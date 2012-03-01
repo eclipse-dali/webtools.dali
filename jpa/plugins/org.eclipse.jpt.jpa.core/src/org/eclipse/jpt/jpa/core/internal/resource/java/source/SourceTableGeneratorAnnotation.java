@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -89,7 +89,7 @@ public final class SourceTableGeneratorAnnotation
 		this.pkColumnName = this.buildPkColumnName(astRoot);
 		this.valueColumnName = this.buildValueColumnName(astRoot);
 		this.pkColumnValue = this.buildPkColumnValue(astRoot);
-		this.uniqueConstraintsContainer.initialize(this.getAstAnnotation(astRoot));
+		this.uniqueConstraintsContainer.initializeFromContainerAnnotation(this.getAstAnnotation(astRoot));
 	}
 
 	@Override
@@ -327,7 +327,7 @@ public final class SourceTableGeneratorAnnotation
 	}
 
 	public UniqueConstraintAnnotation uniqueConstraintAt(int index) {
-		return this.uniqueConstraintsContainer.nestedAnnotationAt(index);
+		return this.uniqueConstraintsContainer.getNestedAnnotation(index);
 	}
 
 	public UniqueConstraintAnnotation addUniqueConstraint(int index) {
@@ -360,7 +360,7 @@ public final class SourceTableGeneratorAnnotation
 		extends AnnotationContainer<UniqueConstraintAnnotation>
 	{
 		@Override
-		protected String getAnnotationsPropertyName() {
+		protected String getNestedAnnotationsListName() {
 			return UNIQUE_CONSTRAINTS_LIST;
 		}
 		@Override

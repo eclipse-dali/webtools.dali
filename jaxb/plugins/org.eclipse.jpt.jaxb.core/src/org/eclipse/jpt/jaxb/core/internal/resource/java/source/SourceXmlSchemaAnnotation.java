@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -109,7 +109,7 @@ public class SourceXmlSchemaAnnotation
 		this.elementFormDefault = buildElementFormDefault(astRoot);
 		this.location = buildLocation(astRoot);
 		this.namespace = buildNamespace(astRoot);
-		this.xmlnsContainer.initialize(this.getAstAnnotation(astRoot));
+		this.xmlnsContainer.initializeFromContainerAnnotation(this.getAstAnnotation(astRoot));
 	}
 	
 	public void synchronizeWith(CompilationUnit astRoot) {
@@ -253,7 +253,7 @@ public class SourceXmlSchemaAnnotation
 	}
 	
 	public XmlNsAnnotation xmlnsAt(int index) {
-		return this.xmlnsContainer.nestedAnnotationAt(index);
+		return this.xmlnsContainer.getNestedAnnotation(index);
 	}
 	
 	public XmlNsAnnotation addXmlns(int index) {
@@ -285,7 +285,7 @@ public class SourceXmlSchemaAnnotation
 		extends AnnotationContainer<XmlNsAnnotation>
 	{
 		@Override
-		protected String getAnnotationsPropertyName() {
+		protected String getNestedAnnotationsListName() {
 			return XMLNS_LIST;
 		}
 		@Override

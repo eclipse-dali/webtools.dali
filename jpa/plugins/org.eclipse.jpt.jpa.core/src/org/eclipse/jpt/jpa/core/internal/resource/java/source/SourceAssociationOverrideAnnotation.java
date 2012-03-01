@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -51,7 +51,7 @@ public abstract class SourceAssociationOverrideAnnotation
 	@Override
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
-		this.joinColumnsContainer.initialize(this.getAstAnnotation(astRoot));
+		this.joinColumnsContainer.initializeFromContainerAnnotation(this.getAstAnnotation(astRoot));
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public abstract class SourceAssociationOverrideAnnotation
 	}
 
 	public JoinColumnAnnotation joinColumnAt(int index) {
-		return this.joinColumnsContainer.nestedAnnotationAt(index);
+		return this.joinColumnsContainer.getNestedAnnotation(index);
 	}
 
 	public JoinColumnAnnotation addJoinColumn(int index) {
@@ -114,7 +114,7 @@ public abstract class SourceAssociationOverrideAnnotation
 		extends AnnotationContainer<JoinColumnAnnotation>
 	{
 		@Override
-		protected String getAnnotationsPropertyName() {
+		protected String getNestedAnnotationsListName() {
 			return JOIN_COLUMNS_LIST;
 		}
 		@Override

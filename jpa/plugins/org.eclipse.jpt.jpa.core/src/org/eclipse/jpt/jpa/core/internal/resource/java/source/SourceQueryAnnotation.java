@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -59,7 +59,7 @@ abstract class SourceQueryAnnotation
 		this.nameTextRange = this.buildNameTextRange(astRoot);
 		this.query = this.buildQuery(astRoot);
 		this.queryTextRange = this.buildQueryTextRange(astRoot);
-		this.hintsContainer.initialize(this.getAstAnnotation(astRoot));
+		this.hintsContainer.initializeFromContainerAnnotation(this.getAstAnnotation(astRoot));
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
@@ -164,7 +164,7 @@ abstract class SourceQueryAnnotation
 	}
 
 	public QueryHintAnnotation hintAt(int index) {
-		return this.hintsContainer.nestedAnnotationAt(index);
+		return this.hintsContainer.getNestedAnnotation(index);
 	}
 
 	public QueryHintAnnotation addHint(int index) {
@@ -208,7 +208,7 @@ abstract class SourceQueryAnnotation
 		extends AnnotationContainer<QueryHintAnnotation>
 	{
 		@Override
-		protected String getAnnotationsPropertyName() {
+		protected String getNestedAnnotationsListName() {
 			return HINTS_LIST;
 		}
 		@Override

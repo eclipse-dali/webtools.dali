@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -133,11 +133,14 @@ public interface JavaResourceAnnotatedElement
 	// ********** queries **********
 		
 	/**
-	 * Return all top level annotations.
-	 * If there is a container annotation, return that and not any nestables within it.
-	 * If there is a nestable alone, return that and not the container.
+	 * Return the element's "top level" annotations.
+	 * For "combination" annotations (i.e. a virtual array of annotations that
+	 * can be either a single <em>standalone</em> annotation [representing an
+	 * array of length one] or an array of annotations witin a
+	 * <em>container</em> annotation), only the <em>container</em> annotation is
+	 * included (if it is present) or the single <em>standalone</em> annotation.
 	 */
-	Iterable<Annotation> getAllAnnotations();
+	Iterable<Annotation> getTopLevelAnnotations();
 	
 	/**
 	 * Return whether the underlying JDT member is currently annotated with any recognized
@@ -148,7 +151,7 @@ public interface JavaResourceAnnotatedElement
 	/**
 	 * Return whether the underlying JDT member is annotated with any of the given annotations.
 	 */
-	boolean isAnnotatedWith(Iterable<String> annotationNames);
+	boolean isAnnotatedWithAnyOf(Iterable<String> annotationNames);
 
 	/**
 	 * Return the element kind

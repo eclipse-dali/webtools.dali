@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,14 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.internal.resource.java.binary;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Hashtable;
 import java.util.Vector;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMemberValuePair;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
@@ -24,6 +24,8 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.Transformer;
+import org.eclipse.jpt.common.utility.internal.TransformerAdapter;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
@@ -32,7 +34,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 
 /**
- * binary annotated element
+ * Java binary annotated element
  */
 abstract class BinaryAnnotatedElement
 	extends BinaryNode
@@ -41,25 +43,28 @@ abstract class BinaryAnnotatedElement
 	/** JDT annotated element adapter */
 	final Adapter adapter;
 
-	/** annotations */
-	final Vector<Annotation> annotations = new Vector<Annotation>();
-	
 	/**
-	 * Annotation containers keyed on nestable annotation name.
-	 * This is used to store annotations that can be both standalone and nested
-	 * and are moved back and forth between the 2.
+	 * Annotations keyed by annotation name;
+	 * no duplicates (the Java compiler does not allow duplicate annotations).
 	 */
-	final Map<String, AnnotationContainer> annotationContainers = new HashMap<String, AnnotationContainer>();
+	private final Hashtable<String, Annotation> annotations = new Hashtable<String, Annotation>();
 
 	/**
-	 * these are built as needed
+	 * Annotation containers keyed by <em>nestable</em> annotation name.
+	 * This is used to store annotations that can be both standalone and nested
+	 * and are moved back and forth between the two.
 	 */
-	private final HashMap<String, Annotation> nullAnnotationsCache = new HashMap<String, Annotation>();
+	private final Hashtable<String, AnnotationContainer> annotationContainers = new Hashtable<String, AnnotationContainer>();
+
+	/**
+	 * These are built as needed.
+	 */
+	private final Hashtable<String, Annotation> nullAnnotationsCache = new Hashtable<String, Annotation>();
 
 
 	// ********** construction/initialization **********
 
-	public BinaryAnnotatedElement(JavaResourceNode parent, Adapter adapter) {
+	BinaryAnnotatedElement(JavaResourceNode parent, Adapter adapter) {
 		super(parent);
 		this.adapter = adapter;
 		this.initializeAnnotations();
@@ -73,49 +78,39 @@ abstract class BinaryAnnotatedElement
 
 	private void addAnnotation(IAnnotation jdtAnnotation) {
 		String jdtAnnotationName = jdtAnnotation.getElementName();
-		if (this.annotationIsValid(jdtAnnotationName)) {
-			this.annotations.add(this.getAnnotationProvider().buildAnnotation(this, jdtAnnotation));
-		}
-		if (this.annotationIsValidNestable(jdtAnnotationName)) {
-			AnnotationContainer container = new AnnotationContainer();
-			container.initializeFromNestableAnnotation(jdtAnnotation);
-			this.annotationContainers.put(jdtAnnotationName, container);
-		}
+		// check whether the annotation is a valid container annotation first
+		// because container validations are also valid annotations
+		// TODO remove container annotations from list of annotations???
 		if (this.annotationIsValidContainer(jdtAnnotationName)) {
-			String nestableAnnotationName = this.getNestableAnnotationName(jdtAnnotationName);
+			String nestableAnnotationName = this.getAnnotationProvider().getNestableAnnotationName(jdtAnnotationName);
 			AnnotationContainer container = new AnnotationContainer();
 			container.initializeFromContainerAnnotation(jdtAnnotation);
 			this.annotationContainers.put(nestableAnnotationName, container);
 		}
+		else if (this.annotationIsValid(jdtAnnotationName)) {
+			this.annotations.put(jdtAnnotationName, this.buildAnnotation(jdtAnnotation));
+		}
+		else if (this.annotationIsValidNestable(jdtAnnotationName)) {
+			// if we already have an annotation container (because there was a container annotation)
+			// ignore the standalone nestable annotation
+			if (this.annotationContainers.get(jdtAnnotationName) == null) {
+				AnnotationContainer container = new AnnotationContainer();
+				container.initializeFromStandaloneAnnotation(jdtAnnotation);
+				this.annotationContainers.put(jdtAnnotationName, container);
+			}
+		}
 	}
 
 	private boolean annotationIsValid(String annotationName) {
-		return CollectionTools.contains(this.getValidAnnotationNames(), annotationName);
+		return CollectionTools.contains(this.getAnnotationProvider().getAnnotationNames(), annotationName);
 	}
 
 	private boolean annotationIsValidContainer(String annotationName) {
-		return CollectionTools.contains(this.getValidContainerAnnotationNames(), annotationName);
+		return CollectionTools.contains(this.getAnnotationProvider().getContainerAnnotationNames(), annotationName);
 	}
 
 	private boolean annotationIsValidNestable(String annotationName) {
-		return CollectionTools.contains(this.getValidNestableAnnotationNames(), annotationName);
-	}
-
-	Iterable<String> getValidAnnotationNames() {
-		return this.getAnnotationProvider().getAnnotationNames();
-	}
-
-	Iterable<String> getValidContainerAnnotationNames() {
-		return this.getAnnotationProvider().getContainerAnnotationNames();
-	}
-
-	Iterable<String> getValidNestableAnnotationNames() {
-		return this.getAnnotationProvider().getNestableAnnotationNames();
-	}
-
-
-	private String getNestableAnnotationName(String containerAnnotationName) {
-		return getAnnotationProvider().getNestableAnnotationName(containerAnnotationName);
+		return CollectionTools.contains(this.getAnnotationProvider().getNestableAnnotationNames(), annotationName);
 	}
 
 
@@ -131,33 +126,20 @@ abstract class BinaryAnnotatedElement
 	private void updateAnnotations() {
 		throw new UnsupportedOperationException();
 	}
-	
-	
+
+
 	// ********** annotations **********
 
 	public Iterable<Annotation> getAnnotations() {
-		return new LiveCloneIterable<Annotation>(this.annotations);
+		return new LiveCloneIterable<Annotation>(this.annotations.values());
 	}
 
 	public int getAnnotationsSize() {
 		return this.annotations.size();
 	}
 
-	protected Iterable<NestableAnnotation> getNestableAnnotations() {
-		return new CompositeIterable<NestableAnnotation>(this.getNestableAnnotationLists());
-	}
-
-	private Iterable<Iterable<NestableAnnotation>> getNestableAnnotationLists() {
-		return new TransformationIterable<AnnotationContainer, Iterable<NestableAnnotation>>(this.annotationContainers.values()) {
-			@Override
-			protected Iterable<NestableAnnotation> transform(AnnotationContainer container) {
-				return container.getNestedAnnotations();
-			}
-		};
-	}
-
 	public Annotation getAnnotation(String annotationName) {
-		return this.selectAnnotationNamed(this.getAnnotations(), annotationName);
+		return this.annotations.get(annotationName);
 	}
 
 	public Annotation getNonNullAnnotation(String annotationName) {
@@ -165,65 +147,106 @@ abstract class BinaryAnnotatedElement
 		return (annotation != null) ? annotation : this.getNullAnnotation(annotationName);
 	}
 
-	private synchronized Annotation getNullAnnotation(String annotationName) {
-		Annotation annotation = this.nullAnnotationsCache.get(annotationName);
-		if (annotation == null) {
-			annotation = this.buildNullAnnotation(annotationName);
-			this.nullAnnotationsCache.put(annotationName, annotation);
+	private Annotation getNullAnnotation(String annotationName) {
+		synchronized (this.nullAnnotationsCache) {
+			Annotation annotation = this.nullAnnotationsCache.get(annotationName);
+			if (annotation == null) {
+				annotation = this.buildNullAnnotation(annotationName);
+				this.nullAnnotationsCache.put(annotationName, annotation);
+			}
+			return annotation;
 		}
-		return annotation;
 	}
 
 	private Annotation buildNullAnnotation(String annotationName) {
-		return getAnnotationProvider().buildNullAnnotation(this, annotationName);
+		return this.getAnnotationProvider().buildNullAnnotation(this, annotationName);
 	}
 
-	// ********** nestable annotations **********
+	/* CU private */ Annotation buildAnnotation(IAnnotation jdtAnnotation) {
+		return this.getAnnotationProvider().buildAnnotation(this, jdtAnnotation);
+	}
+
+
+	// ********** combination annotations **********
+
+	private Iterable<NestableAnnotation> getNestableAnnotations() {
+		return new CompositeIterable<NestableAnnotation>(this.getNestableAnnotationLists());
+	}
+
+	private Iterable<Iterable<NestableAnnotation>> getNestableAnnotationLists() {
+		return new TransformationIterable<AnnotationContainer, Iterable<NestableAnnotation>>(this.getAnnotationContainers(), ANNOTATION_CONTAINER_NESTED_ANNOTATIONS_TRANSFORMER);
+	}
+
+	private static final Transformer<AnnotationContainer, Iterable<NestableAnnotation>> ANNOTATION_CONTAINER_NESTED_ANNOTATIONS_TRANSFORMER = new AnnotationContainerNestedAnnotationsTransformer();
+	static final class AnnotationContainerNestedAnnotationsTransformer
+		extends TransformerAdapter<AnnotationContainer, Iterable<NestableAnnotation>>
+	{
+		@Override
+		public Iterable<NestableAnnotation> transform(AnnotationContainer container) {
+			return container.getNestedAnnotations();
+		}
+	}
+
+	private Iterable<AnnotationContainer> getAnnotationContainers() {
+		return new LiveCloneIterable<AnnotationContainer>(this.annotationContainers.values());
+	}
 
 	public ListIterable<NestableAnnotation> getAnnotations(String nestableAnnotationName) {
 		AnnotationContainer container = this.annotationContainers.get(nestableAnnotationName);
-		return container != null ? container.getNestedAnnotations() : EmptyListIterable.<NestableAnnotation> instance();
+		return (container != null) ? container.getNestedAnnotations() : EmptyListIterable.<NestableAnnotation> instance();
 	}
 
 
 	public int getAnnotationsSize(String nestableAnnotationName) {
 		AnnotationContainer container = this.annotationContainers.get(nestableAnnotationName);
-		return container == null ? 0 : container.getNestedAnnotationsSize();
+		return (container == null) ? 0 : container.getNestedAnnotationsSize();
 	}
 
 	public NestableAnnotation getAnnotation(int index, String nestableAnnotationName) {
 		AnnotationContainer container = this.annotationContainers.get(nestableAnnotationName);
-		return container == null ? null : container.nestedAnnotationAt(index);
+		return (container == null) ? null : container.getNestedAnnotation(index);
 	}
 
-	// ***** queries *****
-	
-	public Iterable<Annotation> getAllAnnotations() {
-		return new CompositeIterable<Annotation>(
-				getAnnotations(),
-				getContainerOrNestableAnnotations());
-	}
-	
-	protected Iterable<Annotation> getContainerOrNestableAnnotations() {
-		return new TransformationIterable<AnnotationContainer, Annotation>(this.annotationContainers.values()) {
-			@Override
-			protected Annotation transform(AnnotationContainer o) {
-				return (o.getContainerAnnotation() != null) ? o.getContainerAnnotation() : CollectionTools.get(o.getNestedAnnotations(), 0);
-			}
-		};
-	}
-	
-	public boolean isAnnotated() {
-		return ! (this.annotations.isEmpty() && this.annotationContainers.isEmpty());
+	private Iterable<Annotation> getContainerOrStandaloneNestableAnnotations() {
+		return new TransformationIterable<AnnotationContainer, Annotation>(this.getAnnotationContainers(), TOP_LEVEL_ANNOTATION_CONTAINER_TRANSFORMER);
 	}
 
-	public boolean isAnnotatedWith(Iterable<String> annotationNames) {
-		for (Annotation annotation : this.getAnnotations()) {
-			if (CollectionTools.contains(annotationNames, annotation.getAnnotationName())) {
-				return true;
-			}
+	private static final Transformer<AnnotationContainer, Annotation> TOP_LEVEL_ANNOTATION_CONTAINER_TRANSFORMER = new TopLevelAnnotationContainerTransformer();
+	/* CU private */ static final class TopLevelAnnotationContainerTransformer
+		extends TransformerAdapter<AnnotationContainer, Annotation>
+	{
+		@Override
+		public Annotation transform(AnnotationContainer container) {
+			Annotation containerAnnotation = container.getContainerAnnotation();
+			return (containerAnnotation != null) ? containerAnnotation : container.getNestedAnnotation(0);
 		}
-		for (Annotation annotation : this.getNestableAnnotations()) {
+	}
+
+	/* CU private */ NestableAnnotation buildAnnotation(IAnnotation jdtAnnotation, int index) {
+		return this.getAnnotationProvider().buildAnnotation(this, jdtAnnotation, index);
+	}
+
+
+	// ***** all annotations *****
+
+	@SuppressWarnings("unchecked")
+	public Iterable<Annotation> getTopLevelAnnotations() {
+		return new CompositeIterable<Annotation>(
+					this.getAnnotations(),
+					this.getContainerOrStandaloneNestableAnnotations()
+				);
+	}
+
+	public boolean isAnnotated() {
+		return ! this.isUnannotated();
+	}
+
+	private boolean isUnannotated() {
+		return this.annotations.isEmpty() && this.annotationContainers.isEmpty();
+	}
+
+	public boolean isAnnotatedWithAnyOf(Iterable<String> annotationNames) {
+		for (Annotation annotation : this.getSignificantAnnotations()) {
 			if (CollectionTools.contains(annotationNames, annotation.getAnnotationName())) {
 				return true;
 			}
@@ -231,20 +254,24 @@ abstract class BinaryAnnotatedElement
 		return false;
 	}
 
+	/**
+	 * Return the "significant" annotations;
+	 * i.e. ignore the container annotations (they have no semantics).
+	 */
+	@SuppressWarnings("unchecked")
+	private Iterable<Annotation> getSignificantAnnotations() {
+		return new CompositeIterable<Annotation>(
+					this.getAnnotations(),
+					this.getNestableAnnotations()
+				);
+	}
+
 
 	// ********** misc **********
 
-	IJavaElement getAnnotatedElement() {
-		return this.adapter.getElement();
-	}
-
-	private Annotation selectAnnotationNamed(Iterable<Annotation> annotationList, String annotationName) {
-		for (Annotation annotation : annotationList) {
-			if (annotation.getAnnotationName().equals(annotationName)) {
-				return annotation;
-			}
-		}
-		return null;
+	@Override
+	protected AnnotationProvider getAnnotationProvider() {
+		return super.getAnnotationProvider();
 	}
 
 	private IAnnotation[] getJdtAnnotations() {
@@ -303,74 +330,61 @@ abstract class BinaryAnnotatedElement
 		throw new UnsupportedOperationException();
 	}
 
-	private static final IMemberValuePair[] EMPTY_MEMBER_VALUE_PAIR_ARRAY = new IMemberValuePair[0];
-	
-	
-	class AnnotationContainer {
-		
+	/* CU private */ static final IMemberValuePair[] EMPTY_MEMBER_VALUE_PAIR_ARRAY = new IMemberValuePair[0];
+	/* CU private */ static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
+
+
+	// ********** annotation container **********
+
+	/* CU private */ class AnnotationContainer {
+
 		private Annotation containerAnnotation;
-		
+
 		private final Vector<NestableAnnotation> nestedAnnotations = new Vector<NestableAnnotation>();
-		
-		protected AnnotationContainer() {
+
+		AnnotationContainer() {
 			super();
-		}		
-		
-		
-		// ***** init from container *****
-		
-		protected void initializeFromContainerAnnotation(IAnnotation jdtContainerAnnotation) {
-			this.containerAnnotation = 
-					BinaryAnnotatedElement.this.getAnnotationProvider().buildAnnotation(
-							BinaryAnnotatedElement.this, jdtContainerAnnotation);
-			initializeNestedAnnotations(jdtContainerAnnotation);
 		}
-		
-		protected void initializeNestedAnnotations(IAnnotation jdtContainerAnnotation) {
-			int index = 0;
-			for (IMemberValuePair valuePair : this.getJdtMemberValuePairs(jdtContainerAnnotation)) {
-				IAnnotation jdtNestedAnnotation = (IAnnotation) valuePair.getValue();
-				this.nestedAnnotations.add(
-						BinaryAnnotatedElement.this.getAnnotationProvider().buildAnnotation(
-								BinaryAnnotatedElement.this, jdtNestedAnnotation, index++));
+
+		void initializeFromContainerAnnotation(IAnnotation jdtContainerAnnotation) {
+			this.initializeNestedAnnotations(jdtContainerAnnotation);
+			this.containerAnnotation = BinaryAnnotatedElement.this.buildAnnotation(jdtContainerAnnotation);
+		}
+
+		void initializeNestedAnnotations(IAnnotation jdtContainerAnnotation) {
+			Object[] jdtNestedAnnotations = this.getJdtNestedAnnotations(jdtContainerAnnotation);
+			int len = jdtNestedAnnotations.length;
+			for (int i = 0; i < len; i++) {
+				IAnnotation jdtNestedAnnotation = (IAnnotation) jdtNestedAnnotations[i];
+				this.addAnnotation(jdtNestedAnnotation, i);
 			}
 		}
-		
-		private IMemberValuePair[] getJdtMemberValuePairs(IAnnotation jdtContainerAnnotation) {
-			try {
-				return jdtContainerAnnotation.getMemberValuePairs();
-			} 
-			catch (JavaModelException ex) {
-				JptCommonCorePlugin.log(ex);
-				return EMPTY_MEMBER_VALUE_PAIR_ARRAY;
-			}
+
+		private Object[] getJdtNestedAnnotations(IAnnotation jdtContainerAnnotation) {
+			return BinaryAnnotatedElement.this.getJdtMemberValues(jdtContainerAnnotation, "value"); //$NON-NLS-1$
 		}
-		
-		
-		// ***** init from nestable *****
-		
-		protected void initializeFromNestableAnnotation(IAnnotation jdtNestableAnnotation) {
-			this.nestedAnnotations.add(
-					BinaryAnnotatedElement.this.getAnnotationProvider().buildAnnotation(
-							BinaryAnnotatedElement.this, jdtNestableAnnotation, 0));
+
+		void initializeFromStandaloneAnnotation(IAnnotation jdtNestableAnnotation) {
+			this.addAnnotation(jdtNestableAnnotation, 0);
 		}
-		
-		
-		// ***** queries *****
-		
-		protected Annotation getContainerAnnotation() {
+
+		private void addAnnotation(IAnnotation jdtNestableAnnotation, int index) {
+			this.nestedAnnotations.add(BinaryAnnotatedElement.this.buildAnnotation(jdtNestableAnnotation, index));
+		}
+
+		Annotation getContainerAnnotation() {
 			return this.containerAnnotation;
 		}
-		
-		protected ListIterable<NestableAnnotation> getNestedAnnotations() {
+
+		ListIterable<NestableAnnotation> getNestedAnnotations() {
 			return new LiveCloneListIterable<NestableAnnotation>(this.nestedAnnotations);
 		}
-		
-		protected int getNestedAnnotationsSize() {
+
+		int getNestedAnnotationsSize() {
 			return this.nestedAnnotations.size();
 		}
-		
-		protected NestableAnnotation nestedAnnotationAt(int index) {
+
+		NestableAnnotation getNestedAnnotation(int index) {
 			return this.nestedAnnotations.get(index);
 		}
 	}

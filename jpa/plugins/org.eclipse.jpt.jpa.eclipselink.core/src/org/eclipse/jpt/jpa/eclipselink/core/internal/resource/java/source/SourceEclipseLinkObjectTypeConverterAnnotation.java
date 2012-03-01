@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -77,7 +77,7 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 		super.initialize(astRoot);
 		this.defaultObjectValue = this.buildDefaultObjectValue(astRoot);
 		this.defaultObjectValueTextRange = this.buildDefaultObjectValueTextRange(astRoot);
-		this.conversionValuesContainer.initialize(this.getAstAnnotation(astRoot));
+		this.conversionValuesContainer.initializeFromContainerAnnotation(this.getAstAnnotation(astRoot));
 	}
 
 	@Override
@@ -164,7 +164,7 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 	}
 
 	public EclipseLinkConversionValueAnnotation conversionValueAt(int index) {
-		return this.conversionValuesContainer.nestedAnnotationAt(index);
+		return this.conversionValuesContainer.getNestedAnnotation(index);
 	}
 
 	public EclipseLinkConversionValueAnnotation addConversionValue(int index) {
@@ -215,7 +215,7 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 		extends AnnotationContainer<EclipseLinkConversionValueAnnotation>
 	{
 		@Override
-		protected String getAnnotationsPropertyName() {
+		protected String getNestedAnnotationsListName() {
 			return CONVERSION_VALUES_LIST;
 		}
 		@Override

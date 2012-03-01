@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,11 +15,9 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
-import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.ArrayInitializer;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
-import org.eclipse.jdt.core.dom.IAnnotationBinding;
 import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.IVariableBinding;
@@ -82,19 +80,6 @@ public class ASTTools {
 		return variableBinding.getType().getQualifiedName() + '.' + variableBinding.getName();
 	}
 
-	/**
-	 * Return the fully-qualified name of the specified node's annotation
-	 * class.
-	 */
-	public static String resolveAnnotation(Annotation node) {
-		IAnnotationBinding annotationBinding = node.resolveAnnotationBinding();
-		if (annotationBinding == null) {
-			return null;
-		}
-		ITypeBinding annotationTypeBinding = annotationBinding.getAnnotationType();
-		return (annotationTypeBinding == null) ? null : annotationTypeBinding.getQualifiedName();
-	}
-	
 	/**
 	 * If the specified expression is a type literal, return the type's fully-
 	 * qualified name. Return null otherwise.

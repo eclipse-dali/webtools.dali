@@ -217,35 +217,4 @@ public abstract class SourceAnnotation
 	private IndexedAnnotationAdapter getIndexedAnnotationAdapter() {
 		return (IndexedAnnotationAdapter) this.annotationAdapter;
 	}
-
-
-	// ********** annotation container **********
-
-	/**
-	 * A container for nested annotations. The owner of the AnnotationContainer
-	 * needs to call initialize(CompilationUnit) on it.
-	 * @param <T> the type of the resource nestable annotations
-	 */
-	public abstract class AnnotationContainer<T extends NestableAnnotation>
-		extends SourceNode.AnnotationContainer<T>
-	{
-		protected AnnotationContainer() {
-			super();
-		}
-
-		/**
-		 * Return the annotations property name for firing property change notification
-		 */
-		protected abstract String getAnnotationsPropertyName();
-
-		@Override
-		protected void fireItemAdded(int index, T addedItem) {
-			SourceAnnotation.this.fireItemAdded(this.getAnnotationsPropertyName(), index, addedItem);
-		}
-
-		@Override
-		protected void fireItemsRemoved(int index, java.util.List<T> removedItems) {
-			SourceAnnotation.this.fireItemsRemoved(this.getAnnotationsPropertyName(), index, removedItems);
-		}
-	}
 }

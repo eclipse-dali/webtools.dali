@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -63,7 +63,7 @@ public final class SourceSecondaryTableAnnotation
 	@Override
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
-		this.pkJoinColumnsContainer.initialize(this.getAstAnnotation(astRoot));
+		this.pkJoinColumnsContainer.initializeFromContainerAnnotation(this.getAstAnnotation(astRoot));
 	}
 
 	@Override
@@ -109,7 +109,7 @@ public final class SourceSecondaryTableAnnotation
 	}
 
 	public PrimaryKeyJoinColumnAnnotation pkJoinColumnAt(int index) {
-		return this.pkJoinColumnsContainer.nestedAnnotationAt(index);
+		return this.pkJoinColumnsContainer.getNestedAnnotation(index);
 	}
 
 	public PrimaryKeyJoinColumnAnnotation addPkJoinColumn(int index) {
@@ -141,7 +141,7 @@ public final class SourceSecondaryTableAnnotation
 		extends AnnotationContainer<PrimaryKeyJoinColumnAnnotation>
 	{
 		@Override
-		protected String getAnnotationsPropertyName() {
+		protected String getNestedAnnotationsListName() {
 			return PK_JOIN_COLUMNS_LIST;
 		}
 		@Override

@@ -208,7 +208,7 @@ public interface JpaProject
 	 */
 	Iterable<String> getMappedJavaSourceClassNames();
 
-	Iterable<String> getTypeMappingAnnotations();
+	Iterable<String> getTypeMappingAnnotationNames();
 
 	/**
 	 * Return the Java resource type for the fully qualified type name.

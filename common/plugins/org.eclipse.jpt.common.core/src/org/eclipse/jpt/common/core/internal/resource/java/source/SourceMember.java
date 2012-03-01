@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.internal.resource.java.source;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.Modifier;
@@ -18,7 +16,6 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.jdt.Member;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 
 /**
  * Java source member (annotations, "persistable")
@@ -27,7 +24,6 @@ abstract class SourceMember<M extends Member>
 	extends SourceAnnotatedElement<M>
 	implements JavaResourceMember
 {
-
 	boolean final_;  // 'final' is a reserved word
 
 	boolean transient_;  // 'transient' is a reserved word
@@ -65,50 +61,6 @@ abstract class SourceMember<M extends Member>
 		this.syncStatic(this.buildStatic(binding));
 		this.syncProtected(this.buildProtected(binding));
 	}
-
-
-	// ********** annotations **********
-
-	public Annotation setPrimaryAnnotation(String primaryAnnotationName, Iterable<String> supportingAnnotationNames) {
-		ArrayList<String> annotationNames = new ArrayList<String>();
-		CollectionTools.addAll(annotationNames, supportingAnnotationNames);
-		if (primaryAnnotationName != null) {
-			annotationNames.add(primaryAnnotationName);
-		}
-		for (Annotation annotation : this.getAnnotations()) {
-			if ( ! CollectionTools.contains(annotationNames, annotation.getAnnotationName())) {
-				this.annotations.remove(annotation);
-				annotation.removeAnnotation();
-			}
-		}
-		Iterator<AnnotationContainer> containers = this.annotationContainers.values().iterator();
-		for (; containers.hasNext();) {
-			AnnotationContainer container = containers.next();
-			if (container.getContainerAnnotation() != null) {
-				if ( ! CollectionTools.contains(annotationNames, container.getContainerAnnotation().getAnnotationName())) {
-					containers.remove();
-					container.getContainerAnnotation().removeAnnotation();
-				}
-			}
-			else {
-				//At this point the only thing remaining would be a standalone "nestable" annotation
-				String nestedAnnotatioName = container.getNestedAnnotationName();
-				if ( ! CollectionTools.contains(annotationNames, nestedAnnotatioName)) {
-					containers.remove();
-					container.getNestedAnnotations().iterator().next().removeAnnotation();
-				}
-			}
-		}
-
-		Annotation newPrimaryAnnotation = this.getAnnotation(primaryAnnotationName);
-		if ((primaryAnnotationName != null) && (newPrimaryAnnotation == null)) {
-			newPrimaryAnnotation = this.buildAnnotation(primaryAnnotationName);
-			this.annotations.add(newPrimaryAnnotation);
-			newPrimaryAnnotation.newAnnotation();
-		}
-		return newPrimaryAnnotation;
-	}
-
 
 	// ***** final
 	public boolean isFinal() {
@@ -191,7 +143,13 @@ abstract class SourceMember<M extends Member>
 		return this.annotatedElement.matches(memberName, occurrence);
 	}
 
+	@Override
+	public Annotation setPrimaryAnnotation(String primaryAnnotationName, Iterable<String> supportingAnnotationNames) {
+		return super.setPrimaryAnnotation(primaryAnnotationName, supportingAnnotationNames);
+	}
+
 	public void resolveTypes(CompilationUnit astRoot) {
+		// do nothing?
 	}
 
 	public boolean isPublicOrProtected() {

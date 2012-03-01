@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,6 +21,7 @@ import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
+import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.internal.resource.java.AbstractJavaResourceNode;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
@@ -38,7 +39,7 @@ public abstract class SourceNode
 	extends AbstractJavaResourceNode
 {
 
-	public SourceNode(JavaResourceNode parent) {
+	protected SourceNode(JavaResourceNode parent) {
 		super(parent);
 	}
 
@@ -50,14 +51,31 @@ public abstract class SourceNode
 		return this.getJavaResourceCompilationUnit().buildASTRoot();
 	}
 
+	protected void nestedAnnotationAdded(String listName, int index, NestableAnnotation addedAnnotation) {
+		this.fireItemAdded(listName, index, addedAnnotation);
+	}
+
+	protected void nestedAnnotationsRemoved(String listName, int index, List<? extends NestableAnnotation> removedAnnotations) {
+		this.fireItemsRemoved(listName, index, removedAnnotations);
+	}
+
+	@Override
+	protected AnnotationProvider getAnnotationProvider() {
+		return super.getAnnotationProvider();
+	}
+
+
+	// ********** annotation container **********
+
 	/**
 	 * A container for nested annotations. The owner of the AnnotationContainer
-	 * needs to call initialize(org.eclipse.jdt.core.dom.Annotation) on it.
-	 * @param <T> the type of the resource nestable annotations
+	 * needs to call
+	 * {@link #initializeFromContainerAnnotation(org.eclipse.jdt.core.dom.Annotation)}
+	 * on it.
+	 * @param <A> the type of the resource nestable annotations
 	 */
-	abstract class AnnotationContainer<T extends NestableAnnotation>
-	{
-		protected final Vector<T> nestedAnnotations = new Vector<T>();
+	protected abstract class AnnotationContainer<A extends NestableAnnotation> {
+		protected final Vector<A> nestedAnnotations = new Vector<A>();
 
 		protected AnnotationContainer() {
 			super();
@@ -76,18 +94,14 @@ public abstract class SourceNode
 		/**
 		 * Return a new nested annotation at the given index
 		 */
-		protected abstract T buildNestedAnnotation(int index);
+		protected abstract A buildNestedAnnotation(int index);
 
-		protected abstract void fireItemAdded(int index, T nestedAnnotation);
-
-		protected abstract void fireItemsRemoved(int index, List<T> removedItems);
-
-		public void initialize(org.eclipse.jdt.core.dom.Annotation astContainerAnnotation) {
+		public void initializeFromContainerAnnotation(org.eclipse.jdt.core.dom.Annotation astContainerAnnotation) {
 			// ignore the nested AST annotations themselves
-			// (maybe someday we can use them during initialization...)
+			// TODO (maybe someday we can use them during initialization...)
 			int size = this.getNestedAstAnnotations(astContainerAnnotation).size();
 			for (int i = 0; i < size; i++) {
-				T nestedAnnotation = this.buildNestedAnnotation(i);
+				A nestedAnnotation = this.buildNestedAnnotation(i);
 				this.nestedAnnotations.add(i, nestedAnnotation);
 				nestedAnnotation.initialize((CompilationUnit) astContainerAnnotation.getRoot());
 			}
@@ -101,10 +115,10 @@ public abstract class SourceNode
 			ArrayList<org.eclipse.jdt.core.dom.Annotation> astAnnotations = this.getNestedAstAnnotations(astContainerAnnotation);
 			Iterator<org.eclipse.jdt.core.dom.Annotation> astAnnotationStream = astAnnotations.iterator();
 
-			for (T nestedAnnotation : this.getNestedAnnotations()) {
+			for (A nestedAnnotation : this.getNestedAnnotations()) {
 				if (astAnnotationStream.hasNext()) {
 					// matching AST annotation is present - synchronize the nested annotation
-					astAnnotationStream.next();  // maybe someday we can pass this to the update
+					astAnnotationStream.next();  // TODO pass this to the update
 					nestedAnnotation.synchronizeWith((CompilationUnit) astContainerAnnotation.getRoot());
 				} else {
 					// no more AST annotations - remove the remaining nested annotations and exit
@@ -119,22 +133,22 @@ public abstract class SourceNode
 			}
 		}
 
-		public ListIterable<T> getNestedAnnotations() {
-			return new LiveCloneListIterable<T>(this.nestedAnnotations);
+		public ListIterable<A> getNestedAnnotations() {
+			return new LiveCloneListIterable<A>(this.nestedAnnotations);
 		}
 
 		public int getNestedAnnotationsSize() {
 			return this.nestedAnnotations.size();
 		}
 
-		public T nestedAnnotationAt(int index) {
+		public A getNestedAnnotation(int index) {
 			return this.nestedAnnotations.get(index);
 		}
 
-		public T addNestedAnnotation(int index) {
+		public A addNestedAnnotation(int index) {
 			// add a new annotation to the end of the list...
-			int sourceIndex = this.getNestedAnnotationsSize();
-			T nestedAnnotation = this.buildNestedAnnotation(sourceIndex);
+			int sourceIndex = this.nestedAnnotations.size();
+			A nestedAnnotation = this.buildNestedAnnotation(sourceIndex);
 			this.nestedAnnotations.add(sourceIndex, nestedAnnotation);
 			nestedAnnotation.newAnnotation();
 			nestedAnnotation.initialize(nestedAnnotation.getJavaResourceCompilationUnit().buildASTRoot());
@@ -143,22 +157,22 @@ public abstract class SourceNode
 			return nestedAnnotation;
 		}
 
-		public T moveNestedAnnotation(int targetIndex, int sourceIndex) {
+		public A moveNestedAnnotation(int targetIndex, int sourceIndex) {
 			if (targetIndex != sourceIndex) {
 				return this.moveNestedAnnotation_(targetIndex, sourceIndex);
 			}
 			return null;
 		}
 
-		public T removeNestedAnnotation(int index) {
-			T nestedAnnotation = this.nestedAnnotations.remove(index);
+		public A removeNestedAnnotation(int index) {
+			A nestedAnnotation = this.nestedAnnotations.remove(index);
 			nestedAnnotation.removeAnnotation();
 			this.syncAstAnnotationsAfterRemove(index);
 			return nestedAnnotation;
 		}
 
-		private T moveNestedAnnotation_(int targetIndex, int sourceIndex) {
-			T nestedAnnotation = CollectionTools.move(this.nestedAnnotations, targetIndex, sourceIndex).get(targetIndex);
+		private A moveNestedAnnotation_(int targetIndex, int sourceIndex) {
+			A nestedAnnotation = CollectionTools.move(this.nestedAnnotations, targetIndex, sourceIndex).get(targetIndex);
 			this.syncAstAnnotationsAfterMove(targetIndex, sourceIndex, nestedAnnotation);
 			return nestedAnnotation;
 		}
@@ -274,7 +288,7 @@ public abstract class SourceNode
 		}
 
 		@SuppressWarnings("unchecked")
-		protected List<MemberValuePair> values(NormalAnnotation na) {
+		private List<MemberValuePair> values(NormalAnnotation na) {
 			return na.values();
 		}
 
@@ -284,9 +298,9 @@ public abstract class SourceNode
 		 * Synchronize the AST annotations with the resource model annotation container,
 		 * starting with the lower index to prevent overlap.
 		 */
-		private void syncAstAnnotationsAfterMove(int targetIndex, int sourceIndex, T nestedAnnotation) {
+		private void syncAstAnnotationsAfterMove(int targetIndex, int sourceIndex, A nestedAnnotation) {
 			// move the Java annotation to the end of the list...
-			nestedAnnotation.moveAnnotation(this.getNestedAnnotationsSize());
+			nestedAnnotation.moveAnnotation(this.nestedAnnotations.size());
 			// ...then shift the other AST annotations over one slot...
 			if (sourceIndex < targetIndex) {
 				for (int i = sourceIndex; i < targetIndex; i++) {
@@ -308,7 +322,7 @@ public abstract class SourceNode
 		 * starting at the specified index to prevent overlap.
 		 */
 		private void syncAstAnnotationsAfterRemove(int index) {
-			for (int i = index; i < this.getNestedAnnotationsSize(); i++) {
+			for (int i = index; i < this.nestedAnnotations.size(); i++) {
 				// the indices are the same because the model annotations are
 				// already in the proper locations - it's the AST annotations that
 				// need to be moved to the matching location
@@ -316,32 +330,50 @@ public abstract class SourceNode
 			}
 		}
 
-		protected void syncAddNestedAnnotation(org.eclipse.jdt.core.dom.Annotation astAnnotation) {
-			int index = this.getNestedAnnotationsSize();
-			T nestedAnnotation = this.buildNestedAnnotation(index);
+		private void syncAddNestedAnnotation(org.eclipse.jdt.core.dom.Annotation astAnnotation) {
+			int index = this.nestedAnnotations.size();
+			A nestedAnnotation = this.buildNestedAnnotation(index);
 			nestedAnnotation.initialize((CompilationUnit) astAnnotation.getRoot());
 			this.nestedAnnotations.add(index, nestedAnnotation);
-			this.fireItemAdded(index, nestedAnnotation);
+			this.nestedAnnotationAdded(index, nestedAnnotation);
 		}
 
-		protected void syncRemoveNestedAnnotations(int index) {
-			List<T> subList = this.nestedAnnotations.subList(index, this.getNestedAnnotationsSize());
-			List<T> removedItems = new ArrayList<T>(subList);
-			subList.clear();
-			this.fireItemsRemoved(index, removedItems);
+		void nestedAnnotationAdded(int index, A addedAnnotation) {
+			SourceNode.this.nestedAnnotationAdded(this.getNestedAnnotationsListName(), index, addedAnnotation);
 		}
+
+		/**
+		 * Remove the nested annotations from the specified index to the end of
+		 * the list.
+		 */
+		void syncRemoveNestedAnnotations(int index) {
+			List<A> subList = this.nestedAnnotations.subList(index, this.nestedAnnotations.size());
+			List<A> removedAnnotations = new ArrayList<A>(subList);
+			subList.clear();
+			this.nestedAnnotationsRemoved(index, removedAnnotations);
+		}
+
+		void nestedAnnotationsRemoved(int index, List<A> removedAnnotations) {
+			SourceNode.this.nestedAnnotationsRemoved(this.getNestedAnnotationsListName(), index, removedAnnotations);
+		}
+
+		/**
+		 * Return the nested annotations list name for firing property change
+		 * notification.
+		 */
+		protected abstract String getNestedAnnotationsListName();
 
 		public boolean isEmpty() {
 			return this.nestedAnnotations.isEmpty();
 		}
 
-		@Override
-		public String toString() {
-			return StringTools.buildToStringFor(this);
+		AnnotationProvider getAnnotationProvider() {
+			return SourceNode.this.getAnnotationProvider();
 		}
 
-		public void toString(StringBuilder sb) {
-			sb.append(this.nestedAnnotations);
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this, this.nestedAnnotations);
 		}
 	}
 }

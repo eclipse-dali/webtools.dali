@@ -297,10 +297,11 @@ public class GenericRootContextNode
 		// replace jrpt.getMappingAnnotation().getTextRange(jrcu.buildASTRoot())
 		//    with jrpt.getMappingAnnotation().getTextRange()
 		//    (new method #getTextRange() ?)
+		Iterable<String> typeMappingAnnotationNames = this.jpaProject.getTypeMappingAnnotationNames();
 		for (String orphan : orphans) {
 			JavaResourceAbstractType jrt = this.jpaProject.getJavaResourceType(orphan);
 			JavaResourceCompilationUnit jrcu = jrt.getJavaResourceCompilationUnit();
-			if (jrt.isAnnotatedWith(this.jpaProject.getTypeMappingAnnotations())) {
+			if (jrt.isAnnotatedWithAnyOf(typeMappingAnnotationNames)) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,

@@ -249,7 +249,7 @@ public class GenericOrmIdClassReference
 			return null;
 		}
 		JavaResourceType jrt = (JavaResourceType) this.getJpaProject().getJavaResourceType(this.fullyQualifiedIdClassName, Kind.TYPE);
-		return jrt == null || jrt.isAnnotatedWith(getJpaProject().getTypeMappingAnnotations()) ? null : jrt;
+		return jrt == null || jrt.isAnnotatedWithAnyOf(getJpaProject().getTypeMappingAnnotationNames()) ? null : jrt;
 	}
 
 	protected JavaPersistentType buildIdClass() {

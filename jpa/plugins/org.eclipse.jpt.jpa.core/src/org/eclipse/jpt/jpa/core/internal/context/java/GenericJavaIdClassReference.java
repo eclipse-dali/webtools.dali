@@ -194,7 +194,7 @@ public class GenericJavaIdClassReference
 			return null;
 		} 
 		JavaResourceType jrt = this.getIdClassJavaResourceType();
-		return (jrt == null) ? null : (jrt.isAnnotatedWith(getJpaProject().getTypeMappingAnnotations()) ? null : jrt);
+		return (jrt == null) ? null : (jrt.isAnnotatedWithAnyOf(getJpaProject().getTypeMappingAnnotationNames()) ? null : jrt);
 	}
 
 	protected JavaResourceType getIdClassJavaResourceType() {

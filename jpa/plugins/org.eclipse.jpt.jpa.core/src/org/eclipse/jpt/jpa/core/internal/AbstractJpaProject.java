@@ -851,15 +851,16 @@ public abstract class AbstractJpaProject
 	 * those in JARs referenced in <code>persistence.xml</code>.
 	 */
 	protected Iterable<JavaResourceAbstractType> getInternalMappedSourceJavaResourceTypes() {
+		final Iterable<String> typeMappingAnnotationNames = this.getTypeMappingAnnotationNames();
 		return new FilteringIterable<JavaResourceAbstractType>(this.getInternalAnnotatedSourceJavaResourceTypes()) {
 			@Override
 			protected boolean accept(JavaResourceAbstractType jraType) {
-				return jraType.isAnnotatedWith(AbstractJpaProject.this.getTypeMappingAnnotations());
+				return jraType.isAnnotatedWithAnyOf(typeMappingAnnotationNames);
 			}
 		};
 	}
 
-	public Iterable<String> getTypeMappingAnnotations() {
+	public Iterable<String> getTypeMappingAnnotationNames() {
 		return new TransformationIterable<JavaTypeMappingDefinition, String>(this.getJpaPlatform().getJavaTypeMappingDefinitions()) {
 			@Override
 			protected String transform(JavaTypeMappingDefinition o) {
