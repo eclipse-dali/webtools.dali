@@ -143,7 +143,9 @@ public class JaxbJavaCompletionProposalComputer
 		List<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
 		for (JavaContextNode javaNode : javaNodes) {
 			for (String proposal : javaNode.getJavaCompletionProposals(context.getInvocationOffset(), filter, astRoot)) {
-				proposals.add(new CompletionProposal(proposal, tokenStart, tokenEnd - tokenStart + 1, proposal.length()));
+				// using proposal.length() -1 as cursor position puts the cursor just inside end quotes 
+				// useful for further content assist if necessary
+				proposals.add(new CompletionProposal(proposal, tokenStart, tokenEnd - tokenStart + 1, proposal.length() - 1));
 			}
 		}
 		return proposals;
