@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -87,9 +87,8 @@ public abstract class AbstractJavaResourceNode
 	// ********** JavaResourceNode implementation **********
 
 	/**
-	 * @see org.eclipse.jpt.common.core.internal.resource.java.source.core.internal.resource.java.source.SourceCompilationUnit#getRoot()
-	 * @see org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryPackageFragmentRoot#getRoot()
-	 * @see org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryTypeCache#getRoot()
+	 * @see org.eclipse.jpt.common.core.internal.resource.java.binary.RootBinaryNode#getRoot()
+	 * @see org.eclipse.jpt.common.core.internal.resource.java.source.SourceCompilationUnit#getRoot()
 	 */
 	public Root getRoot() {
 		return this.parent.getRoot();
@@ -105,5 +104,4 @@ public abstract class AbstractJavaResourceNode
 	protected AnnotationProvider getAnnotationProvider() {
 		return this.getRoot().getAnnotationProvider();
 	}
-
 }
