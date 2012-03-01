@@ -125,10 +125,10 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 		return this.fullyQualifiedAttributeType;
 	}
 
-	protected void setFullyQualifiedAttributeType(String entity) {
+	protected void setFullyQualifiedAttributeType(String attributeType) {
 		String old = this.fullyQualifiedAttributeType;
-		this.fullyQualifiedAttributeType = entity;
-		this.firePropertyChanged(FULLY_QUALIFIED_ATTRIBUTE_TYPE_PROPERTY, old, entity);
+		this.fullyQualifiedAttributeType = attributeType;
+		this.firePropertyChanged(FULLY_QUALIFIED_ATTRIBUTE_TYPE_PROPERTY, old, attributeType);
 	}
 
 	protected String buildFullyQualifiedAttributeType() {
