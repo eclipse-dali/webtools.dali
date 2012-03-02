@@ -112,7 +112,7 @@ public class ELJavaXmlDiscriminatorNode
 			messages.add(
 					ELJaxbValidationMessageBuilder.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								ELJaxbValidationMessages.XML_PATH__NOT_SPECIFIED,
+								ELJaxbValidationMessages.XML_DISCRIMINATOR_NODE__NOT_SPECIFIED,
 								ELJavaXmlDiscriminatorNode.this,
 								getValueTextRange(astRoot)));
 			return;
@@ -122,7 +122,7 @@ public class ELJavaXmlDiscriminatorNode
 			messages.add(
 					ELJaxbValidationMessageBuilder.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								ELJaxbValidationMessages.XML_PATH__ROOT_NOT_SUPPORTED,
+								ELJaxbValidationMessages.XML_DISCRIMINATOR_NODE__ROOT_NOT_SUPPORTED,
 								ELJavaXmlDiscriminatorNode.this,
 								getValueTextRange(astRoot)));
 			return;

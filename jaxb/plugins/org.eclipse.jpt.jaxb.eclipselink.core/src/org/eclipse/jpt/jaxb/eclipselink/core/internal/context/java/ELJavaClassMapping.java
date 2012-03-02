@@ -9,8 +9,10 @@ import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaClassMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELClassMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlDiscriminatorNode;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlDiscriminatorValue;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlDiscriminatorNodeAnnotation;
+import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlDiscriminatorValueAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -21,10 +23,13 @@ public class ELJavaClassMapping
 	
 	protected ELJavaXmlDiscriminatorNode xmlDiscriminatorNode;
 	
+	protected ELJavaXmlDiscriminatorValue xmlDiscriminatorValue;
+	
 	
 	public ELJavaClassMapping(JaxbClass parent) {
 		super(parent);
 		initXmlDiscriminatorNode();
+		initXmlDiscriminatorValue();
 	}
 	
 	
@@ -34,12 +39,14 @@ public class ELJavaClassMapping
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		syncXmlDiscriminatorNode();
+		syncXmlDiscriminatorValue();
 	}
 	
 	@Override
 	public void update() {
 		super.update();
 		updateXmlDiscriminatorNode();
+		updateXmlDiscriminatorValue();
 	}
 	
 	
@@ -108,6 +115,71 @@ public class ELJavaClassMapping
 	}
 	
 	
+	// ***** xmlDiscriminatorValue *****
+	
+	public ELXmlDiscriminatorValue getXmlDiscriminatorValue() {
+		return this.xmlDiscriminatorValue;
+	}
+	
+	protected void setXmlDiscriminatorValue_(ELJavaXmlDiscriminatorValue xmlDiscriminatorValue) {
+		ELXmlDiscriminatorValue old = this.xmlDiscriminatorValue;
+		this.xmlDiscriminatorValue = xmlDiscriminatorValue;
+		firePropertyChanged(XML_DISCRIMINATOR_VALUE_PROPERTY, old, xmlDiscriminatorValue);
+	}
+	
+	public ELXmlDiscriminatorValue addXmlDiscriminatorValue() {
+		if (this.xmlDiscriminatorValue != null) {
+			throw new IllegalStateException();
+		}
+		getJavaResourceType().addAnnotation(ELJaxb.XML_DISCRIMINATOR_VALUE);
+		ELJavaXmlDiscriminatorValue xmlDiscriminatorValue = buildXmlDiscriminatorValue();
+		setXmlDiscriminatorValue_(xmlDiscriminatorValue);
+		return xmlDiscriminatorValue;
+	}
+	
+	public void removeXmlDiscriminatorValue() {
+		if (this.xmlDiscriminatorValue == null) {
+			throw new IllegalStateException();
+		}
+		getJavaResourceType().removeAnnotation(ELJaxb.XML_DISCRIMINATOR_VALUE);
+		setXmlDiscriminatorValue_(null);
+	}
+	
+	public XmlDiscriminatorValueAnnotation getXmlDiscriminatorValueAnnotation() {
+		return (XmlDiscriminatorValueAnnotation) getJavaResourceType().getAnnotation(ELJaxb.XML_DISCRIMINATOR_VALUE);
+	}
+	
+	protected ELJavaXmlDiscriminatorValue buildXmlDiscriminatorValue() {
+		return new ELJavaXmlDiscriminatorValue(this);
+	}
+	
+	protected void initXmlDiscriminatorValue() {
+		XmlDiscriminatorValueAnnotation annotation = getXmlDiscriminatorValueAnnotation();
+		this.xmlDiscriminatorValue = (annotation == null) ? null : buildXmlDiscriminatorValue();
+	}
+	
+	protected void syncXmlDiscriminatorValue() {
+		XmlDiscriminatorValueAnnotation annotation = getXmlDiscriminatorValueAnnotation();
+		if (annotation != null) {
+			if (this.xmlDiscriminatorValue != null) {
+				this.xmlDiscriminatorValue.synchronizeWithResourceModel();
+			}
+			else {
+				setXmlDiscriminatorValue_(buildXmlDiscriminatorValue());
+			}
+		}
+		else {
+			setXmlDiscriminatorValue_(null);
+		}
+	}
+	
+	protected void updateXmlDiscriminatorValue() {
+		if (this.xmlDiscriminatorValue != null) {
+			this.xmlDiscriminatorValue.update();
+		}
+	}
+	
+	
 	// ***** content assist *****
 	
 	@Override
@@ -138,6 +210,10 @@ public class ELJavaClassMapping
 		
 		if (this.xmlDiscriminatorNode != null) {
 			this.xmlDiscriminatorNode.validate(messages, reporter, astRoot);
+		}
+		
+		if (this.xmlDiscriminatorValue != null) {
+			this.xmlDiscriminatorValue.validate(messages, reporter, astRoot);
 		}
 	}
 }

@@ -20,6 +20,7 @@ import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbPlatform;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELClassMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlDiscriminatorNodeAnnotation;
+import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlDiscriminatorValueAnnotation;
 import org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.context.ELJaxbContextModelTestCase;
 
 
@@ -91,6 +92,64 @@ public class ELJavaClassMappingTests
 					});
 		annotation = (XmlDiscriminatorNodeAnnotation) resourceType.getAnnotation(ELJaxb.XML_DISCRIMINATOR_NODE);
 		assertNull(classMapping.getXmlDiscriminatorNode());
+		assertNull(annotation);
+	}
+	
+	public void testModifyXmlDiscriminatorValue() throws Exception {
+		createClassWithXmlType();
+		
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		ELClassMapping classMapping = (ELClassMapping) jaxbClass.getMapping();
+		JavaResourceType resourceType = jaxbClass.getJavaResourceType();
+		
+		XmlDiscriminatorValueAnnotation annotation = 
+				(XmlDiscriminatorValueAnnotation) resourceType.getAnnotation(ELJaxb.XML_DISCRIMINATOR_VALUE);
+		assertNull(classMapping.getXmlDiscriminatorValue());
+		assertNull(annotation);
+		
+		classMapping.addXmlDiscriminatorValue();
+		annotation = (XmlDiscriminatorValueAnnotation) resourceType.getAnnotation(ELJaxb.XML_DISCRIMINATOR_VALUE);
+		assertNotNull(classMapping.getXmlDiscriminatorValue());
+		assertNotNull(annotation);
+		
+		classMapping.removeXmlDiscriminatorValue();
+		annotation = (XmlDiscriminatorValueAnnotation) resourceType.getAnnotation(ELJaxb.XML_DISCRIMINATOR_VALUE);
+		assertNull(classMapping.getXmlDiscriminatorValue());
+		assertNull(annotation);
+	}
+	
+	public void testUpdateXmlDiscriminatorValue() throws Exception {
+		createClassWithXmlType();
+		
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		ELClassMapping classMapping = (ELClassMapping) jaxbClass.getMapping();
+		JavaResourceType resourceType = jaxbClass.getJavaResourceType();
+		
+		XmlDiscriminatorValueAnnotation annotation = 
+				(XmlDiscriminatorValueAnnotation) resourceType.getAnnotation(ELJaxb.XML_DISCRIMINATOR_VALUE);
+		assertNull(classMapping.getXmlDiscriminatorValue());
+		assertNull(annotation);
+		
+		AnnotatedElement annotatedElement = this.annotatedElement(resourceType);
+		annotatedElement.edit(
+				new Member.Editor() {
+					public void edit(ModifiedDeclaration declaration) {
+						ELJavaClassMappingTests.this.addMarkerAnnotation(declaration.getDeclaration(), ELJaxb.XML_DISCRIMINATOR_VALUE);
+					}
+				});
+		annotation = (XmlDiscriminatorValueAnnotation) resourceType.getAnnotation(ELJaxb.XML_DISCRIMINATOR_VALUE);
+		assertNotNull(classMapping.getXmlDiscriminatorValue());
+		assertNotNull(annotation);
+		
+		annotatedElement.edit(
+				new Member.Editor() {
+					public void edit(
+						ModifiedDeclaration declaration) {
+							ELJavaClassMappingTests.this.removeAnnotation(declaration, ELJaxb.XML_DISCRIMINATOR_VALUE);
+						}
+					});
+		annotation = (XmlDiscriminatorValueAnnotation) resourceType.getAnnotation(ELJaxb.XML_DISCRIMINATOR_VALUE);
+		assertNull(classMapping.getXmlDiscriminatorValue());
 		assertNull(annotation);
 	}
 }

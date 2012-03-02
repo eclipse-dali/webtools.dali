@@ -9,10 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.context.java;
 
-import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
-
 /**
- * EclipseLink extensions to JaxbClassMapping
+ * Corresponds to XmlDiscriminatorValue annotation
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -23,27 +21,24 @@ import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
  * @version 3.2
  * @since 3.2
  */
-public interface ELClassMapping
-		extends JaxbClassMapping {
+public interface ELXmlDiscriminatorValue {
 	
-	// ***** XmlDiscriminatorNode *****
+	// ***** value *****
 	
-	String XML_DISCRIMINATOR_NODE_PROPERTY = "xmlDiscriminatorNode";  //$NON-NLS-1$
+	/**
+	 * String associated with changes to the value property
+	 */
+	String VALUE_PROPERTY = "value";  ///$NON-NLS-1$
 	
-	ELXmlDiscriminatorNode getXmlDiscriminatorNode();
+	/**
+	 * Return the value property value.
+	 * A null indicates it is not specified.
+	 */
+	String getValue();
 	
-	ELXmlDiscriminatorNode addXmlDiscriminatorNode();
-	
-	void removeXmlDiscriminatorNode();
-	
-	
-	// ***** XmlDiscriminatorValue *****
-	
-	String XML_DISCRIMINATOR_VALUE_PROPERTY = "xmlDiscriminatorValue";  //$NON-NLS-1$
-	
-	ELXmlDiscriminatorValue getXmlDiscriminatorValue();
-	
-	ELXmlDiscriminatorValue addXmlDiscriminatorValue();
-	
-	void removeXmlDiscriminatorValue();
+	/**
+	 * Set the value property value.
+	 * Null unspecifies the value.
+	 */
+	void setValue(String value);
 }
