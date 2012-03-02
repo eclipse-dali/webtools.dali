@@ -108,7 +108,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 				validate();
 			}
 		});
-		JpaPlatformUi jpaPlatformUi = (JpaPlatformUi) this.unmappedPersistentAttribute.getJpaProject().getAdapter(JpaPlatformUi.class);
+		JpaPlatformUi jpaPlatformUi = (JpaPlatformUi) this.unmappedPersistentAttribute.getJpaPlatform().getAdapter(JpaPlatformUi.class);
 		mappingCombo.setInput(jpaPlatformUi);
 		mappingCombo.getCombo().select(0);  // select Basic to begin
 
