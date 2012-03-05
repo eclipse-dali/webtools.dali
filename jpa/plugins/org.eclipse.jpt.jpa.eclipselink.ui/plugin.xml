@@ -158,5 +158,63 @@
 		</page>
 		
 	</extension>
-	
+
+	<!-- ***** commands ***** -->
+
+  	<extension
+        point="org.eclipse.ui.commands">
+		
+		<command
+			id="org.eclipse.jpt.jpa.eclipselink.ui.persistentTypeAddVirtualAttribute"
+			name="%addVirtualAttribute"
+			categoryId="org.eclipse.jpt.jpa.ui.jpaStructureViewCommands">
+		</command>
+
+  	</extension>
+
+	<!-- ***** handlers ***** -->
+
+   <extension
+          point="org.eclipse.ui.handlers">
+		
+		<handler
+			commandId="org.eclipse.jpt.jpa.eclipselink.ui.persistentTypeAddVirtualAttribute"
+			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.handlers.AddVirtualAttributeHandler">
+			<activeWhen>
+				<reference
+					definitionId="org.eclipse.jpt.jpa.ui.reference.inJpaStructureView">
+				</reference>
+			</activeWhen>
+			<enabledWhen>
+				<iterate>
+					<instanceof value="org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType"/>
+				</iterate>
+			</enabledWhen>
+		</handler>
+    </extension>
+
+	<!-- ***** menus ***** -->
+
+  	 <extension
+  	 	point="org.eclipse.ui.menus">
+	       
+	       	<!-- contributions to objects in the JPA structure view -->
+		<menuContribution
+			locationURI="popup:org.eclipse.jpt.ui.jpaStructureView">
+
+			<command
+				commandId="org.eclipse.jpt.jpa.eclipselink.ui.persistentTypeAddVirtualAttribute">
+				<visibleWhen>
+					<with
+						variable="selection">
+						<iterate ifEmpty="false">
+							<instanceof value="org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType"/>
+						</iterate>
+					</with>
+				</visibleWhen>
+			</command>
+		</menuContribution>
+		
+	 </extension>
+ 	
 </plugin>

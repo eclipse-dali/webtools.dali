@@ -13,12 +13,19 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
+import org.eclipse.jpt.jpa.core.context.orm.OrmBasicMapping;
+import org.eclipse.jpt.jpa.core.context.orm.OrmIdMapping;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkPersistenceUnitDefaults;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkPersistentType;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAccessMethodsHolder;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasic;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntity;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlId;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLink2_1ContextModelTestCase;
 
 @SuppressWarnings("nls")
@@ -48,7 +55,7 @@ public class EclipseLink2_1OrmPersistentTypeTests
 
 	public void testUpdateSpecifiedGetMethod() throws Exception {
 		createTestEntity();
-		OrmEclipseLinkPersistentType ormPersistentType = (OrmEclipseLinkPersistentType) getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkOrmPersistentType ormPersistentType = (EclipseLinkOrmPersistentType) getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		XmlAccessMethodsHolder xmlAccessMethodsHolder = (XmlAccessMethodsHolder) ormPersistentType.getMapping().getXmlTypeMapping();
 		assertNull(ormPersistentType.getSpecifiedGetMethod());
 		assertNull(xmlAccessMethodsHolder.getAccessMethods());
@@ -67,7 +74,7 @@ public class EclipseLink2_1OrmPersistentTypeTests
 
 	public void testModifySpecifiedGetMethod() throws Exception {		
 		createTestEntity();
-		OrmEclipseLinkPersistentType ormPersistentType = (OrmEclipseLinkPersistentType) getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkOrmPersistentType ormPersistentType = (EclipseLinkOrmPersistentType) getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		XmlAccessMethodsHolder xmlAccessMethodsHolder = (XmlAccessMethodsHolder) ormPersistentType.getMapping().getXmlTypeMapping();
 		assertNull(ormPersistentType.getSpecifiedGetMethod());
 		assertNull(xmlAccessMethodsHolder.getAccessMethods());
@@ -85,7 +92,7 @@ public class EclipseLink2_1OrmPersistentTypeTests
 	
 	public void testModifySpecifiedGetMethod2() throws Exception {
 		createTestEntity();
-		OrmEclipseLinkPersistentType ormPersistentType = (OrmEclipseLinkPersistentType) getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkOrmPersistentType ormPersistentType = (EclipseLinkOrmPersistentType) getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		XmlAccessMethodsHolder xmlAccessMethodsHolder = (XmlAccessMethodsHolder) ormPersistentType.getMapping().getXmlTypeMapping();
 		assertNull(ormPersistentType.getSpecifiedGetMethod());
 		assertNull(xmlAccessMethodsHolder.getAccessMethods());
@@ -107,7 +114,7 @@ public class EclipseLink2_1OrmPersistentTypeTests
 	//default from persistence-unit-defaults, default from entity-mappings, default from java entity
 	public void testGetDefaultGetMethod() throws Exception {
 		createTestEntity();
-		OrmEclipseLinkPersistentType ormPersistentType = (OrmEclipseLinkPersistentType) getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkOrmPersistentType ormPersistentType = (EclipseLinkOrmPersistentType) getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		XmlAccessMethodsHolder xmlAccessMethodsHolder = (XmlAccessMethodsHolder) ormPersistentType.getMapping().getXmlTypeMapping();
 		assertNull(ormPersistentType.getSpecifiedGetMethod());
 		assertNull(ormPersistentType.getGetMethod());
@@ -138,7 +145,7 @@ public class EclipseLink2_1OrmPersistentTypeTests
 
 	public void testUpdateSpecifiedSetMethod() throws Exception {
 		createTestEntity();
-		OrmEclipseLinkPersistentType ormPersistentType = (OrmEclipseLinkPersistentType) getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkOrmPersistentType ormPersistentType = (EclipseLinkOrmPersistentType) getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		XmlAccessMethodsHolder xmlAccessMethodsHolder = (XmlAccessMethodsHolder) ormPersistentType.getMapping().getXmlTypeMapping();
 		assertNull(ormPersistentType.getSpecifiedSetMethod());
 		assertNull(xmlAccessMethodsHolder.getAccessMethods());
@@ -157,7 +164,7 @@ public class EclipseLink2_1OrmPersistentTypeTests
 
 	public void testModifySpecifiedSetMethod() throws Exception {		
 		createTestEntity();
-		OrmEclipseLinkPersistentType ormPersistentType = (OrmEclipseLinkPersistentType) getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkOrmPersistentType ormPersistentType = (EclipseLinkOrmPersistentType) getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		XmlAccessMethodsHolder xmlAccessMethodsHolder = (XmlAccessMethodsHolder) ormPersistentType.getMapping().getXmlTypeMapping();
 		assertNull(ormPersistentType.getSpecifiedSetMethod());
 		assertNull(xmlAccessMethodsHolder.getAccessMethods());
@@ -175,7 +182,7 @@ public class EclipseLink2_1OrmPersistentTypeTests
 	
 	public void testModifySpecifiedSetMethod2() throws Exception {
 		createTestEntity();
-		OrmEclipseLinkPersistentType ormPersistentType = (OrmEclipseLinkPersistentType) getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkOrmPersistentType ormPersistentType = (EclipseLinkOrmPersistentType) getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		XmlAccessMethodsHolder xmlAccessMethodsHolder = (XmlAccessMethodsHolder) ormPersistentType.getMapping().getXmlTypeMapping();
 		assertNull(ormPersistentType.getSpecifiedSetMethod());
 		assertNull(xmlAccessMethodsHolder.getAccessMethods());
@@ -197,7 +204,7 @@ public class EclipseLink2_1OrmPersistentTypeTests
 	//default from persistence-unit-defaults, default from entity-mappings, default from java entity
 	public void testGetDefaultSetMethod() throws Exception {
 		createTestEntity();
-		OrmEclipseLinkPersistentType ormPersistentType = (OrmEclipseLinkPersistentType) getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkOrmPersistentType ormPersistentType = (EclipseLinkOrmPersistentType) getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		XmlAccessMethodsHolder xmlAccessMethodsHolder = (XmlAccessMethodsHolder) ormPersistentType.getMapping().getXmlTypeMapping();
 		assertNull(ormPersistentType.getSpecifiedSetMethod());
 		assertNull(ormPersistentType.getSetMethod());
@@ -230,4 +237,35 @@ public class EclipseLink2_1OrmPersistentTypeTests
 		return(EclipseLinkPersistenceUnitDefaults) getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults();
 	}
 
+	public void testAddVirtualAttribute() throws Exception {
+		EclipseLinkOrmPersistentType persistentType = (EclipseLinkOrmPersistentType) getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Employee");
+		OrmPersistentAttribute persistentAttribute = persistentType.addVirtualAttribute("id", MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "int");
+
+		assertEquals("id", persistentAttribute.getName());
+		assertEquals(EclipseLinkAccessType.VIRTUAL, persistentAttribute.getSpecifiedAccess());
+		OrmIdMapping idMapping = (OrmIdMapping) persistentAttribute.getMapping();
+		assertEquals("int", idMapping.getAttributeType());
+		
+		XmlEntityMappings xmlEntityMappings = getXmlEntityMappings();
+		XmlEntity xmlEntity = (XmlEntity) xmlEntityMappings.getEntities().get(0);
+		XmlId xmlId = (XmlId) xmlEntity.getAttributes().getIds().get(0);
+		assertEquals("id", xmlId.getName());
+		assertEquals("int", xmlId.getAttributeType());
+		assertEquals("VIRTUAL", xmlId.getAccess());
+
+		//if the entity access is set to VIRTUAL, test that the added virtual attribute mapping has no specified access
+		persistentType.setSpecifiedAccess(EclipseLinkAccessType.VIRTUAL);
+		persistentAttribute = persistentType.addVirtualAttribute("name", MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "String");
+
+		assertEquals("name", persistentAttribute.getName());
+		assertNull(persistentAttribute.getSpecifiedAccess());
+		assertEquals(EclipseLinkAccessType.VIRTUAL, persistentAttribute.getDefaultAccess());
+		OrmBasicMapping basicMapping = (OrmBasicMapping) persistentAttribute.getMapping();
+		assertEquals("String", basicMapping.getAttributeType());
+		
+		XmlBasic xmlBasic = (XmlBasic) xmlEntity.getAttributes().getBasics().get(0);
+		assertEquals("name", xmlBasic.getName());
+		assertEquals("String", xmlBasic.getAttributeType());
+		assertNull(xmlBasic.getAccess());
+	}
 }

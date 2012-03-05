@@ -66,7 +66,7 @@ public class EclipseLinkOrmXmlContextNodeFactory
 
 	@Override
 	public OrmPersistentType buildOrmPersistentType(EntityMappings parent, org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping resourceMapping) {
-		return new OrmEclipseLinkPersistentType(parent, (XmlTypeMapping) resourceMapping);
+		return new EclipseLinkOrmPersistentTypeImpl(parent, (XmlTypeMapping) resourceMapping);
 	}
 
 	@Override

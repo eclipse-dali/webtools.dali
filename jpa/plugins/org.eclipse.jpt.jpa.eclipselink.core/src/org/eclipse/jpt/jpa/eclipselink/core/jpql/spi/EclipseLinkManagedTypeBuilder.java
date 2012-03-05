@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.jpql.spi.JpaEntity;
 import org.eclipse.jpt.jpa.core.jpql.spi.JpaManagedTypeBuilder;
 import org.eclipse.jpt.jpa.core.jpql.spi.JpaManagedTypeProvider;
 import org.eclipse.jpt.jpa.core.jpql.spi.JpaMappedSuperclass;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkPersistentType;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
 import org.eclipse.persistence.jpa.jpql.spi.IEmbeddable;
 import org.eclipse.persistence.jpa.jpql.spi.IEntity;
 import org.eclipse.persistence.jpa.jpql.spi.IMappedSuperclass;
@@ -68,8 +68,8 @@ public class EclipseLinkManagedTypeBuilder implements IManagedTypeBuilder {
 
 		PersistentType persistentType = mappedClass.getPersistentType();
 
-		if (persistentType instanceof OrmEclipseLinkPersistentType) {
-			OrmEclipseLinkPersistentType ormPersistentType = (OrmEclipseLinkPersistentType) persistentType;
+		if (persistentType instanceof EclipseLinkOrmPersistentType) {
+			EclipseLinkOrmPersistentType ormPersistentType = (EclipseLinkOrmPersistentType) persistentType;
 			if (ormPersistentType.isDynamic()) {
 				return new EclipseLinkDynamicEmbeddable(provider, embeddable);
 			}
@@ -88,8 +88,8 @@ public class EclipseLinkManagedTypeBuilder implements IManagedTypeBuilder {
 		JpaEntity entity = (JpaEntity) builder.buildEntity(provider, mappedClass, mappingBuilder);
 		PersistentType persistentType = mappedClass.getPersistentType();
 
-		if (persistentType instanceof OrmEclipseLinkPersistentType) {
-			OrmEclipseLinkPersistentType ormPersistentType = (OrmEclipseLinkPersistentType) persistentType;
+		if (persistentType instanceof EclipseLinkOrmPersistentType) {
+			EclipseLinkOrmPersistentType ormPersistentType = (EclipseLinkOrmPersistentType) persistentType;
 			if (ormPersistentType.isDynamic()) {
 				return new EclipseLinkDynamicEntity(provider, entity);
 			}
@@ -113,8 +113,8 @@ public class EclipseLinkManagedTypeBuilder implements IManagedTypeBuilder {
 
 		PersistentType persistentType = mappedClass.getPersistentType();
 
-		if (persistentType instanceof OrmEclipseLinkPersistentType) {
-			OrmEclipseLinkPersistentType ormPersistentType = (OrmEclipseLinkPersistentType) persistentType;
+		if (persistentType instanceof EclipseLinkOrmPersistentType) {
+			EclipseLinkOrmPersistentType ormPersistentType = (EclipseLinkOrmPersistentType) persistentType;
 			if (ormPersistentType.isDynamic()) {
 				return new EclipseLinkDynamicMappedSuperclass(provider, mappedSuperclass);
 			}

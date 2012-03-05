@@ -13,15 +13,20 @@ import java.util.List;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
+import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.SpecifiedOrmPersistentType;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessMethodsHolder;
+import org.eclipse.jpt.jpa.core.resource.orm.Attributes;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmTypeMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAccessMethods;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAccessMethodsHolder;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTypeMapping;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -35,9 +40,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
  * <li>Java persistent type
  * </ul>
  */
-public class OrmEclipseLinkPersistentType
+public class EclipseLinkOrmPersistentTypeImpl
 	extends SpecifiedOrmPersistentType
-	implements EclipseLinkAccessMethodsHolder
+	implements EclipseLinkOrmPersistentType
 {
 
 	protected String specifiedGetMethod;
@@ -47,9 +52,8 @@ public class OrmEclipseLinkPersistentType
 	protected String defaultSetMethod;
 
 	protected boolean dynamic;
-		public static final String DYNAMIC_PROPERTY = "dynamic"; //$NON-NLS-1$
 
-	public OrmEclipseLinkPersistentType(EntityMappings parent, XmlTypeMapping xmlTypeMapping) {
+	public EclipseLinkOrmPersistentTypeImpl(EntityMappings parent, XmlTypeMapping xmlTypeMapping) {
 		super(parent, xmlTypeMapping);
 		this.specifiedGetMethod = this.buildSpecifiedGetMethod();
 		this.specifiedSetMethod = this.buildSpecifiedSetMethod();
@@ -60,6 +64,10 @@ public class OrmEclipseLinkPersistentType
 		return (XmlTypeMapping) super.getXmlTypeMapping();
 	}
 
+	@Override
+	public EclipseLinkOrmTypeMapping getMapping() {
+		return (EclipseLinkOrmTypeMapping) super.getMapping();
+	}
 
 	// ********** synchronize/update **********
 
@@ -130,29 +138,28 @@ public class OrmEclipseLinkPersistentType
 		return super.getOverriddenPersistentType();
 	}
 
-//	//TODO should we throw an exception if there is a default attribute with this name? or even a specified attribute
-//	public OrmPersistentAttribute addVirtualAttribute(String attributeName, String mappingKey, String attributeType) {
-//		// force the creation of an empty xml attribute container beforehand or it will trigger
-//		// a sync and, if we do this after adding the attribute, clear out our context attributes
-//		Attributes xmlAttributes = this.getXmlAttributesForUpdate();
-//		this.getXmlTypeMapping().setAttributes(xmlAttributes);  // possibly a NOP
-//
-//		OrmAttributeMappingDefinition md = this.getMappingFileDefinition().getAttributeMappingDefinition(mappingKey);
-//		XmlAttributeMapping xmlMapping = (XmlAttributeMapping) md.buildResourceMapping(this.getResourceNodeFactory());
-//		xmlMapping.setName(attributeName);
-//		xmlMapping.setTypeName(attributeType);
-//		if (getAccess() != EclipseLinkAccessType.VIRTUAL) {
-//			xmlMapping.setAccess(EclipseLinkAccessType.VIRTUAL.getOrmAccessType());
-//		}
-//
-//		OrmPersistentAttribute specifiedAttribute = this.buildSpecifiedAttribute(xmlMapping);
-//		// we need to add the attribute to the right spot in the list - stupid spec...
-//		int specifiedIndex = this.getSpecifiedAttributeInsertionIndex(specifiedAttribute);
-//		this.addItemToList(specifiedIndex, specifiedAttribute, this.specifiedAttributes, SPECIFIED_ATTRIBUTES_LIST);
-//		specifiedAttribute.getMapping().addXmlAttributeMappingTo(xmlAttributes);
-//
-//		return specifiedAttribute;
-//	}
+	public OrmPersistentAttribute addVirtualAttribute(String attributeName, String mappingKey, String attributeType) {
+		// force the creation of an empty xml attribute container beforehand or it will trigger
+		// a sync and, if we do this after adding the attribute, clear out our context attributes
+		Attributes xmlAttributes = this.getXmlAttributesForUpdate();
+		this.getXmlTypeMapping().setAttributes(xmlAttributes);  // possibly a NOP
+
+		OrmAttributeMappingDefinition md = this.getMappingFileDefinition().getAttributeMappingDefinition(mappingKey);
+		XmlAttributeMapping xmlMapping = (XmlAttributeMapping) md.buildResourceMapping(this.getResourceNodeFactory());
+		xmlMapping.setName(attributeName);
+		xmlMapping.setAttributeType(attributeType);
+		if (this.getAccess() != EclipseLinkAccessType.VIRTUAL) {
+			xmlMapping.setAccess(EclipseLinkAccessType.VIRTUAL.getOrmAccessType());
+		}
+
+		OrmPersistentAttribute specifiedAttribute = this.buildSpecifiedAttribute(xmlMapping);
+		// we need to add the attribute to the right spot in the list - stupid spec...
+		int specifiedIndex = this.getSpecifiedAttributeInsertionIndex(specifiedAttribute);
+		this.addItemToList(specifiedIndex, specifiedAttribute, this.specifiedAttributes, SPECIFIED_ATTRIBUTES_LIST);
+		specifiedAttribute.getMapping().addXmlAttributeMappingTo(xmlAttributes);
+
+		return specifiedAttribute;
+	}
 
 	//*************** get method *****************
 

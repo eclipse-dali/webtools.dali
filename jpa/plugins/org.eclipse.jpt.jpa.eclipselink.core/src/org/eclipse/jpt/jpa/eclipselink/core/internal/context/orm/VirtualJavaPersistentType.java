@@ -38,6 +38,7 @@ import org.eclipse.jpt.jpa.core.internal.context.java.JavaNullTypeMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaPersistentType2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTypeMapping;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -52,19 +53,19 @@ public class VirtualJavaPersistentType
 	protected final JavaTypeMapping mapping;
 	protected PersistentType superPersistentType;
 
-	public VirtualJavaPersistentType(OrmEclipseLinkPersistentType parent, XmlTypeMapping xmlTypeMapping) {
+	public VirtualJavaPersistentType(EclipseLinkOrmPersistentType parent, XmlTypeMapping xmlTypeMapping) {
 		super(parent);
 		this.xmlTypeMapping = xmlTypeMapping;
 		this.mapping = new JavaNullTypeMapping(this);
 	}
 
 	@Override
-	public OrmEclipseLinkPersistentType getParent() {
-		return (OrmEclipseLinkPersistentType) super.getParent();
+	public EclipseLinkOrmPersistentType getParent() {
+		return (EclipseLinkOrmPersistentType) super.getParent();
 	}
 
 	protected EclipseLinkEntityMappings getEntityMappings() {
-		return getParent().getEntityMappings();
+		return (EclipseLinkEntityMappings) getParent().getMappingFileRoot();
 	}
 
 
