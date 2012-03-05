@@ -58,7 +58,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 
 		Composite composite = new Composite(dialogArea, SWT.NULL);
 		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
-		composite.setLayout(new GridLayout());
+		composite.setLayout(new GridLayout(2, false));
 
 		createLabel(composite, 1, JptUiMessages.AddPersistentAttributeDialog_attributeLabel);
 
