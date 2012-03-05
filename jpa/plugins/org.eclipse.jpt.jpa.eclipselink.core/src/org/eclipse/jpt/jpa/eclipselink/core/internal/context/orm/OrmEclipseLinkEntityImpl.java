@@ -12,8 +12,10 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
@@ -38,6 +40,9 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMultitenancy2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkDynamicTypeMappingValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkEntityPrimaryKeyValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkTypeMappingValidator;
@@ -69,8 +74,6 @@ public class OrmEclipseLinkEntityImpl
 
 	protected final OrmEclipseLinkMultitenancy2_3 multitenancy;
 
-	protected String parentClass;
-
 
 	public OrmEclipseLinkEntityImpl(OrmPersistentType parent, XmlEntity xmlEntity) {
 		super(parent, xmlEntity);
@@ -80,7 +83,6 @@ public class OrmEclipseLinkEntityImpl
 		this.changeTracking = this.buildChangeTracking();
 		this.customizer = this.buildCustomizer();
 		this.multitenancy = this.buildMultitenancy();
-		this.parentClass = xmlEntity.getParentClass();
 	}
 
 
@@ -95,7 +97,6 @@ public class OrmEclipseLinkEntityImpl
 		this.changeTracking.synchronizeWithResourceModel();
 		this.customizer.synchronizeWithResourceModel();
 		this.multitenancy.synchronizeWithResourceModel();
-		this.setParentClass_(this.xmlTypeMapping.getParentClass());
 	}
 
 	@Override
@@ -219,19 +220,14 @@ public class OrmEclipseLinkEntityImpl
 
 	// ********** parent class **********
 
-	public String getParentClass() {
-		return this.parentClass;
+	@Override
+	protected String buildSpecifiedParentClass() {
+		return this.xmlTypeMapping.getParentClass();
 	}
 
-	public void setParentClass(String parentClass) {
-		this.setParentClass_(parentClass);
+	@Override
+	public void setSpecifiedParentClassInXml(String parentClass) {
 		this.xmlTypeMapping.setParentClass(parentClass);
-	}
-
-	protected void setParentClass_(String parentClass) {
-		String old = this.parentClass;
-		this.parentClass = parentClass;
-		this.firePropertyChanged(PARENT_CLASS_PROPERTY, old, parentClass);
 	}
 
 
@@ -248,8 +244,8 @@ public class OrmEclipseLinkEntityImpl
 	}
 
 	@Override
-	public OrmEclipseLinkPersistentType getPersistentType() {
-		return (OrmEclipseLinkPersistentType) super.getPersistentType();
+	public EclipseLinkOrmPersistentType getPersistentType() {
+		return (EclipseLinkOrmPersistentType) super.getPersistentType();
 	}
 
 	public boolean usesPrimaryKeyColumns() {
@@ -411,6 +407,7 @@ public class OrmEclipseLinkEntityImpl
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
+		this.validateParentClass(messages, reporter);
 		this.caching.validate(messages, reporter);
 		this.readOnly.validate(messages, reporter);
 		this.converterContainer.validate(messages, reporter);
@@ -434,5 +431,29 @@ public class OrmEclipseLinkEntityImpl
 
 	protected boolean isDynamicType() {
 		return this.getPersistentType().isDynamic();
+	}
+
+	protected void validateParentClass(List<IMessage> messages, IReporter reporter) {
+		if (this.specifiedParentClass == null) {
+			return;
+		}
+		if (this.getResolvedParentClass() == null) {
+			IType jdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedParentClass());
+			if (jdtType == null) {
+				messages.add(
+					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						EclipseLinkJpaValidationMessages.VIRTUAL_TYPE_PARENT_CLASS_DOES_NOT_EXIST,
+						new String[] {this.getFullyQualifiedParentClass()},
+						this,
+						this.getParentClassTextRange()
+					)
+				);
+			}
+		}
+	}
+
+	protected TextRange getParentClassTextRange() {
+		return this.getValidationTextRange(this.xmlTypeMapping.getParentClassTextRange());
 	}
 }

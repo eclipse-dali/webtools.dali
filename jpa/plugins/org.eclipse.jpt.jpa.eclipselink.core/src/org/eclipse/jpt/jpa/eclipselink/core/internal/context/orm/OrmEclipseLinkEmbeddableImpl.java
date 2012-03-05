@@ -12,6 +12,8 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
@@ -26,6 +28,9 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEmbeddable;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkEmbeddable;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkDynamicTypeMappingValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkTypeMappingValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEmbeddable;
@@ -49,15 +54,12 @@ public class OrmEclipseLinkEmbeddableImpl
 
 	protected final OrmEclipseLinkCustomizer customizer;
 
-	protected String parentClass;
-
 
 	public OrmEclipseLinkEmbeddableImpl(OrmPersistentType parent, XmlEmbeddable xmlEmbeddable) {
 		super(parent, xmlEmbeddable);
 		this.converterContainer = this.buildConverterContainer();
 		this.changeTracking = this.buildChangeTracking();
 		this.customizer = this.buildCustomizer();
-		this.parentClass = xmlEmbeddable.getParentClass();
 	}
 
 
@@ -69,7 +71,6 @@ public class OrmEclipseLinkEmbeddableImpl
 		this.converterContainer.synchronizeWithResourceModel();
 		this.changeTracking.synchronizeWithResourceModel();
 		this.customizer.synchronizeWithResourceModel();
-		this.setParentClass(this.xmlTypeMapping.getParentClass());
 	}
 
 	@Override
@@ -143,19 +144,14 @@ public class OrmEclipseLinkEmbeddableImpl
 
 	// ********** parent class **********
 
-	public String getParentClass() {
-		return this.parentClass;
+	@Override
+	protected String buildSpecifiedParentClass() {
+		return this.xmlTypeMapping.getParentClass();
 	}
 
-	public void setParentClass(String parentClass) {
-		this.setParentClass_(parentClass);
+	@Override
+	public void setSpecifiedParentClassInXml(String parentClass) {
 		this.xmlTypeMapping.setParentClass(parentClass);
-	}
-
-	protected void setParentClass_(String parentClass) {
-		String old = this.parentClass;
-		this.parentClass = parentClass;
-		this.firePropertyChanged(PARENT_CLASS_PROPERTY, old, parentClass);
 	}
 
 
@@ -172,8 +168,8 @@ public class OrmEclipseLinkEmbeddableImpl
 	}
 
 	@Override
-	public OrmEclipseLinkPersistentType getPersistentType() {
-		return (OrmEclipseLinkPersistentType) super.getPersistentType();
+	public EclipseLinkOrmPersistentType getPersistentType() {
+		return (EclipseLinkOrmPersistentType) super.getPersistentType();
 	}
 
 	public boolean usesPrimaryKeyColumns() {
@@ -247,6 +243,7 @@ public class OrmEclipseLinkEmbeddableImpl
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
+		this.validateParentClass(messages, reporter);
 		this.customizer.validate(messages, reporter);
 		this.changeTracking.validate(messages, reporter);
 		this.converterContainer.validate(messages, reporter);
@@ -262,5 +259,30 @@ public class OrmEclipseLinkEmbeddableImpl
 
 	protected boolean isDynamicType() {
 		return this.getPersistentType().isDynamic();
+	}
+
+
+	protected void validateParentClass(List<IMessage> messages, IReporter reporter) {
+		if (this.specifiedParentClass == null) {
+			return;
+		}
+		if (this.getResolvedParentClass() == null) {
+			IType jdtType = JDTTools.findType(this.getJavaProject(), this.getFullyQualifiedParentClass());
+			if (jdtType == null) {
+				messages.add(
+					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						EclipseLinkJpaValidationMessages.VIRTUAL_TYPE_PARENT_CLASS_DOES_NOT_EXIST,
+						new String[] {this.getFullyQualifiedParentClass()},
+						this,
+						this.getParentClassTextRange()
+					)
+				);
+			}
+		}
+	}
+
+	protected TextRange getParentClassTextRange() {
+		return this.getValidationTextRange(this.xmlTypeMapping.getParentClassTextRange());
 	}
 }

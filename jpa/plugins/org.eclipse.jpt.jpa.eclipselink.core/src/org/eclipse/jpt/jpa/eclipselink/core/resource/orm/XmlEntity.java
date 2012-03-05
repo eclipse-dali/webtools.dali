@@ -3577,7 +3577,12 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 	public TextRange getReadOnlyTextRange() {
 		return getAttributeTextRange(EclipseLink.READ_ONLY);
 	}
-	
+
+	public TextRange getParentClassTextRange() {
+		return getAttributeTextRange(EclipseLink2_1.PARENT_CLASS);
+	}
+
+
 	// ********** translators **********
 	
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {

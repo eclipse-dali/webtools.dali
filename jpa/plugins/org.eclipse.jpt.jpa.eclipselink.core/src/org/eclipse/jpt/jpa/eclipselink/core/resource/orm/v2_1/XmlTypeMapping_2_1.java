@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1;
 
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAccessMethodsHolder;
 
 /**
@@ -55,4 +56,6 @@ public interface XmlTypeMapping_2_1 extends XmlAccessMethodsHolder
 	 * @generated
 	 */
 	void setParentClass(String value);
+
+	TextRange getParentClassTextRange();
 } // XmlTypeMapping_2_1

@@ -68,12 +68,16 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	protected Boolean specifiedMetadataComplete;
 	protected boolean overrideMetadataComplete;
 
+	protected String specifiedParentClass;
+	protected String defaultParentClass;
+	protected String fullyQualifiedParentClass;
 
 	protected AbstractOrmTypeMapping(OrmPersistentType parent, X xmlTypeMapping) {
 		super(parent);
 		this.xmlTypeMapping = xmlTypeMapping;
 		this.class_ = xmlTypeMapping.getClassName();
 		this.specifiedMetadataComplete = xmlTypeMapping.getMetadataComplete();
+		this.specifiedParentClass = this.buildSpecifiedParentClass();
 	}
 
 
@@ -84,12 +88,15 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 		super.synchronizeWithResourceModel();
 		this.setClass_(this.xmlTypeMapping.getClassName());
 		this.setSpecifiedMetadataComplete_(this.xmlTypeMapping.getMetadataComplete());
+		this.setSpecifiedParentClass_(this.buildSpecifiedParentClass());
 	}
 
 	@Override
 	public void update() {
 		super.update();
 		this.setOverrideMetadataComplete(this.buildOverrideMetadataComplete());
+		this.setDefaultParentClass(this.buildDefaultParentClass());
+		this.setFullyQualifiedParentClass(this.buildFullyQualifiedParentClass());
 	}
 
 
@@ -151,6 +158,82 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 
 	protected boolean buildOverrideMetadataComplete() {
 		return this.getPersistenceUnit().isXmlMappingMetadataComplete();
+	}
+
+
+	// ********** fully-qualified parent class **********
+
+	public String getFullyQualifiedParentClass() {
+		return this.fullyQualifiedParentClass;
+	}
+
+	protected void setFullyQualifiedParentClass(String parentClass) {
+		String old = this.fullyQualifiedParentClass;
+		this.fullyQualifiedParentClass = parentClass;
+		this.firePropertyChanged(FULLY_QUALIFIED_PARENT_CLASS_PROPERTY, old, parentClass);
+	}
+
+	protected String buildFullyQualifiedParentClass() {
+		return (this.specifiedParentClass == null) ?
+				this.defaultParentClass :
+				this.getEntityMappings().getFullyQualifiedName(this.specifiedParentClass);
+	}
+
+	// ********** parent class **********
+
+	public String getParentClass() {
+		return (this.specifiedParentClass != null) ? this.specifiedParentClass : this.defaultParentClass;
+	}
+
+	public String getSpecifiedParentClass() {
+		return this.specifiedParentClass;
+	}
+
+	public void setSpecifiedParentClass(String parentClass) {
+		this.setSpecifiedParentClass_(parentClass);
+		this.setSpecifiedParentClassInXml(parentClass);
+	}
+
+	protected void setSpecifiedParentClass_(String parentClass) {
+		String old = this.specifiedParentClass;
+		this.specifiedParentClass = parentClass;
+		this.firePropertyChanged(SPECIFIED_PARENT_CLASS_PROPERTY, old, parentClass);
+	}
+
+	/**
+	 * subclasses must override if they support specifying a parent class
+	 */
+	protected void setSpecifiedParentClassInXml(String parentClass) {
+		//no-op
+	}
+
+	/**
+	 * subclasses must override if they support specifying a parent class
+	 */
+	protected String buildSpecifiedParentClass() {
+		return null;
+	}
+
+	public String getDefaultParentClass() {
+		return this.defaultParentClass;
+	}
+
+	protected void setDefaultParentClass(String parentClass) {
+		String old = this.defaultParentClass;
+		this.defaultParentClass = parentClass;
+		this.firePropertyChanged(DEFAULT_PARENT_CLASS_PROPERTY, old, parentClass);
+	}
+
+	protected String buildDefaultParentClass() {
+		JavaResourceType javaResourceType = this.getJavaResourceType();
+		return (javaResourceType == null) ? null : javaResourceType.getSuperclassQualifiedName();
+	}
+
+	protected PersistentType getResolvedParentClass() {
+		if (this.fullyQualifiedParentClass == null) {
+			return null;
+		}
+		return this.getPersistenceUnit().getPersistentType(this.fullyQualifiedParentClass);
 	}
 
 

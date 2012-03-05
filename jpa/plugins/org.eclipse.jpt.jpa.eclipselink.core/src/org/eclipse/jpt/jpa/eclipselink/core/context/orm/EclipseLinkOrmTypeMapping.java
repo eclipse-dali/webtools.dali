@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaTypeMapping;
@@ -31,22 +30,5 @@ public interface EclipseLinkOrmTypeMapping
 	EclipseLinkJavaTypeMapping getJavaTypeMapping();
 
 	EclipseLinkJavaTypeMapping getJavaTypeMappingForDefaults();
-
-
-	// ********** parent class **********
-
-	/**
-	 * <strong>NB:</strong> This may be a partial name to be prefixed by the
-	 * entity mappings's package value.
-	 * 
-	 * @see EntityMappings#getPackage()
-	 */
-	String getParentClass();
-
-	/**
-	 * @see #getParentClass()
-	 */
-	void setParentClass(String parentClass);
-		String PARENT_CLASS_PROPERTY = "parentClass"; //$NON-NLS-1$
 
 }

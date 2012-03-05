@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.orm.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverride;
@@ -28,6 +29,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlClassReference;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlTypeMapping_2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLink2_2;
@@ -1503,7 +1505,13 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 		result.append(')');
 		return result.toString();
 	}
-		
+
+
+	public TextRange getParentClassTextRange() {
+		return getAttributeTextRange(EclipseLink2_1.PARENT_CLASS);
+	}
+
+
 	// ********** translators **********
 	
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {

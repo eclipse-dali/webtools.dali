@@ -67,6 +67,31 @@ public interface OrmTypeMapping
 		String OVERRIDE_METADATA_COMPLETE_PROPERTY = "overrideMetadataComplete"; //$NON-NLS-1$
 
 
+	// ********** parent class **********
+
+	/**
+	 * <strong>NB:</strong> This may be an unqualified name to be prefixed by the
+	 * entity mappings's package value.
+	 * 
+	 * @see EntityMappings#getPackage()
+	 */
+	String getParentClass();
+
+	String getFullyQualifiedParentClass();
+		String FULLY_QUALIFIED_PARENT_CLASS_PROPERTY = "fullyQualifiedParentClass"; //$NON-NLS-1$
+
+	String getSpecifiedParentClass();
+
+	/**
+	 * @see #getParentClass()
+	 */
+	void setSpecifiedParentClass(String parentClass);
+		String SPECIFIED_PARENT_CLASS_PROPERTY = "specifiedParentClass"; //$NON-NLS-1$
+
+	String getDefaultParentClass();
+		String DEFAULT_PARENT_CLASS_PROPERTY = "defaultParentClass"; //$NON-NLS-1$
+
+
 	// ********** XML **********
 
 	/**

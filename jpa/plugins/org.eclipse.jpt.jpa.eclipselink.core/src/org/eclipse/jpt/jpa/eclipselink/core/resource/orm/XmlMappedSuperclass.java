@@ -3816,7 +3816,10 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	public TextRange getCacheableTextRange() {
 		return getAttributeTextRange(JPA2_0.CACHEABLE);
 	}
-	
+
+	public TextRange getParentClassTextRange() {
+		return getAttributeTextRange(EclipseLink2_1.PARENT_CLASS);
+	}
 	
 	
 	// ********** translators **********
