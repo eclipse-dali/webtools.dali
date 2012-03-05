@@ -21,7 +21,6 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.ClassName;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
@@ -99,8 +98,8 @@ public abstract class AbstractEntityMappings
 
 	protected final OrmQueryContainer queryContainer;
 
-	// Lookup of classname to Class to resolve wrapper classes
-	protected static Map<String, Class<?>> PRIMITIVE_WRAPPER_CLASSES = null;
+	// Lookup of short class name to fully qualified class name for primitives, wrappers, array primitives
+	protected static Map<String, String> PRIMITIVE_CLASSES = null;
 
 
 	protected AbstractEntityMappings(OrmXml parent, XmlEntityMappings xmlEntityMappings) {
@@ -511,12 +510,9 @@ public abstract class AbstractEntityMappings
 		if (StringTools.stringIsEmpty(className)) {
 			return null;
 		}
-		if (ClassName.isPrimitive(className)) {
-			return className;
-		}
-		Class<?> wrapperClass = getPrimitiveWrapperClassForName(className);
-		if (wrapperClass != null) {
-			return wrapperClass.getName();
+		String primitiveClassName = getPrimitiveClassName(className);
+		if (primitiveClassName != null) {
+			return primitiveClassName;
 		}
 
 	    //No global package defined or the class name is qualified, use the className. 
@@ -572,22 +568,38 @@ public abstract class AbstractEntityMappings
 			}
 		};
 
-	protected static Class<?> getPrimitiveWrapperClassForName(String className) {
-		if (PRIMITIVE_WRAPPER_CLASSES == null) {
-			PRIMITIVE_WRAPPER_CLASSES = new HashMap<String, Class<?>>();
-			PRIMITIVE_WRAPPER_CLASSES.put("Boolean", Boolean.class); //$NON-NLS-1$
-			PRIMITIVE_WRAPPER_CLASSES.put("Byte", Byte.class); //$NON-NLS-1$
-			PRIMITIVE_WRAPPER_CLASSES.put("Character", Character.class); //$NON-NLS-1$
-			PRIMITIVE_WRAPPER_CLASSES.put("Double", Double.class); //$NON-NLS-1$
-			PRIMITIVE_WRAPPER_CLASSES.put("Float", Float.class); //$NON-NLS-1$
-			PRIMITIVE_WRAPPER_CLASSES.put("Integer", Integer.class); //$NON-NLS-1$
-			PRIMITIVE_WRAPPER_CLASSES.put("Long", Long.class); //$NON-NLS-1$
-			PRIMITIVE_WRAPPER_CLASSES.put("Number", Number.class); //$NON-NLS-1$
-			PRIMITIVE_WRAPPER_CLASSES.put("Short", Short.class); //$NON-NLS-1$
-			PRIMITIVE_WRAPPER_CLASSES.put("String", String.class); //$NON-NLS-1$
+	protected static String getPrimitiveClassName(String className) {
+		if (PRIMITIVE_CLASSES == null) {
+			PRIMITIVE_CLASSES = new HashMap<String, String>();
+			PRIMITIVE_CLASSES.put("Boolean", Boolean.class.getName()); //$NON-NLS-1$
+			PRIMITIVE_CLASSES.put("Byte", Byte.class.getName()); //$NON-NLS-1$
+			PRIMITIVE_CLASSES.put("Character", Character.class.getName()); //$NON-NLS-1$
+			PRIMITIVE_CLASSES.put("Double", Double.class.getName()); //$NON-NLS-1$
+			PRIMITIVE_CLASSES.put("Float", Float.class.getName()); //$NON-NLS-1$
+			PRIMITIVE_CLASSES.put("Integer", Integer.class.getName()); //$NON-NLS-1$
+			PRIMITIVE_CLASSES.put("Long", Long.class.getName()); //$NON-NLS-1$
+			PRIMITIVE_CLASSES.put("Number", Number.class.getName()); //$NON-NLS-1$
+			PRIMITIVE_CLASSES.put("Short", Short.class.getName()); //$NON-NLS-1$
+			PRIMITIVE_CLASSES.put("String", String.class.getName()); //$NON-NLS-1$
+			PRIMITIVE_CLASSES.put("boolean", "boolean"); //$NON-NLS-1$ //$NON-NLS-2$
+			PRIMITIVE_CLASSES.put("byte", "byte"); //$NON-NLS-1$ //$NON-NLS-2$
+			PRIMITIVE_CLASSES.put("char", "char"); //$NON-NLS-1$ //$NON-NLS-2$
+			PRIMITIVE_CLASSES.put("double", "double"); //$NON-NLS-1$ //$NON-NLS-2$
+			PRIMITIVE_CLASSES.put("float", "float"); //$NON-NLS-1$ //$NON-NLS-2$
+			PRIMITIVE_CLASSES.put("int", "int"); //$NON-NLS-1$ //$NON-NLS-2$
+			PRIMITIVE_CLASSES.put("long", "long"); //$NON-NLS-1$ //$NON-NLS-2$
+			PRIMITIVE_CLASSES.put("short", "short"); //$NON-NLS-1$ //$NON-NLS-2$
+			PRIMITIVE_CLASSES.put("byte[]", "byte[]"); //$NON-NLS-1$ //$NON-NLS-2$
+			PRIMITIVE_CLASSES.put("char[]", "char[]"); //$NON-NLS-1$ //$NON-NLS-2$
+			PRIMITIVE_CLASSES.put("boolean[]", "boolean[]"); //$NON-NLS-1$ //$NON-NLS-2$
+			PRIMITIVE_CLASSES.put("double[]", "double[]"); //$NON-NLS-1$ //$NON-NLS-2$
+			PRIMITIVE_CLASSES.put("float[]", "float[]"); //$NON-NLS-1$ //$NON-NLS-2$
+			PRIMITIVE_CLASSES.put("int[]", "int[]"); //$NON-NLS-1$ //$NON-NLS-2$
+			PRIMITIVE_CLASSES.put("long[]", "long[]"); //$NON-NLS-1$ //$NON-NLS-2$
+			PRIMITIVE_CLASSES.put("short[]", "short[]"); //$NON-NLS-1$ //$NON-NLS-2$
         }
         
-        return (className == null) ? null : PRIMITIVE_WRAPPER_CLASSES.get(className); 
+        return (className == null) ? null : PRIMITIVE_CLASSES.get(className); 
     }
 
 	/**
