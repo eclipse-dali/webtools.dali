@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2007, 2011 Oracle. All rights reserved.
+* Copyright (c) 2007, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,6 +19,8 @@ import java.util.Set;
 import java.util.Map.Entry;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import org.eclipse.persistence.config.PersistenceUnitProperties;
+import org.eclipse.persistence.dynamic.DynamicClassLoader;
 
 /** 
  * This class creates a EclipseLink <code>EntityManagerFactory</code>, 
@@ -29,6 +31,8 @@ import javax.persistence.Persistence;
  * Current command-line arguments:
  *     [-pu puName] - persistence unit name
  *     [-p propertiesFilePath] - properties for EclipseLink EntityManager
+ *     [-debug] - debug mode
+ *     [-dynamic] - use the org.eclipse.persistence.dynamic.DynamicClassLoader
  *  
  *  Example of a properties file:
  *  	eclipselink.jdbc.bind-parameters=false
@@ -49,7 +53,7 @@ import javax.persistence.Persistence;
 public class Main
 {
 	protected EntityManagerFactory emf;
-	private Map<String, String> eclipseLinkProperties;
+	private Map<String, Object> eclipseLinkProperties;
 	private String eclipseLinkPropertiesPath;
 	private boolean isDebugMode;
 	
@@ -86,22 +90,30 @@ public class Main
 	}
 	
 	private void initializeWith(String[] args) {
-
 		this.eclipseLinkPropertiesPath = this.getEclipseLinkPropertiesPath(args);
 		this.eclipseLinkProperties = this.getProperties(this.eclipseLinkPropertiesPath);
+		this.setDynamicClassLoaderProperty(args);
 
 		this.isDebugMode = this.getDebugMode(args);
 	}
-	
-	private void dispose() {
 
+	private void setDynamicClassLoaderProperty(String[] args) {
+		if (this.getEclipseLinkDynamic(args)) {
+			this.eclipseLinkProperties.put(PersistenceUnitProperties.CLASSLOADER, this.buildDynamicClassLoader());
+		}
+	}
+
+	private ClassLoader buildDynamicClassLoader() {
+		return new DynamicClassLoader(Thread.currentThread().getContextClassLoader());
+	}
+
+	private void dispose() {
 		if( ! this.isDebugMode) {
 			new File(this.eclipseLinkPropertiesPath).delete();
 		}
 	}
 	
-	private Map<String, String> getProperties(String eclipseLinkPropertiesPath) {
-		
+	private Map<String, Object> getProperties(String eclipseLinkPropertiesPath) {
 		Set<Entry<Object, Object>> propertiesSet = null;
 		try {
 			propertiesSet = this.loadEclipseLinkProperties(eclipseLinkPropertiesPath);
@@ -110,15 +122,14 @@ public class Main
 			throw new RuntimeException("Missing: " + eclipseLinkPropertiesPath, e); //$NON-NLS-1$
 		}
 		
-		Map<String, String> properties = new HashMap<String, String>();
+		Map<String, Object> properties = new HashMap<String, Object>();
 		for(Entry<Object, Object> property : propertiesSet) {
-			properties.put((String)property.getKey(), (String)property.getValue());
+			properties.put((String) property.getKey(), property.getValue());
 		}
 		return properties;
 	}
 
     private Set<Entry<Object, Object>> loadEclipseLinkProperties(String eclipseLinkPropertiesPath) throws IOException {
-		
         FileInputStream stream = new FileInputStream(eclipseLinkPropertiesPath);
         
         Properties properties = new Properties();
@@ -130,18 +141,19 @@ public class Main
 	// ********** argument queries **********
     
 	private String getPUName(String[] args) {
-
 		return this.getArgumentValue("-pu", args); //$NON-NLS-1$
 	}
 	
 	private String getEclipseLinkPropertiesPath(String[] args) {
-
 		return this.getArgumentValue("-p", args); //$NON-NLS-1$
 	}
 
 	private boolean getDebugMode(String[] args) {
-
 		return this.argumentExists("-debug", args); //$NON-NLS-1$
+	}
+	
+	private boolean getEclipseLinkDynamic(String[] args) {
+		return this.argumentExists("-dynamic", args); //$NON-NLS-1$
 	}
 	
 	private String getArgumentValue(String argument, String[] args) {

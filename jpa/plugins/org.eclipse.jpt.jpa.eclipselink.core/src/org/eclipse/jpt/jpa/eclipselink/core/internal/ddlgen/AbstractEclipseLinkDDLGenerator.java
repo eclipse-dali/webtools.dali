@@ -39,6 +39,7 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
 import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
+import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Connection;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.DdlGenerationType;
@@ -62,10 +63,11 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 	public static final String TRUE = "true";	  //$NON-NLS-1$
 	public static final String FALSE = "false";	  //$NON-NLS-1$
 	public static final String NONE = "NONE";	  //$NON-NLS-1$
+	private static final String DYNAMIC_PROGRAM_ARGUMENT = "-dynamic"; 	  //$NON-NLS-1$
 
-	private final String puName;
-	private final JpaProject jpaProject;
-	private final OutputMode outputMode;
+	protected final String puName;
+	protected final JpaProject jpaProject;
+	protected final OutputMode outputMode;
 
 	// ********** constructors **********
 
@@ -115,15 +117,38 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 	}
 
 	// ********** Setting Launch Configuration **********
-	
+
 	@Override
 	protected void specifyProgramArguments() {
 		StringBuffer programArguments = new StringBuffer();
+		this.appendProgramArguments(programArguments);
+		this.launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, programArguments.toString());
+	}
+
+	// ********** Main arguments **********
+
+	protected void appendProgramArguments(StringBuffer programArguments) {
 		this.appendPuNameArgument(programArguments);
 		this.appendPropertiesFileArgument(programArguments);
 		this.appendDebugArgument(programArguments);
-		
-		this.launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, programArguments.toString());
+		this.appendDynamicArgument(programArguments);
+	}
+
+	private void appendPuNameArgument(StringBuffer sb) {
+		sb.append(" -pu \""); //$NON-NLS-1$
+		sb.append(this.puName);
+		sb.append("\"");	  //$NON-NLS-1$
+	}
+
+	private void appendPropertiesFileArgument(StringBuffer sb) {
+		sb.append(" -p \""); //$NON-NLS-1$
+		sb.append(this.projectLocation).append("/").append(PROPERTIES_FILE_NAME).append("\""); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	protected void appendDynamicArgument(StringBuffer sb) {
+		if (JptJpaEclipseLinkCorePlugin.nodeIsEclipseLinkVersionCompatible(this.jpaProject, JptJpaEclipseLinkCorePlugin.ECLIPSELINK_PLATFORM_VERSION_2_1)) {
+			sb.append(' ').append(DYNAMIC_PROGRAM_ARGUMENT);
+		}
 	}
 
 	@Override
@@ -327,19 +352,6 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 	private String getJpaProjectConnectionDriverJarList() {
 		ConnectionProfile cp = this.getConnectionProfile();
 		return (cp == null) ? "" : cp.getDriverJarList(); //$NON-NLS-1$
-	}
-
-	// ********** Main arguments **********
-
-	private void appendPuNameArgument(StringBuffer sb) {
-		sb.append(" -pu \""); //$NON-NLS-1$
-		sb.append(this.puName);
-		sb.append("\"");	  //$NON-NLS-1$
-	}
-	
-	private void appendPropertiesFileArgument(StringBuffer sb) {
-		sb.append(" -p \""); //$NON-NLS-1$
-		sb.append(this.projectLocation).append("/").append(PROPERTIES_FILE_NAME).append("\""); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 
