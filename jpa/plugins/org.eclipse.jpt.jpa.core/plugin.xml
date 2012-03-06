@@ -177,6 +177,13 @@
 			properties="isLatestSupportedVersion, isNotLatestSupportedVersion"
 			class="org.eclipse.jpt.jpa.core.internal.JptResourceModelPropertyTester"/>
 
+		<propertyTester
+			id="org.eclipse.jpt.jpa.ui.propertyTester.jpaContextNode"
+			type="org.eclipse.jpt.jpa.core.context.JpaContextNode"
+			namespace="org.eclipse.jpt.jpa.core"
+			properties="isCompatibleVersion"
+			class="org.eclipse.jpt.jpa.core.internal.JpaContextNodePropertyTester"/>
+
 	</extension>
 
 

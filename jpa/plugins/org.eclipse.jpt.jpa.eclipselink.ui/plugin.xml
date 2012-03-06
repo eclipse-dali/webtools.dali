@@ -181,15 +181,19 @@
 			commandId="org.eclipse.jpt.jpa.eclipselink.ui.persistentTypeAddVirtualAttribute"
 			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.handlers.AddVirtualAttributeHandler">
 			<activeWhen>
-				<reference
-					definitionId="org.eclipse.jpt.jpa.ui.reference.inJpaStructureView">
-				</reference>
+				<and>
+					<with variable="activePartId">
+		    			<equals value="org.eclipse.jpt.ui.jpaStructureView"/>
+		   			</with>
+					<with variable="selection">
+						<count value="1"/>
+						<iterate operator="and">
+							<instanceof value="org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType"/>
+							<test property="org.eclipse.jpt.jpa.core.isCompatibleVersion" value="&apos;2.1&apos;"/>
+						</iterate>
+					</with>
+				</and>
 			</activeWhen>
-			<enabledWhen>
-				<iterate>
-					<instanceof value="org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType"/>
-				</iterate>
-			</enabledWhen>
 		</handler>
     </extension>
 
@@ -205,10 +209,11 @@
 			<command
 				commandId="org.eclipse.jpt.jpa.eclipselink.ui.persistentTypeAddVirtualAttribute">
 				<visibleWhen>
-					<with
-						variable="selection">
-						<iterate ifEmpty="false">
+					<with variable="selection">
+						<count value="1"/>
+						<iterate operator="and">
 							<instanceof value="org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType"/>
+							<test property="org.eclipse.jpt.jpa.core.isCompatibleVersion" value="&apos;2.1&apos;"/>
 						</iterate>
 					</with>
 				</visibleWhen>
