@@ -25,14 +25,14 @@ public class JpaContextNodePropertyTester
 
 	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
 		if (receiver instanceof JpaContextNode) {
-			return this.test((JpaContextNode) receiver, property, (String) expectedValue);
+			return this.test((JpaContextNode) receiver, property, expectedValue);
 		}
 		return false;
 	}
 
-	private boolean test(JpaContextNode contextNode, String property, String expectedValue) {
+	private boolean test(JpaContextNode contextNode, String property, Object expectedValue) {
 		if (property.equals(IS_COMPATIBLE_VERSION)) {
-			return JptJpaCorePlugin.resourceTypeIsCompatible(contextNode.getResourceType(), expectedValue);
+			return JptJpaCorePlugin.resourceTypeIsCompatible(contextNode.getResourceType(), (String) expectedValue);
 		}
 		return false;
 	}
