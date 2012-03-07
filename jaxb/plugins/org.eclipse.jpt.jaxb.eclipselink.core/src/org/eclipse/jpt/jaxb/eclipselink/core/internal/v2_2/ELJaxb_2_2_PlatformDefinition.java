@@ -13,12 +13,12 @@ import java.util.ArrayList;
 import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jaxb.core.internal.jaxb22.GenericJaxb_2_2_PlatformDefinition;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
 import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbPlatform;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlJoinNodesMappingDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlTransformationMappingDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.XmlCDATAAnnotationDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.XmlDiscriminatorNodeAnnotationDefinition;
@@ -81,6 +81,7 @@ public class ELJaxb_2_2_PlatformDefinition
 	protected void addSpecifiedJavaAttributeMappingDefinitionsTo(
 			ArrayList<JavaAttributeMappingDefinition> definitions) {
 		super.addSpecifiedJavaAttributeMappingDefinitionsTo(definitions);
-		CollectionTools.addAll(definitions, ELJavaXmlTransformationMappingDefinition.instance());
+		definitions.add(ELJavaXmlJoinNodesMappingDefinition.instance());
+		definitions.add(ELJavaXmlTransformationMappingDefinition.instance());
 	}
 }

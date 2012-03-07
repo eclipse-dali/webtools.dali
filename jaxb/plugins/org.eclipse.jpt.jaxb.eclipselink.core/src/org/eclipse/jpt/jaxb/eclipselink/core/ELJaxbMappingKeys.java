@@ -22,5 +22,6 @@ package org.eclipse.jpt.jaxb.eclipselink.core;
 public interface ELJaxbMappingKeys {
 	
 	String XML_INVERSE_REFERENCE_ATTRIBUTE_MAPPING_KEY = "xml-inverse-reference";
+	String XML_JOIN_NODES_ATTRIBUTE_MAPPING_KEY = "xml-join-nodes";
 	String XML_TRANSFORMATION_ATTRIBUTE_MAPPING_KEY = "xml-transformation";
 }
