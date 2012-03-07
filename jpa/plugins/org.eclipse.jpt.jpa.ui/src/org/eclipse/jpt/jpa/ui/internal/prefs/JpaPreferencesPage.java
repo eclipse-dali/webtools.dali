@@ -11,9 +11,11 @@ package org.eclipse.jpt.jpa.ui.internal.prefs;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.prefs.JpaEntityGenPreferencesManager;
+import org.eclipse.jpt.jpa.core.prefs.JpaJpqlPreferencesManager;
 import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.swt.SWT;
@@ -91,7 +93,12 @@ public class JpaPreferencesPage extends PreferencePage
 	 */
 	@Override
 	protected void performDefaults() {
+		// entitygen prefs
+		String defaultPackage = JpaEntityGenPreferencesManager.getDefaultDefaultPackage();
+		this.setDefaultPackage(defaultPackage);
+		JpaEntityGenPreferencesManager.setDefaultPackageWorkspacePreference(defaultPackage);
 
+		// jpql identifier prefs
 		this.lowercase = this.isDefaultJpqlIdentifierLowercase();
 		this.matchFirstCharacterCase = this.shouldDefaultMatchFirstCharacterCase();
 
@@ -107,12 +114,12 @@ public class JpaPreferencesPage extends PreferencePage
 	 */
 	@Override
 	public boolean performOk() {
-
+		// entitygen prefs
 		JpaEntityGenPreferencesManager.setDefaultPackageWorkspacePreference(this.getDefaultPackage());
-		
-		//TODO use JpaPreferencesManager
-		this.getPreferenceStore().setValue(JptJpaUiPlugin.JPQL_IDENTIFIER_CASE_PREF_KEY, jpqlIdentifierPreferenceValue());
-		this.getPreferenceStore().setValue(JptJpaUiPlugin.JPQL_IDENTIFIER_MATCH_FIRST_CHARACTER_CASE_PREF_KEY, matchFirstCharacterCase);
+
+		// jpql identifier prefs
+		JpaJpqlPreferencesManager.setIdentifiersCaseWorkspacePreference(this.jpqlIdentifierPreferenceValue());
+		JpaJpqlPreferencesManager.setMatchFirstCharacterCaseWorkspacePreference(this.matchFirstCharacterCase);
 
 		return super.performOk();
 	}
@@ -122,7 +129,8 @@ public class JpaPreferencesPage extends PreferencePage
 	 * {@inheritDoc}
 	 */
 	public void init(IWorkbench workbench) {
-		this.setPreferenceStore(JptJpaUiPlugin.instance().getPreferenceStore());
+		this.migrateLegacyJpqlWorkspacePreferences();
+		
 		this.lowercase = this.shouldUseLowercaseIdentifiers();
 		this.matchFirstCharacterCase = this.shouldMatchFirstCharacterCase();
 	}
@@ -157,24 +165,24 @@ public class JpaPreferencesPage extends PreferencePage
 		description.setText(JptUiMessages.JpaPreferencesPage_jpqlEditor_description);
 
 		// Uppercase radio button
-		lowerCaseRadioButton = new Button(group, SWT.RADIO);
-		lowerCaseRadioButton.setText(JptUiMessages.JpaPreferencesPage_jpqlEditor_lowerCaseRadioButton);
-		lowerCaseRadioButton.addSelectionListener(buildLowercaseSelectionListener());
-		lowerCaseRadioButton.setSelection(lowercase);
+		this.lowerCaseRadioButton = new Button(group, SWT.RADIO);
+		this.lowerCaseRadioButton.setText(JptUiMessages.JpaPreferencesPage_jpqlEditor_lowerCaseRadioButton);
+		this.lowerCaseRadioButton.addSelectionListener(this.buildLowercaseSelectionListener());
+		this.lowerCaseRadioButton.setSelection(this.lowercase);
 
 		// Uppercase radio button
-		upperCaseRadioButton = new Button(group, SWT.RADIO);
-		upperCaseRadioButton.setText(JptUiMessages.JpaPreferencesPage_jpqlEditor_upperCaseRadioButton);
-		upperCaseRadioButton.addSelectionListener(buildUppercaseSelectionListener());
-		upperCaseRadioButton.setSelection(!lowercase);
+		this.upperCaseRadioButton = new Button(group, SWT.RADIO);
+		this.upperCaseRadioButton.setText(JptUiMessages.JpaPreferencesPage_jpqlEditor_upperCaseRadioButton);
+		this.upperCaseRadioButton.addSelectionListener(this.buildUppercaseSelectionListener());
+		this.upperCaseRadioButton.setSelection( ! this.lowercase);
 
 		new Label(group, SWT.NONE);
 
 		// Match Case of First Letter check box
-		matchFirstCharacterCaseCheckBox = new Button(group, SWT.CHECK);
-		matchFirstCharacterCaseCheckBox.setText(JptUiMessages.JpaPreferencesPage_jpqlEditor_matchFirstCharacterCaseRadioButton);
-		matchFirstCharacterCaseCheckBox.addSelectionListener(buildMatchFirstCharacterCaseSelectionListener());
-		matchFirstCharacterCaseCheckBox.setSelection(matchFirstCharacterCase);
+		this.matchFirstCharacterCaseCheckBox = new Button(group, SWT.CHECK);
+		this.matchFirstCharacterCaseCheckBox.setText(JptUiMessages.JpaPreferencesPage_jpqlEditor_matchFirstCharacterCaseRadioButton);
+		this.matchFirstCharacterCaseCheckBox.addSelectionListener(buildMatchFirstCharacterCaseSelectionListener());
+		this.matchFirstCharacterCaseCheckBox.setSelection(this.matchFirstCharacterCase);
 	}
 
 	private SelectionListener buildLowercaseSelectionListener() {
@@ -208,25 +216,27 @@ public class JpaPreferencesPage extends PreferencePage
 	}
 
 	private boolean isDefaultJpqlIdentifierLowercase() {
-		String value = getPreferenceStore().getDefaultString(JptJpaUiPlugin.JPQL_IDENTIFIER_CASE_PREF_KEY);
-		return JptJpaUiPlugin.JPQL_IDENTIFIER_LOWERCASE_PREF_VALUE.equals(value);
+		String value = JpaJpqlPreferencesManager.getDefaultIdentifiersCase();
+		return JpaJpqlPreferencesManager.JPQL_IDENTIFIER_LOWERCASE_PREF_VALUE.equals(value);
 	}
 
 	private String jpqlIdentifierPreferenceValue() {
-		return lowercase ? JptJpaUiPlugin.JPQL_IDENTIFIER_LOWERCASE_PREF_VALUE : JptJpaUiPlugin.JPQL_IDENTIFIER_UPPERCASE_PREF_VALUE;
+		return this.lowercase ? 
+				JpaJpqlPreferencesManager.JPQL_IDENTIFIER_LOWERCASE_PREF_VALUE : 
+				JpaJpqlPreferencesManager.JPQL_IDENTIFIER_UPPERCASE_PREF_VALUE;
 	}
 
 	private boolean shouldDefaultMatchFirstCharacterCase() {
-		return getPreferenceStore().getDefaultBoolean(JptJpaUiPlugin.JPQL_IDENTIFIER_MATCH_FIRST_CHARACTER_CASE_PREF_KEY);
+		return JpaJpqlPreferencesManager.getDefaultMatchFirstCharacterCase();
 	}
 
 	private boolean shouldMatchFirstCharacterCase() {
-		return getPreferenceStore().getBoolean(JptJpaUiPlugin.JPQL_IDENTIFIER_MATCH_FIRST_CHARACTER_CASE_PREF_KEY);
+		return JpaJpqlPreferencesManager.getMatchFirstCharacterCaseWorkspacePreference();
 	}
 
 	private boolean shouldUseLowercaseIdentifiers() {
-		String value = getPreferenceStore().getString(JptJpaUiPlugin.JPQL_IDENTIFIER_CASE_PREF_KEY);
-		return JptJpaUiPlugin.JPQL_IDENTIFIER_LOWERCASE_PREF_VALUE.equals(value);
+		String value = JpaJpqlPreferencesManager.getIdentifiersCaseWorkspacePreference();
+		return JpaJpqlPreferencesManager.JPQL_IDENTIFIER_LOWERCASE_PREF_VALUE.equals(value);
 	}
 
 	private String getDefaultPackage() {
@@ -236,6 +246,37 @@ public class JpaPreferencesPage extends PreferencePage
 		return (StringTools.stringIsEmpty(this.defaultPackageText.getText())) ? 
 						null : 
 						this.defaultPackageText.getText();
+	}
+
+	private void setDefaultPackage(String defaultPackage) {
+		if(this.defaultPackageText == null) {
+			return;
+		}
+		this.defaultPackageText.setText(defaultPackage);
+	}
+
+	private void migrateLegacyJpqlWorkspacePreferences() {
+
+		IPreferenceStore preferences = JptJpaUiPlugin.instance().getPreferenceStore();
+		
+		String legacyCase = preferences.getString(JptJpaUiPlugin.JPQL_IDENTIFIER_CASE_PREF_KEY);
+		boolean legacyMatchFirstCharacterCase = preferences.getBoolean(JptJpaUiPlugin.JPQL_IDENTIFIER_MATCH_FIRST_CHARACTER_CASE_PREF_KEY);
+		
+		if( ! StringTools.stringIsEmpty(legacyCase)) { // value is not empty when legacy preference exist 
+			JpaJpqlPreferencesManager.setIdentifiersCaseWorkspacePreference(legacyCase);
+		}
+		if(legacyMatchFirstCharacterCase) { // value is true when legacy preference exist
+			JpaJpqlPreferencesManager.setMatchFirstCharacterCaseWorkspacePreference(legacyMatchFirstCharacterCase);
+		}
+
+		this.removeLegacyJpqlPreferences();
+	}
+
+	private void removeLegacyJpqlPreferences() {
+		IPreferenceStore preferences = JptJpaUiPlugin.instance().getPreferenceStore();
+
+		preferences.setToDefault(JptJpaUiPlugin.JPQL_IDENTIFIER_CASE_PREF_KEY);
+		preferences.setToDefault(JptJpaUiPlugin.JPQL_IDENTIFIER_MATCH_FIRST_CHARACTER_CASE_PREF_KEY);
 	}
 
 	// ********** UI controls **********

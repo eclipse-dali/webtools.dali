@@ -155,6 +155,22 @@ public class JpaPreferencesManager
 		}
 		flush(wkspPrefs);
 	}
+	
+	protected static boolean getWorkspacePreference(String key, boolean defaultBooleanValue) {
+		return getWorkspacePreferences().getBoolean(key, defaultBooleanValue);
+	}
+
+	public static void setWorkspacePreference(String key, boolean booleanValue) {
+		IEclipsePreferences wkspPrefs = getWorkspacePreferences();
+		wkspPrefs.putBoolean(key, booleanValue);
+		flush(wkspPrefs);
+	}
+
+	public static void removeWorkspacePreference(String key) {
+		IEclipsePreferences wkspPrefs = getWorkspacePreferences();
+		wkspPrefs.remove(key);
+		flush(wkspPrefs);
+	}
 
 	// ********** private static methods **********
 
@@ -291,12 +307,13 @@ public class JpaPreferencesManager
 
 	protected void setProjectPreference(String key, boolean booleanValue) {
 		IEclipsePreferences projectPrefs = this.getProjectPreferences();
-		if( ! booleanValue) {
-			projectPrefs.remove(key);
-		}
-		else {
-			projectPrefs.putBoolean(key, booleanValue);
-		}
+		projectPrefs.putBoolean(key, booleanValue);
+		flush(projectPrefs);
+	}
+
+	protected void removeProjectPreference(String key) {
+		IEclipsePreferences projectPrefs = this.getProjectPreferences();
+		projectPrefs.remove(key);
 		flush(projectPrefs);
 	}
 

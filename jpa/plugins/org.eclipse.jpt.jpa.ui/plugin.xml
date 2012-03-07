@@ -1115,17 +1115,6 @@
 		
 	</extension>
 	
-
-	<extension
-		point="org.eclipse.core.runtime.preferences"
-		id="org.eclipse.jpt.jpa.ui">
-
-		<initializer
-			class="org.eclipse.jpt.jpa.ui.internal.prefs.JpaUiPreferenceInitializer">
-		</initializer>
-
-	</extension>
- 	
 	
 	<!-- ***** JPA project properties pages ***** -->
 

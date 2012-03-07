@@ -22,6 +22,7 @@ import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
+import org.eclipse.jpt.jpa.core.prefs.JpaJpqlPreferencesManager;
 import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
 import org.eclipse.persistence.jpa.jpql.ContentAssistProposals;
@@ -429,12 +430,12 @@ abstract class JpqlCompletionProposalComputer<T> {
 	}
 
 	private boolean shouldMatchFirstCharacterCase() {
-		return JptJpaUiPlugin.instance().getPreferenceStore().getBoolean(JptJpaUiPlugin.JPQL_IDENTIFIER_MATCH_FIRST_CHARACTER_CASE_PREF_KEY);
+		return JpaJpqlPreferencesManager.getMatchFirstCharacterCaseWorkspacePreference();
 	}
 
 	private boolean shouldUseLowercaseIdentifiers() {
-		String value = JptJpaUiPlugin.instance().getPreferenceStore().getString(JptJpaUiPlugin.JPQL_IDENTIFIER_CASE_PREF_KEY);
-		return JptJpaUiPlugin.JPQL_IDENTIFIER_LOWERCASE_PREF_VALUE.equals(value);
+		String value = JpaJpqlPreferencesManager.getIdentifiersCaseWorkspacePreference();
+		return JpaJpqlPreferencesManager.JPQL_IDENTIFIER_LOWERCASE_PREF_VALUE.equals(value);
 	}
 
 	private <I extends Comparable<? super I>> Iterable<I> sort(Iterable<I> iterator) {

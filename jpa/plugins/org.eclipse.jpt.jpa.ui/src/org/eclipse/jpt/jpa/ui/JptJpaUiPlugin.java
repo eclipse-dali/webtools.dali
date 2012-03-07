@@ -58,13 +58,17 @@ public class JptJpaUiPlugin
 
 
 	// ********** Preference keys **********
-
 	/**
 	 * The preference key used to retrieve the case used for JPQL identifiers.
+	 * @deprecated - Use JpaJpqlPreferencesManager instead
 	 */
+	@Deprecated
 	public static final String JPQL_IDENTIFIER_CASE_PREF_KEY = PLUGIN_ID + ".jpqlIdentifier.case";
+	@Deprecated
 	public static final String JPQL_IDENTIFIER_LOWERCASE_PREF_VALUE = "lowercase";
+	@Deprecated
 	public static final String JPQL_IDENTIFIER_UPPERCASE_PREF_VALUE = "uppercase";
+	@Deprecated
 	public static final String JPQL_IDENTIFIER_MATCH_FIRST_CHARACTER_CASE_PREF_KEY = PLUGIN_ID + ".jpqlIdentifier.matchFirstCharacterCase";
 
 

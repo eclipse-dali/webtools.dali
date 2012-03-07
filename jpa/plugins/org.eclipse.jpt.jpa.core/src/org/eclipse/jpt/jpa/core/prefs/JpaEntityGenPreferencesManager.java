@@ -32,7 +32,12 @@ public class JpaEntityGenPreferencesManager extends JpaPreferencesManager
 	}
 	
 	public static void setDefaultPackageWorkspacePreference(String value) {
-		setWorkspacePreference(appendPrefix(DEFAULT_PACKAGE), value);
+		if(StringTools.stringsAreEqual(value, getDefaultDefaultPackage())) {
+			removeWorkspacePreference(appendPrefix(DEFAULT_PACKAGE));
+		}
+		else {
+			setWorkspacePreference(appendPrefix(DEFAULT_PACKAGE), value);
+		}
 	}
 	
 	public static String getDefaultDefaultPackage() {
@@ -65,7 +70,7 @@ public class JpaEntityGenPreferencesManager extends JpaPreferencesManager
 	}
 
 	public void removeDefaultPackagePreference() {
-		this.setProjectPreference(appendPrefix(DEFAULT_PACKAGE), null);
+		this.removeProjectPreference(appendPrefix(DEFAULT_PACKAGE));
 	}
 
 }
