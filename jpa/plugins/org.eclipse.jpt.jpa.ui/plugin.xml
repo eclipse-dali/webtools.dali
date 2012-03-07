@@ -161,46 +161,34 @@
 
 	<extension
        point="org.eclipse.wst.sse.ui.completionProposal"
-       id="org.eclipse.jpt.jpa.ui.xml.jpqlCompletionProposal">
+       id="org.eclipse.jpt.jpa.ui.xml.jpaCompletionProposal">
 
-		<proposalCategory
+		<proposalCategory 
 	           icon="$nl$/icons/full/eview16/jpa_perspective.gif"
-	           id="org.eclipse.jpt.jpa.ui.xml.jpqlProposalCategory"
+	           id="org.eclipse.jpt.jpa.ui.xml.jpaProposalCategory"
 	           name="%JpaProposalCategory">
 		</proposalCategory>
 
 		<proposalComputer
 	       activate="true"
-	       categoryId="org.eclipse.jpt.jpa.ui.xml.jpqlProposalCategory"
+	       categoryId="org.eclipse.jpt.jpa.ui.xml.jpaProposalCategory"
 	       class="org.eclipse.jpt.jpa.ui.internal.jpql.JpaJpqlSseCompletionProposalComputer"
 	       id="org.eclipse.jpt.jpa.ui.internal.jpql.JpaJpqlSseCompletionProposalComputer">
 			<contentType
 				id="org.eclipse.core.runtime.xml">
 			</contentType>
 		</proposalComputer>
-
-	</extension>
-
-	<extension
-       id="org.eclipse.jpt.jpa.ui.xml.xmlCompletionProposal"
-       point="org.eclipse.wst.sse.ui.completionProposal">
-
-		<proposalCategory
-	           icon="$nl$/icons/full/eview16/jpa_perspective.gif"
-	           id="org.eclipse.jpt.jpa.ui.xml.xmlProposalCategory"
-	           name="%JpaProposalCategory">
-		</proposalCategory>
-
-		<proposalComputer
+		
+		<!-- Use  xml instead of more specific mappingFile content type so JPA Proposals appears in the XMl preferences  -->
+		<proposalComputer 
 	       activate="true"
-	       categoryId="org.eclipse.jpt.jpa.ui.xml.xmlProposalCategory"
+	       categoryId="org.eclipse.jpt.jpa.ui.xml.jpaProposalCategory"
 	       class="org.eclipse.jpt.jpa.ui.internal.JpaXmlCompletionProposalComputer"
 	       id="org.eclipse.jpt.jpa.ui.internal.JpaXmlCompletionProposalComputer">
 			<contentType
 				id="org.eclipse.core.runtime.xml">
 			</contentType>
 		</proposalComputer>
-
 	</extension>
 
 	<!-- ***** Dali extensions (eat our own dogfood) ***** -->
@@ -269,13 +257,7 @@
 			name="%addPersistentClass"
 			categoryId="org.eclipse.jpt.jpa.ui.jpaStructureViewCommands">
 		</command>
-		
-		<command
-			id="org.eclipse.jpt.jpa.ui.persistentTypeRemovePersistentClass"
-			name="%removePersistentClass"
-			categoryId="org.eclipse.jpt.jpa.ui.jpaStructureViewCommands">
-		</command>
-		
+			
 		<command
 			id="org.eclipse.jpt.jpa.ui.persistentAttributeAddToXml"
 			name="%addPersistentAttributeToXml"
@@ -383,7 +365,7 @@
 		</handler>
 		
 		<handler
-			commandId="org.eclipse.jpt.jpa.ui.persistentTypeRemovePersistentClass"
+			commandId="org.eclipse.ui.edit.delete"
 			class="org.eclipse.jpt.jpa.ui.internal.commands.RemovePersistentClassHandler">
 			<activeWhen>
 				<reference
@@ -602,7 +584,7 @@
 				</visibleWhen>
 			</command>
 			<command
-				commandId="org.eclipse.jpt.jpa.ui.persistentTypeRemovePersistentClass">
+				commandId="org.eclipse.ui.edit.delete">
 				<visibleWhen>
 					<with
 						variable="selection">
