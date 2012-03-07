@@ -9,13 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.tests.internal.jpa2.context.persistence;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappedSuperclass;
@@ -33,6 +35,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.tests.internal.jpa2.context.Generic2_0ContextModelTestCase;
 
+@SuppressWarnings("nls")
 public class Generic2_0JpaMetadataConversionTests extends
 		Generic2_0ContextModelTestCase {
 
@@ -241,10 +244,10 @@ public class Generic2_0JpaMetadataConversionTests extends
 		assertEquals(0, entity.getQueryContainer().getNamedNativeQueriesSize());
 		
 		// test the mapping file queries have correct values
-		ListIterator<OrmNamedNativeQuery> namedNativeQueries= entityMappings.getQueryContainer().getNamedNativeQueries().iterator();
+		Collection<OrmNamedNativeQuery> namedNativeQueries = CollectionTools.collection(entityMappings.getQueryContainer().getNamedNativeQueries());
 
 		// test the first mapping file query
-		OrmNamedNativeQuery nnq1 = namedNativeQueries.next();
+		OrmNamedNativeQuery nnq1 = this.selectNodeNamed(namedNativeQueries, "nnq1");
 		assertEquals("nnq1", (nnq1.getName()));
 		assertEquals("abcd", (nnq1.getQuery()));
 		assertEquals("foo1", nnq1.getResultClass());
@@ -265,7 +268,7 @@ public class Generic2_0JpaMetadataConversionTests extends
 		assertEquals("bbb", nnq1hint2.getValue());
 		
 		// test the second mapping file query
-		OrmNamedNativeQuery nnq2 = namedNativeQueries.next();
+		OrmNamedNativeQuery nnq2 = this.selectNodeNamed(namedNativeQueries, "nnq2");
 		assertEquals("nnq2", (nnq2.getName()));
 		assertEquals("efgh", (nnq2.getQuery()));
 		assertEquals("foo2", nnq2.getResultClass());
@@ -279,6 +282,15 @@ public class Generic2_0JpaMetadataConversionTests extends
 		assertEquals("nnq2hint1", nnq2hint1.getName());
 		assertEquals("ccc", nnq2hint1.getValue());
 		
+	}
+
+	private <N extends JpaNamedContextNode> N selectNodeNamed(Iterable<N> nodes, String name) {
+		for (N node : nodes) {
+			if (node.getName().equals(name)) {
+				return node;
+			}
+		}
+		return null;
 	}
 
 	public void testConvertOverriddenQueries() throws Exception {
@@ -395,10 +407,10 @@ public class Generic2_0JpaMetadataConversionTests extends
 		assertEquals(0, mappedSuperclass.getQueryContainer().getNamedNativeQueriesSize());
 		
 		// test the mapping file queries have correct values
-		ListIterator<OrmNamedNativeQuery> namedNativeQueries= entityMappings.getQueryContainer().getNamedNativeQueries().iterator();
+		Collection<OrmNamedNativeQuery> namedNativeQueries = CollectionTools.collection(entityMappings.getQueryContainer().getNamedNativeQueries());
 
 		// test the first mapping file query
-		OrmNamedNativeQuery nnq1 = namedNativeQueries.next();
+		OrmNamedNativeQuery nnq1 = this.selectNodeNamed(namedNativeQueries, "nnq1");
 		assertEquals("nnq1", (nnq1.getName()));
 		assertEquals("abcd", (nnq1.getQuery()));
 		assertEquals("foo1", nnq1.getResultClass());
@@ -419,7 +431,7 @@ public class Generic2_0JpaMetadataConversionTests extends
 		assertEquals("bbb", nnq1hint2.getValue());
 		
 		// test the second mapping file query
-		OrmNamedNativeQuery nnq2 = namedNativeQueries.next();
+		OrmNamedNativeQuery nnq2 = this.selectNodeNamed(namedNativeQueries, "nnq2");
 		assertEquals("nnq2", (nnq2.getName()));
 		assertEquals("efgh", (nnq2.getQuery()));
 		assertEquals("foo2", nnq2.getResultClass());
