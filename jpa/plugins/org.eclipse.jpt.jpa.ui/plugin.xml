@@ -181,6 +181,27 @@
 
 	</extension>
 
+	<extension
+       id="org.eclipse.jpt.jpa.ui.xml.xmlCompletionProposal"
+       point="org.eclipse.wst.sse.ui.completionProposal">
+
+		<proposalCategory
+	           icon="$nl$/icons/full/eview16/jpa_perspective.gif"
+	           id="org.eclipse.jpt.jpa.ui.xml.xmlProposalCategory"
+	           name="%JpaProposalCategory">
+		</proposalCategory>
+
+		<proposalComputer
+	       activate="true"
+	       categoryId="org.eclipse.jpt.jpa.ui.xml.xmlProposalCategory"
+	       class="org.eclipse.jpt.jpa.ui.internal.JpaXmlCompletionProposalComputer"
+	       id="org.eclipse.jpt.jpa.ui.internal.JpaXmlCompletionProposalComputer">
+			<contentType
+				id="org.eclipse.core.runtime.xml">
+			</contentType>
+		</proposalComputer>
+
+	</extension>
 
 	<!-- ***** Dali extensions (eat our own dogfood) ***** -->
 

@@ -456,4 +456,21 @@ public class OrmEclipseLinkEntityImpl
 	protected TextRange getParentClassTextRange() {
 		return this.getValidationTextRange(this.xmlTypeMapping.getParentClassTextRange());
 	}
+	
+
+	// ********** completion proposals **********
+
+	@Override
+	public Iterable<String> getXmlCompletionProposals(int pos) {
+		Iterable<String> result = super.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		result = this.multitenancy.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		return null;
+	}
+
 }

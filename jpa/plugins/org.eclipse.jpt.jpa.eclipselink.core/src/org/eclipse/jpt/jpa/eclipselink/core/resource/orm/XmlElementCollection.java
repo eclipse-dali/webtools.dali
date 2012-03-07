@@ -2304,4 +2304,14 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 		return new EmptyTagBooleanTranslator(EclipseLink2_4.DELETE_ALL, EclipseLinkOrmV2_4Package.eINSTANCE.getXmlElementCollection_2_4_DeleteAll());
 	}
 
+	// *********** content assist ************
+	
+	protected TextRange getConvertCodeAssistTextRange() {
+		return getElementCodeAssistTextRange(EclipseLink.CONVERT);
+	}
+
+	public boolean convertTouches(int pos) {
+		TextRange textRange = this.getConvertCodeAssistTextRange();
+		return (textRange != null) && (textRange.touches(pos));
+	}
 }

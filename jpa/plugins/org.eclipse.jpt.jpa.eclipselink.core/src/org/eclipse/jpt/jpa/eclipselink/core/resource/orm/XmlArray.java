@@ -1289,4 +1289,15 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 	protected static Translator buildAttributeTypeTranslator() {
 		return new Translator(EclipseLink2_3.ARRAY__ATTRIBUTE_TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlAttributeMapping_AttributeType(), Translator.DOM_ATTRIBUTE);
 	}
+
+	// *********** content assist ************
+	
+	protected TextRange getConvertCodeAssistTextRange() {
+		return getElementCodeAssistTextRange(EclipseLink.CONVERT);
+	}
+
+	public boolean convertTouches(int pos) {
+		TextRange textRange = this.getConvertCodeAssistTextRange();
+		return (textRange != null) && (textRange.touches(pos));
+	}
 } // XmlArray

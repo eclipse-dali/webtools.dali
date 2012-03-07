@@ -1551,4 +1551,14 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 		return new Translator(EclipseLink2_1.ATTRIBUTE_TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlAttributeMapping_AttributeType(), Translator.DOM_ATTRIBUTE);
 	}
 
+	// *********** content assist ************
+	
+	protected TextRange getConvertCodeAssistTextRange() {
+		return getElementCodeAssistTextRange(EclipseLink.CONVERT);
+	}
+
+	public boolean convertTouches(int pos) {
+		TextRange textRange = this.getConvertCodeAssistTextRange();
+		return (textRange != null) && (textRange.touches(pos));
+	}
 }

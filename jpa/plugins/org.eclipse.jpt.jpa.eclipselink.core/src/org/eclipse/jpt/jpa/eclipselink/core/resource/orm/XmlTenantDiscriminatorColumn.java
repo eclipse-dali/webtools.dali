@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
+ *  Copyright (c) 2012  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -400,5 +400,15 @@ public class XmlTenantDiscriminatorColumn extends AbstractXmlBaseDiscriminatorCo
 
 	protected static Translator buildPrimaryKeyTranslator() {
 		return new Translator(EclipseLink2_3.TENANT_DISCRIMINATOR_COLUMN__PRIMARY_KEY, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlTenantDiscriminatorColumn_2_3_PrimaryKey(), Translator.DOM_ATTRIBUTE);
+	}
+	// *********** content assist ***********
+	
+	public TextRange getTableCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(EclipseLink2_3.TENANT_DISCRIMINATOR_COLUMN__TABLE);
+	}
+
+	public boolean tableTouches(int pos) {
+		TextRange textRange = this.getTableCodeAssistTextRange();
+		return (textRange != null) && (textRange.touches(pos));
 	}
 } // XmlTenantDiscriminator

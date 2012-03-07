@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
+import java.util.Arrays;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
@@ -116,6 +118,33 @@ public class OrmEclipseLinkConvert
 		return this.getXmlConvertibleMapping().getConvertTextRange();
 	}
 
+	// ********** completion proposals **********
+
+	@Override
+	public Iterable<String> getXmlCompletionProposals(int pos) {
+		Iterable<String> result = super.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		if (this.convertValueTouches(pos)) {
+			return this.getConverterNames();
+		}
+		return null;
+	}
+
+	protected boolean convertValueTouches(int pos) {
+		return this.getXmlConvertibleMapping().convertTouches(pos);
+	}
+
+	/**
+	 * @return names of the user-defined converters and of reserved converters
+	 */
+	@SuppressWarnings("unchecked")
+	protected Iterable<String> getConverterNames() {
+		return new CompositeIterable<String>(
+				this.getPersistenceUnit().getUniqueConverterNames(),
+				Arrays.asList(EclipseLinkConvert.RESERVED_CONVERTER_NAMES));
+	}
 
 	// ********** adapter **********
 
