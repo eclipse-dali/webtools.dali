@@ -29,6 +29,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueMo
 import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
@@ -110,7 +111,7 @@ public abstract class PersistenceUnitMappingFilesComposite
 		dialog.setValidator(buildValidator());
 		dialog.setTitle(JptUiPersistenceMessages.PersistenceUnitMappingFilesComposite_mappingFileDialog_title);
 		dialog.setMessage(JptUiPersistenceMessages.PersistenceUnitMappingFilesComposite_mappingFileDialog_message);
-		dialog.addFilter(new XmlMappingFileViewerFilter(getSubject().getJpaProject()));
+		dialog.addFilter(new XmlMappingFileViewerFilter(getSubject().getJpaProject(), JptJpaCorePlugin.MAPPING_FILE_CONTENT_TYPE));
 		dialog.setInput(getSubject().getJpaProject().getProject());
 		dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));
 

@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jpa.core.context.Generator;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
+import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaSequenceGenerator;
 import org.eclipse.jpt.jpa.core.resource.java.SequenceGeneratorAnnotation;
 
@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.resource.java.SequenceGeneratorAnnotation;
 public class GenericJavaSequenceGenerator
 	extends AbstractJavaSequenceGenerator<SequenceGeneratorAnnotation>
 {
-	public GenericJavaSequenceGenerator(JavaJpaContextNode parent, SequenceGeneratorAnnotation generatorAnnotation) {
+	public GenericJavaSequenceGenerator(JavaGeneratorContainer parent, SequenceGeneratorAnnotation generatorAnnotation) {
 		super(parent, generatorAnnotation);
 	}
 
@@ -47,9 +47,9 @@ public class GenericJavaSequenceGenerator
 	// ********** validation **********
 
 	@Override
-	public boolean isIdentical(Generator generator) {
-		return super.isIdentical(generator) &&
-				StringTools.stringsAreEqual(this.getSchema(), (((GenericJavaSequenceGenerator)generator).getSchema())) &&
-				StringTools.stringsAreEqual(this.getCatalog(), (((GenericJavaSequenceGenerator)generator).getCatalog()));
+	protected boolean isEquivalentTo(SequenceGenerator generator) {
+		return super.isEquivalentTo(generator) &&
+				Tools.valuesAreEqual(this.getDbSchema(), generator.getDbSchema()) &&
+				Tools.valuesAreEqual(this.getDbCatalog(), generator.getDbCatalog());
 	}
 }

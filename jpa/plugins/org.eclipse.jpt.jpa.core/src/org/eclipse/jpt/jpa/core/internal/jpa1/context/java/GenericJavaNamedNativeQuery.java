@@ -11,11 +11,12 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
-import org.eclipse.jpt.jpa.core.context.Query;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedNativeQuery;
+import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
+import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaQuery;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.java.NamedNativeQueryAnnotation;
@@ -35,7 +36,7 @@ public class GenericJavaNamedNativeQuery
 	protected String resultSetMapping;
 
 
-	public GenericJavaNamedNativeQuery(JavaJpaContextNode parent, NamedNativeQueryAnnotation queryAnnotation) {
+	public GenericJavaNamedNativeQuery(JavaQueryContainer parent, NamedNativeQueryAnnotation queryAnnotation) {
 		super(parent, queryAnnotation);
 		this.resultClass = queryAnnotation.getResultClass();
 		this.resultSetMapping = queryAnnotation.getResultSetMapping();
@@ -110,6 +111,15 @@ public class GenericJavaNamedNativeQuery
 		this.firePropertyChanged(RESULT_SET_MAPPING_PROPERTY, old, resultSetMapping);
 	}
 
+	// ********** metadata conversion *********
+	
+	public void convertTo(OrmQueryContainer queryContainer) {
+		queryContainer.addNamedNativeQuery().convertFrom(this);
+	}
+
+	public void delete() {
+		this.getParent().removeNamedNativeQuery(this);
+	}
 
 	// ********** validation **********
 
@@ -119,10 +129,14 @@ public class GenericJavaNamedNativeQuery
 	}
 
 	@Override
-	public boolean isIdentical(Query query) {
-		return super.isIdentical(query) &&
-				StringTools.stringsAreEqual(this.getResultClass(), ((GenericJavaNamedNativeQuery)query).getResultClass()) &&
-				StringTools.stringsAreEqual(this.getResultSetMapping(), ((GenericJavaNamedNativeQuery)query).getResultSetMapping());
+	public boolean isEquivalentTo(JpaNamedContextNode node) {
+		return super.isEquivalentTo(node)
+				&& this.isEquivalentTo((NamedNativeQuery) node);
+	}
+	
+	protected boolean isEquivalentTo(NamedNativeQuery nativeQuery) {
+		return Tools.valuesAreEqual(this.resultClass, nativeQuery.getResultClass()) &&
+				Tools.valuesAreEqual(this.resultSetMapping, nativeQuery.getResultSetMapping());
 	}
 
 	// ********** misc **********

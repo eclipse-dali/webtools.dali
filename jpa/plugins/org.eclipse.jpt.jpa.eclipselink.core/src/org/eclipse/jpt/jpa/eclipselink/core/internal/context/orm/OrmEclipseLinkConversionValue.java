@@ -11,9 +11,10 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkConversionValue;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConversionValue;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -119,8 +120,15 @@ public class OrmEclipseLinkConversionValue
 		return (textRange != null) ? textRange : this.getObjectTypeConverter().getValidationTextRange();
 	}
 
-	public boolean isIdentical(EclipseLinkConversionValue eclipseLinkConversionValue) {
-		return StringTools.stringsAreEqual(this.getDataValue(), eclipseLinkConversionValue.getDataValue()) &&
-				StringTools.stringsAreEqual(this.getObjectValue(), eclipseLinkConversionValue.getObjectValue());
+	public boolean isEquivalentTo(EclipseLinkConversionValue conversionValue) {
+		return Tools.valuesAreEqual(this.dataValue, conversionValue.getDataValue()) &&
+				Tools.valuesAreEqual(this.objectValue, conversionValue.getObjectValue());
+	}
+
+	// ********** validation **********
+	
+	public void convertFrom(JavaEclipseLinkConversionValue value) {
+		this.setDataValue(value.getDataValue());
+		this.setObjectValue(value.getObjectValue());
 	}
 }

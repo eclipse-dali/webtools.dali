@@ -14,10 +14,14 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
@@ -76,8 +80,8 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 	// ********** misc **********
 
 	@Override
-	public JavaJpaContextNode getParent() {
-		return (JavaJpaContextNode) super.getParent();
+	public JavaEclipseLinkConverterContainer getParent() {
+		return (JavaEclipseLinkConverterContainer) super.getParent();
 	}
 
 	public A getConverterAnnotation() {
@@ -142,8 +146,16 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 	public TextRange getNameTextRange(CompilationUnit astRoot){
 		return this.getValidationTextRange(this.getConverterAnnotation().getNameTextRange(astRoot), astRoot);
 	}
-	
-	public boolean isIdentical(EclipseLinkConverter eclipseLinkConverter) {
-		return StringTools.stringsAreEqual(this.getName(), eclipseLinkConverter.getName());
+
+	public boolean isEquivalentTo(JpaNamedContextNode node) {
+		return (this != node) &&
+				(this.getType() == node.getType()) &&
+				Tools.valuesAreEqual(this.name, node.getName());
 	}
+
+	// ********** metadata conversion **********
+
+	public abstract void convertTo(OrmEclipseLinkConverterContainer ormConverterContainer);
+	
+	public abstract void delete();
 }

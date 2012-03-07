@@ -12,12 +12,14 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.jpa.core.context.Generator;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaSequenceGenerator;
+import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.jpa.db.Schema;
 
@@ -32,7 +34,7 @@ public abstract class AbstractJavaSequenceGenerator<A extends SequenceGeneratorA
 	protected String defaultSequenceName;
 
 
-	protected AbstractJavaSequenceGenerator(JavaJpaContextNode parent, A generatorAnnotation) {
+	protected AbstractJavaSequenceGenerator(JavaGeneratorContainer parent, A generatorAnnotation) {
 		super(parent, generatorAnnotation);
 		this.specifiedSequenceName = generatorAnnotation.getSequenceName();
 	}
@@ -141,8 +143,23 @@ public abstract class AbstractJavaSequenceGenerator<A extends SequenceGeneratorA
 	// ********** validation **********
 	
 	@Override
-	public boolean isIdentical(Generator generator) {
-		return super.isIdentical(generator) &&
-				StringTools.stringsAreEqual(this.getSpecifiedSequenceName(), ((SequenceGenerator)generator).getSpecifiedSequenceName());
+	public boolean isEquivalentTo(JpaNamedContextNode node) {
+		return super.isEquivalentTo(node)
+				&& this.isEquivalentTo((SequenceGenerator) node);
+	}
+	
+	protected boolean isEquivalentTo(SequenceGenerator generator) {
+		return super.isEquivalentTo(generator) &&
+				Tools.valuesAreEqual(this.specifiedSequenceName, generator.getSpecifiedSequenceName());
+	}
+	
+	// ********** metadata conversion **********
+
+	public void convertTo(EntityMappings entityMappings) {
+		entityMappings.addSequenceGenerator().convertFrom(this);
+	}
+
+	public void delete() {
+		this.getParent().removeSequenceGenerator();	
 	}
 }

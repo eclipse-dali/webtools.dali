@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.TableGenerator;
+import org.eclipse.jpt.jpa.core.context.java.JavaTableGenerator;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTableGenerator;
 
 /**
@@ -39,4 +40,11 @@ public interface OrmTableGenerator
 
 	OrmUniqueConstraint addUniqueConstraint(int index);
 
+
+	//********* metadata conversion *********
+	
+	/**
+	 * Build up a mapping file generator from the given Java generator.
+	 */
+	void convertFrom(JavaTableGenerator javaGenerator);
 }

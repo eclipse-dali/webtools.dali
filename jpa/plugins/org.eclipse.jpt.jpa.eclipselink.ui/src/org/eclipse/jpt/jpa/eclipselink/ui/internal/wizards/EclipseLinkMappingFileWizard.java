@@ -10,17 +10,21 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards;
 
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.operations.EclipseLinkOrmFileCreationDataModelProvider;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.wizards.orm.MappingFileNewFileWizardPage;
 import org.eclipse.jpt.jpa.ui.internal.wizards.orm.MappingFileOptionsWizardPage;
 import org.eclipse.jpt.jpa.ui.internal.wizards.orm.MappingFileWizard;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelProvider;
 
 /**
  * This is referenced in the plugin.xml as an org.eclipse.ui.newWizards extension
  */
+@SuppressWarnings("restriction")
 public class EclipseLinkMappingFileWizard
 		extends MappingFileWizard {
 	
@@ -50,6 +54,12 @@ public class EclipseLinkMappingFileWizard
 				EclipseLinkUiMessages.MappingFileWizardPage_options_desc);
 	}
 	
+	public static IPath createNewMappingFile(IStructuredSelection selection, String xmlFileName) {
+		EclipseLinkMappingFileWizard wizard = new EclipseLinkMappingFileWizard(
+				DataModelFactory.createDataModel(new EclipseLinkOrmFileCreationDataModelProvider()));
+		return MappingFileWizard.createMappingFile(selection, xmlFileName, wizard);		
+	}
+
 	@Override
 	protected IDataModelProvider getDefaultProvider() {
 		return new EclipseLinkOrmFileCreationDataModelProvider();

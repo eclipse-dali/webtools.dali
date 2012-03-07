@@ -29,6 +29,7 @@ Require-Bundle: org.eclipse.core.resources;bundle-version="[3.4.0,4.0.0)",
  org.eclipse.jpt.common.ui;bundle-version="[1.0.0,2.0.0)"
 Export-Package: org.eclipse.jpt.jpa.eclipselink.ui,
  org.eclipse.jpt.jpa.eclipselink.ui.internal;x-internal:=true,
+ org.eclipse.jpt.jpa.eclipselink.ui.internal.commands;x-internal:=true,
  org.eclipse.jpt.jpa.eclipselink.ui.internal.ddlgen;x-internal:=true,
  org.eclipse.jpt.jpa.eclipselink.ui.internal.ddlgen.wizards;x-internal:=true,
  org.eclipse.jpt.jpa.eclipselink.ui.internal.details;x-internal:=true,
@@ -51,5 +52,6 @@ Export-Package: org.eclipse.jpt.jpa.eclipselink.ui,
  org.eclipse.jpt.jpa.eclipselink.ui.internal.v2_0.persistence.logging;x-internal:=true,
  org.eclipse.jpt.jpa.eclipselink.ui.internal.v2_0.persistence.options;x-internal:=true,
  org.eclipse.jpt.jpa.eclipselink.ui.internal.weave;x-internal:=true,
- org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards;x-internal:=true
+ org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards;x-internal:=true,
+ org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards.conversion.java;x-internal:=true
 Import-Package: com.ibm.icu.text;version="4.0.1"

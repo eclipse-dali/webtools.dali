@@ -12,13 +12,14 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTypeConverter;
 import org.eclipse.text.edits.ReplaceEdit;
 
@@ -248,9 +249,21 @@ public class OrmEclipseLinkTypeConverter
 	// ********** validation *********
 
 	@Override
-	public boolean isIdentical(EclipseLinkConverter eclipseLinkConverter) {
-		return super.isIdentical(eclipseLinkConverter) && 
-				StringTools.stringsAreEqual(this.getDataType(), (((EclipseLinkTypeConverter)eclipseLinkConverter).getDataType())) &&
-				StringTools.stringsAreEqual(this.getObjectType(), ((EclipseLinkTypeConverter)eclipseLinkConverter).getObjectType());
+	public boolean isEquivalentTo(JpaNamedContextNode node) {
+		return super.isEquivalentTo(node)
+				&& this.isEquivalentTo((EclipseLinkTypeConverter) node);
+	}
+
+	protected boolean isEquivalentTo(EclipseLinkTypeConverter converter) {
+		return Tools.valuesAreEqual(this.fullyQualifiedDataType, converter.getFullyQualifiedDataType()) &&
+				Tools.valuesAreEqual(this.fullyQualifiedObjectType, converter.getFullyQualifiedObjectType());
+	}
+
+	// ********** metadata conversion **********
+
+	public void convertFrom(JavaEclipseLinkTypeConverter javaConverter) {
+		super.convertFrom(javaConverter);
+		this.setDataType(javaConverter.getFullyQualifiedDataType());
+		this.setObjectType(javaConverter.getFullyQualifiedObjectType());
 	}
 }

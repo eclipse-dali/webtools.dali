@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,9 +14,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Transformer;
 
 /**
- * Named context node.
- * <p>
- * Vestigial - not sure how helpful this common interface is now....
+ * Named context node. Sorta. :-)
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -32,6 +30,14 @@ public interface JpaNamedContextNode
 	void setName(String name);
 
 	Class<? extends JpaNamedContextNode> getType();
+
+	/**
+	 * Return whether the specified node is <em>not</em> this node and it has
+	 * the same state. Typically the specified node would be the same type as
+	 * this node.
+	 * @see #getType()
+	 */
+	boolean isEquivalentTo(JpaNamedContextNode node);
 
 	final class NameTransformer<N extends JpaNamedContextNode>
 		implements Transformer<N, String>, Serializable

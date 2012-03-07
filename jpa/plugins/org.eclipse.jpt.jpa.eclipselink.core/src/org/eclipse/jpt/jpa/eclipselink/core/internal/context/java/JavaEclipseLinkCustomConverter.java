@@ -12,10 +12,9 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConverterAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -30,7 +29,7 @@ public class JavaEclipseLinkCustomConverter
 	private String fullyQualifiedConverterClass;
 
 
-	public JavaEclipseLinkCustomConverter(JavaJpaContextNode parent, EclipseLinkConverterAnnotation converterAnnotation) {
+	public JavaEclipseLinkCustomConverter(JavaEclipseLinkConverterContainer parent, EclipseLinkConverterAnnotation converterAnnotation) {
 		super(parent, converterAnnotation, converterAnnotation.getConverterClass());
 	}
 
@@ -99,10 +98,15 @@ public class JavaEclipseLinkCustomConverter
 		// no need to add message since there will already be a compiler error
 	}
 
-	@Override
-	public boolean isIdentical(EclipseLinkConverter eclipseLinkConverter) {
-		return super.isIdentical(eclipseLinkConverter) && 
-				StringTools.stringsAreEqual(this.getFullyQualifiedConverterClass(), ((JavaEclipseLinkCustomConverter)eclipseLinkConverter).getFullyQualifiedConverterClass());
-	}
+	// ********** metadata conversion **********
 
+	@Override
+	public void convertTo(OrmEclipseLinkConverterContainer ormConverterContainer) {
+		ormConverterContainer.addCustomConverter().convertFrom(this);
+	}
+	
+	@Override
+	public void delete() {
+		this.getParent().removeCustomConverter(this);
+	}
 }

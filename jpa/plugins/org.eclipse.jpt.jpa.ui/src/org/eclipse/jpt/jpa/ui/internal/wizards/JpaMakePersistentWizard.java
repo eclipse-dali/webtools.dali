@@ -10,6 +10,7 @@
 
 package org.eclipse.jpt.jpa.ui.internal.wizards;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IType;
@@ -57,7 +58,11 @@ public class JpaMakePersistentWizard extends Wizard {
 
 	@Override
 	public boolean performFinish() {
-		this.makePersistentWizardPage.performFinish();
+		try {
+			this.makePersistentWizardPage.performFinish();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
 		return true;
 	}
 

@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jpa.core.context.Generator;
+import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmSequenceGenerator;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlSequenceGenerator;
@@ -46,10 +46,10 @@ public class GenericOrmSequenceGenerator
 	// ********** validation **********
 
 	@Override
-	public boolean isIdentical(Generator generator) {
-		return super.isIdentical(generator) &&
-				StringTools.stringsAreEqual(this.getSchema(), (((GenericOrmSequenceGenerator)generator).getSchema())) &&
-				StringTools.stringsAreEqual(this.getCatalog(), (((GenericOrmSequenceGenerator)generator).getCatalog()));
+	protected boolean isEquivalentTo(SequenceGenerator generator) {
+		return super.isEquivalentTo(generator) &&
+				Tools.valuesAreEqual(this.getDbSchema(), generator.getDbSchema()) &&
+				Tools.valuesAreEqual(this.getDbCatalog(), generator.getDbCatalog());
 	}
 
 }

@@ -60,6 +60,11 @@ public interface EclipseLinkObjectTypeConverter
 	int getConversionValuesSize();
 
 	/**
+	 * Return the conversion value at the specified index.
+	 */
+	EclipseLinkConversionValue getConversionValue(int index);
+
+	/**
 	 * Add a conversion value to the converter at the specified index
 	 * and return it.
 	 */

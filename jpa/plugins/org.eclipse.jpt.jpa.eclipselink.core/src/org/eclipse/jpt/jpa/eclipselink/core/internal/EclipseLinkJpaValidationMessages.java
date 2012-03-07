@@ -48,7 +48,7 @@ public interface EclipseLinkJpaValidationMessages {
 	
 	public static final String GENERATOR_DUPLICATE_NAME = "GENERATOR_DUPLICATE_NAME";
 
-	public static final String GENERATOR_IDENTICAL = "GENERATOR_IDENTICAL";
+	public static final String GENERATOR_EQUIVALENT = "GENERATOR_EQUIVALENT";
 
 	public static final String ID_MAPPING_UNRESOLVED_CONVERTER_NAME = "ID_MAPPING_UNRESOLVED_CONVERTER_NAME";
 
@@ -64,7 +64,7 @@ public interface EclipseLinkJpaValidationMessages {
 
 	public static final String QUERY_DUPLICATE_NAME = "QUERY_DUPLICATE_NAME";
 
-	public static final String QUERY_IDENTICAL = "QUERY_IDENTICAL";
+	public static final String QUERY_EQUIVALENT = "QUERY_EQUIVALENT";
 
 	public static final String SESSION_CUSTOMIZER_CLASS_NOT_SPECIFIED = "SESSION_CUSTOMIZER_CLASS_NOT_SPECIFIED";
 	

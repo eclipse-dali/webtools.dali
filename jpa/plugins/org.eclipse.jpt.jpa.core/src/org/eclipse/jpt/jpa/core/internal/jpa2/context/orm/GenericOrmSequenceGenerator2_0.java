@@ -9,10 +9,13 @@
 *******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jpa.core.context.Generator;
+import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
+import org.eclipse.jpt.jpa.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmSequenceGenerator;
+import org.eclipse.jpt.jpa.core.jpa2.context.SequenceGenerator2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSequenceGenerator2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmSequenceGenerator2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlSequenceGenerator;
 
@@ -131,9 +134,18 @@ public class GenericOrmSequenceGenerator2_0
 	// ********** validation **********
 
 	@Override
-	public boolean isIdentical(Generator generator) {
-		return super.isIdentical(generator) &&
-				StringTools.stringsAreEqual(this.getSpecifiedSchema(), (((GenericOrmSequenceGenerator2_0)generator).getSpecifiedSchema())) &&
-				StringTools.stringsAreEqual(this.getSpecifiedCatalog(), (((GenericOrmSequenceGenerator2_0)generator).getSpecifiedCatalog()));
+	protected boolean isEquivalentTo(SequenceGenerator generator) {
+		return super.isEquivalentTo(generator) &&
+				Tools.valuesAreEqual(this.specifiedSchema, ((SequenceGenerator2_0) generator).getSpecifiedSchema()) &&
+				Tools.valuesAreEqual(this.specifiedCatalog, ((SequenceGenerator2_0) generator).getSpecifiedCatalog());
+	}
+
+	// ********** metadata conversion **********
+	
+	@Override
+	public void convertFrom(JavaSequenceGenerator javaGenerator) {
+		super.convertFrom(javaGenerator);
+		this.setSpecifiedCatalog(((JavaSequenceGenerator2_0) javaGenerator).getSpecifiedCatalog());
+		this.setSpecifiedSchema(((JavaSequenceGenerator2_0) javaGenerator).getSpecifiedSchema());
 	}
 }

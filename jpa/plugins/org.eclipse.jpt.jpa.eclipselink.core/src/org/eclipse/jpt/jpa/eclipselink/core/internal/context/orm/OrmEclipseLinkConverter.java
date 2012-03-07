@@ -15,6 +15,8 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
@@ -22,6 +24,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlNamedConverter;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -149,7 +152,15 @@ public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 		return this.getValidationTextRange(this.xmlConverter.getNameTextRange());
 	}
 
-	public boolean isIdentical(EclipseLinkConverter eclipseLinkConverter) {
-		return StringTools.stringsAreEqual(this.getName(), eclipseLinkConverter.getName());
+	public boolean isEquivalentTo(JpaNamedContextNode node) {
+		return (this != node) &&
+				(this.getType() == node.getType()) &&
+				Tools.valuesAreEqual(this.name, node.getName());
+	}
+
+	// ********** metadata conversion **********
+
+	public void convertFrom(JavaEclipseLinkConverter<?> javaConverter) {
+		this.setName(javaConverter.getName());
 	}
 }

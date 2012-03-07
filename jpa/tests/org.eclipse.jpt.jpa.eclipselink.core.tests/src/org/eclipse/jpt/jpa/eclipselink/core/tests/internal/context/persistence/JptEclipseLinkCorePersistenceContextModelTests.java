@@ -37,6 +37,7 @@ public class JptEclipseLinkCorePersistenceContextModelTests extends TestCase
 		suite.addTestSuite(EclipseLink2_0ConnectionTests.class);
 		suite.addTestSuite(EclipseLink2_0LoggingTests.class);
 		suite.addTestSuite(EclipseLink2_0OptionsTests.class);
+		suite.addTestSuite(EclipseLink2_2JpaMetadataConversionTests.class);
 		return suite;
 	}
 

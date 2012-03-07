@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.QueryHint;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
+import org.eclipse.jpt.jpa.core.context.java.JavaQueryHint;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlQueryHint;
 
 /**
@@ -29,6 +30,11 @@ public interface OrmQueryHint
 	extends QueryHint, XmlContextNode
 {
 	XmlQueryHint getXmlQueryHint();
-	
-	boolean isIdentical(QueryHint queryHint);
+
+	// ****** metadata conversion ****
+	/**
+	 * Build up a mapping file query hint
+	 * from the given Java query hint
+	 */
+	void convertFrom(JavaQueryHint javaQueryHint);
 }

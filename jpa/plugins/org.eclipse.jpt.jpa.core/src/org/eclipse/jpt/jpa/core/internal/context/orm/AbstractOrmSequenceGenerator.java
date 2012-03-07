@@ -9,11 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.jpa.core.context.Generator;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
+import org.eclipse.jpt.jpa.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.jpa.db.Schema;
@@ -102,9 +103,21 @@ public abstract class AbstractOrmSequenceGenerator
 	// ********** validation **********
 	
 	@Override
-	public boolean isIdentical(Generator generator) {
-		return super.isIdentical(generator) &&
-				StringTools.stringsAreEqual(this.getSpecifiedSequenceName(), ((SequenceGenerator)generator).getSpecifiedSequenceName());
+	public boolean isEquivalentTo(JpaNamedContextNode node) {
+		return super.isEquivalentTo(node)
+				&& this.isEquivalentTo((SequenceGenerator) node);
+	}
+	
+	protected boolean isEquivalentTo(SequenceGenerator generator) {
+		return super.isEquivalentTo(generator) &&
+				Tools.valuesAreEqual(this.specifiedSequenceName, generator.getSpecifiedSequenceName());
+	}
+	
+	// ********** metadata conversion **********
+	
+	public void convertFrom(JavaSequenceGenerator javaGenerator) {
+		super.convertFrom(javaGenerator);
+		this.setSpecifiedSequenceName(javaGenerator.getSpecifiedSequenceName());
 	}
 	
 	// ********** completion proposals **********

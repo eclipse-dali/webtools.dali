@@ -10,11 +10,16 @@
 package org.eclipse.jpt.jpa.eclipselink.core.context.persistence;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
@@ -32,6 +37,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.Generator;
@@ -41,8 +47,13 @@ import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.context.MappingFileRoot;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
+import org.eclipse.jpt.jpa.core.context.java.JavaGenerator;
+import org.eclipse.jpt.jpa.core.context.java.JavaQuery;
+import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
+import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
+import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.ImpliedMappingFileRef;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode;
@@ -55,9 +66,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkPersistenceUnitDefaults;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.JptJpaEclipseLinkCoreMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkPersistenceUnitMetadata;
@@ -65,6 +78,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.Eclipse
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkCustomization;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkGeneralProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkSchemaGeneration;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -430,8 +444,8 @@ public class EclipseLinkPersistenceUnit
 		ArrayList<EclipseLinkConverter> result = CollectionTools.list(this.getMappingFileConverters());
 
 		HashSet<String> mappingFileConverterNames = this.convertToNames(result);
-		HashMap<String, ArrayList<EclipseLinkConverter>> javaConverters = this.mapByName(this.getAllJavaConverters());
-		for (Map.Entry<String, ArrayList<EclipseLinkConverter>> entry : javaConverters.entrySet()) {
+		HashMap<String, ArrayList<JavaEclipseLinkConverter<?>>> javaConverters = this.mapByName(this.getAllJavaConverters());
+		for (Map.Entry<String, ArrayList<JavaEclipseLinkConverter<?>>> entry : javaConverters.entrySet()) {
 			if ( ! mappingFileConverterNames.contains(entry.getKey())) {
 				result.addAll(entry.getValue());
 			}
@@ -440,7 +454,7 @@ public class EclipseLinkPersistenceUnit
 		return result;
 	}
 
-	protected Iterable<EclipseLinkConverter> getMappingFileConverters() {
+	public Iterable<EclipseLinkConverter> getMappingFileConverters() {
 		return new CompositeIterable<EclipseLinkConverter>(this.getMappingFileConverterLists());
 	}
 
@@ -459,14 +473,17 @@ public class EclipseLinkPersistenceUnit
 	/**
 	 * Include "overridden" Java converters.
 	 */
-	public Iterable<EclipseLinkConverter> getAllJavaConverters() {
-		return new CompositeIterable<EclipseLinkConverter>(this.getAllJavaTypeMappingConverterLists());
+	public Iterable<JavaEclipseLinkConverter<?>> getAllJavaConverters() {
+		return new CompositeIterable<JavaEclipseLinkConverter<?>>(this.getAllJavaTypeMappingConverterLists());
 	}
 
-	protected Iterable<Iterable<EclipseLinkConverter>> getAllJavaTypeMappingConverterLists() {
-		return new TransformationIterable<TypeMapping, Iterable<EclipseLinkConverter>>(this.getAllJavaTypeMappingsUnique()) {
+	protected Iterable<Iterable<JavaEclipseLinkConverter<?>>> getAllJavaTypeMappingConverterLists() {
+		return new TransformationIterable<TypeMapping, Iterable<JavaEclipseLinkConverter<?>>>(this.getAllJavaTypeMappingsUnique()) {
 					@Override
-					protected Iterable<EclipseLinkConverter> transform(TypeMapping typeMapping) {
+					protected Iterable<JavaEclipseLinkConverter<?>> transform(TypeMapping typeMapping) {
+						return new SubIterableWrapper<EclipseLinkConverter, JavaEclipseLinkConverter<?>>(this.transform_(typeMapping));
+					}
+					protected Iterable<EclipseLinkConverter> transform_(TypeMapping typeMapping) {
 						// Java "null" type mappings are not EclipseLink mappings
 						return (typeMapping instanceof EclipseLinkTypeMapping) ?
 								((EclipseLinkTypeMapping) typeMapping).getConverters() :
@@ -950,31 +967,31 @@ public class EclipseLinkPersistenceUnit
 						String[] parms = new String[] {converterName};
 						for (EclipseLinkConverter dup : dups) {
 							messages.add(
+								DefaultEclipseLinkJpaValidationMessages.buildMessage(
+									IMessage.HIGH_SEVERITY,
+									EclipseLinkJpaValidationMessages.CONVERTER_DUPLICATE_NAME,
+									parms,
+									dup,
+									this.extractNameTextRange(dup)
+								)
+							);
+						}
+					} else {
+						// otherwise if all the converters are with the same type, check every converter
+						// to see if its definition is not equivalent with any one of the converters in the list;
+						// if any one of the converters is NOT equivalent, add errors for all of them; otherwise do nothing
+						if (this.anyNodesAreInequivalent(dups)) {
+							String[] parms = new String[] {converterName};
+							for (EclipseLinkConverter dup : dups) {
+								messages.add(
 									DefaultEclipseLinkJpaValidationMessages.buildMessage(
 											IMessage.HIGH_SEVERITY,
 											EclipseLinkJpaValidationMessages.CONVERTER_DUPLICATE_NAME,
 											parms,
 											dup,
 											this.extractNameTextRange(dup)
-											)
-									);
-						}
-					} else {
-						// otherwise if all the converters are with the same type, check every converter
-						// to see if its definition is not identical with any one of the converters in the list;
-						// if yes, report duplicate error on it; if not, doing nothing
-						for (EclipseLinkConverter dup : dups) {
-							String[] parms = new String[] {dup.getName()};
-							if (hasDuplicateConverter(dup, dups)) {
-								messages.add(
-										DefaultEclipseLinkJpaValidationMessages.buildMessage(
-												IMessage.HIGH_SEVERITY,
-												EclipseLinkJpaValidationMessages.CONVERTER_DUPLICATE_NAME,
-												parms,
-												dup,
-												this.extractNameTextRange(dup)
-												)
-										);
+									)
+								);
 							}
 						}
 					}
@@ -983,14 +1000,26 @@ public class EclipseLinkPersistenceUnit
 		}
 	}
 
-	private boolean hasDuplicateConverter(EclipseLinkConverter converter, ArrayList<EclipseLinkConverter> converters) {
-		boolean isDuplicate = false;
-		for (int i=0; i<converters.size(); i++) {
-			if (converter != converters.get(i) && !converter.isIdentical(converters.get(i))) {
-				isDuplicate = true;
+	/**
+	 * Return whether all the specified nodes are "equivalent"
+	 * (i.e. they all have the same state).
+	 */
+	protected boolean allNodesAreEquivalent(ArrayList<? extends JpaNamedContextNode> nodes) {
+		return ! this.anyNodesAreInequivalent(nodes);
+	}
+
+	protected boolean anyNodesAreInequivalent(ArrayList<? extends JpaNamedContextNode> nodes) {
+		if (nodes.size() < 2) {
+			throw new IllegalArgumentException();
+		}
+		Iterator<? extends JpaNamedContextNode> stream = nodes.iterator();
+		JpaNamedContextNode first = stream.next();
+		while (stream.hasNext()) {
+			if ( ! stream.next().isEquivalentTo(first)) {
+				return true;
 			}
 		}
-		return isDuplicate;
+		return false;
 	}
 
 	// TODO bjv isn't it obvious?
@@ -1035,27 +1064,30 @@ public class EclipseLinkPersistenceUnit
 									);
 						}
 					} else {
-						// otherwise if all the generators are with the same type, check every generator
-						// to see if its definition is not identical with any one of the generators in the list;
-						// if yes, report duplicate error on it;
-						for (Generator dup : dups) {
-							String[] parms = new String[] {dup.getName()};
-							if (hasDuplicateGenerator(dup, dups)) {
+						// if all the generators are "equivalent", add info messages
+						if (this.allNodesAreEquivalent(dups)) {
+							String[] parms = new String[] {generatorName};
+							for (Generator dup : dups) {
+								messages.add(
+									DefaultEclipseLinkJpaValidationMessages.buildMessage(
+											IMessage.LOW_SEVERITY,
+											EclipseLinkJpaValidationMessages.GENERATOR_EQUIVALENT,
+											parms,
+											dup,
+											this.extractNameTextRange(dup)
+											)
+									);
+							}
+						} else {
+							// otherwise if all the generators are with the same type, check every generator
+							// to see if its definition is not equivalent with any one of the generators in the list;
+							// if any one of the generators is NOT equivalent, add errors for all of them; otherwise do nothing
+							String[] parms = new String[] {generatorName};
+							for (Generator dup : dups) {
 								messages.add(
 										DefaultEclipseLinkJpaValidationMessages.buildMessage(
 												IMessage.HIGH_SEVERITY,
 												EclipseLinkJpaValidationMessages.GENERATOR_DUPLICATE_NAME,
-												parms,
-												dup,
-												this.extractNameTextRange(dup)
-												)
-										);
-							} else {
-								// if not, report identical warning on it
-								messages.add(
-										DefaultEclipseLinkJpaValidationMessages.buildMessage(
-												IMessage.LOW_SEVERITY,
-												EclipseLinkJpaValidationMessages.GENERATOR_IDENTICAL,
 												parms,
 												dup,
 												this.extractNameTextRange(dup)
@@ -1067,16 +1099,6 @@ public class EclipseLinkPersistenceUnit
 				}
 			}
 		}
-	}
-
-	private boolean hasDuplicateGenerator(Generator generator, ArrayList<Generator> generators) {
-		boolean isDuplicate = false;
-		for (int i=0; i<generators.size(); i++) {
-			if (generator != generators.get(i) && !generator.isIdentical(generators.get(i))) {
-				isDuplicate = true;
-			}
-		}
-		return isDuplicate;
 	}
 
 	@Override
@@ -1105,27 +1127,30 @@ public class EclipseLinkPersistenceUnit
 									);
 						}
 					} else {
-						// otherwise if all the queries are with the same type, check every query
-						// to see if its definition is not identical with any one of the queries in the list;
-						// if yes, report duplicate error on it;
-						for (Query dup : dups) {
-							String[] parms = new String[] {dup.getName()};
-							if (hasDuplicateQuery(dup, dups)) {
+						// if all the queries are "equivalent", add info messages
+						if (this.allNodesAreEquivalent(dups)) {
+							String[] parms = new String[] {queryName};
+							for (Query dup : dups) {
 								messages.add(
 										DefaultEclipseLinkJpaValidationMessages.buildMessage(
-												IMessage.HIGH_SEVERITY,
-												EclipseLinkJpaValidationMessages.QUERY_DUPLICATE_NAME,
+												IMessage.LOW_SEVERITY,
+												EclipseLinkJpaValidationMessages.QUERY_EQUIVALENT,
 												parms,
 												dup,
 												this.extractNameTextRange(dup)
 												)
 										);
-							} else {
-								// if not, report identical warning on it
+							}
+						} else {
+							// otherwise if all the queries are with the same type, check every query
+							// to see if its definition is not equivalent with any one of the queries in the list;
+							// if any one of the queries is NOT equivalent, add errors for all of them; otherwise do nothing
+							String[] parms = new String[] {queryName};
+							for (Query dup : dups) {
 								messages.add(
 										DefaultEclipseLinkJpaValidationMessages.buildMessage(
-												IMessage.LOW_SEVERITY,
-												EclipseLinkJpaValidationMessages.QUERY_IDENTICAL,
+												IMessage.HIGH_SEVERITY,
+												EclipseLinkJpaValidationMessages.QUERY_DUPLICATE_NAME,
 												parms,
 												dup,
 												this.extractNameTextRange(dup)
@@ -1139,19 +1164,8 @@ public class EclipseLinkPersistenceUnit
 		}
 	}
 
-	private boolean hasDuplicateQuery(Query query, ArrayList<Query> queries) {
-		boolean isDuplicate = false;
-		for (int i=0; i<queries.size(); i++) {
-			if (query != queries.get(i) && !query.isIdentical(queries.get(i))) {
-				isDuplicate = true;
-			}
-		}
-		return isDuplicate;
-	}
-
-	private <N extends JpaNamedContextNode> HashMap<Class<? extends JpaNamedContextNode>, ArrayList<N>> mapByType(Iterable<N> nodes) {
-		HashMap<Class<? extends JpaNamedContextNode>, ArrayList<N>> map =
-				new HashMap<Class<? extends JpaNamedContextNode>, ArrayList<N>>();
+	protected <N extends JpaNamedContextNode> HashMap<Class<? extends JpaNamedContextNode>, ArrayList<N>> mapByType(Iterable<N> nodes) {
+		HashMap<Class<? extends JpaNamedContextNode>, ArrayList<N>> map = new HashMap<Class<? extends JpaNamedContextNode>, ArrayList<N>>();
 		for (N node : nodes) {
 			Class<? extends JpaNamedContextNode> type = node.getType();
 			ArrayList<N> list = map.get(type);
@@ -1163,6 +1177,7 @@ public class EclipseLinkPersistenceUnit
 		}
 		return map;
 	}
+
 	// ********** refactoring **********
 
 	@Override
@@ -1193,5 +1208,224 @@ public class EclipseLinkPersistenceUnit
 				this.customization.createRenamePackageEdits(originalPackage, newName),
 				this.logging.createRenamePackageEdits(originalPackage, newName)
 			);
+	}
+
+	// ********** metadata conversion **********
+	// ***** queries
+	
+	/**
+	 * @see #convertJavaQueries(EntityMappings, IProgressMonitor)
+	 */
+	@Override
+	public boolean hasConvertibleJavaQueries() {
+		return ! this.getEclipseLinkConvertibleJavaQueries().isEmpty();
+	}
+
+	/**
+	 * Return whether the persistence unit has any equivalent Java generators.
+	 */
+	public boolean hasAnyEquivalentJavaQueries() {
+		return this.hasAnyEquivalentJavaNodes(this.getAllJavaQueries(), this.getMappingFileQueries());
+	}
+
+	/**
+	 * Override the default implementation because EclipseLink allows
+	 * "equivalent" queries.
+	 */
+	@Override
+	public void convertJavaQueries(EntityMappings entityMappings, IProgressMonitor monitor) {
+		OrmQueryContainer queryContainer = entityMappings.getQueryContainer();
+		HashMap<String, ArrayList<JavaQuery>> convertibleJavaQueries = this.getEclipseLinkConvertibleJavaQueries();
+		int work = this.calculateCumulativeSize(convertibleJavaQueries.values());
+		SubMonitor sm = SubMonitor.convert(monitor, JptCoreMessages.JPA_METADATA_CONVERSION_CONVERTING, work);
+		for (Map.Entry<String, ArrayList<JavaQuery>> entry : convertibleJavaQueries.entrySet()) {
+			this.convertJavaQueriesWithSameName(queryContainer, entry, sm.newChild(entry.getValue().size()));
+		}
+		sm.setTaskName(JptCoreMessages.JPA_METADATA_CONVERSION_OPERATION_COMPLETE);
+	}
+
+	protected void convertJavaQueriesWithSameName(OrmQueryContainer queryContainer, Map.Entry<String, ArrayList<JavaQuery>> entry, SubMonitor monitor) {
+		if (monitor.isCanceled()) {
+			throw new OperationCanceledException(JptCoreMessages.JPA_METADATA_CONVERSION_OPERATION_CANCELED);
+		}
+		monitor.setTaskName(NLS.bind(JptCoreMessages.JPA_METADATA_CONVERSION_CONVERT_QUERY, entry.getKey()));
+
+		ArrayList<JavaQuery> javaQueriesWithSameName = entry.getValue();
+		JavaQuery first = javaQueriesWithSameName.get(0);
+		first.convertTo(queryContainer);
+		first.delete();  // delete any converted queries
+		monitor.worked(1);
+
+		for (int i = 1; i < javaQueriesWithSameName.size(); i++) {  // NB: start with 1!
+			javaQueriesWithSameName.get(i).delete();
+			monitor.worked(1);
+		}
+	}
+	
+	/**
+	 * @see #extractEclipseLinkConvertibleJavaNodes(Iterable, Iterable)
+	 */
+	protected HashMap<String, ArrayList<JavaQuery>> getEclipseLinkConvertibleJavaQueries() {
+		return this.extractEclipseLinkConvertibleJavaNodes(this.getAllJavaQueries(), this.getMappingFileQueries());
+	}
+
+	// ***** generators
+	
+	/**
+	 * @see #convertJavaGenerators(EntityMappings, IProgressMonitor)
+	 */
+	@Override
+	public boolean hasConvertibleJavaGenerators() {
+		return ! this.getEclipseLinkConvertibleJavaGenerators().isEmpty();
+	}
+
+	/**
+	 * Return whether the persistence unit has any equivalent Java generators.
+	 */
+	public boolean hasAnyEquivalentJavaGenerators() {
+		return this.hasAnyEquivalentJavaNodes(this.getAllJavaGenerators(), this.getMappingFileGenerators());
+	}
+
+	/**
+	 * Override the default implementation because EclipseLink allows
+	 * "equivalent" generators.
+	 */
+	@Override
+	public void convertJavaGenerators(EntityMappings entityMappings, IProgressMonitor monitor) {
+		HashMap<String, ArrayList<JavaGenerator>> convertibleJavaGenerators = this.getEclipseLinkConvertibleJavaGenerators();
+		int work = this.calculateCumulativeSize(convertibleJavaGenerators.values());
+		SubMonitor sm = SubMonitor.convert(monitor, JptCoreMessages.JPA_METADATA_CONVERSION_CONVERTING, work);
+		for (Map.Entry<String, ArrayList<JavaGenerator>> entry : convertibleJavaGenerators.entrySet()) {
+			this.convertJavaGeneratorsWithSameName(entityMappings, entry, sm.newChild(entry.getValue().size()));
+		}
+		sm.setTaskName(JptCoreMessages.JPA_METADATA_CONVERSION_OPERATION_COMPLETE);
+	}
+
+	protected void convertJavaGeneratorsWithSameName(EntityMappings entityMappings, Map.Entry<String, ArrayList<JavaGenerator>> entry, SubMonitor monitor) {
+		if (monitor.isCanceled()) {
+			throw new OperationCanceledException(JptCoreMessages.JPA_METADATA_CONVERSION_OPERATION_CANCELED);
+		}
+		monitor.setTaskName(NLS.bind(JptCoreMessages.JPA_METADATA_CONVERSION_CONVERT_GENERATOR, entry.getKey()));
+
+		ArrayList<JavaGenerator> javaGeneratorsWithSameName = entry.getValue();
+		JavaGenerator first = javaGeneratorsWithSameName.get(0);
+		first.convertTo(entityMappings);
+		first.delete();  // delete any converted generators
+		monitor.worked(1);
+
+		for (int i = 1; i < javaGeneratorsWithSameName.size(); i++) {  // NB: start with 1!
+			javaGeneratorsWithSameName.get(i).delete();
+			monitor.worked(1);
+		}
+	}
+	
+	/**
+	 * @see #extractEclipseLinkConvertibleJavaNodes(Iterable, Iterable)
+	 */
+	protected HashMap<String, ArrayList<JavaGenerator>> getEclipseLinkConvertibleJavaGenerators() {
+		return this.extractEclipseLinkConvertibleJavaNodes(this.getAllJavaGenerators(), this.getMappingFileGenerators());
+	}
+
+	// ***** converters
+	
+	/**
+	 * @see #convertJavaConverters(EclipseLinkEntityMappings, IProgressMonitor)
+	 */
+	public boolean hasConvertibleJavaConverters() {
+		return ! this.getEclipseLinkConvertibleJavaConverters().isEmpty();
+	}
+
+	/**
+	 * Return whether the persistence unit has any equivalent Java generators.
+	 */
+	public boolean hasAnyEquivalentJavaConverters() {
+		return this.hasAnyEquivalentJavaNodes(this.getAllJavaConverters(), this.getMappingFileConverters());
+	}
+
+	/**
+	 * Override the default implementation because EclipseLink allows
+	 * "equivalent" converters.
+	 */
+	public void convertJavaConverters(EclipseLinkEntityMappings entityMappings, IProgressMonitor monitor) {
+		OrmEclipseLinkConverterContainer ormConverterContainer = entityMappings.getConverterContainer();
+		HashMap<String, ArrayList<JavaEclipseLinkConverter<?>>> convertibleJavaConverters = this.getEclipseLinkConvertibleJavaConverters();
+		int work = this.calculateCumulativeSize(convertibleJavaConverters.values());
+		SubMonitor sm = SubMonitor.convert(monitor, JptCoreMessages.JPA_METADATA_CONVERSION_CONVERTING, work);
+		for (Map.Entry<String, ArrayList<JavaEclipseLinkConverter<?>>> entry : convertibleJavaConverters.entrySet()) {
+			this.convertJavaConvertersWithSameName(ormConverterContainer, entry, sm.newChild(entry.getValue().size()));
+		}
+		sm.setTaskName(JptCoreMessages.JPA_METADATA_CONVERSION_OPERATION_COMPLETE);
+	}
+
+	protected void convertJavaConvertersWithSameName(OrmEclipseLinkConverterContainer ormConverterContainer, Map.Entry<String, ArrayList<JavaEclipseLinkConverter<?>>> entry, SubMonitor monitor) {
+		if (monitor.isCanceled()) {
+			throw new OperationCanceledException(JptCoreMessages.JPA_METADATA_CONVERSION_OPERATION_CANCELED);
+		}
+		monitor.setTaskName(NLS.bind(JptJpaEclipseLinkCoreMessages.JPA_METADATA_CONVERSION_CONVERT_CONVERTER, entry.getKey()));
+
+		ArrayList<JavaEclipseLinkConverter<?>> javaConvertersWithSameName = entry.getValue();
+		JavaEclipseLinkConverter<?> first = javaConvertersWithSameName.get(0);
+		first.convertTo(ormConverterContainer);
+		first.delete();  // delete any converted generators
+		monitor.worked(1);
+
+		for (int i = 1; i < javaConvertersWithSameName.size(); i++) {  // NB: start with 1!
+			javaConvertersWithSameName.get(i).delete();
+			monitor.worked(1);
+		}
+	}
+	
+	/**
+	 * @see #extractEclipseLinkConvertibleJavaNodes(Iterable, Iterable)
+	 */
+	protected HashMap<String, ArrayList<JavaEclipseLinkConverter<?>>> getEclipseLinkConvertibleJavaConverters() {
+		return this.extractEclipseLinkConvertibleJavaNodes(this.getAllJavaConverters(), this.getMappingFileConverters());
+	}
+
+	protected int calculateCumulativeSize(Collection<? extends Collection<?>> collections) {
+		int cumulativeSize = 0;
+		for (Collection<?> collection : collections) {
+			cumulativeSize += collection.size();
+		}
+		return cumulativeSize;
+	}
+
+	protected <N extends JpaNamedContextNode> boolean hasAnyEquivalentJavaNodes(Iterable<N> allJavaNodes, Iterable<? extends JpaNamedContextNode> mappingFileNodes) {
+		HashMap<String, ArrayList<N>> convertibleJavaNodes = this.extractEclipseLinkConvertibleJavaNodes(allJavaNodes, mappingFileNodes);
+		for (Map.Entry<String, ArrayList<N>> entry : convertibleJavaNodes.entrySet()) {
+			if (entry.getValue().size() > 1) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Return the Java nodes that are neither overridden nor duplicated
+	 * (by default any Java nodes with the same name are "duplicates");
+	 * but, in EclipseLink we return any "equivalent" nodes also.
+	 */
+	protected <N extends JpaNamedContextNode> HashMap<String, ArrayList<N>> extractEclipseLinkConvertibleJavaNodes(Iterable<N> allJavaNodes, Iterable<? extends JpaNamedContextNode> mappingFileNodes) {
+		HashMap<String, ArrayList<N>> convertibleNodes = new HashMap<String, ArrayList<N>>();
+
+		HashSet<String> mappingFileNodeNames = this.convertToNames(CollectionTools.list(mappingFileNodes));
+		HashMap<String, ArrayList<N>> allJavaNodesByName = this.mapByName(allJavaNodes);
+		for (Map.Entry<String, ArrayList<N>> entry : allJavaNodesByName.entrySet()) {
+			String javaNodeName = entry.getKey();
+			if (StringTools.stringIsEmpty(javaNodeName)) {
+				continue;  // ignore any nodes with an empty name(?)
+			}
+			if (mappingFileNodeNames.contains(javaNodeName)) {
+				continue;  // ignore any Java nodes overridden in the mapping file
+			}
+			ArrayList<N> javaNodesWithSameName = entry.getValue();
+			if ((javaNodesWithSameName.size() == 1) || this.allNodesAreEquivalent(javaNodesWithSameName)) {
+				convertibleNodes.put(javaNodeName, javaNodesWithSameName);
+			} else {
+				// ignore multiple Java nodes with the same name but that are not all "equivalent"
+			}
+		}
+
+		return convertibleNodes;
 	}
 }

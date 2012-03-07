@@ -25,6 +25,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IPackageFragment;
@@ -68,9 +69,11 @@ import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaQuery;
+import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQuery;
+import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
@@ -79,6 +82,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistentTypeContainer;
+import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.JpaFactory2_0;
@@ -97,6 +101,7 @@ import org.eclipse.jpt.jpa.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlProperties;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlProperty;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -1495,8 +1500,8 @@ public abstract class AbstractPersistenceUnit
 		ArrayList<Generator> result = CollectionTools.list(this.getMappingFileGenerators());
 
 		HashSet<String> mappingFileGeneratorNames = this.convertToNames(result);
-		HashMap<String, ArrayList<Generator>> javaGenerators = this.mapByName(this.getAllJavaGenerators());
-		for (Map.Entry<String, ArrayList<Generator>> entry : javaGenerators.entrySet()) {
+		HashMap<String, ArrayList<JavaGenerator>> allJavaGenerators = this.mapByName(this.getAllJavaGenerators());
+		for (Map.Entry<String, ArrayList<JavaGenerator>> entry : allJavaGenerators.entrySet()) {
 			if ( ! mappingFileGeneratorNames.contains(entry.getKey())) {
 				result.addAll(entry.getValue());
 			}
@@ -1521,17 +1526,47 @@ public abstract class AbstractPersistenceUnit
 	/**
 	 * Include "overridden" Java generators.
 	 */
-	protected Iterable<Generator> getAllJavaGenerators() {
-		return new CompositeIterable<Generator>(this.getAllJavaTypeMappingGeneratorLists());
+	protected Iterable<JavaGenerator> getAllJavaGenerators() {
+		return new CompositeIterable<JavaGenerator>(this.getAllJavaTypeMappingGeneratorLists());
 	}
 
-	protected Iterable<Iterable<Generator>> getAllJavaTypeMappingGeneratorLists() {
-		return new TransformationIterable<TypeMapping, Iterable<Generator>>(this.getAllJavaTypeMappingsUnique()) {
+	protected Iterable<Iterable<JavaGenerator>> getAllJavaTypeMappingGeneratorLists() {
+		return new TransformationIterable<TypeMapping, Iterable<JavaGenerator>>(this.getAllJavaTypeMappingsUnique()) {
 					@Override
-					protected Iterable<Generator> transform(TypeMapping typeMapping) {
+					protected Iterable<JavaGenerator> transform(TypeMapping typeMapping) {
+						return new SubIterableWrapper<Generator, JavaGenerator>(this.transform_(typeMapping));
+					}
+					protected Iterable<Generator> transform_(TypeMapping typeMapping) {
 						return typeMapping.getGenerators();
 					}
 				};
+	}
+
+	// ***** metadata conversion
+	public boolean hasConvertibleJavaGenerators() {
+		return ! this.getConvertibleJavaGenerators().isEmpty();
+	}
+
+	public void convertJavaGenerators(EntityMappings entityMappings, IProgressMonitor monitor) {
+		ArrayList<JavaGenerator> convertibleJavaGenerators = this.getConvertibleJavaGenerators();
+		SubMonitor subMonitor = SubMonitor.convert(monitor, JptCoreMessages.JPA_METADATA_CONVERSION_CONVERTING, convertibleJavaGenerators.size());
+		for (JavaGenerator generator : convertibleJavaGenerators) {
+			this.convertJavaGenerator(entityMappings, generator, subMonitor.newChild(1));
+		}
+		subMonitor.setTaskName(JptCoreMessages.JPA_METADATA_CONVERSION_OPERATION_COMPLETE);
+	}
+
+	protected void convertJavaGenerator(EntityMappings entityMappings, JavaGenerator generator, SubMonitor monitor) {
+		if (monitor.isCanceled()) {
+			throw new OperationCanceledException(JptCoreMessages.JPA_METADATA_CONVERSION_OPERATION_CANCELED);
+		}
+		monitor.setTaskName(NLS.bind(JptCoreMessages.JPA_METADATA_CONVERSION_CONVERT_GENERATOR, generator.getName()));
+		generator.convertTo(entityMappings);
+		generator.delete();  // delete any converted generators
+	}
+
+	protected ArrayList<JavaGenerator> getConvertibleJavaGenerators() {
+		return this.extractConvertibleJavaNodes(this.getAllJavaGenerators(), this.getMappingFileGenerators());
 	}
 
 
@@ -1566,8 +1601,8 @@ public abstract class AbstractPersistenceUnit
 		ArrayList<Query> result = CollectionTools.list(this.getMappingFileQueries());
 
 		HashSet<String> mappingFileQueryNames = this.convertToNames(result);
-		HashMap<String, ArrayList<Query>> javaQueries = this.mapByName(this.getAllJavaQueries());
-		for (Map.Entry<String, ArrayList<Query>> entry : javaQueries.entrySet()) {
+		HashMap<String, ArrayList<JavaQuery>> allJavaQueries = this.mapByName(this.getAllJavaQueries());
+		for (Map.Entry<String, ArrayList<JavaQuery>> entry : allJavaQueries.entrySet()) {
 			if ( ! mappingFileQueryNames.contains(entry.getKey())) {
 				result.addAll(entry.getValue());
 			}
@@ -1589,25 +1624,20 @@ public abstract class AbstractPersistenceUnit
 				};
 	}
 
-	protected HashSet<String> convertToNames(Collection<? extends JpaNamedContextNode> nodes) {
-		HashSet<String> names = new HashSet<String>(nodes.size());
-		for (JpaNamedContextNode node : nodes) {
-			names.add(node.getName());
-		}
-		return names;
-	}
-
 	/**
 	 * Include "overridden" Java queries.
 	 */
-	protected Iterable<Query> getAllJavaQueries() {
-		return new CompositeIterable<Query>(this.getAllJavaTypeMappingQueryLists());
+	protected Iterable<JavaQuery> getAllJavaQueries() {
+		return new CompositeIterable<JavaQuery>(this.getAllJavaTypeMappingQueryLists());
 	}
 
-	protected Iterable<Iterable<Query>> getAllJavaTypeMappingQueryLists() {
-		return new TransformationIterable<TypeMapping, Iterable<Query>>(this.getAllJavaTypeMappingsUnique()) {
+	protected Iterable<Iterable<JavaQuery>> getAllJavaTypeMappingQueryLists() {
+		return new TransformationIterable<TypeMapping, Iterable<JavaQuery>>(this.getAllJavaTypeMappingsUnique()) {
 					@Override
-					protected Iterable<Query> transform(TypeMapping typeMapping) {
+					protected Iterable<JavaQuery> transform(TypeMapping typeMapping) {
+						return new SubIterableWrapper<Query, JavaQuery>(this.transform_(typeMapping));
+					}
+					protected Iterable<Query> transform_(TypeMapping typeMapping) {
 						return typeMapping.getQueries();
 					}
 				};
@@ -1622,18 +1652,32 @@ public abstract class AbstractPersistenceUnit
 				};
 	}
 
-	protected <N extends JpaNamedContextNode> HashMap<String, ArrayList<N>> mapByName(Iterable<N> nodes) {
-		HashMap<String, ArrayList<N>> map = new HashMap<String, ArrayList<N>>();
-		for (N node : nodes) {
-			String nodeName = node.getName();
-			ArrayList<N> list = map.get(nodeName);
-			if (list == null) {
-				list = new ArrayList<N>();
-				map.put(nodeName, list);
-			}
-			list.add(node);
+	// ***** metadata conversion
+	public boolean hasConvertibleJavaQueries() {
+		return ! this.getConvertibleJavaQueries().isEmpty();
+	}
+
+	public void convertJavaQueries(EntityMappings entityMappings, IProgressMonitor monitor) {
+		OrmQueryContainer queryContainer = entityMappings.getQueryContainer();
+		ArrayList<JavaQuery> convertibleJavaQueries = this.getConvertibleJavaQueries();
+		SubMonitor subMonitor = SubMonitor.convert(monitor, JptCoreMessages.JPA_METADATA_CONVERSION_CONVERTING, convertibleJavaQueries.size());
+		for (JavaQuery query : convertibleJavaQueries) {
+			this.convertJavaQuery(queryContainer, query, subMonitor.newChild(1));
 		}
-		return map;
+		subMonitor.setTaskName(JptCoreMessages.JPA_METADATA_CONVERSION_OPERATION_COMPLETE);
+	}
+
+	protected void convertJavaQuery(OrmQueryContainer queryContainer, JavaQuery query, SubMonitor monitor) {
+		if (monitor.isCanceled()) {
+			throw new OperationCanceledException(JptCoreMessages.JPA_METADATA_CONVERSION_OPERATION_CANCELED);
+		}
+		monitor.setTaskName(NLS.bind(JptCoreMessages.JPA_METADATA_CONVERSION_CONVERT_QUERY, query.getName()));
+		query.convertTo(queryContainer);
+		query.delete();  // delete any converted queries
+	}
+
+	protected ArrayList<JavaQuery> getConvertibleJavaQueries() {
+		return this.extractConvertibleJavaNodes(this.getAllJavaQueries(), this.getMappingFileQueries());
 	}
 
 
@@ -2031,6 +2075,51 @@ public abstract class AbstractPersistenceUnit
 		return (this.xmlPersistenceUnit != null) && this.xmlPersistenceUnit.containsOffset(textOffset);
 	}
 
+	protected HashSet<String> convertToNames(Collection<? extends JpaNamedContextNode> nodes) {
+		HashSet<String> names = new HashSet<String>(nodes.size());
+		for (JpaNamedContextNode node : nodes) {
+			names.add(node.getName());
+		}
+		return names;
+	}
+
+	protected <N extends JpaNamedContextNode> HashMap<String, ArrayList<N>> mapByName(Iterable<N> nodes) {
+		HashMap<String, ArrayList<N>> map = new HashMap<String, ArrayList<N>>();
+		for (N node : nodes) {
+			String nodeName = node.getName();
+			ArrayList<N> list = map.get(nodeName);
+			if (list == null) {
+				list = new ArrayList<N>();
+				map.put(nodeName, list);
+			}
+			list.add(node);
+		}
+		return map;
+	}
+
+	/**
+	 * Return the Java nodes that are neither overridden nor duplicated
+	 * (by default any Java nodes with the same name are "duplicates").
+	 */
+	protected <N extends JpaNamedContextNode> ArrayList<N> extractConvertibleJavaNodes(Iterable<N> allJavaNodes, Iterable<? extends JpaNamedContextNode> mappingFileNodes) {
+		ArrayList<N> convertibleNodes = new ArrayList<N>();
+
+		HashSet<String> mappingFileNodeNames = this.convertToNames(CollectionTools.list(mappingFileNodes));
+		HashMap<String, ArrayList<N>> allJavaNodesByName = this.mapByName(allJavaNodes);
+		for (Map.Entry<String, ArrayList<N>> entry : allJavaNodesByName.entrySet()) {
+			String javaNodeName = entry.getKey();
+			if (StringTools.stringIsEmpty(javaNodeName)) {
+				continue;  // ignore any nodes with an empty name(?)
+			}
+			ArrayList<N> javaNodesWithSameName = entry.getValue();
+			if ((javaNodesWithSameName.size() == 1) && ! mappingFileNodeNames.contains(javaNodeName)) {
+				convertibleNodes.add(javaNodesWithSameName.get(0));
+			}
+		}
+
+		return convertibleNodes;
+	}
+
 	@Override
 	public void toString(StringBuilder sb) {
 		super.toString(sb);
@@ -2057,7 +2146,7 @@ public abstract class AbstractPersistenceUnit
 		this.validateProperties(messages, reporter);
 		this.validateGenerators(messages, reporter);
 		this.validateQueries(messages, reporter);
-		this.validateEntityNames(messages, reporter);
+		this.validateEntityNames(messages);
 	}
 
 	protected void validateMappingFiles(List<IMessage> messages, IReporter reporter) {
@@ -2390,7 +2479,7 @@ public abstract class AbstractPersistenceUnit
 		}
 	}
 
-	protected void validateEntityNames(List<IMessage> messages, @SuppressWarnings("unused") IReporter reporter) {
+	protected void validateEntityNames(List<IMessage> messages) {
 		for (Map.Entry<String, ArrayList<Entity>> entry : this.mapTypeMappingsByName(this.getActiveEntities()).entrySet()) {
 			String entityName = entry.getKey();
 			if (StringTools.stringIsNotEmpty(entityName)) {

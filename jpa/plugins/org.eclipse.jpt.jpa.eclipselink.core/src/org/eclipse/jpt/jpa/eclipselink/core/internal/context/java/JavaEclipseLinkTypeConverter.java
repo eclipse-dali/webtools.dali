@@ -9,10 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
+import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTypeConverterAnnotation;
 
 /**
@@ -29,7 +30,7 @@ public class JavaEclipseLinkTypeConverter
 	private String fullyQualifiedObjectType;
 
 
-	public JavaEclipseLinkTypeConverter(JavaJpaContextNode parent, EclipseLinkTypeConverterAnnotation converterAnnotation) {
+	public JavaEclipseLinkTypeConverter(JavaEclipseLinkConverterContainer parent, EclipseLinkTypeConverterAnnotation converterAnnotation) {
 		super(parent, converterAnnotation);
 		this.dataType = this.converterAnnotation.getDataType();
 		this.objectType = this.converterAnnotation.getObjectType();
@@ -125,10 +126,26 @@ public class JavaEclipseLinkTypeConverter
 	// ********** validation *********
 
 	@Override
-	public boolean isIdentical(EclipseLinkConverter eclipseLinkConverter) {
-		return super.isIdentical(eclipseLinkConverter) && 
-				StringTools.stringsAreEqual(this.getFullyQualifiedDataType(), ((JavaEclipseLinkTypeConverter)eclipseLinkConverter).getFullyQualifiedDataType()) &&
-				StringTools.stringsAreEqual(this.getFullyQualifiedObjectType(), ((JavaEclipseLinkTypeConverter)eclipseLinkConverter).getFullyQualifiedObjectType());
+	public boolean isEquivalentTo(JpaNamedContextNode node) {
+		return super.isEquivalentTo(node)
+				&& this.isEquivalentTo((EclipseLinkTypeConverter) node);
 	}
 
+	protected boolean isEquivalentTo(EclipseLinkTypeConverter converter) {
+		return Tools.valuesAreEqual(this.fullyQualifiedDataType, converter.getFullyQualifiedDataType()) &&
+				Tools.valuesAreEqual(this.fullyQualifiedObjectType, converter.getFullyQualifiedObjectType());
+	}
+
+
+	// ********** metadata conversion **********
+
+	@Override
+	public void convertTo(OrmEclipseLinkConverterContainer ormConverterContainer) {
+		ormConverterContainer.addTypeConverter().convertFrom(this);
+	}
+	
+	@Override
+	public void delete() {
+		this.getParent().removeTypeConverter(this);
+	}
 }

@@ -328,6 +328,10 @@ public abstract class AbstractJpaNode
 			return new LiveCloneIterable<C>(this.contextElements);
 		}
 
+		public C get(int index) {
+			return this.contextElements.get(index);
+		}
+
 		public Iterator<C> iterator() {
 			return new CloneIterator<C>(this.contextElements);
 		}

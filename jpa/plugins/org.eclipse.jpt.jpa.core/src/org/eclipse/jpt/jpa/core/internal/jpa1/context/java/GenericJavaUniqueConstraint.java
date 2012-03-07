@@ -14,10 +14,13 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.orm.OrmUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
 
@@ -120,22 +123,21 @@ public class GenericJavaUniqueConstraint
 		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
 	}
 
-	public boolean isIdentical(JavaUniqueConstraint javaUniqueConstraint) {
-		return  columnNamesAreIdentical(javaUniqueConstraint.getColumnNames());
+	public boolean isEquivalentTo(UniqueConstraint uniqueConstraint) {
+		return  columnNamesAreEquivalent(uniqueConstraint);
 	}
 
-	private boolean columnNamesAreIdentical(Iterable<String> columnNames) {
-		boolean isIdentical = true;
-		if (this.getColumnNamesSize() != CollectionTools.size(columnNames)) {
+	protected boolean columnNamesAreEquivalent(UniqueConstraint uniqueConstraint) {
+		if (this.getColumnNamesSize() != uniqueConstraint.getColumnNamesSize()) {
 			return false;
-		} else {
-			for (int i=0; i<this.getColumnNamesSize(); i++) {
-					if (!StringTools.stringsAreEqual(CollectionTools.get(this.getColumnNames(), i), CollectionTools.get(columnNames, i))) {
-						isIdentical = false;
-					}
+		} 
+
+		for (int i=0; i<this.getColumnNamesSize(); i++) {
+			if (! Tools.valuesAreEqual(this.columnNames.get(i), uniqueConstraint.getColumnName(i))) {
+				return false;
 			}
 		}
-		return isIdentical;
+		return true;
 	}
 
 	// ********** misc **********

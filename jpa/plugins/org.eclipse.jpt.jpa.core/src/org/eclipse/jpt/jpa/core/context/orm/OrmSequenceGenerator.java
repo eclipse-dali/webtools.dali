@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
+import org.eclipse.jpt.jpa.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlSequenceGenerator;
 
 /**
@@ -28,4 +29,11 @@ public interface OrmSequenceGenerator
 	extends SequenceGenerator, OrmGenerator
 {
 	XmlSequenceGenerator getXmlGenerator();
+
+	//********* metadata conversion *********
+	
+	/**
+	 * Build up a mapping file generator from the given Java generator.
+	 */
+	void convertFrom(JavaSequenceGenerator javaGenerator);
 }

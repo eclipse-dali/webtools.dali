@@ -325,11 +325,11 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaGeneratorContainer(parentAdapter);
 	}
 	
-	public JavaSequenceGenerator buildJavaSequenceGenerator(JavaJpaContextNode parent, SequenceGeneratorAnnotation sequenceGeneratorAnnotation) {
+	public JavaSequenceGenerator buildJavaSequenceGenerator(JavaGeneratorContainer parent, SequenceGeneratorAnnotation sequenceGeneratorAnnotation) {
 		return new GenericJavaSequenceGenerator(parent, sequenceGeneratorAnnotation);
 	}
 	
-	public JavaTableGenerator buildJavaTableGenerator(JavaJpaContextNode parent, TableGeneratorAnnotation tableGeneratorAnnotation) {
+	public JavaTableGenerator buildJavaTableGenerator(JavaGeneratorContainer parent, TableGeneratorAnnotation tableGeneratorAnnotation) {
 		return new GenericJavaTableGenerator(parent, tableGeneratorAnnotation);
 	}
 	
@@ -377,11 +377,11 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaQueryContainer(parent, owner);
 	}
 	
-	public JavaNamedQuery buildJavaNamedQuery(JavaJpaContextNode parent, NamedQueryAnnotation namedQueryAnnotation) {
+	public JavaNamedQuery buildJavaNamedQuery(JavaQueryContainer parent, NamedQueryAnnotation namedQueryAnnotation) {
 		return new GenericJavaNamedQuery(parent, namedQueryAnnotation);
 	}
 	
-	public JavaNamedNativeQuery buildJavaNamedNativeQuery(JavaJpaContextNode parent, NamedNativeQueryAnnotation namedNativeQueryAnnotation) {
+	public JavaNamedNativeQuery buildJavaNamedNativeQuery(JavaQueryContainer parent, NamedNativeQueryAnnotation namedNativeQueryAnnotation) {
 		return new GenericJavaNamedNativeQuery(parent, namedNativeQueryAnnotation);
 	}
 	

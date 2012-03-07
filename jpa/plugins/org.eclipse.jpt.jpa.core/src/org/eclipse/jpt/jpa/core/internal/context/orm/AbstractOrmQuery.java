@@ -13,11 +13,15 @@ import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.QueryHint;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
+import org.eclipse.jpt.jpa.core.context.java.JavaQuery;
+import org.eclipse.jpt.jpa.core.context.java.JavaQueryHint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryHint;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
@@ -154,6 +158,10 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 		this.xmlQuery.getHints().move(targetIndex, sourceIndex);
 	}
 
+	public OrmQueryHint getHint(int index) {
+		return this.queryHintContainer.get(index);
+	}
+	
 	protected OrmQueryHint buildHint(XmlQueryHint xmlHint) {
 		return this.getContextNodeFactory().buildOrmQueryHint(this, xmlHint);
 	}
@@ -198,6 +206,16 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 	}
 
 
+	// ********** metadata conversion **********
+
+	public void convertFrom(JavaQuery javaQuery) {
+		this.setName(javaQuery.getName());
+		this.setQuery(javaQuery.getQuery());
+		for (JavaQueryHint javaQueryHint : javaQuery.getHints()) {
+			this.addHint().convertFrom(javaQueryHint);
+		}
+	}
+	
 	// ********** validation **********
 
 	public void validate(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
@@ -251,24 +269,30 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 		return this.getValidationTextRange(this.xmlQuery.getQueryTextRange());
 	}
 
-	public boolean isIdentical(Query query) {
-		return StringTools.stringsAreEqual(this.getName(), query.getName()) &&
-				StringTools.stringsAreEqual(this.getQuery(), query.getQuery()) &&
-				hintsAreIdentical(query.getHints());
+	public boolean isEquivalentTo(JpaNamedContextNode node) {
+		return (this != node) &&
+				(this.getType() == node.getType()) &&
+				this.isEquivalentTo((Query)node);
+	}
+	
+	protected boolean isEquivalentTo(Query other) {
+		return Tools.valuesAreEqual(this.name, other.getName()) &&
+				Tools.valuesAreEqual(this.query, other.getQuery()) &&
+				hintsAreEquivalentTo(other);
 	}
 
-	private boolean hintsAreIdentical(ListIterable<? extends QueryHint> hints) {
-		boolean isIdentical = true;
-		if (this.getHintsSize() != CollectionTools.size(hints)) {
+	protected boolean hintsAreEquivalentTo(Query other) {
+		if (this.getHintsSize() != CollectionTools.size(other.getHints())) {
 			return false;
-		} else {
-			for (int i=0; i<this.getHintsSize(); i++) {
-					if (!(CollectionTools.get(this.getHints(), i)).isIdentical(CollectionTools.get(hints, i))) {
-						isIdentical = false;
-					}
+		}
+
+		for (int i=0; i<this.getHintsSize(); i++) {
+			if (! this.queryHintContainer.get(i).isEquivalentTo(other.getHint(i))) {
+				return false;
 			}
 		}
-		return isIdentical;
+
+		return true;
 	}
 
 	// ********** misc **********

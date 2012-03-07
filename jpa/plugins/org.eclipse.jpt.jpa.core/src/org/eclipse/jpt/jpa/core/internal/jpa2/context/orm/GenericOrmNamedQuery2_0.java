@@ -10,11 +10,14 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 
 import java.util.List;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
-import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
+import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmQuery;
 import org.eclipse.jpt.jpa.core.jpa2.context.LockModeType2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.NamedQuery2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaNamedQuery2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmNamedQuery2_0;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedQuery;
@@ -94,6 +97,13 @@ public class GenericOrmNamedQuery2_0
 		return LockModeType2_0.NONE;
 	}
 
+	// ********** metadata conversion **********
+ 
+	public void convertFrom(JavaNamedQuery javaQuery) {
+		super.convertFrom(javaQuery);
+		this.setSpecifiedLockMode(((JavaNamedQuery2_0)javaQuery).getSpecifiedLockMode());
+	}
+
 	// ********** validation **********
 
 	@Override
@@ -106,11 +116,15 @@ public class GenericOrmNamedQuery2_0
 	}
 
 	@Override
-	public boolean isIdentical(Query query) {
-		return super.isIdentical(query) &&
-				this.getSpecifiedLockMode() == ((GenericOrmNamedQuery2_0)query).getSpecifiedLockMode();
+	public boolean isEquivalentTo(JpaNamedContextNode node) {
+		return super.isEquivalentTo(node)
+				&& this.isEquivalentTo((NamedQuery) node);
 	}
-
+	
+	protected boolean isEquivalentTo(NamedQuery namedQuery) {
+		return this.specifiedLockMode == ((NamedQuery2_0) namedQuery).getSpecifiedLockMode();
+	}
+	
 	// ********** misc **********
 
 	public Class<NamedQuery> getType() {

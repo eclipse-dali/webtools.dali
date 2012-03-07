@@ -375,6 +375,17 @@ public class EclipseLinkUiMessages {
 	public static String GenerationOutputModeWizardPage_title;
 	public static String GenerationOutputModeWizardPage_desc;
 	public static String GenerationOutputModeWizardPage_generationOutputMode;
+	
+	// Metadata Conversion
+	public static String JpaGlobalMetadataConversion_noConverterMetadataToConvert;
+	public static String JpaJavaGConverterMetadataConversionWizardPage_description;
+	public static String JpaJavaConverterMetadataConversionWizardPage_title;
+	public static String JpaGlobalMetadataConversion_equivalentConverterMetadataWarningTitle;
+	public static String JpaGlobalMetadataConversion_equivalentConverterMetadataWarningMessage;
+	public static String JpaGlobalMetadataConversion_equivalentGeneratorMetadataWarningMessage;
+	public static String JpaGlobalMetadataConversion_equivalentGeneratorMetadataWarningTitle;
+	public static String JpaGlobalMetadataConversion_equivalentQueryMetadataWarningTitle;
+	public static String JpaGlobalMetadataConversion_equivalentQueryMetadataWarningMessage;
 
 	// Static Weaving
 	public static String EclipselinkPreferencePage_description;

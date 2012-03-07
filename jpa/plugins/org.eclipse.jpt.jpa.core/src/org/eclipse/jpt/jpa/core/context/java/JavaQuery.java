@@ -14,6 +14,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Query;
+import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.java.QueryAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -51,4 +52,17 @@ public interface JavaQuery
 	void validate(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter, CompilationUnit astRoot);
 
 	TextRange getNameTextRange(CompilationUnit astRoot);
+
+	// ********** metadata conversion *********
+	
+	/**
+	 * Add the appropriate mapping file query to the specified query
+	 * container and convert it from this query.
+	 */
+	void convertTo(OrmQueryContainer queryContainer);
+
+	/**
+	 * Remove the query from its parent.
+	 */
+	void delete();
 }

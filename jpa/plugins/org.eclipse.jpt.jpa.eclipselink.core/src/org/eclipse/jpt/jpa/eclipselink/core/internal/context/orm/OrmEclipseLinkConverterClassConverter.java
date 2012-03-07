@@ -16,8 +16,10 @@ import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterClassConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
@@ -172,6 +174,16 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 
 	protected abstract TextRange getXmlConverterClassTextRange();
 
+
+	@Override
+	public boolean isEquivalentTo(JpaNamedContextNode node) {
+		return super.isEquivalentTo(node)
+				&& this.isEquivalentTo((EclipseLinkConverterClassConverter) node);
+	}
+
+	protected boolean isEquivalentTo(EclipseLinkConverterClassConverter converter) {
+		return Tools.valuesAreEqual(this.getFullyQualifiedConverterClass(), converter.getFullyQualifiedConverterClass());
+	}
 
 	// ********** refactoring **********
 

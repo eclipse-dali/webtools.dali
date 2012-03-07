@@ -163,8 +163,8 @@ public class OrmEclipseLinkEntityImpl
 		return new CompositeIterable<EclipseLinkConverter>(this.getAttributeMappingConverterLists());
 	}
 
-	protected Iterable<Iterable<? extends EclipseLinkConverter>> getAttributeMappingConverterLists() {
-		return new TransformationIterable<AttributeMapping, Iterable<? extends EclipseLinkConverter>>(
+	protected Iterable<Iterable<EclipseLinkConverter>> getAttributeMappingConverterLists() {
+		return new TransformationIterable<AttributeMapping, Iterable<EclipseLinkConverter>>(
 				this.getAttributeMappings(),
 				ATTRIBUTE_MAPPING_CONVERTER_TRANSFORMER
 			);

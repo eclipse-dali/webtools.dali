@@ -66,6 +66,11 @@ public class JptCoreMessages {
 	public static String PREFERENCES_FLUSH_JOB_NAME;
 	public static String OSGI_BUNDLES_LIBRARY_VALIDATOR__BUNDLE_NOT_FOUND;
 	public static String OSGI_BUNDLES_LIBRARY_VALIDATOR__IMPROPER_BUNDLE_VERSION;
+	public static String JPA_METADATA_CONVERSION_CONVERTING;
+	public static String JPA_METADATA_CONVERSION_CONVERT_GENERATOR;
+	public static String JPA_METADATA_CONVERSION_CONVERT_QUERY;
+	public static String JPA_METADATA_CONVERSION_OPERATION_CANCELED;
+	public static String JPA_METADATA_CONVERSION_OPERATION_COMPLETE;
 	
 	private static final String BUNDLE_NAME = "jpa_core"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptCoreMessages.class;

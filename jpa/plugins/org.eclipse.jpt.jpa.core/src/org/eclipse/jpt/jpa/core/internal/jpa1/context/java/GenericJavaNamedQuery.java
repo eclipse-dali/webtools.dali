@@ -12,8 +12,9 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
+import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
+import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaQuery;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.java.NamedQueryAnnotation;
@@ -27,10 +28,19 @@ public class GenericJavaNamedQuery
 	extends AbstractJavaQuery<NamedQueryAnnotation>
 	implements JavaNamedQuery
 {
-	public GenericJavaNamedQuery(JavaJpaContextNode parent, NamedQueryAnnotation queryAnnotation) {
+	public GenericJavaNamedQuery(JavaQueryContainer parent, NamedQueryAnnotation queryAnnotation) {
 		super(parent, queryAnnotation);
 	}
 
+	// ********** metadata conversion *********
+	
+	public void convertTo(OrmQueryContainer queryContainer) {
+		queryContainer.addNamedQuery().convertFrom(this);
+	}
+
+	public void delete() {
+		this.getParent().removeNamedQuery(this);
+	}
 
 	// ********** validation **********
 

@@ -373,7 +373,7 @@ public class EntityClassWizardPage
 	 * @return new instance of viewer filter for the SelectMappingXMLDialog
 	 */
 	protected ViewerFilter getDialogViewerFilter(JpaProject jpaProject) {
-		return new XmlMappingFileViewerFilter(jpaProject);
+		return new XmlMappingFileViewerFilter(jpaProject, JptJpaCorePlugin.MAPPING_FILE_CONTENT_TYPE);
 	}
 	
 	private void enableMappingXMLChooseGroup(boolean enabled) {

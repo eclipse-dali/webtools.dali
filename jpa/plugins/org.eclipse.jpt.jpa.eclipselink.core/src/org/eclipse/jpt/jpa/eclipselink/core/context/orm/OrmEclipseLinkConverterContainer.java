@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -38,15 +38,19 @@ public interface OrmEclipseLinkConverterContainer
 
 	ListIterable<OrmEclipseLinkCustomConverter> getCustomConverters();
 	OrmEclipseLinkCustomConverter addCustomConverter(int index);
+	OrmEclipseLinkCustomConverter addCustomConverter();
 
 	ListIterable<OrmEclipseLinkObjectTypeConverter> getObjectTypeConverters();
 	OrmEclipseLinkObjectTypeConverter addObjectTypeConverter(int index);
+	OrmEclipseLinkObjectTypeConverter addObjectTypeConverter();
 	
 	ListIterable<OrmEclipseLinkStructConverter> getStructConverters();
 	OrmEclipseLinkStructConverter addStructConverter(int index);
+	OrmEclipseLinkStructConverter addStructConverter();
 
 	ListIterable<OrmEclipseLinkTypeConverter> getTypeConverters();
 	OrmEclipseLinkTypeConverter addTypeConverter(int index);
+	OrmEclipseLinkTypeConverter addTypeConverter();
 
 
 	// ********** refactoring **********

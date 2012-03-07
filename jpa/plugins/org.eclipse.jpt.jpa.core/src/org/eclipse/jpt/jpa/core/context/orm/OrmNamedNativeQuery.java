@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
+import org.eclipse.jpt.jpa.core.context.java.JavaNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedNativeQuery;
 
 /**
@@ -28,4 +29,12 @@ public interface OrmNamedNativeQuery
 	extends OrmQuery, NamedNativeQuery
 {
 	XmlNamedNativeQuery getXmlQuery();
+
+	// ********** metadata conversion *********
+	
+	/**
+	 * Build up a mapping file query from
+	 * the given Java query
+	 */
+	void convertFrom(JavaNamedNativeQuery javaQuery);
 }

@@ -164,8 +164,8 @@ public class OrmEclipseLinkMappedSuperclassImpl
 		return new CompositeIterable<EclipseLinkConverter>(this.getAttributeMappingConverterLists());
 	}
 
-	protected Iterable<Iterable<? extends EclipseLinkConverter>> getAttributeMappingConverterLists() {
-		return new TransformationIterable<AttributeMapping, Iterable<? extends EclipseLinkConverter>>(
+	protected Iterable<Iterable<EclipseLinkConverter>> getAttributeMappingConverterLists() {
+		return new TransformationIterable<AttributeMapping, Iterable<EclipseLinkConverter>>(
 				this.getAttributeMappings(),
 				ATTRIBUTE_MAPPING_CONVERTER_TRANSFORMER
 			);
@@ -363,7 +363,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 		this.customizer.validate(messages, reporter);
 		this.multitenancy.validate(messages, reporter);
 	}
-
+	
 	@Override
 	protected JptValidator buildPrimaryKeyValidator() {
 		return new EclipseLinkMappedSuperclassPrimaryKeyValidator(this, this.buildTextRangeResolver());

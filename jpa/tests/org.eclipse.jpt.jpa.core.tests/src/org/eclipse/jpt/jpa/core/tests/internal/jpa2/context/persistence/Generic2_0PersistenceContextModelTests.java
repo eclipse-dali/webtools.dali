@@ -20,6 +20,7 @@ public class Generic2_0PersistenceContextModelTests
 	public static Test suite() {
 		TestSuite suite = new TestSuite(Generic2_0ConnectionTests.class.getPackage().getName());
 		suite.addTestSuite(Generic2_0OptionsTests.class);
+		suite.addTestSuite(Generic2_0JpaMetadataConversionTests.class);
 		return suite;
 	}
 

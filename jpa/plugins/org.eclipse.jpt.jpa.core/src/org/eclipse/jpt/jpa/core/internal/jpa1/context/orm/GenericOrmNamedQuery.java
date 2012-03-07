@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 import java.util.List;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
+import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmQuery;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
@@ -47,5 +48,9 @@ public class GenericOrmNamedQuery
 
 	public Class<NamedQuery> getType() {
 		return NamedQuery.class;
+	}
+
+	public void convertFrom(JavaNamedQuery javaQuery) {
+		super.convertFrom(javaQuery);
 	}
 }

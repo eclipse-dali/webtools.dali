@@ -15,20 +15,21 @@ import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkConversionValue;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConversionValue;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlObjectTypeConverter;
@@ -183,6 +184,10 @@ public class OrmEclipseLinkObjectTypeConverter
 
 	public int getConversionValuesSize() {
 		return this.conversionValueContainer.getContextElementsSize();
+	}
+
+	public EclipseLinkConversionValue getConversionValue(int index) {
+		return this.conversionValueContainer.get(index);
 	}
 
 	public OrmEclipseLinkConversionValue addConversionValue() {
@@ -437,24 +442,40 @@ public class OrmEclipseLinkObjectTypeConverter
 	}
 
 	@Override
-	public boolean isIdentical(EclipseLinkConverter eclipseLinkConverter) {
-		return super.isIdentical(eclipseLinkConverter) && 
-				StringTools.stringsAreEqual(this.getObjectType(), ((EclipseLinkObjectTypeConverter)eclipseLinkConverter).getObjectType()) &&
-				StringTools.stringsAreEqual(this.getDataType(), (((EclipseLinkObjectTypeConverter)eclipseLinkConverter).getDataType())) &&
-				StringTools.stringsAreEqual(this.getDefaultObjectValue(), (((EclipseLinkObjectTypeConverter)eclipseLinkConverter).getDefaultObjectValue()))  &&
-				conversionValuesAreIdentical(((EclipseLinkObjectTypeConverter)eclipseLinkConverter).getConversionValues());
+	public boolean isEquivalentTo(JpaNamedContextNode node) {
+		return super.isEquivalentTo(node)
+				&& this.isEquivalentTo((EclipseLinkObjectTypeConverter) node);
 	}
 
-	private boolean conversionValuesAreIdentical(ListIterable<? extends EclipseLinkConversionValue> conversionValues) {
-		boolean isIdentical = true;
-		if (this.getConversionValuesSize() != CollectionTools.size(conversionValues)) {
+	protected boolean isEquivalentTo(EclipseLinkObjectTypeConverter converter) {
+		return Tools.valuesAreEqual(this.fullyQualifiedObjectType, converter.getFullyQualifiedObjectType()) &&
+				Tools.valuesAreEqual(this.fullyQualifiedDataType, converter.getFullyQualifiedDataType()) &&
+				Tools.valuesAreEqual(this.defaultObjectValue, converter.getDefaultObjectValue()) &&
+				this.conversionValuesAreEquivalentTo(converter);
+	}
+
+	protected boolean conversionValuesAreEquivalentTo(EclipseLinkObjectTypeConverter converter) {
+		if (this.getConversionValuesSize() != converter.getConversionValuesSize()) {
 			return false;
 		}
+
 		for (int i=0; i<this.getConversionValuesSize(); i++) {
-			if (!(CollectionTools.get(this.getConversionValues(), i)).isIdentical(CollectionTools.get(conversionValues, i))) {
-				isIdentical = false;
+			if ( ! this.conversionValueContainer.get(i).isEquivalentTo(converter.getConversionValue(i))) {
+				return false;
 			}
 		}
-		return isIdentical;
+		return true;
+	}
+
+	// ********** metadata conversion **********
+
+	public void convertFrom(JavaEclipseLinkObjectTypeConverter javaConverter) {
+		super.convertFrom(javaConverter);
+		this.setDataType(javaConverter.getFullyQualifiedDataType());
+		this.setObjectType(javaConverter.getFullyQualifiedObjectType());
+		this.setDefaultObjectValue(javaConverter.getDefaultObjectValue());
+		for (JavaEclipseLinkConversionValue value : javaConverter.getConversionValues()) {
+			this.addConversionValue().convertFrom(value);
+		}
 	}
 }

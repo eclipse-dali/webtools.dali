@@ -237,9 +237,9 @@ public interface JpaFactory
 	
 	JavaSecondaryTable buildJavaSecondaryTable(JavaEntity parent, Table.Owner owner, SecondaryTableAnnotation tableAnnotation);
 	
-	JavaSequenceGenerator buildJavaSequenceGenerator(JavaJpaContextNode parent, SequenceGeneratorAnnotation sequenceGeneratorAnnotation);
+	JavaSequenceGenerator buildJavaSequenceGenerator(JavaGeneratorContainer parent, SequenceGeneratorAnnotation sequenceGeneratorAnnotation);
 	
-	JavaTableGenerator buildJavaTableGenerator(JavaJpaContextNode parent, TableGeneratorAnnotation tableGeneratorAnnotation);
+	JavaTableGenerator buildJavaTableGenerator(JavaGeneratorContainer parent, TableGeneratorAnnotation tableGeneratorAnnotation);
 	
 	JavaGeneratedValue buildJavaGeneratedValue(JavaIdMapping parent, GeneratedValueAnnotation generatedValueAnnotation);
 	
@@ -263,9 +263,9 @@ public interface JpaFactory
 	
 	JavaQueryContainer buildJavaQueryContainer(JavaJpaContextNode parent, JavaQueryContainer.Owner owner);
 
-	JavaNamedQuery buildJavaNamedQuery(JavaJpaContextNode parent, NamedQueryAnnotation namedQueryAnnotation);
+	JavaNamedQuery buildJavaNamedQuery(JavaQueryContainer parent, NamedQueryAnnotation namedQueryAnnotation);
 	
-	JavaNamedNativeQuery buildJavaNamedNativeQuery(JavaJpaContextNode parent, NamedNativeQueryAnnotation namedNativeQueryAnnotation);
+	JavaNamedNativeQuery buildJavaNamedNativeQuery(JavaQueryContainer parent, NamedNativeQueryAnnotation namedNativeQueryAnnotation);
 	
 	JavaQueryHint buildJavaQueryHint(JavaQuery parent, QueryHintAnnotation queryHintAnnotation);
 	

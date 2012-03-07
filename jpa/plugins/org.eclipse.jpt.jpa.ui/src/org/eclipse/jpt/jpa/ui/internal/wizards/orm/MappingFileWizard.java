@@ -56,7 +56,7 @@ import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelProvider;
 import org.eclipse.wst.common.frameworks.internal.datamodel.IDataModelPausibleOperation;
-import org.eclipse.wst.common.frameworks.internal.dialog.ui.WarningDialog;
+import org.eclipse.wst.common.frameworks.internal.dialog.ui.MessageDialog;
 import org.eclipse.wst.common.frameworks.internal.ui.ErrorDialog;
 import org.eclipse.wst.common.frameworks.internal.ui.WTPCommonUIResourceHandler;
 
@@ -232,7 +232,17 @@ public class MappingFileWizard extends Wizard
 	}
 	
 	@Override
-	public final boolean performFinish() {
+	public boolean performFinish() {
+		createMappingFile();
+		try {
+			postPerformFinish();
+		} catch (Exception e) {
+			JptJpaUiPlugin.log(e);
+		}
+		return true;
+	}
+	
+	protected boolean createMappingFile() {
 		try {
 			final IStatus st = runOperations();
 			
@@ -246,14 +256,12 @@ public class MappingFileWizard extends Wizard
 						t, 0, false);
 			} 
 			else if(st.getSeverity() == IStatus.WARNING){
-				WarningDialog.openWarning(
+				MessageDialog.openWarning(
 						getShell(), 
 						WTPCommonUIResourceHandler.getString(WTPCommonUIResourceHandler.WTPWizard_UI_2, new Object[]{getWindowTitle()}), 
 						st.getMessage(), 
 						st, IStatus.WARNING);
 			}
-			
-			postPerformFinish();
 		}
 		catch (Exception e) {
 			JptJpaUiPlugin.log(e);
@@ -266,7 +274,7 @@ public class MappingFileWizard extends Wizard
 		return true;
 	}
 	
-	private IStatus runOperations() {
+	protected IStatus runOperations() {
 		
 		class CatchThrowableRunnableWithProgress
 				implements IRunnableWithProgress {
@@ -346,6 +354,10 @@ public class MappingFileWizard extends Wizard
 	
 	public static IPath createNewMappingFile(IStructuredSelection selection, String xmlFileName) {
 		MappingFileWizard wizard = new MappingFileWizard(DataModelFactory.createDataModel(new OrmFileCreationDataModelProvider()));
+		return createMappingFile(selection, xmlFileName, wizard);
+	}
+
+	protected static IPath createMappingFile(IStructuredSelection selection, String xmlFileName, MappingFileWizard wizard) {
 		wizard.getDataModel().setProperty(FILE_NAME, xmlFileName);
 		wizard.init(PlatformUI.getWorkbench(), selection);
 		WizardDialog dialog = new WizardDialog(getCurrentShell(), wizard);

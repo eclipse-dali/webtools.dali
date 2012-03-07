@@ -113,6 +113,11 @@ public interface JpaPlatformUi {
 	Iterator<MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping>>
 			attributeMappingUiDefinitions(JptResourceType resourceType);
 	
+	// ********** metadata conversion **********
+
+	void convertJavaQueryMetadataToGlobal(JpaProject project);
+	
+	void convertJavaGeneratorMetadataToGlobal(JpaProject project);
 	
 	// ********** entity generation **********
 	

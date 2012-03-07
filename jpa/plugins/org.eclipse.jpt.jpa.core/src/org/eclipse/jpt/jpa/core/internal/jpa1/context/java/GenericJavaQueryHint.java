@@ -92,7 +92,7 @@ public class GenericJavaQueryHint
 		return (textRange != null) ? textRange : this.getQuery().getValidationTextRange(astRoot);
 	}
 
-	public boolean isIdentical(QueryHint hint) {
+	public boolean isEquivalentTo(QueryHint hint) {
 		return StringTools.stringsAreEqual(this.getName(), hint.getName()) &&
 				StringTools.stringsAreEqual(this.getValue(), hint.getValue()) ;
 	}

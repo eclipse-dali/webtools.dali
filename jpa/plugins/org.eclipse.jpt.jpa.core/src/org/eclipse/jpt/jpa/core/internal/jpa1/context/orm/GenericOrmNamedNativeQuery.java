@@ -10,10 +10,11 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import java.util.List;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
-import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
+import org.eclipse.jpt.jpa.core.context.java.JavaNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmQuery;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
@@ -109,6 +110,13 @@ public class GenericOrmNamedNativeQuery
 		this.firePropertyChanged(RESULT_SET_MAPPING_PROPERTY, old, resultSetMapping);
 	}
 
+	// ********** metadata conversion **********
+	
+	public void convertFrom(JavaNamedNativeQuery javaQuery) {
+		super.convertFrom(javaQuery);
+		this.setResultClass(javaQuery.getResultClass());
+		this.setResultSetMapping(javaQuery.getResultSetMapping());
+	}
 
 	// ********** validation **********
 
@@ -118,10 +126,14 @@ public class GenericOrmNamedNativeQuery
 	}
 
 	@Override
-	public boolean isIdentical(Query query) {
-		return super.isIdentical(query) &&
-				StringTools.stringsAreEqual(this.getResultClass(), ((GenericOrmNamedNativeQuery)query).getResultClass()) &&
-				StringTools.stringsAreEqual(this.getResultSetMapping(), ((GenericOrmNamedNativeQuery)query).getResultSetMapping());
+	public boolean isEquivalentTo(JpaNamedContextNode node) {
+		return super.isEquivalentTo(node)
+				&& this.isEquivalentTo((NamedNativeQuery) node);
+	}
+	
+	protected boolean isEquivalentTo(NamedNativeQuery nnQuery) {
+		return Tools.valuesAreEqual(this.resultClass, nnQuery.getResultClass()) &&
+				Tools.valuesAreEqual(this.resultSetMapping, nnQuery.getResultSetMapping());
 	}
 
 	// ********** misc **********

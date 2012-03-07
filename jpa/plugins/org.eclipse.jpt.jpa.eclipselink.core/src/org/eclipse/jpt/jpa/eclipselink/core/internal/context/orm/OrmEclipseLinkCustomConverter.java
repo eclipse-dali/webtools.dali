@@ -11,11 +11,10 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkCustomConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverter;
 import org.eclipse.text.edits.ReplaceEdit;
 
@@ -78,9 +77,10 @@ public class OrmEclipseLinkCustomConverter
 		return this.xmlConverter.getConverterClassTextRange();
 	}
 
-	@Override
-	public boolean isIdentical(EclipseLinkConverter eclipseLinkConverter) {
-		return super.isIdentical(eclipseLinkConverter) && 
-				StringTools.stringsAreEqual(this.getConverterClass(), ((EclipseLinkCustomConverter)eclipseLinkConverter).getConverterClass());
+	// ********** metadata conversion **********
+
+	public void convertFrom(JavaEclipseLinkCustomConverter javaConverter) {
+		super.convertFrom(javaConverter);
+		this.setConverterClass(javaConverter.getFullyQualifiedConverterClass());
 	}
 }

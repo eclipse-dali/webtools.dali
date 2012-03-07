@@ -11,11 +11,13 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
-import org.eclipse.jpt.jpa.core.context.Query;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
+import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaQuery;
 import org.eclipse.jpt.jpa.core.jpa2.context.LockModeType2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.NamedQuery2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaNamedQuery2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.NamedQuery2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
@@ -34,7 +36,7 @@ public class GenericJavaNamedQuery2_0
 	protected LockModeType2_0 defaultLockMode;
 
 
-	public GenericJavaNamedQuery2_0(JavaJpaContextNode parent, NamedQuery2_0Annotation queryAnnotation) {
+	public GenericJavaNamedQuery2_0(JavaQueryContainer parent, NamedQuery2_0Annotation queryAnnotation) {
 		super(parent, queryAnnotation);
 		this.specifiedLockMode = this.buildSpecifiedLockMode();
 	}
@@ -94,7 +96,16 @@ public class GenericJavaNamedQuery2_0
 		return LockModeType2_0.NONE;
 	}
 
+	// ********** metadata conversion *********
+	
+	public void convertTo(OrmQueryContainer queryContainer) {
+		queryContainer.addNamedQuery().convertFrom(this);
+	}
 
+	public void delete() {
+		this.getParent().removeNamedQuery(this);
+	}
+	
 	// ********** validation **********
 
 	@Override
@@ -103,9 +114,13 @@ public class GenericJavaNamedQuery2_0
 	}
 
 	@Override
-	public boolean isIdentical(Query query) {
-		return super.isIdentical(query) &&
-				this.getSpecifiedLockMode() == ((GenericJavaNamedQuery2_0)query).getSpecifiedLockMode();
+	public boolean isEquivalentTo(JpaNamedContextNode node) {
+		return super.isEquivalentTo(node)
+				&& this.isEquivalentTo((NamedQuery2_0) node);
+	}
+	
+	protected boolean isEquivalentTo(NamedQuery2_0 namedQuery) {
+		return this.specifiedLockMode == namedQuery.getSpecifiedLockMode();
 	}
 
 	// ********** misc **********

@@ -14,6 +14,8 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterClassConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
@@ -170,4 +172,14 @@ public abstract class JavaEclipseLinkConverterClassConverter<A extends EclipseLi
 	}
 
 	protected abstract TextRange getAnnotationConverterClassTextRange(CompilationUnit astRoot);
+
+	@Override
+	public boolean isEquivalentTo(JpaNamedContextNode node) {
+		return super.isEquivalentTo(node)
+				&& this.isEquivalentTo((EclipseLinkConverterClassConverter) node);
+	}
+
+	protected boolean isEquivalentTo(EclipseLinkConverterClassConverter converter) {
+		return Tools.valuesAreEqual(this.getFullyQualifiedConverterClass(), converter.getFullyQualifiedConverterClass());
+	}
 }

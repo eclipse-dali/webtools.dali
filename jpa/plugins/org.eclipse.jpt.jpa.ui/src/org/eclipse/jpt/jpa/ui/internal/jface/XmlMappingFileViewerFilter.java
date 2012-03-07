@@ -14,6 +14,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
@@ -33,11 +34,13 @@ public class XmlMappingFileViewerFilter
 		extends ViewerFilter {
 	
 	private final JpaProject jpaProject;
+	private IContentType contentType;
 	
 	
-	public XmlMappingFileViewerFilter(JpaProject jpaProject) {
+	public XmlMappingFileViewerFilter(JpaProject jpaProject, IContentType contentType) {
 		super();
 		this.jpaProject = jpaProject;
+		this.contentType = contentType;
 	}
 	
 	
@@ -74,6 +77,6 @@ public class XmlMappingFileViewerFilter
 	 */
 	private boolean isMappingFile(IFile file) {
 		JpaFile jpaFile = this.jpaProject.getJpaFile(file);
-		return jpaFile != null ? jpaFile.getContentType().isKindOf(JptJpaCorePlugin.MAPPING_FILE_CONTENT_TYPE): false;
+		return jpaFile != null ? jpaFile.getContentType().isKindOf(contentType): false;
 	}
 }

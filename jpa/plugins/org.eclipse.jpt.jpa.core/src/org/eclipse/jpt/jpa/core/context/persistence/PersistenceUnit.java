@@ -24,6 +24,7 @@ import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
+import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlProperty;
@@ -517,7 +518,6 @@ public interface PersistenceUnit
 	{
 		PersistenceUnit getParent();
 
-		@SuppressWarnings("hiding")
 		String NAME_PROPERTY = "name"; //$NON-NLS-1$
 		String getName();
 		void setName(String name);
@@ -653,6 +653,21 @@ public interface PersistenceUnit
 	 */
 	Iterable<String> getUniqueGeneratorNames();
 
+	/**
+	 * Return whether the persistence unit contains any "convertible"
+	 * generators (i.e. Java generators that are neither overridden nor
+	 * [erroneously] duplicated).
+	 * @see #convertJavaGenerators(EntityMappings, IProgressMonitor)
+	 */
+	boolean hasConvertibleJavaGenerators();
+	
+	/**
+	 * Convert all "convertible" Java generators to global-level mapping file
+	 * generators.
+	 * @see #hasConvertibleJavaGenerators()
+	 */
+	void convertJavaGenerators(EntityMappings entityMappings, IProgressMonitor monitor);
+	
 
 	// ********** queries **********
 
@@ -682,6 +697,22 @@ public interface PersistenceUnit
 	 * list of queries defined within the persistence unit's scope.
 	 */
 	void addQuery(Query query);
+	
+	/**
+	 * Return whether the persistence unit contains any "convertible"
+	 * queries. (i.e. Java queries that are neither overridden nor
+	 * [erroneously] duplicated - by default, any Java queries with the same
+	 * name are "duplicates").
+	 * @see #convertJavaQueries(EntityMappings, IProgressMonitor)
+	 */
+	boolean hasConvertibleJavaQueries();
+	
+	/**
+	 * Convert all "convertible" Java queries to global-level mapping file
+	 * queries.
+	 * @see #hasConvertibleJavaQueries()
+	 */
+	void convertJavaQueries(EntityMappings entityMappings, IProgressMonitor monitor);
 
 
 	// ********** misc **********

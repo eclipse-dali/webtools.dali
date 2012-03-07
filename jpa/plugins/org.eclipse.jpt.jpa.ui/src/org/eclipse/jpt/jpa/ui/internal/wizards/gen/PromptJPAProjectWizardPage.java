@@ -36,8 +36,8 @@ import org.eclipse.ui.PlatformUI;
 
 public class PromptJPAProjectWizardPage extends WizardPage {
 
-	private static String SELECT_PROJECT_PAGE_NAME = "SelectJPAProject"; //$NON-NLS-1$
-	private Table projTable;
+	protected static String SELECT_PROJECT_PAGE_NAME = "SelectJPAProject"; //$NON-NLS-1$
+	protected Table projTable;
 	private TableViewer projTableViewer;
 	private static int PROJECT_NAME_COLUMN_INDEX = 0;
 	private final String helpContextId;
@@ -64,10 +64,12 @@ public class PromptJPAProjectWizardPage extends WizardPage {
 		projTable.setLayoutData(gd);
 				
 		projTable.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				handleJpaProjectSelection();
 			}
 
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				widgetSelected(e);
 			}
@@ -82,7 +84,7 @@ public class PromptJPAProjectWizardPage extends WizardPage {
 		validate();
 	}
 	
-	private void handleJpaProjectSelection() {
+	protected void handleJpaProjectSelection() {
 		if (projTable.getSelectionIndex() != -1) {
 			TableItem item =  projTable.getItem(projTable.getSelectionIndex());
 			String projName = item.getText(0);
@@ -110,7 +112,7 @@ public class PromptJPAProjectWizardPage extends WizardPage {
 		return (JpaProject) project.getAdapter(JpaProject.class);
 	}
 
-	private void validate() {
+	protected void validate() {
 		if (projTable.getSelectionIndex() != -1)
 			setPageComplete(true);
 		else

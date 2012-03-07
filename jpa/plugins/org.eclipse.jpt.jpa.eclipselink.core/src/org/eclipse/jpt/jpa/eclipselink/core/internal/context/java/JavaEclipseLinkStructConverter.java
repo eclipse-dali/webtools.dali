@@ -11,10 +11,9 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkStructConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkStructConverterAnnotation;
 
@@ -25,7 +24,7 @@ public class JavaEclipseLinkStructConverter
 	extends JavaEclipseLinkConverterClassConverter<EclipseLinkStructConverterAnnotation>
 	implements EclipseLinkStructConverter
 {
-	public JavaEclipseLinkStructConverter(JavaJpaContextNode parent, EclipseLinkStructConverterAnnotation converterAnnotation) {
+	public JavaEclipseLinkStructConverter(JavaEclipseLinkConverterContainer parent, EclipseLinkStructConverterAnnotation converterAnnotation) {
 		super(parent, converterAnnotation, converterAnnotation.getConverter());
 	}
 
@@ -67,12 +66,6 @@ public class JavaEclipseLinkStructConverter
 		return this.converterAnnotation.getConverterTextRange(astRoot);
 	}
 
-	@Override
-	public boolean isIdentical(EclipseLinkConverter eclipseLinkConverter) {
-		return super.isIdentical(eclipseLinkConverter) && 
-				StringTools.stringsAreEqual(this.getFullyQualifiedConverterClass(), (((EclipseLinkStructConverter)eclipseLinkConverter).getConverterClass()));
-	}
-
 	/**
 	 * Since the converter class is a string, it must be fully-qualified.
 	 */
@@ -80,4 +73,16 @@ public class JavaEclipseLinkStructConverter
 		return this.getConverterClass();
 	}
 
+
+	// ********** metadata conversion **********
+
+	@Override
+	public void convertTo(OrmEclipseLinkConverterContainer ormConverterContainer) {
+		ormConverterContainer.addStructConverter().convertFrom(this);
+	}
+	
+	@Override
+	public void delete() {
+		this.getParent().removeStructConverter(this);
+	}
 }

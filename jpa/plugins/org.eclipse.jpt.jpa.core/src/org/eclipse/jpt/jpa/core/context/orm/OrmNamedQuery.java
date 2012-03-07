@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
+import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedQuery;
 
 /**
@@ -29,4 +30,11 @@ public interface OrmNamedQuery
 {
 	XmlNamedQuery getXmlQuery();
 
+	// ********** metadata conversion *********
+	
+	/**
+	 * Build up a mapping file query from
+	 * the given Java query
+	 */
+	void convertFrom(JavaNamedQuery javaQuery);
 }

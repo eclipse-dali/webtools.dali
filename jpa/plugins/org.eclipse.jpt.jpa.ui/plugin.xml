@@ -303,6 +303,23 @@
 			</commandParameter>
 		</command>
 		
+		<category
+			id="org.eclipse.jpt.jpa.ui.jpaMetadataConversionCommands"
+			name="%jpaMetadataConversionCommandCategory">
+		</category>
+		
+		<command
+			id="org.eclipse.jpt.jpa.ui.convertJavaGenerators"
+			name="%convertJavaGenerators"
+			categoryId="org.eclipse.jpt.jpa.ui.jpaMetadataConversionCommands">
+		</command>        
+       	
+       	<command
+	        id="org.eclipse.jpt.jpa.ui.convertJavaQueries"
+			name="%convertJavaQueries"
+			categoryId="org.eclipse.jpt.jpa.ui.jpaMetadataConversionCommands">
+  		</command>
+	
 	</extension>
 	
 	
@@ -465,6 +482,14 @@
 			</enabledWhen>
 		</handler>
 		
+		<handler
+			class="org.eclipse.jpt.jpa.ui.internal.commands.JpaJavaGeneratorMetadataConversionHandler"
+        	commandId="org.eclipse.jpt.jpa.ui.convertJavaGenerators"/>
+			
+		<handler
+			class="org.eclipse.jpt.jpa.ui.internal.commands.JpaJavaQueryMetadataConversionHandler"
+			commandId="org.eclipse.jpt.jpa.ui.convertJavaQueries"/>
+		
  	</extension>
  	
  	
@@ -523,11 +548,13 @@
 					</with>
 				</visibleWhen>
 			</command>	
+
 		</menuContribution>
 		
 		<!-- contributions to the "JPA Tools" submenu -->
 		<menuContribution
 			locationURI="popup:org.eclipse.jpt.jpa.ui.menu.JpaTools">
+
 			<command
 				commandId="org.eclipse.jpt.jpa.ui.xmlFileUpgradeToLatestVersion">
 				<visibleWhen>
@@ -541,6 +568,49 @@
 					</with>
 				</visibleWhen>
 			</command>
+			
+			<!-- "Move to XML" submenu -->
+			<menu
+				id="org.eclipse.jpt.jpa.ui.menu.moveToXml"
+				label="%moveToXml">
+				<visibleWhen
+                  checkEnabled="false">
+               		<with
+                    	 variable="activeMenuSelection">
+                  		<iterate
+                        	ifEmpty="false">
+                     		<adapt
+                           		type="org.eclipse.core.resources.IProject">
+                   				<test
+									property="org.eclipse.wst.common.project.facet.core.projectFacet" 
+									value="jpt.jpa"/>
+                     		</adapt>
+                  		</iterate>
+	                    <count
+	                          value="1"/>
+               		</with>
+            	</visibleWhen>
+			</menu>
+			
+		</menuContribution>
+		
+		<!-- contributions to "Move to XML" submenu -->
+		
+		<menuContribution
+			locationURI="popup:org.eclipse.jpt.jpa.ui.menu.moveToXml">
+			
+			<command
+				commandId="org.eclipse.jpt.jpa.ui.convertJavaQueries"
+				label="%convertJavaQueries"
+				style="push">
+			</command>
+			
+			<command
+				commandId="org.eclipse.jpt.jpa.ui.convertJavaGenerators"
+				label="%convertJavaGenerators"
+				style="push">
+			</command>
+
 		</menuContribution>
 		
 		<!-- contributions to the project configure menu -->

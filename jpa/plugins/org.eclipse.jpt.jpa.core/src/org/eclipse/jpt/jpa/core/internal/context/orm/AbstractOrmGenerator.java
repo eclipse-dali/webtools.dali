@@ -15,7 +15,9 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.Generator;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
+import org.eclipse.jpt.jpa.core.context.java.JavaGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGenerator;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
@@ -188,12 +190,18 @@ public abstract class AbstractOrmGenerator<X extends XmlGenerator>
 		return this.getValidationTextRange(this.xmlGenerator.getNameTextRange());
 	}
 
-	public boolean isIdentical(Generator generator) {
-		return StringTools.stringsAreEqual(this.getName(), generator.getName()) &&
-				Tools.valuesAreEqual(this.getSpecifiedAllocationSize(), generator.getSpecifiedAllocationSize()) &&
-				Tools.valuesAreEqual(this.getSpecifiedInitialValue(), generator.getSpecifiedInitialValue());
+	public boolean isEquivalentTo(JpaNamedContextNode node) {
+		return (this != node) &&
+				(this.getType() == node.getType()) &&
+				this.isEquivalentTo((Generator)node);
 	}
-
+	
+	protected boolean isEquivalentTo(Generator generator) {
+		return Tools.valuesAreEqual(this.name, generator.getName()) &&
+				Tools.valuesAreEqual(this.specifiedAllocationSize, generator.getSpecifiedAllocationSize()) &&
+				Tools.valuesAreEqual(this.specifiedInitialValue, generator.getSpecifiedInitialValue());
+	}
+	
 	// ************* completion proposals *************
 	/**
 	 * called if the database is connected:
@@ -235,7 +243,7 @@ public abstract class AbstractOrmGenerator<X extends XmlGenerator>
 		Database db = this.getDatabase();
 		return (db != null) ? db.getSortedCatalogIdentifiers() : EmptyIterable.<String> instance();
 	}
-
+	
 	// ********** database stuff **********
 
 	public Schema getDbSchema() {
@@ -267,6 +275,14 @@ public abstract class AbstractOrmGenerator<X extends XmlGenerator>
 	protected abstract String getCatalog();
 
 
+	// ********** metadata conversion **********
+	
+	public void convertFrom(JavaGenerator javaGenerator) {
+		this.setName(javaGenerator.getName());
+		this.setSpecifiedInitialValue(javaGenerator.getSpecifiedInitialValue());
+		this.setSpecifiedAllocationSize(javaGenerator.getSpecifiedAllocationSize());
+	}
+
 	// ********** misc **********
 
 	@Override
@@ -282,5 +298,4 @@ public abstract class AbstractOrmGenerator<X extends XmlGenerator>
 	public void toString(StringBuilder sb) {
 		sb.append(this.name);
 	}
-
 }

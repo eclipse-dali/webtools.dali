@@ -15,6 +15,8 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUiProvider;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.platform.base.BaseJpaPlatformUi;
+import org.eclipse.jpt.jpa.ui.internal.platform.base.GenericJpaJavaGeneratorMetadataConvertor;
+import org.eclipse.jpt.jpa.ui.internal.platform.base.GenericJpaJavaQueryMetadataConvertor;
 
 public class GenericJpaPlatformUi
 	extends BaseJpaPlatformUi
@@ -30,5 +32,15 @@ public class GenericJpaPlatformUi
 
 	public void generateDDL(JpaProject project, IStructuredSelection selection) {
 		this.displayMessage(JptUiMessages.GenericPlatformUiDialog_notSupportedMessageTitle, JptUiMessages.GenericPlatformUiDialog_notSupportedMessageText);
+	}
+	
+	// ********** metadata conversion **********
+	
+	public void convertJavaQueryMetadataToGlobal(JpaProject jpaProject) {
+		GenericJpaJavaQueryMetadataConvertor.convert(jpaProject);
+	}
+	
+	public void convertJavaGeneratorMetadataToGlobal(JpaProject jpaProject) {
+		GenericJpaJavaGeneratorMetadataConvertor.convert(jpaProject);
 	}
 }

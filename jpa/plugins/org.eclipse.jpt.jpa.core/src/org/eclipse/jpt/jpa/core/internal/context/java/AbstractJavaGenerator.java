@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 201s Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,8 +15,9 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.jpa.core.context.Generator;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaGenerator;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.java.GeneratorAnnotation;
@@ -44,7 +45,7 @@ public abstract class AbstractJavaGenerator<A extends GeneratorAnnotation>
 	protected int defaultAllocationSize;
 
 
-	protected AbstractJavaGenerator(JavaJpaContextNode parent, A generatorAnnotation) {
+	protected AbstractJavaGenerator(JavaGeneratorContainer parent, A generatorAnnotation) {
 		super(parent);
 		this.generatorAnnotation = generatorAnnotation;
 		this.name = generatorAnnotation.getName();
@@ -158,7 +159,6 @@ public abstract class AbstractJavaGenerator<A extends GeneratorAnnotation>
 		return DEFAULT_ALLOCATION_SIZE;
 	}
 	
-
 	// ********** validation **********
 
 	@Override
@@ -187,10 +187,17 @@ public abstract class AbstractJavaGenerator<A extends GeneratorAnnotation>
 		return this.getValidationTextRange(this.generatorAnnotation.getNameTextRange(astRoot), astRoot);
 	}
 
-	public boolean isIdentical(Generator generator) {
-		return StringTools.stringsAreEqual(this.getName(), generator.getName()) &&
-				Tools.valuesAreEqual(this.getSpecifiedAllocationSize(), generator.getSpecifiedAllocationSize()) &&
-				Tools.valuesAreEqual(this.getSpecifiedInitialValue(), generator.getSpecifiedInitialValue());
+	
+	public boolean isEquivalentTo(JpaNamedContextNode node) {
+		return (this != node) &&
+				(this.getType() == node.getType()) &&
+				this.isEquivalentTo((Generator)node);
+	}
+	
+	protected boolean isEquivalentTo(Generator generator) {
+		return Tools.valuesAreEqual(this.name, generator.getName()) &&
+				Tools.valuesAreEqual(this.specifiedAllocationSize, generator.getSpecifiedAllocationSize()) &&
+				Tools.valuesAreEqual(this.specifiedInitialValue, generator.getSpecifiedInitialValue());
 	}
 
 	// ********** database stuff **********
@@ -227,8 +234,8 @@ public abstract class AbstractJavaGenerator<A extends GeneratorAnnotation>
 	// ********** misc **********
 
 	@Override
-	public JavaJpaContextNode getParent() {
-		return (JavaJpaContextNode) super.getParent();
+	public JavaGeneratorContainer getParent() {
+		return (JavaGeneratorContainer) super.getParent();
 	}
 
 	public A getGeneratorAnnotation() {

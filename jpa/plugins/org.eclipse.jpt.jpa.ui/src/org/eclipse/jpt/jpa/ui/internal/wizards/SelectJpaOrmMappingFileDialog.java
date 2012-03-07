@@ -25,7 +25,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
-import org.eclipse.jpt.jpa.ui.internal.wizards.orm.MappingFileWizard;
+import org.eclipse.jpt.jpa.ui.internal.wizards.orm.EmbeddedMappingFileWizard;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -40,10 +40,10 @@ import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 
 public class SelectJpaOrmMappingFileDialog extends ElementTreeSelectionDialog
 {
-	private final IProject project;
+	protected final IProject project;
 	
-	private Label messageLabel;
-	private Tree treeWidget;
+	protected Label messageLabel;
+	protected Tree treeWidget;
 
 	public SelectJpaOrmMappingFileDialog(Shell parent, IProject project, ILabelProvider labelProvider, ITreeContentProvider contentProvider) {
 		super(parent, labelProvider, contentProvider);
@@ -58,7 +58,7 @@ public class SelectJpaOrmMappingFileDialog extends ElementTreeSelectionDialog
 		newButton.setText(JptUiMessages.SelectJpaOrmMappingFileDialog_newButton);
 		GridData browseButtonData = new GridData(GridData.HORIZONTAL_ALIGN_END);
 		newButton.setLayoutData(browseButtonData);		
-		newButton.setToolTipText(JptUiMessages.SelectJpaOrmMappingFileDialog_toolTip);
+		newButton.setToolTipText(JptUiMessages.SelectJpaOrmMappingFileDialog_newBtnToolTip);
 		newButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				openNewMappingFileWizard();
@@ -116,16 +116,23 @@ public class SelectJpaOrmMappingFileDialog extends ElementTreeSelectionDialog
 		}
 	}
 	
-	private void openNewMappingFileWizard() {
-		IPath path = MappingFileWizard.createNewMappingFile(new StructuredSelection(this.project), null);
+	protected void openNewMappingFileWizard() {
+		IPath path = EmbeddedMappingFileWizard.createNewMappingFile(new StructuredSelection(this.project), null);
+		updateDialog(path);
+	}
+
+	protected void updateDialog(IPath path) {
 		if (path != null) {
 			//these are disabled if the tree is empty when the dialog is created.
 			this.messageLabel.setEnabled(true);
 			this.treeWidget.setEnabled(true);
 			IFile file = this.getProjectResourceLocator().getPlatformFile(path);
+			getTreeViewer().refresh();
 			getTreeViewer().setSelection(new StructuredSelection(file), true);
 		}
 	}
+	
+	
 
 	protected ProjectResourceLocator getProjectResourceLocator() {
 		return (ProjectResourceLocator) this.project.getAdapter(ProjectResourceLocator.class);

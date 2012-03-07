@@ -9,15 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.jpa.core.context.Generator;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.TableGenerator;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
+import org.eclipse.jpt.jpa.core.context.java.JavaTableGenerator;
+import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmGenerator;
@@ -337,6 +338,10 @@ public class GenericOrmTableGenerator
 		return this.uniqueConstraintContainer.getContextElementsSize();
 	}
 
+	public OrmUniqueConstraint getUniqueConstraint(int index) {
+		return this.uniqueConstraintContainer.getContextElement(index);
+	}
+	
 	public OrmUniqueConstraint addUniqueConstraint() {
 		return this.addUniqueConstraint(this.getUniqueConstraintsSize());
 	}
@@ -426,29 +431,48 @@ public class GenericOrmTableGenerator
 	// ********** validation **********
 
 	@Override
-	public boolean isIdentical(Generator generator) {
-		return super.isIdentical(generator) &&
-				StringTools.stringsAreEqual(this.getSpecifiedTable(), (((GenericOrmTableGenerator)generator).getSpecifiedTable())) &&
-				StringTools.stringsAreEqual(this.getSpecifiedSchema(), (((GenericOrmTableGenerator)generator).getSpecifiedSchema())) &&
-				StringTools.stringsAreEqual(this.getSpecifiedCatalog(), (((GenericOrmTableGenerator)generator).getSpecifiedCatalog())) &&
-				StringTools.stringsAreEqual(this.getSpecifiedPkColumnName(), (((GenericOrmTableGenerator)generator).getSpecifiedPkColumnName())) &&
-				StringTools.stringsAreEqual(this.getSpecifiedPkColumnValue(), (((GenericOrmTableGenerator)generator).getSpecifiedPkColumnValue())) &&
-				StringTools.stringsAreEqual(this.getSpecifiedValueColumnName(), (((GenericOrmTableGenerator)generator).getSpecifiedValueColumnName())) &&
-				conversionValuesAreIdentical(((GenericOrmTableGenerator)generator).getUniqueConstraints());
+	public boolean isEquivalentTo(JpaNamedContextNode node) {
+		return super.isEquivalentTo(node)
+				&& this.isEquivalentTo((TableGenerator) node);
 	}
 
-	private boolean conversionValuesAreIdentical(ListIterable<OrmUniqueConstraint> conversionValues) {
-		boolean isIdentical = true;
-		if (this.getUniqueConstraintsSize() != CollectionTools.size(conversionValues)) {
+	protected boolean isEquivalentTo(TableGenerator generator) {
+		return super.isEquivalentTo(generator) &&
+				Tools.valuesAreEqual(this.specifiedTable, generator.getSpecifiedTable()) &&
+				Tools.valuesAreEqual(this.specifiedSchema, generator.getSpecifiedSchema()) &&
+				Tools.valuesAreEqual(this.specifiedCatalog, generator.getSpecifiedCatalog()) &&
+				Tools.valuesAreEqual(this.specifiedPkColumnName, generator.getSpecifiedPkColumnName()) &&
+				Tools.valuesAreEqual(this.specifiedValueColumnName, generator.getSpecifiedValueColumnName()) &&
+				Tools.valuesAreEqual(this.specifiedPkColumnValue, generator.getSpecifiedPkColumnValue()) &&
+				uniqueConstrainsAreEquivalentTo(generator);
+	}
+
+	protected boolean uniqueConstrainsAreEquivalentTo(TableGenerator generator) {
+		if (this.getUniqueConstraintsSize() != generator.getUniqueConstraintsSize()) {
 			return false;
-		} else {
-			for (int i=0; i<this.getUniqueConstraintsSize(); i++) {
-					if (!(CollectionTools.get(this.getUniqueConstraints(), i)).isIdentical(CollectionTools.get(conversionValues, i))) {
-						isIdentical = false;
-					}
+		}
+
+		for (int i=0; i<this.getUniqueConstraintsSize(); i++) {
+			if (! this.uniqueConstraintContainer.get(i).isEquivalentTo(generator.getUniqueConstraint(i))) {
+				return false;
 			}
 		}
-		return isIdentical;
+		return true;
+	}
+	
+	// ********** metadata conversion **********
+
+	public void convertFrom(JavaTableGenerator javaTableGenerator) {
+		super.convertFrom(javaTableGenerator);
+		this.setSpecifiedTable(javaTableGenerator.getSpecifiedTable());
+		this.setSpecifiedSchema(javaTableGenerator.getSpecifiedSchema());
+		this.setSpecifiedCatalog(javaTableGenerator.getSpecifiedCatalog());
+		this.setSpecifiedPkColumnName(javaTableGenerator.getSpecifiedPkColumnName());
+		this.setSpecifiedValueColumnName(javaTableGenerator.getSpecifiedValueColumnName());
+		this.setSpecifiedPkColumnValue(javaTableGenerator.getSpecifiedPkColumnValue());
+		for (JavaUniqueConstraint javaUniqueConstraint : javaTableGenerator.getUniqueConstraints()) {
+			this.addUniqueConstraint().convertFrom(javaUniqueConstraint);
+		}
 	}
 
 	// ********** completion proposals **********

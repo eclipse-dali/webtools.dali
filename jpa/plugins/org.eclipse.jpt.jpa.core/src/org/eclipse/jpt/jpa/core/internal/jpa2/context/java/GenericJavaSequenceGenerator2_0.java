@@ -9,10 +9,11 @@
 *******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jpa.core.context.Generator;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
+import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaSequenceGenerator;
+import org.eclipse.jpt.jpa.core.jpa2.context.SequenceGenerator2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSequenceGenerator2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.SequenceGenerator2_0Annotation;
 
@@ -31,7 +32,7 @@ public class GenericJavaSequenceGenerator2_0
 	protected String defaultSchema;
 
 
-	public GenericJavaSequenceGenerator2_0(JavaJpaContextNode parent, SequenceGenerator2_0Annotation generatorAnnotation) {
+	public GenericJavaSequenceGenerator2_0(JavaGeneratorContainer parent, SequenceGenerator2_0Annotation generatorAnnotation) {
 		super(parent, generatorAnnotation);
 		this.specifiedCatalog = generatorAnnotation.getCatalog();
 		this.specifiedSchema = generatorAnnotation.getSchema();
@@ -131,9 +132,9 @@ public class GenericJavaSequenceGenerator2_0
 	// ********** validation **********
 
 	@Override
-	public boolean isIdentical(Generator generator) {
-		return super.isIdentical(generator) &&
-				StringTools.stringsAreEqual(this.getSpecifiedSchema(), (((GenericJavaSequenceGenerator2_0)generator).getSpecifiedSchema())) &&
-				StringTools.stringsAreEqual(this.getSpecifiedCatalog(), (((GenericJavaSequenceGenerator2_0)generator).getSpecifiedCatalog()));
+	protected boolean isEquivalentTo(SequenceGenerator generator) {
+		return super.isEquivalentTo(generator) &&
+				Tools.valuesAreEqual(this.specifiedSchema, ((SequenceGenerator2_0) generator).getSpecifiedSchema()) &&
+				Tools.valuesAreEqual(this.specifiedCatalog, ((SequenceGenerator2_0) generator).getSpecifiedCatalog());
 	}
 }

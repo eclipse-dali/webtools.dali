@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.wizards;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.core.resources.IFile;
@@ -60,12 +61,13 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
+import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.jface.XmlMappingFileViewerFilter;
 import org.eclipse.jpt.jpa.ui.internal.platform.JpaPlatformUiRegistry;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.EntityWizardMsg;
-import org.eclipse.jpt.jpa.ui.internal.wizards.orm.MappingFileWizard;
+import org.eclipse.jpt.jpa.ui.internal.wizards.orm.EmbeddedMappingFileWizard;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -77,7 +79,10 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
@@ -302,11 +307,11 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 	 * @return new instance of viewer filter for the SelectMappingXMLDialog
 	 */
 	protected ViewerFilter buildMappingFileDialogViewerFilter() {
-		return new XmlMappingFileViewerFilter(this.jpaProject);
+		return new XmlMappingFileViewerFilter(this.jpaProject, JptJpaCorePlugin.MAPPING_FILE_CONTENT_TYPE);
 	}
 
 	private void openNewMappingFileWizard() {
-		IPath path = MappingFileWizard.createNewMappingFile(
+		IPath path = EmbeddedMappingFileWizard.createNewMappingFile(
 					new StructuredSelection(this.jpaProject.getProject()), 
 					getMappingFileName());
 		if (path != null) {
@@ -453,7 +458,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 	}
 	
 	// TODO use JpaProjectManager.execute(Command, ...)
-	protected void performFinish() {
+	protected void performFinish() throws InvocationTargetException {
 		boolean modifiedPersistenceXml = false;
 		for (Type type : this.selectedTypes) {
 			modifiedPersistenceXml |= type.makePersistent();			
@@ -465,6 +470,35 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 			catch (IOException e) {
 				//ignore, file just won't get saved
 			}
+		}
+		if (isAddToOrmMappingFile()) {
+			postPerformFinish();
+		}
+	}
+	
+	private void postPerformFinish() throws InvocationTargetException {
+		try {
+			IFile file = getOrmXmlResource().getFile();
+			openEditor(file);
+		}
+		catch (Exception cantOpen) {
+			throw new InvocationTargetException(cantOpen);
+		} 
+	}
+	
+	private void openEditor(final IFile file) {
+		if (file != null) {
+			getShell().getDisplay().asyncExec(new Runnable() {
+				public void run() {
+					try {
+						IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+						IDE.openEditor(page, file, true);
+					}
+					catch (PartInitException e) {
+						JptJpaUiPlugin.log(e);
+					}
+				}
+			});
 		}
 	}
 

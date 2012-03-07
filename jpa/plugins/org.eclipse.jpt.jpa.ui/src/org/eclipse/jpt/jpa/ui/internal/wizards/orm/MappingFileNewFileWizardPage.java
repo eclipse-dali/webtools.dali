@@ -48,7 +48,11 @@ public class MappingFileNewFileWizardPage
 	@Override
 	protected boolean validatePage() {
 		this.dataModel.setProperty(CONTAINER_PATH, getContainerFullPath());
-		this.dataModel.setProperty(FILE_NAME, getFileName());
+		String fileName = getFileName();
+		if( fileName != null && !fileName.toLowerCase().endsWith(".xml")) { //$NON-NLS-1$
+			fileName = fileName + ".xml"; //$NON-NLS-1$
+		}
+		this.dataModel.setProperty(FILE_NAME, fileName);
 		
 		boolean valid = super.validatePage();
 		if (! valid) {
