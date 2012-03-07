@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.persistence;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -22,6 +23,7 @@ import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
+import org.eclipse.jpt.jpa.core.tests.internal.jpa2.context.persistence.Generic2_0JpaMetadataConversionTests;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvertibleMapping;
@@ -39,6 +41,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkC
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLink2_2ContextModelTestCase;
 
+@SuppressWarnings("nls")
 public class EclipseLink2_2JpaMetadataConversionTests extends EclipseLink2_2ContextModelTestCase {
 
 	private IProgressMonitor progressMonitor;
@@ -446,17 +449,13 @@ public class EclipseLink2_2JpaMetadataConversionTests extends EclipseLink2_2Cont
 		assertEquals(mapping.getConverterContainer().getConvertersSize(), 0);
 		
 		// test the mapping file converter have correct values
-		Iterator<OrmEclipseLinkCustomConverter> it = entityMappings.getConverterContainer().getCustomConverters().iterator();
-		if (it.hasNext()) {
-			EclipseLinkCustomConverter custom1 = it.next();
-			assertEquals("custom1", custom1.getName());
-			assertEquals("foo1", custom1.getConverterClass());
-		}
-		if (it.hasNext()) {
-			EclipseLinkCustomConverter custom2 = it.next();
-			assertEquals("custom2", custom2.getName());
-			assertEquals("foo2", custom2.getConverterClass());
-		}
+		Collection<OrmEclipseLinkCustomConverter> customConverters = CollectionTools.collection(entityMappings.getConverterContainer().getCustomConverters());
+		EclipseLinkCustomConverter custom1 = Generic2_0JpaMetadataConversionTests.selectNodeNamed(customConverters, "custom1");
+		assertEquals("custom1", custom1.getName());
+		assertEquals("foo1", custom1.getConverterClass());
+		EclipseLinkCustomConverter custom2 = Generic2_0JpaMetadataConversionTests.selectNodeNamed(customConverters, "custom2");
+		assertEquals("custom2", custom2.getName());
+		assertEquals("foo2", custom2.getConverterClass());
 	}
 	
 	public void testConvertConvertersOnCollectionMapping() throws Exception {
@@ -486,7 +485,7 @@ public class EclipseLink2_2JpaMetadataConversionTests extends EclipseLink2_2Cont
 		// TODO test converting converter on map key - not supported yet
 	}
 	
-		public void testConvertOverridenConverters() throws Exception {
+		public void testConvertOverriddenConverters() throws Exception {
 		createTestEntityWithDuplicateConvertersOfDiffTypes();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
