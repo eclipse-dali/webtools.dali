@@ -9,14 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.internal.resource;
 
-import static org.eclipse.jpt.common.core.internal.utility.XPointTools.findRequiredAttribute;
-import static org.eclipse.jpt.common.core.internal.utility.XPointTools.log;
-import static org.eclipse.jpt.common.core.internal.utility.XPointTools.logDuplicateExtension;
-import static org.eclipse.jpt.common.core.internal.utility.XPointTools.logInvalidValue;
+import static org.eclipse.jpt.common.core.internal.utility.XPointTools.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.TreeSet;
 import org.eclipse.core.expressions.Expression;
 import org.eclipse.core.expressions.ExpressionConverter;
 import org.eclipse.core.resources.IProject;
@@ -30,9 +25,9 @@ import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.resource.ResourceLocatorConfig.Priority;
 import org.eclipse.jpt.common.core.internal.utility.XPointTools.XPointException;
 import org.eclipse.jpt.common.core.resource.ResourceLocator;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.KeyedSet;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 
 public class ResourceLocatorManager {
 	
@@ -67,26 +62,24 @@ public class ResourceLocatorManager {
 	 * for the given project
 	 */
 	public ResourceLocator getResourceLocator(final IProject project) {
-		Iterator<ResourceLocator> stream = new FilteringIterable<ResourceLocator>(
-				new TransformationIterable<ResourceLocatorConfig, ResourceLocator>(
+		Iterable<ResourceLocatorConfig> sortedConfigs = 
+				//make ResourceLocatorConfig with higher priority go first
+				CollectionTools.sort(
 						new FilteringIterable<ResourceLocatorConfig>(
-								new TreeSet<ResourceLocatorConfig>(this.resourceLocatorConfigs.getItemSet())) {
+								this.resourceLocatorConfigs.getItemSet()) {
 							@Override
 							protected boolean accept(ResourceLocatorConfig o) {
-								return o.isEnabledFor(project);
+								return o.isEnabledFor(project)
+										&& o.getResourceLocator() != null;
 							}
-						}) {
-					@Override
-					protected ResourceLocator transform(ResourceLocatorConfig o) {
-						return o.getResourceLocator();
-					}
-				}) {
-			@Override
-			protected boolean accept(ResourceLocator o) {
-				return o != null;
+						});
+		for (ResourceLocatorConfig config : sortedConfigs) {
+			ResourceLocator locator = config.getResourceLocator();
+			if (locator != null) {
+				return locator;
 			}
-		}.iterator();
-		return (stream.hasNext()) ? stream.next() : null;
+		}
+		return null;
 	}
 	
 	private void readExtensions() {
