@@ -550,4 +550,14 @@ public abstract class AbstractXmlTypeMapping extends AbstractJpaEObject implemen
 		return new ReplaceEdit(offset, packageLength, newName);
 	}
 
+	// *********** content assist ************
+	
+	protected TextRange getClassNameCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(JPA.CLASS);
+	}
+
+	public boolean classNameTouches(int pos) {
+		TextRange textRange = this.getClassNameCodeAssistTextRange();
+		return (textRange != null) && (textRange.touches(pos));
+	}
 } // TypeMapping

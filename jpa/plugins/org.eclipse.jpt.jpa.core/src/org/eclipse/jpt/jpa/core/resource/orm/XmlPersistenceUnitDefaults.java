@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.common.core.internal.utility.translators.EmptyTagBooleanTranslator;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlPersistenceUnitDefaults_2_0;
@@ -725,5 +726,17 @@ public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements Xm
 
 	protected static Translator buildEntityListenersTranslator() {
 		return EntityListeners.buildTranslator(JPA.ENTITY_LISTENERS, OrmPackage.eINSTANCE.getXmlPersistenceUnitDefaults_EntityListeners());
+	}
+
+	// *********** content assist *********
+	
+	public boolean schemaTouches(int pos) {
+		TextRange textRange = this.getElementCodeAssistTextRange(JPA.SCHEMA);
+		return (textRange != null) && (textRange.touches(pos));
+	}
+
+	public boolean catalogTouches(int pos) {
+		TextRange textRange = this.getElementCodeAssistTextRange(JPA.CATALOG);
+		return (textRange != null) && (textRange.touches(pos));
 	}
 }

@@ -1743,6 +1743,65 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		}
 	}
 
+	// ********** completion proposals **********
+	
+	@Override
+	public Iterable<String> getXmlCompletionProposals(int pos) {
+		Iterable<String> result = super.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		result = this.collectionTable.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		result = this.valueColumn.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		result = this.converter.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		result = this.orderable.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		result = this.valueAttributeOverrideContainer.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		result = this.valueAssociationOverrideContainer.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		if (this.mapKeyNameTouches(pos)) {
+			return this.getCandidateMapKeyNames();
+		}
+		result = this.mapKeyColumn.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		result = this.mapKeyConverter.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		result = this.mapKeyAttributeOverrideContainer.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		for (OrmJoinColumn joinColumn : this.getMapKeyJoinColumns()) {
+			result = joinColumn.getXmlCompletionProposals(pos);
+			if (result != null) {
+				return result;
+			}
+		}
+		return null;
+	}
+	
+	protected boolean mapKeyNameTouches(int pos) {
+		return this.xmlAttributeMapping.mapKeyNameTouches(pos);
+	}
 
 	// ********** abstract owner **********
 

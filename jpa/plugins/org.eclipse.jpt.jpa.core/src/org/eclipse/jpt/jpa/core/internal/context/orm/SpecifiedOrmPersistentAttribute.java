@@ -533,6 +533,20 @@ public abstract class SpecifiedOrmPersistentAttribute
 				JavaPersistentAttribute.JpaContainerDefinition.Null.instance();
 	}
 
+	// ********** completion proposals **********
+
+	@Override
+	public Iterable<String> getXmlCompletionProposals(int pos) {
+		Iterable<String> result = super.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		result = this.mapping.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		return null;
+	}
 
 	// ********** misc **********
 

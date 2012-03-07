@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,10 +28,10 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualOverride;
-import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.OverrideTextRangeResolver;
+import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlOverride;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -470,5 +470,22 @@ public abstract class AbstractOrmOverrideContainer<
 		return (this.specifiedOverrides.size() > 0) ?
 				this.specifiedOverrides.get(0).getValidationTextRange() :
 				this.owner.getValidationTextRange();
+	}
+
+	// ********** completion proposals **********
+
+	@Override
+	public Iterable<String> getXmlCompletionProposals(int pos) {
+		Iterable<String> result = super.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		for (R override : this.getOverrides()) {
+			result = override.getXmlCompletionProposals(pos);
+			if (result != null) {
+				return result;
+			}
+		}
+		return null;
 	}
 }

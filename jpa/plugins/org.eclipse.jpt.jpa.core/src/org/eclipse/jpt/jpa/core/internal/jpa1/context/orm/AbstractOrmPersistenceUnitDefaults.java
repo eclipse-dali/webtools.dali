@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
@@ -17,6 +18,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmPersistenceUnitDefaults2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.db.Catalog;
+import org.eclipse.jpt.jpa.db.Database;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
 
@@ -352,5 +354,44 @@ public abstract class AbstractOrmPersistenceUnitDefaults
 	protected TextRange getXmlTextRange() {
 		XmlPersistenceUnitDefaults xmlDefaults = this.getXmlDefaults();
 		return (xmlDefaults == null) ? null : xmlDefaults.getValidationTextRange();
+	}
+
+	// ********** completion proposals *********
+	
+	@Override
+	protected Iterable<String> getConnectedXmlCompletionProposals(int pos) {
+		Iterable<String> result = super.getConnectedXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		if (this.schemaTouches(pos)) {
+			return this.getCandidateSchemata();
+		}
+		if (this.catalogTouches(pos)) {
+			return this.getCandidateCatalogs();
+		}
+		return null;
+	}
+	
+	// ********** content assist: schema
+
+	protected boolean schemaTouches(int pos) {
+		return (this.getXmlDefaults() != null) && this.getXmlDefaults().schemaTouches(pos);
+	}
+
+	protected Iterable<String> getCandidateSchemata() {
+		SchemaContainer schemaContainer = this.getDbSchemaContainer();
+		return (schemaContainer != null) ? schemaContainer.getSortedSchemaIdentifiers() : EmptyIterable.<String> instance();
+	}
+
+	// ********** content assist: catalog
+
+	protected boolean catalogTouches(int pos) {
+		return (this.getXmlDefaults() != null) && this.getXmlDefaults().catalogTouches(pos);
+	}
+
+	protected Iterable<String> getCandidateCatalogs() {
+		Database db = this.getDatabase();
+		return (db != null) ? db.getSortedCatalogIdentifiers() : EmptyIterable.<String> instance();
 	}
 }

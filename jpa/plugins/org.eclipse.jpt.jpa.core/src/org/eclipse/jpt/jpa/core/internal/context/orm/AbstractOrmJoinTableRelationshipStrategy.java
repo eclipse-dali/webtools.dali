@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -124,6 +124,20 @@ public abstract class AbstractOrmJoinTableRelationshipStrategy
 		if (this.joinTable != null) {
 			this.joinTable.validate(messages, reporter);
 		}
+	}
+
+	// ********** completion proposals **********
+
+	@Override
+	public Iterable<String> getXmlCompletionProposals(int pos) {
+		Iterable<String> result = super.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		if (this.joinTable != null) {
+			result = this.joinTable.getXmlCompletionProposals(pos);
+		}
+		return result;
 	}
 
 

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPrimaryKeyJoinColumn;
@@ -168,5 +169,29 @@ public class GenericOrmPrimaryKeyJoinColumn
 
 	public TextRange getReferencedColumnNameTextRange() {
 		return this.getValidationTextRange(this.xmlColumn.getReferencedColumnNameTextRange());
+	}
+
+	// ********** completion proposals **********
+
+	@Override
+	protected Iterable<String> getConnectedXmlCompletionProposals(int pos) {
+		Iterable<String> result = super.getConnectedXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		if (this.referencedColumnNameTouches(pos)) {
+			return this.getCandidateReferencedColumnNames();
+		}
+		return null;
+	}
+
+	public boolean referencedColumnNameTouches(int pos) {
+		XmlPrimaryKeyJoinColumn column = this.getXmlColumn();
+		return (column != null) && (column.referencedColumnNameTouches(pos));
+	}
+
+	protected Iterable<String> getCandidateReferencedColumnNames() {
+		Table table = this.owner.getReferencedColumnDbTable();
+		return (table != null) ? table.getSortedColumnIdentifiers() : EmptyIterable.<String> instance();
 	}
 }

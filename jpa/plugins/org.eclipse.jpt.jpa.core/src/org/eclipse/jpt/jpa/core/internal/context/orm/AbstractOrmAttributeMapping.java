@@ -14,6 +14,7 @@ import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.Transformer;
@@ -27,6 +28,7 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBaseEmbeddedMapping;
@@ -505,5 +507,35 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 				)
 			);
 		}
+	}
+	
+	// ********** completion proposals **********
+
+	@Override
+	public Iterable<String> getXmlCompletionProposals(int pos) {
+		Iterable<String> result = super.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		if (this.attributeNameTouches(pos)) {
+			return this.getCandidateMappingNames();
+		}
+		return null;
+	}
+	
+	/**
+	 * @return all the attribute of corresponding Java persistent type
+	 */
+	// Attributes of the corresponding XML persistent type include these
+	// that are already defined in XML so using these attributes as candidates
+	// could lead to multiple attribute mappings with the same name;
+	// thus using the attribute of the corresponding Java persistent type instead
+	private Iterable<String> getCandidateMappingNames() {
+		JavaPersistentType jpt = this.getTypeMapping().getPersistentType().getJavaPersistentType();
+		return jpt == null ? EmptyIterable.<String>instance() : CollectionTools.collection(jpt.getAttributeNames());
+	}
+
+	private boolean attributeNameTouches(int pos) {
+		return this.getXmlAttributeMapping().nameTouches(pos);
 	}
 }

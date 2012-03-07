@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -436,4 +436,32 @@ public abstract class AbstractXmlTable extends AbstractJpaEObject implements Jpa
 		return XmlUniqueConstraint.buildTranslator(JPA.UNIQUE_CONSTRAINT, OrmPackage.eINSTANCE.getAbstractXmlTable_UniqueConstraints());
 	}
 
+	//***************** content assist ****************
+	
+	public TextRange getNameCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(JPA.NAME);
+	}
+	
+	public TextRange getSchemaCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(JPA.SCHEMA);
+	}
+		
+	public TextRange getCatalogCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(JPA.CATALOG);
+	}
+	
+	public boolean nameTouches(int pos) {
+		TextRange textRange = this.getNameCodeAssistTextRange();
+		return (textRange != null) && (textRange.touches(pos));
+	}
+	
+	public boolean schemaTouches(int pos) {
+		TextRange textRange = this.getSchemaCodeAssistTextRange();
+		return (textRange != null) && (textRange.touches(pos));
+	}
+	
+	public boolean catalogTouches(int pos) {
+		TextRange textRange = this.getCatalogCodeAssistTextRange();
+		return (textRange != null) && (textRange.touches(pos));
+	}
 } // AbstractXmlBaseTable

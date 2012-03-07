@@ -1293,6 +1293,26 @@ public abstract class SpecifiedOrmPersistentType
 		return this.mapping.getValidationTextRange();
 	}
 
+	// ********** completion proposals **********
+	
+	@Override
+	public Iterable<String> getXmlCompletionProposals(int pos) {
+		Iterable<String> result = super.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		result = this.mapping.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		for (OrmPersistentAttribute attribute : this.getSpecifiedAttributes()) {
+			result = attribute.getXmlCompletionProposals(pos);
+			if (result != null) {
+				return result;
+			}
+		}
+		return null;
+	}
 
 	// ********** misc **********
 

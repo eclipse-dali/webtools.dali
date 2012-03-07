@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -436,5 +436,16 @@ public class XmlAttributeOverride extends AbstractJpaEObject implements XmlOverr
 	
 	protected static Translator buildColumnTranslator() {
 		return XmlColumn.buildTranslator(JPA.COLUMN, OrmPackage.eINSTANCE.getXmlAttributeOverride_Column());
+	}
+
+	// ************* content assist ************
+	
+	public TextRange getNameCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(JPA.NAME);
+	}
+	
+	public boolean nameTouches(int pos) {
+		TextRange textRange = this.getNameTextRange();
+		return (textRange != null) && (textRange.touches(pos));
 	}
 }

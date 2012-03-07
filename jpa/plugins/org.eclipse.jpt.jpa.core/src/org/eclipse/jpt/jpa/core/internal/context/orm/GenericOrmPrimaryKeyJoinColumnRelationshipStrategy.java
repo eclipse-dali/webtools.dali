@@ -238,6 +238,22 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 		}
 	}
 
+	// ********** completion proposals **********
+
+	@Override
+	public Iterable<String> getXmlCompletionProposals(int pos) {
+		Iterable<String> result = super.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		for (OrmPrimaryKeyJoinColumn column : this.getPrimaryKeyJoinColumns()) {
+			result = column.getXmlCompletionProposals(pos);
+			if (result != null) {
+				return result;
+			}
+		}
+		return null;
+	}
 
 	// ********** join column owner **********
 

@@ -21,6 +21,7 @@ import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.Generator;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
@@ -699,6 +700,15 @@ public interface PersistenceUnit
 	boolean specifiesPersistentType(String typeName);
 
 	/**
+	 * Return the persistence unit's Java persistent types, as specified by
+	 * the class refs (both specified and implied) and jar files.
+	 * There can be duplicate types, and any of them may be overridden by a
+	 * mapping file persistence type.
+	 * @see #getMappingFilePersistentTypes()
+	 */
+	Iterable<PersistentType> getJavaPersistentTypes();
+
+	/**
 	 * Return the persistence unit's entities.
 	 */
 	Iterable<Entity> getEntities();
@@ -732,8 +742,13 @@ public interface PersistenceUnit
 	 * types in the project currently annotated.
 	 */
 	void synchronizeClasses(IProgressMonitor monitor);
-
-
+	
+	/**
+	 * Return the names of all the packages valid cross the persistence unit
+	 * including the ones from jar files
+	 */
+	Iterable<String> getPackageNames();
+	
 	// ********** validation **********
 
 	/**

@@ -56,6 +56,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.jpa.db.Catalog;
+import org.eclipse.jpt.jpa.db.Database;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.text.edits.DeleteEdit;
@@ -1071,4 +1072,92 @@ public abstract class AbstractEntityMappings
 				new SingleElementIterable<ReplaceEdit>(this.xmlEntityMappings.createRenamePackageEdit(newName)) :
 				EmptyIterable.<ReplaceEdit>instance();
 	}
+	
+	// ************ completion proposals**************
+	
+	@Override
+	public Iterable<String> getXmlCompletionProposals(int pos) {
+		Iterable<String> result = super.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		result = this.queryContainer.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		for (OrmTableGenerator tableGenerator : this.getTableGenerators()) {
+			result = tableGenerator.getXmlCompletionProposals(pos);
+			if (result != null) {
+				return result;
+			}
+		}
+		for (OrmSequenceGenerator seqGenerator : this.getSequenceGenerators()) {
+			result = seqGenerator.getXmlCompletionProposals(pos);
+			if (result != null) {
+				return result;
+			}
+		}
+		result = this.persistenceUnitMetadata.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		if (this.packageTouches(pos)) {
+			return this.getCandidatePackages();
+		}
+		for (OrmPersistentType persistentType : this.getPersistentTypes()) {
+			result = persistentType.getXmlCompletionProposals(pos);
+			if (result != null) {
+				return result;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	protected Iterable<String> getConnectedXmlCompletionProposals(int pos) {
+		Iterable<String> result = super.getConnectedXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		if (this.schemaTouches(pos)) {
+			return this.getCandidateSchemata();
+		}
+		if (this.catalogTouches(pos)) {
+			return this.getCandidateCatalogs();
+		}
+		return null;
+	}
+	
+	// ********** content assist: schema
+
+	protected boolean schemaTouches(int pos) {
+		return this.getXmlEntityMappings().schemaTouches(pos);
+	}
+
+	protected Iterable<String> getCandidateSchemata() {
+		SchemaContainer schemaContainer = this.getDbSchemaContainer();
+		return (schemaContainer != null) ? schemaContainer.getSortedSchemaIdentifiers() : EmptyIterable.<String> instance();
+	}
+
+	// ********** content assist: catalog
+
+	protected boolean catalogTouches(int pos) {
+		return this.getXmlEntityMappings().catalogTouches(pos);
+	}
+
+	protected Iterable<String> getCandidateCatalogs() {
+		Database db = this.getDatabase();
+		return (db != null) ? db.getSortedCatalogIdentifiers() : EmptyIterable.<String> instance();
+	}
+	
+	// ********** content assist: package
+	
+	private boolean packageTouches(int pos) {
+		return this.getXmlEntityMappings().packageTouches(pos);
+	}
+	
+	private Iterable<String> getCandidatePackages() {
+		return this.getPersistenceUnit().getPackageNames();
+	}
+
 }

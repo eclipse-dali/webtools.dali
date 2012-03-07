@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,7 @@ import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGenerator;
@@ -20,6 +21,7 @@ import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlGenerator;
 import org.eclipse.jpt.jpa.db.Catalog;
+import org.eclipse.jpt.jpa.db.Database;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -190,6 +192,48 @@ public abstract class AbstractOrmGenerator<X extends XmlGenerator>
 		return StringTools.stringsAreEqual(this.getName(), generator.getName()) &&
 				Tools.valuesAreEqual(this.getSpecifiedAllocationSize(), generator.getSpecifiedAllocationSize()) &&
 				Tools.valuesAreEqual(this.getSpecifiedInitialValue(), generator.getSpecifiedInitialValue());
+	}
+
+	// ************* completion proposals *************
+	/**
+	 * called if the database is connected:
+	 * table, schema, catalog, pkColumnName, valueColumnName
+	 */
+	@Override
+	protected Iterable<String> getConnectedXmlCompletionProposals(int pos) {
+		Iterable<String> result = super.getConnectedXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		if (this.schemaTouches(pos)) {
+			return this.getCandidateSchemata();
+		}
+		if (this.catalogTouches(pos)) {
+			return this.getCandidateCatalogs();
+		}
+		return null;
+	}
+
+	// ********** content assist: schema
+
+	protected boolean schemaTouches(int pos) {
+		return this.xmlGenerator.schemaTouches(pos);
+	}
+
+	protected Iterable<String> getCandidateSchemata() {
+		SchemaContainer schemaContainer = this.getDbSchemaContainer();
+		return (schemaContainer != null) ? schemaContainer.getSortedSchemaIdentifiers() : EmptyIterable.<String> instance();
+	}
+
+	// ********** content assist: catalog
+
+	protected boolean catalogTouches(int pos) {
+		return this.xmlGenerator.catalogTouches(pos);
+	}
+
+	protected Iterable<String> getCandidateCatalogs() {
+		Database db = this.getDatabase();
+		return (db != null) ? db.getSortedCatalogIdentifiers() : EmptyIterable.<String> instance();
 	}
 
 	// ********** database stuff **********

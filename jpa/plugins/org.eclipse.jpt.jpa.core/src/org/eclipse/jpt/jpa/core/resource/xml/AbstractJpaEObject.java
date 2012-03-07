@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -259,6 +259,55 @@ public abstract class AbstractJpaEObject
 		return (this.node == null) ? false : this.node.contains(textOffset);
 	}
 
+
+	// ********** content assist **********
+	
+	/**
+	 * Return a text range for the specified attribute node.
+	 * If the attribute node does not exist, return null
+	 * 
+	 * This is used for content assist to return the exact text range of an attribute.
+	 * It is different from the text range used by validation which returns
+	 * the parent's text range if the specified attribute node does not exist
+	 */
+	protected TextRange getAttributeCodeAssistTextRange(String attributeName) {
+		IDOMNode attributeNode = this.getAttributeNode(attributeName);
+		return (attributeNode != null) ? this.buildTextRange(attributeNode) : null;
+	}
+	
+	/**
+	 * Return a text range for the specified element node.
+	 * If the element node does not exist, return null
+	 * 
+	 * This is used for content assist to return the exact text range of an element.
+	 * It is different from the text range used by validation which returns
+	 * the parent's text range if the specified element node does not exist
+	 */
+	protected TextRange getElementCodeAssistTextRange(String elementName) {
+		IDOMNode elementNode = this.getElementNode(elementName);
+		return (elementNode != null) ? this.buildElementCodeAssistTextRange(elementNode) : null;
+	}
+	
+	protected TextRange buildElementCodeAssistTextRange(IDOMNode domNode) {
+		return (domNode == null) ? null : this.buildElementCodeAssistTextRange(domNode, null);
+	}
+	
+	protected TextRange buildElementCodeAssistTextRange(IDOMNode domNode, TextRange textRange) {
+		return (domNode == null) ? null : this.buildElementCodeAssistTextRange_(domNode, textRange);
+	}
+	/**
+	 * pre-condition: the specified DOM node is not <code>null</code>
+	 */
+	protected TextRange buildElementCodeAssistTextRange_(IDOMNode domNode, TextRange textRange) {
+		int offset = domNode.getStartOffset();
+		int length = (domNode.getNodeType() == Node.ELEMENT_NODE) ?
+						(((IDOMElement) domNode).getEndStartOffset() - offset) :
+						domNode.getLength();
+		int lineNumber = domNode.getStructuredDocument().getLineOfOffset(offset) + 1;
+		return (textRange == null) ?
+				new SimpleTextRange(offset, length, lineNumber) :
+				textRange.buildTextRange(offset, length, lineNumber);
+	}
 
 	// ********** Refactoring TextEdits **********
 	

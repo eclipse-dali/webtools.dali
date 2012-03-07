@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -1122,5 +1122,25 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 
 	protected static Translator buildOrderColumnTranslator() {
 		return XmlOrderColumn.buildTranslator(JPA2_0.ORDER_COLUMN, OrmV2_0Package.eINSTANCE.getXmlOrderable_2_0_OrderColumn());
+	}
+
+	// ********** content assist ***************
+	
+	public TextRange getMappedByCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(JPA.MAPPED_BY);
+	}
+	
+	public TextRange getMapKeyNameCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(JPA.MAP_KEY);
+	}
+	
+	public boolean mappedByTouches(int pos) {
+		TextRange textRange = this.getMappedByCodeAssistTextRange();
+		return (textRange!= null) && textRange.touches(pos);
+	}
+	
+	public boolean mapKeyNameTouches(int pos) {
+		TextRange textRange = this.getMapKeyNameCodeAssistTextRange();
+		return (textRange != null) && textRange.touches(pos);
 	}
 }

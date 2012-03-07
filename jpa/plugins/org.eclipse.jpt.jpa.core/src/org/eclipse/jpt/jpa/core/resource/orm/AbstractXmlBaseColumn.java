@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -531,6 +531,17 @@ public abstract class AbstractXmlBaseColumn extends AbstractXmlNamedColumn imple
 	
 	protected static Translator buildTableTranslator() {
 		return new Translator(JPA.TABLE, OrmPackage.eINSTANCE.getXmlBaseColumn_Table(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	// ************ content assist ************
+	
+	private TextRange getTableCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(JPA.TABLE);
+	}
+	
+	public boolean tableTouches(int pos) {
+		TextRange textRange = this.getTableCodeAssistTextRange();
+		return (textRange != null) && (textRange.touches(pos));
 	}
 	
 } // AbstractXmlAbstractColumn

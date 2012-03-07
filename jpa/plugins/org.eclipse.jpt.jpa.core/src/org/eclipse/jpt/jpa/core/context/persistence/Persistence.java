@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.persistence;
 
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.jpa.core.JpaStructureNode;
+import org.eclipse.jpt.jpa.core.JpaXmlStructureNode;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
 
@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
  * @since 2.0
  */
 public interface Persistence
-	extends XmlContextNode, JpaStructureNode
+	extends XmlContextNode, JpaXmlStructureNode
 {
 	/**
 	 * Return the resource model object associated with this context model object

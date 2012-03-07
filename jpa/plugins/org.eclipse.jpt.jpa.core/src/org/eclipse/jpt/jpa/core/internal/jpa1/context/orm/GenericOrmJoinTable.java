@@ -307,6 +307,22 @@ public class GenericOrmJoinTable
 		return this.getRelationshipStrategy().validatesAgainstDatabase();
 	}
 
+	// ********** completion proposals **********
+
+	@Override
+	public Iterable<String> getXmlCompletionProposals(int pos) {
+		Iterable<String> result = super.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		for (OrmJoinColumn column : this.getInverseJoinColumns()) {
+			result = column.getXmlCompletionProposals(pos);
+			if (result != null) {
+				return result;
+			}
+		}
+		return null;
+	}
 
 	// ********** join column owners **********
 

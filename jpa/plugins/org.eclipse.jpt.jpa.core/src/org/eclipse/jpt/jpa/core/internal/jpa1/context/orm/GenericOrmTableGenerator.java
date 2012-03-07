@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -449,5 +449,72 @@ public class GenericOrmTableGenerator
 			}
 		}
 		return isIdentical;
+	}
+
+	// ********** completion proposals **********
+
+	@Override
+	public Iterable<String> getXmlCompletionProposals(int pos) {
+		Iterable<String> result = super.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		for (OrmUniqueConstraint constraint : this.getUniqueConstraints()) {
+			result = constraint.getXmlCompletionProposals(pos);
+			if (result != null) {
+				return result;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * called if the database is connected:
+	 * table, schema, catalog, pkColumnName, valueColumnName
+	 */
+	@Override
+	protected Iterable<String> getConnectedXmlCompletionProposals(int pos) {
+		Iterable<String> result = super.getConnectedXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		if (this.tableTouches(pos)) {
+			return this.getCandidateTables();
+		}
+		if (this.pkColumnNameTouches(pos)) {
+			return this.getCandidateColumnNames();
+		}
+		if (this.valueColumnNameTouches(pos)) {
+			return this.getCandidateColumnNames();
+		}
+		return null;
+	}
+
+	// ********** content assist: table
+
+	protected boolean tableTouches(int pos) {
+		return this.xmlGenerator.tableTouches(pos);
+	}
+
+	protected Iterable<String> getCandidateTables() {
+		Schema dbSchema = this.getDbSchema();
+		return (dbSchema != null) ? dbSchema.getSortedTableIdentifiers() : EmptyIterable.<String> instance();
+	}
+	
+	// ********** content assist: pkColumnName
+
+	protected boolean pkColumnNameTouches(int pos) {
+		return this.xmlGenerator.pkColumnNameTouches(pos);
+	}
+
+	protected Iterable<String> getCandidateColumnNames() {
+		Table table = this.getDbTable();
+		return (table != null) ? table.getSortedColumnIdentifiers() : EmptyIterable.<String> instance();
+	}
+
+	// ********** content assist: valueColumnName
+
+	protected boolean valueColumnNameTouches(int pos) {
+		return this.xmlGenerator.valueColumnNameTouches(pos);
 	}
 }

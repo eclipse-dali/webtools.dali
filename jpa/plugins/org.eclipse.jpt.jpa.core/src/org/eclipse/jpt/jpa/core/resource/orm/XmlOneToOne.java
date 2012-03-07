@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -463,5 +463,16 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 	
 	protected static Translator buildPrimaryKeyJoinColumnTranslator() {
 		return XmlPrimaryKeyJoinColumn.buildTranslator(JPA.PRIMARY_KEY_JOIN_COLUMN, OrmPackage.eINSTANCE.getXmlPrimaryKeyJoinColumnContainer_PrimaryKeyJoinColumns());
+	}
+
+	// ********** content assist ***************
+	
+	public TextRange getMappedByCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(JPA.MAPPED_BY);
+	}
+	
+	public boolean mappedByTouches(int pos) {
+		TextRange textRange = this.getMappedByCodeAssistTextRange();
+		return (textRange!= null) && textRange.touches(pos);
 	}
 }

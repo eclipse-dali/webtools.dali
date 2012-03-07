@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -943,5 +943,52 @@ public class XmlTableGenerator extends AbstractJpaEObject implements XmlGenerato
 	
 	protected static Translator buildDescriptionTranslator() {
 		return new Translator(JPA.DESCRIPTION, OrmV2_0Package.eINSTANCE.getXmlGenerator_2_0_Description());
+	}
+
+	// ************* content assist ***************
+	
+	public TextRange getTableCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(JPA.TABLE);
+	}
+	
+	public TextRange getSchemaCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(JPA.SCHEMA);
+	}
+	
+	public TextRange getCatalogCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(JPA.CATALOG);
+	}
+	
+	public TextRange getPKColumnNameTextRange() {
+		return getAttributeCodeAssistTextRange(JPA.PK_COLUMN_NAME);
+	}
+	
+	public TextRange getValueColumnNameTextRange() {
+		return getAttributeCodeAssistTextRange(JPA.VALUE_COLUMN_NAME);
+	}
+	
+	public boolean tableTouches(int pos) {
+		TextRange textRange = this.getTableCodeAssistTextRange();
+		return (textRange != null) && (textRange.touches(pos));
+	}
+
+	public boolean schemaTouches(int pos) {
+		TextRange textRange = this.getSchemaCodeAssistTextRange();
+		return (textRange != null) && (textRange.touches(pos));
+	}
+
+	public boolean catalogTouches(int pos) {
+		TextRange textRange = this.getCatalogCodeAssistTextRange();
+		return (textRange != null) && (textRange.touches(pos));
+	}
+
+	public boolean pkColumnNameTouches(int pos) {
+		TextRange textRange = this.getPKColumnNameTextRange();
+		return (textRange != null) && (textRange.touches(pos));
+	}
+
+	public boolean valueColumnNameTouches(int pos) {
+		TextRange textRange = this.getValueColumnNameTextRange();
+		return (textRange != null) && (textRange.touches(pos));
 	}
 }

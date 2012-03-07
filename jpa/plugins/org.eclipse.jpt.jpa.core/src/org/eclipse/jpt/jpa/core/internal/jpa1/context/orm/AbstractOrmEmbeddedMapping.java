@@ -220,6 +220,20 @@ public abstract class AbstractOrmEmbeddedMapping<X extends XmlEmbedded>
 		this.associationOverrideContainer.validate(messages, reporter);
 	}
 
+	// ********** completion proposals **********
+	
+	@Override
+	public Iterable<String> getXmlCompletionProposals(int pos) {
+		Iterable<String> result = super.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		result = this.associationOverrideContainer.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		return null;
+	}
 
 	// ********** attribute override container owner *********
 

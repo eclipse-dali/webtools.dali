@@ -1264,7 +1264,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 		}
 
 		public Table getReferencedColumnDbTable() {
-			return AbstractJavaMultiRelationshipMapping.this.getResolvedMapKeyEntity().getPrimaryDbTable();
+			Entity entity = AbstractJavaMultiRelationshipMapping.this.getResolvedMapKeyEntity();
+			return entity != null ? entity.getPrimaryDbTable() : null;
 		}
 
 		public int getJoinColumnsSize() {

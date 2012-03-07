@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,11 +10,13 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlSequenceGenerator;
+import org.eclipse.jpt.jpa.db.Schema;
 
 /**
  * <code>orm.xml</code> sequence generator
@@ -104,4 +106,32 @@ public abstract class AbstractOrmSequenceGenerator
 		return super.isIdentical(generator) &&
 				StringTools.stringsAreEqual(this.getSpecifiedSequenceName(), ((SequenceGenerator)generator).getSpecifiedSequenceName());
 	}
+	
+	// ********** completion proposals **********
+
+	/**
+	 * called if the database is connected:
+	 * sequenceName
+	 */
+	@Override
+	protected Iterable<String> getConnectedXmlCompletionProposals(int pos) {
+		Iterable<String> result = super.getConnectedXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		if (this.sequenceNameTouches(pos)) {
+			return this.getCandidateSequences();
+		}
+		return null;
+	}
+
+	protected boolean sequenceNameTouches(int pos) {
+		return this.xmlGenerator.sequenceNameTouches(pos);
+	}
+
+	protected Iterable<String> getCandidateSequences() {
+		Schema dbSchema = this.getDbSchema();
+		return (dbSchema != null) ? dbSchema.getSortedSequenceIdentifiers() : EmptyIterable.<String> instance();
+	}
+
 }

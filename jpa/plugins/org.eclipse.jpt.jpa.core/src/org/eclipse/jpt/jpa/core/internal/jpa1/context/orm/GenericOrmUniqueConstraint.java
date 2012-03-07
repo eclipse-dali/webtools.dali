@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -103,6 +103,28 @@ public class GenericOrmUniqueConstraint
 			}
 		}
 		return isIdentical;
+	}
+
+	// ********** completion proposals **********
+
+	@Override
+	protected Iterable<String> getConnectedXmlCompletionProposals(int pos) {
+		Iterable<String> result = super.getConnectedXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		if (this.columnNamesTouches(pos)) {
+			return this.getCandidateColumnNames();
+		}
+		return null;
+	}
+
+	protected boolean columnNamesTouches(int pos) {
+		return this.xmlUniqueConstraint.columnNamesTouches(pos);
+	}
+
+	protected Iterable<String> getCandidateColumnNames() {
+		return this.owner.getCandidateUniqueConstraintColumnNames();
 	}
 
 	// ********** misc **********

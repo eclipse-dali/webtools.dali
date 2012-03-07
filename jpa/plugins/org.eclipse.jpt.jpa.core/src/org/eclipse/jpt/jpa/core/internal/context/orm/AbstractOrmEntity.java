@@ -1918,6 +1918,48 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		return this.getValidationTextRange(this.xmlTypeMapping.getInheritanceStrategyTextRange());
 	}
 
+	// ********** completion proposals **********
+
+	@Override
+	public Iterable<String> getXmlCompletionProposals(int pos) {
+		Iterable<String> result = super.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		result = this.table.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		for (OrmSecondaryTable secondaryTable : this.getSpecifiedSecondaryTables()) {
+			result = secondaryTable.getXmlCompletionProposals(pos);
+			if (result != null) {
+				return result;
+			}
+		}
+		for (OrmPrimaryKeyJoinColumn pkJoinColumn : this.getSpecifiedPrimaryKeyJoinColumns()) {
+			result = pkJoinColumn.getXmlCompletionProposals(pos);
+			if (result != null) {
+				return result;
+			}
+		}
+		result = this.attributeOverrideContainer.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		result = this.associationOverrideContainer.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		result = this.discriminatorColumn.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		result = this.generatorContainer.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		return null;
+	}
 
 	// ********** OrmOverrideContainer.Owner implementation **********
 

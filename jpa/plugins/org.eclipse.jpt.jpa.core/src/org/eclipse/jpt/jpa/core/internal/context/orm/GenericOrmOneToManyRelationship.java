@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -240,5 +240,28 @@ public class GenericOrmOneToManyRelationship
 		this.mappedByStrategy.validate(messages, reporter);
 		this.joinTableStrategy.validate(messages, reporter);
 		this.joinColumnStrategy.validate(messages, reporter);
+	}
+
+	// ********** completion proposals **********
+
+	@Override
+	public Iterable<String> getXmlCompletionProposals(int pos) {
+		Iterable<String> result = super.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		result = this.mappedByStrategy.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		result = this.joinTableStrategy.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		result = this.joinColumnStrategy.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		return null;
 	}
 }

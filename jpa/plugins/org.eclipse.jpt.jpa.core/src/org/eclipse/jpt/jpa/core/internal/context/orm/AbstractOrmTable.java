@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,6 +28,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlTable;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.jpa.db.Catalog;
+import org.eclipse.jpt.jpa.db.Database;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -469,6 +470,82 @@ public abstract class AbstractOrmTable<X extends AbstractXmlTable>
 		return (xmlTable == null) ? null : xmlTable.getCatalogTextRange();
 	}
 
+	// ********** completion proposals **********
+
+	@Override
+	public Iterable<String> getXmlCompletionProposals(int pos) {
+		Iterable<String> result = super.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		for (OrmUniqueConstraint constraint : this.getUniqueConstraints()) {
+			result = constraint.getXmlCompletionProposals(pos);
+			if (result != null) {
+				return result;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * called if the database is connected:
+	 * name, schema, catalog
+	 */
+	@Override
+	protected Iterable<String> getConnectedXmlCompletionProposals(int pos) {
+		Iterable<String> result = super.getConnectedXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		if (this.tableNameTouches(pos)) {
+			return this.getCandidateTableNames();
+		}
+		if (this.schemaTouches(pos)) {
+			return this.getCandidateSchemata();
+		}
+		if (this.catalogTouches(pos)) {
+			return this.getCandidateCatalogs();
+		}
+		return null;
+	}
+
+	// ********* content assist : table
+	
+	protected boolean tableNameTouches(int pos) {
+		X table = this.getXmlTable();
+		return (table != null) && (table.nameTouches(pos));
+	}
+
+	protected Iterable<String> getCandidateTableNames() {
+		Schema dbSchema = this.getDbSchema();
+		return (dbSchema != null) ? dbSchema.getSortedTableIdentifiers() : EmptyIterable.<String> instance();
+	}
+
+	// ********* content assist : schema
+	
+	protected boolean schemaTouches(int pos) {
+		X table = this.getXmlTable();
+		return (table != null) && (table.schemaTouches(pos));
+	}
+
+	protected Iterable<String> getCandidateSchemata() {
+		if (this.getDbSchemaContainer() == null)
+			return EmptyIterable.<String>instance();
+		else
+			return this.getDbSchemaContainer().getSortedSchemaIdentifiers();
+	}
+
+	// ********* content assist : catalog
+	
+	protected boolean catalogTouches(int pos) {
+		X table = this.getXmlTable();
+		return (table != null) && (table.catalogTouches(pos));
+	}
+
+	protected Iterable<String> getCandidateCatalogs() {
+		Database db = this.getDatabase();
+		return (db != null) ? db.getSortedCatalogIdentifiers() : EmptyIterable.<String> instance();
+	}
 
 	// ********** misc **********
 

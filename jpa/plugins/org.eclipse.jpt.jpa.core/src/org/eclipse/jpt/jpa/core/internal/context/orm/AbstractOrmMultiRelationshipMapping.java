@@ -1070,6 +1070,45 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		return this.getValidationTextRange(this.xmlAttributeMapping.getMapKeyClassTextRange());
 	}
 
+	// ********** completion proposals **********
+
+	@Override
+	public Iterable<String> getXmlCompletionProposals(int pos) {
+		Iterable<String> result = super.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		result = this.orderable.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		if (this.mapKeyNameTouches(pos)) {
+			return this.getCandidateMapKeyNames();
+		}
+		result = this.mapKeyColumn.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		result = this.mapKeyConverter.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		result = this.mapKeyAttributeOverrideContainer.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		for (OrmJoinColumn joinColumn : this.getMapKeyJoinColumns()) {
+			result = joinColumn.getXmlCompletionProposals(pos);
+			if (result != null) {
+				return result;
+			}
+		}
+		return null;
+	}
+
+	protected boolean mapKeyNameTouches(int pos) {
+		return this.xmlAttributeMapping.mapKeyNameTouches(pos);
+	}
 
 	// ********** abstract owner **********
 
@@ -1234,7 +1273,8 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		}
 
 		public Table getReferencedColumnDbTable() {
-			return AbstractOrmMultiRelationshipMapping.this.getResolvedMapKeyEntity().getPrimaryDbTable();
+			Entity entity = AbstractOrmMultiRelationshipMapping.this.getResolvedMapKeyEntity();
+			return entity != null ? entity.getPrimaryDbTable() : null;
 		}
 
 		public int getJoinColumnsSize() {

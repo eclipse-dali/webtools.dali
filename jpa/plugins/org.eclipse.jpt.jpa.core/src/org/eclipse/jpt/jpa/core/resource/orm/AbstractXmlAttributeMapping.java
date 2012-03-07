@@ -279,4 +279,15 @@ public abstract class AbstractXmlAttributeMapping
 	protected static Translator buildAccessTranslator() {
 		return new Translator(JPA.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
 	}
+
+	// *********** content assist ************
+	
+	protected TextRange getNameCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(JPA.NAME);
+	}
+
+	public boolean nameTouches(int pos) {
+		TextRange textRange = this.getNameCodeAssistTextRange();
+		return (textRange != null) && (textRange.touches(pos));
+	}
 }

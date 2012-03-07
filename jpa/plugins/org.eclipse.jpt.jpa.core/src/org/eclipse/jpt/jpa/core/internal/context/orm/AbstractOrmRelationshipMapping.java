@@ -441,5 +441,20 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 	public String getMetamodelTypeName() {
 		return (this.fullyQualifiedTargetEntity != null) ? this.fullyQualifiedTargetEntity : MetamodelField.DEFAULT_TYPE_NAME;
 	}
+	
+	
+	// ********** completion proposals **********
 
+	@Override
+	public Iterable<String> getXmlCompletionProposals(int pos) {
+		Iterable<String> result = super.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		result = this.relationship.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		return null;
+	}
 }

@@ -31,6 +31,7 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.BodySourceWriter;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
@@ -1657,15 +1658,8 @@ public abstract class AbstractPersistenceUnit
 				);
 	}
 
-	/**
-	 * Return the persistence unit's Java persistent types, as specified by
-	 * the class refs (both specified and implied) and jar files.
-	 * There can be duplicate types, and any of them may be overridden by a
-	 * mapping file persistence type.
-	 * @see #getMappingFilePersistentTypes()
-	 */
 	@SuppressWarnings("unchecked")
-	protected Iterable<PersistentType> getJavaPersistentTypes() {
+	public Iterable<PersistentType> getJavaPersistentTypes() {
 		return new CompositeIterable<PersistentType>(
 				this.getClassRefPersistentTypes(),
 				this.getJarFilePersistentTypes()
@@ -2043,6 +2037,14 @@ public abstract class AbstractPersistenceUnit
 		sb.append(this.name);
 	}
 
+	public Iterable<String> getPackageNames() {
+		Set<String> packageNames = new HashSet<String>();
+		for (PersistentType pType : this.getJavaPersistentTypes()) {
+			JavaResourceType jrt = ((JavaPersistentType)pType).getJavaResourceType();
+			packageNames.add(jrt.getPackageName());
+		}
+		return packageNames;
+	}
 
 	// ********** validation **********
 

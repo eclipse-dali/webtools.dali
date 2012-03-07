@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EDataTypeEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlUniqueConstraint_2_0;
 import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaEObject;
@@ -270,5 +271,16 @@ public class XmlUniqueConstraint extends AbstractJpaEObject implements XmlUnique
 	
 	protected static Translator buildColumnNameTranslator() {
 		return new Translator(JPA.COLUMN_NAME, OrmPackage.eINSTANCE.getXmlUniqueConstraint_ColumnNames());
+	}	
+
+	// ************ content assist **********
+	
+	protected TextRange getColumnNameCodeAssistTextRange() {
+		return this.getElementCodeAssistTextRange(JPA.COLUMN_NAME);
+	}
+	
+	public boolean columnNamesTouches(int pos) {
+		TextRange textRange = getColumnNameCodeAssistTextRange();
+		return (textRange != null) && (textRange.touches(pos));
 	}	
 }

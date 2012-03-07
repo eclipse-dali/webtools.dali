@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
@@ -172,5 +173,29 @@ public class GenericOrmJoinColumn
 	@Override
 	protected NamedColumnTextRangeResolver buildTextRangeResolver() {
 		return new OrmJoinColumnTextRangeResolver(this);
+	}
+
+	// ********** completion proposals **********
+
+	@Override
+	protected Iterable<String> getConnectedXmlCompletionProposals(int pos) {
+		Iterable<String> result = super.getConnectedXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		if (this.referencedColumnNameTouches(pos)) {
+			return this.getCandidateReferencedColumnNames();
+		}
+		return null;
+	}
+
+	protected boolean referencedColumnNameTouches(int pos) {
+		XmlJoinColumn joinColumn = this.getXmlColumn();
+		return (joinColumn != null) && (joinColumn.referencedColumnNameTouches(pos));
+	}
+
+	protected Iterable<String> getCandidateReferencedColumnNames() {
+		Table table = this.owner.getReferencedColumnDbTable();
+		return (table != null) ? table.getSortedColumnIdentifiers() : EmptyIterable.<String> instance();
 	}
 }

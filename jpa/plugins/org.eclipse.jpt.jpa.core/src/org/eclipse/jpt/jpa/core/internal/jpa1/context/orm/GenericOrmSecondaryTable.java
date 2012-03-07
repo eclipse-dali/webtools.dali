@@ -317,6 +317,22 @@ public class GenericOrmSecondaryTable
 		}
 	}
 
+	// ********** completion proposals **********
+
+	@Override
+	public Iterable<String> getXmlCompletionProposals(int pos) {
+		Iterable<String> result = super.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		for (OrmPrimaryKeyJoinColumn column : this.getPrimaryKeyJoinColumns()) {
+			result = column.getXmlCompletionProposals(pos);
+			if (result != null) {
+				return result;
+			}
+		}
+		return null;
+	}
 
 	// ********** primary key join column owner adapter **********
 

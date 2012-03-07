@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedColumn;
@@ -252,7 +253,30 @@ public abstract class AbstractOrmNamedColumn<X extends XmlNamedColumn, O extends
 		return (xmlColumn == null) ? null : xmlColumn.getNameTextRange();
 	}
 
+	// ********** completion proposals **********
 
+	@Override
+	protected Iterable<String> getConnectedXmlCompletionProposals(int pos) {
+		Iterable<String> result = super.getConnectedXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		if (this.columnNameTouches(pos)) {
+			return this.getCandidateColumnNames();
+		}
+		return null;
+	}
+
+	protected boolean columnNameTouches(int pos) {
+		X column = this.getXmlColumn();
+		return (column != null) && (column.columnNameTouches(pos));
+	}
+
+	protected Iterable<String> getCandidateColumnNames() {
+		Table dbTable = this.getDbTable();
+		return (dbTable != null) ? dbTable.getSortedColumnIdentifiers() : EmptyIterable.<String> instance();
+	}
+	
 	// ********** misc **********
 
 	@Override

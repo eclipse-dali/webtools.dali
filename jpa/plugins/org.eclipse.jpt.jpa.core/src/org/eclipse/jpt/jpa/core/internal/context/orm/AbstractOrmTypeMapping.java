@@ -605,4 +605,58 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 		//fix this problem.  bug 358745
 		return (textRange != null) ? textRange : TextRange.Empty.instance();
 	}
+
+	// ********** completion proposals **********
+
+	@Override
+	public Iterable<String> getXmlCompletionProposals(int pos) {
+		Iterable<String> result = super.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		if (this.classNameTouches(pos)) {
+			return this.getCandidateClassNames();
+		}
+		return null;
+	}
+
+	private Iterable<String> getCandidateClassNames() {
+		final String packageName = this.getEntityMappings().getPackage();
+		if (!StringTools.stringIsEmpty(packageName)) {
+			return new TransformationIterable<String, String>(this.getFilteredCandidateClassNames(packageName)) {
+				@Override
+				protected String transform(String className) {
+					return className.substring(packageName.length()+1);
+				}
+			};
+		}
+		return this.getCandidateFullQulifiedClassNames();
+	}
+	
+	private Iterable<String> getFilteredCandidateClassNames(final String packageName) {
+			return new FilteringIterable<String>(this.getCandidateFullQulifiedClassNames()) {
+				@Override
+				protected boolean accept(String className) {
+					return className.startsWith(packageName);
+				}
+			};
+	}
+
+	/**
+	 * @return names of the classes specified by class refs and jar files
+	 */
+	// should return names of all the classes defined in the project?
+	private Iterable<String> getCandidateFullQulifiedClassNames() {
+		return new TransformationIterable<PersistentType, String>(
+				this.getPersistenceUnit().getJavaPersistentTypes()) {
+			@Override
+			protected String transform(PersistentType pType) {
+				return pType.getName();
+			}
+		};
+	}
+
+	private boolean classNameTouches(int pos) {
+		return this.getXmlTypeMapping().classNameTouches(pos);
+	}
 }

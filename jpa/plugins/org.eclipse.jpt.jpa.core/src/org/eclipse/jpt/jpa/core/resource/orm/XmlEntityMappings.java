@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleRootTranslator;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaRootEObject;
@@ -1114,6 +1115,23 @@ public class XmlEntityMappings extends AbstractJpaRootEObject implements XmlQuer
 	public ReplaceEdit createRenamePackageEdit(String newName) {
 		int offset = getElementNode(JPA.PACKAGE).getStartStructuredDocumentRegion().getEndOffset();
 		return new ReplaceEdit(offset, this.package_.length(), newName);		
+	}
+
+	// *********** content assist *********
+	
+	public boolean schemaTouches(int pos) {
+		TextRange textRange = this.getElementCodeAssistTextRange(JPA.SCHEMA);
+		return (textRange != null) && (textRange.touches(pos));
+	}
+
+	public boolean catalogTouches(int pos) {
+		TextRange textRange = this.getElementCodeAssistTextRange(JPA.CATALOG);
+		return (textRange != null) && (textRange.touches(pos));
+	}
+
+	public boolean packageTouches(int pos) {
+		TextRange textRange = this.getElementCodeAssistTextRange(JPA.PACKAGE);
+		return (textRange != null) && (textRange.touches(pos));
 	}
 
 }

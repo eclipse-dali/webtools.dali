@@ -32,10 +32,10 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmBaseEmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
-import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.OverrideTextRangeResolver;
+import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AttributeOverrideColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AttributeOverrideValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EmbeddableOverrideDescriptionProvider;
@@ -230,6 +230,20 @@ public abstract class AbstractOrmBaseEmbeddedMapping<X extends AbstractXmlEmbedd
 		this.attributeOverrideContainer.validate(messages, reporter);
 	}
 
+	// ********** completion proposals **********
+
+	@Override
+	public Iterable<String> getXmlCompletionProposals(int pos) {
+		Iterable<String> result = super.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		result = this.attributeOverrideContainer.getXmlCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		return null;
+	}
 
 	// ********** attribute override container owner *********
 
