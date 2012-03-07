@@ -395,9 +395,11 @@ public class EclipseLinkUiMessages {
 	public static String AddVirtualAttributeDialog_title;
 	public static String AddVirtualAttributeDialog_nameLabel;
 	public static String AddVirtualAttributeDialog_mappingLabel;
+	public static String AddVirtualAttributeDialog_attributeTypeLabel;
 	public static String AddVirtualAttributeDialog_noMappingKeyError;
 	public static String AddVirtualAttributeDialog_noNameError;
-
+	public static String AddVirtualAttributeDialog_noAttributeTypeError;
+	
 	private static final String BUNDLE_NAME = "eclipselink_ui"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = EclipseLinkUiMessages.class;
 	static {
