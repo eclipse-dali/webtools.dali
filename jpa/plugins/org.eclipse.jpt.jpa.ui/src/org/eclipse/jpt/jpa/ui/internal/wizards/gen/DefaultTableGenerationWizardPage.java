@@ -75,6 +75,7 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 		this.jpaProject = jpaProject;
 		setTitle(JptUiEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_title);
 		setDescription( JptUiEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_desc);
+		this.prefrencesManager = buildEntityGenPreferencesManager();
 	}
 	
 	
@@ -102,7 +103,6 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 	
 	public void createControl(Composite parent) {
 		this.initializeDialogUnits(parent);
-		this.prefrencesManager = new JpaEntityGenPreferencesManager(this.jpaProject.getProject());
 		
 		Composite composite = new Composite(parent, SWT.NULL);
 		int nColumns= 4	;
@@ -323,8 +323,12 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 		GenerateEntitiesFromSchemaWizard wizard = (GenerateEntitiesFromSchemaWizard) this.getWizard();
 		return wizard.getCustomizer();
 	}	
+	
+    private JpaEntityGenPreferencesManager buildEntityGenPreferencesManager() {
+		return new JpaEntityGenPreferencesManager(this.jpaProject.getProject());
+	}
 
-    @Override
+	@Override
     public final void performHelp() {
         this.getHelpSystem().displayHelp( GenerateEntitiesFromSchemaWizard.HELP_CONTEXT_ID );
     }
