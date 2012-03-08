@@ -28,6 +28,9 @@ public class ELJaxbMappingImageHelper {
 		if (ELJaxbMappingKeys.XML_INVERSE_REFERENCE_ATTRIBUTE_MAPPING_KEY == mappingKey) {
 			return JptJaxbEclipseLinkUiIcons.XML_INVERSE_REFERENCE;
 		}
+		else if (ELJaxbMappingKeys.XML_JOIN_NODES_ATTRIBUTE_MAPPING_KEY == mappingKey) {
+			return JptJaxbEclipseLinkUiIcons.XML_JOIN_NODES;
+		}
 		else if (ELJaxbMappingKeys.XML_TRANSFORMATION_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
 			return JptJaxbEclipseLinkUiIcons.XML_TRANSFORMATION;
 		}
