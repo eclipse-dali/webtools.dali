@@ -13,7 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.core.context.TemporalConverter;
+import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBasicMapping;
@@ -489,8 +489,8 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		attribute = employeePersistentType.addAttributeToXml(employeePersistentType.getAttributeNamed("startDate"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		attribute.getMapping().setName("name");
 		OrmPersistentAttribute startDateAttribute = employeePersistentType.addAttributeToXml(employeePersistentType.getAttributeNamed("startDate"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
-		((OrmBasicMapping) startDateAttribute.getMapping()).setConverter(TemporalConverter.class);
-		((TemporalConverter) ((OrmBasicMapping) startDateAttribute.getMapping()).getConverter()).setTemporalType(TemporalType.DATE);
+		((OrmBasicMapping) startDateAttribute.getMapping()).setConverter(BaseTemporalConverter.class);
+		((BaseTemporalConverter) ((OrmBasicMapping) startDateAttribute.getMapping()).getConverter()).setTemporalType(TemporalType.DATE);
 		
 		OrmReadOnlyPersistentAttribute idAttribute = employeePersistentType.getAttributeNamed("id");
 		JavaPersistentAttribute javaPersistentAttribute = idAttribute.getJavaPersistentAttribute();

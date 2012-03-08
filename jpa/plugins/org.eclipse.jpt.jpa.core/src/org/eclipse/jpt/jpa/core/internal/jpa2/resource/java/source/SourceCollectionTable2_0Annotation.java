@@ -108,7 +108,7 @@ public final class SourceCollectionTable2_0Annotation
 		return this.joinColumnsContainer.addNestedAnnotation(index);
 	}
 	
-	private JoinColumnAnnotation buildJoinColumn(int index) {
+	/* CU private */ JoinColumnAnnotation buildJoinColumn(int index) {
 		return SourceJoinColumnAnnotation.buildNestedSourceJoinColumnAnnotation(
 				this, this.annotatedElement, buildJoinColumnIndexedDeclarationAnnotationAdapter(index));
 	}

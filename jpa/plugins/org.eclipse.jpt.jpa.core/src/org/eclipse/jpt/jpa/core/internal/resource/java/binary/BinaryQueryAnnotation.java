@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 
 import java.util.Vector;
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -77,7 +76,7 @@ abstract class BinaryQueryAnnotation
 
 	abstract String getNameElementName();
 
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
+	public TextRange getNameTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -102,7 +101,7 @@ abstract class BinaryQueryAnnotation
 
 	abstract String getQueryElementName();
 
-	public TextRange getQueryTextRange(CompilationUnit astRoot) {
+	public TextRange getQueryTextRange() {
 		throw new UnsupportedOperationException();
 	}
 

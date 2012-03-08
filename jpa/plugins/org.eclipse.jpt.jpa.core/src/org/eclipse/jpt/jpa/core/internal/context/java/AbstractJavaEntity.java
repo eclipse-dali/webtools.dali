@@ -1289,7 +1289,7 @@ public abstract class AbstractJavaEntity
 		this.queryContainer.validate(messages, reporter, astRoot);
 		this.attributeOverrideContainer.validate(messages, reporter, astRoot);
 		this.associationOverrideContainer.validate(messages, reporter, astRoot);
-		this.validateEntityName(messages, astRoot);
+		this.validateEntityName(messages);
 		this.idClassReference.validate(messages, reporter, astRoot);
 	}
 
@@ -1298,7 +1298,7 @@ public abstract class AbstractJavaEntity
 		return super.validatesAgainstDatabase() && ! this.isAbstractTablePerClass();
 	}
 
-	protected void validateEntityName(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateEntityName(List<IMessage> messages) {
 		if (StringTools.stringIsEmpty(this.getName())){
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
@@ -1306,7 +1306,7 @@ public abstract class AbstractJavaEntity
 							JpaValidationMessages.ENTITY_NAME_MISSING,
 							new String[] {this.getPersistentType().getName()}, 
 							this,
-							this.getMappingAnnotation().getNameTextRange(astRoot)
+							this.getMappingAnnotation().getNameTextRange()
 					)
 			);
 		}
@@ -1469,7 +1469,7 @@ public abstract class AbstractJavaEntity
 	}
 
 	protected TextRange getInheritanceStrategyTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.getInheritanceAnnotation().getStrategyTextRange(astRoot), astRoot);
+		return this.getValidationTextRange(this.getInheritanceAnnotation().getStrategyTextRange(), astRoot);
 	}
 
 

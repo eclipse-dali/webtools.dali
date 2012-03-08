@@ -116,7 +116,7 @@ public final class SourceSecondaryTableAnnotation
 		return this.pkJoinColumnsContainer.addNestedAnnotation(index);
 	}
 	
-	private PrimaryKeyJoinColumnAnnotation buildPkJoinColumn(int index) {
+	/* CU private */ PrimaryKeyJoinColumnAnnotation buildPkJoinColumn(int index) {
 		return SourcePrimaryKeyJoinColumnAnnotation.buildNestedSourcePrimaryKeyJoinColumnAnnotation(
 				this, this.annotatedElement, this.buildPkJoinColumnIndexedDeclarationAnnotationAdapter(index));
 	}

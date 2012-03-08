@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.OneToOne2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
 /**
- * javax.persistence.OneToOne
+ * <code>javax.persistence.OneToOne</code>
  */
 public final class SourceOneToOneAnnotation
 	extends SourceRelationshipMappingAnnotation
@@ -41,15 +41,18 @@ public final class SourceOneToOneAnnotation
 	private static final DeclarationAnnotationElementAdapter<String> MAPPED_BY_ADAPTER = buildMappedByAdapter();
 	private final AnnotationElementAdapter<String> mappedByAdapter;
 	private String mappedBy;
+	private TextRange mappedByTextRange;
 
 	private static final DeclarationAnnotationElementAdapter<Boolean> OPTIONAL_ADAPTER = buildOptionalAdapter();
 	private final AnnotationElementAdapter<Boolean> optionalAdapter;
 	private Boolean optional;
+	private TextRange optionalTextRange;
 
 	//added in JPA 2.0
 	private static final DeclarationAnnotationElementAdapter<Boolean> ORPHAN_REMOVAL_ADAPTER = buildOrphanRemovalAdapter();
 	private final AnnotationElementAdapter<Boolean> orphanRemovalAdapter;
 	private Boolean orphanRemoval;
+	private TextRange orphanRemovalTextRange;
 
 	public SourceOneToOneAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
 		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
@@ -65,17 +68,29 @@ public final class SourceOneToOneAnnotation
 	@Override
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
+
 		this.mappedBy = this.buildMappedBy(astRoot);
+		this.mappedByTextRange = this.buildMappedByTextRange(astRoot);
+
 		this.optional = this.buildOptional(astRoot);
+		this.optionalTextRange = this.buildOptionalTextRange(astRoot);
+
 		this.orphanRemoval = this.buildOrphanRemoval(astRoot);
+		this.orphanRemovalTextRange = this.buildOrphanRemovalTextRange(astRoot);
 	}
 
 	@Override
 	public void synchronizeWith(CompilationUnit astRoot) {
 		super.synchronizeWith(astRoot);
+
 		this.syncMappedBy(this.buildMappedBy(astRoot));
+		this.mappedByTextRange = this.buildMappedByTextRange(astRoot);
+
 		this.syncOptional(this.buildOptional(astRoot));
+		this.optionalTextRange = this.buildOptionalTextRange(astRoot);
+
 		this.syncOrphanRemoval(this.buildOrphanRemoval(astRoot));
+		this.orphanRemovalTextRange = this.buildOrphanRemovalTextRange(astRoot);
 	}
 
 	@Override
@@ -129,12 +144,16 @@ public final class SourceOneToOneAnnotation
 		return this.mappedByAdapter.getValue(astRoot);
 	}
 
-	public TextRange getMappedByTextRange(CompilationUnit astRoot) {
+	public TextRange getMappedByTextRange() {
+		return this.mappedByTextRange;
+	}
+
+	private TextRange buildMappedByTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(MAPPED_BY_ADAPTER, astRoot);
 	}
 
-	public boolean mappedByTouches(int pos, CompilationUnit astRoot) {
-		return this.elementTouches(MAPPED_BY_ADAPTER, pos, astRoot);
+	public boolean mappedByTouches(int pos) {
+		return this.textRangeTouches(mappedByTextRange, pos);
 	}
 
 	// ***** optional
@@ -159,7 +178,11 @@ public final class SourceOneToOneAnnotation
 		return this.optionalAdapter.getValue(astRoot);
 	}
 
-	public TextRange getOptionalTextRange(CompilationUnit astRoot) {
+	public TextRange getOptionalTextRange() {
+		return this.optionalTextRange;
+	}
+
+	private TextRange buildOptionalTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(OPTIONAL_ADAPTER, astRoot);
 	}
 
@@ -182,7 +205,11 @@ public final class SourceOneToOneAnnotation
 		this.firePropertyChanged(ORPHAN_REMOVAL_PROPERTY, old, astOrphanRemoval);
 	}
 
-	public TextRange getOrphanRemovalTextRange(CompilationUnit astRoot) {
+	public TextRange getOrphanRemovalTextRange() {
+		return this.orphanRemovalTextRange;
+	}
+
+	private TextRange buildOrphanRemovalTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(ORPHAN_REMOVAL_ADAPTER, astRoot);
 	}
 

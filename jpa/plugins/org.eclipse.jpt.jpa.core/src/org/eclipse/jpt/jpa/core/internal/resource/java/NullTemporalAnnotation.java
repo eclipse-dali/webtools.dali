@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,18 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.core.internal.resource.java.NullAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.java.TemporalAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.TemporalType;
 
 /**
  * <code>javax.persistence.Temporal</code>
  */
 public final class NullTemporalAnnotation
-	extends NullAnnotation<TemporalAnnotation>
+	extends NullBaseTemporalAnnotation<TemporalAnnotation>
 	implements TemporalAnnotation
 {
 	protected NullTemporalAnnotation(JavaResourceAnnotatedElement parent) {
@@ -29,20 +25,5 @@ public final class NullTemporalAnnotation
 
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
-	}
-
-	// ***** value
-	public TemporalType getValue() {
-		return null;
-	}
-
-	public void setValue(TemporalType value) {
-		if (value != null) {
-			this.addAnnotation().setValue(value);
-		}
-	}
-
-	public TextRange getValueTextRange(CompilationUnit astRoot) {
-		return null;
 	}
 }

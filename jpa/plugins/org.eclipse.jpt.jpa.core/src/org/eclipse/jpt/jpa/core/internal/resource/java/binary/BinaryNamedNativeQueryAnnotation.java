@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
@@ -84,7 +83,7 @@ public final class BinaryNamedNativeQueryAnnotation
 		return (String) this.getJdtMemberValue(JPA.NAMED_NATIVE_QUERY__RESULT_CLASS);
 	}
 
-	public TextRange getResultClassTextRange(CompilationUnit astRoot) {
+	public TextRange getResultClassTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -112,8 +111,7 @@ public final class BinaryNamedNativeQueryAnnotation
 		return (String) this.getJdtMemberValue(JPA.NAMED_NATIVE_QUERY__RESULT_CLASS);
 	}
 
-	public TextRange getResultSetMappingTextRange(CompilationUnit astRoot) {
+	public TextRange getResultSetMappingTextRange() {
 		throw new UnsupportedOperationException();
 	}
-
 }

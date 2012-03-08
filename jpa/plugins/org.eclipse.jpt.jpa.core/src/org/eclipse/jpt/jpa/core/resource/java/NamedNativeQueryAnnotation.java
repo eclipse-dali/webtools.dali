@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 
 
@@ -51,7 +50,7 @@ public interface NamedNativeQueryAnnotation
 	 * Return the {@link TextRange} for the 'resultClass' element. If element
 	 * does not exist return the {@link TextRange} for the NamedNativeQuery annotation.
 	 */
-	TextRange getResultClassTextRange(CompilationUnit astRoot);
+	TextRange getResultClassTextRange();
 
 	/**
 	 * Return the named native query's fully-qualified result class name as
@@ -84,6 +83,5 @@ public interface NamedNativeQueryAnnotation
 	 * Return the {@link TextRange} for the 'resultSetMapping' element. If element
 	 * does not exist return the {@link TextRange} for the NamedNativeQuery annotation.
 	 */
-	TextRange getResultSetMappingTextRange(CompilationUnit astRoot);
-
+	TextRange getResultSetMappingTextRange();
 }

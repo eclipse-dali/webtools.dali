@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -125,7 +125,7 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 	}
 
 	public TextRange getTableTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.getColumnAnnotation().getTableTextRange(astRoot), astRoot);
+		return this.getValidationTextRange(this.getColumnAnnotation().getTableTextRange(), astRoot);
 	}
 
 
@@ -327,14 +327,14 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 		if (result != null) {
 			return result;
 		}
-		if (this.tableTouches(pos, astRoot)) {
+		if (this.tableTouches(pos)) {
 			return this.getJavaCandidateTableNames(filter);
 		}
 		return null;
 	}
 
-	protected boolean tableTouches(int pos, CompilationUnit astRoot) {
-		return this.getColumnAnnotation().tableTouches(pos, astRoot);
+	protected boolean tableTouches(int pos) {
+		return this.getColumnAnnotation().tableTouches(pos);
 	}
 
 	protected Iterable<String> getJavaCandidateTableNames(Filter<String> filter) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.context.EmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.EnumType;
-import org.eclipse.jpt.jpa.core.context.EnumeratedConverter;
+import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.TemporalConverter;
+import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.core.context.TransientMapping;
 import org.eclipse.jpt.jpa.core.context.VersionMapping;
@@ -89,8 +89,8 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(basicMapping.isDefault());
 		basicMapping.getColumn().setSpecifiedName("FOO");
-		basicMapping.setConverter(EnumeratedConverter.class);
-		((EnumeratedConverter) basicMapping.getConverter()).setSpecifiedEnumType(EnumType.STRING);
+		basicMapping.setConverter(BaseEnumeratedConverter.class);
+		((BaseEnumeratedConverter) basicMapping.getConverter()).setSpecifiedEnumType(EnumType.STRING);
 		resourceField.addAnnotation(LobAnnotation.ANNOTATION_NAME);
 		resourceField.addAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
@@ -100,7 +100,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		
 		persistentAttribute.setMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
 		assertEquals("FOO", ((BasicMapping) persistentAttribute.getMapping()).getColumn().getSpecifiedName());
-		assertEquals(EnumType.STRING, ((EnumeratedConverter) ((BasicMapping) persistentAttribute.getMapping()).getConverter()).getEnumType());
+		assertEquals(EnumType.STRING, ((BaseEnumeratedConverter) ((BasicMapping) persistentAttribute.getMapping()).getConverter()).getEnumType());
 		
 		assertNull(((BasicMapping) persistentAttribute.getMapping()).getSpecifiedFetch());
 		assertNull(((BasicMapping) persistentAttribute.getMapping()).getSpecifiedOptional());
@@ -122,8 +122,8 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(basicMapping.isDefault());
 		basicMapping.getColumn().setSpecifiedName("FOO");
-		basicMapping.setConverter(TemporalConverter.class);
-		((TemporalConverter) basicMapping.getConverter()).setTemporalType(TemporalType.TIME);
+		basicMapping.setConverter(BaseTemporalConverter.class);
+		((BaseTemporalConverter) basicMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		resourceField.addAnnotation(LobAnnotation.ANNOTATION_NAME);
 		resourceField.addAnnotation(EnumeratedAnnotation.ANNOTATION_NAME);
 		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
@@ -133,7 +133,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		
 		persistentAttribute.setMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		assertEquals("FOO", ((IdMapping) persistentAttribute.getMapping()).getColumn().getSpecifiedName());
-		assertEquals(TemporalType.TIME, ((TemporalConverter) ((IdMapping) persistentAttribute.getMapping()).getConverter()).getTemporalType());
+		assertEquals(TemporalType.TIME, ((BaseTemporalConverter) ((IdMapping) persistentAttribute.getMapping()).getConverter()).getTemporalType());
 		
 		assertNull(resourceField.getAnnotation(BasicAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(IdAnnotation.ANNOTATION_NAME));
@@ -154,8 +154,8 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(basicMapping.isDefault());
 		basicMapping.getColumn().setSpecifiedName("FOO");
-		basicMapping.setConverter(TemporalConverter.class);
-		((TemporalConverter) basicMapping.getConverter()).setTemporalType(TemporalType.TIME);
+		basicMapping.setConverter(BaseTemporalConverter.class);
+		((BaseTemporalConverter) basicMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		resourceField.addAnnotation(LobAnnotation.ANNOTATION_NAME);
 		resourceField.addAnnotation(EnumeratedAnnotation.ANNOTATION_NAME);
 		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
@@ -163,7 +163,7 @@ public class GenericJavaBasicMapping2_0Tests extends Generic2_0ContextModelTestC
 		
 		persistentAttribute.setMappingKey(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
 		assertEquals("FOO", ((VersionMapping) persistentAttribute.getMapping()).getColumn().getSpecifiedName());
-		assertEquals(TemporalType.TIME, ((TemporalConverter) ((VersionMapping) persistentAttribute.getMapping()).getConverter()).getTemporalType());
+		assertEquals(TemporalType.TIME, ((BaseTemporalConverter) ((VersionMapping) persistentAttribute.getMapping()).getConverter()).getTemporalType());
 		
 		assertNull(resourceField.getAnnotation(BasicAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));

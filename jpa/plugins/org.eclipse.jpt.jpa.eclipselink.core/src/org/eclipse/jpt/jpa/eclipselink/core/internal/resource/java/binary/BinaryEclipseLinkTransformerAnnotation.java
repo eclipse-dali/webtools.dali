@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,15 +10,16 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTransformerAnnotation;
 
 /**
- * org.eclipse.persistence.annotations.ReadTransformer
- * org.eclipse.persistence.annotations.WriteTransformer
+ * <code><ul>
+ * <li>org.eclipse.persistence.annotations.ReadTransformer
+ * <li>org.eclipse.persistence.annotations.WriteTransformer
+ * </ul></code>
  */
 abstract class BinaryEclipseLinkTransformerAnnotation
 	extends BinaryAnnotation
@@ -63,7 +64,7 @@ abstract class BinaryEclipseLinkTransformerAnnotation
 		return (String) this.getJdtMemberValue(this.getTransformerClassElementName());
 	}
 
-	public TextRange getTransformerClassTextRange(CompilationUnit astRoot) {
+	public TextRange getTransformerClassTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -88,10 +89,9 @@ abstract class BinaryEclipseLinkTransformerAnnotation
 		return (String) this.getJdtMemberValue(this.getMethodElementName());
 	}
 
-	public TextRange getMethodTextRange(CompilationUnit astRoot) {
+	public TextRange getMethodTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
 	abstract String getMethodElementName();
-
 }

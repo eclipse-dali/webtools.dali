@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -62,6 +62,7 @@ final class SourceEclipseLinkConversionValueAnnotation
 	public void initialize(CompilationUnit astRoot) {
 		this.dataValue = this.buildDataValue(astRoot);
 		this.dataValueTextRange = this.buildDataValueTextRange(astRoot);
+
 		this.objectValue = this.buildObjectValue(astRoot);
 		this.objectValueTextRange = this.buildObjectValueTextRange(astRoot);
 	}
@@ -69,6 +70,7 @@ final class SourceEclipseLinkConversionValueAnnotation
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncDataValue(this.buildDataValue(astRoot));
 		this.dataValueTextRange = this.buildDataValueTextRange(astRoot);
+
 		this.syncObjectValue(this.buildObjectValue(astRoot));
 		this.objectValueTextRange = this.buildObjectValueTextRange(astRoot);
 	}
@@ -98,7 +100,7 @@ final class SourceEclipseLinkConversionValueAnnotation
 		return this.dataValueAdapter.getValue(astRoot);
 	}
 
-	public TextRange getDataValueTextRange(CompilationUnit astRoot) {
+	public TextRange getDataValueTextRange() {
 		return this.dataValueTextRange;
 	}
 
@@ -136,7 +138,7 @@ final class SourceEclipseLinkConversionValueAnnotation
 		return this.objectValueAdapter.getValue(astRoot);
 	}
 
-	public TextRange getObjectValueTextRange(CompilationUnit astRoot) {
+	public TextRange getObjectValueTextRange() {
 		return this.objectValueTextRange;
 	}
 
@@ -168,5 +170,4 @@ final class SourceEclipseLinkConversionValueAnnotation
 		sb.append("=>"); //$NON-NLS-1$
 		sb.append(this.objectValue);
 	}
-
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -40,6 +40,8 @@ public final class SourcePrimaryKeyJoinColumnAnnotation
 	private DeclarationAnnotationElementAdapter<String> referencedColumnNameDeclarationAdapter;
 	private AnnotationElementAdapter<String> referencedColumnNameAdapter;
 	private String referencedColumnName;
+	private TextRange referencedColumnNameTextRange;
+
 
 	public static SourcePrimaryKeyJoinColumnAnnotation buildSourcePrimaryKeyJoinColumnAnnotation(
 		JavaResourceNode parent, 
@@ -91,12 +93,14 @@ public final class SourcePrimaryKeyJoinColumnAnnotation
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
 		this.referencedColumnName = this.buildReferencedColumnName(astRoot);
+		this.referencedColumnNameTextRange = this.buildReferencedColumnNameTextRange(astRoot);
 	}
 
 	@Override
 	public void synchronizeWith(CompilationUnit astRoot) {
 		super.synchronizeWith(astRoot);
 		this.syncReferencedColumnName(this.buildReferencedColumnName(astRoot));
+		this.referencedColumnNameTextRange = this.buildReferencedColumnNameTextRange(astRoot);
 	}
 
 
@@ -137,12 +141,16 @@ public final class SourcePrimaryKeyJoinColumnAnnotation
 		return this.referencedColumnNameAdapter.getValue(astRoot);
 	}
 
-	public TextRange getReferencedColumnNameTextRange(CompilationUnit astRoot) {
+	public TextRange getReferencedColumnNameTextRange() {
+		return this.referencedColumnNameTextRange;
+	}
+
+	private TextRange buildReferencedColumnNameTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.referencedColumnNameDeclarationAdapter, astRoot);
 	}
 
-	public boolean referencedColumnNameTouches(int pos, CompilationUnit astRoot) {
-		return this.elementTouches(this.referencedColumnNameDeclarationAdapter, pos, astRoot);
+	public boolean referencedColumnNameTouches(int pos) {
+		return this.textRangeTouches(this.referencedColumnNameTextRange, pos);
 	}
 
 	private DeclarationAnnotationElementAdapter<String> buildReferencedColumnNameDeclarationAdapter() {

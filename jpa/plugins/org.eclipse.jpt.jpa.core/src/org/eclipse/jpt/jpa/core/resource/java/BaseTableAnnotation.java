@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,18 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
 /**
- * Corresponds to the JPA annotations:<ul>
- * <li><code>javax.persistence.Table<code>
- * <li><code>javax.persistence.JoinTable<code>
- * <li><code>javax.persistence.SecondaryTable<code>
- * <li><code>javax.persistence.CollectionTable<code>
- * </ul>
+ * Corresponds to the JPA annotations:<code><ul>
+ * <li>javax.persistence.Table
+ * <li>javax.persistence.JoinTable
+ * <li>javax.persistence.SecondaryTable
+ * <li>javax.persistence.CollectionTable
+ * </ul></code>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -58,13 +57,13 @@ public interface BaseTableAnnotation
 	 * Return the {@link TextRange} for the 'name' element. If the element
 	 * does not exist return the {@link TextRange} for the *Table annotation.
 	 */
-	TextRange getNameTextRange(CompilationUnit astRoot);
+	TextRange getNameTextRange();
 
 	/**
 	 * Return whether the specified position touches the 'name' element.
 	 * Return false if the element does not exist.
 	 */
-	boolean nameTouches(int pos, CompilationUnit astRoot);
+	boolean nameTouches(int pos);
 
 
 	// ********** schema **********
@@ -86,13 +85,13 @@ public interface BaseTableAnnotation
 	 * Return the {@link TextRange} for the 'schema' element. If the element
 	 * does not exist return the {@link TextRange} for the *Table annotation.
 	 */
-	TextRange getSchemaTextRange(CompilationUnit astRoot);
+	TextRange getSchemaTextRange();
 
 	/**
 	 * Return whether the specified position touches the 'schema' element.
 	 * Return false if the element does not exist.
 	 */
-	boolean schemaTouches(int pos, CompilationUnit astRoot);
+	boolean schemaTouches(int pos);
 
 
 	// ********** catalog **********
@@ -114,13 +113,13 @@ public interface BaseTableAnnotation
 	 * Return the {@link TextRange} for the 'catalog' element. If the element
 	 * does not exist return the {@link TextRange} for the *Table annotation.
 	 */
-	TextRange getCatalogTextRange(CompilationUnit astRoot);
+	TextRange getCatalogTextRange();
 
 	/**
 	 * Return whether the specified position touches the 'catalog' element.
 	 * Return false if the element does not exist.
 	 */
-	boolean catalogTouches(int pos, CompilationUnit astRoot);
+	boolean catalogTouches(int pos);
 
 
 	// ********** unique constraints **********
@@ -156,5 +155,4 @@ public interface BaseTableAnnotation
 	 * Corresponds to the 'uniqueConstraints' element of the *Table annotation.
 	 */
 	void removeUniqueConstraint(int index);
-
 }

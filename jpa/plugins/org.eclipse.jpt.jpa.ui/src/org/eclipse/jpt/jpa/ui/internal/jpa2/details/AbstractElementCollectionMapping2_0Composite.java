@@ -22,9 +22,9 @@ import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.ConvertibleMapping;
-import org.eclipse.jpt.jpa.core.context.EnumeratedConverter;
+import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.LobConverter;
-import org.eclipse.jpt.jpa.core.context.TemporalConverter;
+import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
@@ -323,20 +323,20 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 		};
 	}
 	
-	private PropertyValueModel<TemporalConverter> buildTemporalConverterHolder(PropertyValueModel<Converter> converterHolder) {
-		return new TransformationPropertyValueModel<Converter, TemporalConverter>(converterHolder) {
+	private PropertyValueModel<BaseTemporalConverter> buildTemporalConverterHolder(PropertyValueModel<Converter> converterHolder) {
+		return new TransformationPropertyValueModel<Converter, BaseTemporalConverter>(converterHolder) {
 			@Override
-			protected TemporalConverter transform_(Converter converter) {
-				return converter.getType() == TemporalConverter.class ? (TemporalConverter) converter : null;
+			protected BaseTemporalConverter transform_(Converter converter) {
+				return converter.getType() == BaseTemporalConverter.class ? (BaseTemporalConverter) converter : null;
 			}
 		};
 	}
 	
-	private PropertyValueModel<EnumeratedConverter> buildEnumeratedConverterHolder(PropertyValueModel<Converter> converterHolder) {
-		return new TransformationPropertyValueModel<Converter, EnumeratedConverter>(converterHolder) {
+	private PropertyValueModel<BaseEnumeratedConverter> buildEnumeratedConverterHolder(PropertyValueModel<Converter> converterHolder) {
+		return new TransformationPropertyValueModel<Converter, BaseEnumeratedConverter>(converterHolder) {
 			@Override
-			protected EnumeratedConverter transform_(Converter converter) {
-				return converter.getType() == EnumeratedConverter.class ? (EnumeratedConverter) converter : null;
+			protected BaseEnumeratedConverter transform_(Converter converter) {
+				return converter.getType() == BaseEnumeratedConverter.class ? (BaseEnumeratedConverter) converter : null;
 			}
 		};
 	}
@@ -346,13 +346,13 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 			@Override
 			protected Boolean buildValue_() {
 				Converter converter = this.subject.getConverter();
-				return Boolean.valueOf(converter.getType() == TemporalConverter.class);
+				return Boolean.valueOf(converter.getType() == BaseTemporalConverter.class);
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value.booleanValue()) {
-					this.subject.setConverter(TemporalConverter.class);
+					this.subject.setConverter(BaseTemporalConverter.class);
 				}
 			}
 		};
@@ -363,13 +363,13 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 			@Override
 			protected Boolean buildValue_() {
 				Converter converter = this.subject.getConverter();
-				return Boolean.valueOf(converter.getType() == EnumeratedConverter.class);
+				return Boolean.valueOf(converter.getType() == BaseEnumeratedConverter.class);
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value.booleanValue()) {
-					this.subject.setConverter(EnumeratedConverter.class);
+					this.subject.setConverter(BaseEnumeratedConverter.class);
 				}
 			}
 		};

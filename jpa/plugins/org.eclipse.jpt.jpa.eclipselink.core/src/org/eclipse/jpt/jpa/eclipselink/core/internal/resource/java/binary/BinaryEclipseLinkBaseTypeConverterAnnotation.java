@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,24 +10,27 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.BaseEclipseLinkTypeConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkBaseTypeConverterAnnotation;
 
 /**
- * org.eclipse.persistence.annotations.ObjectTypeConverter
- * org.eclipse.persistence.annotations.TypeConverter
+ * <code>
+ * <ul>
+ * <li>org.eclipse.persistence.annotations.TypeConverter
+ * <li>org.eclipse.persistence.annotations.ObjectTypeConverter
+ * </ul>
+ * </code>
  */
-abstract class BinaryBaseEclipseLinkTypeConverterAnnotation
+abstract class BinaryEclipseLinkBaseTypeConverterAnnotation
 	extends BinaryEclipseLinkNamedConverterAnnotation
-	implements BaseEclipseLinkTypeConverterAnnotation
+	implements EclipseLinkBaseTypeConverterAnnotation
 {
 	String dataType;
 	String objectType;
 
 
-	BinaryBaseEclipseLinkTypeConverterAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
+	BinaryEclipseLinkBaseTypeConverterAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.dataType = this.buildDataType();
 		this.objectType = this.buildObjectType();
@@ -66,7 +69,7 @@ abstract class BinaryBaseEclipseLinkTypeConverterAnnotation
 		return (String) this.getJdtMemberValue(this.getDataTypeElementName());
 	}
 
-	public TextRange getDataTypeTextRange(CompilationUnit astRoot) {
+	public TextRange getDataTypeTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -95,10 +98,9 @@ abstract class BinaryBaseEclipseLinkTypeConverterAnnotation
 		return (String) this.getJdtMemberValue(this.getObjectTypeElementName());
 	}
 
-	public TextRange getObjectTypeTextRange(CompilationUnit astRoot) {
+	public TextRange getObjectTypeTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
 	abstract String getObjectTypeElementName();
-
 }

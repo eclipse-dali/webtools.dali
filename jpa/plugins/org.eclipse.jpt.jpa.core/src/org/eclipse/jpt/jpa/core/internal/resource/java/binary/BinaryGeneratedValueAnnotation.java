@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -19,7 +18,7 @@ import org.eclipse.jpt.jpa.core.resource.java.GenerationType;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
 /**
- * javax.persistence.GeneratedValue
+ * <code>javax.persistence.GeneratedValue</code>
  */
 public final class BinaryGeneratedValueAnnotation
 	extends BinaryAnnotation
@@ -68,7 +67,7 @@ public final class BinaryGeneratedValueAnnotation
 		return GenerationType.fromJavaAnnotationValue(this.getJdtMemberValue(JPA.GENERATED_VALUE__STRATEGY));
 	}
 	
-	public TextRange getStrategyTextRange(CompilationUnit astRoot) {
+	public TextRange getStrategyTextRange() {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -91,12 +90,11 @@ public final class BinaryGeneratedValueAnnotation
 		return (String) this.getJdtMemberValue(JPA.GENERATED_VALUE__GENERATOR);
 	}
 	
-	public TextRange getGeneratorTextRange(CompilationUnit astRoot) {
+	public TextRange getGeneratorTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean generatorTouches(int pos, CompilationUnit astRoot) {
+	public boolean generatorTouches(int pos) {
 		throw new UnsupportedOperationException();
 	}
-
 }

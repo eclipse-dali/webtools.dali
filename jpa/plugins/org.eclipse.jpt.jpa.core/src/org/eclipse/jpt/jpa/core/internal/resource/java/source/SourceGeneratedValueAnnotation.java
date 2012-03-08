@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.resource.java.GenerationType;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
 /**
- * javax.persistence.GeneratedValue
+ * <code>javax.persistence.GeneratedValue</code>
  */
 public final class SourceGeneratedValueAnnotation
 	extends SourceAnnotation
@@ -37,10 +37,12 @@ public final class SourceGeneratedValueAnnotation
 	private static final DeclarationAnnotationElementAdapter<String> STRATEGY_ADAPTER = buildStrategyAdapter();
 	private final AnnotationElementAdapter<String> strategyAdapter;
 	private GenerationType strategy;
+	private TextRange strategyTextRange;
 
 	private static final DeclarationAnnotationElementAdapter<String> GENERATOR_ADAPTER = buildGeneratorAdapter();
 	private final AnnotationElementAdapter<String> generatorAdapter;
 	private String generator;
+	private TextRange generatorTextRange;
 	
 		
 	public SourceGeneratedValueAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
@@ -55,12 +57,18 @@ public final class SourceGeneratedValueAnnotation
 
 	public void initialize(CompilationUnit astRoot) {
 		this.strategy = this.buildStrategy(astRoot);
+		this.strategyTextRange = this.buildStrategyTextRange(astRoot);
+
 		this.generator = this.buildGenerator(astRoot);
+		this.generatorTextRange = this.buildGeneratorTextRange(astRoot);
 	}
 	
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncStrategy(this.buildStrategy(astRoot));
+		this.strategyTextRange = this.buildStrategyTextRange(astRoot);
+
 		this.syncGenerator(this.buildGenerator(astRoot));
+		this.generatorTextRange = this.buildGeneratorTextRange(astRoot);
 	}
 
 	@Override
@@ -100,7 +108,11 @@ public final class SourceGeneratedValueAnnotation
 		return GenerationType.fromJavaAnnotationValue(this.strategyAdapter.getValue(astRoot));
 	}
 	
-	public TextRange getStrategyTextRange(CompilationUnit astRoot) {
+	public TextRange getStrategyTextRange() {
+		return this.strategyTextRange;
+	}
+	
+	private TextRange buildStrategyTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(STRATEGY_ADAPTER, astRoot);
 	}
 	
@@ -126,12 +138,16 @@ public final class SourceGeneratedValueAnnotation
 		return this.generatorAdapter.getValue(astRoot);
 	}
 	
-	public TextRange getGeneratorTextRange(CompilationUnit astRoot) {
+	public TextRange getGeneratorTextRange() {
+		return this.generatorTextRange;
+	}
+
+	private TextRange buildGeneratorTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(GENERATOR_ADAPTER, astRoot);
 	}
 
-	public boolean generatorTouches(int pos, CompilationUnit astRoot) {
-		return this.elementTouches(GENERATOR_ADAPTER, pos, astRoot);
+	public boolean generatorTouches(int pos) {
+		return this.textRangeTouches(this.generatorTextRange, pos);
 	}
 
 
@@ -144,5 +160,4 @@ public final class SourceGeneratedValueAnnotation
 	private static DeclarationAnnotationElementAdapter<String> buildGeneratorAdapter() {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.GENERATED_VALUE__GENERATOR);
 	}
-
 }

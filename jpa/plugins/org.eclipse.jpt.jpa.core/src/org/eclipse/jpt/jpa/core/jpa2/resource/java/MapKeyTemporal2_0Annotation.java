@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,12 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.resource.java;
 
-import org.eclipse.jpt.jpa.core.resource.java.TemporalAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.BaseTemporalAnnotation;
 
 /**
  * Corresponds to the JPA 2.0 annotation
- * javax.persistence.MapKeyTemporal
- * 
+ * <code>javax.persistence.MapKeyTemporal</code>
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -25,8 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.java.TemporalAnnotation;
  * @since 2.3
  */
 public interface MapKeyTemporal2_0Annotation
-	extends TemporalAnnotation
+	extends BaseTemporalAnnotation
 {
 	String ANNOTATION_NAME = JPA2_0.MAP_KEY_TEMPORAL;
-
 }

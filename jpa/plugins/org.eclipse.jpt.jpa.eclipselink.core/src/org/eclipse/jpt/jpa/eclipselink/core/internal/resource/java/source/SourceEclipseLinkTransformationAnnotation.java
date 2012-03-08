@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTransformationAnnotation;
 
 /**
- * org.eclipse.persistence.annotations.Transformation
+ * <code>org.eclipse.persistence.annotations.Transformation</code>
  */
 public final class SourceEclipseLinkTransformationAnnotation
 	extends SourceAnnotation
@@ -38,10 +38,12 @@ public final class SourceEclipseLinkTransformationAnnotation
 	private static final DeclarationAnnotationElementAdapter<String> FETCH_ADAPTER = buildFetchAdapter();
 	private final AnnotationElementAdapter<String> fetchAdapter;
 	private FetchType fetch;
+	private TextRange fetchTextRange;
 
 	private static final DeclarationAnnotationElementAdapter<Boolean> OPTIONAL_ADAPTER = buildOptionalAdapter();
 	private final AnnotationElementAdapter<Boolean> optionalAdapter;
 	private Boolean optional;
+	private TextRange optionalTextRange;
 
 
 	public SourceEclipseLinkTransformationAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
@@ -56,12 +58,18 @@ public final class SourceEclipseLinkTransformationAnnotation
 
 	public void initialize(CompilationUnit astRoot) {
 		this.fetch = this.buildFetch(astRoot);
+		this.fetchTextRange = this.buildFetchTextRange(astRoot);
+
 		this.optional = this.buildOptional(astRoot);
+		this.optionalTextRange = this.buildOptionalTextRange(astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncFetch(this.buildFetch(astRoot));
+		this.fetchTextRange = this.buildFetchTextRange(astRoot);
+
 		this.syncOptional(this.buildOptional(astRoot));
+		this.optionalTextRange = this.buildOptionalTextRange(astRoot);
 	}
 
 	@Override
@@ -101,7 +109,11 @@ public final class SourceEclipseLinkTransformationAnnotation
 		return FetchType.fromJavaAnnotationValue(this.fetchAdapter.getValue(astRoot));
 	}
 
-	public TextRange getFetchTextRange(CompilationUnit astRoot) {
+	public TextRange getFetchTextRange() {
+		return this.fetchTextRange;
+	}
+
+	private TextRange buildFetchTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(FETCH_ADAPTER, astRoot);
 	}
 
@@ -127,7 +139,11 @@ public final class SourceEclipseLinkTransformationAnnotation
 		return this.optionalAdapter.getValue(astRoot);
 	}
 
-	public TextRange getOptionalTextRange(CompilationUnit astRoot) {
+	public TextRange getOptionalTextRange() {
+		return this.optionalTextRange;
+	}
+
+	private TextRange buildOptionalTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(OPTIONAL_ADAPTER, astRoot);
 	}
 
@@ -141,5 +157,4 @@ public final class SourceEclipseLinkTransformationAnnotation
 	private static DeclarationAnnotationElementAdapter<String> buildFetchAdapter() {
 		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.TRANSFORMATION__FETCH);
 	}
-
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.TemporalConverter;
+import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.core.context.TransientMapping;
 import org.eclipse.jpt.jpa.core.context.VersionMapping;
@@ -87,8 +87,8 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.setConverter(TemporalConverter.class);
-		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(BaseTemporalConverter.class);
+		((BaseTemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		idMapping.addGeneratedValue();
 		idMapping.getGeneratorContainer().addTableGenerator();
 		idMapping.getGeneratorContainer().addSequenceGenerator();
@@ -97,7 +97,7 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		
 		persistentAttribute.setMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		assertEquals("FOO", ((BasicMapping) persistentAttribute.getMapping()).getColumn().getSpecifiedName());
-		assertEquals(TemporalType.TIME, ((TemporalConverter) ((BasicMapping) persistentAttribute.getMapping()).getConverter()).getTemporalType());
+		assertEquals(TemporalType.TIME, ((BaseTemporalConverter) ((BasicMapping) persistentAttribute.getMapping()).getConverter()).getTemporalType());
 		
 		assertNull(resourceField.getAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(BasicAnnotation.ANNOTATION_NAME));
@@ -119,8 +119,8 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.setConverter(TemporalConverter.class);
-		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(BaseTemporalConverter.class);
+		((BaseTemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		idMapping.addGeneratedValue();
 		idMapping.getGeneratorContainer().addTableGenerator();
 		idMapping.getGeneratorContainer().addSequenceGenerator();
@@ -129,7 +129,7 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		
 		persistentAttribute.setMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
 		assertEquals("FOO", ((BasicMapping) persistentAttribute.getMapping()).getColumn().getSpecifiedName());
-		assertEquals(TemporalType.TIME, ((TemporalConverter) ((BasicMapping) persistentAttribute.getMapping()).getConverter()).getTemporalType());
+		assertEquals(TemporalType.TIME, ((BaseTemporalConverter) ((BasicMapping) persistentAttribute.getMapping()).getConverter()).getTemporalType());
 		
 		assertNull(resourceField.getAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
@@ -150,8 +150,8 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.setConverter(TemporalConverter.class);
-		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(BaseTemporalConverter.class);
+		((BaseTemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		resourceField.addAnnotation(Access2_0Annotation.ANNOTATION_NAME);
 		idMapping.addGeneratedValue();
 		idMapping.getGeneratorContainer().addTableGenerator();
@@ -160,7 +160,7 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		
 		persistentAttribute.setMappingKey(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
 		assertEquals("FOO", ((VersionMapping) persistentAttribute.getMapping()).getColumn().getSpecifiedName());
-		assertEquals(TemporalType.TIME, ((TemporalConverter) ((VersionMapping) persistentAttribute.getMapping()).getConverter()).getTemporalType());
+		assertEquals(TemporalType.TIME, ((BaseTemporalConverter) ((VersionMapping) persistentAttribute.getMapping()).getConverter()).getTemporalType());
 		
 		assertNull(resourceField.getAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
@@ -182,8 +182,8 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.setConverter(TemporalConverter.class);
-		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(BaseTemporalConverter.class);
+		((BaseTemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		idMapping.addGeneratedValue();
 		idMapping.getGeneratorContainer().addTableGenerator();
 		idMapping.getGeneratorContainer().addSequenceGenerator();
@@ -213,8 +213,8 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.setConverter(TemporalConverter.class);
-		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(BaseTemporalConverter.class);
+		((BaseTemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		idMapping.addGeneratedValue();
 		idMapping.getGeneratorContainer().addTableGenerator();
 		idMapping.getGeneratorContainer().addSequenceGenerator();
@@ -244,8 +244,8 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.setConverter(TemporalConverter.class);
-		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(BaseTemporalConverter.class);
+		((BaseTemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		idMapping.addGeneratedValue();
 		idMapping.getGeneratorContainer().addTableGenerator();
 		idMapping.getGeneratorContainer().addSequenceGenerator();
@@ -275,8 +275,8 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.setConverter(TemporalConverter.class);
-		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(BaseTemporalConverter.class);
+		((BaseTemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		idMapping.addGeneratedValue();
 		idMapping.getGeneratorContainer().addTableGenerator();
 		idMapping.getGeneratorContainer().addSequenceGenerator();
@@ -306,8 +306,8 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.setConverter(TemporalConverter.class);
-		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(BaseTemporalConverter.class);
+		((BaseTemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		idMapping.addGeneratedValue();
 		idMapping.getGeneratorContainer().addTableGenerator();
 		idMapping.getGeneratorContainer().addSequenceGenerator();
@@ -337,8 +337,8 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.setConverter(TemporalConverter.class);
-		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(BaseTemporalConverter.class);
+		((BaseTemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		idMapping.addGeneratedValue();
 		idMapping.getGeneratorContainer().addTableGenerator();
 		idMapping.getGeneratorContainer().addSequenceGenerator();
@@ -368,8 +368,8 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.setConverter(TemporalConverter.class);
-		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(BaseTemporalConverter.class);
+		((BaseTemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		idMapping.addGeneratedValue();
 		idMapping.getGeneratorContainer().addTableGenerator();
 		idMapping.getGeneratorContainer().addSequenceGenerator();
@@ -400,8 +400,8 @@ public class GenericJavaIdMapping2_0Tests extends Generic2_0ContextModelTestCase
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.setConverter(TemporalConverter.class);
-		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(BaseTemporalConverter.class);
+		((BaseTemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		idMapping.addGeneratedValue();
 		idMapping.getGeneratorContainer().addTableGenerator();
 		idMapping.getGeneratorContainer().addSequenceGenerator();

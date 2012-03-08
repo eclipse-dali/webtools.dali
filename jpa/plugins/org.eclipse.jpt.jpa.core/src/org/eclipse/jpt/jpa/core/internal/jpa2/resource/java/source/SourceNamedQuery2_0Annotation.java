@@ -1,12 +1,12 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2011 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -34,6 +34,7 @@ public final class SourceNamedQuery2_0Annotation
 	private DeclarationAnnotationElementAdapter<String> lockModeDeclarationAdapter;
 	private AnnotationElementAdapter<String> lockModeAdapter;
 	private LockModeType_2_0 lockMode;
+	private TextRange lockModeTextRange;
 
 	public static SourceNamedQuery2_0Annotation buildSourceNamedQueryAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement, int index) {
 		IndexedDeclarationAnnotationAdapter idaa = buildNamedQueryDeclarationAnnotationAdapter(index);
@@ -63,12 +64,14 @@ public final class SourceNamedQuery2_0Annotation
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
 		this.lockMode = this.buildLockMode(astRoot);
+		this.lockModeTextRange = this.buildLockModeTextRange(astRoot);
 	}
 
 	@Override
 	public void synchronizeWith(CompilationUnit astRoot) {
 		super.synchronizeWith(astRoot);
 		this.syncLockMode(this.buildLockMode(astRoot));
+		this.lockModeTextRange = this.buildLockModeTextRange(astRoot);
 	}
 
 
@@ -95,12 +98,16 @@ public final class SourceNamedQuery2_0Annotation
 		return LockModeType_2_0.fromJavaAnnotationValue(this.lockModeAdapter.getValue(astRoot));
 	}
 
-	public TextRange getLockModeTextRange(CompilationUnit astRoot) {
+	public TextRange getLockModeTextRange() {
+		return this.lockModeTextRange;
+	}
+
+	private TextRange buildLockModeTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.lockModeDeclarationAdapter, astRoot);
 	}
 
-	public boolean lockModeTouches(int pos, CompilationUnit astRoot) {
-		return this.elementTouches(this.lockModeDeclarationAdapter, pos, astRoot);
+	public boolean lockModeTouches(int pos) {
+		return this.textRangeTouches(this.lockModeTextRange, pos);
 	}
 
 	private DeclarationAnnotationElementAdapter<String> buildLockModeDeclarationAdapter() {

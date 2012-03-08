@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.ConvertibleMapping;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
-import org.eclipse.jpt.jpa.core.context.TemporalConverter;
+import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -81,7 +81,7 @@ public abstract class AbstractIdMappingComposite<T extends IdMapping>
 		addRadioButton(
 				container, 
 				JptUiDetailsMessages.TypeSection_temporal, 
-				buildConverterBooleanHolder(TemporalConverter.class), 
+				buildConverterBooleanHolder(BaseTemporalConverter.class), 
 				null);
 		registerSubPane(new TemporalTypeComposite(buildTemporalConverterHolder(converterHolder), container, getWidgetFactory()));
 	}
@@ -125,11 +125,11 @@ public abstract class AbstractIdMappingComposite<T extends IdMapping>
 		};
 	}
 	
-	protected PropertyValueModel<TemporalConverter> buildTemporalConverterHolder(PropertyValueModel<Converter> converterHolder) {
-		return new TransformationPropertyValueModel<Converter, TemporalConverter>(converterHolder) {
+	protected PropertyValueModel<BaseTemporalConverter> buildTemporalConverterHolder(PropertyValueModel<Converter> converterHolder) {
+		return new TransformationPropertyValueModel<Converter, BaseTemporalConverter>(converterHolder) {
 			@Override
-			protected TemporalConverter transform_(Converter converter) {
-				return converter.getType() == TemporalConverter.class ? (TemporalConverter) converter : null;
+			protected BaseTemporalConverter transform_(Converter converter) {
+				return converter.getType() == BaseTemporalConverter.class ? (BaseTemporalConverter) converter : null;
 			}
 		};
 	}

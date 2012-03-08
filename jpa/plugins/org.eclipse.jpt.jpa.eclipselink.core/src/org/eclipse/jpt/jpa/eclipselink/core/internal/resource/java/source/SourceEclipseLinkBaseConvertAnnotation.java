@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,22 +20,25 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConvertAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkBaseConvertAnnotation;
 
 /**
- * org.eclipse.persistence.annotations.Convert
- * org.eclipse.persistence.annotations.MapKeyConvert
+ * <code><ul>
+ * <li>org.eclipse.persistence.annotations.Convert
+ * <li>org.eclipse.persistence.annotations.MapKeyConvert
+ * </ul></code>
  */
-public abstract class SourceBaseEclipseLinkConvertAnnotation
+public abstract class SourceEclipseLinkBaseConvertAnnotation
 	extends SourceAnnotation
-	implements EclipseLinkConvertAnnotation
+	implements EclipseLinkBaseConvertAnnotation
 {
 	private final DeclarationAnnotationElementAdapter<String> valueDeclarationAdapter;
 	private final AnnotationElementAdapter<String> valueAdapter;
 	private String value;
+	private TextRange valueTextRange;
 
 
-	protected SourceBaseEclipseLinkConvertAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
+	protected SourceEclipseLinkBaseConvertAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
 		super(parent, element, daa);
 		this.valueDeclarationAdapter = this.buildValueDeclarationAdapter();
 		this.valueAdapter = new AnnotatedElementAnnotationElementAdapter<String>(element, this.valueDeclarationAdapter);
@@ -43,10 +46,12 @@ public abstract class SourceBaseEclipseLinkConvertAnnotation
 
 	public void initialize(CompilationUnit astRoot) {
 		this.value = this.buildValue(astRoot);
+		this.valueTextRange = this.buildValueTextRange(astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncValue(this.buildValue(astRoot));
+		this.valueTextRange = this.buildValueTextRange(astRoot);
 	}
 
 	@Override
@@ -86,12 +91,16 @@ public abstract class SourceBaseEclipseLinkConvertAnnotation
 		return this.valueAdapter.getValue(astRoot);
 	}
 
-	public TextRange getValueTextRange(CompilationUnit astRoot) {
+	public TextRange getValueTextRange() {
+		return this.valueTextRange;
+	}
+
+	private TextRange buildValueTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.valueDeclarationAdapter, astRoot);
 	}
 
-	public boolean valueTouches(int pos, CompilationUnit astRoot) {
-		return this.elementTouches(this.valueDeclarationAdapter, pos, astRoot);
+	public boolean valueTouches(int pos) {
+		return this.textRangeTouches(this.valueTextRange, pos);
 	}
 
 	private DeclarationAnnotationElementAdapter<String> buildValueDeclarationAdapter() {

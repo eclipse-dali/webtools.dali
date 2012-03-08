@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,14 +33,17 @@ public final class SourceOrderColumn2_0Annotation
 	private DeclarationAnnotationElementAdapter<Boolean> nullableDeclarationAdapter;
 	private AnnotationElementAdapter<Boolean> nullableAdapter;
 	private Boolean nullable;
+	private TextRange nullableTextRange;
 
 	private DeclarationAnnotationElementAdapter<Boolean> insertableDeclarationAdapter;
 	private AnnotationElementAdapter<Boolean> insertableAdapter;
 	private Boolean insertable;
+	private TextRange insertableTextRange;
 
 	private DeclarationAnnotationElementAdapter<Boolean> updatableDeclarationAdapter;
 	private AnnotationElementAdapter<Boolean> updatableAdapter;
 	private Boolean updatable;
+	private TextRange updatableTextRange;
 
 
 	public SourceOrderColumn2_0Annotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
@@ -56,17 +59,29 @@ public final class SourceOrderColumn2_0Annotation
 	@Override
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
+
 		this.nullable = this.buildNullable(astRoot);
+		this.nullableTextRange = this.buildNullableTextRange(astRoot);
+
 		this.insertable = this.buildInsertable(astRoot);
+		this.insertableTextRange = this.buildInsertableTextRange(astRoot);
+
 		this.updatable = this.buildUpdatable(astRoot);
+		this.updatableTextRange = this.buildUpdatableTextRange(astRoot);
 	}
 	
 	@Override
 	public void synchronizeWith(CompilationUnit astRoot) {
 		super.synchronizeWith(astRoot);
+
 		this.syncNullable(this.buildNullable(astRoot));
+		this.nullableTextRange = this.buildNullableTextRange(astRoot);
+
 		this.syncInsertable(this.buildInsertable(astRoot));
+		this.insertableTextRange = this.buildInsertableTextRange(astRoot);
+
 		this.syncUpdatable(this.buildUpdatable(astRoot));
+		this.updatableTextRange = this.buildUpdatableTextRange(astRoot);
 	}
 	
 	public String getAnnotationName() {
@@ -108,7 +123,11 @@ public final class SourceOrderColumn2_0Annotation
 		return this.nullableAdapter.getValue(astRoot);
 	}
 	
-	public TextRange getNullableTextRange(CompilationUnit astRoot) {
+	public TextRange getNullableTextRange() {
+		return this.nullableTextRange;
+	}
+	
+	private TextRange buildNullableTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.nullableDeclarationAdapter, astRoot);
 	}
 	
@@ -146,7 +165,11 @@ public final class SourceOrderColumn2_0Annotation
 		return this.insertableAdapter.getValue(astRoot);
 	}
 	
-	public TextRange getInsertableTextRange(CompilationUnit astRoot) {
+	public TextRange getInsertableTextRange() {
+		return this.insertableTextRange;
+	}
+	
+	private TextRange buildInsertableTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.insertableDeclarationAdapter, astRoot);
 	}
 	
@@ -184,7 +207,11 @@ public final class SourceOrderColumn2_0Annotation
 		return this.updatableAdapter.getValue(astRoot);
 	}
 
-	public TextRange getUpdatableTextRange(CompilationUnit astRoot) {
+	public TextRange getUpdatableTextRange() {
+		return this.updatableTextRange;
+	}
+	
+	private TextRange buildUpdatableTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.updatableDeclarationAdapter, astRoot);
 	}
 	

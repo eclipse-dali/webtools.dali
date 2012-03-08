@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 
 import java.util.Vector;
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -21,9 +20,12 @@ import org.eclipse.jpt.jpa.core.resource.java.BaseTableAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
 
 /**
- * javax.persistence.Table
- * javax.persistence.JoinTable
- * javax.persistence.SecondaryTable
+ * <code><ul>
+ * <li>javax.persistence.Table
+ * <li>javax.persistence.JoinTable
+ * <li>javax.persistence.SecondaryTable
+ * <li>javax.persistence.CollectionTable
+ * </ul></code>
  */
 public abstract class BinaryBaseTableAnnotation
 	extends BinaryAnnotation
@@ -85,11 +87,11 @@ public abstract class BinaryBaseTableAnnotation
 
 	protected abstract String getNameElementName();
 
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
+	public TextRange getNameTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean nameTouches(int pos, CompilationUnit astRoot) {
+	public boolean nameTouches(int pos) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -114,11 +116,11 @@ public abstract class BinaryBaseTableAnnotation
 
 	protected abstract String getSchemaElementName();
 
-	public TextRange getSchemaTextRange(CompilationUnit astRoot) {
+	public TextRange getSchemaTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean schemaTouches(int pos, CompilationUnit astRoot) {
+	public boolean schemaTouches(int pos) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -143,11 +145,11 @@ public abstract class BinaryBaseTableAnnotation
 
 	protected abstract String getCatalogElementName();
 
-	public TextRange getCatalogTextRange(CompilationUnit astRoot) {
+	public TextRange getCatalogTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean catalogTouches(int pos, CompilationUnit astRoot) {
+	public boolean catalogTouches(int pos) {
 		throw new UnsupportedOperationException();
 	}
 

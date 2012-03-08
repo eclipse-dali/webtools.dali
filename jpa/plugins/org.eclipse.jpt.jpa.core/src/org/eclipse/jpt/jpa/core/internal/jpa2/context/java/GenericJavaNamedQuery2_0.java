@@ -1,16 +1,15 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2011 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-*
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
@@ -109,8 +108,8 @@ public class GenericJavaNamedQuery2_0
 	// ********** validation **********
 
 	@Override
-	protected void validateQuery_(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		queryHelper.validate(this, this.query, this.getQueryAnnotation().getQueryTextRange(astRoot), 1, messages);
+	protected void validateQuery_(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
+		queryHelper.validate(this, this.query, this.getQueryAnnotation().getQueryTextRange(), 1, messages);
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,10 +23,10 @@ import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapt
 import org.eclipse.jpt.jpa.core.resource.java.BaseJoinColumnAnnotation;
 
 /**
- * <ul>
- * <li><code>javax.persistence.JoinColumn</code>
- * <li><code>javax.persistence.MapKeyJoinColumn</code>
- * </ul>
+ * <code><ul>
+ * <li>javax.persistence.JoinColumn
+ * <li>javax.persistence.MapKeyJoinColumn
+ * </ul></code>
  */
 public abstract class SourceBaseJoinColumnAnnotation
 	extends SourceBaseColumnAnnotation
@@ -35,6 +35,7 @@ public abstract class SourceBaseJoinColumnAnnotation
 	private DeclarationAnnotationElementAdapter<String> referencedColumnNameDeclarationAdapter;
 	private AnnotationElementAdapter<String> referencedColumnNameAdapter;
 	private String referencedColumnName;
+	private TextRange referencedColumnNameTextRange;
 
 
 	protected SourceBaseJoinColumnAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
@@ -55,12 +56,14 @@ public abstract class SourceBaseJoinColumnAnnotation
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
 		this.referencedColumnName = this.buildReferencedColumnName(astRoot);
+		this.referencedColumnNameTextRange = this.buildReferencedColumnNameTextRange(astRoot);
 	}
 
 	@Override
 	public void synchronizeWith(CompilationUnit astRoot) {
 		super.synchronizeWith(astRoot);
 		this.syncReferencedColumnName(this.buildReferencedColumnName(astRoot));
+		this.referencedColumnNameTextRange = this.buildReferencedColumnNameTextRange(astRoot);
 	}
 
 
@@ -88,12 +91,16 @@ public abstract class SourceBaseJoinColumnAnnotation
 		return this.referencedColumnNameAdapter.getValue(astRoot);
 	}
 
-	public TextRange getReferencedColumnNameTextRange(CompilationUnit astRoot) {
+	public TextRange getReferencedColumnNameTextRange() {
+		return this.referencedColumnNameTextRange;
+	}
+
+	private TextRange buildReferencedColumnNameTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.referencedColumnNameDeclarationAdapter, astRoot);
 	}
 
-	public boolean referencedColumnNameTouches(int pos, CompilationUnit astRoot) {
-		return this.elementTouches(this.referencedColumnNameDeclarationAdapter, pos, astRoot);
+	public boolean referencedColumnNameTouches(int pos) {
+		return this.textRangeTouches(this.referencedColumnNameTextRange, pos);
 	}
 
 	private DeclarationAnnotationElementAdapter<String> buildReferencedColumnNameDeclarationAdapter() {

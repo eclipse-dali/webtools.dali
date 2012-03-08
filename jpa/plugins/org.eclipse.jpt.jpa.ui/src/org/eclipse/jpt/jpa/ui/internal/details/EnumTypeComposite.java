@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.EnumType;
-import org.eclipse.jpt.jpa.core.context.EnumeratedConverter;
+import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class EnumTypeComposite extends Pane<EnumeratedConverter>
+public class EnumTypeComposite extends Pane<BaseEnumeratedConverter>
 {
 	/**
 	 * Creates a new <code>EnumTypeComposite</code>.
@@ -44,21 +44,21 @@ public class EnumTypeComposite extends Pane<EnumeratedConverter>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public EnumTypeComposite(PropertyValueModel<? extends EnumeratedConverter> subjectHolder,
+	public EnumTypeComposite(PropertyValueModel<? extends BaseEnumeratedConverter> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	private EnumFormComboViewer<EnumeratedConverter, EnumType> addEnumTypeCombo(Composite container) {
+	private EnumFormComboViewer<BaseEnumeratedConverter, EnumType> addEnumTypeCombo(Composite container) {
 
-		return new EnumFormComboViewer<EnumeratedConverter, EnumType>(this, container) {
+		return new EnumFormComboViewer<BaseEnumeratedConverter, EnumType>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(EnumeratedConverter.SPECIFIED_ENUM_TYPE_PROPERTY);
+				propertyNames.add(BaseEnumeratedConverter.SPECIFIED_ENUM_TYPE_PROPERTY);
 			}
 
 			@Override
@@ -105,9 +105,9 @@ public class EnumTypeComposite extends Pane<EnumeratedConverter>
 	
 	
 	protected PropertyValueModel<Boolean> buildBooleanHolder() {
-		return new TransformationPropertyValueModel<EnumeratedConverter, Boolean>(getSubjectHolder()) {
+		return new TransformationPropertyValueModel<BaseEnumeratedConverter, Boolean>(getSubjectHolder()) {
 			@Override
-			protected Boolean transform(EnumeratedConverter value) {
+			protected Boolean transform(BaseEnumeratedConverter value) {
 				if (getSubject() != null && getSubject().getParent().getPersistentAttribute().isVirtual()) {
 					return Boolean.FALSE;
 				}

@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.context.EmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.EnumType;
-import org.eclipse.jpt.jpa.core.context.EnumeratedConverter;
+import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTableRelationshipStrategy;
@@ -38,7 +38,7 @@ import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
-import org.eclipse.jpt.jpa.core.context.TemporalConverter;
+import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.core.context.TransientMapping;
 import org.eclipse.jpt.jpa.core.context.VersionMapping;
@@ -1540,7 +1540,7 @@ public class GenericJavaManyToManyMapping2_0Tests
 		JavaManyToManyMapping2_0 manyToManyMapping = (JavaManyToManyMapping2_0) persistentAttribute.getMapping();
 		assertNull(manyToManyMapping.getMapKeyConverter().getType());
 		
-		manyToManyMapping.setMapKeyConverter(EnumeratedConverter.class);
+		manyToManyMapping.setMapKeyConverter(BaseEnumeratedConverter.class);
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -1549,10 +1549,10 @@ public class GenericJavaManyToManyMapping2_0Tests
 		assertNotNull(enumerated);
 		assertEquals(null, enumerated.getValue());
 		
-		((EnumeratedConverter) manyToManyMapping.getMapKeyConverter()).setSpecifiedEnumType(EnumType.STRING);
+		((BaseEnumeratedConverter) manyToManyMapping.getMapKeyConverter()).setSpecifiedEnumType(EnumType.STRING);
 		assertEquals(org.eclipse.jpt.jpa.core.resource.java.EnumType.STRING, enumerated.getValue());
 		
-		((EnumeratedConverter) manyToManyMapping.getMapKeyConverter()).setSpecifiedEnumType(null);
+		((BaseEnumeratedConverter) manyToManyMapping.getMapKeyConverter()).setSpecifiedEnumType(null);
 		assertNotNull(resourceField.getAnnotation(MapKeyEnumerated2_0Annotation.ANNOTATION_NAME));
 		assertNull(enumerated.getValue());
 		
@@ -1576,12 +1576,12 @@ public class GenericJavaManyToManyMapping2_0Tests
 		enumerated.setValue(org.eclipse.jpt.jpa.core.resource.java.EnumType.STRING);
 		getJpaProject().synchronizeContextModel();
 		
-		assertEquals(EnumType.STRING, ((EnumeratedConverter) manyToManyMapping.getMapKeyConverter()).getSpecifiedEnumType());
+		assertEquals(EnumType.STRING, ((BaseEnumeratedConverter) manyToManyMapping.getMapKeyConverter()).getSpecifiedEnumType());
 		
 		enumerated.setValue(null);
 		getJpaProject().synchronizeContextModel();
 		assertNotNull(resourceField.getAnnotation(MapKeyEnumerated2_0Annotation.ANNOTATION_NAME));
-		assertNull(((EnumeratedConverter) manyToManyMapping.getMapKeyConverter()).getSpecifiedEnumType());
+		assertNull(((BaseEnumeratedConverter) manyToManyMapping.getMapKeyConverter()).getSpecifiedEnumType());
 		assertFalse(manyToManyMapping.isDefault());
 		assertSame(manyToManyMapping, persistentAttribute.getMapping());
 	}
@@ -1594,7 +1594,7 @@ public class GenericJavaManyToManyMapping2_0Tests
 		JavaManyToManyMapping2_0 manyToManyMapping = (JavaManyToManyMapping2_0) persistentAttribute.getMapping();
 		assertNull(manyToManyMapping.getMapKeyConverter().getType());
 		
-		manyToManyMapping.setMapKeyConverter(TemporalConverter.class);
+		manyToManyMapping.setMapKeyConverter(BaseTemporalConverter.class);
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -1603,10 +1603,10 @@ public class GenericJavaManyToManyMapping2_0Tests
 		assertNotNull(temporal);
 		assertEquals(null, temporal.getValue());
 		
-		((TemporalConverter) manyToManyMapping.getMapKeyConverter()).setTemporalType(TemporalType.TIME);
+		((BaseTemporalConverter) manyToManyMapping.getMapKeyConverter()).setTemporalType(TemporalType.TIME);
 		assertEquals(org.eclipse.jpt.jpa.core.resource.java.TemporalType.TIME, temporal.getValue());
 		
-		((TemporalConverter) manyToManyMapping.getMapKeyConverter()).setTemporalType(null);
+		((BaseTemporalConverter) manyToManyMapping.getMapKeyConverter()).setTemporalType(null);
 		assertNull(resourceField.getAnnotation(MapKeyTemporal2_0Annotation.ANNOTATION_NAME));
 	}
 	
@@ -1626,12 +1626,12 @@ public class GenericJavaManyToManyMapping2_0Tests
 		temporal.setValue(org.eclipse.jpt.jpa.core.resource.java.TemporalType.TIME);
 		getJpaProject().synchronizeContextModel();
 		
-		assertEquals(TemporalType.TIME, ((TemporalConverter) manyToManyMapping.getMapKeyConverter()).getTemporalType());
+		assertEquals(TemporalType.TIME, ((BaseTemporalConverter) manyToManyMapping.getMapKeyConverter()).getTemporalType());
 		
 		temporal.setValue(null);
 		getJpaProject().synchronizeContextModel();
 		assertNotNull(resourceField.getAnnotation(MapKeyTemporal2_0Annotation.ANNOTATION_NAME));
-		assertNull(((TemporalConverter) manyToManyMapping.getMapKeyConverter()).getTemporalType());
+		assertNull(((BaseTemporalConverter) manyToManyMapping.getMapKeyConverter()).getTemporalType());
 		assertFalse(manyToManyMapping.isDefault());
 		assertSame(manyToManyMapping, persistentAttribute.getMapping());
 	}

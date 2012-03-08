@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.ManyToOne2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
 /**
- * javax.persistence.ManyToOne
+ * <code>javax.persistence.ManyToOne</code>
  */
 public final class SourceManyToOneAnnotation
 	extends SourceRelationshipMappingAnnotation
@@ -40,6 +40,7 @@ public final class SourceManyToOneAnnotation
 	private static final DeclarationAnnotationElementAdapter<Boolean> OPTIONAL_ADAPTER = buildOptionalAdapter();
 	private final AnnotationElementAdapter<Boolean> optionalAdapter;
 	private Boolean optional;
+	private TextRange optionalTextRange;
 
 
 	public SourceManyToOneAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
@@ -55,12 +56,14 @@ public final class SourceManyToOneAnnotation
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
 		this.optional = this.buildOptional(astRoot);
+		this.optionalTextRange = this.buildOptionalTextRange(astRoot);
 	}
 
 	@Override
 	public void synchronizeWith(CompilationUnit astRoot) {
 		super.synchronizeWith(astRoot);
 		this.syncOptional(this.buildOptional(astRoot));
+		this.optionalTextRange = this.buildOptionalTextRange(astRoot);
 	}
 
 	@Override
@@ -112,7 +115,11 @@ public final class SourceManyToOneAnnotation
 		return this.optionalAdapter.getValue(astRoot);
 	}
 
-	public TextRange getOptionalTextRange(CompilationUnit astRoot) {
+	public TextRange getOptionalTextRange() {
+		return this.optionalTextRange;
+	}
+
+	private TextRange buildOptionalTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(OPTIONAL_ADAPTER, astRoot);
 	}
 
@@ -138,5 +145,4 @@ public final class SourceManyToOneAnnotation
 	private static DeclarationAnnotationElementAdapter<Boolean> buildOptionalAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
 		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(annotationAdapter, elementName, BooleanExpressionConverter.instance());
 	}
-
 }

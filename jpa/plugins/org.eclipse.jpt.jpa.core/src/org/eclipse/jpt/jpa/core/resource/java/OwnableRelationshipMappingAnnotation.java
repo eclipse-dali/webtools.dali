@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,16 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 
 /**
  * Represents a relationship mapping annotation that may have the
- * <code>mappedBy</code> element:<ul>
- * <li><code>javax.persistence.ManyToMany</code>
- * <li><code>javax.persistence.OneToMany</code>
- * <li><code>javax.persistence.OneToOne</code>
- * </ul>
+ * <code>mappedBy</code> element:<code><ul>
+ * <li>javax.persistence.ManyToMany
+ * <li>javax.persistence.OneToMany
+ * <li>javax.persistence.OneToOne
+ * </ul></code>
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -50,12 +49,11 @@ public interface OwnableRelationshipMappingAnnotation
 	 * Return the {@link TextRange} for the 'mappedBy' element. If the element 
 	 * does not exist return the {@link TextRange} for the annotation.
 	 */
-	TextRange getMappedByTextRange(CompilationUnit astRoot);
+	TextRange getMappedByTextRange();
 	
 	/**
 	 * Return whether the specified position touches the 'mappedBy' element.
 	 * Return false if the element does not exist.
 	 */
-	boolean mappedByTouches(int pos, CompilationUnit astRoot);
-
+	boolean mappedByTouches(int pos);
 }

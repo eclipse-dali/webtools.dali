@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.Converter;
-import org.eclipse.jpt.jpa.core.context.EnumeratedConverter;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.ConverterTextRangeResolver;
 import org.eclipse.jpt.jpa.core.resource.orm.EnumType;
@@ -28,20 +28,8 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlConvertibleMapping;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface OrmEnumeratedConverter
-	extends EnumeratedConverter, OrmConverter
+	extends OrmBaseEnumeratedConverter
 {
-	// ********** owner **********
-
-	/**
-	 */
-	public interface Owner extends OrmConverter.Owner {
-		EnumType getXmlEnumType();
-
-		void setXmlEnumType(EnumType enumType);
-
-		TextRange getEnumTextRange();
-	}
-
 	// ********** adapter **********
 
 	public static class Adapter
@@ -57,16 +45,16 @@ public interface OrmEnumeratedConverter
 		}
 
 		public Class<? extends Converter> getConverterType() {
-			return EnumeratedConverter.class;
+			return BaseEnumeratedConverter.class;
 		}
 
 		public OrmConverter buildConverter(OrmAttributeMapping parent, OrmXmlContextNodeFactory factory) {
 			XmlConvertibleMapping xmlMapping = (XmlConvertibleMapping) parent.getXmlAttributeMapping();
-			return (xmlMapping.getEnumerated() == null) ? null : factory.buildOrmEnumeratedConverter(parent, this.buildOwner(xmlMapping));
+			return (xmlMapping.getEnumerated() == null) ? null : factory.buildOrmBaseEnumeratedConverter(parent, this.buildOwner(xmlMapping));
 		}
 
-		protected OrmEnumeratedConverter.Owner buildOwner(final XmlConvertibleMapping mapping) {
-			return new OrmEnumeratedConverter.Owner() {
+		protected OrmBaseEnumeratedConverter.Owner buildOwner(final XmlConvertibleMapping mapping) {
+			return new OrmBaseEnumeratedConverter.Owner() {
 				public void setXmlEnumType(EnumType enumType) {
 					mapping.setEnumerated(enumType);
 				}
@@ -87,7 +75,7 @@ public interface OrmEnumeratedConverter
 		}
 
 		public OrmConverter buildNewConverter(OrmAttributeMapping parent, OrmXmlContextNodeFactory factory) {
-			return factory.buildOrmEnumeratedConverter(parent, this.buildOwner((XmlConvertibleMapping) parent.getXmlAttributeMapping()));
+			return factory.buildOrmBaseEnumeratedConverter(parent, this.buildOwner((XmlConvertibleMapping) parent.getXmlAttributeMapping()));
 		}
 
 		public void clearXmlValue(XmlAttributeMapping xmlMapping) {

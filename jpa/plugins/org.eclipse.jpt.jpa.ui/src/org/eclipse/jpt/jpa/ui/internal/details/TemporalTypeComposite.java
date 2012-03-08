@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
-import org.eclipse.jpt.jpa.core.context.TemporalConverter;
+import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.swt.widgets.Composite;
 
@@ -46,7 +46,7 @@ import com.ibm.icu.text.Collator;
  * @version 2.0
  * @since 1.0
  */
-public class TemporalTypeComposite extends Pane<TemporalConverter> {
+public class TemporalTypeComposite extends Pane<BaseTemporalConverter> {
 
 	/**
 	 * Creates a new <code>TemporalTypeComposite</code>.
@@ -54,7 +54,7 @@ public class TemporalTypeComposite extends Pane<TemporalConverter> {
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public TemporalTypeComposite(PropertyValueModel<? extends TemporalConverter> subjectHolder,
+	public TemporalTypeComposite(PropertyValueModel<? extends BaseTemporalConverter> subjectHolder,
 	                             Composite parent,
 	                             WidgetFactory widgetFactory) {
 
@@ -74,7 +74,7 @@ public class TemporalTypeComposite extends Pane<TemporalConverter> {
 	}
 
 	private ModifiablePropertyValueModel<TemporalType> buildTemporalTypeHolder() {
-		return new PropertyAspectAdapter<TemporalConverter, TemporalType>(getSubjectHolder(), TemporalConverter.TEMPORAL_TYPE_PROPERTY) {
+		return new PropertyAspectAdapter<BaseTemporalConverter, TemporalType>(getSubjectHolder(), BaseTemporalConverter.TEMPORAL_TYPE_PROPERTY) {
 			@Override
 			protected TemporalType buildValue_() {
 				return this.subject.getTemporalType();
@@ -129,9 +129,9 @@ public class TemporalTypeComposite extends Pane<TemporalConverter> {
 	}
 	
 	protected PropertyValueModel<Boolean> buildBooleanHolder() {
-		return new TransformationPropertyValueModel<TemporalConverter, Boolean>(getSubjectHolder()) {
+		return new TransformationPropertyValueModel<BaseTemporalConverter, Boolean>(getSubjectHolder()) {
 			@Override
-			protected Boolean transform(TemporalConverter value) {
+			protected Boolean transform(BaseTemporalConverter value) {
 				if (getSubject() != null && getSubject().getParent().getPersistentAttribute().isVirtual()) {
 					return Boolean.FALSE;
 				}

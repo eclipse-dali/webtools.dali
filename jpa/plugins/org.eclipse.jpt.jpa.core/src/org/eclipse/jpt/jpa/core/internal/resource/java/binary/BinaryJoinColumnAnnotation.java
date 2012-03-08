@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,13 +15,12 @@ import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
 
 /**
- * javax.persistence.JoinColumn
+ * <code>javax.persistence.JoinColumn</code>
  */
 public final class BinaryJoinColumnAnnotation
 	extends BinaryBaseJoinColumnAnnotation
 	implements JoinColumnAnnotation
 {
-
 	public BinaryJoinColumnAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 	}
@@ -78,5 +77,4 @@ public final class BinaryJoinColumnAnnotation
 	protected String getReferencedColumnNameElementName() {
 		return JPA.JOIN_COLUMN__REFERENCED_COLUMN_NAME;
 	}
-
 }

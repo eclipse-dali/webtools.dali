@@ -107,7 +107,7 @@ public final class SourceJoinTableAnnotation
 		return this.joinColumnsContainer.addNestedAnnotation(index);
 	}
 	
-	private JoinColumnAnnotation buildJoinColumn(int index) {
+	/* CU private */ JoinColumnAnnotation buildJoinColumn(int index) {
 		return SourceJoinColumnAnnotation.buildNestedSourceJoinColumnAnnotation(
 				this, this.annotatedElement, this.buildJoinColumnIndexedDeclarationAnnotationAdapter(index));
 	}
@@ -167,7 +167,7 @@ public final class SourceJoinTableAnnotation
 		return this.inverseJoinColumnsContainer.addNestedAnnotation(index);
 	}
 	
-	private JoinColumnAnnotation buildInverseJoinColumn(int index) {
+	/* CU private */ JoinColumnAnnotation buildInverseJoinColumn(int index) {
 		return SourceJoinColumnAnnotation.buildNestedSourceJoinColumnAnnotation(
 				this, this.annotatedElement, buildInverseJoinColumnIndexedDeclarationAnnotationAdapter(index));
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,15 +10,15 @@
 package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.java.CompleteColumnAnnotation;
 
 /**
- * Abstract implementation of ColumnAnnotation to be used for JPA annotations:
- * javax.persistence.Column
- * javax.persistence.MapKeyColumn
+ * <code><ul>
+ * <li>javax.persistence.Column
+ * <li>javax.persistence.MapKeyColumn
+ * </ul></code>
  */
 public abstract class BinaryCompleteColumnAnnotation
 	extends BinaryBaseColumnAnnotation
@@ -66,7 +66,7 @@ public abstract class BinaryCompleteColumnAnnotation
 		return (Integer) this.getJdtMemberValue(this.getLengthElementName());
 	}
 
-	public TextRange getLengthTextRange(CompilationUnit astRoot) {
+	public TextRange getLengthTextRange() {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -91,7 +91,7 @@ public abstract class BinaryCompleteColumnAnnotation
 		return (Integer) this.getJdtMemberValue(this.getPrecisionElementName());
 	}
 
-	public TextRange getPrecisionTextRange(CompilationUnit astRoot) {
+	public TextRange getPrecisionTextRange() {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -116,7 +116,7 @@ public abstract class BinaryCompleteColumnAnnotation
 		return (Integer) this.getJdtMemberValue(this.getScaleElementName());
 	}
 
-	public TextRange getScaleTextRange(CompilationUnit astRoot) {
+	public TextRange getScaleTextRange() {
 		throw new UnsupportedOperationException();
 	}
 	

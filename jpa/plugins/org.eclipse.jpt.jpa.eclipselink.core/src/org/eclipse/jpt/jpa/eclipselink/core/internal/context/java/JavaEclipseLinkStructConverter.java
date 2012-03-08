@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkStructConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
@@ -62,8 +61,8 @@ public class JavaEclipseLinkStructConverter
 	}
 
 	@Override
-	protected TextRange getAnnotationConverterClassTextRange(CompilationUnit astRoot) {
-		return this.converterAnnotation.getConverterTextRange(astRoot);
+	protected TextRange getAnnotationConverterClassTextRange() {
+		return this.converterAnnotation.getConverterTextRange();
 	}
 
 	/**
@@ -72,7 +71,6 @@ public class JavaEclipseLinkStructConverter
 	public String getFullyQualifiedConverterClass() {
 		return this.getConverterClass();
 	}
-
 
 	// ********** metadata conversion **********
 

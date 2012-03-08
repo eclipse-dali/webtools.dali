@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,10 +30,12 @@ import org.eclipse.jpt.jpa.core.resource.java.CascadeType;
 import org.eclipse.jpt.jpa.core.resource.java.FetchType;
 
 /**
- * javax.persistence.ManyToMany
- * javax.persistence.ManyToOne
- * javax.persistence.OneToMany
- * javax.persistence.OneToOne
+ * <code><ul>
+ * <li>javax.persistence.ManyToMany
+ * <li>javax.persistence.ManyToOne
+ * <li>javax.persistence.OneToMany
+ * <li>javax.persistence.OneToOne
+ * </ul></code>
  */
 abstract class SourceRelationshipMappingAnnotation
 	extends SourceAnnotation
@@ -42,6 +44,7 @@ abstract class SourceRelationshipMappingAnnotation
 	final DeclarationAnnotationElementAdapter<String> targetEntityDeclarationAdapter;
 	final AnnotationElementAdapter<String> targetEntityAdapter;
 	String targetEntity;
+	TextRange targetEntityTextRange;
 
 	/**
 	 * @see org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceIdClassAnnotation#fullyQualifiedClassName
@@ -53,10 +56,12 @@ abstract class SourceRelationshipMappingAnnotation
 	final DeclarationAnnotationElementAdapter<String> fetchDeclarationAdapter;
 	final AnnotationElementAdapter<String> fetchAdapter;
 	FetchType fetch;
+	TextRange fetchTextRange;
 
 	final DeclarationAnnotationElementAdapter<String[]> cascadeDeclarationAdapter;
 	final AnnotationElementAdapter<String[]> cascadeAdapter;
 	CascadeType[] cascadeTypes = EMPTY_CASCADE_TYPE_ARRAY;  // this should never be null
+	TextRange cascadeTextRange;
 	private static final CascadeType[] EMPTY_CASCADE_TYPE_ARRAY = new CascadeType[0];
 
 
@@ -80,14 +85,24 @@ abstract class SourceRelationshipMappingAnnotation
 
 	public void initialize(CompilationUnit astRoot) {
 		this.targetEntity = this.buildTargetEntity(astRoot);
+		this.targetEntityTextRange = this.buildTargetEntityTextRange(astRoot);
+
 		this.fetch = this.buildFetch(astRoot);
+		this.fetchTextRange = this.buildFetchTextRange(astRoot);
+
 		this.cascadeTypes = this.buildCascadeTypes(astRoot);
+		this.cascadeTextRange = this.buildCascadeTextRange(astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncFetch(this.buildFetch(astRoot));
+		this.targetEntityTextRange = this.buildTargetEntityTextRange(astRoot);
+
 		this.syncTargetEntity(this.buildTargetEntity(astRoot));
+		this.fetchTextRange = this.buildFetchTextRange(astRoot);
+
 		this.syncCascadeTypes(this.buildCascadeTypes(astRoot));
+		this.cascadeTextRange = this.buildCascadeTextRange(astRoot);
 	}
 
 	@Override
@@ -136,7 +151,11 @@ abstract class SourceRelationshipMappingAnnotation
 		return this.targetEntityAdapter.getValue(astRoot);
 	}
 
-	public TextRange getTargetEntityTextRange(CompilationUnit astRoot) {
+	public TextRange getTargetEntityTextRange() {
+		return this.targetEntityTextRange;
+	}
+
+	private TextRange buildTargetEntityTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.targetEntityDeclarationAdapter, astRoot);
 	}
 
@@ -184,7 +203,11 @@ abstract class SourceRelationshipMappingAnnotation
 		return FetchType.fromJavaAnnotationValue(this.fetchAdapter.getValue(astRoot));
 	}
 
-	public TextRange getFetchTextRange(CompilationUnit astRoot) {
+	public TextRange getFetchTextRange() {
+		return this.fetchTextRange;
+	}
+
+	private TextRange buildFetchTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.fetchDeclarationAdapter, astRoot);
 	}
 
@@ -231,7 +254,11 @@ abstract class SourceRelationshipMappingAnnotation
 		return ArrayTools.contains(this.cascadeTypes, cascadeType);
 	}
 
-	public TextRange getCascadeTextRange(CompilationUnit astRoot) {
+	public TextRange getCascadeTextRange() {
+		return this.cascadeTextRange;
+	}
+
+	private TextRange buildCascadeTextRange(CompilationUnit astRoot) {
 		return getElementTextRange(this.cascadeDeclarationAdapter, astRoot);
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.BaseEclipseLinkTypeConverterAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkBaseTypeConverterAnnotation;
 
 /**
  * <code>
@@ -31,9 +31,9 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.BaseEclipseLinkTypeCon
  * </ul>
  * </code>
  */
-abstract class SourceBaseEclipseLinkTypeConverterAnnotation
+abstract class SourceEclipseLinkBaseTypeConverterAnnotation
 	extends SourceEclipseLinkNamedConverterAnnotation
-	implements BaseEclipseLinkTypeConverterAnnotation
+	implements EclipseLinkBaseTypeConverterAnnotation
 {
 	final DeclarationAnnotationElementAdapter<String> dataTypeDeclarationAdapter;
 	final AnnotationElementAdapter<String> dataTypeAdapter;
@@ -60,7 +60,7 @@ abstract class SourceBaseEclipseLinkTypeConverterAnnotation
 	boolean fqObjectTypeStale = true;
 
 
-	SourceBaseEclipseLinkTypeConverterAnnotation(
+	SourceEclipseLinkBaseTypeConverterAnnotation(
 			JavaResourceAnnotatedElement parent,
 			AnnotatedElement element,
 			IndexedDeclarationAnnotationAdapter daa,
@@ -81,8 +81,10 @@ abstract class SourceBaseEclipseLinkTypeConverterAnnotation
 	@Override
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
+
 		this.dataType = this.buildDataType(astRoot);
 		this.dataTypeTextRange = this.buildDataTypeTextRange(astRoot);
+
 		this.objectType = this.buildObjectType(astRoot);
 		this.objectTypeTextRange = this.buildObjectTypeTextRange(astRoot);
 	}
@@ -90,8 +92,10 @@ abstract class SourceBaseEclipseLinkTypeConverterAnnotation
 	@Override
 	public void synchronizeWith(CompilationUnit astRoot) {
 		super.synchronizeWith(astRoot);
+
 		this.syncDataType(this.buildDataType(astRoot));
 		this.dataTypeTextRange = this.buildDataTypeTextRange(astRoot);
+
 		this.syncObjectType(this.buildObjectType(astRoot));
 		this.objectTypeTextRange = this.buildObjectTypeTextRange(astRoot);
 	}
@@ -136,7 +140,7 @@ abstract class SourceBaseEclipseLinkTypeConverterAnnotation
 		return this.dataTypeAdapter.getValue(astRoot);
 	}
 
-	public TextRange getDataTypeTextRange(CompilationUnit astRoot) {
+	public TextRange getDataTypeTextRange() {
 		return this.dataTypeTextRange;
 	}
 
@@ -193,7 +197,7 @@ abstract class SourceBaseEclipseLinkTypeConverterAnnotation
 		return this.objectTypeAdapter.getValue(astRoot);
 	}
 
-	public TextRange getObjectTypeTextRange(CompilationUnit astRoot) {
+	public TextRange getObjectTypeTextRange() {
 		return this.objectTypeTextRange;
 	}
 

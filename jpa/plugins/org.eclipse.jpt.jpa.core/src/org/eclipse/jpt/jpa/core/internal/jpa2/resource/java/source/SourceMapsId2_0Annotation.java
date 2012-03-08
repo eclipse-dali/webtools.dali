@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsId2_0Annotation;
 
 /**
- * javax.persistence.MapsId
+ * <code>javax.persistence.MapsId</code>
  */
 public final class SourceMapsId2_0Annotation
 	extends SourceAnnotation
@@ -35,6 +35,7 @@ public final class SourceMapsId2_0Annotation
 	private static final DeclarationAnnotationElementAdapter<String> VALUE_ADAPTER = buildValueAdapter();
 	private final AnnotationElementAdapter<String> valueAdapter;
 	private String value;
+	private TextRange valueTextRange;
 	
 	
 	public SourceMapsId2_0Annotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
@@ -49,10 +50,12 @@ public final class SourceMapsId2_0Annotation
 	
 	public void initialize(CompilationUnit astRoot) {
 		this.value = this.buildValue(astRoot);
+		this.valueTextRange = this.buildValueTextRange(astRoot);
 	}
 	
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncValue(this.buildValue(astRoot));
+		this.valueTextRange = this.buildValueTextRange(astRoot);
 	}
 	
 	@Override
@@ -90,12 +93,16 @@ public final class SourceMapsId2_0Annotation
 		return this.valueAdapter.getValue(astRoot);
 	}
 	
-	public TextRange getValueTextRange(CompilationUnit astRoot) {
+	public TextRange getValueTextRange() {
+		return this.valueTextRange;
+	}
+	
+	private TextRange buildValueTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(VALUE_ADAPTER, astRoot);
 	}
 	
-	public boolean valueTouches(int pos, CompilationUnit astRoot) {
-		return this.elementTouches(VALUE_ADAPTER, pos, astRoot);
+	public boolean valueTouches(int pos) {
+		return this.textRangeTouches(this.valueTextRange, pos);
 	}
 	
 	

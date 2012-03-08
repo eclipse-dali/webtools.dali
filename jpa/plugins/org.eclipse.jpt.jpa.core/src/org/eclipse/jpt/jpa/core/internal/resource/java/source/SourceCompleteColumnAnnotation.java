@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,10 +19,10 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapt
 import org.eclipse.jpt.jpa.core.resource.java.CompleteColumnAnnotation;
 
 /**
- * <ul>
- * <li><code>javax.persistence.Column</code>
- * <li><code>javax.persistence.MapKeyColumn</code>
- * </ul>
+ * <code><ul>
+ * <li>javax.persistence.Column
+ * <li>javax.persistence.MapKeyColumn
+ * </ul></code>
  */
 public abstract class SourceCompleteColumnAnnotation
 	extends SourceBaseColumnAnnotation
@@ -31,14 +31,17 @@ public abstract class SourceCompleteColumnAnnotation
 	protected DeclarationAnnotationElementAdapter<Integer> lengthDeclarationAdapter;
 	protected AnnotationElementAdapter<Integer> lengthAdapter;
 	protected Integer length;
+	protected TextRange lengthTextRange;
 
 	protected DeclarationAnnotationElementAdapter<Integer> precisionDeclarationAdapter;
 	protected AnnotationElementAdapter<Integer> precisionAdapter;
 	protected Integer precision;
+	protected TextRange precisionTextRange;
 
 	protected DeclarationAnnotationElementAdapter<Integer> scaleDeclarationAdapter;
 	protected AnnotationElementAdapter<Integer> scaleAdapter;
 	protected Integer scale;
+	protected TextRange scaleTextRange;
 
 
 	protected SourceCompleteColumnAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
@@ -54,17 +57,29 @@ public abstract class SourceCompleteColumnAnnotation
 	@Override
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
+
 		this.length = this.buildLength(astRoot);
+		this.lengthTextRange = this.buildLengthTextRange(astRoot);
+
 		this.precision = this.buildPrecision(astRoot);
+		this.precisionTextRange = this.buildPrecisionTextRange(astRoot);
+
 		this.scale = this.buildScale(astRoot);
+		this.scaleTextRange = this.buildScaleTextRange(astRoot);
 	}
 
 	@Override
 	public void synchronizeWith(CompilationUnit astRoot) {
 		super.synchronizeWith(astRoot);
+
 		this.syncLength(this.buildLength(astRoot));
+		this.lengthTextRange = this.buildLengthTextRange(astRoot);
+
 		this.syncPrecision(this.buildPrecision(astRoot));
+		this.precisionTextRange = this.buildPrecisionTextRange(astRoot);
+
 		this.syncScale(this.buildScale(astRoot));
+		this.scaleTextRange = this.buildScaleTextRange(astRoot);
 	}
 
 
@@ -92,7 +107,11 @@ public abstract class SourceCompleteColumnAnnotation
 		return this.lengthAdapter.getValue(astRoot);
 	}
 
-	public TextRange getLengthTextRange(CompilationUnit astRoot) {
+	public TextRange getLengthTextRange() {
+		return this.lengthTextRange;
+	}
+	
+	protected TextRange buildLengthTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.lengthDeclarationAdapter, astRoot);
 	}
 	
@@ -128,7 +147,11 @@ public abstract class SourceCompleteColumnAnnotation
 		return this.precisionAdapter.getValue(astRoot);
 	}
 
-	public TextRange getPrecisionTextRange(CompilationUnit astRoot) {
+	public TextRange getPrecisionTextRange() {
+		return this.precisionTextRange;
+	}
+	
+	protected TextRange buildPrecisionTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.precisionDeclarationAdapter, astRoot);
 	}
 	
@@ -164,7 +187,11 @@ public abstract class SourceCompleteColumnAnnotation
 		return this.scaleAdapter.getValue(astRoot);
 	}
 
-	public TextRange getScaleTextRange(CompilationUnit astRoot) {
+	public TextRange getScaleTextRange() {
+		return this.scaleTextRange;
+	}
+	
+	protected TextRange buildScaleTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.scaleDeclarationAdapter, astRoot);
 	}
 	
@@ -188,5 +215,4 @@ public abstract class SourceCompleteColumnAnnotation
 				(this.precision == null) &&
 				(this.scale == null);
 	}
-
 }

@@ -1,17 +1,15 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryBaseDiscriminatorColumnAnnotation;
@@ -19,7 +17,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTenantDiscriminatorColumnAnnotation2_3;
 
 /**
- * org.eclipse.persistence.annotations.TenantDiscriminatorColumn
+ * <code>org.eclipse.persistence.annotations.TenantDiscriminatorColumn</code>
  */
 public final class BinaryEclipseLinkTenantDiscriminatorColumnAnnotation2_3
 	extends BinaryBaseDiscriminatorColumnAnnotation
@@ -94,7 +92,7 @@ public final class BinaryEclipseLinkTenantDiscriminatorColumnAnnotation2_3
 		return (String) this.getJdtMemberValue(EclipseLink.TENANT_DISCRIMINATOR_COLUMN__CONTEXT_PROPERTY);
 	}
 
-	public TextRange getContextPropertyTextRange(CompilationUnit astRoot) {
+	public TextRange getContextPropertyTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -117,11 +115,11 @@ public final class BinaryEclipseLinkTenantDiscriminatorColumnAnnotation2_3
 		return (String) this.getJdtMemberValue(EclipseLink.TENANT_DISCRIMINATOR_COLUMN__TABLE);
 	}
 
-	public TextRange getTableTextRange(CompilationUnit astRoot) {
+	public TextRange getTableTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean tableTouches(int pos, CompilationUnit astRoot) {
+	public boolean tableTouches(int pos) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -144,8 +142,7 @@ public final class BinaryEclipseLinkTenantDiscriminatorColumnAnnotation2_3
 		return (Boolean) this.getJdtMemberValue(EclipseLink.TENANT_DISCRIMINATOR_COLUMN__PRIMARY_KEY);
 	}
 
-	public TextRange getPrimaryKeyTextRange(CompilationUnit astRoot) {
+	public TextRange getPrimaryKeyTextRange() {
 		throw new UnsupportedOperationException();
 	}
-
 }

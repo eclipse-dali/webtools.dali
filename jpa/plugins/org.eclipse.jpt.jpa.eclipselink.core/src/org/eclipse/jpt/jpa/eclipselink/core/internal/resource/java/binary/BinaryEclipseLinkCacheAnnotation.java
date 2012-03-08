@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -22,7 +21,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkCacheAnnota
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTimeOfDayAnnotation;
 
 /**
- * org.eclipse.persistence.annotations.Cache
+ * <code>org.eclipse.persistence.annotations.Cache</code>
  */
 public final class BinaryEclipseLinkCacheAnnotation
 	extends BinaryAnnotation
@@ -96,7 +95,7 @@ public final class BinaryEclipseLinkCacheAnnotation
 		return CacheType.fromJavaAnnotationValue(this.getJdtMemberValue(EclipseLink.CACHE__TYPE));
 	}
 
-	public TextRange getTypeTextRange(CompilationUnit astRoot) {
+	public TextRange getTypeTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -119,7 +118,7 @@ public final class BinaryEclipseLinkCacheAnnotation
 		return (Integer) this.getJdtMemberValue(EclipseLink.CACHE__SIZE);
 	}
 
-	public TextRange getSizeTextRange(CompilationUnit astRoot) {
+	public TextRange getSizeTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -142,7 +141,7 @@ public final class BinaryEclipseLinkCacheAnnotation
 		return (Boolean) this.getJdtMemberValue(EclipseLink.CACHE__SHARED);
 	}
 
-	public TextRange getSharedTextRange(CompilationUnit astRoot) {
+	public TextRange getSharedTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -165,7 +164,7 @@ public final class BinaryEclipseLinkCacheAnnotation
 		return (Integer) this.getJdtMemberValue(EclipseLink.CACHE__EXPIRY);
 	}
 
-	public TextRange getExpiryTextRange(CompilationUnit astRoot) {
+	public TextRange getExpiryTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -216,7 +215,7 @@ public final class BinaryEclipseLinkCacheAnnotation
 //		}
 	}
 
-	public TextRange getExpiryTimeOfDayTextRange(CompilationUnit astRoot) {
+	public TextRange getExpiryTimeOfDayTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -239,7 +238,7 @@ public final class BinaryEclipseLinkCacheAnnotation
 		return (Boolean) this.getJdtMemberValue(EclipseLink.CACHE__ALWAYS_REFRESH);
 	}
 
-	public TextRange getAlwaysRefreshTextRange(CompilationUnit astRoot) {
+	public TextRange getAlwaysRefreshTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -262,7 +261,7 @@ public final class BinaryEclipseLinkCacheAnnotation
 		return (Boolean) this.getJdtMemberValue(EclipseLink.CACHE__REFRESH_ONLY_IF_NEWER);
 	}
 
-	public TextRange getRefreshOnlyIfNewerTextRange(CompilationUnit astRoot) {
+	public TextRange getRefreshOnlyIfNewerTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -285,7 +284,7 @@ public final class BinaryEclipseLinkCacheAnnotation
 		return (Boolean) this.getJdtMemberValue(EclipseLink.CACHE__DISABLE_HITS);
 	}
 
-	public TextRange getDisablesHitsTextRange(CompilationUnit astRoot) {
+	public TextRange getDisableHitsTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -308,7 +307,7 @@ public final class BinaryEclipseLinkCacheAnnotation
 		return CacheCoordinationType.fromJavaAnnotationValue(this.getJdtMemberValue(EclipseLink.CACHE__COORDINATION_TYPE));
 	}
 
-	public TextRange getCoordinationTypeTextRange(CompilationUnit astRoot) {
+	public TextRange getCoordinationTypeTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -331,8 +330,7 @@ public final class BinaryEclipseLinkCacheAnnotation
 		return CacheIsolationType2_2.fromJavaAnnotationValue(this.getJdtMemberValue(EclipseLink.CACHE__ISOLATION));
 	}
 
-	public TextRange getIsolationTextRange(CompilationUnit astRoot) {
+	public TextRange getIsolationTextRange() {
 		throw new UnsupportedOperationException();
 	}
-
 }

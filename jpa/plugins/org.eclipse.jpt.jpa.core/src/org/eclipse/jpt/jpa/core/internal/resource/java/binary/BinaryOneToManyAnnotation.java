@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
@@ -18,7 +17,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.OneToMany2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
 /**
- * javax.persistence.OneToMany
+ * <code>javax.persistence.OneToMany</code>
  */
 public final class BinaryOneToManyAnnotation
 	extends BinaryRelationshipMappingAnnotation
@@ -85,11 +84,11 @@ public final class BinaryOneToManyAnnotation
 		return (String) this.getJdtMemberValue(JPA.ONE_TO_MANY__MAPPED_BY);
 	}
 
-	public TextRange getMappedByTextRange(CompilationUnit astRoot) {
+	public TextRange getMappedByTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean mappedByTouches(int pos, CompilationUnit astRoot) {
+	public boolean mappedByTouches(int pos) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -104,7 +103,7 @@ public final class BinaryOneToManyAnnotation
 		throw new UnsupportedOperationException();
 	}
 
-	public TextRange getOrphanRemovalTextRange(CompilationUnit astRoot) {
+	public TextRange getOrphanRemovalTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -117,5 +116,4 @@ public final class BinaryOneToManyAnnotation
 		this.orphanRemoval = orphanRemoval;
 		this.firePropertyChanged(ORPHAN_REMOVAL_PROPERTY, old, orphanRemoval);
 	}
-
 }

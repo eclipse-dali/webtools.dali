@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -93,14 +93,14 @@ public class GenericJavaUniqueConstraint
 		if (result != null) {
 			return result;
 		}
-		if (this.columnNamesTouches(pos, astRoot)) {
+		if (this.columnNamesTouches(pos)) {
 			return this.javaCandidateColumnNames(filter);
 		}
 		return null;
 	}
 
-	protected boolean columnNamesTouches(int pos, CompilationUnit astRoot) {
-		return this.uniqueConstraintAnnotation.columnNamesTouches(pos, astRoot);
+	protected boolean columnNamesTouches(int pos) {
+		return this.uniqueConstraintAnnotation.columnNamesTouches(pos);
 	}
 
 	protected Iterable<String> javaCandidateColumnNames(Filter<String> filter) {

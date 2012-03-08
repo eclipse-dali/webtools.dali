@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.MapKeyAnnotation;
 
 /**
- * javax.persistence.MapKey
+ * <code>javax.persistence.MapKey</code>
  */
 public final class SourceMapKeyAnnotation
 	extends SourceAnnotation
@@ -35,6 +35,7 @@ public final class SourceMapKeyAnnotation
 	private static final DeclarationAnnotationElementAdapter<String> NAME_ADAPTER = buildNameAdapter();
 	private final AnnotationElementAdapter<String> nameAdapter;
 	private String name;
+	private TextRange nameTextRange;
 
 
 	public SourceMapKeyAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
@@ -48,10 +49,12 @@ public final class SourceMapKeyAnnotation
 
 	public void initialize(CompilationUnit astRoot) {
 		this.name = this.buildName(astRoot);
+		this.nameTextRange = this.buildNameTextRange(astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncName(this.buildName(astRoot));
+		this.nameTextRange = this.buildNameTextRange(astRoot);
 	}
 
 	@Override
@@ -90,12 +93,16 @@ public final class SourceMapKeyAnnotation
 		return this.nameAdapter.getValue(astRoot);
 	}
 
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
+	public TextRange getNameTextRange() {
+		return this.nameTextRange;
+	}
+
+	public TextRange buildNameTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(NAME_ADAPTER, astRoot);
 	}
 
-	public boolean nameTouches(int pos, CompilationUnit astRoot) {
-		return this.elementTouches(NAME_ADAPTER, pos, astRoot);
+	public boolean nameTouches(int pos) {
+		return this.textRangeTouches(nameTextRange, pos);
 	}
 
 
@@ -104,5 +111,4 @@ public final class SourceMapKeyAnnotation
 	private static DeclarationAnnotationElementAdapter<String> buildNameAdapter() {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.MAP_KEY__NAME);
 	}
-
 }

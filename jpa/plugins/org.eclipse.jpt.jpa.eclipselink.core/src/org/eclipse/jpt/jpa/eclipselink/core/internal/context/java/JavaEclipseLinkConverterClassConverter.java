@@ -168,10 +168,10 @@ public abstract class JavaEclipseLinkConverterClassConverter<A extends EclipseLi
 	}
 
 	protected TextRange getConverterClassTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.getAnnotationConverterClassTextRange(astRoot), astRoot);
+		return this.getValidationTextRange(this.getAnnotationConverterClassTextRange(), astRoot);
 	}
 
-	protected abstract TextRange getAnnotationConverterClassTextRange(CompilationUnit astRoot);
+	protected abstract TextRange getAnnotationConverterClassTextRange();
 
 	@Override
 	public boolean isEquivalentTo(JpaNamedContextNode node) {

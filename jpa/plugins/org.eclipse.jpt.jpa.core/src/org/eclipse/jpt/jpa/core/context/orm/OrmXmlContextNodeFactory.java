@@ -253,9 +253,9 @@ public interface OrmXmlContextNodeFactory
 
 	OrmVirtualUniqueConstraint buildOrmVirtualUniqueConstraint(XmlContextNode parent, ReadOnlyUniqueConstraint overriddenUniqueConstraint);
 
-	OrmConverter buildOrmEnumeratedConverter(OrmAttributeMapping parent, OrmEnumeratedConverter.Owner owner);
+	OrmConverter buildOrmBaseEnumeratedConverter(OrmAttributeMapping parent, OrmBaseEnumeratedConverter.Owner owner);
 
-	OrmConverter buildOrmTemporalConverter(OrmAttributeMapping parent, OrmTemporalConverter.Owner owner);
+	OrmConverter buildOrmBaseTemporalConverter(OrmAttributeMapping parent, OrmBaseTemporalConverter.Owner owner);
 
 	OrmConverter buildOrmLobConverter(OrmAttributeMapping parent, OrmConverter.Owner owner);
 

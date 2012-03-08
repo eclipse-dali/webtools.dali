@@ -155,14 +155,14 @@ public class GenericJavaPrimaryKeyJoinColumn
 		if (result != null) {
 			return result;
 		}
-		if (this.referencedColumnNameTouches(pos, astRoot)) {
+		if (this.referencedColumnNameTouches(pos)) {
 			return this.getJavaCandidateReferencedColumnNames(filter);
 		}
 		return null;
 	}
 
-	public boolean referencedColumnNameTouches(int pos, CompilationUnit astRoot) {
-		return this.columnAnnotation.referencedColumnNameTouches(pos, astRoot);
+	protected boolean referencedColumnNameTouches(int pos) {
+		return this.columnAnnotation.referencedColumnNameTouches(pos);
 	}
 
 	protected Iterable<String> getJavaCandidateReferencedColumnNames(Filter<String> filter) {
@@ -187,7 +187,7 @@ public class GenericJavaPrimaryKeyJoinColumn
 	}
 
 	public TextRange getReferencedColumnNameTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.columnAnnotation.getReferencedColumnNameTextRange(astRoot), astRoot);
+		return this.getValidationTextRange(this.columnAnnotation.getReferencedColumnNameTextRange(), astRoot);
 	}
 
 

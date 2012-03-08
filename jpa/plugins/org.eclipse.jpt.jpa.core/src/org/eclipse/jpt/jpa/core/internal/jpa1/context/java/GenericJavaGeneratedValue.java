@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -167,14 +167,14 @@ public class GenericJavaGeneratedValue
 		if (result != null) {
 			return result;
 		}
-		if (this.generatorTouches(pos, astRoot)) {
+		if (this.generatorTouches(pos)) {
 			return this.getJavaCandidateGeneratorNames(filter);
 		}
 		return null;
 	}
 
-	protected boolean generatorTouches(int pos, CompilationUnit astRoot) {
-		return this.generatedValueAnnotation.generatorTouches(pos, astRoot);
+	protected boolean generatorTouches(int pos) {
+		return this.generatedValueAnnotation.generatorTouches(pos);
 	}
 
 	protected Iterable<String> getJavaCandidateGeneratorNames(Filter<String> filter) {
@@ -228,6 +228,6 @@ public class GenericJavaGeneratedValue
 	}
 
 	public TextRange getGeneratorTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.generatedValueAnnotation.getGeneratorTextRange(astRoot), astRoot);
+		return this.getValidationTextRange(this.generatedValueAnnotation.getGeneratorTextRange(), astRoot);
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,26 +7,36 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.core.context;
+package org.eclipse.jpt.jpa.core.context.orm;
+
+import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
+import org.eclipse.jpt.jpa.core.resource.orm.TemporalType;
 
 /**
- * JPA temporal converter
+ * <code>orm.xml</code> temporal/map key temporal converter
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
- * 
- * @version 2.1
- * @since 2.1
  */
-public interface TemporalConverter
-	extends Converter
+public interface OrmBaseTemporalConverter
+	extends BaseTemporalConverter, OrmConverter
 {
-	static final String[] TEMPORAL_MAPPING_SUPPORTED_TYPES = {"java.util.Date", "java.util.Calendar", "java.util.GregorianCalendar"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-	
-	TemporalType getTemporalType();
-	void setTemporalType(TemporalType temporalType);
-		String TEMPORAL_TYPE_PROPERTY = "temporalType"; //$NON-NLS-1$
+	// ********** owner **********
+
+	/**
+	 * 
+	 */
+	public interface Owner 
+		extends OrmConverter.Owner
+	{
+		TemporalType getXmlTemporalType();
+
+		void setXmlTemporalType(TemporalType temporalType);
+
+		TextRange getTemporalTextRange();
+	}
 }

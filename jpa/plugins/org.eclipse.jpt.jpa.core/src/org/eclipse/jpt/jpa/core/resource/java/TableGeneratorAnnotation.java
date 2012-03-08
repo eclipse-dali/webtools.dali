@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,14 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
 /**
  * Corresponds to the JPA annotation
- * javax.persistence.TableGenerator
- * 
+ * <code>javax.persistence.TableGenerator</code>
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -48,13 +47,13 @@ public interface TableGeneratorAnnotation
 	 * Return the {@link TextRange} for the 'table' element. If the element 
 	 * does not exist return the {@link TextRange} for the TableGenerator annotation.
 	 */
-	TextRange getTableTextRange(CompilationUnit astRoot);
+	TextRange getTableTextRange();
 
 	/**
 	 * Return whether the specified position touches the 'table' element.
 	 * Return false if the element does not exist.
 	 */
-	boolean tableTouches(int pos, CompilationUnit astRoot);
+	boolean tableTouches(int pos);
 
 
 	/**
@@ -74,13 +73,13 @@ public interface TableGeneratorAnnotation
 	 * Return the {@link TextRange} for the 'schema' element. If the element 
 	 * does not exist return the {@link TextRange} for the TableGenerator annotation.
 	 */
-	TextRange getSchemaTextRange(CompilationUnit astRoot);
+	TextRange getSchemaTextRange();
 
 	/**
 	 * Return whether the specified position touches the 'schema' element.
 	 * Return false if the element does not exist.
 	 */
-	boolean schemaTouches(int pos, CompilationUnit astRoot);
+	boolean schemaTouches(int pos);
 
 
 	/**
@@ -100,13 +99,13 @@ public interface TableGeneratorAnnotation
 	 * Return the {@link TextRange} for the 'catalog' element. If the element 
 	 * does not exist return the {@link TextRange} for the TableGenerator annotation.
 	 */
-	TextRange getCatalogTextRange(CompilationUnit astRoot);
+	TextRange getCatalogTextRange();
 
 	/**
 	 * Return whether the specified position touches the 'catalog' element.
 	 * Return false if the element does not exist.
 	 */
-	boolean catalogTouches(int pos, CompilationUnit astRoot);
+	boolean catalogTouches(int pos);
 
 
 	/**
@@ -126,13 +125,13 @@ public interface TableGeneratorAnnotation
 	 * Return the {@link TextRange} for the 'pkColumnName' element. If the element 
 	 * does not exist return the {@link TextRange} for the TableGenerator annotation.
 	 */
-	TextRange getPkColumnNameTextRange(CompilationUnit astRoot);
+	TextRange getPkColumnNameTextRange();
 
 	/**
 	 * Return whether the specified position touches the 'pkColumnName' element.
 	 * Return false if the element does not exist.
 	 */
-	boolean pkColumnNameTouches(int pos, CompilationUnit astRoot);
+	boolean pkColumnNameTouches(int pos);
 
 
 	/**
@@ -152,13 +151,13 @@ public interface TableGeneratorAnnotation
 	 * Return the {@link TextRange} for the 'valueColumnName' element. If the element 
 	 * does not exist return the {@link TextRange} for the TableGenerator annotation.
 	 */
-	TextRange getValueColumnNameTextRange(CompilationUnit astRoot);
+	TextRange getValueColumnNameTextRange();
 
 	/**
 	 * Return whether the specified position touches the 'valueColumnName' element.
 	 * Return false if the element does not exist.
 	 */
-	boolean valueColumnNameTouches(int pos, CompilationUnit astRoot);
+	boolean valueColumnNameTouches(int pos);
 
 
 	/**
@@ -178,13 +177,13 @@ public interface TableGeneratorAnnotation
 	 * Return the {@link TextRange} for the 'pkColumnValue' element. If the element 
 	 * does not exist return the {@link TextRange} for the TableGenerator annotation.
 	 */
-	TextRange getPkColumnValueTextRange(CompilationUnit astRoot);
+	TextRange getPkColumnValueTextRange();
 
 	/**
 	 * Return whether the specified position touches the 'pkColumnValue' element.
 	 * Return false if the element does not exist.
 	 */
-	boolean pkColumnValueTouches(int pos, CompilationUnit astRoot);
+	boolean pkColumnValueTouches(int pos);
 
 
 	/**

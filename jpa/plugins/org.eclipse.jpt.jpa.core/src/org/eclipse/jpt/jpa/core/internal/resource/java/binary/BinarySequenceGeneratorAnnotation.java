@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,14 +10,13 @@
 package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.SequenceGeneratorAnnotation;
 
 /**
- * javax.persistence.SequenceGenerator
+ * <code>javax.persistence.SequenceGenerator</code>
  */
 public abstract class BinarySequenceGeneratorAnnotation
 	extends BinaryGeneratorAnnotation
@@ -81,12 +80,11 @@ public abstract class BinarySequenceGeneratorAnnotation
 		return (String) this.getJdtMemberValue(JPA.SEQUENCE_GENERATOR__SEQUENCE_NAME);
 	}
 
-	public TextRange getSequenceNameTextRange(CompilationUnit astRoot) {
+	public TextRange getSequenceNameTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean sequenceNameTouches(int pos, CompilationUnit astRoot) {
+	public boolean sequenceNameTouches(int pos) {
 		throw new UnsupportedOperationException();
 	}
-
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,20 +19,23 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.jpa.core.resource.java.BaseEnumeratedAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.EnumType;
-import org.eclipse.jpt.jpa.core.resource.java.EnumeratedAnnotation;
 
 /**
- * javax.persistence.Enumerated
- * javax.persistence.MapKeyEnumerated
+ * <code><ul>
+ * <li>javax.persistence.Enumerated
+ * <li>javax.persistence.MapKeyEnumerated
+ * </ul></code>
  */
 public abstract class SourceBaseEnumeratedAnnotation
 	extends SourceAnnotation
-	implements EnumeratedAnnotation
+	implements BaseEnumeratedAnnotation
 {
 	private final DeclarationAnnotationElementAdapter<String> valueDeclarationAdapter;
 	private final AnnotationElementAdapter<String> valueAdapter;
 	private EnumType value;
+	private TextRange valueTextRange;
 	
 
 	protected SourceBaseEnumeratedAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
@@ -43,10 +46,12 @@ public abstract class SourceBaseEnumeratedAnnotation
 	
 	public void initialize(CompilationUnit astRoot) {
 		this.value = this.buildValue(astRoot);
+		this.valueTextRange = this.buildValueTextRange(astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncValue(this.buildValue(astRoot));
+		this.valueTextRange = this.buildValueTextRange(astRoot);
 	}
 	
 	@Override
@@ -85,10 +90,13 @@ public abstract class SourceBaseEnumeratedAnnotation
 		return EnumType.fromJavaAnnotationValue(this.valueAdapter.getValue(astRoot));
 	}
 
-	public TextRange getValueTextRange(CompilationUnit astRoot) {
+	public TextRange getValueTextRange() {
+		return this.valueTextRange;
+	}
+	
+	private TextRange buildValueTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.valueDeclarationAdapter, astRoot);
 	}
 	
 	protected abstract String getValueElementName();
-
 }

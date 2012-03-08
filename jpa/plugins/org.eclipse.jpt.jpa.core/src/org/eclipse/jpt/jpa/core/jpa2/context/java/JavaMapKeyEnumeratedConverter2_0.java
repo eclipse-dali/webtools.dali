@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,9 +11,10 @@ package org.eclipse.jpt.jpa.core.jpa2.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.jpa.core.JpaFactory;
+import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.Converter;
-import org.eclipse.jpt.jpa.core.context.EnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.jpa.core.context.java.JavaBaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumerated2_0Annotation;
 
@@ -27,7 +28,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumerated2_0Annotation
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface JavaMapKeyEnumeratedConverter2_0
-	extends EnumeratedConverter, JavaConverter
+	extends JavaBaseEnumeratedConverter
 {
 	// ********** adapter **********
 
@@ -44,7 +45,7 @@ public interface JavaMapKeyEnumeratedConverter2_0
 		}
 
 		public Class<? extends Converter> getConverterType() {
-			return EnumeratedConverter.class;
+			return BaseEnumeratedConverter.class;
 		}
 
 		@Override
@@ -53,7 +54,7 @@ public interface JavaMapKeyEnumeratedConverter2_0
 		}
 
 		public JavaConverter buildConverter(Annotation converterAnnotation, JavaAttributeMapping parent, JpaFactory factory) {
-			return factory.buildJavaEnumeratedConverter(parent, (MapKeyEnumerated2_0Annotation) converterAnnotation, this.buildOwner());
+			return factory.buildJavaBaseEnumeratedConverter(parent, (MapKeyEnumerated2_0Annotation) converterAnnotation, this.buildOwner());
 		}
 	}
 }

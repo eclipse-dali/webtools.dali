@@ -897,7 +897,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			return result;
 		}
 
-		if (this.mapKeyNameTouches(pos, astRoot)) {
+		if (this.mapKeyNameTouches(pos)) {
 			return this.javaCandidateMapKeyNames(filter);
 		}
 
@@ -923,9 +923,9 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 		return null;
 	}
 
-	protected boolean mapKeyNameTouches(int pos, CompilationUnit astRoot) {
+	protected boolean mapKeyNameTouches(int pos) {
 		MapKeyAnnotation mapKeyAnnotation = this.getMapKeyAnnotation();
-		return (mapKeyAnnotation != null) && mapKeyAnnotation.nameTouches(pos, astRoot);
+		return (mapKeyAnnotation != null) && mapKeyAnnotation.nameTouches(pos);
 	}
 
 	protected Iterable<String> javaCandidateMapKeyNames(Filter<String> filter) {

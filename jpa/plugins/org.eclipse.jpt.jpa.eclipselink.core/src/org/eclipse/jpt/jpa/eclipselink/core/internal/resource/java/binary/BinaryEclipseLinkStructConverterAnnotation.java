@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,14 +10,13 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkStructConverterAnnotation;
 
 /**
- * org.eclipse.persistence.annotations.StructConverter
+ * <code>org.eclipse.persistence.annotations.StructConverter</code>
  */
 public final class BinaryEclipseLinkStructConverterAnnotation
 	extends BinaryEclipseLinkNamedConverterAnnotation
@@ -71,8 +70,7 @@ public final class BinaryEclipseLinkStructConverterAnnotation
 		return (String) this.getJdtMemberValue(EclipseLink.STRUCT_CONVERTER__CONVERTER);
 	}
 
-	public TextRange getConverterTextRange(CompilationUnit astRoot) {
+	public TextRange getConverterTextRange() {
 		throw new UnsupportedOperationException();
 	}
-
 }

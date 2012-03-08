@@ -2526,7 +2526,7 @@ public abstract class AbstractPersistenceUnit
 	protected TextRange extractNameTextRange(Entity entity) {
 		return (entity instanceof OrmEntity) ?
 				((OrmEntity) entity).getXmlTypeMapping().getNameTextRange():
-				((JavaEntity) entity).getMappingAnnotation().getNameTextRange(null);
+				((JavaEntity) entity).getMappingAnnotation().getNameTextRange();
 	}
 
 	public boolean validatesAgainstDatabase() {

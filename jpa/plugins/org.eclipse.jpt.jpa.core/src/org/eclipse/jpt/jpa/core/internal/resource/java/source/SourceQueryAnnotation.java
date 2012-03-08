@@ -95,7 +95,7 @@ abstract class SourceQueryAnnotation
 		return this.nameAdapter.getValue(astRoot);
 	}
 
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
+	public TextRange getNameTextRange() {
 		return this.nameTextRange;
 	}
 
@@ -135,7 +135,7 @@ abstract class SourceQueryAnnotation
 		return this.queryAdapter.getValue(astRoot);
 	}
 
-	public TextRange getQueryTextRange(CompilationUnit astRoot) {
+	public TextRange getQueryTextRange() {
 		return this.queryTextRange;
 	}
 

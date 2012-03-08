@@ -42,14 +42,17 @@ public abstract class SourceBaseTableAnnotation
 	DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
 	AnnotationElementAdapter<String> nameAdapter;
 	String name;
+	TextRange nameTextRange;
 
 	DeclarationAnnotationElementAdapter<String> schemaDeclarationAdapter;
 	AnnotationElementAdapter<String> schemaAdapter;
 	String schema;
+	TextRange schemaTextRange;
 
 	DeclarationAnnotationElementAdapter<String> catalogDeclarationAdapter;
 	AnnotationElementAdapter<String> catalogAdapter;
 	String catalog;
+	TextRange catalogTextRange;
 
 	
 	final UniqueConstraintsAnnotationContainer uniqueConstraintsContainer = new UniqueConstraintsAnnotationContainer();
@@ -71,15 +74,27 @@ public abstract class SourceBaseTableAnnotation
 
 	public void initialize(CompilationUnit astRoot) {
 		this.name = this.buildName(astRoot);
+		this.nameTextRange = this.buildNameTextRange(astRoot);
+
 		this.schema = this.buildSchema(astRoot);
+		this.schemaTextRange = this.buildSchemaTextRange(astRoot);
+
 		this.catalog = this.buildCatalog(astRoot);
+		this.catalogTextRange = this.buildCatalogTextRange(astRoot);
+
 		this.uniqueConstraintsContainer.initializeFromContainerAnnotation(this.getAstAnnotation(astRoot));
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncName(this.buildName(astRoot));
+		this.nameTextRange = this.buildNameTextRange(astRoot);
+
 		this.syncSchema(this.buildSchema(astRoot));
+		this.schemaTextRange = this.buildSchemaTextRange(astRoot);
+
 		this.syncCatalog(this.buildCatalog(astRoot));
+		this.catalogTextRange = this.buildCatalogTextRange(astRoot);
+
 		this.uniqueConstraintsContainer.synchronize(this.getAstAnnotation(astRoot));
 	}
 
@@ -117,12 +132,16 @@ public abstract class SourceBaseTableAnnotation
 		return this.nameAdapter.getValue(astRoot);
 	}
 
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
+	public TextRange getNameTextRange() {
+		return this.nameTextRange;
+	}
+
+	private TextRange buildNameTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
 
-	public boolean nameTouches(int pos, CompilationUnit astRoot) {
-		return this.elementTouches(this.nameDeclarationAdapter, pos, astRoot);
+	public boolean nameTouches(int pos) {
+		return this.textRangeTouches(this.nameTextRange, pos);
 	}
 
 	/**
@@ -156,12 +175,16 @@ public abstract class SourceBaseTableAnnotation
 		return this.schemaAdapter.getValue(astRoot);
 	}
 
-	public TextRange getSchemaTextRange(CompilationUnit astRoot) {
+	public TextRange getSchemaTextRange() {
+		return this.schemaTextRange;
+	}
+
+	private TextRange buildSchemaTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.schemaDeclarationAdapter, astRoot);
 	}
 
-	public boolean schemaTouches(int pos, CompilationUnit astRoot) {
-		return this.elementTouches(this.schemaDeclarationAdapter, pos, astRoot);
+	public boolean schemaTouches(int pos) {
+		return this.textRangeTouches(this.schemaTextRange, pos);
 	}
 
 	/**
@@ -195,12 +218,16 @@ public abstract class SourceBaseTableAnnotation
 		return this.catalogAdapter.getValue(astRoot);
 	}
 
-	public TextRange getCatalogTextRange(CompilationUnit astRoot) {
+	public TextRange getCatalogTextRange() {
+		return this.catalogTextRange;
+	}
+
+	private TextRange buildCatalogTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.catalogDeclarationAdapter, astRoot);
 	}
 
-	public boolean catalogTouches(int pos, CompilationUnit astRoot) {
-		return this.elementTouches(this.catalogDeclarationAdapter, pos, astRoot);
+	public boolean catalogTouches(int pos) {
+		return this.textRangeTouches(this.catalogTextRange, pos);
 	}
 
 	/**
@@ -230,7 +257,7 @@ public abstract class SourceBaseTableAnnotation
 		return this.uniqueConstraintsContainer.addNestedAnnotation(index);
 	}
 	
-	private UniqueConstraintAnnotation buildUniqueConstraint(int index) {
+	/* CU private */ UniqueConstraintAnnotation buildUniqueConstraint(int index) {
 		return new SourceUniqueConstraintAnnotation(
 				this, this.annotatedElement, buildUniqueConstraintIndexedDeclarationAnnotationAdapter(index));
 	}

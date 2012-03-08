@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.SequenceGeneratorAnnotation;
 
 /**
- * javax.persistence.SequenceGenerator
+ * <code>javax.persistence.SequenceGenerator</code>
  */
 public abstract class SourceSequenceGeneratorAnnotation
 	extends SourceGeneratorAnnotation
@@ -38,6 +38,7 @@ public abstract class SourceSequenceGeneratorAnnotation
 	private static final DeclarationAnnotationElementAdapter<String> SEQUENCE_NAME_ADAPTER = buildAdapter(JPA.SEQUENCE_GENERATOR__SEQUENCE_NAME);
 	private final AnnotationElementAdapter<String> sequenceNameAdapter;
 	private String sequenceName;
+	private TextRange sequenceNameTextRange;
 
 
 	protected SourceSequenceGeneratorAnnotation(JavaResourceNode parent, AnnotatedElement element) {
@@ -53,12 +54,14 @@ public abstract class SourceSequenceGeneratorAnnotation
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
 		this.sequenceName = this.buildSequenceName(astRoot);
+		this.sequenceNameTextRange = this.buildSequenceNameTextRange(astRoot);
 	}
 
 	@Override
 	public void synchronizeWith(CompilationUnit astRoot) {
 		super.synchronizeWith(astRoot);
 		this.syncSequenceName(this.buildSequenceName(astRoot));
+		this.sequenceNameTextRange = this.buildSequenceNameTextRange(astRoot);
 	}
 
 	@Override
@@ -110,12 +113,16 @@ public abstract class SourceSequenceGeneratorAnnotation
 		return this.sequenceNameAdapter.getValue(astRoot);
 	}
 
-	public TextRange getSequenceNameTextRange(CompilationUnit astRoot) {
+	public TextRange getSequenceNameTextRange() {
+		return this.sequenceNameTextRange;
+	}
+
+	private TextRange buildSequenceNameTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(SEQUENCE_NAME_ADAPTER, astRoot);
 	}
 
-	public boolean sequenceNameTouches(int pos, CompilationUnit astRoot) {
-		return this.elementTouches(SEQUENCE_NAME_ADAPTER, pos, astRoot);
+	public boolean sequenceNameTouches(int pos) {
+		return this.textRangeTouches(this.sequenceNameTextRange, pos);
 	}
 
 

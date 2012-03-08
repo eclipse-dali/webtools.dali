@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,9 +16,9 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.core.context.Converter;
-import org.eclipse.jpt.jpa.core.context.EnumeratedConverter;
+import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.LobConverter;
-import org.eclipse.jpt.jpa.core.context.TemporalConverter;
+import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkBasicMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
@@ -136,7 +136,7 @@ public abstract class EclipseLinkBasicMappingComposite<T extends BasicMapping> e
 		addRadioButton(
 			container, 
 			JptUiDetailsMessages.TypeSection_temporal, 
-			buildConverterBooleanHolder(TemporalConverter.class), 
+			buildConverterBooleanHolder(BaseTemporalConverter.class), 
 			null);
 		registerSubPane(new TemporalTypeComposite(buildTemporalConverterHolder(converterHolder), container, getWidgetFactory()));
 		
@@ -145,7 +145,7 @@ public abstract class EclipseLinkBasicMappingComposite<T extends BasicMapping> e
 		addRadioButton(
 			container, 
 			JptUiDetailsMessages.TypeSection_enumerated, 
-			buildConverterBooleanHolder(EnumeratedConverter.class), 
+			buildConverterBooleanHolder(BaseEnumeratedConverter.class), 
 			null);
 		registerSubPane(new EnumTypeComposite(buildEnumeratedConverterHolder(converterHolder), container, getWidgetFactory()));
 

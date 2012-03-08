@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,7 +29,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.java.FetchType;
 
 /**
- * org.eclipse.persistence.annotations.Transformation
+ * <code>javax.persistence.ElementCollection</code>
  */
 public final class SourceElementCollection2_0Annotation
 	extends SourceAnnotation
@@ -40,6 +40,7 @@ public final class SourceElementCollection2_0Annotation
 	private static final DeclarationAnnotationElementAdapter<String> TARGET_CLASS_ADAPTER = buildTargetClassAdapter();
 	private final AnnotationElementAdapter<String> targetClassAdapter;
 	private String targetClass;
+	private TextRange targetClassTextRange;
 
 	/**
 	 * @see org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceIdClassAnnotation#fullyQualifiedClassName
@@ -51,6 +52,7 @@ public final class SourceElementCollection2_0Annotation
 	private static final DeclarationAnnotationElementAdapter<String> FETCH_ADAPTER = buildFetchAdapter();
 	private final AnnotationElementAdapter<String> fetchAdapter;
 	private FetchType fetch;
+	private TextRange fetchTextRange;
 
 
 	public SourceElementCollection2_0Annotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
@@ -66,12 +68,18 @@ public final class SourceElementCollection2_0Annotation
 
 	public void initialize(CompilationUnit astRoot) {
 		this.targetClass = this.buildTargetClass(astRoot);
+		this.targetClassTextRange = this.buildTargetClassTextRange(astRoot);
+
 		this.fetch = this.buildFetch(astRoot);
+		this.fetchTextRange = this.buildFetchTextRange(astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncTargetClass(this.buildTargetClass(astRoot));
+		this.targetClassTextRange = this.buildTargetClassTextRange(astRoot);
+
 		this.syncFetch(this.buildFetch(astRoot));
+		this.fetchTextRange = this.buildFetchTextRange(astRoot);
 	}
 
 	@Override
@@ -119,7 +127,11 @@ public final class SourceElementCollection2_0Annotation
 		return this.targetClassAdapter.getValue(astRoot);
 	}
 
-	public TextRange getTargetClassTextRange(CompilationUnit astRoot) {
+	public TextRange getTargetClassTextRange() {
+		return this.targetClassTextRange;
+	}
+
+	private TextRange buildTargetClassTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(TARGET_CLASS_ADAPTER, astRoot);
 	}
 
@@ -162,7 +174,11 @@ public final class SourceElementCollection2_0Annotation
 		return FetchType.fromJavaAnnotationValue(this.fetchAdapter.getValue(astRoot));
 	}
 
-	public TextRange getFetchTextRange(CompilationUnit astRoot) {
+	public TextRange getFetchTextRange() {
+		return this.fetchTextRange;
+	}
+
+	private TextRange buildFetchTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(FETCH_ADAPTER, astRoot);
 	}
 
@@ -184,5 +200,4 @@ public final class SourceElementCollection2_0Annotation
 	private static DeclarationAnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, ExpressionConverter<String> converter) {
 		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, converter);
 	}
-
 }

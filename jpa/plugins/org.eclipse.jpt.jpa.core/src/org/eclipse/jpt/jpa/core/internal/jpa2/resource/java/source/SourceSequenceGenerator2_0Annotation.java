@@ -1,12 +1,12 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2011 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -20,7 +20,8 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.SequenceGenerator2_0Annotation;
 
 /**
- *  SourceSequenceGenerator2_0Annotation
+ * JPA 2.0
+ * <code>javax.persistence.SequenceGenerator</code>
  */
 public final class SourceSequenceGenerator2_0Annotation
 	extends SourceSequenceGeneratorAnnotation
@@ -29,10 +30,12 @@ public final class SourceSequenceGenerator2_0Annotation
 	private static final DeclarationAnnotationElementAdapter<String> CATALOG_ADAPTER = buildAdapter(JPA2_0.SEQUENCE_GENERATOR__CATALOG);
 	private final AnnotationElementAdapter<String> catalogAdapter;
 	private String catalog;
+	private TextRange catalogTextRange;
 	
 	private static final DeclarationAnnotationElementAdapter<String> SCHEMA_ADAPTER = buildAdapter(JPA2_0.SEQUENCE_GENERATOR__SCHEMA);
 	private final AnnotationElementAdapter<String> schemaAdapter;
 	private String schema;
+	private TextRange schemaTextRange;
 
 
 	// ********** constructor **********
@@ -46,14 +49,18 @@ public final class SourceSequenceGenerator2_0Annotation
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
 		this.catalog = this.buildCatalog(astRoot);
+		this.catalogTextRange = this.buildCatalogTextRange(astRoot);
 		this.schema = this.buildSchema(astRoot);
+		this.schemaTextRange = this.buildSchemaTextRange(astRoot);
 	}
 
 	@Override
 	public void synchronizeWith(CompilationUnit astRoot) {
 		super.synchronizeWith(astRoot);
 		this.syncCatalog(this.buildCatalog(astRoot));
+		this.catalogTextRange = this.buildCatalogTextRange(astRoot);
 		this.syncSchema(this.buildSchema(astRoot));
+		this.schemaTextRange = this.buildSchemaTextRange(astRoot);
 	}
 
 	@Override
@@ -86,12 +93,16 @@ public final class SourceSequenceGenerator2_0Annotation
 		return this.catalogAdapter.getValue(astRoot);
 	}
 
-	public TextRange getCatalogTextRange(CompilationUnit astRoot) {
+	public TextRange getCatalogTextRange() {
+		return this.catalogTextRange;
+	}
+
+	private TextRange buildCatalogTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(CATALOG_ADAPTER, astRoot);
 	}
 
-	public boolean catalogTouches(int pos, CompilationUnit astRoot) {
-		return this.elementTouches(CATALOG_ADAPTER, pos, astRoot);
+	public boolean catalogTouches(int pos) {
+		return this.textRangeTouches(this.catalogTextRange, pos);
 	}
 
 	// ********** schema **********
@@ -116,12 +127,15 @@ public final class SourceSequenceGenerator2_0Annotation
 		return this.schemaAdapter.getValue(astRoot);
 	}
 
-	public TextRange getSchemaTextRange(CompilationUnit astRoot) {
+	public TextRange getSchemaTextRange() {
+		return this.schemaTextRange;
+	}
+
+	private TextRange buildSchemaTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(SCHEMA_ADAPTER, astRoot);
 	}
 
-	public boolean schemaTouches(int pos, CompilationUnit astRoot) {
-		return this.elementTouches(SCHEMA_ADAPTER, pos, astRoot);
+	public boolean schemaTouches(int pos) {
+		return this.textRangeTouches(this.schemaTextRange, pos);
 	}
-
 }

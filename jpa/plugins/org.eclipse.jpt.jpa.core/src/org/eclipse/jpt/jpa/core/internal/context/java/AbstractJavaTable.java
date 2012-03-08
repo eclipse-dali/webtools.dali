@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -418,20 +418,20 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 		if (result != null) {
 			return result;
 		}
-		if (this.nameTouches(pos, astRoot)) {
+		if (this.nameTouches(pos)) {
 			return this.getJavaCandidateNames(filter);
 		}
-		if (this.schemaTouches(pos, astRoot)) {
+		if (this.schemaTouches(pos)) {
 			return this.getJavaCandidateSchemata(filter);
 		}
-		if (this.catalogTouches(pos, astRoot)) {
+		if (this.catalogTouches(pos)) {
 			return this.getJavaCandidateCatalogs(filter);
 		}
 		return null;
 	}
 
-	protected boolean nameTouches(int pos, CompilationUnit astRoot) {
-		return this.getTableAnnotation().nameTouches(pos, astRoot);
+	protected boolean nameTouches(int pos) {
+		return this.getTableAnnotation().nameTouches(pos);
 	}
 
 	protected Iterable<String> getJavaCandidateNames(Filter<String> filter) {
@@ -447,8 +447,8 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 		return (dbSchema != null) ? dbSchema.getSortedTableIdentifiers() : EmptyIterable.<String> instance();
 	}
 
-	protected boolean schemaTouches(int pos, CompilationUnit astRoot) {
-		return this.getTableAnnotation().schemaTouches(pos, astRoot);
+	protected boolean schemaTouches(int pos) {
+		return this.getTableAnnotation().schemaTouches(pos);
 	}
 
 	protected Iterable<String> getJavaCandidateSchemata(Filter<String> filter) {
@@ -463,8 +463,8 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 		return this.getDbSchemaContainer().getSortedSchemaIdentifiers();
 	}
 
-	protected boolean catalogTouches(int pos, CompilationUnit astRoot) {
-		return this.getTableAnnotation().catalogTouches(pos, astRoot);
+	protected boolean catalogTouches(int pos) {
+		return this.getTableAnnotation().catalogTouches(pos);
 	}
 
 	protected Iterable<String> getJavaCandidateCatalogs(Filter<String> filter) {
@@ -503,15 +503,15 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 	}
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.getTableAnnotation().getNameTextRange(astRoot), astRoot);
+		return this.getValidationTextRange(this.getTableAnnotation().getNameTextRange(), astRoot);
 	}
 
 	public TextRange getSchemaTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.getTableAnnotation().getSchemaTextRange(astRoot), astRoot);
+		return this.getValidationTextRange(this.getTableAnnotation().getSchemaTextRange(), astRoot);
 	}
 
 	public TextRange getCatalogTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.getTableAnnotation().getCatalogTextRange(astRoot), astRoot);
+		return this.getValidationTextRange(this.getTableAnnotation().getCatalogTextRange(), astRoot);
 	}
 
 

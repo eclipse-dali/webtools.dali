@@ -20,9 +20,9 @@ import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.ConvertibleMapping;
-import org.eclipse.jpt.jpa.core.context.EnumeratedConverter;
+import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.LobConverter;
-import org.eclipse.jpt.jpa.core.context.TemporalConverter;
+import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -148,7 +148,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 		addRadioButton(
 			container, 
 			JptUiDetailsMessages.TypeSection_temporal, 
-			buildConverterBooleanHolder(TemporalConverter.class), 
+			buildConverterBooleanHolder(BaseTemporalConverter.class), 
 			null);
 		registerSubPane(new TemporalTypeComposite(buildTemporalConverterHolder(converterHolder), container, getWidgetFactory()));
 		
@@ -157,7 +157,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 		addRadioButton(
 			container, 
 			JptUiDetailsMessages.TypeSection_enumerated, 
-			buildConverterBooleanHolder(EnumeratedConverter.class), 
+			buildConverterBooleanHolder(BaseEnumeratedConverter.class), 
 			null);
 		registerSubPane(new EnumTypeComposite(buildEnumeratedConverterHolder(converterHolder), container, getWidgetFactory()));
 	}
@@ -180,20 +180,20 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 		};
 	}
 	
-	protected PropertyValueModel<TemporalConverter> buildTemporalConverterHolder(PropertyValueModel<Converter> converterHolder) {
-		return new TransformationPropertyValueModel<Converter, TemporalConverter>(converterHolder) {
+	protected PropertyValueModel<BaseTemporalConverter> buildTemporalConverterHolder(PropertyValueModel<Converter> converterHolder) {
+		return new TransformationPropertyValueModel<Converter, BaseTemporalConverter>(converterHolder) {
 			@Override
-			protected TemporalConverter transform_(Converter converter) {
-				return converter.getType() == TemporalConverter.class ? (TemporalConverter) converter : null;
+			protected BaseTemporalConverter transform_(Converter converter) {
+				return converter.getType() == BaseTemporalConverter.class ? (BaseTemporalConverter) converter : null;
 			}
 		};
 	}
 	
-	protected PropertyValueModel<EnumeratedConverter> buildEnumeratedConverterHolder(PropertyValueModel<Converter> converterHolder) {
-		return new TransformationPropertyValueModel<Converter, EnumeratedConverter>(converterHolder) {
+	protected PropertyValueModel<BaseEnumeratedConverter> buildEnumeratedConverterHolder(PropertyValueModel<Converter> converterHolder) {
+		return new TransformationPropertyValueModel<Converter, BaseEnumeratedConverter>(converterHolder) {
 			@Override
-			protected EnumeratedConverter transform_(Converter converter) {
-				return converter.getType() == EnumeratedConverter.class ? (EnumeratedConverter) converter : null;
+			protected BaseEnumeratedConverter transform_(Converter converter) {
+				return converter.getType() == BaseEnumeratedConverter.class ? (BaseEnumeratedConverter) converter : null;
 			}
 		};
 	}

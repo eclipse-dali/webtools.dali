@@ -20,12 +20,12 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.EnumType;
-import org.eclipse.jpt.jpa.core.context.EnumeratedConverter;
+import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
-import org.eclipse.jpt.jpa.core.context.TemporalConverter;
+import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToManyMapping;
@@ -1116,11 +1116,11 @@ public class EclipseLink2_0OrmOneToManyMappingTests
 				
 		//set enumerated in the resource model, verify context model updated
 		oneToManyResource.setMapKeyEnumerated(org.eclipse.jpt.jpa.core.resource.orm.EnumType.ORDINAL);
-		assertEquals(EnumType.ORDINAL, ((EnumeratedConverter) ormOneToManyMapping.getMapKeyConverter()).getSpecifiedEnumType());
+		assertEquals(EnumType.ORDINAL, ((BaseEnumeratedConverter) ormOneToManyMapping.getMapKeyConverter()).getSpecifiedEnumType());
 		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.EnumType.ORDINAL, oneToManyResource.getMapKeyEnumerated());
 	
 		oneToManyResource.setMapKeyEnumerated(org.eclipse.jpt.jpa.core.resource.orm.EnumType.STRING);
-		assertEquals(EnumType.STRING, ((EnumeratedConverter) ormOneToManyMapping.getMapKeyConverter()).getSpecifiedEnumType());
+		assertEquals(EnumType.STRING, ((BaseEnumeratedConverter) ormOneToManyMapping.getMapKeyConverter()).getSpecifiedEnumType());
 		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.EnumType.STRING, oneToManyResource.getMapKeyEnumerated());
 
 		//set enumerated to null in the resource model
@@ -1141,14 +1141,14 @@ public class EclipseLink2_0OrmOneToManyMappingTests
 		assertNull(oneToManyResource.getMapKeyEnumerated());
 				
 		//set enumerated in the context model, verify resource model updated
-		ormOneToManyMapping.setMapKeyConverter(EnumeratedConverter.class);
-		((EnumeratedConverter) ormOneToManyMapping.getMapKeyConverter()).setSpecifiedEnumType(EnumType.ORDINAL);
+		ormOneToManyMapping.setMapKeyConverter(BaseEnumeratedConverter.class);
+		((BaseEnumeratedConverter) ormOneToManyMapping.getMapKeyConverter()).setSpecifiedEnumType(EnumType.ORDINAL);
 		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.EnumType.ORDINAL, oneToManyResource.getMapKeyEnumerated());
-		assertEquals(EnumType.ORDINAL, ((EnumeratedConverter) ormOneToManyMapping.getMapKeyConverter()).getSpecifiedEnumType());
+		assertEquals(EnumType.ORDINAL, ((BaseEnumeratedConverter) ormOneToManyMapping.getMapKeyConverter()).getSpecifiedEnumType());
 	
-		((EnumeratedConverter) ormOneToManyMapping.getMapKeyConverter()).setSpecifiedEnumType(EnumType.STRING);
+		((BaseEnumeratedConverter) ormOneToManyMapping.getMapKeyConverter()).setSpecifiedEnumType(EnumType.STRING);
 		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.EnumType.STRING, oneToManyResource.getMapKeyEnumerated());
-		assertEquals(EnumType.STRING, ((EnumeratedConverter) ormOneToManyMapping.getMapKeyConverter()).getSpecifiedEnumType());
+		assertEquals(EnumType.STRING, ((BaseEnumeratedConverter) ormOneToManyMapping.getMapKeyConverter()).getSpecifiedEnumType());
 
 		//set enumerated to null in the context model
 		ormOneToManyMapping.setMapKeyConverter(null);
@@ -1169,15 +1169,15 @@ public class EclipseLink2_0OrmOneToManyMappingTests
 				
 		//set temporal in the resource model, verify context model updated
 		oneToManyResource.setMapKeyTemporal(org.eclipse.jpt.jpa.core.resource.orm.TemporalType.DATE);
-		assertEquals(TemporalType.DATE, ((TemporalConverter) ormOneToManyMapping.getMapKeyConverter()).getTemporalType());
+		assertEquals(TemporalType.DATE, ((BaseTemporalConverter) ormOneToManyMapping.getMapKeyConverter()).getTemporalType());
 		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.TemporalType.DATE, oneToManyResource.getMapKeyTemporal());
 	
 		oneToManyResource.setMapKeyTemporal(org.eclipse.jpt.jpa.core.resource.orm.TemporalType.TIME);
-		assertEquals(TemporalType.TIME, ((TemporalConverter) ormOneToManyMapping.getMapKeyConverter()).getTemporalType());
+		assertEquals(TemporalType.TIME, ((BaseTemporalConverter) ormOneToManyMapping.getMapKeyConverter()).getTemporalType());
 		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.TemporalType.TIME, oneToManyResource.getMapKeyTemporal());
 		
 		oneToManyResource.setMapKeyTemporal(org.eclipse.jpt.jpa.core.resource.orm.TemporalType.TIMESTAMP);
-		assertEquals(TemporalType.TIMESTAMP, ((TemporalConverter) ormOneToManyMapping.getMapKeyConverter()).getTemporalType());
+		assertEquals(TemporalType.TIMESTAMP, ((BaseTemporalConverter) ormOneToManyMapping.getMapKeyConverter()).getTemporalType());
 		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.TemporalType.TIMESTAMP, oneToManyResource.getMapKeyTemporal());
 
 		//set temporal to null in the resource model
@@ -1198,14 +1198,14 @@ public class EclipseLink2_0OrmOneToManyMappingTests
 		assertNull(oneToManyResource.getMapKeyTemporal());
 				
 		//set temporal in the context model, verify resource model updated
-		ormOneToManyMapping.setMapKeyConverter(TemporalConverter.class);
-		((TemporalConverter) ormOneToManyMapping.getMapKeyConverter()).setTemporalType(TemporalType.DATE);
+		ormOneToManyMapping.setMapKeyConverter(BaseTemporalConverter.class);
+		((BaseTemporalConverter) ormOneToManyMapping.getMapKeyConverter()).setTemporalType(TemporalType.DATE);
 		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.TemporalType.DATE, oneToManyResource.getMapKeyTemporal());
-		assertEquals(TemporalType.DATE, ((TemporalConverter) ormOneToManyMapping.getMapKeyConverter()).getTemporalType());
+		assertEquals(TemporalType.DATE, ((BaseTemporalConverter) ormOneToManyMapping.getMapKeyConverter()).getTemporalType());
 	
-		((TemporalConverter) ormOneToManyMapping.getMapKeyConverter()).setTemporalType(TemporalType.TIME);
+		((BaseTemporalConverter) ormOneToManyMapping.getMapKeyConverter()).setTemporalType(TemporalType.TIME);
 		assertEquals(org.eclipse.jpt.jpa.core.resource.orm.TemporalType.TIME, oneToManyResource.getMapKeyTemporal());
-		assertEquals(TemporalType.TIME, ((TemporalConverter) ormOneToManyMapping.getMapKeyConverter()).getTemporalType());
+		assertEquals(TemporalType.TIME, ((BaseTemporalConverter) ormOneToManyMapping.getMapKeyConverter()).getTemporalType());
 
 		//set temporal to null in the context model
 		ormOneToManyMapping.setMapKeyConverter(null);

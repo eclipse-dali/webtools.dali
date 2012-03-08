@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.resource.java.DiscriminatorValueAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
 /**
- * javax.persistence.DiscriminatorValue
+ * <code>javax.persistence.DiscriminatorValue</code>
  */
 public final class SourceDiscriminatorValueAnnotation
 	extends SourceAnnotation
@@ -35,6 +35,7 @@ public final class SourceDiscriminatorValueAnnotation
 	private static final DeclarationAnnotationElementAdapter<String> VALUE_ADAPTER = buildValueAdapter();
 	private final AnnotationElementAdapter<String> valueAdapter;
 	private String value;
+	private TextRange valueTextRange;
 
 
 	public SourceDiscriminatorValueAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
@@ -48,10 +49,12 @@ public final class SourceDiscriminatorValueAnnotation
 
 	public void initialize(CompilationUnit astRoot) {
 		this.value = this.buildValue(astRoot);
+		this.valueTextRange = this.buildValueTextRange(astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncValue(this.buildValue(astRoot));
+		this.valueTextRange = this.buildValueTextRange(astRoot);
 	}
 
 	@Override
@@ -90,7 +93,11 @@ public final class SourceDiscriminatorValueAnnotation
 		return this.valueAdapter.getValue(astRoot);
 	}
 
-	public TextRange getValueTextRange(CompilationUnit astRoot) {
+	public TextRange getValueTextRange() {
+		return this.valueTextRange;
+	}
+
+	private TextRange buildValueTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(VALUE_ADAPTER, astRoot);
 	}
 
@@ -100,5 +107,4 @@ public final class SourceDiscriminatorValueAnnotation
 	private static DeclarationAnnotationElementAdapter<String> buildValueAdapter() {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.DISCRIMINATOR_VALUE__VALUE);
 	}
-
 }

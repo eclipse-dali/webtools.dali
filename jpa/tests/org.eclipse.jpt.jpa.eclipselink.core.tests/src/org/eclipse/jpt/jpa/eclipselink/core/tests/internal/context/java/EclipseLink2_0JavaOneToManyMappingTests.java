@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2011 Oracle. All rights reserved.
+* Copyright (c) 2009, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,13 +23,13 @@ import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.EnumType;
-import org.eclipse.jpt.jpa.core.context.EnumeratedConverter;
+import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
-import org.eclipse.jpt.jpa.core.context.TemporalConverter;
+import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
@@ -1433,7 +1433,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		JavaOneToManyMapping2_0 oneToManyMapping = (JavaOneToManyMapping2_0) persistentAttribute.getMapping();
 		assertNull(oneToManyMapping.getMapKeyConverter().getType());
 		
-		oneToManyMapping.setMapKeyConverter(EnumeratedConverter.class);
+		oneToManyMapping.setMapKeyConverter(BaseEnumeratedConverter.class);
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -1442,10 +1442,10 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		assertNotNull(enumerated);
 		assertEquals(null, enumerated.getValue());
 		
-		((EnumeratedConverter) oneToManyMapping.getMapKeyConverter()).setSpecifiedEnumType(EnumType.STRING);
+		((BaseEnumeratedConverter) oneToManyMapping.getMapKeyConverter()).setSpecifiedEnumType(EnumType.STRING);
 		assertEquals(org.eclipse.jpt.jpa.core.resource.java.EnumType.STRING, enumerated.getValue());
 		
-		((EnumeratedConverter) oneToManyMapping.getMapKeyConverter()).setSpecifiedEnumType(null);
+		((BaseEnumeratedConverter) oneToManyMapping.getMapKeyConverter()).setSpecifiedEnumType(null);
 		assertNotNull(resourceField.getAnnotation(MapKeyEnumerated2_0Annotation.ANNOTATION_NAME));
 		assertNull(enumerated.getValue());
 		
@@ -1469,12 +1469,12 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		enumerated.setValue(org.eclipse.jpt.jpa.core.resource.java.EnumType.STRING);
 		getJpaProject().synchronizeContextModel();
 		
-		assertEquals(EnumType.STRING, ((EnumeratedConverter) oneToManyMapping.getMapKeyConverter()).getSpecifiedEnumType());
+		assertEquals(EnumType.STRING, ((BaseEnumeratedConverter) oneToManyMapping.getMapKeyConverter()).getSpecifiedEnumType());
 		
 		enumerated.setValue(null);
 		getJpaProject().synchronizeContextModel();
 		assertNotNull(resourceField.getAnnotation(MapKeyEnumerated2_0Annotation.ANNOTATION_NAME));
-		assertNull(((EnumeratedConverter) oneToManyMapping.getMapKeyConverter()).getSpecifiedEnumType());
+		assertNull(((BaseEnumeratedConverter) oneToManyMapping.getMapKeyConverter()).getSpecifiedEnumType());
 		assertFalse(oneToManyMapping.isDefault());
 		assertSame(oneToManyMapping, persistentAttribute.getMapping());
 	}
@@ -1487,7 +1487,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		JavaOneToManyMapping2_0 oneToManyMapping = (JavaOneToManyMapping2_0) persistentAttribute.getMapping();
 		assertNull(oneToManyMapping.getMapKeyConverter().getType());
 		
-		oneToManyMapping.setMapKeyConverter(TemporalConverter.class);
+		oneToManyMapping.setMapKeyConverter(BaseTemporalConverter.class);
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -1496,10 +1496,10 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		assertNotNull(temporal);
 		assertEquals(null, temporal.getValue());
 		
-		((TemporalConverter) oneToManyMapping.getMapKeyConverter()).setTemporalType(TemporalType.TIME);
+		((BaseTemporalConverter) oneToManyMapping.getMapKeyConverter()).setTemporalType(TemporalType.TIME);
 		assertEquals(org.eclipse.jpt.jpa.core.resource.java.TemporalType.TIME, temporal.getValue());
 		
-		((TemporalConverter) oneToManyMapping.getMapKeyConverter()).setTemporalType(null);
+		((BaseTemporalConverter) oneToManyMapping.getMapKeyConverter()).setTemporalType(null);
 		assertNull(resourceField.getAnnotation(MapKeyTemporal2_0Annotation.ANNOTATION_NAME));
 	}
 	
@@ -1519,12 +1519,12 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		temporal.setValue(org.eclipse.jpt.jpa.core.resource.java.TemporalType.TIME);
 		getJpaProject().synchronizeContextModel();
 		
-		assertEquals(TemporalType.TIME, ((TemporalConverter) oneToManyMapping.getMapKeyConverter()).getTemporalType());
+		assertEquals(TemporalType.TIME, ((BaseTemporalConverter) oneToManyMapping.getMapKeyConverter()).getTemporalType());
 		
 		temporal.setValue(null);
 		getJpaProject().synchronizeContextModel();
 		assertNotNull(resourceField.getAnnotation(MapKeyTemporal2_0Annotation.ANNOTATION_NAME));
-		assertNull(((TemporalConverter) oneToManyMapping.getMapKeyConverter()).getTemporalType());
+		assertNull(((BaseTemporalConverter) oneToManyMapping.getMapKeyConverter()).getTemporalType());
 		assertFalse(oneToManyMapping.isDefault());
 		assertSame(oneToManyMapping, persistentAttribute.getMapping());
 	}

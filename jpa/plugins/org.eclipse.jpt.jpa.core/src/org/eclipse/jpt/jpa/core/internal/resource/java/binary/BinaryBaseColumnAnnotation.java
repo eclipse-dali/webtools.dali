@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,14 +10,17 @@
 package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.java.BaseColumnAnnotation;
 
 /**
- * javax.persistence.Column
- * javax.persistence.JoinColumn
+ * <code><ul>
+ * <li>javax.persistence.Column
+ * <li>javax.persistence.JoinColumn
+ * <li>javax.persistence.MapKeyColumn
+ * <li>javax.persistence.MapKeyJoinColumn
+ * </ul></code>
  */
 public abstract class BinaryBaseColumnAnnotation
 	extends BinaryNamedColumnAnnotation
@@ -73,11 +76,11 @@ public abstract class BinaryBaseColumnAnnotation
 	
 	protected abstract String getTableElementName();
 
-	public TextRange getTableTextRange(CompilationUnit astRoot) {
+	public TextRange getTableTextRange() {
 		throw new UnsupportedOperationException();
 	}
 	
-	public boolean tableTouches(int pos, CompilationUnit astRoot) {
+	public boolean tableTouches(int pos) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -102,7 +105,7 @@ public abstract class BinaryBaseColumnAnnotation
 	
 	protected abstract String getUniqueElementName();
 
-	public TextRange getUniqueTextRange(CompilationUnit astRoot) {
+	public TextRange getUniqueTextRange() {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -127,7 +130,7 @@ public abstract class BinaryBaseColumnAnnotation
 	
 	protected abstract String getNullableElementName();
 
-	public TextRange getNullableTextRange(CompilationUnit astRoot) {
+	public TextRange getNullableTextRange() {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -152,7 +155,7 @@ public abstract class BinaryBaseColumnAnnotation
 	
 	protected abstract String getInsertableElementName();
 
-	public TextRange getInsertableTextRange(CompilationUnit astRoot) {
+	public TextRange getInsertableTextRange() {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -177,8 +180,7 @@ public abstract class BinaryBaseColumnAnnotation
 
 	protected abstract String getUpdatableElementName();
 
-	public TextRange getUpdatableTextRange(CompilationUnit astRoot) {
+	public TextRange getUpdatableTextRange() {
 		throw new UnsupportedOperationException();
 	}
-	
 }

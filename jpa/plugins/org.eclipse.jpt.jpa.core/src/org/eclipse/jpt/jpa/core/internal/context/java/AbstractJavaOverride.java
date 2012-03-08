@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,15 +16,15 @@ import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyTableColumn.Owner;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyTableColumn.Owner;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualOverride;
-import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.OverrideTextRangeResolver;
+import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.resource.java.OverrideAnnotation;
 import org.eclipse.jpt.jpa.db.Table;
@@ -191,14 +191,14 @@ public abstract class AbstractJavaOverride<C extends JavaOverrideContainer, A ex
 		if (result != null) {
 			return result;
 		}
-		if (this.nameTouches(pos, astRoot)) {
+		if (this.nameTouches(pos)) {
 			return this.getJavaCandidateNames(filter);
 		}
 		return null;
 	}
 
-	protected boolean nameTouches(int pos, CompilationUnit astRoot) {
-		return this.overrideAnnotation.nameTouches(pos, astRoot);
+	protected boolean nameTouches(int pos) {
+		return this.overrideAnnotation.nameTouches(pos);
 	}
 
 	protected Iterable<String> getJavaCandidateNames(Filter<String> filter) {
@@ -234,7 +234,7 @@ public abstract class AbstractJavaOverride<C extends JavaOverrideContainer, A ex
 	}
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.overrideAnnotation.getNameTextRange(astRoot), astRoot);
+		return this.getValidationTextRange(this.overrideAnnotation.getNameTextRange(), astRoot);
 	}
 
 	public boolean tableNameIsInvalid(String tableName) {

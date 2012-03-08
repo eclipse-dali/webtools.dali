@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkWriteTransformerAnnotation;
 
 /**
- * org.eclipse.persistence.annotations.WriteTransformer
+ * <code>org.eclipse.persistence.annotations.WriteTransformer</code>
  */
 public final class SourceEclipseLinkWriteTransformerAnnotation
 	extends SourceEclipseLinkTransformerAnnotation
@@ -37,6 +37,7 @@ public final class SourceEclipseLinkWriteTransformerAnnotation
 	private final ElementAnnotationAdapter columnAdapter;
 	private ColumnAnnotation column;
 	private final ColumnAnnotation nullColumn;
+	private TextRange columnTextRange;
 
 
 	public SourceEclipseLinkWriteTransformerAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
@@ -56,12 +57,14 @@ public final class SourceEclipseLinkWriteTransformerAnnotation
 			this.column = createColumn(this, this.annotatedElement, this.daa);
 			this.column.initialize(astRoot);
 		}
+		this.columnTextRange = this.buildColumnTextRange(astRoot);
 	}
 
 	@Override
 	public void synchronizeWith(CompilationUnit astRoot) {
 		super.synchronizeWith(astRoot);
 		this.syncColumn(astRoot);
+		this.columnTextRange = this.buildColumnTextRange(astRoot);
 	}
 
 	@Override
@@ -137,11 +140,15 @@ public final class SourceEclipseLinkWriteTransformerAnnotation
 		return new NullEclipseLinkWriteTransformerColumnAnnotation(this);
 	}
 
-	public TextRange getColumnTextRange(CompilationUnit astRoot) {
+	public TextRange getColumnTextRange() {
+		return this.columnTextRange;
+	}
+
+	private TextRange buildColumnTextRange(CompilationUnit astRoot) {
 		if (this.column != null) {
 			return this.column.getTextRange(astRoot);
 		}
-		return getTextRange(astRoot);
+		return this.getTextRange(astRoot);
 	}
 
 

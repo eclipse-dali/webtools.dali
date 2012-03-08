@@ -122,7 +122,7 @@ public class JavaEclipseLinkConvert
 		if (result != null) {
 			return result;
 		}
-		if (this.convertValueTouches(pos, astRoot)) {
+		if (this.convertValueTouches(pos)) {
 			result = this.getJavaCandidateConverterNames(filter);
 			if (result != null) {
 				return result;
@@ -131,8 +131,8 @@ public class JavaEclipseLinkConvert
 		return null;
 	}
 
-	protected boolean convertValueTouches(int pos, CompilationUnit astRoot) {
-		return this.convertAnnotation.valueTouches(pos, astRoot);
+	protected boolean convertValueTouches(int pos) {
+		return this.convertAnnotation.valueTouches(pos);
 	}
 
 	protected Iterable<String> getJavaCandidateConverterNames(Filter<String> filter) {

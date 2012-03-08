@@ -1,16 +1,15 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2011 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.resource.java.binary.BinaryNamedQueryAnnotation;
@@ -54,11 +53,11 @@ public final class BinaryNamedQuery2_0Annotation
 		this.firePropertyChanged(LOCK_MODE_PROPERTY, old, lockMode);
 	}
 
-	public TextRange getLockModeTextRange(CompilationUnit astRoot) {
+	public TextRange getLockModeTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean lockModeTouches(int pos, CompilationUnit astRoot) {
+	public boolean lockModeTouches(int pos) {
 		throw new UnsupportedOperationException();
 	}
 

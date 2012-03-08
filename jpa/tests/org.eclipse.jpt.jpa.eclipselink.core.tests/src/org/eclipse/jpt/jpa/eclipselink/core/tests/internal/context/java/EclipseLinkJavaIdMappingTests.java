@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Ki
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.TemporalConverter;
+import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.TemporalAnnotation;
@@ -151,8 +151,8 @@ public class EclipseLinkJavaIdMappingTests extends EclipseLinkContextModelTestCa
 		IdMapping idMapping = (IdMapping) persistentAttribute.getMapping();
 		assertNull(idMapping.getConverter().getType());
 		
-		idMapping.setConverter(TemporalConverter.class);
-		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
+		idMapping.setConverter(BaseTemporalConverter.class);
+		((BaseTemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();

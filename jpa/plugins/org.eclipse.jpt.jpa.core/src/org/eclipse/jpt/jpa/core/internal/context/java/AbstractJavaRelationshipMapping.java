@@ -373,11 +373,11 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 	}
 
 	protected TextRange getTargetEntityTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.getAnnotationTargetEntityTextRange(astRoot), astRoot);
+		return this.getValidationTextRange(this.getAnnotationTargetEntityTextRange(), astRoot);
 	}
 
-	protected TextRange getAnnotationTargetEntityTextRange(CompilationUnit astRoot) {
+	protected TextRange getAnnotationTargetEntityTextRange() {
 		A annotation = this.getMappingAnnotation();
-		return (annotation == null) ? null : annotation.getTargetEntityTextRange(astRoot);
+		return (annotation == null) ? null : annotation.getTargetEntityTextRange();
 	}
 }

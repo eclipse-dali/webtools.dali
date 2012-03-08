@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -18,7 +17,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConversionValueAnnotation;
 
 /**
- * org.eclipse.persistence.annotations.ConversionValue
+ * <code>org.eclipse.persistence.annotations.ConversionValue</code>
  */
 final class BinaryEclipseLinkConversionValueAnnotation
 	extends BinaryAnnotation
@@ -67,7 +66,7 @@ final class BinaryEclipseLinkConversionValueAnnotation
 		return (String) this.getJdtMemberValue(EclipseLink.CONVERSION_VALUE__DATA_VALUE);
 	}
 
-	public TextRange getDataValueTextRange(CompilationUnit astRoot) {
+	public TextRange getDataValueTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -90,8 +89,7 @@ final class BinaryEclipseLinkConversionValueAnnotation
 		return (String) this.getJdtMemberValue(EclipseLink.CONVERSION_VALUE__OBJECT_VALUE);
 	}
 
-	public TextRange getObjectValueTextRange(CompilationUnit astRoot) {
+	public TextRange getObjectValueTextRange() {
 		throw new UnsupportedOperationException();
 	}
-
 }

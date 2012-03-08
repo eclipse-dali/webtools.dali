@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -34,10 +34,12 @@ public final class SourceQueryHintAnnotation
 	private DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
 	private AnnotationElementAdapter<String> nameAdapter;
 	private String name;
+	private TextRange nameTextRange;
 
 	private DeclarationAnnotationElementAdapter<String> valueDeclarationAdapter;
 	private AnnotationElementAdapter<String> valueAdapter;
 	private String value;
+	private TextRange valueTextRange;
 
 
 	static SourceQueryHintAnnotation buildNamedQueryQueryHint(JavaResourceNode parent, AnnotatedElement element,  DeclarationAnnotationAdapter namedQueryAdapter, int index) {
@@ -70,12 +72,18 @@ public final class SourceQueryHintAnnotation
 
 	public void initialize(CompilationUnit astRoot) {
 		this.name = this.buildName(astRoot);
+		this.nameTextRange = this.buildNameTextRange(astRoot);
+
 		this.value = this.buildValue(astRoot);
+		this.valueTextRange = this.buildValueTextRange(astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncName(this.buildName(astRoot));
+		this.nameTextRange = this.buildNameTextRange(astRoot);
+
 		this.syncValue(this.buildValue(astRoot));
+		this.valueTextRange = this.buildValueTextRange(astRoot);
 	}
 
 
@@ -103,7 +111,11 @@ public final class SourceQueryHintAnnotation
 		return this.nameAdapter.getValue(astRoot);
 	}
 
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
+	public TextRange getNameTextRange() {
+		return this.nameTextRange;
+	}
+
+	private TextRange buildNameTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
 
@@ -137,7 +149,11 @@ public final class SourceQueryHintAnnotation
 		return this.valueAdapter.getValue(astRoot);
 	}
 
-	public TextRange getValueTextRange(CompilationUnit astRoot) {
+	public TextRange getValueTextRange() {
+		return this.valueTextRange;
+	}
+
+	private TextRange buildValueTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.valueDeclarationAdapter, astRoot);
 	}
 

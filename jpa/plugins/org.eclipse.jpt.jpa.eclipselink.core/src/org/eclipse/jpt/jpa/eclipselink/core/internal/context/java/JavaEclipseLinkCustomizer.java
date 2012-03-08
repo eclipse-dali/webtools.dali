@@ -199,7 +199,7 @@ public class JavaEclipseLinkCustomizer
 	}
 
 	protected TextRange getCustomizerClassTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.getCustomizerAnnotation().getValueTextRange(astRoot), astRoot);
+		return this.getValidationTextRange(this.getCustomizerAnnotation().getValueTextRange(), astRoot);
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {

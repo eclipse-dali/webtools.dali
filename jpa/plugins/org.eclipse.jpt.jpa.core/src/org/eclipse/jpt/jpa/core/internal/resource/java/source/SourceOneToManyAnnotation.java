@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.OneToMany2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
 /**
- * javax.persistence.OneToMany
+ * <code>javax.persistence.OneToMany</code>
  */
 public final class SourceOneToManyAnnotation
 	extends SourceRelationshipMappingAnnotation
@@ -41,11 +41,13 @@ public final class SourceOneToManyAnnotation
 	private static final DeclarationAnnotationElementAdapter<String> MAPPED_BY_ADAPTER = buildMappedByAdapter();
 	private final AnnotationElementAdapter<String> mappedByAdapter;
 	private String mappedBy;
+	private TextRange mappedByTextRange;
 
 	//added in JPA2.0
 	private static final DeclarationAnnotationElementAdapter<Boolean> ORPHAN_REMOVAL_ADAPTER = buildOrphanRemovalAdapter();
 	private final AnnotationElementAdapter<Boolean> orphanRemovalAdapter;
 	private Boolean orphanRemoval;
+	private TextRange orphanRemovalTextRange;
 
 	public SourceOneToManyAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
 		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
@@ -61,14 +63,20 @@ public final class SourceOneToManyAnnotation
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
 		this.mappedBy = this.buildMappedBy(astRoot);
+		this.mappedByTextRange = this.buildMappedByTextRange(astRoot);
+
 		this.orphanRemoval = this.buildOrphanRemoval(astRoot);
+		this.orphanRemovalTextRange = this.buildOrphanRemovalTextRange(astRoot);
 	}
 
 	@Override
 	public void synchronizeWith(CompilationUnit astRoot) {
 		super.synchronizeWith(astRoot);
 		this.syncMappedBy(this.buildMappedBy(astRoot));
+		this.mappedByTextRange = this.buildMappedByTextRange(astRoot);
+
 		this.syncOrphanRemoval(this.buildOrphanRemoval(astRoot));
+		this.orphanRemovalTextRange = this.buildOrphanRemovalTextRange(astRoot);
 	}
 
 	@Override
@@ -120,12 +128,16 @@ public final class SourceOneToManyAnnotation
 		return this.mappedByAdapter.getValue(astRoot);
 	}
 
-	public TextRange getMappedByTextRange(CompilationUnit astRoot) {
-		return getElementTextRange(MAPPED_BY_ADAPTER, astRoot);
+	public TextRange getMappedByTextRange() {
+		return this.mappedByTextRange;
 	}
 
-	public boolean mappedByTouches(int pos, CompilationUnit astRoot) {
-		return this.elementTouches(MAPPED_BY_ADAPTER, pos, astRoot);
+	private TextRange buildMappedByTextRange(CompilationUnit astRoot) {
+		return this.getElementTextRange(MAPPED_BY_ADAPTER, astRoot);
+	}
+
+	public boolean mappedByTouches(int pos) {
+		return this.textRangeTouches(mappedByTextRange, pos);
 	}
 
 	// ********** OneToMany2_0Annotation implementation **********
@@ -147,7 +159,11 @@ public final class SourceOneToManyAnnotation
 		this.firePropertyChanged(ORPHAN_REMOVAL_PROPERTY, old, astOrphanRemoval);
 	}
 
-	public TextRange getOrphanRemovalTextRange(CompilationUnit astRoot) {
+	public TextRange getOrphanRemovalTextRange() {
+		return this.orphanRemovalTextRange;
+	}
+
+	private TextRange buildOrphanRemovalTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(ORPHAN_REMOVAL_ADAPTER, astRoot);
 	}
 

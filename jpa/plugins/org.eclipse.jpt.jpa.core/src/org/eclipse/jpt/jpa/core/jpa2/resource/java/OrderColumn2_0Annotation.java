@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation;
 
@@ -51,7 +50,7 @@ public interface OrderColumn2_0Annotation
 	 * Return the {@link TextRange} for the 'nullable' element. If the element
 	 * does not exist return the {@link TextRange} for the OrderColumn annotation.
 	 */
-	TextRange getNullableTextRange(CompilationUnit astRoot);
+	TextRange getNullableTextRange();
 
 
 	// ********** insertable **********
@@ -73,7 +72,7 @@ public interface OrderColumn2_0Annotation
 	 * Return the {@link TextRange} for the 'insertable' element. If the element
 	 * does not exist return the {@link TextRange} for the OrderColumn annotation.
 	 */
-	TextRange getInsertableTextRange(CompilationUnit astRoot);
+	TextRange getInsertableTextRange();
 
 
 	// ********** updatable **********
@@ -95,6 +94,5 @@ public interface OrderColumn2_0Annotation
 	 * Return the {@link TextRange} for the 'updatable' element. If the element
 	 * does not exist return the {@link TextRange} for the OrderColumn annotation.
 	 */
-	TextRange getUpdatableTextRange(CompilationUnit astRoot);
-
+	TextRange getUpdatableTextRange();
 }

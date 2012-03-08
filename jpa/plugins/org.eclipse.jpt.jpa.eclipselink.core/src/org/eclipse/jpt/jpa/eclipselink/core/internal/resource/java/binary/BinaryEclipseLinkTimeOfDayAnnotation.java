@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -18,7 +17,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTimeOfDayAnnotation;
 
 /**
- * org.eclipse.persistence.annotations.TimeOfDay
+ * <code>org.eclipse.persistence.annotations.TimeOfDay</code>
  */
 public final class BinaryEclipseLinkTimeOfDayAnnotation
 	extends BinaryAnnotation
@@ -73,7 +72,7 @@ public final class BinaryEclipseLinkTimeOfDayAnnotation
 		return (Integer) this.getJdtMemberValue(EclipseLink.TIME_OF_DAY__HOUR);
 	}
 
-	public TextRange getHourTextRange(CompilationUnit astRoot) {
+	public TextRange getHourTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -96,7 +95,7 @@ public final class BinaryEclipseLinkTimeOfDayAnnotation
 		return (Integer) this.getJdtMemberValue(EclipseLink.TIME_OF_DAY__MINUTE);
 	}
 
-	public TextRange getMinuteTextRange(CompilationUnit astRoot) {
+	public TextRange getMinuteTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -119,7 +118,7 @@ public final class BinaryEclipseLinkTimeOfDayAnnotation
 		return (Integer) this.getJdtMemberValue(EclipseLink.TIME_OF_DAY__SECOND);
 	}
 
-	public TextRange getSecondTextRange(CompilationUnit astRoot) {
+	public TextRange getSecondTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -142,8 +141,7 @@ public final class BinaryEclipseLinkTimeOfDayAnnotation
 		return (Integer) this.getJdtMemberValue(EclipseLink.TIME_OF_DAY__MILLISECOND);
 	}
 
-	public TextRange getMillisecondTextRange(CompilationUnit astRoot) {
+	public TextRange getMillisecondTextRange() {
 		throw new UnsupportedOperationException();
 	}
-
 }

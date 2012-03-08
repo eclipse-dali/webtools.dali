@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkCustomizerAnnotation;
 
 /**
- * org.eclipse.persistence.annotations.Customizer
+ * <code>org.eclipse.persistence.annotations.Customizer</code>
  */
 public final class BinaryEclipseLinkCustomizerAnnotation
 	extends BinaryAnnotation
@@ -69,12 +69,11 @@ public final class BinaryEclipseLinkCustomizerAnnotation
 		return (String) this.getJdtMemberValue(EclipseLink.CUSTOMIZER__VALUE);
 	}
 
-	public TextRange getValueTextRange(CompilationUnit astRoot) {
+	public TextRange getValueTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
 	public boolean customizerClassImplementsInterface(String interfaceName, CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	}
-
 }

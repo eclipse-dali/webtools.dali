@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 
 import java.util.Vector;
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
@@ -21,7 +20,7 @@ import org.eclipse.jpt.jpa.core.resource.java.TableGeneratorAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
 
 /**
- * javax.persistence.TableGenerator
+ * <code>javax.persistence.TableGenerator</code>
  */
 public final class BinaryTableGeneratorAnnotation
 	extends BinaryGeneratorAnnotation
@@ -103,11 +102,11 @@ public final class BinaryTableGeneratorAnnotation
 		return (String) this.getJdtMemberValue(JPA.TABLE_GENERATOR__TABLE);
 	}
 
-	public TextRange getTableTextRange(CompilationUnit astRoot) {
+	public TextRange getTableTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean tableTouches(int pos, CompilationUnit astRoot) {
+	public boolean tableTouches(int pos) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -130,11 +129,11 @@ public final class BinaryTableGeneratorAnnotation
 		return (String) this.getJdtMemberValue(JPA.TABLE_GENERATOR__SCHEMA);
 	}
 
-	public TextRange getSchemaTextRange(CompilationUnit astRoot) {
+	public TextRange getSchemaTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean schemaTouches(int pos, CompilationUnit astRoot) {
+	public boolean schemaTouches(int pos) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -157,11 +156,11 @@ public final class BinaryTableGeneratorAnnotation
 		return (String) this.getJdtMemberValue(JPA.TABLE_GENERATOR__CATALOG);
 	}
 
-	public TextRange getCatalogTextRange(CompilationUnit astRoot) {
+	public TextRange getCatalogTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean catalogTouches(int pos, CompilationUnit astRoot) {
+	public boolean catalogTouches(int pos) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -184,11 +183,11 @@ public final class BinaryTableGeneratorAnnotation
 		return (String) this.getJdtMemberValue(JPA.TABLE_GENERATOR__PK_COLUMN_NAME);
 	}
 
-	public TextRange getPkColumnNameTextRange(CompilationUnit astRoot) {
+	public TextRange getPkColumnNameTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean pkColumnNameTouches(int pos, CompilationUnit astRoot) {
+	public boolean pkColumnNameTouches(int pos) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -211,11 +210,11 @@ public final class BinaryTableGeneratorAnnotation
 		return (String) this.getJdtMemberValue(JPA.TABLE_GENERATOR__VALUE_COLUMN_NAME);
 	}
 
-	public TextRange getValueColumnNameTextRange(CompilationUnit astRoot) {
+	public TextRange getValueColumnNameTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean valueColumnNameTouches(int pos, CompilationUnit astRoot) {
+	public boolean valueColumnNameTouches(int pos) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -238,11 +237,11 @@ public final class BinaryTableGeneratorAnnotation
 		return (String) this.getJdtMemberValue(JPA.TABLE_GENERATOR__PK_COLUMN_VALUE);
 	}
 
-	public TextRange getPkColumnValueTextRange(CompilationUnit astRoot) {
+	public TextRange getPkColumnValueTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean pkColumnValueTouches(int pos, CompilationUnit astRoot) {
+	public boolean pkColumnValueTouches(int pos) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -284,5 +283,4 @@ public final class BinaryTableGeneratorAnnotation
 	private void updateUniqueConstraints() {
 		throw new UnsupportedOperationException();
 	}
-
 }

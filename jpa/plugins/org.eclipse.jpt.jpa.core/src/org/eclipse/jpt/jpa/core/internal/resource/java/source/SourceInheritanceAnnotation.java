@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.java.InheritanceType;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
 /**
- * javax.persistence.Inheritance
+ * <code>javax.persistence.Inheritance</code>
  */
 public final class SourceInheritanceAnnotation
 	extends SourceAnnotation
@@ -36,6 +36,7 @@ public final class SourceInheritanceAnnotation
 	private static final DeclarationAnnotationElementAdapter<String> STRATEGY_ADAPTER = buildStrategyAdapter();
 	private final AnnotationElementAdapter<String> strategyAdapter;
 	private InheritanceType strategy;
+	private TextRange strategyTextRange;
 
 
 	public SourceInheritanceAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
@@ -49,10 +50,12 @@ public final class SourceInheritanceAnnotation
 
 	public void initialize(CompilationUnit astRoot) {
 		this.strategy = this.buildStrategy(astRoot);
+		this.strategyTextRange = this.buildStrategyTextRange(astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncStrategy(this.buildStrategy(astRoot));
+		this.strategyTextRange = this.buildStrategyTextRange(astRoot);
 	}
 
 	@Override
@@ -91,7 +94,11 @@ public final class SourceInheritanceAnnotation
 		return InheritanceType.fromJavaAnnotationValue(this.strategyAdapter.getValue(astRoot));
 	}
 
-	public TextRange getStrategyTextRange(CompilationUnit astRoot) {
+	public TextRange getStrategyTextRange() {
+		return this.strategyTextRange;
+	}
+
+	private TextRange buildStrategyTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(STRATEGY_ADAPTER, astRoot);
 	}
 

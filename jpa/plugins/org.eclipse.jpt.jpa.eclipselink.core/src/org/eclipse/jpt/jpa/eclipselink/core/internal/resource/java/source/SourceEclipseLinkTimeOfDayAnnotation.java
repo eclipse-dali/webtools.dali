@@ -33,18 +33,22 @@ public final class SourceEclipseLinkTimeOfDayAnnotation
 	private final DeclarationAnnotationElementAdapter<Integer> hourDeclarationAdapter;
 	private final AnnotationElementAdapter<Integer> hourAdapter;
 	private Integer hour;
+	private TextRange hourTextRange;
 
 	private final DeclarationAnnotationElementAdapter<Integer> minuteDeclarationAdapter;
 	private final AnnotationElementAdapter<Integer> minuteAdapter;
 	private Integer minute;
+	private TextRange minuteTextRange;
 
 	private final DeclarationAnnotationElementAdapter<Integer> secondDeclarationAdapter;
 	private final AnnotationElementAdapter<Integer> secondAdapter;
 	private Integer second;
+	private TextRange secondTextRange;
 
 	private final DeclarationAnnotationElementAdapter<Integer> millisecondDeclarationAdapter;
 	private final AnnotationElementAdapter<Integer> millisecondAdapter;
 	private Integer millisecond;
+	private TextRange millisecondTextRange;
 
 
 	public SourceEclipseLinkTimeOfDayAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
@@ -65,16 +69,30 @@ public final class SourceEclipseLinkTimeOfDayAnnotation
 
 	public void initialize(CompilationUnit astRoot) {
 		this.hour = this.buildHour(astRoot);
+		this.hourTextRange = this.buildHourTextRange(astRoot);
+
 		this.minute = this.buildMinute(astRoot);
+		this.minuteTextRange = this.buildMinuteTextRange(astRoot);
+
 		this.second = this.buildSecond(astRoot);
+		this.secondTextRange = this.buildSecondTextRange(astRoot);
+
 		this.millisecond = this.buildMillisecond(astRoot);
+		this.millisecondTextRange = this.buildMillisecondTextRange(astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncHour(this.buildHour(astRoot));
+		this.hourTextRange = this.buildHourTextRange(astRoot);
+
 		this.syncMinute(this.buildMinute(astRoot));
+		this.minuteTextRange = this.buildMinuteTextRange(astRoot);
+
 		this.syncSecond(this.buildSecond(astRoot));
+		this.secondTextRange = this.buildSecondTextRange(astRoot);
+
 		this.syncMillisecond(this.buildMillisecond(astRoot));
+		this.millisecondTextRange = this.buildMillisecondTextRange(astRoot);
 	}
 
 	@Override
@@ -111,7 +129,11 @@ public final class SourceEclipseLinkTimeOfDayAnnotation
 		return this.hourAdapter.getValue(astRoot);
 	}
 
-	public TextRange getHourTextRange(CompilationUnit astRoot) {
+	public TextRange getHourTextRange() {
+		return this.hourTextRange;
+	}
+
+	private TextRange buildHourTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.hourDeclarationAdapter, astRoot);
 	}
 
@@ -137,7 +159,11 @@ public final class SourceEclipseLinkTimeOfDayAnnotation
 		return this.minuteAdapter.getValue(astRoot);
 	}
 
-	public TextRange getMinuteTextRange(CompilationUnit astRoot) {
+	public TextRange getMinuteTextRange() {
+		return this.minuteTextRange;
+	}
+
+	private TextRange buildMinuteTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.minuteDeclarationAdapter, astRoot);
 	}
 
@@ -163,7 +189,11 @@ public final class SourceEclipseLinkTimeOfDayAnnotation
 		return this.secondAdapter.getValue(astRoot);
 	}
 
-	public TextRange getSecondTextRange(CompilationUnit astRoot) {
+	public TextRange getSecondTextRange() {
+		return this.secondTextRange;
+	}
+
+	private TextRange buildSecondTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.secondDeclarationAdapter, astRoot);
 	}
 
@@ -189,7 +219,11 @@ public final class SourceEclipseLinkTimeOfDayAnnotation
 		return this.millisecondAdapter.getValue(astRoot);
 	}
 
-	public TextRange getMillisecondTextRange(CompilationUnit astRoot) {
+	public TextRange getMillisecondTextRange() {
+		return this.millisecondTextRange;
+	}
+
+	private TextRange buildMillisecondTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.millisecondDeclarationAdapter, astRoot);
 	}
 

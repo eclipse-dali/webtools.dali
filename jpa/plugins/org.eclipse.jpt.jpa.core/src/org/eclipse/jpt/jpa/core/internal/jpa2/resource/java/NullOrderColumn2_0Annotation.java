@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.resource.java.NullNamedColumnAnnotation;
@@ -41,7 +40,7 @@ public final class NullOrderColumn2_0Annotation
 		}
 	}
 
-	public TextRange getUpdatableTextRange(CompilationUnit astRoot) {
+	public TextRange getUpdatableTextRange() {
 		return null;
 	}
 
@@ -56,7 +55,7 @@ public final class NullOrderColumn2_0Annotation
 		}
 	}
 
-	public TextRange getInsertableTextRange(CompilationUnit astRoot) {
+	public TextRange getInsertableTextRange() {
 		return null;
 	}
 
@@ -71,7 +70,7 @@ public final class NullOrderColumn2_0Annotation
 		}
 	}
 
-	public TextRange getNullableTextRange(CompilationUnit astRoot) {
+	public TextRange getNullableTextRange() {
 		return null;
 	}
 }

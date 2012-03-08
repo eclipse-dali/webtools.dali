@@ -72,12 +72,12 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaTemporalConverter;
 import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
-import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.OverrideTextRangeResolver;
+import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AssociationOverrideJoinColumnValidator;
@@ -813,9 +813,9 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		this.getResourceAttribute().removeAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 	}
 
-	protected boolean mapKeyNameTouches(int pos, CompilationUnit astRoot) {
+	protected boolean mapKeyNameTouches(int pos) {
 		MapKeyAnnotation mapKeyAnnotation = this.getMapKeyAnnotation();
-		return (mapKeyAnnotation != null) && mapKeyAnnotation.nameTouches(pos, astRoot);
+		return (mapKeyAnnotation != null) && mapKeyAnnotation.nameTouches(pos);
 	}
 
 
@@ -1405,7 +1405,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		if (result != null) {
 			return result;
 		}
-		if (this.mapKeyNameTouches(pos, astRoot)) {
+		if (this.mapKeyNameTouches(pos)) {
 			return this.getJavaCandidateMapKeyNames(filter);
 		}
 		result = this.mapKeyColumn.getJavaCompletionProposals(pos, filter, astRoot);
@@ -1691,12 +1691,12 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	protected TextRange getTargetClassTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.getAnnotationTargetClassTextRange(astRoot), astRoot);
+		return this.getValidationTextRange(this.getAnnotationTargetClassTextRange(), astRoot);
 	}
 
-	protected TextRange getAnnotationTargetClassTextRange(CompilationUnit astRoot) {
+	protected TextRange getAnnotationTargetClassTextRange() {
 		ElementCollection2_0Annotation annotation = this.getMappingAnnotation();
-		return (annotation == null) ? null : annotation.getTargetClassTextRange(astRoot);
+		return (annotation == null) ? null : annotation.getTargetClassTextRange();
 	}
 
 	protected void validateMapKeyClass(List<IMessage> messages, CompilationUnit astRoot) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.ManyToMany2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
 /**
- * javax.persistence.ManyToMany
+ * <code>javax.persistence.ManyToMany</code>
  */
 public final class SourceManyToManyAnnotation
 	extends SourceRelationshipMappingAnnotation
@@ -39,6 +39,7 @@ public final class SourceManyToManyAnnotation
 	private static final DeclarationAnnotationElementAdapter<String> MAPPED_BY_ADAPTER = buildMappedByAdapter();
 	private final AnnotationElementAdapter<String> mappedByAdapter;
 	private String mappedBy;
+	private TextRange mappedByTextRange;
 
 
 	public SourceManyToManyAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
@@ -54,12 +55,14 @@ public final class SourceManyToManyAnnotation
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
 		this.mappedBy = this.buildMappedBy(astRoot);
+		this.mappedByTextRange = this.buildMappedByTextRange(astRoot);
 	}
 
 	@Override
 	public void synchronizeWith(CompilationUnit astRoot) {
 		super.synchronizeWith(astRoot);
 		this.syncMappedBy(this.buildMappedBy(astRoot));
+		this.mappedByTextRange = this.buildMappedByTextRange(astRoot);
 	}
 
 	@Override
@@ -111,12 +114,16 @@ public final class SourceManyToManyAnnotation
 		return this.mappedByAdapter.getValue(astRoot);
 	}
 
-	public TextRange getMappedByTextRange(CompilationUnit astRoot) {
+	public TextRange getMappedByTextRange() {
+		return this.mappedByTextRange;
+	}
+
+	private TextRange buildMappedByTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(MAPPED_BY_ADAPTER, astRoot);
 	}
 
-	public boolean mappedByTouches(int pos, CompilationUnit astRoot) {
-		return this.elementTouches(MAPPED_BY_ADAPTER, pos, astRoot);
+	public boolean mappedByTouches(int pos) {
+		return this.textRangeTouches(this.mappedByTextRange, pos);
 	}
 
 

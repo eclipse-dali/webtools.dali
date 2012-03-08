@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.context.EmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.EnumType;
-import org.eclipse.jpt.jpa.core.context.EnumeratedConverter;
+import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
@@ -38,7 +38,7 @@ import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
-import org.eclipse.jpt.jpa.core.context.TemporalConverter;
+import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.core.context.TransientMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -2203,7 +2203,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		assertNull(elementCollectionMapping.getMapKeyConverter().getType());
 		
-		elementCollectionMapping.setMapKeyConverter(EnumeratedConverter.class);
+		elementCollectionMapping.setMapKeyConverter(BaseEnumeratedConverter.class);
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -2212,10 +2212,10 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertNotNull(enumerated);
 		assertEquals(null, enumerated.getValue());
 		
-		((EnumeratedConverter) elementCollectionMapping.getMapKeyConverter()).setSpecifiedEnumType(EnumType.STRING);
+		((BaseEnumeratedConverter) elementCollectionMapping.getMapKeyConverter()).setSpecifiedEnumType(EnumType.STRING);
 		assertEquals(org.eclipse.jpt.jpa.core.resource.java.EnumType.STRING, enumerated.getValue());
 		
-		((EnumeratedConverter) elementCollectionMapping.getMapKeyConverter()).setSpecifiedEnumType(null);
+		((BaseEnumeratedConverter) elementCollectionMapping.getMapKeyConverter()).setSpecifiedEnumType(null);
 		assertNotNull(resourceField.getAnnotation(MapKeyEnumerated2_0Annotation.ANNOTATION_NAME));
 		assertNull(enumerated.getValue());
 		
@@ -2239,12 +2239,12 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		enumerated.setValue(org.eclipse.jpt.jpa.core.resource.java.EnumType.STRING);
 		getJpaProject().synchronizeContextModel();
 		
-		assertEquals(EnumType.STRING, ((EnumeratedConverter) elementCollectionMapping.getMapKeyConverter()).getSpecifiedEnumType());
+		assertEquals(EnumType.STRING, ((BaseEnumeratedConverter) elementCollectionMapping.getMapKeyConverter()).getSpecifiedEnumType());
 		
 		enumerated.setValue(null);
 		getJpaProject().synchronizeContextModel();
 		assertNotNull(resourceField.getAnnotation(MapKeyEnumerated2_0Annotation.ANNOTATION_NAME));
-		assertNull(((EnumeratedConverter) elementCollectionMapping.getMapKeyConverter()).getSpecifiedEnumType());
+		assertNull(((BaseEnumeratedConverter) elementCollectionMapping.getMapKeyConverter()).getSpecifiedEnumType());
 		assertFalse(elementCollectionMapping.isDefault());
 		assertSame(elementCollectionMapping, persistentAttribute.getMapping());
 	}
@@ -2257,7 +2257,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) persistentAttribute.getMapping();
 		assertNull(elementCollectionMapping.getMapKeyConverter().getType());
 		
-		elementCollectionMapping.setMapKeyConverter(TemporalConverter.class);
+		elementCollectionMapping.setMapKeyConverter(BaseTemporalConverter.class);
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -2266,10 +2266,10 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertNotNull(temporal);
 		assertEquals(null, temporal.getValue());
 		
-		((TemporalConverter) elementCollectionMapping.getMapKeyConverter()).setTemporalType(TemporalType.TIME);
+		((BaseTemporalConverter) elementCollectionMapping.getMapKeyConverter()).setTemporalType(TemporalType.TIME);
 		assertEquals(org.eclipse.jpt.jpa.core.resource.java.TemporalType.TIME, temporal.getValue());
 		
-		((TemporalConverter) elementCollectionMapping.getMapKeyConverter()).setTemporalType(null);
+		((BaseTemporalConverter) elementCollectionMapping.getMapKeyConverter()).setTemporalType(null);
 		assertNull(resourceField.getAnnotation(MapKeyTemporal2_0Annotation.ANNOTATION_NAME));
 	}
 	
@@ -2289,12 +2289,12 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		temporal.setValue(org.eclipse.jpt.jpa.core.resource.java.TemporalType.TIME);
 		getJpaProject().synchronizeContextModel();
 		
-		assertEquals(TemporalType.TIME, ((TemporalConverter) elementCollectionMapping.getMapKeyConverter()).getTemporalType());
+		assertEquals(TemporalType.TIME, ((BaseTemporalConverter) elementCollectionMapping.getMapKeyConverter()).getTemporalType());
 		
 		temporal.setValue(null);
 		getJpaProject().synchronizeContextModel();
 		assertNotNull(resourceField.getAnnotation(MapKeyTemporal2_0Annotation.ANNOTATION_NAME));
-		assertNull(((TemporalConverter) elementCollectionMapping.getMapKeyConverter()).getTemporalType());
+		assertNull(((BaseTemporalConverter) elementCollectionMapping.getMapKeyConverter()).getTemporalType());
 		assertFalse(elementCollectionMapping.isDefault());
 		assertSame(elementCollectionMapping, persistentAttribute.getMapping());
 	}

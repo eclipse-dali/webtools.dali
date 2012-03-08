@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,11 +10,11 @@
 package org.eclipse.jpt.jpa.core.jpa2.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.Converter;
-import org.eclipse.jpt.jpa.core.context.EnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
+import org.eclipse.jpt.jpa.core.context.orm.OrmBaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
-import org.eclipse.jpt.jpa.core.context.orm.OrmEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.ConverterTextRangeResolver;
@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlMapKeyConvertibleMapping_2_0;
 
 /**
- * <code>orm.xml</code> enumerated converter
+ * <code>orm.xml</code> map key enumerated converter
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlMapKeyConvertibleMapping_2_
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface OrmMapKeyEnumeratedConverter2_0
-	extends EnumeratedConverter, OrmConverter
+	extends OrmBaseEnumeratedConverter
 {
 	// ********** adapter **********
 
@@ -49,16 +49,16 @@ public interface OrmMapKeyEnumeratedConverter2_0
 		}
 
 		public Class<? extends Converter> getConverterType() {
-			return EnumeratedConverter.class;
+			return BaseEnumeratedConverter.class;
 		}
 
 		public OrmConverter buildConverter(OrmAttributeMapping parent, OrmXmlContextNodeFactory factory) {
 			XmlMapKeyConvertibleMapping_2_0 xmlMapping = (XmlMapKeyConvertibleMapping_2_0) parent.getXmlAttributeMapping();
-			return (xmlMapping.getMapKeyEnumerated() == null) ? null : factory.buildOrmEnumeratedConverter(parent, this.buildOwner(xmlMapping));
+			return (xmlMapping.getMapKeyEnumerated() == null) ? null : factory.buildOrmBaseEnumeratedConverter(parent, this.buildOwner(xmlMapping));
 		}
 
-		protected OrmEnumeratedConverter.Owner buildOwner(final XmlMapKeyConvertibleMapping_2_0 mapping) {
-			return new OrmEnumeratedConverter.Owner() {
+		protected OrmBaseEnumeratedConverter.Owner buildOwner(final XmlMapKeyConvertibleMapping_2_0 mapping) {
+			return new OrmBaseEnumeratedConverter.Owner() {
 				public void setXmlEnumType(EnumType enumType) {
 					mapping.setMapKeyEnumerated(enumType);
 				}
@@ -82,7 +82,7 @@ public interface OrmMapKeyEnumeratedConverter2_0
 		}
 
 		public OrmConverter buildNewConverter(OrmAttributeMapping parent, OrmXmlContextNodeFactory factory) {
-			return factory.buildOrmEnumeratedConverter(parent, this.buildOwner((XmlMapKeyConvertibleMapping_2_0) parent.getXmlAttributeMapping()));
+			return factory.buildOrmBaseEnumeratedConverter(parent, this.buildOwner((XmlMapKeyConvertibleMapping_2_0) parent.getXmlAttributeMapping()));
 		}
 
 		public void clearXmlValue(XmlAttributeMapping xmlMapping) {

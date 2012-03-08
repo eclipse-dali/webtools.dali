@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,15 +10,16 @@
 package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.java.GeneratorAnnotation;
 
 /**
- * javax.persistence.SequenceGenerator
- * javax.persistence.TableGenerator
+ * <ul>
+ * <li>javax.persistence.SequenceGenerator
+ * <li>javax.persistence.TableGenerator
+ * </ul>
  */
 abstract class BinaryGeneratorAnnotation
 	extends BinaryAnnotation
@@ -73,7 +74,7 @@ abstract class BinaryGeneratorAnnotation
 
 	abstract String getNameElementName();
 
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
+	public TextRange getNameTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -98,7 +99,7 @@ abstract class BinaryGeneratorAnnotation
 
 	abstract String getInitialValueElementName();
 
-	public TextRange getInitialValueTextRange(CompilationUnit astRoot) {
+	public TextRange getInitialValueTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -123,8 +124,7 @@ abstract class BinaryGeneratorAnnotation
 
 	abstract String getAllocationSizeElementName();
 
-	public TextRange getAllocationSizeTextRange(CompilationUnit astRoot) {
+	public TextRange getAllocationSizeTextRange() {
 		throw new UnsupportedOperationException();
 	}
-
 }

@@ -35,7 +35,7 @@ public final class SourceEntityAnnotation
 	private static final DeclarationAnnotationElementAdapter<String> NAME_ADAPTER = buildNameAdapter();
 	private final AnnotationElementAdapter<String> nameAdapter;
 	private String name;
-	TextRange nameTextRange;
+	private TextRange nameTextRange;
 
 
 	public SourceEntityAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
@@ -93,7 +93,7 @@ public final class SourceEntityAnnotation
 		return this.nameAdapter.getValue(astRoot);
 	}
 
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
+	public TextRange getNameTextRange() {
 		return this.nameTextRange;
 	}
 

@@ -213,14 +213,14 @@ public abstract class AbstractJavaNamedColumn<A extends NamedColumnAnnotation, O
 		if (result != null) {
 			return result;
 		}
-		if (this.nameTouches(pos, astRoot)) {
+		if (this.nameTouches(pos)) {
 			return this.getJavaCandidateNames(filter);
 		}
 		return null;
 	}
 
-	protected boolean nameTouches(int pos, CompilationUnit astRoot) {
-		return this.getColumnAnnotation().nameTouches(pos, astRoot);
+	protected boolean nameTouches(int pos) {
+		return this.getColumnAnnotation().nameTouches(pos);
 	}
 
 	protected Iterable<String> getJavaCandidateNames(Filter<String> filter) {
@@ -259,7 +259,7 @@ public abstract class AbstractJavaNamedColumn<A extends NamedColumnAnnotation, O
 	}
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.getColumnAnnotation().getNameTextRange(astRoot), astRoot);
+		return this.getValidationTextRange(this.getColumnAnnotation().getNameTextRange(), astRoot);
 	}
 
 

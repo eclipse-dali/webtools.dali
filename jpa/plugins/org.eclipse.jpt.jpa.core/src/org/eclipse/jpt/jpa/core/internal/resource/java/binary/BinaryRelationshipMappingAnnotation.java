@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -20,10 +19,12 @@ import org.eclipse.jpt.jpa.core.resource.java.CascadeType;
 import org.eclipse.jpt.jpa.core.resource.java.FetchType;
 
 /**
- * javax.persistence.ManyToMany
- * javax.persistence.ManyToOne
- * javax.persistence.OneToMany
- * javax.persistence.OneToOne
+ * <code><ul>
+ * <li>javax.persistence.ManyToMany
+ * <li>javax.persistence.ManyToOne
+ * <li>javax.persistence.OneToMany
+ * <li>javax.persistence.OneToOne
+ * </ul></code>
  */
 abstract class BinaryRelationshipMappingAnnotation
 	extends BinaryAnnotation
@@ -95,7 +96,7 @@ abstract class BinaryRelationshipMappingAnnotation
 
 	abstract String getTargetEntityElementName();
 
-	public TextRange getTargetEntityTextRange(CompilationUnit astRoot) {
+	public TextRange getTargetEntityTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -125,7 +126,7 @@ abstract class BinaryRelationshipMappingAnnotation
 
 	abstract String getFetchElementName();
 
-	public TextRange getFetchTextRange(CompilationUnit astRoot) {
+	public TextRange getFetchTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -136,7 +137,7 @@ abstract class BinaryRelationshipMappingAnnotation
 
 	abstract String getCascadeElementName();
 
-	public TextRange getCascadeTextRange(CompilationUnit astRoot) {
+	public TextRange getCascadeTextRange() {
 		throw new UnsupportedOperationException();
 	}
 

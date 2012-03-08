@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -221,11 +221,11 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 				)
 			);
 		} else {
-			this.validateQuery_(queryHelper, messages, reporter, astRoot);
+			this.validateQuery_(queryHelper, messages, reporter);
 		}
 	}
 
-	protected abstract void validateQuery_(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter, CompilationUnit astRoot);
+	protected abstract void validateQuery_(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter);
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		TextRange textRange = this.queryAnnotation.getTextRange(astRoot);
@@ -233,7 +233,7 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 	}
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.queryAnnotation.getNameTextRange(astRoot), astRoot);
+		return this.getValidationTextRange(this.queryAnnotation.getNameTextRange(), astRoot);
 	}
 
 	public boolean isEquivalentTo(JpaNamedContextNode node) {

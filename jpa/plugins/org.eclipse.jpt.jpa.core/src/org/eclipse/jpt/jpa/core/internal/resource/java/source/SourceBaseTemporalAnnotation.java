@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,21 +19,23 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.jpa.core.resource.java.TemporalAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.BaseTemporalAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.TemporalType;
 
 /**
- * Abstract implementation for JPA annotations
- * javax.persistence.Temporal
- * javax.persistence.MapKeyTemporal
+ * <code><ul>
+ * <li>javax.persistence.Temporal
+ * <li>javax.persistence.MapKeyTemporal
+ * </ul></code>
  */
 public abstract class SourceBaseTemporalAnnotation
 	extends SourceAnnotation
-	implements TemporalAnnotation
+	implements BaseTemporalAnnotation
 {
 	protected final DeclarationAnnotationElementAdapter<String> valueDeclarationAdapter;
 	private final AnnotationElementAdapter<String> valueAdapter;
 	private TemporalType value;
+	private TextRange valueTextRange;
 
 
 	protected SourceBaseTemporalAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
@@ -44,10 +46,12 @@ public abstract class SourceBaseTemporalAnnotation
 
 	public void initialize(CompilationUnit astRoot) {
 		this.value = this.buildValue(astRoot);
+		this.valueTextRange = this.buildValueTextRange(astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncValue(this.buildValue(astRoot));
+		this.valueTextRange = this.buildValueTextRange(astRoot);
 	}
 
 	@Override
@@ -86,10 +90,13 @@ public abstract class SourceBaseTemporalAnnotation
 		return TemporalType.fromJavaAnnotationValue(this.valueAdapter.getValue(astRoot));
 	}
 
-	public TextRange getValueTextRange(CompilationUnit astRoot) {
+	public TextRange getValueTextRange() {
+		return this.valueTextRange;
+	}
+
+	private TextRange buildValueTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.valueDeclarationAdapter, astRoot);
 	}
 
 	protected abstract String getValueElementName();
-
 }

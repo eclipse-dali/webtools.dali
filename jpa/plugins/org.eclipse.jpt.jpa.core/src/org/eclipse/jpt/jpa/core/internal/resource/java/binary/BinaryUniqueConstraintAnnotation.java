@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core.internal.resource.java.binary;
 
 import java.util.Vector;
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
@@ -20,7 +19,7 @@ import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
 
 /**
- * javax.persistence.UniqueConstraint
+ * <code>javax.persistence.UniqueConstraint</code>
  */
 final class BinaryUniqueConstraintAnnotation
 	extends BinaryAnnotation
@@ -86,7 +85,7 @@ final class BinaryUniqueConstraintAnnotation
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean columnNamesTouches(int pos, CompilationUnit astRoot) {
+	public boolean columnNamesTouches(int pos) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -97,5 +96,4 @@ final class BinaryUniqueConstraintAnnotation
 	public void removeColumnName(int index) {
 		throw new UnsupportedOperationException();
 	}
-
 }

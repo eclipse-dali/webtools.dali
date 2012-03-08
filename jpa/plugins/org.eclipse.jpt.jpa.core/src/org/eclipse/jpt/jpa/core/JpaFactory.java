@@ -30,6 +30,8 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
+import org.eclipse.jpt.jpa.core.context.java.JavaBaseEnumeratedConverter;
+import org.eclipse.jpt.jpa.core.context.java.JavaBaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
@@ -38,7 +40,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
-import org.eclipse.jpt.jpa.core.context.java.JavaEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratedValue;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdMapping;
@@ -68,7 +69,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaTableGenerator;
-import org.eclipse.jpt.jpa.core.context.java.JavaTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
@@ -87,10 +87,11 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.BaseEnumeratedAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.BaseTemporalAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.CompleteJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.EmbeddableAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.EntityAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.EnumeratedAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.GeneratedValueAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.LobAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.MappedSuperclassAnnotation;
@@ -101,7 +102,6 @@ import org.eclipse.jpt.jpa.core.resource.java.QueryHintAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.SecondaryTableAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.TableGeneratorAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.TemporalAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 
@@ -273,9 +273,9 @@ public interface JpaFactory
 	
 	JavaVirtualUniqueConstraint buildJavaVirtualUniqueConstraint(JavaJpaContextNode parent, ReadOnlyUniqueConstraint overriddenUniqueConstraint);
 	
-	JavaEnumeratedConverter buildJavaEnumeratedConverter(JavaAttributeMapping parent, EnumeratedAnnotation annotation, JavaConverter.Owner owner);
+	JavaBaseEnumeratedConverter buildJavaBaseEnumeratedConverter(JavaAttributeMapping parent, BaseEnumeratedAnnotation annotation, JavaConverter.Owner owner);
 	
-	JavaTemporalConverter buildJavaTemporalConverter(JavaAttributeMapping parent, TemporalAnnotation annotation, JavaConverter.Owner owner);
+	JavaBaseTemporalConverter buildJavaBaseTemporalConverter(JavaAttributeMapping parent, BaseTemporalAnnotation annotation, JavaConverter.Owner owner);
 	
 	JavaLobConverter buildJavaLobConverter(JavaAttributeMapping parent, LobAnnotation annotation, JavaConverter.Owner owner);
 

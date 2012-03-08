@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.TemporalConverter;
+import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.core.context.TransientMapping;
 import org.eclipse.jpt.jpa.core.context.VersionMapping;
@@ -96,13 +96,13 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
-		versionMapping.setConverter(TemporalConverter.class);
-		((TemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
+		versionMapping.setConverter(BaseTemporalConverter.class);
+		((BaseTemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		assertFalse(versionMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		assertEquals("FOO", ((BasicMapping) persistentAttribute.getMapping()).getColumn().getSpecifiedName());
-		assertEquals(TemporalType.TIME, ((TemporalConverter) ((BasicMapping) persistentAttribute.getMapping()).getConverter()).getTemporalType());
+		assertEquals(TemporalType.TIME, ((BaseTemporalConverter) ((BasicMapping) persistentAttribute.getMapping()).getConverter()).getTemporalType());
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -120,13 +120,13 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
-		versionMapping.setConverter(TemporalConverter.class);
-		((TemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
+		versionMapping.setConverter(BaseTemporalConverter.class);
+		((BaseTemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		assertFalse(versionMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
 		assertEquals("FOO", ((BasicMapping) persistentAttribute.getMapping()).getColumn().getSpecifiedName());
-		assertEquals(TemporalType.TIME, ((TemporalConverter) ((BasicMapping) persistentAttribute.getMapping()).getConverter()).getTemporalType());
+		assertEquals(TemporalType.TIME, ((BaseTemporalConverter) ((BasicMapping) persistentAttribute.getMapping()).getConverter()).getTemporalType());
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -143,13 +143,13 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
-		versionMapping.setConverter(TemporalConverter.class);
-		((TemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
+		versionMapping.setConverter(BaseTemporalConverter.class);
+		((BaseTemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		assertFalse(versionMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		assertEquals("FOO", ((IdMapping) persistentAttribute.getMapping()).getColumn().getSpecifiedName());
-		assertEquals(TemporalType.TIME, ((TemporalConverter) ((IdMapping) persistentAttribute.getMapping()).getConverter()).getTemporalType());
+		assertEquals(TemporalType.TIME, ((BaseTemporalConverter) ((IdMapping) persistentAttribute.getMapping()).getConverter()).getTemporalType());
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -167,8 +167,8 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
-		versionMapping.setConverter(TemporalConverter.class);
-		((TemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
+		versionMapping.setConverter(BaseTemporalConverter.class);
+		((BaseTemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		assertFalse(versionMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
@@ -190,8 +190,8 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
-		versionMapping.setConverter(TemporalConverter.class);
-		((TemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
+		versionMapping.setConverter(BaseTemporalConverter.class);
+		((BaseTemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		assertFalse(versionMapping.isDefault());
 
 		persistentAttribute.setMappingKey(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
@@ -213,8 +213,8 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
-		versionMapping.setConverter(TemporalConverter.class);
-		((TemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
+		versionMapping.setConverter(BaseTemporalConverter.class);
+		((BaseTemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		assertFalse(versionMapping.isDefault());
 
 		persistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
@@ -236,8 +236,8 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
-		versionMapping.setConverter(TemporalConverter.class);
-		((TemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
+		versionMapping.setConverter(BaseTemporalConverter.class);
+		((BaseTemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		assertFalse(versionMapping.isDefault());
 
 		persistentAttribute.setMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
@@ -259,8 +259,8 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
-		versionMapping.setConverter(TemporalConverter.class);
-		((TemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
+		versionMapping.setConverter(BaseTemporalConverter.class);
+		((BaseTemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		assertFalse(versionMapping.isDefault());
 
 		persistentAttribute.setMappingKey(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
@@ -282,8 +282,8 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
-		versionMapping.setConverter(TemporalConverter.class);
-		((TemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
+		versionMapping.setConverter(BaseTemporalConverter.class);
+		((BaseTemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		assertFalse(versionMapping.isDefault());
 
 		persistentAttribute.setMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
@@ -305,8 +305,8 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 		assertFalse(versionMapping.isDefault());
 		versionMapping.getColumn().setSpecifiedName("FOO");
-		versionMapping.setConverter(TemporalConverter.class);
-		((TemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
+		versionMapping.setConverter(BaseTemporalConverter.class);
+		((BaseTemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		assertFalse(versionMapping.isDefault());
 
 		persistentAttribute.setMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
@@ -328,7 +328,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 
-		assertEquals(TemporalType.TIMESTAMP, ((TemporalConverter) versionMapping.getConverter()).getTemporalType());
+		assertEquals(TemporalType.TIMESTAMP, ((BaseTemporalConverter) versionMapping.getConverter()).getTemporalType());
 	}
 
 	public void testSetTemporal() throws Exception {
@@ -339,8 +339,8 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 		assertNull(versionMapping.getConverter().getType());
 		
-		versionMapping.setConverter(TemporalConverter.class);
-		((TemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
+		versionMapping.setConverter(BaseTemporalConverter.class);
+		((BaseTemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -368,7 +368,7 @@ public class JavaVersionMappingTests extends ContextModelTestCase
 		temporal.setValue(org.eclipse.jpt.jpa.core.resource.java.TemporalType.DATE);
 		getJpaProject().synchronizeContextModel();
 		
-		assertEquals(TemporalType.DATE, ((TemporalConverter) versionMapping.getConverter()).getTemporalType());
+		assertEquals(TemporalType.DATE, ((BaseTemporalConverter) versionMapping.getConverter()).getTemporalType());
 		
 		resourceField.removeAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();

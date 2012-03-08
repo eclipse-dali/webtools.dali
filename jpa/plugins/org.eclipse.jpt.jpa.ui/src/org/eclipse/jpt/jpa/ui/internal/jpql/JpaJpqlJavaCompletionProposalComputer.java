@@ -153,7 +153,7 @@ public final class JpaJpqlJavaCompletionProposalComputer extends JpqlCompletionP
 		checkCanceled(monitor);
 
 		// Retrieve the JPA's model object
-		NamedQuery namedQuery = namedQuery(astRoot, jpaFile, tokenStart);
+		NamedQuery namedQuery = namedQuery(jpaFile, tokenStart);
 		if (namedQuery == null) return Collections.emptyList();
 
 		// Retrieve the actual value of the element "query" since the content assist can be
@@ -174,7 +174,6 @@ public final class JpaJpqlJavaCompletionProposalComputer extends JpqlCompletionP
 	}
 
 	private NamedQuery findNamedQuery(JpaStructureNode structureNode,
-	                                  CompilationUnit astRoot,
 	                                  int tokenStart) {
 
 		if (structureNode instanceof JavaPersistentType) {
@@ -184,7 +183,7 @@ public final class JpaJpqlJavaCompletionProposalComputer extends JpqlCompletionP
 			for (Query query : typeMapping.getQueries()){
 				if (query.getType().equals(NamedQuery.class)){
 					JavaNamedQuery namedQuery = (JavaNamedQuery)query;
-					TextRange textRange = namedQuery.getQueryAnnotation().getQueryTextRange(astRoot);
+					TextRange textRange = namedQuery.getQueryAnnotation().getQueryTextRange();
 					if ((textRange != null) && textRange.includes(tokenStart)) {
 						return namedQuery;
 					}
@@ -233,10 +232,10 @@ public final class JpaJpqlJavaCompletionProposalComputer extends JpqlCompletionP
 		return ExpressionTools.unescape(jpqlQuery, position);
 	}
 
-	private NamedQuery namedQuery(CompilationUnit astRoot, JpaFile jpaFile, int tokenStart) {
+	private NamedQuery namedQuery(JpaFile jpaFile, int tokenStart) {
 
 		for (JpaStructureNode node : jpaFile.getRootStructureNodes()) {
-			NamedQuery namedQuery = findNamedQuery(node, astRoot, tokenStart);
+			NamedQuery namedQuery = findNamedQuery(node, tokenStart);
 			if (namedQuery != null) {
 				return namedQuery;
 			}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkExistenceCh
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.ExistenceType;
 
 /**
- * org.eclipse.persistence.annotations.ExistenceChecking
+ * <code>org.eclipse.persistence.annotations.ExistenceChecking</code>
  */
 public final class SourceEclipseLinkExistenceCheckingAnnotation
 	extends SourceAnnotation
@@ -36,6 +36,7 @@ public final class SourceEclipseLinkExistenceCheckingAnnotation
 	private static final DeclarationAnnotationElementAdapter<String> VALUE_ADAPTER = buildValueAdapter();
 	private final AnnotationElementAdapter<String> valueAdapter;
 	private ExistenceType value;
+	private TextRange valueTextRange;
 
 
 	public SourceEclipseLinkExistenceCheckingAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
@@ -49,10 +50,12 @@ public final class SourceEclipseLinkExistenceCheckingAnnotation
 
 	public void initialize(CompilationUnit astRoot) {
 		this.value = this.buildValue(astRoot);
+		this.valueTextRange = this.buildValueTextRange(astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncValue(this.buildValue(astRoot));
+		this.valueTextRange = this.buildValueTextRange(astRoot);
 	}
 
 	@Override
@@ -91,7 +94,11 @@ public final class SourceEclipseLinkExistenceCheckingAnnotation
 		return ExistenceType.fromJavaAnnotationValue(this.valueAdapter.getValue(astRoot));
 	}
 
-	public TextRange getValueTextRange(CompilationUnit astRoot) {
+	public TextRange getValueTextRange() {
+		return this.valueTextRange;
+	}
+
+	private TextRange buildValueTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(VALUE_ADAPTER, astRoot);
 	}
 

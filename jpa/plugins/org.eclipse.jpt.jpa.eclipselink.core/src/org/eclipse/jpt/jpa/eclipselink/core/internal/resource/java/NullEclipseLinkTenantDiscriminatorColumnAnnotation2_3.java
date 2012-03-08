@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.resource.java.NullBaseDiscriminatorColumnAnnotation;
@@ -41,7 +40,7 @@ public final class NullEclipseLinkTenantDiscriminatorColumnAnnotation2_3
 		}
 	}
 
-	public TextRange getContextPropertyTextRange(CompilationUnit astRoot) {
+	public TextRange getContextPropertyTextRange() {
 		return null;
 	}
 
@@ -56,11 +55,11 @@ public final class NullEclipseLinkTenantDiscriminatorColumnAnnotation2_3
 		}
 	}
 
-	public TextRange getTableTextRange(CompilationUnit astRoot) {
+	public TextRange getTableTextRange() {
 		return null;
 	}
 
-	public boolean tableTouches(int pos, CompilationUnit astRoot) {
+	public boolean tableTouches(int pos) {
 		return false;
 	}
 
@@ -75,7 +74,7 @@ public final class NullEclipseLinkTenantDiscriminatorColumnAnnotation2_3
 		}
 	}
 
-	public TextRange getPrimaryKeyTextRange(CompilationUnit astRoot) {
+	public TextRange getPrimaryKeyTextRange() {
 		return null;
 	}
 }

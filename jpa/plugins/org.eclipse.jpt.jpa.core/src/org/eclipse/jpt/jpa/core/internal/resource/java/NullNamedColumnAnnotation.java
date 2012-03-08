@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,21 +9,21 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.NullAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation;
 
 /**
- * <ul>
- * <li><code>javax.persistence.Column</code>
- * <li><code>javax.persistence.JoinColumn</code>
- * <li><code>javax.persistence.MapKeyColumn</code>
- * <li><code>javax.persistence.DiscriminatorColumn</code>
- * <li><code>javax.persistence.OrderColumn</code>
- * <li><code>javax.persistence.PrimaryKeyJoinColumn</code>
- * </ul>
+ * <code><ul>
+ * <li>javax.persistence.Column
+ * <li>javax.persistence.JoinColumn
+ * <li>javax.persistence.DiscriminatorColumn
+ * <li>javax.persistence.PrimaryKeyJoinColumn
+ * <li>javax.persistence.MapKeyColumn
+ * <li>javax.persistence.MapKeyJoinColumn
+ * <li>javax.persistence.OrderColumn
+ * </ul></code>
  */
 public abstract class NullNamedColumnAnnotation<A extends NamedColumnAnnotation>
 	extends NullAnnotation<A>
@@ -48,11 +48,11 @@ public abstract class NullNamedColumnAnnotation<A extends NamedColumnAnnotation>
 		}	
 	}
 
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
+	public TextRange getNameTextRange() {
 		return null;
 	}
 
-	public boolean nameTouches(int pos, CompilationUnit astRoot) {
+	public boolean nameTouches(int pos) {
 		return false;
 	}
 
@@ -67,7 +67,7 @@ public abstract class NullNamedColumnAnnotation<A extends NamedColumnAnnotation>
 		}	
 	}
 
-	public TextRange getColumnDefinitionTextRange(CompilationUnit astRoot) {
+	public TextRange getColumnDefinitionTextRange() {
 		return null;
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.NullAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -45,7 +44,7 @@ public final class NullEclipseLinkCacheAnnotation
 		}
 	}
 
-	public TextRange getTypeTextRange(CompilationUnit astRoot) {
+	public TextRange getTypeTextRange() {
 		return null;
 	}
 
@@ -60,7 +59,7 @@ public final class NullEclipseLinkCacheAnnotation
 		}
 	}
 
-	public TextRange getSizeTextRange(CompilationUnit astRoot) {
+	public TextRange getSizeTextRange() {
 		return null;
 	}
 
@@ -75,7 +74,7 @@ public final class NullEclipseLinkCacheAnnotation
 		}
 	}
 
-	public TextRange getSharedTextRange(CompilationUnit astRoot) {
+	public TextRange getSharedTextRange() {
 		return null;
 	}
 
@@ -90,7 +89,7 @@ public final class NullEclipseLinkCacheAnnotation
 		}
 	}
 
-	public TextRange getAlwaysRefreshTextRange(CompilationUnit astRoot) {
+	public TextRange getAlwaysRefreshTextRange() {
 		return null;
 	}
 
@@ -105,7 +104,7 @@ public final class NullEclipseLinkCacheAnnotation
 		}
 	}
 
-	public TextRange getRefreshOnlyIfNewerTextRange(CompilationUnit astRoot) {
+	public TextRange getRefreshOnlyIfNewerTextRange() {
 		return null;
 	}
 
@@ -120,7 +119,7 @@ public final class NullEclipseLinkCacheAnnotation
 		}
 	}
 
-	public TextRange getDisablesHitsTextRange(CompilationUnit astRoot) {
+	public TextRange getDisableHitsTextRange() {
 		return null;
 	}
 
@@ -135,7 +134,7 @@ public final class NullEclipseLinkCacheAnnotation
 		}
 	}
 
-	public TextRange getCoordinationTypeTextRange(CompilationUnit astRoot) {
+	public TextRange getCoordinationTypeTextRange() {
 		return null;
 	}
 
@@ -150,7 +149,7 @@ public final class NullEclipseLinkCacheAnnotation
 		}
 	}
 
-	public TextRange getExpiryTextRange(CompilationUnit astRoot) {
+	public TextRange getExpiryTextRange() {
 		return null;
 	}
 
@@ -167,7 +166,7 @@ public final class NullEclipseLinkCacheAnnotation
 		// do nothing
 	}
 
-	public TextRange getExpiryTimeOfDayTextRange(CompilationUnit astRoot) {
+	public TextRange getExpiryTimeOfDayTextRange() {
 		return null;
 	}
 
@@ -183,8 +182,7 @@ public final class NullEclipseLinkCacheAnnotation
 		}
 	}
 
-	public TextRange getIsolationTextRange(CompilationUnit astRoot) {
+	public TextRange getIsolationTextRange() {
 		return null;
 	}
-
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,8 +11,8 @@ package org.eclipse.jpt.jpa.core.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.jpa.core.JpaFactory;
+import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.Converter;
-import org.eclipse.jpt.jpa.core.context.EnumeratedConverter;
 import org.eclipse.jpt.jpa.core.resource.java.EnumeratedAnnotation;
 
 /**
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.java.EnumeratedAnnotation;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface JavaEnumeratedConverter
-	extends EnumeratedConverter, JavaConverter
+	extends JavaBaseEnumeratedConverter
 {
 	// ********** adapter **********
 
@@ -42,7 +42,7 @@ public interface JavaEnumeratedConverter
 		}
 
 		public Class<? extends Converter> getConverterType() {
-			return EnumeratedConverter.class;
+			return BaseEnumeratedConverter.class;
 		}
 
 		@Override
@@ -51,7 +51,7 @@ public interface JavaEnumeratedConverter
 		}
 
 		public JavaConverter buildConverter(Annotation converterAnnotation, JavaAttributeMapping parent, JpaFactory factory) {
-			return factory.buildJavaEnumeratedConverter(parent, (EnumeratedAnnotation) converterAnnotation, this.buildOwner());
+			return factory.buildJavaBaseEnumeratedConverter(parent, (EnumeratedAnnotation) converterAnnotation, this.buildOwner());
 		}
 	}
 }

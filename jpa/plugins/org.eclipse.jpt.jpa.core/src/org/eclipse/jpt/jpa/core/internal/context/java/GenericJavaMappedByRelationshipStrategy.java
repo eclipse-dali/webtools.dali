@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -176,7 +176,7 @@ public class GenericJavaMappedByRelationshipStrategy
 			return result;
 		}
 		OwnableRelationshipMappingAnnotation annotation = this.getMappingAnnotation();
-		if ((annotation != null) && annotation.mappedByTouches(pos, astRoot)) {
+		if ((annotation != null) && annotation.mappedByTouches(pos)) {
 			result = this.getJavaCandidateMappedByAttributeNames(filter);
 		}
 		return result;
@@ -264,12 +264,12 @@ public class GenericJavaMappedByRelationshipStrategy
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.getAnnotationMappedByTextRange(astRoot);
+		TextRange textRange = this.getAnnotationMappedByTextRange();
 		return (textRange != null) ? textRange : this.getRelationship().getValidationTextRange(astRoot);
 	}
 
-	protected TextRange getAnnotationMappedByTextRange(CompilationUnit astRoot) {
+	protected TextRange getAnnotationMappedByTextRange() {
 		OwnableRelationshipMappingAnnotation annotation = this.getMappingAnnotation();
-		return (annotation == null) ? null : annotation.getMappedByTextRange(astRoot);
+		return (annotation == null) ? null : annotation.getMappedByTextRange();
 	}
 }

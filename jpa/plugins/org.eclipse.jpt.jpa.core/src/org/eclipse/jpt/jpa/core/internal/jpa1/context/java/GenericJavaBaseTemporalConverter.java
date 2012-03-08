@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,24 +9,24 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
+import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.Converter;
-import org.eclipse.jpt.jpa.core.context.TemporalConverter;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.jpa.core.context.java.JavaBaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
-import org.eclipse.jpt.jpa.core.context.java.JavaTemporalConverter;
-import org.eclipse.jpt.jpa.core.resource.java.TemporalAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.BaseTemporalAnnotation;
 
-public class GenericJavaTemporalConverter
+public class GenericJavaBaseTemporalConverter
 	extends AbstractJavaConverter
-	implements JavaTemporalConverter
+	implements JavaBaseTemporalConverter
 {
-	protected final TemporalAnnotation temporalAnnotation;
+	protected final BaseTemporalAnnotation temporalAnnotation;
 
 	protected TemporalType temporalType;
 
 
-	public GenericJavaTemporalConverter(JavaAttributeMapping parent, TemporalAnnotation temporalAnnotation, JavaConverter.Owner owner) {
+	public GenericJavaBaseTemporalConverter(JavaAttributeMapping parent, BaseTemporalAnnotation temporalAnnotation, JavaConverter.Owner owner) {
 		super(parent, owner);
 		this.temporalAnnotation = temporalAnnotation;
 		this.temporalType = this.buildTemporalType();
@@ -70,10 +70,10 @@ public class GenericJavaTemporalConverter
 	// ********** misc **********
 
 	public Class<? extends Converter> getType() {
-		return TemporalConverter.class;
+		return BaseTemporalConverter.class;
 	}
 
-	public TemporalAnnotation getConverterAnnotation() {
+	public BaseTemporalAnnotation getConverterAnnotation() {
 		return this.temporalAnnotation;
 	}
 

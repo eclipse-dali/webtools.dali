@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,6 +29,16 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkNamedConver
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
+/**
+ * <code>
+ * <ul>
+ * <li>org.eclipse.persistence.annotations.Converter
+ * <li>org.eclipse.persistence.annotations.StructConverter
+ * <li>org.eclipse.persistence.annotations.ObjectTypeConverter
+ * <li>org.eclipse.persistence.annotations.TypeConverter
+ * </ul>
+ * </code>
+ */
 public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConverterAnnotation>
 	extends AbstractJavaJpaContextNode
 	implements EclipseLinkConverter
@@ -144,7 +154,7 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 	}
 	
 	public TextRange getNameTextRange(CompilationUnit astRoot){
-		return this.getValidationTextRange(this.getConverterAnnotation().getNameTextRange(astRoot), astRoot);
+		return this.getValidationTextRange(this.getConverterAnnotation().getNameTextRange(), astRoot);
 	}
 
 	public boolean isEquivalentTo(JpaNamedContextNode node) {

@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.TemporalConverter;
+import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AbstractTemporalConverterValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.ConverterTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCollectionMapping2_0;
 public class OrmMapKeyTemporalConverterValidator extends AbstractTemporalConverterValidator
 {
 
-	public OrmMapKeyTemporalConverterValidator(TemporalConverter converter, ConverterTextRangeResolver textRangeResolver) {
+	public OrmMapKeyTemporalConverterValidator(BaseTemporalConverter converter, ConverterTextRangeResolver textRangeResolver) {
 		super(converter, textRangeResolver);
 	}
 

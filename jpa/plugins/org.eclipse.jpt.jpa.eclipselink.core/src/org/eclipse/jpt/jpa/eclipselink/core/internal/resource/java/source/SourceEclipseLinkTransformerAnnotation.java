@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,8 +23,10 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapt
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTransformerAnnotation;
 
 /**
- * org.eclipse.persistence.annotations.ReadTransformer
- * org.eclipse.persistence.annotations.WriteTransformer
+ * <code><ul>
+ * <li>org.eclipse.persistence.annotations.ReadTransformer
+ * <li>org.eclipse.persistence.annotations.WriteTransformer
+ * </ul></code>
  */
 abstract class SourceEclipseLinkTransformerAnnotation
 	extends SourceAnnotation
@@ -33,10 +35,12 @@ abstract class SourceEclipseLinkTransformerAnnotation
 	final DeclarationAnnotationElementAdapter<String> transformerClassDeclarationAdapter;
 	final AnnotationElementAdapter<String> transformerClassAdapter;
 	String transformerClass;
+	TextRange transformerClassTextRange;
 
 	final DeclarationAnnotationElementAdapter<String> methodDeclarationAdapter;
 	final AnnotationElementAdapter<String> methodAdapter;
 	String method;
+	TextRange methodTextRange;
 
 
 	SourceEclipseLinkTransformerAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
@@ -50,12 +54,18 @@ abstract class SourceEclipseLinkTransformerAnnotation
 
 	public void initialize(CompilationUnit astRoot) {
 		this.transformerClass = this.buildTransformerClass(astRoot);
+		this.transformerClassTextRange = this.buildTransformerClassTextRange(astRoot);
+
 		this.method = this.buildMethod(astRoot);
+		this.methodTextRange = this.buildMethodTextRange(astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncTransformerClass(this.buildTransformerClass(astRoot));
+		this.transformerClassTextRange = this.buildTransformerClassTextRange(astRoot);
+
 		this.syncMethod(this.buildMethod(astRoot));
+		this.methodTextRange = this.buildMethodTextRange(astRoot);
 	}
 
 	@Override
@@ -95,7 +105,11 @@ abstract class SourceEclipseLinkTransformerAnnotation
 		return this.transformerClassAdapter.getValue(astRoot);
 	}
 
-	public TextRange getTransformerClassTextRange(CompilationUnit astRoot) {
+	public TextRange getTransformerClassTextRange() {
+		return this.transformerClassTextRange;
+	}
+
+	private TextRange buildTransformerClassTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.transformerClassDeclarationAdapter, astRoot);
 	}
 
@@ -123,10 +137,13 @@ abstract class SourceEclipseLinkTransformerAnnotation
 		return this.methodAdapter.getValue(astRoot);
 	}
 
-	public TextRange getMethodTextRange(CompilationUnit astRoot) {
+	public TextRange getMethodTextRange() {
+		return this.methodTextRange;
+	}
+
+	private TextRange buildMethodTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.methodDeclarationAdapter, astRoot);
 	}
 
 	abstract String getMethodElementName();
-
 }

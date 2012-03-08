@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -449,16 +449,16 @@ public class GenericJavaTableGenerator
 		if (result != null) {
 			return result;
 		}
-		if (this.tableTouches(pos, astRoot)) {
+		if (this.tableTouches(pos)) {
 			return this.getJavaCandidateTables(filter);
 		}
-		if (this.schemaTouches(pos, astRoot)) {
+		if (this.schemaTouches(pos)) {
 			return this.getJavaCandidateSchemata(filter);
 		}
-		if (this.pkColumnNameTouches(pos, astRoot)) {
+		if (this.pkColumnNameTouches(pos)) {
 			return this.getJavaCandidateColumnNames(filter);
 		}
-		if (this.valueColumnNameTouches(pos, astRoot)) {
+		if (this.valueColumnNameTouches(pos)) {
 			return this.getJavaCandidateColumnNames(filter);
 		}
 		return null;
@@ -466,8 +466,8 @@ public class GenericJavaTableGenerator
 
 	// ********** code assist: table
 
-	protected boolean tableTouches(int pos, CompilationUnit astRoot) {
-		return this.generatorAnnotation.tableTouches(pos, astRoot);
+	protected boolean tableTouches(int pos) {
+		return this.generatorAnnotation.tableTouches(pos);
 	}
 
 	protected Iterable<String> getJavaCandidateTables(Filter<String> filter) {
@@ -485,8 +485,8 @@ public class GenericJavaTableGenerator
 
 	// ********** code assist: schema
 
-	protected boolean schemaTouches(int pos, CompilationUnit astRoot) {
-		return this.generatorAnnotation.schemaTouches(pos, astRoot);
+	protected boolean schemaTouches(int pos) {
+		return this.generatorAnnotation.schemaTouches(pos);
 	}
 
 	protected Iterable<String> getJavaCandidateSchemata(Filter<String> filter) {
@@ -504,8 +504,8 @@ public class GenericJavaTableGenerator
 
 	// ********** code assist: catalog
 
-	protected boolean catalogTouches(int pos, CompilationUnit astRoot) {
-		return this.generatorAnnotation.catalogTouches(pos, astRoot);
+	protected boolean catalogTouches(int pos) {
+		return this.generatorAnnotation.catalogTouches(pos);
 	}
 
 	protected Iterable<String> getJavaCandidateCatalogs(Filter<String> filter) {
@@ -523,8 +523,8 @@ public class GenericJavaTableGenerator
 
 	// ********** code assist: pkColumnName
 
-	protected boolean pkColumnNameTouches(int pos, CompilationUnit astRoot) {
-		return this.generatorAnnotation.pkColumnNameTouches(pos, astRoot);
+	protected boolean pkColumnNameTouches(int pos) {
+		return this.generatorAnnotation.pkColumnNameTouches(pos);
 	}
 
 	protected Iterable<String> getJavaCandidateColumnNames(Filter<String> filter) {
@@ -542,8 +542,8 @@ public class GenericJavaTableGenerator
 
 	// ********** code assist: valueColumnName
 
-	protected boolean valueColumnNameTouches(int pos, CompilationUnit astRoot) {
-		return this.generatorAnnotation.valueColumnNameTouches(pos, astRoot);
+	protected boolean valueColumnNameTouches(int pos) {
+		return this.generatorAnnotation.valueColumnNameTouches(pos);
 	}
 
 	// ********** metadata conversion **********

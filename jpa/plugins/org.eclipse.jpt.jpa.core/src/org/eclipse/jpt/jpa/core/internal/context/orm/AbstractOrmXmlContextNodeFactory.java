@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,6 +26,8 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
+import org.eclipse.jpt.jpa.core.context.orm.OrmBaseEnumeratedConverter;
+import org.eclipse.jpt.jpa.core.context.orm.OrmBaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
@@ -34,7 +36,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
-import org.eclipse.jpt.jpa.core.context.orm.OrmEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratedValue;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdMapping;
@@ -65,7 +66,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTableGenerator;
-import org.eclipse.jpt.jpa.core.context.orm.OrmTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTransientMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVersionMapping;
@@ -86,6 +86,8 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmAssociationO
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmAttributeOverride;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmAttributeOverrideContainer;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmBaseEnumeratedConverter;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmBaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmBasicMapping;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmColumn;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmDiscriminatorColumn;
@@ -93,7 +95,6 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmEmbeddable;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmEmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmEmbeddedMapping;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmEntity;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmGeneratedValue;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmGeneratorContainer;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmIdMapping;
@@ -121,7 +122,6 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmSecondaryTab
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmSequenceGenerator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmTable;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmTableGenerator;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmTemporalConverter;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmTransientMapping;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmVersionMapping;
@@ -376,16 +376,16 @@ public abstract class AbstractOrmXmlContextNodeFactory
 		return new GenericOrmVirtualUniqueConstraint(parent, overriddenUniqueConstraint);
 	}
 
-	public OrmConverter buildOrmEnumeratedConverter(OrmAttributeMapping parent, OrmEnumeratedConverter.Owner owner) {
-		return new GenericOrmEnumeratedConverter(parent, owner);
+	public OrmConverter buildOrmBaseEnumeratedConverter(OrmAttributeMapping parent, OrmBaseEnumeratedConverter.Owner owner) {
+		return new GenericOrmBaseEnumeratedConverter(parent, owner);
 	}
 	
 	public OrmConverter buildOrmLobConverter(OrmAttributeMapping parent, OrmConverter.Owner owner) {
 		return new GenericOrmLobConverter(parent, owner);
 	}
 	
-	public OrmConverter buildOrmTemporalConverter(OrmAttributeMapping parent, OrmTemporalConverter.Owner owner) {
-		return new GenericOrmTemporalConverter(parent, owner);
+	public OrmConverter buildOrmBaseTemporalConverter(OrmAttributeMapping parent, OrmBaseTemporalConverter.Owner owner) {
+		return new GenericOrmBaseTemporalConverter(parent, owner);
 	}
 	
 	public OrmOrderable buildOrmOrderable(OrmAttributeMapping parent) {

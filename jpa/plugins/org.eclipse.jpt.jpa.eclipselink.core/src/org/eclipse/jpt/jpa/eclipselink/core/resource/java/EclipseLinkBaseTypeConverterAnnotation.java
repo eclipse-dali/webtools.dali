@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,21 +9,20 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 
 /**
- * Common protocol among:
- *     org.eclipse.persistence.annotations.TypeConverter
- *     org.eclipse.persistence.annotations.ObjectTypeConverter
- * 
+ * Common protocol among:<code><ul>
+ * <li>org.eclipse.persistence.annotations.TypeConverter
+ * <li>org.eclipse.persistence.annotations.ObjectTypeConverter
+ * </ul></code>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface BaseEclipseLinkTypeConverterAnnotation
+public interface EclipseLinkBaseTypeConverterAnnotation
 	extends EclipseLinkNamedConverterAnnotation
 {
 	/**
@@ -43,7 +42,7 @@ public interface BaseEclipseLinkTypeConverterAnnotation
 	 * Return the {@link TextRange} for the 'dataType' element. If the element 
 	 * does not exist return the {@link TextRange} for the TypeConverter annotation.
 	 */
-	TextRange getDataTypeTextRange(CompilationUnit astRoot);
+	TextRange getDataTypeTextRange();
 
 	/**
 	 * Return the fully-qualified data type name as resolved by the
@@ -73,7 +72,7 @@ public interface BaseEclipseLinkTypeConverterAnnotation
 	 * Return the {@link TextRange} for the 'objectType' element. If the element 
 	 * does not exist return the {@link TextRange} for the TypeConverter annotation.
 	 */
-	TextRange getObjectTypeTextRange(CompilationUnit astRoot);
+	TextRange getObjectTypeTextRange();
 
 	/**
 	 * Return the fully-qualified object type name as resolved by the

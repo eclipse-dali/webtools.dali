@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,10 +21,10 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapt
 import org.eclipse.jpt.jpa.core.resource.java.OverrideAnnotation;
 
 /**
- * <ul>
- * <li><code>javax.persistence.AttributeOverride</code>
- * <li><code>javax.persistence.AssociationOverride</code>
- * </ul>
+ * <code><ul>
+ * <li>javax.persistence.AttributeOverride
+ * <li>javax.persistence.AssociationOverride
+ * </ul></code>
  */
 abstract class SourceOverrideAnnotation
 	extends SourceAnnotation
@@ -33,6 +33,7 @@ abstract class SourceOverrideAnnotation
 	DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
 	AnnotationElementAdapter<String> nameAdapter;
 	String name;
+	TextRange nameTextRange;
 		
 
 	SourceOverrideAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
@@ -43,10 +44,12 @@ abstract class SourceOverrideAnnotation
 
 	public void initialize(CompilationUnit astRoot) {
 		this.name = this.buildName(astRoot);
+		this.nameTextRange = this.buildNameTextRange(astRoot);
 	}
 	
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncName(this.buildName(astRoot));
+		this.nameTextRange = this.buildNameTextRange(astRoot);
 	}
 	
 
@@ -74,12 +77,16 @@ abstract class SourceOverrideAnnotation
 		return this.nameAdapter.getValue(astRoot);
 	}
 
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
+	public TextRange getNameTextRange() {
+		return this.nameTextRange;
+	}
+
+	private TextRange buildNameTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
 
-	public boolean nameTouches(int pos, CompilationUnit astRoot) {
-		return this.elementTouches(this.nameDeclarationAdapter, pos, astRoot);
+	public boolean nameTouches(int pos) {
+		return this.textRangeTouches(this.nameTextRange, pos);
 	}
 
 	private DeclarationAnnotationElementAdapter<String> buildNameDeclarationAdapter() {

@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.java.TableGeneratorAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
 
 /**
- * javax.persistence.TableGenerator
+ * <code>javax.persistence.TableGenerator</code>
  */
 public final class SourceTableGeneratorAnnotation
 	extends SourceGeneratorAnnotation
@@ -42,26 +42,32 @@ public final class SourceTableGeneratorAnnotation
 	private static final DeclarationAnnotationElementAdapter<String> TABLE_ADAPTER = buildAdapter(JPA.TABLE_GENERATOR__TABLE);
 	private final AnnotationElementAdapter<String> tableAdapter;
 	private String table;
+	private TextRange tableTextRange;
 
 	private static final DeclarationAnnotationElementAdapter<String> SCHEMA_ADAPTER = buildAdapter(JPA.TABLE_GENERATOR__SCHEMA);
 	private final AnnotationElementAdapter<String> schemaAdapter;
 	private String schema;
+	private TextRange schemaTextRange;
 
 	private static final DeclarationAnnotationElementAdapter<String> CATALOG_ADAPTER = buildAdapter(JPA.TABLE_GENERATOR__CATALOG);
 	private final AnnotationElementAdapter<String> catalogAdapter;
 	private String catalog;
+	private TextRange catalogTextRange;
 
 	private static final DeclarationAnnotationElementAdapter<String> PK_COLUMN_NAME_ADAPTER = buildAdapter(JPA.TABLE_GENERATOR__PK_COLUMN_NAME);
 	private final AnnotationElementAdapter<String> pkColumnNameAdapter;
 	private String pkColumnName;
+	private TextRange pkColumnNameTextRange;
 
 	private static final DeclarationAnnotationElementAdapter<String> VALUE_COLUMN_NAME_ADAPTER = buildAdapter(JPA.TABLE_GENERATOR__VALUE_COLUMN_NAME);
 	private final AnnotationElementAdapter<String> valueColumnNameAdapter;
 	private String valueColumnName;
+	private TextRange valueColumnNameTextRange;
 
 	private static final DeclarationAnnotationElementAdapter<String> PK_COLUMN_VALUE_ADAPTER = buildAdapter(JPA.TABLE_GENERATOR__PK_COLUMN_VALUE);
 	private final AnnotationElementAdapter<String> pkColumnValueAdapter;
 	private String pkColumnValue;
+	private TextRange pkColumnValueTextRange;
 
 	private final UniqueConstraintsAnnotationContainer uniqueConstraintsContainer = new UniqueConstraintsAnnotationContainer();
 
@@ -83,24 +89,50 @@ public final class SourceTableGeneratorAnnotation
 	@Override
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
+
 		this.table = this.buildTable(astRoot);
+		this.tableTextRange = this.buildTableTextRange(astRoot);
+
 		this.schema = this.buildSchema(astRoot);
+		this.schemaTextRange = this.buildSchemaTextRange(astRoot);
+
 		this.catalog = this.buildCatalog(astRoot);
+		this.catalogTextRange = this.buildCatalogTextRange(astRoot);
+
 		this.pkColumnName = this.buildPkColumnName(astRoot);
+		this.pkColumnNameTextRange = this.buildPkColumnNameTextRange(astRoot);
+
 		this.valueColumnName = this.buildValueColumnName(astRoot);
+		this.valueColumnNameTextRange = this.buildValueColumnNameTextRange(astRoot);
+
 		this.pkColumnValue = this.buildPkColumnValue(astRoot);
+		this.pkColumnValueTextRange = this.buildPkColumnValueTextRange(astRoot);
+
 		this.uniqueConstraintsContainer.initializeFromContainerAnnotation(this.getAstAnnotation(astRoot));
 	}
 
 	@Override
 	public void synchronizeWith(CompilationUnit astRoot) {
 		super.synchronizeWith(astRoot);
+
 		this.syncTable(this.buildTable(astRoot));
+		this.tableTextRange = this.buildTableTextRange(astRoot);
+
 		this.syncSchema(this.buildSchema(astRoot));
+		this.schemaTextRange = this.buildSchemaTextRange(astRoot);
+
 		this.syncCatalog(this.buildCatalog(astRoot));
+		this.catalogTextRange = this.buildCatalogTextRange(astRoot);
+
 		this.syncPkColumnName(this.buildPkColumnName(astRoot));
+		this.pkColumnNameTextRange = this.buildPkColumnNameTextRange(astRoot);
+
 		this.syncValueColumnName(this.buildValueColumnName(astRoot));
+		this.valueColumnNameTextRange = this.buildValueColumnNameTextRange(astRoot);
+
 		this.syncPkColumnValue(this.buildPkColumnValue(astRoot));
+		this.pkColumnValueTextRange = this.buildPkColumnValueTextRange(astRoot);
+
 		this.uniqueConstraintsContainer.synchronize(this.getAstAnnotation(astRoot));
 	}
 
@@ -158,12 +190,16 @@ public final class SourceTableGeneratorAnnotation
 		return this.tableAdapter.getValue(astRoot);
 	}
 
-	public TextRange getTableTextRange(CompilationUnit astRoot) {
+	public TextRange getTableTextRange() {
+		return this.tableTextRange;
+	}
+
+	private TextRange buildTableTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(TABLE_ADAPTER, astRoot);
 	}
 
-	public boolean tableTouches(int pos, CompilationUnit astRoot) {
-		return this.elementTouches(TABLE_ADAPTER, pos, astRoot);
+	public boolean tableTouches(int pos) {
+		return this.textRangeTouches(this.tableTextRange, pos);
 	}
 
 	// ***** schema
@@ -188,12 +224,16 @@ public final class SourceTableGeneratorAnnotation
 		return this.schemaAdapter.getValue(astRoot);
 	}
 
-	public TextRange getSchemaTextRange(CompilationUnit astRoot) {
+	public TextRange getSchemaTextRange() {
+		return this.schemaTextRange;
+	}
+
+	private TextRange buildSchemaTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(SCHEMA_ADAPTER, astRoot);
 	}
 
-	public boolean schemaTouches(int pos, CompilationUnit astRoot) {
-		return this.elementTouches(SCHEMA_ADAPTER, pos, astRoot);
+	public boolean schemaTouches(int pos) {
+		return this.textRangeTouches(this.schemaTextRange, pos);
 	}
 
 	// ***** catalog
@@ -218,12 +258,16 @@ public final class SourceTableGeneratorAnnotation
 		return this.catalogAdapter.getValue(astRoot);
 	}
 
-	public TextRange getCatalogTextRange(CompilationUnit astRoot) {
+	public TextRange getCatalogTextRange() {
+		return this.catalogTextRange;
+	}
+
+	private TextRange buildCatalogTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(CATALOG_ADAPTER, astRoot);
 	}
 
-	public boolean catalogTouches(int pos, CompilationUnit astRoot) {
-		return this.elementTouches(CATALOG_ADAPTER, pos, astRoot);
+	public boolean catalogTouches(int pos) {
+		return this.textRangeTouches(this.catalogTextRange, pos);
 	}
 
 	// ***** pk column name
@@ -248,12 +292,16 @@ public final class SourceTableGeneratorAnnotation
 		return this.pkColumnNameAdapter.getValue(astRoot);
 	}
 
-	public TextRange getPkColumnNameTextRange(CompilationUnit astRoot) {
+	public TextRange getPkColumnNameTextRange() {
+		return this.pkColumnNameTextRange;
+	}
+
+	private TextRange buildPkColumnNameTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(PK_COLUMN_NAME_ADAPTER, astRoot);
 	}
 
-	public boolean pkColumnNameTouches(int pos, CompilationUnit astRoot) {
-		return this.elementTouches(PK_COLUMN_NAME_ADAPTER, pos, astRoot);
+	public boolean pkColumnNameTouches(int pos) {
+		return this.textRangeTouches(this.pkColumnNameTextRange, pos);
 	}
 
 	// ***** value column name
@@ -278,12 +326,16 @@ public final class SourceTableGeneratorAnnotation
 		return this.valueColumnNameAdapter.getValue(astRoot);
 	}
 
-	public TextRange getValueColumnNameTextRange(CompilationUnit astRoot) {
+	public TextRange getValueColumnNameTextRange() {
+		return this.valueColumnNameTextRange;
+	}
+
+	private TextRange buildValueColumnNameTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(VALUE_COLUMN_NAME_ADAPTER, astRoot);
 	}
 
-	public boolean valueColumnNameTouches(int pos, CompilationUnit astRoot) {
-		return this.elementTouches(VALUE_COLUMN_NAME_ADAPTER, pos, astRoot);
+	public boolean valueColumnNameTouches(int pos) {
+		return this.textRangeTouches(this.valueColumnNameTextRange, pos);
 	}
 
 	// ***** pk column value
@@ -308,12 +360,16 @@ public final class SourceTableGeneratorAnnotation
 		return this.pkColumnValueAdapter.getValue(astRoot);
 	}
 
-	public TextRange getPkColumnValueTextRange(CompilationUnit astRoot) {
+	public TextRange getPkColumnValueTextRange() {
+		return this.pkColumnValueTextRange;
+	}
+
+	private TextRange buildPkColumnValueTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(PK_COLUMN_VALUE_ADAPTER, astRoot);
 	}
 
-	public boolean pkColumnValueTouches(int pos, CompilationUnit astRoot) {
-		return this.elementTouches(PK_COLUMN_VALUE_ADAPTER, pos, astRoot);
+	public boolean pkColumnValueTouches(int pos) {
+		return this.textRangeTouches(this.pkColumnValueTextRange, pos);
 	}
 
 	// ***** unique constraints
@@ -334,7 +390,7 @@ public final class SourceTableGeneratorAnnotation
 		return this.uniqueConstraintsContainer.addNestedAnnotation(index);
 	}
 
-	private UniqueConstraintAnnotation buildUniqueConstraint(int index) {
+	/* CU private */ UniqueConstraintAnnotation buildUniqueConstraint(int index) {
 		return new SourceUniqueConstraintAnnotation(
 				this, this.annotatedElement, buildUniqueConstraintIndexedDeclarationAnnotationAdapter(index));
 	}

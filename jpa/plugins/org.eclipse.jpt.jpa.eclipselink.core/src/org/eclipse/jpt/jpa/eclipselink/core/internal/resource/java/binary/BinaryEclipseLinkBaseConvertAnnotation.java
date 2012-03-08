@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,23 +10,24 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConvertAnnotation;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkBaseConvertAnnotation;
 
 /**
- * org.eclipse.persistence.annotations.Convert
- * org.eclipse.persistence.annotations.MapKeyConvert
+ * <code><ul>
+ * <li>org.eclipse.persistence.annotations.Convert
+ * <li>org.eclipse.persistence.annotations.MapKeyConvert
+ * </ul></code>
  */
-public abstract class BinaryBaseEclipseLinkConvertAnnotation
+public abstract class BinaryEclipseLinkBaseConvertAnnotation
 	extends BinaryAnnotation
-	implements EclipseLinkConvertAnnotation
+	implements EclipseLinkBaseConvertAnnotation
 {
 	private String value;
 
-	protected BinaryBaseEclipseLinkConvertAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
+	protected BinaryEclipseLinkBaseConvertAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.value = this.buildValue();
 	}
@@ -61,12 +62,11 @@ public abstract class BinaryBaseEclipseLinkConvertAnnotation
 
 	protected abstract String getValueElementName();
 
-	public TextRange getValueTextRange(CompilationUnit astRoot) {
+	public TextRange getValueTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean valueTouches(int pos, CompilationUnit astRoot) {
+	public boolean valueTouches(int pos) {
 		throw new UnsupportedOperationException();
 	}
-
 }

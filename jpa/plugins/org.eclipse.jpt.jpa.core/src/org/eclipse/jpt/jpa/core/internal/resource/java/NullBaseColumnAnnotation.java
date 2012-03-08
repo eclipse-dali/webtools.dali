@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,17 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.java.BaseColumnAnnotation;
 
 /**
- * <ul>
- * <li><code>javax.persistence.Column</code>
- * <li><code>javax.persistence.JoinColumn</code>
- * <li><code>javax.persistence.MapKeyColumn</code>
- * </ul>
+ * <code><ul>
+ * <li>javax.persistence.Column
+ * <li>javax.persistence.JoinColumn
+ * <li>javax.persistence.MapKeyColumn
+ * <li>javax.persistence.MapKeyJoinColumn
+ * </ul></code>
  */
 public abstract class NullBaseColumnAnnotation<A extends BaseColumnAnnotation>
 	extends NullNamedColumnAnnotation<A>
@@ -40,11 +40,11 @@ public abstract class NullBaseColumnAnnotation<A extends BaseColumnAnnotation>
 		}
 	}
 
-	public TextRange getTableTextRange(CompilationUnit astRoot) {
+	public TextRange getTableTextRange() {
 		return null;
 	}
 
-	public boolean tableTouches(int pos, CompilationUnit astRoot) {
+	public boolean tableTouches(int pos) {
 		return false;
 	}
 
@@ -59,7 +59,7 @@ public abstract class NullBaseColumnAnnotation<A extends BaseColumnAnnotation>
 		}
 	}
 
-	public TextRange getUniqueTextRange(CompilationUnit astRoot) {
+	public TextRange getUniqueTextRange() {
 		return null;
 	}
 
@@ -74,7 +74,7 @@ public abstract class NullBaseColumnAnnotation<A extends BaseColumnAnnotation>
 		}
 	}
 
-	public TextRange getUpdatableTextRange(CompilationUnit astRoot) {
+	public TextRange getUpdatableTextRange() {
 		return null;
 	}
 
@@ -89,7 +89,7 @@ public abstract class NullBaseColumnAnnotation<A extends BaseColumnAnnotation>
 		}
 	}
 
-	public TextRange getInsertableTextRange(CompilationUnit astRoot) {
+	public TextRange getInsertableTextRange() {
 		return null;
 	}
 
@@ -104,7 +104,7 @@ public abstract class NullBaseColumnAnnotation<A extends BaseColumnAnnotation>
 		}
 	}
 
-	public TextRange getNullableTextRange(CompilationUnit astRoot) {
+	public TextRange getNullableTextRange() {
 		return null;
 	}
 }

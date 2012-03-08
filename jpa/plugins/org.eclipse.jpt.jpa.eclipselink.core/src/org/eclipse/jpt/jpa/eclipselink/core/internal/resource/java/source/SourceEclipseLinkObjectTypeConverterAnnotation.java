@@ -34,7 +34,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeC
  * <code>org.eclipse.persistence.annotations.ObjectTypeConverter</code>
  */
 public final class SourceEclipseLinkObjectTypeConverterAnnotation
-	extends SourceBaseEclipseLinkTypeConverterAnnotation
+	extends SourceEclipseLinkBaseTypeConverterAnnotation
 	implements EclipseLinkObjectTypeConverterAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
@@ -141,7 +141,7 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 		return this.defaultObjectValueAdapter.getValue(astRoot);
 	}
 
-	public TextRange getDefaultObjectValueTextRange(CompilationUnit astRoot) {
+	public TextRange getDefaultObjectValueTextRange() {
 		return this.defaultObjectValueTextRange;
 	}
 
