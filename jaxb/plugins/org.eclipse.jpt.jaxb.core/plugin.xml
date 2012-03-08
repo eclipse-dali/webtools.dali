@@ -65,6 +65,10 @@
 			priority="high"
 			file-names="jaxb.properties"/>
 		
+		<file-association
+			content-type="org.eclipse.core.runtime.xml"
+			file-extensions="xjb"/>
+		
 	</extension>
 	
 
