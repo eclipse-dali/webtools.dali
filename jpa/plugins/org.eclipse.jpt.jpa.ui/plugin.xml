@@ -271,12 +271,6 @@
 		</command>
 		
 		<command
-			id="org.eclipse.jpt.jpa.ui.persistentAttributeRemoveFromXml"
-			name="%removePersistentAttributeFromXml"
-			categoryId="org.eclipse.jpt.jpa.ui.jpaStructureViewCommands">
-		</command>
-
-		<command
 			id="org.eclipse.jpt.jpa.ui.persistentTypeMapAs"
 			name="%mapAs"
 			categoryId="org.eclipse.jpt.jpa.ui.jpaStructureViewCommands">
@@ -385,15 +379,15 @@
 			commandId="org.eclipse.ui.edit.delete"
 			class="org.eclipse.jpt.jpa.ui.internal.commands.RemovePersistentClassHandler">
 			<activeWhen>
-				<reference
-					definitionId="org.eclipse.jpt.jpa.ui.reference.inJpaStructureView">
-				</reference>
+				<and>
+					<with variable="activePartId">
+		    			<equals value="org.eclipse.jpt.ui.jpaStructureView"/>
+		   			</with>
+					<iterate>
+						<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType"/>
+					</iterate>
+				</and>
 			</activeWhen>
-			<enabledWhen>
-				<iterate>
-					<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType"/>
-				</iterate>
-			</enabledWhen>
 		</handler>
 		
 		<handler
@@ -434,21 +428,19 @@
 		</handler>
 		
 		<handler
-			commandId="org.eclipse.jpt.jpa.ui.persistentAttributeRemoveFromXml"
+			commandId="org.eclipse.ui.edit.delete"
 			class="org.eclipse.jpt.jpa.ui.internal.commands.RemovePersistentAttributeFromXmlHandler">
 			<activeWhen>
-				<reference
-					definitionId="org.eclipse.jpt.jpa.ui.reference.inJpaStructureView">
-				</reference>
-			</activeWhen>
-			<enabledWhen>
-				<iterate>
-					<and>
+				<and>
+					<with variable="activePartId">
+		    			<equals value="org.eclipse.jpt.ui.jpaStructureView"/>
+		   			</with>
+					<iterate operator="and">
 						<instanceof value="org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute"/>
 						<test property="org.eclipse.jpt.jpa.core.isNotVirtual"/>
-					</and>
-				</iterate>
-			</enabledWhen>
+					</iterate>
+				</and>
+			</activeWhen>
 		</handler>
 		
 		<handler
@@ -658,7 +650,8 @@
 				</visibleWhen>
 			</command>
 			<command
-				commandId="org.eclipse.ui.edit.delete">
+				commandId="org.eclipse.ui.edit.delete"
+				label="%removePersistentClass">
 				<visibleWhen>
 					<with
 						variable="selection">
@@ -697,7 +690,8 @@
 				</visibleWhen>
 			</command>
 			<command
-				commandId="org.eclipse.jpt.jpa.ui.persistentAttributeRemoveFromXml">
+				commandId="org.eclipse.ui.edit.delete"
+				label="%removePersistentAttributeFromXml">
 				<visibleWhen>
 					<with
 						variable="selection">
@@ -714,7 +708,8 @@
 			<menu
 				id="org.eclipse.jpt.jpa.ui.persistentTypeMapAs"
 				label="%mapAs"
-				mnemonic="%mapAsMnemonic">
+				mnemonic="%mapAsMnemonic"
+				icon="$nl$/icons/full/eview16/jpa_perspective.gif">
 				<visibleWhen>
 					<with
 						variable="selection">
@@ -732,7 +727,8 @@
 			<menu
 				id="org.eclipse.jpt.jpa.ui.persistentAttributeMapAs"
 				label="%mapAs"
-				mnemonic="%mapAsMnemonic">
+				mnemonic="%mapAsMnemonic"
+				icon="$nl$/icons/full/eview16/jpa_perspective.gif">
 				<visibleWhen>
 					<with
 						variable="selection">
