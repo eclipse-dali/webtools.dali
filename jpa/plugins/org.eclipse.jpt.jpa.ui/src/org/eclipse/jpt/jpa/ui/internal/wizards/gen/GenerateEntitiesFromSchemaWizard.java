@@ -63,21 +63,21 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 	
 	public static final String HELP_CONTEXT_ID = JptJpaUiPlugin.PLUGIN_ID + ".GenerateEntitiesFromSchemaWizard"; //$NON-NLS-1$
 
-	private JpaProject jpaProject;
+	protected JpaProject jpaProject;
 
-	private IStructuredSelection selection;
+	protected IStructuredSelection selection;
 
 	private ORMGenCustomizer customizer = null;	
 
 	private PromptJPAProjectWizardPage projectPage;	
 
-	private TablesSelectorWizardPage tablesSelectorPage;
+	protected TablesSelectorWizardPage tablesSelectorPage;
 
-	private TableAssociationsWizardPage tableAssociationsPage;
+	protected TableAssociationsWizardPage tableAssociationsPage;
 	
-	private DefaultTableGenerationWizardPage defaultTableGenerationPage;
+	protected DefaultTableGenerationWizardPage defaultTableGenerationPage;
 	
-	private TablesAndColumnsCustomizationWizardPage tablesAndColumnsCustomizationPage;
+	protected TablesAndColumnsCustomizationWizardPage tablesAndColumnsCustomizationPage;
 	
 	protected final ResourceManager resourceManager;
 	
@@ -108,8 +108,8 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 		addMainPages();
 	}
 
-	private void addMainPages() {
-		this.tablesSelectorPage = new TablesSelectorWizardPage(this.jpaProject, this.resourceManager);
+	protected void addMainPages() {
+		this.tablesSelectorPage = new TablesSelectorWizardPage(this.jpaProject, this.resourceManager, false);
 		this.addPage(this.tablesSelectorPage);
 		
 		this.tableAssociationsPage = new TableAssociationsWizardPage(this.jpaProject, this.resourceManager);
@@ -211,29 +211,36 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 			overwriteConfirmer = new OverwriteConfirmer();
 		}
 		
-		WorkspaceJob genEntitiesJob = new GenerateEntitiesJob(this.jpaProject, getCustomizer(), overwriteConfirmer);
-		genEntitiesJob.schedule();
+		scheduleGenerateEntitiesJob(overwriteConfirmer);
 		return true;
+	}
+
+	protected void scheduleGenerateEntitiesJob(
+			OverwriteConfirmer overwriteConfirmer) {
+		WorkspaceJob genEntitiesJob = new GenerateEntitiesJob(this.jpaProject, getCustomizer(), overwriteConfirmer, false);
+		genEntitiesJob.schedule();
 	}
 	
 	// ********** generate entities job **********
 
-	static class GenerateEntitiesJob extends WorkspaceJob {
+	public static class GenerateEntitiesJob extends WorkspaceJob {
 		final JpaProject jpaProject;
 		final ORMGenCustomizer customizer;
 		final OverwriteConfirmer confirmer;
-		GenerateEntitiesJob(JpaProject jpaProject, ORMGenCustomizer customizer, OverwriteConfirmer confirmer) {
+		final boolean generateXml;
+		public GenerateEntitiesJob(JpaProject jpaProject, ORMGenCustomizer customizer, OverwriteConfirmer confirmer, boolean generateXml) {
 			super(JptUiMessages.EntitiesGenerator_jobName);
 			this.customizer = customizer;
 			this.jpaProject = jpaProject;
 			this.confirmer = confirmer;
+			this.generateXml = generateXml;
 			IResourceRuleFactory ruleFactory = ResourcesPlugin.getWorkspace().getRuleFactory();
 			this.setRule(ruleFactory.modifyRule(jpaProject.getProject()));
 		}
 
 		@Override
 		public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-			PackageGenerator.generate(this.jpaProject,this.customizer, this.confirmer, monitor);
+			PackageGenerator.generate(this.jpaProject,this.customizer, this.confirmer, monitor, this.generateXml);
 			return Status.OK_STATUS;
 		}
 	}
@@ -244,7 +251,7 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
     
     // ********** overwrite confirmer **********
 
-	static class OverwriteConfirmer implements org.eclipse.jpt.jpa.gen.internal.OverwriteConfirmer {
+	public static class OverwriteConfirmer implements org.eclipse.jpt.jpa.gen.internal.OverwriteConfirmer {
 		private boolean overwriteAll = false;
 		private boolean skipAll = false;
 

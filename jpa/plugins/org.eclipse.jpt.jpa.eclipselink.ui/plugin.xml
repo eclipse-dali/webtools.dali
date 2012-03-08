@@ -76,6 +76,16 @@
 				<parameter name="jptartifact" value="true"/> 
 			</class> 
 		</wizard>
+		
+		<wizard
+			category="org.eclipse.jpt.jpa/org.eclipse.jpt.jpa.eclipselink"
+			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards.gen.GenerateDynamicEntitiesFromSchemaWizard"
+			icon="platform:/plugin/org.eclipse.jpt.jpa.ui/icons/full/etool16/new_jpa_file_wiz.gif"
+			id="org.eclipse.jpt.jpa.eclipselink.ui.wizard.newDynamicEntitiesFromTables"
+			name="%newDynamicEntityFromTableWizardName">
+			<description>%newDynamicEntityFromTableWizardDesc</description>
+			<selection class="org.eclipse.core.resources.IResource"/> 
+        </wizard>		
 		    
 	</extension>
 
@@ -166,8 +176,16 @@
 		<command
 			id="org.eclipse.jpt.jpa.eclipselink.ui.persistentTypeAddVirtualAttribute"
 			name="%addVirtualAttribute"
-			categoryId="org.eclipse.jpt.jpa.ui.jpaStructureViewCommands">
-		</command>
+			categoryId="org.eclipse.jpt.jpa.ui.jpaStructureViewCommands"/>
+		
+		<command
+			id="org.eclipse.jpt.jpa.eclipselink.ui.convertJavaConverters"
+			name="%convertJavaConverters"
+			categoryId="org.eclipse.jpt.jpa.ui.jpaMetadataConversionCommands"/>
+		
+		<command
+			id="org.eclipse.jpt.jpa.eclipselink.ui.generateDynamicEntities"
+			name="%generateDynamicEntities"/>
 
   	</extension>
 
@@ -194,17 +212,54 @@
 				</and>
 			</activeWhen>
 		</handler>
-    </extension>
-
+		
+		<handler
+			commandId="org.eclipse.jpt.jpa.eclipselink.ui.convertJavaConverters"
+			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.commands.JpaJavaConverterMetadataConversionHandler">
+		</handler>
+		
+		<handler
+			commandId="org.eclipse.jpt.jpa.eclipselink.ui.generateDynamicEntities"
+			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.commands.GenerateDynamicEntitiesHandler">
+		</handler>
+		
+	</extension>
+	
+	
 	<!-- ***** menus ***** -->
 
-  	 <extension
-  	 	point="org.eclipse.ui.menus">
-	       
-	       	<!-- contributions to objects in the JPA structure view -->
+	<extension
+		point="org.eclipse.ui.menus">
+		
+		<!-- contributions to the "JPA Tools" submenu -->
+		<menuContribution
+			locationURI="popup:org.eclipse.jpt.jpa.ui.menu.JpaTools?after=generate">
+			
+			<command
+				commandId="org.eclipse.jpt.jpa.eclipselink.ui.generateDynamicEntities">
+				<visibleWhen>
+					<with
+						variable="selection">
+						<and>
+							<count value="1"/>
+							<iterate>
+								<adapt type="org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription">
+									<test 
+										property="org.eclipse.jpt.jpa.core.jpaPlatformGroup"
+										value="eclipselink"/>
+								</adapt>
+							</iterate>
+						</and>
+					</with>
+				</visibleWhen>
+			</command>
+			
+		</menuContribution>
+		
+		<!-- contributions to objects in the JPA structure view -->
 		<menuContribution
 			locationURI="popup:org.eclipse.jpt.ui.jpaStructureView">
-
+			
 			<command
 				commandId="org.eclipse.jpt.jpa.eclipselink.ui.persistentTypeAddVirtualAttribute">
 				<visibleWhen>
@@ -221,7 +276,7 @@
 		
 	 </extension>
  	
- 		<extension
+ 	 <extension
 		point="org.eclipse.ui.menus">
         
         <!-- contributions to "Move to XML" submenu-->
@@ -255,26 +310,6 @@
 			
 		</menuContribution>
 	
-	</extension>
-
-  	<extension
-        point="org.eclipse.ui.commands">
-  
-     	<command
-			id="org.eclipse.jpt.jpa.eclipselink.ui.convertJavaConverters"
-			name="%convertJavaConverters"
-			categoryId="org.eclipse.jpt.jpa.ui.jpaMetadataConversionCommands">
-		</command>
-		
-  	</extension>
-  
-	<extension
-		point="org.eclipse.ui.handlers">
-
-		<handler
-			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.commands.JpaJavaConverterMetadataConversionHandler"
-			commandId="org.eclipse.jpt.jpa.eclipselink.ui.convertJavaConverters">
-		</handler>
 	</extension>
 	
 </plugin>

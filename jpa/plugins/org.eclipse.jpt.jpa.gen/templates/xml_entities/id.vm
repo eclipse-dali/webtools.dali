@@ -1,0 +1,26 @@
+		<id name="${column.propertyName}" attribute-type="${column.propertyType}">
+#parse("column.vm")
+#set ($idGenerator = $table.idGenerator)
+#if ($idGenerator == "auto")
+	#set ($generationType = "AUTO")
+#elseif ($idGenerator == "identity")
+	#set ($generationType = "IDENTITY")
+#elseif ($idGenerator == "sequence")
+	#set ($generationType = "SEQUENCE")
+#elseif ($idGenerator == "table")
+	#set ($generationType = "TABLE")
+#else
+	#set ($generationType = "")
+#end
+#if ($idGenerator == "sequence" )
+	#set ($generatorName = "${table.name.toUpperCase()}_${column.propertyName.toUpperCase()}_GENERATOR")
+				<generated-value strategy="$generationType" generator="$generatorName"/> 
+	#if( $table.formattedSequence != "" )
+			<sequence-generator name="$generatorName" sequence-name="$table.formattedSequence"/>
+	#else
+			<sequence-generator name="$generatorName"/>
+	#end	
+#elseif ($generationType != "")
+			<generated-value strategy="$generationType"/> 
+#end      
+			</id>

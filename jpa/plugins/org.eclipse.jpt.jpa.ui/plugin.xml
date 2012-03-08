@@ -552,6 +552,7 @@
 		</menuContribution>
 		
 		<!-- contributions to the "JPA Tools" submenu -->
+		
 		<menuContribution
 			locationURI="popup:org.eclipse.jpt.jpa.ui.menu.JpaTools">
 
@@ -591,6 +592,9 @@
                		</with>
             	</visibleWhen>
 			</menu>
+			
+			<separator
+				name="generate"/>
 			
 		</menuContribution>
 		
@@ -1028,14 +1032,14 @@
 				label="%generateEntities"
 				class="org.eclipse.jpt.jpa.ui.internal.actions.GenerateEntitiesAction"
 				enablesFor="1"
-				menubarPath="org.eclipse.jpt.jpa.ui.menu.JpaTools/content"/>
+				menubarPath="org.eclipse.jpt.jpa.ui.menu.JpaTools/generate"/>
 			
 			<action
 				id="org.eclipse.jpt.jpa.ui.generateDDL"
 				label="%generateDDL"
 				class="org.eclipse.jpt.jpa.ui.internal.actions.GenerateDDLAction"
 				enablesFor="1"
-				menubarPath="org.eclipse.jpt.jpa.ui.menu.JpaTools/content"/>
+				menubarPath="org.eclipse.jpt.jpa.ui.menu.JpaTools/generate"/>
 				
 		</objectContribution>
 		

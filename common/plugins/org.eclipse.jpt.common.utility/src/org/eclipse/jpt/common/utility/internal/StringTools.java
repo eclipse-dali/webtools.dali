@@ -33,6 +33,9 @@ public final class StringTools {
 
 	/** double quote */
 	public static final char QUOTE = '"';
+	
+	/** XML double quote */
+	public static final String XML_QUOTE = "&quot;";
 
 	/** parenthesis */
 	public static final char OPEN_PARENTHESIS = '(';
@@ -5026,7 +5029,36 @@ public final class StringTools {
 		writeCharOn(QUOTE, writer);
 	}
 
+	// ********** convert to XML string literal **********
 
+	public static String convertToXmlStringLiteral(String string) {
+		int len = string.length();
+		if (len == 0) {
+			return EMPTY_JAVA_STRING_LITERAL;
+		}
+		StringBuilder sb = new StringBuilder(len + 5);
+		convertToXmlStringLiteralOn_(string.toCharArray(), sb, len);
+		return sb.toString();
+	}
+
+	//TODO need to add the rest of the predifende entities to this switch (amp, apos, lt, and gt)
+	private static void convertToXmlStringLiteralOn_(char[] string, StringBuilder sb, int len) {
+		sb.ensureCapacity(sb.length() + len + 5);
+		sb.append(QUOTE);
+		for (char c : string) {
+			switch (c) {
+				case '"':  // double-quote
+					sb.append(XML_QUOTE);  //$NON-NLS-1$
+					break;					
+				default:
+					sb.append(c);
+					break;
+			}
+		}
+		sb.append(QUOTE);
+	}
+	
+	
 	// ********** convenience **********
 
 	public static char[] convertToCharArray(StringBuffer sb) {

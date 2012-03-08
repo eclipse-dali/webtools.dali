@@ -96,7 +96,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 	
 	protected final ResourceManager resourceManager;
 
-	protected TableAssociationsWizardPage(JpaProject jpaProject, ResourceManager resourceManager) {
+	public TableAssociationsWizardPage(JpaProject jpaProject, ResourceManager resourceManager) {
 		super("Table Associations"); //$NON-NLS-1$
 		this.jpaProject = jpaProject;
 		this.resourceManager = resourceManager;

@@ -21,7 +21,6 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -42,7 +41,7 @@ public class PromptJPAProjectWizardPage extends WizardPage {
 	private static int PROJECT_NAME_COLUMN_INDEX = 0;
 	private final String helpContextId;
 	
-	protected PromptJPAProjectWizardPage( final String helpContextId ) {
+	public PromptJPAProjectWizardPage( final String helpContextId ) {
 		super(SELECT_PROJECT_PAGE_NAME);
 		setTitle( JptUiEntityGenMessages.GenerateEntitiesWizard_selectJPAProject );
 		setMessage( JptUiEntityGenMessages.GenerateEntitiesWizard_selectJPAProject_msg );

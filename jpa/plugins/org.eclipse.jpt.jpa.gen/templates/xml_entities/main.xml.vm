@@ -1,0 +1,39 @@
+#### Entity ####
+ 	<entity class="${table.qualifiedClassName}" access="VIRTUAL">
+  #if(!$table.defaultname)
+	<table name=$customizer.convertToXmlStringLiteral(${table.name})/>
+  #end
+#### Mappings ####
+		<attributes>
+##Check for embedded-id
+#if ($table.compositeKey)
+			<embedded-id name="${table.compositeKeyPropertyName}" attribute-type="${table.qualifiedCompositeKeyClassName}"></embedded-id>
+#end
+#foreach ($column in $table.getSimpleColumns(true, true, false))
+#set ($mappingKind = $column.mappingKind)
+	#if ($mappingKind == "id")
+#parse("id.vm")
+	#elseif ($mappingKind == "basic")
+#parse("basic.vm")
+	#elseif ($mappingKind == "version")
+#parse("version.vm")
+	#end
+#end
+#foreach ($role in $table.associationRoles)
+	#if ($role.cardinality == "many-to-one")
+#parse("manyToOne.vm")
+	#end
+#end
+#foreach ($role in $table.associationRoles)
+	#if ($role.cardinality == "one-to-many")
+#parse("oneToMany.vm")
+	#end
+#end
+#foreach ($role in $table.associationRoles)
+	#if ($role.cardinality == "many-to-many")
+#parse("manyToMany.vm")
+	#end
+#end
+		
+		</attributes>
+	</entity>

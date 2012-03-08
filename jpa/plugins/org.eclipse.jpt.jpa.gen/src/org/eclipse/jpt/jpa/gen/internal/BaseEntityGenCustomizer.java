@@ -209,6 +209,39 @@ public class BaseEntityGenCustomizer extends ORMGenCustomizer
 		return buffer.toString();
 	}
 
+	public String genCascadesXml(AssociationRole role) {
+		List<String> cascades = StringUtil.strToList(role.getCascade(), ',', true/* trim */);
+		if (cascades == null) {
+			return ""; //$NON-NLS-1$
+		}
+		StringBuffer buffer = new StringBuffer();
+		for (int i = 0, n = cascades.size(); i < n; ++i) {
+			String cascade = cascades.get(i);
+			String enumStr;
+			if (cascade.equals(TagNames.ALL_CASCADE)) {
+				enumStr = "<cascade-all></cascade-all>"; //$NON-NLS-1$
+			}
+			else if (cascade.equals(TagNames.PERSIST_CASCADE)) {
+				enumStr = "<cascade-persist></cascade-persist>"; //$NON-NLS-1$
+			}
+			else if (cascade.equals(TagNames.MERGE_CASCADE)) {
+				enumStr = "<cascade-merge></cascade-merge>"; //$NON-NLS-1$
+			}
+			else if (cascade.equals(TagNames.REMOVE_CASCADE)) {
+				enumStr = "<cascade-remove></cascade-remove>"; //$NON-NLS-1$
+			}
+			else {
+				assert (cascade.equals(TagNames.REFRESH_CASCADE));
+				enumStr = "<cascade-refresh></cascade-refresh>"; //$NON-NLS-1$
+			}
+			if (i != 0) {
+				buffer.append("\n\t\t\t\t\t"); //$NON-NLS-1$
+			}
+			buffer.append(enumStr);
+		}
+		return buffer.toString();
+	}
+
 	/**
 	 * Returns the fetch type annotation member value, or empty string if none.
 	 * Empty string is returned instead of null because Velocity does not like
@@ -227,4 +260,19 @@ public class BaseEntityGenCustomizer extends ORMGenCustomizer
 			return "FetchType.EAGER"; //$NON-NLS-1$
 		}
 	}
+	
+	@Override
+	public String genFetchXml(ORMGenTable table) {
+		String fetch = table.getDefaultFetch();
+		if (fetch == null || ORMGenTable.DEFAULT_FETCH.equals(fetch)) {
+			return ""; //$NON-NLS-1$
+		}
+		else if (fetch.equals(ORMGenTable.LAZY_FETCH)) {
+			return "LAZY"; //$NON-NLS-1$
+		}
+		else {
+			return "EAGER"; //$NON-NLS-1$
+		}
+	}
+	
 }

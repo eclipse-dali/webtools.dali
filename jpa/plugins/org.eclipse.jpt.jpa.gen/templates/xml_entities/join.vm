@@ -1,0 +1,50 @@
+##macro joinColumn
+#macro (joinColumn $column $referencedColumn)
+	#set ($members = "name=$customizer.convertToJavaStringLiteral($column.joinColumnName)")
+	#if( !$referencedColumn.primaryKey || $referencedColumn.partOfCompositePrimaryKey )
+		#set ($members = "$members referencedColumnName=$customizer.convertToJavaStringLiteral($referencedColumn.name)")
+	#end
+<join-column $members/>
+#end
+##macro inverseJoinColumn
+#macro (inverseJoinColumn $column $referencedColumn)
+	#set ($members = "name=$customizer.convertToJavaStringLiteral($column.joinColumnName)")
+	#if( !$referencedColumn.primaryKey || $referencedColumn.partOfCompositePrimaryKey )
+		#set ($members = "$members referencedColumnName=$customizer.convertToJavaStringLiteral($referencedColumn.name)")
+	#end
+<inverse-join-column $members/>
+#end
+##
+##
+#### JoinTables
+#if ($role.association.joinTable)
+	#set ($joinTable = $role.association.joinTable)
+				<join-table name=$customizer.convertToJavaStringLiteral(${joinTable.joinTableAnnotationName})>
+	#foreach ($column in $role.referrerColumns)
+		#set ($referencedColumn = $role.getReferencedColumn(${column.name}))
+		##$referencedColumn is the column in the join table
+	#joinColumn($referencedColumn $column)
+	#end
+	#foreach ($column in $role.referencedColumns)
+		#set ($referencedColumn = $role.getReferrerColumn(${column.name}))
+		##$referencedColumn is the column in the join table
+#inverseJoinColumn($referencedColumn $column)
+	#end
+			</join-table>
+#### JoinColumn
+#else 
+	#if ($role.referrerColumns.size() == 1)
+		#set ($column = $role.referrerColumns.get(0))
+		#set ($referencedColumn = $role.getReferencedColumn(${column.name}))
+		#set( $isDefaultJoinColumnName =  $column.isDefaultJoinColumnName( ${role.propertyName}))
+		#if( ! $isDefaultJoinColumnName )
+#joinColumn($column $referencedColumn)
+		#end
+#### JoinColumns
+	#else
+		#foreach ($column in $role.referrerColumns)
+			#set ($referencedColumn = $role.getReferencedColumn(${column.name}))
+#joinColumn($column $referencedColumn)
+		#end
+	#end
+#end

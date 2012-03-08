@@ -54,19 +54,19 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 
 	private TreeViewer tableColumnTreeViewer;
 	
-	private Composite detailPanel ;
-	private StackLayout detailPanelStatckLayout;
-	private Composite tableGenDetatilGroup;
-	private ColumnGenPanel columnGenPanel;
-	private Composite columnGenDetatilGroup;
-	private TableGenPanel tableGenPanel;
-	private ORMGenTable selectedTable;
+	protected Composite detailPanel ;
+	protected StackLayout detailPanelStatckLayout;
+	protected Composite tableGenDetatilGroup;
+	protected ColumnGenPanel columnGenPanel;
+	protected Composite columnGenDetatilGroup;
+	protected TableGenPanel tableGenPanel;
+	protected ORMGenTable selectedTable;
 	
 	private ORMGenCustomizer customizer;
 
 	protected final ResourceManager resourceManager;
 	
-	protected TablesAndColumnsCustomizationWizardPage(JpaProject jpaProject, ResourceManager resourceManager) {
+	public TablesAndColumnsCustomizationWizardPage(JpaProject jpaProject, ResourceManager resourceManager) {
 		super(true, "TablesAndColumnsCustomizationWizardPage"); //$NON-NLS-1$
 		this.jpaProject = jpaProject;
 		this.resourceManager = resourceManager;
@@ -82,7 +82,7 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 	 * 
 	 * @param selection used to initialize the fields
 	 */
-	void init(IStructuredSelection selection) {
+	public void init(IStructuredSelection selection) {
 		if ( jpaProject != null ) {
 			IJavaElement jelem = this.jpaProject.getJavaProject();
 			initContainerPage(jelem);
@@ -174,13 +174,13 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 		}
 	}			
 	
-	private void updateColumnGenDetail(ORMGenColumn column) {
+	protected void updateColumnGenDetail(ORMGenColumn column) {
 		if(columnGenDetatilGroup==null){
 			columnGenDetatilGroup = new Composite(detailPanel, SWT.NONE);
 			GridLayout gridLayout = new GridLayout();
 			gridLayout.numColumns = 4;
 			columnGenDetatilGroup.setLayout(gridLayout);
-			this.columnGenPanel = new ColumnGenPanel(columnGenDetatilGroup, 4, getCustomizer() , this );
+			this.columnGenPanel = new ColumnGenPanel(columnGenDetatilGroup, 4, getCustomizer() , this, false);
 		}
 		columnGenPanel.setColumn(column);
 		this.detailPanelStatckLayout.topControl = columnGenDetatilGroup;
@@ -188,7 +188,7 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 		detailPanel.getParent().layout();
 	}
 
-	private void updateTabelGenDetail(ORMGenTable table) {
+	protected void updateTabelGenDetail(ORMGenTable table) {
 		this.selectedTable = table;
 		if(tableGenDetatilGroup==null){
 			tableGenDetatilGroup = new Composite(detailPanel, SWT.NONE);
@@ -200,6 +200,7 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 			createDomainJavaClassesPropertiesGroup(tableGenDetatilGroup, 4 );
 		}
 		tableGenPanel.setORMGenTable(table);
+		tableGenPanel.updateControls();
 		
 		this.detailPanelStatckLayout.topControl = tableGenDetatilGroup;
 		this.detailPanel.layout();		
@@ -285,10 +286,15 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 		
 	}	
 	
-	private ORMGenCustomizer getCustomizer(){
+	protected ORMGenCustomizer getCustomizer(){
 		GenerateEntitiesFromSchemaWizard wizard = (GenerateEntitiesFromSchemaWizard) this.getWizard();
 		return wizard.getCustomizer();
 	}
+	
+	public boolean isDynamic() {
+		return false;
+	}
+	
 	/**
 	 * Content provider, and label provider for the DB Table/Column TreeViewer
 	 *
@@ -337,7 +343,7 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {}
 		public void dispose() {}
 	}
-
+	
 	class TableColumnTreeLabelProvider extends LabelProvider{
 
 		@Override
@@ -388,4 +394,5 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 	protected final IWorkbenchHelpSystem getHelpSystem() {
 		return PlatformUI.getWorkbench().getHelpSystem();
 	}
+
 }

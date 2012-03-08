@@ -13,7 +13,6 @@ package org.eclipse.jpt.jpa.ui.internal.wizards.gen;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.JavaConventions;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenColumn;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
 import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
@@ -40,7 +39,7 @@ import org.eclipse.swt.widgets.Text;
  */
 public class ColumnGenPanel 
 {
-	WizardPage wizardPage ; 
+	TablesAndColumnsCustomizationWizardPage wizardPage ; 
 	Composite parent;	//parent control with grid layout
 	int columns; 		//total columns in the parent composite
 	
@@ -62,11 +61,14 @@ public class ColumnGenPanel
 	private ScopePanel mPropGetScopePanel;
 	private ScopePanel mPropSetScopePanel;
 	
-	public ColumnGenPanel(Composite parent, int columns, ORMGenCustomizer customizer, WizardPage wizardPage ) {
+	private boolean isDynamic;
+	
+	public ColumnGenPanel(Composite parent, int columns, ORMGenCustomizer customizer, TablesAndColumnsCustomizationWizardPage wizardPage, boolean isDynamic) {
 		this.wizardPage = wizardPage;
 		this.customizer = customizer;
 		this.parent =parent;
 		this.columns = columns;
+		this.isDynamic = isDynamic;
 		
 		initPanel();
 	}
@@ -107,11 +109,13 @@ public class ColumnGenPanel
 			
 			mInsertableCheckBox.setSelection(mColumn.isInsertable());
 			
-			mPropGetScopePanel.enableComponents(isGenerated);
-			mPropGetScopePanel.setScope(mColumn.getPropertyGetScope());
-			
-			mPropSetScopePanel.enableComponents( isGenerated );
-			mPropSetScopePanel.setScope(mColumn.getPropertySetScope());
+			if(!this.isDynamic){
+				mPropGetScopePanel.enableComponents(isGenerated);
+				mPropGetScopePanel.setScope(mColumn.getPropertyGetScope());
+				
+				mPropSetScopePanel.enableComponents( isGenerated );
+				mPropSetScopePanel.setScope(mColumn.getPropertySetScope());
+			}
 
 			if( mColumn.isPartOfCompositePrimaryKey()){
 				enableControls(false);
@@ -121,14 +125,17 @@ public class ColumnGenPanel
 			
 		} catch (Exception e) {
 			JptJpaUiPlugin.log(e);
+		} finally {
+			mIsUpdatingControls = false;
 		}
-
-		mIsUpdatingControls = false;
 	}
 	private void enableControls(boolean isGenerated) {
-		Control[] controls = this.domainClassGroup.getChildren();
-		for( Control c: controls){
-			c.setEnabled( isGenerated );
+		Control[] controls;
+		if(!this.isDynamic) {
+			controls = this.domainClassGroup.getChildren();
+			for( Control c: controls){
+				c.setEnabled( isGenerated );
+			}
 		}
 
 		controls = this.columnMappingGroup.getChildren();
@@ -315,8 +322,9 @@ public class ColumnGenPanel
 		SWTUtil.fillColumns(mInsertableCheckBox ,4);
 		
 		SWTUtil.createLabel(composite, 4,""); 
-		
-		createJavaBeanPropertyControls(composite, columns);
+		if (!this.wizardPage.isDynamic()) {
+			createJavaBeanPropertyControls(composite, columns);
+		}
 	}
 	
 	void createJavaBeanPropertyControls(Composite composite, int columns){

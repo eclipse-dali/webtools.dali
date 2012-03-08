@@ -350,6 +350,10 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 	public String genFetch(ORMGenTable table) {
 		return "";
 	}	
+	
+	public String genFetchXml(ORMGenTable table) {
+		return "";
+	}	
 	/**
 	 * Called when the table user selection is changed in the 
 	 * generation wizard.
@@ -533,6 +537,9 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 	public String convertToJavaStringLiteral(String s) {
 		return StringTools.convertToJavaStringLiteral(s);
 	}
+	public String convertToXmlStringLiteral(String s) {
+		return StringTools.convertToXmlStringLiteral(s);
+	}
 	/**
 	 * Appends an annotation member name and value to an existing annotation.
 	 * 
@@ -562,6 +569,37 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 		}
 		return buffer.toString();
 	}
+	
+	/**
+	 * Appends an attribute name and value to an existing element.
+	 * 
+	 * @param s The attribute key string.
+	 *
+	 * @param memberValue The attribute value, if null or empty strings then 
+	 * nothing is appened.
+	 * 
+	 * @param whether to double quote the member value.
+	 */
+	public String appendAttribute(String s, String memberName, String memberValue, boolean quote) {
+		if (memberValue == null || memberValue.length() == 0) {
+			return s;
+		}
+		StringBuffer buffer = new StringBuffer(s);
+		if (buffer.length() != 0) {
+			buffer.append(" ");
+		}
+		buffer.append(memberName);
+		buffer.append('=');
+		if (quote) {
+			buffer.append('"');
+		}
+		buffer.append(memberValue);
+		if (quote) {
+			buffer.append('"');
+		}
+		return buffer.toString();
+	}
+	
 	public boolean isJDK1_5() {
 		return true;
 	}

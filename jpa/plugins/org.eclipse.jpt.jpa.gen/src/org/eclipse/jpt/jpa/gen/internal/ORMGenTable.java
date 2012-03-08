@@ -211,7 +211,7 @@ public class ORMGenTable
 		return columnTypesMap;
 	}
 	
-	public String getSimplifiedColType(String fqtn ) {
+	public String getSimplifiedColType(String fqtn) {
 		HashMap<String, String> map = buildColumnTypesMap();
 		String typeName = map.get(fqtn);
 		if (  typeName != null ) {
@@ -745,7 +745,7 @@ public class ORMGenTable
 	public String getDefaultCollectionType() {
 		String cType = customized(DEFAULT_COLLECTION_TYPE);
 		if (cType == null) {
-			cType = SET_COLLECTION_TYPE;
+			cType = LIST_COLLECTION_TYPE;
 		}
 		return cType;
 	}

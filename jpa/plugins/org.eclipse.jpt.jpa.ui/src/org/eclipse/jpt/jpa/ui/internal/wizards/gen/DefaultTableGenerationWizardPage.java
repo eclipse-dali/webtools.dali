@@ -66,11 +66,11 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 
 	private ORMGenCustomizer customizer;
 	
-	private TableGenPanel defaultTableGenPanel ;
+	protected TableGenPanel defaultTableGenPanel ;
 
 	private JpaEntityGenPreferencesManager prefrencesManager;
 
-	protected DefaultTableGenerationWizardPage(JpaProject jpaProject) {
+	public DefaultTableGenerationWizardPage(JpaProject jpaProject) {
 		super(true, "DefaultTableGenerationWizardPage"); //$NON-NLS-1$
 		this.jpaProject = jpaProject;
 		setTitle(JptUiEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_title);
@@ -86,7 +86,7 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 	 * 
 	 * @param selection used to initialize the fields
 	 */
-	void init(IStructuredSelection selection) {
+	public void init(IStructuredSelection selection) {
 		IJavaElement jelem = null;
 		if ( selection!=null && selection.getFirstElement() instanceof IJavaElement ) {
 			jelem = (IJavaElement) selection.getFirstElement();
@@ -130,6 +130,7 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 				this.customizer = customizer; 
 				this.defaultsTable = customizer.createGenTable(null);
 				this.defaultTableGenPanel.setORMGenTable(this.defaultsTable);
+				defaultTableGenPanel.updateControls();
 				//set the super class and implemented interfaces value
 				String baseClass = this.defaultsTable.getExtends() == null ?"" : this.defaultsTable.getExtends();
 				this.setSuperClass(baseClass, true);

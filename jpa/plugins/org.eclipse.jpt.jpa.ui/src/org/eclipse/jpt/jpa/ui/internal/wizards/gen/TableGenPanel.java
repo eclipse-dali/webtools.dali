@@ -38,7 +38,7 @@ import org.eclipse.swt.widgets.Text;
  * table entity generation properties.
  * 
  */
-class TableGenPanel
+public class TableGenPanel
 {
 	WizardPage wizardPage ; 
 	
@@ -64,7 +64,7 @@ class TableGenPanel
 	
 	private ORMGenTable mTable;
 	
-	private boolean isDefaultTable = false;
+	protected boolean isDefaultTable = false;
 	
 	public TableGenPanel(Composite parent, int columns , boolean isDefaultTable, WizardPage wizardPage   ){
 		super();
@@ -116,7 +116,7 @@ class TableGenPanel
 		});
 	}
 
-	private void createClassNameControl(Composite parent, int columns) {
+	protected void createClassNameControl(Composite parent, int columns) {
 		//Customize class name for specific table only
 		if ( !isDefaultTable ) {
 			SWTUtil.createLabel( parent, 1 , JptUiEntityGenMessages.GenerateEntitiesWizard_tablePanel_className );
@@ -152,7 +152,7 @@ class TableGenPanel
 		}
 	}
 
-	private void createAssociationFetchControls(Composite composite, int columns) {
+	protected void createAssociationFetchControls(Composite composite, int columns) {
 		SWTUtil.createLabel(composite, 1, JptUiEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_fetch );
 		
 		Composite parent = new Composite( composite, SWT.NONE);
@@ -186,7 +186,7 @@ class TableGenPanel
 		}
 	}	
 	
-	private void createCollectionTypeControls(Composite composite, int columns) {
+	protected void createCollectionTypeControls(Composite composite, int columns) {
 		SWTUtil.createLabel(composite, 1, JptUiEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_collType );
 		
 		Composite parent = new Composite( composite, SWT.NONE);
@@ -207,70 +207,24 @@ class TableGenPanel
 
 
 	public void setORMGenTable(ORMGenTable table) {
-		mTable = table;
+		this.mTable = table;
+	}
+	
+	//should be called after setting the ORMGenTable
+	public void updateControls(){
 		
 		isUpdatingControls = true;
 				
 		try {
-			//ClassNameField is not available for default table
-			if(classNameField!= null )
-				classNameField.setText( mTable.getClassName() );
-			
-			final List<String> schemes = this.mTable.getCustomizer().getAllIdGenerators();
-			String[] values = new String[schemes.size()];
-			schemes.toArray(values);
-			idGeneratorCombo.setItems( values );
-			String idGenerator = mTable.getIdGenerator();
-			idGeneratorCombo.setText( idGenerator);
-			
-			boolean isSequence = this.mTable.getCustomizer().getSequenceIdGenerators().contains(idGenerator);		
-			String sequenceName = mTable.isDefaultsTable() ? mTable.getSequence() : mTable.getFormattedSequence();
-			sequenceName  = ( sequenceName == null ? "" : sequenceName ); 
-			sequenceNameField.setText( sequenceName );
-			if ( isSequence ) {
-				sequenceNameField.setEnabled(true);
-				sequenceNameNoteLabel.setEnabled(true);
-			} else {
-				sequenceNameField.setEnabled(false);
-				sequenceNameNoteLabel.setEnabled(false);
-			}
-			
-			String access = mTable.getAccess() ;
-			if (  ORMGenTable.FIELD_ACCESS.equals( access ) ) {
-				this.entityAccessField.setSelection( true );
-				this.entityAccessProperty.setSelection( false );
-			} else {
-				this.entityAccessProperty.setSelection( true );
-				this.entityAccessField.setSelection( false );
-			}
-	
-			if (associationFetchLazy != null && associationFetchEager != null ) {
-				String defaultFetch = mTable.getDefaultFetch();
-				//reset all three buttons
-				associationFetchDefault.setSelection(false);
-				associationFetchEager.setSelection(false);
-				associationFetchLazy.setSelection(false);
-				if( ORMGenTable.DEFAULT_FETCH.equals( defaultFetch ) )
-					associationFetchDefault.setSelection(true);
-				else if( ORMGenTable.EAGER_FETCH.equals( defaultFetch ) )
-					associationFetchEager.setSelection(true);
-				else
-					associationFetchLazy.setSelection(true);
-			}
+			updateClassNameField();
+			udpateGeneratorControls();
+			updateAccessControls();
+			updateFetchControls();
 			
 			//DefaultTable only
-			if (collectionTypeList != null) {
-				String cType = mTable.getDefaultCollectionType();
-				if ( ORMGenTable.LIST_COLLECTION_TYPE.equals( cType ) ) {
-					this.collectionTypeList.setSelection( true );
-					this.collectionTypeSet.setSelection( false );
-				} else {
-					this.collectionTypeSet.setSelection( true );
-					this.collectionTypeList.setSelection( false );
-				}
-				
-				this.generateOptionalAnnotations.setSelection( mTable.isGenerateDDLAnnotations());
-			}
+			updateCollectionTypeControls();
+			updateGenerateOptionalAnnotationControls();
+			
 			
 		} catch (Exception e) {
 			JptJpaUiPlugin.log(e);
@@ -279,7 +233,82 @@ class TableGenPanel
 		isUpdatingControls = false;
 	}
 
-	private void createIdGeneratorControls(Composite parent, int columns) {
+	private void updateCollectionTypeControls() {
+		if (collectionTypeList != null) {
+			String cType = this.mTable.getDefaultCollectionType();
+			if ( ORMGenTable.LIST_COLLECTION_TYPE.equals( cType ) ) {
+				this.collectionTypeList.setSelection( true );
+				this.collectionTypeSet.setSelection( false );
+			} else {
+				this.collectionTypeSet.setSelection( true );
+				this.collectionTypeList.setSelection( false );
+			}
+			
+
+		}
+	}
+	
+	protected void updateGenerateOptionalAnnotationControls(){
+		if (generateOptionalAnnotations != null){
+			this.generateOptionalAnnotations.setSelection( this.mTable.isGenerateDDLAnnotations());
+		}
+	}
+
+	private void updateFetchControls() {
+		if (associationFetchLazy != null && associationFetchEager != null ) {
+			String defaultFetch = this.mTable.getDefaultFetch();
+			//reset all three buttons
+			associationFetchDefault.setSelection(false);
+			associationFetchEager.setSelection(false);
+			associationFetchLazy.setSelection(false);
+			if( ORMGenTable.DEFAULT_FETCH.equals( defaultFetch ) )
+				associationFetchDefault.setSelection(true);
+			else if( ORMGenTable.EAGER_FETCH.equals( defaultFetch ) )
+				associationFetchEager.setSelection(true);
+			else
+				associationFetchLazy.setSelection(true);
+		}
+	}
+
+	protected void updateAccessControls() {
+		String access = this.mTable.getAccess() ;
+		if (  ORMGenTable.FIELD_ACCESS.equals( access ) ) {
+			this.entityAccessField.setSelection( true );
+			this.entityAccessProperty.setSelection( false );
+		} else {
+			this.entityAccessProperty.setSelection( true );
+			this.entityAccessField.setSelection( false );
+		}
+	}
+
+	private void udpateGeneratorControls() {
+		final List<String> schemes = this.mTable.getCustomizer().getAllIdGenerators();
+		String[] values = new String[schemes.size()];
+		schemes.toArray(values);
+		idGeneratorCombo.setItems( values );
+		String idGenerator = this.mTable.getIdGenerator();
+		idGeneratorCombo.setText( idGenerator);
+		
+		boolean isSequence = this.mTable.getCustomizer().getSequenceIdGenerators().contains(idGenerator);		
+		String sequenceName = this.mTable.isDefaultsTable() ? this.mTable.getSequence() : this.mTable.getFormattedSequence();
+		sequenceName  = ( sequenceName == null ? "" : sequenceName ); 
+		sequenceNameField.setText( sequenceName );
+		if ( isSequence ) {
+			sequenceNameField.setEnabled(true);
+			sequenceNameNoteLabel.setEnabled(true);
+		} else {
+			sequenceNameField.setEnabled(false);
+			sequenceNameNoteLabel.setEnabled(false);
+		}
+	}
+
+	private void updateClassNameField() {
+		//ClassNameField is not available for default table
+		if(classNameField!= null )
+			classNameField.setText( this.mTable.getClassName() );
+	}
+
+	protected void createIdGeneratorControls(Composite parent, int columns) {
 		SWTUtil.createLabel(parent, 1, JptUiEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_keyGen );
 
 		idGeneratorCombo = new Combo(parent,SWT.SINGLE | SWT.READ_ONLY);

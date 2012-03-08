@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -24,8 +25,10 @@ import java.util.logging.Logger;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.log.JdkLogChute;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -38,6 +41,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
@@ -59,12 +63,17 @@ public class PackageGenerator {
 	private final ORMGenCustomizer customizer;
 	private final OverwriteConfirmer overwriteConfirmer;
 
-	public static void generate(JpaProject jpaProject, ORMGenCustomizer customizer, OverwriteConfirmer overwriteConfirmer, IProgressMonitor monitor) throws CoreException {
+	public static void generate(JpaProject jpaProject, ORMGenCustomizer customizer, OverwriteConfirmer overwriteConfirmer, IProgressMonitor monitor, boolean generateXml) throws CoreException {
 		SubMonitor sm = SubMonitor.convert(monitor, 20);
 		PackageGenerator generator = new PackageGenerator(jpaProject, customizer, overwriteConfirmer);
 		sm.worked(1);
 		try {
-			generator.doGenerate(sm.newChild(19));
+			if (generateXml) {
+				generator.doXmlGenerate(sm.newChild(19));
+			}
+			else {
+				generator.doGenerate(sm.newChild(19));
+			}
 		} catch (Exception e) {
 			throw new CoreException(new Status(IStatus.ERROR, JptJpaGenPlugin.PLUGIN_ID, JptGenMessages.Error_Generating_Entities, e));
 		}
@@ -89,9 +98,13 @@ public class PackageGenerator {
 	protected void doGenerate(IProgressMonitor monitor) throws Exception {
 		generateInternal(monitor);
 	}
+	
+	protected void doXmlGenerate(IProgressMonitor monitor) throws Exception {
+		generateXmlInternal(monitor);
+	}
 
 	protected void generateInternal(IProgressMonitor monitor) throws Exception {
-		File templDir = prepareTemplatesFolder();
+		File templDir = prepareTemplatesFolder("templates/entities/"); //$NON-NLS-1$
 
 		List<String> genClasses = new java.util.ArrayList<String>();
 		List<String> tableNames = this.customizer.getGenTableNames();
@@ -161,14 +174,31 @@ public class PackageGenerator {
 		resource.save();
 	}
 
-	private File prepareTemplatesFolder() throws IOException, Exception,
+	//TODO can probably axe this method
+	protected void generateXmlInternal(IProgressMonitor monitor) throws Exception {
+		File templDir = prepareTemplatesFolder("templates/xml_entities/"); //$NON-NLS-1$
+
+		List<String> tableNames = this.customizer.getGenTableNames();
+
+		//TODO Need to fix progress monitor
+		SubMonitor sm = SubMonitor.convert(monitor, tableNames.size() + 2);
+
+		generateXmlMappingFile(tableNames, templDir.getAbsolutePath(), sm.newChild(1, SubMonitor.SUPPRESS_NONE));
+
+		if (sm.isCanceled()) {
+			return;
+		}
+		
+		sm.worked(2);
+	}
+	
+	private File prepareTemplatesFolder(String templatesPath) throws IOException, Exception,
 			CoreException {
 		//Prepare the Velocity template folder:
 		//If the plug-in is packaged as a JAR, we need extract the template 
 		//folder into the plug-in state location. This is required by Velocity
 		//since we use included templates.
 		Bundle bundle = Platform.getBundle(JptJpaGenPlugin.PLUGIN_ID);
-		String templatesPath = "templates/entities/";  //$NON-NLS-1$
 		Path path = new Path( templatesPath);
 		URL url = FileLocator.find(bundle, path, null);
 		if (url == null) {
@@ -322,4 +352,96 @@ public class PackageGenerator {
 		}
 		return defaultSrcPath;
 	}
+	
+	protected void generateXmlMappingFile(List<String> tableNames, String templateDirPath, IProgressMonitor monitor) throws Exception {
+
+		try {
+			IProject project = jpaProject.getProject();
+			IContainer container = ((ProjectResourceLocator) project.getAdapter(ProjectResourceLocator.class)).getDefaultResourceLocation();
+			IFile xmlFile = container.getFile(new Path("/eclipselink-orm.xml")); //$NON-NLS-1$
+	
+			if (xmlFile.exists()) {
+				if (this.overwriteConfirmer != null && !this.overwriteConfirmer.overwrite(xmlFile.getName())) {
+					return;
+				}
+			}
+			//JdkLogChute in this version of Velocity not allow to set log level
+			//Workaround by preset the log level before Velocity is initialized
+			Logger logger = Logger.getLogger( LOGGER_NAME );
+			logger.setLevel( Level.SEVERE );
+			
+			Properties vep = new Properties();
+			vep.setProperty("file.resource.loader.path", templateDirPath); //$NON-NLS-1$
+			vep.setProperty( JdkLogChute.RUNTIME_LOG_JDK_LOGGER, LOGGER_NAME );
+			VelocityEngine ve = new VelocityEngine();
+		    ve.init(vep);
+
+		    StringBuilder xmlFileContents = new StringBuilder();
+		    xmlFileContents.append(generateXmlHeaderFooter(ve, "header.vm")); //$NON-NLS-1$
+		    List<ORMGenTable> compositeKeyTables = new ArrayList<ORMGenTable>();
+		    
+			for (Iterator<String> names = tableNames.iterator(); names.hasNext();) {
+				
+				ORMGenTable table = this.customizer.getTable(names.next());
+				String subTaskName = NLS.bind(JptGenMessages.EntityGenerator_taskName, table.getName());
+				SubMonitor sm = SubMonitor.convert(monitor, subTaskName, 10);
+		    
+				if (sm.isCanceled()) {
+					return;
+				}
+			
+				xmlFileContents.append(generateXmlTypeMapping(table, ve, "main.xml.vm", sm.newChild(10))); //$NON-NLS-1$
+
+				if (table.isCompositeKey()) {
+					compositeKeyTables.add(table);
+				}
+			}
+			
+			//Embeddables need to come after entities in the XML
+			for (ORMGenTable table : compositeKeyTables) {
+				SubMonitor sm = SubMonitor.convert(monitor, NLS.bind(JptGenMessages.EntityGenerator_taskName, table.getName()), 1);
+			    if (table.isCompositeKey()) {
+			    	xmlFileContents.append(generateXmlTypeMapping(table, ve, "embeddable.vm", sm.newChild(1))); //$NON-NLS-1$
+			    }
+			}
+			
+			xmlFileContents.append(generateXmlHeaderFooter(ve, "footer.vm")); //$NON-NLS-1$
+			
+			if(xmlFile.exists()){
+				byte[] content = xmlFileContents.toString().getBytes(xmlFile.getCharset());
+				xmlFile.setContents(new ByteArrayInputStream(content), false, true, null);
+			}
+			else {
+				byte[] content = xmlFileContents.toString().getBytes(xmlFile.getCharset());
+				createFile(xmlFile, new ByteArrayInputStream(content));
+			}
+			
+		    xmlFile.refreshLocal(1, null);
+			
+		} catch (Throwable e) {
+			CoreException ce = new CoreException(new Status(IStatus.ERROR, JptJpaGenPlugin.PLUGIN_ID, JptGenMessages.Templates_notFound + "" + JptJpaGenPlugin.PLUGIN_ID , e) );//$NON-NLS-1$
+			JptJpaGenPlugin.logException( ce );
+		}
+	}
+	
+	private String generateXmlHeaderFooter(VelocityEngine ve, String templateName) throws Exception{
+		StringWriter stringWriter = new StringWriter();
+		VelocityContext context = new VelocityContext();
+		ve.mergeTemplate(templateName, context, stringWriter);
+		return stringWriter.toString();
+	}
+
+	
+	private String generateXmlTypeMapping(ORMGenTable table, VelocityEngine ve
+			, String templateName, IProgressMonitor monitor) throws Exception {
+		VelocityContext context = new VelocityContext();
+        context.put("table", table); //$NON-NLS-1$
+        context.put("customizer", getCustomizer()); //$NON-NLS-1$
+        
+		StringWriter w = new StringWriter();
+		ve.mergeTemplate(templateName, context, w);
+		
+		return w.toString();
+	}
+	
 }

@@ -74,7 +74,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
 
-class TablesSelectorWizardPage extends WizardPage {
+public class TablesSelectorWizardPage extends WizardPage {
 
 	private static final int TABLE_COLUMN_INDEX = 0;
 	
@@ -82,6 +82,7 @@ class TablesSelectorWizardPage extends WizardPage {
 	private Schema schema;
 	private ORMGenCustomizer customizer;
 	private boolean updatePersistenceXml = true;
+	private boolean isDynamic;
 
 	private DatabaseGroup databaseGroup;
 	private CheckboxTableViewer tableTable;
@@ -95,12 +96,13 @@ class TablesSelectorWizardPage extends WizardPage {
 
 	// ********** constructors **********
 	
-	public TablesSelectorWizardPage(JpaProject jpaProject, ResourceManager resourceManager) {
+	public TablesSelectorWizardPage(JpaProject jpaProject, ResourceManager resourceManager, boolean isDynamic) {
 		super("TablesSelectorWizardPage"); //$NON-NLS-1$
 		
 		this.jpaProject = jpaProject;
 		this.resourceManager = resourceManager;
 		this.schema = jpaProject.getDefaultDbSchema();
+		this.isDynamic = isDynamic;
 		this.setTitle(JptUiEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_selectTable );
 		this.setMessage(JptUiEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_chooseEntityTable );
 	}
@@ -166,8 +168,10 @@ class TablesSelectorWizardPage extends WizardPage {
 
 		this.createTablesSelectionControl(composite, nColumns);
 
-		this.updatePersistenceXmlCheckBox = this.buildUpdatePersistenceXmlCheckBox(composite);
-		this.fillColumns(this.updatePersistenceXmlCheckBox, 3);
+		if (!isDynamic) {
+			this.updatePersistenceXmlCheckBox = this.buildUpdatePersistenceXmlCheckBox(composite);
+			this.fillColumns(this.updatePersistenceXmlCheckBox, 3);
+		}
 		
 		//Filler column
 		new Label( composite, SWT.NONE);
@@ -678,7 +682,7 @@ class TablesSelectorWizardPage extends WizardPage {
 		GenerateEntitiesFromSchemaWizard wizard = (GenerateEntitiesFromSchemaWizard) getWizard();
 		this.customizer = wizard.createORMGenCustomizer(schema);
 
-		if(this.tableTable!=null && this.updatePersistenceXmlCheckBox!=null && this.customizer != null) {
+		if(this.tableTable!=null && this.customizer != null) {
 			this.restoreWizardState();
 		}
 		this.doStatusUpdate();
@@ -686,7 +690,9 @@ class TablesSelectorWizardPage extends WizardPage {
 
 	private boolean restoreWizardState() {
 		boolean pageComplete = false;
-		this.updatePersistenceXmlCheckBox.setSelection(this.customizer.updatePersistenceXml());
+		if (this.updatePersistenceXmlCheckBox != null){
+			this.updatePersistenceXmlCheckBox.setSelection(this.customizer.updatePersistenceXml());
+		}
 		List<String> preSelectedTableNames = this.customizer.getTableNames();
 		if(preSelectedTableNames!=null && preSelectedTableNames.size()>0) {
 			Set<String> set = new HashSet<String>();
