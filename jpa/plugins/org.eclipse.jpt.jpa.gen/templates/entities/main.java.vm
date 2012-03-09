@@ -62,8 +62,8 @@ public class ${table.className} ${table.generateExtendsImplements()} {
 	private $propertyType $role.propertyName;
 #end
 
-    public ${table.className}() {
-    }
+	public ${table.className}() {
+	}
 
 #####
 ##### simple properties getters and setters
@@ -80,7 +80,7 @@ public class ${table.className} ${table.generateExtendsImplements()} {
 	public void $customizer.propertySetter($table.compositeKeyPropertyName)($table.compositeKeyClassName $table.compositeKeyPropertyName) {
 		this.${table.compositeKeyPropertyName} = ${table.compositeKeyPropertyName};
 	}
-	
+
 #end
 #foreach ($column in $table.getSimpleColumns(true, true, false))
 #if ($table.access == "property")
@@ -127,7 +127,7 @@ public class ${table.className} ${table.generateExtendsImplements()} {
 	public void ${customizer.propertySetter($role.propertyName)}($propertyType $role.propertyName) {
 		this.${role.propertyName} = $role.propertyName;
 	}
-	
+
 ##
 #end
 ##

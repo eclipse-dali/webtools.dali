@@ -8,6 +8,6 @@
 #if($members!="")
 	@ManyToOne($members)
 #else
-    @ManyToOne
+	@ManyToOne
 #end
 #parse("join.vm")

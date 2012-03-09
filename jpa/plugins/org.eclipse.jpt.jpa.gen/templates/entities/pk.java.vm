@@ -24,8 +24,8 @@ public class ${table.compositeKeyClassName} implements Serializable {
 	${column.fieldScope} ${column.propertyType} ${column.propertyName};
 #end
 
-    public ${table.compositeKeyClassName}() {
-    }
+	public ${table.compositeKeyClassName}() {
+	}
 #####
 ##### simple properties getters and setters
 #####
@@ -54,13 +54,12 @@ public class ${table.compositeKeyClassName} implements Serializable {
 		${table.compositeKeyClassName} castOther = (${table.compositeKeyClassName})other;
 		return 
 			${table.primaryKeyEqualsClause}
+	}
 
-    }
-    
 	public int hashCode() {
 		final int prime = 31;
 		int hash = 17;
 		${table.primaryKeyHashCodeClause}
 		return hash;
-    }
+	}
 }

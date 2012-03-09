@@ -9,9 +9,9 @@
 #end
 #if($members!="")
 	@ManyToMany($members)
-#else	
-    @ManyToMany
-#end    
+#else
+	@ManyToMany
+#end
 #else
 #set ($members = $customizer.appendAnnotation("", "cascade", $customizer.genCascades($role), false))
 #if($customizer.genFetch($role.referrerTable)!="" && $customizer.genFetch($role.referrerTable)!="FetchType.LAZY")
@@ -19,8 +19,8 @@
 #end
 #if($members!="")
 	@ManyToMany($members)
-#else	
-    @ManyToMany
-#end    
+#else
+	@ManyToMany
+#end
 #parse("join.vm")
 #end

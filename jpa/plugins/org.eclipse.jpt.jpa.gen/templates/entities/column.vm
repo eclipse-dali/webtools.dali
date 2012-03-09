@@ -12,10 +12,10 @@
 #end
 ###------------------------------------------------
 #if ( $column.dataTypeLOB)
-    @Lob()
+	@Lob
 #end
 #if ( $column.needMapTemporalType)
-    @Temporal( TemporalType.$column.temporalType)
+	@Temporal(TemporalType.$column.temporalType)
 #end
 #set ($members = "")
 #if ( !$column.default || $customizer.generateDDLAnnotations )

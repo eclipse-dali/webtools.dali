@@ -22,11 +22,11 @@
 	@SequenceGenerator(name="$generatorName", sequenceName="$table.formattedSequence")
 #else
 	@SequenceGenerator(name="$generatorName" )
-#end	
+#end
 	@GeneratedValue(strategy=$generationType, generator="$generatorName")
 #elseif ($generationType != "")
 	@GeneratedValue(strategy=$generationType)
-#end      
+#end
 #elseif ($mappingKind == "version")
 	@Version
 #else
