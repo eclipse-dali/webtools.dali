@@ -1,6 +1,6 @@
 ###------------------------------------------------
 #macro( append $members $parameters )
-#if( $members == "")
+#if ($members == "")
 	#set( $members = $parameters )
 #else
 	#set( $members = "$members $parameters" ) 
@@ -9,7 +9,7 @@
 ###------------------------------------------------
 #set ($DQ = '"')
 #set ($members = "")
-#if ( !$column.defaultname )
+#if (!$column.defaultname)
 	#append($members "name=$customizer.convertToXmlStringLiteral($column.name)" )
 #end
 #if (!$column.insertable)
@@ -18,12 +18,12 @@
 #if (!$column.updateable)
 #append(${members} "updatable=${DQ}false${DQ}")
 #end
-#if( $members !="" )
+#if ($members !="")
 			<column $members/>
 #end
-#if ( $column.dataTypeLOB)
+#if ($column.dataTypeLOB)
 				<lob/>
 #end
-#if ( $column.needMapTemporalType)
-    			<temporal>$column.temporalType</temporal>
+#if ($column.needMapTemporalType)
+				<temporal>$column.temporalType</temporal>
 #end

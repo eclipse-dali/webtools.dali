@@ -1,8 +1,8 @@
 #### Entity ####
- 	<entity class="${table.qualifiedClassName}" access="VIRTUAL">
-  #if(!$table.defaultname)
-	<table name=$customizer.convertToXmlStringLiteral(${table.name})/>
-  #end
+	<entity class="${table.qualifiedClassName}" access="VIRTUAL">
+#if (!$table.defaultname)
+		<table name=$customizer.convertToXmlStringLiteral(${table.name})/>
+#end
 #### Mappings ####
 		<attributes>
 ##Check for embedded-id
@@ -11,29 +11,28 @@
 #end
 #foreach ($column in $table.getSimpleColumns(true, true, false))
 #set ($mappingKind = $column.mappingKind)
-	#if ($mappingKind == "id")
+#if ($mappingKind == "id")
 #parse("id.vm")
-	#elseif ($mappingKind == "basic")
+#elseif ($mappingKind == "basic")
 #parse("basic.vm")
-	#elseif ($mappingKind == "version")
+#elseif ($mappingKind == "version")
 #parse("version.vm")
-	#end
+#end
 #end
 #foreach ($role in $table.associationRoles)
-	#if ($role.cardinality == "many-to-one")
+#if ($role.cardinality == "many-to-one")
 #parse("manyToOne.vm")
-	#end
+#end
 #end
 #foreach ($role in $table.associationRoles)
-	#if ($role.cardinality == "one-to-many")
+#if ($role.cardinality == "one-to-many")
 #parse("oneToMany.vm")
-	#end
+#end
 #end
 #foreach ($role in $table.associationRoles)
-	#if ($role.cardinality == "many-to-many")
+#if ($role.cardinality == "many-to-many")
 #parse("manyToMany.vm")
-	#end
 #end
-		
+#end
 		</attributes>
 	</entity>

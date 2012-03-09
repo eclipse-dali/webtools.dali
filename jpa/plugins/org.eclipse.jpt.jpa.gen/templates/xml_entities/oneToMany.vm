@@ -4,10 +4,9 @@
 	#set ($members = $customizer.appendAttribute($members, "mapped-by", $role.oppositeRole.propertyName, true))
 	#set ($members = $customizer.appendAttribute($members, "target-entity", $role.referencedTable.qualifiedClassName, true))
 	#set ($members = $customizer.appendAttribute($members, "attribute-type", $role.referencedTable.defaultCollectionType, true))
-	#if($customizer.genFetchXml($role.referrerTable)!="" && $customizer.genFetchXml($role.referrerTable) !="LAZY")
-		#set ($members = $customizer.appendAttribute($members, "fetch", $customizer.genFetchXml($role.referrerTable), true))
-	#end
-	
+#if ($customizer.genFetchXml($role.referrerTable)!="" && $customizer.genFetchXml($role.referrerTable) !="LAZY")
+	#set ($members = $customizer.appendAttribute($members, "fetch", $customizer.genFetchXml($role.referrerTable), true))
+#end
 			<one-to-many $members>
 #if( $cascade!="")
 				<cascade>
@@ -19,12 +18,12 @@
 	#set ($members = $customizer.appendAttribute("", "name", $role.propertyName, true))
 	#set ($members = $customizer.appendAttribute($members, "target-entity", $role.referencedTable.qualifiedClassName, true))
 	#set ($members = $customizer.appendAttribute($members, "attribute-type", $role.referencedTable.defaultCollectionType, true))
-	#if($customizer.genFetchXml($role.referrerTable)!="" && $customizer.genFetchXml($role.referrerTable) !="LAZY")
-		#set ($members = $customizer.appendAttribute($members, "fetch", $customizer.genFetchXml($role.referrerTable), true))
-	#end
+#if ($customizer.genFetchXml($role.referrerTable)!="" && $customizer.genFetchXml($role.referrerTable) !="LAZY")
+	#set ($members = $customizer.appendAttribute($members, "fetch", $customizer.genFetchXml($role.referrerTable), true))
+#end
 			<one-to-many $members>
 #parse("join.vm")
-#if( $cascade!="")
+#if ($cascade!="")
 				<cascade>
 					$cascade
 				</cascade>

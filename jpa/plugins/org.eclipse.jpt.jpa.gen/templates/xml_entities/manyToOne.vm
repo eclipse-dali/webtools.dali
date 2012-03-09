@@ -2,18 +2,15 @@
 ##Assumes that the context has a "role" object representing the generated AssociationRole
 #set ($DQ = '"')
 #set ($members = "name=${DQ}$role.propertyName${DQ} target-entity=${DQ}$role.referencedTable.qualifiedClassName${DQ}")
-#if( $customizer.genFetchXml($role.referrerTable)!= "" && $customizer.genFetchXml($role.referrerTable)!= "EAGER")
-#set ($members = $customizer.appendAttribute($members, "fetch", $customizer.genFetchXml($role.referrerTable), true))
+#if ($customizer.genFetchXml($role.referrerTable)!= "" && $customizer.genFetchXml($role.referrerTable)!= "EAGER")
+	#set ($members = $customizer.appendAttribute($members, "fetch", $customizer.genFetchXml($role.referrerTable), true))
 #end
-
 			<many-to-one $members>
 #parse("join.vm")
 #set ($cascade=$customizer.genCascadesXml($role))
-#if( $cascade!="")
-	<cascade>
+#if ($cascade!="")
+				<cascade>
 					$cascade
 				</cascade>
-			</many-to-one>
-#else
-</many-to-one>
 #end
+			</many-to-one>
