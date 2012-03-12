@@ -2,7 +2,7 @@
 #macro (joinColumn $column $referencedColumn)
 	#set ($members = "name=$customizer.convertToJavaStringLiteral($column.joinColumnName)")
 #if (!$referencedColumn.primaryKey || $referencedColumn.partOfCompositePrimaryKey)
-	#set ($members = "$members referencedColumnName=$customizer.convertToJavaStringLiteral($referencedColumn.name)")
+	#set ($members = "$members referenced-column-name=$customizer.convertToJavaStringLiteral($referencedColumn.name)")
 #end
 				<join-column $members/>
 #end
@@ -10,7 +10,7 @@
 #macro (inverseJoinColumn $column $referencedColumn)
 	#set ($members = "name=$customizer.convertToJavaStringLiteral($column.joinColumnName)")
 #if (!$referencedColumn.primaryKey || $referencedColumn.partOfCompositePrimaryKey)
-	#set ($members = "$members referencedColumnName=$customizer.convertToJavaStringLiteral($referencedColumn.name)")
+	#set ($members = "$members referenced-column-name=$customizer.convertToJavaStringLiteral($referencedColumn.name)")
 #end
 				<inverse-join-column $members/>
 #end
