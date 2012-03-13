@@ -23,8 +23,10 @@ import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
+import org.eclipse.persistence.jpa.jpql.spi.IEntity;
 import org.eclipse.persistence.jpa.jpql.spi.IManagedType;
 import org.eclipse.persistence.jpa.jpql.spi.IMapping;
 import org.eclipse.persistence.jpa.jpql.spi.IType;
@@ -116,6 +118,19 @@ public abstract class JpaMapping implements IMapping {
 		// The attribute could be virtual, incorrectly specified in the orm.xml
 		if (typeName == null) {
 			return getTypeRepository().getTypeHelper().unknownType();
+		}
+
+		// For relationship mapping, make sure to check the target entity first
+		if (isRelationship()) {
+
+			String entityName = ((RelationshipMapping) mapping).getTargetEntity();
+
+			if (StringTools.stringIsNotEmpty(entityName)) {
+				IEntity entity = getParent().getProvider().getEntityNamed(entityName);
+				if (entity != null) {
+					return entity.getType();
+				}
+			}
 		}
 
 		return getTypeRepository().getType(typeName);
@@ -229,7 +244,6 @@ public abstract class JpaMapping implements IMapping {
 	 */
 	public int getMappingType() {
 		if (mappingType == -1) {
-			getTypeDeclaration();
 			mappingType = calculateMappingType();
 		}
 		return mappingType;
