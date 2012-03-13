@@ -856,6 +856,10 @@ public class InternalJpaProjectManager
 
 	// ********** misc **********
 
+	public IWorkspace getWorkspace() {
+		return this.workspace;
+	}
+
 	private IWorkspaceRoot getWorkspaceRoot() {
 		return this.workspace.getRoot();
 	}

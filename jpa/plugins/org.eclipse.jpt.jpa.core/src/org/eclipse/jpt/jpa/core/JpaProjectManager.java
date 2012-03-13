@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core;
 
+import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.jpt.common.utility.BooleanReference;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
@@ -37,6 +38,12 @@ import org.eclipse.jpt.common.utility.model.Model;
 public interface JpaProjectManager
 	extends Model
 {
+	/**
+	 * Return the JPA project manager's workspace.
+	 */
+	IWorkspace getWorkspace();
+
+
 	// ********** JPA projects **********
 
 	/**
