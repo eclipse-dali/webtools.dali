@@ -91,7 +91,7 @@ public abstract class JpaMapping implements IMapping {
 
 	protected ITypeDeclaration[] buildGenericTypeDeclarations() {
 		JavaPersistentAttribute javaPersistentAttribute = mapping.getPersistentAttribute().getJavaPersistentAttribute();
-		JavaResourceAttribute resource = javaPersistentAttribute.getResourceAttribute();
+		JavaResourceAttribute resource = javaPersistentAttribute == null ? null : javaPersistentAttribute.getResourceAttribute();
 		List<ITypeDeclaration> declarations = CollectionTools.list(buildGenericTypeDeclarations(resource));
 		return declarations.toArray(new ITypeDeclaration[declarations.size()]);
 	}
