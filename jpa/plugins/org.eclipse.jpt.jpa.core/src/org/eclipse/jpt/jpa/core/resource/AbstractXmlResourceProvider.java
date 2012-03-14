@@ -17,17 +17,12 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -37,9 +32,7 @@ import org.eclipse.jem.util.emf.workbench.EMFWorkbenchContextBase;
 import org.eclipse.jem.util.emf.workbench.FlexibleProjectResourceSet;
 import org.eclipse.jem.util.emf.workbench.IEMFContextContributor;
 import org.eclipse.jem.util.emf.workbench.ProjectResourceSet;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
-import org.eclipse.jpt.common.utility.internal.ListenerList;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.wst.common.componentcore.internal.impl.WTPResourceFactoryRegistry;
@@ -69,10 +62,6 @@ public abstract class AbstractXmlResourceProvider
 	protected JpaXmlResource resource;
 	
 	protected IContentType contentType;
-	
-	protected final ResourceAdapter resourceAdapter = new ResourceAdapter();
-	
-	protected final ListenerList<JpaXmlResourceProviderListener> listenerList = new ListenerList<JpaXmlResourceProviderListener>(JpaXmlResourceProviderListener.class);
 	
 	protected ResourceStateValidator stateValidator;
 	
@@ -199,32 +188,6 @@ public abstract class AbstractXmlResourceProvider
 	protected EList<EObject> getResourceContents() {
 		return this.resource.getContents();
 	}
-
-	public void addListener(JpaXmlResourceProviderListener listener) {
-		if (this.listenerList.isEmpty()) {
-			engageResource();
-		}
-		this.listenerList.add(listener);
-	}
-	
-	public void removeListener(JpaXmlResourceProviderListener listener) {
-		this.listenerList.remove(listener);
-		if (this.listenerList.isEmpty()) {
-			disengageResource();
-		}
-	}
-	
-	private void engageResource() {
-		if (this.resource != null) {
-			this.resource.eAdapters().add(this.resourceAdapter);
-		}
- 	}
-	
-	private void disengageResource() {
-		if (this.resource != null) {
-			this.resource.eAdapters().remove(this.resourceAdapter);
-		}
-	}
 	
 	protected FlexibleProjectResourceSet getResourceSet() {
 		return (FlexibleProjectResourceSet) getEmfContext().getResourceSet();
@@ -236,22 +199,6 @@ public abstract class AbstractXmlResourceProvider
 	
 	public IProject getProject() {
 		return this.project;
-	}
-	
-	protected void resourceIsLoadedChanged(Resource aResource, boolean oldValue, boolean newValue) {
-		if ( ! this.listenerList.isEmpty()) {
-			int eventType= newValue ? JpaXmlResourceProviderEvent.RESOURCE_LOADED : JpaXmlResourceProviderEvent.RESOURCE_UNLOADED;
-			JpaXmlResourceProviderEvent evt = new JpaXmlResourceProviderEvent(this, eventType);
-			notifyListeners(evt);
-		}
-	}
-	
-	protected void notifyListeners(JpaXmlResourceProviderEvent event) {
-		NotifyRunner notifier = new NotifyRunner(event); 
-		for (JpaXmlResourceProviderListener listener : this.listenerList.getListeners()) {
-			notifier.setListener(listener);
-			SafeRunner.run(notifier);
-		}
 	}
 	
 	public IStatus validateEdit(Object context) {
@@ -345,46 +292,5 @@ public abstract class AbstractXmlResourceProvider
 	@SuppressWarnings("unchecked")
 	public void cacheNonResourceValidateState(List roNonResourceFiles) {
 		// do nothing
-	}
-	
-	
-	// **************** member classes *****************************************
-	
-	protected class ResourceAdapter extends AdapterImpl {
-		@Override
-		public void notifyChanged(Notification notification) {
-			if ( notification.getEventType() == Notification.SET && notification.getFeatureID(null) == Resource.RESOURCE__IS_LOADED) {
-				resourceIsLoadedChanged((Resource) notification.getNotifier(), notification.getOldBooleanValue(), notification.getNewBooleanValue());
-			}
-		}
-	}
-	
-	
-	public static class NotifyRunner implements ISafeRunnable 
-	{
-		private final JpaXmlResourceProviderEvent event;
-		
-		private JpaXmlResourceProviderListener listener;
-		
-		
-		public NotifyRunner(JpaXmlResourceProviderEvent event) {
-			Assert.isNotNull(event);
-			this.event = event;
-		}
-		
-		
-		public void setListener(JpaXmlResourceProviderListener listener) {
-			this.listener = listener;
-		}
-		
-		public void run() throws Exception {
-			if (listener != null) {
-				listener.modelChanged(event);
-			}
-		}
-		
-		public void handleException(Throwable exception) { 
-			JptJpaCorePlugin.log(exception);
-		}
 	}
 }
