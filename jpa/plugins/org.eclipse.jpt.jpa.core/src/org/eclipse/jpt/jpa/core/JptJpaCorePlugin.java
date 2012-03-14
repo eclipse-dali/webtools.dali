@@ -311,7 +311,7 @@ public class JptJpaCorePlugin
 	}
 	
 	public static void initializeDefaultPreferences() {
-		IEclipsePreferences node = getDefaultPreferences();
+		IEclipsePreferences node = getNonLegacyDefaultPreferences();
 
 		// default JPA platforms
 		JpaPlatformDescription defaultPlatform_1_0 = 
@@ -327,6 +327,11 @@ public class JptJpaCorePlugin
 			defaultPlatform_2_0 = GenericPlatform.VERSION_2_0;
 		}
 		node.put(DEFAULT_JPA_PLATFORM_2_0_PREF_KEY, defaultPlatform_2_0.getId());
+	}
+	
+	/* return default preferences for org.eclipse.jpt.jpa.core */
+	protected static IEclipsePreferences getNonLegacyDefaultPreferences() {
+		return DefaultScope.INSTANCE.getNode(PLUGIN_ID);
 	}
 	
 	/**
@@ -419,10 +424,10 @@ public class JptJpaCorePlugin
 	 */
 	public static JpaPlatformDescription getDefaultJpaPlatform(IProjectFacetVersion jpaFacetVersion) {
 		JpaPlatformDescription defaultPlatform = 
-				getDefaultJpaPlatform(jpaFacetVersion, getWorkspacePreferences(), getDefaultPreferences());
+				getDefaultJpaPlatform(jpaFacetVersion, getWorkspacePreferences(), getDefaultPreferences(), getNonLegacyDefaultPreferences());
 		if (defaultPlatform == null) {
 			// if the platform ID stored in the workspace prefs is invalid (i.e. null), look in the default prefs
-			defaultPlatform = getDefaultJpaPlatform(jpaFacetVersion, getDefaultPreferences());
+			defaultPlatform = getDefaultJpaPlatform(jpaFacetVersion, getDefaultPreferences(), getNonLegacyDefaultPreferences());
 		}
 		return defaultPlatform;
 	}
