@@ -181,7 +181,7 @@ public class OrmEclipseLinkVersionMapping
 							EclipseLinkJpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE,
 							new String[] {this.getName()},
 							this,
-							this.getNameTextRange()
+							this.getAttributeTypeTextRange()
 					)
 			);
 		}
