@@ -200,6 +200,11 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 		if (this.jpaProject == null) {
 			return true;
 		}
+		// the customizer will be null if the user presses "Finish" on the
+		// Select JPA Project page (Don't ask....)
+		if (this.customizer == null) {
+			return false;
+		}
 		try {
 			this.customizer.setDatabaseAnnotationNameBuilder( buildDatabaseAnnotationNameBuilder() );
 			this.customizer.save();
