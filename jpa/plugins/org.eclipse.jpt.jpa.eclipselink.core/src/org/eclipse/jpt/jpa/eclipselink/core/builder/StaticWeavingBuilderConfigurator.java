@@ -131,22 +131,22 @@ public class StaticWeavingBuilderConfigurator extends JpaPreferencesManager
 	
 	public String getSourceLocationPreference() {
 		
-		return this.getProjectPreference(this.appendPrefix(SOURCE), this.getDefaultSourceLocation());
+		return this.getLegacyProjectPreference(this.appendPrefix(SOURCE), this.getDefaultSourceLocation());
 	}
 	
 	public String getTargetLocationPreference() {
 		
-		return this.getProjectPreference(this.appendPrefix(TARGET), this.getDefaultTargetLocation());
+		return this.getLegacyProjectPreference(this.appendPrefix(TARGET), this.getDefaultTargetLocation());
 	}
 	
 	public String getPersistenceInfoPreference() {
 		
-		return this.getProjectPreference(this.appendPrefix(PERSISTENCE_INFO), this.getDefaultPersistenceInfo());
+		return this.getLegacyProjectPreference(this.appendPrefix(PERSISTENCE_INFO), this.getDefaultPersistenceInfo());
 	}
 	
 	public String getLogLevelPreference() {
 		
-		return this.getProjectPreference(this.appendPrefix(LOG_LEVEL), this.getDefaultLogLevel());
+		return this.getLegacyProjectPreference(this.appendPrefix(LOG_LEVEL), this.getDefaultLogLevel());
 	}
 
 	// default preferences value
@@ -175,35 +175,35 @@ public class StaticWeavingBuilderConfigurator extends JpaPreferencesManager
 	//  setting and removing preferences
 	
 	public void setSourceLocationPreference(String location) {
-		this.setProjectPreference(this.appendPrefix(SOURCE), location);
+		this.setLegacyProjectPreference(this.appendPrefix(SOURCE), location);
 	}
 	
 	public void removeSourceLocationPreference() {
-		this.setProjectPreference(this.appendPrefix(SOURCE), null);
+		this.setLegacyProjectPreference(this.appendPrefix(SOURCE), null);
 	}
 	
 	public void setTargetLocationPreference(String location) {
-		this.setProjectPreference(this.appendPrefix(TARGET), location);
+		this.setLegacyProjectPreference(this.appendPrefix(TARGET), location);
 	}
 	
 	public void removeTargetLocationPreference() {
-		this.setProjectPreference(this.appendPrefix(TARGET), null);
+		this.setLegacyProjectPreference(this.appendPrefix(TARGET), null);
 	}
 	
 	public void setLogLevelPreference(String logLevel) {
-		this.setProjectPreference(this.appendPrefix(LOG_LEVEL), logLevel);
+		this.setLegacyProjectPreference(this.appendPrefix(LOG_LEVEL), logLevel);
 	}
 	
 	public void removeLogLevelPreference() {
-		this.setProjectPreference(this.appendPrefix(LOG_LEVEL), null);
+		this.setLegacyProjectPreference(this.appendPrefix(LOG_LEVEL), null);
 	}
 	
 	public void setPersistenceInfoPreference(String persistenceInfo) {
-		this.setProjectPreference(this.appendPrefix(PERSISTENCE_INFO), persistenceInfo);
+		this.setLegacyProjectPreference(this.appendPrefix(PERSISTENCE_INFO), persistenceInfo);
 	}
 	
 	public void removePersistenceInfoPreference() {
-		this.setProjectPreference(this.appendPrefix(PERSISTENCE_INFO), null);
+		this.setLegacyProjectPreference(this.appendPrefix(PERSISTENCE_INFO), null);
 	}
 
 	// ********** private methods **********

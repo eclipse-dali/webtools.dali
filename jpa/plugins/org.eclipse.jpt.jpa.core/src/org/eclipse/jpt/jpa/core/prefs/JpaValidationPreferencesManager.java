@@ -45,7 +45,7 @@ public class JpaValidationPreferencesManager extends JpaPreferencesManager
 	 */
 	public static int getProblemSeverityPreference(IResource targetObject, String messageId) {
 		String problemPreference = (new JpaValidationPreferencesManager(targetObject.getProject())).
-															getPreference(appendProblemPrefix(messageId));
+															getLegacyPreference(appendProblemPrefix(messageId));
 
 		if(problemPreference == null) {
 			return NO_SEVERITY_PREFERENCE;
@@ -68,11 +68,11 @@ public class JpaValidationPreferencesManager extends JpaPreferencesManager
 	 * Returns the String value of the problem preference from the workspace preferences
 	 */
 	public static String getWorkspaceLevelProblemPreference(String messageId) {
-		return getWorkspacePreference(appendProblemPrefix(messageId));
+		return getLegacyWorkspacePreference(appendProblemPrefix(messageId));
 	}
 	
 	public static void setWorkspaceLevelProblemPreference(String messageId, String problemPreference) {
-		setWorkspacePreference(appendProblemPrefix(messageId), problemPreference);
+		setLegacyWorkspacePreference(appendProblemPrefix(messageId), problemPreference);
 	}
 	
 	protected static String appendProblemPrefix(String messageId) {
@@ -101,15 +101,15 @@ public class JpaValidationPreferencesManager extends JpaPreferencesManager
 	 * workspace preferences.
 	 */
 	public boolean problemIsIgnored(String messageId) {
-		return Tools.valuesAreEqual(this.getPreference(appendProblemPrefix(messageId)), IGNORE);
+		return Tools.valuesAreEqual(this.getLegacyPreference(appendProblemPrefix(messageId)), IGNORE);
 	}
 
 	public boolean projectHasSpecificOptions() {
-		return this.getProjectPreference(WORKSPACE_PREFERENCES_OVERRIDEN, false);
+		return this.getLegacyProjectPreference(WORKSPACE_PREFERENCES_OVERRIDEN, false);
 	}
 
 	public void setProjectHasSpecificOptions(boolean booleanValue) {
-		this.setProjectPreference(WORKSPACE_PREFERENCES_OVERRIDEN, booleanValue);
+		this.setLegacyProjectPreference(WORKSPACE_PREFERENCES_OVERRIDEN, booleanValue);
 	}
 	
 	// ********** project preference **********
@@ -118,11 +118,11 @@ public class JpaValidationPreferencesManager extends JpaPreferencesManager
 	 * Returns the String value of the problem preference from the project preferences
 	 */
 	public String getProjectLevelProblemPreference(String messageId) {
-		return this.getProjectPreference(appendProblemPrefix(messageId));
+		return this.getLegacyProjectPreference(appendProblemPrefix(messageId));
 	}
 	
 	public void setProjectLevelProblemPreference(String messageId, String problemPreference) {
-		this.setProjectPreference(appendProblemPrefix(messageId), problemPreference);
+		this.setLegacyProjectPreference(appendProblemPrefix(messageId), problemPreference);
 	}
 	
 }

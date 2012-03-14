@@ -10,9 +10,7 @@
 package org.eclipse.jpt.jpa.core;
 
 import java.util.Hashtable;
-
 import javax.xml.parsers.SAXParserFactory;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.CoreException;
@@ -239,13 +237,14 @@ public class JptJpaCorePlugin
 	public static JpaPlatformDescription getDefaultJpaPlatform(IProjectFacetVersion jpaFacetVersion) {
 		JpaPlatformDescription defaultPlatform = 	getDefaultJpaPlatform(
 							jpaFacetVersion, 
-							JpaPreferencesManager.getWorkspacePreferences(), 
+							JpaPreferencesManager.getLegacyWorkspacePreferences(), 
+							JpaPreferencesManager.getLegacyDefaultPreferences(),
 							JpaPreferencesManager.getDefaultPreferences());
 		if (defaultPlatform == null) {
 			// if the platform ID stored in the workspace prefs is invalid (i.e. null), look in the default prefs
 			defaultPlatform = getDefaultJpaPlatform(
 						jpaFacetVersion, 
-						JpaPreferencesManager.getDefaultPreferences());
+						JpaPreferencesManager.getLegacyDefaultPreferences());
 		}
 		return defaultPlatform;
 	}
@@ -308,7 +307,7 @@ public class JptJpaCorePlugin
 		else {
 			throw new IllegalArgumentException("Illegal JPA facet version: " + jpaFacetVersion); //$NON-NLS-1$
 		}
-		JpaPreferencesManager.setWorkspacePreference(preferenceKey, platformId);
+		JpaPreferencesManager.setLegacyWorkspacePreference(preferenceKey, platformId);
 	}
 	
 	/**

@@ -28,15 +28,15 @@ public class JpaEntityGenPreferencesManager extends JpaPreferencesManager
 	// ********** static methods **************************************************
 
 	public static String getDefaultPackageWorkspacePreference() {
-		return getWorkspacePreference(appendPrefix(DEFAULT_PACKAGE), getDefaultDefaultPackage());
+		return getLegacyWorkspacePreference(appendPrefix(DEFAULT_PACKAGE), getDefaultDefaultPackage());
 	}
 	
 	public static void setDefaultPackageWorkspacePreference(String value) {
 		if(StringTools.stringsAreEqual(value, getDefaultDefaultPackage())) {
-			removeWorkspacePreference(appendPrefix(DEFAULT_PACKAGE));
+			removeLegacyWorkspacePreference(appendPrefix(DEFAULT_PACKAGE));
 		}
 		else {
-			setWorkspacePreference(appendPrefix(DEFAULT_PACKAGE), value);
+			setLegacyWorkspacePreference(appendPrefix(DEFAULT_PACKAGE), value);
 		}
 	}
 	
@@ -57,7 +57,7 @@ public class JpaEntityGenPreferencesManager extends JpaPreferencesManager
 	// ********** project preference **********
 
 	public String getDefaultPackagePreference() {
-		return this.getPreference(appendPrefix(DEFAULT_PACKAGE), getDefaultDefaultPackage());
+		return this.getLegacyPreference(appendPrefix(DEFAULT_PACKAGE), getDefaultDefaultPackage());
 	}
 
 	public void setDefaultPackagePreference(String preferenceValue) {
@@ -65,12 +65,12 @@ public class JpaEntityGenPreferencesManager extends JpaPreferencesManager
 			this.removeDefaultPackagePreference();
 		}
 		else {
-			this.setProjectPreference(appendPrefix(DEFAULT_PACKAGE), preferenceValue);
+			this.setLegacyProjectPreference(appendPrefix(DEFAULT_PACKAGE), preferenceValue);
 		}
 	}
 
 	public void removeDefaultPackagePreference() {
-		this.removeProjectPreference(appendPrefix(DEFAULT_PACKAGE));
+		this.removeLegacyProjectPreference(appendPrefix(DEFAULT_PACKAGE));
 	}
 
 }

@@ -88,30 +88,44 @@ public class JpaPreferencesManager
 	// ********** static methods **************************************************
 	
 	public static void clearWorkspacePreferences() throws BackingStoreException {
-		getWorkspacePreferences().clear();
+		getLegacyWorkspacePreferences().clear();
 	}
 
 	// ********** preferences **********
 
 	/**
-	 * Return the Dali preferences for the specified context.
+	 * Return the legacy Dali (org.eclipse.jpt.core) preferences for the specified context.
 	 */
-	private static IEclipsePreferences getPreferences(IScopeContext context) {
+	private static IEclipsePreferences getLegacyPreferences(IScopeContext context) {
 		return context.getNode(JptJpaCorePlugin.LEGACY_PLUGIN_ID);
-	}
-
-	/**
-	 * Return the Dali preferences for the current workspace instance.
-	 */
-	public static IEclipsePreferences getWorkspacePreferences() {
-		return getPreferences(InstanceScope.INSTANCE);
 	}
 	
 	/**
-	 * Return the default Dali preferences
-	 * @see JpaPreferenceInitializer
+	 * Return the Dali (org.eclipse.jpt.jpa.core) preferences for the specified context.
 	 */
-	 public static IEclipsePreferences getDefaultPreferences() {
+	private static IEclipsePreferences getPreferences(IScopeContext context) {
+		return context.getNode(JptJpaCorePlugin.PLUGIN_ID);
+	}
+	
+	/**
+	 * Return the legacy Dali (org.eclipse.jpt.core) preferences for the current workspace instance.
+	 */
+	public static IEclipsePreferences getLegacyWorkspacePreferences() {
+		return getLegacyPreferences(InstanceScope.INSTANCE);
+	}
+	
+	/**
+	 * Return the legacy Dali (org.eclipse.jpt.core) default preferences
+	 */
+	 public static IEclipsePreferences getLegacyDefaultPreferences() {
+		return getLegacyPreferences(DefaultScope.INSTANCE);
+	}
+	 
+	 /**
+	  * Return the Dali (org.eclipse.jpt.jpa.core) default preferences
+	  * @see JpaPreferenceInitializer
+	  */
+	public static IEclipsePreferences getDefaultPreferences() {
 		return getPreferences(DefaultScope.INSTANCE);
 	}
 	
@@ -136,17 +150,17 @@ public class JpaPreferencesManager
 
 	// ********** workspace preference **********
 
-	protected static String getWorkspacePreference(String key, String defaultValue) {
-		String value = getWorkspacePreferences().get(key, defaultValue);
+	protected static String getLegacyWorkspacePreference(String key, String defaultValue) {
+		String value = getLegacyWorkspacePreferences().get(key, defaultValue);
 		return (StringTools.stringIsEmpty(value)) ? defaultValue : value;
 	}
 
-	protected static String getWorkspacePreference(String key) {
-		return getWorkspacePreferences().get(key, null);
+	protected static String getLegacyWorkspacePreference(String key) {
+		return getLegacyWorkspacePreferences().get(key, null);
 	}
 
-	public static void setWorkspacePreference(String key, String value) {
-		IEclipsePreferences wkspPrefs = getWorkspacePreferences();
+	public static void setLegacyWorkspacePreference(String key, String value) {
+		IEclipsePreferences wkspPrefs = getLegacyWorkspacePreferences();
 		if(value == null) {
 			wkspPrefs.remove(key);
 		}
@@ -156,18 +170,18 @@ public class JpaPreferencesManager
 		flush(wkspPrefs);
 	}
 	
-	protected static boolean getWorkspacePreference(String key, boolean defaultBooleanValue) {
-		return getWorkspacePreferences().getBoolean(key, defaultBooleanValue);
+	protected static boolean getLegacyWorkspacePreference(String key, boolean defaultBooleanValue) {
+		return getLegacyWorkspacePreferences().getBoolean(key, defaultBooleanValue);
 	}
 
-	public static void setWorkspacePreference(String key, boolean booleanValue) {
-		IEclipsePreferences wkspPrefs = getWorkspacePreferences();
+	public static void setLegacyWorkspacePreference(String key, boolean booleanValue) {
+		IEclipsePreferences wkspPrefs = getLegacyWorkspacePreferences();
 		wkspPrefs.putBoolean(key, booleanValue);
 		flush(wkspPrefs);
 	}
 
-	public static void removeWorkspacePreference(String key) {
-		IEclipsePreferences wkspPrefs = getWorkspacePreferences();
+	public static void removeLegacyWorkspacePreference(String key) {
+		IEclipsePreferences wkspPrefs = getLegacyWorkspacePreferences();
 		wkspPrefs.remove(key);
 		flush(wkspPrefs);
 	}
@@ -229,18 +243,18 @@ public class JpaPreferencesManager
 
 	// ********** query **********
 
-	protected String getPreference(String key) {
-		String preferenceValue = this.getProjectPreference(key);
+	protected String getLegacyPreference(String key) {
+		String preferenceValue = this.getLegacyProjectPreference(key);
 		
 		// check workspace preferences if not a project preference
 		if(preferenceValue == null) {
-			preferenceValue = getWorkspacePreference(key);
+			preferenceValue = getLegacyWorkspacePreference(key);
 		}
 		return preferenceValue;
 	}
 	
-	protected String getPreference(String key, String defaultValue) {
-		String preferenceValue = this.getPreference(key);
+	protected String getLegacyPreference(String key, String defaultValue) {
+		String preferenceValue = this.getLegacyPreference(key);
 		if(StringTools.stringIsEmpty(preferenceValue)) {
 			return defaultValue;
 		}
@@ -250,17 +264,17 @@ public class JpaPreferencesManager
 	// ********** preferences **********
 
 	/**
-	 * Return the Dali preferences for the specified Eclipse project.
+	 * Return the legacy Dali (org.eclipse.jpt.core) preferences for the specified Eclipse project.
 	 */
-	protected IEclipsePreferences getProjectPreferences() {
-		return getPreferences(new ProjectScope(this.project));
+	protected IEclipsePreferences getLegacyProjectPreferences() {
+		return getLegacyPreferences(new ProjectScope(this.project));
 	}
 	
 	/**
 	 * Clears the project of JPA-specific preferences
 	 */
 	public void clearProjectPreferences() {
-		this.clearProjectPreferences(
+		this.clearLegacyProjectPreferences(
 				JPA_PLATFORM_PREF_KEY,
 				DISCOVER_ANNOTATED_CLASSES,
 				METAMODEL_SOURCE_FOLDER_NAME,
@@ -269,10 +283,10 @@ public class JpaPreferencesManager
 	}
 	
 	/**
-	 * Clears the specified preferences
+	 * Clears the specified legacy Dali (org.eclipse.jpt.core) preferences
 	 */
-	public void clearProjectPreferences(String ... preferenceKeys) {
-		IEclipsePreferences projectPrefs = this.getProjectPreferences();
+	public void clearLegacyProjectPreferences(String ... preferenceKeys) {
+		IEclipsePreferences projectPrefs = this.getLegacyProjectPreferences();
 		for(String preferenceKey : preferenceKeys) {
 			projectPrefs.remove(preferenceKey);
 		}
@@ -281,17 +295,17 @@ public class JpaPreferencesManager
 
 	// ********** project preference **********
 
-	protected String getProjectPreference(String key, String defaultValue) {
-		String value = this.getProjectPreferences().get(key, defaultValue);
+	protected String getLegacyProjectPreference(String key, String defaultValue) {
+		String value = this.getLegacyProjectPreferences().get(key, defaultValue);
 		return (StringTools.stringIsEmpty(value)) ? defaultValue : value;
 	}
 	
-	protected String getProjectPreference(String key) {
-		return this.getProjectPreferences().get(key, null);
+	protected String getLegacyProjectPreference(String key) {
+		return this.getLegacyProjectPreferences().get(key, null);
 	}
 	
-	protected void setProjectPreference(String key, String value) {
-		IEclipsePreferences projectPrefs = this.getProjectPreferences();
+	protected void setLegacyProjectPreference(String key, String value) {
+		IEclipsePreferences projectPrefs = this.getLegacyProjectPreferences();
 		if(value == null) {
 			projectPrefs.remove(key);
 		}
@@ -301,18 +315,18 @@ public class JpaPreferencesManager
 		flush(projectPrefs);
 	}
 
-	protected boolean getProjectPreference(String key, boolean defaultBooleanValue) {
-		return this.getProjectPreferences().getBoolean(key, defaultBooleanValue);
+	protected boolean getLegacyProjectPreference(String key, boolean defaultBooleanValue) {
+		return this.getLegacyProjectPreferences().getBoolean(key, defaultBooleanValue);
 	}
 
-	protected void setProjectPreference(String key, boolean booleanValue) {
-		IEclipsePreferences projectPrefs = this.getProjectPreferences();
+	protected void setLegacyProjectPreference(String key, boolean booleanValue) {
+		IEclipsePreferences projectPrefs = this.getLegacyProjectPreferences();
 		projectPrefs.putBoolean(key, booleanValue);
 		flush(projectPrefs);
 	}
 
-	protected void removeProjectPreference(String key) {
-		IEclipsePreferences projectPrefs = this.getProjectPreferences();
+	protected void removeLegacyProjectPreference(String key) {
+		IEclipsePreferences projectPrefs = this.getLegacyProjectPreferences();
 		projectPrefs.remove(key);
 		flush(projectPrefs);
 	}
@@ -323,14 +337,14 @@ public class JpaPreferencesManager
 	 * Return the JPA platform ID associated with the specified Eclipse project.
 	 */
 	public String getJpaPlatformId() {
-		return this.getProjectPreference(JPA_PLATFORM_PREF_KEY, GenericPlatform.VERSION_1_0.getId());
+		return this.getLegacyProjectPreference(JPA_PLATFORM_PREF_KEY, GenericPlatform.VERSION_1_0.getId());
 	}
 
 	/**
 	 * Set the JPA platform ID associated with the specified Eclipse project.
 	 */
 	public void setJpaPlatformId(String jpaPlatformId) {
-		this.setProjectPreference(JPA_PLATFORM_PREF_KEY, jpaPlatformId);
+		this.setLegacyProjectPreference(JPA_PLATFORM_PREF_KEY, jpaPlatformId);
 	}
 
 	/**
@@ -338,11 +352,11 @@ public class JpaPreferencesManager
 	 * Eclipse project.
 	 */
 	public boolean getDiscoverAnnotatedClasses() {
-		if (this.getProjectPreference(DISCOVER_ANNOTATED_CLASSES, null) != null) {
-			return this.getProjectPreference(DISCOVER_ANNOTATED_CLASSES, false);
+		if (this.getLegacyProjectPreference(DISCOVER_ANNOTATED_CLASSES, null) != null) {
+			return this.getLegacyProjectPreference(DISCOVER_ANNOTATED_CLASSES, false);
 		}
 		//bug 354780 - made the mistake of changing the project metadata in the 3.0 release
-		return this.getProjectPreference(LEGACY_DISCOVER_ANNOTATED_CLASSES, false);
+		return this.getLegacyProjectPreference(LEGACY_DISCOVER_ANNOTATED_CLASSES, false);
 	}
 	
 	 /** 
@@ -350,7 +364,7 @@ public class JpaPreferencesManager
 	 * Eclipse project.
 	 */
 	public void setDiscoverAnnotatedClasses(boolean discoverAnnotatedClasses) {
-		this.setProjectPreference(DISCOVER_ANNOTATED_CLASSES, discoverAnnotatedClasses);
+		this.setLegacyProjectPreference(DISCOVER_ANNOTATED_CLASSES, discoverAnnotatedClasses);
 	}
 
 	/**
@@ -358,12 +372,12 @@ public class JpaPreferencesManager
 	 * specified Eclipse project.
 	 */
 	public String getMetamodelSourceFolderName() {
-		String metamodelSourceFolderName = this.getProjectPreference(METAMODEL_SOURCE_FOLDER_NAME, null);
+		String metamodelSourceFolderName = this.getLegacyProjectPreference(METAMODEL_SOURCE_FOLDER_NAME, null);
 		if (metamodelSourceFolderName != null) {
 			return metamodelSourceFolderName;
 		}
 		//bug 354780 - made the mistake of changing the project metadata in the 3.0 release
-		return this.getProjectPreference(LEGACY_METAMODEL_SOURCE_FOLDER_NAME, null);
+		return this.getLegacyProjectPreference(LEGACY_METAMODEL_SOURCE_FOLDER_NAME, null);
 	}
 
 	/**
@@ -371,12 +385,12 @@ public class JpaPreferencesManager
 	 * specified Eclipse project.
 	 */
 	public void setMetamodelSourceFolderName(String metamodelSourceFolderName) {
-		this.setProjectPreference(METAMODEL_SOURCE_FOLDER_NAME, metamodelSourceFolderName);
+		this.setLegacyProjectPreference(METAMODEL_SOURCE_FOLDER_NAME, metamodelSourceFolderName);
 		//bug 354780 - made the mistake of changing the project metadata in the 3.0 release.
 		//make sure legacy setting is removed when turning off metamodel gen, if we don't then
 		//there will be no way to turn off meatamodel gen without sacrificing backwards compatibility
 		if(metamodelSourceFolderName == null) {
-			this.setProjectPreference(LEGACY_METAMODEL_SOURCE_FOLDER_NAME, null);
+			this.setLegacyProjectPreference(LEGACY_METAMODEL_SOURCE_FOLDER_NAME, null);
 		}
 	}
 

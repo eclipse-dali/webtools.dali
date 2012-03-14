@@ -32,15 +32,15 @@ public class JpaJpqlPreferencesManager extends JpaPreferencesManager
 	// ********** workspace preference **********
 	
 	public static String getIdentifiersCaseWorkspacePreference() {
-		return getWorkspacePreference(appendPrefix(CASE), getDefaultIdentifiersCase());
+		return getLegacyWorkspacePreference(appendPrefix(CASE), getDefaultIdentifiersCase());
 	}
 	
 	public static void setIdentifiersCaseWorkspacePreference(String value) {
 		if(StringTools.stringsAreEqual(value, getDefaultIdentifiersCase())) {
-			removeWorkspacePreference(appendPrefix(CASE));
+			removeLegacyWorkspacePreference(appendPrefix(CASE));
 		}
 		else {
-			setWorkspacePreference(appendPrefix(CASE), value);
+			setLegacyWorkspacePreference(appendPrefix(CASE), value);
 		}
 	}
 	
@@ -49,15 +49,15 @@ public class JpaJpqlPreferencesManager extends JpaPreferencesManager
 	}
 
 	public static boolean getMatchFirstCharacterCaseWorkspacePreference() {
-		return getWorkspacePreference(appendPrefix(MATCH_FIRST_CHARACTER_CASE), getDefaultMatchFirstCharacterCase());
+		return getLegacyWorkspacePreference(appendPrefix(MATCH_FIRST_CHARACTER_CASE), getDefaultMatchFirstCharacterCase());
 	}
 	
 	public static void setMatchFirstCharacterCaseWorkspacePreference(boolean value) {
 		if(value == getDefaultMatchFirstCharacterCase()) {
-			removeWorkspacePreference(appendPrefix(MATCH_FIRST_CHARACTER_CASE));
+			removeLegacyWorkspacePreference(appendPrefix(MATCH_FIRST_CHARACTER_CASE));
 		}
 		else {
-			setWorkspacePreference(appendPrefix(MATCH_FIRST_CHARACTER_CASE), value);
+			setLegacyWorkspacePreference(appendPrefix(MATCH_FIRST_CHARACTER_CASE), value);
 		}
 	}
 	
