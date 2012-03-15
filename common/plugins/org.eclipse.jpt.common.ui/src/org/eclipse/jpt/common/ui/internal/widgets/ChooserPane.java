@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -62,6 +62,21 @@ public abstract class ChooserPane<T extends Model> extends Pane<T>
 	                           Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
+	}
+
+	/**
+	 * Creates a new <code>ChooserPane</code>.
+	 *
+	 * @param parentPane The parent container of this one
+	 * @param subjectHolder The holder of this pane's subject
+	 * @param parent The parent container
+	 */
+	public ChooserPane(Pane<?> parentPane,
+	                           PropertyValueModel<? extends T> subjectHolder,
+	                           Composite parent,
+	                           PropertyValueModel<Boolean> enabledModel) {
+
+		super(parentPane, subjectHolder, parent, enabledModel);
 	}
 
 	@Override
@@ -157,11 +172,11 @@ public abstract class ChooserPane<T extends Model> extends Pane<T>
 		super.enableWidgets(enabled);
 
 		if (!this.mainControl.isDisposed()) {
-			this.mainControl.setEnabled(enabled);
+			this.mainControl.setEnabled(getCombinedEnablement());
 		}
 
 		if (!this.rightControl.isDisposed()) {
-			this.rightControl.setEnabled(enabled);
+			this.rightControl.setEnabled(getCombinedEnablement());
 		}
 	}
 }

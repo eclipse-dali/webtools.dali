@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -50,12 +50,13 @@ public class OrmEclipseLinkBasicMapping1_1Composite extends EclipseLinkBasicMapp
 	protected void initializeBasicSection(Composite container) {
 		new ColumnComposite(this, buildColumnHolder(), container);
 		new OrmMappingNameChooser(this, getSubjectHolder(), container);
+		new OrmAttributeTypeComposite(this, getSubjectHolder(), container);
 		new AccessTypeComposite(this, buildAccessHolderHolder(), container);
 		new FetchTypeComposite(this, container);
 		new OptionalComposite(this, addSubPane(container, 4));
 		new EclipseLinkMutableComposite(this, buildMutableHolder(), container);
 	}
-	
+
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
 		return new PropertyAspectAdapter<BasicMapping, AccessHolder>(getSubjectHolder()) {
 			@Override
@@ -64,5 +65,4 @@ public class OrmEclipseLinkBasicMapping1_1Composite extends EclipseLinkBasicMapp
 			}
 		};
 	}
-
 }

@@ -56,6 +56,7 @@ public class OrmEclipseLinkElementCollectionMapping2_1Composite
 	protected void initializeElementCollectionSection(Composite container) {
 		new TargetClassComposite(this, container);
 		new OrmMappingNameChooser(this, getSubjectHolder(), container);
+		new OrmAttributeTypeComposite(this, getSubjectHolder(), container);
 		new AccessTypeComposite(this, buildAccessHolderHolder(), container);
 		new FetchTypeComposite(this, container);
 		new EclipseLinkJoinFetchComposite(this, buildJoinFetchHolder(), container);

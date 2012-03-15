@@ -176,6 +176,8 @@ public class EclipseLinkUiDetailsMessages extends NLS {
 	public static String EclipseLinkMultitenancyComposite_includeCriteria;
 	public static String EclipseLinkMultitenancyComposite_includeCriteriaWithDefault;
 
+	public static String OrmAttributeTypeComposite_attributeType;
+
 	static {
 		NLS.initializeMessages("eclipselink_ui_details", EclipseLinkUiDetailsMessages.class);
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,8 +16,9 @@ import org.eclipse.jpt.jpa.core.context.AccessHolder;
 import org.eclipse.jpt.jpa.core.context.EmbeddedMapping;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEmbeddedMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.EmbeddedMappingOverridesComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.java.BaseJavaUiFactory;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmMappingNameChooser;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.EmbeddedMapping2_0OverridesComposite;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -32,11 +33,12 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see EmbeddedMapping
+ * @see BaseJavaUiFactory - The factory creating this pane
  *
  * @version 2.3
  * @since 2.2
  */
-public class OrmEclipseLinkEmbeddedMapping1_1Composite
+public class OrmEclipseLinkEmbeddedMapping2_0Composite
 	extends AbstractEmbeddedMappingComposite<EmbeddedMapping>
 {
 	/**
@@ -46,25 +48,25 @@ public class OrmEclipseLinkEmbeddedMapping1_1Composite
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public OrmEclipseLinkEmbeddedMapping1_1Composite(PropertyValueModel<? extends EmbeddedMapping> subjectHolder,
+	public OrmEclipseLinkEmbeddedMapping2_0Composite(PropertyValueModel<? extends EmbeddedMapping> subjectHolder,
 	                                Composite parent,
 	                                WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
-	
+
 	@Override
 	protected void initializeEmbeddedSection(Composite container) {
 		new OrmMappingNameChooser(this, getSubjectHolder(), container);
 		new OrmAttributeTypeComposite(this, getSubjectHolder(), container);
 		new AccessTypeComposite(this, buildAccessHolderHolder(), container);
 
-		new EmbeddedMappingOverridesComposite(
+		new EmbeddedMapping2_0OverridesComposite(
 			this,
 			container
 		);
-	}	
-	
+	}
+
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
 		return new PropertyAspectAdapter<EmbeddedMapping, AccessHolder>(getSubjectHolder()) {
 			@Override

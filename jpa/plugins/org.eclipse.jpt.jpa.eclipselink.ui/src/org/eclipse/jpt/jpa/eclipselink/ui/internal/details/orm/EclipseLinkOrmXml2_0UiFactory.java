@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,7 +24,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmEmbeddedMapping2_0Composite;
 import org.eclipse.jpt.jpa.ui.jpa2.details.orm.OrmXmlUiFactory2_0;
 import org.eclipse.swt.widgets.Composite;
 
@@ -63,7 +62,7 @@ public class EclipseLinkOrmXml2_0UiFactory
 			PropertyValueModel<OrmEmbeddedMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new OrmEmbeddedMapping2_0Composite(subjectHolder, parent, widgetFactory);
+		return new OrmEclipseLinkEmbeddedMapping2_0Composite(subjectHolder, parent, widgetFactory);
 	}
 	
 	@Override

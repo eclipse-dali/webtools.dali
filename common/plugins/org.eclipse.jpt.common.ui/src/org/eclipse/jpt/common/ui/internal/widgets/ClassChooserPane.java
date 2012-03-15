@@ -99,17 +99,36 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 		super(parentPane, subjectHolder, parent);
 	}
 
+	/**
+	 * Creates a new <code>ClassChooserPane</code>.
+	 *
+	 * @param parentPane The parent container of this one
+	 * @param subjectHolder The holder of this pane's subject
+	 * @param parent The parent container
+	 */
+	public ClassChooserPane(Pane<?> parentPane,
+	                        PropertyValueModel<? extends T> subjectHolder,
+	                        Composite parent,
+	                        PropertyValueModel<Boolean> enabledModel) {
+
+		super(parentPane, subjectHolder, parent, enabledModel);
+	}
+
 	@Override
 	protected void initialize() {
 		super.initialize();
 
 		// TODO bug 156185 - when this is fixed there should be api for this
-		this.javaTypeCompletionProcessor = new JavaTypeCompletionProcessor(false, false);
+		this.javaTypeCompletionProcessor = buildJavaTypeCompletionProcessor();
 
 		this.subjectChangeListener = this.buildSubjectChangeListener();
 		this.getSubjectHolder().addPropertyChangeListener(PropertyValueModel.VALUE, this.subjectChangeListener);
 
 		this.classChooserSubjectChanged(getSubject());
+	}
+
+	protected JavaTypeCompletionProcessor buildJavaTypeCompletionProcessor() {
+		return new JavaTypeCompletionProcessor(false, false);
 	}
 
 	private PropertyChangeListener buildSubjectChangeListener() {
