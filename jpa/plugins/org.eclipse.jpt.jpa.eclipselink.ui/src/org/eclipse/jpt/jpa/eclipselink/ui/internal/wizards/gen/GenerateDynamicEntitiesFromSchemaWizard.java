@@ -10,17 +10,37 @@
 
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards.gen;
 
+import java.lang.reflect.InvocationTargetException;
+
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResourceRuleFactory;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.WorkspaceJob;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
+import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.Schema;
+import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.gen.GenerateEntitiesFromSchemaWizard;
 import org.eclipse.jpt.jpa.ui.internal.wizards.gen.TableAssociationsWizardPage;
 import org.eclipse.jpt.jpa.ui.internal.wizards.gen.TablesSelectorWizardPage;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.IDE;
 
 public class GenerateDynamicEntitiesFromSchemaWizard extends GenerateEntitiesFromSchemaWizard 
 	implements INewWizard  {	
@@ -73,10 +93,20 @@ public class GenerateDynamicEntitiesFromSchemaWizard extends GenerateEntitiesFro
 		WorkspaceJob genEntitiesJob = new GenerateEntitiesJob(this.jpaProject, getCustomizer(), overwriteConfirmer, true);
 		genEntitiesJob.schedule();
 		
-		//TODO need to open file after generation
-//		JpaXmlResource jpaXmlResource = this.jpaProject.getMappingFileXmlResource(new Path(getCustomizer().getXmlMappingFile()));
-//		OpenXmlMappingFileJob openXmlMappingFileJob = new OpenXmlMappingFileJob(this.jpaProject, jpaXmlResource, getShell());
-//		openXmlMappingFileJob.schedule();
+		//open file after generation
+		String xmlMappingFileLocation = getCustomizer().getXmlMappingFile();
+		JpaXmlResource jpaXmlResource = this.jpaProject.getMappingFileXmlResource(new Path(xmlMappingFileLocation));
+		IFile mappingFile;
+		if(jpaXmlResource!=null){
+			mappingFile = jpaXmlResource.getFile();
+		}
+		else{
+			IProject project = jpaProject.getProject();
+			IContainer container = ((ProjectResourceLocator) project.getAdapter(ProjectResourceLocator.class)).getDefaultResourceLocation();
+			mappingFile = container.getFile(new Path(xmlMappingFileLocation.substring(xmlMappingFileLocation.lastIndexOf("/")))); //$NON-NLS-1$
+		}
+		OpenXmlMappingFileJob openXmlMappingFileJob = new OpenXmlMappingFileJob(this.jpaProject, mappingFile);
+		openXmlMappingFileJob.schedule();
 	}
 
 	@Override
@@ -86,55 +116,52 @@ public class GenerateDynamicEntitiesFromSchemaWizard extends GenerateEntitiesFro
 		this.setWindowTitle(JptJpaEclipseLinkUiEntityGenMessages.GenerateDynamicEntitiesWizard_generateEntities);
 	}
 	
-//	public static class OpenXmlMappingFileJob extends WorkspaceJob {
-//		final JpaProject jpaProject;
-//		final JpaXmlResource jpaXmlResource;
-//		final Shell shell;
-//
-//		public OpenXmlMappingFileJob(JpaProject jpaProject, JpaXmlResource jpaXmlResource, Shell shell) {
-//			super("Open XML File");
-//			this.jpaProject = jpaProject;
-//			this.jpaXmlResource = jpaXmlResource;
-//			this.shell = shell;
-//			IResourceRuleFactory ruleFactory = ResourcesPlugin.getWorkspace().getRuleFactory();
-//			this.setRule(ruleFactory.modifyRule(jpaProject.getProject()));
-//		}
-//
-//		@Override
-//		public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-//			try {
-//				postPerformFinish(this.jpaProject,this.jpaXmlResource, this.shell);
-//			} catch (InvocationTargetException e) {
-//				throw new CoreException(new Status(IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, "error", e));
-//			}
-//			return Status.OK_STATUS;
-//		}
-//		
-//		private void postPerformFinish(JpaProject jpaProject, JpaXmlResource jpaXmlResource, Shell shell) throws InvocationTargetException {
-//			try {
-//				IFile file = jpaXmlResource.getFile();
-//				openEditor(file, shell);
-//			}
-//			catch (Exception cantOpen) {
-//				throw new InvocationTargetException(cantOpen);
-//			} 
-//		}
-//		
-//		private void openEditor(final IFile file, Shell shell) {
-//			if (file != null) {
-//				shell.getDisplay().asyncExec(new Runnable() {
-//					public void run() {
-//						try {
-//							IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-//							IDE.openEditor(page, file, true);
-//						}
-//						catch (PartInitException e) {
-//							JptJpaUiPlugin.log(e);
-//						}
-//					}
-//				});
-//			}
-//		}
-//	}
+	public static class OpenXmlMappingFileJob extends WorkspaceJob {
+		final JpaProject jpaProject;
+		final IFile mappingFile;
+
+		public OpenXmlMappingFileJob(JpaProject jpaProject, IFile mappingFile) {
+			super("Open XML File");
+			this.jpaProject = jpaProject;
+			this.mappingFile = mappingFile;
+			IResourceRuleFactory ruleFactory = ResourcesPlugin.getWorkspace().getRuleFactory();
+			this.setRule(ruleFactory.modifyRule(jpaProject.getProject()));
+		}
+
+		@Override
+		public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+			try {
+				postGeneration(this.jpaProject,this.mappingFile);
+			} catch (InvocationTargetException e) {
+				throw new CoreException(new Status(IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, "error", e));
+			}
+			return Status.OK_STATUS;
+		}
+		
+		private void postGeneration(JpaProject jpaProject, IFile mappingFile) throws InvocationTargetException {
+			try {
+				openEditor(mappingFile);
+			}
+			catch (Exception cantOpen) {
+				throw new InvocationTargetException(cantOpen);
+			} 
+		}
+		
+		private void openEditor(final IFile file) {
+			if (file != null) {
+				SWTUtil.getStandardDisplay().asyncExec(new Runnable() {
+					public void run() {
+						try {
+							IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+							IDE.openEditor(page, file, true);
+						}
+						catch (PartInitException e) {
+							JptJpaUiPlugin.log(e);
+						}
+					}
+				});
+			}
+		}
+	}
 	
 }

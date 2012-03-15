@@ -44,6 +44,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
@@ -174,7 +175,6 @@ public class PackageGenerator {
 		resource.save();
 	}
 
-	//TODO can probably axe this method
 	protected void generateXmlInternal(IProgressMonitor monitor) throws Exception {
 		File templDir = prepareTemplatesFolder("templates/xml_entities/"); //$NON-NLS-1$
 
@@ -188,6 +188,8 @@ public class PackageGenerator {
 		if (sm.isCanceled()) {
 			return;
 		}
+		
+		updatePersistenceXmlForMappingFile(this.customizer.getXmlMappingFile());
 		
 		sm.worked(2);
 	}
@@ -219,6 +221,41 @@ public class PackageGenerator {
 			throw new CoreException(new Status(IStatus.ERROR, JptJpaGenPlugin.PLUGIN_ID,  JptGenMessages.Templates_notFound + " "+  JptJpaGenPlugin.PLUGIN_ID ) );//$NON-NLS-1$
 		}
 		return templDir;
+	}
+	
+	private void updatePersistenceXmlForMappingFile(final String mappingFile) {
+		JpaXmlResource resource = this.jpaProject.getPersistenceXmlResource();
+		if (resource == null) {
+			//the resource would only be null if the persistence.xml file had an invalid content type,
+			//do not attempt to update
+			return;
+		}
+
+		Persistence persistence = this.jpaProject.getRootContextNode().getPersistenceXml().getPersistence();
+		if (persistence == null) {
+			// invalid content, do not attempt to update
+			return;
+		}
+		
+		PersistenceUnit persistenceUnit;
+		// create a persistence unit if one doesn't already exist
+		if (persistence.getPersistenceUnitsSize() == 0) {
+			persistenceUnit = persistence.addPersistenceUnit();
+			persistenceUnit.setName(PackageGenerator.this.jpaProject.getName());
+		} else {
+			// we only support one persistence unit - take the first one
+			persistenceUnit = persistence.getPersistenceUnit(0);
+		}
+		boolean addSpecifiedMappingFile = true;
+		for (MappingFileRef mappingFileRef : persistenceUnit.getMappingFileRefs()) {
+			if (mappingFileRef.getFileName().equals(mappingFile)){
+				addSpecifiedMappingFile = false;
+			}
+		}
+		if (addSpecifiedMappingFile){
+			persistenceUnit.addSpecifiedMappingFileRef(mappingFile);
+			resource.save();
+		}
 	}
 	
 	/**
