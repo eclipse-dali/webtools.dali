@@ -59,7 +59,7 @@ public class GenerateDynamicEntitiesFromSchemaWizard extends GenerateEntitiesFro
 	protected String getCustomizationFileName() {
 		ConnectionProfile profile = getProjectConnectionProfile();
 		String connection = profile == null ? "" : profile.getName();
-		String name = "org.eclipse.jpt.entitygen.dynamic" + (connection == null ? "" :connection.replace(' ', '-'));  //$NON-NLS-1$
+		String name = "org.eclipse.jpt.jpa.gen.dynamic." + (connection == null ? "" :connection.replace(' ', '-'));  //$NON-NLS-1$
 		Schema schema = getDefaultSchema();
 		if ( schema!= null  ) {
 			name += "." + schema.getName();//$NON-NLS-1$
@@ -72,6 +72,11 @@ public class GenerateDynamicEntitiesFromSchemaWizard extends GenerateEntitiesFro
 			OverwriteConfirmer overwriteConfirmer) {
 		WorkspaceJob genEntitiesJob = new GenerateEntitiesJob(this.jpaProject, getCustomizer(), overwriteConfirmer, true);
 		genEntitiesJob.schedule();
+		
+		//TODO need to open file after generation
+//		JpaXmlResource jpaXmlResource = this.jpaProject.getMappingFileXmlResource(new Path(getCustomizer().getXmlMappingFile()));
+//		OpenXmlMappingFileJob openXmlMappingFileJob = new OpenXmlMappingFileJob(this.jpaProject, jpaXmlResource, getShell());
+//		openXmlMappingFileJob.schedule();
 	}
 
 	@Override
@@ -80,5 +85,56 @@ public class GenerateDynamicEntitiesFromSchemaWizard extends GenerateEntitiesFro
 		
 		this.setWindowTitle(JptJpaEclipseLinkUiEntityGenMessages.GenerateDynamicEntitiesWizard_generateEntities);
 	}
+	
+//	public static class OpenXmlMappingFileJob extends WorkspaceJob {
+//		final JpaProject jpaProject;
+//		final JpaXmlResource jpaXmlResource;
+//		final Shell shell;
+//
+//		public OpenXmlMappingFileJob(JpaProject jpaProject, JpaXmlResource jpaXmlResource, Shell shell) {
+//			super("Open XML File");
+//			this.jpaProject = jpaProject;
+//			this.jpaXmlResource = jpaXmlResource;
+//			this.shell = shell;
+//			IResourceRuleFactory ruleFactory = ResourcesPlugin.getWorkspace().getRuleFactory();
+//			this.setRule(ruleFactory.modifyRule(jpaProject.getProject()));
+//		}
+//
+//		@Override
+//		public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+//			try {
+//				postPerformFinish(this.jpaProject,this.jpaXmlResource, this.shell);
+//			} catch (InvocationTargetException e) {
+//				throw new CoreException(new Status(IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, "error", e));
+//			}
+//			return Status.OK_STATUS;
+//		}
+//		
+//		private void postPerformFinish(JpaProject jpaProject, JpaXmlResource jpaXmlResource, Shell shell) throws InvocationTargetException {
+//			try {
+//				IFile file = jpaXmlResource.getFile();
+//				openEditor(file, shell);
+//			}
+//			catch (Exception cantOpen) {
+//				throw new InvocationTargetException(cantOpen);
+//			} 
+//		}
+//		
+//		private void openEditor(final IFile file, Shell shell) {
+//			if (file != null) {
+//				shell.getDisplay().asyncExec(new Runnable() {
+//					public void run() {
+//						try {
+//							IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+//							IDE.openEditor(page, file, true);
+//						}
+//						catch (PartInitException e) {
+//							JptJpaUiPlugin.log(e);
+//						}
+//					}
+//				});
+//			}
+//		}
+//	}
 	
 }

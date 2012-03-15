@@ -19,6 +19,7 @@ public class JptJpaEclipseLinkUiEntityGenMessages {
 	
 	//Default table gen properties
 	public static String GenerateDynamicEntitiesWizard_defaultTablePage_domainJavaClass;
+	public static String GenerateDynamicEntitiesWizard_defaultTablePage_xmlMappingFile;
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, BUNDLE_CLASS);

@@ -59,12 +59,12 @@ import org.eclipse.ui.help.IWorkbenchHelpSystem;
 @SuppressWarnings("restriction")
 public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 
-	private JpaProject jpaProject;
+	protected JpaProject jpaProject;
 
 	/*the instance used to get/set the default properties.*/
-	private ORMGenTable defaultsTable;
+	protected ORMGenTable defaultsTable;
 
-	private ORMGenCustomizer customizer;
+	protected ORMGenCustomizer customizer;
 	
 	protected TableGenPanel defaultTableGenPanel ;
 
@@ -319,7 +319,7 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 		return ret;
 	}	
 
-	private ORMGenCustomizer getCustomizer() {
+	protected ORMGenCustomizer getCustomizer() {
 		GenerateEntitiesFromSchemaWizard wizard = (GenerateEntitiesFromSchemaWizard) this.getWizard();
 		return wizard.getCustomizer();
 	}	

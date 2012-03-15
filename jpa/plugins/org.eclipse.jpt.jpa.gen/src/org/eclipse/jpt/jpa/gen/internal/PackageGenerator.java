@@ -355,11 +355,20 @@ public class PackageGenerator {
 	
 	protected void generateXmlMappingFile(List<String> tableNames, String templateDirPath, IProgressMonitor monitor) throws Exception {
 
-		try {
-			IProject project = jpaProject.getProject();
-			IContainer container = ((ProjectResourceLocator) project.getAdapter(ProjectResourceLocator.class)).getDefaultResourceLocation();
-			IFile xmlFile = container.getFile(new Path("/eclipselink-orm.xml")); //$NON-NLS-1$
-	
+		try {		
+			String xmlMappingFileLocation = this.customizer.getXmlMappingFile();
+			JpaXmlResource xmlResource = this.jpaProject.getMappingFileXmlResource(new Path(xmlMappingFileLocation));
+			IFile xmlFile;
+			if (xmlResource != null) {
+				xmlFile = xmlResource.getFile();
+			}
+			else{
+				//TODO This is a temp hack for M6 use default location if writing to a new mapping file
+				IProject project = jpaProject.getProject();
+				IContainer container = ((ProjectResourceLocator) project.getAdapter(ProjectResourceLocator.class)).getDefaultResourceLocation();
+				xmlFile = container.getFile(new Path(xmlMappingFileLocation.substring(xmlMappingFileLocation.lastIndexOf("/")))); //$NON-NLS-1$
+			}
+			
 			if (xmlFile.exists()) {
 				if (this.overwriteConfirmer != null && !this.overwriteConfirmer.overwrite(xmlFile.getName())) {
 					return;

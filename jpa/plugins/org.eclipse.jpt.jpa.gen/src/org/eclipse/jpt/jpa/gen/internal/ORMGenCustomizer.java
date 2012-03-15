@@ -98,6 +98,11 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 
 	private boolean mUpdatePersistenceXml = true;
 	
+	//EclipseLink mapping file default name
+	private static final String DEFAULT_XML_MAPPING_FILE = "META-INF/eclipselink-orm.xml";
+	private static final String XML_MAPPING_FILE = "xmlMappingFileName";
+	
+	
 	//-----------------------------------------
 	//---- abstract methods
 	//-----------------------------------------
@@ -354,6 +359,23 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 	public String genFetchXml(ORMGenTable table) {
 		return "";
 	}	
+	
+	/**
+	 * XML Mapping File Path
+	 */
+	public void setXmlMappingFile(String xmlMappingFile) {
+		setProperty(XML_MAPPING_FILE, xmlMappingFile, null, null); 
+	}
+
+	/**
+	 * XML Mapping File Path
+	 */
+	public String getXmlMappingFile() {
+		String xmlMappingFile = getProperty(XML_MAPPING_FILE, null, null);
+		return xmlMappingFile == null ? DEFAULT_XML_MAPPING_FILE : xmlMappingFile; //$NON-NLS-1$
+	}
+	
+	
 	/**
 	 * Called when the table user selection is changed in the 
 	 * generation wizard.
