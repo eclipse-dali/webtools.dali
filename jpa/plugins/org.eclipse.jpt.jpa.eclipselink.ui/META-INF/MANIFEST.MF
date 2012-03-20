@@ -37,6 +37,8 @@ Export-Package: org.eclipse.jpt.jpa.eclipselink.ui,
  org.eclipse.jpt.jpa.eclipselink.ui.internal.details;x-internal:=true,
  org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;x-internal:=true,
  org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;x-internal:=true,
+ org.eclipse.jpt.jpa.eclipselink.ui.internal.dialogs;x-internal:=true,
+ org.eclipse.jpt.jpa.eclipselink.ui.internal.handlers;x-internal:=true,
  org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence;x-internal:=true,
  org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.caching;x-internal:=true,
  org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.connection;x-internal:=true,
@@ -55,5 +57,6 @@ Export-Package: org.eclipse.jpt.jpa.eclipselink.ui,
  org.eclipse.jpt.jpa.eclipselink.ui.internal.v2_0.persistence.options;x-internal:=true,
  org.eclipse.jpt.jpa.eclipselink.ui.internal.weave;x-internal:=true,
  org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards;x-internal:=true,
- org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards.conversion.java;x-internal:=true
+ org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards.conversion.java;x-internal:=true,
+ org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards.gen;x-internal:=true
 Import-Package: com.ibm.icu.text;version="4.0.1"
