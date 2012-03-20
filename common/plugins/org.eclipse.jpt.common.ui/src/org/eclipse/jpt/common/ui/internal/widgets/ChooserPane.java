@@ -165,18 +165,4 @@ public abstract class ChooserPane<T extends Model> extends Pane<T>
 	protected String getHelpId() {
 		return null;
 	}
-
-	@Override
-	public void enableWidgets(boolean enabled) {
-
-		super.enableWidgets(enabled);
-
-		if (!this.mainControl.isDisposed()) {
-			this.mainControl.setEnabled(getCombinedEnablement());
-		}
-
-		if (!this.rightControl.isDisposed()) {
-			this.rightControl.setEnabled(getCombinedEnablement());
-		}
-	}
 }

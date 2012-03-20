@@ -51,16 +51,6 @@ public abstract class EnumDialogComboViewer<T extends Model, V>
 		super(parentPane, subjectHolder, parent);
 	}
 
-	@Override
-	public void enableWidgets(boolean enabled) {
-		super.enableWidgets(enabled);
-
-		Combo combo = getCombo();
-		if ( ! combo.isDisposed()) {
-			combo.setEnabled(enabled);
-		}
-	}
-
 	protected final Combo getCombo() {
 		return getComboViewer().getCombo();
 	}

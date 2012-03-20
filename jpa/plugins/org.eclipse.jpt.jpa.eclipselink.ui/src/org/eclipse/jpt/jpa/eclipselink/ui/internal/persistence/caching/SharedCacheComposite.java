@@ -145,12 +145,6 @@ public class SharedCacheComposite extends Pane<CachingEntity>
 	}
 
 	@Override
-	public void enableWidgets(boolean enabled) {
-		super.enableWidgets(enabled);
-		this.sharedCacheCheckBox.setEnabled(enabled);
-	}
-
-	@Override
 	protected void initializeLayout(Composite container) {
 
 		this.sharedCacheCheckBox = this.addTriStateCheckBoxWithDefault(

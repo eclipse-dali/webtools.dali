@@ -42,11 +42,6 @@ public class OrmAttributeTypeComposite
 	}
 
 	@Override
-	public void enableWidgets(boolean enabled) {
-		// TODO Auto-generated method stub
-		super.enableWidgets(enabled);
-	}
-	@Override
 	protected JavaTypeCompletionProcessor buildJavaTypeCompletionProcessor() {
 		return new JavaTypeCompletionProcessor(true, true);
 	}

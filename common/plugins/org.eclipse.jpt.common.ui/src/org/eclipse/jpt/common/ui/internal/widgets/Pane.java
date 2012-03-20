@@ -3299,7 +3299,7 @@ public abstract class Pane<T extends Model>
 		return (this.combinedEnabledModel != null) ? this.combinedEnabledModel : this.baseEnabledModel;
 	}
 
-	protected boolean getCombinedEnablement() {
+	private boolean getCombinedEnablement() {
 		Boolean enabled = getCombinedEnabledModel().getValue();
 		return (enabled == null) ? true : enabled.booleanValue();
 	}
