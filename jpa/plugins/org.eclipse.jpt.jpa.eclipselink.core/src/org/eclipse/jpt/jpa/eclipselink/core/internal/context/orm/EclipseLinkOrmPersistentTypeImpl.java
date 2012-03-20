@@ -19,6 +19,7 @@ import org.eclipse.jpt.jpa.core.internal.context.orm.SpecifiedOrmPersistentType;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.orm.Attributes;
+import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmTypeMapping;
@@ -106,11 +107,12 @@ public class EclipseLinkOrmPersistentTypeImpl
 	}
 
 	//Base the dynamic state only on the JavaResourceType being null.
-	//Otherwise, the accces type affects the hierarchy
+	//Otherwise, the access type affects the hierarchy
 	//and then the hierarchy affects the access type and we get stuck in an update.
 	//Validation will check that virtual access is set if it is dynamic.
 	protected boolean buildDynamic() {
-		return this.resolveJavaResourceType() == null;
+		return JptJpaEclipseLinkCorePlugin.nodeIsEclipseLinkVersionCompatible(this, JptJpaEclipseLinkCorePlugin.ECLIPSELINK_PLATFORM_VERSION_2_1)
+			&& this.resolveJavaResourceType() == null;
 	}
 
 	protected boolean isVirtualAccess() {
