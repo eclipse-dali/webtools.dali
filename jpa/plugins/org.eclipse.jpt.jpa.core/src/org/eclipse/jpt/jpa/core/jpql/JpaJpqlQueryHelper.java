@@ -17,6 +17,7 @@ import java.util.List;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.common.core.internal.utility.SimpleTextRange;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
@@ -199,11 +200,10 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 		);
 	}
 
-	protected int getValidationPreference(NamedQuery namedQuery) {
-		return JpaValidationPreferencesManager.getProblemSeverityPreference(
-			namedQuery.getResource(),
-			JpaValidationMessages.JPQL_QUERY_VALIDATION
-		);
+	protected String getValidationPreference(NamedQuery namedQuery) {
+		return JpaValidationPreferencesManager.getProblemPreference(
+				namedQuery.getResource(),
+				JpaValidationMessages.JPQL_QUERY_VALIDATION);
 	}
 
 	/**
@@ -229,17 +229,21 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 
 	 * @param targetObject The object for which a new {@link IMessage} is creating describing the
 	 * problem
-	 * @return The global severity for validating JPQL queries
+	 * @return The global severity for validating JPQL queries.  The default is {@link IMessage#HIGH_SEVERITY}.
 	 */
 	protected int severity(IResource targetObject) {
-		return JpaValidationPreferencesManager.getProblemSeverityPreference(
-			targetObject,
-			JpaValidationMessages.JPQL_QUERY_VALIDATION
-		);
+		int severity = JpaValidationPreferencesManager.getProblemSeverityPreference(
+				targetObject, JpaValidationMessages.JPQL_QUERY_VALIDATION);
+		if (severity == JpaValidationPreferencesManager.NO_SEVERITY_PREFERENCE) {
+			return IMessage.HIGH_SEVERITY;
+		}
+		return severity;
 	}
-
+	
 	protected boolean shouldValidate(NamedQuery namedQuery) {
-		return getValidationPreference(namedQuery) == -1;
+		return ! StringTools.stringsAreEqual(
+				getValidationPreference(namedQuery), 
+				JpaValidationPreferencesManager.IGNORE);
 	}
 
 	/**

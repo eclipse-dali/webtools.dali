@@ -37,16 +37,21 @@ public class JpaValidationPreferencesManager extends JpaPreferencesManager
 	public static final String WORKSPACE_PREFERENCES_OVERRIDEN = "workspace_preferences_overriden"; //$NON-NLS-1$
 
 	// ********** public static methods **********
+	
+	public static String getProblemPreference(IResource targetObject, String messageId) {
+		return new JpaValidationPreferencesManager(targetObject.getProject()).
+				getLegacyPreference(appendProblemPrefix(messageId));
 
+	}
+	
 	/**
 	 * Returns only the severity level of a given problem preference.  This does not
 	 * include information on whether the problem is ignored.  See isProblemIgnored.
 	 * @return an IMessage severity level
 	 */
 	public static int getProblemSeverityPreference(IResource targetObject, String messageId) {
-		String problemPreference = (new JpaValidationPreferencesManager(targetObject.getProject())).
-															getLegacyPreference(appendProblemPrefix(messageId));
-
+		String problemPreference = getProblemPreference(targetObject, messageId);
+		
 		if(problemPreference == null) {
 			return NO_SEVERITY_PREFERENCE;
 		} 
@@ -61,7 +66,8 @@ public class JpaValidationPreferencesManager extends JpaPreferencesManager
 		}
 		return NO_SEVERITY_PREFERENCE;
 	}
-
+	
+	
 	// ********** workspace preference **********
 
 	/**

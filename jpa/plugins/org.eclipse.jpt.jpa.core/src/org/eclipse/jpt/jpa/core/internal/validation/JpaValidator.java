@@ -31,9 +31,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IValidator;
  * WTP validator extension point.
  */
 public class JpaValidator
-	extends AbstractValidator
-	implements IValidator
-{
+		extends AbstractValidator
+		implements IValidator {
+	
 	public JpaValidator() {
 		super();
 	}
@@ -85,13 +85,16 @@ public class JpaValidator
 
 	private void validate(IReporter reporter, IProject project) {
 		Iterable<IMessage> messages = this.buildValidationMessages(reporter, project);
+		
 		// since the validation messages are usually built asynchronously
 		// and a workspace shutdown could occur in the meantime,
 		// wait until we actually get the new messages before we clear out the old messages
 		this.clearMarkers(project);
+		
+		JpaValidationPreferencesManager prefsManager = new JpaValidationPreferencesManager(project);
 		for (IMessage message : messages) {
 			// check preferences for IGNORE
-			if ((new JpaValidationPreferencesManager(project)).problemIsNotIgnored(message.getId())) {
+			if (prefsManager.problemIsNotIgnored(message.getId())) {
 				reporter.addMessage(this, message);
 			}
 		}
