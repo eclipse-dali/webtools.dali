@@ -166,6 +166,16 @@ public class GenericJavaXmlRegistry
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		
+		Iterable<XmlRegistry> registries = getContextRoot().getXmlRegistries(getJaxbPackage());
+		if (CollectionTools.size(registries) > 1) {
+			messages.add(
+					DefaultValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JaxbValidationMessages.XML_REGISTRY__MULTIPLE_XML_REGISTRIES_FOR_PACKAGE,
+						this,
+						getValidationTextRange(astRoot)));
+		}
+		
 		validateDuplicateQNames(messages, reporter, astRoot);
 		
 		for (JaxbElementFactoryMethod efm : getElementFactoryMethods()) {
