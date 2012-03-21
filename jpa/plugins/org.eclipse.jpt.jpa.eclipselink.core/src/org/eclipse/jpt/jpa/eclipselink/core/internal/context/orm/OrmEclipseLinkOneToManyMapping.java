@@ -15,6 +15,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmOneToManyMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOneToManyRelationship2_0;
@@ -131,18 +132,30 @@ public class OrmEclipseLinkOneToManyMapping
 	//************ refactoring ************
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		return this.converterContainer.createMoveTypeEdits(originalType, newPackage);
+		return new CompositeIterable<ReplaceEdit>(
+			super.createMoveTypeEdits(originalType, newPackage),
+			this.converterContainer.createMoveTypeEdits(originalType, newPackage)
+		);
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return this.converterContainer.createRenamePackageEdits(originalPackage, newName);
+		return new CompositeIterable<ReplaceEdit>(
+			super.createRenamePackageEdits(originalPackage, newName),
+			this.converterContainer.createRenamePackageEdits(originalPackage, newName)
+		);
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
-		return this.converterContainer.createRenameTypeEdits(originalType, newName);
+		return new CompositeIterable<ReplaceEdit>(
+			super.createRenameTypeEdits(originalType, newName),
+			this.converterContainer.createRenameTypeEdits(originalType, newName)
+		);
 	}
 
 
