@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
+import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaMappedSuperclass;
@@ -46,7 +47,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class JavaEclipseLinkMappedSuperclassImpl
 	extends AbstractJavaMappedSuperclass
-	implements JavaEclipseLinkMappedSuperclass, JavaCacheableHolder2_0, JavaEclipseLinkConverterContainer.Owner
+	implements JavaEclipseLinkMappedSuperclass, JavaCacheableHolder2_0, JavaEclipseLinkConverterContainer.ParentAdapter
 {
 	protected final JavaEclipseLinkCaching caching;
 
@@ -125,7 +126,7 @@ public class JavaEclipseLinkMappedSuperclassImpl
 	}
 
 	protected JavaEclipseLinkConverterContainer buildConverterContainer() {
-		return new JavaEclipseLinkConverterContainerImpl(this, this);
+		return new JavaEclipseLinkConverterContainerImpl(this);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -213,10 +214,19 @@ public class JavaEclipseLinkMappedSuperclassImpl
 		return ((CacheableHolder2_0) this.getCaching()).calculateDefaultCacheable();
 	}
 
+	// ********** converter container parent adapter **********
+
+	public JavaJpaContextNode getConverterContainerParent() {
+		return this;  // no adapter
+	}
+
 	public JavaResourceAnnotatedElement getJavaResourceAnnotatedElement() {
 		return this.getJavaResourceType();
 	}
 
+	public boolean parentSupportsConverters() {
+		return true;
+	}
 
 	// ********** Java completion proposals **********
 

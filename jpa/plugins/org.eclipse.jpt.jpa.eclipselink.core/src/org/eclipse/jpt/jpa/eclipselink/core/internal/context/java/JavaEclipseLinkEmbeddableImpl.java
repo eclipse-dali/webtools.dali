@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
+import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaEmbeddable;
@@ -36,7 +37,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class JavaEclipseLinkEmbeddableImpl
 	extends AbstractJavaEmbeddable
-	implements JavaEclipseLinkEmbeddable, JavaEclipseLinkConverterContainer.Owner
+	implements JavaEclipseLinkEmbeddable, JavaEclipseLinkConverterContainer.ParentAdapter
 {
 	protected final JavaEclipseLinkConverterContainer converterContainer;
 
@@ -79,7 +80,7 @@ public class JavaEclipseLinkEmbeddableImpl
 	}
 
 	protected JavaEclipseLinkConverterContainer buildConverterContainer() {
-		return new JavaEclipseLinkConverterContainerImpl(this, this);
+		return new JavaEclipseLinkConverterContainerImpl(this);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -138,10 +139,19 @@ public class JavaEclipseLinkEmbeddableImpl
 		return false;
 	}
 
+	// ********** converter container parent adapter **********
+
+	public JavaJpaContextNode getConverterContainerParent() {
+		return this;  // no adapter
+	}
+
 	public JavaResourceAnnotatedElement getJavaResourceAnnotatedElement() {
 		return this.getJavaResourceType();
 	}
 
+	public boolean parentSupportsConverters() {
+		return true;
+	}
 
 	// ********** validation **********
 

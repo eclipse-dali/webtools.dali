@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SubListIterableWrapper;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
@@ -36,7 +37,7 @@ public class JavaEclipseLinkConverterContainerImpl
 	extends AbstractJavaJpaContextNode
 	implements JavaEclipseLinkConverterContainer
 {
-	protected final Owner owner;
+	protected final ParentAdapter parentAdapter;
 
 	protected final ContextListContainer<JavaEclipseLinkCustomConverter, EclipseLinkConverterAnnotation> customConverterContainer;
 	protected final ContextListContainer<JavaEclipseLinkObjectTypeConverter, EclipseLinkObjectTypeConverterAnnotation> objectTypeConverterContainer;
@@ -44,9 +45,9 @@ public class JavaEclipseLinkConverterContainerImpl
 	protected final ContextListContainer<JavaEclipseLinkTypeConverter, EclipseLinkTypeConverterAnnotation> typeConverterContainer;
 
 
-	public JavaEclipseLinkConverterContainerImpl(JavaJpaContextNode parent, Owner owner) {
-		super(parent);
-		this.owner = owner;
+	public JavaEclipseLinkConverterContainerImpl(ParentAdapter parentAdapter) {
+		super(parentAdapter.getConverterContainerParent());
+		this.parentAdapter = parentAdapter;
 		this.customConverterContainer = this.buildCustomConverterContainer();
 		this.objectTypeConverterContainer = this.buildObjectTypeConverterContainer();
 		this.structConverterContainer = this.buildStructConverterContainer();
@@ -121,7 +122,9 @@ public class JavaEclipseLinkConverterContainerImpl
 	}
 
 	protected ListIterable<EclipseLinkConverterAnnotation> getCustomConverterAnnotations() {
-		return new SubListIterableWrapper<NestableAnnotation, EclipseLinkConverterAnnotation>(this.getNestableCustomConverterAnnotations_());
+		return this.parentAdapter.parentSupportsConverters() ?
+				new SubListIterableWrapper<NestableAnnotation, EclipseLinkConverterAnnotation>(this.getNestableCustomConverterAnnotations_()) :
+				EmptyListIterable.<EclipseLinkConverterAnnotation>instance();
 	}
 
 	protected ListIterable<NestableAnnotation> getNestableCustomConverterAnnotations_() {
@@ -204,7 +207,9 @@ public class JavaEclipseLinkConverterContainerImpl
 	}
 
 	protected ListIterable<EclipseLinkObjectTypeConverterAnnotation> getObjectTypeConverterAnnotations() {
-		return new SubListIterableWrapper<NestableAnnotation, EclipseLinkObjectTypeConverterAnnotation>(this.getNestableObjectTypeConverterAnnotations_());
+		return this.parentAdapter.parentSupportsConverters() ? 
+				new SubListIterableWrapper<NestableAnnotation, EclipseLinkObjectTypeConverterAnnotation>(this.getNestableObjectTypeConverterAnnotations_()) :
+				EmptyListIterable.<EclipseLinkObjectTypeConverterAnnotation>instance();
 	}
 
 	protected ListIterable<NestableAnnotation> getNestableObjectTypeConverterAnnotations_() {
@@ -287,7 +292,9 @@ public class JavaEclipseLinkConverterContainerImpl
 	}
 
 	protected ListIterable<EclipseLinkStructConverterAnnotation> getStructConverterAnnotations() {
-		return new SubListIterableWrapper<NestableAnnotation, EclipseLinkStructConverterAnnotation>(this.getNestableStructConverterAnnotations_());
+		return this.parentAdapter.parentSupportsConverters() ?
+				new SubListIterableWrapper<NestableAnnotation, EclipseLinkStructConverterAnnotation>(this.getNestableStructConverterAnnotations_()) :
+				EmptyListIterable.<EclipseLinkStructConverterAnnotation>instance();
 	}
 
 	protected ListIterable<NestableAnnotation> getNestableStructConverterAnnotations_() {
@@ -371,7 +378,9 @@ public class JavaEclipseLinkConverterContainerImpl
 	}
 
 	protected ListIterable<EclipseLinkTypeConverterAnnotation> getTypeConverterAnnotations() {
-		return new SubListIterableWrapper<NestableAnnotation, EclipseLinkTypeConverterAnnotation>(this.getNestableTypeConverterAnnotations_());
+		return this.parentAdapter.parentSupportsConverters() ? 
+				new SubListIterableWrapper<NestableAnnotation, EclipseLinkTypeConverterAnnotation>(this.getNestableTypeConverterAnnotations_()) :
+				EmptyListIterable.<EclipseLinkTypeConverterAnnotation>instance();
 	}
 
 	protected ListIterable<NestableAnnotation> getNestableTypeConverterAnnotations_() {
@@ -416,12 +425,12 @@ public class JavaEclipseLinkConverterContainerImpl
 		return (JavaJpaContextNode) super.getParent();
 	}
 
-	protected Owner getOwner() {
-		return this.owner;
+	protected ParentAdapter getParentAdapter() {
+		return this.parentAdapter;
 	}
 
 	protected JavaResourceAnnotatedElement getJavaResourceAnnotatedElement() {
-		return this.getOwner().getJavaResourceAnnotatedElement();
+		return this.getParentAdapter().getJavaResourceAnnotatedElement();
 	}
 
 	@SuppressWarnings("unchecked")

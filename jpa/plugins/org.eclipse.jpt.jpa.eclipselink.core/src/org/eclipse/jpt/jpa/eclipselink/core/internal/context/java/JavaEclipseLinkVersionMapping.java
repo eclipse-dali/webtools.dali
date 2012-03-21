@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
+import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaVersionMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
@@ -73,13 +74,22 @@ public class JavaEclipseLinkVersionMapping
 	}
 
 	protected JavaEclipseLinkConverterContainer buildConverterContainer() {
-		return new JavaEclipseLinkConverterContainerImpl(this, this);
+		return new JavaEclipseLinkConverterContainerImpl(this);
+	}
+
+	// ********** converter container parent adapter **********
+
+	public JavaJpaContextNode getConverterContainerParent() {
+		return this;  // no adapter
 	}
 
 	public JavaResourceAnnotatedElement getJavaResourceAnnotatedElement() {
 		return this.getResourceAttribute();
 	}
 
+	public boolean parentSupportsConverters() {
+		return ! this.getPersistentAttribute().isVirtual();
+	}
 
 	// ********** converter adapters **********
 
