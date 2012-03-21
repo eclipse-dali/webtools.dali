@@ -129,6 +129,10 @@ public class GenericPackage
 	// **************** validation ********************************************
 	
 	public void validate(List<IMessage> messages, IReporter reporter) {
+		if (reporter.isCancelled()) {
+			throw new ValidationCancelledException();
+		}
+		
 		if (getJaxbProject().getSchemaLibrary().getSchema(getNamespace()) == null) {
 			messages.add(
 					DefaultValidationMessages.buildMessage(
@@ -137,9 +141,7 @@ public class GenericPackage
 						new String[] {getNamespace(), this.name},
 						this));
 		}
-		if (reporter.isCancelled()) {
-			throw new ValidationCancelledException();
-		}
+		
 		if (this.packageInfo != null) {
 			this.packageInfo.validate(messages, reporter);
 		}
