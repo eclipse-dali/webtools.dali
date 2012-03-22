@@ -13,11 +13,13 @@ import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.internal.context.java.AbstractJavaAttributeMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbMappingKeys;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlJoinNodesMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 
 
 public class ELJavaXmlJoinNodesMapping
-		extends AbstractJavaAttributeMapping {
+		extends AbstractJavaAttributeMapping
+		implements ELXmlJoinNodesMapping {
 	
 	public ELJavaXmlJoinNodesMapping(JaxbPersistentAttribute parent) {
 		super(parent);
