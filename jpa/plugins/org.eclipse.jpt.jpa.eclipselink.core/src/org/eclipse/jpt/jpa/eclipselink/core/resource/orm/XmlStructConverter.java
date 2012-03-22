@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -243,13 +243,18 @@ public class XmlStructConverter extends XmlNamedConverter
 		return new ReplaceEdit(offset + nameIndex, originalName.length(), newName);
 	}
 
-	public ReplaceEdit createRenamePackageEdit(String newName) {
+	public ReplaceEdit createRenamePackageEdit(String newPackageName) {
 		int packageLength = this.converter.lastIndexOf('.');
+		if (newPackageName == "") {//$NON-NLS-1$
+			//moving to the default package, remove the '.'
+			packageLength++;
+		}
 		if (packageLength == -1) {
+			//moving from the default package or unspecified package
 			packageLength = 0;
-			newName = newName + '.';
+			newPackageName = newPackageName + '.';
 		}
 		int offset = getAttributeNode(EclipseLink.STRUCT_CONVERTER__CONVERTER).getValueRegionStartOffset() + 1; // +1 = opening double quote
-		return new ReplaceEdit(offset, packageLength, newName);
+		return new ReplaceEdit(offset, packageLength, newPackageName);
 	}
 } // XmlStructConverter

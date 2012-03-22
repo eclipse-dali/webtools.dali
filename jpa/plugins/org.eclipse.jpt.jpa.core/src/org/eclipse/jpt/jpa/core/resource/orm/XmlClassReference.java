@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. 
+ *  Copyright (c) 2010, 2012  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -237,10 +237,19 @@ public class XmlClassReference extends AbstractJpaEObject implements JpaEObject
 		return new ReplaceEdit(offset + nameIndex, originalName.length(), newName);
 	}
 
-	public ReplaceEdit createRenamePackageEdit(String newName) {
+	public ReplaceEdit createRenamePackageEdit(String newPackageName) {
 		int packageLength = this.className.lastIndexOf('.');
+		if (newPackageName == "") {//$NON-NLS-1$
+			//moving to the default package, remove the '.'
+			packageLength++;
+		}
+		if (packageLength == -1) {
+			//moving from the default package or unspecified package
+			packageLength = 0;
+			newPackageName = newPackageName + '.';
+		}
 		int offset = getAttributeNode(JPA.CLASS).getValueRegionStartOffset() + 1; // +1 = opening double quote
-		return new ReplaceEdit(offset, packageLength, newName);
+		return new ReplaceEdit(offset, packageLength, newPackageName);
 	}
 
 }

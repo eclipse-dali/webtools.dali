@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -391,10 +391,19 @@ public abstract class AbstractXmlRelationshipMapping extends AbstractXmlAttribut
 		return new ReplaceEdit(offset + nameIndex, originalName.length(), newName);
 	}
 
-	public ReplaceEdit createRenameTargetEntityPackageEdit(String newName) {
+	public ReplaceEdit createRenameTargetEntityPackageEdit(String newPackageName) {
 		int packageLength = this.targetEntity.lastIndexOf('.');
+		if (newPackageName == "") {//$NON-NLS-1$
+			//moving to the default package, remove the '.'
+			packageLength++;
+		}
+		if (packageLength == -1) {
+			//moving from the default package or unspecified package
+			packageLength = 0;
+			newPackageName = newPackageName + '.';
+		}
 		int offset = getAttributeNode(JPA.TARGET_ENTITY).getValueRegionStartOffset() + 1; // +1 = opening double quote
-		return new ReplaceEdit(offset, packageLength, newName);
+		return new ReplaceEdit(offset, packageLength, newPackageName);
 	}
 
 } // RelationshipMapping

@@ -1674,10 +1674,19 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 		return getMapKeyClass().createRenameEdit(originalType, newName);
 	}
 
-	public ReplaceEdit createRenameTargetClassPackageEdit(String newName) {
+	public ReplaceEdit createRenameTargetClassPackageEdit(String newPackageName) {
 		int packageLength = this.targetClass.lastIndexOf('.');
+		if (newPackageName == "") {//$NON-NLS-1$
+			//moving to the default package, remove the '.'
+			packageLength++;
+		}
+		if (packageLength == -1) {
+			//moving from the default package or unspecified package
+			packageLength = 0;
+			newPackageName = newPackageName + '.';
+		}
 		int offset = getAttributeNode(JPA2_0.TARGET_CLASS).getValueRegionStartOffset() + 1; // +1 = opening double quote
-		return new ReplaceEdit(offset, packageLength, newName);
+		return new ReplaceEdit(offset, packageLength, newPackageName);
 	}
 
 	public ReplaceEdit createRenameMapKeyClassPackageEdit(String newName) {
