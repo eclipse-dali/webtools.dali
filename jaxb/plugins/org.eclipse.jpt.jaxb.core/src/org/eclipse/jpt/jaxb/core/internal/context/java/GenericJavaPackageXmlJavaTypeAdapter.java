@@ -36,7 +36,7 @@ public class GenericJavaPackageXmlJavaTypeAdapter
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		if (getSpecifiedType() == null || getSpecifiedType().equals(XmlJavaTypeAdapter.DEFAULT_TYPE)) {
+		if (getSpecifiedType() == null || getFullyQualifiedType().equals(XmlJavaTypeAdapter.DEFAULT_TYPE)) {
 			messages.add(
 				DefaultValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
