@@ -41,6 +41,12 @@ import org.eclipse.swt.widgets.Composite;
  * <p>
  * See the extension point: <code>org.eclipse.jpt.jpa.ui.jpaPlatform</code>
  * <p>
+ * To retrieve the JPA UI platform corresponding to a JPA platform:
+ * <pre>
+ * JpaProject jpaProject = ...;
+ * JpaPlatform jpaPlatform = jpaProject.getJpaPlatform();
+ * JpaPlatformUi jpaPlatformUi = (JpaPlatformUi) jpaPlatform.getAdapter(JpaPlatformUi.class);
+ * </pre>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from

@@ -52,6 +52,8 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Reference JPA project reference} to retrieve a JPA project in a blocking
  * fashion that will return a JPA project once it has been constructed.
  * <p>
+ * See <code>org.eclipse.jpt.jpa.core/plugin.xml</code>.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -549,6 +551,7 @@ public interface JpaProject
 	 * JpaProject.Reference jpaProjectRef = (JpaProject.Reference) project.getAdapter(JpaProject.Reference.class);
 	 * JpaProject jpaProject = jpaProjectRef.getValue();
 	 * </pre>
+	 * See <code>org.eclipse.jpt.jpa.core/plugin.xml</code>.
 	 * @see org.eclipse.jpt.jpa.core.internal.ProjectAdapterFactory
 	 */
 	interface Reference {

@@ -28,6 +28,8 @@ import org.eclipse.jpt.common.core.JptResourceModel;
  * fashion that will return a JPA file once it and its JPA project have been
  * constructed.
  * <p>
+ * See <code>org.eclipse.jpt.jpa.core/plugin.xml</code>.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -120,6 +122,7 @@ public interface JpaFile
 	 * JpaFile.Reference jpaFileRef = (JpaFile.Reference) file.getAdapter(JpaFile.Reference.class);
 	 * JpaFile jpaFile = jpaFileRef.getValue();
 	 * </pre>
+	 * See <code>org.eclipse.jpt.jpa.core/plugin.xml</code>.
 	 * @see org.eclipse.jpt.jpa.core.internal.FileAdapterFactory
 	 */
 	interface Reference {

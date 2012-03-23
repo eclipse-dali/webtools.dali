@@ -36,6 +36,16 @@ import org.eclipse.wst.common.internal.emf.resource.TranslatorResourceImpl;
 import org.xml.sax.EntityResolver;
 
 /**
+ * To retrieve the JPA XML resource corresponding to an Eclipse file:
+ * <pre>
+ * IFile file = (IFile) ResourcesPlugin.getWorkspace().getRoot().findMember("Foo.java");
+ * JpaXmlResource jpaXmlResource = (JpaXmlResource) file.getAdapter(JpaXmlResource.class);
+ * </pre>
+ * This is a non-blocking call; and as a result it will return <code>null</code>
+ * if the JPA XML resource or its JPA project is currently under construction.
+ * <p>
+ * See <code>org.eclipse.jpt.jpa.core/plugin.xml</code>.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from

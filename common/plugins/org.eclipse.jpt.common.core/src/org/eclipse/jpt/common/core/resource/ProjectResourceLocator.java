@@ -14,6 +14,12 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IPath;
 
 /**
+ * Implementations of this interface can be retrieved via the Adapter framework:
+ * <pre>
+ * IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject("Foo Project");
+ * ProjectResourceLocator locator = (ProjectResourceLocator) project.getAdapter(ProjectResourceLocator.class);
+ * </pre>
+ * <p>
  * See <code>org.eclipse.jpt.common.core/plugin.xml</code>.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
