@@ -149,7 +149,7 @@ public class GenerateDynamicEntitiesFromSchemaWizard extends GenerateEntitiesFro
 		
 		private void openEditor(final IFile file) {
 			if (file != null) {
-				SWTUtil.getStandardDisplay().asyncExec(new Runnable() {
+				SWTUtil.asyncExec(new Runnable() {
 					public void run() {
 						try {
 							IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
