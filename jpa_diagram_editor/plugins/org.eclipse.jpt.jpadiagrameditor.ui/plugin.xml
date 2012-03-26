@@ -29,6 +29,26 @@
    
  <extension
        point="org.eclipse.ui.popupMenus">
+       <objectContribution
+          adaptable="false"
+          id="org.eclipse.jpt.jpadiagrameditor.ui.openDiagramOnJpaContentNode"
+          nameFilter="*"
+          objectClass="org.eclipse.jpt.jpa.ui.JpaRootContextNodeModel">
+          
+			<enablement>
+				<test property="org.eclipse.jpt.jpadiagrameditor.ui.jpaContentNodeFacet" value="jpt.jpa"/>
+			</enablement>
+       <menu
+             id="org.eclipse.jpt.jpadiagrameditor.ui.openDiagramJpaContentNodeMenu"
+             label="%diagrameditor.opendiagram.menu.label">
+       </menu>
+       <action
+             class="org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.ui.OpenJpaDiagramActionDelegate"
+             enablesFor="1"
+             id="org.eclipse.jpt.jpadiagrameditor.ui.openDiagramOnJpaContentNodeAction"
+             label="%diagrameditor.opendiagram.action.label">
+       </action>
+    </objectContribution>
     <objectContribution
           adaptable="false"
           id="org.eclipse.jpt.jpadiagrameditor.ui.openDiagramJpa"
@@ -143,6 +163,13 @@
       namespace="org.eclipse.jpt.jpadiagrameditor.ui"
       properties="jpaProjectFacet"
       class="org.eclipse.jpt.jpadiagrameditor.ui.internal.propertytester.JpaProjectFacetVersionPropertyTester">
+    </propertyTester>
+    <propertyTester
+          class="org.eclipse.jpt.jpadiagrameditor.ui.internal.propertytester.JpaContentNodeFacetProjectVersionPropertyTester"
+          id="org.eclipse.jpt.jpadiagrameditor.ui.JpaContentNodeFacetVersionPropertyTester"
+          namespace="org.eclipse.jpt.jpadiagrameditor.ui"
+          properties="jpaContentNodeFacet"
+          type="org.eclipse.jpt.jpa.ui.JpaRootContextNodeModel">
     </propertyTester>
 </extension>
 
