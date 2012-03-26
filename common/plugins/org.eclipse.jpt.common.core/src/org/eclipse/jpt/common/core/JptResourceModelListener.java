@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.core;
 
 import java.util.EventListener;
+import org.eclipse.wst.common.internal.emf.resource.TranslatorResourceImpl;
 
 /**
  * The listener is notified whenever anything in the JPA resource model changes.
@@ -28,6 +29,10 @@ public interface JptResourceModelListener
 {
 	void resourceModelChanged(JptResourceModel jpaResourceModel);
 	
+	/**
+	 * Modified resource is closed without saving
+	 * @see TranslatorResourceImpl#isReverting()
+	 */
 	void resourceModelReverted(JptResourceModel jpaResourceModel);
 	
 	void resourceModelUnloaded(JptResourceModel jpaResourceModel);

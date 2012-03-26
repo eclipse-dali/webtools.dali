@@ -113,7 +113,7 @@ public class JpaXmlResource
 		// unload events can happen before the resource set is removed - should always react to unload events
 		if (this.loadedFlagCleared(notification)) {
 			super.eNotify(notification);
-			if (this.isReverting()) {
+			if (this.isReverting()) {// closing a modified file without saving
 				this.resourceModelReverted();
 			} else {
 				this.resourceModelUnloaded();
