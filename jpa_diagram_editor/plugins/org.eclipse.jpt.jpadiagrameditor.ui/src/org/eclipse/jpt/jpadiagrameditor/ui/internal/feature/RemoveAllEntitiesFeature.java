@@ -27,8 +27,8 @@ import org.eclipse.graphiti.features.context.ICustomContext;
 import org.eclipse.graphiti.features.context.IRemoveContext;
 import org.eclipse.graphiti.features.context.impl.RemoveContext;
 import org.eclipse.graphiti.features.custom.AbstractCustomFeature;
-import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 
 public abstract class RemoveAllEntitiesFeature extends AbstractCustomFeature {
 
@@ -45,14 +45,12 @@ public abstract class RemoveAllEntitiesFeature extends AbstractCustomFeature {
 	}
 	
 	public void execute(ICustomContext context) {
+		TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(getFeatureProvider().getDiagram());
 		Iterator<Shape> it = allShapes.iterator();
 		while (it.hasNext()) {
 			Shape sh = it.next();
-			final RemoveJPAEntityFeature ft = new RemoveJPAEntityFeature(this.getFeatureProvider());
+			final RemoveJPAEntityFeature ft = new RemoveJPAEntityFeature(this.getFeatureProvider(), false);
 			final IRemoveContext ctx = new RemoveContext(sh);
-			PictogramElement pe = ctx.getPictogramElement();
-			
-			TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(pe);
 			ted.getCommandStack().execute(new RecordingCommand(ted) {
 				@Override
 				protected void doExecute() {
@@ -60,6 +58,10 @@ public abstract class RemoveAllEntitiesFeature extends AbstractCustomFeature {
 				}
 			});
 		}
+	}
+
+	public IJPAEditorFeatureProvider getFeatureProvider() {
+		return (IJPAEditorFeatureProvider) super.getFeatureProvider();
 	}
 
 }

@@ -294,6 +294,8 @@ public class ModelIntegrationUtil {
 		
 	public static JPAEditorDiagramTypeProvider getProviderByDiagram(String diagramName) {
 		IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		if (workbenchWindow == null)
+			return null;
 		IWorkbenchPage workbenchPage = workbenchWindow.getActivePage();
 		IEditorReference[] editorRefs = workbenchPage.getEditorReferences();
 		for (IEditorReference editorRef : editorRefs) {

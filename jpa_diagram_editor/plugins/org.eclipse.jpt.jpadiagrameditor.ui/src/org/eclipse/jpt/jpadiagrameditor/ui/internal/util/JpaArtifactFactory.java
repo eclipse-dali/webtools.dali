@@ -27,10 +27,13 @@ import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.Set;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.emf.transaction.RecordingCommand;
+import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.IRemoveContext;
 import org.eclipse.graphiti.features.context.impl.AddConnectionContext;
@@ -39,10 +42,12 @@ import org.eclipse.graphiti.mm.pictograms.Connection;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.services.Graphiti;
+import org.eclipse.graphiti.util.IColorConstant;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IImportDeclaration;
 import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.IPackageDeclaration;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -68,6 +73,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToManyMapping;
+import org.eclipse.jpt.jpa.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
@@ -77,8 +83,6 @@ import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.EmbeddedIdAnnotation;
-import org.eclipse.jpt.jpa.core.resource.java.IdAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.IdClassAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.ManyToManyAnnotation;
@@ -89,16 +93,18 @@ import org.eclipse.jpt.jpa.core.resource.java.OwnableRelationshipMappingAnnotati
 import org.eclipse.jpt.jpa.core.resource.java.RelationshipMappingAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.TableAnnotation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.AddInheritedEntityFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.AddRelationFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.RemoveRelationFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.UpdateAttributeFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.propertypage.JPADiagramPropertyPage;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.BidirectionalRelation;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IBidirectionalRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation.RelDir;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation.RelType;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IsARelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.ManyToManyBiDirRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.ManyToManyUniDirRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.ManyToOneBiDirRelation;
@@ -129,6 +135,44 @@ public class JpaArtifactFactory {
 		return INSTANCE;
 	}
 	
+	public void rearrangeIsARelations(IJPAEditorFeatureProvider fp) {
+		Collection<IsARelation> isARels = produceAllMissingIsARelations(fp);
+		addIsARelations(fp, isARels);
+		fp.removeAllRedundantIsARelations();
+	} 
+	
+	public void rearrangeIsARelationsInTransaction(final IJPAEditorFeatureProvider fp) {
+		final Collection<IsARelation> isARels = produceAllMissingIsARelations(fp);
+		if (!fp.existRedundantIsARelations() && (isARels.size() == 0))
+			return;
+		TransactionalEditingDomain ted = fp.getTransactionalEditingDomain();
+		RecordingCommand rc = new RecordingCommand(ted) {
+			protected void doExecute() {
+				addIsARelations(fp, isARels);
+				fp.removeAllRedundantIsARelations();
+			}		
+		};
+		ted.getCommandStack().execute(rc);
+	} 
+	
+		
+	public Collection<IsARelation> produceAllMissingIsARelations(IJPAEditorFeatureProvider fp) {
+		Collection<JavaPersistentType> persistentTypes = fp.getPersistentTypes();
+		Collection<IsARelation> res = new HashSet<IsARelation>();
+		Iterator<JavaPersistentType> it = persistentTypes.iterator(); 
+		HashSet<IsARelation> allExistingIsARelations = fp.getAllExistingIsARelations();
+		while (it.hasNext()) {
+			JavaPersistentType jpt = it.next();
+			JavaPersistentType superclass = fp.getFirstSuperclassBelongingToTheDiagram(jpt);
+			if (superclass == null)
+				continue;
+			IsARelation newRel = new IsARelation(jpt, superclass);
+			if (!allExistingIsARelations.contains(newRel))
+				res.add(newRel);
+		}
+		return res;
+	}
+		
 	public void addOneToOneUnidirectionalRelation(IFeatureProvider fp, JavaPersistentType jpt, 
 												  JavaPersistentAttribute attribute) {
 		addOneToOneRelation(fp, jpt, attribute, null, null,
@@ -445,7 +489,6 @@ public class JpaArtifactFactory {
 									 IJPAEditorFeatureProvider fp) {
 		ICompilationUnit cu = fp.getCompilationUnit(jpt);
 		try {
-			JpaProject jpaProject = jpt.getJpaProject();
 			JPAEditorUtil.discardWorkingCopy(cu);
 			cu.delete(true, new NullProgressMonitor());
 			return true;			
@@ -514,9 +557,13 @@ public class JpaArtifactFactory {
 		JavaResourceType jrpt = convertJPTToJRT(jpt);
 		if (jrpt == null)
 			return false;
-		JavaEntity mapping = (JavaEntity) jpt.getMapping();
-		if (mapping != null)
+		JavaTypeMapping jtm = jpt.getMapping();
+		if (jtm == null)
+			return false;
+		if (jtm instanceof JavaEntity) {
+			JavaEntity mapping = (JavaEntity)jtm;
 			return (mapping.getSpecifiedName() != null);
+		}
 		return false;
 							}
 	
@@ -551,18 +598,34 @@ public class JpaArtifactFactory {
 	}
 	*/
 	
+	public boolean hasEntityOrMappedSuperclassAnnotation(JavaPersistentType jpt) {
+		return hasEntityAnnotation(jpt) || hasMappedSuperclassAnnotation(jpt); 
+	}
+	
 	public boolean hasEntityAnnotation(JavaPersistentType jpt) {
-		return (jpt.getMapping() instanceof JavaEntity);
+		return (jpt.getMappingKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY);
 	}	
 	
+	public boolean hasMappedSuperclassAnnotation(JavaPersistentType jpt) {
+		return (jpt.getMappingKey() == MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
+	}		
+	
 	public String getSpecifiedEntityName(JavaPersistentType jpt){
-		JavaEntity gje = (JavaEntity) jpt.getMapping();
+		JavaTypeMapping jtm = jpt.getMapping();
+		if (jtm instanceof JavaEntity) {
+			JavaEntity gje = (JavaEntity)jtm;
 		return gje.getSpecifiedName();
+	}
+		JavaMappedSuperclass jms = (JavaMappedSuperclass)jtm;
+		return jms.getName();
 	}
 	
 	public void renameEntity(JavaPersistentType jpt, String newName) {
-		JavaEntity gje = (JavaEntity)jpt.getMapping();
+		JavaTypeMapping jtm = jpt.getMapping();
+		if (jtm instanceof JavaEntity) {
+			JavaEntity gje = (JavaEntity)jtm;
 		gje.setSpecifiedName(newName);	
+	}
 	}
 	
 	public JavaPersistentAttribute addAttribute(IJPAEditorFeatureProvider fp, JavaPersistentType jpt, 
@@ -1478,7 +1541,7 @@ public class JpaArtifactFactory {
 		IRelation rel = fp.getRelationRelatedToAttribute(oldAt);
 		String inverseJPAName = null;
 		JavaPersistentType inverseJPT = null;
-		if (BidirectionalRelation.class.isInstance(rel)) {
+		if (IBidirectionalRelation.class.isInstance(rel)) {
 			inverseJPT = rel.getInverse();
 			if (inverseJPT != oldAt.getParent()) {
 				pu = JpaArtifactFactory.INSTANCE.getPersistenceUnit(jpt);
@@ -1832,7 +1895,7 @@ public class JpaArtifactFactory {
 		return res;
 	}
 	
-	private BidirectionalRelation produceBiDirRelation(JavaPersistentType jpt,
+	private IBidirectionalRelation produceBiDirRelation(JavaPersistentType jpt,
 			JavaPersistentAttribute at, Annotation an,
 			JavaPersistentType relJPT, JavaPersistentAttribute relAt,
 			Annotation relAn, IJPAEditorFeatureProvider fp) {
@@ -1876,7 +1939,7 @@ public class JpaArtifactFactory {
 			}
 		}
 		
-		BidirectionalRelation res = null;
+		IBidirectionalRelation res = null;
 		if (annotationName.equals(JPAEditorConstants.ANNOTATION_ONE_TO_ONE)) {
 			if (!fp.doesRelationExist(jpt, relJPT, ownerAttrName, RelType.ONE_TO_ONE,
 					RelDir.BI))
@@ -2167,6 +2230,9 @@ public class JpaArtifactFactory {
 		Iterator<Connection> iter = Graphiti.getPeService().getAllConnections(cs).iterator();
 		while (iter.hasNext()) {
 			Connection conn = iter.next();
+			String v = Graphiti.getPeService().getPropertyValue(conn, IsARelation.IS_A_CONNECTION_PROP_KEY);
+			if (Boolean.TRUE.toString().equals(v))
+				continue;
 			IRemoveContext ctx = new RemoveContext(conn);
 			ctxs.add(ctx);
 		}
@@ -2200,6 +2266,15 @@ public class JpaArtifactFactory {
 		}		
 	}
 	
+	public void addIsARelations(IJPAEditorFeatureProvider fp,
+								   Collection<IsARelation> rels) {
+		Iterator<IsARelation> it = rels.iterator();
+		while (it.hasNext()) {
+			IsARelation rel = it.next();
+			addNewIsARelation(fp, rel);
+		}
+	}
+	
 	private void addNewRelation(IJPAEditorFeatureProvider fp, IRelation rel) {
 		AddConnectionContext ctx = new AddConnectionContext(JPAEditorUtil
 				.getAnchor(rel.getOwner(), fp), JPAEditorUtil.getAnchor(rel
@@ -2209,6 +2284,17 @@ public class JpaArtifactFactory {
 		refreshEntityModel(fp, rel.getOwner());
 		refreshEntityModel(fp, rel.getInverse());
 		AddRelationFeature ft = new AddRelationFeature(fp);
+		ft.add(ctx);		
+	}
+	
+	private void addNewIsARelation(IJPAEditorFeatureProvider fp, IsARelation rel) {
+		AddConnectionContext ctx = new AddConnectionContext(JPAEditorUtil
+				.getAnchor(rel.getSubclass(), fp), JPAEditorUtil.getAnchor(rel.getSuperclass(), fp));
+		ctx.setNewObject(rel);
+		ctx.setTargetContainer(fp.getDiagramTypeProvider().getDiagram());
+		refreshEntityModel(fp, rel.getSubclass());
+		refreshEntityModel(fp, rel.getSuperclass());
+		AddInheritedEntityFeature ft = new AddInheritedEntityFeature(fp);
 		ft.add(ctx);		
 	}
 	
@@ -2252,18 +2338,35 @@ public class JpaArtifactFactory {
 		return res.toArray(ret);
 	}
 	
-	public boolean isId(JavaPersistentAttribute jpa) {
+	// returns true even if the primary key is inherited
+	public boolean hasOrInheritsPrimaryKey(JavaPersistentType jpt) {
+		Iterable<ReadOnlyPersistentAttribute> attributes = jpt.getAllAttributes();
+		Iterator<ReadOnlyPersistentAttribute> it = attributes.iterator();
+		while (it.hasNext()) {
+			ReadOnlyPersistentAttribute at = it.next();
+			if (isId(at))
+				return true;
+		}
+		return false;
+	}
+	
+	public boolean hasPrimaryKey(JavaPersistentType jpt) {
+		for (JavaPersistentAttribute at : jpt.getAttributes()) 
+			if (isId(at)) return true;
+		return false;
+	}
+
+	
+	public boolean isId(ReadOnlyPersistentAttribute jpa) {
 		return isSimpleId(jpa) || isEmbeddedId(jpa);
 	}
 	
-	public boolean isSimpleId(JavaPersistentAttribute jpa) {
-		IdAnnotation an = (IdAnnotation)jpa.getResourceAttribute().getAnnotation(IdAnnotation.ANNOTATION_NAME);
-		return (an != null);
+	public boolean isSimpleId(ReadOnlyPersistentAttribute jpa) {
+		return (jpa.getMappingKey() == MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 	}
 	
-	public boolean isEmbeddedId(JavaPersistentAttribute jpa) {
-		EmbeddedIdAnnotation an = (EmbeddedIdAnnotation)jpa.getResourceAttribute().getAnnotation(EmbeddedIdAnnotation.ANNOTATION_NAME);
-		return (an != null);
+	public boolean isEmbeddedId(ReadOnlyPersistentAttribute jpa) {
+		return (jpa.getMappingKey() == MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
 	}	
 	
 	public String getColumnName(JavaPersistentAttribute jpa) {
@@ -2278,5 +2381,69 @@ public class JpaArtifactFactory {
 		return columnName; 
 	}
 	
+	public IColorConstant getForeground(JPAEditorConstants.DIAGRAM_OBJECT_TYPE dot) {
+		IColorConstant foreground = dot.equals(JPAEditorConstants.DIAGRAM_OBJECT_TYPE.MappedSupeclass) ? 
+				JPAEditorConstants.MAPPED_SUPERCLASS_BORDER_COLOR:
+				JPAEditorConstants.ENTITY_BORDER_COLOR;
+		return foreground;
+	}
 
+	public IColorConstant getBackground(JPAEditorConstants.DIAGRAM_OBJECT_TYPE dot) {
+		IColorConstant background = dot.equals(JPAEditorConstants.DIAGRAM_OBJECT_TYPE.MappedSupeclass) ? 
+				JPAEditorConstants.MAPPED_SUPERCLASS_BACKGROUND:
+				JPAEditorConstants.ENTITY_BACKGROUND;	
+		return background;
+	}
+	
+	public String getRenderingStyle(JPAEditorConstants.DIAGRAM_OBJECT_TYPE dot) {
+		String renderingStyle = dot.equals(JPAEditorConstants.DIAGRAM_OBJECT_TYPE.MappedSupeclass) ? 
+			IJPAEditorPredefinedRenderingStyle.GREEN_WHITE_GLOSS_ID :
+			IJPAEditorPredefinedRenderingStyle.BLUE_WHITE_GLOSS_ID;
+		return renderingStyle;
+	}
+	
+	public JPAEditorConstants.DIAGRAM_OBJECT_TYPE determineDiagramObjectType(JavaPersistentType jpt) {
+		if (this.hasEntityAnnotation(jpt)) {
+			return JPAEditorConstants.DIAGRAM_OBJECT_TYPE.Entity;
+		} else if (this.hasMappedSuperclassAnnotation(jpt)) {
+			return JPAEditorConstants.DIAGRAM_OBJECT_TYPE.MappedSupeclass;
+		}
+		throw new IllegalArgumentException();
+	}
+	
+	public String generateIdName(JavaPersistentType jpt) {
+		String name = "id";		//$NON-NLS-1$
+		String genName = name;
+		for (int i = 0; i < 10000000; i++) {
+			if (!hasAttributeNamed(jpt, genName))
+				return genName;
+			genName = name + "_" + i;	//$NON-NLS-1$
+		}
+		return genName;
+	}
+	
+	
+	private  boolean hasAttributeNamed(JavaPersistentType jpt, String name) {
+		Iterable<String> hier = jpt.getAllAttributeNames();
+		Iterator<String> it = hier.iterator();
+		while (it.hasNext()) {
+			String atName = it.next();
+			if (name.equals(atName))
+				return true;
+		}
+		return false;
+	}
+	
+	public String getMappedSuperclassPackageDeclaration(JavaPersistentType jpt) throws JavaModelException {
+		String packageName = null;
+		IPackageDeclaration[] packages = JPAEditorUtil.getCompilationUnit(jpt)
+				.getPackageDeclarations();
+		if (packages.length > 0) {
+			IPackageDeclaration packageDecl = packages[0];
+			packageName = packageDecl.getElementName();
+		}
+		return packageName;
+	}
+	
+		
 }

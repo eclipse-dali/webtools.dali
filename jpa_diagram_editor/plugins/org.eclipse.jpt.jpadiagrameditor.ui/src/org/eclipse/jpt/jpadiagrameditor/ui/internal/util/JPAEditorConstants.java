@@ -25,6 +25,15 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 
 public class JPAEditorConstants {
 	
+	public static enum DIAGRAM_OBJECT_TYPE {
+		Entity,
+		MappedSupeclass
+	};
+	
+	public static final String IS_A_RELATION_ID_PREFIX = "is_a_relation:"; 	//$NON-NLS-1$
+	
+	public static final String IS_A = "is-a";	//$NON-NLS-1$
+	
 	public static final String HEADER_PREFIX_DIRTY = "* ";	//$NON-NLS-1$
 	
 	public static Hashtable<String, String> PRIMITIVE_TO_WRAPPER = new Hashtable<String,String>();
@@ -41,16 +50,27 @@ public class JPAEditorConstants {
 		
 	public static final IColorConstant ENTITY_BACKGROUND =
         new ColorConstant(212, 231, 248);
+	
+	public static final IColorConstant MAPPED_SUPERCLASS_BACKGROUND =
+	        new ColorConstant(212, 248, 231);
 
 	public static final IColorConstant CONNECTION_LINE_COLOR = 
         new ColorConstant(98, 131,167);	
 	
+	public static final IColorConstant IS_A_CONNECTION_LINE_COLOR = 
+	        new ColorConstant(98, 167, 131);	
+	
 	public static final IColorConstant ENTITY_BORDER_COLOR = 
         new ColorConstant(98, 131,167);		
+	
+	public static final IColorConstant MAPPED_SUPERCLASS_BORDER_COLOR = 
+	        new ColorConstant(98, 167, 131);		
 	
 	public final static String TRUE_STRING = Boolean.toString(true);
 	
 	public final static int CONNECTION_LINE_WIDTH = 2;
+	public final static int IS_A_CONNECTION_LINE_WIDTH = 2;
+
 	public final static int ENTITY_BORDER_WIDTH = 2;
 	
 	public final static int ENTITY_CORNER_WIDTH = 6;

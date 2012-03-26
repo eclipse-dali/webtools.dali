@@ -35,13 +35,14 @@ import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.ModelIntegrationUtil;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 
 
 public class AddAllEntitiesFeature extends AbstractCustomFeature implements IAddFeature {
@@ -90,11 +91,12 @@ public class AddAllEntitiesFeature extends AbstractCustomFeature implements IAdd
 		numInARow = (numInARow > 0) ? numInARow : 1;
 		
 		lowerEdges[0] = lowestRightestPointOfExistingDiagram.y + ((lowestRightestPointOfExistingDiagram.y == 0) ? DIST_FROM_EDGE_V : DIST_V);		
+		TransactionalEditingDomain ted = ModelIntegrationUtil.getTransactionalEditingDomain(d);
 		
 		for (ClassRef classRef : unit.getClassRefs()) {
 			if (classRef.getJavaPersistentType() != null) { // null if
 				JavaPersistentType jpt = classRef.getJavaPersistentType(); 
-				if (jpt.getMappingKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY) {
+				if (JpaArtifactFactory.instance().hasEntityOrMappedSuperclassAnnotation(jpt)) {
 					PictogramElement pe = getFeatureProvider().getPictogramElementForBusinessObject(jpt);
 					if (pe != null)
 						continue;
@@ -107,10 +109,8 @@ public class AddAllEntitiesFeature extends AbstractCustomFeature implements IAdd
 					
 					int x = DIST_FROM_EDGE_H + ie.index * (JPAEditorConstants.ENTITY_WIDTH + DIST_H);
 					ctx.setLocation(x, ie.lowerEdge);
-					final AddJPAEntityFeature ft = new AddJPAEntityFeature(getFeatureProvider());
+					final AddJPAEntityFeature ft = new AddJPAEntityFeature(getFeatureProvider(), false);
 					
-					final Diagram targetDiagram = (Diagram) ctx.getTargetContainer();
-					TransactionalEditingDomain ted = ModelIntegrationUtil.getTransactionalEditingDomain(targetDiagram);
 					ted.getCommandStack().execute(new RecordingCommand(ted) {
 						@Override
 						protected void doExecute() {
@@ -122,6 +122,13 @@ public class AddAllEntitiesFeature extends AbstractCustomFeature implements IAdd
 				}
 			}
 		}		
+		ted.getCommandStack().execute(new RecordingCommand(ted) {
+			@Override
+			protected void doExecute() {
+				JpaArtifactFactory.instance().rearrangeIsARelations(getFeatureProvider());
+			}
+		});
+
 	}
 	
 	private IndexAndLowerEdge getMinLowerEdge() {
@@ -176,5 +183,10 @@ public class AddAllEntitiesFeature extends AbstractCustomFeature implements IAdd
 	public String getName() {
 		return JPAEditorMessages.JPAEditorToolBehaviorProvider_showAllTheEntities;
 	}
+	
+	public IJPAEditorFeatureProvider getFeatureProvider() {
+		return (IJPAEditorFeatureProvider) super.getFeatureProvider();
+	}
+
 	
 }

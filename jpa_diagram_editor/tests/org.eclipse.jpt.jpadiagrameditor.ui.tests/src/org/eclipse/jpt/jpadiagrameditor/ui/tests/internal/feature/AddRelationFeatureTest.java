@@ -76,7 +76,7 @@ public class AddRelationFeatureTest {
 
 	private IAddConnectionContext context;
 
-	private IPeServiceUtil peUtil;
+	private IPeServiceUtil peServiceUtil;
 	
 	private IGaService gaUtil;
 	
@@ -100,7 +100,7 @@ public class AddRelationFeatureTest {
 		diagramProvider = EasyMock.createMock(IDiagramTypeProvider.class);
 		diagram = EasyMock.createMock(Diagram.class);
 		context = EasyMock.createMock(IAddConnectionContext.class);
-		peUtil = EasyMock.createMock(IPeServiceUtil.class);
+		peServiceUtil = EasyMock.createMock(IPeServiceUtil.class);
 		gaUtil = EasyMock.createMock(IGaService.class);
 		ft = EasyMock.createMock(IAddBendpointFeature.class);
 		
@@ -191,7 +191,7 @@ public class AddRelationFeatureTest {
 		Polyline pl = EasyMock.createMock(Polyline.class);
 		expect(pl.getX()).andReturn(0);
 		expect(pl.getY()).andReturn(0);
-		expect(imageCreator.createArrowConnectionDecorator(isA(Connection.class), eq(location))).andReturn(d);
+		expect(imageCreator.createArrowConnectionDecorator(isA(Connection.class), eq(location), false)).andReturn(d);
 		expect(d.getGraphicsAlgorithm()).andReturn(pl);
 		replay(d, pl);
 	}
@@ -213,7 +213,7 @@ public class AddRelationFeatureTest {
 	private void configureProvidersForAdd(IRelation relation) {
 		expect(diagramProvider.getDiagram()).andReturn(diagram);
 		expect(featureProvider.getDiagramTypeProvider()).andReturn(diagramProvider);
-		expect(featureProvider.getPeUtil()).andReturn(peUtil);
+		expect(featureProvider.getPeServiceUtil()).andReturn(peServiceUtil);
 		expect(featureProvider.getAddBendpointFeature(isA(IAddBendpointContext.class))).andStubReturn(ft);
 		expect(context.getNewObject()).andReturn(relation);
 
@@ -255,7 +255,7 @@ public class AddRelationFeatureTest {
 		gaUtil.setLocation(isA(Polyline.class), EasyMock.anyInt() , EasyMock.anyInt());
 
 		FreeFormConnection connection = createConnection(startAnchor, endAnchor);
-		expect(peUtil.createFreeFormConnection(diagram)).andReturn(connection);
+		expect(peServiceUtil.createFreeFormConnection(diagram)).andReturn(connection);
 		expect(imageCreator.createConnectionLine(diagram, connection)).andReturn(null);
 		ft.addBendpoint(isA(IAddBendpointContext.class));
 		
@@ -320,7 +320,7 @@ public class AddRelationFeatureTest {
 		replay(diagramProvider);
 		replay(diagram);
 		replay(context);
-		replay(peUtil);
+		replay(peServiceUtil);
 		replay(gaUtil);
 		replay(ft);
 		return new AddRelationFeature(featureProvider, imageCreator, jpaEditorUtil);

@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.AbstractRelation;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.BidirectionalRelation;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IBidirectionalRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.UnidirectionalRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IJPAEditorUtil;
@@ -81,8 +81,8 @@ public class DeleteRelationFeature extends DefaultDeleteFeature{
     		feat.delete(delCtx, false);
     	}    	
 
-        if (rel instanceof BidirectionalRelation) { 			
-        	BidirectionalRelation relation = (BidirectionalRelation)(rel);
+        if (rel instanceof IBidirectionalRelation) { 			
+        	IBidirectionalRelation relation = (IBidirectionalRelation)(rel);
         	ClickRemoveAttributeButtonFeature feat = new ClickRemoveAttributeButtonFeature(getFeatureProvider());
         	
     		JavaPersistentAttribute ownerAttribute = relation.getOwnerAnnotatedAttribute();
@@ -97,17 +97,6 @@ public class DeleteRelationFeature extends DefaultDeleteFeature{
     	}    	
 
         postDelete(context);
-        
-        /*
-        IRemoveContext rc = new RemoveContext(pe);
-        IFeatureProvider featureProvider = getFeatureProvider();
-        IRemoveFeature removeFeature = featureProvider.getRemoveFeature(rc);
-        if (removeFeature != null) {
-            removeFeature.remove(rc);
-        }
-        */
-        
-        
     }	
     
 	public void postDelete(IDeleteContext context) {
@@ -117,7 +106,7 @@ public class DeleteRelationFeature extends DefaultDeleteFeature{
 		IWorkbenchSite ws = ((IEditorPart)getDiagramEditor()).getSite();
 		ICompilationUnit cu = getFeatureProvider().getCompilationUnit(rel.getOwner());		
         ut.organizeImports(cu, ws);        
-		if (rel instanceof BidirectionalRelation) {
+		if (rel instanceof IBidirectionalRelation) {
 			cu = getFeatureProvider().getCompilationUnit(rel.getInverse());
 			ut.organizeImports(cu, ws);  
 		}

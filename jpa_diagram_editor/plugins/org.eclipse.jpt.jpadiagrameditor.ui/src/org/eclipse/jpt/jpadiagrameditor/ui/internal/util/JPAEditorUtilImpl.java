@@ -18,6 +18,7 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal.util;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.graphiti.mm.pictograms.ConnectionDecorator;
 import org.eclipse.graphiti.mm.pictograms.FreeFormConnection;
@@ -78,11 +79,18 @@ public class JPAEditorUtilImpl implements IJPAEditorUtil {
 
 	
 	public IFile createEntityInProject(IProject project, String entityName, IPreferenceStore jpaPreferenceStore,
-			boolean isMappedSuperclassChild, String mappedSuperclassName, String mappedSuperclassPackage, boolean hasPrimaryKey) throws Exception {
+									   boolean isMappedSuperclassChild, String mappedSuperclassName, 
+									   String mappedSuperclassPackage, String idName, 
+									   boolean hasPrimaryKey) throws Exception {
 		return JPAEditorUtil.createEntityInProject(project, entityName, jpaPreferenceStore, isMappedSuperclassChild, 
-				mappedSuperclassName, mappedSuperclassPackage, hasPrimaryKey);
+				mappedSuperclassName, mappedSuperclassPackage, idName, hasPrimaryKey);
  	}
 
+	public IFile createEntityInProject(IProject project, 
+			   String entityName, 
+			   JavaPersistentType mappedSuperclass) throws Exception {
+		return JPAEditorUtil.createEntityInProject(project, entityName, mappedSuperclass);		
+	}
 	
 	public ICompilationUnit getCompilationUnit(JavaPersistentType jpt) {
 		return JPAEditorUtil.getCompilationUnit(jpt);
@@ -99,6 +107,16 @@ public class JPAEditorUtilImpl implements IJPAEditorUtil {
 	public IFile createEntityFromMappedSuperclassInProject(IProject project,
 			String mappedSuperclassName, IPreferenceStore jpaPreferenceStore) throws Exception {
 		return JPAEditorUtil.createEntityFromMappedSuperclassInProject(project, mappedSuperclassName, jpaPreferenceStore);
+	}
+	
+	public IFile createMappedSuperclassInProject(IProject project,
+			IFolder folder, String mappedSuperclassName) throws Exception {
+		return JPAEditorUtil.createMappedSuperclassInProject(project, folder, mappedSuperclassName);
+	}
+	
+	public IFile createMappedSuperclassInProject(IProject project,
+			String mappedSuperclassName) throws Exception {
+		return JPAEditorUtil.createMappedSuperclassInProject(project, mappedSuperclassName);
 	}
 
 }

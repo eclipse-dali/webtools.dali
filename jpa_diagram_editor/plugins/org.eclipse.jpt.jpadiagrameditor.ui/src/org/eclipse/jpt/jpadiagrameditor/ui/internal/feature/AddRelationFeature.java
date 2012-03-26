@@ -103,7 +103,7 @@ public class AddRelationFeature extends AbstractAddFeature {
         
 	private FreeFormConnection createConnection(IAddConnectionContext addConContext, IRelation relation,
 			final Diagram diagram) {
-        FreeFormConnection connection = getFeatureProvider().getPeUtil().createFreeFormConnection(diagram);
+        FreeFormConnection connection = getFeatureProvider().getPeServiceUtil().createFreeFormConnection(diagram);
         connection.setStart(addConContext.getSourceAnchor());
         connection.setEnd(addConContext.getTargetAnchor());
         connection.setVisible(true);
@@ -154,7 +154,7 @@ public class AddRelationFeature extends AbstractAddFeature {
 		double endCoefficient = 1.0 - startCoefficient;	
 		int len = JPAEditorUtil.calcConnectionLength(c);		
 		if (UNI.equals(direction)) {
-			ConnectionDecorator d = imageCreator.createArrowConnectionDecorator(c, endCoefficient);
+			ConnectionDecorator d = imageCreator.createArrowConnectionDecorator(c, endCoefficient, false);
 			Graphiti.getGaService().setLocation(d.getGraphicsAlgorithm(),Math.round(-len/10), 0);				
 		} 
 	}
@@ -175,7 +175,7 @@ public class AddRelationFeature extends AbstractAddFeature {
 		ConnectionDecorator d1 = imageCreator.createManyStartDecorator(c, startCoefficient);
 		Graphiti.getGaService().setLocation(d1.getGraphicsAlgorithm(),Math.round(len/10), 0);
 		if (UNI.equals(direction)) {
-			ConnectionDecorator d2 = imageCreator.createArrowConnectionDecorator(c, endCoefficient);
+			ConnectionDecorator d2 = imageCreator.createArrowConnectionDecorator(c, endCoefficient, false);
 			Graphiti.getGaService().setLocation(d2.getGraphicsAlgorithm(),Math.round(-len/10), 0);
 		} 
     }

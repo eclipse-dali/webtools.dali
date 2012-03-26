@@ -45,7 +45,7 @@ public class LayoutEntityFeatureTest {
 		EList<Shape> shList = new BasicInternalEList<Shape>(Shape.class); 
 		EasyMock.expect(cs.getChildren()).andStubReturn(shList);
 		IPeServiceUtil peUtil = EasyMock.createMock(IPeServiceUtil.class);
-		EasyMock.expect(fp.getPeUtil()).andStubReturn(peUtil);
+		EasyMock.expect(fp.getPeServiceUtil()).andStubReturn(peUtil);
 		EasyMock.expect(peUtil.getProperty(cs, JPAEditorConstants.COLLAPSE_FEATURES)).andStubReturn(null);
 		EasyMock.expect(peUtil.removeProperty(cs, JPAEditorConstants.COLLAPSE_FEATURES)).andStubReturn(false);
 		IGraphicsUpdater gu = EasyMock.createMock(IGraphicsUpdater.class);

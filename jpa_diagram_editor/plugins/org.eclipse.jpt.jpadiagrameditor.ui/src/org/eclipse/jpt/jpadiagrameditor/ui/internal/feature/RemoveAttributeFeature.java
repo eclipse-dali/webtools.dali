@@ -154,8 +154,8 @@ public class RemoveAttributeFeature extends DefaultRemoveFeature {
 			cntx.setNewObject(rel);
 			AddRelationFeature ft = new AddRelationFeature(getFeatureProvider());
 			ft.add(cntx);
-//			JpaArtifactFactory.instance().refreshEntityModel(getFeatureProvider(), jpt);
 		}
+		JpaArtifactFactory.instance().rearrangeIsARelations(getFeatureProvider());
 	}
 
 }

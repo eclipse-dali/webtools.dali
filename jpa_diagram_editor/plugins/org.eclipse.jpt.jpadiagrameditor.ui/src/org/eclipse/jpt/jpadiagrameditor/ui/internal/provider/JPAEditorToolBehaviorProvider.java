@@ -46,6 +46,7 @@ import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.palette.IPaletteCompartmentEntry;
 import org.eclipse.graphiti.palette.IToolEntry;
+import org.eclipse.graphiti.palette.impl.ConnectionCreationToolEntry;
 import org.eclipse.graphiti.palette.impl.PaletteCompartmentEntry;
 import org.eclipse.graphiti.platform.IPlatformImageConstants;
 import org.eclipse.graphiti.services.Graphiti;
@@ -68,6 +69,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.ClickRemoveAttribute
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.CollapseAllEntitiesFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.CollapseCompartmentShapeFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.CollapseEntityFeature;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.CreateInheritedEntityFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.DeleteJPAEntityFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.DiscardAndRemoveAllEntitiesFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.ExpandAllEntitiesFeature;
@@ -88,8 +90,8 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.ui.JPAEdito
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.GraphicsUpdater;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IEclipseFacade;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants.ShapeType;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.ui.PartInitException;
 
 @SuppressWarnings("restriction")
@@ -236,6 +238,18 @@ public class JPAEditorToolBehaviorProvider extends DefaultToolBehaviorProvider {
         IPaletteCompartmentEntry en = ret.get(0);
         ret.set(0, ret.get(1));
         ret.set(1, en);
+        
+    	PaletteCompartmentEntry ent = new PaletteCompartmentEntry(JPAEditorMessages.JPAEditorToolBehaviorProvider_InheritanceCompartmentTitle, superCompartments[1].getIconId());     
+    	CreateInheritedEntityFeature ft = new CreateInheritedEntityFeature(this.getFeatureProvider());
+    	ConnectionCreationToolEntry isARelToolEntry = new ConnectionCreationToolEntry(ft.getCreateName(),
+				ft.getCreateDescription(), ft.getCreateImageId(), ft.getCreateLargeImageId());
+    	isARelToolEntry.addCreateConnectionFeature(ft);
+    	
+		ent.addToolEntry(isARelToolEntry);
+
+    	
+    	ret.add(1, ent);
+
         return ret.toArray(new IPaletteCompartmentEntry[ret.size()]);
     }
    

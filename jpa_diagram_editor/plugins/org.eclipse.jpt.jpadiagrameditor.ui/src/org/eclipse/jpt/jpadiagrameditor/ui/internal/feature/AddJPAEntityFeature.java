@@ -18,10 +18,9 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal.feature;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.IAddContext;
-import org.eclipse.graphiti.features.context.ICreateContext;
-import org.eclipse.graphiti.features.context.impl.CreateContext;
 import org.eclipse.graphiti.features.impl.AbstractAddShapeFeature;
 import org.eclipse.graphiti.mm.algorithms.Image;
 import org.eclipse.graphiti.mm.algorithms.Polyline;
@@ -35,15 +34,11 @@ import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.services.Graphiti;
-import org.eclipse.graphiti.util.IPredefinedRenderingStyle;
-import org.eclipse.graphiti.util.PredefinedColoredAreas;
+import org.eclipse.graphiti.util.IColorConstant;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.IPackageDeclaration;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.core.SourceType;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
@@ -54,22 +49,25 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeaturePr
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPAEditorImageProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.GraphicsUpdater;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants.ShapeType;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorPredefinedColoredAreas;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants.ShapeType;
 
 
 @SuppressWarnings({ "restriction" })
 public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 
 	private IPeUtilFacade facade;
+	private boolean shouldRearrangeIsARelations = true;
 	private static ContainerShape primaryShape;
 	private static ContainerShape relationShape;
 	private static ContainerShape basicShape;
 
 
-	public AddJPAEntityFeature(IFeatureProvider fp) {
+	public AddJPAEntityFeature(IFeatureProvider fp, boolean shouldRearrangeIsARelations) {
 		super(fp);
+		this.shouldRearrangeIsARelations = shouldRearrangeIsARelations;
 		facade = new PeUtilFacade();
 	}
 
@@ -126,15 +124,9 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 		JavaPersistentType jpt = null;
 		if (newObj instanceof JavaPersistentType) {
 			jpt = (JavaPersistentType) newObj;
-			if (jpt.getMapping() instanceof JavaMappedSuperclass) {
-				jpt = createEntityFromExistingMappedSuperclass(fp, jpt);
-			}			
 		} else if (newObj instanceof ICompilationUnit) {
 			ICompilationUnit cu = (ICompilationUnit) newObj;
 			jpt = JPAEditorUtil.getJPType(cu);
-			if (jpt.getMapping() instanceof JavaMappedSuperclass) {
-				jpt = createEntityFromExistingMappedSuperclass(fp, jpt);
-			}
 
 		} else if (newObj instanceof SourceType) {
 			ICompilationUnit cu = ((SourceType)newObj).getCompilationUnit();
@@ -144,8 +136,9 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 				
 	    ContainerShape entityShape = facade.createContainerShape(targetDiagram, true);
 		
-		createEntityRectangle(context, entityShape,
-								this.getFeatureProvider().getDiagramTypeProvider().getDiagram());
+	    JPAEditorConstants.DIAGRAM_OBJECT_TYPE dot = JpaArtifactFactory.instance().determineDiagramObjectType(jpt);
+		createEntityRectangle(context, entityShape, dot,
+							  this.getFeatureProvider().getDiagramTypeProvider().getDiagram());
 		link(entityShape, jpt);
 		Shape shape = Graphiti.getPeService().createShape(entityShape, false);
 		Polyline headerBottomLine = Graphiti.getGaService().createPolyline(shape, new int[] { 0,
@@ -154,7 +147,7 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 				.setForeground(manageColor(JPAEditorConstants.ENTITY_BORDER_COLOR));
 		headerBottomLine.setLineWidth(JPAEditorConstants.ENTITY_BORDER_WIDTH);
 
-		addHeader(jpt, entityShape, JPAEditorConstants.ENTITY_WIDTH);
+		addHeader(jpt, entityShape, JPAEditorConstants.ENTITY_WIDTH, dot);
 		
 		createCompartments(context, jpt, entityShape);
 		fillCompartments(jpt,entityShape);
@@ -169,64 +162,26 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 
 		UpdateAttributeFeature updateFeature = new UpdateAttributeFeature(fp);
 		updateFeature.reconnect(jpt);
-	
+		if (shouldRearrangeIsARelations)
+			JpaArtifactFactory.instance().rearrangeIsARelations(getFeatureProvider());	
 		return entityShape;
-	}
-
-	private JavaPersistentType createEntityFromExistingMappedSuperclass(
-			IJPAEditorFeatureProvider fp, JavaPersistentType jpt) {
-		ICreateContext cont = new CreateContext();
-		String packageName = null;
-		try {
-			packageName = getMappedSuperclassPackageDeclaration(fp, jpt,
-					packageName);
-		} catch (JavaModelException e) {
-			JPADiagramEditorPlugin.logError(e); 	     					
-		}
-
-		boolean hasPrimaryKey = hasMappedSuperclassPrimaryKeyAttribute(jpt);
-
-		CreateJPAEntityFeature createFeature = new CreateJPAEntityFeature(fp,
-				true, jpt.getName(), packageName, hasPrimaryKey);
-		Object[] objects = createFeature.create(cont);
-		if (objects.length != 0) {
-			Object obj = objects[0];
-			if (obj instanceof JavaPersistentType) {
-				jpt = (JavaPersistentType) obj;
-			}
-		}
-		return jpt;
-	}
-
-	private boolean hasMappedSuperclassPrimaryKeyAttribute(
-			JavaPersistentType jpt) {
-		
-		for (AttributeMapping map : ((JavaMappedSuperclass) jpt.getMapping()).getAllAttributeMappings()) {
-			if (map.getPrimaryKeyColumnName() != null) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private String getMappedSuperclassPackageDeclaration(
-			IJPAEditorFeatureProvider fp, JavaPersistentType jpt,
-			String packageName) throws JavaModelException {
-		IPackageDeclaration[] packages = fp.getCompilationUnit(jpt)
-				.getPackageDeclarations();
-		if (packages.length > 0) {
-			IPackageDeclaration packageDecl = packages[0];
-			packageName = packageDecl.getElementName();
-		}
-		return packageName;
 	}
 	
 	private void createCompartments(IAddContext context, JavaPersistentType jpt,
 			ContainerShape entityShape) {
-		primaryShape = createCompartmentRectangle(entityShape, JPAEditorConstants.ENTITY_MIN_HEIGHT, JPAEditorMessages.AddJPAEntityFeature_primaryKeysShape);
-		relationShape = createCompartmentRectangle(entityShape, GraphicsUpdater.getNextCompartmentY(primaryShape) + JPAEditorConstants.SEPARATOR_HEIGHT,
-				 JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes);
-		basicShape = createCompartmentRectangle(entityShape, GraphicsUpdater.getNextCompartmentY(relationShape) + JPAEditorConstants.SEPARATOR_HEIGHT, JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes);
+		JPAEditorConstants.DIAGRAM_OBJECT_TYPE dot = JpaArtifactFactory.instance().determineDiagramObjectType(jpt);
+		primaryShape = createCompartmentRectangle(entityShape, 
+												  JPAEditorConstants.ENTITY_MIN_HEIGHT, 
+												  JPAEditorMessages.AddJPAEntityFeature_primaryKeysShape,
+												  dot);
+		relationShape = createCompartmentRectangle(entityShape, 
+												   GraphicsUpdater.getNextCompartmentY(primaryShape) + JPAEditorConstants.SEPARATOR_HEIGHT,
+												   JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes,
+												   dot);
+		basicShape = createCompartmentRectangle(entityShape, 
+												GraphicsUpdater.getNextCompartmentY(relationShape) + JPAEditorConstants.SEPARATOR_HEIGHT, 
+												JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes,
+												dot);
 		if (IAddEntityContext.class.isInstance(context)) {
 			IAddEntityContext entityContext = (IAddEntityContext) context;
 			GraphicsUpdater.setCollapsed(primaryShape, entityContext.isPrimaryCollapsed());
@@ -255,7 +210,8 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 	}
 
 	private ContainerShape createCompartmentRectangle(
-			ContainerShape entityShape, int y, String attribTxt) {
+			ContainerShape entityShape, int y, String attribTxt,
+			JPAEditorConstants.DIAGRAM_OBJECT_TYPE dot) {
 		int width = entityShape.getGraphicsAlgorithm().getWidth();
 		ContainerShape containerShape = Graphiti.getPeService().createContainerShape(
 				entityShape, false);
@@ -268,7 +224,7 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 		
 		UpdateAttributeFeature updateFeature = new UpdateAttributeFeature(getFeatureProvider());
 		
-		updateFeature.addSeparatorsToShape(containerShape);
+		updateFeature.addSeparatorsToShape(containerShape, dot);
 		
 		return containerShape;
 	}
@@ -341,17 +297,23 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 	}
 
 	public static RoundedRectangle createEntityRectangle(IAddContext context,
-			ContainerShape entityShape, Diagram diagram) {
+														 ContainerShape entityShape, 
+														 JPAEditorConstants.DIAGRAM_OBJECT_TYPE dot,  
+														 Diagram diagram) {
 
+		IColorConstant foreground = JpaArtifactFactory.instance().getForeground(dot);
+		IColorConstant background = JpaArtifactFactory.instance().getBackground(dot);
+		String renderingStyle = JpaArtifactFactory.instance().getRenderingStyle(dot);
+		
 		RoundedRectangle entityRectangle = Graphiti.getGaService().createRoundedRectangle(
 				entityShape, JPAEditorConstants.ENTITY_CORNER_WIDTH,
 				JPAEditorConstants.ENTITY_CORNER_HEIGHT);
 		entityRectangle
-				.setForeground(Graphiti.getGaService().manageColor(diagram, JPAEditorConstants.ENTITY_BORDER_COLOR));
+				.setForeground(Graphiti.getGaService().manageColor(diagram, foreground));
 		entityRectangle
-				.setBackground(Graphiti.getGaService().manageColor(diagram, JPAEditorConstants.ENTITY_BACKGROUND));
+				.setBackground(Graphiti.getGaService().manageColor(diagram, background));
 		Graphiti.getGaService().setRenderingStyle(entityRectangle.getPictogramElement().getGraphicsAlgorithm(), 
-				PredefinedColoredAreas.getAdaptedGradientColoredAreas(IPredefinedRenderingStyle.BLUE_WHITE_GLOSS_ID));
+				JPAEditorPredefinedColoredAreas.getAdaptedGradientColoredAreas(renderingStyle));
 		entityRectangle.setLineWidth(JPAEditorConstants.ENTITY_BORDER_WIDTH);
 		entityRectangle.setLineStyle(LineStyle.SOLID);
 		Graphiti.getGaService().setLocationAndSize(entityRectangle, context
@@ -370,8 +332,13 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 	}
 
 	private ContainerShape addHeader(JavaPersistentType addedWrapper,
-			ContainerShape entityShape, int width) {
-
+									 ContainerShape entityShape, 
+									 int width,
+									 JPAEditorConstants.DIAGRAM_OBJECT_TYPE dot) {
+		String entityIconId = dot.equals(JPAEditorConstants.DIAGRAM_OBJECT_TYPE.Entity) ? 
+									JPAEditorImageProvider.JPA_ENTITY :
+									JPAEditorImageProvider.MAPPED_SUPERCLASS;
+		
 		ContainerShape headerIconShape = Graphiti.getPeService().createContainerShape(
 				entityShape, false);
 		Rectangle iconRect = Graphiti.getGaService().createRectangle(headerIconShape);
@@ -383,7 +350,7 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 		iconRect.setHeight(JPAEditorConstants.HEADER_ICON_RECT_HEIGHT);
 		iconRect.setY(0);
 		Image headerIcon = Graphiti.getGaService().createImage(iconRect,
-				JPAEditorImageProvider.JPA_ENTITY);
+				entityIconId);
 		Graphiti.getGaService().setLocationAndSize(headerIcon, 
 													JPAEditorConstants.ICON_HEADER_X,
 													JPAEditorConstants.ICON_HEADER_Y,

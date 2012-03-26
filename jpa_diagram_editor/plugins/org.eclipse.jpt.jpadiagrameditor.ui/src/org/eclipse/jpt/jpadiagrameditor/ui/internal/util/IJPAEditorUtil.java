@@ -18,6 +18,7 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal.util;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.graphiti.mm.pictograms.ConnectionDecorator;
 import org.eclipse.graphiti.mm.pictograms.FreeFormConnection;
@@ -64,10 +65,22 @@ public interface IJPAEditorUtil {
 									   boolean isMappedSuperClassChild, 
 									   String mappedSuperclassName, 
 									   String mappedSuperclassPackage, 
+									   String idName,
 									   boolean hasPrimaryKey) throws Exception;
+	
+	public IFile createEntityInProject(IProject project, 
+									   String entityName, 
+									   JavaPersistentType mappedSuperclass) throws Exception;
+	
 
 	public IFile createEntityFromMappedSuperclassInProject(IProject project,
 			String mappedSuperclassName, IPreferenceStore jpaPreferenceStore) throws Exception;
+	
+	public IFile createMappedSuperclassInProject(IProject project,
+			IFolder folder, String mappedSuperclassName) throws Exception;
+	
+	public IFile createMappedSuperclassInProject(IProject project,
+			String mappedSuperclassName) throws Exception;	
 	
 	public boolean isCardinalityDecorator(ConnectionDecorator cd);
 	

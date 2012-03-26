@@ -25,8 +25,8 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 
 
-public class CreateManyToOneUniDirRelationFeature extends
-		CreateManyToOneRelationFeature {
+public class CreateManyToOneUniDirRelationFeature extends CreateManyToOneRelationFeature 
+												  implements ICreateUniDirRelationFeature {
 
 	public CreateManyToOneUniDirRelationFeature(IJPAEditorFeatureProvider fp) {
 		super(fp, JPAEditorMessages.CreateManyToOneUniDirRelationFeature_manyToOneUniDirFeatureName,  

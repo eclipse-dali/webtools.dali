@@ -92,18 +92,19 @@ class GraphicalRemoveAttributeFeature extends AbstractCustomFeature {
 					.getAnchors().iterator().next());
 			ctx.setNewObject(rel);
 			relF.add(ctx);
-//			JpaArtifactFactory.instance().refreshEntityModel(fp, jpt);
 		}
+		JpaArtifactFactory.instance().rearrangeIsARelations(getFeatureProvider());
+
 	}
 
 	@SuppressWarnings("deprecation")
 	private void readdCompartmentsChildren(JavaPersistentType javaPersistentType, ContainerShape entityShape,
 			ContainerShape primaryShape, ContainerShape relationShape, ContainerShape basicShape) {
-
+		JPAEditorConstants.DIAGRAM_OBJECT_TYPE dot = JpaArtifactFactory.instance().determineDiagramObjectType(javaPersistentType);
 		UpdateAttributeFeature updateFeature = new UpdateAttributeFeature(getFeatureProvider());
-		updateFeature.addSeparatorsToShape(primaryShape);
-		updateFeature.addSeparatorsToShape(relationShape);
-		updateFeature.addSeparatorsToShape(basicShape);
+		updateFeature.addSeparatorsToShape(primaryShape, dot);
+		updateFeature.addSeparatorsToShape(relationShape, dot);
+		updateFeature.addSeparatorsToShape(basicShape, dot);
 
 		for (JavaPersistentAttribute attribute : javaPersistentType.getAttributes()) {
 			updateFeature.addAttributes(entityShape, attribute);

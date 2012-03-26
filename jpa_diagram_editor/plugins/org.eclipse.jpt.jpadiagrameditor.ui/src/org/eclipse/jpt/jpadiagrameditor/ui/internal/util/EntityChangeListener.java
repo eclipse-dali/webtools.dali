@@ -20,10 +20,9 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
+
 import org.eclipse.graphiti.features.context.impl.RemoveContext;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
-import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
@@ -122,7 +121,7 @@ public class EntityChangeListener extends Thread {
 						PersistenceUnit pu = JpaArtifactFactory.instance().getPersistenceUnit(jpt);
 						PersistentType pt = pu.getPersistentType(jpt.getName());
 						
-						if ((pt == null) || !JpaArtifactFactory.instance().hasEntityAnnotation(jpt)) {
+						if ((pt == null) || !JpaArtifactFactory.instance().hasEntityOrMappedSuperclassAnnotation(jpt)) {
 							
 							JpaArtifactFactory.instance().forceSaveEntityClass(jpt, featureProvider);
 							
@@ -136,21 +135,6 @@ public class EntityChangeListener extends Thread {
 							RemoveAndSaveEntityFeature ft = new RemoveAndSaveEntityFeature(featureProvider);
 							ft.remove(ctx);
 							break;
-						} else {	
-							
-							ICompilationUnit cu = featureProvider.getCompilationUnit(jpt);
-							String entName = JPAEditorUtil.returnSimpleName(JpaArtifactFactory.instance().getEntityName(jpt)); 
-							try {
-								final String newHeader = (cu.hasUnsavedChanges() ? "* " : "") + entName;	//$NON-NLS-1$ //$NON-NLS-2$
-								Display.getDefault().asyncExec(new Runnable() {
-									public void run() {
-										GraphicsUpdater.updateHeader(entShape, newHeader);
-									}
-								});
-												
-							} catch (JavaModelException e) {
-								JPADiagramEditorPlugin.logError("Cannot check compilation unit for unsaved changes", e); //$NON-NLS-1$				
-							}								
 						}
 					}
 				}		
@@ -192,7 +176,7 @@ public class EntityChangeListener extends Thread {
 					}
 				}
 			} catch(Exception e) {
-				//$NON-NLS-1$ 
+				//ignore 
 			}			
 		}
 	}

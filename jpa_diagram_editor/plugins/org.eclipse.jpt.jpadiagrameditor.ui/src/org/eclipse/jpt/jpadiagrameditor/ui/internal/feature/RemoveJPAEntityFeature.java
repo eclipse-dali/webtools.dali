@@ -43,18 +43,15 @@ import org.eclipse.ui.PlatformUI;
 
 public class RemoveJPAEntityFeature extends DefaultRemoveFeature {
 	
+	private boolean shouldRearrangeIsARelations = true;
 	
-    public RemoveJPAEntityFeature(IFeatureProvider fp) {
+    public RemoveJPAEntityFeature(IFeatureProvider fp, boolean shouldRearrangeIsARelations) {
     	super(fp);
+    	this.shouldRearrangeIsARelations = shouldRearrangeIsARelations;
     }
     
     public void preRemove(IRemoveContext context) {
     	PictogramElement pe = context.getPictogramElement();
-    			
-//		RestoreEntityFeature ft = new RestoreEntityFeature(getFeatureProvider());
-//		ICustomContext customContext = new CustomContext(new PictogramElement[] { pe });
-//		ft.execute(customContext);
-    	
     	final Object bo = getFeatureProvider().getBusinessObjectForPictogramElement(pe);
     	Set<Shape> shapesForDeletion = new HashSet<Shape>();
     	if (bo instanceof JavaPersistentType) {
@@ -75,20 +72,8 @@ public class RemoveJPAEntityFeature extends DefaultRemoveFeature {
 				IRemoveContext ctx = new RemoveContext(it.next());
 				f.remove(ctx);    			
     		}
-    		//---------------------------------------------------------------------
-    		//--Workaround for https://bugs.eclipse.org/bugs/show_bug.cgi?id=281345
-    		//Job job = new Job("Remove JPA entity") {				//$NON-NLS-1$
-			//	protected IStatus run(IProgressMonitor monitor) {
-		    		String name = ((PersistentType)bo).getName();
-					getFeatureProvider().remove(name, true);
-					//return new Status(IStatus.OK, 
-					//	  JPADiagramEditorPlugin.PLUGIN_ID, 
-					//	  name + " is removed"); 	//$NON-NLS-1$
-									  
-			//	}
-    		//};
-    		//job.schedule();
-    		//---------------------------------------------------------------------
+    		String name = ((PersistentType)bo).getName();
+			getFeatureProvider().remove(name, true);
     	} 			
     }
     
@@ -123,9 +108,9 @@ public class RemoveJPAEntityFeature extends DefaultRemoveFeature {
 		super.execute(context);
 	}
 	
-	
-	
-
-	
+    public void postRemove(IRemoveContext context) {
+    	if (shouldRearrangeIsARelations)
+    		JpaArtifactFactory.instance().rearrangeIsARelations(getFeatureProvider());
+    }
 	
 }

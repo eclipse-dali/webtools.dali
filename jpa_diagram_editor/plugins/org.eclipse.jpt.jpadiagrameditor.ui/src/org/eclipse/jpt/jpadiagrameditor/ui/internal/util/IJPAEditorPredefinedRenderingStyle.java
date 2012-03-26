@@ -13,18 +13,15 @@
  * </copyright>
  *
  *******************************************************************************/
-package org.eclipse.jpt.jpadiagrameditor.ui.internal.relations;
+package org.eclipse.jpt.jpadiagrameditor.ui.internal.util;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.graphiti.util.IPredefinedRenderingStyle;
 
-public interface BidirectionalRelation extends IRelation {
+public interface IJPAEditorPredefinedRenderingStyle extends IPredefinedRenderingStyle {
+
+	/**
+	 * The ID for a green-to-white gradient with a gloss-effect.
+	 */
+	public static final String GREEN_WHITE_GLOSS_ID = "green-white-gloss"; //$NON-NLS-1$
 	
-	public abstract JavaPersistentAttribute getOwnerAnnotatedAttribute();
-
-	public abstract JavaPersistentAttribute getInverseAnnotatedAttribute();
-
-	public abstract void setOwnerAnnotatedAttribute(JavaPersistentAttribute ownerAnnotatedAttribute);
-
-	public abstract void setInverseAnnotatedAttribute(JavaPersistentAttribute inverseAnnotatedAttribute); 
-
 }

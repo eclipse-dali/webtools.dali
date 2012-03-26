@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.WeakHashMap;
+
 import org.eclipse.core.internal.resources.File;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarkerDelta;
@@ -115,7 +116,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.ModelI
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPAEditorDiagramTypeProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.AbstractRelation;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.BidirectionalRelation;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IBidirectionalRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
@@ -143,6 +144,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 	private IJPAEditorFeatureProvider featureProvider;
 	private HashSet<String> removeIgnore = new HashSet<String>();
 	private HashSet<String> removeRelIgnore = new HashSet<String>();
+	private Collection<JavaPersistentType> persistentTypes = new HashSet<JavaPersistentType>();
 
 	private HashSet<String> addIgnore = new HashSet<String>();
 	private Hashtable<String, IRelation> attribToRel = new Hashtable<String, IRelation>();
@@ -221,7 +223,11 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			eclipseFacade.getDisplay().asyncExec(new Runnable() {
 				public void run() {
 					if(featureProvider != null)
-						featureProvider.getDiagramTypeProvider().getDiagramEditor().refresh();
+						try {
+							featureProvider.getDiagramTypeProvider().getDiagramEditor().refresh();
+						} catch (Exception e) {
+							// ignore
+						}
 				}
 			});
 
@@ -323,10 +329,11 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			addListenersToEntity(jpt);
 			PictogramElement pe = featureProvider.getPictogramElementForBusinessObject(jpt);
 			Graphiti.getPeService().setPropertyValue(pe, JPAEditorConstants.PROP_ENTITY_CLASS_NAME, jpt.getName());
+			persistentTypes.add(jpt);
 		} else if (bo instanceof AbstractRelation) {
 			AbstractRelation rel = (AbstractRelation) bo;
 			attribToRel.put(produceOwnerKeyForRel(rel), rel);
-			if (rel instanceof BidirectionalRelation) {
+			if (rel instanceof IBidirectionalRelation) {
 				attribToRel.put(produceInverseKeyForRel(rel), rel);
 			}
 		} else if (bo instanceof JavaPersistentAttribute) {
@@ -344,7 +351,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 				String k = getKeyForBusinessObject(at);
 				remove(k);
 			}
-			
+			persistentTypes.remove(jpt);
 			removeListenersFromEntity(jpt);
 			Diagram d = featureProvider.getDiagramTypeProvider().getDiagram();
 			if (d.getChildren().size() == 1) {
@@ -361,7 +368,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		} else if (o instanceof AbstractRelation) {
 			AbstractRelation rel = (AbstractRelation) o;
 			attribToRel.remove(produceOwnerKeyForRel(rel));
-			if (rel instanceof BidirectionalRelation) 
+			if (rel instanceof IBidirectionalRelation) 
 				attribToRel.remove(produceInverseKeyForRel(rel));
 		} else if (o instanceof JavaPersistentAttribute) {
 			removeListenersFromAttribute((JavaPersistentAttribute)o);
@@ -939,8 +946,10 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		util = null;
 		keyToBO.clear();
 		attribToRel.clear();
+		persistentTypes.clear();
 		keyToBO = null;
-		attribToRel = null;	
+		attribToRel = null;
+		persistentTypes = null;
 		removeAllListeners();
 		featureProvider = null;
 		synchronized (JPASolver.class) {
@@ -977,25 +986,20 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			
 			for (ICompilationUnit cu : affectedCompilationUnits) {
 				JavaPersistentType jpt = JPAEditorUtil.getJPType(cu);
-				for (JPASolver solver : solversSet) {
+				for (final JPASolver solver : solversSet) {
 					final ContainerShape cs = (ContainerShape)solver.featureProvider.getPictogramElementForBusinessObject(jpt);
 					if (cs == null)
 						return;
 					String entName = JPAEditorUtil.getText(jpt);
 					try {
 						final String newHeader = (cu.hasUnsavedChanges() ? "* " : "") + entName;	//$NON-NLS-1$ //$NON-NLS-2$
-						Display.getDefault().asyncExec(new Runnable() {
-							public void run() {
-								GraphicsUpdater.updateHeader(cs, newHeader);
-							}
-						});
-										
+						GraphicsUpdater.updateHeader(cs, newHeader);
+						JpaArtifactFactory.instance().rearrangeIsARelationsInTransaction(solver.featureProvider);
 					} catch (JavaModelException e) {
 						JPADiagramEditorPlugin.logError("Cannot check compilation unit for unsaved changes", e); //$NON-NLS-1$				 
-					}	
+					}
 				}
-				
-			}			
+			}
 		}
 		
 		private Set<ICompilationUnit> getAffectedCompilationUnits(IJavaElementDelta delta) { 
@@ -1468,6 +1472,10 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 				    resources.add(del);
 			}
 		return resources;
+	}
+
+	public Collection<JavaPersistentType> getPersistentTypes() {
+		return persistentTypes;
 	}
 
 }

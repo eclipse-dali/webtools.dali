@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 
 
-public class OneToOneBiDirRelation extends OneToOneRelation implements BidirectionalRelation{
+public class OneToOneBiDirRelation extends OneToOneRelation implements IBidirectionalRelation{
 	public OneToOneBiDirRelation(IJPAEditorFeatureProvider fp, JavaPersistentType owner, 
 								 JavaPersistentType inverse, 
 								 String ownerAttributeName,
@@ -59,7 +59,6 @@ public class OneToOneBiDirRelation extends OneToOneRelation implements Bidirecti
 	private void createRelation(IJPAEditorFeatureProvider fp, ICompilationUnit ownerCU, ICompilationUnit inverseCU) {
 		String name = JPAEditorUtil.returnSimpleName(inverse.getName());
 		String actName = JPAEditorUtil.returnSimpleName(JpaArtifactFactory.instance().getEntityName(inverse));
-
 		String nameWithNonCapitalLetter = JPAEditorUtil.decapitalizeFirstLetter(name);
 		String actNameWithNonCapitalLetter = JPAEditorUtil.decapitalizeFirstLetter(actName);
 		

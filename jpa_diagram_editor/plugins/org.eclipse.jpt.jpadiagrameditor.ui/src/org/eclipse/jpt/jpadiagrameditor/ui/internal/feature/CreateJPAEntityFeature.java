@@ -30,6 +30,7 @@ import org.eclipse.graphiti.features.impl.AbstractCreateFeature;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -43,6 +44,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.propertypage.JPADiagramPrope
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPAEditorImageProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchSite;
@@ -52,9 +54,10 @@ public class CreateJPAEntityFeature extends AbstractCreateFeature {
 	
 	private IPreferenceStore jpaPreferenceStore = JPADiagramEditorPlugin.getDefault().getPreferenceStore();
 	private boolean isMappedSuperclassChild;
+	private JavaPersistentType mappedSuperclass;
 	private String mappedSuperclassName;
 	private String mappedSuperclassPackage;
-	private boolean hasPrimarykey;
+	private boolean superHasPrimarykey;
 
 
 	public CreateJPAEntityFeature(IFeatureProvider fp) {
@@ -75,14 +78,24 @@ public class CreateJPAEntityFeature extends AbstractCreateFeature {
 
 	public CreateJPAEntityFeature(IFeatureProvider fp,
 			boolean isMappedSuperclassChild, String mappedSuperclassName,
-			String mappedSuperClassPackage, boolean hasPrimaryKey) {
+			String mappedSuperClassPackage, boolean superHasPrimaryKey) {
 		this(fp);
 		this.isMappedSuperclassChild = isMappedSuperclassChild;
 		this.mappedSuperclassName = mappedSuperclassName;
 		this.mappedSuperclassPackage = mappedSuperClassPackage;
-		this.hasPrimarykey = hasPrimaryKey;
+		this.superHasPrimarykey = superHasPrimaryKey;
 	}
 
+	public CreateJPAEntityFeature(IJPAEditorFeatureProvider fp,
+			JavaPersistentType mappedSuperclass) throws JavaModelException {
+		this(fp);
+		this.isMappedSuperclassChild = true;
+		this.mappedSuperclass = mappedSuperclass; 
+		this.mappedSuperclassName = mappedSuperclass.getName();
+		this.mappedSuperclassPackage = JpaArtifactFactory.instance().getMappedSuperclassPackageDeclaration(mappedSuperclass);
+		this.superHasPrimarykey = JpaArtifactFactory.instance().hasOrInheritsPrimaryKey(mappedSuperclass);
+	}
+	
 
     public boolean canCreate(ICreateContext context) {
         return context.getTargetContainer() instanceof Diagram;
@@ -122,7 +135,17 @@ public class CreateJPAEntityFeature extends AbstractCreateFeature {
 		}
 		
 		try {
-			this.getFeatureProvider().getJPAEditorUtil().createEntityInProject(targetProject, entityName, jpaPreferenceStore, isMappedSuperclassChild, mappedSuperclassName, mappedSuperclassPackage, hasPrimarykey);
+			if (mappedSuperclass != null) {
+				this.getFeatureProvider().
+				getJPAEditorUtil().
+					createEntityInProject(targetProject, entityName, mappedSuperclass);	//$NON-NLS-1$								
+			} else {
+				this.getFeatureProvider().
+				getJPAEditorUtil().
+					createEntityInProject(targetProject, entityName, jpaPreferenceStore, 
+										  isMappedSuperclassChild, mappedSuperclassName, 
+										  mappedSuperclassPackage, "id", superHasPrimarykey);	//$NON-NLS-1$				
+			}
 		} catch (Exception e1) {
 			JPADiagramEditorPlugin.logError("Cannot create an entity in the project " + targetProject.getName(), e1);  //$NON-NLS-1$		 
 		}

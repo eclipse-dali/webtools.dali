@@ -18,6 +18,7 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal.provider;
 import org.eclipse.graphiti.mm.algorithms.Image;
 import org.eclipse.graphiti.mm.algorithms.Polyline;
 import org.eclipse.graphiti.mm.algorithms.Text;
+import org.eclipse.graphiti.mm.algorithms.styles.LineStyle;
 import org.eclipse.graphiti.mm.pictograms.Connection;
 import org.eclipse.graphiti.mm.pictograms.ConnectionDecorator;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
@@ -37,18 +38,14 @@ public class JPAEditorImageCreator implements IJPAEditorImageCreator {
 		return polyline;
 	}
 
-	/*
-	public ConnectionDecorator createTextConnectionDecorator(Connection connection, String text, double location) {
-		ConnectionDecorator textDecorator = Graphiti.getPeService().createConnectionDecorator(connection, true, 0.5, true);
-		Text txt = Graphiti.getGaService().createDefaultText(textDecorator);
-		txt.setLineWidth(JPAEditorConstants.CONNECTION_LINE_WIDTH);
-		txt.setValue(text);
-		Graphiti.getGaService().manageColor(connection.getParent(), IColorConstant.BLACK);
-		Graphiti.getGaService().setLocation(txt, 5, -20);
-		return textDecorator;
+	public Polyline createIsAConnectionLine(Diagram d, Connection connection) {
+		Polyline polyline = Graphiti.getGaService().createPolyline(connection);
+		polyline.setForeground(Graphiti.getGaService().manageColor(d, JPAEditorConstants.IS_A_CONNECTION_LINE_COLOR));
+		polyline.setLineWidth(JPAEditorConstants.IS_A_CONNECTION_LINE_WIDTH);
+		polyline.setLineStyle(LineStyle.DASH);
+		return polyline;
 	}
-	*/
-	
+		
 	public ConnectionDecorator createCardinalityConnectionDecorator(Diagram d, Connection c, String text, double location) {
 		ConnectionDecorator textDecorator = Graphiti.getPeService().createConnectionDecorator(c, true, location, true);
 		Text txt = Graphiti.getGaService().createDefaultText(d, textDecorator);
@@ -60,11 +57,14 @@ public class JPAEditorImageCreator implements IJPAEditorImageCreator {
 		return textDecorator;
 	}
 
-	public ConnectionDecorator createArrowConnectionDecorator(Connection connection, double location) {
+	public ConnectionDecorator createArrowConnectionDecorator(Connection connection, 
+															  double location,
+															  boolean isA) {
 		ConnectionDecorator cd = Graphiti.getPeService().createConnectionDecorator(connection, false, location, true);
-		Polyline arrow = null; 
-			arrow = Graphiti.getGaService().createPolyline(cd, new int[] { 11, 3, 0, 0, 11, -3, 11, 3});
-		arrow.setForeground(Graphiti.getGaService().manageColor(connection.getParent(), JPAEditorConstants.CONNECTION_LINE_COLOR));
+		Polyline arrow = Graphiti.getGaService().createPolyline(cd, new int[] { 11, 3, 0, 0, 11, -3, 11, 3 });
+		arrow.setForeground(Graphiti.getGaService().manageColor(connection.getParent(), isA ? 
+																						JPAEditorConstants.IS_A_CONNECTION_LINE_COLOR : 
+																						JPAEditorConstants.CONNECTION_LINE_COLOR));
 		arrow.setLineWidth(JPAEditorConstants.CONNECTION_LINE_WIDTH);
 		return cd;
 	}
@@ -105,6 +105,17 @@ public class JPAEditorImageCreator implements IJPAEditorImageCreator {
 		Image icon = Graphiti.getGaService().createImage(connection, iconId);
 		Graphiti.getGaService().setLocation(icon, 5, -20);
 		return iconDecorator;
+	}
+
+	public ConnectionDecorator createIsATextConnectionDecorator(Diagram d, Connection c) {
+		ConnectionDecorator textDecorator = Graphiti.getPeService().createConnectionDecorator(c, true, 0.5, true);
+		Text txt = Graphiti.getGaService().createDefaultText(d, textDecorator);
+		txt.setLineWidth(JPAEditorConstants.CONNECTION_LINE_WIDTH);
+		txt.setValue(JPAEditorConstants.IS_A);
+		Graphiti.getGaService().manageColor(c.getParent(), IColorConstant.BLACK);
+		//Point pt = JPAEditorUtil.recalcTextDecoratorPosition((FreeFormConnection)c, textDecorator);
+		Graphiti.getGaService().setLocation(txt, 5, 5, false);
+		return textDecorator;		
 	}
 
 }

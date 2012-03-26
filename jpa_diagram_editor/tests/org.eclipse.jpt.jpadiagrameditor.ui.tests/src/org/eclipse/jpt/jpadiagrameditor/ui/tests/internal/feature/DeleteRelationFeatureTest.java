@@ -28,7 +28,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.DeleteRelationFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.BidirectionalRelation;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IBidirectionalRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IJPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.util.IEditor;
 import org.eclipse.ui.IWorkbenchPartSite;
@@ -45,7 +45,7 @@ public class DeleteRelationFeatureTest {
 		IDeleteContext ctx = EasyMock.createMock(IDeleteContext.class);
 		PictogramElement pe = EasyMock.createMock(PictogramElement.class);
 		expect(ctx.getPictogramElement()).andStubReturn(pe);
-		BidirectionalRelation rel = EasyMock.createMock(BidirectionalRelation.class); 
+		IBidirectionalRelation rel = EasyMock.createMock(IBidirectionalRelation.class); 
 		ICompilationUnit cu1 = EasyMock.createMock(ICompilationUnit.class);
 		ICompilationUnit cu2 = EasyMock.createMock(ICompilationUnit.class);
 		JavaPersistentType jpt1 = EasyMock.createMock(JavaPersistentType.class);

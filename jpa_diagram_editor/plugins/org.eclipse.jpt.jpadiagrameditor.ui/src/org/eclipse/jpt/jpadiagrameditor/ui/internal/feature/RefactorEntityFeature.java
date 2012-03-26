@@ -114,6 +114,7 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 		final Shape pict = (Shape)getFeatureProvider().getPictogramElementForBusinessObject(jpt);
 		JavaPersistentType jpt = (JavaPersistentType)getFeatureProvider().
 									getBusinessObjectForPictogramElement(pict);
+		final JPAEditorConstants.DIAGRAM_OBJECT_TYPE dot = JpaArtifactFactory.instance().determineDiagramObjectType(jpt);
 		final PersistenceUnit pu = JpaArtifactFactory.instance().getPersistenceUnit(jpt);
 		final Semaphore s = new Semaphore(0);
 		final JPAProjectListener lsnr = new JPAProjectListener(s);
@@ -137,12 +138,13 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 		ted.getCommandStack().execute(new RecordingCommand(ted) {
 			@Override
 			protected void doExecute() {
-				remapEntity(oldName, pict, pu, rename, lsnr, getFeatureProvider());
+				remapEntity(oldName, pict, pu, rename, lsnr, dot, getFeatureProvider());
 			}
 		});	
 	}
 	
 	public void execute(ICustomContext context, String newName, ICompilationUnit cu, JavaPersistentType jpt) {
+		final JPAEditorConstants.DIAGRAM_OBJECT_TYPE dot = JpaArtifactFactory.instance().determineDiagramObjectType(jpt);
 		final String oldName = jpt.getName();
 		final Shape pict = (Shape)getFeatureProvider().getPictogramElementForBusinessObject(jpt);
 		jpt = (JavaPersistentType)getFeatureProvider().
@@ -161,7 +163,7 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 		ted.getCommandStack().execute(new RecordingCommand(ted) {
 			@Override
 			protected void doExecute() {
-				remapEntity(oldName, pict, pu, true, lsnr, getFeatureProvider());
+				remapEntity(oldName, pict, pu, true, lsnr, dot, getFeatureProvider());
 			}
 		});
 	}
@@ -171,6 +173,7 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 								   final PersistenceUnit pu,
 								   final boolean rename,
 								   final JPAProjectListener lsnr,
+								   final JPAEditorConstants.DIAGRAM_OBJECT_TYPE dot,
 								   final IJPAEditorFeatureProvider fp) {
 		BusyIndicator.showWhile(Display.getCurrent(), new Runnable() {
 			public void run() {
@@ -190,11 +193,11 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 				cont.setY(y);
 				cont.setWidth(width);
 				cont.setHeight(height);
-				RoundedRectangle rect = AddJPAEntityFeature.createEntityRectangle(cont, cs, fp.getDiagramTypeProvider().getDiagram()); 	
+				RoundedRectangle rect = AddJPAEntityFeature.createEntityRectangle(cont, cs, dot, fp.getDiagramTypeProvider().getDiagram()); 	
 				rect.setFilled(true);
 				
 				IRemoveContext ctx = new RemoveContext(pict); 
-				RemoveJPAEntityFeature ft = new RemoveJPAEntityFeature(fp);
+				RemoveJPAEntityFeature ft = new RemoveJPAEntityFeature(fp, true);
 				
 				boolean primaryCollapsed = JPAEditorConstants.TRUE_STRING.equals(Graphiti.getPeService().getPropertyValue(pict, JPAEditorConstants.PRIMARY_COLLAPSED));
 				boolean relationCollapsed = JPAEditorConstants.TRUE_STRING.equals(Graphiti.getPeService().getPropertyValue(pict, JPAEditorConstants.RELATION_COLLAPSED));
@@ -217,7 +220,7 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 				addCtx.setY(y);
 				addCtx.setWidth(width);
 				addCtx.setHeight(height);
-				AddJPAEntityFeature ft1 = new AddJPAEntityFeature(fp);
+				AddJPAEntityFeature ft1 = new AddJPAEntityFeature(fp, true);
 				ft.remove(ctx);
 				ft1.add(addCtx);
 				PictogramElement pe = fp.getPictogramElementForBusinessObject(newJPT);

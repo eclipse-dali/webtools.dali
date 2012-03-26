@@ -166,9 +166,25 @@ public class GraphicsUpdater {
 	}
 	
 	public static void updateHeader(ContainerShape entityShape, final String newHeader) {
-		if(entityShape == null)
+		final Text txt = getHeaderText(entityShape);
+		if (txt == null)
 			return;
-		
+		//if (!JPAEditorUtil.areHeadersEqual(txt.getValue(), newHeader)) {
+
+		if (!txt.getValue().equals(newHeader)) {
+			TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(txt);
+			RecordingCommand rc = new RecordingCommand(ted) {
+				protected void doExecute() {
+					txt.setValue(newHeader);		
+				}		
+			};			
+			ted.getCommandStack().execute(rc);
+		}
+	}
+	
+	private static Text getHeaderText(ContainerShape entityShape) {
+		if(entityShape == null)
+			return null;		
 		List<Shape> shapes = entityShape.getChildren();
 		Iterator<Shape> shIt = shapes.iterator();
 		Shape headerShape = null;;
@@ -180,19 +196,13 @@ public class GraphicsUpdater {
 			headerShape = null;
 		}
 		if (headerShape == null)
-			return;
+			return null;
 		GraphicsAlgorithm ga = headerShape.getGraphicsAlgorithm();
 		if (ga == null)
-			return;
-		final Text txt = (Text)ga.getGraphicsAlgorithmChildren().get(0);
-		if (!JPAEditorUtil.areHeadersEqual(txt.getValue(), newHeader)) {
-			TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(txt);
-			RecordingCommand rc = new RecordingCommand(ted) {
-				protected void doExecute() {
-					txt.setValue(newHeader);		
-				}		
-			};			
-			ted.getCommandStack().execute(rc);
-		}
+			return null;
+		if (ga.getGraphicsAlgorithmChildren().size() == 0)
+			return null;
+		Text txt = (Text)ga.getGraphicsAlgorithmChildren().get(0);
+		return txt;
 	}
 }

@@ -15,6 +15,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.provider;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Properties;
 
 import org.eclipse.core.resources.IProject;
@@ -23,7 +25,9 @@ import org.eclipse.graphiti.features.IDeleteFeature;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.IDeleteContext;
 import org.eclipse.graphiti.features.custom.ICustomFeature;
+import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.Shape;
+import org.eclipse.graphiti.services.IPeService;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -32,6 +36,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.IModel
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation.RelDir;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation.RelType;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IsARelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IGraphicsUpdater;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IJPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IPeServiceUtil;
@@ -39,6 +44,12 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IPeServiceUtil;
 
 public interface IJPAEditorFeatureProvider extends IFeatureProvider{
 
+	public Diagram getDiagram();
+	
+	public HashSet<IsARelation> getAllRedundantIsARelations(); 
+	
+	public HashSet<IsARelation> getAllExistingIsARelations();
+	
 	public ICompilationUnit getCompilationUnit(JavaPersistentType jpt);
 	
 	public boolean hasObjectWithName(String name);
@@ -80,8 +91,10 @@ public interface IJPAEditorFeatureProvider extends IFeatureProvider{
     public void replaceAttribute(JavaPersistentAttribute oldAt, JavaPersistentAttribute newAt);
     	
 	public void renewAttributeJoiningStrategyPropertyListener(JavaPersistentAttribute jpa);
+	
+	public IPeService getPeService();
 
-	public IPeServiceUtil getPeUtil();
+	public IPeServiceUtil getPeServiceUtil();
 	
 	public IJPAEditorUtil getJPAEditorUtil();
 
@@ -98,5 +111,13 @@ public interface IJPAEditorFeatureProvider extends IFeatureProvider{
 	public TransactionalEditingDomain getTransactionalEditingDomain();
 	
 	public Properties loadProperties(IProject project);
+
+	public Collection<JavaPersistentType> getPersistentTypes();
+	
+	public JavaPersistentType getFirstSuperclassBelongingToTheDiagram(JavaPersistentType subclass);
+	
+	public void removeAllRedundantIsARelations();
+	
+	public boolean existRedundantIsARelations();
 
 }

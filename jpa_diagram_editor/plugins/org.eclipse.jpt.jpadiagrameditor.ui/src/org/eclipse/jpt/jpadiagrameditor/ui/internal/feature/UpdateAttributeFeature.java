@@ -31,6 +31,7 @@ import org.eclipse.graphiti.mm.pictograms.AnchorContainer;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.services.Graphiti;
+import org.eclipse.graphiti.util.IColorConstant;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
@@ -128,17 +129,21 @@ public class UpdateAttributeFeature extends AbstractCustomFeature {
 		return rect;
 	}
 
-	public void addSeparatorsToShape(ContainerShape compartmentShape) {
-		addSeparatorToCollection(compartmentShape, 0);
-		addSeparatorToCollection(compartmentShape, JPAEditorConstants.COMPARTMENT_MIN_HEIGHT);
+	public void addSeparatorsToShape(ContainerShape compartmentShape,
+			JPAEditorConstants.DIAGRAM_OBJECT_TYPE dot) {
+		addSeparatorToCollection(compartmentShape, 0, dot);
+		addSeparatorToCollection(compartmentShape, JPAEditorConstants.COMPARTMENT_MIN_HEIGHT, dot);
 	}
 
-	private Shape addSeparatorToCollection(ContainerShape containerShape, int y) {
+	private Shape addSeparatorToCollection(ContainerShape containerShape, int y, 
+										   JPAEditorConstants.DIAGRAM_OBJECT_TYPE dot) {
 		final int width = containerShape.getGraphicsAlgorithm().getWidth();
 		Shape shape = Graphiti.getPeService().createShape(containerShape, false);
 		Rectangle rectangle = Graphiti.getGaService().createRectangle(shape);
-		rectangle.setForeground(manageColor(JPAEditorConstants.ENTITY_BACKGROUND));
-		rectangle.setBackground(manageColor(JPAEditorConstants.ENTITY_BORDER_COLOR));
+		IColorConstant foreground = JpaArtifactFactory.instance().getForeground(dot);
+		IColorConstant background = JpaArtifactFactory.instance().getBackground(dot);
+		rectangle.setForeground(manageColor(background));
+		rectangle.setBackground(manageColor(foreground));
 		rectangle.setLineVisible(false);
 		Graphiti.getGaService().setSize(rectangle, width, JPAEditorConstants.SEPARATOR_HEIGHT);
 		Graphiti.getGaService().setLocationAndSize(rectangle, 0, y, width, JPAEditorConstants.SEPARATOR_HEIGHT);

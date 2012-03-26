@@ -45,7 +45,7 @@ public class LayoutJPAEntityFeature extends AbstractLayoutFeature {
 
     public LayoutJPAEntityFeature(IJPAEditorFeatureProvider fp) {
         super(fp);
-        peUtil = fp.getPeUtil();
+        peUtil = fp.getPeServiceUtil();
     }
 
     public boolean canLayout(ILayoutContext context) {

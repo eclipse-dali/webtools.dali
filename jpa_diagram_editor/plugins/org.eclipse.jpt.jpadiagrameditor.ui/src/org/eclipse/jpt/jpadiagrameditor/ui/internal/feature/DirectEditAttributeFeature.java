@@ -35,7 +35,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.BidirectionalRelation;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IBidirectionalRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
@@ -106,7 +106,7 @@ public class DirectEditAttributeFeature extends AbstractDirectEditingFeature {
 
 		IRelation rel = getFeatureProvider().getRelationRelatedToAttribute(oldAt);
 		String inverseJPTName = null;
-		if (BidirectionalRelation.class.isInstance(rel)) 
+		if (IBidirectionalRelation.class.isInstance(rel)) 
 			inverseJPTName = rel.getInverse().getName();
 		if (oldAt.getName().equals(value))
 			return;

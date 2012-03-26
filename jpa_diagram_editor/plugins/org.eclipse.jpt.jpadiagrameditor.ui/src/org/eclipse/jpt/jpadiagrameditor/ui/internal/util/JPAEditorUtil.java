@@ -159,7 +159,9 @@ public class JPAEditorUtil {
 	
     public static Anchor getAnchor(ContainerShape cs) { 
     	Collection<Anchor> anchors  = cs.getAnchors();
-	    return anchors.iterator().next();    	
+    	if (anchors.iterator().hasNext())
+    		return anchors.iterator().next();
+    	return null;
     }
     
     public static Anchor getAnchor(JavaPersistentType jpt, IFeatureProvider fp) {
@@ -536,7 +538,12 @@ public class JPAEditorUtil {
 		Iterator<Connection> consIt = cons.iterator();
 		while (consIt.hasNext()) {
 			Connection con = consIt.next();
-			ContainerShape cs1 = (ContainerShape)con.getStart().getParent(); 
+			ContainerShape cs1 = null;
+			try {
+				cs1 = (ContainerShape)con.getStart().getParent();
+			} catch (NullPointerException e) {
+				continue;
+			}
 			if (cs1 != cs)
 				res.add(cs1);
 			cs1 = (ContainerShape)con.getEnd().getParent();
@@ -847,7 +854,10 @@ public class JPAEditorUtil {
 						Iterator<Connection> cIter = set.iterator();
 						while (cIter.hasNext()) {
 							Connection c = cIter.next();
-							IRelation rel = (IRelation)fp.getBusinessObjectForPictogramElement(c);
+							Object o = fp.getBusinessObjectForPictogramElement(c);
+							if (!(o instanceof IRelation))
+								continue;
+							IRelation rel = (IRelation)o; 
 							rearrangeConnection(c, cnt, setSize,  rel.getOwner() == rel.getInverse());
 							cnt++;
 						}
@@ -1067,7 +1077,7 @@ public class JPAEditorUtil {
 	
 	static public String generateUniqueMappedSuperclassName(
 			JpaProject jpaProject, String pack, IJPAEditorFeatureProvider fp) {
-		String NAME = pack + ".MappedSuperclass"; //$NON-NLS-1$
+		String NAME = pack + ".MpdSuprcls"; //$NON-NLS-1$
 		String name = null;
 
 		HashSet<String> JPAProjectEntityNames = getEntityNames(jpaProject);
@@ -1084,17 +1094,26 @@ public class JPAEditorUtil {
 		return name;
 	}
 				
-
+	static public IFile createEntityInProject(IProject project,
+											  String entityName,
+											  JavaPersistentType mappedSuperclass) throws Exception {
+		IFolder folder = getPackageFolder(project);
+		return createEntity(project, folder, entityName,
+				true, mappedSuperclass.getName(),
+				JpaArtifactFactory.instance().getMappedSuperclassPackageDeclaration(mappedSuperclass), 
+				JpaArtifactFactory.instance().generateIdName(mappedSuperclass), 
+				JpaArtifactFactory.instance().hasOrInheritsPrimaryKey(mappedSuperclass));
+	}
 	
 	static public IFile createEntityInProject(IProject project,
 			String entityName, IPreferenceStore jpaPreferenceStore,
 			boolean isMappedSuperclassChild, String mappedSuperclassName,
-			String mappedSuperclassPackage, boolean hasPrimaryKey)
+			String mappedSuperclassPackage, String idName, boolean hasPrimaryKey)
 			throws Exception {
 		IFolder folder = getPackageFolder(project);
 		return createEntity(project, folder, entityName,
 				isMappedSuperclassChild, mappedSuperclassName,
-				mappedSuperclassPackage, hasPrimaryKey);
+				mappedSuperclassPackage, idName, hasPrimaryKey);
 	}
 
 				
@@ -1102,8 +1121,7 @@ public class JPAEditorUtil {
 			IProject project, String mappedSuperclassName,
 			IPreferenceStore jpaPreferenceStore) throws Exception {
 		IFolder folder = getPackageFolder(project);
-		createMappedSuperclass(project, folder, mappedSuperclassName);
-		return createMappedSuperclass(project, folder, mappedSuperclassName);
+		return createMappedSuperclassInProject(project, folder, mappedSuperclassName);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -1130,7 +1148,13 @@ public class JPAEditorUtil {
 
 	}
 	
-	static private IFile createMappedSuperclass(IProject project,
+	static public IFile createMappedSuperclassInProject(IProject project,
+			String mappedSuperclassName) throws Exception {
+		IFolder folder = getPackageFolder(project);
+		return createMappedSuperclassInProject(project, folder, mappedSuperclassName);
+	}
+	
+	static public IFile createMappedSuperclassInProject(IProject project,
 			IFolder folder, String mappedSuperclassName) throws Exception {
 
 		String mappedSuperclassShortName = mappedSuperclassName
@@ -1275,10 +1299,14 @@ public class JPAEditorUtil {
 			}
 	}
 		
-	static private IFile createEntity(IProject project, IFolder folder, String entityName, boolean isMappedSuperclassChild, 
-			String mappedSuperclassName, String mappedSuperclassPackage, boolean hasPrimaryKey) throws Exception {
-
-
+	static private IFile createEntity(IProject project, 
+									  IFolder folder, 
+									  String entityName, 
+									  boolean isMappedSuperclassChild, 
+									  String mappedSuperclassName, 
+									  String mappedSuperclassPackage, 
+									  String idName,
+									  boolean hasPrimaryKey) throws Exception {
 		
 		String entityShortName = entityName.substring(entityName.lastIndexOf('.') + 1);		
 		if (!folder.exists()) {
@@ -1306,28 +1334,20 @@ public class JPAEditorUtil {
 		}
 
 		String primaryKeyDeclaration = ""; //$NON-NLS-1$
-		if (!hasPrimaryKey) {
-			primaryKeyDeclaration = (fieldBasedAccess ? "  @Id \n" : "") //$NON-NLS-1$ //$NON-NLS-2$
-					+ "  private long id;\n\n" //$NON-NLS-1$
-					+ (fieldBasedAccess ? "" : "  @Id \n") //$NON-NLS-1$ //$NON-NLS-2$
-					+ "  public long getId() {\n" //$NON-NLS-1$
-					+ "    return id;\n" //$NON-NLS-1$
-					+ "  }\n\n" //$NON-NLS-1$
-					+ "  public void setId(long id) {\n" //$NON-NLS-1$
-					+ "    this.id = id;\n" //$NON-NLS-1$
-					+ "  }\n\n"; //$NON-NLS-1$
-		}
-
+		if (!hasPrimaryKey) 
+			primaryKeyDeclaration = generatePrimaryKeyDeclaration(fieldBasedAccess, idName);
 		
 		if (!file.exists()) {
-			  String content = "package " + JPADiagramPropertyPage.getDefaultPackage(project, props) + ";\n\n" //$NON-NLS-1$	//$NON-NLS-2$
-					+ "import javax.persistence.*;\n"  //$NON-NLS-1$
-					+ packageImport+"\n\n" //$NON-NLS-1$
-					+ "@Entity \n" //$NON-NLS-1$
-					+ ((tableName.length() > 0) ? ("@Table(name=\"" + tableName + "\")\n") : "")  //$NON-NLS-1$	//$NON-NLS-2$	//$NON-NLS-3$
-					+ classDeclarationStringContent
-					+ primaryKeyDeclaration
-					+"}"; //$NON-NLS-1$
+			  String content = "package " + JPADiagramPropertyPage.getDefaultPackage(project, props)	//$NON-NLS-1$ 
+					  		 + ";\n\n"																	//$NON-NLS-1$	
+					  		 + "import javax.persistence.*;\n"  										//$NON-NLS-1$
+					  		 + packageImport+"\n\n" 													//$NON-NLS-1$
+					  		 + "@Entity \n" 															//$NON-NLS-1$
+					  		 + ((tableName.length() > 0) ? ("@Table(name=\"" 							//$NON-NLS-1$
+					  		 + tableName + "\")\n") : "")  												//$NON-NLS-1$	//$NON-NLS-2$
+					  		 + classDeclarationStringContent
+					  		 + primaryKeyDeclaration
+					  		 +"}"; 																		//$NON-NLS-1$
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
 			try {
 				stream.write(content.getBytes());
@@ -1338,7 +1358,21 @@ public class JPAEditorUtil {
 			}	
 		}
 		return file;
-	}		
+	}	
+	
+	static private String generatePrimaryKeyDeclaration(boolean fieldBasedAccess, String primaryKeyName) {
+		String primaryKeyDeclaration = (fieldBasedAccess ? "  @Id \n" : "") 				//$NON-NLS-1$	//$NON-NLS-2$
+				+ "  private long " + primaryKeyName + ";\n\n" 								//$NON-NLS-1$	//$NON-NLS-2$
+				+ (fieldBasedAccess ? "" : "  @Id \n") 										//$NON-NLS-1$	//$NON-NLS-2$
+				+ "  public long get" + capitalizeFirstLetter(primaryKeyName) + "() {\n" 	//$NON-NLS-1$	//$NON-NLS-2$
+				+ "    return " + primaryKeyName + ";\n" 									//$NON-NLS-1$	//$NON-NLS-2$
+				+ "  }\n\n" 																//$NON-NLS-1$
+				+ "  public void set" + capitalizeFirstLetter(primaryKeyName) 				//$NON-NLS-1$ 
+				+ "(long " + primaryKeyName + ") {\n" 										//$NON-NLS-1$	//$NON-NLS-2$
+				+ "    this." + primaryKeyName + " = " + primaryKeyName + ";\n" 			//$NON-NLS-1$	//$NON-NLS-2$	//$NON-NLS-3$
+				+ "  }\n\n"; 																//$NON-NLS-1$
+		return primaryKeyDeclaration;
+	}
 	
 	static private HashSet<String> getEntityNames(JpaProject jpaProject) {
 		HashSet<String> names = new HashSet<String>();

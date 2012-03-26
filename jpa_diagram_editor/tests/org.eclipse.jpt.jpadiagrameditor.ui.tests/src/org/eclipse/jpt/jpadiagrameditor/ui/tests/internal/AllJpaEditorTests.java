@@ -83,7 +83,7 @@ public class AllJpaEditorTests {
     @BeforeClass
     public static void verifyRequiredJarsExists() throws NoSuchElementException {
     	verifyJpaJarExists();
-    	verifyEclipseLinkJarExists();
+    	//verifyEclipseLinkJarExists();
     }
 
 	private static void verifyJpaJarExists() throws NoSuchElementException {

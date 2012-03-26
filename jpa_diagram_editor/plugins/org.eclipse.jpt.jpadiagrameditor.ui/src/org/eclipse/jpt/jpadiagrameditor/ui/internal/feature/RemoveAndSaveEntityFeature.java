@@ -30,6 +30,7 @@ import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 
 
 
@@ -66,5 +67,10 @@ public class RemoveAndSaveEntityFeature extends DefaultRemoveFeature {
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return  (IJPAEditorFeatureProvider)super.getFeatureProvider();
 	}
+
+    public void postRemove(IRemoveContext context) {
+    	JpaArtifactFactory.instance().rearrangeIsARelations(getFeatureProvider());    	
+    }
+	
 
 }

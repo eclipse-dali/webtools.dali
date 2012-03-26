@@ -36,18 +36,20 @@ public class JPAEditorMessages extends NLS {
 	public static String CreateDiagramJob_createDiagramJobName;
 	public static String CreateDiagramJob_getJPADiagramMonitorTaskName;
 	
+	public static String CreateIsARelationFeature_description;
+	public static String CreateIsARelationFeature_name;
+	
 	public static String CreateJPAEntityFeature_createEntityErrorMsg;
-
 	public static String CreateJPAEntityFeature_createEntityErrorMsgTitle;
-
 	public static String CreateJPAEntityFeature_createEntityErrorStatusMsg;
-
 	public static String CreateJPAEntityFeature_jpaEntityFeatureDescription;
 	public static String CreateJPAEntityFeature_jpaEntityFeatureName;
 	public static String CreateJPAEntityFeature_jpaProjectSelectionDialogDescription;
 	public static String CreateJPAEntityFeature_jpaProjectSelectionDialogTitle;
 	public static String CreateJPAEntityFromMappedSuperclassFeature_createInheritedEntityFeatureDescription;
 	public static String CreateJPAEntityFromMappedSuperclassFeature_createInheritedEntityFeatureName;
+	public static String CreateMappedSuperclassFeature_createMappedSuperclassFeatureDescription;
+	public static String CreateMappedSuperclassFeature_createMappedSuperclassFeatureName;
 	
 	public static String CreateManyToManyBiDirRelationFeature_manyToManyBiDirFeatureName;
 	public static String CreateManyToManyBiDirRelationFeature_manyToManyUniDirFeatureDescription;
@@ -181,7 +183,9 @@ public class JPAEditorMessages extends NLS {
 	public static String JPAEditorToolBehaviorProvider_expandEntitymenuItemDescr;
 	
 	public static String JPAEditorToolBehaviorProvider_expandAllEntitiesMenuItem;
-	public static String JPAEditorToolBehaviorProvider_expandAllEntitiesMenuItemDescr;	
+	public static String JPAEditorToolBehaviorProvider_expandAllEntitiesMenuItemDescr;
+
+	public static String JPAEditorToolBehaviorProvider_InheritanceCompartmentTitle;	
 
 	public static String JPAEditorToolBehaviorProvider_refactorAttributeType; 
 	public static String JPAEditorToolBehaviorProvider_refactorAttributeTypeDesc;

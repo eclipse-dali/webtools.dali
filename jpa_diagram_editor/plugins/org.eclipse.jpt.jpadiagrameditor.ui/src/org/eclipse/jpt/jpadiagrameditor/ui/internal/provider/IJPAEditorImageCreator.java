@@ -31,9 +31,11 @@ public interface IJPAEditorImageCreator {
 
 	public Polyline createConnectionLine(Diagram d, Connection connection);
 
+	public Polyline createIsAConnectionLine(Diagram d, Connection connection);
+
 	//public ConnectionDecorator createTextConnectionDecorator(Connection connection, String text, double location);
 
-	public ConnectionDecorator createArrowConnectionDecorator(Connection connection, double location);
+	public ConnectionDecorator createArrowConnectionDecorator(Connection connection, double location, boolean isA);
 
 	public ConnectionDecorator createManyEndWithArrowDecorator(Connection connection, double location);
 
@@ -44,6 +46,8 @@ public interface IJPAEditorImageCreator {
 	public ConnectionDecorator createIconConnectionDecorator(Connection connection, String iconId, double location);
 	
 	public ConnectionDecorator createCardinalityConnectionDecorator(Diagram d, Connection c, String text, double location);
+	
+	public ConnectionDecorator createIsATextConnectionDecorator(Diagram d, Connection c);
 	
 
 }

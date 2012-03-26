@@ -25,6 +25,7 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.AbstractRelation;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 
 
 abstract public class CreateRelationFeature extends AbstractCreateConnectionFeature {
@@ -34,25 +35,33 @@ abstract public class CreateRelationFeature extends AbstractCreateConnectionFeat
 	}
 
 	public boolean canCreate(ICreateConnectionContext context) {
-		JavaPersistentType source = (JavaPersistentType)getPersistentType(context.getSourceAnchor());
-		JavaPersistentType target = (JavaPersistentType)getPersistentType(context.getTargetAnchor());
-	    if (source != null && target != null) {
-	        return true;
-	    }
-	    return false;
+		JavaPersistentType owner = (JavaPersistentType)getPersistentType(context.getSourceAnchor());
+		JavaPersistentType inverse = (JavaPersistentType)getPersistentType(context.getTargetAnchor());
+	    if ((owner == null) || (inverse == null)) 
+	        return false;
+	    if (JpaArtifactFactory.instance().hasMappedSuperclassAnnotation(inverse))
+	    	return false;
+	    if ((this instanceof ICreateBiDirRelationFeature) && 
+	    	(JpaArtifactFactory.instance().hasMappedSuperclassAnnotation(owner)))
+	    	return false;
+	    return true;
 	}
 
 	public boolean canStartConnection(ICreateConnectionContext context) {
-	    if (getPersistentType(context.getSourceAnchor()) != null) 
-	        return true;
-	    return false;
+		JavaPersistentType owner = (JavaPersistentType)getPersistentType(context.getSourceAnchor()); 
+	    if (owner == null) 
+	        return false;
+	    if ((this instanceof ICreateBiDirRelationFeature) &&
+	    	JpaArtifactFactory.instance().hasMappedSuperclassAnnotation(owner))
+	    	return false;
+	    return true;
 	}
 	
 	public Connection create(ICreateConnectionContext context) {
 	    Connection newConnection = null;
-	    PersistentType source = getPersistentType(context.getSourceAnchor());
-	    PersistentType target = getPersistentType(context.getTargetAnchor());
-	    if (source != null && target != null) {
+	    PersistentType owner = getPersistentType(context.getSourceAnchor());
+	    PersistentType inverse = getPersistentType(context.getTargetAnchor());
+	    if (owner != null && inverse != null) {
 	    	AbstractRelation rel = createRelation(getFeatureProvider(), context.getSourceAnchor().getParent(), 
 	    													context.getTargetAnchor().getParent());
 	        AddConnectionContext addContext =

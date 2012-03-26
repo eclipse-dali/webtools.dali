@@ -266,10 +266,11 @@ public class JPAEditorDiagramTypeProvider extends AbstractDiagramTypeProvider {
 						ctx.setHeight(sp.getHeight());
 						ctx.setX(sp.getX());
 						ctx.setY(sp.getY());
-						AddJPAEntityFeature ft = new AddJPAEntityFeature(getFeatureProvider());
+						AddJPAEntityFeature ft = new AddJPAEntityFeature(getFeatureProvider(), false);
 						ft.add(ctx);
 					}
 				}
+				JpaArtifactFactory.instance().rearrangeIsARelations(getFeatureProvider());
 			}			
 		});
 		getDiagramEditor().saveWithoutEntities(new NullProgressMonitor());

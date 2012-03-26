@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 
 
-public class ManyToManyBiDirRelation extends ManyToManyRelation implements BidirectionalRelation {
+public class ManyToManyBiDirRelation extends ManyToManyRelation implements IBidirectionalRelation {
 	
 	public ManyToManyBiDirRelation(IJPAEditorFeatureProvider fp, JavaPersistentType owner, 
 								   JavaPersistentType inverse,

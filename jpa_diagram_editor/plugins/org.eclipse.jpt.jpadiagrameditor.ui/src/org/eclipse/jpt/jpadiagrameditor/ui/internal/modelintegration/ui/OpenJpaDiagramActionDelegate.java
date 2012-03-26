@@ -178,7 +178,18 @@ public class OpenJpaDiagramActionDelegate implements IObjectActionDelegate {
         if (firstElement instanceof JpaNode) {
         	jpaProject = ((JpaNode)firstElement).getJpaProject();
         } else if (firstElement instanceof IProject) {
-			jpaProject = JpaArtifactFactory.instance().getJpaProject((IProject)firstElement);
+        	int cnt = 0;
+    		while ((jpaProject == null) && (cnt < 25)) { 
+    			jpaProject = JpaArtifactFactory.instance().getJpaProject((IProject)firstElement);
+    			if (jpaProject == null) {
+    				try {
+    					Thread.sleep(200);
+    				} catch (InterruptedException e) {
+    					JPADiagramEditorPlugin.logError("Thread sleep interrupted", e);  //$NON-NLS-1$		 
+    				}
+    			}
+    			cnt++;
+    		}
         }
         return JpaArtifactFactory.instance().getPersistenceUnit(jpaProject);
 	}
