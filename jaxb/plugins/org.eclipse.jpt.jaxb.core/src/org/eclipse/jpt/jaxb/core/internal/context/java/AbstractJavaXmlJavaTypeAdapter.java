@@ -158,7 +158,7 @@ public abstract class AbstractJavaXmlJavaTypeAdapter
 	 * @see javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter.DEFAULT
 	 */
 	protected boolean specifiedTypeNotSet() {
-		return getSpecifiedType() == null || getSpecifiedType().equals(DEFAULT_TYPE);
+		return getSpecifiedType() == null || this.annotation.getFullyQualifiedType().equals(DEFAULT_TYPE);
 	}
 	
 	public String getDefaultType() {
@@ -193,7 +193,7 @@ public abstract class AbstractJavaXmlJavaTypeAdapter
 	}
 	
 	public String getFullyQualifiedType() {
-		return this.annotation.getFullyQualifiedType();
+		return specifiedTypeNotSet() ? getDefaultType() : this.annotation.getFullyQualifiedType();
 	}
 	
 	
