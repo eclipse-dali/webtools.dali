@@ -384,7 +384,7 @@ public class XPath {
 		protected String resolveNamespace(Context context) {
 			JaxbPackage pkg = context.getJaxbPackage();
 			if (this.nsPrefix == null) {
-				return pkg.getNamespace();
+				return "";
 			}
 			else {
 				JaxbPackageInfo pkgInfo = pkg.getPackageInfo();
@@ -520,7 +520,7 @@ public class XPath {
 									};
 								}
 							}),
-					new TransformationIterable<String, String>(xsdType.getAttributeNames(context.getJaxbPackage().getNamespace())) {
+					new TransformationIterable<String, String>(xsdType.getAttributeNames("")) {
 						@Override
 						protected String transform(String o) {
 							return StringTools.concatenate(ATT_PREFIX, o);
@@ -542,7 +542,7 @@ public class XPath {
 									};
 								}
 							}),
-					xsdType.getElementNames(context.getJaxbPackage().getNamespace(), false));
+					xsdType.getElementNames("", false));
 		}
 		
 		protected Iterable<XmlNs> getXmlNsInfos(Context context) {
