@@ -1,9 +1,0 @@
-#### Embeddable ####
-	<embeddable class="${table.qualifiedCompositeKeyClassName}" access="VIRTUAL">
-#### Mappings ####
-		<attributes>
-#foreach ($column in $table.primaryKeyColumns)
-#parse("embeddedBasic.vm")
-#end
-		</attributes>
-	</embeddable>
