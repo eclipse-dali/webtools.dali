@@ -50,10 +50,10 @@ public abstract class AbstractOrmBasicMapping<X extends XmlBasic>
 	protected final OrmColumn column;
 
 	protected FetchType specifiedFetch;
-	protected FetchType defaultFetch;
+	protected FetchType defaultFetch = DEFAULT_FETCH_TYPE;
 
 	protected Boolean specifiedOptional;
-	protected boolean defaultOptional;
+	protected boolean defaultOptional = DEFAULT_OPTIONAL;
 
 	protected OrmConverter converter;  // never null
 

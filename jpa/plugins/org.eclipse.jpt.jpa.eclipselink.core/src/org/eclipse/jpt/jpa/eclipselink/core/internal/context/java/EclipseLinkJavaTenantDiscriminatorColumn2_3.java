@@ -41,7 +41,7 @@ public class EclipseLinkJavaTenantDiscriminatorColumn2_3
 	protected String defaultContextProperty;
 
 	protected Boolean specifiedPrimaryKey;
-	protected boolean defaultPrimaryKey;
+	protected boolean defaultPrimaryKey = DEFAULT_PRIMARY_KEY;
 
 	public EclipseLinkJavaTenantDiscriminatorColumn2_3(JavaEclipseLinkMultitenancyImpl2_3 parent, JavaReadOnlyTenantDiscriminatorColumn2_3.Owner owner, EclipseLinkTenantDiscriminatorColumnAnnotation2_3 columnAnnotation) {
 		super(parent, owner, columnAnnotation);

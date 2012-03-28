@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -42,36 +42,36 @@ public class OrmEclipseLinkCachingImpl
 	implements OrmEclipseLinkCaching, OrmCacheableHolder2_0
 {
 	protected EclipseLinkCacheType specifiedType;
-	protected EclipseLinkCacheType defaultType;
+	protected EclipseLinkCacheType defaultType = DEFAULT_TYPE;
 
 	protected Integer specifiedSize;
-	protected int defaultSize;
+	protected int defaultSize = DEFAULT_SIZE;
 
 	protected Boolean specifiedShared;
-	protected boolean defaultShared;
+	protected boolean defaultShared = DEFAULT_SHARED;
 
 	protected Boolean specifiedAlwaysRefresh;
-	protected boolean defaultAlwaysRefresh;
+	protected boolean defaultAlwaysRefresh = DEFAULT_ALWAYS_REFRESH;
 
 	protected Boolean specifiedRefreshOnlyIfNewer;
-	protected boolean defaultRefreshOnlyIfNewer;
+	protected boolean defaultRefreshOnlyIfNewer = DEFAULT_REFRESH_ONLY_IF_NEWER;
 
 	protected Boolean specifiedDisableHits;
-	protected boolean defaultDisableHits;
+	protected boolean defaultDisableHits = DEFAULT_DISABLE_HITS;
 
 	protected EclipseLinkCacheCoordinationType specifiedCoordinationType;
-	protected EclipseLinkCacheCoordinationType defaultCoordinationType;
+	protected EclipseLinkCacheCoordinationType defaultCoordinationType = DEFAULT_COORDINATION_TYPE;
 
 	protected Integer expiry;
 	protected EclipseLinkOrmTimeOfDay expiryTimeOfDay;
 
 	protected EclipseLinkExistenceType specifiedExistenceType;
-	protected EclipseLinkExistenceType defaultExistenceType;
+	protected EclipseLinkExistenceType defaultExistenceType = DEFAULT_EXISTENCE_TYPE;
 
 	protected final OrmCacheable2_0 cacheable;
 
 	protected EclipseLinkCacheIsolationType2_2 specifiedIsolation;
-	protected EclipseLinkCacheIsolationType2_2 defaultIsolation;
+	protected EclipseLinkCacheIsolationType2_2 defaultIsolation = DEFAULT_ISOLATION;
 
 
 	public OrmEclipseLinkCachingImpl(OrmEclipseLinkNonEmbeddableTypeMapping parent) {

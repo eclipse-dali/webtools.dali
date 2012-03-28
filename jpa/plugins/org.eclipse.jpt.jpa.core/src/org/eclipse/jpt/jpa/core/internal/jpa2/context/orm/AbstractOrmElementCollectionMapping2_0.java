@@ -134,7 +134,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	protected String fullyQualifiedTargetClass;
 
 	protected FetchType specifiedFetch;
-	protected FetchType defaultFetch;
+	protected FetchType defaultFetch = DEFAULT_FETCH_TYPE;
 
 	protected final OrmOrderable2_0 orderable;
 

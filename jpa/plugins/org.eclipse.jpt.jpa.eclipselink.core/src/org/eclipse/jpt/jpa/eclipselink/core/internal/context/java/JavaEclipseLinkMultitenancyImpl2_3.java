@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -66,7 +66,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 	protected EclipseLinkMultitenantType2_3 defaultType;
 
 	protected Boolean specifiedIncludeCriteria;
-	protected boolean defaultIncludeCriteria;
+	protected boolean defaultIncludeCriteria = DEFAULT_INCLUDE_CRITERIA;
 
 	protected final JavaReadOnlyTenantDiscriminatorColumn2_3.Owner tenantDiscriminatorColumnOwner;
 	protected final ContextListContainer<JavaTenantDiscriminatorColumn2_3, EclipseLinkTenantDiscriminatorColumnAnnotation2_3> specifiedTenantDiscriminatorColumnContainer;

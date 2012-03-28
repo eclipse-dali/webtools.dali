@@ -133,7 +133,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	protected String fullyQualifiedTargetClass;
 
 	protected FetchType specifiedFetch;
-	protected FetchType defaultFetch;
+	protected FetchType defaultFetch = DEFAULT_FETCH_TYPE;
 
 	protected final JavaOrderable2_0 orderable;
 

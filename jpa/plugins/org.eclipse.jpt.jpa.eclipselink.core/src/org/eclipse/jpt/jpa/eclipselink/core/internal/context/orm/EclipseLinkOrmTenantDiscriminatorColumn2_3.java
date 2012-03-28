@@ -35,7 +35,7 @@ public class EclipseLinkOrmTenantDiscriminatorColumn2_3
 	protected String defaultContextProperty;
 
 	protected Boolean specifiedPrimaryKey;
-	protected boolean defaultPrimaryKey;
+	protected boolean defaultPrimaryKey = DEFAULT_PRIMARY_KEY;
 
 	public EclipseLinkOrmTenantDiscriminatorColumn2_3(XmlContextNode parent, OrmReadOnlyTenantDiscriminatorColumn2_3.Owner owner, XmlTenantDiscriminatorColumn_2_3 column) {
 		super(parent, owner, column);

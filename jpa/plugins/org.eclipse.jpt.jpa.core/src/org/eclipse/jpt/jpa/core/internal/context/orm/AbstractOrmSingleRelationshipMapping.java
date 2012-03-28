@@ -28,7 +28,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<X extends AbstractXml
 	implements OrmSingleRelationshipMapping2_0
 {
 	protected Boolean specifiedOptional;
-	protected boolean defaultOptional;
+	protected boolean defaultOptional = DEFAULT_OPTIONAL;
 
 	protected final OrmDerivedIdentity2_0 derivedIdentity;
 

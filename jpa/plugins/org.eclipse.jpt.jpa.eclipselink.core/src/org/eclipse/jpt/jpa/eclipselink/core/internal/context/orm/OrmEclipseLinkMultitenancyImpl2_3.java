@@ -67,7 +67,7 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 	protected EclipseLinkMultitenantType2_3 defaultType;
 
 	protected Boolean specifiedIncludeCriteria;
-	protected boolean defaultIncludeCriteria;
+	protected boolean defaultIncludeCriteria = DEFAULT_INCLUDE_CRITERIA;
 
 	protected final ContextListContainer<OrmTenantDiscriminatorColumn2_3, XmlTenantDiscriminatorColumn_2_3> specifiedTenantDiscriminatorColumnContainer;
 	protected final OrmReadOnlyTenantDiscriminatorColumn2_3.Owner tenantDiscriminatorColumnOwner;

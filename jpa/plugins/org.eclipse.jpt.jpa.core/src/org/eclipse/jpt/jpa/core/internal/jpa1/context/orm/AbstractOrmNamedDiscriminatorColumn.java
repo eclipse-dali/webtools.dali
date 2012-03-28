@@ -27,7 +27,7 @@ public abstract class AbstractOrmNamedDiscriminatorColumn<X extends XmlBaseDiscr
 	protected DiscriminatorType defaultDiscriminatorType;
 
 	protected Integer specifiedLength;
-	protected int defaultLength;
+	protected int defaultLength = DEFAULT_LENGTH;
 
 
 	protected AbstractOrmNamedDiscriminatorColumn(XmlContextNode parent, O owner) {
