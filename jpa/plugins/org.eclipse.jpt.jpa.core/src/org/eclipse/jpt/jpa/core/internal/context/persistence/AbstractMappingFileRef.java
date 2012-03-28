@@ -147,6 +147,9 @@ public abstract class AbstractMappingFileRef
 				} else {
 					// [seems like we should never get here; since if the file's
 					// content type changed, the JPA project would return null...  ~bjv]
+					// [I have hit this before (had this println uncommmented), 
+					// but I am not sure how... ~kfb]
+					// System.out.println("AbstractMappingFileRef.syncMappingFile");
 					// if the resource's content type has changed, we completely rebuild the mapping file
 					this.mappingFile.dispose();
 					this.setMappingFile(this.buildMappingFile(newXmlResource));

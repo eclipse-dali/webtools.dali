@@ -90,6 +90,37 @@ public class GenericOrmXml
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
+		this.syncEntityMappings();
+	}
+
+	protected void syncEntityMappings() {
+		this.syncEntityMappings(true);
+	}
+
+	/**
+	 * @see org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.GenericPersistenceXml#update()
+	 */
+	@Override
+	public void update() {
+		super.update();
+		this.updateEntityMappings();
+	}
+
+	protected void updateEntityMappings() {
+		this.syncEntityMappings(false);
+	}
+
+	/**
+	 * We call this method from both {@link #syncEntityMappings()} and
+	 * {@link #updateEntityMappings()} because<ul>
+	 * <li>a <em>sync</em> will occur when the file is edited directly;
+	 *     the user could modify something (e.g. the version number) that 
+	 *     causes the XML entity mappings to be rebuilt. 
+	 * 
+	 * <li>an <em>update</em> will occur whenever the JPA file is added or removed: 
+	 *     when resource contents replaced from history EMF unloads the resource.
+	 */
+	protected void syncEntityMappings(boolean sync) {
 		XmlEntityMappings oldXmlEntityMappings = (this.root == null) ? null : this.root.getXmlEntityMappings();
 		XmlEntityMappings newXmlEntityMappings = (XmlEntityMappings) this.xmlResource.getRootObject();
 		JptResourceType newResourceType = this.xmlResource.getResourceType();
@@ -117,18 +148,15 @@ public class GenericOrmXml
 				this.setRoot(this.buildRoot(newXmlEntityMappings));
 			} else {
 				// the context entity mappings already holds the XML entity mappings
-				this.root.synchronizeWithResourceModel();
+				if (sync) {
+					this.root.synchronizeWithResourceModel();
+				}
+				else {
+					this.root.update();
+					// this will happen redundantly - need to hold JpaFile?
+					this.registerRootStructureNode();
+				}
 			}
-		}
-	}
-
-	@Override
-	public void update() {
-		super.update();
-		if (this.root != null) {
-			this.root.update();
-			// this will happen redundantly - need to hold JpaFile?
-			this.registerRootStructureNode();
 		}
 	}
 

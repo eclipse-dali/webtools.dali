@@ -108,6 +108,10 @@ public abstract class AbstractXmlResourceProvider
 	public JpaXmlResource getXmlResource() {
 		if (this.resource == null) {
 			JpaXmlResource newResource = (JpaXmlResource) WorkbenchResourceHelper.getOrCreateResource(this.fileUri, getResourceSet());
+			if (newResource == null) {
+				//ResourceSet "isReleasing", deleting the project causes this
+				return null;
+			}
 			//EMF caches resources based on URI.  If the resource has changed content types (say the schema was changed
 			//from orm to eclipselink-orm), then the resource will be of the wrong type and we need to create a new one.
 			if (newResource.getContentType().equals(this.contentType)) {

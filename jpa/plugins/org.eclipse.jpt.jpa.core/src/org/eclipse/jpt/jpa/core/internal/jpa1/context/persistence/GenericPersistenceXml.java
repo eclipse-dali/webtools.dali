@@ -78,6 +78,36 @@ public class GenericPersistenceXml
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
+		this.syncPersistence();
+	}
+
+	protected void syncPersistence() {
+		this.syncPersistence(true);
+	}
+
+	/**
+	 * @see org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmXml#update()
+	 */
+	@Override
+	public void update() {
+		this.updatePersistence();	
+	}
+
+	protected void updatePersistence() {
+		this.syncPersistence(false);
+	}
+	
+	/**
+	 * We call this method from both {@link #syncPersistence()} and
+	 * {@link #updatePersistence()} because<ul>
+	 * <li>a <em>sync</em> will occur when the file is edited directly;
+	 *     the user could modify something (e.g. the version number) that 
+	 *     causes the XML entity mappings to be rebuilt. 
+	 * 
+	 * <li>an <em>update</em> will occur whenever the JPA file is added or removed: 
+	 *     when resource contents replaced from history EMF unloads the resource.
+	 */
+	protected void syncPersistence(boolean sync) {
 		XmlPersistence oldXmlPersistence = (this.persistence == null) ? null : this.persistence.getXmlPersistence();
 		XmlPersistence newXmlPersistence = (XmlPersistence) this.xmlResource.getRootObject();
 		JptResourceType newResourceType = this.xmlResource.getResourceType();
@@ -104,18 +134,15 @@ public class GenericPersistenceXml
 				this.setPersistence(this.buildPersistence(newXmlPersistence));
 			} else {
 				// the context persistence already holds the XML persistence
-				this.persistence.synchronizeWithResourceModel();
+				if (sync) {
+					this.persistence.synchronizeWithResourceModel();
+				}
+				else {
+					this.persistence.update();
+					// this will happen redundantly - need to hold JpaFile?
+					this.registerRootStructureNode();					
+				}
 			}
-		}
-	}
-
-	@Override
-	public void update() {
-		super.update();
-		if (this.persistence != null) {
-			this.persistence.update();
-			// this will happen redundantly - need to hold JpaFile?
-			this.registerRootStructureNode();
 		}
 	}
 

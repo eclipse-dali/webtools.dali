@@ -123,7 +123,7 @@ public abstract class AbstractPersistenceUnit
 	protected Boolean specifiedExcludeUnlistedClasses;
 
 	protected PersistenceUnitTransactionType specifiedTransactionType;
-	protected PersistenceUnitTransactionType defaultTransactionType;
+	protected PersistenceUnitTransactionType defaultTransactionType = PersistenceUnitTransactionType.JTA;
 
 	protected String description;
 
@@ -133,7 +133,24 @@ public abstract class AbstractPersistenceUnit
 	protected String nonJtaDataSource;
 
 	protected final ContextListContainer<MappingFileRef, XmlMappingFileRef> specifiedMappingFileRefContainer;
+
+	/**
+	 * Will be null if the implied mapping file should not be part of the context model.
+	 * Otherwise will be equal to potentialImpliedMappingFileRef.
+	 * 
+	 * @see #potentialImpliedMappingFileRef
+	 */
 	protected MappingFileRef impliedMappingFileRef;
+
+	/**
+	 * Store the implied mapping file ref here even if it is not part of the context model.
+	 * This allows us to sync it in the syncWithResourceModel. In the update, determine if
+	 * it should be part of the context model and set the impliedMappingFileRef appropriately.
+	 * 
+	 * @see #impliedMappingFileRef
+	 * @see #usesImpliedMappingFile()
+	 */
+	protected final MappingFileRef potentialImpliedMappingFileRef;
 
 	protected final ContextListContainer<JarFileRef, XmlJarFileRef> jarFileRefContainer;
 
@@ -164,7 +181,7 @@ public abstract class AbstractPersistenceUnit
 	protected SharedCacheMode defaultSharedCacheMode;
 
 	protected ValidationMode specifiedValidationMode;
-	protected ValidationMode defaultValidationMode;
+	protected ValidationMode defaultValidationMode = DEFAULT_VALIDATION_MODE;
 
 	protected final Set<IFile> metamodelFiles = Collections.synchronizedSet(new HashSet<IFile>());
 
@@ -191,6 +208,7 @@ public abstract class AbstractPersistenceUnit
 		this.initializeProperties();
 
 		this.specifiedMappingFileRefContainer = this.buildSpecifiedMappingFileRefContainer();
+		this.potentialImpliedMappingFileRef = this.buildImpliedMappingFileRef();
 		this.jarFileRefContainer = this.buildJarFileRefContainer();
 		this.specifiedClassRefContainer = this.buildSpecifiedClassRefContainer();
 		this.impliedClassRefContainer = this.buildImpliedClassRefContainer();
@@ -583,50 +601,33 @@ public abstract class AbstractPersistenceUnit
 		return this.impliedMappingFileRef;
 	}
 
-	protected MappingFileRef addImpliedMappingFileRef() {
-		if (this.impliedMappingFileRef != null) {
-			throw new IllegalStateException("The implied mapping file ref is already set: " + this.impliedMappingFileRef); //$NON-NLS-1$
-		}
-		this.impliedMappingFileRef = this.buildImpliedMappingFileRef();
-		this.firePropertyChanged(IMPLIED_MAPPING_FILE_REF_PROPERTY, null, this.impliedMappingFileRef);
-		return this.impliedMappingFileRef;
+	protected void setImpliedMappingFileRef(MappingFileRef mappingFileRef) {
+		MappingFileRef old = this.impliedMappingFileRef;
+		this.impliedMappingFileRef = mappingFileRef;
+		this.firePropertyChanged(IMPLIED_MAPPING_FILE_REF_PROPERTY, old, mappingFileRef);
 	}
 
 	protected MappingFileRef buildImpliedMappingFileRef() {
 		return this.getContextNodeFactory().buildImpliedMappingFileRef(this);
 	}
 
-	protected void removeImpliedMappingFileRef() {
-		if (this.impliedMappingFileRef == null) {
-			throw new IllegalStateException("The implied mapping file ref is already unset."); //$NON-NLS-1$
-		}
-		MappingFileRef old = this.impliedMappingFileRef;
-		this.impliedMappingFileRef = null;
-		old.dispose();
-		this.firePropertyChanged(IMPLIED_MAPPING_FILE_REF_PROPERTY, old, null);
-	}
-
 	protected void syncImpliedMappingFileRef() {
-		if (this.impliedMappingFileRef != null) {
-			this.impliedMappingFileRef.synchronizeWithResourceModel();
-		}
+		this.potentialImpliedMappingFileRef.synchronizeWithResourceModel();
 	}
 
 	protected void updateImpliedMappingFileRef() {
-		if (this.buildsImpliedMappingFile()) {
-			if (this.impliedMappingFileRef == null) {
-				this.addImpliedMappingFileRef();
-			} else {
-				this.impliedMappingFileRef.update();
-			}
-		} else {
-			if (this.impliedMappingFileRef != null) {
-				this.removeImpliedMappingFileRef();
-			}
+		if (this.usesImpliedMappingFile()) {
+			this.setImpliedMappingFileRef(this.potentialImpliedMappingFileRef);
+			this.potentialImpliedMappingFileRef.update();
+		}
+		else {
+			this.setImpliedMappingFileRef(null);
+			//this is needed to unregister the root structure node, how we build the root structure nodes probably needs to change.
+			this.potentialImpliedMappingFileRef.dispose();
 		}
 	}
 
-	protected boolean buildsImpliedMappingFile() {
+	protected boolean usesImpliedMappingFile() {
 		return this.impliedMappingFileIsNotSpecified() && this.impliedMappingFileExists();
 	}
 

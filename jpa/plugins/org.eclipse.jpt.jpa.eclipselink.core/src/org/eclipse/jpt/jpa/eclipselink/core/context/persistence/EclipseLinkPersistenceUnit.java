@@ -89,11 +89,27 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public class EclipseLinkPersistenceUnit
 	extends AbstractPersistenceUnit
 {
+	/**
+	 * Will be null if the implied EL mapping file should not be part of the context model.
+	 * Otherwise will be equal to potentialImpliedEclipseLinkMappingFileRef.
+	 * 
+	 * @see #potentialImpliedEclipseLinkMappingFileRef
+	 */
 	protected MappingFileRef impliedEclipseLinkMappingFileRef;
 	/**
 	 * String constant associated with changes to the implied eclipselink mapping file ref
 	 */
 	public static final String IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_PROPERTY = "impliedEclipseLinkMappingFileRef"; //$NON-NLS-1$
+
+	/**
+	 * Store the implied EL mapping file ref even if it is not part of the context model.
+	 * This allows us to sync it in the syncWithResourceModel. In the update, determine if
+	 * it should be part of the context model and set the impliedEclipseLinkMappingFileRef appropriately.
+	 * 
+	 * @see #impliedEclipseLinkMappingFileRef
+	 * @see #usesImpliedEclipseLinkMappingFile()
+	 */
+	protected final MappingFileRef potentialImpliedEclipseLinkMappingFileRef;
 
 
 	private/*final*/ GeneralProperties generalProperties;
@@ -112,6 +128,7 @@ public class EclipseLinkPersistenceUnit
 
 	public EclipseLinkPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
 		super(parent, xmlPersistenceUnit);
+		this.potentialImpliedEclipseLinkMappingFileRef = this.buildEclipseLinkImpliedMappingFileRef();
 	}
 
 
@@ -275,63 +292,45 @@ public class EclipseLinkPersistenceUnit
 		return this.impliedEclipseLinkMappingFileRef;
 	}
 
-	protected MappingFileRef addImpliedEclipseLinkMappingFileRef() {
-		if (this.impliedEclipseLinkMappingFileRef != null) {
-			throw new IllegalStateException("The implied EclipseLink mapping file ref is already present: " + this.impliedEclipseLinkMappingFileRef); //$NON-NLS-1$
-		}
-		MappingFileRef mappingFileRef = this.buildEclipseLinkImpliedMappingFileRef();
+	protected void setImpliedEclipseLinkMappingFileRef(MappingFileRef mappingFileRef) {
+		MappingFileRef old = this.impliedEclipseLinkMappingFileRef;
 		this.impliedEclipseLinkMappingFileRef = mappingFileRef;
-		this.firePropertyChanged(IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_PROPERTY, null, mappingFileRef);
-		return mappingFileRef;
+		this.firePropertyChanged(IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_PROPERTY, old, mappingFileRef);
 	}
 
 	private ImpliedMappingFileRef buildEclipseLinkImpliedMappingFileRef() {
 		return new ImpliedMappingFileRef(this, JptJpaEclipseLinkCorePlugin.DEFAULT_ECLIPSELINK_ORM_XML_RUNTIME_PATH.toString());
 	}
 
-	protected void removeImpliedEclipseLinkMappingFileRef() {
-		if (this.impliedEclipseLinkMappingFileRef == null) {
-			throw new IllegalStateException("The implied EclipseLink mapping file ref is null."); //$NON-NLS-1$
-		}
-		MappingFileRef mappingFileRef = this.impliedEclipseLinkMappingFileRef;
-		this.impliedEclipseLinkMappingFileRef.dispose();
-		this.impliedEclipseLinkMappingFileRef = null;
-		this.firePropertyChanged(IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_PROPERTY, mappingFileRef, null);
-	}
-
 	@Override
 	protected void syncImpliedMappingFileRef() {
 		super.syncImpliedMappingFileRef();
-		if (this.impliedEclipseLinkMappingFileRef != null) {
-			this.impliedEclipseLinkMappingFileRef.synchronizeWithResourceModel();
-		}
+		this.potentialImpliedEclipseLinkMappingFileRef.synchronizeWithResourceModel();
 	}
 
 	@Override
 	protected void updateImpliedMappingFileRef() {
 		super.updateImpliedMappingFileRef();
 
-		if (this.buildsImpliedEclipseLinkMappingFile()) {
-			if (this.impliedEclipseLinkMappingFileRef == null) {
-				this.addImpliedEclipseLinkMappingFileRef();
-			} else {
-				this.impliedEclipseLinkMappingFileRef.update();
-			}
-		} else {
-			if (this.impliedEclipseLinkMappingFileRef != null) {
-				this.removeImpliedEclipseLinkMappingFileRef();
-			}
+		if (this.usesImpliedEclipseLinkMappingFile()) {
+			this.setImpliedEclipseLinkMappingFileRef(this.potentialImpliedEclipseLinkMappingFileRef);
+			this.potentialImpliedEclipseLinkMappingFileRef.update();
+		}
+		else {
+			this.setImpliedEclipseLinkMappingFileRef(null);
+			//this is needed to unregister the root structure node, how we build the root structure nodes probably needs to change.
+			this.potentialImpliedEclipseLinkMappingFileRef.dispose();
 		}
 	}
 
 	/**
-	 * Build a virtual EclipseLink mapping file if all the following are true:<ul>
+	 * Use the implied EclipseLink mapping file if all the following are true:<ul>
 	 * <li>the properties do not explicitly exclude it
 	 * <li>it is not specified explicitly in the persistence unit
 	 * <li>the file actually exists
 	 * </ul>
 	 */
-	private boolean buildsImpliedEclipseLinkMappingFile() {
+	private boolean usesImpliedEclipseLinkMappingFile() {
 		return this.impliedEclipseLinkMappingFileIsNotExcluded() &&
 				this.impliedEclipseLinkMappingFileIsNotSpecified() &&
 				this.impliedEclipseLinkMappingFileExists();

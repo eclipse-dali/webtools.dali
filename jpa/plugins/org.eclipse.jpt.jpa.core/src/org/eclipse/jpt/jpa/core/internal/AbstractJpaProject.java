@@ -330,7 +330,7 @@ public abstract class AbstractJpaProject
 				case IResource.FOLDER :
 					return true;  // visit children
 				case IResource.FILE :
-					AbstractJpaProject.this.addJpaFile_((IFile) resource.requestResource());
+					AbstractJpaProject.this.addJpaFileMaybe_((IFile) resource.requestResource());
 					return false;  // no children
 				default :
 					return false;  // no children
@@ -551,8 +551,8 @@ public abstract class AbstractJpaProject
 	 * Add a JPA file for the specified file, if appropriate.
 	 * Return true if a JPA File was created and added, false otherwise
 	 */
-	protected boolean addJpaFile(IFile file) {
-		JpaFile jpaFile = this.addJpaFile_(file);
+	protected boolean addJpaFileMaybe(IFile file) {
+		JpaFile jpaFile = this.addJpaFileMaybe_(file);
 		if (jpaFile != null) {
 			this.fireItemAdded(JPA_FILES_COLLECTION, jpaFile);
 			return true;
@@ -565,7 +565,7 @@ public abstract class AbstractJpaProject
 	 * an event; useful during construction.
 	 * Return the new JPA file, null if it was not created.
 	 */
-	protected JpaFile addJpaFile_(IFile file) {
+	protected JpaFile addJpaFileMaybe_(IFile file) {
 		if (this.fileIsJavaRelated(file)) {
 			if ( ! this.getJavaProject().isOnClasspath(file)) {
 				return null;  // java-related files must be on the Java classpath
@@ -1604,12 +1604,17 @@ public abstract class AbstractJpaProject
 		public void resourceModelReverted(JptResourceModel jpaResourceModel) {
 			IFile file = WorkbenchResourceHelper.getFile((JpaXmlResource)jpaResourceModel);
 			AbstractJpaProject.this.removeJpaFile(file);
-			AbstractJpaProject.this.addJpaFile(file);
+			AbstractJpaProject.this.addJpaFileMaybe(file);
 		}
 
 		public void resourceModelUnloaded(JptResourceModel jpaResourceModel) {
 			IFile file = WorkbenchResourceHelper.getFile((JpaXmlResource)jpaResourceModel);
 			AbstractJpaProject.this.removeJpaFile(file);
+			if (file.exists()) { //false if file delete caused the unload event
+				//go ahead and re-add the JPA file here, otherwise a resource change event
+				//will cause it to be added.
+				AbstractJpaProject.this.addJpaFileMaybe(file);
+			}
 		}
 
 		@Override
@@ -1677,7 +1682,7 @@ public abstract class AbstractJpaProject
 	protected boolean synchronizeJpaFiles(IFile file, int deltaKind) {
 		switch (deltaKind) {
 			case IResourceDelta.ADDED :
-				return this.addJpaFile(file);
+				return this.addJpaFileMaybe(file);
 			case IResourceDelta.REMOVED :
 				return this.removeJpaFile(file);
 			case IResourceDelta.CHANGED :
@@ -1697,7 +1702,7 @@ public abstract class AbstractJpaProject
 		JpaFile jpaFile = this.getJpaFile(file);
 		if (jpaFile == null) {
 			// the file might have changed its content to something significant to Dali
-			return this.addJpaFile(file);
+			return this.addJpaFileMaybe(file);
 		}
 
 		if (jpaFile.getContentType().equals(PlatformTools.getContentType(file))) {
@@ -1708,7 +1713,7 @@ public abstract class AbstractJpaProject
 		// the content type changed, we need to remove the old JPA file and build a new one
 		// (e.g. the schema of an orm.xml file changed from JPA to EclipseLink)
 		this.removeJpaFile(jpaFile);
-		this.addJpaFile(file);
+		this.addJpaFileMaybe(file);
 		return true;  // at the least, we have removed a JPA file
 	}
 

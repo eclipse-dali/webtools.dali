@@ -54,6 +54,9 @@ public class JptResourceModelPropertyTester
 			return true;  // effectively disable "upgrade"
 		}
 		JptResourceType resourceType = resourceModel.getResourceType();
+		if (resourceType == null) {
+			return true; // effectively disable "upgrade"
+		}
 		String latestVersion = jpaProject.getJpaPlatform().getMostRecentSupportedResourceType(resourceType.getContentType()).getVersion();
 		return Tools.valuesAreEqual(resourceType.getVersion(), latestVersion);
 	}

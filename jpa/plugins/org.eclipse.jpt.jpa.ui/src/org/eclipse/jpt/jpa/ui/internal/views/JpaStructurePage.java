@@ -242,7 +242,7 @@ public class JpaStructurePage
 	}
 
 	private void setTreeViewerJpaFile(JpaFile jpaFile) {
-		if (jpaFile == null) {
+		if (jpaFile == null || jpaFile.getResourceModel().getResourceType() == null) {
 			this.setTreeViewerMessage(JptUiMessages.JpaStructureView_structureNotAvailable);
 		} else {
 			ItemTreeStateProviderFactoryProvider factoryProvider = this.getFactoryProvider(jpaFile);
