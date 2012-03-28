@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
@@ -38,6 +39,7 @@ import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
 import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
+import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Connection;
@@ -155,7 +157,7 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 	protected List<String> buildClasspath() throws CoreException {
 		List<String> classpath = new ArrayList<String>();
 		// DDL_GEN jar
-		classpath.add(getBootstrapJarClasspathEntry().getMemento());
+		classpath.add(this.getBootstrapJarClasspathEntry().getMemento());
 		// Default Project classpath
 		classpath.add(this.getDefaultProjectClasspathEntry().getMemento());
 		// Osgi Bundles
@@ -164,6 +166,10 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 		classpath.add(this.getJdbcJarClasspathEntry().getMemento());
 		// System Library  
 		classpath.add(this.getSystemLibraryClasspathEntry().getMemento());
+		// meta-inf
+		if(this.metaInfIsNotOnClasspath()) {
+			classpath.add(this.getMetaInfClasspathEntry().getMemento());
+		}
 		return classpath;
 	}
 
@@ -195,6 +201,9 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 		return bundleEntry;
 	}
 
+	private IRuntimeClasspathEntry getMetaInfClasspathEntry() {
+		return getVariableRuntimeClasspathEntry(this.getMetaInfPath());
+	}
 
 	// ********** EclipseLink properties **********
 	
@@ -233,14 +242,14 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 	}
 
 	protected void putProperty(Properties properties, String key, PersistenceXmlEnumValue value) {
-		this.putProperty(properties, key, getPropertyStringValueOf(value));
+		this.putProperty(properties, key, this.getPropertyStringValueOf(value));
 	}
 
 	/**
 	 * Returns the Property string value of the given property value.
 	 */
 	protected String getPropertyStringValueOf(PersistenceXmlEnumValue value) {
-		if (value == null) {
+		if(value == null) {
 			return null;
 		}
 		return value.getPropertyValue();
@@ -319,6 +328,17 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 				throw new RuntimeException(e);
 			}
     	}		
+	}
+	
+	private IPath getMetaInfPath() {
+		JpaXmlResource persistenceXmlResource = this.jpaProject.getPersistenceXmlResource();
+		IPath persistenceXmlPath = persistenceXmlResource.getFile().getLocation();
+		return persistenceXmlPath.removeLastSegments(2);
+	}
+	
+	private boolean metaInfIsNotOnClasspath() {
+		JpaXmlResource persistenceXmlResource = this.jpaProject.getPersistenceXmlResource();
+		return ! this.jpaProject.getJavaProject().isOnClasspath(persistenceXmlResource.getFile());
 	}
 
 	/**

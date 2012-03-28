@@ -240,7 +240,12 @@ public abstract class AbstractJptGenerator
 		
 		return archiveEntry;
 	}
-	
+
+	protected static IRuntimeClasspathEntry getVariableRuntimeClasspathEntry(IPath path) {
+		IRuntimeClasspathEntry varEntry = JavaRuntime.newVariableRuntimeClasspathEntry(path);
+		varEntry.setClasspathProperty(IRuntimeClasspathEntry.USER_CLASSES);
+		return varEntry;
+	}
 
 	// ********** LaunchConfig **********
 	
