@@ -18,6 +18,7 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -62,8 +63,10 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.Wrp;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
@@ -243,14 +246,18 @@ public class JPADiagramEditor extends DiagramEditor {
 		}
 	}
 
-	public void init(IEditorSite site, IEditorInput input)
-			throws PartInitException {		
+	public void init(IEditorSite site, IEditorInput input) throws PartInitException {		
 		IFile entityFile = (IFile) input.getAdapter(IFile.class);
 		
 		if (entityFile != null && entityFile.getFileExtension().equals("java")) { //$NON-NLS-1$
 			initWithFileEditorInput(site, entityFile);
-		} else
-			super.init(site, input);
+		} else {
+			if(input instanceof IFileEditorInput){
+				throw new PartInitException(NLS.bind(JPAEditorMessages.JPADiagramEditor_openDiagramErrorMSG, entityFile.getName()));
+			} else {
+				super.init(site, input);
+			}
+		}
 	}
 	
 	@Override

@@ -97,6 +97,8 @@ public class JPAEditorMessages extends NLS {
 	
 	public static String JpaArtifactFactory_CanNotCheckReturnType;
 
+	public static String JPADiagramEditor_openDiagramErrorMSG;
+
 	public static String JPADiagramEditor_waitingForMoin;
 	
 	public static String JPADiagramPropertyPage_errSavePropsMsgTitle;
