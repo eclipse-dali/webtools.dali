@@ -14,14 +14,13 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.jpt.common.utility.internal.AbstractTransformer;
 import org.eclipse.jpt.common.utility.internal.SimpleFilter;
-import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ElementPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.ui.JpaProjectModel;
+import org.eclipse.jpt.jpa.ui.JpaProjectsModel;
 import org.eclipse.jpt.jpa.ui.JpaRootContextNodeModel;
 
 /**
@@ -44,7 +43,7 @@ public class ProjectAdapterFactory
 {
 	private static final Class<?>[] ADAPTER_LIST = new Class[] {
 			JpaProjectModel.class,
-			JpaRootContextNodeModel.class,
+			JpaRootContextNodeModel.class
 		};
 
 	public Class<?>[] getAdapterList() {
@@ -72,41 +71,12 @@ public class ProjectAdapterFactory
 		return new JpaProjectModelAdapter(this.getJpaProjectsModel(project.getWorkspace()), project);
 	}
 
-	private CollectionValueModel<JpaProject> getJpaProjectsModel(IWorkspace workspace) {
-		return new JpaProjectsModel(this.getJpaProjectManager(workspace));
-	}
-
-	private JpaProjectManager getJpaProjectManager(IWorkspace workspace) {
-		return (JpaProjectManager) workspace.getAdapter(JpaProjectManager.class);
+	private JpaProjectsModel getJpaProjectsModel(IWorkspace workspace) {
+		return (JpaProjectsModel) workspace.getAdapter(JpaProjectsModel.class);
 	}
 
 	private JpaRootContextNodeModel getJpaRootContextNodeModel(IProject project) {
 		return new JpaRootContextNodeModelAdapter(this.getJpaProjectModel(project));
-	}
-
-
-	// ********** JPA projects model **********
-
-	/**
-	 * Adapt the JPA project manager's JPA projects list to the collection value
-	 * model interface.
-	 */
-	/* CU private */ static class JpaProjectsModel
-		extends CollectionAspectAdapter<JpaProjectManager, JpaProject>
-	{
-		JpaProjectsModel(JpaProjectManager jpaProjectManager) {
-			super(JpaProjectManager.JPA_PROJECTS_COLLECTION, jpaProjectManager);
-		}
-
-		@Override
-		protected Iterable<JpaProject> getIterable() {
-			return this.subject.getJpaProjects();
-		}
-
-		@Override
-		protected int size_() {
-			return this.subject.getJpaProjectsSize();
-		}
 	}
 
 

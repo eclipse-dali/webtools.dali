@@ -53,6 +53,13 @@
 			<adapter type="org.eclipse.jpt.jpa.ui.JpaPlatformUi"/>
 		</factory>
 
+		<!-- IWorkspace -> JpaProjectsModel -->
+		<factory
+			adaptableType="org.eclipse.core.resources.IWorkspace"
+			class="org.eclipse.jpt.jpa.ui.internal.WorkspaceAdapterFactory">
+			<adapter type="org.eclipse.jpt.jpa.ui.JpaProjectsModel"/>
+		</factory>
+
 		<!-- IProject
 				-> JpaProjectModel
 				-> JpaRootContextNodeModel
@@ -190,6 +197,7 @@
 			</contentType>
 		</proposalComputer>
 	</extension>
+
 
 	<!-- ***** Dali extensions (eat our own dogfood) ***** -->
 
