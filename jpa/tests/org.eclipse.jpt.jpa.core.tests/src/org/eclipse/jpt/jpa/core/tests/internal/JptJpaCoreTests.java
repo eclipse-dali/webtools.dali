@@ -13,6 +13,7 @@ import java.io.File;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.eclipse.jpt.jpa.core.tests.internal.context.JptJpaCoreContextModelTests;
+import org.eclipse.jpt.jpa.core.tests.internal.metadata.JptJpaCoreMetadataTests;
 import org.eclipse.jpt.jpa.core.tests.internal.model.JptJpaCoreModelTests;
 import org.eclipse.jpt.jpa.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.jpa.core.tests.internal.resource.JptJpaCoreResourceModelTests;
@@ -33,6 +34,7 @@ public class JptJpaCoreTests {
 		suite.addTest(JptJpaCoreModelTests.suite());
 		suite.addTest(JptJpaCoreResourceModelTests.suite());
 		suite.addTest(JptJpaCoreContextModelTests.suite());
+		suite.addTest(JptJpaCoreMetadataTests.suite());
 		return suite;
 	}
 	

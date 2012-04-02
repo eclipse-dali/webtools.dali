@@ -14,6 +14,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.eclipse.jpt.jpa.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.JptJpaEclipseLinkCoreContextModelTests;
+import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.metadata.JptJpaEclipseLinkCoreMetadataTests;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.resource.JptJpaEclipselinkCoreResourceModelTests;
 
 /**
@@ -33,6 +34,7 @@ public class JptJpaEclipseLinkCoreTests
 		TestSuite suite = new TestSuite(JptJpaEclipseLinkCoreTests.class.getPackage().getName());
 		suite.addTest(JptJpaEclipselinkCoreResourceModelTests.suite());
 		suite.addTest(JptJpaEclipseLinkCoreContextModelTests.suite());
+		suite.addTest(JptJpaEclipseLinkCoreMetadataTests.suite());
 		return suite;
 	}
 

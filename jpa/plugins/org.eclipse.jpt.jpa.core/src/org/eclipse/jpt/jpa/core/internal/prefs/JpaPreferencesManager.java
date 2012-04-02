@@ -266,7 +266,7 @@ public class JpaPreferencesManager
 	/**
 	 * Return the legacy Dali (org.eclipse.jpt.core) preferences for the specified Eclipse project.
 	 */
-	protected IEclipsePreferences getLegacyProjectPreferences() {
+	public IEclipsePreferences getLegacyProjectPreferences() {
 		return getLegacyPreferences(new ProjectScope(this.project));
 	}
 	
