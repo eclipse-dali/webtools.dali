@@ -30,8 +30,8 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
@@ -41,7 +41,6 @@ import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.PersistenceXmlResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.JpaPageComposite;
 import org.eclipse.jpt.jpa.ui.internal.persistence.JptUiPersistenceMessages;
-import org.eclipse.jpt.jpa.ui.internal.platform.JpaPlatformUiRegistry;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
@@ -228,8 +227,8 @@ public class PersistenceEditor
 	private PropertyValueModel<JpaRootContextNode> buildRootContextNodeHolder() {
 		return new TransformationPropertyValueModel<JpaProject, JpaRootContextNode>(buildJpaProjectHolder()) {
 			@Override
-			protected JpaRootContextNode transform_(JpaProject value) {
-				return value.getRootContextNode();
+			protected JpaRootContextNode transform_(JpaProject jpaProject) {
+				return jpaProject.getRootContextNode();
 			}
 		};
 	}
