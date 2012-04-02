@@ -69,19 +69,8 @@ import org.eclipse.swt.widgets.Label;
  * @version 2.0
  * @since 2.0
  */
-@SuppressWarnings("nls")
 public abstract class AbstractInheritanceComposite<T extends Entity> extends Pane<T> {
 
-	/**
-	 * A key used to represent the default value, this is required to convert
-	 * the selected item from a combo to <code>null</code>. This key is most
-	 * likely never typed the user and it will help to convert the value to
-	 * <code>null</code> when it's time to set the new selected value into the
-	 * model.
-	 */
-	protected static String DEFAULT_KEY = "?!#!?#?#?default?#?!#?!#?";
-	
-	protected static String NONE_KEY = "?!#!?#?#?none?#?!#?!#?";
 
 	/**
 	 * Creates a new <code>InheritanceComposite</code>.
@@ -112,13 +101,13 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 			JpaHelpContextIds.ENTITY_INHERITANCE_STRATEGY
 		);
 
-		// Discrinator Value widgets
+		// Discriminator Value widgets
 		PropertyValueModel<Boolean> dvEnabled = this.buildDiscriminatorValueEnabledHolder();
 		Combo discriminatorValueCombo = addEditableCombo(
 			subPane,
 			buildDiscriminatorValueListHolder(),
 			buildDiscriminatorValueHolder(),
-			buildDiscriminatorValueConverter(),
+			StringConverter.Default.<String>instance(),
 			dvEnabled
 		);
 		Label discriminatorValueLabel = addLabel(
@@ -159,82 +148,43 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 		return new PropertyAspectAdapter<Entity, String>(getSubjectHolder(), Entity.DEFAULT_DISCRIMINATOR_VALUE_PROPERTY, Entity.DISCRIMINATOR_VALUE_IS_UNDEFINED_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				String value = this.subject.getDefaultDiscriminatorValue();
-				if (value == null && this.subject.discriminatorValueIsUndefined()) {
-					return NONE_KEY;
-				}
-
-				if (value == null) {
-					value = DEFAULT_KEY;
-				}
-				else {
-					value = DEFAULT_KEY + value;
-				}
-
-				return value;
+				return defaultValue(this.subject);
 			}
 		};
 	}
 
-	private StringConverter<String> buildDiscriminatorValueConverter() {
-		return new StringConverter<String>() {
-			public String convertToString(String value) {
+	private String defaultValue(Entity subject) {
+		String defaultValue = subject.getDefaultDiscriminatorValue();
 
-				if (getSubject() == null) {
-					//this is part of a list given to a combo, combos don't take kindly to null
-					return JptCommonUiMessages.NoneSelected;
-				}
-
-				if (value == null) {
-					value = getSubject().getDefaultDiscriminatorValue();
-					if (value == null && getSubject().discriminatorValueIsUndefined()) {
-						value = NONE_KEY;
-					}
-					else {
-						value = (value != null) ? 
-								DEFAULT_KEY + value
-							: 
-								DEFAULT_KEY;
-					}
-				}
-				if (value.startsWith(DEFAULT_KEY)) {
-					String defaultName = value.substring(DEFAULT_KEY.length());
-
-					if (defaultName.length() > 0) {
-						value = NLS.bind(
-							JptCommonUiMessages.DefaultWithOneParam,
-							defaultName
-						);
-					}
-					else {
-						value = JptUiDetailsMessages.ProviderDefault;
-					}
-				}
-				if (value.startsWith(NONE_KEY)) {
-					value = JptCommonUiMessages.NoneSelected;
-				}
-				return value;
-			}
-		};
+		if (defaultValue == null && subject.discriminatorValueIsUndefined()) {
+			return JptCommonUiMessages.NoneSelected;
+		}
+		if (defaultValue != null && defaultValue.length() > 0) {
+			return NLS.bind(
+				JptCommonUiMessages.DefaultWithOneParam,
+				defaultValue
+			);
+		}
+		return JptUiDetailsMessages.ProviderDefault;
 	}
+
 
 	private ModifiablePropertyValueModel<String> buildDiscriminatorValueHolder() {
 		return new PropertyAspectAdapter<Entity, String>(getSubjectHolder(), Entity.SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				return this.subject.getSpecifiedDiscriminatorValue();
+				String value = this.subject.getSpecifiedDiscriminatorValue();
+				if (value == null) {
+					return defaultValue(this.subject);
+				}
+				return value;
 			}
 
 			@Override
 			protected void setValue_(String value) {
-
-				// Convert the default value or an empty string to null
-				if ((value != null) &&
-				   ((value.length() == 0) || value.startsWith(DEFAULT_KEY) || value.startsWith(NONE_KEY))) {
-
+				if (defaultValue(this.subject).equals(value)) {
 					value = null;
 				}
-
 				this.subject.setSpecifiedDiscriminatorValue(value);
 			}
 		};
