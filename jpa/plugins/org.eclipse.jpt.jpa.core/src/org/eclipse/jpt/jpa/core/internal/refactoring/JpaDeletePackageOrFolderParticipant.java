@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,6 +18,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceProxy;
 import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
@@ -176,8 +177,11 @@ public class JpaDeletePackageOrFolderParticipant
 			{
 				@Override
 				protected boolean accept(IFile file) {
-					return javaProject.isOnClasspath(file) 
-							&& PlatformTools.getContentType(file).isKindOf(JptJpaCorePlugin.MAPPING_FILE_CONTENT_TYPE);
+					if (javaProject.isOnClasspath(file)) {
+						IContentType contentType = PlatformTools.getContentType(file);
+						return contentType != null && contentType.isKindOf(JptJpaCorePlugin.MAPPING_FILE_CONTENT_TYPE);
+					}
+					return false;
 				}
 			};
 	}
