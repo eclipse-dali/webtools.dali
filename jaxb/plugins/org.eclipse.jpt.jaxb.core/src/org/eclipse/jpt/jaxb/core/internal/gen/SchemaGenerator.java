@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -115,11 +116,11 @@ public class SchemaGenerator extends AbstractJptGenerator
 	@Override
 	protected void preGenerate(IProgressMonitor monitor) {
 		// generate jaxb.properties file if necessary
-		if (this.useMoxy){
-			if (!isJaxbPropertiesFilePresent()){
+		if(this.useMoxy) {
+			if( ! this.jaxbPropertiesFileIsPresent()) {
 				this.generateJaxbPropertiesFile(monitor);
 			}
-			else if (!isJaxbContextMoxy()){
+			else if( ! this.jaxbContextUsesMoxy()) {
 				//properties file actually specifies a different implementation
 				//override wizard setting and fall back to generic generation
 				this.useMoxy = false;
@@ -177,19 +178,19 @@ public class SchemaGenerator extends AbstractJptGenerator
 	}
 	
 	private IFile getJaxbPropertiesFileFromPackageRoots(Iterable<IPackageFragmentRoot> packageFragmentRoots){
-		Object[] objects = null;
 		IJavaElement[] javaElements;
+		IFile jaxbPropertiesFile = null;
 		try {
 			for (IPackageFragmentRoot pfr : packageFragmentRoots) {
+				jaxbPropertiesFile = this.findJaxbPropertiesFile(pfr.getNonJavaResources());
+				if(jaxbPropertiesFile != null) {
+					return jaxbPropertiesFile;
+				}
 				javaElements = pfr.getChildren();
-				for (IJavaElement javaElement : javaElements) {
-					objects = ((IPackageFragment) javaElement).getNonJavaResources();
-					for (Object object : objects) {
-						IResource resource = (IResource) object;
-						if (resource.getName().equals(JAXB_PROPERTIES_FILE_NAME)) {
-							// jaxb.properties has been found
-							return (IFile)resource;
-						}
+				for(IJavaElement je : javaElements) {
+					jaxbPropertiesFile = this.findJaxbPropertiesFile(((IPackageFragment)je).getNonJavaResources());
+					if(jaxbPropertiesFile != null) {
+						return jaxbPropertiesFile;
 					}
 				}
 			}
@@ -197,31 +198,42 @@ public class SchemaGenerator extends AbstractJptGenerator
 			throw new RuntimeException(jme);
 		}
 		return null;
-	}		
+	}
+	
+	private IFile findJaxbPropertiesFile(Object[] objects) throws JavaModelException {
+		for(Object object : objects) {
+			IResource resource = (IResource) object;
+			if(resource.getName().equals(JAXB_PROPERTIES_FILE_NAME)) {
+				// jaxb.properties has been found
+				return (IFile)resource;
+			}
+		}
+		return null;
+	}	
 
-	private boolean isJaxbPropertiesFilePresent(){
-		return getJaxbPropertiesFile()!= null;
+	private boolean jaxbPropertiesFileIsPresent() {
+		return this.getJaxbPropertiesFile() != null;
 	}
 
-	private boolean isJaxbContextMoxy(){	
+	private boolean jaxbContextUsesMoxy() {	
 
 		InputStream in = null;
 		try {
-			in = getJaxbPropertiesFile().getContents();
+			in = this.getJaxbPropertiesFile().getContents();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 			String line = reader.readLine();
 			//jaxb.properties will only contain one property entry, the JAXBContextFactory
 			String propertyValue = line.substring(line.indexOf("=") + 1); //$NON-NLS-1$
-			if (propertyValue.equals(ECLIPSELINK_JAXB_CONTEXT_FACTORY)){
+			if (propertyValue.equals(ECLIPSELINK_JAXB_CONTEXT_FACTORY)) {
 				return true;
 			}
-		} catch (CoreException ce){
+		} catch (CoreException ce) {
 			throw new RuntimeException(ce);
-		} catch (IOException ioe){
+		} catch (IOException ioe) {
 			throw new RuntimeException(ioe);
 		} finally {
-		    if (in != null){
-		    	try{
+		    if (in != null) {
+		    	try {
 		    		in.close();
 		    	} catch (IOException ioe) {
 		    		throw new RuntimeException(ioe);
@@ -234,8 +246,8 @@ public class SchemaGenerator extends AbstractJptGenerator
 	private void generateJaxbPropertiesFile(IProgressMonitor monitor) {
 		SubMonitor sm = SubMonitor.convert(monitor, 1);
 		sm.subTask(JptJaxbCoreMessages.SchemaGenerator_creatingJAXBPropertiesFileTask);
-		
-		IPackageFragment packageFragment = findPackageFragementForSourceClassName(this.sourceClassNames[0]);
+
+		IPackageFragment packageFragment = this.findPackageFragementForSourceClassName(this.sourceClassNames[0]);
 
 		IFolder folder = (IFolder)packageFragment.getResource();
 		IFile file = folder.getFile(JAXB_PROPERTIES_FILE_NAME);
@@ -258,6 +270,10 @@ public class SchemaGenerator extends AbstractJptGenerator
 	}
 
 	private IPackageFragment findPackageFragementForSourceClassName(String sourceClassName) {
+
+		if(this.classIsInDefaultPackage(sourceClassName)) {
+			return this.emptyPackageFragment();
+		}
 		String packageName = sourceClassName.substring(0, sourceClassName.lastIndexOf('.'));
 		
 		//Find the existing package fragment where we want to generate
@@ -270,6 +286,19 @@ public class SchemaGenerator extends AbstractJptGenerator
 		}
 		//the existing package fragment was not found
 		throw new IllegalStateException("Java package must exist for source class"); //$NON-NLS-1$
+	}
+	
+	private IPackageFragment emptyPackageFragment() {
+		return this.getFirstJavaSourceFolder().getPackageFragment(""); //$NON-NLS-1$
+	}
+	
+	private IPackageFragmentRoot getFirstJavaSourceFolder() {
+		Iterator<IPackageFragmentRoot> i = JDTTools.getJavaSourceFolders(this.javaProject).iterator();
+		return i.hasNext() ? i.next() : null;
+	}
+	
+	private boolean classIsInDefaultPackage(String sourceClassName) {
+		return ! sourceClassName.contains("."); //$NON-NLS-1$
 	}
 
 }
