@@ -132,7 +132,7 @@ public class ELJavaXmlPath
 			messages.add(
 					ELJaxbValidationMessageBuilder.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								ELJaxbValidationMessages.XML_PATH__ROOT_NOT_SUPPORTED,
+								ELJaxbValidationMessages.XPATH__ROOT_NOT_SUPPORTED,
 								ELJavaXmlPath.this,
 								getValueTextRange(astRoot)));
 			return;

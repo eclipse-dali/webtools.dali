@@ -71,7 +71,7 @@ public class ELJavaXmlElementsMapping
 	// ***** xmlPaths *****
 	
 	public ListIterable<ELXmlPath> getXmlPaths() {
-		return new SuperListIterableWrapper<ELXmlPath>(xmlPathContainer.getContextElements());
+		return new SuperListIterableWrapper<ELXmlPath>(this.xmlPathContainer.getContextElements());
 	}
 	
 	public int getXmlPathsSize() {
