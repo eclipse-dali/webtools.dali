@@ -27,4 +27,38 @@ import org.eclipse.jpt.jaxb.core.context.XmlNamedNodeMapping;
 public interface ELXmlNamedNodeMapping
 		extends XmlNamedNodeMapping, ELXmlPathMapping {
 	
+	// ***** XmlKey *****
+	
+	/**
+	 * String associated with changes to the xmlKey property
+	 */
+	String XML_KEY_PROPERTY = "xmlKey";  ///$NON-NLS-1$
+	
+	/**
+	 * Return the xmlKey property value.
+	 * A null indicates it is not specified.
+	 */
+	ELXmlKey getXmlKey();
+	
+	/**
+	 * Add (and return) an xmlKey property value.
+	 * (Specifies the property)
+	 */
+	ELXmlKey addXmlKey();
+	
+	/**
+	 * Remove the xmlKey property value.
+	 * (Unspecifies the property)
+	 */
+	void removeXmlKey();
+	
+	
+	// ***** misc *****
+	
+	/**
+	 * Return an XPath to represent this attribute mapping.
+	 * Return <code>null</code> if no valid XPath can be constructed.
+	 * (Trivial if this mapping has an XmlPath annotation)
+	 */
+	String getXPath();
 }

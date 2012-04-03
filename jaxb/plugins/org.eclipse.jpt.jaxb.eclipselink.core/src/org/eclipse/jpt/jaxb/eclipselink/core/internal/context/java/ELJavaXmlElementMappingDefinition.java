@@ -26,6 +26,7 @@ public class ELJavaXmlElementMappingDefinition
 	private static final String[] SUPPORTING_ANNOTATION_NAMES = 
 			{
 				ELJaxb.XML_CDATA,
+				ELJaxb.XML_KEY,
 				ELJaxb.XML_PATH };
 	
 	/**

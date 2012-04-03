@@ -25,6 +25,7 @@ import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.XmlDiscrimin
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.XmlDiscriminatorValueAnnotationDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.XmlJoinNodeAnnotationDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.XmlJoinNodesAnnotationDefinition;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.XmlKeyAnnotationDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.XmlTransformationAnnotationDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_1.ELJaxb_2_1_PlatformDefinition;
 
@@ -67,6 +68,7 @@ public class ELJaxb_2_2_PlatformDefinition
 				XmlDiscriminatorNodeAnnotationDefinition.instance(),
 				XmlDiscriminatorValueAnnotationDefinition.instance(),
 				XmlJoinNodesAnnotationDefinition.instance(),
+				XmlKeyAnnotationDefinition.instance(),
 				XmlTransformationAnnotationDefinition.instance());
 	}
 	

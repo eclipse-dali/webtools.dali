@@ -50,6 +50,8 @@ public interface ELJaxb {
 	String XML_JOIN_NODES = PACKAGE_ + "XmlJoinNodes";
 		String XML_JOIN_NODES__VALUE = "value";
 	
+	String XML_KEY = PACKAGE_ + "XmlKey";
+	
 	String XML_PATH = PACKAGE_ + "XmlPath";
 		String XML_PATH__VALUE = "value";
 	

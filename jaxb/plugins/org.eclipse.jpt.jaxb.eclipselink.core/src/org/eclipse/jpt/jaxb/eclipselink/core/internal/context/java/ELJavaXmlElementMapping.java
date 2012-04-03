@@ -13,6 +13,7 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
@@ -22,9 +23,14 @@ import org.eclipse.jpt.jaxb.core.context.XmlID;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlElementMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlIDAnnotation;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlCDATA;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlElementMapping;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlKey;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlPath;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.xpath.java.XPath;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
+import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlCDATAAnnotation;
+import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlKeyAnnotation;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlPathAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -36,10 +42,16 @@ public class ELJavaXmlElementMapping
 	
 	protected ELJavaXmlPath xmlPath;
 	
+	protected ELJavaXmlKey xmlKey;
+	
+	protected ELJavaXmlCDATA xmlCDATA;
+	
 	
 	public ELJavaXmlElementMapping(JaxbPersistentAttribute parent) {
 		super(parent);
 		initXmlPath();
+		initXmlKey();
+		initXmlCDATA();
 	}
 	
 	
@@ -55,6 +67,8 @@ public class ELJavaXmlElementMapping
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		syncXmlPath();
+		syncXmlKey();
+		syncXmlCDATA();
 	}
 	
 	
@@ -119,6 +133,118 @@ public class ELJavaXmlElementMapping
 	}
 	
 	
+	// ***** XmlKey *****
+	
+	public ELXmlKey getXmlKey() {
+		return this.xmlKey;
+	}
+	
+	protected void setXmlKey_(ELJavaXmlKey xmlKey) {
+		ELJavaXmlKey old = this.xmlKey;
+		this.xmlKey = xmlKey;
+		firePropertyChanged(XML_KEY_PROPERTY, old, this.xmlKey);
+	}
+	
+	public ELXmlKey addXmlKey() {
+		if (this.xmlKey != null) {
+			throw new IllegalStateException();
+		}
+		getJavaResourceAttribute().addAnnotation(ELJaxb.XML_KEY);
+		ELJavaXmlKey xmlKey = buildXmlKey();
+		setXmlKey_(xmlKey);
+		return xmlKey;
+	}
+	
+	public void removeXmlKey() {
+		if (this.xmlKey == null) {
+			throw new IllegalStateException();
+		}
+		getJavaResourceAttribute().removeAnnotation(ELJaxb.XML_KEY);
+		setXmlKey_(null);
+	}
+	
+	protected void initXmlKey() {
+		XmlKeyAnnotation annotation = getXmlKeyAnnotation();
+		this.xmlKey = (annotation == null) ? null : buildXmlKey();
+	}
+	
+	protected void syncXmlKey() {
+		XmlKeyAnnotation annotation = getXmlKeyAnnotation();
+		if (annotation != null) {
+			if (this.xmlKey == null) {
+				setXmlKey_(buildXmlKey());
+			}
+		}
+		else {
+			setXmlKey_(null);
+		}
+	}
+	
+	protected ELJavaXmlKey buildXmlKey() {
+		return new ELJavaXmlKey(this, new XmlKeyContext());
+	}
+	
+	protected XmlKeyAnnotation getXmlKeyAnnotation() {
+		return (XmlKeyAnnotation) getJavaResourceAttribute().getAnnotation(ELJaxb.XML_KEY);
+	}
+	
+	
+	// ***** XmlCDATA *****
+	
+	public ELXmlCDATA getXmlCDATA() {
+		return this.xmlCDATA;
+	}
+	
+	protected void setXmlCDATA_(ELJavaXmlCDATA xmlCDATA) {
+		ELJavaXmlCDATA old = this.xmlCDATA;
+		this.xmlCDATA = xmlCDATA;
+		firePropertyChanged(XML_CDATA_PROPERTY, old, this.xmlCDATA);
+	}
+	
+	public ELXmlCDATA addXmlCDATA() {
+		if (this.xmlCDATA != null) {
+			throw new IllegalStateException();
+		}
+		getJavaResourceAttribute().addAnnotation(ELJaxb.XML_CDATA);
+		ELJavaXmlCDATA xmlCDATA = buildXmlCDATA();
+		setXmlCDATA_(xmlCDATA);
+		return xmlCDATA;
+	}
+	
+	public void removeXmlCDATA() {
+		if (this.xmlCDATA == null) {
+			throw new IllegalStateException();
+		}
+		getJavaResourceAttribute().removeAnnotation(ELJaxb.XML_CDATA);
+		setXmlCDATA_(null);
+	}
+	
+	protected void initXmlCDATA() {
+		XmlCDATAAnnotation annotation = getXmlCDATAAnnotation();
+		this.xmlCDATA = (annotation == null) ? null : buildXmlCDATA();
+	}
+	
+	protected void syncXmlCDATA() {
+		XmlCDATAAnnotation annotation = getXmlCDATAAnnotation();
+		if (annotation != null) {
+			if (this.xmlCDATA == null) {
+				setXmlCDATA_(buildXmlCDATA());
+			}
+		}
+		else {
+			setXmlCDATA_(null);
+		}
+	}
+	
+	protected ELJavaXmlCDATA buildXmlCDATA() {
+		return new ELJavaXmlCDATA(this, new XmlCDATAContext());
+	}
+	
+	protected XmlCDATAAnnotation getXmlCDATAAnnotation() {
+		return (XmlCDATAAnnotation) getJavaResourceAttribute().getAnnotation(ELJaxb.XML_CDATA);
+	}
+	
+	
 	// ***** misc *****
 	
 	@Override
@@ -129,6 +255,32 @@ public class ELJavaXmlElementMapping
 	@Override
 	protected XmlElementWrapper buildXmlElementWrapper() {
 		return new ELJavaXmlElementWrapper(this, new XmlElementWrapperContext());
+	}
+	
+	public String getXPath() {
+		if (this.xmlPath != null) {
+			return this.xmlPath.getValue();
+		}
+		
+		String name = this.xmlElement.getQName().getName();
+		if (StringTools.stringIsEmpty(name)) {
+			// no name is invalid
+			return null;
+		}
+		
+		String namespace = this.xmlElement.getQName().getNamespace();
+		if (StringTools.stringIsEmpty(namespace)) {
+			// empty namespace means "no" namespace
+			return XPath.elementXPath(null, name);
+		}
+		
+		String prefix = getJaxbPackage().getPackageInfo().getPrefixForNamespace(namespace);
+		if (prefix == null) {
+			// no prefix for non-null namespace is invalid
+			return null;
+		}
+		
+		return XPath.elementXPath(prefix, name);
 	}
 	
 	
@@ -177,6 +329,24 @@ public class ELJavaXmlElementMapping
 		
 		public JaxbAttributeMapping getAttributeMapping() {
 			return ELJavaXmlElementMapping.this;
+		}
+	}
+	
+	
+	protected class XmlKeyContext
+			implements ELJavaXmlKey.Context {
+		
+		public XmlKeyAnnotation getAnnotation() {
+			return ELJavaXmlElementMapping.this.getXmlKeyAnnotation();
+		}
+	}
+	
+	
+	protected class XmlCDATAContext
+			implements ELJavaXmlCDATA.Context {
+		
+		public XmlCDATAAnnotation getAnnotation() {
+			return ELJavaXmlElementMapping.this.getXmlCDATAAnnotation();
 		}
 	}
 	

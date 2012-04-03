@@ -21,7 +21,9 @@ import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
+import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbPlatform;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlAttributeMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlPathAnnotation;
@@ -35,6 +37,11 @@ public class ELJavaXmlAttributeMappingTests
 		super(name);
 	}
 	
+	
+	@Override
+	protected JaxbPlatformDescription getPlatform() {
+		return ELJaxbPlatform.VERSION_2_2;
+	}
 	
 	private ICompilationUnit createTypeWithXmlAttribute() throws Exception {
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -173,5 +180,61 @@ public class ELJavaXmlAttributeMappingTests
 		
 		assertNull(xmlPathAnnotation.getValue());
 		assertFalse(persistentAttribute.getMapping().getKey() == MappingKeys.XML_ATTRIBUTE_ATTRIBUTE_MAPPING_KEY);
+	}
+	
+	public void testModifyXmlKey() throws Exception {
+		createTypeWithXmlAttribute();
+		
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(classMapping.getAttributes(), 0);
+		ELJavaXmlAttributeMapping mapping = (ELJavaXmlAttributeMapping) persistentAttribute.getMapping();
+		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
+		
+		assertNull(resourceAttribute.getAnnotation(ELJaxb.XML_KEY));
+		assertNull(mapping.getXmlKey());
+		
+		mapping.addXmlKey();
+		
+		assertNotNull(resourceAttribute.getAnnotation(ELJaxb.XML_KEY));
+		assertNotNull(mapping.getXmlKey());
+		
+		mapping.removeXmlKey();
+		
+		assertNull(resourceAttribute.getAnnotation(ELJaxb.XML_KEY));
+		assertNull(mapping.getXmlKey());
+	}
+	
+	public void testUpdateXmlKey() throws Exception {
+		createTypeWithXmlAttribute();
+		
+		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClassMapping classMapping = jaxbClass.getMapping();
+		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(classMapping.getAttributes(), 0);
+		ELJavaXmlAttributeMapping mapping = (ELJavaXmlAttributeMapping) persistentAttribute.getMapping();
+		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
+		
+		assertNull(resourceAttribute.getAnnotation(ELJaxb.XML_KEY));
+		assertNull(mapping.getXmlKey());
+		
+		AnnotatedElement annotatedElement = this.annotatedElement(resourceAttribute);
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				ELJavaXmlAttributeMappingTests.this.addMarkerAnnotation(
+						declaration.getDeclaration(), ELJaxb.XML_KEY);
+			}
+		});
+		
+		assertNotNull(resourceAttribute.getAnnotation(ELJaxb.XML_KEY));
+		assertNotNull(mapping.getXmlKey());
+		
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				ELJavaXmlAttributeMappingTests.this.removeAnnotation(declaration, ELJaxb.XML_KEY);
+			}
+		});
+		
+		assertNull(resourceAttribute.getAnnotation(ELJaxb.XML_KEY));
+		assertNull(mapping.getXmlKey());
 	}
 }

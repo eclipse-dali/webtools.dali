@@ -24,6 +24,7 @@ public class ELJaxbJavaResourceModelTests
 		suite.addTestSuite(XmlDiscriminatorValueAnnotationTests.class);
 		suite.addTestSuite(XmlInverseReferenceAnnotationTests.class);
 		suite.addTestSuite(XmlJoinNodeAnnotationTests.class);
+		suite.addTestSuite(XmlKeyAnnotationTests.class);
 		suite.addTestSuite(XmlPathAnnotationTests.class);
 		suite.addTestSuite(XmlTransformationAnnotationTests.class);
 		
