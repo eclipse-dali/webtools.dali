@@ -14,11 +14,9 @@ import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.ddlgen.EclipseLinkDDLGeneratorUi;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUiProvider;
-import org.eclipse.jpt.jpa.ui.internal.platform.base.BaseJpaPlatformUi;
 
 public class EclipseLink1_0JpaPlatformUi
-	extends BaseJpaPlatformUi
-	implements EclipseLinkJpaPlatformUi
+	extends AbstractEclipseLinkJpaPlatformUi
 {
 	public EclipseLink1_0JpaPlatformUi(
 			ItemTreeStateProviderFactoryProvider navigatorFactoryProvider,
@@ -31,19 +29,5 @@ public class EclipseLink1_0JpaPlatformUi
 
 	public void generateDDL(JpaProject project, IStructuredSelection selection) {
 		EclipseLinkDDLGeneratorUi.generate(project);
-	}
-
-	// ********** metadata conversion **********
-	
-	public void convertJavaQueryMetadataToGlobal(JpaProject jpaProject) {
-		EclipseLinkJpaJavaQueryMetadataConvertor.convert(jpaProject);
-	}
-	
-	public void convertJavaGeneratorMetadataToGlobal(JpaProject jpaProject) {
-		EclipseLinkJpaJavaGeneratorMetadataConvertor.convert(jpaProject);
-	}
-
-	public void convertJavaConverterMetadataToGlobal(JpaProject jpaProject) {
-		EclipseLinkJpaJavaConverterMetadataConvertor.convert(jpaProject);
 	}
 }

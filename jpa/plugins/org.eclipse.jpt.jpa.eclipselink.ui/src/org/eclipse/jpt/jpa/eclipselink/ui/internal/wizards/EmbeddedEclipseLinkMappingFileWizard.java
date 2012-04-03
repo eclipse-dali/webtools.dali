@@ -17,35 +17,39 @@ import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 /**
- * This wizard will create a new EclipseLink mapping file without open it afterwards.
- * It is used within other wizards where opening mapping file is unnecessary,
- * therefore, making the whole process more smooth.
- * This wizard has one more attribute called <code> DEFAULT_XML_FILE_NAME </code>
- * used when the given XML file name is null to avoid NullPointerException.
+ * This wizard will create a new EclipseLink mapping file without opening it
+ * afterwards.
+ * It can be used within other wizards where opening the mapping file is
+ * unnecessary, making the process smoother.
  */
+public class EmbeddedEclipseLinkMappingFileWizard
+	extends EclipseLinkMappingFileWizard
+{
+	public static IPath createNewMappingFile(IStructuredSelection selection) {
+		return createNewMappingFile(selection, null);
+	}
 
-@SuppressWarnings("restriction")
-public class EmbeddedEclipseLinkMappingFileWizard extends
-		EclipseLinkMappingFileWizard {
-	
-	public static final String DEFAULT_XML_FILE_NAME = "eclipselink-orm.xml";
+	public static IPath createNewMappingFile(IStructuredSelection selection, String xmlFileName) {
+		if (xmlFileName == null) {
+			xmlFileName = DEFAULT_XML_FILE_NAME;
+		} 
+		EmbeddedEclipseLinkMappingFileWizard wizard = new EmbeddedEclipseLinkMappingFileWizard(DataModelFactory.createDataModel(new EclipseLinkOrmFileCreationDataModelProvider()));
+		return MappingFileWizard.createMappingFile(selection, xmlFileName, wizard);
+	}
+
+	public static final String DEFAULT_XML_FILE_NAME = "eclipselink-orm.xml"; //$NON-NLS-1$
+
 
 	public EmbeddedEclipseLinkMappingFileWizard() {
+		super();
 	}
 
 	public EmbeddedEclipseLinkMappingFileWizard(IDataModel dataModel) {
 		super(dataModel);
 	}
-	
+
 	@Override
 	public boolean performFinish() {
 		return this.createMappingFile();
-	}
-
-	public static IPath createNewMappingFile(IStructuredSelection selection, String xmlFileName) {
-		if (xmlFileName == null) {xmlFileName = DEFAULT_XML_FILE_NAME;} 
-		EmbeddedEclipseLinkMappingFileWizard wizard = new EmbeddedEclipseLinkMappingFileWizard(
-				DataModelFactory.createDataModel(new EclipseLinkOrmFileCreationDataModelProvider()));
-		return MappingFileWizard.createMappingFile(selection, xmlFileName, wizard);
 	}
 }

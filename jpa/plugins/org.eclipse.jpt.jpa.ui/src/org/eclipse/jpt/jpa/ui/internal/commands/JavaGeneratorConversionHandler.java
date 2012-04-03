@@ -11,15 +11,15 @@ package org.eclipse.jpt.jpa.ui.internal.commands;
 
 import org.eclipse.jpt.jpa.core.JpaProject;
 
-public class JpaJavaGeneratorMetadataConversionHandler extends AbstractJpaJavaMetadataConversionHandler {
-
-	public JpaJavaGeneratorMetadataConversionHandler() {
+public class JavaGeneratorConversionHandler
+	extends AbstractJavaMetadataConversionHandler
+{
+	public JavaGeneratorConversionHandler() {
 		super();
 	}
 
 	@Override
-	protected void converterJavaGlobalMetadata(JpaProject jpaProject) {
-		super.getJpaPlatformUi(jpaProject).convertJavaGeneratorMetadataToGlobal(jpaProject);
-
+	protected void convertJavaMetadata(JpaProject jpaProject) {
+		this.getJpaPlatformUi(jpaProject).convertJavaGeneratorMetadataToGlobal(jpaProject);
 	}
 }

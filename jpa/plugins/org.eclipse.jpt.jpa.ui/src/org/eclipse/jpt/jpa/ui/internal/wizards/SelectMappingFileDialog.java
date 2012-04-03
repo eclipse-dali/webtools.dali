@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.wizards;
 
-import java.io.File;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -37,15 +36,23 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
+import org.eclipse.ui.model.WorkbenchContentProvider;
+import org.eclipse.ui.model.WorkbenchLabelProvider;
 
-public class SelectJpaOrmMappingFileDialog extends ElementTreeSelectionDialog
+public class SelectMappingFileDialog
+	extends ElementTreeSelectionDialog
 {
 	protected final IProject project;
 	
 	protected Label messageLabel;
 	protected Tree treeWidget;
 
-	public SelectJpaOrmMappingFileDialog(Shell parent, IProject project, ILabelProvider labelProvider, ITreeContentProvider contentProvider) {
+
+	public SelectMappingFileDialog(Shell parent, IProject project) {
+		this(parent, project, new WorkbenchLabelProvider(), new WorkbenchContentProvider());
+	}
+
+	public SelectMappingFileDialog(Shell parent, IProject project, ILabelProvider labelProvider, ITreeContentProvider contentProvider) {
 		super(parent, labelProvider, contentProvider);
 		setAllowMultiple(false);
 		this.project = project;
@@ -55,10 +62,10 @@ public class SelectJpaOrmMappingFileDialog extends ElementTreeSelectionDialog
 	protected Control createDialogArea(Composite parent) {
 		Composite composite = (Composite) super.createDialogArea(parent);
 		Button newButton = new Button(composite, SWT.PUSH);
-		newButton.setText(JptUiMessages.SelectJpaOrmMappingFileDialog_newButton);
+		newButton.setText(JptUiMessages.SelectMappingFileDialog_newButton);
 		GridData browseButtonData = new GridData(GridData.HORIZONTAL_ALIGN_END);
 		newButton.setLayoutData(browseButtonData);		
-		newButton.setToolTipText(JptUiMessages.SelectJpaOrmMappingFileDialog_newBtnToolTip);
+		newButton.setToolTipText(JptUiMessages.SelectMappingFileDialog_newButtonToolTip);
 		newButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				openNewMappingFileWizard();
@@ -84,10 +91,6 @@ public class SelectJpaOrmMappingFileDialog extends ElementTreeSelectionDialog
         return treeViewer;
 	}
    
-	/**
-	 * @param project
-	 * @return the runtime path of the chosen element
-	 */
 	public String getChosenName() {
 		IPath resourcePath = null;
 		Object element = getFirstResult();
@@ -96,8 +99,7 @@ public class SelectJpaOrmMappingFileDialog extends ElementTreeSelectionDialog
 		} else {
 			resourcePath = ((IFile) element).getFullPath();
 		}
-		String runtimePath = this.getProjectResourceLocator().getRuntimePath(resourcePath).toOSString();
-		return runtimePath.replace(File.separatorChar, '/');
+		return this.getProjectResourceLocator().getRuntimePath(resourcePath).toString();
 	}
 
 	@Override
@@ -109,15 +111,15 @@ public class SelectJpaOrmMappingFileDialog extends ElementTreeSelectionDialog
 		TreeSelection selection = (TreeSelection)getTreeViewer().getSelection();
 		IResource selectedResource = (IResource) selection.getFirstElement();
 		if (selectedResource instanceof IFile) {
-			updateStatus(new Status(IStatus.OK, JptJpaUiPlugin.PLUGIN_ID, ""));
+			updateStatus(new Status(IStatus.OK, JptJpaUiPlugin.PLUGIN_ID, "")); //$NON-NLS-1$
 		}
 		else {
-			updateStatus(new Status(IStatus.ERROR, JptJpaUiPlugin.PLUGIN_ID, ""));
+			updateStatus(new Status(IStatus.ERROR, JptJpaUiPlugin.PLUGIN_ID, "")); //$NON-NLS-1$
 		}
 	}
 	
 	protected void openNewMappingFileWizard() {
-		IPath path = EmbeddedMappingFileWizard.createNewMappingFile(new StructuredSelection(this.project), null);
+		IPath path = EmbeddedMappingFileWizard.createNewMappingFile(new StructuredSelection(this.project));
 		updateDialog(path);
 	}
 

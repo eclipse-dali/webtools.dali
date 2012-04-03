@@ -9,9 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
@@ -43,7 +45,7 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 
 	protected String query;
 
-	protected final ContextListContainer<JavaQueryHint, QueryHintAnnotation> queryHintContainer;
+	protected final ContextListContainer<JavaQueryHint, QueryHintAnnotation> hintContainer;
 
 
 	protected AbstractJavaQuery(JavaJpaContextNode parent, A queryAnnotation) {
@@ -51,7 +53,7 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 		this.queryAnnotation = queryAnnotation;
 		this.name = queryAnnotation.getName();
 		this.query = queryAnnotation.getQuery();
-		this.queryHintContainer = this.buildHintContainer();
+		this.hintContainer = this.buildHintContainer();
 	}
 
 
@@ -111,11 +113,11 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 	// ********** hints **********
 
 	public ListIterable<JavaQueryHint> getHints() {
-		return this.queryHintContainer.getContextElements();
+		return this.hintContainer.getContextElements();
 	}
 
 	public int getHintsSize() {
-		return this.queryHintContainer.getContextElementsSize();
+		return this.hintContainer.getContextElementsSize();
 	}
 
 	public JavaQueryHint addHint() {
@@ -124,25 +126,25 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 
 	public JavaQueryHint addHint(int index) {
 		QueryHintAnnotation annotation = this.queryAnnotation.addHint(index);
-		return this.queryHintContainer.addContextElement(index, annotation);
+		return this.hintContainer.addContextElement(index, annotation);
 	}
 
 	public void removeHint(QueryHint hint) {
-		this.removeHint(this.queryHintContainer.indexOfContextElement((JavaQueryHint) hint));
+		this.removeHint(this.hintContainer.indexOfContextElement((JavaQueryHint) hint));
 	}
 
 	public void removeHint(int index) {
 		this.queryAnnotation.removeHint(index);
-		this.queryHintContainer.removeContextElement(index);
+		this.hintContainer.removeContextElement(index);
 	}
 
 	public void moveHint(int targetIndex, int sourceIndex) {
 		this.queryAnnotation.moveHint(targetIndex, sourceIndex);
-		this.queryHintContainer.moveContextElement(targetIndex, sourceIndex);
+		this.hintContainer.moveContextElement(targetIndex, sourceIndex);
 	}
 
 	public JavaQueryHint getHint(int index) {
-		return this.queryHintContainer.get(index);
+		return this.hintContainer.get(index);
 	}
 	
 	protected JavaQueryHint buildHint(QueryHintAnnotation hintAnnotation) {
@@ -150,7 +152,7 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 	}
 
 	protected void syncHints() {
-		this.queryHintContainer.synchronizeWithResourceModel();
+		this.hintContainer.synchronizeWithResourceModel();
 	}
 
 	protected ListIterable<QueryHintAnnotation> getHintAnnotations() {
@@ -239,28 +241,30 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 	public boolean isEquivalentTo(JpaNamedContextNode node) {
 		return (this != node) &&
 				(this.getType() == node.getType()) &&
-				this.isEquivalentTo((Query)node);
+				this.isEquivalentTo((Query) node);
 	}
 	
 	protected boolean isEquivalentTo(Query other) {
 		return Tools.valuesAreEqual(this.name, other.getName()) &&
 				Tools.valuesAreEqual(this.query, other.getQuery()) &&
-				hintsAreEquivalentTo(other);
+				this.hintsAreEquivalentTo(other);
 	}
 
 	protected boolean hintsAreEquivalentTo(Query other) {
-		if (this.getHintsSize() != other.getHintsSize()) {
+		// get fixed lists of the hints
+		ArrayList<JavaQueryHint> hints1 = CollectionTools.list(this.getHints());
+		ArrayList<? extends QueryHint> hints2 = CollectionTools.list(other.getHints());
+		if (hints1.size() != hints2.size()) {
 			return false;
 		}
-		
-		for (int i=0; i<this.getHintsSize(); i++) {
-			if (! this.queryHintContainer.get(i).isEquivalentTo(other.getHint(i))) {
+		for (int i = 0; i < hints1.size(); i++) {
+			if ( ! hints1.get(i).isEquivalentTo(hints2.get(i))) {
 				return false;
 			}
 		}
-		
 		return true;
 	}
+
 
 	// ********** misc **********
 

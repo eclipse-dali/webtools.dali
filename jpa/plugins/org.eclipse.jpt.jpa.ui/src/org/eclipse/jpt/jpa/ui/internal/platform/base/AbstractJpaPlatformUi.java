@@ -13,8 +13,11 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.wizard.IWizard;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -35,11 +38,12 @@ import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsPageManager;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.wizards.conversion.java.JavaMetadataConversionWizard;
+import org.eclipse.jpt.jpa.ui.internal.wizards.conversion.java.JavaMetadataConversionWizardPage;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-public abstract class BaseJpaPlatformUi
+public abstract class AbstractJpaPlatformUi
 	implements JpaPlatformUi
 {
 	private final ItemTreeStateProviderFactoryProvider navigatorFactoryProvider;
@@ -47,11 +51,14 @@ public abstract class BaseJpaPlatformUi
 	private final JpaPlatformUiProvider platformUiProvider;
 	
 	
-	protected BaseJpaPlatformUi(
+	protected AbstractJpaPlatformUi(
 			ItemTreeStateProviderFactoryProvider navigatorFactoryProvider,
 			JpaPlatformUiProvider platformUiProvider
 	) {
 		super();
+		if ((navigatorFactoryProvider == null) || (platformUiProvider == null)) {
+			throw new NullPointerException();
+		}
 		this.navigatorFactoryProvider = navigatorFactoryProvider;
 		this.platformUiProvider = platformUiProvider;
 	}
@@ -182,7 +189,45 @@ public abstract class BaseJpaPlatformUi
 	// ********** convenience methods **********
 	
 	protected void displayMessage(String title, String message) {
-	    Shell currentShell = Display.getCurrent().getActiveShell();
-	    MessageDialog.openInformation(currentShell, title, message);
+	    MessageDialog.openInformation(SWTUtil.getShell(), title, message);
+	}
+
+	protected void openInDialog(JavaMetadataConversionWizardPage wizardPage) {
+		openInDialog(new JavaMetadataConversionWizard(wizardPage));
+	}
+
+	protected void openInDialog(IWizard wizard) {
+		new SizedWizardDialog(wizard).open();
+	}
+
+
+	// ********** wizard dialog **********
+
+	public class SizedWizardDialog
+		extends WizardDialog
+	{
+		private final int width;
+		private final int height;
+
+		public SizedWizardDialog(IWizard wizard) {
+			this(wizard, 520, 460);
+		}
+
+		public SizedWizardDialog(IWizard wizard, int width, int height) {
+			this(SWTUtil.getShell(), wizard, width, height);
+		}
+
+		public SizedWizardDialog(Shell shell, IWizard wizard, int width, int height) {
+			super(shell, wizard);
+			this.width = width;
+			this.height = height;
+		}
+
+		@Override
+		protected void configureShell(Shell shell) {
+			super.configureShell(shell);
+			shell.setSize(this.width, this.height);
+			SWTUtil.center(shell, this.getParentShell());
+		}
 	}
 }

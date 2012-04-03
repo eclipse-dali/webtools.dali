@@ -16,19 +16,30 @@ import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 /**
- * This wizard will create a new mapping file without open it afterwards.
- * It is used within other wizards where opening mapping file is unnecessary,
- * therefore, making the whole process more smooth.
- * This wizard has one more attribute called <code> DEFAULT_XML_FILE_NAME </code>
- * used when the given XML file name is null to avoid NullPointerException.
+ * This wizard will create a new mapping file without opening it afterwards.
+ * It can be used within other wizards where opening the mapping file is
+ * unnecessary, making the process smoother.
  */
+public class EmbeddedMappingFileWizard
+	extends MappingFileWizard
+{
+	public static IPath createNewMappingFile(IStructuredSelection selection) {
+		return createNewMappingFile(selection, null);
+	}
 
-public class EmbeddedMappingFileWizard extends MappingFileWizard {
-	
-	
-	public static final String DEFAULT_XML_FILE_NAME = "orm.xml";
+	public static IPath createNewMappingFile(IStructuredSelection selection, String xmlFileName) {
+		if (xmlFileName == null) {
+			xmlFileName = DEFAULT_XML_FILE_NAME;
+		} 
+		EmbeddedMappingFileWizard wizard = new EmbeddedMappingFileWizard(DataModelFactory.createDataModel(new OrmFileCreationDataModelProvider()));
+		return MappingFileWizard.createMappingFile(selection, xmlFileName, wizard);
+	}
+
+	private static final String DEFAULT_XML_FILE_NAME = "orm.xml"; //$NON-NLS-1$
+
 
 	public EmbeddedMappingFileWizard() {
+		super();
 	}
 
 	public EmbeddedMappingFileWizard(IDataModel dataModel) {
@@ -38,11 +49,5 @@ public class EmbeddedMappingFileWizard extends MappingFileWizard {
 	@Override
 	public final boolean performFinish() {
 		return this.createMappingFile();
-	}
-	
-	public static IPath createNewMappingFile(IStructuredSelection selection, String xmlFileName) {
-		if (xmlFileName == null) {xmlFileName = DEFAULT_XML_FILE_NAME;} 
-		EmbeddedMappingFileWizard wizard = new EmbeddedMappingFileWizard(DataModelFactory.createDataModel(new OrmFileCreationDataModelProvider()));
-		return MappingFileWizard.createMappingFile(selection, xmlFileName, wizard);
 	}
 }

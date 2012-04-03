@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
@@ -47,7 +48,7 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 
 	protected String query;
 
-	protected final ContextListContainer<OrmQueryHint, XmlQueryHint> queryHintContainer;
+	protected final ContextListContainer<OrmQueryHint, XmlQueryHint> hintContainer;
 
 
 	protected AbstractOrmQuery(XmlContextNode parent, X xmlQuery) {
@@ -55,7 +56,7 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 		this.xmlQuery = xmlQuery;
 		this.name = xmlQuery.getName();
 		this.query = this.getUnescapedQuery();
-		this.queryHintContainer = this.buildHintContainer();
+		this.hintContainer = this.buildHintContainer();
 	}
 
 	// ********** synchronize/update **********
@@ -122,11 +123,11 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 	// ********** hints **********
 
 	public ListIterable<OrmQueryHint> getHints() {
-		return this.queryHintContainer.getContextElements();
+		return this.hintContainer.getContextElements();
 	}
 
 	public int getHintsSize() {
-		return this.queryHintContainer.getContextElementsSize();
+		return this.hintContainer.getContextElementsSize();
 	}
 
 	public OrmQueryHint addHint() {
@@ -135,7 +136,7 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 
 	public OrmQueryHint addHint(int index) {
 		XmlQueryHint xmlHint = this.buildXmlQueryHint();
-		OrmQueryHint hint = this.queryHintContainer.addContextElement(index, xmlHint);
+		OrmQueryHint hint = this.hintContainer.addContextElement(index, xmlHint);
 		this.xmlQuery.getHints().add(index, xmlHint);
 		return hint;
 	}
@@ -145,21 +146,21 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 	}
 
 	public void removeHint(QueryHint hint) {
-		this.removeHint(this.queryHintContainer.indexOfContextElement((OrmQueryHint) hint));
+		this.removeHint(this.hintContainer.indexOfContextElement((OrmQueryHint) hint));
 	}
 
 	public void removeHint(int index) {
-		this.queryHintContainer.removeContextElement(index);
+		this.hintContainer.removeContextElement(index);
 		this.xmlQuery.getHints().remove(index);
 	}
 
 	public void moveHint(int targetIndex, int sourceIndex) {
-		this.queryHintContainer.moveContextElement(targetIndex, sourceIndex);
+		this.hintContainer.moveContextElement(targetIndex, sourceIndex);
 		this.xmlQuery.getHints().move(targetIndex, sourceIndex);
 	}
 
 	public OrmQueryHint getHint(int index) {
-		return this.queryHintContainer.get(index);
+		return this.hintContainer.get(index);
 	}
 	
 	protected OrmQueryHint buildHint(XmlQueryHint xmlHint) {
@@ -167,7 +168,7 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 	}
 
 	protected void syncHints() {
-		this.queryHintContainer.synchronizeWithResourceModel();
+		this.hintContainer.synchronizeWithResourceModel();
 	}
 
 	protected ListIterable<XmlQueryHint> getXmlHints() {
@@ -272,28 +273,30 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 	public boolean isEquivalentTo(JpaNamedContextNode node) {
 		return (this != node) &&
 				(this.getType() == node.getType()) &&
-				this.isEquivalentTo((Query)node);
+				this.isEquivalentTo((Query) node);
 	}
 	
 	protected boolean isEquivalentTo(Query other) {
 		return Tools.valuesAreEqual(this.name, other.getName()) &&
 				Tools.valuesAreEqual(this.query, other.getQuery()) &&
-				hintsAreEquivalentTo(other);
+				this.hintsAreEquivalentTo(other);
 	}
 
 	protected boolean hintsAreEquivalentTo(Query other) {
-		if (this.getHintsSize() != CollectionTools.size(other.getHints())) {
+		// get fixed lists of the hints
+		ArrayList<OrmQueryHint> hints1 = CollectionTools.list(this.getHints());
+		ArrayList<? extends QueryHint> hints2 = CollectionTools.list(other.getHints());
+		if (hints1.size() != hints2.size()) {
 			return false;
 		}
-
-		for (int i=0; i<this.getHintsSize(); i++) {
-			if (! this.queryHintContainer.get(i).isEquivalentTo(other.getHint(i))) {
+		for (int i = 0; i < hints1.size(); i++) {
+			if ( ! hints1.get(i).isEquivalentTo(hints2.get(i))) {
 				return false;
 			}
 		}
-
 		return true;
 	}
+
 
 	// ********** misc **********
 

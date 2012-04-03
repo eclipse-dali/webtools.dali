@@ -14,25 +14,26 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jpt.jpa.ui.internal.wizards.SelectJpaOrmMappingFileDialog;
+import org.eclipse.jpt.jpa.ui.internal.wizards.SelectMappingFileDialog;
 import org.eclipse.swt.widgets.Shell;
 
 /**
  * Only EclipseLink mapping file will show up on EclipseLink platform with this dialog
- *
  */
+public class SelectEclipseLinkMappingFileDialog
+	extends SelectMappingFileDialog
+{
+	public SelectEclipseLinkMappingFileDialog(Shell parent, IProject project) {
+		super(parent, project);
+	}
 
-public class SelectEcliplseLinkMappingFileDialog extends SelectJpaOrmMappingFileDialog {
-
-	public SelectEcliplseLinkMappingFileDialog(Shell parent,
-			IProject project, ILabelProvider labelProvider,
-			ITreeContentProvider contentProvider) {
+	public SelectEclipseLinkMappingFileDialog(Shell parent, IProject project, ILabelProvider labelProvider, ITreeContentProvider contentProvider) {
 		super(parent, project, labelProvider, contentProvider);
 	}
 
 	@Override
 	protected void openNewMappingFileWizard() {
-		IPath path = EmbeddedEclipseLinkMappingFileWizard.createNewMappingFile(new StructuredSelection(super.project), null);
-		super.updateDialog(path);
+		IPath path = EmbeddedEclipseLinkMappingFileWizard.createNewMappingFile(new StructuredSelection(super.project));
+		this.updateDialog(path);
 	}
 }

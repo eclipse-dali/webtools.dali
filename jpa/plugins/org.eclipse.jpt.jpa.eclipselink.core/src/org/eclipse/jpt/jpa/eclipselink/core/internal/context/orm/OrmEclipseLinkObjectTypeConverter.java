@@ -15,6 +15,7 @@ import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
@@ -455,17 +456,20 @@ public class OrmEclipseLinkObjectTypeConverter
 	}
 
 	protected boolean conversionValuesAreEquivalentTo(EclipseLinkObjectTypeConverter converter) {
-		if (this.getConversionValuesSize() != converter.getConversionValuesSize()) {
+		// get fixed lists of the conversion values
+		ArrayList<OrmEclipseLinkConversionValue> conversionValues1 = CollectionTools.list(this.getConversionValues());
+		ArrayList<? extends EclipseLinkConversionValue> conversionValues2 = CollectionTools.list(converter.getConversionValues());
+		if (conversionValues1.size() != conversionValues2.size()) {
 			return false;
 		}
-
-		for (int i=0; i<this.getConversionValuesSize(); i++) {
-			if ( ! this.conversionValueContainer.get(i).isEquivalentTo(converter.getConversionValue(i))) {
+		for (int i = 0; i < conversionValues1.size(); i++) {
+			if ( ! conversionValues1.get(i).isEquivalentTo(conversionValues2.get(i))) {
 				return false;
 			}
 		}
 		return true;
 	}
+
 
 	// ********** metadata conversion **********
 

@@ -201,7 +201,7 @@
 		
 		<handler
 			commandId="org.eclipse.jpt.jpa.eclipselink.ui.convertJavaConverters"
-			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.commands.JpaJavaConverterMetadataConversionHandler">
+			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.commands.JavaConverterConversionHandler">
 		</handler>
 		
 		<handler

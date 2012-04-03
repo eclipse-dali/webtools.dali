@@ -11,13 +11,15 @@ package org.eclipse.jpt.jpa.ui.internal.commands;
 
 import org.eclipse.jpt.jpa.core.JpaProject;
 
-public class JpaJavaQueryMetadataConversionHandler extends AbstractJpaJavaMetadataConversionHandler {
-	public JpaJavaQueryMetadataConversionHandler() {
+public class JavaQueryConversionHandler
+	extends AbstractJavaMetadataConversionHandler
+{
+	public JavaQueryConversionHandler() {
 		super();
 	}
 
 	@Override
-	protected void converterJavaGlobalMetadata(JpaProject jpaProject) {
-		super.getJpaPlatformUi(jpaProject).convertJavaQueryMetadataToGlobal(jpaProject);
+	protected void convertJavaMetadata(JpaProject jpaProject) {
+		this.getJpaPlatformUi(jpaProject).convertJavaQueryMetadataToGlobal(jpaProject);
 	}
 }

@@ -32,10 +32,12 @@ import org.osgi.framework.BundleContext;
 /**
  * The activator class controls the plug-in life cycle
  */
-public class JptJpaEclipseLinkCorePlugin extends Plugin
+public class JptJpaEclipseLinkCorePlugin
+	extends Plugin
 {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.jpt.jpa.eclipselink.core"; //$NON-NLS-1$
+	public static final String PLUGIN_ID_ = PLUGIN_ID + '.';
 	
 	/**
 	 * Version string for EclipseLink platform version 1.0
@@ -85,7 +87,7 @@ public class JptJpaEclipseLinkCorePlugin extends Plugin
 	 * @see org.eclipse.core.runtime.content.IContentTypeManager#getContentType(String)
 	 */
 	public static final IContentType ECLIPSELINK_ORM_XML_CONTENT_TYPE = 
-			Platform.getContentTypeManager().getContentType(PLUGIN_ID + ".content.orm"); //$NON-NLS-1$
+			Platform.getContentTypeManager().getContentType(PLUGIN_ID_ + "content.orm"); //$NON-NLS-1$
 	
 	/**
 	 * The resource type for eclipselink-orm.xml version 1.0 mapping files

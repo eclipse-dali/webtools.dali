@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
+import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaSequenceGenerator;
@@ -103,14 +103,13 @@ public abstract class AbstractOrmSequenceGenerator
 	// ********** validation **********
 	
 	@Override
-	public boolean isEquivalentTo(JpaNamedContextNode node) {
-		return super.isEquivalentTo(node)
-				&& this.isEquivalentTo((SequenceGenerator) node);
+	protected boolean isEquivalentTo(Generator generator) {
+		return super.isEquivalentTo(generator)
+				&& this.isEquivalentTo((SequenceGenerator) generator);
 	}
 	
 	protected boolean isEquivalentTo(SequenceGenerator generator) {
-		return super.isEquivalentTo(generator) &&
-				Tools.valuesAreEqual(this.specifiedSequenceName, generator.getSpecifiedSequenceName());
+		return Tools.valuesAreEqual(this.specifiedSequenceName, generator.getSpecifiedSequenceName());
 	}
 	
 	// ********** metadata conversion **********

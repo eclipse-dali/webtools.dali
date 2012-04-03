@@ -35,7 +35,7 @@ import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.jface.XmlMappingFileViewerFilter;
-import org.eclipse.jpt.jpa.ui.internal.wizards.SelectJpaOrmMappingFileDialog;
+import org.eclipse.jpt.jpa.ui.internal.wizards.SelectMappingFileDialog;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.model.IEntityDataModelProperties;
 import org.eclipse.jst.j2ee.internal.common.operations.INewJavaClassDataModelProperties;
 import org.eclipse.jst.j2ee.internal.plugin.J2EEUIMessages;
@@ -342,7 +342,7 @@ public class EntityClassWizardPage
 		ViewerFilter filter = getDialogViewerFilter(jpaProject);
 		ITreeContentProvider contentProvider = new WorkbenchContentProvider();
 		ILabelProvider labelProvider = new WorkbenchLabelProvider();
-		SelectJpaOrmMappingFileDialog dialog = new SelectJpaOrmMappingFileDialog(getShell(), project, labelProvider, contentProvider);
+		SelectMappingFileDialog dialog = new SelectMappingFileDialog(getShell(), project, labelProvider, contentProvider);
 		dialog.setTitle(EntityWizardMsg.MAPPING_XML_TITLE);
 		dialog.setMessage(EntityWizardMsg.CHOOSE_MAPPING_XML_MESSAGE);
 		dialog.addFilter(filter);

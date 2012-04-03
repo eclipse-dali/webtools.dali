@@ -191,7 +191,7 @@ public abstract class AbstractJavaGenerator<A extends GeneratorAnnotation>
 	public boolean isEquivalentTo(JpaNamedContextNode node) {
 		return (this != node) &&
 				(this.getType() == node.getType()) &&
-				this.isEquivalentTo((Generator)node);
+				this.isEquivalentTo((Generator) node);
 	}
 	
 	protected boolean isEquivalentTo(Generator generator) {

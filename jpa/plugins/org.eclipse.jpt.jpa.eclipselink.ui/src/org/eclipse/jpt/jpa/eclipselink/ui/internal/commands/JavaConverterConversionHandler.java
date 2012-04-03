@@ -11,16 +11,17 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.commands;
 
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.platform.EclipseLinkJpaPlatformUi;
-import org.eclipse.jpt.jpa.ui.internal.commands.AbstractJpaJavaMetadataConversionHandler;
+import org.eclipse.jpt.jpa.ui.internal.commands.AbstractJavaMetadataConversionHandler;
 
-public class JpaJavaConverterMetadataConversionHandler extends AbstractJpaJavaMetadataConversionHandler {
-
-	public JpaJavaConverterMetadataConversionHandler() {
+public class JavaConverterConversionHandler
+	extends AbstractJavaMetadataConversionHandler
+{
+	public JavaConverterConversionHandler() {
 		super();
 	}
 
 	@Override
-	protected void converterJavaGlobalMetadata(JpaProject jpaProject) {
+	protected void convertJavaMetadata(JpaProject jpaProject) {
 		this.getJpaPlatformUi(jpaProject).convertJavaConverterMetadataToGlobal(jpaProject);
 	}
 

@@ -483,11 +483,11 @@
 		</handler>
 		
 		<handler
-			class="org.eclipse.jpt.jpa.ui.internal.commands.JpaJavaGeneratorMetadataConversionHandler"
+			class="org.eclipse.jpt.jpa.ui.internal.commands.JavaGeneratorConversionHandler"
         	commandId="org.eclipse.jpt.jpa.ui.convertJavaGenerators"/>
 			
 		<handler
-			class="org.eclipse.jpt.jpa.ui.internal.commands.JpaJavaQueryMetadataConversionHandler"
+			class="org.eclipse.jpt.jpa.ui.internal.commands.JavaQueryConversionHandler"
 			commandId="org.eclipse.jpt.jpa.ui.convertJavaQueries"/>
 		
  	</extension>

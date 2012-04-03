@@ -19,6 +19,12 @@ import org.eclipse.osgi.util.NLS;
  */
 // TODO bjv rename...
 public class JptUiMessages {
+	private static final String BUNDLE_NAME = "jpt_ui"; //$NON-NLS-1$
+	private static final Class<?> BUNDLE_CLASS = JptUiMessages.class;
+
+	static {
+		NLS.initializeMessages(BUNDLE_NAME, BUNDLE_CLASS);
+	}
 
 	public static String AccessTypeComposite_access;
 	public static String AddToEarComposite_earMemberShip;
@@ -153,39 +159,36 @@ public class JptUiMessages {
 	public static String JpaProblemSeveritiesPage_Ignore;
 	public static String JpaProblemSeveritiesPage_Info;
 	public static String JpaProblemSeveritiesPage_Warning;
-	public static String SelectJpaOrmMappingFileDialog_title;
-	public static String SelectJpaOrmMappingFileDialog_message;
 	public static String JpaEntityGenPreferencePage_Description;
 	public static String JpaEntityGenPreferencePage_generalGroup_title;
 	public static String JpaEntityGenPreferencePage_defaultPackageLabel;
 
-	public static String SelectJpaOrmMappingFileDialog_newButton;
-	public static String SelectJpaOrmMappingFileDialog_newBtnToolTip;
+	public static String SelectJpaProjectWizardPage_title;
+	public static String SelectJpaProjectWizardPage_msg;
+
+	public static String SelectMappingFileDialog_title;
+	public static String SelectMappingFileDialog_message;
+	public static String SelectMappingFileDialog_newButton;
+	public static String SelectMappingFileDialog_newButtonToolTip;
+
 	public static String SynchronizingClasses_TaskName;
-	public static String JpaGlobalMetadataConversionWizard_title;
-	public static String JpaGlobalMetadataConversion_convertingJpaGlobalMetadataWarning;
-	public static String JpaGlobalMetadataConversion_mappingFileDoesNotExist;
-	public static String JpaGlobalMetadataConversion_mappingFileHasInvalidVersion;
-	public static String JpaGlobalMetadataConversion_mappingFileNotListedInPersistenceXml;
-	public static String JpaGlobalMetadataConversion_noGeneratorMetadataToConvert;
-	public static String JpaGlobalMetadataConversion_noQueryMetadataToConvert;
-	public static String JpaGlobalMetadataConversionWizardPage_browseMappingFileBtn;
-	public static String JpaGlobalMetadataConversionWizardPage_browseMappingFileBtnToolTip;
-	public static String JpaGlobalMetadataConversionWizardPage_label;
-	public static String JpaGlobalMetadataConversionWizardPage_newMappingFileLink;
-	public static String JpaGlobalMetadataConversionWizardPage_newMappingFileLinkToolTip;
-	public static String JpaJavaGeneratorMetadataConversionWizardPage_description;
-	public static String JpaJavaGeneratorMetadataConversionWizardPage_title;
-	public static String JpaJavaQueryMetadataConversionWizardPage_description;
-	public static String JpaJavaQueryMetadataConversionWizardPage_title;
 
-
-	private static final String BUNDLE_NAME = "jpt_ui"; //$NON-NLS-1$
-	private static final Class<?> BUNDLE_CLASS = JptUiMessages.class;
-
-	static {
-		NLS.initializeMessages(BUNDLE_NAME, BUNDLE_CLASS);
-	}
+	public static String JavaMetadataConversionWizard_title;
+	public static String JavaMetadataConversion_warning;
+	public static String JavaMetadataConversion_mappingFileDoesNotExist;
+	public static String JavaMetadataConversion_mappingFileVersionIsInvalid;
+	public static String JavaMetadataConversion_mappingFileNotListedInPersistenceXml;
+	public static String JavaMetadataConversion_noGeneratorsToConvert;
+	public static String JavaMetadataConversion_noQueriesToConvert;
+	public static String JavaMetadataConversionWizardPage_mappingFileBrowseButton;
+	public static String JavaMetadataConversionWizardPage_mappingFileBrowseButtonToolTip;
+	public static String JavaMetadataConversionWizardPage_label;
+	public static String JavaMetadataConversionWizardPage_newMappingFileLink;
+	public static String JavaMetadataConversionWizardPage_newMappingFileLinkToolTip;
+	public static String JavaGeneratorConversionWizardPage_title;
+	public static String JavaGeneratorConversionWizardPage_description;
+	public static String JavaQueryConversionWizardPage_title;
+	public static String JavaQueryConversionWizardPage_description;
 
 	private JptUiMessages() {
 		throw new UnsupportedOperationException();

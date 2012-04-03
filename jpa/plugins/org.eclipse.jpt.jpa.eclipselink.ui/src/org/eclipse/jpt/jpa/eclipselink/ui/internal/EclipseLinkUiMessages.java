@@ -377,15 +377,15 @@ public class EclipseLinkUiMessages {
 	public static String GenerationOutputModeWizardPage_generationOutputMode;
 	
 	// Metadata Conversion
-	public static String JpaGlobalMetadataConversion_noConverterMetadataToConvert;
-	public static String JpaJavaGConverterMetadataConversionWizardPage_description;
-	public static String JpaJavaConverterMetadataConversionWizardPage_title;
-	public static String JpaGlobalMetadataConversion_equivalentConverterMetadataWarningTitle;
-	public static String JpaGlobalMetadataConversion_equivalentConverterMetadataWarningMessage;
-	public static String JpaGlobalMetadataConversion_equivalentGeneratorMetadataWarningMessage;
-	public static String JpaGlobalMetadataConversion_equivalentGeneratorMetadataWarningTitle;
-	public static String JpaGlobalMetadataConversion_equivalentQueryMetadataWarningTitle;
-	public static String JpaGlobalMetadataConversion_equivalentQueryMetadataWarningMessage;
+	public static String JavaMetadataConversion_noConvertersToConvert;
+	public static String JavaConverterConversionWizardPage_title;
+	public static String JavaConverterConversionWizardPage_description;
+	public static String JavaMetadataConversion_equivalentConvertersWarningTitle;
+	public static String JavaMetadataConversion_equivalentConvertersWarningMessage;
+	public static String JavaMetadataConversion_equivalentGeneratorsWarningTitle;
+	public static String JavaMetadataConversion_equivalentGeneratorsWarningMessage;
+	public static String JavaMetadataConversion_equivalentQueriesWarningTitle;
+	public static String JavaMetadataConversion_equivalentQueriesWarningMessage;
 
 	// Static Weaving
 	public static String EclipselinkPreferencePage_description;

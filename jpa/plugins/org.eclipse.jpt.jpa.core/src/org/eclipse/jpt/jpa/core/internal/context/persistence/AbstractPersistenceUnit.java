@@ -1550,18 +1550,18 @@ public abstract class AbstractPersistenceUnit
 
 	public void convertJavaGenerators(EntityMappings entityMappings, IProgressMonitor monitor) {
 		ArrayList<JavaGenerator> convertibleJavaGenerators = this.getConvertibleJavaGenerators();
-		SubMonitor subMonitor = SubMonitor.convert(monitor, JptCoreMessages.JPA_METADATA_CONVERSION_CONVERTING, convertibleJavaGenerators.size());
+		SubMonitor subMonitor = SubMonitor.convert(monitor, JptCoreMessages.JAVA_METADATA_CONVERSION_IN_PROGRESS, convertibleJavaGenerators.size());
 		for (JavaGenerator generator : convertibleJavaGenerators) {
 			this.convertJavaGenerator(entityMappings, generator, subMonitor.newChild(1));
 		}
-		subMonitor.setTaskName(JptCoreMessages.JPA_METADATA_CONVERSION_OPERATION_COMPLETE);
+		subMonitor.setTaskName(JptCoreMessages.JAVA_METADATA_CONVERSION_COMPLETE);
 	}
 
 	protected void convertJavaGenerator(EntityMappings entityMappings, JavaGenerator generator, SubMonitor monitor) {
 		if (monitor.isCanceled()) {
-			throw new OperationCanceledException(JptCoreMessages.JPA_METADATA_CONVERSION_OPERATION_CANCELED);
+			throw new OperationCanceledException(JptCoreMessages.JAVA_METADATA_CONVERSION_CANCELED);
 		}
-		monitor.setTaskName(NLS.bind(JptCoreMessages.JPA_METADATA_CONVERSION_CONVERT_GENERATOR, generator.getName()));
+		monitor.setTaskName(NLS.bind(JptCoreMessages.JAVA_METADATA_CONVERSION_CONVERT_GENERATOR, generator.getName()));
 		generator.convertTo(entityMappings);
 		generator.delete();  // delete any converted generators
 	}
@@ -1661,18 +1661,18 @@ public abstract class AbstractPersistenceUnit
 	public void convertJavaQueries(EntityMappings entityMappings, IProgressMonitor monitor) {
 		OrmQueryContainer queryContainer = entityMappings.getQueryContainer();
 		ArrayList<JavaQuery> convertibleJavaQueries = this.getConvertibleJavaQueries();
-		SubMonitor subMonitor = SubMonitor.convert(monitor, JptCoreMessages.JPA_METADATA_CONVERSION_CONVERTING, convertibleJavaQueries.size());
+		SubMonitor subMonitor = SubMonitor.convert(monitor, JptCoreMessages.JAVA_METADATA_CONVERSION_IN_PROGRESS, convertibleJavaQueries.size());
 		for (JavaQuery query : convertibleJavaQueries) {
 			this.convertJavaQuery(queryContainer, query, subMonitor.newChild(1));
 		}
-		subMonitor.setTaskName(JptCoreMessages.JPA_METADATA_CONVERSION_OPERATION_COMPLETE);
+		subMonitor.setTaskName(JptCoreMessages.JAVA_METADATA_CONVERSION_COMPLETE);
 	}
 
 	protected void convertJavaQuery(OrmQueryContainer queryContainer, JavaQuery query, SubMonitor monitor) {
 		if (monitor.isCanceled()) {
-			throw new OperationCanceledException(JptCoreMessages.JPA_METADATA_CONVERSION_OPERATION_CANCELED);
+			throw new OperationCanceledException(JptCoreMessages.JAVA_METADATA_CONVERSION_CANCELED);
 		}
-		monitor.setTaskName(NLS.bind(JptCoreMessages.JPA_METADATA_CONVERSION_CONVERT_QUERY, query.getName()));
+		monitor.setTaskName(NLS.bind(JptCoreMessages.JAVA_METADATA_CONVERSION_CONVERT_QUERY, query.getName()));
 		query.convertTo(queryContainer);
 		query.delete();  // delete any converted queries
 	}
@@ -2379,33 +2379,41 @@ public abstract class AbstractPersistenceUnit
 	 * the typical "override" in JPA....
 	 */
 	protected void validateGenerators(List<IMessage> messages, IReporter reporter) {
-		this.checkForDuplicateGenerators(messages);
+		this.checkForGeneratorsWithSameName(messages);
 		for (Generator generator : this.getGenerators()) {
 			this.validate(generator, messages, reporter);
 		}
 	}
 
-	protected void checkForDuplicateGenerators(List<IMessage> messages) {
+	protected void checkForGeneratorsWithSameName(List<IMessage> messages) {
 		HashMap<String, ArrayList<Generator>> generatorsByName = this.mapByName(this.getGenerators());
 		for (Map.Entry<String, ArrayList<Generator>> entry : generatorsByName.entrySet()) {
 			String generatorName = entry.getKey();
 			if (StringTools.stringIsNotEmpty(generatorName)) {  // ignore empty names
 				ArrayList<Generator> dups = entry.getValue();
 				if (dups.size() > 1) {
-					String[] parms = new String[] {generatorName};
-					for (Generator dup : dups) {
-						messages.add(
-							DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
-								parms,
-								dup,
-								this.extractNameTextRange(dup)
-							)
-						);
-					}
+					this.validateGeneratorsWithSameName(generatorName, dups, messages);
 				}
 			}
+		}
+	}
+
+	/**
+	 * All the specified generators have the same specified name.
+	 * Mark them appropriately.
+	 */
+	protected void validateGeneratorsWithSameName(String generatorName, ArrayList<Generator> dups, List<IMessage> messages) {
+		String[] parms = new String[] {generatorName};
+		for (Generator dup : dups) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
+					parms,
+					dup,
+					this.extractNameTextRange(dup)
+				)
+			);
 		}
 	}
 
@@ -2430,7 +2438,7 @@ public abstract class AbstractPersistenceUnit
 	 * @see #validateGenerators(List, IReporter)
 	 */
 	protected void validateQueries(List<IMessage> messages, IReporter reporter) {
-		this.checkForDuplicateQueries(messages);
+		this.checkForQueriesWithSameName(messages);
 
 		JpaJpqlQueryHelper queryHelper = this.createJpqlQueryHelper();
 
@@ -2439,27 +2447,31 @@ public abstract class AbstractPersistenceUnit
 		}
 	}
 
-	protected void checkForDuplicateQueries(List<IMessage> messages) {
+	protected void checkForQueriesWithSameName(List<IMessage> messages) {
 		HashMap<String, ArrayList<Query>> queriesByName = this.mapByName(this.getQueries());
 		for (Map.Entry<String, ArrayList<Query>> entry : queriesByName.entrySet()) {
 			String queryName = entry.getKey();
 			if (StringTools.stringIsNotEmpty(queryName)) {  // ignore empty names
 				ArrayList<Query> dups = entry.getValue();
 				if (dups.size() > 1) {
-					String[] parms = new String[] {queryName};
-					for (Query dup : dups) {
-						messages.add(
-							DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.QUERY_DUPLICATE_NAME,
-								parms,
-								dup,
-								this.extractNameTextRange(dup)
-							)
-						);
-					}
+					this.validateQueriesWithSameName(queryName, dups, messages);
 				}
 			}
+		}
+	}
+
+	protected void validateQueriesWithSameName(String queryName, ArrayList<Query> dups, List<IMessage> messages) {
+		String[] parms = new String[] {queryName};
+		for (Query dup : dups) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.QUERY_DUPLICATE_NAME,
+					parms,
+					dup,
+					this.extractNameTextRange(dup)
+				)
+			);
 		}
 	}
 

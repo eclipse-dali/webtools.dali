@@ -17,6 +17,7 @@ import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -24,7 +25,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Widget;
-import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 
@@ -43,7 +43,7 @@ public class SWTUtil {
 	 * @see #execute(Runnable)
 	 */
 	public static void asyncExec(Runnable runnable) {
-		getStandardDisplay().asyncExec(runnable);
+		getDisplay().asyncExec(runnable);
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class SWTUtil {
 	 * @see #execute(Runnable)
 	 */
 	public static void syncExec(Runnable runnable) {
-		getStandardDisplay().syncExec(runnable);
+		getDisplay().syncExec(runnable);
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class SWTUtil {
 	 * @see #execute(Runnable)
 	 */
 	public static void timerExec(int milliseconds, Runnable runnable) {
-		getStandardDisplay().timerExec(milliseconds, runnable);
+		getDisplay().timerExec(milliseconds, runnable);
 	}
 
 	/**
@@ -153,6 +153,124 @@ public class SWTUtil {
 	}
 
 	/**
+	 * Convenience method for getting the current shell. If the current thread is
+	 * not the UI thread, then an invalid thread access exception will be thrown.
+	 *
+	 * @return The shell, never <code>null</code>
+	 */
+	public static Shell getShell() {
+		// Retrieve the active shell, which can be the shell from any window
+		Shell shell = getDisplay().getActiveShell();
+		if (shell != null) {
+			return shell;
+		}
+
+		// No shell could be found, revert back to the active workbench window
+		shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+		return (shell != null) ? shell : new Shell();
+	}
+
+	/**
+	 * Return the most appropriate {@link Display display}; i.e. return the
+	 * {@link Display#getCurrent() display associated with the current thread}
+	 * if it is present; otherwise return the
+	 * {@link Display#getDefault() default display}.
+	 */
+	public static Display getDisplay() {
+		Display display = Display.getCurrent();
+		return (display != null) ? display : Display.getDefault();
+	}
+
+	/**
+	 * Center the specified shell within its display.
+	 * <p>
+	 * <strong>NB:</strong> This will not look too good on a dual monitor system.
+	 */
+	public static void center(Shell shell) {
+		shell.setBounds(calculateCenteredBounds(shell.getBounds(), shell.getDisplay().getBounds()));
+	}
+
+	/**
+	 * Center the specified shell within the specified parent shell.
+	 */
+	public static void center(Shell shell, Shell parentShell) {
+		shell.setBounds(calculateCenteredBounds(shell.getBounds(), parentShell.getBounds()));
+	}
+
+	/**
+	 * Calculate the bounds (within the second specified rectangle's coordinate
+	 * system) that would center the first specified rectangle
+	 * with respect to the second specified rectangle.
+	 */
+	public static Rectangle calculateCenteredBounds(Rectangle rectangle1, Rectangle rectangle2) {
+		return calculateCenteredBounds(rectangle1.width, rectangle1.height, rectangle2.x, rectangle2.y, rectangle2.width, rectangle2.height);
+	}
+
+	/**
+	 * Calculate the bounds (within the second specified rectangle's coordinate
+	 * system) that would center the first specified rectangle
+	 * with respect to the second specified rectangle.
+	 */
+	public static Rectangle calculateCenteredBounds(Point size1, Point size2) {
+		return calculateCenteredBounds(size1.x, size1.y, size2.x, size2.y);
+	}
+
+	/**
+	 * Calculate the point (within the second specified rectangle's coordinate
+	 * system) that would center the first specified rectangle
+	 * with respect to the second specified rectangle.
+	 */
+	public static Rectangle calculateCenteredBounds(int width1, int height1, int width2, int height2) {
+		return calculateCenteredBounds(width1, height1, 0, 0, width2, height2);
+	}
+
+
+	/**
+	 * Calculate the point (within the second specified rectangle's coordinate
+	 * system) that would center the first specified rectangle
+	 * with respect to the second specified rectangle.
+	 */
+	public static Rectangle calculateCenteredBounds(int width1, int height1, int x2, int y2, int width2, int height2) {
+		return new Rectangle(x2 + ((width2 - width1) / 2), y2 + ((height2 - height1) / 2), width1, height1);
+	}
+
+	/**
+	 * Calculate the point (within the second specified rectangle's coordinate
+	 * system) that would center the first specified rectangle
+	 * with respect to the second specified rectangle.
+	 */
+	public static Point calculateCenteredPosition(Rectangle rectangle1, Rectangle rectangle2) {
+		return calculateCenteredPosition(rectangle1.width, rectangle1.height, rectangle2.x, rectangle2.y, rectangle2.width, rectangle2.height);
+	}
+
+	/**
+	 * Calculate the point (within the second specified rectangle's coordinate
+	 * system) that would center the first specified rectangle
+	 * with respect to the second specified rectangle.
+	 */
+	public static Point calculateCenteredPosition(Point size1, Point size2) {
+		return calculateCenteredPosition(size1.x, size1.y, size2.x, size2.y);
+	}
+
+	/**
+	 * Calculate the point (within the second specified rectangle's coordinate
+	 * system) that would center the first specified rectangle
+	 * with respect to the second specified rectangle.
+	 */
+	public static Point calculateCenteredPosition(int width1, int height1, int width2, int height2) {
+		return calculateCenteredPosition(width1, height1, 0, 0, width2, height2);
+	}
+
+	/**
+	 * Calculate the point (within the second specified rectangle's coordinate
+	 * system) that would center the first specified rectangle
+	 * with respect to the second specified rectangle.
+	 */
+	public static Point calculateCenteredPosition(int width1, int height1, int x2, int y2, int width2, int height2) {
+		return new Point(x2 + ((width2 - width1) / 2), y2 + ((height2 - height1) / 2));
+	}
+
+	/**
 	 * Tweaks the given <code>Combo</code> to remove the default value when the
 	 * widget receives the focus and to show the default when the widget loses
 	 * the focus.
@@ -167,35 +285,6 @@ public class SWTUtil {
 	}
 
 
-	/**
-	 * Convenience method for getting the current shell. If the current thread is
-	 * not the UI thread, then an invalid thread access exception will be thrown.
-	 *
-	 * @return The shell, never <code>null</code>
-	 */
-	public static Shell getShell() {
-		// Retrieve the active shell, which can be the shell from any window
-		Shell shell = getStandardDisplay().getActiveShell();
-		if (shell != null) {
-			return shell;
-		}
-
-		// No shell could be found, revert back to the active workbench window
-		shell = getWorkbench().getActiveWorkbenchWindow().getShell();
-		return (shell != null) ? shell : new Shell();
-	}
-
-	/**
-	 * Return the "standard" {@link Display display}. Return the
-	 * {@link Display#getCurrent() display associated with the current thread}
-	 * if it is present; otherwise return the
-	 * {@link Display#getDefault() default display}.
-	 */
-	public static Display getStandardDisplay() {
-		Display display = Display.getCurrent();
-		return (display != null) ? display : Display.getDefault();
-	}
-
 	public static int getTableHeightHint(Table table, int rows) {
 		if (table.getFont().equals(JFaceResources.getDefaultFont()))
 			table.setFont(JFaceResources.getDialogFont());
@@ -203,15 +292,6 @@ public class SWTUtil {
 		if (table.getLinesVisible())
 			result+= table.getGridLineWidth() * (rows - 1);
 		return result;
-	}
-
-   /**
-	 * Returns the Platform UI workbench.
-	 *
-	 * @return The workbench for this plug-in
-	 */
-	public static IWorkbench getWorkbench() {
-		return PlatformUI.getWorkbench();
 	}
 
 	/**

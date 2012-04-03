@@ -9,14 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
+import java.util.ArrayList;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.utility.Filter;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
+import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.TableGenerator;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
@@ -565,29 +567,30 @@ public class GenericJavaTableGenerator
 	// ********** validation **********
 
 	@Override
-	public boolean isEquivalentTo(JpaNamedContextNode node) {
-		return super.isEquivalentTo(node)
-				&& this.isEquivalentTo((TableGenerator) node);
+	protected boolean isEquivalentTo(Generator generator) {
+		return super.isEquivalentTo(generator)
+				&& this.isEquivalentTo((TableGenerator) generator);
 	}
 
 	protected boolean isEquivalentTo(TableGenerator generator) {
-		return super.isEquivalentTo(generator) &&
-				Tools.valuesAreEqual(this.specifiedTable, generator.getSpecifiedTable()) &&
+		return Tools.valuesAreEqual(this.specifiedTable, generator.getSpecifiedTable()) &&
 				Tools.valuesAreEqual(this.specifiedSchema, generator.getSpecifiedSchema()) &&
 				Tools.valuesAreEqual(this.specifiedCatalog, generator.getSpecifiedCatalog()) &&
 				Tools.valuesAreEqual(this.specifiedPkColumnName, generator.getSpecifiedPkColumnName()) &&
 				Tools.valuesAreEqual(this.specifiedPkColumnValue, generator.getSpecifiedPkColumnValue()) &&
 				Tools.valuesAreEqual(this.specifiedValueColumnName, generator.getSpecifiedValueColumnName()) &&
-				uniqueConstrainsAreEquivalentTo(generator);
+				this.uniqueConstrainsAreEquivalentTo(generator);
 	}
 
 	protected boolean uniqueConstrainsAreEquivalentTo(TableGenerator generator) {
-		if (this.getUniqueConstraintsSize() != generator.getUniqueConstraintsSize()) {
+		// get fixed lists of the unique constraints
+		ArrayList<JavaUniqueConstraint> uniqueConstraints1 = CollectionTools.list(this.getUniqueConstraints());
+		ArrayList<UniqueConstraint> uniqueConstraints2 = CollectionTools.list(generator.getUniqueConstraints());
+		if (uniqueConstraints1.size() != uniqueConstraints2.size()) {
 			return false;
 		}
-
-		for (int i=0; i<this.getUniqueConstraintsSize(); i++) {
-			if (! this.uniqueConstraintContainer.get(i).isEquivalentTo(generator.getUniqueConstraint(i))) {
+		for (int i = 0; i < uniqueConstraints1.size(); i++) {
+			if ( ! uniqueConstraints1.get(i).isEquivalentTo(uniqueConstraints2.get(i))) {
 				return false;
 			}
 		}

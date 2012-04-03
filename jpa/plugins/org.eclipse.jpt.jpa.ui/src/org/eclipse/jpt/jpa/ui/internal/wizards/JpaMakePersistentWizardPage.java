@@ -283,7 +283,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 		ViewerFilter filter = buildMappingFileDialogViewerFilter();
 		ITreeContentProvider contentProvider = new WorkbenchContentProvider();
 		ILabelProvider labelProvider = new WorkbenchLabelProvider();
-		SelectJpaOrmMappingFileDialog dialog = new SelectJpaOrmMappingFileDialog(getShell(), this.jpaProject.getProject(), labelProvider, contentProvider);
+		SelectMappingFileDialog dialog = new SelectMappingFileDialog(getShell(), this.jpaProject.getProject(), labelProvider, contentProvider);
 		dialog.setTitle(EntityWizardMsg.MAPPING_XML_TITLE);
 		dialog.setMessage(EntityWizardMsg.CHOOSE_MAPPING_XML_MESSAGE);
 		dialog.addFilter(filter);

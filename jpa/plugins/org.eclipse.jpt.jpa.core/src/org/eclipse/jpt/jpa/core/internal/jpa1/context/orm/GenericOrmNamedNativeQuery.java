@@ -11,8 +11,8 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
+import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedNativeQuery;
@@ -126,14 +126,14 @@ public class GenericOrmNamedNativeQuery
 	}
 
 	@Override
-	public boolean isEquivalentTo(JpaNamedContextNode node) {
-		return super.isEquivalentTo(node)
-				&& this.isEquivalentTo((NamedNativeQuery) node);
+	protected boolean isEquivalentTo(Query other) {
+		return super.isEquivalentTo(other)
+				&& this.isEquivalentTo((NamedNativeQuery) other);
 	}
 	
-	protected boolean isEquivalentTo(NamedNativeQuery nnQuery) {
-		return Tools.valuesAreEqual(this.resultClass, nnQuery.getResultClass()) &&
-				Tools.valuesAreEqual(this.resultSetMapping, nnQuery.getResultSetMapping());
+	protected boolean isEquivalentTo(NamedNativeQuery other) {
+		return Tools.valuesAreEqual(this.resultClass, other.getResultClass()) &&
+				Tools.valuesAreEqual(this.resultSetMapping, other.getResultSetMapping());
 	}
 
 	// ********** misc **********

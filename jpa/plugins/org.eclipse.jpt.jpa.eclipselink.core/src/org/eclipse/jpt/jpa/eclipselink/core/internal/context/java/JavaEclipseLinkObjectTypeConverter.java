@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
@@ -318,12 +319,14 @@ public class JavaEclipseLinkObjectTypeConverter
 	}
 
 	protected boolean conversionValuesAreEquivalentTo(EclipseLinkObjectTypeConverter converter) {
-		if (this.getConversionValuesSize() != converter.getConversionValuesSize()) {
+		// get fixed lists of the conversion values
+		ArrayList<JavaEclipseLinkConversionValue> conversionValues1 = CollectionTools.list(this.getConversionValues());
+		ArrayList<? extends EclipseLinkConversionValue> conversionValues2 = CollectionTools.list(converter.getConversionValues());
+		if (conversionValues1.size() != conversionValues2.size()) {
 			return false;
 		}
-
-		for (int i=0; i<this.getConversionValuesSize(); i++) {
-			if ( ! this.conversionValueContainer.get(i).isEquivalentTo(converter.getConversionValue(i))) {
+		for (int i = 0; i < conversionValues1.size(); i++) {
+			if ( ! conversionValues1.get(i).isEquivalentTo(conversionValues2.get(i))) {
 				return false;
 			}
 		}

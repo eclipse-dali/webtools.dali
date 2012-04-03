@@ -14,15 +14,13 @@ import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.ddlgen.wizards.EclipseLink2_0DDLGeneratorUi;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUiProvider;
-import org.eclipse.jpt.jpa.ui.internal.platform.base.BaseJpaPlatformUi;
 
 public class EclipseLink2_0JpaPlatformUi
-	extends BaseJpaPlatformUi
-	implements EclipseLinkJpaPlatformUi
+	extends AbstractEclipseLinkJpaPlatformUi
 {
 	public EclipseLink2_0JpaPlatformUi(
-					ItemTreeStateProviderFactoryProvider navigatorFactoryProvider,
-					JpaPlatformUiProvider platformUiProvider
+			ItemTreeStateProviderFactoryProvider navigatorFactoryProvider,
+			JpaPlatformUiProvider platformUiProvider
 	) {
 		super(navigatorFactoryProvider, platformUiProvider);
 	}
@@ -31,18 +29,5 @@ public class EclipseLink2_0JpaPlatformUi
 
 	public void generateDDL(JpaProject project, IStructuredSelection selection) {
 		EclipseLink2_0DDLGeneratorUi.generate(project);
-	}
-	// ********** metadata conversion **********
-
-	public void convertJavaQueryMetadataToGlobal(JpaProject jpaProject) {
-		EclipseLinkJpaJavaQueryMetadataConvertor.convert(jpaProject);
-	}
-	
-	public void convertJavaGeneratorMetadataToGlobal(JpaProject jpaProject) {
-		EclipseLinkJpaJavaGeneratorMetadataConvertor.convert(jpaProject);
-	}
-
-	public void convertJavaConverterMetadataToGlobal(JpaProject jpaProject) {
-		EclipseLinkJpaJavaConverterMetadataConvertor.convert(jpaProject);
 	}
 }

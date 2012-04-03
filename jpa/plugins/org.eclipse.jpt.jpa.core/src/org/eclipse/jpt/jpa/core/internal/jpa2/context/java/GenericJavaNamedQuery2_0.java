@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
 import java.util.List;
-import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
+import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaQuery;
@@ -113,13 +113,13 @@ public class GenericJavaNamedQuery2_0
 	}
 
 	@Override
-	public boolean isEquivalentTo(JpaNamedContextNode node) {
-		return super.isEquivalentTo(node)
-				&& this.isEquivalentTo((NamedQuery2_0) node);
+	protected boolean isEquivalentTo(Query other) {
+		return super.isEquivalentTo(other)
+				&& this.isEquivalentTo((NamedQuery2_0) other);
 	}
 	
-	protected boolean isEquivalentTo(NamedQuery2_0 namedQuery) {
-		return this.specifiedLockMode == namedQuery.getSpecifiedLockMode();
+	protected boolean isEquivalentTo(NamedQuery2_0 other) {
+		return this.specifiedLockMode == other.getSpecifiedLockMode();
 	}
 
 	// ********** misc **********
