@@ -7,13 +7,12 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.jaxb.eclipselink.core.resource.java;
+package org.eclipse.jpt.jaxb.eclipselink.core.context.java;
 
-import org.eclipse.jpt.common.core.resource.java.Annotation;
+import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 
 /**
- * Corresponds to the EclipseLink annotation
- * org.eclipse.persistence.oxm.annotations.XmlCDATA
+ * Corresponds to the XmlCDATA annotation
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -24,7 +23,7 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
  * @version 3.2
  * @since 3.2
  */
-public interface XmlCDATAAnnotation
-		extends Annotation {
+public interface ELXmlCDATA
+		extends JaxbContextNode {
 
 }

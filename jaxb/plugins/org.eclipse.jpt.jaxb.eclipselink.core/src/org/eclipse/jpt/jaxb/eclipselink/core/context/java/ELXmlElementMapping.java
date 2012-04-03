@@ -24,6 +24,6 @@ import org.eclipse.jpt.jaxb.core.context.XmlElementMapping;
  * @since 3.2
  */
 public interface ELXmlElementMapping
-		extends XmlElementMapping, ELXmlNamedNodeMapping {
-
+		extends XmlElementMapping, ELXmlNamedNodeMapping, ELXmlCDATAMapping {
+	
 }

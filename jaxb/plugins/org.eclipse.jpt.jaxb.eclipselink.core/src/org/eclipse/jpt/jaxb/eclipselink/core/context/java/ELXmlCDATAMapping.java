@@ -7,13 +7,10 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.jaxb.eclipselink.core.resource.java;
-
-import org.eclipse.jpt.common.core.resource.java.Annotation;
+package org.eclipse.jpt.jaxb.eclipselink.core.context.java;
 
 /**
- * Corresponds to the EclipseLink annotation
- * org.eclipse.persistence.oxm.annotations.XmlCDATA
+ * EclipseLink mappings that have an XmlCDATA
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -24,7 +21,30 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
  * @version 3.2
  * @since 3.2
  */
-public interface XmlCDATAAnnotation
-		extends Annotation {
-
+public interface ELXmlCDATAMapping {
+	
+	// ***** xmlCDATA *****
+	
+	/**
+	 * String associated with changes to the xmlCDATA property
+	 */
+	String XML_CDATA_PROPERTY = "xmlCDATA";  ///$NON-NLS-1$
+	
+	/**
+	 * Return the xmlCDATA property value.
+	 * A null indicates it is not specified.
+	 */
+	ELXmlCDATA getXmlCDATA();
+	
+	/**
+	 * Add (and return) an xmlCDATA property value.
+	 * (Specifies the property)
+	 */
+	ELXmlCDATA addXmlCDATA();
+	
+	/**
+	 * Remove the xmlCDATA property value.
+	 * (Unspecifies the property)
+	 */
+	void removeXmlCDATA();
 }

@@ -20,9 +20,6 @@ public class BinaryXmlCDATAAnnotation
 		extends BinaryAnnotation
 		implements XmlCDATAAnnotation {
 	
-	private String value;
-	
-	
 	public BinaryXmlCDATAAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 	}

@@ -25,6 +25,7 @@ import org.eclipse.jpt.jaxb.core.context.XmlElementRefMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRefsMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElementsMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
+import org.eclipse.jpt.jaxb.core.context.XmlValueMapping;
 import org.eclipse.jpt.jaxb.core.internal.AbstractJaxbFactory;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.ELJaxbContextRoot;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaClassMapping;
@@ -36,6 +37,7 @@ import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlElem
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlElementRefMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlElementRefsMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlElementsMapping;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlValueMapping;
 
 
 public class ELJaxb_2_1_Factory
@@ -110,5 +112,10 @@ public class ELJaxb_2_1_Factory
 	@Override
 	public XmlElementsMapping buildJavaXmlElementsMapping(JaxbPersistentAttribute parent) {
 		return new ELJavaXmlElementsMapping(parent);
+	}
+	
+	@Override
+	public XmlValueMapping buildJavaXmlValueMapping(JaxbPersistentAttribute parent) {
+		return new ELJavaXmlValueMapping(parent);
 	}
 }
