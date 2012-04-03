@@ -46,4 +46,14 @@ public interface ELClassMapping
 	ELXmlDiscriminatorValue addXmlDiscriminatorValue();
 	
 	void removeXmlDiscriminatorValue();
+	
+	
+	// ***** misc *****
+	
+	/**
+	 * Return an {@link Iterable} of XPaths that represent the attributes annotated with XmlID or
+	 * XmlKey.  (Includes those attributes that are not annotated with XmlPath - those XPaths
+	 * will be calculated.)
+	 */
+	Iterable<String> getKeyXPaths();
 }

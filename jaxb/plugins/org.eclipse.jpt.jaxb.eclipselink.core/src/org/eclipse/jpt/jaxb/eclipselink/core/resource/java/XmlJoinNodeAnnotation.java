@@ -53,6 +53,12 @@ public interface XmlJoinNodeAnnotation
 	TextRange getXmlPathTextRange(CompilationUnit astRoot);
 	
 	/**
+	 * Return whether the specified text position is within the 'xmlPath' element.
+	 */
+	boolean xmlPathTouches(int pos, CompilationUnit astRoot);
+	
+	
+	/**
 	 * String associated with change events to the 'referencedXmlPath' property
 	 */
 	String REFERENCED_XML_PATH_PROPERTY = "referencedXmlPath"; //$NON-NLS-1$
@@ -74,4 +80,9 @@ public interface XmlJoinNodeAnnotation
 	 * Return the text range of this annotation if the element is absent.
 	 */
 	TextRange getReferencedXmlPathTextRange(CompilationUnit astRoot);
+	
+	/**
+	 * Return whether the specified text position is within the 'referencedXmlPath' element.
+	 */
+	boolean referencedXmlPathTouches(int pos, CompilationUnit astRoot);
 }

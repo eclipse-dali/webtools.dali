@@ -4,12 +4,20 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.jaxb.core.MappingKeys;
+import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbClass;
+import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaClassMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELClassMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlDiscriminatorNode;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlDiscriminatorValue;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlNamedNodeMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlDiscriminatorNodeAnnotation;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlDiscriminatorValueAnnotation;
@@ -177,6 +185,43 @@ public class ELJavaClassMapping
 		if (this.xmlDiscriminatorValue != null) {
 			this.xmlDiscriminatorValue.update();
 		}
+	}
+	
+	
+	// ***** misc *****
+	
+	public Iterable<String> getKeyXPaths() {
+		return new FilteringIterable(
+				new TransformationIterable<ELXmlNamedNodeMapping, String>(getAllKeyMappings()) {
+					@Override
+					protected String transform(ELXmlNamedNodeMapping o) {
+						return o.getXPath();
+					}
+				},
+				NotNullFilter.instance());
+	}
+	
+	protected Iterable<ELXmlNamedNodeMapping> getAllKeyMappings() {
+		return new FilteringIterable<ELXmlNamedNodeMapping>(
+				new SubIterableWrapper<JaxbAttributeMapping, ELXmlNamedNodeMapping>(
+						new FilteringIterable<JaxbAttributeMapping>(
+								new TransformationIterable<JaxbPersistentAttribute, JaxbAttributeMapping>(getAllAttributes()) {
+									@Override
+									protected JaxbAttributeMapping transform(JaxbPersistentAttribute o) {
+										return o.getMapping();
+									}
+								}) {
+							@Override
+							protected boolean accept(JaxbAttributeMapping o) {
+								return (o.getKey() == MappingKeys.XML_ELEMENT_ATTRIBUTE_MAPPING_KEY
+										|| o.getKey() == MappingKeys.XML_ATTRIBUTE_ATTRIBUTE_MAPPING_KEY);
+							}
+						})) {
+			@Override
+			protected boolean accept(ELXmlNamedNodeMapping o) {
+				return o.getXmlID() != null || o.getXmlKey() != null;
+			}
+		};
 	}
 	
 	

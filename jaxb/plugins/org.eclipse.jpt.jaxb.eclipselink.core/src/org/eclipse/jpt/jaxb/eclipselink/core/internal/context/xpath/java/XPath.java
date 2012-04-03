@@ -52,6 +52,21 @@ public class XPath {
 	public static char CLOSE_BRACKET = ']';
 	
 	
+	public static String attributeXPath(String prefix, String localName) {
+		if (prefix == null) {
+			return StringTools.concatenate(ATT_PREFIX, localName);
+		}
+		return StringTools.concatenate(ATT_PREFIX, prefix, COLON, localName);
+	}
+	
+	public static String elementXPath(String prefix, String localName) {
+		if (prefix == null) {
+			return localName;
+		}
+		return StringTools.concatenate(prefix, COLON, localName);
+	}
+	
+	
 	List<Step> steps;
 	
 	
@@ -224,7 +239,7 @@ public class XPath {
 				messages.add(
 						ELJaxbValidationMessageBuilder.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								ELJaxbValidationMessages.XML_PATH__ATTRIBUTE_SEGMENT_MUST_BE_LAST_SEGMENT,
+								ELJaxbValidationMessages.XPATH__ATTRIBUTE_SEGMENT_MUST_BE_LAST_SEGMENT,
 								context.getContextObject(),
 								getTextRange(context)));
 				return;
@@ -242,7 +257,7 @@ public class XPath {
 				messages.add(
 						ELJaxbValidationMessageBuilder.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								ELJaxbValidationMessages.XML_PATH__UNRESOLVED_ATTRIBUTE,
+								ELJaxbValidationMessages.XPATH__UNRESOLVED_ATTRIBUTE,
 								new String[] { namespace, this.localName },
 								context.getContextObject(),
 								getTextRange(context)));
@@ -292,7 +307,7 @@ public class XPath {
 				messages.add(
 						ELJaxbValidationMessageBuilder.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								ELJaxbValidationMessages.XML_PATH__UNRESOLVED_ELEMENT,
+								ELJaxbValidationMessages.XPATH__UNRESOLVED_ELEMENT,
 								new String[] { namespace, this.localName },
 								context.getContextObject(),
 								getTextRange(context)));
@@ -339,7 +354,7 @@ public class XPath {
 			
 			messages. add(ELJaxbValidationMessageBuilder.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							ELJaxbValidationMessages.XML_PATH__INVALID_FORM_ILLEGAL_SEGMENT,
+							ELJaxbValidationMessages.XPATH__INVALID_FORM_ILLEGAL_SEGMENT,
 							new String[] { getValue() },
 							context.getContextObject(),
 							getTextRange(context)));
@@ -402,7 +417,7 @@ public class XPath {
 				messages.add(
 						ELJaxbValidationMessageBuilder.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								ELJaxbValidationMessages.XML_PATH__INVALID_NS_PREFIX,
+								ELJaxbValidationMessages.XPATH__INVALID_NS_PREFIX,
 								new String[] { this.nsPrefix },
 								context.getContextObject(),
 								getTextRange(context)));
@@ -451,7 +466,7 @@ public class XPath {
 				messages.add(
 						ELJaxbValidationMessageBuilder.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								ELJaxbValidationMessages.XML_PATH__SELF_SEGMENT_MUST_BE_FIRST_SEGMENT,
+								ELJaxbValidationMessages.XPATH__SELF_SEGMENT_MUST_BE_FIRST_SEGMENT,
 								context.getContextObject(),
 								getTextRange(context)));
 				return;
@@ -486,7 +501,7 @@ public class XPath {
 						new FilteringIterable<String>(
 								new TransformationIterable<String, String>(
 										new CompositeIterable<String>(
-												new SingleElementIterable(TEXT),
+												getTextProposals(context, previousType),
 												getAttributeProposals(context, previousType),
 												getElementProposals(context, previousType))) {
 									@Override
@@ -506,6 +521,10 @@ public class XPath {
 			return new SingleElementIterable(TEXT);
 		}
 		
+		protected Iterable<String> getTextProposals(Context context, final XsdTypeDefinition xsdType) {
+			return (xsdType.hasTextContent()) ? new SingleElementIterable(TEXT) : EmptyIterable.instance();						
+		}
+		
 		protected Iterable<String> getAttributeProposals(Context context, final XsdTypeDefinition xsdType) {
 			return new CompositeIterable<String>(
 					new CompositeIterable<String>(
@@ -515,7 +534,7 @@ public class XPath {
 									return new TransformationIterable<String, String>(xsdType.getAttributeNames(xmlns.getNamespaceURI())) {
 										@Override
 										protected String transform(String o) {
-											return StringTools.concatenate(ATT_PREFIX, xmlns.getPrefix(), COLON, o);
+											return XPath.attributeXPath(xmlns.getPrefix(), o);
 										}
 									};
 								}
@@ -523,7 +542,7 @@ public class XPath {
 					new TransformationIterable<String, String>(xsdType.getAttributeNames("")) {
 						@Override
 						protected String transform(String o) {
-							return StringTools.concatenate(ATT_PREFIX, o);
+							return XPath.attributeXPath(null, o);
 						}
 					});
 		}
@@ -537,7 +556,7 @@ public class XPath {
 									return new TransformationIterable<String, String>(xsdType.getElementNames(xmlns.getNamespaceURI(), false)) {
 										@Override
 										protected String transform(String o) {
-											return StringTools.concatenate(xmlns.getPrefix(), COLON, o);
+											return XPath.elementXPath(xmlns.getPrefix(), o);
 										}
 									};
 								}
@@ -587,7 +606,7 @@ public class XPath {
 				messages.add(
 						ELJaxbValidationMessageBuilder.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								ELJaxbValidationMessages.XML_PATH__TEXT_SEGMENT_MUST_BE_LAST_SEGMENT,
+								ELJaxbValidationMessages.XPATH__TEXT_SEGMENT_MUST_BE_LAST_SEGMENT,
 								context.getContextObject(),
 								getTextRange(context)));
 			}

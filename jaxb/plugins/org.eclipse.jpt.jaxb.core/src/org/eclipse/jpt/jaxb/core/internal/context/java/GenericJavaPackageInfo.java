@@ -313,6 +313,17 @@ public class GenericJavaPackageInfo
 		return null;
 	}
 	
+	public String getPrefixForNamespace(String namespace) {
+		if (this.xmlSchema != null) {
+			for (XmlNs xmlns : this.xmlSchema.getXmlNsPrefixes()) {
+				if (StringTools.stringsAreEqual(xmlns.getNamespaceURI(), namespace)) {
+					return xmlns.getPrefix();
+				}
+			}
+		}
+		return null;
+	}
+	
 	
 	// ***** content assist ******
 	

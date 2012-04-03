@@ -28,7 +28,10 @@ public class ELJaxbCoreJavaContextModelTests
 		suite.addTestSuite(ELJavaXmlElementMappingTests.class);
 		suite.addTestSuite(ELJavaXmlElementsMappingTests.class);
 		suite.addTestSuite(ELJavaXmlInverseReferenceMappingTests.class);
+		suite.addTestSuite(ELJavaXmlJoinNodesMappingTests.class);
+		suite.addTestSuite(ELJavaXmlJoinNodeTests.class);
 		suite.addTestSuite(ELJavaXmlPathTests.class);
+		suite.addTestSuite(ELJavaXmlValueMappingTests.class);
 		return suite;
 	}
 	

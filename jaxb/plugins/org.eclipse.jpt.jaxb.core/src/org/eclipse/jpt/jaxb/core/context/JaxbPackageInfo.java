@@ -87,6 +87,8 @@ public interface JaxbPackageInfo
 	
 	String getNamespaceForPrefix(String prefix);
 	
+	String getPrefixForNamespace(String namespace);
+	
 	
 	// ***** validation *****
 	

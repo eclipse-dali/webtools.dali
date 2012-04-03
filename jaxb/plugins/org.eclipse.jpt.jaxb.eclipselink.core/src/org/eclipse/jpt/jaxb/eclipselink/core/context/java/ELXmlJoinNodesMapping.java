@@ -9,7 +9,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.context.java;
 
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
+import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 
 /**
  * Represents an EclipseLink XmlJoinNodes attribute mapping in either
@@ -27,4 +29,25 @@ import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 public interface ELXmlJoinNodesMapping
 		extends JaxbAttributeMapping {
 	
+	
+	// ***** XmlJoinNodes *****
+	
+	String XML_JOIN_NODES_LIST = "xmlJoinNodes"; //$NON-NLS-1$
+	
+	ListIterable<ELXmlJoinNode> getXmlJoinNodes();
+	
+	int getXmlJoinNodesSize();
+	
+	ELXmlJoinNode addXmlJoinNode(int index);
+	
+	void removeXmlJoinNode(int index);
+	
+	void moveXmlJoinNode(int targetIndex, int sourceIndex);
+	
+	
+	// ***** misc *****
+	
+	ELClassMapping getReferencedClassMapping();
+	
+	XsdTypeDefinition getReferencedXsdTypeDefinition();
 }
