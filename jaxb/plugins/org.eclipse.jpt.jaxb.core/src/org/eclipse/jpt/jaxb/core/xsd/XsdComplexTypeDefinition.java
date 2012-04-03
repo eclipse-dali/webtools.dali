@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.xsd.XSDAttributeUse;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
+import org.eclipse.xsd.XSDContentTypeCategory;
 import org.eclipse.xsd.XSDElementDeclaration;
 
 
@@ -29,6 +30,11 @@ public class XsdComplexTypeDefinition
 	@Override
 	public org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition.Kind getKind() {
 		return Kind.COMPLEX;
+	}
+	
+	@Override
+	public boolean hasTextContent() {
+		return getXSDComponent().getContentTypeCategory() == XSDContentTypeCategory.SIMPLE_LITERAL;
 	}
 	
 	@Override

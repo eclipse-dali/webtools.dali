@@ -33,6 +33,11 @@ public class XsdSimpleTypeDefinition
 	}
 	
 	@Override
+	public boolean hasTextContent() {
+		return true;
+	}
+	
+	@Override
 	public boolean typeIsValid(XsdTypeDefinition xsdType, boolean isItemType, boolean allowExtension, boolean allowRestriction) {
 		if (isItemType) {
 			XsdSimpleTypeDefinition itemType = getItemType();

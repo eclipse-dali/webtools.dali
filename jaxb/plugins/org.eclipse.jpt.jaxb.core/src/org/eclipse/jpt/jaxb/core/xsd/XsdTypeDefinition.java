@@ -47,6 +47,8 @@ public abstract class XsdTypeDefinition<A extends XSDTypeDefinition>
 		return getXSDComponent().getName();
 	}
 	
+	public abstract boolean hasTextContent();
+	
 	public boolean matches(String namespace, String name) {
 		return XsdUtil.namespaceEquals(getXSDComponent(), namespace) && StringTools.stringsAreEqual(getName(), name); 
 	}

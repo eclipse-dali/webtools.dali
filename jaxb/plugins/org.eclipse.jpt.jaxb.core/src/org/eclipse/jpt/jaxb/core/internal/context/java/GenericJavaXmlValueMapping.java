@@ -18,11 +18,9 @@ import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlValueAnnotation;
-import org.eclipse.jpt.jaxb.core.xsd.XsdComplexTypeDefinition;
 import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
-import org.eclipse.xsd.XSDContentTypeCategory;
 
 public class GenericJavaXmlValueMapping
 		extends AbstractJavaXmlNodeMapping<XmlValueAnnotation>
@@ -67,8 +65,7 @@ public class GenericJavaXmlValueMapping
 			return;
 		}
 		
-		if (! (xsdClassType.getKind() == XsdTypeDefinition.Kind.SIMPLE
-				|| ((XsdComplexTypeDefinition) xsdClassType).getXSDComponent().getContentTypeCategory() == XSDContentTypeCategory.SIMPLE_LITERAL)) {
+		if (! xsdClassType.hasTextContent()) {
 			messages.add(
 					DefaultValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
