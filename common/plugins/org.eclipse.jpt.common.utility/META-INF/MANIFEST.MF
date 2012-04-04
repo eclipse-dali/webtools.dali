@@ -6,8 +6,8 @@ Bundle-SymbolicName: org.eclipse.jpt.common.utility
 Bundle-Version: 2.1.0.qualifier
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Dali-Comment: *NO* EclipseLink friends!
-Dali-Comment: the UI-related packages are friends with only UI plug-ins
+Dali-Comment-1: *NO* EclipseLink friends!
+Dali-Comment-2: the UI-related packages are friends with only UI plug-ins
 Export-Package: org.eclipse.jpt.common.utility,
  org.eclipse.jpt.common.utility.command,
  org.eclipse.jpt.common.utility.internal;
