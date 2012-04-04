@@ -17,8 +17,6 @@ import java.util.Collections;
 import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.CompletionContext;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
@@ -111,8 +109,7 @@ public final class JpaJpqlJavaCompletionProposalComputer extends JpqlCompletionP
 				return computeCompletionProposals((JavaContentAssistInvocationContext) context, monitor);
 			}
 			catch (Exception e) {
-				Status status = new Status(IStatus.ERROR, JptJpaUiPlugin.PLUGIN_ID, JptUiMessages.JpaJpqlJavaCompletionProposalComputer_Error, e);
-				JptJpaCorePlugin.log(status);
+				JptJpaUiPlugin.log(JptUiMessages.JpaJpqlJavaCompletionProposalComputer_Error, e);
 			}
 			finally {
 				monitor.done();

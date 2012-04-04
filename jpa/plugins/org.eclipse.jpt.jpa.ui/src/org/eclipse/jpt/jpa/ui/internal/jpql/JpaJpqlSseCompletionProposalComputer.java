@@ -22,8 +22,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
@@ -32,7 +30,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
@@ -128,8 +125,7 @@ public final class JpaJpqlSseCompletionProposalComputer extends JpqlCompletionPr
 			return buildProposals(namedQuery, jpqlQuery, tokenStart, position[0]);
 		}
 		catch (Exception e) {
-			Status status = new Status(IStatus.ERROR, JptJpaUiPlugin.PLUGIN_ID, JptUiMessages.JpaJpqlSseCompletionProposalComputer_Error, e);
-			JptJpaCorePlugin.log(status);
+			JptJpaUiPlugin.log(JptUiMessages.JpaJpqlSseCompletionProposalComputer_Error, e);
 		}
 		finally {
 			monitor.done();
