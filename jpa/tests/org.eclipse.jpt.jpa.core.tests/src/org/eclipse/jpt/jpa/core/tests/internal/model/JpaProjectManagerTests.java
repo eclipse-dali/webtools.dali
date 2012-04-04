@@ -57,7 +57,7 @@ public class JpaProjectManagerTests
 		return TestTools.debug(this.getGenericJpaProjectManagerClass());
 	}
 
-	// GenericJpaProjectManager is package-private
+	// InternalJpaProjectManager is package-private
 	private Class<?> getGenericJpaProjectManagerClass() {
 		return this.getJpaProjectManager().getClass();
 	}
@@ -129,7 +129,8 @@ public class JpaProjectManagerTests
 	}
 
 	/**
-	 * make sure the DEBUG constants are 'false' before checking in the code
+	 * Make sure the <code>DEBUG</code> constant is <code>false</code>
+	 * before checking in the code.
 	 */
 	public void testDEBUG() {
 		TestTools.assertFalseDEBUG(this.getGenericJpaProjectManagerClass());
