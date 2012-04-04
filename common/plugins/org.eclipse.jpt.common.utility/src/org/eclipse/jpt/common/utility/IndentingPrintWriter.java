@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -36,9 +36,17 @@ public class IndentingPrintWriter
 	 * Construct a writer that indents with the specified string.
 	 */
 	public IndentingPrintWriter(Writer out, String indent) {
+		this(out, indent, 0);
+	}
+
+	/**
+	 * Construct a writer that indents with the specified string
+	 * and begins with the specified indent level.
+	 */
+	public IndentingPrintWriter(Writer out, String indent, int initialIndentLevel) {
 		super(out);
 		this.indent = indent;
-		this.indentLevel = 0;
+		this.indentLevel = initialIndentLevel;
 		this.needsIndent = true;
 	}
 
