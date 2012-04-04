@@ -11,8 +11,8 @@ package org.eclipse.jpt.common.utility.internal.command;
 
 import java.util.concurrent.ThreadFactory;
 import org.eclipse.jpt.common.utility.ExceptionHandler;
-import org.eclipse.jpt.common.utility.command.NotifyingRepeatingCommand;
 import org.eclipse.jpt.common.utility.command.Command;
+import org.eclipse.jpt.common.utility.command.NotifyingRepeatingCommand;
 import org.eclipse.jpt.common.utility.internal.ConsumerThreadCoordinator;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
 
@@ -23,10 +23,6 @@ import org.eclipse.jpt.common.utility.internal.ListenerList;
  * This notification is <em>not</em> guaranteed to occur with <em>every</em>
  * execution "cycle"; since other, unrelated, executions can be
  * triggered concurrently.
- * <p>
- * <strong>NB:</strong> Listeners should handle any exceptions
- * appropriately (e.g. log the exception and return gracefully so the thread
- * can continue the synchronization process).
  */
 public class AsynchronousNotifyingRepeatingCommandWrapper
 	extends AsynchronousRepeatingCommandWrapper
