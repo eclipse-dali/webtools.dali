@@ -24,10 +24,17 @@ import org.eclipse.persistence.jpa.jpql.AbstractSemanticValidator;
 import org.eclipse.persistence.jpa.jpql.DefaultContentAssistVisitor;
 import org.eclipse.persistence.jpa.jpql.DefaultGrammarValidator;
 import org.eclipse.persistence.jpa.jpql.DefaultJPQLQueryContext;
+import org.eclipse.persistence.jpa.jpql.DefaultRefactoringTool;
 import org.eclipse.persistence.jpa.jpql.DefaultSemanticValidator;
 import org.eclipse.persistence.jpa.jpql.JPQLQueryContext;
+import org.eclipse.persistence.jpa.jpql.RefactoringTool;
+import org.eclipse.persistence.jpa.jpql.model.IJPQLQueryBuilder;
+import org.eclipse.persistence.jpa.jpql.model.JPQLQueryBuilder1_0;
+import org.eclipse.persistence.jpa.jpql.model.JPQLQueryBuilder2_0;
+import org.eclipse.persistence.jpa.jpql.model.JPQLQueryBuilder2_1;
 import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar;
 import org.eclipse.persistence.jpa.jpql.spi.IMappingBuilder;
+import org.eclipse.persistence.jpa.jpql.spi.IQuery;
 
 /**
  * The default implementation of {@link JpaJpqlQueryHelper} that provides support based on the Java
@@ -61,7 +68,7 @@ public class GenericJpaJpqlQueryHelper extends JpaJpqlQueryHelper {
 	 */
 	@Override
 	protected AbstractGrammarValidator buildGrammarValidator(JPQLQueryContext queryContext) {
-		return new DefaultGrammarValidator(queryContext);
+		return new DefaultGrammarValidator(queryContext.getGrammar());
 	}
 
 	/**
@@ -86,6 +93,34 @@ public class GenericJpaJpqlQueryHelper extends JpaJpqlQueryHelper {
 	@Override
 	protected IMappingBuilder<AttributeMapping> buildMappingBuilder() {
 		return new GenericMappingBuilder();
+	}
+
+	/**
+	 * Creates the right {@link IJPQLQueryBuilder} based on the JPQL grammar.
+	 *
+	 * @return A new concrete instance of {@link IJPQLQueryBuilder}
+	 */
+	protected IJPQLQueryBuilder buildQueryBuilder() {
+		switch (getGrammar().getJPAVersion()) {
+			case VERSION_1_0: return new JPQLQueryBuilder1_0();
+			case VERSION_2_0: return new JPQLQueryBuilder2_0();
+			default:          return new JPQLQueryBuilder2_1();
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public RefactoringTool buildRefactoringTool() {
+
+		IQuery query = getQuery();
+
+		return new DefaultRefactoringTool(
+			query.getProvider(),
+			buildQueryBuilder(),
+			query.getExpression()
+		);
 	}
 
 	/**
