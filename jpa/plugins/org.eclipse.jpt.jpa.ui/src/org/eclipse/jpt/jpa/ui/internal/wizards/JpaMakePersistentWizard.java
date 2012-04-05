@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.ui.internal.wizards;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.resource.LocalResourceManager;
@@ -30,6 +29,7 @@ public class JpaMakePersistentWizard extends Wizard {
 	
 	public static final String HELP_CONTEXT_ID = JptJpaUiPlugin.PLUGIN_ID + ".GenerateEntitiesFromSchemaWizard"; //$NON-NLS-1$
 
+	final JpaProject jpaProject;
 
 	final List<IType> selectedTypes;
 
@@ -37,8 +37,9 @@ public class JpaMakePersistentWizard extends Wizard {
 	
 	protected final ResourceManager resourceManager;
 	
-	public JpaMakePersistentWizard(List<IType> selectedTypes) {
+	public JpaMakePersistentWizard(JpaProject jpaProject, List<IType> selectedTypes) {
 		super();
+		this.jpaProject = jpaProject;
 		this.selectedTypes = selectedTypes;
 		this.resourceManager = new LocalResourceManager(JFaceResources.getResources());
 		this.setWindowTitle(JptUiMessages.JpaMakePersistentWizardPage_title);
@@ -48,10 +49,7 @@ public class JpaMakePersistentWizard extends Wizard {
 	@Override
 	public void addPages() {
 		setForcePreviousAndNextButtons(true);
-
-		IProject project = this.selectedTypes.get(0).getResource().getProject();
-		JpaProject jpaProject = (JpaProject) project.getAdapter(JpaProject.class);
-		this.makePersistentWizardPage = new JpaMakePersistentWizardPage(jpaProject, this.selectedTypes, HELP_CONTEXT_ID);
+		this.makePersistentWizardPage = new JpaMakePersistentWizardPage(this.jpaProject, this.selectedTypes, HELP_CONTEXT_ID);
 		this.addPage(this.makePersistentWizardPage);
 		return;
 	}
@@ -61,7 +59,7 @@ public class JpaMakePersistentWizard extends Wizard {
 		try {
 			this.makePersistentWizardPage.performFinish();
 		} catch (InvocationTargetException e) {
-			e.printStackTrace();
+			JptJpaUiPlugin.log(e);
 		}
 		return true;
 	}

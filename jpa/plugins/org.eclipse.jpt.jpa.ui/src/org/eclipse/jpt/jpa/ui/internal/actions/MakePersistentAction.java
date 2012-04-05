@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2010 Oracle. All rights reserved.
+* Copyright (c) 2010, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,6 +24,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.JpaMakePersistentWizard;
 import org.eclipse.swt.widgets.Display;
@@ -131,11 +132,15 @@ public class MakePersistentAction implements IObjectActionDelegate {
 
 	public void run(IAction action) {
 		for (List<IType> types : this.selectedTypes.values()) {
-			//open the wizard once for each selected project
-			JpaMakePersistentWizard wizard = new JpaMakePersistentWizard(types);
-			WizardDialog dialog = new WizardDialog(this.getCurrentShell(), wizard);
-			dialog.create();
-			dialog.open();
+			IProject project = types.get(0).getResource().getProject();
+			JpaProject jpaProject = (JpaProject) project.getAdapter(JpaProject.class);
+			if (jpaProject != null) {
+				//open the wizard once for each selected project
+				JpaMakePersistentWizard wizard = new JpaMakePersistentWizard(jpaProject, types);
+				WizardDialog dialog = new WizardDialog(this.getCurrentShell(), wizard);
+				dialog.create();
+				dialog.open();
+			}
 		}
 	}
 	

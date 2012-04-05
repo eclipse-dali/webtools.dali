@@ -10,16 +10,24 @@
 package org.eclipse.jpt.jpa.ui.internal.wizards;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRunnable;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.ui.JavaElementComparator;
 import org.eclipse.jdt.ui.JavaElementLabelProvider;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ComboBoxViewerCellEditor;
@@ -37,35 +45,37 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.ui.internal.utility.SynchronousUiCommandExecutor;
 import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
+import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
+import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractEntityMappings;
+import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnit;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.jface.XmlMappingFileViewerFilter;
-import org.eclipse.jpt.jpa.ui.internal.platform.JpaPlatformUiRegistry;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.EntityWizardMsg;
 import org.eclipse.jpt.jpa.ui.internal.wizards.orm.EmbeddedMappingFileWizard;
 import org.eclipse.swt.SWT;
@@ -457,33 +467,42 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 	    PlatformUI.getWorkbench().getHelpSystem().displayHelp( this.helpContextId );
 	}
 	
-	// TODO use JpaProjectManager.execute(Command, ...)
 	protected void performFinish() throws InvocationTargetException {
-		boolean modifiedPersistenceXml = false;
-		for (Type type : this.selectedTypes) {
-			modifiedPersistenceXml |= type.makePersistent();			
+		if (this.isAddToOrmMappingFile()) {
+			this.performAddToOrmXml();
 		}
-		if (modifiedPersistenceXml) {
-			try {
-				this.getJpaProject().getPersistenceXmlResource().save(null);
-			}
-			catch (IOException e) {
-				//ignore, file just won't get saved
-			}
-		}
-		if (isAddToOrmMappingFile()) {
-			postPerformFinish();
+		else {
+			this.performAnnotateInJava();
 		}
 	}
-	
-	private void postPerformFinish() throws InvocationTargetException {
+
+	private void performAddToOrmXml() throws InvocationTargetException {
+		this.perform(new AddToOrmXmlRunnable(this.getJpaProject(), this.getOrmXmlResource(), this.selectedTypes));	
 		try {
-			IFile file = getOrmXmlResource().getFile();
-			openEditor(file);
+			this.openEditor(this.getOrmXmlResource().getFile());
 		}
 		catch (Exception cantOpen) {
 			throw new InvocationTargetException(cantOpen);
 		} 
+	}
+
+	private void performAnnotateInJava() {
+		this.perform(new AnnotateInJavaRunnable(this.getJpaProject(), this.selectedTypes, this.isListInPersistenceXml()));
+	}
+
+	private void perform(IRunnableWithProgress runnable) {
+		try {
+			this.buildProgressMonitorDialog().run(true, true, runnable);  // true => fork; true => cancellable
+		} catch (InvocationTargetException ex) {
+			JptJpaUiPlugin.log(ex);
+		} catch (InterruptedException ex) {
+			Thread.currentThread().interrupt();
+			JptJpaUiPlugin.log(ex);
+		}
+	}
+
+	private ProgressMonitorDialog buildProgressMonitorDialog() {
+		return new ProgressMonitorDialog(null);
 	}
 	
 	private void openEditor(final IFile file) {
@@ -503,12 +522,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 	}
 
 	protected JpaXmlResource getOrmXmlResource() {
-		return getJpaProject().getMappingFileXmlResource(new Path(getMappingFileLocation()));
-	}
-
-	protected EntityMappings getEntityMappings() {
-		JpaXmlResource xmlResource = getOrmXmlResource();
-		return (EntityMappings) getJpaProject().getJpaFile(xmlResource.getFile()).getRootStructureNodes().iterator().next();
+		return this.getJpaProject().getMappingFileXmlResource(new Path(this.getMappingFileLocation()));
 	}
 	
 	protected boolean isListInPersistenceXml() {
@@ -531,7 +545,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 		return new File(getMappingFileLocation()).getName();
 	}
 
-	private class Type {
+	private class Type implements AbstractPersistenceUnit.MappedType {
 
 		private final IType jdtType;
 
@@ -543,63 +557,20 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 			this.mappingKey = MappingKeys.ENTITY_TYPE_MAPPING_KEY;
 		}
 
+		public String getFullyQualifiedName() {
+			return this.jdtType.getFullyQualifiedName();
+		}
+
+		public String getMappingKey() {
+			return this.mappingKey;
+		}
+
 		protected void setMappingKey(String mappingKey) {
 			this.mappingKey = mappingKey;
 		}
-		// TODO modify the context model
-		protected boolean makePersistent() {
-			if (JpaMakePersistentWizardPage.this.isAnnotateInJavaModel()) {
-				PersistenceUnit persistenceUnit = this.getPersistenceUnit();
-				JavaResourceAbstractType type = getJavaResourceType();
-				type.addAnnotation(getJavaTypeMappingDefinition(this.mappingKey).getAnnotationName());
-				if (JpaMakePersistentWizardPage.this.isListInPersistenceXml()) {
-					if (persistenceUnit != null) {
-						persistenceUnit.addSpecifiedClassRef(type.getQualifiedName());
-						return true;
-					}
-				}
-			} else {
-				getEntityMappings().addPersistentType(Type.this.mappingKey, Type.this.jdtType.getFullyQualifiedName());
-				getOrmXmlResource().save();
-			}
-			return false;
-		}
 
 		protected Iterable<? extends MappingUiDefinition<? extends PersistentType, ?>> typeMappingUiDefinitions() {
-			return CollectionTools.iterable(getJpaPlatformUi().typeMappingUiDefinitions(jptResourceType));
-		}
-
-		protected JavaTypeMappingDefinition getJavaTypeMappingDefinition(String key) {
-			for (JavaTypeMappingDefinition definition : getJpaProject().getJpaPlatform().getJavaTypeMappingDefinitions()) {
-				if (Tools.valuesAreEqual(definition.getKey(), key)) {
-					return definition;
-				}
-			}
-			throw new IllegalArgumentException("Illegal type mapping key: " + key); //$NON-NLS-1$
-		}
-
-		protected JavaResourceAbstractType getJavaResourceType() {
-			return getJpaProject().getJavaResourceType(this.jdtType.getFullyQualifiedName());
-		}
-
-
-		protected PersistenceUnit getPersistenceUnit() {
-			Persistence p = this.getPersistence();
-			if (p == null) {
-				return null;
-			}
-			ListIterator<PersistenceUnit> units = p.getPersistenceUnits().iterator();
-			return units.hasNext() ? units.next() : null;
-		}
-
-		protected Persistence getPersistence() {
-			PersistenceXml pxml = this.getPersistenceXml();
-			return (pxml == null) ? null : pxml.getPersistence();
-		}
-
-		protected PersistenceXml getPersistenceXml() {
-			JpaRootContextNode rcn = getJpaProject().getRootContextNode();
-			return (rcn == null) ? null : rcn.getPersistenceXml();
+			return CollectionTools.iterable(getJpaPlatformUi().typeMappingUiDefinitions(JpaMakePersistentWizardPage.this.jptResourceType));
 		}
 	}
 	
@@ -660,4 +631,276 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 		protected void disengageSubject_() {/*nothing*/}
 	}
 
+
+	// ********** add to orm.xml runnable **********
+
+	/**
+	 * This is dispatched to the progress monitor dialog.
+	 */
+	/* CU private */ static class AddToOrmXmlRunnable
+		implements IRunnableWithProgress
+	{
+		private final JpaProject jpaProject;
+		private final JpaXmlResource ormXmlResource;
+		private final AbstractPersistenceUnit.MappedType[] selectedTypes;
+
+		AddToOrmXmlRunnable(JpaProject jpaProject, JpaXmlResource ormXmlResource, AbstractPersistenceUnit.MappedType[] selectedTypes) {
+			super();
+			this.jpaProject = jpaProject;
+			this.ormXmlResource = ormXmlResource;
+			this.selectedTypes = selectedTypes;
+		}
+
+		public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+			try {
+				this.run_(monitor);
+			} catch (CoreException ex) {
+				throw new InvocationTargetException(ex);
+			}
+		}
+
+		private void run_(IProgressMonitor monitor) throws CoreException {
+			IWorkspace workspace = ResourcesPlugin.getWorkspace();
+			// lock the orm.xml resource, it is the only thing we will be modifying.
+			ISchedulingRule rule = workspace.getRuleFactory().modifyRule(this.ormXmlResource.getFile());
+			workspace.run(
+				new AddToOrmXmlWorkspaceRunnable(this.jpaProject, this.ormXmlResource, this.selectedTypes),
+				rule,
+				IWorkspace.AVOID_UPDATE,
+				monitor
+			);
+		}
+	}
+
+
+	// ********** add to orm.xml workspace runnable **********
+
+	/**
+	 * This is dispatched to the Eclipse workspace.
+	 */
+	/* CU private */ static class AddToOrmXmlWorkspaceRunnable
+		implements IWorkspaceRunnable
+	{
+		private final JpaProject jpaProject;
+		private final JpaXmlResource ormXmlResource;
+		private final AbstractPersistenceUnit.MappedType[] selectedTypes;
+
+		AddToOrmXmlWorkspaceRunnable(JpaProject jpaProject, JpaXmlResource ormXmlResource, AbstractPersistenceUnit.MappedType[] selectedTypes) {
+			super();
+			this.jpaProject = jpaProject;
+			this.ormXmlResource = ormXmlResource;
+			this.selectedTypes = selectedTypes;
+		}
+
+		public void run(IProgressMonitor monitor) {
+			if (monitor.isCanceled()) {
+				return;
+			}
+			Command addToOrmXmlCommand = new AddToOrmXmlCommand(this.getEntityMappings(),this.selectedTypes, monitor);
+			try {
+				this.getJpaProjectManager().execute(addToOrmXmlCommand, SynchronousUiCommandExecutor.instance());
+			} catch (InterruptedException ex) {
+				Thread.currentThread().interrupt();  // skip save?
+				throw new RuntimeException(ex);
+			}
+			this.ormXmlResource.save();
+		}
+
+		protected EntityMappings getEntityMappings() {
+			return (EntityMappings) this.jpaProject.getJpaFile(this.ormXmlResource.getFile()).getRootStructureNodes().iterator().next();
+		}
+
+		private JpaProjectManager getJpaProjectManager() {
+			return (JpaProjectManager) this.getWorkspace().getAdapter(JpaProjectManager.class);
+		}
+	
+		private IProject getProject() {
+			return this.jpaProject.getProject();
+		}
+
+		private IWorkspace getWorkspace() {
+			return this.getProject().getWorkspace();
+		}
+	}
+
+
+	// ********** add to orm.xml command **********
+
+	/**
+	 * This is dispatched to the JPA project manager.
+	 */
+	/* CU private */ static class AddToOrmXmlCommand
+		implements Command
+	{
+		private final EntityMappings entityMappings;
+		private final AbstractPersistenceUnit.MappedType[] selectedTypes;
+		private final IProgressMonitor monitor;
+
+		AddToOrmXmlCommand(EntityMappings entityMappings, AbstractPersistenceUnit.MappedType[] selectedTypes, IProgressMonitor monitor) {
+			super();
+			this.entityMappings = entityMappings;
+			this.selectedTypes = selectedTypes;
+			this.monitor = monitor;
+		}
+
+		public void execute() {
+			//TODO add API to EntityMappings - added this post-M6
+			((AbstractEntityMappings) this.entityMappings).addPersistentTypes(this.selectedTypes, this.monitor);
+		}
+
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this, this.selectedTypes);
+		}
+	}
+
+
+	// ********** annotate in Java runnable **********
+
+	/**
+	 * This is dispatched to the progress monitor dialog.
+	 */
+	/* CU private */ static class AnnotateInJavaRunnable
+		implements IRunnableWithProgress
+	{
+		private final JpaProject jpaProject;
+		private final AbstractPersistenceUnit.MappedType[] selectedTypes;
+		private final boolean listInPersistenceXml;
+
+		AnnotateInJavaRunnable(JpaProject jpaProject, AbstractPersistenceUnit.MappedType[] selectedTypes, boolean listInPersistenceXml) {
+			super();
+			this.jpaProject = jpaProject;
+			this.selectedTypes = selectedTypes;
+			this.listInPersistenceXml = listInPersistenceXml;
+		}
+
+		public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+			try {
+				this.run_(monitor);
+			} catch (CoreException ex) {
+				throw new InvocationTargetException(ex);
+			}
+		}
+
+		private void run_(IProgressMonitor monitor) throws CoreException {
+			IWorkspace workspace = ResourcesPlugin.getWorkspace();
+			// lock the entire project, since we could be modifying multiple java files and the persistence.xml file
+			ISchedulingRule rule = workspace.getRuleFactory().modifyRule(this.jpaProject.getProject());
+			workspace.run(
+				new AnnotateInJavaWorkspaceRunnable(this.jpaProject, this.selectedTypes, this.listInPersistenceXml),
+				rule,
+				IWorkspace.AVOID_UPDATE,
+				monitor
+			);
+		}
+	}
+
+
+	// ********** annotate in Java workspace runnable **********
+
+	/**
+	 * This is dispatched to the Eclipse workspace.
+	 */
+	/* CU private */ static class AnnotateInJavaWorkspaceRunnable
+		implements IWorkspaceRunnable
+	{
+		private final JpaProject jpaProject;
+		private final AbstractPersistenceUnit.MappedType[] selectedTypes;
+		private final boolean listInPersistenceXml;
+
+		AnnotateInJavaWorkspaceRunnable(JpaProject jpaProject, AbstractPersistenceUnit.MappedType[] selectedTypes, boolean listInPersistenceXml) {
+			super();
+			this.jpaProject = jpaProject;
+			this.selectedTypes = selectedTypes;
+			this.listInPersistenceXml = listInPersistenceXml;
+		}
+
+		public void run(IProgressMonitor monitor) {
+			if (monitor.isCanceled()) {
+				return;
+			}
+			PersistenceUnit persistenceUnit = this.getPersistenceUnit();
+			if (persistenceUnit == null) {
+				return; //unlikely...
+			}
+			Command annotateInJavaCommand = new AnnotateInJavaCommand(persistenceUnit, this.selectedTypes, this.listInPersistenceXml, monitor);
+			try {
+				this.getJpaProjectManager().execute(annotateInJavaCommand, SynchronousUiCommandExecutor.instance());
+			} catch (InterruptedException ex) {
+				Thread.currentThread().interrupt();  // skip save?
+				throw new RuntimeException(ex);
+			}
+			if (this.listInPersistenceXml) {
+				JpaXmlResource persistenceXmlResource = this.jpaProject.getPersistenceXmlResource();
+				if (persistenceXmlResource != null) {
+					persistenceXmlResource.save();
+				}
+			}
+		}
+		
+		protected PersistenceUnit getPersistenceUnit() {
+			Persistence p = this.getPersistence();
+			if (p == null) {
+				return null;
+			}
+			ListIterator<PersistenceUnit> units = p.getPersistenceUnits().iterator();
+			return units.hasNext() ? units.next() : null;
+		}
+
+		protected Persistence getPersistence() {
+			PersistenceXml pxml = this.getPersistenceXml();
+			return (pxml == null) ? null : pxml.getPersistence();
+		}
+
+		protected PersistenceXml getPersistenceXml() {
+			JpaRootContextNode rcn = this.jpaProject.getRootContextNode();
+			return (rcn == null) ? null : rcn.getPersistenceXml();
+		}
+
+
+		private JpaProjectManager getJpaProjectManager() {
+			return (JpaProjectManager) this.getWorkspace().getAdapter(JpaProjectManager.class);
+		}
+	
+		private IProject getProject() {
+			return this.jpaProject.getProject();
+		}
+
+		private IWorkspace getWorkspace() {
+			return this.getProject().getWorkspace();
+		}
+	}
+
+
+	// ********** annotate in Java command **********
+
+	/**
+	 * This is dispatched to the JPA project manager.
+	 */
+	/* CU private */ static class AnnotateInJavaCommand
+		implements Command
+	{
+		private final PersistenceUnit persistenceUnit;
+		private final AbstractPersistenceUnit.MappedType[] selectedTypes;
+		private final boolean listInPersistenceXml;
+		private final IProgressMonitor monitor;
+
+		AnnotateInJavaCommand(PersistenceUnit persistenceUnit, AbstractPersistenceUnit.MappedType[] selectedTypes, boolean listInPersistenceXml, IProgressMonitor monitor) {
+			super();
+			this.persistenceUnit = persistenceUnit;
+			this.selectedTypes = selectedTypes;
+			this.listInPersistenceXml = listInPersistenceXml;
+			this.monitor = monitor;
+		}
+
+		public void execute() {
+			//TODO add API to PersistenceUnit - added this post-M6
+			((AbstractPersistenceUnit) this.persistenceUnit).addPersistentTypes(this.selectedTypes, this.listInPersistenceXml, this.monitor);
+		}
+
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this, this.selectedTypes);
+		}
+	}
 }
