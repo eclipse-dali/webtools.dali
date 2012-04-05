@@ -11,7 +11,6 @@ package org.eclipse.jpt.common.utility.internal;
 
 import java.util.Vector;
 import org.eclipse.jpt.common.utility.ExceptionHandler;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
 
 /**
@@ -32,7 +31,7 @@ public class CollectingExceptionHandler
 	 * Return the current list of exceptions handled by the handler so far.
 	 */
 	public Iterable<Throwable> getExceptions() {
-		return new LiveCloneIterable<Throwable>(this.exceptions);
+		return new SnapshotCloneIterable<Throwable>(this.exceptions);
 	}
 
 	/**

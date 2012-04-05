@@ -1,0 +1,4 @@
+# Debugging options for the org.eclipse.jpt.common.core plugin.
+
+# Turn on debugging for the org.eclipse.jpt.common.core plugin.
+org.eclipse.jpt.common.core/debug=true

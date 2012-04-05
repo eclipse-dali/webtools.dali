@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -48,6 +49,7 @@ import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.ModifiableObjectReference;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
+import org.eclipse.jpt.common.utility.internal.StackTrace;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.command.ThreadLocalExtendedCommandExecutor;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
@@ -1337,8 +1339,11 @@ public class InternalJpaProjectManager
 
 	// ********** DEBUG **********
 
-	// see JpaProjectManagerTests.testDEBUG()
-	private static final boolean DEBUG = false;
+	private static boolean debug() {
+		return JptJpaCorePlugin.instance().getBooleanDebugOption(DEBUG_OPTION);
+	}
+	private static final String DEBUG_OPTION = JpaProjectManager.class.getSimpleName();
+	private static final String DEBUG_OPTION_ = DEBUG_OPTION + '.';
 
 	/* CU private */ static void debug(String message) {
 		debug(message, null);
@@ -1349,7 +1354,7 @@ public class InternalJpaProjectManager
 	}
 
 	/* CU private */ static void debug(String message, Object object, Object additionalInfo) {
-		if (DEBUG) {
+		if (debug()) {
 			// lock System.out so the strings are printed out contiguously
 			synchronized (System.out) {
 				debug_(message, object, additionalInfo);
@@ -1393,7 +1398,7 @@ public class InternalJpaProjectManager
 	}
 
 	/* CU private */ static void dumpStackTrace(String message, Object object, Object additionalInfo) {
-		if (DEBUG) {
+		if (debug()) {
 			// lock System.out so the stack elements are printed out contiguously
 			synchronized (System.out) {
 				dumpStackTrace_(message, object, additionalInfo);
@@ -1401,21 +1406,20 @@ public class InternalJpaProjectManager
 		}
 	}
 
-	private static final boolean DEBUG_STACK_TRACE = false;
+	private static boolean debugStackTrace() {
+		return JptJpaCorePlugin.instance().getBooleanDebugOption(DEBUG_STACK_TRACE_OPTION);
+	}
+	private static final String DEBUG_STACK_TRACE_OPTION = DEBUG_OPTION_ + "stack_trace"; //$NON-NLS-1$
+
 	private static void dumpStackTrace_(String message, Object object, Object additionalInfo) {
 		if (message != null) {
 			debug_(message, object, additionalInfo);
 		}
-		if (DEBUG_STACK_TRACE) {
-			StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-			// skip the first 3 elements - those are this method and 2 methods in Thread
-			for (int i = 3; i < stackTrace.length; i++) {
-				StackTraceElement element = stackTrace[i];
-				if (element.getMethodName().equals("invoke0")) { //$NON-NLS-1$
-					break;  // skip all elements outside of the JUnit test
-				}
-				System.out.print('\t');
-				System.out.println(element);
+		if (debugStackTrace()) {
+			try {
+				new StackTrace().appendTo(System.out, "\t"); //$NON-NLS-1$
+			} catch (IOException ex) {
+				throw new RuntimeException(ex);
 			}
 		}
 	}

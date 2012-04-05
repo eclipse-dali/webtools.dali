@@ -9,10 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.command;
 
+import java.util.ArrayList;
 import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.CommandExecutor;
 import org.eclipse.jpt.common.utility.command.RepeatingCommand;
+import org.eclipse.jpt.common.utility.internal.StackTrace;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 
 /**
@@ -56,6 +58,15 @@ public class RepeatingCommandWrapper
 	 * The command wrapper's state.
 	 */
 	final RepeatingCommandState state;
+
+	/**
+	 * List of stack traces for each (repeating) invocation of the command,
+	 * starting with the initial invocation. The list is cleared with each
+	 * initial invocation of the command.
+	 */
+	private final ArrayList<StackTrace> stackTraces = DEBUG ? new ArrayList<StackTrace>() : null;
+	// see RepeatingCommandWrapperTests.testDEBUG()
+	private static final boolean DEBUG = false;
 
 
 	// ********** construction **********
@@ -107,11 +118,22 @@ public class RepeatingCommandWrapper
 	 * It is possible to come back here if the wrapped command recurses
 	 * to the client and triggers another execution.
 	 */
-	// pretty sure no need for this method to be 'synchronized'
-	public void execute() {
+	public synchronized void execute() {
 		if (this.state.isReadyToStartExecutionCycle()) {
-			this.startCommandExecutor.execute(this.startCommand);
+			if (DEBUG) {
+				this.stackTraces.clear();
+				this.stackTraces.add(new StackTrace());
+			}
+			this.executeStartCommand();
+		} else {
+			if (DEBUG) {
+				this.stackTraces.add(new StackTrace());
+			}
 		}
+	}
+
+	/* private protected */ void executeStartCommand() {
+		this.startCommandExecutor.execute(this.startCommand);
 	}
 
 	public void stop() throws InterruptedException {

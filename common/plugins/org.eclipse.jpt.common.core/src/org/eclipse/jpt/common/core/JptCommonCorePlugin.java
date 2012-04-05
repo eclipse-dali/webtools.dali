@@ -9,19 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core;
 
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Plugin;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jpt.common.core.internal.JptPlugin;
 import org.eclipse.jpt.common.core.internal.libval.LibraryValidatorManager;
 import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.common.core.libval.LibraryValidator;
 import org.osgi.framework.BundleContext;
 
+// TODO bjv move to *private* internal package and move all public stuff to adapters etc.
 public class JptCommonCorePlugin
-	extends Plugin
+	extends JptPlugin
 {
 
 	// ********** public constants **********
@@ -100,29 +99,22 @@ public class JptCommonCorePlugin
 	 * Log the specified message.
 	 */
 	public static void log(String msg) {
-        log(msg, null);
+		INSTANCE.logError(msg);
     }
 
 	/**
 	 * Log the specified exception or error.
 	 */
 	public static void log(Throwable throwable) {
-		log(throwable.getLocalizedMessage(), throwable);
+		INSTANCE.logError(throwable);
 	}
 
 	/**
 	 * Log the specified message and exception or error.
 	 */
 	public static void log(String msg, Throwable throwable) {
-		log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.OK, msg, throwable));
+		INSTANCE.logError(msg, throwable);
 	}
-
-	/**
-	 * Log the specified status.
-	 */
-	public static void log(IStatus status) {
-        INSTANCE.getLog().log(status);
-    }
 
 
 	// ********** plug-in implementation **********
@@ -145,8 +137,7 @@ public class JptCommonCorePlugin
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
-		super.stop(context);
 		// nothing yet...		
+		super.stop(context);
 	}
 }
-

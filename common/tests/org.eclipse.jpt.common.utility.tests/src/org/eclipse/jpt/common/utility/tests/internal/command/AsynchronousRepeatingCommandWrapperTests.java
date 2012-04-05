@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.utility.internal.ConsumerThreadCoordinator;
 import org.eclipse.jpt.common.utility.internal.ReflectionTools;
 import org.eclipse.jpt.common.utility.internal.command.AsynchronousRepeatingCommandWrapper;
 import org.eclipse.jpt.common.utility.tests.internal.MultiThreadedTestCase;
+import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
 public class AsynchronousRepeatingCommandWrapperTests
@@ -226,6 +227,14 @@ public class AsynchronousRepeatingCommandWrapperTests
 			this.count++;
 			throw new NullPointerException();
 		}
+	}
+
+	/**
+	 * Make sure the <code>DEBUG</code> constant is <code>false</code>
+	 * before checking in the code.
+	 */
+	public void testDEBUG() {
+		TestTools.assertFalseDEBUG(AsynchronousRepeatingCommandWrapper.class);
 	}
 
 

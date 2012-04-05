@@ -9,14 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.internal.utility.command;
 
+import java.util.ArrayList;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
 import org.eclipse.jpt.common.core.utility.command.JobCommandExecutor;
 import org.eclipse.jpt.common.core.utility.command.RepeatingJobCommand;
 import org.eclipse.jpt.common.utility.ExceptionHandler;
+import org.eclipse.jpt.common.utility.internal.StackTrace;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.command.RepeatingCommandState;
 
@@ -74,6 +77,17 @@ public class RepeatingJobCommandWrapper
 	 */
 	final RepeatingCommandState state;
 
+	/**
+	 * List of stack traces for each (repeating) invocation of the command,
+	 * starting with the initial invocation. The list is cleared with each
+	 * initial invocation of the command.
+	 */
+	private final ArrayList<StackTrace> stackTraces = debug() ? new ArrayList<StackTrace>() : null;
+
+	private static boolean debug() {
+		return JptCommonCorePlugin.instance().isDebugging();
+	}
+
 
 	// ********** construction **********
 
@@ -124,12 +138,23 @@ public class RepeatingJobCommandWrapper
 	 * It is possible to come back here if the wrapped command recurses
 	 * to the client and triggers another execution.
 	 */
-	// pretty sure no need for this method to be 'synchronized'
-	public IStatus execute(IProgressMonitor monitor) {
+	public synchronized IStatus execute(IProgressMonitor monitor) {
 		if (this.state.isReadyToStartExecutionCycle()) {
-			this.startCommandExecutor.execute(this.startCommand);
+			if (debug()) {
+				this.stackTraces.clear();
+				this.stackTraces.add(new StackTrace());
+			}
+			this.executeStartCommand();
+		} else {
+			if (debug()) {
+				this.stackTraces.add(new StackTrace());
+			}
 		}
 		return Status.OK_STATUS;
+	}
+
+	/* private protected */ void executeStartCommand() {
+		this.startCommandExecutor.execute(this.startCommand);
 	}
 
 	public void stop() throws InterruptedException {

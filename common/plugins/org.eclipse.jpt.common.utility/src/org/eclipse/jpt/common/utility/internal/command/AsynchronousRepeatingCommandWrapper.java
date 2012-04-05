@@ -9,12 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.command;
 
+import java.util.ArrayList;
 import java.util.concurrent.ThreadFactory;
 import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.RepeatingCommand;
 import org.eclipse.jpt.common.utility.internal.ConsumerThreadCoordinator;
 import org.eclipse.jpt.common.utility.internal.SimpleThreadFactory;
+import org.eclipse.jpt.common.utility.internal.StackTrace;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.SynchronizedBoolean;
 
@@ -22,10 +24,6 @@ import org.eclipse.jpt.common.utility.internal.SynchronizedBoolean;
  * This repeating command will perform a client-supplied command in a separate
  * thread, allowing calls to {@link org.eclipse.jpt.common.utility.command.Command#execute()}
  * to return immediately.
- * <p>
- * <strong>NB:</strong> The client-supplied command should handle any exceptions
- * appropriately (e.g. log the exception and return gracefully so the thread
- * can continue the execution process).
  */
 public class AsynchronousRepeatingCommandWrapper
 	implements RepeatingCommand
@@ -42,6 +40,15 @@ public class AsynchronousRepeatingCommandWrapper
 	 * Most of the thread-related behavior is delegated to this coordinator.
 	 */
 	private final ConsumerThreadCoordinator consumerThreadCoordinator;
+
+	/**
+	 * List of stack traces for each (repeating) invocation of the command,
+	 * starting with the initial invocation. The list is cleared with each
+	 * initial invocation of the command.
+	 */
+	private final ArrayList<StackTrace> stackTraces = DEBUG ? new ArrayList<StackTrace>() : null;
+	// see AsynchronousRepeatingCommandWrapperTests.testDEBUG()
+	private static final boolean DEBUG = false;
 
 
 	// ********** construction **********
@@ -133,7 +140,15 @@ public class AsynchronousRepeatingCommandWrapper
 	 * </ul>
 	 */
 	public void execute() {
-		this.executeFlag.setTrue();
+		synchronized (this.executeFlag) {
+			if (DEBUG) {
+				if (this.executeFlag.isFalse()) {
+					this.stackTraces.clear();
+				}
+				this.stackTraces.add(new StackTrace());
+			}
+			this.executeFlag.setTrue();
+		}
 	}
 
 	/**

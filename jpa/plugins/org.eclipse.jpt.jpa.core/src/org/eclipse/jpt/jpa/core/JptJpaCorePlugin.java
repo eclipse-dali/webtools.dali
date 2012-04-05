@@ -15,14 +15,12 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.QualifiedName;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.internal.JptPlugin;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.internal.InternalJpaProjectManager;
@@ -54,9 +52,9 @@ import org.osgi.util.tracker.ServiceTracker;
  * @version 3.0
  * @since 2.0
  */
-// TODO bjv move to internal package and move all public stuff to adapters etc.
+// TODO bjv move to *private* internal package and move all public stuff to adapters etc.
 public class JptJpaCorePlugin
-	extends Plugin
+	extends JptPlugin
 {
 	/**
 	 * Flag necessary to handle lazy-initialization appropriately.
@@ -179,6 +177,10 @@ public class JptJpaCorePlugin
 	// ********** singleton **********
 
 	static JptJpaCorePlugin INSTANCE;
+
+	public static JptJpaCorePlugin instance() {
+		return INSTANCE;
+	}
 
 	// ********** public static methods **********
 
@@ -472,29 +474,23 @@ public class JptJpaCorePlugin
 	 * Log the specified message.
 	 */
 	public static void log(String msg) {
-        log(msg, null);
+        INSTANCE.logError(msg);
     }
 
 	/**
 	 * Log the specified exception or error.
 	 */
 	public static void log(Throwable throwable) {
-		log(throwable.getLocalizedMessage(), throwable);
+		INSTANCE.logError(throwable);
 	}
 
 	/**
 	 * Log the specified message and exception or error.
 	 */
 	public static void log(String msg, Throwable throwable) {
-		log(new Status(IStatus.ERROR, PLUGIN_ID, msg, throwable));
+		INSTANCE.logError(msg, throwable);
 	}
 
-	/**
-	 * Log the specified status.
-	 */
-	public static void log(IStatus status) {
-        INSTANCE.getLog().log(status);
-    }
 
 	// ********** plug-in implementation **************************************************
 

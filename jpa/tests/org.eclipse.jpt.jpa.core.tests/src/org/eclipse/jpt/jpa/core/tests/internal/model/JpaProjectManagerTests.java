@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.core.tests.internal.projects.TestFacetedProject;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestPlatformProject;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.tests.internal.TestTools;
+import org.eclipse.jpt.common.utility.internal.ReflectionTools;
 import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
@@ -54,7 +54,8 @@ public class JpaProjectManagerTests
 	}
 
 	private boolean debug() {
-		return TestTools.debug(this.getGenericJpaProjectManagerClass());
+		Boolean debug = (Boolean) ReflectionTools.executeStaticMethod(this.getGenericJpaProjectManagerClass(), "debug");
+		return debug.booleanValue();
 	}
 
 	// InternalJpaProjectManager is package-private
@@ -126,14 +127,6 @@ public class JpaProjectManagerTests
 
 	private IFile getFile(TestPlatformProject p, String path) {
 		return p.getProject().getFile(new Path(path));
-	}
-
-	/**
-	 * Make sure the <code>DEBUG</code> constant is <code>false</code>
-	 * before checking in the code.
-	 */
-	public void testDEBUG() {
-		TestTools.assertFalseDEBUG(this.getGenericJpaProjectManagerClass());
 	}
 
 	public void testJpaProjectManager() {
