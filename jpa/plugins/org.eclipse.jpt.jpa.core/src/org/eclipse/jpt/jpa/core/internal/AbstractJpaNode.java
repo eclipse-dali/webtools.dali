@@ -17,8 +17,8 @@ import java.util.Set;
 import java.util.Vector;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.JDTModifiedDeclaration.Adapter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -386,6 +386,10 @@ public abstract class AbstractJpaNode
 
 		protected abstract void moveContextElement(int index, C element);
 
+		protected void disposeElement(C element) {
+			//override if you need to dispose an element when it is removed
+		}
+
 		@Override
 		public String toString() {
 			return this.contextElements.toString();
@@ -512,13 +516,17 @@ public abstract class AbstractJpaNode
 		}
 
 		@Override
-		public void removeContextElement(C element) {
-			AbstractJpaNode.this.removeItemFromCollection(element, this.contextElements, this.getContextElementsPropertyName());
+		public void removeContextElement(C contextElement) {
+			AbstractJpaNode.this.removeItemFromCollection(contextElement, this.contextElements, this.getContextElementsPropertyName());
+			this.disposeElement(contextElement);
 		}
 
 		@Override
 		public void removeAll(Iterable<C> elements) {
 			AbstractJpaNode.this.removeItemsFromCollection(elements, this.contextElements, this.getContextElementsPropertyName());
+			for (C element : elements) {
+				this.disposeElement(element);
+			}
 		}
 
 		@Override
@@ -567,7 +575,7 @@ public abstract class AbstractJpaNode
 		}
 
 		@Override
-		protected Iterable<C> addAll(int index, Iterable<C> elements) {
+		public Iterable<C> addAll(int index, Iterable<C> elements) {
 			AbstractJpaNode.this.addItemsToList(index, elements, this.contextElements, this.getContextElementsPropertyName());
 			return elements;
 		}
@@ -589,6 +597,9 @@ public abstract class AbstractJpaNode
 		 * clear the list of context elements
 		 */
 		public void clearContextList() {
+			for (C element : this.contextElements) {
+				this.disposeElement(element);
+			}
 			AbstractJpaNode.this.clearList(this.contextElements, getContextElementsPropertyName());
 		}
 
@@ -596,17 +607,23 @@ public abstract class AbstractJpaNode
 		 * Remove the context element at the specified index from the container.
 		 */
 		public C removeContextElement(int index) {
-			return AbstractJpaNode.this.removeItemFromList(index, this.contextElements, this.getContextElementsPropertyName());
+			C element = AbstractJpaNode.this.removeItemFromList(index, this.contextElements, this.getContextElementsPropertyName());
+			this.disposeElement(element);
+			return element;
 		}
 
 		@Override
 		public void removeContextElement(C element) {
-			this.removeContextElement(this.indexOfContextElement(element));
+			AbstractJpaNode.this.removeItemFromList(element, this.contextElements, this.getContextElementsPropertyName());
+			this.disposeElement(element);
 		}
 
 		@Override
 		public void removeAll(Iterable<C> elements) {
 			AbstractJpaNode.this.removeItemsFromList(elements, this.contextElements, this.getContextElementsPropertyName());
+			for (C element : elements) {
+				this.disposeElement(element);
+			}
 		}
 	}
 
@@ -670,19 +687,30 @@ public abstract class AbstractJpaNode
 
 		@Override
 		public void removeContextElement(C element) {
-			this.removeContextElement(this.indexOfContextElement(element));
+			AbstractJpaNode.this.removeItemFromList(element, this.contextElements, this.getContextElementsPropertyName());
+			this.disposeElement(element);
 		}
 
 		/**
 		 * Remove the context element at the specified index from the container.
 		 */
-		public void removeContextElement(int index) {
-			AbstractJpaNode.this.removeItemFromList(index, this.contextElements, this.getContextElementsPropertyName());
+		public C removeContextElement(int index) {
+			C element = AbstractJpaNode.this.removeItemFromList(index, this.contextElements, this.getContextElementsPropertyName());
+			this.disposeElement(element);
+			return element;
 		}
 
 		@Override
 		public void removeAll(Iterable<C> elements) {
 			AbstractJpaNode.this.removeItemsFromList(elements, this.contextElements, this.getContextElementsPropertyName());
+			for (C element : elements) {
+				this.disposeElement(element);
+			}
+		}
+
+		@Override
+		protected void disposeElement(C element) {
+			//override if you need to dispose an element when it is removed
 		}
 
 		public void synchronizeWithResourceModel() {
