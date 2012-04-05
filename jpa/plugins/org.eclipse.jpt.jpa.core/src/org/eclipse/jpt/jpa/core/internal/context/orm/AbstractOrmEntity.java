@@ -251,6 +251,8 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 		this.idClassReference.update();
 
+		this.setDefaultInheritanceStrategy(this.buildDefaultInheritanceStrategy());
+
 		this.table.update();
 		this.setSpecifiedTableIsAllowed(this.buildSpecifiedTableIsAllowed());
 		this.setTableIsUndefined(this.buildTableIsUndefined());
@@ -261,15 +263,13 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		this.updateDefaultPrimaryKeyJoinColumns();
 		this.updateNodes(this.getPrimaryKeyJoinColumns());
 
-		this.setDefaultInheritanceStrategy(this.buildDefaultInheritanceStrategy());
+		this.discriminatorColumn.update();
+		this.setSpecifiedDiscriminatorColumnIsAllowed(this.buildSpecifiedDiscriminatorColumnIsAllowed());
+		this.setDiscriminatorColumnIsUndefined(this.buildDiscriminatorColumnIsUndefined());
 
 		this.setDefaultDiscriminatorValue(this.buildDefaultDiscriminatorValue());
 		this.setSpecifiedDiscriminatorValueIsAllowed(this.buildSpecifiedDiscriminatorValueIsAllowed());
 		this.setDiscriminatorValueIsUndefined(this.buildDiscriminatorValueIsUndefined());
-
-		this.discriminatorColumn.update();
-		this.setSpecifiedDiscriminatorColumnIsAllowed(this.buildSpecifiedDiscriminatorColumnIsAllowed());
-		this.setDiscriminatorColumnIsUndefined(this.buildDiscriminatorColumnIsUndefined());
 
 		this.attributeOverrideContainer.update();
 		this.associationOverrideContainer.update();

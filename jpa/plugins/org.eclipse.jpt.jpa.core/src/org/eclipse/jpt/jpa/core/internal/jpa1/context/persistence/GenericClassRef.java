@@ -81,7 +81,11 @@ public class GenericClassRef
 		super(parent);
 		this.xmlJavaClassRef = xmlJavaClassRef;
 		this.className = className;
-		// 'javaPersistentType' is resolved in the update
+		// build 'javaPersistentType' here, but also resolve in the update
+		JavaResourceType resourceType = this.resolveJavaResourceType();
+		if (resourceType != null) {
+			this.javaPersistentType = this.buildJavaPersistentType(resourceType);
+		}
 	}
 
 

@@ -53,6 +53,10 @@ public abstract class AbstractOrmPersistenceUnitDefaults
 		this.specifiedSchema = this.buildSpecifiedSchema();
 		this.cascadePersist = this.buildCascadePersist();
 		this.delimitedIdentifiers = this.buildDelimitedIdentifiers();
+
+		//already available from JpaProject, so set it here, many things depend on these
+		this.defaultCatalog = this.buildDefaultCatalog();
+		this.defaultSchema = this.buildDefaultSchema();
 	}
 
 
