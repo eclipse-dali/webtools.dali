@@ -14,7 +14,6 @@ import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.Transformer;
@@ -532,7 +531,7 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 	// thus using the attribute of the corresponding Java persistent type instead
 	private Iterable<String> getCandidateMappingNames() {
 		JavaPersistentType jpt = this.getTypeMapping().getPersistentType().getJavaPersistentType();
-		return jpt == null ? EmptyIterable.<String>instance() : CollectionTools.collection(jpt.getAttributeNames());
+		return jpt == null ? EmptyIterable.<String>instance() : jpt.getAttributeNames();
 	}
 
 	private boolean attributeNameTouches(int pos) {

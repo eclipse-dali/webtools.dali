@@ -176,7 +176,7 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 	}
 
 	protected Iterable<AttributeMapping> getAllAttributeMappings() {
-		return CollectionTools.collection(this.getPersistentAttribute().getOwningTypeMapping().getAllAttributeMappings());
+		return this.getPersistentAttribute().getOwningTypeMapping().getAllAttributeMappings();
 	}
 
 	public Iterable<String> getSortedCandidateIdAttributeNames() {
@@ -228,7 +228,7 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 		}
 		return new CompositeIterable<AttributeMapping>(
 				mapping,
-				CollectionTools.collection(embeddable.getAllAttributeMappings())
+				embeddable.getAllAttributeMappings()
 			);
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,6 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
@@ -201,7 +200,7 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 	}
 
 	public Iterable<AttributeMapping> getAllAttributeMappings(final String mappingKey) {
-		return new FilteringIterable<AttributeMapping>(CollectionTools.collection(this.getAllAttributeMappings())) {
+		return new FilteringIterable<AttributeMapping>(this.getAllAttributeMappings()) {
 			@Override
 			protected boolean accept(AttributeMapping attributeMapping) {
 				return Tools.valuesAreEqual(attributeMapping.getKey(), mappingKey);

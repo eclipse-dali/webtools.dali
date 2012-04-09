@@ -544,7 +544,7 @@ public abstract class AbstractPrimaryKeyValidator
 	 * mapping with transient attribute mappings being excluded
 	 */
 	protected Iterable<AttributeMapping> getAttributeMappings(TypeMapping typeMapping) {
-		return new FilteringIterable<AttributeMapping>(CollectionTools.collection(typeMapping.getAllAttributeMappings())) {
+		return new FilteringIterable<AttributeMapping>(typeMapping.getAllAttributeMappings()) {
 			@Override
 			protected boolean accept(AttributeMapping o) {
 				return !StringTools.stringsAreEqual(o.getKey(), MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
