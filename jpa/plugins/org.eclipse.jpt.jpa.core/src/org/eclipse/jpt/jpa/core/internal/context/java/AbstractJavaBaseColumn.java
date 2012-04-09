@@ -55,6 +55,12 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 		this.specifiedNullable = this.buildSpecifiedNullable();
 		this.specifiedInsertable = this.buildSpecifiedInsertable();
 		this.specifiedUpdatable = this.buildSpecifiedUpdatable();
+		//build defaults during construction for performance
+		this.defaultTable = this.buildDefaultTable();
+		this.defaultUnique = this.buildDefaultUnique();
+		this.defaultNullable = this.buildDefaultNullable();
+		this.defaultInsertable = this.buildDefaultInsertable();
+		this.defaultUpdatable = this.buildDefaultUpdatable();
 	}
 
 

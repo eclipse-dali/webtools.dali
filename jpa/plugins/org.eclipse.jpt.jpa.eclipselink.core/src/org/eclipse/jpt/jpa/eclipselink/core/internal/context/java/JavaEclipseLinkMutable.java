@@ -30,6 +30,8 @@ public class JavaEclipseLinkMutable
 	public JavaEclipseLinkMutable(JavaAttributeMapping parent) {
 		super(parent);
 		this.specifiedMutable = this.buildSpecifiedMutable();
+		//build defaults during construction for performance
+		this.defaultMutable = this.buildDefaultMutable();
 	}
 
 

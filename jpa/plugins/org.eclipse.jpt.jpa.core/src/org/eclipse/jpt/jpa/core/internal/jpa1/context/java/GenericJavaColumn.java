@@ -41,6 +41,10 @@ public class GenericJavaColumn
 		this.specifiedLength = this.buildSpecifiedLength();
 		this.specifiedPrecision = this.buildSpecifiedPrecision();
 		this.specifiedScale = this.buildSpecifiedScale();
+		//build defaults during construction for performance
+		this.defaultLength = this.buildDefaultLength();
+		this.defaultPrecision = this.buildDefaultPrecision();
+		this.defaultScale = this.buildDefaultScale();
 	}
 
 

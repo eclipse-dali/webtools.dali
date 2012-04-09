@@ -42,6 +42,10 @@ public class GenericJavaOrderColumn2_0
 		this.specifiedNullable = this.buildSpecifiedNullable();
 		this.specifiedInsertable = this.buildSpecifiedInsertable();
 		this.specifiedUpdatable = this.buildSpecifiedUpdatable();
+		//build defaults during construction for performance
+		this.defaultNullable = this.buildDefaultNullable();
+		this.defaultInsertable = this.buildDefaultInsertable();
+		this.defaultUpdatable = this.buildDefaultUpdatable();
 	}
 
 
