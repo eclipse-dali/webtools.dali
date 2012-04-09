@@ -136,9 +136,6 @@ public class AddVirtualAttributeDialog extends StatusDialog
 		JpaPlatformUi jpaPlatformUi = (JpaPlatformUi) this.persistentType.getJpaPlatform().getAdapter(JpaPlatformUi.class);
 		this.mappingCombo.setInput(jpaPlatformUi);
 		this.mappingCombo.getCombo().select(0);  // select Basic to begin
-
-		
-		this.buildAttributeTypeChooser();
 		
 		createLabel(composite, 1, EclipseLinkUiMessages.AddVirtualAttributeDialog_attributeTypeLabel);
 			
@@ -173,13 +170,6 @@ public class AddVirtualAttributeDialog extends StatusDialog
 		return dialogArea;
 	}
 
-	protected void buildAttributeTypeChooser() {
-		
-	}
-//
-//	protected class AttributeTypeChooser extends ClassChooserPane<Model> {
-//		
-//	}
 	protected Comparator<MappingUiDefinition<?,?>> getProvidersComparator() {
 		return new Comparator<MappingUiDefinition<?,?>>() {
 			public int compare(MappingUiDefinition<?,?> item1, MappingUiDefinition<?,?> item2) {
