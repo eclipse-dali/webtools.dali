@@ -14,7 +14,6 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
@@ -367,7 +366,7 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	}
 
 	public Iterable<AttributeMapping> getAttributeMappings(final String mappingKey) {
-		return new FilteringIterable<AttributeMapping>(CollectionTools.collection(this.getAttributeMappings())) {
+		return new FilteringIterable<AttributeMapping>(this.getAttributeMappings()) {
 			@Override
 			protected boolean accept(AttributeMapping o) {
 				return Tools.valuesAreEqual(o.getKey(), mappingKey);
@@ -376,7 +375,7 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	}
 
 	public Iterable<AttributeMapping> getAllAttributeMappings(final String mappingKey) {
-		return new FilteringIterable<AttributeMapping>(CollectionTools.collection(this.getAllAttributeMappings())) {
+		return new FilteringIterable<AttributeMapping>(this.getAllAttributeMappings()) {
 			@Override
 			protected boolean accept(AttributeMapping o) {
 				return Tools.valuesAreEqual(o.getKey(), mappingKey);
