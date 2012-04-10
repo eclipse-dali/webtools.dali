@@ -67,8 +67,6 @@ public abstract class AbstractJavaNamedColumn<A extends NamedColumnAnnotation, O
 		this.setColumnAnnotation(columnAnnotation);
 		this.specifiedName = this.buildSpecifiedName();
 		this.columnDefinition = this.buildColumnDefinition();
-		//build defaults during construction for performance
-		this.defaultName = this.buildDefaultName();
 	}
 
 
