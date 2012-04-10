@@ -195,6 +195,8 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		this.specifiedName = xmlEntity.getName();
 		this.idClassReference = this.buildIdClassReference();
 		this.table = this.buildTable();
+		// start with the entity as the root - it will be recalculated in update()
+		this.rootEntity = this;
 		this.secondaryTableOwner = this.buildSecondaryTableOwner();
 		this.specifiedSecondaryTableContainer = this.buildSpecifiedSecondaryTableContainer();
 		this.virtualSecondaryTableContainer = this.buildVirtualSecondaryTableContainer();
@@ -203,8 +205,6 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		this.specifiedInheritanceStrategy = this.buildSpecifiedInheritanceStrategy();
 		this.specifiedDiscriminatorValue = xmlEntity.getDiscriminatorValue();
 		this.discriminatorColumn = this.buildDiscriminatorColumn();
-		// start with the entity as the root - it will be recalculated in update()
-		this.rootEntity = this;
 		this.attributeOverrideContainer = this.buildAttributeOverrideContainer();
 		this.associationOverrideContainer = this.buildAssociationOverrideContainer();
 		this.generatorContainer = this.buildGeneratorContainer();

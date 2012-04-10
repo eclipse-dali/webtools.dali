@@ -170,6 +170,8 @@ public abstract class AbstractJavaEntity
 		this.specifiedName = this.mappingAnnotation.getName();
 		this.idClassReference = this.buildIdClassReference();
 		this.table = this.buildTable();
+		// start with the entity as the root - it will be recalculated in update()
+		this.rootEntity = this;
 		this.specifiedSecondaryTableOwner = this.buildSpecifiedSecondaryTableOwner();
 		this.specifiedSecondaryTableContainer = this.buildSpecifiedSecondaryTableContainer();
 		this.primaryKeyJoinColumnOwner = this.buildPrimaryKeyJoinColumnOwner();
@@ -177,8 +179,6 @@ public abstract class AbstractJavaEntity
 		this.specifiedInheritanceStrategy = this.buildSpecifiedInheritanceStrategy();
 		this.specifiedDiscriminatorValue = this.getDiscriminatorValueAnnotation().getValue();
 		this.discriminatorColumn = this.buildDiscriminatorColumn();
-		// start with the entity as the root - it will be recalculated in update()
-		this.rootEntity = this;
 		this.attributeOverrideContainer = this.buildAttributeOverrideContainer();
 		this.associationOverrideContainer = this.buildAssociationOverrideContainer();
 		this.generatorContainer = this.buildGeneratorContainer();
