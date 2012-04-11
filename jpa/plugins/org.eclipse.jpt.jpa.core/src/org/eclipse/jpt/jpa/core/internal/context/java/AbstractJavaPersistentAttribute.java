@@ -13,6 +13,7 @@ import java.util.List;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
@@ -488,8 +489,41 @@ public abstract class AbstractJavaPersistentAttribute
 	 * <li>any other type that implements <code>java.io.Serializable</code>
 	 * </ul>
 	 */
+	//Beware of trying to change this to use MappingTools.typeIsBasic, see bug 374831
 	public boolean typeIsBasic() {
-		return MappingTools.typeIsBasic(this.getJavaProject(), this.getTypeName());
+		// 'typeName' may include array brackets but not generic type arguments
+		String typeName = this.getTypeName();
+		if (typeName == null) {
+			return false;
+		}
+
+		int arrayDepth = ReflectionTools.getArrayDepthForTypeDeclaration(typeName);
+		if (arrayDepth > 1) {
+			return false;  // multi-dimensional arrays are not supported
+		}
+
+		if (arrayDepth == 1) {
+			String elementTypeName = ReflectionTools.getElementTypeNameForTypeDeclaration(typeName, 1);
+			return MappingTools.elementTypeIsValidForBasicArray(elementTypeName);
+		}
+
+		// arrayDepth == 0
+		if (ClassName.isVariablePrimitive(typeName)) {
+			return true;  // any primitive but 'void'
+		}
+		if (ClassName.isVariablePrimitiveWrapper(typeName)) {
+			return true;  // any primitive wrapper but 'java.lang.Void'
+		}
+		if (MappingTools.typeIsOtherValidBasicType(typeName)) {
+			return true;
+		}
+		if (this.getResourceAttribute().typeIsEnum()) {
+			return true;
+		}
+		if (this.getResourceAttribute().typeIsSubTypeOf(JDTTools.SERIALIZABLE_CLASS_NAME)) {
+			return true;
+		}
+		return false;
 	}
 
 	public String getSingleReferenceTargetTypeName() {
