@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jaxb.core.internal.resource;
 
 import java.io.BufferedInputStream;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import org.eclipse.core.resources.IFile;
@@ -91,7 +92,7 @@ public abstract class AbstractJaxbFileResourceModel<S>
 	 */
 	protected abstract void load(InputStream stream) throws IOException;
 
-	protected void closeStream(InputStream stream) {
+	protected void closeStream(Closeable stream) {
 		try {
 			if (stream != null) {
 				stream.close();
