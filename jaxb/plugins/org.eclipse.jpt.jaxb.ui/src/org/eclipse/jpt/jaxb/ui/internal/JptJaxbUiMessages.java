@@ -129,6 +129,7 @@ public class JptJaxbUiMessages {
 	// SchemaGenerator
 	public static String SchemaGeneratorWizard_title;
 	public static String SchemaGeneratorWizard_generatingSchema;
+	public static String SchemaGeneratorWizard_openSchemaFileJobName;
 
 	public static String SchemaGeneratorProjectWizardPage_title;
 	public static String SchemaGeneratorProjectWizardPage_desc;

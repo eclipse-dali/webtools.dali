@@ -10,10 +10,14 @@
 package org.eclipse.jpt.jaxb.ui.internal.wizards.schemagen;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResourceRuleFactory;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
@@ -22,6 +26,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IJavaElement;
@@ -31,6 +36,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.FileTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -42,6 +48,10 @@ import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.IDE;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelProvider;
@@ -99,15 +109,30 @@ public class SchemaGeneratorWizard extends Wizard implements INewWizard
 		this.targetProject = this.getJavaProject();
 		
 		String[] sourceClassNames = this.buildSourceClassNames(this.getAllCheckedItems());
-		
-		WorkspaceJob genSchemaJob = new GenerateSchemaJob( 
-						this.targetProject, 
-						sourceClassNames, 
-						this.getTargetSchema(), 
-						this.usesMoxy());
-		genSchemaJob.schedule();
 
+		this.scheduleGenerateSchemaJob(sourceClassNames);
 		return true;
+	}
+
+	protected void scheduleGenerateSchemaJob(String[] sourceClassNames) {
+			
+		WorkspaceJob genSchemaJob = new GenerateSchemaJob( 
+									this.targetProject, 
+									sourceClassNames, 
+									this.getTargetSchema(), 
+									this.usesMoxy());
+		genSchemaJob.schedule();
+		
+		IPath schemaPath = this.newSchemaFileWizardPage.getContainerFullPath(); 
+		String schemaName = this.newSchemaFileWizardPage.getFileName();
+		
+		IContainer container = (IContainer)ResourcesPlugin.getWorkspace().getRoot().findMember(schemaPath);
+		IFile schemaFile = container.getFile(new Path(schemaName)); 
+
+		OpenSchemaFileJob openSchemaFileJob = new OpenSchemaFileJob(
+									this.targetProject, 
+									schemaFile);
+		openSchemaFileJob.schedule();
 	}
 
 	// ********** intra-wizard methods **********
@@ -261,6 +286,57 @@ public class SchemaGeneratorWizard extends Wizard implements INewWizard
 				return Status.CANCEL_STATUS;
 			}
 			return Status.OK_STATUS;
+		}
+	}
+	
+	// ********** open schema file job **********
+
+	public static class OpenSchemaFileJob extends WorkspaceJob {
+		private final IJavaProject javaProject;
+		private final IFile schemaFile;
+
+		public OpenSchemaFileJob(IJavaProject javaProject, IFile schemaFile) {
+			super(JptJaxbUiMessages.SchemaGeneratorWizard_openSchemaFileJobName);
+			this.javaProject = javaProject;
+			this.schemaFile = schemaFile;
+			IResourceRuleFactory ruleFactory = ResourcesPlugin.getWorkspace().getRuleFactory();
+			this.setRule(ruleFactory.modifyRule(this.javaProject.getProject()));
+		}
+
+		@Override
+		public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+			try {
+				this.postGeneration(this.schemaFile);
+			} 
+			catch (InvocationTargetException e) {
+				throw new CoreException(new Status(IStatus.ERROR, JptJaxbUiPlugin.PLUGIN_ID, "error", e));	   //$NON-NLS-1$
+			}
+			return Status.OK_STATUS;
+		}
+		
+		private void postGeneration(IFile schemaFile) throws InvocationTargetException {
+			try {
+				this.openEditor(schemaFile);
+			}
+			catch (Exception cantOpen) {
+				throw new InvocationTargetException(cantOpen);
+			} 
+		}
+		
+		private void openEditor(final IFile file) {
+			if(file != null) {
+				SWTUtil.asyncExec(new Runnable() {
+					public void run() {
+						try {
+							IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+							IDE.openEditor(page, file, true);
+						}
+						catch (PartInitException e) {
+							JptJaxbUiPlugin.log(e);
+						}
+					}
+				});
+			}
 		}
 	}
 }
