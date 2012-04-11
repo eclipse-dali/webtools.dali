@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,7 +25,6 @@ import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributesContainer;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
@@ -608,13 +607,12 @@ public class GenericJavaAttributesContainer
 	 * and that method is valid for a "persistable" property.
 	 */
 	private static JavaResourceMethod getValidSiblingSetMethod(JavaResourceMethod getMethod, Collection<JavaResourceMethod> resourceMethods) {
-		String capitalizedAttributeName = StringTools.capitalize(getMethod.getName());
+		String capitalizedSetAttributeName = "set" + StringTools.capitalize(getMethod.getName());//$NON-NLS-1$
 		String parameterTypeErasureName = getMethod.getTypeName();
 		for (JavaResourceMethod sibling : resourceMethods) {
-			ListIterable<String> siblingParmTypeNames = sibling.getParameterTypeNames();
 			if ((sibling.getParametersSize() == 1)
-				&& sibling.getMethodName().equals("set" + capitalizedAttributeName) //$NON-NLS-1$
-				&& siblingParmTypeNames.iterator().next().equals(parameterTypeErasureName)) {
+				&& sibling.getMethodName().equals(capitalizedSetAttributeName)
+				&& sibling.getParameterTypeName(0).equals(parameterTypeErasureName)) {
 				return methodIsValidSibling(sibling, "void") ? sibling : null; //$NON-NLS-1$
 			}
 		}

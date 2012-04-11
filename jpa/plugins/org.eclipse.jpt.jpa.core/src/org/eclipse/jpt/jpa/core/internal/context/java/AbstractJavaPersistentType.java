@@ -822,13 +822,12 @@ public abstract class AbstractJavaPersistentType
 	 * and that method is valid for a "persistable" property.
 	 */
 	public static JavaResourceMethod getValidSiblingSetMethod(JavaResourceMethod getMethod, Iterable<JavaResourceMethod> resourceMethods) {
-		String capitalizedAttributeName = StringTools.capitalize(getMethod.getName());
+		String capitalizedSetAttributeName = "set" + StringTools.capitalize(getMethod.getName());//$NON-NLS-1$
 		String parameterTypeErasureName = getMethod.getTypeName();
 		for (JavaResourceMethod sibling : resourceMethods) {
-			ListIterable<String> siblingParmTypeNames = sibling.getParameterTypeNames();
 			if ((sibling.getParametersSize() == 1)
-				&& sibling.getMethodName().equals("set" + capitalizedAttributeName) //$NON-NLS-1$
-				&& siblingParmTypeNames.iterator().next().equals(parameterTypeErasureName)) {
+				&& sibling.getMethodName().equals(capitalizedSetAttributeName)
+				&& sibling.getParameterTypeName(0).equals(parameterTypeErasureName)) {
 				return methodIsValidSibling(sibling, "void") ? sibling : null; //$NON-NLS-1$
 			}
 		}
