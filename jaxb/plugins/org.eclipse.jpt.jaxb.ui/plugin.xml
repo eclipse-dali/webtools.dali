@@ -123,6 +123,90 @@
 	
 	
 	<extension
+		point="org.eclipse.ui.commands">
+		
+		<command
+			id="org.eclipse.jpt.jaxb.ui.command.createPackageInfo"
+			name="%createPackageInfoCommand"/>
+		
+	</extension>		
+			
+	
+	<extension
+		point="org.eclipse.ui.handlers">
+		
+		<handler
+			commandId="org.eclipse.jpt.jaxb.ui.command.createPackageInfo"
+			class="org.eclipse.jpt.jaxb.ui.internal.commands.CreatePackageInfoCommandHandler">
+			<enabledWhen>
+				<iterate ifEmpty="false">
+					<adapt type="org.eclipse.jpt.jaxb.core.context.JaxbPackage">
+						<test 
+							property="org.eclipse.jpt.jaxb.core.hasPackageInfo" 
+							value="false"/>
+					</adapt>
+				</iterate>
+			</enabledWhen>
+		</handler>
+		
+	</extension>
+	
+	
+	<extension
+		point="org.eclipse.ui.menus">
+		
+		<!-- contributions for any popup -->
+		<menuContribution
+			locationURI="popup:org.eclipse.ui.popup.any">
+			
+			<!-- 
+				"JAXB" submenu for any JaxbPackage
+			-->
+			<menu
+				id="org.eclipse.jpt.jaxb.ui.menu.jaxb"
+				label="%jaxbMenu">
+				<visibleWhen>
+					<with
+						variable="selection">
+						<iterate ifEmpty="false">
+							<adapt type="org.eclipse.jpt.jaxb.core.context.JaxbPackage"/>
+						</iterate>
+					</with>
+				</visibleWhen>
+			</menu>
+			
+		</menuContribution>
+		
+		<!-- contributions to the JAXB menu -->
+		<menuContribution
+			locationURI="popup:org.eclipse.jpt.jaxb.ui.menu.jaxb">
+			
+			<!-- 
+				"Create package-info.java" menu item for any JaxbPackage
+				that does not already have one
+			-->
+			<command
+				commandId="org.eclipse.jpt.jaxb.ui.command.createPackageInfo">
+				<visibleWhen>
+					<with
+						variable="selection">
+						<iterate ifEmpty="false">
+							<adapt type="org.eclipse.jpt.jaxb.core.context.JaxbPackage">
+								<test 
+									property="org.eclipse.jpt.jaxb.core.hasPackageInfo" 
+									value="false"/>
+							</adapt>
+						</iterate>
+					</with>
+				</visibleWhen>
+			</command>
+			
+		</menuContribution>
+		
+	</extension>
+	
+	
+	<extension
 		point="org.eclipse.ui.navigator.navigatorContent">
 		
 		<navigatorContent

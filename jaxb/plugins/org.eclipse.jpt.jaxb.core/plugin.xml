@@ -36,6 +36,13 @@
 			adaptableType="org.eclipse.jdt.core.IJavaElement">
 			<adapter type="org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription"/>
 		</factory>
+		
+		<!-- IPackageFragment -> JaxbPackage -->
+		<factory
+			class="org.eclipse.jpt.jaxb.core.internal.context.JaxbPackageAdapterFactory"
+			adaptableType="org.eclipse.jdt.core.IPackageFragment">
+			<adapter type="org.eclipse.jpt.jaxb.core.context.JaxbPackage"/>
+		</factory>
 
 		<factory
 			class="org.eclipse.jpt.jaxb.core.internal.libprov.JaxbLibraryProviderInstallOperationConfigAdapterFactory"
@@ -83,7 +90,14 @@
 			namespace="org.eclipse.jpt.jaxb.core"
 			properties="jaxbPlatform, jaxbPlatformGroup"
 			class="org.eclipse.jpt.jaxb.core.internal.platform.JaxbPlatformTester"/>
-
+		
+		<propertyTester
+			id="org.eclipse.jpt.jaxb.core.propertyTester.jaxbPackage"
+			type="org.eclipse.jpt.jaxb.core.context.JaxbPackage"
+			namespace="org.eclipse.jpt.jaxb.core"
+			properties="hasPackageInfo"
+			class="org.eclipse.jpt.jaxb.core.internal.context.JaxbPackageTester"/>
+		
 	</extension>
 			
 

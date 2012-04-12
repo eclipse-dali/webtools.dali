@@ -37,4 +37,66 @@
 		
 	</extension>
 	
+	
+	<extension
+		point="org.eclipse.ui.commands">
+		
+		<command
+			id="org.eclipse.jpt.jaxb.eclipselink.ui.command.addEclipseLinkJaxbProperty"
+			name="%addEclipseLinkJaxbPropertyCommand"/>
+		
+	</extension>
+	
+	
+	<extension
+		point="org.eclipse.ui.handlers">
+		
+		<handler
+			commandId="org.eclipse.jpt.jaxb.eclipselink.ui.command.addEclipseLinkJaxbProperty"
+			class="org.eclipse.jpt.jaxb.eclipselink.ui.internal.commands.AddEclipseLinkJaxbPropertyCommandHandler">
+			<enabledWhen>
+				<iterate ifEmpty="false">
+					<adapt type="org.eclipse.jpt.jaxb.core.context.JaxbPackage">
+						<test 
+							property="org.eclipse.jpt.jaxb.eclipselink.core.hasEclipseLinkJaxbProperty" 
+							value="false"/>
+					</adapt>
+				</iterate>
+			</enabledWhen>
+		</handler>
+		
+	</extension>
+	
+	
+	<extension
+		point="org.eclipse.ui.menus">
+		
+		<!-- contributions to the JAXB menu -->
+		<menuContribution
+			locationURI="popup:org.eclipse.jpt.jaxb.ui.menu.jaxb">
+			
+			<!-- 
+				"Add EclipseLink JAXB property" menu item for any JaxbPackage
+				that does not already have one
+			-->
+			<command
+				commandId="org.eclipse.jpt.jaxb.eclipselink.ui.command.addEclipseLinkJaxbProperty">
+				<visibleWhen>
+					<with
+						variable="selection">
+						<iterate ifEmpty="false">
+							<adapt type="org.eclipse.jpt.jaxb.core.context.JaxbPackage">
+								<test 
+									property="org.eclipse.jpt.jaxb.eclipselink.core.hasEclipseLinkJaxbProperty" 
+									value="false"/>
+							</adapt>
+						</iterate>
+					</with>
+				</visibleWhen>
+			</command>
+			
+		</menuContribution>
+		
+	</extension>
+	
 </plugin>

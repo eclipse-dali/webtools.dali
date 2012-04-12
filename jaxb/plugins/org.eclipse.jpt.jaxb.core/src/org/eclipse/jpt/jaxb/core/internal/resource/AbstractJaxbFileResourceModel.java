@@ -14,6 +14,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.JavaCore;
@@ -80,9 +81,14 @@ public abstract class AbstractJaxbFileResourceModel<S>
 			if (stream != null) {
 				this.load(new BufferedInputStream(stream));
 			}
-		} catch (Exception ex) {
+		}
+		catch (CoreException ce) {
+			// workspace out of sync - no underlying file - simply don't load
+		}
+		catch (Exception ex) {
 			JptJaxbCorePlugin.log(ex);
-		} finally {
+		}
+		finally {
 			this.closeStream(stream);
 		}
 	}
