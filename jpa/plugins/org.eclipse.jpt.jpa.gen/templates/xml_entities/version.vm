@@ -1,3 +1,0 @@
-			<version name="${column.propertyName}" attribute-type="${column.propertyType}">
-#parse("column.vm")
-			</version>
