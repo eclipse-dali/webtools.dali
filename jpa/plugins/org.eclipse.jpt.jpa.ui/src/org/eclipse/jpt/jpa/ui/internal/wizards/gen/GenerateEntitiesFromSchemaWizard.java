@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.wizards.gen;
 
 import java.io.File;
 import java.io.IOException;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceRuleFactory;
@@ -21,6 +22,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -97,15 +99,19 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 	
 	@Override
 	public void addPages() {
-		setForcePreviousAndNextButtons(true);
-		
+		this.setForcePreviousAndNextButtons(true);
+
+		if(this.jpaProject == null && this.selection != null) {
+			this.jpaProject = this.getJpaProjectFromSelection(this.selection);
+		}
+			
 		//If this.jpaProject is not initialized because user didn't select a JPA project
-		if( this.jpaProject == null ){
-			this.projectPage = new PromptJPAProjectWizardPage(HELP_CONTEXT_ID);
+		if( ! this.projectIsValidSelection(this.jpaProject)) {
+			this.projectPage = this.buildProjectWizardPage();
 			this.addPage(this.projectPage);
 			return;
 		}
-		addMainPages();
+		this.addMainPages();
 	}
 
 	protected void addMainPages() {
@@ -449,7 +455,7 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 		return super.getStartingPage();
     }
 	
-	public ORMGenCustomizer getCustomizer (){
+	public ORMGenCustomizer getCustomizer() {
 		return customizer;
 	} 
 	
@@ -457,7 +463,7 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 		return this.jpaProject.getConnectionProfile();
 	}
 	
-	public JpaProject getJpaProject(){
+	public JpaProject getJpaProject() {
 		return this.jpaProject;
 	}
 	
@@ -495,6 +501,29 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 		
 		this.selection = selection;
 		this.setWindowTitle(JptUiEntityGenMessages.GenerateEntitiesWizard_generateEntities);
+	}
+
+	protected JpaProject getJpaProjectFromSelection(IStructuredSelection selection) {
+    	if(selection == null || selection.isEmpty()) {
+    		return null;
+    	}
+		Object firstElement = selection.getFirstElement();
+		if(firstElement instanceof IProject) {
+			return this.getJpaProject((IProject)firstElement);
+		}
+		else if(firstElement instanceof IJavaElement) {
+			IProject project = ((IJavaElement)firstElement).getJavaProject().getProject();
+			return this.getJpaProject(project);
+		}
+		return null;
+    }
+	
+	protected boolean projectIsValidSelection(JpaProject jpaProject) {
+		return (jpaProject == null) ? false : true;
+	}
+
+	protected PromptJPAProjectWizardPage buildProjectWizardPage() {
+		return new PromptJPAProjectWizardPage(HELP_CONTEXT_ID);
 	}
 
 	protected JpaProject getJpaProject(IProject project) {

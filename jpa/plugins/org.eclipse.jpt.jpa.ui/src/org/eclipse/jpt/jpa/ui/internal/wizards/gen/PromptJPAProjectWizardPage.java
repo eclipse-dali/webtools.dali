@@ -9,9 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.wizards.gen;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.Iterator;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -20,6 +19,11 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -95,16 +99,39 @@ public class PromptJPAProjectWizardPage extends WizardPage {
 	}
 	
 	private void fillJpaProjectList() {
-		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
-		List<String> projNames = new ArrayList<String>();
-		for ( IProject project : projects )
-		{
-			JpaProject jpaProj = this.getJpaProject( project );
-			if ( jpaProj != null ) {
-				projNames.add(project.getName());
+		this.projTableViewer.setInput(this.getSortedJpaProjectsNames());
+	}
+
+	private String[] getSortedJpaProjectsNames() {
+		return ArrayTools.sort(this.getJpaProjectsNames());
+	}
+
+	private String[] getJpaProjectsNames() {
+		return ArrayTools.array(
+			new TransformationIterable<IProject, String>(this.getJpaProjects()) {
+				@Override
+				protected String transform(IProject project) {
+					return project.getName();
+				}
+			},
+			new String[0]);
+	}
+
+	private Iterable<IProject> getJpaProjects() {
+		return new FilteringIterable<IProject>(CollectionTools.collection(this.getProjects())) {
+			@Override
+			protected boolean accept(IProject next) {
+				return projectIsValidSelection(getJpaProject(next));
 			}
-		}
-		projTableViewer.setInput(projNames);
+		};
+	}
+	
+	protected boolean projectIsValidSelection(JpaProject jpaProject) {
+		return (jpaProject == null) ? false : true;
+	}
+	
+	private Iterator<IProject> getProjects() {
+		return new ArrayIterator<IProject>(ResourcesPlugin.getWorkspace().getRoot().getProjects());
 	}
 	
 	private JpaProject getJpaProject(IProject project) {
@@ -145,13 +172,13 @@ public class PromptJPAProjectWizardPage extends WizardPage {
 	
 	private final class ProjectTableContentProvider implements IStructuredContentProvider
 	{
-		public Object[] getElements(Object inputElement){
-			return ((Collection<?>) inputElement).toArray();
+		public Object[] getElements(Object inputElement) {
+			return ((String[])inputElement);
 		}
 
-		public void dispose(){}
+		public void dispose() {}
 
-		public void inputChanged(Viewer viewer, Object oldInput, Object newInput){}
+		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {}
 		
 	}
 }	

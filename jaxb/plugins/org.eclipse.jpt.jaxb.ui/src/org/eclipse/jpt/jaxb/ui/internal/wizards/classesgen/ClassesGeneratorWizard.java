@@ -107,7 +107,7 @@ public class ClassesGeneratorWizard
 	public void addPages() {
 		super.addPages();
 		
-		if (this.selection != null) {
+		if (this.selection != null && ! this.selection.isEmpty()) {
 			this.javaProject = this.getJavaProjectFromSelection(this.selection);
 			
 			this.projectWizardPage = new JavaProjectWizardPage(this.javaProject);
@@ -239,7 +239,7 @@ public class ClassesGeneratorWizard
 	// ********** internal methods **********
     
 	public IJavaProject getJavaProjectFromSelection(IStructuredSelection selection) {
-    	if(selection == null) {
+    	if(selection == null || selection.isEmpty()) {
     		return null;
     	}
 		Object firstElement = selection.getFirstElement();

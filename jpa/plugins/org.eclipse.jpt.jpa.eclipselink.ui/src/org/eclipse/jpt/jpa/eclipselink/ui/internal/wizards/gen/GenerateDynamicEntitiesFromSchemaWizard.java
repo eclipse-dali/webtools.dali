@@ -30,9 +30,11 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.Schema;
+import org.eclipse.jpt.jpa.eclipselink.core.platform.EclipseLinkPlatform;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.gen.GenerateEntitiesFromSchemaWizard;
+import org.eclipse.jpt.jpa.ui.internal.wizards.gen.PromptJPAProjectWizardPage;
 import org.eclipse.jpt.jpa.ui.internal.wizards.gen.TableAssociationsWizardPage;
 import org.eclipse.jpt.jpa.ui.internal.wizards.gen.TablesSelectorWizardPage;
 import org.eclipse.ui.INewWizard;
@@ -47,6 +49,7 @@ public class GenerateDynamicEntitiesFromSchemaWizard extends GenerateEntitiesFro
 	
 	public static final String HELP_CONTEXT_ID = JptJpaUiPlugin.PLUGIN_ID + ".GenerateEntitiesFromSchemaWizard"; //$NON-NLS-1$
 
+	// ********** constructor **********
 
 	public GenerateDynamicEntitiesFromSchemaWizard() {
 		super();
@@ -115,10 +118,26 @@ public class GenerateDynamicEntitiesFromSchemaWizard extends GenerateEntitiesFro
 		
 		this.setWindowTitle(JptJpaEclipseLinkUiEntityGenMessages.GenerateDynamicEntitiesWizard_generateEntities);
 	}
+
+	@Override
+	protected PromptJPAProjectWizardPage buildProjectWizardPage() {
+		return new PromptEclipseProjectWizardPage(HELP_CONTEXT_ID);
+	}
+
+	@Override
+	protected boolean projectIsValidSelection(JpaProject jpaProject) {
+		if(jpaProject == null) {
+			return false;
+		}
+		return jpaProject.getJpaPlatform().getDescription().getGroup().getId().
+			equals(EclipseLinkPlatform.GROUP.getId());
+	}
+	
+	// ********** open xml mapping file job **********
 	
 	public static class OpenXmlMappingFileJob extends WorkspaceJob {
-		final JpaProject jpaProject;
-		final IFile mappingFile;
+		private final JpaProject jpaProject;
+		private final IFile mappingFile;
 
 		public OpenXmlMappingFileJob(JpaProject jpaProject, IFile mappingFile) {
 			super("Open XML File");
