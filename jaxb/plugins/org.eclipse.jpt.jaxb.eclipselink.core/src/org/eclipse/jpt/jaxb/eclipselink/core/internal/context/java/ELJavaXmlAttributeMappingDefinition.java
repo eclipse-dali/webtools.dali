@@ -58,8 +58,10 @@ public class ELJavaXmlAttributeMappingDefinition
 	public boolean isDefault(JaxbPersistentAttribute persistentAttribute) {
 		// test whether annotated with @XmlPath, and if so, if last segment starts with "@"
 		// (presence of "@" elsewhere may be a node select clause)
-		XmlPathAnnotation xmlPathAnnotation = 
-				(XmlPathAnnotation) persistentAttribute.getJavaResourceAttribute().getAnnotation(0, ELJaxb.XML_PATH);
+		XmlPathAnnotation xmlPathAnnotation = null;
+		if (persistentAttribute.getJavaResourceAttribute().getAnnotationsSize(ELJaxb.XML_PATH) > 0) {
+			xmlPathAnnotation = (XmlPathAnnotation) persistentAttribute.getJavaResourceAttribute().getAnnotation(0, ELJaxb.XML_PATH);
+		}
 		if (xmlPathAnnotation == null) {
 			return false;
 		}

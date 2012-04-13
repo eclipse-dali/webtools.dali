@@ -104,7 +104,10 @@ public class ELJavaXmlAnyAttributeMapping
 	}
 	
 	protected XmlPathAnnotation getXmlPathAnnotation() {
-		return (XmlPathAnnotation) getJavaResourceAttribute().getAnnotation(0, ELJaxb.XML_PATH);
+		if (getJavaResourceAttribute().getAnnotationsSize(ELJaxb.XML_PATH) > 0) {
+			return (XmlPathAnnotation) getJavaResourceAttribute().getAnnotation(0, ELJaxb.XML_PATH);
+		}
+		return null;
 	}
 	
 	
