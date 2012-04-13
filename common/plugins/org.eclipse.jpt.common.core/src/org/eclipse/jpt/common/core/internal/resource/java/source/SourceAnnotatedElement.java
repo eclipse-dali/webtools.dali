@@ -231,7 +231,10 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 
 	public NestableAnnotation getAnnotation(int index, String nestableAnnotationName) {
 		CombinationAnnotationContainer container = this.annotationContainers.get(nestableAnnotationName);
-		return (container == null) ? null : container.getNestedAnnotation(index);
+		if (container == null) {
+			throw new ArrayIndexOutOfBoundsException("Container annotation does not exist.");
+		}
+		return container.getNestedAnnotation(index);
 	}
 
 	private String getNestableAnnotationName(String containerAnnotationName) {
