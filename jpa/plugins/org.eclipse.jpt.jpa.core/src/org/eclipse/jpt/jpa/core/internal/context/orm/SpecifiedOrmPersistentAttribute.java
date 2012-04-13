@@ -527,9 +527,8 @@ public abstract class SpecifiedOrmPersistentAttribute
 	}
 
 	protected JavaPersistentAttribute.JpaContainerDefinition getJpaContainerDefinition() {
-		JavaPersistentAttribute2_0 javaAttribute = (JavaPersistentAttribute2_0) this.javaPersistentAttribute;
-		return (javaAttribute != null) ?
-				javaAttribute.getJpaContainerDefinition() :
+		return (this.javaPersistentAttribute != null) ?
+				this.javaPersistentAttribute.getJpaContainerDefinition() :
 				JavaPersistentAttribute.JpaContainerDefinition.Null.instance();
 	}
 
