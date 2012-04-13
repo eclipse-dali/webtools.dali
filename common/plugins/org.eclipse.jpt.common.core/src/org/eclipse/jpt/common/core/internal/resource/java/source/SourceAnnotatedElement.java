@@ -58,6 +58,13 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 	private final Hashtable<String, Annotation> annotations = new Hashtable<String, Annotation>();
 
 	/**
+	 * Cache the null annotation objects or they will be rebuilt on every access.
+	 * Make this a HashMap for performance, not concerned with duplicate creation and
+	 * unlikely that multiple threads will access this.
+	 */
+	private final HashMap<String, Annotation> nullAnnotationCache = new HashMap<String, Annotation>();
+
+	/**
 	 * Annotation containers keyed by <em>nestable</em> annotation name.
 	 * This is used to store annotations that can be both standalone and nested
 	 * and are moved back and forth between the two.
@@ -138,7 +145,8 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 	}
 
 	public Annotation getAnnotation(String annotationName) {
-		// TODO figure out why we need to search the containers...
+		// TODO one reason we search the containers is validation, we need to have separate API for getting the container annotation.
+		//The validation in org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlAnyElementMapping is an example 
 		if (this.annotationIsValidContainer(annotationName)) {
 			CombinationAnnotationContainer container = this.annotationContainers.get(this.getAnnotationProvider().getNestableAnnotationName(annotationName));
 			return (container == null) ? null : container.getContainerAnnotation();
@@ -148,7 +156,16 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 
 	public Annotation getNonNullAnnotation(String annotationName) {
 		Annotation annotation = this.getAnnotation(annotationName);
-		return (annotation != null) ? annotation : this.buildNullAnnotation(annotationName);
+		return (annotation != null) ? annotation : this.getNullAnnotation(annotationName);
+	}
+
+	private Annotation getNullAnnotation(String annotationName) {
+		Annotation annotation = this.nullAnnotationCache.get(annotationName);
+		if (annotation == null) {
+			annotation = this.buildNullAnnotation(annotationName);
+			this.nullAnnotationCache.put(annotationName, annotation);
+		}
+		return annotation;
 	}
 
 	private Annotation buildNullAnnotation(String annotationName) {
