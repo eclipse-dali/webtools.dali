@@ -14,12 +14,12 @@ import org.eclipse.jpt.jpa.eclipselink.core.platform.EclipseLinkPlatform;
 import org.eclipse.jpt.jpa.ui.internal.wizards.gen.PromptJPAProjectWizardPage;
 
 /**
- *  PromptEclipseProjectWizardPage
+ *  PromptEclipseLinkProjectWizardPage
  */
-public class PromptEclipseProjectWizardPage extends PromptJPAProjectWizardPage
+public class PromptEclipseLinkProjectWizardPage extends PromptJPAProjectWizardPage
 {
 
-	public PromptEclipseProjectWizardPage(String helpContextId) {
+	public PromptEclipseLinkProjectWizardPage(String helpContextId) {
 		super(helpContextId);
 	}
 
