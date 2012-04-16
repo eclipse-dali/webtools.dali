@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core;
 
 import java.util.Hashtable;
-import javax.xml.parsers.SAXParserFactory;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.CoreException;
@@ -37,7 +36,6 @@ import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.prefs.Preferences;
-import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * The Dali core plug-in lifecycle implementation.
@@ -56,12 +54,7 @@ import org.osgi.util.tracker.ServiceTracker;
 public class JptJpaCorePlugin
 	extends JptPlugin
 {
-	/**
-	 * Flag necessary to handle lazy-initialization appropriately.
-	 */
-	private volatile boolean active = false;
 	private final Hashtable<IWorkspace, InternalJpaProjectManager> jpaProjectManagers = new Hashtable<IWorkspace, InternalJpaProjectManager>();
-	private volatile ServiceTracker<?, SAXParserFactory> parserTracker;
 
 	// ********** public constants **********
 
@@ -197,10 +190,6 @@ public class JptJpaCorePlugin
 	@Deprecated
 	public static JpaProjectManager getJpaProjectManager(IWorkspace workspace) {
 		return INSTANCE.getJpaProjectManager_(workspace);
-	}
-
-	public static SAXParserFactory getSAXParserFactory() {
-		return INSTANCE.getSAXParserFactory_();
 	}
 
 	/**
@@ -507,7 +496,7 @@ public class JptJpaCorePlugin
 	@Override
 	public synchronized void start(BundleContext context) throws Exception {
 		super.start(context);
-		this.active = true;
+		// nothing yet
 	}
 
 	@Override
@@ -517,26 +506,20 @@ public class JptJpaCorePlugin
 				jpaProjectManager.stop();
 			}
 			this.jpaProjectManagers.clear();
-
-			if (this.parserTracker != null) {
-				this.parserTracker.close();
-				this.parserTracker = null;
-			}
 		} finally {
-			this.active = false;
 			super.stop(context);
 		}
 	}
 
 
-	// ********** state **********
+	// ********** JPA project manager **********
 
 	/**
 	 * @see #getJpaProjectManager(IWorkspace)
 	 */
 	private synchronized InternalJpaProjectManager getJpaProjectManager_(IWorkspace workspace) {
 		InternalJpaProjectManager jpaProjectManager = this.jpaProjectManagers.get(workspace);
-		if (this.active && (jpaProjectManager == null)) {
+		if (this.isActive() && (jpaProjectManager == null)) {
 			jpaProjectManager = this.buildJpaProjectManager(workspace);
 			jpaProjectManager.start();
 			this.jpaProjectManagers.put(workspace, jpaProjectManager);
@@ -546,32 +529,5 @@ public class JptJpaCorePlugin
 
 	private InternalJpaProjectManager buildJpaProjectManager(IWorkspace workspace) {
 		return new InternalJpaProjectManager(workspace);
-	}
-
-	/**
-	 * @see #getSAXParserFactory()
-	 */
-	private SAXParserFactory getSAXParserFactory_() {
-		ServiceTracker<?, SAXParserFactory> tracker = this.getParserTracker();
-		if (tracker == null) {
-			return null;
-		}
-		SAXParserFactory factory = tracker.getService();
-		if (factory != null) {
-			factory.setNamespaceAware(true);
-		}
-		return factory;
-	}
-
-	private synchronized ServiceTracker<?, SAXParserFactory> getParserTracker() {
-		if (this.active && (this.parserTracker == null)) {
-			this.parserTracker = this.buildParserTracker();
-			this.parserTracker.open();
-		}
-		return this.parserTracker;
-	}
-
-	private ServiceTracker<?, SAXParserFactory> buildParserTracker() {
-		return new ServiceTracker<Object, SAXParserFactory>(this.getBundle().getBundleContext(), "javax.xml.parsers.SAXParserFactory", null); //$NON-NLS-1$
 	}
 }

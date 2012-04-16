@@ -247,7 +247,7 @@ public class MappingFileWizard extends Wizard
 			final IStatus st = runOperations();
 			
 			if (st.getSeverity() == IStatus.ERROR) {
-				JptJpaUiPlugin.log(st);
+				JptJpaUiPlugin.instance().getLog().log(st);
 				Throwable t = st.getException() == null ? new CoreException(st) : st.getException();
 				ErrorDialog.openError(
 						getShell(), 

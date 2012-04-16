@@ -7,28 +7,29 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.core.internal;
+package org.eclipse.jpt.common.ui.internal;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.osgi.service.debug.DebugOptions;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
 
 /**
- * Common Dali plug-in behavior.
+ * Common Dali UI plug-in behavior.
+ * See JptPlugin
  */
-public abstract class JptPlugin
-	extends Plugin
+public class JptUIPlugin
+	extends AbstractUIPlugin
 {
 	protected BundleContext bundleContext;
 	protected ServiceTracker<DebugOptions, DebugOptions> debugOptionsServiceTracker;
 
 
-	protected JptPlugin() {
+	protected JptUIPlugin() {
 		super();
 	}
 

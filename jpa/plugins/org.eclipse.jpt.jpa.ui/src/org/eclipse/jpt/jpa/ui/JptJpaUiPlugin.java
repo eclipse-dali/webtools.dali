@@ -10,10 +10,9 @@
 package org.eclipse.jpt.jpa.ui;
 
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.jpt.common.ui.internal.JptUIPlugin;
 import org.eclipse.jpt.common.utility.internal.AbstractBooleanReference;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.swt.SWT;
@@ -22,11 +21,10 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
- * Dali UI plug-in.
+ * Dali JPA UI plug-in.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -36,7 +34,7 @@ import org.osgi.framework.BundleContext;
  */
 @SuppressWarnings("nls")
 public class JptJpaUiPlugin
-	extends AbstractUIPlugin
+	extends JptUIPlugin
 {
 	/**
 	 * @see #focusIn(Control)
@@ -90,29 +88,22 @@ public class JptJpaUiPlugin
 	 * Log the specified message.
 	 */
 	public static void log(String msg) {
-        log(msg, null);
+        INSTANCE.logError(msg);
     }
 
 	/**
 	 * Log the specified exception or error.
 	 */
 	public static void log(Throwable throwable) {
-		log(throwable.getLocalizedMessage(), throwable);
+        INSTANCE.logError(throwable);
 	}
 
 	/**
 	 * Log the specified message and exception or error.
 	 */
 	public static void log(String msg, Throwable throwable) {
-		log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.OK, msg, throwable));
+        INSTANCE.logError(msg, throwable);
 	}
-
-	/**
-	 * Log the specified status.
-	 */
-	public static void log(IStatus status) {
-        INSTANCE.getLog().log(status);
-    }
 
 
 	// ********** images **********
@@ -238,7 +229,7 @@ public class JptJpaUiPlugin
 	 * of every "focus in" event.
 	 */
 	@Override
-	public void start(BundleContext context) throws Exception {
+	public synchronized void start(BundleContext context) throws Exception {
 		super.start(context);
 		this.getJpaProjectManager().addAsyncEventListenerFlag(this.asyncEventListenerFlag);
 		Display.getDefault().addFilter(SWT.FocusIn, this.focusListener);
@@ -252,7 +243,7 @@ public class JptJpaUiPlugin
 	 * Unregister our SWT listener with the display.
 	 */
 	@Override
-	public void stop(BundleContext context) throws Exception {
+	public synchronized void stop(BundleContext context) throws Exception {
 		try {
 			Display.getDefault().removeFilter(SWT.FocusIn, this.focusListener);
 			this.getJpaProjectManager().removeAsyncEventListenerFlag(this.asyncEventListenerFlag);

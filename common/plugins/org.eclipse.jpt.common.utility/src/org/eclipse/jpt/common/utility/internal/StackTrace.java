@@ -11,6 +11,7 @@ package org.eclipse.jpt.common.utility.internal;
 
 import java.io.IOException;
 import java.io.Serializable;
+import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 
 /**
  * Container for holding and printing the {@StackTraceElement stack trace
@@ -22,13 +23,22 @@ import java.io.Serializable;
 public class StackTrace
 	implements Serializable
 {
+	private final Thread thread;
 	private final StackTraceElement[] elements;
 	private volatile String string;
 	private static final long serialVersionUID = 1L;
 
 
 	public StackTrace() {
+		this(Thread.currentThread());
+	}
+
+	public StackTrace(Thread thread) {
 		super();
+		if (thread == null) {
+			throw new NullPointerException();
+		}
+		this.thread = thread;
 		this.elements = this.buildElements();
 	}
 
@@ -36,7 +46,7 @@ public class StackTrace
 	 * Strip off all the elements associated with this class and {@link Thread}.
 	 */
 	private StackTraceElement[] buildElements() {
-		StackTraceElement[] result = Thread.currentThread().getStackTrace();
+		StackTraceElement[] result = this.thread.getStackTrace();
 		int len = result.length;
 		if (len == 0) {
 			return result;
@@ -56,6 +66,14 @@ public class StackTrace
 			i++;
 		}
 		return found ? ArrayTools.subArray(result, i, len) : result;
+	}
+
+	public Thread getThread() {
+		return this.thread;
+	}
+
+	public Iterable<StackTraceElement> getElements() {
+		return new ArrayIterable<StackTraceElement>(this.elements);
 	}
 
 	/**

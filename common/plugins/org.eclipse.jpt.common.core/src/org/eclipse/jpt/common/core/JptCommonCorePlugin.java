@@ -128,16 +128,18 @@ public class JptCommonCorePlugin
 		INSTANCE = this;
 	}
 
-
 	@Override
-	public void start(BundleContext context) throws Exception {
+	public synchronized void start(BundleContext context) throws Exception {
 		super.start(context);
 		// nothing yet...
 	}
 
 	@Override
-	public void stop(BundleContext context) throws Exception {
-		// nothing yet...		
-		super.stop(context);
+	public synchronized void stop(BundleContext context) throws Exception {
+		try {
+			// nothing yet...
+		} finally {
+			super.stop(context);
+		}
 	}
 }
