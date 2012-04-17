@@ -35,8 +35,7 @@ import org.eclipse.ui.IWorkbenchPart;
 
 public class MakePersistentAction implements IObjectActionDelegate {
 
-	
-	private Map<IProject, List<IType>> selectedTypes;
+	private ISelection selection;
 	
 	public MakePersistentAction() {
 		super();
@@ -47,29 +46,30 @@ public class MakePersistentAction implements IObjectActionDelegate {
 	}
 	
 	public void selectionChanged(IAction action, ISelection selection) {
-		// Action is contributed for IType, ICompilationUnit, IPackageFragment, and IPackageFragmentRoot that is a source folder
-		this.selectedTypes = this.buildSelectedTypes((StructuredSelection) selection);
+		this.selection = selection;
 	}
 
-	protected Map<IProject, List<IType>> buildSelectedTypes(StructuredSelection structuredSelection) {
+	// Action is contributed for IType, ICompilationUnit, IPackageFragment, and IPackageFragmentRoot that is a source folder
+	protected Map<IProject, List<IType>> buildSelectedTypes() {
 		Map<IProject, List<IType>> types = new HashMap<IProject, List<IType>>();
-		
-		for (Object selection : structuredSelection.toList()) {
-			switch (((IJavaElement) selection).getElementType()) {
-				case IJavaElement.TYPE :
-					addSelectedType((IType) selection, types);
-					break;
-				case IJavaElement.COMPILATION_UNIT :
-					addSelectedType((ICompilationUnit) selection, types);
-					break;
-				case IJavaElement.PACKAGE_FRAGMENT :
-					addSelectedType((IPackageFragment) selection, types);
-					break;
-				case IJavaElement.PACKAGE_FRAGMENT_ROOT :
-					addSelectedType((IPackageFragmentRoot) selection, types);
-					break;
-				default :
-					break;
+		if (this.selection instanceof StructuredSelection) {			
+			for (Object selection : ((StructuredSelection) this.selection).toList()) {
+				switch (((IJavaElement) selection).getElementType()) {
+					case IJavaElement.TYPE :
+						addSelectedType((IType) selection, types);
+						break;
+					case IJavaElement.COMPILATION_UNIT :
+						addSelectedType((ICompilationUnit) selection, types);
+						break;
+					case IJavaElement.PACKAGE_FRAGMENT :
+						addSelectedType((IPackageFragment) selection, types);
+						break;
+					case IJavaElement.PACKAGE_FRAGMENT_ROOT :
+						addSelectedType((IPackageFragmentRoot) selection, types);
+						break;
+					default :
+						break;
+				}
 			}
 		}
 		return types;
@@ -131,7 +131,7 @@ public class MakePersistentAction implements IObjectActionDelegate {
 	}
 
 	public void run(IAction action) {
-		for (List<IType> types : this.selectedTypes.values()) {
+		for (List<IType> types : this.buildSelectedTypes().values()) {
 			IProject project = types.get(0).getResource().getProject();
 			JpaProject jpaProject = (JpaProject) project.getAdapter(JpaProject.class);
 			if (jpaProject != null) {
