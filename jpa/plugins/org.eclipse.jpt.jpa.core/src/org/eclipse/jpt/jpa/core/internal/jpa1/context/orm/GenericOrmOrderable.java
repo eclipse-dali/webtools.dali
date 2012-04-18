@@ -408,9 +408,13 @@ public class GenericOrmOrderable
 		if (result != null) {
 			return result;
 		}
-		result = this.orderColumn.getXmlCompletionProposals(pos);
-		if (result != null) {
-			return result;
+		// orderColumn is null for JPA 1.0 mappings so adding a null
+		// check here to prevent NPE - Bug 375670
+		if (this.orderColumn != null) {
+			result = this.orderColumn.getXmlCompletionProposals(pos);
+			if (result != null) {
+				return result;
+			}
 		}
 		return null;
 	}
