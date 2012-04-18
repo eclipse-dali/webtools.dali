@@ -379,9 +379,11 @@ public abstract class AbstractJavaPersistentAttribute
 	 * source code.
 	 */
 	protected JavaAttributeMappingDefinition getSpecifiedMappingDefinition() {
-		for (JavaAttributeMappingDefinition definition : this.getSpecifiedMappingDefinitions()) {
-			if (definition.isSpecified(this)) {
-				return definition;
+		if (this.accessor.getResourceAttribute().isAnnotated()) { //short-circuit for performance
+			for (JavaAttributeMappingDefinition definition : this.getSpecifiedMappingDefinitions()) {
+				if (definition.isSpecified(this)) {
+					return definition;
+				}
 			}
 		}
 		return null;
