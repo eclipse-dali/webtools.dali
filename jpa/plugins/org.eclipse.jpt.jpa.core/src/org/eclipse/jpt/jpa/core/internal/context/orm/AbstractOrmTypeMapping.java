@@ -629,11 +629,11 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 				}
 			};
 		}
-		return this.getCandidateFullQulifiedClassNames();
+		return this.getCandidateFullyQualifiedClassNames();
 	}
 	
 	private Iterable<String> getFilteredCandidateClassNames(final String packageName) {
-			return new FilteringIterable<String>(this.getCandidateFullQulifiedClassNames()) {
+			return new FilteringIterable<String>(this.getCandidateFullyQualifiedClassNames()) {
 				@Override
 				protected boolean accept(String className) {
 					return className.startsWith(packageName);
@@ -645,7 +645,7 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	 * @return names of the classes specified by class refs and jar files
 	 */
 	// should return names of all the classes defined in the project?
-	private Iterable<String> getCandidateFullQulifiedClassNames() {
+	private Iterable<String> getCandidateFullyQualifiedClassNames() {
 		return new TransformationIterable<PersistentType, String>(
 				this.getPersistenceUnit().getJavaPersistentTypes()) {
 			@Override
