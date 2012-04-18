@@ -189,7 +189,10 @@ public abstract class AbstractJavaType
 	}
 	
 	protected XmlJavaTypeAdapterAnnotation getXmlJavaTypeAdapterAnnotation() {
-		return (XmlJavaTypeAdapterAnnotation) getJavaResourceType().getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+		if (getJavaResourceType().getAnnotationsSize(JAXB.XML_JAVA_TYPE_ADAPTER) > 0) {
+			return (XmlJavaTypeAdapterAnnotation) getJavaResourceType().getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+		}
+		return null;
 	}
 	
 	protected XmlJavaTypeAdapter buildXmlJavaTypeAdapter(XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation) {

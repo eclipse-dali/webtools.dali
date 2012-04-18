@@ -23,12 +23,13 @@ import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
+import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
+import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.context.EmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.EnumType;
-import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
@@ -38,7 +39,6 @@ import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
-import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.core.context.TransientMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -423,8 +423,8 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(BasicAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToDefault() throws Exception {
@@ -445,8 +445,8 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 	
 		assertNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToVersionMapping() throws Exception {
@@ -469,8 +469,8 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToIdMapping() throws Exception {
@@ -493,8 +493,8 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToEmbeddedMapping() throws Exception {
@@ -542,7 +542,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertNotNull(resourceField.getAnnotation(EmbeddedIdAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToTransientMapping() throws Exception {
@@ -565,8 +565,8 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(TransientAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToManyToOneMapping() throws Exception {
@@ -589,8 +589,8 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToOneToManyMapping() throws Exception {
@@ -614,7 +614,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertNotNull(resourceField.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToManyToManyMapping() throws Exception {
@@ -639,7 +639,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertNotNull(resourceField.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testUpdateSpecifiedTargetEntity() throws Exception {
@@ -1291,7 +1291,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertEquals("addresses", resourceField.getName());
-		assertNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
 		
 		assertEquals(4, attributeOverrideContainer.getVirtualOverridesSize());
 		ReadOnlyAttributeOverride defaultAttributeOverride = attributeOverrideContainer.getVirtualOverrides().iterator().next();
@@ -1325,8 +1325,8 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		cityMapping.getColumn().setSpecifiedScale(Integer.valueOf(7));
 		
 		assertEquals("addresses", resourceField.getName());
-		assertNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
-
+		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		
 		assertEquals(4, attributeOverrideContainer.getVirtualOverridesSize());
 		defaultAttributeOverride = attributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("city", defaultAttributeOverride.getName());
@@ -1340,7 +1340,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertEquals(5, defaultAttributeOverride.getColumn().getLength());
 		assertEquals(6, defaultAttributeOverride.getColumn().getPrecision());
 		assertEquals(7, defaultAttributeOverride.getColumn().getScale());
-
+		
 		cityMapping.getColumn().setSpecifiedName(null);
 		cityMapping.getColumn().setSpecifiedTable(null);
 		cityMapping.getColumn().setColumnDefinition(null);
@@ -1770,7 +1770,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertEquals("parcels", resourceField.getName());
-		assertNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
 		
 		assertEquals(4, mapKeyAttributeOverrideContainer.getVirtualOverridesSize());
 		ReadOnlyAttributeOverride defaultAttributeOverride = mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next();
@@ -1804,8 +1804,8 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		cityMapping.getColumn().setSpecifiedScale(Integer.valueOf(7));
 		
 		assertEquals("parcels", resourceField.getName());
-		assertNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
-
+		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		
 		assertEquals(4, mapKeyAttributeOverrideContainer.getVirtualOverridesSize());
 		defaultAttributeOverride = mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("city", defaultAttributeOverride.getName());
@@ -1819,7 +1819,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertEquals(5, defaultAttributeOverride.getColumn().getLength());
 		assertEquals(6, defaultAttributeOverride.getColumn().getPrecision());
 		assertEquals(7, defaultAttributeOverride.getColumn().getScale());
-
+		
 		cityMapping.getColumn().setSpecifiedName(null);
 		cityMapping.getColumn().setSpecifiedTable(null);
 		cityMapping.getColumn().setColumnDefinition(null);
@@ -1847,8 +1847,6 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		annotation.setName("key.city");
 		getJpaProject().synchronizeContextModel();
 		assertEquals(3, mapKeyAttributeOverrideContainer.getVirtualOverridesSize());
-	
-		
 		
 		assertEquals(3, attributeOverrideContainer.getVirtualOverridesSize());
 		defaultAttributeOverride = attributeOverrideContainer.getVirtualOverrides().iterator().next();
@@ -1863,7 +1861,6 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertEquals(255, defaultAttributeOverride.getColumn().getLength());
 		assertEquals(0, defaultAttributeOverride.getColumn().getPrecision());
 		assertEquals(0, defaultAttributeOverride.getColumn().getScale());
-		
 		
 		classRefs = getPersistenceUnit().getSpecifiedClassRefs().iterator();
 		classRefs.next();
@@ -1883,7 +1880,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		parcelNumberMapping.getColumn().setSpecifiedScale(Integer.valueOf(7));
 		
 		assertEquals("parcels", resourceField.getName());
-
+		
 		assertEquals(3, attributeOverrideContainer.getVirtualOverridesSize());
 		defaultAttributeOverride = attributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("parcelNumber", defaultAttributeOverride.getName());
@@ -1897,7 +1894,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertEquals(5, defaultAttributeOverride.getColumn().getLength());
 		assertEquals(6, defaultAttributeOverride.getColumn().getPrecision());
 		assertEquals(7, defaultAttributeOverride.getColumn().getScale());
-
+		
 		parcelNumberMapping.getColumn().setSpecifiedName(null);
 		parcelNumberMapping.getColumn().setSpecifiedTable(null);
 		parcelNumberMapping.getColumn().setColumnDefinition(null);
@@ -2494,8 +2491,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertFalse(joinColumnResources.hasNext());
 		joinColumnsIterator = elementCollectionMapping.getSpecifiedMapKeyJoinColumns().iterator();
 		assertFalse(joinColumnsIterator.hasNext());
-
-		assertNull(resourceField.getAnnotation(0, MapKeyJoinColumn2_0Annotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(MapKeyJoinColumn2_0Annotation.ANNOTATION_NAME));
 	}
 
 	public void testMoveSpecifiedJoinColumn() throws Exception {

@@ -30,7 +30,6 @@ import org.eclipse.jpt.jaxb.core.context.XmlElementRefMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlMixedAnnotation;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
 
@@ -403,19 +402,18 @@ public class GenericJavaXmlElementRefMappingTests
 		XmlElementRefMapping xmlElementRefMapping = (XmlElementRefMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = xmlElementRefMapping.getPersistentAttribute().getJavaResourceAttribute();
 		
-		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
 		assertNull(xmlElementRefMapping.getXmlJavaTypeAdapter());
-		assertNull(xmlJavaTypeAdapterAnnotation);
-
+		assertEquals(0, resourceAttribute.getAnnotationsSize(JAXB.XML_JAVA_TYPE_ADAPTER));
+		
 		xmlElementRefMapping.addXmlJavaTypeAdapter();
-		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+		
 		assertNotNull(xmlElementRefMapping.getXmlJavaTypeAdapter());
-		assertNotNull(xmlJavaTypeAdapterAnnotation);
+		assertNotNull(resourceAttribute.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER));
 
 		xmlElementRefMapping.removeXmlJavaTypeAdapter();
-		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+		
 		assertNull(xmlElementRefMapping.getXmlJavaTypeAdapter());
-		assertNull(xmlJavaTypeAdapterAnnotation);
+		assertEquals(0, resourceAttribute.getAnnotationsSize(JAXB.XML_JAVA_TYPE_ADAPTER));
 	}
 
 	public void testUpdateXmlJavaTypeAdapter() throws Exception {
@@ -426,12 +424,10 @@ public class GenericJavaXmlElementRefMappingTests
 		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(classMapping.getAttributes(), 0);
 		XmlElementRefMapping xmlElementRefMapping = (XmlElementRefMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = xmlElementRefMapping.getPersistentAttribute().getJavaResourceAttribute();
-
-		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+		
 		assertNull(xmlElementRefMapping.getXmlJavaTypeAdapter());
-		assertNull(xmlJavaTypeAdapterAnnotation);
-
-
+		assertEquals(0, resourceAttribute.getAnnotationsSize(JAXB.XML_JAVA_TYPE_ADAPTER));
+		
 		//add an XmlJavaTypeAdapter annotation
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceAttribute);
 		annotatedElement.edit(new Member.Editor() {
@@ -439,19 +435,19 @@ public class GenericJavaXmlElementRefMappingTests
 				GenericJavaXmlElementRefMappingTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_JAVA_TYPE_ADAPTER);
 			}
 		});
-		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+		
 		assertNotNull(xmlElementRefMapping.getXmlJavaTypeAdapter());
-		assertNotNull(xmlJavaTypeAdapterAnnotation);
-
+		assertNotNull(resourceAttribute.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER));
+		
 		//remove the XmlJavaTypeAdapter annotation
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
 				GenericJavaXmlElementRefMappingTests.this.removeAnnotation(declaration, JAXB.XML_JAVA_TYPE_ADAPTER);
 			}
 		});
-		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+		
 		assertNull(xmlElementRefMapping.getXmlJavaTypeAdapter());
-		assertNull(xmlJavaTypeAdapterAnnotation);
+		assertEquals(0, resourceAttribute.getAnnotationsSize(JAXB.XML_JAVA_TYPE_ADAPTER));
 	}
 
 	protected void addXmlElementRefMemberValuePair(ModifiedDeclaration declaration, String name, String value) {

@@ -87,7 +87,7 @@ public abstract class AbstractJavaXmlNodeMapping<A extends Annotation>
 		if (this.xmlSchemaType == null) {
 			throw new IllegalStateException();
 		}
-		this.getJavaResourceAttribute().removeAnnotation(JAXB.XML_SCHEMA_TYPE);
+		this.getJavaResourceAttribute().removeAnnotation(0, JAXB.XML_SCHEMA_TYPE);
 		this.setXmlSchemaType_(null);
 	}
 	
@@ -96,7 +96,10 @@ public abstract class AbstractJavaXmlNodeMapping<A extends Annotation>
 	}
 	
 	protected XmlSchemaTypeAnnotation getXmlSchemaTypeAnnotation() {
-		return (XmlSchemaTypeAnnotation) this.getJavaResourceAttribute().getAnnotation(0, JAXB.XML_SCHEMA_TYPE);
+		if (getJavaResourceAttribute().getAnnotationsSize(JAXB.XML_SCHEMA_TYPE) > 0) {
+			return (XmlSchemaTypeAnnotation) getJavaResourceAttribute().getAnnotation(0, JAXB.XML_SCHEMA_TYPE);
+		}
+		return null;
 	}
 	
 	protected void initializeXmlSchemaType() {

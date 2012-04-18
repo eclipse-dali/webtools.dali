@@ -284,8 +284,8 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		assertNull(resourceField.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(BasicAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToDefault() throws Exception {
@@ -422,8 +422,8 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		assertNull(resourceField.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToTransientMapping() throws Exception {
@@ -445,8 +445,8 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		assertNull(resourceField.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(TransientAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToIdMapping() throws Exception {
@@ -469,8 +469,8 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		assertNull(resourceField.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testMorphToEmbeddedIdMapping() throws Exception {
@@ -494,7 +494,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		assertNotNull(resourceField.getAnnotation(EmbeddedIdAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToOneToOneMapping() throws Exception {
@@ -517,8 +517,8 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		assertNull(resourceField.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testMorphToOneToManyMapping() throws Exception {
@@ -541,7 +541,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		assertNull(resourceField.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testMorphToManyToOneMapping() throws Exception {
@@ -564,8 +564,8 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		assertNull(resourceField.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testMorphToManyToManyMapping() throws Exception {
@@ -589,7 +589,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		assertNotNull(resourceField.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testMorphToElementCollectionMapping() throws Exception {
@@ -699,7 +699,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertEquals("myEmbedded", resourceField.getName());
-		assertNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
 		
 		assertEquals(2, attributeOverrideContainer.getVirtualOverridesSize());
 		ReadOnlyAttributeOverride defaultAttributeOverride = attributeOverrideContainer.getVirtualOverrides().iterator().next();
@@ -733,8 +733,8 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		cityMapping.getColumn().setSpecifiedScale(Integer.valueOf(7));
 		
 		assertEquals("myEmbedded", resourceField.getName());
-		assertNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
-
+		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		
 		assertEquals(2, attributeOverrideContainer.getVirtualOverridesSize());
 		defaultAttributeOverride = attributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("city", defaultAttributeOverride.getName());
@@ -748,7 +748,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		assertEquals(5, defaultAttributeOverride.getColumn().getLength());
 		assertEquals(6, defaultAttributeOverride.getColumn().getPrecision());
 		assertEquals(7, defaultAttributeOverride.getColumn().getScale());
-
+		
 		cityMapping.getColumn().setSpecifiedName(null);
 		cityMapping.getColumn().setSpecifiedTable(null);
 		cityMapping.getColumn().setColumnDefinition(null);
@@ -1024,7 +1024,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		JavaAssociationOverrideContainer overrideContainer = embeddedMapping.getAssociationOverrideContainer();
 
 		JavaResourceField resourceField = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
-		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 		
 		assertEquals(2, overrideContainer.getVirtualOverridesSize());
 		VirtualAssociationOverride virtualAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next();
@@ -1055,8 +1055,8 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		joinColumn.setSpecifiedUnique(Boolean.TRUE);
 		joinColumn.setSpecifiedNullable(Boolean.FALSE);
 		
-		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
-
+		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
+		
 		assertEquals(2, overrideContainer.getVirtualOverridesSize());
 		virtualAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		joiningStrategy = ((VirtualJoinColumnRelationship) virtualAssociationOverride.getRelationship()).getJoinColumnStrategy();
@@ -1072,12 +1072,11 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		assertEquals(false, virtualJoinColumn.isUpdatable());
 		assertEquals(true, virtualJoinColumn.isUnique());
 		assertEquals(false, virtualJoinColumn.isNullable());
-
-		assertEquals("MY_JOIN_COLUMN", joiningStrategy.getJoinColumns().iterator().next().getName());
-
 		
-		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
-
+		assertEquals("MY_JOIN_COLUMN", joiningStrategy.getJoinColumns().iterator().next().getName());
+		
+		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
+		
 		virtualAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("address", virtualAssociationOverride.getName());
 		
@@ -1229,8 +1228,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		assertFalse(associationOverrideResources.hasNext());
 		associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertFalse(associationOverrides.hasNext());
-
-		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMoveSpecifiedAssociationOverride() throws Exception {
@@ -1375,7 +1373,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		JavaAssociationOverrideContainer overrideContainer = embeddedMapping.getAssociationOverrideContainer();
 
 		JavaResourceField resourceField = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
-		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 		
 		assertEquals(2, overrideContainer.getVirtualOverridesSize());
 		VirtualAssociationOverride virtualAssociationOverride = CollectionTools.get(overrideContainer.getVirtualOverrides(), 1);
@@ -1431,8 +1429,8 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		inverseJoinColumn.setSpecifiedUnique(Boolean.TRUE);
 		inverseJoinColumn.setSpecifiedNullable(Boolean.FALSE);
 		
-		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
-
+		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
+		
 		assertEquals(2, overrideContainer.getVirtualOverridesSize());
 		virtualAssociationOverride = CollectionTools.get(overrideContainer.getVirtualOverrides(), 1);
 		joiningStrategy = ((VirtualOverrideRelationship2_0) virtualAssociationOverride.getRelationship()).getJoinTableStrategy();
@@ -1448,7 +1446,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		assertEquals(false, virtualJoinColumn.isUpdatable());
 		assertEquals(true, virtualJoinColumn.isUnique());
 		assertEquals(false, virtualJoinColumn.isNullable());
-
+		
 		assertEquals(1, joinTable.getInverseJoinColumnsSize());
 		virtualInverseJoinColumn = joinTable.getInverseJoinColumns().iterator().next();
 		assertEquals("MY_INVERSE_JOIN_COLUMN", virtualInverseJoinColumn.getName());
@@ -1459,10 +1457,9 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		assertEquals(false, virtualInverseJoinColumn.isUpdatable());
 		assertEquals(true, virtualInverseJoinColumn.isUnique());
 		assertEquals(false, virtualInverseJoinColumn.isNullable());
-
 		
-		assertNull(resourceField.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
-
+		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
+		
 		virtualAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("address", virtualAssociationOverride.getName());
 		

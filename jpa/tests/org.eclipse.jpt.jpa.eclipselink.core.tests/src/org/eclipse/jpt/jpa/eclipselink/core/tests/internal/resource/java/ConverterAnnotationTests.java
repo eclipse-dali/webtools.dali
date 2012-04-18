@@ -72,7 +72,7 @@ public class ConverterAnnotationTests extends EclipseLinkJavaResourceModelTestCa
 		assertNotNull(resourceField.getAnnotation(0, EclipseLink.CONVERTER));
 		
 		resourceField.removeAnnotation(0, EclipseLink.CONVERTER);
-		assertNull(resourceField.getAnnotation(0, EclipseLink.CONVERTER));
+		assertEquals(0, resourceField.getAnnotationsSize(EclipseLink.CONVERTER));
 		
 		resourceField.addAnnotation(0, EclipseLink.CONVERTER);
 		assertNotNull(resourceField.getAnnotation(0, EclipseLink.CONVERTER));

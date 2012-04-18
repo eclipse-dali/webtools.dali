@@ -97,10 +97,10 @@ public class EclipseLink2_2JavaEntityTests extends EclipseLink2_2ContextModelTes
 
 		assertNull(resourceType.getAnnotation(EntityAnnotation.ANNOTATION_NAME));
 		assertNull(resourceType.getAnnotation(TableAnnotation.ANNOTATION_NAME));
-		assertNull(resourceType.getAnnotation(0, SecondaryTableAnnotation.ANNOTATION_NAME));
-		assertNull(resourceType.getAnnotation(0, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME));
-		assertNull(resourceType.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
-		assertNull(resourceType.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceType.getAnnotationsSize(SecondaryTableAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceType.getAnnotationsSize(PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceType.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceType.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 		assertNull(resourceType.getAnnotation(InheritanceAnnotation.ANNOTATION_NAME));
 		assertNull(resourceType.getAnnotation(DiscriminatorValueAnnotation.ANNOTATION_NAME));
 		assertNull(resourceType.getAnnotation(DiscriminatorColumnAnnotation.ANNOTATION_NAME));
@@ -151,18 +151,18 @@ public class EclipseLink2_2JavaEntityTests extends EclipseLink2_2ContextModelTes
 
 		assertNull(resourceType.getAnnotation(EntityAnnotation.ANNOTATION_NAME));
 		assertNull(resourceType.getAnnotation(TableAnnotation.ANNOTATION_NAME));
-		assertNull(resourceType.getAnnotation(0, SecondaryTableAnnotation.ANNOTATION_NAME));
-		assertNull(resourceType.getAnnotation(0, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME));
-		assertNull(resourceType.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
-		assertNull(resourceType.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceType.getAnnotationsSize(SecondaryTableAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceType.getAnnotationsSize(PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceType.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceType.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 		assertNull(resourceType.getAnnotation(InheritanceAnnotation.ANNOTATION_NAME));
 		assertNull(resourceType.getAnnotation(DiscriminatorValueAnnotation.ANNOTATION_NAME));
 		assertNull(resourceType.getAnnotation(DiscriminatorColumnAnnotation.ANNOTATION_NAME));
 		assertNull(resourceType.getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME));
 		assertNull(resourceType.getAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME));
 		assertNull(resourceType.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
-		assertNull(resourceType.getAnnotation(0, NamedQueryAnnotation.ANNOTATION_NAME));
-		assertNull(resourceType.getAnnotation(0, NamedNativeQueryAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceType.getAnnotationsSize(NamedQueryAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceType.getAnnotationsSize(NamedNativeQueryAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(0, EclipseLinkConverterAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(1, EclipseLinkConverterAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceType.getAnnotation(0, EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME));

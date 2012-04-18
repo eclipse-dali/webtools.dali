@@ -1034,7 +1034,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertEquals("parcels", resourceField.getName());
-		assertNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
 		
 		assertEquals(4, mapKeyAttributeOverrideContainer.getVirtualOverridesSize());
 		ReadOnlyAttributeOverride defaultAttributeOverride = mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next();
@@ -1049,7 +1049,6 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		assertEquals(255, defaultAttributeOverride.getColumn().getLength());
 		assertEquals(0, defaultAttributeOverride.getColumn().getPrecision());
 		assertEquals(0, defaultAttributeOverride.getColumn().getScale());
-		
 		
 		ListIterator<ClassRef> classRefs = getPersistenceUnit().getSpecifiedClassRefs().iterator();
 		classRefs.next();
@@ -1068,8 +1067,8 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		cityMapping.getColumn().setSpecifiedScale(Integer.valueOf(7));
 		
 		assertEquals("parcels", resourceField.getName());
-		assertNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
-
+		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		
 		assertEquals(4, mapKeyAttributeOverrideContainer.getVirtualOverridesSize());
 		defaultAttributeOverride = mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("city", defaultAttributeOverride.getName());
@@ -1083,7 +1082,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		assertEquals(5, defaultAttributeOverride.getColumn().getLength());
 		assertEquals(6, defaultAttributeOverride.getColumn().getPrecision());
 		assertEquals(7, defaultAttributeOverride.getColumn().getScale());
-
+		
 		cityMapping.getColumn().setSpecifiedName(null);
 		cityMapping.getColumn().setSpecifiedTable(null);
 		cityMapping.getColumn().setColumnDefinition(null);
@@ -1111,7 +1110,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		annotation.setName("key.city");
 		getJpaProject().synchronizeContextModel();
 		assertEquals(3, mapKeyAttributeOverrideContainer.getVirtualOverridesSize());
-		}
+	}
 	
 	public void testMapKeyValueSpecifiedAttributeOverridesSize() throws Exception {
 		createTestEntityWithEmbeddableKeyManyToManyMapping();

@@ -193,7 +193,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(BasicAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToDefault() throws Exception {
@@ -212,7 +212,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToVersionMapping() throws Exception {
@@ -233,7 +233,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToIdMapping() throws Exception {
@@ -254,7 +254,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(IdAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToEmbeddedMapping() throws Exception {
@@ -275,7 +275,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToEmbeddedIdMapping() throws Exception {
@@ -296,7 +296,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(EmbeddedIdAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToTransientMapping() throws Exception {
@@ -317,7 +317,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(TransientAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToOneToOneMapping() throws Exception {
@@ -380,7 +380,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertNull(resourceField.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testUpdateSpecifiedTargetEntity() throws Exception {
@@ -698,8 +698,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		assertFalse(joinColumnResources.hasNext());
 		joinColumnsIterator = joinColumns.getSpecifiedJoinColumns().iterator();
 		assertFalse(joinColumnsIterator.hasNext());
-
-		assertNull(resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMoveSpecifiedJoinColumn() throws Exception {
@@ -826,11 +825,11 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		ManyToOneMapping mapping = (ManyToOneMapping) contextAttribute.getMapping();
 		ManyToOneRelationship rel = mapping.getRelationship();
 		
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertTrue(rel.strategyIsJoinColumn());
 		
 		rel.setStrategyToJoinColumn();
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertTrue(rel.strategyIsJoinColumn());
 	}
 	
@@ -844,7 +843,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		ManyToOneMapping mapping = (ManyToOneMapping) contextAttribute.getMapping();
 		ManyToOneRelationship rel = mapping.getRelationship();
 		
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertTrue(rel.strategyIsJoinColumn());
 		
 		resourceField.addAnnotation(0, JPA.JOIN_COLUMN);
@@ -854,7 +853,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		
 		resourceField.removeAnnotation(0, JPA.JOIN_COLUMN);
 		getJpaProject().synchronizeContextModel();
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertTrue(rel.strategyIsJoinColumn());
 	}
 	

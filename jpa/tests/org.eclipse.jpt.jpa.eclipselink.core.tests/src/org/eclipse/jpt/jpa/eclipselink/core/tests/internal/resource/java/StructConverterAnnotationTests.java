@@ -72,7 +72,7 @@ public class StructConverterAnnotationTests extends EclipseLinkJavaResourceModel
 		assertNotNull(resourceField.getAnnotation(0, EclipseLink.STRUCT_CONVERTER));
 		
 		resourceField.removeAnnotation(0, EclipseLink.STRUCT_CONVERTER);
-		assertNull(resourceField.getAnnotation(0, EclipseLink.STRUCT_CONVERTER));
+		assertEquals(0, resourceField.getAnnotationsSize(EclipseLink.STRUCT_CONVERTER));
 		
 		resourceField.addAnnotation(0, EclipseLink.STRUCT_CONVERTER);
 		assertNotNull(resourceField.getAnnotation(0, EclipseLink.STRUCT_CONVERTER));

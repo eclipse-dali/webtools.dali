@@ -228,7 +228,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 		assertEquals(EclipseLinkMultitenantType2_3.VPD, getJavaMultitenancy().getSpecifiedType());		
 		assertEquals(MultitenantType2_3.VPD, multitenant.getValue());
 	}
-
+	
 	public void testIsIncludeCriteria() throws Exception {
 		createTestEntityWithMultitenant();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);

@@ -151,7 +151,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 		
 		assertNull(resourceField.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(BasicAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
 	}
 	
@@ -172,7 +172,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 		assertTrue(persistentAttribute.getMapping().isDefault());
 	
 		assertNull(resourceField.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
 	}
 	
@@ -195,7 +195,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 		
 		assertNull(resourceField.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
 	}
 	
@@ -218,7 +218,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 		
 		assertNull(resourceField.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(IdAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
 	}
 	
@@ -241,7 +241,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 		
 		assertNull(resourceField.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
 	}
 	
@@ -264,7 +264,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 		
 		assertNull(resourceField.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(EmbeddedIdAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
 	}
 	
@@ -287,7 +287,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 		
 		assertNull(resourceField.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(TransientAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME));
 		assertNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
 	}
 	
@@ -356,7 +356,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 		
 		assertNull(resourceField.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
 	}
 	
@@ -379,7 +379,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 		
 		assertNull(resourceField.getAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(ElementCollection2_0Annotation.ANNOTATION_NAME));
-		assertNull(resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME));
 		assertNotNull(resourceField.getAnnotation(Access2_0Annotation.ANNOTATION_NAME));
 	}
 	
@@ -613,25 +613,25 @@ public class GenericJavaManyToOneMapping2_0Tests
 		ManyToOneMapping2_0 mapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
 		ManyToOneRelationship2_0 rel = (ManyToOneRelationship2_0) mapping.getRelationship();
 
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertTrue(rel.strategyIsJoinColumn());
 		assertFalse(rel.strategyIsJoinTable());
 
 		rel.setStrategyToJoinColumn();
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
-		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_TABLE));
 		assertTrue(rel.strategyIsJoinColumn());
 		assertFalse(rel.strategyIsJoinTable());
-
+		
 		rel.setStrategyToJoinTable();
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNotNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertFalse(rel.strategyIsJoinColumn());
 		assertTrue(rel.strategyIsJoinTable());
-
+		
 		rel.setStrategyToJoinColumn();
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertTrue(rel.strategyIsJoinColumn());
 		assertFalse(rel.strategyIsJoinTable());
@@ -646,7 +646,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 		ManyToOneMapping2_0 mapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
 		ManyToOneRelationship2_0 rel = (ManyToOneRelationship2_0) mapping.getRelationship();
 
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertTrue(rel.strategyIsJoinColumn());
 		assertFalse(rel.strategyIsJoinTable());
@@ -667,14 +667,14 @@ public class GenericJavaManyToOneMapping2_0Tests
 
 		resourceField.removeAnnotation(0, JPA.JOIN_COLUMN);
 		getJpaProject().synchronizeContextModel();
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNotNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertFalse(rel.strategyIsJoinColumn());
 		assertTrue(rel.strategyIsJoinTable());
-
+		
 		resourceField.removeAnnotation(JPA.JOIN_TABLE);
 		getJpaProject().synchronizeContextModel();
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertTrue(rel.strategyIsJoinColumn());
 		assertFalse(rel.strategyIsJoinTable());

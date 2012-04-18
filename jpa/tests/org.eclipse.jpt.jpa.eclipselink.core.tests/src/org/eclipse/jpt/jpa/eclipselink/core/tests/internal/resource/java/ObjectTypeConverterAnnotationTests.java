@@ -113,7 +113,7 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 		assertNotNull(resourceField.getAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER));
 		
 		resourceField.removeAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER);
-		assertNull(resourceField.getAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER));
+		assertEquals(0, resourceField.getAnnotationsSize(EclipseLink.OBJECT_TYPE_CONVERTER));
 		
 		resourceField.addAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER);
 		assertNotNull(resourceField.getAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER));

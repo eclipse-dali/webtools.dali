@@ -255,31 +255,31 @@ public class EclipseLink2_0JavaManyToOneMappingTests
 		PersistentAttribute contextAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToOneMapping2_0 mapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
 		ManyToOneRelationship2_0 rel = (ManyToOneRelationship2_0) mapping.getRelationship();
-
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertTrue(rel.strategyIsJoinColumn());
 		assertFalse(rel.strategyIsJoinTable());
-
+		
 		rel.setStrategyToJoinColumn();
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertTrue(rel.strategyIsJoinColumn());
 		assertFalse(rel.strategyIsJoinTable());
-
+		
 		rel.setStrategyToJoinTable();
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNotNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertFalse(rel.strategyIsJoinColumn());
 		assertTrue(rel.strategyIsJoinTable());
-
+		
 		rel.setStrategyToJoinColumn();
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertTrue(rel.strategyIsJoinColumn());
 		assertFalse(rel.strategyIsJoinTable());
 	}
-
+	
 	public void testUpdatePredominantJoiningStrategy() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
@@ -289,36 +289,36 @@ public class EclipseLink2_0JavaManyToOneMappingTests
 		PersistentAttribute contextAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		ManyToOneMapping2_0 mapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
 		ManyToOneRelationship2_0 rel = (ManyToOneRelationship2_0) mapping.getRelationship();
-
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertTrue(rel.strategyIsJoinColumn());
 		assertFalse(rel.strategyIsJoinTable());
-
+		
 		resourceField.addAnnotation(0, JPA.JOIN_COLUMN);
 		getJpaProject().synchronizeContextModel();
 		assertNotNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
 		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertTrue(rel.strategyIsJoinColumn());
 		assertFalse(rel.strategyIsJoinTable());
-
+		
 		resourceField.addAnnotation(JPA.JOIN_TABLE);
 		getJpaProject().synchronizeContextModel();
 		assertNotNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
 		assertNotNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertFalse(rel.strategyIsJoinColumn());
 		assertTrue(rel.strategyIsJoinTable());
-
+		
 		resourceField.removeAnnotation(0, JPA.JOIN_COLUMN);
 		getJpaProject().synchronizeContextModel();
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNotNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertFalse(rel.strategyIsJoinColumn());
 		assertTrue(rel.strategyIsJoinTable());
-
+		
 		resourceField.removeAnnotation(JPA.JOIN_TABLE);
 		getJpaProject().synchronizeContextModel();
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertTrue(rel.strategyIsJoinColumn());
 		assertFalse(rel.strategyIsJoinTable());

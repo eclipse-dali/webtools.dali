@@ -90,7 +90,10 @@ public abstract class AbstractJavaAdaptableAttributeMapping<A extends Annotation
 	}
 	
 	protected XmlJavaTypeAdapterAnnotation getXmlJavaTypeAdapterAnnotation() {
-		return (XmlJavaTypeAdapterAnnotation) getJavaResourceAttribute().getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+		if (getJavaResourceAttribute().getAnnotationsSize(JAXB.XML_JAVA_TYPE_ADAPTER) > 0) {
+			return (XmlJavaTypeAdapterAnnotation) getJavaResourceAttribute().getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+		}
+		return null;
 	}
 	
 	protected void initializeXmlJavaTypeAdapter() {

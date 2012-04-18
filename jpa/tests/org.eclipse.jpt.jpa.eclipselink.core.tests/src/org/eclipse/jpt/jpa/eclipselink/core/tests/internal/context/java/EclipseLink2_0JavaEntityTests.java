@@ -545,7 +545,7 @@ public class EclipseLink2_0JavaEntityTests extends EclipseLink2_0ContextModelTes
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, Kind.TYPE);
 		assertEquals(SUB_TYPE_NAME, resourceType.getName());
-		assertNull(resourceType.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceType.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
 		
 		assertEquals(3, overrideContainer.getVirtualOverridesSize());
 		VirtualAttributeOverride virtualAttributeOverride = overrideContainer.getVirtualOverrides().iterator().next();
@@ -553,7 +553,6 @@ public class EclipseLink2_0JavaEntityTests extends EclipseLink2_0ContextModelTes
 		assertEquals("id", virtualAttributeOverride.getColumn().getName());
 		assertEquals(SUB_TYPE_NAME, virtualAttributeOverride.getColumn().getTable());
 		
-
 		MappedSuperclass mappedSuperclass = (MappedSuperclass) getJavaPersistentType().getMapping();
 		
 		BasicMapping idMapping = (BasicMapping) mappedSuperclass.getPersistentType().getAttributeNamed("id").getMapping();
@@ -561,19 +560,19 @@ public class EclipseLink2_0JavaEntityTests extends EclipseLink2_0ContextModelTes
 		idMapping.getColumn().setSpecifiedTable("BAR");
 		
 		assertEquals(SUB_TYPE_NAME, resourceType.getName());
-		assertNull(resourceType.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
-
+		assertEquals(0, resourceType.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		
 		assertEquals(3, overrideContainer.getVirtualOverridesSize());
 		virtualAttributeOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("id", virtualAttributeOverride.getName());
 		assertEquals("FOO", virtualAttributeOverride.getColumn().getName());
 		assertEquals("BAR", virtualAttributeOverride.getColumn().getTable());
-
+		
 		idMapping.getColumn().setSpecifiedName(null);
 		idMapping.getColumn().setSpecifiedTable(null);
 		assertEquals(SUB_TYPE_NAME, resourceType.getName());
-		assertNull(resourceType.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
-
+		assertEquals(0, resourceType.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		
 		virtualAttributeOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("id", virtualAttributeOverride.getName());
 		assertEquals("id", virtualAttributeOverride.getColumn().getName());
@@ -597,7 +596,7 @@ public class EclipseLink2_0JavaEntityTests extends EclipseLink2_0ContextModelTes
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, Kind.TYPE);
 		assertEquals(SUB_TYPE_NAME, resourceType.getName());
-		assertNull(resourceType.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceType.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
 		
 		assertEquals(3, overrideContainer.getVirtualOverridesSize());
 		VirtualAttributeOverride virtualAttributeOverride = overrideContainer.getVirtualOverrides().iterator().next();
@@ -605,7 +604,6 @@ public class EclipseLink2_0JavaEntityTests extends EclipseLink2_0ContextModelTes
 		assertEquals("id", virtualAttributeOverride.getColumn().getName());
 		assertEquals(SUB_TYPE_NAME, virtualAttributeOverride.getColumn().getTable());
 		
-
 		JavaEntity superclass = (JavaEntity) getJavaPersistentType().getMapping();
 		
 		BasicMapping idMapping = (BasicMapping) superclass.getPersistentType().getAttributeNamed("id").getMapping();
@@ -613,19 +611,19 @@ public class EclipseLink2_0JavaEntityTests extends EclipseLink2_0ContextModelTes
 		idMapping.getColumn().setSpecifiedTable("BAR");
 		
 		assertEquals(SUB_TYPE_NAME, resourceType.getName());
-		assertNull(resourceType.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
-
+		assertEquals(0, resourceType.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		
 		assertEquals(3, overrideContainer.getVirtualOverridesSize());
 		virtualAttributeOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("id", virtualAttributeOverride.getName());
 		assertEquals("FOO", virtualAttributeOverride.getColumn().getName());
 		assertEquals("BAR", virtualAttributeOverride.getColumn().getTable());
-
+		
 		idMapping.getColumn().setSpecifiedName(null);
 		idMapping.getColumn().setSpecifiedTable(null);
 		assertEquals(SUB_TYPE_NAME, resourceType.getName());
-		assertNull(resourceType.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
-
+		assertEquals(0, resourceType.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		
 		virtualAttributeOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("id", virtualAttributeOverride.getName());
 		assertEquals("id", virtualAttributeOverride.getColumn().getName());
@@ -782,7 +780,7 @@ public class EclipseLink2_0JavaEntityTests extends EclipseLink2_0ContextModelTes
 		attributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertFalse(attributeOverrides.hasNext());
 
-		assertNull(resourceType.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceType.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMoveSpecifiedAttributeOverride() throws Exception {
@@ -1044,37 +1042,34 @@ public class EclipseLink2_0JavaEntityTests extends EclipseLink2_0ContextModelTes
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, Kind.TYPE);
 		assertEquals(SUB_TYPE_NAME, resourceType.getName());
-		assertNull(resourceType.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceType.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 		
 		assertEquals(4, overrideContainer.getVirtualOverridesSize());
 		VirtualAssociationOverride virtualAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("address", virtualAssociationOverride.getName());
 		
-
 		//MappedSuperclass mappedSuperclass = (MappedSuperclass) javaPersistentType().getMapping();
 		//BasicMapping idMapping = (BasicMapping) mappedSuperclass.persistentType().attributeNamed("id").getMapping();
 		//idMapping.getColumn().setSpecifiedName("FOO");
 		//idMapping.getColumn().setSpecifiedTable("BAR");
 		
 		assertEquals(SUB_TYPE_NAME, resourceType.getName());
-		assertNull(resourceType.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
-
+		assertEquals(0, resourceType.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
+		
 		assertEquals(4, overrideContainer.getVirtualOverridesSize());
 		virtualAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("address", virtualAssociationOverride.getName());
-
+		
 		//idMapping.getColumn().setSpecifiedName(null);
 		//idMapping.getColumn().setSpecifiedTable(null);
 		assertEquals(SUB_TYPE_NAME, resourceType.getName());
-		assertNull(resourceType.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
-
+		assertEquals(0, resourceType.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
+		
 		virtualAssociationOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("address", virtualAssociationOverride.getName());
 		
 		virtualAssociationOverride.convertToSpecified();
 		assertEquals(3, overrideContainer.getVirtualOverridesSize());
-		
-		
 		
 //		//TODO joinColumns for default association overrides
 ////	IJoinColumn defaultJoinColumn = defaultAssociationOverride.joinColumns().next();
@@ -1116,7 +1111,6 @@ public class EclipseLink2_0JavaEntityTests extends EclipseLink2_0ContextModelTes
 ////	
 ////	javaEntity.addSpecifiedAssociationOverride(0).setName("address");
 ////	assertEquals(0, CollectionTools.size(javaEntity.defaultAssociationOverrides()));
-
 	}
 	
 	public void testSpecifiedAssociationOverridesSize() throws Exception {
@@ -1256,7 +1250,7 @@ public class EclipseLink2_0JavaEntityTests extends EclipseLink2_0ContextModelTes
 		associationOverrides = overrideContainer.getSpecifiedOverrides().iterator();
 		assertFalse(associationOverrides.hasNext());
 
-		assertNull(resourceType.getAnnotation(0, AssociationOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceType.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMoveSpecifiedAssociationOverride() throws Exception {

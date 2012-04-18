@@ -19,17 +19,17 @@ import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
+import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.EnumType;
-import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
-import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
@@ -938,7 +938,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		OneToManyMapping2_0 mapping = (OneToManyMapping2_0) contextAttribute.getMapping();
 		OneToManyRelationship2_0 rel = (OneToManyRelationship2_0) mapping.getRelationship();
 		
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
 		assertFalse(rel.strategyIsJoinColumn());
@@ -954,7 +954,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		assertFalse(rel.strategyIsMappedBy());
 		
 		rel.setStrategyToMappedBy();
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNotNull(annotation.getMappedBy());
 		assertFalse(rel.strategyIsJoinColumn());
@@ -962,7 +962,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		assertTrue(rel.strategyIsMappedBy());
 		
 		rel.setStrategyToJoinTable();
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
 		assertFalse(rel.strategyIsJoinColumn());
@@ -981,7 +981,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		OneToManyMapping2_0 mapping = (OneToManyMapping2_0) contextAttribute.getMapping();
 		OneToManyRelationship2_0 rel = (OneToManyRelationship2_0) mapping.getRelationship();
 		
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
 		assertFalse(rel.strategyIsJoinColumn());
@@ -990,7 +990,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		
 		annotation.setMappedBy("foo");
 		getJpaProject().synchronizeContextModel();
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNotNull(annotation.getMappedBy());
 		assertFalse(rel.strategyIsJoinColumn());
@@ -999,7 +999,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		
 		resourceField.addAnnotation(JPA.JOIN_TABLE);
 		getJpaProject().synchronizeContextModel();
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNotNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNotNull(annotation.getMappedBy());
 		assertFalse(rel.strategyIsJoinColumn());
@@ -1035,7 +1035,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		
 		resourceField.removeAnnotation(0, JPA.JOIN_COLUMN);
 		getJpaProject().synchronizeContextModel();
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
 		assertFalse(rel.strategyIsJoinColumn());
@@ -1154,7 +1154,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		assertEquals("parcels", resourceField.getName());
-		assertNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
 		
 		assertEquals(4, mapKeyAttributeOverrideContainer.getVirtualOverridesSize());
 		ReadOnlyAttributeOverride defaultAttributeOverride = mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next();
@@ -1169,7 +1169,6 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		assertEquals(255, defaultAttributeOverride.getColumn().getLength());
 		assertEquals(0, defaultAttributeOverride.getColumn().getPrecision());
 		assertEquals(0, defaultAttributeOverride.getColumn().getScale());
-		
 		
 		ListIterator<ClassRef> classRefs = getPersistenceUnit().getSpecifiedClassRefs().iterator();
 		classRefs.next();
@@ -1188,8 +1187,8 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		cityMapping.getColumn().setSpecifiedScale(Integer.valueOf(7));
 		
 		assertEquals("parcels", resourceField.getName());
-		assertNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
-
+		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		
 		assertEquals(4, mapKeyAttributeOverrideContainer.getVirtualOverridesSize());
 		defaultAttributeOverride = mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("city", defaultAttributeOverride.getName());
@@ -1203,7 +1202,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		assertEquals(5, defaultAttributeOverride.getColumn().getLength());
 		assertEquals(6, defaultAttributeOverride.getColumn().getPrecision());
 		assertEquals(7, defaultAttributeOverride.getColumn().getScale());
-
+		
 		cityMapping.getColumn().setSpecifiedName(null);
 		cityMapping.getColumn().setSpecifiedTable(null);
 		cityMapping.getColumn().setColumnDefinition(null);
@@ -1231,7 +1230,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		annotation.setName("key.city");
 		getJpaProject().synchronizeContextModel();
 		assertEquals(3, mapKeyAttributeOverrideContainer.getVirtualOverridesSize());
-		}
+	}
 	
 	public void testMapKeyValueSpecifiedAttributeOverridesSize() throws Exception {
 		createTestEntityWithEmbeddableKeyOneToManyMapping();

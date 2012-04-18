@@ -25,7 +25,6 @@ import org.eclipse.jpt.jaxb.core.context.XmlAnyAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElementMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
 
 
@@ -101,17 +100,18 @@ public class GenericJavaXmlAnyAttributeMappingTests extends JaxbContextModelTest
 		XmlAnyAttributeMapping attributeMapping = (XmlAnyAttributeMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = attributeMapping.getPersistentAttribute().getJavaResourceAttribute();
 
-		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
 		assertNull(attributeMapping.getXmlJavaTypeAdapter());
-		assertNull(xmlJavaTypeAdapterAnnotation);
-
+		assertEquals(0, resourceAttribute.getAnnotationsSize(JAXB.XML_JAVA_TYPE_ADAPTER));
+		
 		attributeMapping.addXmlJavaTypeAdapter();
-		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+		
 		assertNotNull(attributeMapping.getXmlJavaTypeAdapter());
-		assertNotNull(xmlJavaTypeAdapterAnnotation);
+		assertNotNull(resourceAttribute.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER));
 
 		attributeMapping.removeXmlJavaTypeAdapter();
-		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+		
+		assertNull(attributeMapping.getXmlJavaTypeAdapter());
+		assertEquals(0, resourceAttribute.getAnnotationsSize(JAXB.XML_JAVA_TYPE_ADAPTER));
 	}
 
 	public void testUpdateXmlJavaTypeAdapter() throws Exception {
@@ -122,12 +122,10 @@ public class GenericJavaXmlAnyAttributeMappingTests extends JaxbContextModelTest
 		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(classMapping.getAttributes(), 0);
 		XmlAnyAttributeMapping attributeMapping = (XmlAnyAttributeMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = attributeMapping.getPersistentAttribute().getJavaResourceAttribute();
-
-		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+		
 		assertNull(attributeMapping.getXmlJavaTypeAdapter());
-		assertNull(xmlJavaTypeAdapterAnnotation);
-
-
+		assertEquals(0, resourceAttribute.getAnnotationsSize(JAXB.XML_JAVA_TYPE_ADAPTER));
+		
 		//add an XmlJavaTypeAdapter annotation
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceAttribute);
 		annotatedElement.edit(new Member.Editor() {
@@ -135,9 +133,9 @@ public class GenericJavaXmlAnyAttributeMappingTests extends JaxbContextModelTest
 				GenericJavaXmlAnyAttributeMappingTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_JAVA_TYPE_ADAPTER);
 			}
 		});
-		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+		
 		assertNotNull(attributeMapping.getXmlJavaTypeAdapter());
-		assertNotNull(xmlJavaTypeAdapterAnnotation);
+		assertNotNull(resourceAttribute.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER));
 
 		//remove the XmlJavaTypeAdapter annotation
 		annotatedElement.edit(new Member.Editor() {
@@ -145,9 +143,9 @@ public class GenericJavaXmlAnyAttributeMappingTests extends JaxbContextModelTest
 				GenericJavaXmlAnyAttributeMappingTests.this.removeAnnotation(declaration, JAXB.XML_JAVA_TYPE_ADAPTER);
 			}
 		});
-		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+		
 		assertNull(attributeMapping.getXmlJavaTypeAdapter());
-		assertNull(xmlJavaTypeAdapterAnnotation);
+		assertEquals(0, resourceAttribute.getAnnotationsSize(JAXB.XML_JAVA_TYPE_ADAPTER));
 	}
 
 }

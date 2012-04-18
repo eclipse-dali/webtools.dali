@@ -11,9 +11,9 @@ package org.eclipse.jpt.jpa.core.tests.internal.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
@@ -201,14 +201,13 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
-		JoinColumnAnnotation javaJoinColumn = (JoinColumnAnnotation) resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME);
-		
 		assertEquals(0, joinColumns.getSpecifiedJoinColumnsSize());
-		assertNull(javaJoinColumn);
+		assertEquals(0, resourceField.getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME));
 		
 		
 		//set referenced column name in the resource model, verify context model updated
-		javaJoinColumn = (JoinColumnAnnotation) resourceField.addAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME);
+		JoinColumnAnnotation javaJoinColumn = 
+				(JoinColumnAnnotation) resourceField.addAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME);
 		javaJoinColumn.setName("FOO");	
 		javaJoinColumn.setReferencedColumnName("BAR");
 		getJpaProject().synchronizeContextModel();
@@ -263,14 +262,13 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
-		JoinColumnAnnotation javaJoinColumn = (JoinColumnAnnotation) resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME);
-		
 		assertEquals(0, joinColumns.getSpecifiedJoinColumnsSize());
-		assertNull(javaJoinColumn);
+		assertEquals(0, resourceField.getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME));
 		
 		
 		//set table in the resource model, verify context model updated
-		javaJoinColumn = (JoinColumnAnnotation) resourceField.addAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME);
+		JoinColumnAnnotation javaJoinColumn = 
+				(JoinColumnAnnotation) resourceField.addAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME);
 		javaJoinColumn.setName("FOO");	
 		javaJoinColumn.setTable("BAR");
 		getJpaProject().synchronizeContextModel();
@@ -326,14 +324,13 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
-		JoinColumnAnnotation javaJoinColumn = (JoinColumnAnnotation) resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME);
-		
 		assertEquals(0, joinColumns.getSpecifiedJoinColumnsSize());
-		assertNull(javaJoinColumn);
+		assertEquals(0, resourceField.getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME));
 		
 		
 		//set unique in the resource model, verify context model updated
-		javaJoinColumn = (JoinColumnAnnotation) resourceField.addAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME);
+		JoinColumnAnnotation javaJoinColumn = 
+				(JoinColumnAnnotation) resourceField.addAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME);
 		javaJoinColumn.setName("FOO");	
 		javaJoinColumn.setUnique(Boolean.TRUE);
 		getJpaProject().synchronizeContextModel();
@@ -500,14 +497,12 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 	
-		JoinColumnAnnotation javaJoinColumn = (JoinColumnAnnotation) resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME);
-		
 		assertEquals(0, joinColumns.getSpecifiedJoinColumnsSize());
-		assertNull(javaJoinColumn);
-		
+		assertEquals(0, resourceField.getAnnotationsSize(JoinColumnAnnotation.ANNOTATION_NAME));
 		
 		//set updatable in the resource model, verify context model updated
-		javaJoinColumn = (JoinColumnAnnotation) resourceField.addAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME);
+		JoinColumnAnnotation javaJoinColumn = 
+				(JoinColumnAnnotation) resourceField.addAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME);
 		javaJoinColumn.setName("FOO");	
 		javaJoinColumn.setUpdatable(Boolean.FALSE);
 		getJpaProject().synchronizeContextModel();

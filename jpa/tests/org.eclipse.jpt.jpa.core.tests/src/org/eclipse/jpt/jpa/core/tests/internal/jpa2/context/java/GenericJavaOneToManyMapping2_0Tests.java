@@ -1314,7 +1314,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		OneToManyMapping2_0 mapping = (OneToManyMapping2_0) contextAttribute.getMapping();
 		OneToManyRelationship2_0 rel = (OneToManyRelationship2_0) mapping.getRelationship();
 
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
 		assertFalse(rel.strategyIsJoinColumn());
@@ -1330,15 +1330,15 @@ public class GenericJavaOneToManyMapping2_0Tests
 		assertFalse(rel.strategyIsMappedBy());
 
 		rel.setStrategyToMappedBy();
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNotNull(annotation.getMappedBy());
 		assertFalse(rel.strategyIsJoinColumn());
 		assertFalse(rel.strategyIsJoinTable());
 		assertTrue(rel.strategyIsMappedBy());
-
+		
 		rel.setStrategyToJoinTable();
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
 		assertFalse(rel.strategyIsJoinColumn());
@@ -1356,7 +1356,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		OneToManyMapping2_0 mapping = (OneToManyMapping2_0) contextAttribute.getMapping();
 		OneToManyRelationship2_0 rel = (OneToManyRelationship2_0) mapping.getRelationship();
 		
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
 		assertFalse(rel.strategyIsJoinColumn());
@@ -1365,7 +1365,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		
 		annotation.setMappedBy("foo");
 		getJpaProject().synchronizeContextModel();
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNotNull(annotation.getMappedBy());
 		assertFalse(rel.strategyIsJoinColumn());
@@ -1374,7 +1374,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		
 		resourceField.addAnnotation(JPA.JOIN_TABLE);
 		getJpaProject().synchronizeContextModel();
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNotNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNotNull(annotation.getMappedBy());
 		assertFalse(rel.strategyIsJoinColumn());
@@ -1410,14 +1410,14 @@ public class GenericJavaOneToManyMapping2_0Tests
 		
 		resourceField.removeAnnotation(0, JPA.JOIN_COLUMN);
 		getJpaProject().synchronizeContextModel();
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
 		assertFalse(rel.strategyIsJoinColumn());
 		assertTrue(rel.strategyIsJoinTable());
 		assertFalse(rel.strategyIsMappedBy());
 	}
-
+	
 	public void testMapKeySpecifiedAttributeOverrides() throws Exception {
 		createTestEntityWithEmbeddableKeyOneToManyMapping();
 		createTestEmbeddableAddress();
@@ -1527,7 +1527,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 
 		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
 		assertEquals("parcels", resourceField.getName());
-		assertNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
 		
 		assertEquals(4, mapKeyAttributeOverrideContainer.getVirtualOverridesSize());
 		ReadOnlyAttributeOverride defaultAttributeOverride = mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next();
@@ -1561,8 +1561,8 @@ public class GenericJavaOneToManyMapping2_0Tests
 		cityMapping.getColumn().setSpecifiedScale(Integer.valueOf(7));
 		
 		assertEquals("parcels", resourceField.getName());
-		assertNull(resourceField.getAnnotation(0, AttributeOverrideAnnotation.ANNOTATION_NAME));
-
+		assertEquals(0, resourceField.getAnnotationsSize(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		
 		assertEquals(4, mapKeyAttributeOverrideContainer.getVirtualOverridesSize());
 		defaultAttributeOverride = mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("city", defaultAttributeOverride.getName());
@@ -1576,7 +1576,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		assertEquals(5, defaultAttributeOverride.getColumn().getLength());
 		assertEquals(6, defaultAttributeOverride.getColumn().getPrecision());
 		assertEquals(7, defaultAttributeOverride.getColumn().getScale());
-
+		
 		cityMapping.getColumn().setSpecifiedName(null);
 		cityMapping.getColumn().setSpecifiedTable(null);
 		cityMapping.getColumn().setColumnDefinition(null);
@@ -1604,7 +1604,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		annotation.setName("key.city");
 		getJpaProject().synchronizeContextModel();
 		assertEquals(3, mapKeyAttributeOverrideContainer.getVirtualOverridesSize());
-		}
+	}
 	
 	public void testMapKeyValueSpecifiedAttributeOverridesSize() throws Exception {
 		createTestEntityWithEmbeddableKeyOneToManyMapping();
@@ -2092,8 +2092,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		assertFalse(joinColumnResources.hasNext());
 		joinColumnsIterator = oneToManyMapping.getSpecifiedMapKeyJoinColumns().iterator();
 		assertFalse(joinColumnsIterator.hasNext());
-
-		assertNull(resourceField.getAnnotation(0, MapKeyJoinColumn2_0Annotation.ANNOTATION_NAME));
+		assertEquals(0, resourceField.getAnnotationsSize(MapKeyJoinColumn2_0Annotation.ANNOTATION_NAME));
 	}
 
 	public void testMoveSpecifiedJoinColumn() throws Exception {

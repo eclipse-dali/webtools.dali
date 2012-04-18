@@ -135,9 +135,9 @@ public class EclipseLink2_2JavaMappedSuperclassTests extends EclipseLink2_2Conte
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		assertNull(resourceType.getAnnotation(MappedSuperclassAnnotation.ANNOTATION_NAME));
 		assertNull(resourceType.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
-		assertNull(resourceType.getAnnotation(0, EclipseLinkConverterAnnotation.ANNOTATION_NAME));
-		assertNull(resourceType.getAnnotation(0, EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME));
-		assertNull(resourceType.getAnnotation(0, EclipseLinkStructConverterAnnotation.ANNOTATION_NAME));
-		assertNull(resourceType.getAnnotation(0, EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceType.getAnnotationsSize(EclipseLinkConverterAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceType.getAnnotationsSize(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceType.getAnnotationsSize(EclipseLinkStructConverterAnnotation.ANNOTATION_NAME));
+		assertEquals(0, resourceType.getAnnotationsSize(EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME));
 	}
 }

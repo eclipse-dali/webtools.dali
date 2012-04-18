@@ -309,7 +309,7 @@ public abstract class AbstractJaxbContextRoot
 						}
 						return o.getAnnotation(JAXB.XML_TYPE) != null
 								|| o.getAnnotation(JAXB.XML_ROOT_ELEMENT) != null
-								|| o.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER) != null;
+								|| o.getAnnotationsSize(JAXB.XML_JAVA_TYPE_ADAPTER) > 0;
 					}
 				});
 		CollectionTools.addAll(

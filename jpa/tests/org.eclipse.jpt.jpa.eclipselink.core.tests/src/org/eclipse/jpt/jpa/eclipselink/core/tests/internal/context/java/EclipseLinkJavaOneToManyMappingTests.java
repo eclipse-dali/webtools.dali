@@ -11,9 +11,9 @@ package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.FetchType;
@@ -280,7 +280,7 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 		EclipseLinkOneToManyMapping mapping = (EclipseLinkOneToManyMapping) contextAttribute.getMapping();
 		EclipseLinkOneToManyRelationship rel = mapping.getRelationship();
 		
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
 		assertFalse(rel.strategyIsJoinColumn());
@@ -296,7 +296,7 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 		assertFalse(rel.strategyIsMappedBy());
 		
 		rel.setStrategyToMappedBy();
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNotNull(annotation.getMappedBy());
 		assertFalse(rel.strategyIsJoinColumn());
@@ -304,7 +304,7 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 		assertTrue(rel.strategyIsMappedBy());
 		
 		rel.setStrategyToJoinTable();
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
 		assertFalse(rel.strategyIsJoinColumn());
@@ -323,7 +323,7 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 		EclipseLinkOneToManyMapping mapping = (EclipseLinkOneToManyMapping) contextAttribute.getMapping();
 		EclipseLinkOneToManyRelationship rel = mapping.getRelationship();
 		
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
 		assertFalse(rel.strategyIsJoinColumn());
@@ -332,7 +332,7 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 		
 		annotation.setMappedBy("foo");
 		getJpaProject().synchronizeContextModel();
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNotNull(annotation.getMappedBy());
 		assertFalse(rel.strategyIsJoinColumn());
@@ -341,7 +341,7 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 		
 		resourceField.addAnnotation(JPA.JOIN_TABLE);
 		getJpaProject().synchronizeContextModel();
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNotNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNotNull(annotation.getMappedBy());
 		assertFalse(rel.strategyIsJoinColumn());
@@ -377,7 +377,7 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 		
 		resourceField.removeAnnotation(0, JPA.JOIN_COLUMN);
 		getJpaProject().synchronizeContextModel();
-		assertNull(resourceField.getAnnotation(0, JPA.JOIN_COLUMN));
+		assertEquals(0, resourceField.getAnnotationsSize(JPA.JOIN_COLUMN));
 		assertNull(resourceField.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
 		assertFalse(rel.strategyIsJoinColumn());
