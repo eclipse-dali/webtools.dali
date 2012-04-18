@@ -17,6 +17,7 @@ import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.EnumDeclaration;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
+import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
@@ -114,15 +115,19 @@ final class SourceType
 	@Override
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
-		ITypeBinding binding = this.annotatedElement.getBinding(astRoot);
-		this.superclassQualifiedName = this.buildSuperclassQualifiedName(binding);
-		this.abstract_ = this.buildAbstract(binding);
-		this.hasNoArgConstructor = this.buildHasNoArgConstructor(binding);
-		this.hasPrivateNoArgConstructor = this.buildHasPrivateNoArgConstructor(binding);
 		this.initializeTypes(astRoot);
 		this.initializeEnums(astRoot);
 		this.initializeFields(astRoot);
 		this.initializeMethods(astRoot);
+	}
+
+	@Override
+	protected void initialize(IBinding binding) {
+		super.initialize(binding);
+		this.superclassQualifiedName = this.buildSuperclassQualifiedName((ITypeBinding) binding);
+		this.abstract_ = this.buildAbstract((ITypeBinding) binding);
+		this.hasNoArgConstructor = this.buildHasNoArgConstructor((ITypeBinding) binding);
+		this.hasPrivateNoArgConstructor = this.buildHasPrivateNoArgConstructor((ITypeBinding) binding);
 	}
 
 
@@ -131,15 +136,19 @@ final class SourceType
 	@Override
 	public void synchronizeWith(CompilationUnit astRoot) {
 		super.synchronizeWith(astRoot);
-		ITypeBinding binding = this.annotatedElement.getBinding(astRoot);
-		this.syncSuperclassQualifiedName(this.buildSuperclassQualifiedName(binding));
-		this.syncAbstract(this.buildAbstract(binding));
-		this.syncHasNoArgConstructor(this.buildHasNoArgConstructor(binding));
-		this.syncHasPrivateNoArgConstructor(this.buildHasPrivateNoArgConstructor(binding));
 		this.syncTypes(astRoot);
 		this.syncEnums(astRoot);
 		this.syncFields(astRoot);
 		this.syncMethods(astRoot);
+	}
+
+	@Override
+	protected void synchronizeWith(IBinding binding) {
+		super.synchronizeWith(binding);
+		this.syncSuperclassQualifiedName(this.buildSuperclassQualifiedName((ITypeBinding) binding));
+		this.syncAbstract(this.buildAbstract((ITypeBinding) binding));
+		this.syncHasNoArgConstructor(this.buildHasNoArgConstructor((ITypeBinding) binding));
+		this.syncHasPrivateNoArgConstructor(this.buildHasPrivateNoArgConstructor((ITypeBinding) binding));
 	}
 
 
@@ -191,10 +200,7 @@ final class SourceType
 	}
 
 	private String buildSuperclassQualifiedName(ITypeBinding binding) {
-		if (binding == null) {
-			return null;
-		}
-		ITypeBinding superclass = binding.getSuperclass();
+		ITypeBinding superclass = binding == null ? null : binding.getSuperclass();
 		return (superclass == null) ? null : superclass.getTypeDeclaration().getQualifiedName();
 	}
 
@@ -526,7 +532,7 @@ final class SourceType
 		for (MethodDeclaration methodDeclaration : methodDeclarations) {
 			MethodSignature signature = ASTTools.buildMethodSignature(methodDeclaration);
 			int occurrence = counters.increment(signature);
-			this.methods.add(this.buildMethod(signature, occurrence, astRoot));
+			this.methods.add(this.buildMethod(signature, occurrence, methodDeclaration));
 		}
 	}
 
@@ -540,17 +546,17 @@ final class SourceType
 
 			JavaResourceMethod method = this.getMethod(signature, occurrence);
 			if (method == null) {
-				this.addMethod(this.buildMethod(signature, occurrence, astRoot));
+				this.addMethod(this.buildMethod(signature, occurrence, methodDeclaration));
 			} else {
 				methodsToRemove.remove(method);
-				method.synchronizeWith(astRoot);
+				method.synchronizeWith(methodDeclaration);
 			}
 		}
 		this.removeMethods(methodsToRemove);
 	}
 
-	private JavaResourceMethod buildMethod(MethodSignature signature, int occurrence, CompilationUnit astRoot) {
-		return SourceMethod.newInstance(this, this.annotatedElement, signature, occurrence, this.getJavaResourceCompilationUnit(), astRoot);
+	private JavaResourceMethod buildMethod(MethodSignature signature, int occurrence, MethodDeclaration methodDeclaration) {
+		return SourceMethod.newInstance(this, this.annotatedElement, signature, occurrence, this.getJavaResourceCompilationUnit(), methodDeclaration);
 	}
 
 

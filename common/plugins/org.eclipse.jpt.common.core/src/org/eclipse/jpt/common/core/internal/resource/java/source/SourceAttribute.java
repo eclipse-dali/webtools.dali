@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -59,19 +59,24 @@ abstract class SourceAttribute<A extends Attribute>
 	}
 
 	@Override
-	public void initialize(CompilationUnit astRoot) {
-		super.initialize(astRoot);
-		ITypeBinding typeBinding = this.getTypeBinding(astRoot); //build once, minor performance tweak for major benefit
-		this.modifiers = this.buildModifiers(astRoot);
-		this.typeName = this.buildTypeName(typeBinding);
-		this.typeIsInterface = this.buildTypeIsInterface(typeBinding);
-		this.typeIsEnum = this.buildTypeIsEnum(typeBinding);
-		this.typeIsArray = this.buildTypeIsArray(typeBinding);
-		this.typeArrayDimensionality = buildTypeArrayDimensionality(typeBinding);
-		this.typeArrayComponentTypeName = buildTypeArrayComponentTypeName(typeBinding);
-		this.typeSuperclassNames.addAll(this.buildTypeSuperclassNames(typeBinding));
-		this.typeInterfaceNames.addAll(this.buildTypeInterfaceNames(typeBinding));
-		this.typeTypeArgumentNames.addAll(this.buildTypeTypeArgumentNames(typeBinding));
+	protected void initialize(IBinding binding) {
+		super.initialize(binding);
+		this.modifiers = this.buildModifiers(binding);
+	}
+
+	/**
+	 * subclasses need to call this method
+	 */
+	protected void initialize(ITypeBinding attributeTypeBinding) {
+		this.typeName = this.buildTypeName(attributeTypeBinding);
+		this.typeIsInterface = this.buildTypeIsInterface(attributeTypeBinding);
+		this.typeIsEnum = this.buildTypeIsEnum(attributeTypeBinding);
+		this.typeIsArray = this.buildTypeIsArray(attributeTypeBinding);
+		this.typeArrayDimensionality = buildTypeArrayDimensionality(attributeTypeBinding);
+		this.typeArrayComponentTypeName = buildTypeArrayComponentTypeName(attributeTypeBinding);
+		this.typeSuperclassNames.addAll(this.buildTypeSuperclassNames(attributeTypeBinding));
+		this.typeInterfaceNames.addAll(this.buildTypeInterfaceNames(attributeTypeBinding));
+		this.typeTypeArgumentNames.addAll(this.buildTypeTypeArgumentNames(attributeTypeBinding));		
 	}
 
 
@@ -80,28 +85,36 @@ abstract class SourceAttribute<A extends Attribute>
 	@Override
 	public void resolveTypes(CompilationUnit astRoot) {
 		super.resolveTypes(astRoot);
-		ITypeBinding typeBinding = this.getTypeBinding(astRoot);//build once, minor performance tweak for major benefit
+		this.resolveTypes(this.getTypeBinding(astRoot));//build once, minor performance tweak for major benefit
+	}
+
+	protected void resolveTypes(ITypeBinding typeBinding) {
 		this.syncTypeName(this.buildTypeName(typeBinding));
-		syncTypeArrayComponentTypeName(buildTypeArrayComponentTypeName(typeBinding));
+		this.syncTypeArrayComponentTypeName(this.buildTypeArrayComponentTypeName(typeBinding));
 		this.syncTypeSuperclassNames(this.buildTypeSuperclassNames(typeBinding));
 		this.syncTypeInterfaceNames(this.buildTypeInterfaceNames(typeBinding));
 		this.syncTypeTypeArgumentNames(this.buildTypeTypeArgumentNames(typeBinding));
 	}
 
+	/**
+	 * subclasses need to call this method
+	 */
+	protected void synchronizeWith(ITypeBinding attributeTypeBinding) {
+		this.syncTypeName(this.buildTypeName(attributeTypeBinding));
+		this.syncTypeIsInterface(this.buildTypeIsInterface(attributeTypeBinding));
+		this.syncTypeIsEnum(this.buildTypeIsEnum(attributeTypeBinding));
+		this.syncTypeIsArray(this.buildTypeIsArray(attributeTypeBinding));
+		this.syncTypeArrayDimensionality(this.buildTypeArrayDimensionality(attributeTypeBinding));
+		this.syncTypeArrayComponentTypeName(this.buildTypeArrayComponentTypeName(attributeTypeBinding));
+		this.syncTypeSuperclassNames(this.buildTypeSuperclassNames(attributeTypeBinding));
+		this.syncTypeInterfaceNames(this.buildTypeInterfaceNames(attributeTypeBinding));
+		this.syncTypeTypeArgumentNames(this.buildTypeTypeArgumentNames(attributeTypeBinding));
+	}
+
 	@Override
-	public void synchronizeWith(CompilationUnit astRoot) {
-		super.synchronizeWith(astRoot);
-		ITypeBinding typeBinding = this.getTypeBinding(astRoot);//build once, minor performance tweak for major benefit
-		this.syncModifiers(this.buildModifiers(astRoot));
-		this.syncTypeName(this.buildTypeName(typeBinding));
-		this.syncTypeIsInterface(this.buildTypeIsInterface(typeBinding));
-		this.syncTypeIsEnum(this.buildTypeIsEnum(typeBinding));
-		this.syncTypeIsArray(this.buildTypeIsArray(typeBinding));
-		syncTypeArrayDimensionality(buildTypeArrayDimensionality(typeBinding));
-		syncTypeArrayComponentTypeName(buildTypeArrayComponentTypeName(typeBinding));
-		this.syncTypeSuperclassNames(this.buildTypeSuperclassNames(typeBinding));
-		this.syncTypeInterfaceNames(this.buildTypeInterfaceNames(typeBinding));
-		this.syncTypeTypeArgumentNames(this.buildTypeTypeArgumentNames(typeBinding));
+	protected void synchronizeWith(IBinding binding) {
+		super.synchronizeWith(binding);
+		this.syncModifiers(this.buildModifiers(binding));
 	}
 
 	@Override
@@ -138,7 +151,7 @@ abstract class SourceAttribute<A extends Attribute>
 		return (this.typeName != null) && ClassName.isVariablePrimitive(this.typeName);
 	}
 
-	private ITypeBinding getTypeBinding(CompilationUnit astRoot) {
+	protected ITypeBinding getTypeBinding(CompilationUnit astRoot) {
 		return this.annotatedElement.getTypeBinding(astRoot);
 	}
 
@@ -157,8 +170,7 @@ abstract class SourceAttribute<A extends Attribute>
 	/**
 	 * zero seems like a reasonable default...
 	 */
-	private int buildModifiers(CompilationUnit astRoot) {
-		IBinding binding = this.annotatedElement.getBinding(astRoot);
+	private int buildModifiers(IBinding binding) {
 		return (binding == null) ? 0 : binding.getModifiers();
 	}
 

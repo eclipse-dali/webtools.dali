@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.resource.java;
 
+import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jpt.common.utility.MethodSignature;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
@@ -21,7 +22,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 3.2
  * @since 3.0
  */
 public interface JavaResourceMethod
@@ -60,4 +61,16 @@ public interface JavaResourceMethod
 	 * method.
 	 */
 	boolean isFor(MethodSignature methodSignature, int occurrence);
+
+	/**
+	 * Call this instead of initialize(CompilationUnit)
+	 * TODO remove initialize(CompilationUnit) from the hierarchy
+	 */
+	void initialize(MethodDeclaration methodDeclaration);
+
+	/**
+	 * Call this instead of synchronizeWith(CompilationUnit)
+	 * TODO remove synchronizeWith(CompilationUnit) from the hierarchy
+	 */
+	void synchronizeWith(MethodDeclaration methodDeclaration);
 }

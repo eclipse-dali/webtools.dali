@@ -21,6 +21,7 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IAnnotationBinding;
+import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
@@ -80,11 +81,35 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 	}
 
 	/**
+	 * There are 2 initialize calls, 1 for ASTNode and one for IBinding.
+	 * This is a performance enhancement because finding a MethodDeclaration
+	 * for a SourceMethod is very non-performant. SourceMethod actually overrides
+	 * this as unsupported and instead uses initialize(MethodDeclaration).
+	 * TODO continue the pattern in SourceMethod with the other classes in this hierarchy
+	 * trying not to change much API in 3.2M7
+	 * 
+	 * This is also to handle multiple fields declared in a single statement:
+	 * 		private int foo, bar;
+	 * JDTFieldAttribute.getBodyDeclaration(CompilationUnit) returns the FieldDeclaration
+	 * in the call to getBodyDeclaration, this is the ASTNode for a field and
+	 * has the annotations on it.
+	 * JDTFieldAttribute.getBinding(CompiltationUnit) returns the IVariableBinding of the 
+	 * VariableDeclarationFragment which is the ASTNode for the particular field.
+	 */
+	public void initialize(CompilationUnit astRoot) {
+		this.initialize(this.annotatedElement.getBodyDeclaration(astRoot));
+		this.initialize(this.annotatedElement.getBinding(astRoot));
+	}
+
+	protected void initialize(IBinding binding) {
+		//do nothing
+	}
+
+	/**
 	 * Gather up all the significant AST annotations
 	 * and build the corresponding Dali annotations.
 	 */
-	public void initialize(CompilationUnit astRoot) {
-		ASTNode node = this.annotatedElement.getBodyDeclaration(astRoot);
+	protected void initialize(ASTNode node) {
 		AnnotationVisitor visitor = new AnnotationVisitor(node);
 		node.accept(visitor);
 		this.initializeAnnotations(visitor.astAnnotations);
@@ -129,8 +154,20 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 		}
 	}
 
+	/**
+	 * @see #initialize(CompilationUnit)
+	 */
 	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncAnnotations(this.annotatedElement.getBodyDeclaration(astRoot));
+		this.synchronizeWith(this.annotatedElement.getBodyDeclaration(astRoot));
+		this.synchronizeWith(this.annotatedElement.getBinding(astRoot));
+	}
+
+	protected void synchronizeWith(ASTNode bodyDeclaration) {
+		this.syncAnnotations(bodyDeclaration);
+	}
+
+	protected void synchronizeWith(IBinding binding) {
+		//do nothing
 	}
 
 
@@ -155,8 +192,20 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 	}
 
 	public Annotation getNonNullAnnotation(String annotationName) {
-		Annotation annotation = this.getAnnotation(annotationName);
+		Annotation annotation = this.performantGetAnnotation(annotationName);
 		return (annotation != null) ? annotation : this.getNullAnnotation(annotationName);
+	}
+
+	/**
+	 * TODO performance - hack for performance so we don't have to break API in M7.
+	 * Our calls to getNonNullAnnotation are never used for container annotations, so 
+	 * I can use this method to avoid the expensive {@link #annotationIsValidContainer(String)} check
+	 * in {@link #getAnnotation(String)}. In the next release I think we need
+	 * to change the genAnnotation api to not check for container annotations and instead have
+	 * separate API. 
+	 */
+	protected Annotation performantGetAnnotation(String annotationName) {
+		return this.annotations.get(annotationName);
 	}
 
 	private Annotation getNullAnnotation(String annotationName) {

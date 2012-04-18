@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.internal.resource.java.source;
 
+import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jpt.common.core.internal.utility.jdt.JDTFieldAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
@@ -58,4 +60,17 @@ final class SourceField
 	public Kind getKind() {
 		return Kind.FIELD;
 	}
+
+	@Override
+	protected void initialize(ASTNode node) {
+		super.initialize(node);
+		this.initialize(((FieldDeclaration) node).getType().resolveBinding());
+	}
+
+	@Override
+	public void synchronizeWith(ASTNode node) {
+		super.synchronizeWith(node);
+		this.synchronizeWith(((FieldDeclaration) node).getType().resolveBinding());
+	}
+
 }

@@ -14,6 +14,7 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
@@ -46,28 +47,26 @@ abstract class SourceAbstractType<A extends AbstractType>
 	}
 
 	@Override
-	public void initialize(CompilationUnit astRoot) {
-		super.initialize(astRoot);
-		ITypeBinding binding = this.annotatedElement.getBinding(astRoot);
-		this.name = this.buildName(binding);
-		this.qualifiedName = this.buildQualifiedName(binding);
-		this.packageName = this.buildPackageName(binding);
-		this.declaringTypeName = this.buildDeclaringTypeName(binding);
-		this.memberType = this.buildMemberType(binding);
+	protected void initialize(IBinding binding) {
+		super.initialize(binding);
+		this.name = this.buildName((ITypeBinding) binding);
+		this.qualifiedName = this.buildQualifiedName((ITypeBinding) binding);
+		this.packageName = this.buildPackageName((ITypeBinding) binding);
+		this.declaringTypeName = this.buildDeclaringTypeName((ITypeBinding) binding);
+		this.memberType = this.buildMemberType((ITypeBinding) binding);
 	}
 
 
 	// ********** update **********
 
 	@Override
-	public void synchronizeWith(CompilationUnit astRoot) {
-		super.synchronizeWith(astRoot);
-		ITypeBinding binding = this.annotatedElement.getBinding(astRoot);
-		this.syncName(this.buildName(binding));
-		this.syncQualifiedName(this.buildQualifiedName(binding));
-		this.syncPackageName(this.buildPackageName(binding));
-		this.syncDeclaringTypeName(this.buildDeclaringTypeName(binding));
-		this.syncMemberType(this.buildMemberType(binding));
+	protected void synchronizeWith(IBinding binding) {
+		super.synchronizeWith(binding);
+		this.syncName(this.buildName((ITypeBinding) binding));
+		this.syncQualifiedName(this.buildQualifiedName((ITypeBinding) binding));
+		this.syncPackageName(this.buildPackageName((ITypeBinding) binding));
+		this.syncDeclaringTypeName(this.buildDeclaringTypeName((ITypeBinding) binding));
+		this.syncMemberType(this.buildMemberType((ITypeBinding) binding));
 	}
 
 

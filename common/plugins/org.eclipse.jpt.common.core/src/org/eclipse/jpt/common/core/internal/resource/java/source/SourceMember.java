@@ -41,9 +41,8 @@ abstract class SourceMember<M extends Member>
 	}
 
 	@Override
-	public void initialize(CompilationUnit astRoot) {
-		super.initialize(astRoot);
-		IBinding binding = this.annotatedElement.getBinding(astRoot);
+	protected void initialize(IBinding binding) {
+		super.initialize(binding);
 		this.final_ = this.buildFinal(binding);
 		this.transient_ = this.buildTransient(binding);
 		this.public_ = this.buildPublic(binding);
@@ -52,9 +51,8 @@ abstract class SourceMember<M extends Member>
 	}
 
 	@Override
-	public void synchronizeWith(CompilationUnit astRoot) {
-		super.synchronizeWith(astRoot);
-		IBinding binding = this.annotatedElement.getBinding(astRoot);
+	protected void synchronizeWith(IBinding binding) {
+		super.synchronizeWith(binding);
 		this.syncFinal(this.buildFinal(binding));
 		this.syncTransient(this.buildTransient(binding));
 		this.syncPublic(this.buildPublic(binding));

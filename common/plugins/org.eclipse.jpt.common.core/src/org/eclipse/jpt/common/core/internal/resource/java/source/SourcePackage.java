@@ -1,16 +1,18 @@
 /*******************************************************************************
-  * Copyright (c) 2010 Red Hat, Inc.
+  * Copyright (c) 2010, 2012 Red Hat, Inc.
   * Distributed under license by Red Hat, Inc. All rights reserved.
   * This program is made available under the terms of the
   * Eclipse Public License v1.0 which accompanies this distribution,
   * and is available at http://www.eclipse.org/legal/epl-v10.html
   *
-  * Contributor:
+  * Contributors:
   *     Red Hat, Inc. - initial API and implementation
+  *     Oracle
   ******************************************************************************/
 package org.eclipse.jpt.common.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.IPackageBinding;
 import org.eclipse.jdt.core.dom.PackageDeclaration;
 import org.eclipse.jpt.common.core.internal.utility.jdt.JDTPackage;
@@ -55,9 +57,9 @@ public final class SourcePackage
 
 
 	@Override
-	public void initialize(CompilationUnit astRoot) {
-		super.initialize(astRoot);
-		this.name = this.buildName(astRoot);
+	protected void initialize(IBinding binding) {
+		super.initialize(binding);
+		this.name = this.buildName((IPackageBinding) binding);
 	}
 
 	// ******** JavaResourceAnnotatedElement implementation ********
@@ -82,8 +84,7 @@ public final class SourcePackage
 		}		
 	}
 
-	private String buildName(CompilationUnit astRoot) {
-		IPackageBinding binding = this.annotatedElement.getBinding(astRoot);
+	private String buildName(IPackageBinding binding) {
 		return (binding == null) ? null : binding.getName();
 	}
 
@@ -91,9 +92,9 @@ public final class SourcePackage
 	// ********** Java changes **********
 
 	@Override
-	public void synchronizeWith(CompilationUnit astRoot) {
-		super.synchronizeWith(astRoot);
-		this.syncName(this.buildName(astRoot));
+	protected void synchronizeWith(IBinding binding) {
+		super.synchronizeWith(binding);
+		this.syncName(this.buildName((IPackageBinding) binding));
 	}
 
 	@Override

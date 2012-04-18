@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.common.utility.internal;
 
 import java.io.PrintWriter;
 import java.io.Serializable;
+import java.util.HashMap;
 
 import org.eclipse.jpt.common.utility.JavaType;
 
@@ -35,8 +36,34 @@ public final class SimpleJavaType
 	private static final String BRACKETS = "[]"; //$NON-NLS-1$
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Cache the "standard" java types for performance 
+	 * Defining this as java.lang*, java.util*, java.sql.* for array dimensionality of 0
+	 * Make this a HashMap for performance, duplicate creation shouldn't be an issue.
+	 */
+	private static final HashMap<String, JavaType> stardardJavaTypesCache = new HashMap<String, JavaType>();
 
 	// ********** constructors **********
+
+	/**
+	 * Use this factory method for performance. Standard java types will be cached.
+	 */
+	public static JavaType buildSimpleJavaType(String elementTypeName, int arrayDepth) {
+		if (arrayDepth == 0) {
+			JavaType javaType = stardardJavaTypesCache.get(elementTypeName);
+			if (javaType != null) {
+				return javaType;
+			}
+			if (elementTypeName.startsWith("java.lang.") || //$NON-NLS-1$
+					elementTypeName.startsWith("java.util.") || //$NON-NLS-1$
+					elementTypeName.startsWith("java.sql.")) { //$NON-NLS-1$
+				javaType = new SimpleJavaType(elementTypeName, arrayDepth);
+				stardardJavaTypesCache.put(elementTypeName, javaType);
+				return javaType;
+			}
+		}
+		return new SimpleJavaType(elementTypeName, arrayDepth);
+	}
 
 	/**
 	 * Construct a Java type with the specified element type and array depth.

@@ -14,8 +14,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jpt.common.core.internal.utility.jdt.JDTMethodAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
@@ -47,7 +49,7 @@ final class SourceMethod
 			MethodSignature signature,
 			int occurrence,
 			JavaResourceCompilationUnit javaResourceCompilationUnit,
-			CompilationUnit astRoot) {
+			MethodDeclaration methodDeclaration) {
 		
 		MethodAttribute method = JDTMethodAttribute.newInstance(
 				declaringType,
@@ -57,7 +59,7 @@ final class SourceMethod
 				javaResourceCompilationUnit.getModifySharedDocumentCommandExecutor(),
 				javaResourceCompilationUnit.getAnnotationEditFormatter());
 		JavaResourceMethod jrm = new SourceMethod(parent, method);
-		jrm.initialize(astRoot);
+		jrm.initialize(methodDeclaration);
 		return jrm;
 	}
 	
@@ -65,14 +67,28 @@ final class SourceMethod
 	private SourceMethod(JavaResourceType parent, MethodAttribute method){
 		super(parent, method);
 	}
-	
-	
+
+	//call initialize(MethodDeclaration) now for performance
+	//trying to minimize API changes, this should be removed from the interface
+	//TODO other members of this hierarchy should have similar initialize methods
 	@Override
 	public void initialize(CompilationUnit astRoot) {
-		super.initialize(astRoot);
-		IMethodBinding binding = this.annotatedElement.getBinding(astRoot);
-		this.constructor = this.buildConstructor(binding);
-		this.parameterTypeNames.addAll(this.buildParameterTypeNames(binding));
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	protected void initialize(IBinding binding) {
+		super.initialize(binding);
+		this.constructor = this.buildConstructor((IMethodBinding) binding);
+		this.parameterTypeNames.addAll(this.buildParameterTypeNames((IMethodBinding) binding));
+	}
+
+	public void initialize(MethodDeclaration methodDeclaration) {
+		super.initialize(methodDeclaration);
+		IMethodBinding binding = methodDeclaration.resolveBinding();
+		this.initialize(binding.getReturnType());
+		this.initialize(binding);
+		
 	}
 	
 	
@@ -89,15 +105,29 @@ final class SourceMethod
 	public void resolveTypes(CompilationUnit astRoot) {
 		super.resolveTypes(astRoot);
 	}
-	
+
+	//call synchronizeWith(MethodDeclaration) now for performance
+	//trying to minimize API changes, this should be removed from the interface
+	//TODO other members of this hierarchy should have similar synchronizeWith methods
 	@Override
 	public void synchronizeWith(CompilationUnit astRoot) {
-		super.synchronizeWith(astRoot);
-		IMethodBinding binding = this.annotatedElement.getBinding(astRoot);
-		this.syncConstructor(this.buildConstructor(binding));
-		this.syncParameterTypeNames(this.buildParameterTypeNames(binding));
+		throw new UnsupportedOperationException();
 	}
-	
+
+	public void synchronizeWith(MethodDeclaration methodDeclaration) {
+		super.synchronizeWith(methodDeclaration);
+		IMethodBinding binding = methodDeclaration.resolveBinding();
+		this.synchronizeWith(binding.getReturnType());
+		this.synchronizeWith(binding);
+	}
+
+	@Override
+	public void synchronizeWith(IBinding binding) {
+		super.synchronizeWith(binding);
+		this.syncConstructor(this.buildConstructor((IMethodBinding) binding));
+		this.syncParameterTypeNames(this.buildParameterTypeNames((IMethodBinding) binding));
+	}
+
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.getMethodName());

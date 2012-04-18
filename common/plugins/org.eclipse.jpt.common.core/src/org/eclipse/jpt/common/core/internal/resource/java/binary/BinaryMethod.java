@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,6 +17,7 @@ import org.eclipse.jdt.core.ILocalVariable;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.ITypeParameter;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
@@ -58,7 +59,15 @@ final class BinaryMethod
 
 		this.setParameterTypeNames(this.buildParameterTypeNames());
 	}
-	
+
+	public void initialize(MethodDeclaration methodDeclaration) {
+		throw new UnsupportedOperationException();
+	}
+
+	public void synchronizeWith(MethodDeclaration methodDeclaration) {
+		throw new UnsupportedOperationException();
+	}
+
 	@Override
 	IMethod getMember() {
 		return (IMethod) super.getMember();

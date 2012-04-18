@@ -149,7 +149,7 @@ public class ASTTools {
 		JavaType[] parameterTypes = new JavaType[len];
 		for (int i = 0; i < len; i++) {
 			ITypeBinding type = parameters.get(i).getType().resolveBinding();
-			parameterTypes[i] = new SimpleJavaType(type.getQualifiedName(), type.getDimensions());
+			parameterTypes[i] = SimpleJavaType.buildSimpleJavaType(type.getQualifiedName(), type.getDimensions());
 		}
 		return parameterTypes;
 	}
