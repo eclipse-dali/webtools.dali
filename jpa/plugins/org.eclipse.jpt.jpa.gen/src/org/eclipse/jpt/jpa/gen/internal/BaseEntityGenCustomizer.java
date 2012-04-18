@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,8 @@ package org.eclipse.jpt.jpa.gen.internal;
 import java.io.File;
 import java.util.List;
 import java.util.Set;
+
+import org.eclipse.jpt.jpa.core.prefs.JpaEntityGenPreferencesManager;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.gen.internal.util.DTPUtil;
@@ -49,8 +51,10 @@ public class BaseEntityGenCustomizer extends ORMGenCustomizer
 	}
 
 	@Override
-	public void init(File file, Schema schema) {
-		super.init(file, schema);
+	public void init(File file, Schema schema, JpaEntityGenPreferencesManager preferencesManager) {
+		super.init(file, schema, preferencesManager);
+		
+		this.setProperty(ORMGenTable.PACKAGE, preferencesManager.getDefaultPackagePreference(), ANY_TABLE, null);
 	}
 
 	// -----------------------------------------

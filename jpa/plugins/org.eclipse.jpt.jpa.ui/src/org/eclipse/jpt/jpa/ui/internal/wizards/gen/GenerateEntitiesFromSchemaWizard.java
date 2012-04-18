@@ -40,6 +40,7 @@ import org.eclipse.jpt.common.ui.internal.dialogs.OptionalMessageDialog;
 import org.eclipse.jpt.jpa.core.EntityGeneratorDatabaseAnnotationNameBuilder;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.prefs.JpaEntityGenPreferencesManager;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.ForeignKey;
@@ -155,30 +156,32 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 	 * 
 	 * @param schema 
 	 */
-	public ORMGenCustomizer createORMGenCustomizer(Schema schema){
+	public ORMGenCustomizer createORMGenCustomizer(Schema schema) {
 		JpaPlatform jpaPlatform = this.jpaProject.getJpaPlatform();
-		ORMGenCustomizer obj = PlatformTools.getAdapter( jpaPlatform, ORMGenCustomizer.class );
+		ORMGenCustomizer obj = PlatformTools.getAdapter(jpaPlatform, ORMGenCustomizer.class);
+		JpaEntityGenPreferencesManager preferencesManager = this.buildEntityGenPreferencesManager();
 		if (obj != null) {
 			this.customizer = (ORMGenCustomizer) obj; 
-			this.customizer.init(getCustomizationFile(), schema);  
-		} else{
-			this.customizer = new BaseEntityGenCustomizer( );
-			this.customizer.init(getCustomizationFile(), schema);  
+			this.customizer.init(this.getCustomizationFile(), schema, preferencesManager);  
+		} 
+		else {
+			this.customizer = new BaseEntityGenCustomizer();
+			this.customizer.init(this.getCustomizationFile(), schema, preferencesManager);  
 		}
 
-		ORMGenTable newDefaultTable = getCustomizer().createGenTable(null);
-		if ( selection!=null && selection.getFirstElement() instanceof IPackageFragment ) {
-			IPackageFragment packageFrag = (IPackageFragment)selection.getFirstElement();
+		ORMGenTable newDefaultTable = this.getCustomizer().createGenTable(null);
+		if ( this.selection!=null && this.selection.getFirstElement() instanceof IPackageFragment ) {
+			IPackageFragment packageFrag = (IPackageFragment)this.selection.getFirstElement();
 			newDefaultTable.setPackage( packageFrag.getElementName() );
 			for (IPackageFragmentRoot root : JDTTools.getJavaSourceFolders(this.jpaProject.getJavaProject())) {
 				String srcFolder = root.getPath().toPortableString();
-				if( packageFrag.getPath().toPortableString().startsWith( srcFolder +'/' )){
+				if( packageFrag.getPath().toPortableString().startsWith( srcFolder +'/' )) {
 					newDefaultTable.setSourceFolder(srcFolder.substring(1));
 				}
 			}
 		}		
 		return this.customizer;
-	} 
+	}
 	
 	protected String getCustomizationFileName() {
 		ConnectionProfile profile = getProjectConnectionProfile();
@@ -212,7 +215,7 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 			return false;
 		}
 		try {
-			this.customizer.setDatabaseAnnotationNameBuilder( buildDatabaseAnnotationNameBuilder() );
+			this.customizer.setDatabaseAnnotationNameBuilder(this.buildDatabaseAnnotationNameBuilder());
 			this.customizer.save();
 		} catch (IOException e) {
 			JptJpaUiPlugin.log(e);
@@ -232,6 +235,10 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 		genEntitiesJob.schedule();
 	}
 	
+	private JpaEntityGenPreferencesManager buildEntityGenPreferencesManager() {
+		return new JpaEntityGenPreferencesManager(this.jpaProject.getProject());
+	}
+
 	// ********** generate entities job **********
 
 	public static class GenerateEntitiesJob extends WorkspaceJob {

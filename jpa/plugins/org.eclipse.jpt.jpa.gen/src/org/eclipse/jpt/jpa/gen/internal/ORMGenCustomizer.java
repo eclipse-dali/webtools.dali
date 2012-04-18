@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,6 +26,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.jpa.core.prefs.JpaEntityGenPreferencesManager;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.Table;
@@ -177,7 +178,7 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 	 * The file is created if necessary when the <code>save</code> 
 	 * method is called.
 	 */
-	public void init( File file, Schema schema) {
+	public void init( File file, Schema schema, JpaEntityGenPreferencesManager preferencesManager) {
 		this.mSchema = schema;
 		mFile = file;
 		

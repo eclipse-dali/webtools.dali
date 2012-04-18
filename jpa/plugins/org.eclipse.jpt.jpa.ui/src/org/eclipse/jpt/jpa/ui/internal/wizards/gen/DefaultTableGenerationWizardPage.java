@@ -11,6 +11,7 @@
 package org.eclipse.jpt.jpa.ui.internal.wizards.gen;
 
 import java.util.List;
+
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -33,9 +34,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.prefs.JpaEntityGenPreferencesManager;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenTable;
 import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
@@ -68,14 +67,11 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 	
 	protected TableGenPanel defaultTableGenPanel ;
 
-	private JpaEntityGenPreferencesManager prefrencesManager;
-
 	public DefaultTableGenerationWizardPage(JpaProject jpaProject) {
 		super(true, "DefaultTableGenerationWizardPage"); //$NON-NLS-1$
 		this.jpaProject = jpaProject;
 		setTitle(JptUiEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_title);
 		setDescription( JptUiEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_desc);
-		this.prefrencesManager = buildEntityGenPreferencesManager();
 	}
 	
 	
@@ -137,10 +133,7 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 				this.setSuperInterfaces(this.defaultsTable.getImplements(), true);
 				IPackageFragmentRoot root = getSourceFolder(this.defaultsTable.getSourceFolder());
 				String initPackageName = this.getPackageText();
-				if(initPackageName.length() == 0 ) {
-					if(StringTools.stringIsEmpty(this.defaultsTable.getPackage())) {
-						this.defaultsTable.setPackage(this.prefrencesManager.getDefaultPackagePreference());
-					}
+				if(initPackageName.length() == 0) {
 					this.setPackageName(root, this.defaultsTable.getPackage());
 				}
 				this.setPackageFragmentRoot(root, true/*canBeModified*/);
@@ -323,10 +316,6 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 		GenerateEntitiesFromSchemaWizard wizard = (GenerateEntitiesFromSchemaWizard) this.getWizard();
 		return wizard.getCustomizer();
 	}	
-	
-    private JpaEntityGenPreferencesManager buildEntityGenPreferencesManager() {
-		return new JpaEntityGenPreferencesManager(this.jpaProject.getProject());
-	}
 
 	@Override
     public final void performHelp() {
