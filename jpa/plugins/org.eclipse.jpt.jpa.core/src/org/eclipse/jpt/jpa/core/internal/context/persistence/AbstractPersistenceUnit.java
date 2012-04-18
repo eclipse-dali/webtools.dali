@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -132,6 +133,15 @@ public abstract class AbstractPersistenceUnit
 
 	protected String jtaDataSource;
 	protected String nonJtaDataSource;
+
+	/**
+	 * Big performance enhancement! 
+	 * Use with caution since this contains no duplicates (e.g. class is listed in 2 different mappings files)
+	 * Rebuilt at the *beginning* of {@link #update()}
+	 * 
+	 * @see #rebuildPersistentTypeMap()
+	 */
+	protected final Hashtable<String, PersistentType> persistentTypeMap = new Hashtable<String, PersistentType>();
 
 	protected final ContextListContainer<MappingFileRef, XmlMappingFileRef> specifiedMappingFileRefContainer;
 
@@ -252,6 +262,10 @@ public abstract class AbstractPersistenceUnit
 	@Override
 	public void update() {
 		super.update();
+
+		//Rebuild the persistent type map first. I *think* if anything changes to cause 
+		//this to be out of sync another update would be triggered by that change.
+		this.rebuildPersistentTypeMap();
 
 		this.setDefaultTransactionType(this.buildDefaultTransactionType());
 
@@ -1691,7 +1705,8 @@ public abstract class AbstractPersistenceUnit
 	public Iterable<PersistentType> getPersistentTypes() {
 		return new CompositeIterable<PersistentType>(
 				this.getMappingFilePersistentTypes(),
-				this.getJavaPersistentTypes()
+				this.getClassRefPersistentTypes(),
+				this.getJarFilePersistentTypes()
 			);
 	}
 
@@ -1756,28 +1771,35 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	public PersistentType getPersistentType(String typeName) {
-		if (typeName == null) {
-			return null;
-		}
-		// search order is significant(?)
-		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
-			PersistentType persistentType = mappingFileRef.getPersistentType(typeName);
-			if (persistentType != null) {
-				return persistentType;
+		return typeName == null ? null : this.persistentTypeMap.get(typeName);
+	}
+
+	protected void rebuildPersistentTypeMap() {
+		synchronized (this.persistentTypeMap) {
+			this.persistentTypeMap.clear();
+
+			//order is significant - last in wins
+			for (JarFileRef jarFileRef : this.getJarFileRefs()) {
+				for (PersistentType persistentType : jarFileRef.getPersistentTypes()) {
+					if (persistentType.getName() != null) {
+						this.persistentTypeMap.put(persistentType.getName(), persistentType);
+					}
+				}
+			}
+			for (ClassRef classRef : this.getClassRefs()) {
+				PersistentType persistentType = classRef.getJavaPersistentType();
+				if (persistentType != null && persistentType.getName() != null) {
+					this.persistentTypeMap.put(persistentType.getName(), persistentType);
+				}
+			}
+			for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
+				for (PersistentType persistentType : mappingFileRef.getPersistentTypes()) {
+					if (persistentType.getName() != null) {
+						this.persistentTypeMap.put(persistentType.getName(), persistentType);
+					}
+				}
 			}
 		}
-		for (ClassRef classRef : this.getClassRefs()) {
-			if (classRef.isFor(typeName)) {
-				return classRef.getJavaPersistentType();
-			}
-		}
-		for (JarFileRef jarFileRef : this.getJarFileRefs()) {
-			PersistentType persistentType = jarFileRef.getPersistentType(typeName);
-			if (persistentType != null) {
-				return persistentType;
-			}
-		}
-		return null;
 	}
 
 	/**
