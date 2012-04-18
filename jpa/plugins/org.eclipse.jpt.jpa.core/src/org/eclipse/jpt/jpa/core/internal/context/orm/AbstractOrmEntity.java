@@ -356,6 +356,9 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected Iterable<Entity> buildDescendants() {
+		if (!isRootEntity()) {
+			return EmptyIterable.instance();
+		}
 		return new FilteringIterable<Entity>(this.getPersistenceUnit().getEntities()) {
 			@Override
 			protected boolean accept(Entity entity) {
@@ -1439,7 +1442,16 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	protected boolean tableNameIsValid_(String tableName) {
 		return this.connectionProfileIsActive() ?
 				(this.resolveDbTable(tableName) != null) :
-				CollectionTools.contains(this.getAllAssociatedTableNames(), tableName);
+				this.tableNameIsAssociatedTable(tableName);
+	}
+
+	protected boolean tableNameIsAssociatedTable(String tableName) {
+		//short-circuit for performance during validation, likely that the table is the primary table
+		//i think the real answer is not to be validating in this case, but i believe that would involve some api changes up in NamedColumnValidator
+		if (tableName != null && tableName.equals(this.getPrimaryTableName())) {
+			return true;
+		}
+		return CollectionTools.contains(this.getAllAssociatedTableNames(), tableName);
 	}
 
 
@@ -1470,8 +1482,12 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	@Override
 	public org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName) {
-		// matching database objects and identifiers is database platform-specific
-		return this.getDataSource().selectTableForIdentifier(this.getAllAssociatedDbTables(), tableName);
+		//short-circuit for performance during validation, no reason to build all the iterables in getallAssociatedDbTables()
+		if (getDataSource().connectionProfileIsActive()) {
+			// matching database objects and identifiers is database platform-specific
+			return this.getDataSource().selectTableForIdentifier(this.getAllAssociatedDbTables(), tableName);
+		}
+		return null;
 	}
 
 	/**
