@@ -44,6 +44,6 @@
 
 	<!-- This target runs the test suite. Any actions that need to happen -->
 	<!-- after all the tests have been run should go here. -->
-	<target name="run" depends="init, suite1, suite2, cleanup">
+	<target name="run" depends="init, suite1, suite2, suite3, cleanup">
 	</target>
 </project>
