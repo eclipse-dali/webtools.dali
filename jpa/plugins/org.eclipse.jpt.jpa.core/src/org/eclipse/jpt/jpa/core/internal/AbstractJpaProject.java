@@ -541,7 +541,7 @@ public abstract class AbstractJpaProject
 
 	@Override
 	public JpaFile getJpaFile(IFile file) {
-		return this.jpaFiles.get(file);
+		return file == null ? null : this.jpaFiles.get(file);
 	}
 
 	/**
