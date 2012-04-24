@@ -1,11 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle and others. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
  *
  * Contributors:
  *     Oracle - initial API and implementation
+ *     IBM Corporation - modified to fix bug 377064
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.selection;
 
@@ -13,6 +14,7 @@ import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.IPostSelectionProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.JpaFile;
@@ -49,7 +51,9 @@ public class TextEditorSelectionParticipant
 		this.editorInputListener = new EditorInputListener();
 		this.textEditor.addPropertyListener(this.editorInputListener);
 		this.editorSelectionListener = new EditorSelectionListener();
-		this.getPostSelectionProvider().addPostSelectionChangedListener(this.editorSelectionListener);
+		IPostSelectionProvider postSelectionProvider = this.getPostSelectionProvider();
+		if (postSelectionProvider != null)
+			postSelectionProvider.addPostSelectionChangedListener(this.editorSelectionListener);
 		this.currentSelection = this.calculateSelection();
 	}
 
@@ -86,7 +90,9 @@ public class TextEditorSelectionParticipant
 
 	public void dispose() {
 		this.textEditor.removePropertyListener(this.editorInputListener);
-		this.getPostSelectionProvider().removePostSelectionChangedListener(this.editorSelectionListener);
+		IPostSelectionProvider postSelectionProvider = this.getPostSelectionProvider();
+		if (postSelectionProvider != null)
+			postSelectionProvider.removePostSelectionChangedListener(this.editorSelectionListener);
 	}
 
 
@@ -141,7 +147,10 @@ public class TextEditorSelectionParticipant
 	}
 
 	protected IPostSelectionProvider getPostSelectionProvider() {
-		return (IPostSelectionProvider) this.textEditor.getSelectionProvider();
+		ISelectionProvider selectionProvider = this.textEditor.getSelectionProvider();
+		if (selectionProvider instanceof IPostSelectionProvider)
+			return (IPostSelectionProvider) selectionProvider;
+		return null;
 	}
 
 
