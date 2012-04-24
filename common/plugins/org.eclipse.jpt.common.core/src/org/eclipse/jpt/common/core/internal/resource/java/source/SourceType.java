@@ -170,9 +170,13 @@ final class SourceType
 		// and, vice-versa, a removed type can "unresolve" a parameter type
 		this.syncMethods(astRoot);
 
-		for (JavaResourceMethod method : this.getMethods()) {
-			method.resolveTypes(astRoot);
-		}
+		// this is commented out because the above syncMethods() calls 
+		// JavaResourceMethod.sysynchronizeWith(MethodDeclaration)
+		// on all the methods. resolveTypes() is a subset of synchronizeWith()
+		// so it is redundant and expensive to do both of these.
+		//for (JavaResourceMethod method : this.getMethods()) {
+		//	method.resolveTypes(astRoot);
+		//}
 		for (JavaResourceType type : this.getTypes()) {
 			type.resolveTypes(astRoot);
 		}
@@ -509,8 +513,8 @@ final class SourceType
 		return new LiveCloneIterable<JavaResourceMethod>(this.methods);
 	}
 
-	private JavaResourceMethod getMethod(MethodSignature signature, int occurrence) {
-		for (JavaResourceMethod method : this.getMethods()) {
+	private static JavaResourceMethod getMethod(Collection<JavaResourceMethod> methods, MethodSignature signature, int occurrence) {
+		for (JavaResourceMethod method : methods) {
 			if (method.isFor(signature, occurrence)) {
 				return method;
 			}
@@ -544,7 +548,7 @@ final class SourceType
 			MethodSignature signature = ASTTools.buildMethodSignature(methodDeclaration);
 			int occurrence = counters.increment(signature);
 
-			JavaResourceMethod method = this.getMethod(signature, occurrence);
+			JavaResourceMethod method = getMethod(methodsToRemove, signature, occurrence);
 			if (method == null) {
 				this.addMethod(this.buildMethod(signature, occurrence, methodDeclaration));
 			} else {
