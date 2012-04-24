@@ -290,7 +290,7 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 	}
 
 	protected JpaXmlResource getOrmXmlResource(String xmlName) {
-		return getTargetJpaProject().getMappingFileXmlResource(new Path(xmlName));
+		return getTargetJpaProject()== null ? null : getTargetJpaProject().getMappingFileXmlResource(new Path(xmlName));
 	}
 	
 	/**

@@ -273,7 +273,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
         }
 	}
 
-	private void run(IWorkspaceRunnable runnable) {
+	protected void run(IWorkspaceRunnable runnable) {
 		IWorkspace ws = ResourcesPlugin.getWorkspace();
 		try {
 			ws.run(
@@ -298,7 +298,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
      * 
      * @return CreateFilterTemplateModel
      */
-    private CreateEntityTemplateModel createTemplateModel() {
+    protected CreateEntityTemplateModel createTemplateModel() {
         CreateEntityTemplateModel templateModel = new CreateEntityTemplateModel(model);
         return templateModel;
     }
@@ -407,7 +407,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 		protected final IWorkspace workspace;
 		protected final Command command;
 
-		DaliRunnable(IWorkspace workspace, Command command) {
+		public DaliRunnable(IWorkspace workspace, Command command) {
 			super();
 			this.workspace = workspace;
 			this.command = command;

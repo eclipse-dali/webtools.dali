@@ -403,6 +403,55 @@ public class EclipseLinkUiMessages {
 	public static String EclipselinkPreferencePage_logLevelLabel;
 	public static String EclipselinkPreferencePage_browse;
 
+	// New Dynamic Entity
+	public static String EclipseLinkDynamicEntityWizard_applyEmbeddedIdMappingInfo;
+	public static String EclipseLinkDynamicEntityWizard_bothIDAndEmbeddedIDDefinedError;
+	public static String EclipseLinkDynamicEntityWizard_browseBttonLabel;
+	public static String EclipseLinkDynamicEntityWizard_dynamicTypeExistsError;
+	public static String EclipseLinkDynamicEntityWizard_dynamicTypeWithDiffCaseExistsError;
+	public static String EclipseLinkDynamicEntityWizard_invalidArgument;
+	public static String EclipseLinkDynamicEntityWizard_invalidPKType;
+	public static String EclipseLinkDynamicEntityWizard_multipleEmbeddedIDsDefinedError;
+	public static String EclipseLinkDynamicEntityWizard_persistenceUnitNotFoundError;
+	public static String EclipseLinkDynamicEntityWizard_title;
+	public static String EclipseLinkDynamicEntityWizard_typeExistsWarning;
+	public static String EclipseLinkDynamicEntityWizard_typeNotInProjectClasspath;
+	public static String EclipseLinkDynamicEntityWizard_typeWithDiffCaseExistsWarning;
+
+	public static String DynamicEntityClassWizardPage_chooseXMLDialog_title;
+	public static String DynamicEntityClassWizardPage_chooseXMLDialog_msg;
+	public static String DynamicEntityClassWizardPage_classNameLabel;
+	public static String DynamicEntityClassWizardPage_defaultPackageWarning;
+	public static String DynamicEntityClassWizardPage_desc;
+	public static String DynamicEntityClassWizardPage_emptyString;
+	public static String DynamicEntityClassWizardPage_entityName;
+	public static String DynamicEntityClassWizardPage_invalidXMLName;
+	public static String DynamicEntityClassWizardPage_javaPackageLabel;
+	public static String DynamicEntityClassWizardPage_packageSelectionDialog_desc;
+	public static String DynamicEntityClassWizardPage_packageSelectionDialog_msg;
+	public static String DynamicEntityClassWizardPage_packageSelectionDialog_title;
+	public static String DynamicEntityClassWizardPage_projectNameLabel;
+	public static String DynamicEntityClassWizardPage_tableName;
+	public static String DynamicEntityClassWizardPage_tableNameGroup;
+	public static String DynamicEntityClassWizardPage_title;
+	public static String DynamicEntityClassWizardPage_useDefult;
+	public static String DynamicEntityClassWizardPage_xmlGroup;
+	public static String DynamicEntityClassWizardPage_xmlNameLabel;
+	public static String DynamicEntityClassWizardPage_xmlNotListedError;
+
+	public static String DynamicEntityFieldsWizardPage_addButtonLabel;
+	public static String DynamicEntityFieldsWizardPage_addDynamicEntityFieldDialog_title;
+	public static String DynamicEntityFieldsWizardPage_attributeTypeColumnLabel;
+	public static String DynamicEntityFieldsWizardPage_desc;
+	public static String DynamicEntityFieldsWizardPage_duplicateEntityFieldsError;
+	public static String DynamicEntityFieldsWizardPage_editButtonLabel;
+	public static String DynamicEntityFieldsWizardPage_entityFieldGroup;
+	public static String DynamicEntityFieldsWizardPage_mappingTypeColumnLabel;
+	public static String DynamicEntityFieldsWizardPage_nameColumnLabel;
+	public static String DynamicEntityFieldsWizardPage_noJpaProjects;
+	public static String DynamicEntityFieldsWizardPage_title;
+	public static String DynamicEntityFieldsWizardPage_removeButtonLabel;
+
 	public static String AddVirtualAttributeDialog_title;
 	public static String AddVirtualAttributeDialog_nameLabel;
 	public static String AddVirtualAttributeDialog_mappingLabel;

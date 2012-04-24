@@ -33,6 +33,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -66,10 +67,10 @@ import com.ibm.icu.text.Collator;
 public class AddVirtualAttributeDialog extends StatusDialog
 {
 	private EclipseLinkOrmPersistentType persistentType;
-	private Text nameText;
-	private ComboViewer mappingCombo;
+	protected Text nameText;
+	protected ComboViewer mappingCombo;
 	
-	private Text attributeTypeText;
+	protected Text attributeTypeText;
 	
 	private Button attributeTypeBrowseButton;
 
@@ -104,38 +105,20 @@ public class AddVirtualAttributeDialog extends StatusDialog
 
 		this.mappingCombo = new ComboViewer(createCombo(composite, 2));
 		this.mappingCombo.getCombo().setFocus();
-		this.mappingCombo.setContentProvider(
-			new IStructuredContentProvider() {
-				public void dispose() {
-					//nothing to dispose
-				}
-
-				public Object[] getElements(Object inputElement) {
-					return ArrayTools.array(
-						CollectionTools.sort(
-							((JpaPlatformUi) inputElement).attributeMappingUiDefinitions(AddVirtualAttributeDialog.this.persistentType.getResourceType()),
-							getProvidersComparator()));
-				}
-
-				public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-					//input will not change
-				}
-			});
+		this.mappingCombo.setContentProvider(this.buildComboContentProvider());
 		this.mappingCombo.setLabelProvider(
-			new LabelProvider() {
-				@Override
-				public String getText(Object element) {
-					return ((MappingUiDefinition<?,?>) element).getLabel();
-				}
-			});
+				new LabelProvider() {
+					@Override
+					public String getText(Object element) {
+						return ((MappingUiDefinition<?,?>) element).getLabel();
+					}
+				});
 		this.mappingCombo.addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
 				validate();
 			}
 		});
-		JpaPlatformUi jpaPlatformUi = (JpaPlatformUi) this.persistentType.getJpaPlatform().getAdapter(JpaPlatformUi.class);
-		this.mappingCombo.setInput(jpaPlatformUi);
-		this.mappingCombo.getCombo().select(0);  // select Basic to begin
+		this.mappingCombo.setInput(this.getJpaPlatformUi());
 		
 		createLabel(composite, 1, EclipseLinkUiMessages.AddVirtualAttributeDialog_attributeTypeLabel);
 			
@@ -168,6 +151,33 @@ public class AddVirtualAttributeDialog extends StatusDialog
 		validate();
 
 		return dialogArea;
+	}
+
+	protected JpaPlatformUi getJpaPlatformUi() {
+		return (JpaPlatformUi) this.getJpaProject().getJpaPlatform().getAdapter(JpaPlatformUi.class);
+	}
+
+	protected IStructuredContentProvider buildComboContentProvider() {
+		return 	new IStructuredContentProvider() {
+			public void dispose() {
+				//nothing to dispose
+			}
+
+			public Object[] getElements(Object inputElement) {
+				return ArrayTools.array(
+					CollectionTools.sort(
+						((JpaPlatformUi) inputElement).attributeMappingUiDefinitions(AddVirtualAttributeDialog.this.getJptResourceType()),
+						getProvidersComparator()));
+			}
+
+			public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+				//input will not change
+			}
+		};
+	}
+
+	protected JptResourceType getJptResourceType() {
+		return this.persistentType.getResourceType();
 	}
 
 	protected Comparator<MappingUiDefinition<?,?>> getProvidersComparator() {
@@ -251,7 +261,7 @@ public class AddVirtualAttributeDialog extends StatusDialog
 		return button;
 	}
 	
-	private JpaProject getJpaProject() {
+	protected JpaProject getJpaProject() {
 		return this.persistentType.getJpaProject();
 	}
 	

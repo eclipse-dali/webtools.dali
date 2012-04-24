@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0, which accompanies this distribution and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
@@ -63,4 +63,8 @@ public interface EclipseLinkHelpContextIds {
 	public static final String TENANT_DISCRIMINATOR_COLUMN_DISCRIMINATOR_TYPE = PREFIX + "tenantDiscriminatorColumn_discriminatorType";
 	public static final String TENANT_DISCRIMINATOR_COLUMN_PRIMARY_KEY = PREFIX + "tenantDiscriminatorColumn_primaryKey";
 	public static final String TENANT_DISCRIMINATOR_COLUMN_LENGTH = PREFIX + "tenantDiscriminatorColumn_length";
+
+	//Dynamic Entity Wizard
+	public static final String DYNAMIC_ENTITY_CLASS = PREFIX + "dynamicEntityClass";
+	public static final String DYNAMIC_ENTITY_FIELD = PREFIX + "dynamicEntityField";
 }

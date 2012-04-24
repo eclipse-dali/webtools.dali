@@ -22,6 +22,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.Signature;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jst.j2ee.internal.common.operations.INewJavaClassDataModelProperties;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
@@ -276,7 +277,7 @@ public class CreateEntityTemplateModel {
 	 */
 	public boolean isEntityNameSet() {
 		boolean result = false;
-		if (!getClassName().equals(getEntityName())) {
+		if (!StringTools.stringIsEmpty(getEntityName()) && !getClassName().equals(getEntityName())) {
 			result = true;
 		}
 		return result;

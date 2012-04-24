@@ -45,6 +45,7 @@ import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.context.MappingFileRoot;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaGenerator;
@@ -65,6 +66,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
@@ -577,6 +579,39 @@ public class EclipseLinkPersistenceUnit
 	protected String buildDefaultSetMethod(EclipseLinkPersistenceUnitDefaults defaults) {
 		String setMethod = (defaults == null) ? null : defaults.getSetMethod();
 		return (setMethod != null) ? setMethod : null;
+	}
+
+	public Iterable<String> getEclipseLinkDynamicPersistentTypeNames() {
+		return new TransformationIterable<EclipseLinkOrmPersistentType, String>(this.getEclipseLinkDynamicPersistentTypes()) {
+			@Override
+			protected String transform(EclipseLinkOrmPersistentType type) {
+				return type.getName();
+			}
+		};
+	}
+
+	public Iterable<EclipseLinkOrmPersistentType> getEclipseLinkDynamicPersistentTypes() {
+		return new FilteringIterable<EclipseLinkOrmPersistentType>(this.getEclipseLinkOrmPersistentTypes()) {
+					@Override
+					protected boolean accept(EclipseLinkOrmPersistentType pType) {
+						return pType.isDynamic();
+					}
+				};
+	}
+
+	public Iterable<EclipseLinkOrmPersistentType> getEclipseLinkOrmPersistentTypes() {
+		return new TransformationIterable<PersistentType, EclipseLinkOrmPersistentType>(
+				new FilteringIterable<PersistentType>(this.getMappingFilePersistentTypes()) {
+					@Override
+					protected boolean accept(PersistentType pType) {
+						return pType instanceof EclipseLinkOrmPersistentType;
+					}
+				}) {
+			@Override
+			protected EclipseLinkOrmPersistentType transform(PersistentType pType) {
+				return (EclipseLinkOrmPersistentType) pType;
+			}
+		};
 	}
 
 	// ********** validation **********

@@ -9,6 +9,8 @@
 			<accessrule kind="accessible" pattern="org/eclipse/jpt/common/core/**"/>
 			<accessrule kind="accessible" pattern="org/eclipse/jpt/common/ui/**"/>
 			<accessrule kind="accessible" pattern="org/eclipse/jpt/common/utility/**"/>
+			<accessrule kind="accessible" pattern="org/eclipse/jst/**"/>
+			<accessrule kind="accessible" pattern="org/eclipse/wst/**"/>
 		</accessrules>
 	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
