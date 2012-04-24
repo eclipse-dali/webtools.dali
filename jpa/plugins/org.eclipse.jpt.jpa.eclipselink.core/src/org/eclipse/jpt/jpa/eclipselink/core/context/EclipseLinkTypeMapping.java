@@ -9,17 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.Converter;
-import org.eclipse.jpt.jpa.core.context.ConvertibleMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.jpa2.context.ConvertibleKeyMapping2_0;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -59,13 +52,10 @@ public interface EclipseLinkTypeMapping
 	Transformer<AttributeMapping, Iterable<EclipseLinkConverter>> ATTRIBUTE_MAPPING_CONVERTER_TRANSFORMER =
 		new Transformer<AttributeMapping, Iterable<EclipseLinkConverter>>() {
 			public Iterable<EclipseLinkConverter> transform(AttributeMapping attributeMapping) {
-			List<EclipseLinkConverter> converters = new ArrayList<EclipseLinkConverter>(); 
 				if (attributeMapping instanceof EclipseLinkConvertibleMapping) {
-				Iterable<EclipseLinkConverter> mappingConverters = 
-						((EclipseLinkConvertibleMapping) attributeMapping).getConverterContainer().getConverters();
-				CollectionTools.addAll(converters, mappingConverters);
+					return ((EclipseLinkConvertibleMapping) attributeMapping).getConverterContainer().getConverters();
 				}
-			return converters;
+				return EmptyIterable.instance();
 			}
 		};
 }
