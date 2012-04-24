@@ -28,13 +28,13 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatform;
 import org.eclipse.ltk.core.refactoring.participants.ISharableParticipant;
 import org.eclipse.ltk.core.refactoring.participants.RefactoringArguments;
 import org.eclipse.ltk.core.refactoring.participants.RenameProcessor;
@@ -178,7 +178,7 @@ public class JpaDeletePackageOrFolderParticipant
 				@Override
 				protected boolean accept(IFile file) {
 					if (javaProject.isOnClasspath(file)) {
-						IContentType contentType = PlatformTools.getContentType(file);
+						IContentType contentType = GenericJpaPlatform.getContentType(file);
 						return contentType != null && contentType.isKindOf(JptJpaCorePlugin.MAPPING_FILE_CONTENT_TYPE);
 					}
 					return false;

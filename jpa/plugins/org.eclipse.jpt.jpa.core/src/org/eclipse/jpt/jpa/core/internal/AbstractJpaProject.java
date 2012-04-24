@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.internal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -47,7 +48,6 @@ import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.JptResourceModelListener;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryTypeCache;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceTypeCompilationUnit;
-import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.internal.utility.command.NotifyingRepeatingJobCommandWrapper;
 import org.eclipse.jpt.common.core.internal.utility.command.RepeatingJobCommandWrapper;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
@@ -138,12 +138,14 @@ public abstract class AbstractJpaProject
 	protected final JpaPlatform jpaPlatform;
 
 	/**
+	 * key - IFile associated with the JpaFile.
+	 * value - the JpaFile
 	 * The JPA files associated with the JPA project:
 	 *     persistence.xml
 	 *     orm.xml
 	 *     java
 	 */
-	protected final Vector<JpaFile> jpaFiles = new Vector<JpaFile>();
+	protected final Hashtable<IFile, JpaFile> jpaFiles = new Hashtable<IFile, JpaFile>();
 
 	/**
 	 * The "external" Java resource compilation units (source). Populated upon demand.
@@ -521,7 +523,7 @@ public abstract class AbstractJpaProject
 	// ********** JPA files **********
 
 	public Iterable<JpaFile> getJpaFiles() {
-		return new LiveCloneIterable<JpaFile>(this.jpaFiles);  // read-only
+		return new LiveCloneIterable<JpaFile>(this.jpaFiles.values());  // read-only
 	}
 
 	public int getJpaFilesSize() {
@@ -539,12 +541,7 @@ public abstract class AbstractJpaProject
 
 	@Override
 	public JpaFile getJpaFile(IFile file) {
-		for (JpaFile jpaFile : this.getJpaFiles()) {
-			if (jpaFile.getFile().equals(file)) {
-				return jpaFile;
-			}
-		}
-		return null;
+		return this.jpaFiles.get(file);
 	}
 
 	/**
@@ -580,7 +577,7 @@ public abstract class AbstractJpaProject
 			return null;
 		}
 		jpaFile.getResourceModel().addResourceModelListener(this.resourceModelListener);
-		this.jpaFiles.add(jpaFile);
+		this.jpaFiles.put(file, jpaFile);
 		return jpaFile;
 	}
 
@@ -588,7 +585,7 @@ public abstract class AbstractJpaProject
 	 * <code>.java</code> or <code>.jar</code>
 	 */
 	protected boolean fileIsJavaRelated(IFile file) {
-		IContentType contentType = PlatformTools.getContentType(file);
+		IContentType contentType = getContentType(file);
 		return (contentType != null) && this.contentTypeIsJavaRelated(contentType);
 	}
 
@@ -639,9 +636,10 @@ public abstract class AbstractJpaProject
 	 */
 	protected void removeJpaFile(JpaFile jpaFile) {
 		jpaFile.getResourceModel().removeResourceModelListener(this.resourceModelListener);
-		if ( ! this.removeItemFromCollection(jpaFile, this.jpaFiles, JPA_FILES_COLLECTION)) {
+		if (this.jpaFiles.remove(jpaFile.getFile()) == null) {
 			throw new IllegalArgumentException(jpaFile.toString());
 		}
+		this.fireItemRemoved(JPA_FILES_COLLECTION, jpaFile);
 	}
 
 
@@ -1705,7 +1703,7 @@ public abstract class AbstractJpaProject
 			return this.addJpaFileMaybe(file);
 		}
 
-		if (jpaFile.getContentType().equals(PlatformTools.getContentType(file))) {
+		if (jpaFile.getContentType().equals(getContentType(file))) {
 			// content has not changed - ignore
 			return false;
 		}
@@ -1782,7 +1780,7 @@ public abstract class AbstractJpaProject
 	}
 
 	protected boolean externalFileAdded(IFile file) {
-		IContentType contentType = PlatformTools.getContentType(file);
+		IContentType contentType = getContentType(file);
 		if (contentType == null) {
 			return false;
 		}
@@ -1796,7 +1794,7 @@ public abstract class AbstractJpaProject
 	}
 
 	protected boolean externalFileRemoved(IFile file) {
-		IContentType contentType = PlatformTools.getContentType(file);
+		IContentType contentType = getContentType(file);
 		if (contentType == null) {
 			return false;
 		}
@@ -1807,6 +1805,10 @@ public abstract class AbstractJpaProject
 			return this.externalJavaResourceTypeCache.removeTypes(file);
 		}
 		return false;
+	}
+
+	protected static IContentType getContentType(IFile file) {
+		return GenericJpaPlatform.getContentType(file);
 	}
 
 	protected void resolveExternalJavaTypes() {

@@ -10,8 +10,11 @@
 package org.eclipse.jpt.jpa.core.internal;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.common.core.AnnotationProvider;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
@@ -107,8 +110,36 @@ public class GenericJpaPlatform
 	// ********** JPA file/resource models **********
 
 	public JpaFile buildJpaFile(JpaProject jpaProject, IFile file) {
-		IContentType contentType = PlatformTools.getContentType(file);
+		IContentType contentType = getContentType(file);
 		return (contentType == null) ? null : this.buildJpaFile(jpaProject, file, contentType);
+	}
+
+	//TODO make this a non-static method on JpaPlatform
+	//I have done this because our code PlatformTools.getContentType(IFile) opens an InputStream
+	//on the IFile in order to find the content type for our xml mapping files. This is expensive
+	//when called for every file in the project and is only needed for xml mapping files. For now
+	//I am attempting to find the content type just based on the file name first and short-circuiting
+	//if it is a .java or .class file. If we made this api on the JpaPlatform we could potentially
+	//check if it is XML content type and then only do the more expensive InputStream look-up
+	//in that case. Because we are extensible we can't be 100% certain that a "mapping file" 
+	//has xml content type so we would allow this to be overridable.
+	public static IContentType getContentType(IFile file) {
+		IContentType contentType = Platform.getContentTypeManager().findContentTypeFor(file.getName());
+		if (contentType != null) {
+			if (contentType.equals(JptCommonCorePlugin.JAVA_SOURCE_CONTENT_TYPE)) {
+				return contentType;
+			}
+			if (contentType.equals(JAVA_CLASS_CONTENT_TYPE)) {
+				return contentType;
+			}
+		}
+		return PlatformTools.getContentType(file);
+	}
+	//TODO JptCommonCorePlugin.JAVA_CLASS_CONTENT_TYPE after API freeze
+	private static final IContentType JAVA_CLASS_CONTENT_TYPE = getContentType(JavaCore.PLUGIN_ID + ".javaClass");//$NON-NLS-1$
+	
+	private static IContentType getContentType(String contentType) {
+		return Platform.getContentTypeManager().getContentType(contentType);
 	}
 
 	protected JpaFile buildJpaFile(JpaProject jpaProject, IFile file, IContentType contentType) {
