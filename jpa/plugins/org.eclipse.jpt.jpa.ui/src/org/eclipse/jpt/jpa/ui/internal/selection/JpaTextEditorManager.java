@@ -14,6 +14,7 @@ import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.IPostSelectionProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.ui.internal.jface.SelectionChangedAdapter;
@@ -28,8 +29,8 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.ui.JpaFileModel;
@@ -100,7 +101,10 @@ class JpaTextEditorManager
 		super();
 		this.textEditor = textEditor;
 		this.textEditor.addPropertyListener(this.textEditorInputListener);
-		this.getTextEditorSelectionProvider().addPostSelectionChangedListener(this.textEditorSelectionListener);
+		IPostSelectionProvider selProvider = this.getTextEditorSelectionProvider();
+		if (selProvider != null) {
+			selProvider.addPostSelectionChangedListener(this.textEditorSelectionListener);
+		}
 
 		this.jpaFileModel = this.buildJpaFileModel();
 		this.jpaFileModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.jpaFileListener);
@@ -271,6 +275,7 @@ class JpaTextEditorManager
 	private JpaStructureNode getTextEditorJpaSelection() {
 		// the selection provider can be null if the text editor was disposed
 		// before we get a chance to [asynchronously] handle the event
+		// (or if the text editor does not have a *post* selection provider)
 		IPostSelectionProvider selProvider = this.getTextEditorSelectionProvider();
 		return (selProvider == null) ? null : this.getTextEditorJpaSelection(selProvider.getSelection());
 	}
@@ -315,7 +320,8 @@ class JpaTextEditorManager
 	}
 
 	private IPostSelectionProvider getTextEditorSelectionProvider() {
-		return (IPostSelectionProvider) this.textEditor.getSelectionProvider();
+		ISelectionProvider selProvider = this.textEditor.getSelectionProvider();
+		return (selProvider instanceof IPostSelectionProvider) ? (IPostSelectionProvider) selProvider : null;
 	}
 
 	private void execute(Runnable runnable) {
@@ -325,7 +331,10 @@ class JpaTextEditorManager
 	public void dispose() {
 		this.jpaFileModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.jpaFileListener);
 		this.jpaSelectionModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.jpaSelectionListener);
-		this.getTextEditorSelectionProvider().removePostSelectionChangedListener(this.textEditorSelectionListener);
+		IPostSelectionProvider selProvider = this.getTextEditorSelectionProvider();
+		if (selProvider != null) {
+			selProvider.removePostSelectionChangedListener(this.textEditorSelectionListener);
+		}
 		this.textEditor.removePropertyListener(this.textEditorInputListener);
 	}
 
