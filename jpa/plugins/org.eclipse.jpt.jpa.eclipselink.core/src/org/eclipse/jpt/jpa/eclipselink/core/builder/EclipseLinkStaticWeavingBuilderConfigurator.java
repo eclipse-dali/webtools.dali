@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.LoggingLevel;
  *  Configures and coordinates StaticWeaving builder behavior for the project.
  *  Also handles the builder preferences.
  */
-public class StaticWeavingBuilderConfigurator extends JpaPreferencesManager
+public class EclipseLinkStaticWeavingBuilderConfigurator extends JpaPreferencesManager
 {
     public static final String BUILDER_ID = EclipselinkStaticWeavingBuilder.BUILDER_ID;
 
@@ -39,7 +39,7 @@ public class StaticWeavingBuilderConfigurator extends JpaPreferencesManager
 
 	// ********** constructors **********
 
-	public StaticWeavingBuilderConfigurator(IProject project) {
+	public EclipseLinkStaticWeavingBuilderConfigurator(IProject project) {
 		
 		super(project);
 	}

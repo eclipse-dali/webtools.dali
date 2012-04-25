@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.metadata;
 import junit.framework.Assert;
 
 import org.eclipse.jpt.jpa.core.tests.internal.metadata.JpaMetadataTests;
-import org.eclipse.jpt.jpa.eclipselink.core.builder.StaticWeavingBuilderConfigurator;
+import org.eclipse.jpt.jpa.eclipselink.core.builder.EclipseLinkStaticWeavingBuilderConfigurator;
 
 /**
  *  JpaStaticWeavingBuilderMetadataTests
@@ -25,7 +25,7 @@ public class EclipseLinkStaticWeavingBuilderMetadataTests extends JpaMetadataTes
 	public static final String SOURCE_TEST_VALUE = "bin"; //$NON-NLS-1$
 	public static final String LOG_LEVEL_TEST_VALUE = "ALL"; //$NON-NLS-1$
 
-	protected StaticWeavingBuilderConfigurator projectPrefsManager;
+	protected EclipseLinkStaticWeavingBuilderConfigurator projectPrefsManager;
 	
 	// ********** constructor **********
 
@@ -39,7 +39,7 @@ public class EclipseLinkStaticWeavingBuilderMetadataTests extends JpaMetadataTes
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		this.projectPrefsManager = new StaticWeavingBuilderConfigurator(this.getJavaProject().getProject());
+		this.projectPrefsManager = new EclipseLinkStaticWeavingBuilderConfigurator(this.getJavaProject().getProject());
 		Assert.assertNotNull(this.projectPrefsManager);
 	}
 

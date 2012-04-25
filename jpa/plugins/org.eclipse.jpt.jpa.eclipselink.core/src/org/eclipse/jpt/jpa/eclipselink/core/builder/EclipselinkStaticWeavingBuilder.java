@@ -23,7 +23,7 @@ public class EclipselinkStaticWeavingBuilder extends IncrementalProjectBuilder
 {
     public static final String BUILDER_ID = JptJpaEclipseLinkCorePlugin.PLUGIN_ID + ".builder"; //$NON-NLS-1$
 
-	private StaticWeavingBuilderConfigurator configurator;
+	private EclipseLinkStaticWeavingBuilderConfigurator configurator;
 	
 	// ********** overrides **********
 	
@@ -47,7 +47,7 @@ public class EclipselinkStaticWeavingBuilder extends IncrementalProjectBuilder
 	@Override
 	protected void startupOnInitialize() {
 		super.startupOnInitialize();
-		this.configurator = new StaticWeavingBuilderConfigurator(this.getProject());
+		this.configurator = new EclipseLinkStaticWeavingBuilderConfigurator(this.getProject());
 	}
 	
 	@Override

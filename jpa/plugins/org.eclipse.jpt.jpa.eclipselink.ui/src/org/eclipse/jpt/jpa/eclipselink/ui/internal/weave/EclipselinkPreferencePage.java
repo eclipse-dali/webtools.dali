@@ -14,7 +14,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jpa.eclipselink.core.builder.StaticWeavingBuilderConfigurator;
+import org.eclipse.jpt.jpa.eclipselink.core.builder.EclipseLinkStaticWeavingBuilderConfigurator;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.LoggingLevel;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.swt.SWT;
@@ -34,7 +34,7 @@ import org.eclipse.ui.dialogs.PropertyPage;
 
 public class EclipselinkPreferencePage extends PropertyPage {
 
-	private StaticWeavingBuilderConfigurator configurator;
+	private EclipseLinkStaticWeavingBuilderConfigurator configurator;
 	private StaticWeavingComposite staticWeavingComposite;
 	
 	// ********** constructors **********
@@ -65,7 +65,7 @@ public class EclipselinkPreferencePage extends PropertyPage {
 
 	@Override
 	protected Control createContents(Composite parent) {
-		this.configurator = new StaticWeavingBuilderConfigurator(this.getProject());
+		this.configurator = new EclipseLinkStaticWeavingBuilderConfigurator(this.getProject());
 		
 		Composite composite = new Composite(parent, SWT.NULL);
 		composite.setLayout(new GridLayout());
