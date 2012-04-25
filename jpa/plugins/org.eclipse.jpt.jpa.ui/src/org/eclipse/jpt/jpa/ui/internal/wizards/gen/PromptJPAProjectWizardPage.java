@@ -61,12 +61,12 @@ public class PromptJPAProjectWizardPage extends WizardPage {
 		Label label = new Label( composite, SWT.NONE );
 		label.setText( JptUiEntityGenMessages.GenerateEntitiesWizard_selectJPAProject );
 		
-		projTableViewer = new TableViewer(composite, SWT.SINGLE | SWT.BORDER | SWT.V_SCROLL | SWT.VIRTUAL);		
-		projTable = projTableViewer.getTable();
+		this.projTableViewer = new TableViewer(composite, SWT.SINGLE | SWT.BORDER | SWT.V_SCROLL | SWT.VIRTUAL);		
+		this.projTable = this.projTableViewer.getTable();
 		GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true );
-		projTable.setLayoutData(gd);
+		this.projTable.setLayoutData(gd);
 				
-		projTable.addSelectionListener(new SelectionAdapter() {
+		this.projTable.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				handleJpaProjectSelection();
@@ -79,22 +79,22 @@ public class PromptJPAProjectWizardPage extends WizardPage {
 			
 		});
 		
-		projTableViewer = new TableViewer(projTable);
-		projTableViewer.setLabelProvider(new ProjectTableLabelProvider());
-		projTableViewer.setContentProvider(new ProjectTableContentProvider());
-		fillJpaProjectList();
-		setControl( composite );
-		validate();
+		this.projTableViewer = new TableViewer(this.projTable);
+		this.projTableViewer.setLabelProvider(new ProjectTableLabelProvider());
+		this.projTableViewer.setContentProvider(new ProjectTableContentProvider());
+		this.fillJpaProjectList();
+		this.setControl( composite );
+		this.validate();
 	}
 	
 	protected void handleJpaProjectSelection() {
-		if (projTable.getSelectionIndex() != -1) {
-			TableItem item =  projTable.getItem(projTable.getSelectionIndex());
+		if (this.projTable.getSelectionIndex() != -1) {
+			TableItem item =  this.projTable.getItem(this.projTable.getSelectionIndex());
 			String projName = item.getText(0);
 			IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projName);
-			JpaProject jpaProj = this.getJpaProject( project );
-			((GenerateEntitiesFromSchemaWizard)getWizard()).setJpaProject(jpaProj);
-			validate();
+			JpaProject jpaProj = this.getJpaProject(project);
+			((GenerateEntitiesFromSchemaWizard)this.getWizard()).setJpaProject(jpaProj);
+			this.validate();
 		}
 	}
 	

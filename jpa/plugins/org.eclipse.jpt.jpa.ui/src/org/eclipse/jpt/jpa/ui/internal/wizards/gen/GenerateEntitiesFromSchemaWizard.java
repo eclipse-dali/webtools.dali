@@ -475,17 +475,17 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 	}
 	
 	public void setJpaProject(JpaProject jpaProject) {
-		if (this.jpaProject == null) {
+		if ( ! this.projectIsValidSelection(this.jpaProject)) {
 			this.jpaProject = jpaProject;
-			IWizardPage currentPage = getContainer().getCurrentPage();
+			IWizardPage currentPage = this.getContainer().getCurrentPage();
 			if (this.projectPage != null && currentPage.equals(this.projectPage)) {
-				addMainPages();
+				this.addMainPages();
 			}
 		}
 	}
 
 	public Schema getDefaultSchema() {
-		return getJpaProject().getDefaultDbSchema();
+		return this.getJpaProject().getDefaultDbSchema();
 	}
 
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
