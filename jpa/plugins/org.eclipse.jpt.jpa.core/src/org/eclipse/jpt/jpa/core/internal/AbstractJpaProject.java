@@ -652,7 +652,7 @@ public abstract class AbstractJpaProject
 
 	protected IType findType(String typeName) {
 		try {
-			return this.getJavaProject().findType(typeName);
+			return typeName.startsWith(".") ? null : this.getJavaProject().findType(typeName);
 		} catch (JavaModelException ex) {
 			return null;  // ignore exception?
 		}
