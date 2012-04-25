@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
+import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
 
 /**
@@ -24,18 +25,26 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
  * @since 3.0
  */
 public interface XmlNs
-	extends 
-		JaxbContextNode
-{
+		extends JavaContextNode {
+	
+	
 	XmlNsAnnotation getResourceXmlNs();
-
-	// ********** namespaceURI **********
+	
+	
+	// ***** namespaceURI *****
+	
+	String NAMESPACE_URI_PROPERTY = "namespaceURI"; //$NON-NLS-1$
+	
 	String getNamespaceURI();
+	
 	void setNamespaceURI(String namespaceURI);
-		String NAMESPACE_URI_PROPERTY = "namespaceURI"; //$NON-NLS-1$
-
-	// ********** prefix **********
+	
+	
+	// ***** prefix *****
+	
+	String PREFIX_PROPERTY = "prefix"; //$NON-NLS-1$
+	
 	String getPrefix();
+	
 	void setPrefix(String prefix);
-		String PREFIX_PROPERTY = "prefix"; //$NON-NLS-1$
 }

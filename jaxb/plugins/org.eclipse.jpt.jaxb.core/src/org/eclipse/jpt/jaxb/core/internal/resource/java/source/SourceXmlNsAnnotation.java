@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. All rights reserved.
+ *  Copyright (c) 2010, 2012  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -84,7 +84,7 @@ public class SourceXmlNsAnnotation
 	}
 	
 	
-	// **************** namespace *********************************************
+	// ***** namespace *****
 	
 	public String getNamespaceURI() {
 		return this.namespaceURI;
@@ -108,11 +108,15 @@ public class SourceXmlNsAnnotation
 	}
 	
 	public TextRange getNamespaceURITextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.namespaceURIDeclarationAdapter, astRoot);
+		return getElementTextRange(this.namespaceURIDeclarationAdapter, astRoot);
+	}
+	
+	public boolean namespaceURITouches(int pos, CompilationUnit astRoot) {
+		return elementTouches(this.namespaceURIDeclarationAdapter, pos, astRoot);
 	}
 	
 	
-	// **************** prefix ************************************************
+	// ***** prefix *****
 	
 	public String getPrefix() {
 		return this.prefix;
@@ -136,11 +140,15 @@ public class SourceXmlNsAnnotation
 	}
 	
 	public TextRange getPrefixTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.prefixDeclarationAdapter, astRoot);
+		return getElementTextRange(this.prefixDeclarationAdapter, astRoot);
+	}
+	
+	public boolean prefixTouches(int pos, CompilationUnit astRoot) {
+		return elementTouches(this.prefixDeclarationAdapter, pos, astRoot);
 	}
 	
 	
-	// **************** NestableAnnotation impl *******************************
+	// ***** NestableAnnotation impl *****
 	
 	@Override
 	public void moveAnnotation(int newIndex) {
