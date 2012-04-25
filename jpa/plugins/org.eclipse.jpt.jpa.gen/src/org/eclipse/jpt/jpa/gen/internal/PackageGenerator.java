@@ -473,6 +473,7 @@ public class PackageGenerator {
 	private String generateXmlHeaderFooter(VelocityEngine ve, String templateName) throws Exception{
 		StringWriter stringWriter = new StringWriter();
 		VelocityContext context = new VelocityContext();
+		context.put("customizer", getCustomizer());
 		ve.mergeTemplate(templateName, context, stringWriter);
 		return stringWriter.toString();
 	}

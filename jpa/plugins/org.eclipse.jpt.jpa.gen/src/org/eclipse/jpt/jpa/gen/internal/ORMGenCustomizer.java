@@ -103,6 +103,7 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 	private static final String DEFAULT_XML_MAPPING_FILE = "META-INF/eclipselink-orm.xml";
 	private static final String XML_MAPPING_FILE = "xmlMappingFileName";
 	
+	private static final String PLATFORM_VERSION_PROPERTY = "platformVersion";
 	
 	//-----------------------------------------
 	//---- abstract methods
@@ -373,10 +374,13 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 	 */
 	public String getXmlMappingFile() {
 		String xmlMappingFile = getProperty(XML_MAPPING_FILE, null, null);
-		return xmlMappingFile == null ? DEFAULT_XML_MAPPING_FILE : xmlMappingFile; //$NON-NLS-1$
+		return xmlMappingFile == null ? DEFAULT_XML_MAPPING_FILE : xmlMappingFile;
 	}
 	
-	
+	public void setPlatformVersion(String platformVersion) {
+		setProperty(PLATFORM_VERSION_PROPERTY, platformVersion, null, null); 
+	}
+
 	/**
 	 * Called when the table user selection is changed in the 
 	 * generation wizard.
@@ -625,6 +629,18 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 	
 	public boolean isJDK1_5() {
 		return true;
+	}
+	
+	/* Get the platform version
+	 * 
+	 */
+	public String getPlatformVersion() {
+		return getProperty(PLATFORM_VERSION_PROPERTY, null, null);
+	}
+	
+	public String getPlatformVersionWithUnderscore() {
+		String version = getProperty(PLATFORM_VERSION_PROPERTY, null, null);
+		return version.replace('.', '_');
 	}
 	
 	//-----------------------------------------

@@ -32,6 +32,7 @@ import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.eclipselink.core.platform.EclipseLinkPlatform;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiPlugin;
+import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
 import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.gen.GenerateEntitiesFromSchemaWizard;
 import org.eclipse.jpt.jpa.ui.internal.wizards.gen.PromptJPAProjectWizardPage;
@@ -132,6 +133,14 @@ public class GenerateDynamicEntitiesFromSchemaWizard extends GenerateEntitiesFro
 		return jpaProject.getJpaPlatform().getDescription().getGroup().getId().
 			equals(EclipseLinkPlatform.GROUP.getId());
 	}
+	
+	@Override
+	public ORMGenCustomizer createORMGenCustomizer(Schema schema) {
+		ORMGenCustomizer customizer = super.createORMGenCustomizer(schema);
+		customizer.setPlatformVersion(getJpaProject().getJpaPlatform().getJpaVersion().getVersion());
+		return customizer;
+	}
+	
 	
 	// ********** open xml mapping file job **********
 	
