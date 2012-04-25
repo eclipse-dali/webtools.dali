@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.common.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
@@ -47,24 +48,24 @@ abstract class BinaryAbstractType
 
 	protected BinaryAbstractType(JavaResourceNode parent, IType type) {
 		super(parent, new TypeAdapter(type));
-		this.name = this.buildName();
-		this.qualifiedName = this.buildQualifiedName();
-		this.packageName = this.buildPackageName();
-		this.declaringTypeName = this.buildDeclaringTypeName();
-		this.memberType = this.buildMemberType();
+		this.name = this.buildName(type);
+		this.qualifiedName = this.buildQualifiedName(type);
+		this.packageName = this.buildPackageName(type);
+		this.declaringTypeName = this.buildDeclaringTypeName(type);
+		this.memberType = this.buildMemberType(type);
 	}
 
 
 	// ********** overrides **********
 
 	@Override
-	public void update() {
-		super.update();
-		this.setName(this.buildName());
-		this.setQualifiedName(this.buildQualifiedName());
-		this.setPackageName(this.buildPackageName());
-		this.setDeclaringTypeName(this.buildDeclaringTypeName());
-		this.setMemberType(this.buildMemberType());
+	protected void update(IMember member) {
+		super.update(member);
+		this.setName(this.buildName((IType) member));
+		this.setQualifiedName(this.buildQualifiedName((IType) member));
+		this.setPackageName(this.buildPackageName((IType) member));
+		this.setDeclaringTypeName(this.buildDeclaringTypeName((IType) member));
+		this.setMemberType(this.buildMemberType((IType) member));
 	}
 
 	@Override
@@ -86,8 +87,8 @@ abstract class BinaryAbstractType
 		this.firePropertyChanged(NAME_PROPERTY, old, name);
 	}
 
-	private String buildName() {
-		return this.getMember().getElementName();
+	private String buildName(IType type) {
+		return type.getElementName();
 	}
 
 	// ***** qualified name
@@ -101,8 +102,8 @@ abstract class BinaryAbstractType
 		this.firePropertyChanged(QUALIFIED_NAME_PROPERTY, old, qualifiedName);
 	}
 
-	private String buildQualifiedName() {
-		return this.getMember().getFullyQualifiedName('.');  // no parameters are included here
+	private String buildQualifiedName(IType type) {
+		return type.getFullyQualifiedName('.');  // no parameters are included here
 	}
 
 	// ***** package
@@ -116,8 +117,8 @@ abstract class BinaryAbstractType
 		this.firePropertyChanged(PACKAGE_NAME_PROPERTY, old, packageName);
 	}
 
-	private String buildPackageName() {
-		return this.getMember().getPackageFragment().getElementName();
+	private String buildPackageName(IType type) {
+		return type.getPackageFragment().getElementName();
 	}
 
 	public boolean isIn(IPackageFragment packageFragment) {
@@ -144,8 +145,8 @@ abstract class BinaryAbstractType
 		this.firePropertyChanged(DECLARING_TYPE_NAME_PROPERTY, old, declaringTypeName);
 	}
 
-	private String buildDeclaringTypeName() {
-		IType declaringType = this.getMember().getDeclaringType();
+	private String buildDeclaringTypeName(IType type) {
+		IType declaringType = type.getDeclaringType();
 		return (declaringType == null) ? null : declaringType.getFullyQualifiedName('.');  // no parameters are included here
 	}
 
@@ -161,9 +162,9 @@ abstract class BinaryAbstractType
 		this.firePropertyChanged(MEMBER_TYPE_PROPERTY, old, memberType);
 	}
 
-	private boolean buildMemberType() {
+	private boolean buildMemberType(IType type) {
 		try {
-			return this.getMember().isMember();
+			return type.isMember();
 		} catch (JavaModelException ex) {
 			JptCommonCorePlugin.log(ex);
 			return false;

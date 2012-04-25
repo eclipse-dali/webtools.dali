@@ -43,26 +43,29 @@ abstract class BinaryMember
 
 	public BinaryMember(JavaResourceNode parent, Adapter adapter) {
 		super(parent, adapter);
-		this.final_ = this.buildFinal();
-		this.transient_ = this.buildTransient();
-		this.public_ = this.buildPublic();
-		this.static_ = this.buildStatic();
-		this.protected_ = this.buildProtected();
+		IMember member = adapter.getElement();
+		this.final_ = this.buildFinal(member);
+		this.transient_ = this.buildTransient(member);
+		this.public_ = this.buildPublic(member);
+		this.static_ = this.buildStatic(member);
+		this.protected_ = this.buildProtected(member);
 	}
-
 
 	// ********** updating **********
 
 	@Override
 	public void update() {
 		super.update();
-		this.setFinal(this.buildFinal());
-		this.setTransient(this.buildTransient());
-		this.setPublic(this.buildPublic());
-		this.setStatic(this.buildStatic());
-		this.setProtected(this.buildProtected());
+		this.update(this.getMember());
 	}
 
+	protected void update(IMember member) {
+		this.setFinal(this.buildFinal(member));
+		this.setTransient(this.buildTransient(member));
+		this.setPublic(this.buildPublic(member));
+		this.setStatic(this.buildStatic(member));
+		this.setProtected(this.buildProtected(member));		
+	}
 
 	// ********** simple state **********
 
@@ -77,9 +80,9 @@ abstract class BinaryMember
 		this.firePropertyChanged(FINAL_PROPERTY, old, final_);
 	}
 
-	private boolean buildFinal() {
+	private boolean buildFinal(IMember member) {
 		try {
-			return Flags.isFinal(this.getMember().getFlags());
+			return Flags.isFinal(member.getFlags());
 		} catch (JavaModelException ex) {
 			JptCommonCorePlugin.log(ex);
 			return false;
@@ -97,9 +100,9 @@ abstract class BinaryMember
 		this.firePropertyChanged(TRANSIENT_PROPERTY, old, transient_);
 	}
 
-	private boolean buildTransient() {
+	private boolean buildTransient(IMember member) {
 		try {
-			return Flags.isTransient(this.getMember().getFlags());
+			return Flags.isTransient(member.getFlags());
 		} catch (JavaModelException ex) {
 			JptCommonCorePlugin.log(ex);
 			return false;
@@ -117,9 +120,9 @@ abstract class BinaryMember
 		this.firePropertyChanged(PUBLIC_PROPERTY, old, public_);
 	}
 
-	private boolean buildPublic() {
+	private boolean buildPublic(IMember member) {
 		try {
-			return Flags.isPublic(this.getMember().getFlags());
+			return Flags.isPublic(member.getFlags());
 		} catch (JavaModelException ex) {
 			JptCommonCorePlugin.log(ex);
 			return false;
@@ -137,9 +140,9 @@ abstract class BinaryMember
 		this.firePropertyChanged(STATIC_PROPERTY, old, static_);
 	}
 
-	private boolean buildStatic() {
+	private boolean buildStatic(IMember member) {
 		try {
-			return Flags.isStatic(this.getMember().getFlags());
+			return Flags.isStatic(member.getFlags());
 		} catch (JavaModelException ex) {
 			JptCommonCorePlugin.log(ex);
 			return false;
@@ -157,9 +160,9 @@ abstract class BinaryMember
 		this.firePropertyChanged(PROTECTED_PROPERTY, old, protected_);
 	}
 
-	private boolean buildProtected() {
+	private boolean buildProtected(IMember member) {
 		try {
-			return Flags.isProtected(this.getMember().getFlags());
+			return Flags.isProtected(member.getFlags());
 		} catch (JavaModelException ex) {
 			JptCommonCorePlugin.log(ex);
 			return false;

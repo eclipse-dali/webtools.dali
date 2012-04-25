@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Vector;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.ILocalVariable;
+import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.ITypeParameter;
 import org.eclipse.jdt.core.JavaModelException;
@@ -51,13 +52,12 @@ final class BinaryMethod
 	}
 	
 	// ***** overrides *****
-	
-	@Override
-	public void update() {
-		super.update();
-		this.setConstructor(this.buildConstructor());
 
-		this.setParameterTypeNames(this.buildParameterTypeNames());
+	@Override
+	protected void update(IMember member) {
+		super.update(member);
+		this.setConstructor(this.buildConstructor((IMethod) member));
+		this.setParameterTypeNames(this.buildParameterTypeNames((IMethod) member));
 	}
 
 	public void initialize(MethodDeclaration methodDeclaration) {
@@ -95,9 +95,9 @@ final class BinaryMethod
 		return this.parameterTypeNames.size();
 	}
 	
-	private List<String> buildParameterTypeNames() {
+	private List<String> buildParameterTypeNames(IMethod method) {
 		ArrayList<String> names = new ArrayList<String>();
-		for (ILocalVariable parameter : this.getParameters(this.getMember())) {
+		for (ILocalVariable parameter : this.getParameters(method)) {
 			names.add(parameter.getElementName());//TODO is this right?
 		}
 		return names;
@@ -129,9 +129,9 @@ final class BinaryMethod
 		this.firePropertyChanged(CONSTRUCTOR_PROPERTY, old, isConstructor);
 	}
 	
-	private boolean buildConstructor() {
+	private boolean buildConstructor(IMethod method) {
 		try {
-			return this.getMember().isConstructor();
+			return method.isConstructor();
 		} catch (JavaModelException ex) {
 			JptCommonCorePlugin.log(ex);
 			return false;

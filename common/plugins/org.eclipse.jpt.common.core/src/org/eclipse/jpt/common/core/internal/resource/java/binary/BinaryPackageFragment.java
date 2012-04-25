@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.common.core.internal.resource.java.binary;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Vector;
+import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragment;
@@ -22,6 +23,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceClassFile;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragment;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
@@ -56,29 +58,44 @@ final class BinaryPackageFragment
 	private Collection<JavaResourceClassFile> buildClassFiles() {
 		IJavaElement[] children = this.getJDTChildren();
 		ArrayList<JavaResourceClassFile> result = new ArrayList<JavaResourceClassFile>(children.length);
+		Collection<String> annotationNames = CollectionTools.collection(this.getAnnotationProvider().getAnnotationNames());
 		for (IJavaElement child : children) {
 			IClassFile jdtClassFile = (IClassFile) child;
 			IType jdtType = jdtClassFile.getType();
-			if (typeIsRelevant(jdtType)) {
-				JavaResourceClassFile classFile = new BinaryClassFile(this, jdtClassFile, jdtType);
-				if (classFile.getType().isAnnotated()) {  // we only hold annotated types
-					result.add(classFile);
-				}
+			if (typeIsRelevant(jdtType, annotationNames)) {
+				result.add(new BinaryClassFile(this, jdtClassFile, jdtType));
 			}
 		}
 		return result;
 	}
 
 	//we will limit to classes, interfaces, and enums. Annotation types will be ignored.
-	static boolean typeIsRelevant(IType type) {
+	static boolean typeIsRelevant(IType type, Collection<String> annotationNames) {
 		try {
 			return (type != null)
 					&& type.exists()
-					&& (type.isClass() || type.isInterface()|| type.isEnum());
+					&& (type.isClass() || type.isInterface() || type.isEnum())
+					&& typeHasAnnotations(type, annotationNames); // we only hold annotated types
 		}
 		catch (JavaModelException e) {
 			return false;
 		}
+	}
+
+	static boolean typeHasAnnotations(IType type, Collection<String> annotationNames) {
+		IAnnotation[] annotations;
+		try {
+			annotations = type.getAnnotations();
+		}
+		catch (JavaModelException e) {
+			return false;
+		}
+		for (IAnnotation annotation : annotations) {
+			if (annotationNames.contains(annotation.getElementName())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	// ********** JarResourceNode implementation **********

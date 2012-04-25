@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Vector;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.ITypeParameter;
 import org.eclipse.jdt.core.JavaModelException;
@@ -58,7 +59,8 @@ abstract class BinaryAttribute
 
 	protected BinaryAttribute(JavaResourceType parent, Adapter adapter) {
 		super(parent, adapter);
-		this.modifiers = this.buildModifiers();
+		IMember member = adapter.getElement();
+		this.modifiers = this.buildModifiers(member);
 		
 		String typeSignature = getTypeSignature();
 		Iterable<ITypeParameter> typeParameters = getAdapter().getTypeParameters();
@@ -68,7 +70,7 @@ abstract class BinaryAttribute
 		this.typeArrayComponentTypeName = buildTypeArrayComponentTypeName(typeSignature, typeParameters);
 		this.typeTypeArgumentNames.addAll(buildTypeTypeArgumentNames(typeSignature, typeParameters));
 		
-		IType type = getType();
+		IType type = this.getType(member.getJavaProject());
 		// if the type is an array, then the following will be false or empty
 		this.typeIsInterface = this.buildTypeIsInterface(type);
 		this.typeIsEnum = this.buildTypeIsEnum(type);
@@ -76,13 +78,11 @@ abstract class BinaryAttribute
 		this.typeInterfaceNames.addAll(this.buildTypeInterfaceNames(type));
 	}
 
-
 	// ******** overrides ********
 
 	@Override
 	public void update() {
 		super.update();
-		this.setModifiers(this.buildModifiers());
 		
 		String typeSignature = getTypeSignature();
 		Iterable<ITypeParameter> typeParameters = getAdapter().getTypeParameters();
@@ -91,8 +91,15 @@ abstract class BinaryAttribute
 		setTypeArrayDimensionality(buildTypeArrayDimensionality(typeSignature));
 		setTypeArrayComponentTypeName(buildTypeArrayComponentTypeName(typeSignature, typeParameters));
 		setTypeTypeArgumentNames(buildTypeTypeArgumentNames(typeSignature, typeParameters));
+	}
+
+	
+	@Override
+	protected void update(IMember member) {
+		super.update(member);
+		this.setModifiers(this.buildModifiers(member));
 		
-		IType type = this.getType();  // if the type is an array, then the following will be false or empty
+		IType type = this.getType(member.getJavaProject());  // if the type is an array, then the following will be false or empty
 		this.setTypeIsInterface(this.buildTypeIsInterface(type));
 		this.setTypeIsEnum(this.buildTypeIsEnum(type));
 		this.setTypeSuperclassNames(this.buildTypeSuperclassNames(type));
@@ -151,9 +158,9 @@ abstract class BinaryAttribute
 	/**
 	 * zero seems like a reasonable default...
 	 */
-	private int buildModifiers() {
+	private int buildModifiers(IMember member) {
 		try {
-			return this.getMember().getFlags();
+			return member.getFlags();
 		} catch (JavaModelException ex) {
 			JptCommonCorePlugin.log(ex);
 			return 0;
@@ -318,7 +325,7 @@ abstract class BinaryAttribute
 		for (String interfaceSignature : this.getSuperInterfaceTypeSignatures(type)) {
 			String interfaceName = convertTypeSignatureToTypeName(interfaceSignature);
 			names.add(interfaceName);
-			IType interfaceType = this.findType(interfaceName);
+			IType interfaceType = this.findType(interfaceName, type.getJavaProject());
 			if (interfaceType != null) {
 				this.addInterfaceNamesTo(interfaceType, names);  // recurse
 			}
@@ -360,7 +367,7 @@ abstract class BinaryAttribute
 	}
 
 	private IType findSuperclass(IType type) {
-		return this.findTypeBySignature(this.getSuperclassSignature(type));
+		return this.findTypeBySignature(this.getSuperclassSignature(type), type.getJavaProject());
 	}
 
 	private String getSuperclassSignature(IType type) {
@@ -381,25 +388,21 @@ abstract class BinaryAttribute
 		}
 	}
 
-	private IType findTypeBySignature(String typeSignature) {
-		return (typeSignature == null) ? null : this.findType(convertTypeSignatureToTypeName_(typeSignature));
+	private IType findTypeBySignature(String typeSignature, IJavaProject javaProject) {
+		return (typeSignature == null) ? null : findType(convertTypeSignatureToTypeName_(typeSignature), javaProject);
 	}
 
-	private IType getType() {
-		return (this.typeName == null) ? null : this.findType(this.typeName);
+	private IType getType(IJavaProject javaProject) {
+		return (this.typeName == null) ? null : findType(this.typeName, javaProject);
 	}
 
-	private IType findType(String fullyQualifiedName) {
+	private static  IType findType(String fullyQualifiedName, IJavaProject javaProject) {
 		try {
-			return this.getJavaProject().findType(fullyQualifiedName);
+			return javaProject.findType(fullyQualifiedName);
 		} catch (JavaModelException ex) {
 			JptCommonCorePlugin.log(ex);
 			return null;
 		}
-	}
-
-	private IJavaProject getJavaProject() {
-		return this.getMember().getJavaProject();
 	}
 
 

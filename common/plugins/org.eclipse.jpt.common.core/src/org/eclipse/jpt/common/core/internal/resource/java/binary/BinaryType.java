@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.Vector;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
@@ -53,12 +54,12 @@ final class BinaryType
 
 	BinaryType(JavaResourceNode parent, IType type) {
 		super(parent, type);
-		this.superclassQualifiedName = this.buildSuperclassQualifiedName();
-		this.abstract_ = this.buildAbstract();
-		this.hasNoArgConstructor = this.buildHasNoArgConstructor();
-		this.hasPrivateNoArgConstructor = this.buildHasPrivateNoArgConstructor();
-		this.fields = this.buildFields();
-		this.methods = this.buildMethods();
+		this.superclassQualifiedName = this.buildSuperclassQualifiedName(type);
+		this.abstract_ = this.buildAbstract(type);
+		this.hasNoArgConstructor = this.buildHasNoArgConstructor(type);
+		this.hasPrivateNoArgConstructor = this.buildHasPrivateNoArgConstructor(type);
+		this.fields = this.buildFields(type);
+		this.methods = this.buildMethods(type);
 	}
 
 	public Kind getKind() {
@@ -69,23 +70,23 @@ final class BinaryType
 	// ********** overrides **********
 
 	@Override
-	public void update() {
-		super.update();
-		this.setSuperclassQualifiedName(this.buildSuperclassQualifiedName());
-		this.setAbstract(this.buildAbstract());
-		this.setHasNoArgConstructor(this.buildHasNoArgConstructor());
-		this.setHasPrivateNoArgConstructor(this.buildHasPrivateNoArgConstructor());
-		this.updateFields();
-		this.updateMethods();
+	protected void update(IMember member) {
+		super.update(member);
+		this.setSuperclassQualifiedName(this.buildSuperclassQualifiedName((IType) member));
+		this.setAbstract(this.buildAbstract((IType) member));
+		this.setHasNoArgConstructor(this.buildHasNoArgConstructor((IType) member));
+		this.setHasPrivateNoArgConstructor(this.buildHasPrivateNoArgConstructor((IType) member));
+		this.updateFields((IType) member);
+		this.updateMethods((IType) member);
 	}
 
 	// TODO
-	private void updateFields() {
+	private void updateFields(IType type) {
 		throw new UnsupportedOperationException();
 	}
 
 	// TODO
-	private void updateMethods() {
+	private void updateMethods(IType type) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -104,13 +105,13 @@ final class BinaryType
 		this.firePropertyChanged(SUPERCLASS_QUALIFIED_NAME_PROPERTY, old, superclassQualifiedName);
 	}
 
-	private String buildSuperclassQualifiedName() {
-		return convertTypeSignatureToTypeName(this.getSuperclassTypeSignature());
+	private String buildSuperclassQualifiedName(IType type) {
+		return convertTypeSignatureToTypeName(this.getSuperclassTypeSignature(type));
 	}
 
-	private String getSuperclassTypeSignature() {
+	private String getSuperclassTypeSignature(IType type) {
 		try {
-			return this.getMember().getSuperclassTypeSignature();
+			return type.getSuperclassTypeSignature();
 		} catch (JavaModelException ex) {
 			JptCommonCorePlugin.log(ex);
 			return null;
@@ -129,9 +130,9 @@ final class BinaryType
 		this.firePropertyChanged(ABSTRACT_PROPERTY, old, abstract_);
 	}
 
-	private boolean buildAbstract() {
+	private boolean buildAbstract(IType type) {
 		try {
-			return Flags.isAbstract(this.getMember().getFlags());
+			return Flags.isAbstract(type.getFlags());
 		} catch (JavaModelException ex) {
 			JptCommonCorePlugin.log(ex);
 			return false;
@@ -149,13 +150,13 @@ final class BinaryType
 		this.firePropertyChanged(NO_ARG_CONSTRUCTOR_PROPERTY, old, hasNoArgConstructor);
 	}
 
-	private boolean buildHasNoArgConstructor() {
-		return this.findNoArgConstructor() != null;
+	private boolean buildHasNoArgConstructor(IType type) {
+		return this.findNoArgConstructor(type) != null;
 	}
 
-	private IMethod findNoArgConstructor() {
+	private IMethod findNoArgConstructor(IType type) {
 		try {
-			for (IMethod method : this.getMember().getMethods()) {
+			for (IMethod method : type.getMethods()) {
 				if (method.isConstructor()) {
 					return method;
 				}
@@ -178,8 +179,8 @@ final class BinaryType
 		this.firePropertyChanged(PRIVATE_NO_ARG_CONSTRUCTOR_PROPERTY, old, hasPrivateNoArgConstructor);
 	}
 
-	private boolean buildHasPrivateNoArgConstructor() {
-		IMethod method = this.findNoArgConstructor();
+	private boolean buildHasPrivateNoArgConstructor(IType type) {
+		IMethod method = this.findNoArgConstructor(type);
 		try {
 			return method != null && Flags.isPrivate(method.getFlags());
 		}
@@ -315,8 +316,8 @@ final class BinaryType
 		this.removeItemsFromCollection(remove, this.fields, FIELDS_COLLECTION);
 	}
 
-	private Vector<JavaResourceField> buildFields() {
-		IField[] jdtFields = this.getFields(this.getMember());
+	private Vector<JavaResourceField> buildFields(IType type) {
+		IField[] jdtFields = this.getFields(type);
 		Vector<JavaResourceField> result = new Vector<JavaResourceField>(jdtFields.length);
 		for (IField jdtField : jdtFields) {
 			result.add(this.buildField(jdtField));
@@ -362,8 +363,8 @@ final class BinaryType
 		this.removeItemsFromCollection(remove, this.methods, METHODS_COLLECTION);
 	}
 
-	private Vector<JavaResourceMethod> buildMethods() {
-		IMethod[] jdtMethods = this.getMethods(this.getMember());
+	private Vector<JavaResourceMethod> buildMethods(IType type) {
+		IMethod[] jdtMethods = this.getMethods(type);
 		Vector<JavaResourceMethod> result = new Vector<JavaResourceMethod>(jdtMethods.length);
 		for (IMethod jdtMethod : jdtMethods) {
 			result.add(this.buildMethod(jdtMethod));
