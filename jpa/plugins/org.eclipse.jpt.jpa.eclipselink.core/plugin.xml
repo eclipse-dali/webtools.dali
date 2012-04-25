@@ -181,7 +181,7 @@
 		point="org.eclipse.core.resources.builders">
 		
 		<builder hasNature="false">
-			<run class="org.eclipse.jpt.jpa.eclipselink.core.builder.EclipselinkStaticWeavingBuilder"/>
+			<run class="org.eclipse.jpt.jpa.eclipselink.core.builder.EclipseLinkStaticWeavingBuilder"/>
 		</builder>
 	</extension>
 	

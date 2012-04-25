@@ -19,7 +19,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.weave.StaticWeave;
 
-public class EclipselinkStaticWeavingBuilder extends IncrementalProjectBuilder
+public class EclipseLinkStaticWeavingBuilder extends IncrementalProjectBuilder
 {
     public static final String BUILDER_ID = JptJpaEclipseLinkCorePlugin.PLUGIN_ID + ".builder"; //$NON-NLS-1$
 

@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.LoggingLevel;
  */
 public class EclipseLinkStaticWeavingBuilderConfigurator extends JpaPreferencesManager
 {
-    public static final String BUILDER_ID = EclipselinkStaticWeavingBuilder.BUILDER_ID;
+    public static final String BUILDER_ID = EclipseLinkStaticWeavingBuilder.BUILDER_ID;
 
 	private static final String STATIC_WEAVE_PREFIX = "staticweave."; //$NON-NLS-1$
 
