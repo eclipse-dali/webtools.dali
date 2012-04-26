@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?><!--
-     Copyright (c) 2010, 2011  Oracle. All rights reserved.
+     Copyright (c) 2010, 2012  Oracle. All rights reserved.
      This program and the accompanying materials are made available under the
      terms of the Eclipse Public License v1.0, which accompanies this distribution
      and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -169,7 +169,17 @@
 					<with
 						variable="selection">
 						<iterate ifEmpty="false">
-							<adapt type="org.eclipse.jpt.jaxb.core.context.JaxbPackage"/>
+							<!-- bug 377809 test for jaxb facet: if o.e.jpt.jaxb.core plug-in not active, 
+							     the JaxbPackage AdapterFactory will not be called and the expression evaluates to true,
+							     that causes the JAXB menu to appear for JPA project packages -->
+							<and>
+	        					<adapt type="org.eclipse.core.resources.IResource">
+									<test
+										property="org.eclipse.wst.common.project.facet.core.projectFacet"
+										value="jpt.jaxb"/>
+        						</adapt>
+ 								<adapt type="org.eclipse.jpt.jaxb.core.context.JaxbPackage"/>
+							</and>
 						</iterate>
 					</with>
 				</visibleWhen>
