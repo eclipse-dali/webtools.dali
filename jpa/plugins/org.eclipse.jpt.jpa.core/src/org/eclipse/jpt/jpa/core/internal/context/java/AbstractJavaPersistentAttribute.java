@@ -59,6 +59,8 @@ public abstract class AbstractJavaPersistentAttribute
 	protected JavaAttributeMapping mapping;  // never null
 	protected String defaultMappingKey;
 
+	protected JpaContainerDefinition jpaContainerDefinition = JpaContainerDefinition.Null.instance();
+
 	protected AbstractJavaPersistentAttribute(PersistentType parent, JavaResourceField resourceField) {
 		super(parent);
 		this.accessor = new FieldAccessor(this, resourceField);
@@ -100,6 +102,7 @@ public abstract class AbstractJavaPersistentAttribute
 	@Override
 	public void update() {
 		super.update();
+		this.updateJpaContainerDefinition();
 		this.updateMapping();
 	}
 
@@ -538,7 +541,7 @@ public abstract class AbstractJavaPersistentAttribute
 		if (ReflectionTools.getArrayDepthForTypeDeclaration(typeName) != 0) {
 			return null;  // arrays cannot be entities
 		}
-		if (this.typeIsContainer(typeName)) {
+		if (this.typeIsContainer()) {
 			return null;  // "containers" cannot be entities
 		}
 		return typeName;
@@ -556,8 +559,8 @@ public abstract class AbstractJavaPersistentAttribute
 	 * return whether the specified type is one of the container
 	 * types allowed by the JPA spec
 	 */
-	protected boolean typeIsContainer(String typeName) {
-		return this.getJpaContainerDefinition(typeName).isContainer();
+	protected boolean typeIsContainer() {
+		return this.jpaContainerDefinition.isContainer();
 	}
 
 
@@ -686,19 +689,27 @@ public abstract class AbstractJavaPersistentAttribute
 	// ********** JPA container definition **********
 
 	public JpaContainerDefinition getJpaContainerDefinition() {
-		// 'typeName' may include array brackets ("[]")
-		// but not generic type arguments (e.g. "<java.lang.String>")
-		return this.getJpaContainerDefinition(this.getResourceAttribute().getTypeName());
+		return this.jpaContainerDefinition;
+	}
+
+	protected void updateJpaContainerDefinition() {
+		this.setJpaContainerDefinition(this.buildJpaContainerDefinition());
+	}
+
+	protected void setJpaContainerDefinition(JpaContainerDefinition jpaContainerDefinition) {
+		JpaContainerDefinition old = this.jpaContainerDefinition;
+		this.jpaContainerDefinition = jpaContainerDefinition;
+		firePropertyChanged(JPA_CONTAINER_DEFINITION, old, this.jpaContainerDefinition);
 	}
 
 	/**
 	 * Return the JPA container definition corresponding to the specified type;
-	 * return a "null" definition if the specified type is not "assignable to" one of the
+	 * return a "null" definition if the specified type is not a sub-type of one of the
 	 * container types allowed by the JPA spec.
 	 */
-	protected JpaContainerDefinition getJpaContainerDefinition(String typeName) {
+	protected JpaContainerDefinition buildJpaContainerDefinition() {
 		for (JpaContainerDefinition definition : this.getJpaContainerDefinitions()) {
-			if (definition.isAssignableFrom(typeName)) {
+			if (this.getResourceAttribute().typeIsSubTypeOf(definition.getTypeName())) {
 				return definition;
 			}
 		}
@@ -725,25 +736,24 @@ public abstract class AbstractJavaPersistentAttribute
 	protected abstract static class AbstractJpaContainerDefinition
 		implements JpaContainerDefinition
 	{
-		protected final Class<?> containerClass;
+		protected final String typeName;
 		protected final String metamodelContainerFieldTypeName;
 
 		protected AbstractJpaContainerDefinition(Class<?> containerClass, String metamodelContainerFieldTypeName) {
+			this(containerClass.getName(), metamodelContainerFieldTypeName);
+		}
+
+		protected AbstractJpaContainerDefinition(String typeName, String metamodelContainerFieldTypeName) {
 			super();
-			if ((containerClass == null) || (metamodelContainerFieldTypeName == null)) {
+			if ((typeName == null) || (metamodelContainerFieldTypeName == null)) {
 				throw new NullPointerException();
 			}
-			this.containerClass = containerClass;
+			this.typeName = typeName;
 			this.metamodelContainerFieldTypeName = metamodelContainerFieldTypeName;
 		}
 
-		public boolean isAssignableFrom(String typeName) {
-			try {
-				return this.containerClass.isAssignableFrom(Class.forName(typeName));
-			}
-			catch (ClassNotFoundException e) {
-				return false;
-			}
+		public String getTypeName() {
+			return this.typeName;
 		}
 
 		public boolean isContainer() {
@@ -753,7 +763,6 @@ public abstract class AbstractJavaPersistentAttribute
 		public String getMetamodelContainerFieldTypeName() {
 			return this.metamodelContainerFieldTypeName;
 		}
-
 	}
 
 	/**

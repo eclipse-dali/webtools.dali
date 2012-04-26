@@ -106,6 +106,7 @@ public interface JavaPersistentAttribute
 	 * Return a null implementation if the type is not a container (map or collection)
 	 */
 	JpaContainerDefinition getJpaContainerDefinition();
+		String JPA_CONTAINER_DEFINITION = "jpaContainerDefinition"; //$NON-NLS-1$
 
 
 	// ********** JPA container **********
@@ -114,7 +115,7 @@ public interface JavaPersistentAttribute
 	 * JPA container definition interface (and null implementation)
 	 */
 	interface JpaContainerDefinition {
-		boolean isAssignableFrom(String typeName);
+		String getTypeName();
 		boolean isContainer();
 		boolean isMap();
 		String getMultiReferenceTargetTypeName(JavaResourceAttribute resourceAttribute);
@@ -131,8 +132,8 @@ public interface JavaPersistentAttribute
 			private Null() {
 				super();
 			}
-			public boolean isAssignableFrom(String typeName) {
-				return false;
+			public String getTypeName() {
+				return null;
 			}
 			public boolean isContainer() {
 				return false;

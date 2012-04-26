@@ -83,18 +83,19 @@ public class SpecifiedJavaEclipseLinkPersistentAttribute
 
 	public boolean typeIsValidForVariableOneToOne() {
 		return this.getResourceAttribute().typeIsInterface()
-				&& this.interfaceIsValidForVariableOneToOne(getTypeName());
+				&& this.interfaceIsValidForVariableOneToOne();
 	}
 
-	protected boolean interfaceIsValidForVariableOneToOne(String interfaceName) {
-		return ! this.interfaceIsInvalidForVariableOneToOne(interfaceName);
+	protected boolean interfaceIsValidForVariableOneToOne() {
+		return ! this.interfaceIsInvalidForVariableOneToOne();
 	}
 
 	// TODO we could probably add more interfaces to this list...
-	protected boolean interfaceIsInvalidForVariableOneToOne(String interfaceName) {
+	protected boolean interfaceIsInvalidForVariableOneToOne() {
+		String interfaceName = this.getTypeName();
 		return (interfaceName == null) ||
-				this.typeIsContainer(interfaceName) ||
-				interfaceName.equals("org.eclipse.persistence.indirection.ValueHolderInterface"); //$NON-NLS-1$
+				interfaceName.equals("org.eclipse.persistence.indirection.ValueHolderInterface") || //$NON-NLS-1$
+				this.typeIsContainer();
 	}
 
 

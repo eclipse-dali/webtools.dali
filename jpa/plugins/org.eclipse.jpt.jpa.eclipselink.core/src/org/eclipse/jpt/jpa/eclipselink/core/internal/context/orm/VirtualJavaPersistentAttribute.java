@@ -44,10 +44,18 @@ public class VirtualJavaPersistentAttribute extends AbstractJavaJpaContextNode
 	
 	private final JavaAttributeMapping attributeMapping;
 
+	private JpaContainerDefinition jpaContainerDefinition = JpaContainerDefinition.Null.instance();
+
 	public VirtualJavaPersistentAttribute(OrmPersistentType parent, XmlAttributeMapping xmlAttributeMapping) {
 		super(parent);
 		this.xmlAttributeMapping = xmlAttributeMapping;
 		this.attributeMapping = new GenericJavaNullAttributeMapping(this);
+	}
+
+	@Override
+	public void update() {
+		super.update();
+		this.updateJpaContainerDefinition();
 	}
 
 	public XmlAttributeMapping getXmlAttributeMapping() {
@@ -194,7 +202,7 @@ public class VirtualJavaPersistentAttribute extends AbstractJavaJpaContextNode
 		try {
 			return type != null &&
 					type.isInterface() &&
-					this.interfaceIsValidForVariableOneToOne(typeName);
+					this.interfaceIsValidForVariableOneToOne();
 		}
 		catch (JavaModelException e) {
 			JptJpaEclipseLinkCorePlugin.log(e);
@@ -202,14 +210,15 @@ public class VirtualJavaPersistentAttribute extends AbstractJavaJpaContextNode
 		}
 	}
 
-	protected boolean interfaceIsValidForVariableOneToOne(String interfaceName) {
-		return ! this.interfaceIsInvalidForVariableOneToOne(interfaceName);
+	protected boolean interfaceIsValidForVariableOneToOne() {
+		return ! this.interfaceIsInvalidForVariableOneToOne();
 	}
 
 	// TODO we could probably add more interfaces to this list...
-	protected boolean interfaceIsInvalidForVariableOneToOne(String interfaceName) {
+	protected boolean interfaceIsInvalidForVariableOneToOne() {
+		String interfaceName = this.getTypeName();
 		return (interfaceName == null) ||
-				this.typeIsContainer(interfaceName) ||
+				this.typeIsContainer() ||
 				interfaceName.equals("org.eclipse.persistence.indirection.ValueHolderInterface"); //$NON-NLS-1$
 	}
 
@@ -217,8 +226,8 @@ public class VirtualJavaPersistentAttribute extends AbstractJavaJpaContextNode
 	 * return whether the specified type is one of the container
 	 * types allowed by the JPA spec
 	 */
-	protected boolean typeIsContainer(String typeName) {
-		return this.getJpaContainerDefinition(typeName).isContainer();
+	protected boolean typeIsContainer() {
+		return this.getJpaContainerDefinition().isContainer();
 	}
 
 
@@ -243,11 +252,18 @@ public class VirtualJavaPersistentAttribute extends AbstractJavaJpaContextNode
 		}
 		return typeName;
 	}
-
 	public JpaContainerDefinition getJpaContainerDefinition() {
-		// 'typeName' may include array brackets ("[]")
-		// but not generic type arguments (e.g. "<java.lang.String>")
-		return this.getJpaContainerDefinition(this.getTypeName());
+		return this.jpaContainerDefinition;
+	}
+
+	protected void updateJpaContainerDefinition() {
+		this.setJpaContainerDefinition(this.buildJpaContainerDefinition());
+	}
+
+	protected void setJpaContainerDefinition(JpaContainerDefinition jpaContainerDefinition) {
+		JpaContainerDefinition old = this.jpaContainerDefinition;
+		this.jpaContainerDefinition = jpaContainerDefinition;
+		firePropertyChanged(JPA_CONTAINER_DEFINITION, old, this.jpaContainerDefinition);
 	}
 
 	//I don't think we should be doing this here, I think OrmAttributeMappings should be responsible for their own JpaContainerDefinition
@@ -257,10 +273,17 @@ public class VirtualJavaPersistentAttribute extends AbstractJavaJpaContextNode
 	 * return a "null" definition if the specified type is not "assignable to" one of the
 	 * container types allowed by the JPA spec.
 	 */
-	protected JpaContainerDefinition getJpaContainerDefinition(String typeName) {
+	protected JpaContainerDefinition buildJpaContainerDefinition() {
+		String typeName = this.getTypeName();
 		if (typeName != null) {
-			for (JpaContainerDefinition definition : getJpaContainerDefinitions()) {
-				if (definition.isAssignableFrom(typeName)) {
+			//performance - loop and check for .equals() first
+			for (JpaContainerDefinition definition : this.getJpaContainerDefinitions()) {
+				if (definition.getTypeName().equals(typeName)) {
+					return definition;
+				}
+			}
+			for (JpaContainerDefinition definition : this.getJpaContainerDefinitions()) {
+				if (JDTTools.typeIsSubType(this.getJavaProject(), typeName, definition.getTypeName())) {
 					return definition;
 				}
 			}
@@ -288,25 +311,24 @@ public class VirtualJavaPersistentAttribute extends AbstractJavaJpaContextNode
 	protected abstract static class AbstractJpaContainerDefinition
 		implements JpaContainerDefinition
 	{
-		protected final Class<?> containerClass;
+		protected final String typeName;
 		protected final String metamodelContainerFieldTypeName;
 
 		protected AbstractJpaContainerDefinition(Class<?> containerClass, String metamodelContainerFieldTypeName) {
+			this(containerClass.getName(), metamodelContainerFieldTypeName);
+		}
+
+		protected AbstractJpaContainerDefinition(String typeName, String metamodelContainerFieldTypeName) {
 			super();
-			if ((containerClass == null) || (metamodelContainerFieldTypeName == null)) {
+			if ((typeName == null) || (metamodelContainerFieldTypeName == null)) {
 				throw new NullPointerException();
 			}
-			this.containerClass = containerClass;
+			this.typeName = typeName;
 			this.metamodelContainerFieldTypeName = metamodelContainerFieldTypeName;
 		}
 
-		public boolean isAssignableFrom(String typeName) {
-			try {
-				return this.containerClass.isAssignableFrom(Class.forName(typeName));
-			}
-			catch (ClassNotFoundException e) {
-				return false;
-			}
+		public String getTypeName() {
+			return this.typeName;
 		}
 
 		public boolean isContainer() {
