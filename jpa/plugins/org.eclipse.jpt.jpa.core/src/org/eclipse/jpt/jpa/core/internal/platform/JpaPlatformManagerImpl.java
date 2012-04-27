@@ -231,7 +231,7 @@ public class JpaPlatformManagerImpl
 		String jpaPlatformId = JptJpaCorePlugin.getJpaPlatformId(project);
 		JpaPlatformDescriptionImpl platformDesc = this.jpaPlatformDescriptions.getItem(jpaPlatformId);
 		if (platformDesc == null) {
-			throw new IllegalArgumentException("Project does not have a recognized JPA platform.");
+			throw new IllegalArgumentException("Project does not have a recognized JPA platform: " + jpaPlatformId); //$NON-NLS-1$
 		}
 		return platformDesc.buildJpaPlatform();
 	}
