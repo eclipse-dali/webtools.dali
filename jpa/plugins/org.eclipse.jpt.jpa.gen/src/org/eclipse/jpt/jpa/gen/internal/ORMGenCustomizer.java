@@ -179,7 +179,7 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 	 * The file is created if necessary when the <code>save</code> 
 	 * method is called.
 	 */
-	public void init( File file, Schema schema, JpaEntityGenPreferencesManager preferencesManager) {
+	public void init( File file, Schema schema) {
 		this.mSchema = schema;
 		mFile = file;
 		

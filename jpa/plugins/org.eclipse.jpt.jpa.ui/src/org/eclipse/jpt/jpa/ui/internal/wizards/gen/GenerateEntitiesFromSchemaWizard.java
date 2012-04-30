@@ -159,14 +159,14 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 	public ORMGenCustomizer createORMGenCustomizer(Schema schema) {
 		JpaPlatform jpaPlatform = this.jpaProject.getJpaPlatform();
 		ORMGenCustomizer obj = PlatformTools.getAdapter(jpaPlatform, ORMGenCustomizer.class);
-		JpaEntityGenPreferencesManager preferencesManager = this.buildEntityGenPreferencesManager();
+		
 		if (obj != null) {
 			this.customizer = (ORMGenCustomizer) obj; 
-			this.customizer.init(this.getCustomizationFile(), schema, preferencesManager);  
+			this.customizer.init(this.getCustomizationFile(), schema);  
 		} 
 		else {
 			this.customizer = new BaseEntityGenCustomizer();
-			this.customizer.init(this.getCustomizationFile(), schema, preferencesManager);  
+			this.customizer.init(this.getCustomizationFile(), schema);  
 		}
 
 		ORMGenTable newDefaultTable = this.getCustomizer().createGenTable(null);
@@ -179,7 +179,12 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 					newDefaultTable.setSourceFolder(srcFolder.substring(1));
 				}
 			}
-		}		
+		}
+		else if (newDefaultTable.getPackage().isEmpty()) {
+			JpaEntityGenPreferencesManager preferencesManager = this.buildEntityGenPreferencesManager();
+			newDefaultTable.setPackage(preferencesManager.getDefaultPackageWorkspacePreference());
+		}
+			
 		return this.customizer;
 	}
 	

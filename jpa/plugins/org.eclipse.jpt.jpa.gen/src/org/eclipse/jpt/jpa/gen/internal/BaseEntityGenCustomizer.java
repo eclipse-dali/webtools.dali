@@ -51,10 +51,8 @@ public class BaseEntityGenCustomizer extends ORMGenCustomizer
 	}
 
 	@Override
-	public void init(File file, Schema schema, JpaEntityGenPreferencesManager preferencesManager) {
-		super.init(file, schema, preferencesManager);
-		
-		this.setProperty(ORMGenTable.PACKAGE, preferencesManager.getDefaultPackagePreference(), ANY_TABLE, null);
+	public void init(File file, Schema schema) {
+		super.init(file, schema);
 	}
 
 	// -----------------------------------------
