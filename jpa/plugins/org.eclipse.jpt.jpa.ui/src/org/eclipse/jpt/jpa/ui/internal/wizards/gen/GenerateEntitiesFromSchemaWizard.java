@@ -37,6 +37,7 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.ui.internal.dialogs.OptionalMessageDialog;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.EntityGeneratorDatabaseAnnotationNameBuilder;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -180,7 +181,7 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 				}
 			}
 		}
-		else if (newDefaultTable.getPackage().isEmpty()) {
+		else if (newDefaultTable.getPackage().equals(StringTools.EMPTY_STRING)) {
 			JpaEntityGenPreferencesManager preferencesManager = this.buildEntityGenPreferencesManager();
 			newDefaultTable.setPackage(preferencesManager.getDefaultPackageWorkspacePreference());
 		}
