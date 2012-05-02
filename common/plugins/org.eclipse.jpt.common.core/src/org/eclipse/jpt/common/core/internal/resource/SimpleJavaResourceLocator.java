@@ -13,6 +13,7 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaProject;
@@ -198,7 +199,9 @@ public class SimpleJavaResourceLocator
 			}
 		}
 		protected boolean accept_(IPackageFragmentRoot pfr) throws JavaModelException {
-			return pfr.getKind() == IPackageFragmentRoot.K_SOURCE;
+			// accept both source folders and *class* folders (xml files may exist there as well)
+			IResource resource = pfr.getUnderlyingResource();
+			return resource != null && resource.getType() == IResource.FOLDER;
 		}
 	}
 
