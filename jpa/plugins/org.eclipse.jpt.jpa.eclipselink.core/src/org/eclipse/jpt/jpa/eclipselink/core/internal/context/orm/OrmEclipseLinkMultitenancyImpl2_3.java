@@ -28,6 +28,7 @@ import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.jpa.db.Table;
+import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMultitenantType2_3;
@@ -693,7 +694,7 @@ public class OrmEclipseLinkMultitenancyImpl2_3
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		if (getType() == EclipseLinkMultitenantType2_3.TABLE_PER_TENANT) {
+		if (getType() == EclipseLinkMultitenantType2_3.TABLE_PER_TENANT && !JptJpaEclipseLinkCorePlugin.nodeIsEclipseLink2_4Compatible(this)) {
 			messages.add(
 				DefaultEclipseLinkJpaValidationMessages.buildMessage(
 					IMessage.NORMAL_SEVERITY,
