@@ -120,28 +120,14 @@ public class JoiningStrategyJoinColumnsWithOverrideOptionComposite
 			
 			try {
 				JoinColumnRelationshipStrategy subject = (JoinColumnRelationshipStrategy) getSubject();
-	
-				// Add a join column by creating a specified one using the default
-				// one if it exists
 				if (selected) {
-					ReadOnlyJoinColumn defaultJoinColumn = subject.getDefaultJoinColumn();//TODO could be null, disable override default check box?
-					
-					if (defaultJoinColumn != null) {
-						String columnName = defaultJoinColumn.getDefaultName();
-						String referencedColumnName = defaultJoinColumn.getDefaultReferencedColumnName();
-						
-						JoinColumn joinColumn = subject.addSpecifiedJoinColumn();
-						joinColumn.setSpecifiedName(columnName);
-						joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
-						
-						JoiningStrategyJoinColumnsWithOverrideOptionComposite.this.setSelectedJoinColumn(joinColumn);
+					if (subject.getDefaultJoinColumn() != null) {//TODO can this be null, disable override default check box? or have it checked if there are not default join columns?
+						subject.convertDefaultJoinColumnsToSpecified();
+						JoiningStrategyJoinColumnsWithOverrideOptionComposite.this.setSelectedJoinColumn(subject.getSpecifiedJoinColumn(0));
 					}
 				}
-				// Remove all the specified join columns
 				else {
-					for (int index = subject.getSpecifiedJoinColumnsSize(); --index >= 0; ) {
-						subject.removeSpecifiedJoinColumn(index);
-					}
+					subject.clearSpecifiedJoinColumns();
 				}
 			}
 			finally {

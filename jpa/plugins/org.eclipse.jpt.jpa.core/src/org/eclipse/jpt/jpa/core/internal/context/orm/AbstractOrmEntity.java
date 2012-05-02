@@ -790,6 +790,10 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		return this.specifiedPrimaryKeyJoinColumnContainer.getContextElements();
 	}
 
+	public PrimaryKeyJoinColumn getSpecifiedPrimaryKeyJoinColumn(int index) {
+		return this.specifiedPrimaryKeyJoinColumnContainer.get(index);
+	}
+
 	protected ListIterable<ReadOnlyPrimaryKeyJoinColumn> getReadOnlySpecifiedPrimaryKeyJoinColumns() {
 		return new SuperListIterableWrapper<ReadOnlyPrimaryKeyJoinColumn>(this.getSpecifiedPrimaryKeyJoinColumns());
 	}
@@ -822,6 +826,22 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	public void removeSpecifiedPrimaryKeyJoinColumn(int index) {
 		this.specifiedPrimaryKeyJoinColumnContainer.removeContextElement(index);
 		this.xmlTypeMapping.getPrimaryKeyJoinColumns().remove(index);
+	}
+
+	public void convertDefaultPrimaryKeyJoinColumnsToSpecified() {
+		for (ReadOnlyPrimaryKeyJoinColumn defaultJoinColumn : this.getDefaultPrimaryKeyJoinColumns()) {
+			String columnName = defaultJoinColumn.getName();
+			String referencedColumnName = defaultJoinColumn.getReferencedColumnName();
+
+			PrimaryKeyJoinColumn pkJoinColumn = this.addSpecifiedPrimaryKeyJoinColumn();
+			pkJoinColumn.setSpecifiedName(columnName);
+			pkJoinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
+		}
+	}
+
+	public void clearSpecifiedPrimaryKeyJoinColumns() {
+		this.specifiedPrimaryKeyJoinColumnContainer.clearContextList();
+		this.xmlTypeMapping.getPrimaryKeyJoinColumns().clear();
 	}
 
 	public void moveSpecifiedPrimaryKeyJoinColumn(int targetIndex, int sourceIndex) {

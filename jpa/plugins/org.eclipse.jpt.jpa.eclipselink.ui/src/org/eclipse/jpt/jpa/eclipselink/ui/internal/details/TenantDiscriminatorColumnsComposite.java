@@ -10,8 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import java.util.ArrayList;
-import java.util.EventListener;
-import java.util.EventObject;
 import java.util.List;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -22,19 +20,12 @@ import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.AbstractAdapter;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
-import org.eclipse.jpt.common.utility.internal.model.SingleAspectChangeSupport;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
-import org.eclipse.jpt.common.utility.model.Model;
-import org.eclipse.jpt.common.utility.model.event.ListReplaceEvent;
-import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
-import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -183,7 +174,7 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaNode> extends Pane
 	}
 
 	private ListValueModel<ReadOnlyTenantDiscriminatorColumn2_3> buildTenantDiscriminatorColumnsListModel() {
-		return new LocalItemPropertyListValueModelAdapter<ReadOnlyTenantDiscriminatorColumn2_3>(buildTenantDiscriminatorColumnsListHolder(),
+		return new ItemPropertyListValueModelAdapter<ReadOnlyTenantDiscriminatorColumn2_3>(buildTenantDiscriminatorColumnsListHolder(),
 			ReadOnlyNamedColumn.SPECIFIED_NAME_PROPERTY,
 			ReadOnlyNamedColumn.DEFAULT_NAME_PROPERTY);
 	}
@@ -295,50 +286,5 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaNode> extends Pane
 		 * Remove the tenant discriminator columns at the specified indices from the subject
 		 */
 		void removeTenantDiscriminatorColumns(T subject, int[] selectedIndices);
-	}
-
-	private class LocalItemPropertyListValueModelAdapter<E> extends ItemPropertyListValueModelAdapter<E> {
-
-		public LocalItemPropertyListValueModelAdapter(ListValueModel<E> listHolder, String... propertyNames) {
-			super(listHolder, propertyNames);
-		}
-
-		public LocalItemPropertyListValueModelAdapter(CollectionValueModel<E> collectionHolder, String[] propertyNames) {
-			super(collectionHolder, propertyNames);
-		}
-
-		/**
-		 * bug 310720
-		 * Override to just fire an itemReplaced event instead of a listChanged event.
-		 * An aspect of the item as changed, so no reason to say that the entire list has changed.
-		 * Added a LocalChangeSupport so that I can fire a ListReplacedEvent for an old list
-		 * and new list containing the same item.
-		 */
-		@Override
-		protected void itemAspectChanged(EventObject event) {
-			Object item = event.getSource();
-			this.getChangeSupport().fireItemsReplaced(
-				new ListReplaceEvent(this, LIST_VALUES, CollectionTools.indexOf(this.listHolder, item), item, item));
-		}
-
-		@Override
-		protected ChangeSupport buildChangeSupport() {
-			return new LocalChangeSupport(this, ListChangeListener.class, ListValueModel.LIST_VALUES);
-		}
-
-		private class LocalChangeSupport extends SingleAspectChangeSupport {
-			public LocalChangeSupport(Model source, Class<? extends EventListener> validListenerClass, String validAspectName) {
-				super(source, validListenerClass, validAspectName);
-			}
-			@Override
-			public boolean fireItemsReplaced(ListReplaceEvent event) {
-				this.check(LIST_CHANGE_LISTENER_CLASS, event.getListName());
-				if (event.getItemsSize() != 0) {
-					this.fireItemsReplaced_(event);
-					return true;
-				}
-				return false;
-			}
-		}
 	}
 }

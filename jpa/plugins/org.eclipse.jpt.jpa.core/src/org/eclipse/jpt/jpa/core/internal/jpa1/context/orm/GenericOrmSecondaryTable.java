@@ -131,6 +131,10 @@ public class GenericOrmSecondaryTable
 		return this.specifiedPrimaryKeyJoinColumnContainer.getContextElements();
 	}
 
+	public OrmPrimaryKeyJoinColumn getSpecifiedPrimaryKeyJoinColumn(int index) {
+		return this.specifiedPrimaryKeyJoinColumnContainer.get(index);
+	}
+
 	public int getSpecifiedPrimaryKeyJoinColumnsSize() {
 		return this.specifiedPrimaryKeyJoinColumnContainer.getContextElementsSize();
 	}
@@ -161,6 +165,25 @@ public class GenericOrmSecondaryTable
 	public void removeSpecifiedPrimaryKeyJoinColumn(int index) {
 		this.specifiedPrimaryKeyJoinColumnContainer.removeContextElement(index);
 		this.xmlSecondaryTable.getPrimaryKeyJoinColumns().remove(index);
+	}
+
+	//default PK join column will get set in the update
+	public void convertDefaultPrimaryKeyJoinColumnsToSpecified() {
+		if (this.defaultPrimaryKeyJoinColumn == null) {
+			throw new IllegalStateException("default PK join column is null"); //$NON-NLS-1$
+		}
+		// Add a PK join column by creating a specified one using the default one
+		String columnName = this.defaultPrimaryKeyJoinColumn.getDefaultName();
+		String referencedColumnName = this.defaultPrimaryKeyJoinColumn.getDefaultReferencedColumnName();
+
+		PrimaryKeyJoinColumn pkJoinColumn = this.addSpecifiedPrimaryKeyJoinColumn(0);
+		pkJoinColumn.setSpecifiedName(columnName);
+		pkJoinColumn.setSpecifiedReferencedColumnName(referencedColumnName);		
+	}
+
+	public void clearSpecifiedPrimaryKeyJoinColumns() {
+		this.specifiedPrimaryKeyJoinColumnContainer.clearContextList();
+		this.xmlSecondaryTable.getPrimaryKeyJoinColumns().clear();
 	}
 
 	public void moveSpecifiedPrimaryKeyJoinColumn(int targetIndex, int sourceIndex) {

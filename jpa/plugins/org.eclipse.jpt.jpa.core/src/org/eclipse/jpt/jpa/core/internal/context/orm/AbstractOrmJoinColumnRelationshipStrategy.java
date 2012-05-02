@@ -124,6 +124,23 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy
 		this.getXmlJoinColumnContainer().getJoinColumns().remove(index);
 	}
 
+	public void convertDefaultJoinColumnsToSpecified() {
+		if (this.defaultJoinColumn == null) {
+			throw new IllegalStateException("default  join column is null"); //$NON-NLS-1$
+		}
+		String columnName = this.defaultJoinColumn.getDefaultName();
+		String referencedColumnName = this.defaultJoinColumn.getDefaultReferencedColumnName();
+
+		JoinColumn joinColumn = this.addSpecifiedJoinColumn(0);
+		joinColumn.setSpecifiedName(columnName);
+		joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
+	}
+
+	public void clearSpecifiedJoinColumns() {
+		this.specifiedJoinColumnContainer.clearContextList();
+		this.getXmlJoinColumnContainer().getJoinColumns().clear();
+	}
+
 	public void moveSpecifiedJoinColumn(int targetIndex, int sourceIndex) {
 		this.specifiedJoinColumnContainer.moveContextElement(targetIndex, sourceIndex);
 		this.getXmlJoinColumnContainer().getJoinColumns().move(targetIndex, sourceIndex);

@@ -129,6 +129,11 @@ public abstract class GenericOrmReferenceTable<X extends AbstractXmlReferenceTab
 		this.getXmlTable().getJoinColumns().move(targetIndex, sourceIndex);
 	}
 
+	public void clearSpecifiedJoinColumns() {
+		this.specifiedJoinColumnContainer.clearContextList();
+		this.getXmlTable().getJoinColumns().clear();
+	}
+
 	protected void syncSpecifiedJoinColumns() {
 		this.specifiedJoinColumnContainer.synchronizeWithResourceModel();
 	}

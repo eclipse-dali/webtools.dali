@@ -294,9 +294,7 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 				referenceTable.convertDefaultJoinColumnToSpecified();
 				setSelectedJoinColumn(referenceTable.getSpecifiedJoinColumn(0));
 			} else {
-				for (int index = referenceTable.getSpecifiedJoinColumnsSize(); --index >= 0; ) {
-					referenceTable.removeSpecifiedJoinColumn(index);
-				}
+				referenceTable.clearSpecifiedJoinColumns();
 			}
 		} finally {
 			this.setPopulating(false);

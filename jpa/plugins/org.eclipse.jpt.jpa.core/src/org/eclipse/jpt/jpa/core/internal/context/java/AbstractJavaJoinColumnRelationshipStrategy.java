@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -113,6 +113,27 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy
 	public void moveSpecifiedJoinColumn(int targetIndex, int sourceIndex) {
 		this.moveJoinColumnAnnotation(targetIndex, sourceIndex);
 		this.specifiedJoinColumnContainer.moveContextElement(targetIndex, sourceIndex);
+	}
+
+	//default join column will get set in the update
+	public void convertDefaultJoinColumnsToSpecified() {
+		if (this.defaultJoinColumn == null) {
+			throw new IllegalStateException("default join column is null"); //$NON-NLS-1$
+		}
+		// Add a join column by creating a specified one using the default one
+		String columnName = this.defaultJoinColumn.getDefaultName();
+		String referencedColumnName = this.defaultJoinColumn.getDefaultReferencedColumnName();
+
+		JoinColumn joinColumn = this.addSpecifiedJoinColumn(0);
+		joinColumn.setSpecifiedName(columnName);
+		joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
+	}
+
+	public void clearSpecifiedJoinColumns() {
+		for (int index = getSpecifiedJoinColumnsSize(); --index >= 0; ) {
+			this.removeJoinColumnAnnotation(index);
+		}
+		this.specifiedJoinColumnContainer.clearContextList();
 	}
 
 	protected void syncSpecifiedJoinColumns() {

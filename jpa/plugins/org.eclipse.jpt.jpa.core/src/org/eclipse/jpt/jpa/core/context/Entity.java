@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  *
- * @version 2.3
+ * @version 3.2
  * @since 2.0
  */
 public interface Entity
@@ -210,6 +210,8 @@ public interface Entity
 	ListIterable<? extends PrimaryKeyJoinColumn> getSpecifiedPrimaryKeyJoinColumns();
 		String SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST = "specifiedPrimaryKeyJoinColumns"; //$NON-NLS-1$
 
+	PrimaryKeyJoinColumn getSpecifiedPrimaryKeyJoinColumn(int index);
+
 	int getSpecifiedPrimaryKeyJoinColumnsSize();
 
 	PrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
@@ -222,6 +224,18 @@ public interface Entity
 
 	void moveSpecifiedPrimaryKeyJoinColumn(int targetIndex, int sourceIndex);
 
+	/**
+	 * Add specified primary key join column for each default join column
+	 * with the same name and referenced column name. As a side-effect in the
+	 * update, the default primary key join columns will be recalculated.
+	 */
+	void convertDefaultPrimaryKeyJoinColumnsToSpecified();
+
+	/**
+	 * Remove all the specified primary key join columns. As a side-effect in the
+	 * update, the default primary key join columns will be recalculated.
+	 */
+	void clearSpecifiedPrimaryKeyJoinColumns();
 
 	// ********** containers **********
 

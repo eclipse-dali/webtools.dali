@@ -178,7 +178,7 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildOverrideDefaultJoinColumnHolder() {
-		return new OverrideDefaultJoinColumnHolder();
+		return new OverrideDefaultPrimaryKeyJoinColumnHolder();
 	}
 
 	private ListValueModel<ReadOnlyPrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnsListHolder() {
@@ -283,39 +283,29 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 		);
 	}
 
-	void updateJoinColumns(boolean selected) {
-
-		if (isPopulating()) {
+	void updatePrimaryKeyJoinColumns(boolean selected) {
+		if (this.isPopulating()) {
 			return;
 		}
 
-		setPopulating(true);
+		this.setPopulating(true);
 
 		try {
-			// Add a join column by creating a specified one using the default
-			// one if it exists
 			if (selected) {
-
-				switchDefaultToSpecified();
+				getSubject().convertDefaultPrimaryKeyJoinColumnsToSpecified();
+				this.joinColumnHolder.setValue(getSubject().getSpecifiedPrimaryKeyJoinColumn(0));
+			} else {
+				getSubject().clearSpecifiedPrimaryKeyJoinColumns();
 			}
-			// Remove all the specified join columns
-			else {
-				for (int index = getSubject().getSpecifiedPrimaryKeyJoinColumnsSize(); --index >= 0; ) {
-					getSubject().removeSpecifiedPrimaryKeyJoinColumn(index);
-				}
-			}
-		}
-		finally {
-			setPopulating(false);
+		} finally {
+			this.setPopulating(false);
 		}
 	}
-
-	protected abstract void switchDefaultToSpecified();
 	
-	private class OverrideDefaultJoinColumnHolder extends ListPropertyValueModelAdapter<Boolean>
+	private class OverrideDefaultPrimaryKeyJoinColumnHolder extends ListPropertyValueModelAdapter<Boolean>
 	                                              implements ModifiablePropertyValueModel<Boolean> {
 
-		public OverrideDefaultJoinColumnHolder() {
+		public OverrideDefaultPrimaryKeyJoinColumnHolder() {
 			super(buildSpecifiedJoinColumnsListHolder());
 		}
 
@@ -325,7 +315,7 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 		}
 
 		public void setValue(Boolean value) {
-			updateJoinColumns(value.booleanValue());
+			updatePrimaryKeyJoinColumns(value.booleanValue());
 		}
 	}
 }

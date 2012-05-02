@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -121,6 +121,15 @@ public abstract class GenericJavaReferenceTable<A extends ReferenceTableAnnotati
 	public void moveSpecifiedJoinColumn(int targetIndex, int sourceIndex) {
 		this.getTableAnnotation().moveJoinColumn(targetIndex, sourceIndex);
 		this.specifiedJoinColumnContainer.moveContextElement(targetIndex, sourceIndex);
+	}
+
+	public void clearSpecifiedJoinColumns() {
+		// for now, we have to remove annotations one at a time...
+		for (int index = this.getSpecifiedJoinColumnsSize(); --index >= 0; ) {
+			this.getTableAnnotation().removeJoinColumn(index);
+		}
+		this.removeTableAnnotationIfUnset();
+		this.specifiedJoinColumnContainer.clearContextList();
 	}
 
 	protected void syncSpecifiedJoinColumns() {

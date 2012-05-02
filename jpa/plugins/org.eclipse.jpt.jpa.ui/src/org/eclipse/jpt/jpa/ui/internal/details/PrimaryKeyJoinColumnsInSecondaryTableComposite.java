@@ -338,42 +338,26 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends Pane<ReadOnl
 		}
 	}
 
-	void updateJoinColumns(boolean selected) {
-
-		if (isPopulating()) {
+	void updatePrimaryKeyJoinColumns(boolean selected) {
+		if (this.isPopulating()) {
 			return;
 		}
 
-		setPopulating(true);
+		SecondaryTable secondaryTable =  (SecondaryTable) this.getSubject();
+
+		this.setPopulating(true);
 
 		try {
-			SecondaryTable secondaryTable = (SecondaryTable) getSubject();
-
-			// Add a join column by creating a specified one using the default
-			// one if it exists
 			if (selected) {
-
-				PrimaryKeyJoinColumn defaultJoinColumn = secondaryTable.getDefaultPrimaryKeyJoinColumn();
-
-				if (defaultJoinColumn != null) {
-					String columnName = defaultJoinColumn.getDefaultName();
-					String referencedColumnName = defaultJoinColumn.getDefaultReferencedColumnName();
-
-					PrimaryKeyJoinColumn pkJoinColumn = secondaryTable.addSpecifiedPrimaryKeyJoinColumn(0);
-					pkJoinColumn.setSpecifiedName(columnName);
-					pkJoinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
-
-					joinColumnHolder.setValue(pkJoinColumn);
+				if (secondaryTable.getDefaultPrimaryKeyJoinColumn() != null) { //TODO can this be null?
+					secondaryTable.convertDefaultPrimaryKeyJoinColumnsToSpecified();
+					this.joinColumnHolder.setValue(secondaryTable.getSpecifiedPrimaryKeyJoinColumn(0));
 				}
+			} else {
+				secondaryTable.clearSpecifiedPrimaryKeyJoinColumns();
 			}
-			else {
-				for (int index = secondaryTable.getSpecifiedPrimaryKeyJoinColumnsSize(); --index >= 0; ) {
-					secondaryTable.removeSpecifiedPrimaryKeyJoinColumn(index);
-				}
-			}
-		}
-		finally {
-			setPopulating(false);
+		} finally {
+			this.setPopulating(false);
 		}
 	}
 
@@ -395,7 +379,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends Pane<ReadOnl
 		}
 
 		public void setValue(Boolean value) {
-			updateJoinColumns(value.booleanValue());
+			updatePrimaryKeyJoinColumns(value.booleanValue());
 		}
 	}
 }

@@ -158,9 +158,11 @@ public class GenericJavaJoinTable
 
 	public void clearSpecifiedInverseJoinColumns() {
 		// for now, we have to remove annotations one at a time...
-		for (int i = this.getSpecifiedInverseJoinColumnsSize(); i-- > 0; ) {
-			this.removeSpecifiedInverseJoinColumn(i);
+		for (int index = this.getSpecifiedInverseJoinColumnsSize(); --index >= 0; ) {
+			this.getTableAnnotation().removeInverseJoinColumn(index);
 		}
+		this.removeTableAnnotationIfUnset();
+		this.specifiedInverseJoinColumnContainer.clearContextList();
 	}
 
 	protected void syncSpecifiedInverseJoinColumns() {

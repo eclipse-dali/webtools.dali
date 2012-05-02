@@ -87,6 +87,14 @@ public class NullOrmJoinColumnRelationshipStrategy
 		throw new UnsupportedOperationException();
 	}
 
+	public void clearSpecifiedJoinColumns() {
+		throw new UnsupportedOperationException();
+	}
+
+	public void convertDefaultJoinColumnsToSpecified() {
+		throw new UnsupportedOperationException();
+	}
+
 
 	// ********** default join column **********
 
