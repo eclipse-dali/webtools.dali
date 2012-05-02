@@ -365,8 +365,8 @@ public class JpaStructurePage
 	}
 
 	/**
-	 * Return a tree selection that is either empty or contains a single
-	 * {@link JpaStructureNode JPA structure node}.
+	 * Return a tree selection that is either empty or contains
+	 * {@link JpaStructureNode JPA structure nodes}.
 	 */
 	/* CU private */ IStructuredSelection getTreeViewerSelection() {
 		return (this.treeViewer == null) ?
@@ -375,18 +375,18 @@ public class JpaStructurePage
 	}
 
 	/* CU private */ IStructuredSelection filterSelection(IStructuredSelection selection) {
-		// the selection could be a message
-		return ((selection.size() == 1) && (selection.getFirstElement() instanceof JpaStructureNode)) ?
+		// the selection could hold a message
+		return ((selection.size() > 0) && (selection.getFirstElement() instanceof JpaStructureNode)) ?
 				selection :
-				StructuredSelection.EMPTY;
+				TreeSelection.EMPTY;
 	}
 
 	private JpaStructureNode convertToJpaSelection(IStructuredSelection selection) {
 		return this.convertToJpaSelection_(this.filterSelection(selection));
 	}
 
-	private JpaStructureNode convertToJpaSelection_(IStructuredSelection filterSelection) {
-		return filterSelection.isEmpty() ? null : (JpaStructureNode) filterSelection.getFirstElement();
+	private JpaStructureNode convertToJpaSelection_(IStructuredSelection filteredSelection) {
+		return (filteredSelection.size() != 1) ? null : (JpaStructureNode) filteredSelection.getFirstElement();
 	}
 
 
@@ -471,22 +471,32 @@ public class JpaStructurePage
 		extends AbstractSelectionProvider
 		implements ISelectionChangedListener
 	{
+		/**
+		 * This method is called by the page site.
+		 */
 		public ISelection getSelection() {
 			return JpaStructurePage.this.getTreeViewerSelection();
 		}
 
+		/**
+		 * This method is called by the page site.
+		 */
 		public void setSelection(ISelection selection) {
 			JpaStructurePage.this.setTreeViewerSelection(selection);
 		}
 
+		/**
+		 * This method is called by the tree viewer.
+		 */
 		public void selectionChanged(SelectionChangedEvent event) {
+			// convert the tree view event into a selection provider event
 			this.fireSelectionChanged(this.filterSelection(event.getSelection()));
 		}
 
 		private ISelection filterSelection(ISelection selection) {
 			return (selection instanceof IStructuredSelection) ?
 					JpaStructurePage.this.filterSelection((IStructuredSelection) selection) :
-					TreeSelection.EMPTY;
+					selection;  // shouldn't happen? since the event is coming from the tree viewer
 		}
 	}
 
