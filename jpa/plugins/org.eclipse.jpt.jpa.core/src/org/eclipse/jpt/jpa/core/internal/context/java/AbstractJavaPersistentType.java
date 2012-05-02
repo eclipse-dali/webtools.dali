@@ -898,8 +898,7 @@ public abstract class AbstractJavaPersistentType
 		return JavaPersistentType.class;
 	}
 
-	// it would be nice if the we passed in an astRoot here, but then we
-	// would need to pass it to the XML structure nodes too...
+	// TODO when we start caching text ranges we can stop building the ASTRoot.
 	public JpaStructureNode getStructureNode(int offset) {
 		CompilationUnit astRoot = this.buildASTRoot();
 
