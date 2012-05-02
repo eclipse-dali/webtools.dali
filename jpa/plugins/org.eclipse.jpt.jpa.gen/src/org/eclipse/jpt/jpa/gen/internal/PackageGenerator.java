@@ -400,7 +400,8 @@ public class PackageGenerator {
 				xmlFile = xmlResource.getFile();
 			}
 			else{
-				//TODO This is a temp hack for M6 use default location if writing to a new mapping file
+				//TODO We currently don't support mapping files very well if in non source/class folders so force file
+				//into the know default directory for resources to ensure that things work.
 				IProject project = jpaProject.getProject();
 				IContainer container = ((ProjectResourceLocator) project.getAdapter(ProjectResourceLocator.class)).getDefaultResourceLocation();
 				xmlFile = container.getFile(new Path(xmlMappingFileLocation.substring(xmlMappingFileLocation.lastIndexOf("/")))); //$NON-NLS-1$
