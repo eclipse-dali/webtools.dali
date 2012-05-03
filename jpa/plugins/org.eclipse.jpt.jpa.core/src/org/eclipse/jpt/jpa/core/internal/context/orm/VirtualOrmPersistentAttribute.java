@@ -281,7 +281,7 @@ public class VirtualOrmPersistentAttribute
 
 	public OrmPersistentAttribute addToXml() {
 		if (this.mapping.getKey() == null) {
-			throw new IllegalStateException("Use convertToSpecified(String) instead and specify a mapping type"); //$NON-NLS-1$
+			throw new IllegalStateException("Use addToXml(String) instead and specify a mapping type"); //$NON-NLS-1$
 		}
 		return this.getOwningPersistentType().addAttributeToXml(this);
 	}
