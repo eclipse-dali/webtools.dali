@@ -135,8 +135,7 @@ public abstract class PersistentAttributeDetailsPage<A extends ReadOnlyPersisten
 	private ModifiablePropertyValueModel<AttributeMapping> buildMappingHolder() {
 		return new PropertyAspectAdapter<A, AttributeMapping>(
 			getSubjectHolder(),
-			PersistentAttribute.DEFAULT_MAPPING_KEY_PROPERTY,
-			PersistentAttribute.MAPPING_PROPERTY)
+			ReadOnlyPersistentAttribute.MAPPING_PROPERTY)
 		{
 			@Override
 			protected AttributeMapping buildValue_() {

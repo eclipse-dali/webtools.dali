@@ -130,7 +130,7 @@ public class VirtualOrmPersistentAttribute
 	protected void setMapping(JavaAttributeMapping mapping) {
 		JavaAttributeMapping old = this.mapping;
 		this.mapping = mapping;
-		this.firePropertyChanged(DEFAULT_MAPPING_KEY_PROPERTY, old, mapping);
+		this.firePropertyChanged(MAPPING_PROPERTY, old, mapping);
 	}
 
 	protected JavaAttributeMapping buildMapping() {
@@ -224,7 +224,7 @@ public class VirtualOrmPersistentAttribute
 	// ********** original Java persistent attribute **********
 
 	protected void updateOriginalJavaAttribute() {
-		JavaPersistentAttribute newJavaAttribute = this.resolveJavaPersistentAttribute();
+		JavaPersistentAttribute newJavaAttribute = this.resolveJavaPersistentAttribute(); //yes, this is the "original" java attribute
 		if (newJavaAttribute != this.originalJavaAttribute) {
 			if (newJavaAttribute == null) {
 				this.originalJavaAttribute.removeStateChangeListener(this.getOriginalJavaAttributeListener());
