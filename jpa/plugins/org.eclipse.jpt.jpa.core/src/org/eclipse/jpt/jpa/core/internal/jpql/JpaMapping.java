@@ -22,6 +22,7 @@ import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
@@ -95,6 +96,32 @@ final class JpaMapping implements IMapping {
 		};
 	}
 
+	private IType buildType() {
+
+		PersistentAttribute property = mapping.getPersistentAttribute();
+		String typeName = property.getTypeName();
+
+		// The attribute could be virtual, incorrectly specified in the orm.xml
+		if (typeName == null) {
+			return getTypeRepository().getTypeHelper().unknownType();
+		}
+
+		// For relationship mapping, make sure to check the target entity first
+		if (isRelationship()) {
+
+			String entityName = ((RelationshipMapping) mapping).getTargetEntity();
+
+			if (StringTools.stringIsNotEmpty(entityName)) {
+				IManagedType entity = getParent().getProvider().getManagedType(entityName);
+				if (entity != null) {
+					return entity.getType();
+				}
+			}
+		}
+
+		return getTypeRepository().getType(typeName);
+	}
+
 	private ITypeDeclaration buildTypeDeclaration() {
 
 		PersistentAttribute property = mapping.getPersistentAttribute();
@@ -124,7 +151,6 @@ final class JpaMapping implements IMapping {
 	 */
 	public IMappingType getMappingType() {
 		if (mappingType == null) {
-			getTypeDeclaration();
 			mappingType = mappingType();
 		}
 		return mappingType;
@@ -149,8 +175,7 @@ final class JpaMapping implements IMapping {
 	 */
 	public IType getType() {
 		if (type == null) {
-			PersistentAttribute property = mapping.getPersistentAttribute();
-			type = getTypeRepository().getType(property.getTypeName());
+			type = buildType();
 		}
 		return type;
 	}
@@ -175,6 +200,18 @@ final class JpaMapping implements IMapping {
 	public boolean hasAnnotation(Class<? extends Annotation> annotationType) {
 		JavaResourcePersistentAttribute attribute = mapping.getPersistentAttribute().getJavaPersistentAttribute().getResourcePersistentAttribute();
 		return attribute.getAnnotation(annotationType.getName()) != null;
+	}
+
+	public boolean isRelationship() {
+		switch (getMappingType()) {
+			case ELEMENT_COLLECTION:
+			case EMBEDDED_ID:
+			case MANY_TO_MANY:
+			case MANY_TO_ONE:
+			case ONE_TO_MANY:
+			case ONE_TO_ONE: return true;
+			default:         return false;
+		}
 	}
 
 	private IMappingType mappingType() {
