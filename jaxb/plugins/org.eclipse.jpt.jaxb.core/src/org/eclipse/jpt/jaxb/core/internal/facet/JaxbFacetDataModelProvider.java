@@ -273,5 +273,6 @@ public abstract class JaxbFacetDataModelProvider
 	public void dispose() {
 		super.dispose();
 		getFacetedProjectWorkingCopy().removeListener(this.fprojListener);
+		this.defaultLibraryInstallDelegate.dispose();
 	}
 }

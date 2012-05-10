@@ -46,6 +46,9 @@ public class RuntimeChangedListener
 			catch (CoreException ce) {
 				JptJpaCorePlugin.log(ce);
 			}
+			finally {
+				lp.dispose();
+			}
 		}
 	}
 	

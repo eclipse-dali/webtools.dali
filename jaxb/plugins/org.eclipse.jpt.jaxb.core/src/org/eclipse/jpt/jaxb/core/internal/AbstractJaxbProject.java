@@ -1168,26 +1168,29 @@ public abstract class AbstractJaxbProject
 	}
 	
 	protected void validateLibraryProvider(List<IMessage> messages) {
+		IFacetedProject facetedProject = null;
 		try {
-			IFacetedProject facetedProject = ProjectFacetsManager.create(getProject());
-			IProjectFacetVersion facetVersion = facetedProject.getInstalledVersion(JaxbFacet.FACET);
-			LibraryInstallDelegate lid = new LibraryInstallDelegate(facetedProject, facetVersion);
-			ILibraryProvider lp = lid.getLibraryProvider();
-			if (lid.getLibraryProviderOperationConfig() instanceof JaxbLibraryProviderInstallOperationConfig) {
-				((JaxbLibraryProviderInstallOperationConfig) lid.getLibraryProviderOperationConfig()).setJaxbPlatform(getPlatform().getDescription());
-			}
-			if (! lp.isEnabledFor(facetedProject, facetVersion) || ! lid.validate().isOK()) {
-				messages.add(
-						DefaultValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JaxbValidationMessages.PROJECT_INVALID_LIBRARY_PROVIDER,
-							this));
-			}
+			facetedProject = ProjectFacetsManager.create(getProject());
 		}
 		catch (CoreException ce) {
 			// fall through
 			JptJaxbCorePlugin.log(ce);
+		}	
+		
+		IProjectFacetVersion facetVersion = facetedProject.getInstalledVersion(JaxbFacet.FACET);
+		LibraryInstallDelegate lid = new LibraryInstallDelegate(facetedProject, facetVersion);
+		ILibraryProvider lp = lid.getLibraryProvider();
+		if (lid.getLibraryProviderOperationConfig() instanceof JaxbLibraryProviderInstallOperationConfig) {
+			((JaxbLibraryProviderInstallOperationConfig) lid.getLibraryProviderOperationConfig()).setJaxbPlatform(getPlatform().getDescription());
 		}
+		if (! lp.isEnabledFor(facetedProject, facetVersion) || ! lid.validate().isOK()) {
+			messages.add(
+					DefaultValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JaxbValidationMessages.PROJECT_INVALID_LIBRARY_PROVIDER,
+						this));
+		}
+		lid.dispose();
 	}
 	
 	protected void validateSchemaLibrary(List<IMessage> messages) {
