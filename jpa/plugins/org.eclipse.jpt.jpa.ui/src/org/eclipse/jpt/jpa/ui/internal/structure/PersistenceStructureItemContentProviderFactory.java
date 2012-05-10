@@ -19,7 +19,6 @@ import org.eclipse.jpt.jpa.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.ui.internal.platform.generic.PersistenceUnitItemContentProvider;
 
 /**
  * This factory builds item content providers for a <code>persistence.xml</code>
