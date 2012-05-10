@@ -29,8 +29,8 @@ import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueMo
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
@@ -81,7 +81,7 @@ public class QueriesComposite extends Pane<QueryContainer>
 
 
 	public QueriesComposite(
-		Pane<?> parentPane,
+		Pane<?> parentPane, 
 		PropertyValueModel<? extends QueryContainer> subjectHolder,
 		Composite parent) {
 
@@ -121,7 +121,7 @@ public class QueriesComposite extends Pane<QueryContainer>
 			Query.NAME_PROPERTY
 		);
 	}
-
+	
 	private AddRemoveListPane<QueryContainer> addListPane(Composite container) {
 
 		return new AddRemoveListPane<QueryContainer>(
@@ -203,7 +203,7 @@ public class QueriesComposite extends Pane<QueryContainer>
 			}
 		};
 	}
-
+	
 	private Adapter buildQueriesAdapter() {
 
 		return new AddRemoveListPane.AbstractAdapter() {
@@ -295,7 +295,7 @@ public class QueriesComposite extends Pane<QueryContainer>
 
 		installPaneSwitcher(pageBook);
 	}
-
+	
 	protected Pane<? extends NamedQuery> buildNamedQueryPropertyComposite(PageBook pageBook) {
 		return new NamedQueryPropertyComposite<NamedQuery>(
 			this,
@@ -307,7 +307,7 @@ public class QueriesComposite extends Pane<QueryContainer>
 	private void installPaneSwitcher(PageBook pageBook) {
 		new ControlSwitcher(this.getQueryHolder(), this.buildPaneTransformer(), pageBook);
 	}
-
+	
 	protected ModifiablePropertyValueModel<Query> getQueryHolder() {
 		return queryHolder;
 	}

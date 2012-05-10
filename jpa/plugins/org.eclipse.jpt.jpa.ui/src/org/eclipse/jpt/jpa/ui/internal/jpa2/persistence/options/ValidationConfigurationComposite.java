@@ -22,21 +22,23 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
-import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.JpaOptions2_0;
 import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.JptUiPersistence2_0Messages;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
 import org.eclipse.ui.progress.IProgressService;
@@ -81,25 +83,38 @@ public class ValidationConfigurationComposite extends Pane<JpaOptions2_0>
 	}
 
 	// ********** ValidationGroupPrePersists **********
-
+	
 	private void addGroupPrePersistListPane(Composite parent) {
 
-		this.addLabeledComposite(parent,
+		this.addLabeledComposite(parent, 
 			JptUiPersistence2_0Messages.ValidationConfigurationComposite_groupPrePersistLabel,
 			this.addPrePersistListPane(parent),
 			null	// TODO Help
 			);
 	}
-
+	
 	private AddRemoveListPane<JpaOptions2_0> addPrePersistListPane(Composite parent) {
-		return new AddRemoveListPane<JpaOptions2_0>(
+
+		// List pane
+		AddRemoveListPane<JpaOptions2_0> listPane = new AddRemoveListPane<JpaOptions2_0>(
 			this,
 			parent,
 			this.buildPrePersistAdapter(),
 			this.buildPrePersistListHolder(),
 			this.buildSelectedItemHolder(),
 			this.buildLabelProvider()
-		);
+		)
+		{
+			@Override
+			protected void initializeTable(Table table) {
+				super.initializeTable(table);
+
+				Composite container = table.getParent();
+				GridData gridData  = (GridData) container.getLayoutData();
+				gridData.heightHint = 75;
+			}
+		};
+		return listPane;
 	}
 
 	private Adapter buildPrePersistAdapter() {
@@ -137,7 +152,7 @@ public class ValidationConfigurationComposite extends Pane<JpaOptions2_0>
 		if (type != null) {
 			String className = type.getFullyQualifiedName('$');
 			if( ! this.getSubject().validationGroupPrePersistExists(className)) {
-
+				
 				String classRef = this.getSubject().addValidationGroupPrePersist(className);
 				listSelectionModel.setSelectedValue(classRef);
 			}
@@ -145,25 +160,38 @@ public class ValidationConfigurationComposite extends Pane<JpaOptions2_0>
 	}
 
 	// ********** ValidationGroupPreUpdates **********
-
+	
 	private void addGroupPreUpdateListPane(Composite parent) {
 
-		this.addLabeledComposite(parent,
+		this.addLabeledComposite(parent, 
 			JptUiPersistence2_0Messages.ValidationConfigurationComposite_groupPreUpdateLabel,
 			this.addPreUpdateListPane(parent),
 			null	// TODO Help
 			);
 	}
-
+	
 	private AddRemoveListPane<JpaOptions2_0> addPreUpdateListPane(Composite parent) {
-		return new AddRemoveListPane<JpaOptions2_0>(
+
+		// List pane
+		AddRemoveListPane<JpaOptions2_0> listPane = new AddRemoveListPane<JpaOptions2_0>(
 			this,
 			parent,
 			this.buildPreUpdateAdapter(),
 			this.buildPreUpdateListHolder(),
 			this.buildSelectedItemHolder(),
 			this.buildLabelProvider()
-		);
+		)
+		{
+			@Override
+			protected void initializeTable(Table table) {
+				super.initializeTable(table);
+
+				Composite container = table.getParent();
+				GridData gridData  = (GridData) container.getLayoutData();
+				gridData.heightHint = 75;
+			}
+		};
+		return listPane;
 	}
 
 	private Adapter buildPreUpdateAdapter() {
@@ -201,7 +229,7 @@ public class ValidationConfigurationComposite extends Pane<JpaOptions2_0>
 		if (type != null) {
 			String className = type.getFullyQualifiedName('$');
 			if( ! this.getSubject().validationGroupPreUpdateExists(className)) {
-
+				
 				String classRef = this.getSubject().addValidationGroupPreUpdate(className);
 				listSelectionModel.setSelectedValue(classRef);
 			}
@@ -209,25 +237,38 @@ public class ValidationConfigurationComposite extends Pane<JpaOptions2_0>
 	}
 
 	// ********** ValidationGroupPreRemoves **********
-
+	
 	private void addGroupPreRemoveListPane(Composite parent) {
 
-		this.addLabeledComposite(parent,
+		this.addLabeledComposite(parent, 
 			JptUiPersistence2_0Messages.ValidationConfigurationComposite_groupPreRemoveLabel,
 			this.addPreRemoveListPane(parent),
 			null	// TODO Help
 			);
 	}
-
+	
 	private AddRemoveListPane<JpaOptions2_0> addPreRemoveListPane(Composite parent) {
-		return new AddRemoveListPane<JpaOptions2_0>(
+
+		// List pane
+		AddRemoveListPane<JpaOptions2_0> listPane = new AddRemoveListPane<JpaOptions2_0>(
 			this,
 			parent,
 			this.buildPreRemoveAdapter(),
 			this.buildPreRemoveListHolder(),
 			this.buildSelectedItemHolder(),
 			this.buildLabelProvider()
-		);
+		)
+		{
+			@Override
+			protected void initializeTable(Table table) {
+				super.initializeTable(table);
+
+				Composite container = table.getParent();
+				GridData gridData  = (GridData) container.getLayoutData();
+				gridData.heightHint = 75;
+			}
+		};
+		return listPane;
 	}
 
 	private Adapter buildPreRemoveAdapter() {
@@ -265,7 +306,7 @@ public class ValidationConfigurationComposite extends Pane<JpaOptions2_0>
 		if (type != null) {
 			String className = type.getFullyQualifiedName('$');
 			if( ! this.getSubject().validationGroupPreRemoveExists(className)) {
-
+				
 				String classRef = this.getSubject().addValidationGroupPreRemove(className);
 				listSelectionModel.setSelectedValue(classRef);
 			}
@@ -274,7 +315,7 @@ public class ValidationConfigurationComposite extends Pane<JpaOptions2_0>
 
 
 	// ********** Private methods **********
-
+	
 	private PropertyValueModel<PersistenceUnit2_0> buildPersistenceUnit2_0Holder() {
 		return new PropertyAspectAdapter<JpaOptions2_0, PersistenceUnit2_0>(this.getSubjectHolder()) {
 			@Override

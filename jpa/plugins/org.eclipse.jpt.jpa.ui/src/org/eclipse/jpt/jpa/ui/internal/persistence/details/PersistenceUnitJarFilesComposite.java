@@ -14,8 +14,8 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
-import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
@@ -29,7 +29,9 @@ import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
 import org.eclipse.jpt.jpa.ui.internal.persistence.JptUiPersistenceMessages;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 
@@ -54,10 +56,10 @@ import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
  * @version 2.0
  * @since 2.0
  */
-public abstract class PersistenceUnitJarFilesComposite
+public abstract class PersistenceUnitJarFilesComposite 
 	extends Pane<PersistenceUnit>
 {
-	private ModifiablePropertyValueModel<JarFileRef> selectedItemHolder;
+	private ModifiablePropertyValueModel<JarFileRef> selectedItemHolder;	
 
 	/**
 	 * Creates a new <code>PersistenceUnitJPAMappingDescriptorsComposite</code>.
@@ -78,14 +80,15 @@ public abstract class PersistenceUnitJarFilesComposite
 		this.selectedItemHolder = buildSelectedItemHolder();
 	}
 
-
-
+	
+	
 	@Override
 	protected void initializeLayout(Composite container) {
 		addJarFilesList(container);
 	}
-
+	
 	protected void addJarFilesList(Composite container) {
+		// List pane
 		new AddRemoveListPane<PersistenceUnit>(
 			this,
 			container,
@@ -94,15 +97,37 @@ public abstract class PersistenceUnitJarFilesComposite
 			this.selectedItemHolder,
 			this.buildLabelProvider(),
 			JpaHelpContextIds.PERSISTENCE_XML_GENERAL
-		);
+		) {
+			@Override
+			protected Composite addContainer(Composite parent) {
+				parent = super.addContainer(parent);
+				updateGridData(parent);
+				return parent;
+			}
+	
+			@Override
+			protected void initializeLayout(Composite container) {
+				super.initializeLayout(container);
+				updateGridData(getContainer());
+			}
+		};
 	}
-
+	
+	private void updateGridData(Composite container) {
+		GridData gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace   = true;
+		gridData.horizontalAlignment       = SWT.FILL;
+		gridData.verticalAlignment         = SWT.FILL;
+		container.setLayoutData(gridData);
+	}
+	
 	private Adapter buildAdapter() {
 		return new AddRemoveListPane.AbstractAdapter() {
 			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
 				addJarFileRef();
 			}
-
+			
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
 				for (Object item : listSelectionModel.selectedValues()) {
 					getSubject().removeJarFileRef((JarFileRef) item);
@@ -110,59 +135,59 @@ public abstract class PersistenceUnitJarFilesComposite
 			}
 		};
 	}
-
+	
 	private ListValueModel<JarFileRef> buildItemListHolder() {
 		return new ItemPropertyListValueModelAdapter<JarFileRef>(
 			buildListHolder(),
 			JarFileRef.FILE_NAME_PROPERTY
 		);
 	}
-
+	
 	private ListValueModel<JarFileRef> buildListHolder() {
 		return new ListAspectAdapter<PersistenceUnit, JarFileRef>(getSubjectHolder(), PersistenceUnit.JAR_FILE_REFS_LIST) {
 			@Override
 			protected ListIterable<JarFileRef> getListIterable() {
 				return this.subject.getJarFileRefs();
 			}
-
+			
 			@Override
 			protected int size_() {
 				return this.subject.getJarFileRefsSize();
 			}
 		};
 	}
-
+	
 	private ModifiablePropertyValueModel<JarFileRef> buildSelectedItemHolder() {
 		return new SimplePropertyValueModel<JarFileRef>();
 	}
-
+	
 	private ILabelProvider buildLabelProvider() {
 		return new LabelProvider() {
 			@Override
 			public Image getImage(Object element) {
 				return JptJpaUiPlugin.getImage(JptUiIcons.JAR_FILE_REF);
 			}
-
+			
 			@Override
 			public String getText(Object element) {
 				JarFileRef jarFileRef = (JarFileRef) element;
 				String name = jarFileRef.getFileName();
-
+				
 				if (name == null) {
 					name = JptUiPersistenceMessages.PersistenceUnitJarFilesComposite_noFileName;
 				}
-
+				
 				return name;
 			}
 		};
 	}
-
+	
 	private void addJarFileRef() {
 		IProject project = getSubject().getJpaProject().getProject();
 
 		ElementTreeSelectionDialog dialog = new ArchiveFileSelectionDialog(
 			getShell(), buildJarFileDeploymentPathCalculator());
-
+		
 		dialog.setHelpAvailable(false);
 		dialog.setTitle(JptUiPersistenceMessages.PersistenceUnitMappingFilesComposite_jarFileDialog_title);
 		dialog.setMessage(JptUiPersistenceMessages.PersistenceUnitMappingFilesComposite_jarFileDialog_message);
@@ -170,8 +195,8 @@ public abstract class PersistenceUnitJarFilesComposite
 
 
 		dialog.setBlockOnOpen(true);
-
-		if (dialog.open() == Window.OK) {
+		
+		if (dialog.open() == Window.OK) {		
 			for (Object result : dialog.getResult()) {
 				String filePath = (String) result;
 				if (jarFileRefExists(filePath)) {
@@ -183,11 +208,11 @@ public abstract class PersistenceUnitJarFilesComposite
 			}
 		}
 	}
-
+	
 	protected ArchiveFileSelectionDialog.DeploymentPathCalculator buildJarFileDeploymentPathCalculator() {
 		return new ArchiveFileSelectionDialog.ModuleDeploymentPathCalculator();
 	}
-
+	
 	private boolean jarFileRefExists(String fileName) {
 		for (JarFileRef each : getSubject().getJarFileRefs()) {
 			if (each.getFileName().equals(fileName)) {

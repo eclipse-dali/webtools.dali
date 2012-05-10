@@ -32,8 +32,8 @@ import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueMo
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
@@ -44,7 +44,9 @@ import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
 import org.eclipse.jpt.jpa.ui.internal.persistence.JptUiPersistenceMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
@@ -102,7 +104,7 @@ public class PersistenceUnitClassesComposite extends Pane<PersistenceUnit>
 			listSelectionModel.setSelectedValue(classRef);
 		}
 	}
-
+	
 	private boolean classRefExists(String className) {
 		for (ClassRef classRef : getSubject().getSpecifiedClassRefs()) {
 			if( classRef.getClassName().equals(className)) {
@@ -179,7 +181,7 @@ public class PersistenceUnitClassesComposite extends Pane<PersistenceUnit>
 			}
 		};
 	}
-
+	
 	private PropertyValueModel<Boolean> buildDefaultExcludeUnlistedMappedClassesHolder() {
 		return new PropertyAspectAdapter<PersistenceUnit, Boolean>(
 			getSubjectHolder(),
@@ -328,7 +330,17 @@ public class PersistenceUnitClassesComposite extends Pane<PersistenceUnit>
 			this.buildSelectedItemHolder(),
 			this.buildLabelProvider(),
 			JpaHelpContextIds.PERSISTENCE_XML_GENERAL
-		);
+		)
+		{
+			@Override
+			protected void initializeTable(Table table) {
+				super.initializeTable(table);
+
+				Composite container = table.getParent();
+				GridData gridData   = (GridData) container.getLayoutData();
+				gridData.heightHint = 75;
+			}
+		};
 
 		this.addTriStateCheckBoxWithDefault(
 			container,

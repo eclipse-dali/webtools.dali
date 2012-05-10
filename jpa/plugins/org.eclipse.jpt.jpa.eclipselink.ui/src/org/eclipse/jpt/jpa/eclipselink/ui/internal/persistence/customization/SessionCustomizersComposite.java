@@ -3,7 +3,7 @@
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
-*
+* 
 * Contributors:
 *     Oracle - initial API and implementation
 *******************************************************************************/
@@ -33,7 +33,9 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
 import org.eclipse.ui.progress.IProgressService;
@@ -63,7 +65,7 @@ public class SessionCustomizersComposite extends Pane<Customization>
 		if (type != null) {
 			String className = type.getFullyQualifiedName('$');
 			if( ! this.getSubject().sessionCustomizerExists(className)) {
-
+				
 				String classRef = this.getSubject().addSessionCustomizer(className);
 				listSelectionModel.setSelectedValue(classRef);
 			}
@@ -171,7 +173,17 @@ public class SessionCustomizersComposite extends Pane<Customization>
 			buildListHolder(),
 			buildSelectedItemHolder(),
 			buildLabelProvider()
-		);
+		)
+		{
+			@Override
+			protected void initializeTable(Table table) {
+				super.initializeTable(table);
+
+				Composite container = table.getParent();
+				GridData gridData   = (GridData) container.getLayoutData();
+				gridData.heightHint = 75;
+			}
+		};
 	}
 
 	private IJavaProject getJavaProject() {
