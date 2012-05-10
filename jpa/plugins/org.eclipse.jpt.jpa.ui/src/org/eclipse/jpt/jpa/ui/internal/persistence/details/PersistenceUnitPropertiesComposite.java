@@ -31,12 +31,11 @@ import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.common.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.details.JpaPageComposite;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.details.java.BaseJavaUiFactory;
 import org.eclipse.jpt.jpa.ui.internal.persistence.JptUiPersistenceMessages;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -273,7 +272,9 @@ public class PersistenceUnitPropertiesComposite extends Pane<PersistenceUnit>
 		@Override
 		protected Composite addContainer(Composite parent) {
 			Composite container = super.addContainer(parent);
-			container.setLayoutData(new GridData(GridData.FILL_BOTH));
+			GridData gridData = new GridData(GridData.FILL_BOTH);
+			gridData.heightHint = 300;
+			container.setLayoutData(gridData);
 			return container;
 		}
 

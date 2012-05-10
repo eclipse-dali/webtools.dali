@@ -52,11 +52,11 @@ import org.eclipse.ui.views.navigator.ResourceComparator;
 public abstract class PersistenceUnitMappingFilesComposite
 		extends Pane<PersistenceUnit> {
 
-	private ModifiablePropertyValueModel<MappingFileRef> selectedItemHolder;	
+	private ModifiablePropertyValueModel<MappingFileRef> selectedItemHolder;
 
 	public PersistenceUnitMappingFilesComposite(
 			Pane<? extends PersistenceUnit> parentPane, Composite parent) {
-		
+
 		super(parentPane, parent);
 	}
 
@@ -65,8 +65,8 @@ public abstract class PersistenceUnitMappingFilesComposite
 		super.initialize();
 		this.selectedItemHolder = buildSelectedItemHolder();
 	}
-	
-	
+
+
 	protected void addMappingFilesList(Composite container) {
 		// List pane
 		new AddRemoveListPane<PersistenceUnit>(
@@ -76,23 +76,9 @@ public abstract class PersistenceUnitMappingFilesComposite
 				buildItemListHolder(),
 				this.selectedItemHolder,
 				buildLabelProvider(),
-				JpaHelpContextIds.PERSISTENCE_XML_GENERAL) {
-			
-			@Override
-			protected Composite addContainer(Composite parent) {
-				parent = super.addContainer(parent);
-				updateGridData(parent);
-				return parent;
-			}
-			
-			@Override
-			protected void initializeLayout(Composite container) {
-				super.initializeLayout(container);
-				updateGridData(getContainer());
-			}
-		};
+				JpaHelpContextIds.PERSISTENCE_XML_GENERAL);
 	}
-	
+
 	/**
 	 * Prompts a dialog showing a tree structure of the source paths where the
 	 * only files shown are JPA mapping descriptors file. The XML file has to be
@@ -101,12 +87,12 @@ public abstract class PersistenceUnitMappingFilesComposite
 	 * @param listSelectionModel The selection model used to select the new files
 	 */
 	private void addJPAMappingDescriptor() {
-		
+
 		ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(
 				getShell(),
 				new WorkbenchLabelProvider(),
 				new WorkbenchContentProvider());
-		
+
 		dialog.setHelpAvailable(false);
 		dialog.setValidator(buildValidator());
 		dialog.setTitle(JptUiPersistenceMessages.PersistenceUnitMappingFilesComposite_mappingFileDialog_title);
@@ -131,13 +117,13 @@ public abstract class PersistenceUnitMappingFilesComposite
 			}
 		}
 	}
-	
+
 	private Adapter buildAdapter() {
 		return new AddRemoveListPane.AbstractAdapter() {
 			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
 				addJPAMappingDescriptor();
 			}
-			
+
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
 				for (Object item : listSelectionModel.selectedValues()) {
 					getSubject().removeSpecifiedMappingFileRef((MappingFileRef) item);
@@ -145,10 +131,10 @@ public abstract class PersistenceUnitMappingFilesComposite
 			}
 		};
 	}
-	
+
 	@Override
 	protected Composite addContainer(Composite parent) {
-		
+
 		GridLayout layout = new GridLayout(1, true);
 		layout.marginHeight = 0;
 		layout.marginWidth  = 0;
@@ -162,54 +148,54 @@ public abstract class PersistenceUnitMappingFilesComposite
 
 		return container;
 	}
-	
+
 	private ListValueModel<MappingFileRef> buildItemListHolder() {
 		return new ItemPropertyListValueModelAdapter<MappingFileRef>(
 				buildListHolder(),
 				MappingFileRef.FILE_NAME_PROPERTY);
 	}
-	
+
 	private ILabelProvider buildLabelProvider() {
 		return new LabelProvider() {
 			@Override
 			public Image getImage(Object element) {
 				return JptJpaUiPlugin.getImage(JptUiIcons.MAPPING_FILE_REF);
 			}
-			
+
 			@Override
 			public String getText(Object element) {
 				MappingFileRef mappingFileRef = (MappingFileRef) element;
 				String name = mappingFileRef.getFileName();
-				
+
 				if (name == null) {
 					name = JptUiPersistenceMessages.PersistenceUnitMappingFilesComposite_ormNoName;
 				}
-				
+
 				return name;
 			}
 		};
 	}
-	
+
 	private ListValueModel<MappingFileRef> buildListHolder() {
 		return new ListAspectAdapter<PersistenceUnit, MappingFileRef>(
 				getSubjectHolder(), PersistenceUnit.SPECIFIED_MAPPING_FILE_REFS_LIST) {
-			
+
 			@Override
 			protected ListIterable<MappingFileRef> getListIterable() {
 				return this.subject.getSpecifiedMappingFileRefs();
 			}
-			
+
 			@Override
 			protected int size_() {
 				return this.subject.getSpecifiedMappingFileRefsSize();
 			}
 		};
 	}
-	
+
 	private ModifiablePropertyValueModel<MappingFileRef> buildSelectedItemHolder() {
 		return new SimplePropertyValueModel<MappingFileRef>();
 	}
-	
+
 	private boolean mappingFileRefExists(String fileName) {
 		for (MappingFileRef mappingFileRef : getSubject().getSpecifiedMappingFileRefs()) {
 			if( mappingFileRef.getFileName().equals(fileName)) {
@@ -218,7 +204,7 @@ public abstract class PersistenceUnitMappingFilesComposite
 		}
 		return false;
 	}
-	
+
 	private ISelectionStatusValidator buildValidator() {
 		return new ISelectionStatusValidator() {
 			public IStatus validate(Object[] selection) {
@@ -237,10 +223,11 @@ public abstract class PersistenceUnitMappingFilesComposite
 			}
 		};
 	}
-	
+
 	private void updateGridData(Composite container) {
-		
+
 		GridData gridData = new GridData();
+		gridData.minimumHeight             = 150;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace   = true;
 		gridData.horizontalAlignment       = SWT.FILL;

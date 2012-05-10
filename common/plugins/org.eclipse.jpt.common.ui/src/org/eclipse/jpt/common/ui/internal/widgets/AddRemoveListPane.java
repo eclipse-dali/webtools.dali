@@ -31,8 +31,8 @@ import org.eclipse.jpt.common.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -63,7 +63,7 @@ import org.eclipse.swt.widgets.TableColumn;
  * | -------------------------------------------------------------             |
  * -----------------------------------------------------------------------------</pre>
  *
- * @version 2.0
+ * @version 3.2
  * @since 1.0
  */
 @SuppressWarnings("nls")
@@ -495,6 +495,10 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 		table.setData("column.width", new Integer(0));
 		table.setHeaderVisible(false);
 		table.setLinesVisible(false);
+
+		Composite container = table.getParent();
+		GridData gridData   = (GridData) container.getLayoutData();
+		gridData.heightHint = 75;
 	}
 
 	/**
