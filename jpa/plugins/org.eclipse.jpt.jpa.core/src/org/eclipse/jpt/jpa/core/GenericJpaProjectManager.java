@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -233,16 +233,12 @@ class GenericJpaProjectManager
 	 */
 	private void buildJpaProjects() {
 		try {
-			this.buildJpaProjects_();
-		} catch (CoreException ex) {
+			this.getWorkspace().getRoot().accept(new ResourceProxyVisitor(), IResource.NONE);
+		} catch (Exception ex) {
 			// if we have a problem, leave the currently built JPA projects in
 			// place and keep executing (should be OK...)
 			JptJpaCorePlugin.log(ex);
 		}
-	}
-
-	private void buildJpaProjects_() throws CoreException {
-		this.getWorkspace().getRoot().accept(new ResourceProxyVisitor(), IResource.NONE);
 	}
 
 	/**
