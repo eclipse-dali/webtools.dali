@@ -226,7 +226,7 @@ class GenericJpaProjectManager
 	private void buildJpaProjects() {
 		try {
 			this.buildJpaProjects_();
-		} catch (CoreException ex) {
+		} catch (Exception ex) {
 			// if we have a problem, leave the currently built JPA projects in
 			// place and keep executing (should be OK...)
 			JptCorePlugin.log(ex);
