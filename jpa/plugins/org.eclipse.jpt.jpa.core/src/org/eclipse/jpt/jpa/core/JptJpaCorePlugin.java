@@ -118,11 +118,17 @@ public class JptJpaCorePlugin
 	 */
 	public static final String DISCOVER_ANNOTATED_CLASSES = PLUGIN_ID_ + "discoverAnnotatedClasses";  //$NON-NLS-1$
 
+	//bug 354780 - made the mistake of changing the project metadata in the 3.0 release
+	private static final String LEGACY_DISCOVER_ANNOTATED_CLASSES = LEGACY_PLUGIN_ID_ + "discoverAnnotatedClasses";  //$NON-NLS-1$
+
 	/**
 	 * The key for storing the name of a JPA project's metamodel source folder
 	 * in the Eclipse project's preferences.
 	 */
 	public static final String METAMODEL_SOURCE_FOLDER_NAME = PLUGIN_ID_ + "metamodelSourceFolderName";  //$NON-NLS-1$
+
+	//bug 354780 - made the mistake of changing the project metadata in the 3.0 release
+	private static final String LEGACY_METAMODEL_SOURCE_FOLDER_NAME = LEGACY_PLUGIN_ID_ + "metamodelSourceFolderName";  //$NON-NLS-1$
 
 	/**
 	 * The key for storing a JPA project's data source connection profile name
@@ -383,7 +389,11 @@ public class JptJpaCorePlugin
 	public static void clearProjectPreferences(IProject project) {
 		clearProjectPreferences(
 				project, 
-				JPA_PLATFORM_PREF_KEY, DISCOVER_ANNOTATED_CLASSES, METAMODEL_SOURCE_FOLDER_NAME);
+				JPA_PLATFORM_PREF_KEY,
+				DISCOVER_ANNOTATED_CLASSES,
+				METAMODEL_SOURCE_FOLDER_NAME,
+				LEGACY_DISCOVER_ANNOTATED_CLASSES,
+				LEGACY_METAMODEL_SOURCE_FOLDER_NAME);
 	}
 	
 	/**
@@ -510,7 +520,11 @@ public class JptJpaCorePlugin
 	 * Eclipse project.
 	 */
 	public static boolean discoverAnnotatedClasses(IProject project) {
-		return getProjectPreferences(project).getBoolean(DISCOVER_ANNOTATED_CLASSES, false);
+		if (getProjectPreferences(project).get(DISCOVER_ANNOTATED_CLASSES, null) != null) {
+			return getProjectPreferences(project).getBoolean(DISCOVER_ANNOTATED_CLASSES, false);
+		}
+		//bug 354780 - made the mistake of changing the project metadata in the 3.0 release
+		return getProjectPreferences(project).getBoolean(LEGACY_DISCOVER_ANNOTATED_CLASSES, false);
 	}
 
 	/**
@@ -526,7 +540,12 @@ public class JptJpaCorePlugin
 	 * specified Eclipse project.
 	 */
 	public static String getMetamodelSourceFolderName(IProject project) {
-		return getProjectPreferences(project).get(METAMODEL_SOURCE_FOLDER_NAME, null);
+		String metamodelSourceFolderName = getProjectPreferences(project).get(METAMODEL_SOURCE_FOLDER_NAME, null);
+		if (metamodelSourceFolderName != null) {
+			return metamodelSourceFolderName;
+		}
+		//bug 354780 - made the mistake of changing the project metadata in the 3.0 release
+		return getProjectPreferences(project).get(LEGACY_METAMODEL_SOURCE_FOLDER_NAME, null);
 	}
 
 	/**
@@ -535,6 +554,13 @@ public class JptJpaCorePlugin
 	 */
 	public static void setMetamodelSourceFolderName(IProject project, String metamodelSourceFolderName) {
 		setProjectPreference(project, METAMODEL_SOURCE_FOLDER_NAME, metamodelSourceFolderName);
+		//bug 354780 - made the mistake of changing the project metadata in the 3.0 release.
+		//make sure legacy setting is removed when turning off metamodel gen, if we don't then
+		//there will be no way to turn off meatamodel gen without sacrificing backwards compatibility
+		if(metamodelSourceFolderName == null) {
+			setProjectPreference(project, LEGACY_METAMODEL_SOURCE_FOLDER_NAME, null);
+		}
+		
 	}
 
 	/**

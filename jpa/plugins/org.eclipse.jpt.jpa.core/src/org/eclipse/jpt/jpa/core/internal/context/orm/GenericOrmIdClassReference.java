@@ -326,15 +326,14 @@ public class GenericOrmIdClassReference
 	}
 	
 	protected void validateIdClass(List<IMessage> messages, IReporter reporter) {
-		IJavaProject javaProject = getJpaProject().getJavaProject();
 		if (this.isSpecified()) {
-			JavaResourcePersistentType jrpt = getJpaProject().getJavaResourcePersistentType(this.getIdClassName());
+			JavaResourcePersistentType jrpt = getEntityMappings().resolveJavaResourcePersistentType(this.getIdClassName());
 			if ((jrpt != null) && (jrpt.isMapped())) {
 				messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
 								JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_VALID,
-								new String[] {jrpt.getName()}, 
+								EMPTY_STRING_ARRAY, 
 								this,
 								this.getValidationTextRange()
 						)
@@ -349,18 +348,32 @@ public class GenericOrmIdClassReference
 								this.getValidationTextRange()
 						)
 				);
-			} else if (JDTTools.findType(javaProject, this.getIdClassName()) == null) {
+			} else if ( ! this.idClassExists()) {
 				messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
 								JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_EXIST,
-								new String[] { this.getIdClassName()},
+								EMPTY_STRING_ARRAY,
 								this,
 								this.getValidationTextRange()
 						)
 				);
 			}
 		}
+	}
+
+	protected boolean idClassExists() {
+		IJavaProject javaProject = getJpaProject().getJavaProject();
+		boolean idClassExists = JDTTools.findType(javaProject, this.getIdClassName()) != null;
+		if (idClassExists) {
+			return true;
+		}
+		// ...then try to resolve by prepending the global package name
+		if (this.getEntityMappings().getPackage() != null) {
+			String fullyQualifiedIdClassName = this.getEntityMappings().getPackage() + '.' + this.getIdClassName();
+			idClassExists = JDTTools.findType(javaProject, fullyQualifiedIdClassName) != null;
+		}
+		return idClassExists;
 	}
 
 	public TextRange getValidationTextRange() {

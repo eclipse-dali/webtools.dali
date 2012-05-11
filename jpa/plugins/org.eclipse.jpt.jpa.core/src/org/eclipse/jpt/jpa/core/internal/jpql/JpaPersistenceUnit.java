@@ -71,11 +71,6 @@ public final class JpaPersistenceUnit extends JpaManagedTypeProvider {
 	 */
 	@Override
 	Iterator<? extends PersistentType> persistenceTypes() {
-		return new TransformationIterator<ClassRef, PersistentType>(javaClassRefs()) {
-			@Override
-			protected PersistentType transform(ClassRef classRef) {
-				return classRef.getJavaPersistentType();
-			}
-		};
+		return getPersistentTypeContainer().getPersistentTypes().iterator();
 	}
 }

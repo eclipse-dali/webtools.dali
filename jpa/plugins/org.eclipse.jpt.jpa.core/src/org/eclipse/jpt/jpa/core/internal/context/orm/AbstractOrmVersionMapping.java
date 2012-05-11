@@ -209,6 +209,11 @@ public abstract class AbstractOrmVersionMapping<X extends XmlVersion>
 		return 30;
 	}
 
+	@Override
+	public boolean isOverridableAttributeMapping() {
+		return true;
+	}
+
 	public void initializeOn(OrmAttributeMapping newMapping) {
 		newMapping.initializeFromOrmVersionMapping(this);
 	}

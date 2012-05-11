@@ -100,7 +100,7 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 
 	public void setQuery(String query) {
 		this.setQuery_(query);
-		this.xmlQuery.setQuery(this.convertToEscapeQuery(query));
+		this.xmlQuery.setQuery(query);
 	}
 
 	protected void setQuery_(String query) {
@@ -113,14 +113,6 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 		String queryString = this.xmlQuery.getQuery();
 		if (StringTools.stringIsNotEmpty(queryString)) {
 			queryString = ExpressionTools.unescape(queryString, new int[1]);
-		}
-		return queryString;
-	}
-
-	// TODO bjv add method to ExpressionTools?
-	protected String convertToEscapeQuery(String queryString) {
-		if (StringTools.stringIsNotEmpty(queryString)) {
-			queryString = ExpressionTools.escape(queryString, new int[1]);
 		}
 		return queryString;
 	}

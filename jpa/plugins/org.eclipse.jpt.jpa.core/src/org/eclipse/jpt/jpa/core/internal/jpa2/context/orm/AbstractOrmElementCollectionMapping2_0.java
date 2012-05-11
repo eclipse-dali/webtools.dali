@@ -1196,8 +1196,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			return;
 		}
 
-		IJavaProject javaProject = this.getJpaProject().getJavaProject();
-		if (JDTTools.findType(javaProject, targetClass) == null) {
+		if (! this.targetClassExists()) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
@@ -1210,6 +1209,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			return;
 		}
 
+		IJavaProject javaProject = this.getJpaProject().getJavaProject();
 		if ( ! JDTTools.typeIsBasic(javaProject, targetClass) && (this.getResolvedTargetEmbeddable() == null)) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
@@ -1223,13 +1223,27 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		}
 	}
 
+	protected boolean targetClassExists() {
+		IJavaProject javaProject = getJpaProject().getJavaProject();
+		boolean targetClassExists = JDTTools.findType(javaProject, this.getTargetClass()) != null;
+		if (targetClassExists) {
+			return true;
+		}
+		// ...then try to resolve by prepending the global package name
+		if (this.getEntityMappings().getPackage() != null) {
+			String fullyQualifiedIdClassName = this.getEntityMappings().getPackage() + '.' + this.getTargetClass();
+			targetClassExists = JDTTools.findType(javaProject, fullyQualifiedIdClassName) != null;
+		}
+		return targetClassExists;
+	}
+
 	protected TextRange getTargetClassTextRange() {
 		return this.getValidationTextRange(this.xmlAttributeMapping.getTargetClassTextRange());
 	}
 
 	protected void validateMapKeyClass(List<IMessage> messages) {
 		JavaPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
-		if ((javaAttribute != null) && ! javaAttribute.getJpaContainerDefinition().isMap()) {
+		if ((javaAttribute != null) && javaAttribute.getJpaContainerDefinition().isMap()) {
 			this.validateMapKeyClass_(messages);
 		}
 	}
@@ -1430,24 +1444,24 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			return MappingTools.resolveOverriddenRelationship(this.getOverridableTypeMapping(), attributeName);
 		}
 
+		public JptValidator buildValidator(Override_ override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
+			return new AssociationOverrideValidator(this.getPersistentAttribute(), (AssociationOverride) override, (AssociationOverrideContainer) container, textRangeResolver, new EmbeddableOverrideDescriptionProvider());
+		}
+
 		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner columnOwner, BaseColumnTextRangeResolver textRangeResolver) {
 			return new AssociationOverrideJoinColumnValidator(this.getPersistentAttribute(), (AssociationOverride) override, (JoinColumn) column, (JoinColumn.Owner) columnOwner, (JoinColumnTextRangeResolver) textRangeResolver, new CollectionTableTableDescriptionProvider());
 		}
 
 		public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-			throw new UnsupportedOperationException("An element collection containing a nested relationship mapping using a JoinTable is not supported"); //$NON-NLS-1$
-		}
-
-		public JptValidator buildValidator(Override_ override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
-			return new AssociationOverrideValidator(this.getPersistentAttribute(), (AssociationOverride) override, (AssociationOverrideContainer) container, textRangeResolver, new EmbeddableOverrideDescriptionProvider());
+			return JptValidator.Null.instance();
 		}
 
 		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-			throw new UnsupportedOperationException("An element collection containing a nested relationship mapping using a JoinTable is not supported"); //$NON-NLS-1$
+			return JptValidator.Null.instance();
 		}
 
 		public JptValidator buildTableValidator(AssociationOverride override, Table table, TableTextRangeResolver textRangeResolver) {
-			throw new UnsupportedOperationException("An element collection containing a nested relationship mapping using a JoinTable is not supported"); //$NON-NLS-1$
+			return JptValidator.Null.instance();
 		}
 	}
 

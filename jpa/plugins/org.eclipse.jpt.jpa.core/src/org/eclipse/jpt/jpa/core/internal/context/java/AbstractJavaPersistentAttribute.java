@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -660,13 +660,18 @@ public abstract class AbstractJavaPersistentAttribute
 
 	/**
 	 * Return the JPA container definition corresponding to the specified type;
-	 * return a "null" definition if the specified type is not one of the
+	 * return a "null" definition if the specified type is not "assignable to" one of the
 	 * container types allowed by the JPA spec.
 	 */
 	protected JpaContainerDefinition getJpaContainerDefinition(String typeName) {
 		for (JpaContainerDefinition definition : this.getJpaContainerDefinitions()) {
-			if (definition.getTypeName().equals(typeName)) {
-				return definition;
+			try {
+				if (Class.forName(definition.getTypeName()).isAssignableFrom(Class.forName(typeName))) {
+					return definition;
+				}
+			}
+			catch (ClassNotFoundException e) {
+				//do nothing, return the Null instance
 			}
 		}
 		return JpaContainerDefinition.Null.instance();
@@ -677,9 +682,9 @@ public abstract class AbstractJavaPersistentAttribute
 	}
 
 	protected static final JpaContainerDefinition[] JPA_CONTAINER_DEFINITION_ARRAY = new JpaContainerDefinition[] {
-		new CollectionJpaContainerDefinition(java.util.Collection.class, JPA2_0.COLLECTION_ATTRIBUTE),
 		new CollectionJpaContainerDefinition(java.util.Set.class, JPA2_0.SET_ATTRIBUTE),
 		new CollectionJpaContainerDefinition(java.util.List.class, JPA2_0.LIST_ATTRIBUTE),
+		new CollectionJpaContainerDefinition(java.util.Collection.class, JPA2_0.COLLECTION_ATTRIBUTE),
 		new MapJpaContainerDefinition(java.util.Map.class, JPA2_0.MAP_ATTRIBUTE)
 	};
 

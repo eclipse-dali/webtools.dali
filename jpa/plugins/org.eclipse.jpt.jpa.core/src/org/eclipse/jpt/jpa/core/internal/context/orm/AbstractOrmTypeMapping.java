@@ -493,7 +493,13 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	}
 
 	public TextRange getValidationTextRange() {
+		// this should never be null; also, the persistent type delegates
+		// to here, so don't delegate back to it (or we will get a stack overflow)  bug 355415
 		TextRange textRange = this.xmlTypeMapping.getValidationTextRange();
-		return (textRange != null) ? textRange : this.getPersistentType().getValidationTextRange();
+		//*return an Empty text range because validation sometimes run concurrently
+		//with the code adding the type mapping to xml; the IDOMNode might not
+		//be set when this is called. Brian's batch process changes in 3.2 should
+		//fix this problem.  bug 358745
+		return (textRange != null) ? textRange : TextRange.Empty.instance();
 	}
 }

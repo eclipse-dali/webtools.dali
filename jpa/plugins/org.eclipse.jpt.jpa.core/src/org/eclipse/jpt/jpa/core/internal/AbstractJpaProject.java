@@ -41,9 +41,9 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.JptResourceModelListener;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.ResourceLocator;
 import org.eclipse.jpt.common.utility.Command;
@@ -1310,8 +1310,15 @@ public abstract class AbstractJpaProject
 	 */
 	protected boolean jpaFileIsAlive(JpaFile jpaFile) {
 		IFile file = jpaFile.getFile();
-		return this.getJavaProject().isOnClasspath(file) &&
-				file.exists();
+		if (! file.exists()) {
+			return false;
+		}
+		if (fileIsJavaRelated(file)) {
+			return getJavaProject().isOnClasspath(file);
+		}
+		else {
+			return fileResourceLocationIsValid(file);
+		}
 	}
 
 	/**

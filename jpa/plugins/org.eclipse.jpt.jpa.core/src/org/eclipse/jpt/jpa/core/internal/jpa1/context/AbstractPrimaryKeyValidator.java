@@ -401,8 +401,17 @@ public abstract class AbstractPrimaryKeyValidator
 	
 	// **************** attribute mappings in general *************************
 	
+	/**
+	 * Return all the attribute mappings of the given type  
+	 * mapping with transient attribute mappings being excluded
+	 */
 	protected Iterable<AttributeMapping> getAttributeMappings(TypeMapping typeMapping) {
-		return CollectionTools.collection(typeMapping.allAttributeMappings());
+		return new FilteringIterable<AttributeMapping>(CollectionTools.collection(typeMapping.allAttributeMappings())) {
+			@Override
+			protected boolean accept(AttributeMapping o) {
+				return !StringTools.stringsAreEqual(o.getKey(), MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
+			}
+		};
 	}
 	
 	/**
