@@ -2428,7 +2428,7 @@ public abstract class Pane<T extends Model>
 
 		container = this.addPane(container);
 		container.setLayout(layout);
-		container.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		container.setLayoutData(new GridData(GridData.FILL_BOTH));
 		return container;
 	}
 
