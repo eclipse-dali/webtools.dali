@@ -399,7 +399,9 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 
 		IWorkbench workbench = PlatformUI.getWorkbench();
 		IHandlerService handlerService = (IHandlerService) workbench.getService(IHandlerService.class);
-		handlerService.deactivateHandler(handlerActivation);
+		if (handlerService != null) { //this can be null if closing the workbench
+			handlerService.deactivateHandler(handlerActivation);
+		}
 	}
 
 	private KeyStroke findContentAssistTrigger() {
