@@ -249,8 +249,8 @@ public abstract class SpecifiedOrmPersistentType
 	 * @see #syncJavaPersistentType()
 	 */
 	protected void updateJavaPersistentType() {
-		String name = this.getName();
-		if (name == null) {
+		JavaResourceType resourceType = this.resolveJavaResourceType();
+		if (resourceType == null) {
 			if (this.javaPersistentType != null) {
 				this.javaPersistentType.dispose();
 				this.setJavaPersistentType(null);
@@ -258,14 +258,17 @@ public abstract class SpecifiedOrmPersistentType
 		}
 		else {
 			if (this.javaPersistentType == null) {
-				this.setJavaPersistentType(this.buildJavaPersistentType());
+				this.setJavaPersistentType(this.buildJavaPersistentType(resourceType));
 			}
 			else {
-				if (this.javaPersistentType.getName().equals(name)) {
+				// bug 379051 using == here because it is possible that the names are the same, 
+				// but the location has changed: the java resource type has moved from "external" 
+				// to part of the jpa project's jpa files. 
+				if (this.javaPersistentType.getJavaResourceType() == resourceType) {
 					this.javaPersistentType.update();
 				} else {
 					this.javaPersistentType.dispose();
-					this.setJavaPersistentType(this.buildJavaPersistentType());
+					this.setJavaPersistentType(this.buildJavaPersistentType(resourceType));
 				}
 			}
 		}
@@ -280,11 +283,6 @@ public abstract class SpecifiedOrmPersistentType
 			return null;
 		}
 		return (JavaResourceType) this.getJpaProject().getJavaResourceType(this.name, Kind.TYPE);
-	}
-
-	protected JavaPersistentType buildJavaPersistentType() {
-		JavaResourceType jrt = this.resolveJavaResourceType();
-		return jrt != null ? this.buildJavaPersistentType(jrt) : null;
 	}
 
 	protected JavaPersistentType buildJavaPersistentType(JavaResourceType jrt) {

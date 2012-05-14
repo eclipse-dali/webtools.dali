@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import java.util.List;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
@@ -120,11 +121,11 @@ public class EclipseLinkOrmPersistentTypeImpl
 	}
 
 	@Override
-	protected JavaPersistentType buildJavaPersistentType() {
+	protected JavaPersistentType buildJavaPersistentType(JavaResourceType javaResourceType) {
 		if (this.isDynamic()) {
 			return this.buildVirtualJavaPersistentType();
 		}
-		return super.buildJavaPersistentType();
+		return super.buildJavaPersistentType(javaResourceType);
 	}
 
 	protected JavaPersistentType buildVirtualJavaPersistentType() {
