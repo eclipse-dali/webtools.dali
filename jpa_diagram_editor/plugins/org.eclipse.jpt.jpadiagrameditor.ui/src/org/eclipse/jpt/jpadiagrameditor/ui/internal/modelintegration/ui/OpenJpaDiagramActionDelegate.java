@@ -105,8 +105,7 @@ public class OpenJpaDiagramActionDelegate implements IObjectActionDelegate {
 									   0);
 		}
 		
-		TransactionalEditingDomain defaultTransEditDomain = TransactionUtil.getEditingDomain((diagram.eResource().getResourceSet())); 
-		final JPADiagramEditorInput diagramEditorInput = JPADiagramEditorInput.createEditorInput(diagram, defaultTransEditDomain, JPAEditorDiagramTypeProvider.ID, false); 
+		final JPADiagramEditorInput diagramEditorInput = JPADiagramEditorInput.createEditorInput(diagram, JPAEditorDiagramTypeProvider.ID); 
 		IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 		final IWorkbenchPage workbenchPage = workbenchWindow.getActivePage();
 		final Wrp wrp = new Wrp();

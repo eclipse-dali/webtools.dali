@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
@@ -193,7 +194,7 @@ public class JPADiagramEditor extends DiagramEditor {
 	protected ContextMenuProvider createContextMenuProvider() {
 		return new JPAEditorContextMenuProvider(getGraphicalViewer(),
 				getActionRegistry(),
-				getConfigurationProvider());
+				getDiagramTypeProvider());
 	}
 
 	private void initWithFileEditorInput(final IEditorSite site,
@@ -218,15 +219,12 @@ public class JPADiagramEditor extends DiagramEditor {
 					JPAEditorConstants.OPEN_WHOLE_PERSISTENCE_UNIT_EDITOR_PROPERTY,
 					inputJptType.getName());
 			PersistenceUnit persistenceUnit = inputJptType.getPersistenceUnit();
-			String diagramURI = ModelIntegrationUtil.createDiagramPath(persistenceUnit).toString();
-			TransactionalEditingDomain defaultTransEditDomain = (TransactionalEditingDomain)inputJptType.
-								getJpaProject().getProject().getAdapter(TransactionalEditingDomain.class);
+			String diagramURIAsString = ModelIntegrationUtil.createDiagramPath(persistenceUnit).toString();
+			URI diagramURI = URI.createFileURI(diagramURIAsString);
 			diagram = ModelIntegrationUtil.createDiagram(persistenceUnit, 10, true);
 			JPADiagramEditorInput diagramInput = new JPADiagramEditorInput(diagram,
-																		   diagramURI, 
-																		   defaultTransEditDomain, 
-																		   JPAEditorDiagramTypeProvider.ID, 
-																		   false);
+																		   diagramURI,
+																		   JPAEditorDiagramTypeProvider.ID);
 			//ModelIntegrationUtil.mapDiagramToProject(diagram, persistenceUnit
 			//		.getJpaProject());
 			super.init(site, diagramInput);

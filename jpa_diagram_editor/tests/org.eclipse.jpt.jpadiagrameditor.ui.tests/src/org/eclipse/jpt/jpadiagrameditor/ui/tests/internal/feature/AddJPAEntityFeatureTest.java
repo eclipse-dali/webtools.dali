@@ -34,6 +34,8 @@ import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramsPackage;
 import org.eclipse.graphiti.mm.pictograms.Shape;
+import org.eclipse.graphiti.services.Graphiti;
+import org.eclipse.graphiti.services.IGaService;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.UpdateAttributeFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.junit.Before;
@@ -42,7 +44,9 @@ import org.junit.Test;
 public class AddJPAEntityFeatureTest {
 	
 	private IJPAEditorFeatureProvider featureProvider;
+	private Diagram diagram;
 	
+	public static IGaService gas = Graphiti.getGaService();
 	
 	@Before
 	public void setUp() throws Exception {
@@ -52,44 +56,30 @@ public class AddJPAEntityFeatureTest {
 		IDiagramTypeProvider idp = EasyMock.createMock(IDiagramTypeProvider.class);
 		expect(featureProvider.getDiagramTypeProvider()).andStubReturn(idp);
 		expect(featureProvider.increaseAttribsNum((Shape) EasyMock.anyObject())).andStubReturn(1);
-		Diagram d = EasyMock.createMock(Diagram.class);
-		expect(idp.getDiagram()).andStubReturn(d);
+		diagram = EasyMock.createMock(Diagram.class);
+		expect(idp.getDiagram()).andStubReturn(diagram);
 		Color c = EasyMock.createMock(Color.class);
 		expect(c.getBlue()).andStubReturn(0);
 		expect(c.getRed()).andStubReturn(0);
 		expect(c.getGreen()).andStubReturn(0);
 		EList<Color> col = new BasicInternalEList<Color>(Color.class);
-		expect(d.getColors()).andStubReturn(col);
-		Color c1 = EasyMock.createMock(Color.class);
-		c1.setRed(EasyMock.anyInt());
-		EasyMock.expectLastCall().asStub();
-		c1.setGreen(EasyMock.anyInt());
-		EasyMock.expectLastCall().asStub();
-		c1.setBlue(EasyMock.anyInt());
-		EasyMock.expectLastCall().asStub();
+		expect(diagram.getColors()).andStubReturn(col);
 		EList<Font> fonts = new BasicInternalEList<Font>(Font.class);
-		expect(d.getFonts()).andStubReturn(fonts);
-		replay(d, c, c1, idp, featureProvider);
+		expect(diagram.getFonts()).andStubReturn(fonts);
+		replay(diagram, c, idp, featureProvider);
 	}
 	
 
 	@Test
 	public void testAddText() {
-		Font f = EasyMock.createMock(Font.class); 
 		Text t = EasyMock.createMock(Text.class);
+		
+		Font f = gas.manageFont(diagram, "Arial", IGaService.DEFAULT_FONT_SIZE, true, false); 
 		t.setFont(f);
 		EasyMock.expectLastCall().asStub();
 		expect(t.getX()).andStubReturn(0);
 		expect(t.getY()).andStubReturn(0);
 		
-		f.setName("Arial");
-		EasyMock.expectLastCall().asStub();
-		f.setSize(EasyMock.anyInt());
-		EasyMock.expectLastCall().asStub();		
-		f.setItalic(EasyMock.anyBoolean());
-		EasyMock.expectLastCall().asStub();	
-		f.setBold(EasyMock.anyBoolean());
-		EasyMock.expectLastCall().asStub();
 		t.setWidth(EasyMock.anyInt());	
 		EasyMock.expectLastCall().asStub();
 		t.setHeight(EasyMock.anyInt());
@@ -104,16 +94,14 @@ public class AddJPAEntityFeatureTest {
 		t.setVerticalAlignment(Orientation.ALIGNMENT_TOP);
 		EasyMock.expectLastCall().asStub();
 		
-		Font f1 = EasyMock.createMock(Font.class);
-		f1.setBold(true);
-		EasyMock.expectLastCall().asStub();
+		Font f1 = gas.manageFont(diagram, IGaService.DEFAULT_FONT, IGaService.DEFAULT_FONT_SIZE, false, true);
 		expect(t.getFont()).andStubReturn(f1);
 		
 		Rectangle textRectangle = EasyMock.createMock(Rectangle.class);
 		EList<GraphicsAlgorithm> lst = new BasicInternalEList<GraphicsAlgorithm>(GraphicsAlgorithm.class);
 		expect(textRectangle.getGraphicsAlgorithmChildren()).andStubReturn(lst);
 		
-		replay(f1, f, t, textRectangle);
+		replay(t, textRectangle);
 		UpdateAttributeFeature.addText(featureProvider, textRectangle, "abc");
 	}
 	
@@ -253,16 +241,7 @@ public class AddJPAEntityFeatureTest {
 		EasyMock.expectLastCall().asStub();
 		t.setValue("");
 		EasyMock.expectLastCall().asStub();
-		Font f = EasyMock.createMock(Font.class);
-		f.setName((String) EasyMock.anyObject());
-		EasyMock.expectLastCall().asStub();
-		
-		f.setSize(EasyMock.anyInt());
-		EasyMock.expectLastCall().asStub();
-		f.setItalic(EasyMock.anyBoolean());
-		EasyMock.expectLastCall().asStub();
-		f.setBold(EasyMock.anyBoolean());
-		EasyMock.expectLastCall().asStub();
+		Font f = gas.manageFont(diagram, IGaService.DEFAULT_FONT, IGaService.DEFAULT_FONT_SIZE, false, true);
 		expect(t.getFont()).andStubReturn(f);
 		t.setFont((Font) EasyMock.anyObject());
 		EasyMock.expectLastCall().asStub();
@@ -270,8 +249,7 @@ public class AddJPAEntityFeatureTest {
 		t.setForeground((Color) EasyMock.anyObject());
 		t.setHorizontalAlignment(Orientation.ALIGNMENT_LEFT);
 		t.setVerticalAlignment(Orientation.ALIGNMENT_TOP);
-		f.setBold(true);
-		replay(rect, ga, img, cs, cs1, p, pr, t, f);
+		replay(rect, ga, img, cs, cs1, p, pr, t);
 	}
 	
 }

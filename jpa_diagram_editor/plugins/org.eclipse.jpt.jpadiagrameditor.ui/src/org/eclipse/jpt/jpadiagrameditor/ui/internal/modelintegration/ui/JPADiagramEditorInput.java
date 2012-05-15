@@ -38,26 +38,12 @@ public class JPADiagramEditorInput extends DiagramEditorInput
 	
 	private Diagram diagram;
 	private String projectName;
-	
-
-	public JPADiagramEditorInput(Diagram diagram, 
-								 String diagramUriString, 
-								 TransactionalEditingDomain domain, 
-								 String providerId, 
-								 boolean disposeEditingDomain) {
-		
-		super(diagramUriString, domain, providerId, disposeEditingDomain);
-		this.diagram = diagram; 
-		this.projectName = ModelIntegrationUtil.getProjectByDiagram(diagram.getName()).getName();		
-	}
 
 	public JPADiagramEditorInput(Diagram diagram,
-								 URI diagramUri, 
-								 TransactionalEditingDomain domain, 
-								 String providerId, 
-								 boolean disposeEditingDomain) {
+								 URI diagramUri,
+								 String providerId) {
 		
-		super(diagramUri, domain, providerId, disposeEditingDomain);
+		super(diagramUri, providerId);
 		this.diagram = diagram;
 		this.projectName = ModelIntegrationUtil.getProjectByDiagram(diagram.getName()).getName();
 	}
@@ -122,8 +108,7 @@ public class JPADiagramEditorInput extends DiagramEditorInput
 		return diagram;
 	}	
 	
-	public static JPADiagramEditorInput createEditorInput(Diagram diagram, TransactionalEditingDomain domain, String providerId,
-			boolean disposeEditingDomain) {
+	public static JPADiagramEditorInput createEditorInput(Diagram diagram, String providerId) {
 		final Resource resource = diagram.eResource();
 		if (resource == null) {
 			throw new IllegalArgumentException();
@@ -131,7 +116,7 @@ public class JPADiagramEditorInput extends DiagramEditorInput
 		final String fragment = resource.getURIFragment(diagram);
 		final URI fragmentUri = resource.getURI().appendFragment(fragment);
 		JPADiagramEditorInput diagramEditorInput;
-		diagramEditorInput = new JPADiagramEditorInput(diagram, fragmentUri, domain, providerId, disposeEditingDomain);
+		diagramEditorInput = new JPADiagramEditorInput(diagram, fragmentUri, providerId);
 		return diagramEditorInput;
 	}
 	

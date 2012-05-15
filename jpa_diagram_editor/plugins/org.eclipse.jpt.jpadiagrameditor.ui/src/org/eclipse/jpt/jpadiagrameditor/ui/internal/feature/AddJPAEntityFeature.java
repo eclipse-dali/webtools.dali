@@ -27,6 +27,7 @@ import org.eclipse.graphiti.mm.algorithms.Polyline;
 import org.eclipse.graphiti.mm.algorithms.Rectangle;
 import org.eclipse.graphiti.mm.algorithms.RoundedRectangle;
 import org.eclipse.graphiti.mm.algorithms.Text;
+import org.eclipse.graphiti.mm.algorithms.styles.Font;
 import org.eclipse.graphiti.mm.algorithms.styles.LineStyle;
 import org.eclipse.graphiti.mm.algorithms.styles.Orientation;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
@@ -34,6 +35,8 @@ import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.services.Graphiti;
+import org.eclipse.graphiti.services.IGaService;
+import org.eclipse.graphiti.ui.services.GraphitiUi;
 import org.eclipse.graphiti.util.IColorConstant;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
@@ -246,9 +249,9 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 			Rectangle rect) {
 		IJPAEditorFeatureProvider fp = getFeatureProvider();
 		Text text = UpdateAttributeFeature.addText(fp, rect, attribTxt);
-		text.getFont().setSize(7);
-		text.getFont().setItalic(true);
-		text.getFont().setBold(false);
+		Font font = GraphitiUi.getGaService().manageFont(getDiagram(),
+				IGaService.DEFAULT_FONT, 7, true, false);
+		text.setFont(font);
 		Graphiti.getGaService().setWidth(text, width);
 		Graphiti.getGaService().setLocationAndSize(text, 0, 2, width,
 				13);
@@ -383,15 +386,12 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 		} catch (JavaModelException e) { 
 			JPADiagramEditorPlugin.logError("Cannot check compilation unit for unsaved changes", e);  //$NON-NLS-1$		 
 		}
-		Text headerTextObj = Graphiti.getGaService().createDefaultText(getDiagram(), headerRect,
-				headerTextString);
-		headerTextObj
-				.setForeground(manageColor(JPAEditorConstants.ENTITY_TEXT_FOREGROUND));
+		Text headerTextObj = Graphiti.getGaService().createText(getDiagram(), headerRect,
+				headerTextString, IGaService.DEFAULT_FONT, IGaService.DEFAULT_FONT_SIZE, false, true);
+		headerTextObj.setForeground(manageColor(JPAEditorConstants.ENTITY_TEXT_FOREGROUND));
 		headerTextObj.setHorizontalAlignment(Orientation.ALIGNMENT_LEFT);
 		headerTextObj.setVerticalAlignment(Orientation.ALIGNMENT_TOP);
-		headerTextObj.getFont().setBold(true);
-		Graphiti.getGaService().setLocationAndSize(headerTextObj, 1, 2,
-				width, 20);
+		Graphiti.getGaService().setLocationAndSize(headerTextObj, 1, 2,	width, 20);
 
 		return entityHeaderTextShape;
 

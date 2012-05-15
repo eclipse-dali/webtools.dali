@@ -30,10 +30,12 @@ import org.eclipse.graphiti.features.context.ICustomContext;
 import org.eclipse.graphiti.features.context.impl.AddContext;
 import org.eclipse.graphiti.features.context.impl.CustomContext;
 import org.eclipse.graphiti.features.custom.AbstractCustomFeature;
+import org.eclipse.graphiti.mm.algorithms.GraphicsAlgorithm;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
+import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
@@ -85,7 +87,9 @@ public class AddAllEntitiesFeature extends AbstractCustomFeature implements IAdd
 									DIST_FROM_EDGE_V : 
 									DIST_V));
 		}
-		IDimension dim = getFeatureProvider().getDiagramTypeProvider().getDiagramEditor().getCurrentSize();
+		
+		GraphicsAlgorithm graphicsAlgorithm = getFeatureProvider().getDiagramTypeProvider().getDiagram().getGraphicsAlgorithm();
+		IDimension dim = Graphiti.getGaService().calculateSize(graphicsAlgorithm);
 		int dWidth = dim.getWidth();
 		numInARow = (dWidth - DIST_FROM_EDGE_H - 20 + JPAEditorConstants.ENTITY_WIDTH)/(JPAEditorConstants.ENTITY_WIDTH + DIST_H);
 		numInARow = (numInARow > 0) ? numInARow : 1;

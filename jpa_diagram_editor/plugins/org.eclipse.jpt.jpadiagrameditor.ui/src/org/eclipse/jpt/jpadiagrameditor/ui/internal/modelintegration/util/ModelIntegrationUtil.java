@@ -47,7 +47,7 @@ import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.services.Graphiti;
-import org.eclipse.graphiti.ui.editor.DiagramEditorFactory;
+import org.eclipse.graphiti.ui.services.GraphitiUi;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
@@ -185,7 +185,7 @@ public class ModelIntegrationUtil {
 		Diagram diagram = getDiagramByProject(project);
 		if (diagram != null)
 			return diagram;
-		TransactionalEditingDomain defaultTransEditDomain = DiagramEditorFactory.createResourceSetAndEditingDomain();
+		TransactionalEditingDomain defaultTransEditDomain = GraphitiUi.getEmfService().createResourceSetAndEditingDomain();
 		ResourceSet resourceSet = defaultTransEditDomain.getResourceSet();
 
 		String pathName = diagramFileName.toString();

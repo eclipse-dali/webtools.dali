@@ -29,8 +29,10 @@ import org.eclipse.graphiti.mm.algorithms.styles.Color;
 import org.eclipse.graphiti.mm.algorithms.styles.Orientation;
 import org.eclipse.graphiti.mm.pictograms.AnchorContainer;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
+import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.services.Graphiti;
+import org.eclipse.graphiti.services.IGaService;
 import org.eclipse.graphiti.util.IColorConstant;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -93,13 +95,13 @@ public class UpdateAttributeFeature extends AbstractCustomFeature {
 	}
 
 	public static Text addText(IFeatureProvider fp, Rectangle textRectangle, String txt) {
-		Text text = Graphiti.getGaService().createDefaultText(fp.getDiagramTypeProvider().getDiagram(), textRectangle, txt);
-		Color color = Graphiti.getGaService().manageColor(fp.getDiagramTypeProvider().getDiagram(),
-				JPAEditorConstants.ENTITY_TEXT_FOREGROUND);
+		Diagram diagram = fp.getDiagramTypeProvider().getDiagram();
+		Text text = Graphiti.getGaService().createText(diagram, textRectangle, txt, IGaService.DEFAULT_FONT,
+				IGaService.DEFAULT_FONT_SIZE, false, true);
+		Color color = Graphiti.getGaService().manageColor(diagram, JPAEditorConstants.ENTITY_TEXT_FOREGROUND);
 		text.setForeground(color);
 		text.setHorizontalAlignment(Orientation.ALIGNMENT_LEFT);
 		text.setVerticalAlignment(Orientation.ALIGNMENT_TOP);
-		text.getFont().setBold(true);
 		return text;
 	}
 
