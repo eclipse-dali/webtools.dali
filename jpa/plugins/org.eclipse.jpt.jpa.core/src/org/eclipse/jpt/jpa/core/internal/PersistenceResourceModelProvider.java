@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaResourceModelProvider;
@@ -45,6 +46,9 @@ public class PersistenceResourceModelProvider
 	}
 
 	public JpaXmlResource buildResourceModel(JpaProject jpaProject, IFile file) {
+		if (! file.isSynchronized(IResource.DEPTH_ZERO)) {
+			return null;
+		}
 		return PersistenceXmlResourceProvider.getXmlResourceProvider(file).getXmlResource();
 	}
 
