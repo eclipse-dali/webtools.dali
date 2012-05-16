@@ -123,16 +123,17 @@ public class SchemaGeneratorWizard extends Wizard implements INewWizard
 									this.usesMoxy());
 		genSchemaJob.schedule();
 		
-		IPath schemaPath = this.newSchemaFileWizardPage.getContainerFullPath(); 
-		String schemaName = this.newSchemaFileWizardPage.getFileName();
-		
-		IContainer container = (IContainer)ResourcesPlugin.getWorkspace().getRoot().findMember(schemaPath);
-		IFile schemaFile = container.getFile(new Path(schemaName)); 
-
-		OpenSchemaFileJob openSchemaFileJob = new OpenSchemaFileJob(
-									this.targetProject, 
-									schemaFile);
-		openSchemaFileJob.schedule();
+// Delaying the release of "open file" functionality (see bug 322567)
+//		IPath schemaPath = this.newSchemaFileWizardPage.getContainerFullPath(); 
+//		String schemaName = this.newSchemaFileWizardPage.getFileName();
+//
+//		IContainer container = (IContainer)ResourcesPlugin.getWorkspace().getRoot().findMember(schemaPath);
+//		IFile schemaFile = container.getFile(new Path(schemaName)); 
+//
+//		OpenSchemaFileJob openSchemaFileJob = new OpenSchemaFileJob(
+//									this.targetProject, 
+//									schemaFile);
+//		openSchemaFileJob.schedule();
 	}
 
 	// ********** intra-wizard methods **********
