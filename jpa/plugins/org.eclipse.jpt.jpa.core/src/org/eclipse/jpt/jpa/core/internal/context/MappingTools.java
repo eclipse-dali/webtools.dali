@@ -9,9 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.core.internal.resource.java.source.SourceNode;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ClassName;
 import org.eclipse.jpt.common.utility.internal.ReflectionTools;
@@ -31,6 +34,7 @@ import org.eclipse.jpt.jpa.core.context.ReferenceTable;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
+import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
@@ -465,6 +469,21 @@ public final class MappingTools {
 		public String transform(String s) {
 			return this.prefix + s;
 		}
+	}
+
+	/**
+	 * TODO temporary hack since we don't know yet where to put
+	 * any messages for types in another project (e.g. referenced by
+	 * persistence.xml)
+	 */
+	public static boolean nodeIsInternalSource(JavaJpaContextNode contextNode, JavaResourceNode resourceNode) {
+		IResource resource = contextNode.getResource();
+		// 'resource' will be null if the node is "external" and binary;
+		// the resource will be in a different project if the node is "external" and source;
+		// the node will be binary if it is in a JAR in the current project
+		return (resource != null) &&
+				resource.getProject().equals(contextNode.getJpaProject().getProject()) &&
+				(resourceNode instanceof SourceNode);
 	}
 
 

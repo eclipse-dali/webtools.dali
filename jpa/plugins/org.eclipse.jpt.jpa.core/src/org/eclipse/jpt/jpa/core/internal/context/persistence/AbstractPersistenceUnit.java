@@ -85,6 +85,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistentTypeContainer;
 import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
+import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.JpaFactory2_0;
@@ -2500,16 +2501,26 @@ public abstract class AbstractPersistenceUnit
 	protected void validateGeneratorsWithSameName(String generatorName, ArrayList<Generator> dups, List<IMessage> messages) {
 		String[] parms = new String[] {generatorName};
 		for (Generator dup : dups) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
-					parms,
-					dup,
-					this.extractNameTextRange(dup)
-				)
-			);
+			if (this.generatorSupportsValidationMessages(dup)) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
+						parms,
+						dup,
+						this.extractNameTextRange(dup)
+					)
+				);
+			}
 		}
+	}
+
+	protected boolean generatorSupportsValidationMessages(Generator generator) {
+		return (generator instanceof OrmGenerator) || this.generatorSupportsValidationMessages((JavaGenerator) generator);
+	}
+
+	protected boolean generatorSupportsValidationMessages(JavaGenerator javaGenerator) {
+		return MappingTools.nodeIsInternalSource(javaGenerator, javaGenerator.getGeneratorAnnotation());
 	}
 
 	// TODO bjv isn't it obvious?
@@ -2524,7 +2535,10 @@ public abstract class AbstractPersistenceUnit
 		if (generator instanceof OrmGenerator) {
 			((OrmGenerator) generator).validate(messages, reporter);
 		} else {
-			((JavaGenerator) generator).validate(messages, reporter, null);
+			JavaGenerator javaGenerator = (JavaGenerator) generator;
+			if (this.generatorSupportsValidationMessages(javaGenerator)) {
+				javaGenerator.validate(messages, reporter, null);
+			}
 		}
 	}
 
@@ -2558,16 +2572,26 @@ public abstract class AbstractPersistenceUnit
 	protected void validateQueriesWithSameName(String queryName, ArrayList<Query> dups, List<IMessage> messages) {
 		String[] parms = new String[] {queryName};
 		for (Query dup : dups) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.QUERY_DUPLICATE_NAME,
-					parms,
-					dup,
-					this.extractNameTextRange(dup)
-				)
-			);
+			if (this.querySupportsValidationMessages(dup)) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.QUERY_DUPLICATE_NAME,
+						parms,
+						dup,
+						this.extractNameTextRange(dup)
+					)
+				);
+			}
 		}
+	}
+
+	protected boolean querySupportsValidationMessages(Query query) {
+		return (query instanceof OrmQuery) || this.querySupportsValidationMessages((JavaQuery) query);
+	}
+
+	protected boolean querySupportsValidationMessages(JavaQuery javaQuery) {
+		return MappingTools.nodeIsInternalSource(javaQuery, javaQuery.getQueryAnnotation());
 	}
 
 	// TODO bjv isn't it obvious?
@@ -2581,9 +2605,11 @@ public abstract class AbstractPersistenceUnit
 	protected void validate(Query query, JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
 		if (query instanceof OrmQuery) {
 			((OrmQuery) query).validate(queryHelper, messages, reporter);
-		}
-		else {
-			((JavaQuery) query).validate(queryHelper, messages, reporter, null);
+		} else {
+			JavaQuery javaQuery = (JavaQuery) query;
+			if (this.querySupportsValidationMessages(javaQuery)) {
+				javaQuery.validate(queryHelper, messages, reporter, null);
+			}
 		}
 	}
 
@@ -2593,19 +2619,7 @@ public abstract class AbstractPersistenceUnit
 			if (StringTools.stringIsNotEmpty(entityName)) {
 				ArrayList<Entity> dups = entry.getValue();
 				if (dups.size() > 1) {
-					String[] parms = new String[] {entityName};
-					for (Entity dup : dups) {
-						messages.add(
-							DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.ENTITY_NAME_DUPLICATED,
-								parms,
-								dup,
-								this.extractNameTextRange(dup)
-							)
-						);
-					}
-
+					this.validateEntitiesWithSameName(entityName, dups, messages);
 				}
 			}
 		}
@@ -2631,6 +2645,32 @@ public abstract class AbstractPersistenceUnit
 		return map;
 	}
 
+	protected void validateEntitiesWithSameName(String entityName, ArrayList<Entity> dups, List<IMessage> messages) {
+		String[] parms = new String[] {entityName};
+		for (Entity dup : dups) {
+			if (this.entitySupportsValidationMessages(dup)) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.ENTITY_NAME_DUPLICATED,
+						parms,
+						dup,
+						this.extractNameTextRange(dup)
+					)
+				);
+			}
+		}
+	}
+
+	protected boolean entitySupportsValidationMessages(Entity entity) {
+		return (entity instanceof OrmEntity) || this.entitySupportsValidationMessages((JavaEntity) entity);
+	}
+
+	protected boolean entitySupportsValidationMessages(JavaEntity javaEntity) {
+		return MappingTools.nodeIsInternalSource(javaEntity, javaEntity.getJavaResourceType());
+	}
+
+	// TODO bjv isn't it obvious?
 	protected TextRange extractNameTextRange(Entity entity) {
 		return (entity instanceof OrmEntity) ?
 				((OrmEntity) entity).getXmlTypeMapping().getNameTextRange():

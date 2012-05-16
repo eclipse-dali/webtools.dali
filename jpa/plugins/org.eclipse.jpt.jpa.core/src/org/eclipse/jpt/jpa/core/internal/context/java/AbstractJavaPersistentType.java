@@ -15,11 +15,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.core.internal.resource.java.source.SourceNode;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
@@ -51,6 +49,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
+import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -980,15 +979,7 @@ public abstract class AbstractJavaPersistentType
 		if (reporter.isCancelled()) {
 			throw new ValidationCancelledException();
 		}
-		// TODO temporary hack since we don't know yet where to put
-		// any messages for types in another project (e.g. referenced by
-		// persistence.xml)
-		IFile file = this.resourceType.getFile();
-		// 'file' will be null if the type is "external" and binary;
-		// the file will be in a different project if the type is "external" and source;
-		// the type will be binary if it is in a JAR in the current project
-		if ((file != null) && file.getProject().equals(this.getJpaProject().getProject()) &&
-				(this.resourceType instanceof SourceNode)) {
+		if (MappingTools.nodeIsInternalSource(this, this.resourceType)) {
 			// build the AST root here to pass down
 			this.validate(messages, reporter, this.buildASTRoot());
 		}

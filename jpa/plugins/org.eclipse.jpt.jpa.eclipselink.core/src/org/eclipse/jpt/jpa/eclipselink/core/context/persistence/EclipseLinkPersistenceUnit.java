@@ -55,6 +55,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
+import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.ImpliedMappingFileRef;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode;
@@ -1008,15 +1009,17 @@ public class EclipseLinkPersistenceUnit
 		String[] parms = new String[] {converterName};
 		if (this.anyNodesAreInequivalent(dups)) {
 			for (EclipseLinkConverter dup : dups) {
-				messages.add(
-					DefaultEclipseLinkJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						EclipseLinkJpaValidationMessages.CONVERTER_DUPLICATE_NAME,
-						parms,
-						dup,
-						this.extractNameTextRange(dup)
-					)
-				);
+				if (this.converterSupportsValidationMessages(dup)) {
+					messages.add(
+						DefaultEclipseLinkJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							EclipseLinkJpaValidationMessages.CONVERTER_DUPLICATE_NAME,
+							parms,
+							dup,
+							this.extractNameTextRange(dup)
+						)
+					);
+				}
 			}
 		}
 	}
@@ -1043,6 +1046,14 @@ public class EclipseLinkPersistenceUnit
 		return false;
 	}
 
+	protected boolean converterSupportsValidationMessages(EclipseLinkConverter converter) {
+		return (converter instanceof OrmEclipseLinkConverter<?>) || this.converterSupportsValidationMessages((JavaEclipseLinkConverter<?>) converter);
+	}
+
+	protected boolean converterSupportsValidationMessages(JavaEclipseLinkConverter<?> javaConverter) {
+		return MappingTools.nodeIsInternalSource(javaConverter, javaConverter.getConverterAnnotation());
+	}
+
 	// TODO bjv isn't it obvious?
 	protected TextRange extractNameTextRange(EclipseLinkConverter converter) {
 		return (converter instanceof OrmEclipseLinkConverter<?>) ?
@@ -1055,7 +1066,10 @@ public class EclipseLinkPersistenceUnit
 		if (converter instanceof OrmEclipseLinkConverter<?>) {
 			((OrmEclipseLinkConverter<?>) converter).validate(messages, reporter);
 		} else {
-			((JavaEclipseLinkConverter<?>) converter).validate(messages, reporter, null);
+			JavaEclipseLinkConverter<?> javaConverter = (JavaEclipseLinkConverter<?>) converter;
+			if (this.converterSupportsValidationMessages(javaConverter)) {
+				javaConverter.validate(messages, reporter, null);
+			}
 		}
 	}
 
@@ -1068,15 +1082,17 @@ public class EclipseLinkPersistenceUnit
 		if (this.allNodesAreEquivalent(dups)) {
 			String[] parms = new String[] {generatorName};
 			for (Generator dup : dups) {
-				messages.add(
-					DefaultEclipseLinkJpaValidationMessages.buildMessage(
-						IMessage.LOW_SEVERITY,
-						EclipseLinkJpaValidationMessages.GENERATOR_EQUIVALENT,
-						parms,
-						dup,
-						this.extractNameTextRange(dup)
-					)
-				);
+				if (this.generatorSupportsValidationMessages(dup)) {
+					messages.add(
+						DefaultEclipseLinkJpaValidationMessages.buildMessage(
+							IMessage.LOW_SEVERITY,
+							EclipseLinkJpaValidationMessages.GENERATOR_EQUIVALENT,
+							parms,
+							dup,
+							this.extractNameTextRange(dup)
+						)
+					);
+				}
 			}
 		} else {
 			super.validateGeneratorsWithSameName(generatorName, dups, messages);
@@ -1091,15 +1107,17 @@ public class EclipseLinkPersistenceUnit
 		if (this.allNodesAreEquivalent(dups)) {
 			String[] parms = new String[] {queryName};
 			for (Query dup : dups) {
-				messages.add(
-					DefaultEclipseLinkJpaValidationMessages.buildMessage(
-						IMessage.LOW_SEVERITY,
-						EclipseLinkJpaValidationMessages.QUERY_EQUIVALENT,
-						parms,
-						dup,
-						this.extractNameTextRange(dup)
-					)
-				);
+				if (this.querySupportsValidationMessages(dup)) {
+					messages.add(
+						DefaultEclipseLinkJpaValidationMessages.buildMessage(
+							IMessage.LOW_SEVERITY,
+							EclipseLinkJpaValidationMessages.QUERY_EQUIVALENT,
+							parms,
+							dup,
+							this.extractNameTextRange(dup)
+						)
+					);
+				}
 			}
 		} else {
 			super.validateQueriesWithSameName(queryName, dups, messages);
