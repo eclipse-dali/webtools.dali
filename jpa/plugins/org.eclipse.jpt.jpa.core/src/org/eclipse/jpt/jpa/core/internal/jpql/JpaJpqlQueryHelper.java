@@ -193,15 +193,13 @@ public final class JpaJpqlQueryHelper extends JPQLQueryHelper {
 	private int severity(Object targetObject) {
 		return JpaValidationPreferences.getProblemSeverityPreference(
 			targetObject,
-			JpaValidationMessages.JPQL_QUERY_VALIDATION
-		);
+			JpaValidationMessages.JPQL_QUERY_VALIDATION);
 	}
-
+	
 	private boolean shouldValidate(NamedQuery namedQuery) {
-		return JpaValidationPreferences.getProblemSeverityPreference(
-			namedQuery,
-			JpaValidationMessages.JPQL_QUERY_VALIDATION
-		) == -1;
+		return ! JpaValidationPreferences.isProblemIgnored(
+				namedQuery.getJpaProject().getProject(), 
+				JpaValidationMessages.JPQL_QUERY_VALIDATION);
 	}
 
 	/**
