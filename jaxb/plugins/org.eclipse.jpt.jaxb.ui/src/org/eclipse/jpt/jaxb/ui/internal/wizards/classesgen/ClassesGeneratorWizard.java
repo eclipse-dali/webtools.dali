@@ -17,7 +17,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
@@ -109,22 +108,21 @@ public class ClassesGeneratorWizard
 		
 		if (this.selection != null && ! this.selection.isEmpty()) {
 			this.javaProject = this.getJavaProjectFromSelection(this.selection);
-			
-			this.projectWizardPage = new JavaProjectWizardPage(this.javaProject);
-			this.projectWizardPage.setTitle(JptJaxbUiMessages.ClassesGeneratorProjectWizardPage_title);
-			this.projectWizardPage.setDescription(JptJaxbUiMessages.ClassesGeneratorProjectWizardPage_desc);
-			this.projectWizardPage.setDestinationLabel(JptJaxbUiMessages.JavaProjectWizardPage_destinationProject);
-			this.addPage(this.projectWizardPage);
-			
-			// SchemaWizardPage
-			if (this.preselectedXsdFile == null) {
-				this.preselectedXsdFile = SchemaWizardPage.getSourceSchemaFromSelection(this.selection);
-			}
-			
-			if (this.preselectedXsdFile == null) {
-				this.schemaWizardPage = new SchemaWizardPage(this.selection);
-				this.addPage(this.schemaWizardPage);
-			}
+		}
+		this.projectWizardPage = new JavaProjectWizardPage(this.javaProject);
+		this.projectWizardPage.setTitle(JptJaxbUiMessages.ClassesGeneratorProjectWizardPage_title);
+		this.projectWizardPage.setDescription(JptJaxbUiMessages.ClassesGeneratorProjectWizardPage_desc);
+		this.projectWizardPage.setDestinationLabel(JptJaxbUiMessages.JavaProjectWizardPage_destinationProject);
+		this.addPage(this.projectWizardPage);
+		
+		// SchemaWizardPage
+		if (this.preselectedXsdFile == null) {
+			this.preselectedXsdFile = SchemaWizardPage.getSourceSchemaFromSelection(this.selection);
+		}
+		
+		if (this.preselectedXsdFile == null) {
+			this.schemaWizardPage = new SchemaWizardPage(this.selection);
+			this.addPage(this.schemaWizardPage);
 		}
 		
 		this.settingsPage = this.buildClassesGeneratorPage();

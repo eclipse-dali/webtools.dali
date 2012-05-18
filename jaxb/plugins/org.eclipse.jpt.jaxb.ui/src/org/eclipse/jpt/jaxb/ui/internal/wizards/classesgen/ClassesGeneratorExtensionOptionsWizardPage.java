@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2010, 2011 Oracle. All rights reserved.
+* Copyright (c) 2010, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -67,6 +67,17 @@ public class ClassesGeneratorExtensionOptionsWizardPage extends WizardPage
 		
 		return composite;
 	}
+
+	@Override
+	public void setVisible(boolean visible) {
+		super.setVisible(visible);
+		String facetVersion = this.getFacetVersion();
+		if( ! StringTools.stringIsEmpty(facetVersion)) {
+			if(StringTools.stringIsEmpty(this.additionalArgsComposite.getAdditionalArgs())) {
+				this.additionalArgsComposite.setAdditionalArgs(TARGET_OPTION + facetVersion);
+			}
+		}
+	};
 
 	// ********** intra-wizard methods **********
 
@@ -145,9 +156,6 @@ public class ClassesGeneratorExtensionOptionsWizardPage extends WizardPage
 			gridData.verticalIndent = 5;
 			additionalArgsLabel.setLayoutData(gridData);
 			this.additionalArgsText = this.buildAdditionalArgsText(composite);
-			if( ! StringTools.stringIsEmpty(getFacetVersion())) {
-				this.additionalArgsText.setText(TARGET_OPTION + getFacetVersion());
-			}
 		}
 		
 		// ********** UI components **********
@@ -217,5 +225,9 @@ public class ClassesGeneratorExtensionOptionsWizardPage extends WizardPage
 			return this.additionalArgsText.getText();
 		}
 		
+		protected void setAdditionalArgs(String argsString) {
+			this.additionalArgsText.setText(argsString);
+		}
+
 	}	
 }
