@@ -249,14 +249,14 @@ public abstract class SpecifiedOrmPersistentType
 	 * @see #syncJavaPersistentType()
 	 */
 	protected void updateJavaPersistentType() {
-		JavaResourceType resourceType = this.resolveJavaResourceType();
-		if (resourceType == null) {
+		if (this.getName() == null) {
 			if (this.javaPersistentType != null) {
 				this.javaPersistentType.dispose();
 				this.setJavaPersistentType(null);
 			}			
 		}
 		else {
+			JavaResourceType resourceType = this.resolveJavaResourceType();
 			if (this.javaPersistentType == null) {
 				this.setJavaPersistentType(this.buildJavaPersistentType(resourceType));
 			}
@@ -286,7 +286,7 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	protected JavaPersistentType buildJavaPersistentType(JavaResourceType jrt) {
-		return this.getJpaFactory().buildJavaPersistentType(this, jrt);
+		return jrt != null ? this.getJpaFactory().buildJavaPersistentType(this, jrt) : null;
 	}
 
 
