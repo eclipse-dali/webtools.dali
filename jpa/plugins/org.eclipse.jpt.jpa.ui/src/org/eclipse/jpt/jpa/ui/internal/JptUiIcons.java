@@ -26,9 +26,12 @@ public class JptUiIcons
 	 * ImageRegistry with -gray appended to the key.
 	 * Clients of this method should not dispose of the image.
 	 * 
+	 * This method is synchronized to prevent concurrent access of the ImageRegistry by
+	 * multiple threads.
+	 * 
 	 * @return a new grayed out image
 	 */
-	public static Image ghost(String key) {
+	public static synchronized Image ghost(String key) {
 		Image existingImage = JptJpaUiPlugin.instance().getImageRegistry().get(key + "-gray");
 		if (existingImage != null) {
 			return existingImage;
