@@ -13,8 +13,14 @@ import java.util.Map;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.utility.internal.RunnableAdapter;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.ui.selection.JpaSelectionManager;
 import org.eclipse.ui.ISources;
@@ -110,14 +116,50 @@ public class PersistentAttributeMapAsHandler
 	 */
 	private void setJpaSelection(Object[] items) {
 		if (items.length == 1) {
-			JpaSelectionManager mgr = this.getSelectionManager();
-			mgr.setSelection(null);
-			mgr.setSelection((PersistentAttribute) items[0]);
+			new PostExecutionJob((PersistentAttribute) items[0]).schedule();
 		}
 	}
 
-	private JpaSelectionManager getSelectionManager() {
-		return PlatformTools.getAdapter(PlatformUI.getWorkbench(), JpaSelectionManager.class);
+	/**
+	 * This job will not run until any outstanding updates etc. are complete.
+	 * As a result, the runnable dispatched to the UI thread will not run
+	 * until the previously scheduled UI runnables are complete also (e.g. the
+	 * events triggered by the aforementioned updates etc.).
+	 */
+	/* CU private */ static class PostExecutionJob
+		extends Job
+	{
+		private final Runnable setSelectionRunnable;
+
+		PostExecutionJob(PersistentAttribute attribute) {
+			super("select attribute");
+			this.setSelectionRunnable = new SetSelectionRunnable(attribute);
+			this.setRule(attribute.getJpaProject().getProject());
+		}
+
+		@Override
+		protected IStatus run(IProgressMonitor monitor) {
+			SWTUtil.execute(this.setSelectionRunnable);
+			return Status.OK_STATUS;
+		}
+
+		/* class private */ static class SetSelectionRunnable
+			extends RunnableAdapter
+		{
+			private final PersistentAttribute attribute;
+
+			SetSelectionRunnable(PersistentAttribute attribute) {
+				super();
+				this.attribute = attribute;
+			}
+
+			@Override
+			public void run() {
+				JpaSelectionManager mgr = PlatformTools.getAdapter(PlatformUI.getWorkbench(), JpaSelectionManager.class);
+				mgr.setSelection(null);
+				mgr.setSelection(attribute);
+			}
+		}
 	}
 
 	public void updateElement(UIElement element, @SuppressWarnings("rawtypes") Map parameters) {
