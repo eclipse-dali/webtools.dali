@@ -183,7 +183,7 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 		}
 		else if (newDefaultTable.getPackage().equals(StringTools.EMPTY_STRING)) {
 			JpaEntityGenPreferencesManager preferencesManager = this.buildEntityGenPreferencesManager();
-			newDefaultTable.setPackage(preferencesManager.getDefaultPackageWorkspacePreference());
+			newDefaultTable.setPackage(preferencesManager.getDefaultPackagePreference());
 		}
 			
 		return this.customizer;
