@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,18 +21,22 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkCa
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkChangeTrackingAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkConvertAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkConverterAnnotationDefinition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkConverters2_2AnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkCustomizerAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkExistenceCheckingAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkJoinFetchAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkMutableAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkObjectTypeConverterAnnotationDefinition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkObjectTypeConverters2_2AnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkPrimaryKeyAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkPrivateOwnedAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkReadOnlyAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkReadTransformerAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkStructConverterAnnotationDefinition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkStructConverters2_2AnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkTransformationAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkTypeConverterAnnotationDefinition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkTypeConverters2_2AnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkVariableOneToOneAnnotationDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.EclipseLinkWriteTransformerAnnotationDefinition;
 
@@ -71,15 +75,19 @@ public class EclipseLinkJpaAnnotationDefinitionProvider
 		EclipseLinkCacheAnnotationDefinition.instance(),
 		EclipseLinkChangeTrackingAnnotationDefinition.instance(),
 		EclipseLinkConvertAnnotationDefinition.instance(),
+		EclipseLinkConverters2_2AnnotationDefinition.instance(), //Bug 380182 - not supported before EL 2.2, but can handle with validation
 		EclipseLinkCustomizerAnnotationDefinition.instance(),
 		EclipseLinkExistenceCheckingAnnotationDefinition.instance(),
 		EclipseLinkJoinFetchAnnotationDefinition.instance(),
 		EclipseLinkMutableAnnotationDefinition.instance(),
+		EclipseLinkObjectTypeConverters2_2AnnotationDefinition.instance(), //Bug 380182 - not supported before EL 2.2, but can handle with validation
 		EclipseLinkPrimaryKeyAnnotationDefinition.instance(),
 		EclipseLinkPrivateOwnedAnnotationDefinition.instance(),
 		EclipseLinkReadOnlyAnnotationDefinition.instance(),
 		EclipseLinkReadTransformerAnnotationDefinition.instance(),
+		EclipseLinkStructConverters2_2AnnotationDefinition.instance(), //Bug 380182 - not supported before EL 2.2, but can handle with validation
 		EclipseLinkTransformationAnnotationDefinition.instance(),
+		EclipseLinkTypeConverters2_2AnnotationDefinition.instance(), //Bug 380182 - not supported before EL 2.2, but can handle with validation
 		EclipseLinkVariableOneToOneAnnotationDefinition.instance(),
 		EclipseLinkWriteTransformerAnnotationDefinition.instance()
 	};
