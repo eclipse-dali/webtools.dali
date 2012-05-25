@@ -149,6 +149,8 @@ public abstract class AbstractMappingFileRef
 					// content type changed, the JPA project would return null...  ~bjv]
 					// [I have hit this before (had this println uncommmented), 
 					// but I am not sure how... ~kfb]
+					// [I hit this by deleting the implied orm.xml file and then adding it back, I think 
+					// it will not be possible to hit it now that I null out the mappingFile is dispose() ~kfb]
 					// System.out.println("AbstractMappingFileRef.syncMappingFile");
 					// if the resource's content type has changed, we completely rebuild the mapping file
 					this.mappingFile.dispose();
@@ -215,6 +217,8 @@ public abstract class AbstractMappingFileRef
 	public void dispose() {
 		if (this.mappingFile != null) {
 			this.mappingFile.dispose();
+			//need to null this because we are storing the "potential" mappingFileRef in the PersistenceUnit
+			this.mappingFile = null; 
 		}
 	}
 

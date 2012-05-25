@@ -608,6 +608,10 @@ public abstract class AbstractPersistenceUnit
 		protected XmlMappingFileRef getResourceElement(MappingFileRef contextElement) {
 			return contextElement.getXmlMappingFileRef();
 		}
+		@Override
+		protected void disposeElement(MappingFileRef element) {
+			element.dispose();
+		}
 	}
 
 
@@ -634,12 +638,12 @@ public abstract class AbstractPersistenceUnit
 	protected void updateImpliedMappingFileRef() {
 		if (this.usesImpliedMappingFile()) {
 			this.setImpliedMappingFileRef(this.potentialImpliedMappingFileRef);
-			this.potentialImpliedMappingFileRef.update();
+			this.impliedMappingFileRef.update();
 		}
-		else {
+		else if (this.impliedMappingFileRef != null) {
+			//this is needed to unregister the root structure node
+			this.impliedMappingFileRef.dispose();
 			this.setImpliedMappingFileRef(null);
-			//this is needed to unregister the root structure node, how we build the root structure nodes probably needs to change.
-			this.potentialImpliedMappingFileRef.dispose();
 		}
 	}
 

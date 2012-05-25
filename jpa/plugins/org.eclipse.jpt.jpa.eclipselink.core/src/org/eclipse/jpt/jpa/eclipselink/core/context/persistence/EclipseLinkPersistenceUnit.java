@@ -317,12 +317,12 @@ public class EclipseLinkPersistenceUnit
 
 		if (this.usesImpliedEclipseLinkMappingFile()) {
 			this.setImpliedEclipseLinkMappingFileRef(this.potentialImpliedEclipseLinkMappingFileRef);
-			this.potentialImpliedEclipseLinkMappingFileRef.update();
+			this.impliedEclipseLinkMappingFileRef.update();
 		}
-		else {
+		else if (this.impliedEclipseLinkMappingFileRef != null) {
+			//this is needed to unregister the root structure node
+			this.impliedEclipseLinkMappingFileRef.dispose();
 			this.setImpliedEclipseLinkMappingFileRef(null);
-			//this is needed to unregister the root structure node, how we build the root structure nodes probably needs to change.
-			this.potentialImpliedEclipseLinkMappingFileRef.dispose();
 		}
 	}
 
