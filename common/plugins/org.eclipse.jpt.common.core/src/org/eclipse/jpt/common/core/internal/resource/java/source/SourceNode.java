@@ -330,7 +330,7 @@ public abstract class SourceNode
 			}
 		}
 
-		private void syncAddNestedAnnotation(org.eclipse.jdt.core.dom.Annotation astAnnotation) {
+		void syncAddNestedAnnotation(org.eclipse.jdt.core.dom.Annotation astAnnotation) {
 			int index = this.nestedAnnotations.size();
 			A nestedAnnotation = this.buildNestedAnnotation(index);
 			nestedAnnotation.initialize((CompilationUnit) astAnnotation.getRoot());

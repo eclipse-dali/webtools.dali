@@ -774,18 +774,19 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 		}
 
 		/**
-		 * If we get here, the container annotation does <em>not</em> exist but
-		 * the standalone nestable annotation does.
+		 * If we get here, the container annotation is either empty or does
+		 * <em>not</em> exist but the standalone nestable annotation does.
 		 */
 		void synchronizeNestableAnnotation(org.eclipse.jdt.core.dom.Annotation astStandaloneNestableAnnotation) {
-			if (this.nestedAnnotations.size() == 0) {
-				throw new IllegalStateException();  // should not get here...
-			}
-
 			this.containerAnnotation = null;
-			this.nestedAnnotations.get(0).synchronizeWith((CompilationUnit) astStandaloneNestableAnnotation.getRoot());  // TODO pass the AST annotation!
-			// remove any remaining nested annotations
-			this.syncRemoveNestedAnnotations(1);
+			if (this.nestedAnnotations.size() == 0) {
+				// container annotation is present but empty
+				this.syncAddNestedAnnotation(astStandaloneNestableAnnotation);
+			} else {
+				this.nestedAnnotations.get(0).synchronizeWith((CompilationUnit) astStandaloneNestableAnnotation.getRoot());  // TODO pass the AST annotation!
+				// remove any remaining nested annotations
+				this.syncRemoveNestedAnnotations(1);
+			}
 		}
 
 		@Override
