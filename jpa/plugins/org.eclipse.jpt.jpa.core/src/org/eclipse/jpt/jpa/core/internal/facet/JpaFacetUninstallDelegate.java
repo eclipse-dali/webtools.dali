@@ -9,7 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.facet;
 
+import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
@@ -24,6 +26,25 @@ public class JpaFacetUninstallDelegate
 			Object config, IProgressMonitor monitor) throws CoreException {
 		
 		(new JpaValidationPreferencesManager(project)).clearProjectPreferences();
+		removeBuilder(project, STATIC_WEAVING_BUILDER_ID);
 		JptJpaCorePlugin.clearProjectPersistentProperties(project);
+	}
+
+	//TODO hack to fix bug 380735 in RC2. We need to move this code into the eclipselink plug-in
+	private static String STATIC_WEAVING_BUILDER_ID = "org.eclipse.jpt.jpa.eclipselink.core.builder"; //$NON-NLS-1$
+
+	private static void removeBuilder(IProject project, String builderId) throws CoreException {
+		IProjectDescription description = project.getDescription();
+		ICommand[] commands = description.getBuildSpec();
+		for (int i = 0; i < commands.length; ++i) {
+			if (commands[i].getBuilderName().equals(builderId)) {
+				ICommand[] newCommands = new ICommand[commands.length - 1];
+				System.arraycopy(commands, 0, newCommands, 0, i);
+				System.arraycopy(commands, i + 1, newCommands, i, commands.length - i - 1);
+				description.setBuildSpec(newCommands);
+				project.setDescription(description, null);
+				return;
+			}
+		}
 	}
 }
