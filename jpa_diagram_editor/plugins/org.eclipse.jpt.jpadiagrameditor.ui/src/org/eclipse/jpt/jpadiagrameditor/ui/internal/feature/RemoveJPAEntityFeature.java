@@ -20,8 +20,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.emf.transaction.RecordingCommand;
+import org.eclipse.emf.transaction.TransactionalEditingDomain;
+import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.IContext;
+import org.eclipse.graphiti.features.context.IDeleteContext;
 import org.eclipse.graphiti.features.context.IRemoveContext;
 import org.eclipse.graphiti.features.context.impl.RemoveContext;
 import org.eclipse.graphiti.features.impl.DefaultRemoveFeature;
@@ -73,7 +77,7 @@ public class RemoveJPAEntityFeature extends DefaultRemoveFeature {
 				f.remove(ctx);    			
     		}
     		String name = ((PersistentType)bo).getName();
-			getFeatureProvider().remove(name, true);
+			getFeatureProvider().remove(name, false);
     	} 			
     }
     
@@ -85,7 +89,7 @@ public class RemoveJPAEntityFeature extends DefaultRemoveFeature {
 	public void execute(IContext ctx) {
 		if (!IRemoveContext.class.isInstance(ctx)) 
 			return;
-		IRemoveContext context = (IRemoveContext)ctx; 
+		final IRemoveContext context = (IRemoveContext)ctx; 
     	PictogramElement pe = context.getPictogramElement();
     	Object bo = getFeatureProvider().getBusinessObjectForPictogramElement(pe);
     	if (!JavaPersistentType.class.isInstance(bo))
@@ -105,8 +109,18 @@ public class RemoveJPAEntityFeature extends DefaultRemoveFeature {
 			if (dialog.open() != 0)	
 				return;    			
 		}		
-		super.execute(context);
+		TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(pe);
+    	ted.getCommandStack().execute(new RecordingCommand(ted) {
+			protected void doExecute() {
+				removeEntityFromDiagram(context);
+			}
+		});
+
 	}
+	
+	 public void removeEntityFromDiagram(IRemoveContext context){
+	    	super.execute(context);
+	    }
 	
     public void postRemove(IRemoveContext context) {
     	if (shouldRearrangeIsARelations)

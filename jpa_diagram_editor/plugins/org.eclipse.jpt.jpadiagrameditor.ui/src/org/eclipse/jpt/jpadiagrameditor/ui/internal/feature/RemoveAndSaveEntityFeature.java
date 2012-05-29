@@ -20,7 +20,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.emf.transaction.RecordingCommand;
+import org.eclipse.emf.transaction.TransactionalEditingDomain;
+import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.eclipse.graphiti.features.IFeatureProvider;
+import org.eclipse.graphiti.features.context.IContext;
 import org.eclipse.graphiti.features.context.IRemoveContext;
 import org.eclipse.graphiti.features.context.impl.RemoveContext;
 import org.eclipse.graphiti.features.impl.DefaultRemoveFeature;
@@ -62,6 +66,23 @@ public class RemoveAndSaveEntityFeature extends DefaultRemoveFeature {
     		}
     		getFeatureProvider().remove(((PersistentType)bo).getName(), true); 
     	} 			
+    }
+    
+    public void execute(IContext context) {
+    	if (!IRemoveContext.class.isInstance(context)) 
+			return;
+    	final IRemoveContext removeContext = (IRemoveContext)context; 
+    	PictogramElement pe = removeContext.getPictogramElement();
+    	TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(pe);
+    	ted.getCommandStack().execute(new RecordingCommand(ted) {
+			protected void doExecute() {
+				removeEntityFromDiagram(removeContext);
+			}
+		});
+    }
+    
+    public void removeEntityFromDiagram(IRemoveContext context){
+    	super.remove(context);
     }
     
 	public IJPAEditorFeatureProvider getFeatureProvider() {

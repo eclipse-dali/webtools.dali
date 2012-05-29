@@ -471,7 +471,7 @@ public class JpaArtifactFactory {
 	public void forceSaveEntityClass(final JavaPersistentType jpt,
 			IJPAEditorFeatureProvider fp) {
 		final ICompilationUnit cu = fp.getCompilationUnit(jpt);
-		Display.getDefault().asyncExec(new Runnable() {
+		Display.getDefault().syncExec(new Runnable() {
 			public void run() {
 				try {
 					if (cu.isWorkingCopy()) 

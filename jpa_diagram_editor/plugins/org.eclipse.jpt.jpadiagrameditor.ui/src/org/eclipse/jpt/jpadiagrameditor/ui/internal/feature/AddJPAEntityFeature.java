@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import org.eclipse.emf.transaction.RecordingCommand;
+import org.eclipse.emf.transaction.TransactionalEditingDomain;
+import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.IAddContext;
 import org.eclipse.graphiti.features.impl.AbstractAddShapeFeature;
@@ -56,12 +59,12 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants.Shap
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorPredefinedColoredAreas;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.Wrp;
 
 
 @SuppressWarnings({ "restriction" })
 public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 
-	private IPeUtilFacade facade;
 	private boolean shouldRearrangeIsARelations = true;
 	private static ContainerShape primaryShape;
 	private static ContainerShape relationShape;
@@ -71,12 +74,10 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 	public AddJPAEntityFeature(IFeatureProvider fp, boolean shouldRearrangeIsARelations) {
 		super(fp);
 		this.shouldRearrangeIsARelations = shouldRearrangeIsARelations;
-		facade = new PeUtilFacade();
 	}
 
-	public AddJPAEntityFeature(IFeatureProvider fp, IPeUtilFacade facade) {
+	public AddJPAEntityFeature(IFeatureProvider fp) {
 		super(fp);
-		this.facade = facade;
 	}
 
 	public boolean canAdd(IAddContext context) {
@@ -121,8 +122,8 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 		return (IJPAEditorFeatureProvider) super.getFeatureProvider();
 	}
 
-	public PictogramElement add(IAddContext context) {
-		IJPAEditorFeatureProvider fp = getFeatureProvider();
+	public PictogramElement add(final IAddContext context) {
+		final IJPAEditorFeatureProvider fp = getFeatureProvider();
 		Object newObj = context.getNewObject();
 		JavaPersistentType jpt = null;
 		if (newObj instanceof JavaPersistentType) {
@@ -136,38 +137,50 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 			jpt = JPAEditorUtil.getJPType(cu);
 		}
 		final Diagram targetDiagram = (Diagram) context.getTargetContainer();
-				
-	    ContainerShape entityShape = facade.createContainerShape(targetDiagram, true);
-		
-	    JPAEditorConstants.DIAGRAM_OBJECT_TYPE dot = JpaArtifactFactory.instance().determineDiagramObjectType(jpt);
-		createEntityRectangle(context, entityShape, dot,
-							  this.getFeatureProvider().getDiagramTypeProvider().getDiagram());
-		link(entityShape, jpt);
-		Shape shape = Graphiti.getPeService().createShape(entityShape, false);
-		Polyline headerBottomLine = Graphiti.getGaService().createPolyline(shape, new int[] { 0,
-				30, JPAEditorConstants.ENTITY_WIDTH, 30 });
-		headerBottomLine
-				.setForeground(manageColor(JPAEditorConstants.ENTITY_BORDER_COLOR));
-		headerBottomLine.setLineWidth(JPAEditorConstants.ENTITY_BORDER_WIDTH);
+		final Wrp wrp = new Wrp();
+		createEntity(context, fp, targetDiagram, wrp, jpt);
+		return (PictogramElement) wrp.getObj();
+	}
 
-		addHeader(jpt, entityShape, JPAEditorConstants.ENTITY_WIDTH, dot);
+	private void createEntity(final IAddContext context, final IJPAEditorFeatureProvider fp, final Diagram targetDiagram,
+			final Wrp wrp, final JavaPersistentType jpt) {
 		
-		createCompartments(context, jpt, entityShape);
-		fillCompartments(jpt,entityShape);
+		TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(targetDiagram);
 		
-		String key = fp.getKeyForBusinessObject(jpt);
-		if (fp.getBusinessObjectForKey(key) == null)
-			fp.putKeyToBusinessObject(key, jpt);
+		ted.getCommandStack().execute(new RecordingCommand(ted) {
+			protected void doExecute() {
 
-		Graphiti.getPeService().createChopboxAnchor(entityShape);
-		entityShape.setVisible(true);
-		layoutPictogramElement(entityShape);
+				ContainerShape entityShape = Graphiti.getPeService().createContainerShape(targetDiagram, true);
 
-		UpdateAttributeFeature updateFeature = new UpdateAttributeFeature(fp);
-		updateFeature.reconnect(jpt);
-		if (shouldRearrangeIsARelations)
-			JpaArtifactFactory.instance().rearrangeIsARelations(getFeatureProvider());	
-		return entityShape;
+				JPAEditorConstants.DIAGRAM_OBJECT_TYPE dot = JpaArtifactFactory.instance().determineDiagramObjectType(jpt);
+				createEntityRectangle(context, entityShape, dot, fp.getDiagramTypeProvider().getDiagram());
+				link(entityShape, jpt);
+				Shape shape = Graphiti.getPeService().createShape(entityShape,	false);
+				Polyline headerBottomLine = Graphiti.getGaService()
+						.createPolyline(shape, new int[] { 0, 30, JPAEditorConstants.ENTITY_WIDTH, 30 });
+				headerBottomLine.setForeground(manageColor(JPAEditorConstants.ENTITY_BORDER_COLOR));
+				headerBottomLine.setLineWidth(JPAEditorConstants.ENTITY_BORDER_WIDTH);
+
+				addHeader(jpt, entityShape, JPAEditorConstants.ENTITY_WIDTH, dot);
+
+				createCompartments(context, jpt, entityShape);
+				fillCompartments(jpt, entityShape);
+
+				String key = fp.getKeyForBusinessObject(jpt);
+				if (fp.getBusinessObjectForKey(key) == null)
+					fp.putKeyToBusinessObject(key, jpt);
+
+				Graphiti.getPeService().createChopboxAnchor(entityShape);
+				entityShape.setVisible(true);
+				layoutPictogramElement(entityShape);
+
+				UpdateAttributeFeature updateFeature = new UpdateAttributeFeature(fp);
+				updateFeature.reconnect(jpt);
+				if (shouldRearrangeIsARelations)
+					JpaArtifactFactory.instance().rearrangeIsARelations(getFeatureProvider());
+				wrp.setObj(entityShape);
+			}
+		});
 	}
 	
 	private void createCompartments(IAddContext context, JavaPersistentType jpt,
@@ -295,10 +308,6 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 		}
 	}
 
-	public interface IPeUtilFacade {
-		public ContainerShape createContainerShape(Diagram diagram, boolean b);
-	}
-
 	public static RoundedRectangle createEntityRectangle(IAddContext context,
 														 ContainerShape entityShape, 
 														 JPAEditorConstants.DIAGRAM_OBJECT_TYPE dot,  
@@ -327,13 +336,7 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 						: context.getHeight());
 		return entityRectangle;
 	}
-
-	private static class PeUtilFacade implements IPeUtilFacade {
-		public ContainerShape createContainerShape(Diagram diagram, boolean b) {
-			return Graphiti.getPeService().createContainerShape(diagram, true);
-		}
-	}
-
+	
 	private ContainerShape addHeader(JavaPersistentType addedWrapper,
 									 ContainerShape entityShape, 
 									 int width,
