@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.eclipselink.core.builder.EclipseLinkStaticWeavingBuilderConfigurator;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.LoggingLevel;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
@@ -50,7 +51,7 @@ public class EclipselinkPreferencePage extends PropertyPage {
 	public boolean performOk() {
 		super.performOk();
 
-		if(this.staticWeaveClasses()) {
+		if(JpaFacet.isInstalled(this.getProject()) && this.staticWeaveClasses()) {
 			if( ! this.projectHasStaticWeavingBuilder()) {
 				this.configurator.addBuilder();
 			}
