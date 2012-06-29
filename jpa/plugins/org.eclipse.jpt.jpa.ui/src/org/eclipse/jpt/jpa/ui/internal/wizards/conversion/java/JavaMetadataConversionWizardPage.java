@@ -204,8 +204,8 @@ public abstract class JavaMetadataConversionWizardPage
 		data.grabExcessHorizontalSpace = true;
 		mappingFileControl.setLayoutData(data);
 
-		Text noteTextField = new Text(composite, SWT.READ_ONLY | SWT.MULTI);
-		noteTextField.setText(NLS.bind(JptUiMessages.JavaMetadataConversion_warning, StringTools.CR));
+		Text noteTextField = new Text(composite, SWT.READ_ONLY | SWT.MULTI | SWT.WRAP);
+		noteTextField.setText(JptUiMessages.JavaMetadataConversion_warning);
 		noteTextField.setFont(new Font(composite.getDisplay(), "Arial", 10, SWT.EMBEDDED)); //$NON-NLS-1$
 		noteTextField.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, true, 1, 1));
 
