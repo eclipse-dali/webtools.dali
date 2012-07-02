@@ -174,6 +174,13 @@ public abstract class AbstractNamedColumnValidator<C extends ReadOnlyNamedColumn
 		}
 
 		public boolean validate(List<IMessage> messages, IReporter reporter) {
+			// if a column does not have a specified table or its specified table is same as
+			// its default table, don't do the table validation against it - bug 377110
+			String specifiedTable = this.getColumn().getSpecifiedTable();
+			String defaultTable = this.getColumn().getDefaultTable();
+			if (specifiedTable == null || StringTools.stringsAreEqual(specifiedTable, defaultTable)) {
+				return true;
+			}
 			if (this.getColumn().tableNameIsInvalid()) {
 				messages.add(this.buildTableNotValidMessage());
 				return false;
