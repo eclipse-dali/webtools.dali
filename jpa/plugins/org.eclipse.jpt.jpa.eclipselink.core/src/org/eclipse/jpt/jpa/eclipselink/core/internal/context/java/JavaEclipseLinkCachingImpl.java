@@ -458,8 +458,8 @@ public class JavaEclipseLinkCachingImpl
 			if (existenceChecking) {
 				this.addExistenceCheckingAnnotation();
 			} else {
-				this.removeExistenceCheckingAnnotation();
 				this.setSpecifiedExistenceType(null);
+				this.removeExistenceCheckingAnnotation();
 			}
 			this.setExistenceChecking_(existenceChecking);
 		}
