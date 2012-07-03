@@ -62,7 +62,7 @@
                   The implementation class, which implements &lt;samp&gt;org.eclipse.jpt.common.core.libval.LibraryValidator&lt;/samp&gt;.
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.eclipse.jpt.core.libval.LibraryValidator"/>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.jpt.common.core.libval.LibraryValidator"/>
                </appinfo>
             </annotation>
          </attribute>
