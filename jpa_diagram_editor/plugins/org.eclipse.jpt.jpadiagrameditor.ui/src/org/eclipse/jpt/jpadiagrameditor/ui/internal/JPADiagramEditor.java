@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -29,7 +30,6 @@ import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.eclipse.gef.ContextMenuProvider;
-import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.graphiti.features.IFeatureProvider;
@@ -47,9 +47,20 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.utility.internal.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.Transformer;
+import org.eclipse.jpt.common.utility.internal.model.value.DoublePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
+import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpa.ui.JpaFileModel;
+import org.eclipse.jpt.jpa.ui.selection.JpaEditorManager;
 import org.eclipse.jpt.jpa.ui.selection.JpaSelectionManager;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.ui.JPADiagramEditorInput;
@@ -66,6 +77,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.Wrp;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbenchPart;
@@ -75,23 +87,33 @@ import org.eclipse.ui.views.properties.IPropertySheetPage;
 
 
 @SuppressWarnings("restriction")
-public class JPADiagramEditor extends DiagramEditor {
-
+public class JPADiagramEditor extends DiagramEditor implements JpaEditorManager{
+	
+	private final ModifiablePropertyValueModel<JpaStructureNode> jpaSelectionModel = new SimplePropertyValueModel<JpaStructureNode>();
+	
 	public final static String ID = "org.eclipse.jpt.jpadiagrameditor.ui"; //$NON-NLS-1$
-	private DefaultEditDomain editDomain;
 
 	private JavaPersistentType inputJptType;
 	private ISelectionManagerFactory jpaSelectionManagerFactory;
+	
+	private final ModifiablePropertyValueModel<IFile> fileModel = new SimplePropertyValueModel<IFile>();
+
+	/**
+	 * We use the JPA file to calculate the JPA selection.
+	 * We update the JPA file model's file model whenever the text editor's
+	 * file changes.
+	 */
+	private final PropertyValueModel<JpaFile> jpaFileModel;
+
 
 	public JPADiagramEditor() {
 		this(new SelectionManagerFactoryImpl());
-		editDomain = new DefaultEditDomain(this);
 	}
 
 	public JPADiagramEditor(ISelectionManagerFactory jpaSelectionManagerFactory) {
 		super();
 		this.jpaSelectionManagerFactory = jpaSelectionManagerFactory;
-		editDomain = new DefaultEditDomain(this);
+		this.jpaFileModel = this.buildJpaFileModel();
 	}
 
 	@Override
@@ -287,9 +309,15 @@ public class JPADiagramEditor extends DiagramEditor {
 				Object bo = getFeatureProvider()
 						.getBusinessObjectForPictogramElement(
 								(PictogramElement) m);
-				if ((bo == null) || (!(bo instanceof JpaStructureNode)))
+				if ((bo == null) || (!(bo instanceof JpaStructureNode))){
+					jpaSelectionModel.setValue(null);
+					setFileModel(null);
 					return;
-				selectionManager.setSelection((JpaStructureNode) bo);
+				}
+				JpaStructureNode jpaStructureNode = (JpaStructureNode) bo;
+				jpaSelectionModel.setValue(jpaStructureNode);
+				setFileModel(jpaStructureNode);
+				selectionManager.setSelection(jpaStructureNode);
 				return;
 			}
 		}
@@ -312,10 +340,58 @@ public class JPADiagramEditor extends DiagramEditor {
 		}
 
 	}
-	
-	@Override
-	public DefaultEditDomain getEditDomain() {
-		return editDomain;
+
+	public IEditorPart getEditor() {
+		return this.getEditor();
 	}
+
+	public ModifiablePropertyValueModel<JpaStructureNode> getJpaSelectionModel() {
+		return this.jpaSelectionModel;
+	}
+	
+	public PropertyValueModel<JpaFile> getJpaFileModel() {
+		return this.jpaFileModel;
+	}
+
+	private PropertyValueModel<JpaFile> buildJpaFileModel() {
+		return new DoublePropertyValueModel<JpaFile>(this.buildJpaFileModelModel());
+	}
+
+	private PropertyValueModel<PropertyValueModel<JpaFile>> buildJpaFileModelModel() {
+		return new TransformationPropertyValueModel<IFile, PropertyValueModel<JpaFile>>(this.fileModel, JPA_FILE_MODEL_TRANSFORMER);
+	}
+
+	private static final Transformer<IFile, PropertyValueModel<JpaFile>> JPA_FILE_MODEL_TRANSFORMER = new JpaFileModelTransformer();
+
+	/* CU private */ static class JpaFileModelTransformer
+		extends AbstractTransformer<IFile, PropertyValueModel<JpaFile>>
+	{
+		@Override
+		protected PropertyValueModel<JpaFile> transform_(IFile file) {
+			return (JpaFileModel) file.getAdapter(JpaFileModel.class);
+		}
+	}
+	
+	private void setFileModel(JpaStructureNode node) {
+		this.fileModel.setValue(getSelectedEntityFile(node));
+	}
+	
+	private IFile getSelectedEntityFile(JpaStructureNode node) {
+		IResource resource = null;
+		if (node != null) {
+			if (node.getType().isAssignableFrom(JavaPersistentType.class)) {
+				resource = ((JavaPersistentType) node).getResource();
+			} else if (node.getType().isAssignableFrom(JavaPersistentAttribute.class)) {
+				resource = ((JavaPersistentAttribute) node).getResource();
+			}
+
+			if (resource != null && resource.exists() && (resource instanceof IFile)) {
+				return (IFile) resource;
+			}
+		}
+
+		return null;
+	}
+
 	
 }
