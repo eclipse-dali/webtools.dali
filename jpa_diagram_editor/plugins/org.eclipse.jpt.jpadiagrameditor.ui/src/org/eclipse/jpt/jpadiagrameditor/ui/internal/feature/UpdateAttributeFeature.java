@@ -21,7 +21,6 @@ import java.util.Iterator;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ICustomContext;
 import org.eclipse.graphiti.features.context.impl.AddConnectionContext;
-import org.eclipse.graphiti.features.context.impl.AddContext;
 import org.eclipse.graphiti.features.custom.AbstractCustomFeature;
 import org.eclipse.graphiti.mm.algorithms.Rectangle;
 import org.eclipse.graphiti.mm.algorithms.Text;
@@ -34,7 +33,6 @@ import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.services.IGaService;
 import org.eclipse.graphiti.util.IColorConstant;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation;
@@ -74,20 +72,6 @@ public class UpdateAttributeFeature extends AbstractCustomFeature {
 	public void execute(ICustomContext context) {
 		GraphicalRemoveAttributeFeature remove = new GraphicalRemoveAttributeFeature(getFeatureProvider());
 		remove.execute(context);
-	}
-
-	/**
-	 * @deprecated Use GraphicalAddAttributeFeature
-	 * @param entityShape
-	 * @param newAttr
-	 * @return
-	 */
-	public ContainerShape addAttributes(ContainerShape entityShape, JavaPersistentAttribute newAttr) {
-		AddContext context = new AddContext();
-		context.setNewObject(newAttr);
-		context.setTargetContainer(entityShape);
-		GraphicalAddAttributeFeature feature = new GraphicalAddAttributeFeature(getFeatureProvider());
-		return (ContainerShape) feature.add(context);
 	}
 
 	public IJPAEditorFeatureProvider getFeatureProvider() {
