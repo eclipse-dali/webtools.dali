@@ -24,6 +24,7 @@ import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.IAddContext;
+import org.eclipse.graphiti.features.context.impl.AddContext;
 import org.eclipse.graphiti.features.impl.AbstractAddShapeFeature;
 import org.eclipse.graphiti.mm.algorithms.Image;
 import org.eclipse.graphiti.mm.algorithms.Polyline;
@@ -400,7 +401,6 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 
 	}
 
-	@SuppressWarnings("deprecation")
 	private void addAttribute(JavaPersistentAttribute pa,
 			ContainerShape compartmentShape) {
 		IJPAEditorFeatureProvider fp = getFeatureProvider();
@@ -409,9 +409,11 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 		String key = fp.getKeyForBusinessObject(jpt);
 		if (fp.getBusinessObjectForKey(key) == null)
 			fp.putKeyToBusinessObject(key, jpt);
-		UpdateAttributeFeature updateFeature = new UpdateAttributeFeature(fp);
-        updateFeature.addAttributes(compartmentShape.getContainer(), pa);
-		updateFeature = null;
+		AddContext addContext = new AddContext();
+		addContext.setTargetContainer(compartmentShape.getContainer());
+		addContext.setNewObject(pa);
+		GraphicalAddAttributeFeature graphicalAdd = new GraphicalAddAttributeFeature(fp);
+		graphicalAdd.add(addContext);
 	}
 
 }

@@ -109,9 +109,9 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.facade.EclipseFacade;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.AddAttributeFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.AddRelationFeature;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.GraphicalRemoveAttributeFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.RemoveAttributeFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.RemoveRelationFeature;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.UpdateAttributeFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.ModelIntegrationUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPAEditorDiagramTypeProvider;
@@ -1126,15 +1126,13 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 				return;
 			PictogramElement pe = featureProvider
 					.getPictogramElementForBusinessObject(((JavaPersistentAttribute) source)
-							.getParent());			
-			final UpdateAttributeFeature ft = new UpdateAttributeFeature(
-					featureProvider);
+							.getParent());	
+			final GraphicalRemoveAttributeFeature remove = new GraphicalRemoveAttributeFeature(featureProvider);
 			final CustomContext ctx = new CustomContext();
 			ctx.setInnerPictogramElement(pe);
 			Runnable runnable = new Runnable() {
-				@SuppressWarnings("deprecation")
 				public void run() {
-					ft.execute(ctx);					
+					remove.execute(ctx);					
 				}
 			};
 			Display.getDefault().asyncExec(runnable);
@@ -1169,14 +1167,13 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			if (!at.getParent().getParent().getResource().exists())
 				return;
 			PictogramElement pe = featureProvider.getPictogramElementForBusinessObject(at.getParent());
-			final UpdateAttributeFeature ft = new UpdateAttributeFeature(featureProvider); 
+			final GraphicalRemoveAttributeFeature remove = new GraphicalRemoveAttributeFeature(featureProvider); 
 			final CustomContext ctx = new CustomContext();
 			ctx.setInnerPictogramElement(pe);
 			Runnable runnable = new Runnable() {
-				@SuppressWarnings("deprecation")
 				public void run() {
 					try {
-						ft.execute(ctx);
+						remove.execute(ctx);
 					} catch (Exception e) {
 						//$NON-NLS-1$
 					}
@@ -1206,14 +1203,13 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			if (featureProvider == null)
 				return;
 			PictogramElement pe = featureProvider.getPictogramElementForBusinessObject(jpa.getParent());
-			final UpdateAttributeFeature ft = new UpdateAttributeFeature(featureProvider); 
+			final GraphicalRemoveAttributeFeature remove = new GraphicalRemoveAttributeFeature(featureProvider); 
 			final CustomContext ctx = new CustomContext();
 			ctx.setInnerPictogramElement(pe);
 			Runnable runnable = new Runnable() {
-				@SuppressWarnings("deprecation")
 				public void run() {
 					try {
-						ft.execute(ctx);
+						remove.execute(ctx);
 					} catch (Exception e) {
 						//$NON-NLS-1$
 					}

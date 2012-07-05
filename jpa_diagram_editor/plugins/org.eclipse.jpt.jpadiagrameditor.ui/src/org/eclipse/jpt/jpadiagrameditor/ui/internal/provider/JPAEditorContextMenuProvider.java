@@ -22,7 +22,6 @@ import org.eclipse.graphiti.ui.editor.DiagramEditorContextMenuProvider;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.swt.graphics.Point;
 
-@SuppressWarnings("restriction")
 public class JPAEditorContextMenuProvider extends DiagramEditorContextMenuProvider {
 	public JPAEditorContextMenuProvider(EditPartViewer viewer, 
 										ActionRegistry registry, 

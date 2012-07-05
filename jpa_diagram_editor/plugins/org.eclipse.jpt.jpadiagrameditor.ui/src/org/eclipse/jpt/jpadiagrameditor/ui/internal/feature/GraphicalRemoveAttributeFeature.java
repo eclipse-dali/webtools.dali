@@ -19,12 +19,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ICustomContext;
 import org.eclipse.graphiti.features.context.impl.AddConnectionContext;
+import org.eclipse.graphiti.features.context.impl.AddContext;
 import org.eclipse.graphiti.features.custom.AbstractCustomFeature;
 import org.eclipse.graphiti.mm.pictograms.AnchorContainer;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
@@ -40,7 +42,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 
 
-class GraphicalRemoveAttributeFeature extends AbstractCustomFeature {
+public class GraphicalRemoveAttributeFeature extends AbstractCustomFeature {
 
 	public GraphicalRemoveAttributeFeature(IFeatureProvider fp) {
 		super(fp);
@@ -97,7 +99,6 @@ class GraphicalRemoveAttributeFeature extends AbstractCustomFeature {
 
 	}
 
-	@SuppressWarnings("deprecation")
 	private void readdCompartmentsChildren(JavaPersistentType javaPersistentType, ContainerShape entityShape,
 			ContainerShape primaryShape, ContainerShape relationShape, ContainerShape basicShape) {
 		JPAEditorConstants.DIAGRAM_OBJECT_TYPE dot = JpaArtifactFactory.instance().determineDiagramObjectType(javaPersistentType);
@@ -105,9 +106,14 @@ class GraphicalRemoveAttributeFeature extends AbstractCustomFeature {
 		updateFeature.addSeparatorsToShape(primaryShape, dot);
 		updateFeature.addSeparatorsToShape(relationShape, dot);
 		updateFeature.addSeparatorsToShape(basicShape, dot);
+		
+		GraphicalAddAttributeFeature graphicalAdd = new GraphicalAddAttributeFeature(getFeatureProvider());
+		AddContext addContext = new AddContext();
+		addContext.setTargetContainer(entityShape);
 
 		for (JavaPersistentAttribute attribute : javaPersistentType.getAttributes()) {
-			updateFeature.addAttributes(entityShape, attribute);
+			addContext.setNewObject(attribute);
+			graphicalAdd.execute(addContext);
 
 			getFeatureProvider().renewAttributeJoiningStrategyPropertyListener(attribute);
 			getFeatureProvider().addJPTForUpdate(javaPersistentType.getName());
