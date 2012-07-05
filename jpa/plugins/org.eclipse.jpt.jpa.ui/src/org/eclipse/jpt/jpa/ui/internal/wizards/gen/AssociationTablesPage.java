@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,12 +14,17 @@ import static org.eclipse.jpt.jpa.ui.internal.wizards.gen.SWTUtil.createButton;
 import static org.eclipse.jpt.jpa.ui.internal.wizards.gen.SWTUtil.createLabel;
 import static org.eclipse.jpt.jpa.ui.internal.wizards.gen.SWTUtil.createText;
 
+import java.util.ArrayList;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ResourceManager;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.jpa.db.Schema;
+import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.gen.internal.Association;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
 import org.eclipse.jpt.jpa.ui.internal.ImageRepository;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -132,6 +137,11 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 		
 		createLabel(assocTablesGroup, 1, JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_intermediateTable );
 		joinTableTextField = createText(assocTablesGroup, 1);
+		joinTableTextField.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				updatePageComplete();
+			}
+		});
 		joinTableTextField.setEnabled(false);
 
 		joinTableBrowse = createButton(assocTablesGroup, 1, "", SWT.NONE);
@@ -180,9 +190,6 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 				updatePageComplete();
 			}
 		});		
-		
-		this.setPageComplete( false);
-		table1TextField.setFocus(); 
 	}
 
 	@Override
@@ -192,17 +199,48 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 	
 	public void updatePageComplete() {
 		if( this.table1TextField.getText().length() <= 0 ||
-			this.table2TextField.getText().length() <= 0) {
+			this.table2TextField.getText().length() <= 0 ) {
+			this.setErrorMessage(null);
 			setPageComplete(false);
 			return;
 		}
-		if( mtmAssoBtn.getSelection() ){
-			if( this.joinTableTextField.getText().length() <= 0 ){
-				setPageComplete(false);
-				return;
-			}
+
+		String errorMessage = this.buildTableErrorMessage();
+		if( errorMessage == null && this.mtmAssoBtn.getSelection() ) {
+				if( this.joinTableTextField.getText().length() <= 0 ) {
+					this.setErrorMessage(null);
+					setPageComplete(false);
+					return;
+				} else {
+					errorMessage = this.buildJoinTableErrorMessage();
+				}
 		}
-		setPageComplete(true);
+
+		this.setErrorMessage(errorMessage);
+		this.setPageComplete(errorMessage == null);
+	}
+
+	private String buildTableErrorMessage() {
+		if ( !CollectionTools.contains(this.customizer.getTableNames(), this.table1TextField.getText()) ) {
+			return NLS.bind(JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_nonexsistent_table, this.table1TextField.getText());
+		} else if ( !CollectionTools.contains(this.customizer.getTableNames(), this.table2TextField.getText()) ) {
+			return NLS.bind(JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_nonexsistent_table, this.table2TextField.getText());
+		}
+		return null;
 	}
 	
+	private String buildJoinTableErrorMessage() {
+		if (!CollectionTools.contains(this.getAllTableNames(this.customizer.getSchema()), this.joinTableTextField.getText())) {
+			return NLS.bind(JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_nonexsistent_join_table, this.joinTableTextField.getText());
+		}
+		return null;
+	}
+	
+	protected ArrayList<String> getAllTableNames(Schema schema) {
+		ArrayList<String> list = new ArrayList<String>();
+		for (Table table : schema.getTables()) {
+			list.add(table.getName());
+		}
+		return list;
+	}
 }
