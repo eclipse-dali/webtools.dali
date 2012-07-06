@@ -58,7 +58,7 @@ import org.eclipse.ui.help.IWorkbenchHelpSystem;
 
 public class TableAssociationsWizardPage extends WizardPage {
 
-	private JpaProject jpaProject;
+	private final JpaProject jpaProject;
 	private ORMGenCustomizer customizer ;
 	
 	private AssociationsListComposite associationList; 
@@ -575,7 +575,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 	public void updateAssociationEditPanel(Association association) {
 		this.selectedAssociation = association;
 
-		boolean enabled = association.isCustom();
+		boolean enabled = this.selectedAssociation.isCustom();
 		this.deleteAssociationLink.setEnabled(enabled);
 		
 		//Create and display the associationsEditPanel if it was hidden before
@@ -587,11 +587,11 @@ public class TableAssociationsWizardPage extends WizardPage {
 		this.detailPanel.getParent().layout();
 
 		//Update the UI controls from the model
-		String table1Name = association.getReferrerTableName();
-		String table2Name = association.getReferencedTableName();
-		String joinTableName = association.getJoinTableName();
+		String table1Name = this.selectedAssociation.getReferrerTableName();
+		String table2Name = this.selectedAssociation.getReferencedTableName();
+		String joinTableName = this.selectedAssociation.getJoinTableName();
 		
-		boolean isGenerated = association.isGenerated();
+		boolean isGenerated = this.selectedAssociation.isGenerated();
 		this.generateAssociationCheckBox.setSelection(isGenerated);
 		this.referrerRolePropertyLabel.setEnabled( isGenerated );
 		this.referrerRolePropertyField.setEnabled( isGenerated );
@@ -604,7 +604,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 		this.joinConditionLabel.setEnabled( isGenerated );
 		this.joinConditionText.setEnabled( isGenerated );
 		
-		String cardinality = association.getCardinality();
+		String cardinality = this.selectedAssociation.getCardinality();
 		if( Association.MANY_TO_MANY.equals( cardinality ) ){
 			cardinalityCombo.removeAll();
 			cardinalityCombo.add( Association.MANY_TO_MANY);
@@ -635,7 +635,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 		this.referencedRoleCheckBox.setText(text);
 
 		//AssociationRole properties
-		AssociationRole referrerRole = association.getReferrerRole();
+		AssociationRole referrerRole = this.selectedAssociation.getReferrerRole();
 		if( referrerRole != null){
 			this.referrerRoleCheckBox.setSelection( true );
 			this.referrerRolePropertyField.setEditable(true);
@@ -657,7 +657,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 			this.referrerRoleCascadeField.setEnabled(false);
 		}
 		
-		AssociationRole referencedRole = association.getReferencedRole();
+		AssociationRole referencedRole = this.selectedAssociation.getReferencedRole();
 		if( referencedRole != null){
 			this.referencedRoleCheckBox.setSelection( true );
 			this.referencedRolePropertyLabel.setEnabled(true);
@@ -676,7 +676,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 		}
 		
 		//Join conditions
-		updateJoinConditions(association, table1Name, table2Name, joinTableName);
+		updateJoinConditions(this.selectedAssociation, table1Name, table2Name, joinTableName);
 	}
 
 	private void updateJoinConditions(Association association,

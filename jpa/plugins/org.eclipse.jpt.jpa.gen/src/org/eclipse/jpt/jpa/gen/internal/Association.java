@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.gen.internal;
 import java.util.List;
 
 import org.eclipse.jpt.jpa.db.ForeignKey;
+import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.gen.internal.util.StringUtil;
 
 /**
@@ -140,7 +141,7 @@ public class Association implements java.io.Serializable
 		if (pkCols.size() == referrerCols.size()) {
 			boolean isFkPk = true;
 			for (int i = 0, n = pkCols.size(); i < n; ++i) {
-				if (!((ORMGenColumn)pkCols.get(i)).getName().equals(((ORMGenColumn)referrerCols.get(i)).getName())) {
+				if (!pkCols.get(i).getName().equals(referrerCols.get(i).getName())) {
 					isFkPk = false;
 					break;
 				}
@@ -329,20 +330,35 @@ public class Association implements java.io.Serializable
 			return false;
 		}
 		if (mJoinTableName != null) {
-			if (!isValidTableAndColumns(mJoinTableName, mReferrerJoinColNames)
-					|| !isValidTableAndColumns(mJoinTableName, mReferencedJoinColNames)) {
+			if (!isValidJoinTableAndColumns(mJoinTableName, mReferrerJoinColNames)
+					|| !isValidJoinTableAndColumns(mJoinTableName, mReferencedJoinColNames)) {
 				return false;
 			}			
 		}
 		return true;
 	}
+	
+	private boolean isValidJoinTableAndColumns(String joinTableName, List<String> joinColNames) {
+		Table table = mCustomizer.getSchema().getTableNamed(joinTableName);
+		if (table == null) {
+			return false;
+		}
+		for (int i = 0, n = joinColNames.size(); i < n; ++i) {
+			String colName = joinColNames.get(i);
+			if (table.getColumnNamed(colName) == null) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	private boolean isValidTableAndColumns(String tableName, List<String> columnNames) {
 		ORMGenTable table = mCustomizer.getTable(tableName);
 		if (table == null) {
 			return false;
 		}
 		for (int i = 0, n = columnNames.size(); i < n; ++i) {
-			String colName = (String)columnNames.get(i);
+			String colName = columnNames.get(i);
 			if (table.getColumnByName(colName) == null) {
 				return false;
 			}
@@ -354,9 +370,12 @@ public class Association implements java.io.Serializable
 		this.mForeignKey = foreignKey;
 		
 	}
+
 	public ForeignKey getForeignKey(){
 		return this.mForeignKey;
 	};	
+
+	@Override
 	public boolean equals(Object obj) {
 		if( this == obj )
 			return true;
@@ -382,6 +401,8 @@ public class Association implements java.io.Serializable
 		}
 		return false;
 	}	
+
+	@Override
 	public String toString(){
 		return mReferrerTableName + " " + mCardinality + " " + mReferencedTableName ;
 	}
