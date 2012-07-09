@@ -66,46 +66,13 @@ public class ManyToManyBiDirRelation extends ManyToManyRelation implements IBidi
 	}	
 	
 	private void createRelation(IJPAEditorFeatureProvider fp, ICompilationUnit ownerCU, ICompilationUnit inverseCU) {
-		String inverseAttributeName = JPAEditorUtil.returnSimpleName(inverse.getName());
-		String actInverseAttributeName = JPAEditorUtil.returnSimpleName(JpaArtifactFactory.instance().getEntityName(inverse));
 		
-		String nameWithNonCapitalLetter = JPAEditorUtil.decapitalizeFirstLetter(inverseAttributeName);
-		String actNameWithNonCapitalLetter = JPAEditorUtil.decapitalizeFirstLetter(actInverseAttributeName);
-		
-		if (JpaArtifactFactory.instance().isMethodAnnotated(owner)) {
-			nameWithNonCapitalLetter = JPAEditorUtil.produceValidAttributeName(inverseAttributeName);
-			actNameWithNonCapitalLetter = JPAEditorUtil.produceValidAttributeName(actInverseAttributeName);
-		}
-		nameWithNonCapitalLetter = JPAEditorUtil.produceUniqueAttributeName(owner, nameWithNonCapitalLetter);
-		actNameWithNonCapitalLetter = JPAEditorUtil.produceUniqueAttributeName(owner, actNameWithNonCapitalLetter); 
-		
-		ownerAnnotatedAttribute = JpaArtifactFactory.instance().addAttribute(fp, owner, inverse, 
-																				JPADiagramPropertyPage.isMapType(owner.getJpaProject().getProject()) ? JpaArtifactFactory.instance().getIdType(inverse) : null,
-																				   nameWithNonCapitalLetter, 
-																				   actNameWithNonCapitalLetter, 
-																				   true,
-																				   ownerCU,
-																				   inverseCU);
-		
-		String ownerAttributeName = JPAEditorUtil.returnSimpleName(owner.getName());
-		String actOwnerAttributeName = JPAEditorUtil.returnSimpleName(JpaArtifactFactory.instance().getEntityName(owner));
-		nameWithNonCapitalLetter = JPAEditorUtil.decapitalizeFirstLetter(ownerAttributeName);
-		actNameWithNonCapitalLetter = JPAEditorUtil.decapitalizeFirstLetter(actOwnerAttributeName);				
-		
-		if (JpaArtifactFactory.instance().isMethodAnnotated(inverse)) {
-			nameWithNonCapitalLetter = JPAEditorUtil.produceValidAttributeName(ownerAttributeName);
-			actNameWithNonCapitalLetter = JPAEditorUtil.produceValidAttributeName(actOwnerAttributeName);
-		}
-		nameWithNonCapitalLetter = JPAEditorUtil.produceUniqueAttributeName(inverse, nameWithNonCapitalLetter); 
-		actNameWithNonCapitalLetter = JPAEditorUtil.produceUniqueAttributeName(inverse, actNameWithNonCapitalLetter); 
 		boolean isMap = JPADiagramPropertyPage.isMapType(owner.getJpaProject().getProject());
-		inverseAnnotatedAttribute = JpaArtifactFactory.instance().addAttribute(fp, inverse, owner, 
-																			   isMap ? JpaArtifactFactory.instance().getIdType(owner) : null,
-																			   nameWithNonCapitalLetter, 
-																			   actNameWithNonCapitalLetter, 
-																			   true, 
-																			   inverseCU,
-																			   ownerCU);
+		String mapKeyType = getMapKeyType(isMap, inverse);
+		ownerAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, owner, inverse, ownerCU, inverseCU, true, mapKeyType);
+		
+		mapKeyType = getMapKeyType(isMap, owner);
+		inverseAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, inverse, owner, inverseCU, ownerCU, true, mapKeyType);
 		
 		JpaArtifactFactory.instance().addManyToManyBidirectionalRelation(fp, owner, ownerAnnotatedAttribute, inverse, inverseAnnotatedAttribute, isMap);		
 	} 	
@@ -113,5 +80,8 @@ public class ManyToManyBiDirRelation extends ManyToManyRelation implements IBidi
 	public RelDir getRelDir() {
 		return RelDir.BI;
 	}
-		
+	
+	private String getMapKeyType(boolean isMap, JavaPersistentType jpt){
+		return isMap ? JpaArtifactFactory.instance().getIdType(jpt) : null;
+	}
 }

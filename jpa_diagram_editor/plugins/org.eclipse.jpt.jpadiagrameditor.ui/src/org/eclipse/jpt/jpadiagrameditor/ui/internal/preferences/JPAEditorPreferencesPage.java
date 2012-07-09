@@ -33,6 +33,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditor;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Button;
@@ -45,10 +46,6 @@ public class JPAEditorPreferencesPage extends FieldEditorPreferencePage
 		implements IWorkbenchPreferencePage {
 
 	private static final String 	FICTIVE_PROJECT_NAME = "PROJECT NAME";		//$NON-NLS-1$ 
-	private static final String 	COLLECTIION_TYPE = "java.util.Collection"; //$NON-NLS-1$
-	private static final String 	LIST_TYPE = "java.util.List"; //$NON-NLS-1$
-	private static final String 	SET_TYPE = "java.util.Set"; //$NON-NLS-1$
-	private static final String 	MAP_TYPE = "java.util.Map"; //$NON-NLS-1$
 	
 	private StringFieldEditor 		fDefaultDiagramFolderField;
 	private StringFieldEditor 		fDefaultEntityPackageField;
@@ -100,10 +97,10 @@ public class JPAEditorPreferencesPage extends FieldEditorPreferencePage
 				JPAEditorMessages.JPAEditorPreferencesPage_DefaultCollectionTypeSectionTittle,
 				1,
 			    new String[][] {
-					{COLLECTIION_TYPE, JPAEditorPreferenceInitializer.PROPERTY_VAL_COLLECTION_TYPE},
-					{LIST_TYPE, JPAEditorPreferenceInitializer.PROPERTY_VAL_LIST_TYPE},		
-					{SET_TYPE, JPAEditorPreferenceInitializer.PROPERTY_VAL_SET_TYPE},
-					{MAP_TYPE, JPAEditorPreferenceInitializer.PROPERTY_VAL_MAP_TYPE}},
+					{JPAEditorConstants.COLLECTION_TYPE, JPAEditorPreferenceInitializer.PROPERTY_VAL_COLLECTION_TYPE},
+					{JPAEditorConstants.LIST_TYPE, JPAEditorPreferenceInitializer.PROPERTY_VAL_LIST_TYPE},		
+					{JPAEditorConstants.SET_TYPE, JPAEditorPreferenceInitializer.PROPERTY_VAL_SET_TYPE},
+					{JPAEditorConstants.MAP_TYPE, JPAEditorPreferenceInitializer.PROPERTY_VAL_MAP_TYPE}},
 					parent, true);
 		defaultCollectionTypeChooser.setPreferenceStore(getPreferenceStore());
 		defaultCollectionTypeChooser.getRadioBoxControl(parent).setToolTipText(JPAEditorMessages.JPAEditorPreferencesPage_DefaultCollectionTypeSectionDescription);

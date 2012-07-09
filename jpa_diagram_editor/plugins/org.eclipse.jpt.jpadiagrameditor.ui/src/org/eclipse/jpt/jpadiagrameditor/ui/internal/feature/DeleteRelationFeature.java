@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeaturePr
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.AbstractRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IBidirectionalRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.UnidirectionalRelation;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IUnidirectionalRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IJPAEditorUtil;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchSite;
@@ -72,8 +72,8 @@ public class DeleteRelationFeature extends DefaultDeleteFeature{
         preDelete(context);
         AbstractRelation rel = (AbstractRelation)businessObjectForPictogramElement;
 		
-        if (rel instanceof UnidirectionalRelation) {
-        	UnidirectionalRelation relation = (UnidirectionalRelation)rel;
+        if (rel instanceof IUnidirectionalRelation) {
+        	IUnidirectionalRelation relation = (IUnidirectionalRelation)rel;
         	ClickRemoveAttributeButtonFeature feat = new ClickRemoveAttributeButtonFeature(getFeatureProvider());
     		JavaPersistentAttribute attribute = relation.getAnnotatedAttribute();
     		PictogramElement textShape = getFeatureProvider().getPictogramElementForBusinessObject(attribute);

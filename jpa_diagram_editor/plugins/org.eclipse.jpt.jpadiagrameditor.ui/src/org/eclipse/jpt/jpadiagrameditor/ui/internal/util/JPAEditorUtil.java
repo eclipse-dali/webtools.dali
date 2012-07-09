@@ -1391,7 +1391,7 @@ public class JPAEditorUtil {
 												getPersistence().getPersistenceUnits().iterator();
 		PersistenceUnit pu = lit.next();			
 		for (ClassRef cf : pu.getClassRefs()) {
-			names.add(JPAEditorUtil.returnSimpleName(cf.getClassName()).toLowerCase(Locale.ENGLISH));
+			names.add(returnSimpleName(cf.getClassName()).toLowerCase(Locale.ENGLISH));
 		}
 		return names;
 	}		
@@ -1504,6 +1504,36 @@ public class JPAEditorUtil {
 		h1 = cutOffHeaderDirtyPrefix(h1);
 		h2 = cutOffHeaderDirtyPrefix(h2);
 		return h1.equals(h2);
+	}
+	
+	public static JavaPersistentAttribute addAnnotatedAttribute(IJPAEditorFeatureProvider fp, JavaPersistentType referencingJPT, 
+			JavaPersistentType referencedJPT, ICompilationUnit referencingCU, ICompilationUnit referencedCU, boolean isCollection,
+			String mapKeyType){
+		
+		String name = returnSimpleName(referencedJPT.getName());
+		String actName = returnSimpleName(JpaArtifactFactory.instance().getEntityName(referencedJPT));
+		
+		String nameWithNonCapitalLetter = decapitalizeFirstLetter(name);
+		String actNameWithNonCapitalLetter = decapitalizeFirstLetter(actName);
+		
+		if (JpaArtifactFactory.instance().isMethodAnnotated(referencingJPT)) {
+			nameWithNonCapitalLetter = produceValidAttributeName(name);
+			actNameWithNonCapitalLetter = produceValidAttributeName(actName);
+		}
+		nameWithNonCapitalLetter = produceUniqueAttributeName(referencingJPT, nameWithNonCapitalLetter);
+		actNameWithNonCapitalLetter = produceUniqueAttributeName(referencingJPT, actNameWithNonCapitalLetter);
+		
+		if(mapKeyType == null){
+			return JpaArtifactFactory.instance().addAttribute(fp, referencingJPT, referencedJPT, 
+					 nameWithNonCapitalLetter, actNameWithNonCapitalLetter, isCollection, 
+					 referencingCU, referencedCU);
+		}
+		
+		return JpaArtifactFactory.instance().addAttribute(fp, referencingJPT, referencedJPT, mapKeyType,
+																			 nameWithNonCapitalLetter, 
+																			 actNameWithNonCapitalLetter, isCollection, 
+																			 referencingCU,
+																			 referencedCU);
 	}
 	
 }

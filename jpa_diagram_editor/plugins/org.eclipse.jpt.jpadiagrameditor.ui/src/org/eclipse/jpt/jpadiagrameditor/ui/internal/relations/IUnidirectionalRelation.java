@@ -17,7 +17,7 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal.relations;
 
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 
-public interface UnidirectionalRelation extends IRelation {
+public interface IUnidirectionalRelation extends IRelation {
 	
 	public abstract JavaPersistentAttribute getAnnotatedAttribute();
 	

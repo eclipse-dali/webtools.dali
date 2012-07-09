@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 
 
-public class ManyToManyUniDirRelation extends ManyToManyRelation implements UnidirectionalRelation {
+public class ManyToManyUniDirRelation extends ManyToManyRelation implements IUnidirectionalRelation {
 
 	public ManyToManyUniDirRelation(IJPAEditorFeatureProvider fp, JavaPersistentType owner, 
 									JavaPersistentType inverse,
@@ -46,34 +46,20 @@ public class ManyToManyUniDirRelation extends ManyToManyRelation implements Unid
 		this.ownerAnnotatedAttribute = annotatedAttribute;
 	}	
 	
-	private void createRelation(IJPAEditorFeatureProvider fp, ICompilationUnit ownerCU,
-								ICompilationUnit inverseCU) {
-		String name = JPAEditorUtil.returnSimpleName(inverse.getName());
-		String actName = JPAEditorUtil.returnSimpleName(JpaArtifactFactory.instance().getEntityName(inverse));
-		
-		String nameWithNonCapitalLetter = JPAEditorUtil.decapitalizeFirstLetter(name);
-		String actNameWithNonCapitalLetter = JPAEditorUtil.decapitalizeFirstLetter(actName);
-		
-		if (JpaArtifactFactory.instance().isMethodAnnotated(owner)) {
-			nameWithNonCapitalLetter = JPAEditorUtil.produceValidAttributeName(name);
-			actNameWithNonCapitalLetter = JPAEditorUtil.produceValidAttributeName(actName);
-		}
-		nameWithNonCapitalLetter = JPAEditorUtil.produceUniqueAttributeName(owner, nameWithNonCapitalLetter); 
-		actNameWithNonCapitalLetter = JPAEditorUtil.produceUniqueAttributeName(owner, actNameWithNonCapitalLetter); 
+	private void createRelation(IJPAEditorFeatureProvider fp, ICompilationUnit ownerCU, ICompilationUnit inverseCU) {		
 		boolean isMap = JPADiagramPropertyPage.isMapType(owner.getJpaProject().getProject());
-		ownerAnnotatedAttribute = JpaArtifactFactory.instance().addAttribute(fp, owner, inverse, 
-																				isMap ? JpaArtifactFactory.instance().getIdType(inverse) : null,
-																				   nameWithNonCapitalLetter, 
-																				   actNameWithNonCapitalLetter,
-																				   true,
-																				   ownerCU,
-																				   inverseCU);
+		String mapKeyType = getMapKeyType(isMap, inverse);
+		ownerAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, owner, inverse, ownerCU, inverseCU, true, mapKeyType);
+		
 		JpaArtifactFactory.instance().addManyToManyUnidirectionalRelation(fp, owner, ownerAnnotatedAttribute, isMap);
 		
 	} 
 	
 	public RelDir getRelDir() {
 		return RelDir.UNI;
-	}	
+	}
 	
+	private String getMapKeyType(boolean isMap, JavaPersistentType jpt){
+		return isMap ? JpaArtifactFactory.instance().getIdType(jpt) : null;
+	}	
 }
