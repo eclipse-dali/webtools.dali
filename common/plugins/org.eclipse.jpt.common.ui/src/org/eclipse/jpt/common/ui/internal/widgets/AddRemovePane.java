@@ -338,11 +338,14 @@ public abstract class AddRemovePane<T extends Model, E extends Object> extends P
 	}
 	
 	protected void itemsReplaced(ListReplaceEvent e) {
+		//Sometimes itemsReplaced happens when the subject changes, so clear the selectedItemsModel ??
+		//this fixes bug 379274 - fixes orm where we use a CompositeListValueModel
+		this.selectedItemsModel.setValues(EmptyListIterable.<E>instance());
 	}
 	
 	protected void listChanged(ListChangeEvent e) {
-		//I believe listChanged happens when the subject changes, so clear the selectedItemsModel ??
-		//this fixes bug 379274
+		//Sometimes listChanged happens when the subject changes, so clear the selectedItemsModel ??
+		//this fixes bug 379274 - fixes Java where we use a ListAspectAdapter
 		this.selectedItemsModel.setValues(EmptyListIterable.<E>instance());
 		
 	}
