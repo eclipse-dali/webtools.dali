@@ -63,6 +63,9 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLink2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlCacheIndex_2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEntity_2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlGeneratorContainer2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlNoSql_2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlUuidGenerator_2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -390,6 +393,16 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 	protected XmlStruct_2_3 struct;
 
 	/**
+	 * The cached value of the '{@link #getUuidGenerator() <em>Uuid Generator</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getUuidGenerator()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlUuidGenerator_2_4 uuidGenerator;
+
+	/**
 	 * The cached value of the '{@link #getCacheIndex() <em>Cache Index</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -398,6 +411,16 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 	 * @ordered
 	 */
 	protected XmlCacheIndex_2_4 cacheIndex;
+
+	/**
+	 * The cached value of the '{@link #getNoSql() <em>No Sql</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNoSql()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlNoSql_2_4 noSql;
 
 	/**
 	 * The default value of the '{@link #getReadOnly() <em>Read Only</em>}' attribute.
@@ -2502,6 +2525,126 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 	}
 
 	/**
+	 * Returns the value of the '<em><b>No Sql</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>No Sql</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>No Sql</em>' containment reference.
+	 * @see #setNoSql(XmlNoSql_2_4)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntity_2_4_NoSql()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlNoSql_2_4 getNoSql()
+	{
+		return noSql;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetNoSql(XmlNoSql_2_4 newNoSql, NotificationChain msgs)
+	{
+		XmlNoSql_2_4 oldNoSql = noSql;
+		noSql = newNoSql;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ENTITY__NO_SQL, oldNoSql, newNoSql);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntity#getNoSql <em>No Sql</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>No Sql</em>' containment reference.
+	 * @see #getNoSql()
+	 * @generated
+	 */
+	public void setNoSql(XmlNoSql_2_4 newNoSql)
+	{
+		if (newNoSql != noSql)
+		{
+			NotificationChain msgs = null;
+			if (noSql != null)
+				msgs = ((InternalEObject)noSql).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ENTITY__NO_SQL, null, msgs);
+			if (newNoSql != null)
+				msgs = ((InternalEObject)newNoSql).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ENTITY__NO_SQL, null, msgs);
+			msgs = basicSetNoSql(newNoSql, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ENTITY__NO_SQL, newNoSql, newNoSql));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Uuid Generator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Uuid Generator</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Uuid Generator</em>' containment reference.
+	 * @see #setUuidGenerator(XmlUuidGenerator_2_4)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlGeneratorContainer2_4_UuidGenerator()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlUuidGenerator_2_4 getUuidGenerator()
+	{
+		return uuidGenerator;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetUuidGenerator(XmlUuidGenerator_2_4 newUuidGenerator, NotificationChain msgs)
+	{
+		XmlUuidGenerator_2_4 oldUuidGenerator = uuidGenerator;
+		uuidGenerator = newUuidGenerator;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ENTITY__UUID_GENERATOR, oldUuidGenerator, newUuidGenerator);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntity#getUuidGenerator <em>Uuid Generator</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Uuid Generator</em>' containment reference.
+	 * @see #getUuidGenerator()
+	 * @generated
+	 */
+	public void setUuidGenerator(XmlUuidGenerator_2_4 newUuidGenerator)
+	{
+		if (newUuidGenerator != uuidGenerator)
+		{
+			NotificationChain msgs = null;
+			if (uuidGenerator != null)
+				msgs = ((InternalEObject)uuidGenerator).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ENTITY__UUID_GENERATOR, null, msgs);
+			if (newUuidGenerator != null)
+				msgs = ((InternalEObject)newUuidGenerator).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ENTITY__UUID_GENERATOR, null, msgs);
+			msgs = basicSetUuidGenerator(newUuidGenerator, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ENTITY__UUID_GENERATOR, newUuidGenerator, newUuidGenerator));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Additional Criteria</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -2652,8 +2795,12 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 				return ((InternalEList<?>)getPlsqlTables()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__STRUCT:
 				return basicSetStruct(null, msgs);
+			case EclipseLinkOrmPackage.XML_ENTITY__UUID_GENERATOR:
+				return basicSetUuidGenerator(null, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__CACHE_INDEX:
 				return basicSetCacheIndex(null, msgs);
+			case EclipseLinkOrmPackage.XML_ENTITY__NO_SQL:
+				return basicSetNoSql(null, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER:
 				return basicSetCustomizer(null, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__CHANGE_TRACKING:
@@ -2746,8 +2893,12 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 				return getPlsqlTables();
 			case EclipseLinkOrmPackage.XML_ENTITY__STRUCT:
 				return getStruct();
+			case EclipseLinkOrmPackage.XML_ENTITY__UUID_GENERATOR:
+				return getUuidGenerator();
 			case EclipseLinkOrmPackage.XML_ENTITY__CACHE_INDEX:
 				return getCacheIndex();
+			case EclipseLinkOrmPackage.XML_ENTITY__NO_SQL:
+				return getNoSql();
 			case EclipseLinkOrmPackage.XML_ENTITY__READ_ONLY:
 				return getReadOnly();
 			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER:
@@ -2879,8 +3030,14 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 			case EclipseLinkOrmPackage.XML_ENTITY__STRUCT:
 				setStruct((XmlStruct_2_3)newValue);
 				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__UUID_GENERATOR:
+				setUuidGenerator((XmlUuidGenerator_2_4)newValue);
+				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__CACHE_INDEX:
 				setCacheIndex((XmlCacheIndex_2_4)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__NO_SQL:
+				setNoSql((XmlNoSql_2_4)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__READ_ONLY:
 				setReadOnly((Boolean)newValue);
@@ -3028,8 +3185,14 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 			case EclipseLinkOrmPackage.XML_ENTITY__STRUCT:
 				setStruct((XmlStruct_2_3)null);
 				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__UUID_GENERATOR:
+				setUuidGenerator((XmlUuidGenerator_2_4)null);
+				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__CACHE_INDEX:
 				setCacheIndex((XmlCacheIndex_2_4)null);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__NO_SQL:
+				setNoSql((XmlNoSql_2_4)null);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__READ_ONLY:
 				setReadOnly(READ_ONLY_EDEFAULT);
@@ -3145,8 +3308,12 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 				return plsqlTables != null && !plsqlTables.isEmpty();
 			case EclipseLinkOrmPackage.XML_ENTITY__STRUCT:
 				return struct != null;
+			case EclipseLinkOrmPackage.XML_ENTITY__UUID_GENERATOR:
+				return uuidGenerator != null;
 			case EclipseLinkOrmPackage.XML_ENTITY__CACHE_INDEX:
 				return cacheIndex != null;
+			case EclipseLinkOrmPackage.XML_ENTITY__NO_SQL:
+				return noSql != null;
 			case EclipseLinkOrmPackage.XML_ENTITY__READ_ONLY:
 				return READ_ONLY_EDEFAULT == null ? readOnly != null : !READ_ONLY_EDEFAULT.equals(readOnly);
 			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER:
@@ -3294,11 +3461,20 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlGeneratorContainer2_4.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ENTITY__UUID_GENERATOR: return EclipseLinkOrmV2_4Package.XML_GENERATOR_CONTAINER2_4__UUID_GENERATOR;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlEntity_2_4.class)
 		{
 			switch (derivedFeatureID)
 			{
 				case EclipseLinkOrmPackage.XML_ENTITY__CACHE_INDEX: return EclipseLinkOrmV2_4Package.XML_ENTITY_24__CACHE_INDEX;
+				case EclipseLinkOrmPackage.XML_ENTITY__NO_SQL: return EclipseLinkOrmV2_4Package.XML_ENTITY_24__NO_SQL;
 				default: return -1;
 			}
 		}
@@ -3476,11 +3652,20 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlGeneratorContainer2_4.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_4Package.XML_GENERATOR_CONTAINER2_4__UUID_GENERATOR: return EclipseLinkOrmPackage.XML_ENTITY__UUID_GENERATOR;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlEntity_2_4.class)
 		{
 			switch (baseFeatureID)
 			{
 				case EclipseLinkOrmV2_4Package.XML_ENTITY_24__CACHE_INDEX: return EclipseLinkOrmPackage.XML_ENTITY__CACHE_INDEX;
+				case EclipseLinkOrmV2_4Package.XML_ENTITY_24__NO_SQL: return EclipseLinkOrmPackage.XML_ENTITY__NO_SQL;
 				default: return -1;
 			}
 		}
@@ -3614,6 +3799,7 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 			buildSecondaryTableTranslator(),
 			XmlStruct.buildTranslator(EclipseLink2_3.STRUCT, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlEntity_2_3_Struct()),
 			buildPrimaryKeyJoinColumnTranslator(),
+			buildNoSqlTranslator(),
 			buildCascadeOnDeleteTranslator(),
 			buildIndexTranslator(),
 			buildIdClassTranslator(),
@@ -3636,6 +3822,7 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 			buildCloneCopyPolicyTranslator(),
 			buildSequenceGeneratorTranslator(),
 			buildTableGeneratorTranslator(),
+			XmlUuidGenerator.buildTranslator(EclipseLink2_4.UUID_GENERATOR, EclipseLinkOrmV2_4Package.eINSTANCE.getXmlGeneratorContainer2_4_UuidGenerator()),
 		    XmlPartitioning.buildTranslator(EclipseLink2_2.PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlPartitioningGroup_2_2_Partitioning()),
 			XmlReplicationPartitioning.buildTranslator(EclipseLink2_2.REPLICATION_PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlPartitioningGroup_2_2_ReplicationPartitioning()),
 			XmlRoundRobinPartitioning.buildTranslator(EclipseLink2_2.ROUND_ROBIN_PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlPartitioningGroup_2_2_RoundRobinPartitioning()),
@@ -3793,5 +3980,9 @@ public class XmlEntity extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntity i
 
     protected static Translator buildPartitionedTranslator() {
 		return new Translator(EclipseLink2_2.PARTITIONING_GROUP__PARTITIONED, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlPartitioningGroup_2_2_Partitioned());
+	}
+
+	protected static Translator buildNoSqlTranslator() {
+		return XmlNoSql.buildTranslator(EclipseLink2_4.NO_SQL, EclipseLinkOrmV2_4Package.eINSTANCE.getXmlEntity_2_4_NoSql());
 	}
 }

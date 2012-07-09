@@ -101,4 +101,15 @@ public interface EclipseLinkEntityMappings
 	 * Return the number of default tenant discriminator columns.
 	 */
 	int getDefaultTenantDiscriminatorColumnsSize();
+
+
+	ListIterable<OrmUuidGenerator> getUuidGenerators();
+	int getUuidGeneratorsSize();
+	OrmUuidGenerator addUuidGenerator();
+	OrmUuidGenerator addUuidGenerator(int index);
+	void removeUuidGenerator(int index);
+	void removeUuidGenerator(OrmUuidGenerator uuidGenerator);
+	void moveUuidGenerator(int targetIndex, int sourceIndex);
+		String UUID_GENERATORS_LIST = "uuidGenerators"; //$NON-NLS-1$
+
 }

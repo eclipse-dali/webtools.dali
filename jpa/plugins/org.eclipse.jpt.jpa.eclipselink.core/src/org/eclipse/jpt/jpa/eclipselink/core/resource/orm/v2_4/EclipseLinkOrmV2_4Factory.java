@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -97,6 +97,10 @@ public class EclipseLinkOrmV2_4Factory extends EFactoryImpl
 		{
 			case EclipseLinkOrmV2_4Package.DATABASE_CHANGE_NOTIFICATION_TYPE:
 				return createDatabaseChangeNotificationTypeFromString(eDataType, initialValue);
+			case EclipseLinkOrmV2_4Package.TENANT_TABLE_DISCRIMINATOR_TYPE:
+				return createTenantTableDiscriminatorTypeFromString(eDataType, initialValue);
+			case EclipseLinkOrmV2_4Package.DATA_FORMAT_TYPE:
+				return createDataFormatTypeFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -114,6 +118,10 @@ public class EclipseLinkOrmV2_4Factory extends EFactoryImpl
 		{
 			case EclipseLinkOrmV2_4Package.DATABASE_CHANGE_NOTIFICATION_TYPE:
 				return convertDatabaseChangeNotificationTypeToString(eDataType, instanceValue);
+			case EclipseLinkOrmV2_4Package.TENANT_TABLE_DISCRIMINATOR_TYPE:
+				return convertTenantTableDiscriminatorTypeToString(eDataType, instanceValue);
+			case EclipseLinkOrmV2_4Package.DATA_FORMAT_TYPE:
+				return convertDataFormatTypeToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -137,6 +145,50 @@ public class EclipseLinkOrmV2_4Factory extends EFactoryImpl
 	 * @generated
 	 */
 	public String convertDatabaseChangeNotificationTypeToString(EDataType eDataType, Object instanceValue)
+	{
+		return instanceValue == null ? null : instanceValue.toString();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public TenantTableDiscriminatorType createTenantTableDiscriminatorTypeFromString(EDataType eDataType, String initialValue)
+	{
+		TenantTableDiscriminatorType result = TenantTableDiscriminatorType.get(initialValue);
+		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertTenantTableDiscriminatorTypeToString(EDataType eDataType, Object instanceValue)
+	{
+		return instanceValue == null ? null : instanceValue.toString();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public DataFormatType createDataFormatTypeFromString(EDataType eDataType, String initialValue)
+	{
+		DataFormatType result = DataFormatType.get(initialValue);
+		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertDataFormatTypeToString(EDataType eDataType, Object instanceValue)
 	{
 		return instanceValue == null ? null : instanceValue.toString();
 	}

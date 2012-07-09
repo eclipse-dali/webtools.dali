@@ -38,7 +38,7 @@ public class EclipseLink2_4JpaPlatformFactory
 		return new GenericJpaPlatform(
 			id,
 			buildJpaVersion(),
-			new EclipseLink2_0JpaFactory(),
+			new EclipseLink2_4JpaFactory(),
 			buildAnnotationProvider(),
 			EclipseLink2_4JpaPlatformProvider.instance(),
 			buildJpaVariation(),
@@ -56,7 +56,7 @@ public class EclipseLink2_4JpaPlatformFactory
 	protected AnnotationProvider buildAnnotationProvider() {
 		return new JpaAnnotationProvider(
 				Generic2_0JpaAnnotationDefinitionProvider.instance(),
-				EclipseLink2_3JpaAnnotationDefinitionProvider.instance());
+				EclipseLink2_4JpaAnnotationDefinitionProvider.instance());
 	}
 
 	@Override

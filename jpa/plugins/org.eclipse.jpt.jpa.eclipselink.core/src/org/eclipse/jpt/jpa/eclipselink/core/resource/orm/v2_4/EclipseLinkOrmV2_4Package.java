@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -85,6 +85,52 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	public static final EclipseLinkOrmV2_4Package eINSTANCE = org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package.init();
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlGeneratorContainer2_4 <em>Xml Generator Container2 4</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlGeneratorContainer2_4
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlGeneratorContainer2_4()
+	 * @generated
+	 */
+	public static final int XML_GENERATOR_CONTAINER2_4 = 3;
+
+	/**
+	 * The feature id for the '<em><b>Sequence Generator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_GENERATOR_CONTAINER2_4__SEQUENCE_GENERATOR = OrmPackage.XML_GENERATOR_CONTAINER__SEQUENCE_GENERATOR;
+
+	/**
+	 * The feature id for the '<em><b>Table Generator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_GENERATOR_CONTAINER2_4__TABLE_GENERATOR = OrmPackage.XML_GENERATOR_CONTAINER__TABLE_GENERATOR;
+
+	/**
+	 * The feature id for the '<em><b>Uuid Generator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_GENERATOR_CONTAINER2_4__UUID_GENERATOR = OrmPackage.XML_GENERATOR_CONTAINER_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Generator Container2 4</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_GENERATOR_CONTAINER2_4_FEATURE_COUNT = OrmPackage.XML_GENERATOR_CONTAINER_FEATURE_COUNT + 1;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlMultitenant_2_4 <em>Xml Multitenant 24</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -92,7 +138,7 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlMultitenant_2_4()
 	 * @generated
 	 */
-	public static final int XML_MULTITENANT_24 = 7;
+	public static final int XML_MULTITENANT_24 = 15;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlElementCollection_2_4 <em>Xml Element Collection 24</em>}' class.
@@ -102,7 +148,7 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlElementCollection_2_4()
 	 * @generated
 	 */
-	public static final int XML_ELEMENT_COLLECTION_24 = 3;
+	public static final int XML_ELEMENT_COLLECTION_24 = 4;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlOneToMany_2_4 <em>Xml One To Many 24</em>}' class.
@@ -112,7 +158,7 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlOneToMany_2_4()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_MANY_24 = 8;
+	public static final int XML_ONE_TO_MANY_24 = 17;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEntity_2_4 <em>Xml Entity 24</em>}' class.
@@ -122,7 +168,7 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlEntity_2_4()
 	 * @generated
 	 */
-	public static final int XML_ENTITY_24 = 4;
+	public static final int XML_ENTITY_24 = 7;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlBasic_2_4 <em>Xml Basic 24</em>}' class.
@@ -135,13 +181,49 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	public static final int XML_BASIC_24 = 0;
 
 	/**
+	 * The feature id for the '<em><b>Sequence Generator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_BASIC_24__SEQUENCE_GENERATOR = XML_GENERATOR_CONTAINER2_4__SEQUENCE_GENERATOR;
+
+	/**
+	 * The feature id for the '<em><b>Table Generator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_BASIC_24__TABLE_GENERATOR = XML_GENERATOR_CONTAINER2_4__TABLE_GENERATOR;
+
+	/**
+	 * The feature id for the '<em><b>Uuid Generator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_BASIC_24__UUID_GENERATOR = XML_GENERATOR_CONTAINER2_4__UUID_GENERATOR;
+
+	/**
+	 * The feature id for the '<em><b>Field</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_BASIC_24__FIELD = XML_GENERATOR_CONTAINER2_4_FEATURE_COUNT + 0;
+
+	/**
 	 * The feature id for the '<em><b>Cache Index</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_BASIC_24__CACHE_INDEX = 0;
+	public static final int XML_BASIC_24__CACHE_INDEX = XML_GENERATOR_CONTAINER2_4_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Xml Basic 24</em>' class.
@@ -150,7 +232,7 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_BASIC_24_FEATURE_COUNT = 1;
+	public static final int XML_BASIC_24_FEATURE_COUNT = XML_GENERATOR_CONTAINER2_4_FEATURE_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlCache_2_4 <em>Xml Cache 24</em>}' class.
@@ -209,13 +291,22 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	public static final int XML_CACHE_INDEX_24_FEATURE_COUNT = 1;
 
 	/**
+	 * The feature id for the '<em><b>Field</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ELEMENT_COLLECTION_24__FIELD = 0;
+
+	/**
 	 * The feature id for the '<em><b>Delete All</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION_24__DELETE_ALL = 0;
+	public static final int XML_ELEMENT_COLLECTION_24__DELETE_ALL = 1;
 
 	/**
 	 * The number of structural features of the '<em>Xml Element Collection 24</em>' class.
@@ -224,7 +315,90 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ELEMENT_COLLECTION_24_FEATURE_COUNT = 1;
+	public static final int XML_ELEMENT_COLLECTION_24_FEATURE_COUNT = 2;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEmbeddable_2_4 <em>Xml Embeddable 24</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEmbeddable_2_4
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlEmbeddable_2_4()
+	 * @generated
+	 */
+	public static final int XML_EMBEDDABLE_24 = 5;
+
+	/**
+	 * The feature id for the '<em><b>No Sql</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EMBEDDABLE_24__NO_SQL = 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Embeddable 24</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EMBEDDABLE_24_FEATURE_COUNT = 1;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEmbedded_2_4 <em>Xml Embedded 24</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEmbedded_2_4
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlEmbedded_2_4()
+	 * @generated
+	 */
+	public static final int XML_EMBEDDED_24 = 6;
+
+	/**
+	 * The feature id for the '<em><b>Field</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EMBEDDED_24__FIELD = 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Embedded 24</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EMBEDDED_24_FEATURE_COUNT = 1;
+
+	/**
+	 * The feature id for the '<em><b>Sequence Generator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY_24__SEQUENCE_GENERATOR = XML_GENERATOR_CONTAINER2_4__SEQUENCE_GENERATOR;
+
+	/**
+	 * The feature id for the '<em><b>Table Generator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY_24__TABLE_GENERATOR = XML_GENERATOR_CONTAINER2_4__TABLE_GENERATOR;
+
+	/**
+	 * The feature id for the '<em><b>Uuid Generator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY_24__UUID_GENERATOR = XML_GENERATOR_CONTAINER2_4__UUID_GENERATOR;
 
 	/**
 	 * The feature id for the '<em><b>Cache Index</b></em>' containment reference.
@@ -233,7 +407,16 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_24__CACHE_INDEX = 0;
+	public static final int XML_ENTITY_24__CACHE_INDEX = XML_GENERATOR_CONTAINER2_4_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>No Sql</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY_24__NO_SQL = XML_GENERATOR_CONTAINER2_4_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Xml Entity 24</em>' class.
@@ -242,7 +425,63 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_24_FEATURE_COUNT = 1;
+	public static final int XML_ENTITY_24_FEATURE_COUNT = XML_GENERATOR_CONTAINER2_4_FEATURE_COUNT + 2;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEntityMappings_2_4 <em>Xml Entity Mappings 24</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEntityMappings_2_4
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlEntityMappings_2_4()
+	 * @generated
+	 */
+	public static final int XML_ENTITY_MAPPINGS_24 = 8;
+
+	/**
+	 * The feature id for the '<em><b>Uuid Generators</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY_MAPPINGS_24__UUID_GENERATORS = 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Entity Mappings 24</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY_MAPPINGS_24_FEATURE_COUNT = 1;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlField_2_4 <em>Xml Field 24</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlField_2_4
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlField_2_4()
+	 * @generated
+	 */
+	public static final int XML_FIELD_24 = 9;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_FIELD_24__NAME = 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Field 24</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_FIELD_24_FEATURE_COUNT = 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlId_2_4 <em>Xml Id 24</em>}' class.
@@ -252,7 +491,43 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlId_2_4()
 	 * @generated
 	 */
-	public static final int XML_ID_24 = 5;
+	public static final int XML_ID_24 = 10;
+
+	/**
+	 * The feature id for the '<em><b>Sequence Generator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ID_24__SEQUENCE_GENERATOR = XML_GENERATOR_CONTAINER2_4__SEQUENCE_GENERATOR;
+
+	/**
+	 * The feature id for the '<em><b>Table Generator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ID_24__TABLE_GENERATOR = XML_GENERATOR_CONTAINER2_4__TABLE_GENERATOR;
+
+	/**
+	 * The feature id for the '<em><b>Uuid Generator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ID_24__UUID_GENERATOR = XML_GENERATOR_CONTAINER2_4__UUID_GENERATOR;
+
+	/**
+	 * The feature id for the '<em><b>Field</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ID_24__FIELD = XML_GENERATOR_CONTAINER2_4_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Cache Index</b></em>' containment reference.
@@ -261,7 +536,7 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ID_24__CACHE_INDEX = 0;
+	public static final int XML_ID_24__CACHE_INDEX = XML_GENERATOR_CONTAINER2_4_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Xml Id 24</em>' class.
@@ -270,7 +545,100 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ID_24_FEATURE_COUNT = 1;
+	public static final int XML_ID_24_FEATURE_COUNT = XML_GENERATOR_CONTAINER2_4_FEATURE_COUNT + 2;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlJoinField_2_4 <em>Xml Join Field 24</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlJoinField_2_4
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlJoinField_2_4()
+	 * @generated
+	 */
+	public static final int XML_JOIN_FIELD_24 = 11;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_JOIN_FIELD_24__NAME = 0;
+
+	/**
+	 * The feature id for the '<em><b>Referenced Field Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_JOIN_FIELD_24__REFERENCED_FIELD_NAME = 1;
+
+	/**
+	 * The number of structural features of the '<em>Xml Join Field 24</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_JOIN_FIELD_24_FEATURE_COUNT = 2;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlManyToMany_2_4 <em>Xml Many To Many 24</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlManyToMany_2_4
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlManyToMany_2_4()
+	 * @generated
+	 */
+	public static final int XML_MANY_TO_MANY_24 = 12;
+
+	/**
+	 * The feature id for the '<em><b>Join Fields</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY_24__JOIN_FIELDS = 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Many To Many 24</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY_24_FEATURE_COUNT = 1;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlManyToOne_2_4 <em>Xml Many To One 24</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlManyToOne_2_4
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlManyToOne_2_4()
+	 * @generated
+	 */
+	public static final int XML_MANY_TO_ONE_24 = 13;
+
+	/**
+	 * The feature id for the '<em><b>Join Fields</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_ONE_24__JOIN_FIELDS = 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Many To One 24</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_ONE_24_FEATURE_COUNT = 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlMappedSuperclass_2_4 <em>Xml Mapped Superclass 24</em>}' class.
@@ -280,7 +648,34 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlMappedSuperclass_2_4()
 	 * @generated
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_24 = 6;
+	public static final int XML_MAPPED_SUPERCLASS_24 = 14;
+
+	/**
+	 * The feature id for the '<em><b>Sequence Generator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS_24__SEQUENCE_GENERATOR = XML_GENERATOR_CONTAINER2_4__SEQUENCE_GENERATOR;
+
+	/**
+	 * The feature id for the '<em><b>Table Generator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS_24__TABLE_GENERATOR = XML_GENERATOR_CONTAINER2_4__TABLE_GENERATOR;
+
+	/**
+	 * The feature id for the '<em><b>Uuid Generator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS_24__UUID_GENERATOR = XML_GENERATOR_CONTAINER2_4__UUID_GENERATOR;
 
 	/**
 	 * The feature id for the '<em><b>Cache Index</b></em>' containment reference.
@@ -289,7 +684,7 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_24__CACHE_INDEX = 0;
+	public static final int XML_MAPPED_SUPERCLASS_24__CACHE_INDEX = XML_GENERATOR_CONTAINER2_4_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Xml Mapped Superclass 24</em>' class.
@@ -298,7 +693,7 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_24_FEATURE_COUNT = 1;
+	public static final int XML_MAPPED_SUPERCLASS_24_FEATURE_COUNT = XML_GENERATOR_CONTAINER2_4_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Include Criteria</b></em>' attribute.
@@ -310,13 +705,68 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	public static final int XML_MULTITENANT_24__INCLUDE_CRITERIA = 0;
 
 	/**
+	 * The feature id for the '<em><b>Tenant Table Discriminator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MULTITENANT_24__TENANT_TABLE_DISCRIMINATOR = 1;
+
+	/**
 	 * The number of structural features of the '<em>Xml Multitenant 24</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MULTITENANT_24_FEATURE_COUNT = 1;
+	public static final int XML_MULTITENANT_24_FEATURE_COUNT = 2;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlNoSql_2_4 <em>Xml No Sql 24</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlNoSql_2_4
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlNoSql_2_4()
+	 * @generated
+	 */
+	public static final int XML_NO_SQL_24 = 16;
+
+	/**
+	 * The feature id for the '<em><b>Data Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_NO_SQL_24__DATA_TYPE = 0;
+
+	/**
+	 * The feature id for the '<em><b>Data Format</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_NO_SQL_24__DATA_FORMAT = 1;
+
+	/**
+	 * The number of structural features of the '<em>Xml No Sql 24</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_NO_SQL_24_FEATURE_COUNT = 2;
+
+	/**
+	 * The feature id for the '<em><b>Join Fields</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY_24__JOIN_FIELDS = 0;
 
 	/**
 	 * The feature id for the '<em><b>Delete All</b></em>' attribute.
@@ -325,7 +775,7 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY_24__DELETE_ALL = 0;
+	public static final int XML_ONE_TO_MANY_24__DELETE_ALL = 1;
 
 	/**
 	 * The number of structural features of the '<em>Xml One To Many 24</em>' class.
@@ -334,7 +784,127 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_MANY_24_FEATURE_COUNT = 1;
+	public static final int XML_ONE_TO_MANY_24_FEATURE_COUNT = 2;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlOneToOne_2_4 <em>Xml One To One 24</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlOneToOne_2_4
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlOneToOne_2_4()
+	 * @generated
+	 */
+	public static final int XML_ONE_TO_ONE_24 = 18;
+
+	/**
+	 * The feature id for the '<em><b>Join Fields</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_ONE_24__JOIN_FIELDS = 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml One To One 24</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_ONE_24_FEATURE_COUNT = 1;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlTenantTableDiscriminator_2_4 <em>Xml Tenant Table Discriminator 24</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlTenantTableDiscriminator_2_4
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlTenantTableDiscriminator_2_4()
+	 * @generated
+	 */
+	public static final int XML_TENANT_TABLE_DISCRIMINATOR_24 = 19;
+
+	/**
+	 * The feature id for the '<em><b>Context Property</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TENANT_TABLE_DISCRIMINATOR_24__CONTEXT_PROPERTY = 0;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TENANT_TABLE_DISCRIMINATOR_24__TYPE = 1;
+
+	/**
+	 * The number of structural features of the '<em>Xml Tenant Table Discriminator 24</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TENANT_TABLE_DISCRIMINATOR_24_FEATURE_COUNT = 2;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlUuidGenerator_2_4 <em>Xml Uuid Generator 24</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlUuidGenerator_2_4
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlUuidGenerator_2_4()
+	 * @generated
+	 */
+	public static final int XML_UUID_GENERATOR_24 = 20;
+
+	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_UUID_GENERATOR_24__DESCRIPTION = OrmPackage.XML_GENERATOR__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_UUID_GENERATOR_24__NAME = OrmPackage.XML_GENERATOR__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Initial Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_UUID_GENERATOR_24__INITIAL_VALUE = OrmPackage.XML_GENERATOR__INITIAL_VALUE;
+
+	/**
+	 * The feature id for the '<em><b>Allocation Size</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_UUID_GENERATOR_24__ALLOCATION_SIZE = OrmPackage.XML_GENERATOR__ALLOCATION_SIZE;
+
+	/**
+	 * The number of structural features of the '<em>Xml Uuid Generator 24</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_UUID_GENERATOR_24_FEATURE_COUNT = OrmPackage.XML_GENERATOR_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.DatabaseChangeNotificationType <em>Database Change Notification Type</em>}' enum.
@@ -344,7 +914,27 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getDatabaseChangeNotificationType()
 	 * @generated
 	 */
-	public static final int DATABASE_CHANGE_NOTIFICATION_TYPE = 9;
+	public static final int DATABASE_CHANGE_NOTIFICATION_TYPE = 21;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.TenantTableDiscriminatorType <em>Tenant Table Discriminator Type</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.TenantTableDiscriminatorType
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getTenantTableDiscriminatorType()
+	 * @generated
+	 */
+	public static final int TENANT_TABLE_DISCRIMINATOR_TYPE = 22;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.DataFormatType <em>Data Format Type</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.DataFormatType
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getDataFormatType()
+	 * @generated
+	 */
+	public static final int DATA_FORMAT_TYPE = 23;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -358,7 +948,28 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass xmlNoSql_2_4EClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass xmlElementCollection_2_4EClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlEmbeddable_2_4EClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlEmbedded_2_4EClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -372,7 +983,42 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass xmlOneToOne_2_4EClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlTenantTableDiscriminator_2_4EClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlUuidGenerator_2_4EClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass xmlEntity_2_4EClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlEntityMappings_2_4EClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlField_2_4EClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -400,7 +1046,35 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass xmlGeneratorContainer2_4EClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass xmlId_2_4EClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlJoinField_2_4EClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlManyToMany_2_4EClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlManyToOne_2_4EClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -415,6 +1089,20 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 * @generated
 	 */
 	private EEnum databaseChangeNotificationTypeEEnum = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum tenantTableDiscriminatorTypeEEnum = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum dataFormatTypeEEnum = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -533,6 +1221,65 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlMultitenant_2_4#getTenantTableDiscriminator <em>Tenant Table Discriminator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Tenant Table Discriminator</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlMultitenant_2_4#getTenantTableDiscriminator()
+	 * @see #getXmlMultitenant_2_4()
+	 * @generated
+	 */
+	public EReference getXmlMultitenant_2_4_TenantTableDiscriminator()
+	{
+		return (EReference)xmlMultitenant_2_4EClass.getEStructuralFeatures().get(1);
+	}
+
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlNoSql_2_4 <em>Xml No Sql 24</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml No Sql 24</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlNoSql_2_4
+	 * @generated
+	 */
+	public EClass getXmlNoSql_2_4()
+	{
+		return xmlNoSql_2_4EClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlNoSql_2_4#getDataType <em>Data Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Data Type</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlNoSql_2_4#getDataType()
+	 * @see #getXmlNoSql_2_4()
+	 * @generated
+	 */
+	public EAttribute getXmlNoSql_2_4_DataType()
+	{
+		return (EAttribute)xmlNoSql_2_4EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlNoSql_2_4#getDataFormat <em>Data Format</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Data Format</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlNoSql_2_4#getDataFormat()
+	 * @see #getXmlNoSql_2_4()
+	 * @generated
+	 */
+	public EAttribute getXmlNoSql_2_4_DataFormat()
+	{
+		return (EAttribute)xmlNoSql_2_4EClass.getEStructuralFeatures().get(1);
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlElementCollection_2_4 <em>Xml Element Collection 24</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -547,6 +1294,21 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlElementCollection_2_4#getField <em>Field</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Field</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlElementCollection_2_4#getField()
+	 * @see #getXmlElementCollection_2_4()
+	 * @generated
+	 */
+	public EReference getXmlElementCollection_2_4_Field()
+	{
+		return (EReference)xmlElementCollection_2_4EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlElementCollection_2_4#isDeleteAll <em>Delete All</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -557,7 +1319,65 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 */
 	public EAttribute getXmlElementCollection_2_4_DeleteAll()
 	{
-		return (EAttribute)xmlElementCollection_2_4EClass.getEStructuralFeatures().get(0);
+		return (EAttribute)xmlElementCollection_2_4EClass.getEStructuralFeatures().get(1);
+	}
+
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEmbeddable_2_4 <em>Xml Embeddable 24</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Embeddable 24</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEmbeddable_2_4
+	 * @generated
+	 */
+	public EClass getXmlEmbeddable_2_4()
+	{
+		return xmlEmbeddable_2_4EClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEmbeddable_2_4#getNoSql <em>No Sql</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>No Sql</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEmbeddable_2_4#getNoSql()
+	 * @see #getXmlEmbeddable_2_4()
+	 * @generated
+	 */
+	public EReference getXmlEmbeddable_2_4_NoSql()
+	{
+		return (EReference)xmlEmbeddable_2_4EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEmbedded_2_4 <em>Xml Embedded 24</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Embedded 24</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEmbedded_2_4
+	 * @generated
+	 */
+	public EClass getXmlEmbedded_2_4()
+	{
+		return xmlEmbedded_2_4EClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEmbedded_2_4#getField <em>Field</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Field</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEmbedded_2_4#getField()
+	 * @see #getXmlEmbedded_2_4()
+	 * @generated
+	 */
+	public EReference getXmlEmbedded_2_4_Field()
+	{
+		return (EReference)xmlEmbedded_2_4EClass.getEStructuralFeatures().get(0);
 	}
 
 
@@ -576,6 +1396,21 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlOneToMany_2_4#getJoinFields <em>Join Fields</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Join Fields</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlOneToMany_2_4#getJoinFields()
+	 * @see #getXmlOneToMany_2_4()
+	 * @generated
+	 */
+	public EReference getXmlOneToMany_2_4_JoinFields()
+	{
+		return (EReference)xmlOneToMany_2_4EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlOneToMany_2_4#isDeleteAll <em>Delete All</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -586,7 +1421,94 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 */
 	public EAttribute getXmlOneToMany_2_4_DeleteAll()
 	{
-		return (EAttribute)xmlOneToMany_2_4EClass.getEStructuralFeatures().get(0);
+		return (EAttribute)xmlOneToMany_2_4EClass.getEStructuralFeatures().get(1);
+	}
+
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlOneToOne_2_4 <em>Xml One To One 24</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml One To One 24</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlOneToOne_2_4
+	 * @generated
+	 */
+	public EClass getXmlOneToOne_2_4()
+	{
+		return xmlOneToOne_2_4EClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlOneToOne_2_4#getJoinFields <em>Join Fields</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Join Fields</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlOneToOne_2_4#getJoinFields()
+	 * @see #getXmlOneToOne_2_4()
+	 * @generated
+	 */
+	public EReference getXmlOneToOne_2_4_JoinFields()
+	{
+		return (EReference)xmlOneToOne_2_4EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlTenantTableDiscriminator_2_4 <em>Xml Tenant Table Discriminator 24</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Tenant Table Discriminator 24</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlTenantTableDiscriminator_2_4
+	 * @generated
+	 */
+	public EClass getXmlTenantTableDiscriminator_2_4()
+	{
+		return xmlTenantTableDiscriminator_2_4EClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlTenantTableDiscriminator_2_4#getContextProperty <em>Context Property</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Context Property</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlTenantTableDiscriminator_2_4#getContextProperty()
+	 * @see #getXmlTenantTableDiscriminator_2_4()
+	 * @generated
+	 */
+	public EAttribute getXmlTenantTableDiscriminator_2_4_ContextProperty()
+	{
+		return (EAttribute)xmlTenantTableDiscriminator_2_4EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlTenantTableDiscriminator_2_4#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Type</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlTenantTableDiscriminator_2_4#getType()
+	 * @see #getXmlTenantTableDiscriminator_2_4()
+	 * @generated
+	 */
+	public EAttribute getXmlTenantTableDiscriminator_2_4_Type()
+	{
+		return (EAttribute)xmlTenantTableDiscriminator_2_4EClass.getEStructuralFeatures().get(1);
+	}
+
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlUuidGenerator_2_4 <em>Xml Uuid Generator 24</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Uuid Generator 24</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlUuidGenerator_2_4
+	 * @generated
+	 */
+	public EClass getXmlUuidGenerator_2_4()
+	{
+		return xmlUuidGenerator_2_4EClass;
 	}
 
 
@@ -620,6 +1542,79 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEntity_2_4#getNoSql <em>No Sql</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>No Sql</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEntity_2_4#getNoSql()
+	 * @see #getXmlEntity_2_4()
+	 * @generated
+	 */
+	public EReference getXmlEntity_2_4_NoSql()
+	{
+		return (EReference)xmlEntity_2_4EClass.getEStructuralFeatures().get(1);
+	}
+
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEntityMappings_2_4 <em>Xml Entity Mappings 24</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Entity Mappings 24</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEntityMappings_2_4
+	 * @generated
+	 */
+	public EClass getXmlEntityMappings_2_4()
+	{
+		return xmlEntityMappings_2_4EClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEntityMappings_2_4#getUuidGenerators <em>Uuid Generators</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Uuid Generators</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEntityMappings_2_4#getUuidGenerators()
+	 * @see #getXmlEntityMappings_2_4()
+	 * @generated
+	 */
+	public EReference getXmlEntityMappings_2_4_UuidGenerators()
+	{
+		return (EReference)xmlEntityMappings_2_4EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlField_2_4 <em>Xml Field 24</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Field 24</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlField_2_4
+	 * @generated
+	 */
+	public EClass getXmlField_2_4()
+	{
+		return xmlField_2_4EClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlField_2_4#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlField_2_4#getName()
+	 * @see #getXmlField_2_4()
+	 * @generated
+	 */
+	public EAttribute getXmlField_2_4_Name()
+	{
+		return (EAttribute)xmlField_2_4EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlBasic_2_4 <em>Xml Basic 24</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -634,6 +1629,21 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlBasic_2_4#getField <em>Field</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Field</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlBasic_2_4#getField()
+	 * @see #getXmlBasic_2_4()
+	 * @generated
+	 */
+	public EReference getXmlBasic_2_4_Field()
+	{
+		return (EReference)xmlBasic_2_4EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
 	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlBasic_2_4#getCacheIndex <em>Cache Index</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -644,7 +1654,7 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 */
 	public EReference getXmlBasic_2_4_CacheIndex()
 	{
-		return (EReference)xmlBasic_2_4EClass.getEStructuralFeatures().get(0);
+		return (EReference)xmlBasic_2_4EClass.getEStructuralFeatures().get(1);
 	}
 
 
@@ -707,6 +1717,35 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlGeneratorContainer2_4 <em>Xml Generator Container2 4</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Generator Container2 4</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlGeneratorContainer2_4
+	 * @generated
+	 */
+	public EClass getXmlGeneratorContainer2_4()
+	{
+		return xmlGeneratorContainer2_4EClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlGeneratorContainer2_4#getUuidGenerator <em>Uuid Generator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Uuid Generator</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlGeneratorContainer2_4#getUuidGenerator()
+	 * @see #getXmlGeneratorContainer2_4()
+	 * @generated
+	 */
+	public EReference getXmlGeneratorContainer2_4_UuidGenerator()
+	{
+		return (EReference)xmlGeneratorContainer2_4EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlId_2_4 <em>Xml Id 24</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -721,6 +1760,21 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlId_2_4#getField <em>Field</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Field</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlId_2_4#getField()
+	 * @see #getXmlId_2_4()
+	 * @generated
+	 */
+	public EReference getXmlId_2_4_Field()
+	{
+		return (EReference)xmlId_2_4EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
 	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlId_2_4#getCacheIndex <em>Cache Index</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -731,7 +1785,109 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 	 */
 	public EReference getXmlId_2_4_CacheIndex()
 	{
-		return (EReference)xmlId_2_4EClass.getEStructuralFeatures().get(0);
+		return (EReference)xmlId_2_4EClass.getEStructuralFeatures().get(1);
+	}
+
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlJoinField_2_4 <em>Xml Join Field 24</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Join Field 24</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlJoinField_2_4
+	 * @generated
+	 */
+	public EClass getXmlJoinField_2_4()
+	{
+		return xmlJoinField_2_4EClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlJoinField_2_4#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlJoinField_2_4#getName()
+	 * @see #getXmlJoinField_2_4()
+	 * @generated
+	 */
+	public EAttribute getXmlJoinField_2_4_Name()
+	{
+		return (EAttribute)xmlJoinField_2_4EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlJoinField_2_4#getReferencedFieldName <em>Referenced Field Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Referenced Field Name</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlJoinField_2_4#getReferencedFieldName()
+	 * @see #getXmlJoinField_2_4()
+	 * @generated
+	 */
+	public EAttribute getXmlJoinField_2_4_ReferencedFieldName()
+	{
+		return (EAttribute)xmlJoinField_2_4EClass.getEStructuralFeatures().get(1);
+	}
+
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlManyToMany_2_4 <em>Xml Many To Many 24</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Many To Many 24</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlManyToMany_2_4
+	 * @generated
+	 */
+	public EClass getXmlManyToMany_2_4()
+	{
+		return xmlManyToMany_2_4EClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlManyToMany_2_4#getJoinFields <em>Join Fields</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Join Fields</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlManyToMany_2_4#getJoinFields()
+	 * @see #getXmlManyToMany_2_4()
+	 * @generated
+	 */
+	public EReference getXmlManyToMany_2_4_JoinFields()
+	{
+		return (EReference)xmlManyToMany_2_4EClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlManyToOne_2_4 <em>Xml Many To One 24</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Many To One 24</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlManyToOne_2_4
+	 * @generated
+	 */
+	public EClass getXmlManyToOne_2_4()
+	{
+		return xmlManyToOne_2_4EClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlManyToOne_2_4#getJoinFields <em>Join Fields</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Join Fields</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlManyToOne_2_4#getJoinFields()
+	 * @see #getXmlManyToOne_2_4()
+	 * @generated
+	 */
+	public EReference getXmlManyToOne_2_4_JoinFields()
+	{
+		return (EReference)xmlManyToOne_2_4EClass.getEStructuralFeatures().get(0);
 	}
 
 
@@ -779,6 +1935,34 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for enum '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.TenantTableDiscriminatorType <em>Tenant Table Discriminator Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>Tenant Table Discriminator Type</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.TenantTableDiscriminatorType
+	 * @generated
+	 */
+	public EEnum getTenantTableDiscriminatorType()
+	{
+		return tenantTableDiscriminatorTypeEEnum;
+	}
+
+
+	/**
+	 * Returns the meta object for enum '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.DataFormatType <em>Data Format Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>Data Format Type</em>'.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.DataFormatType
+	 * @generated
+	 */
+	public EEnum getDataFormatType()
+	{
+		return dataFormatTypeEEnum;
+	}
+
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -811,6 +1995,7 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 
 		// Create classes and their features
 		xmlBasic_2_4EClass = createEClass(XML_BASIC_24);
+		createEReference(xmlBasic_2_4EClass, XML_BASIC_24__FIELD);
 		createEReference(xmlBasic_2_4EClass, XML_BASIC_24__CACHE_INDEX);
 
 		xmlCache_2_4EClass = createEClass(XML_CACHE_24);
@@ -819,26 +2004,71 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 		xmlCacheIndex_2_4EClass = createEClass(XML_CACHE_INDEX_24);
 		createEAttribute(xmlCacheIndex_2_4EClass, XML_CACHE_INDEX_24__COLUMN_NAMES);
 
+		xmlGeneratorContainer2_4EClass = createEClass(XML_GENERATOR_CONTAINER2_4);
+		createEReference(xmlGeneratorContainer2_4EClass, XML_GENERATOR_CONTAINER2_4__UUID_GENERATOR);
+
 		xmlElementCollection_2_4EClass = createEClass(XML_ELEMENT_COLLECTION_24);
+		createEReference(xmlElementCollection_2_4EClass, XML_ELEMENT_COLLECTION_24__FIELD);
 		createEAttribute(xmlElementCollection_2_4EClass, XML_ELEMENT_COLLECTION_24__DELETE_ALL);
+
+		xmlEmbeddable_2_4EClass = createEClass(XML_EMBEDDABLE_24);
+		createEReference(xmlEmbeddable_2_4EClass, XML_EMBEDDABLE_24__NO_SQL);
+
+		xmlEmbedded_2_4EClass = createEClass(XML_EMBEDDED_24);
+		createEReference(xmlEmbedded_2_4EClass, XML_EMBEDDED_24__FIELD);
 
 		xmlEntity_2_4EClass = createEClass(XML_ENTITY_24);
 		createEReference(xmlEntity_2_4EClass, XML_ENTITY_24__CACHE_INDEX);
+		createEReference(xmlEntity_2_4EClass, XML_ENTITY_24__NO_SQL);
+
+		xmlEntityMappings_2_4EClass = createEClass(XML_ENTITY_MAPPINGS_24);
+		createEReference(xmlEntityMappings_2_4EClass, XML_ENTITY_MAPPINGS_24__UUID_GENERATORS);
+
+		xmlField_2_4EClass = createEClass(XML_FIELD_24);
+		createEAttribute(xmlField_2_4EClass, XML_FIELD_24__NAME);
 
 		xmlId_2_4EClass = createEClass(XML_ID_24);
+		createEReference(xmlId_2_4EClass, XML_ID_24__FIELD);
 		createEReference(xmlId_2_4EClass, XML_ID_24__CACHE_INDEX);
+
+		xmlJoinField_2_4EClass = createEClass(XML_JOIN_FIELD_24);
+		createEAttribute(xmlJoinField_2_4EClass, XML_JOIN_FIELD_24__NAME);
+		createEAttribute(xmlJoinField_2_4EClass, XML_JOIN_FIELD_24__REFERENCED_FIELD_NAME);
+
+		xmlManyToMany_2_4EClass = createEClass(XML_MANY_TO_MANY_24);
+		createEReference(xmlManyToMany_2_4EClass, XML_MANY_TO_MANY_24__JOIN_FIELDS);
+
+		xmlManyToOne_2_4EClass = createEClass(XML_MANY_TO_ONE_24);
+		createEReference(xmlManyToOne_2_4EClass, XML_MANY_TO_ONE_24__JOIN_FIELDS);
 
 		xmlMappedSuperclass_2_4EClass = createEClass(XML_MAPPED_SUPERCLASS_24);
 		createEReference(xmlMappedSuperclass_2_4EClass, XML_MAPPED_SUPERCLASS_24__CACHE_INDEX);
 
 		xmlMultitenant_2_4EClass = createEClass(XML_MULTITENANT_24);
 		createEAttribute(xmlMultitenant_2_4EClass, XML_MULTITENANT_24__INCLUDE_CRITERIA);
+		createEReference(xmlMultitenant_2_4EClass, XML_MULTITENANT_24__TENANT_TABLE_DISCRIMINATOR);
+
+		xmlNoSql_2_4EClass = createEClass(XML_NO_SQL_24);
+		createEAttribute(xmlNoSql_2_4EClass, XML_NO_SQL_24__DATA_TYPE);
+		createEAttribute(xmlNoSql_2_4EClass, XML_NO_SQL_24__DATA_FORMAT);
 
 		xmlOneToMany_2_4EClass = createEClass(XML_ONE_TO_MANY_24);
+		createEReference(xmlOneToMany_2_4EClass, XML_ONE_TO_MANY_24__JOIN_FIELDS);
 		createEAttribute(xmlOneToMany_2_4EClass, XML_ONE_TO_MANY_24__DELETE_ALL);
+
+		xmlOneToOne_2_4EClass = createEClass(XML_ONE_TO_ONE_24);
+		createEReference(xmlOneToOne_2_4EClass, XML_ONE_TO_ONE_24__JOIN_FIELDS);
+
+		xmlTenantTableDiscriminator_2_4EClass = createEClass(XML_TENANT_TABLE_DISCRIMINATOR_24);
+		createEAttribute(xmlTenantTableDiscriminator_2_4EClass, XML_TENANT_TABLE_DISCRIMINATOR_24__CONTEXT_PROPERTY);
+		createEAttribute(xmlTenantTableDiscriminator_2_4EClass, XML_TENANT_TABLE_DISCRIMINATOR_24__TYPE);
+
+		xmlUuidGenerator_2_4EClass = createEClass(XML_UUID_GENERATOR_24);
 
 		// Create enums
 		databaseChangeNotificationTypeEEnum = createEEnum(DATABASE_CHANGE_NOTIFICATION_TYPE);
+		tenantTableDiscriminatorTypeEEnum = createEEnum(TENANT_TABLE_DISCRIMINATOR_TYPE);
+		dataFormatTypeEEnum = createEEnum(DATA_FORMAT_TYPE);
 	}
 
 	/**
@@ -867,15 +2097,23 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 
 		// Obtain other dependent packages
 		XMLTypePackage theXMLTypePackage = (XMLTypePackage)EPackage.Registry.INSTANCE.getEPackage(XMLTypePackage.eNS_URI);
+		OrmPackage theOrmPackage = (OrmPackage)EPackage.Registry.INSTANCE.getEPackage(OrmPackage.eNS_URI);
 
 		// Create type parameters
 
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
+		xmlBasic_2_4EClass.getESuperTypes().add(this.getXmlGeneratorContainer2_4());
+		xmlGeneratorContainer2_4EClass.getESuperTypes().add(theOrmPackage.getXmlGeneratorContainer());
+		xmlEntity_2_4EClass.getESuperTypes().add(this.getXmlGeneratorContainer2_4());
+		xmlId_2_4EClass.getESuperTypes().add(this.getXmlGeneratorContainer2_4());
+		xmlMappedSuperclass_2_4EClass.getESuperTypes().add(this.getXmlGeneratorContainer2_4());
+		xmlUuidGenerator_2_4EClass.getESuperTypes().add(theOrmPackage.getXmlGenerator());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(xmlBasic_2_4EClass, XmlBasic_2_4.class, "XmlBasic_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getXmlBasic_2_4_Field(), this.getXmlField_2_4(), null, "field", null, 0, 1, XmlBasic_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlBasic_2_4_CacheIndex(), this.getXmlCacheIndex_2_4(), null, "cacheIndex", null, 0, 1, XmlBasic_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlCache_2_4EClass, XmlCache_2_4.class, "XmlCache_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -884,28 +2122,81 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 		initEClass(xmlCacheIndex_2_4EClass, XmlCacheIndex_2_4.class, "XmlCacheIndex_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlCacheIndex_2_4_ColumnNames(), theXMLTypePackage.getString(), "columnNames", null, 0, -1, XmlCacheIndex_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEClass(xmlGeneratorContainer2_4EClass, XmlGeneratorContainer2_4.class, "XmlGeneratorContainer2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getXmlGeneratorContainer2_4_UuidGenerator(), this.getXmlUuidGenerator_2_4(), null, "uuidGenerator", null, 0, 1, XmlGeneratorContainer2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		initEClass(xmlElementCollection_2_4EClass, XmlElementCollection_2_4.class, "XmlElementCollection_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getXmlElementCollection_2_4_Field(), this.getXmlField_2_4(), null, "field", null, 0, 1, XmlElementCollection_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlElementCollection_2_4_DeleteAll(), theXMLTypePackage.getBoolean(), "deleteAll", null, 0, 1, XmlElementCollection_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlEmbeddable_2_4EClass, XmlEmbeddable_2_4.class, "XmlEmbeddable_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getXmlEmbeddable_2_4_NoSql(), this.getXmlNoSql_2_4(), null, "noSql", null, 0, 1, XmlEmbeddable_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlEmbedded_2_4EClass, XmlEmbedded_2_4.class, "XmlEmbedded_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getXmlEmbedded_2_4_Field(), this.getXmlField_2_4(), null, "field", null, 0, 1, XmlEmbedded_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlEntity_2_4EClass, XmlEntity_2_4.class, "XmlEntity_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlEntity_2_4_CacheIndex(), this.getXmlCacheIndex_2_4(), null, "cacheIndex", null, 0, 1, XmlEntity_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEntity_2_4_NoSql(), this.getXmlNoSql_2_4(), null, "noSql", null, 0, 1, XmlEntity_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlEntityMappings_2_4EClass, XmlEntityMappings_2_4.class, "XmlEntityMappings_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getXmlEntityMappings_2_4_UuidGenerators(), this.getXmlUuidGenerator_2_4(), null, "uuidGenerators", null, 0, -1, XmlEntityMappings_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlField_2_4EClass, XmlField_2_4.class, "XmlField_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlField_2_4_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, XmlField_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlId_2_4EClass, XmlId_2_4.class, "XmlId_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getXmlId_2_4_Field(), this.getXmlField_2_4(), null, "field", null, 0, 1, XmlId_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlId_2_4_CacheIndex(), this.getXmlCacheIndex_2_4(), null, "cacheIndex", null, 0, 1, XmlId_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlJoinField_2_4EClass, XmlJoinField_2_4.class, "XmlJoinField_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlJoinField_2_4_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, XmlJoinField_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlJoinField_2_4_ReferencedFieldName(), theXMLTypePackage.getString(), "referencedFieldName", null, 0, 1, XmlJoinField_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlManyToMany_2_4EClass, XmlManyToMany_2_4.class, "XmlManyToMany_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getXmlManyToMany_2_4_JoinFields(), this.getXmlJoinField_2_4(), null, "joinFields", null, 0, -1, XmlManyToMany_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlManyToOne_2_4EClass, XmlManyToOne_2_4.class, "XmlManyToOne_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getXmlManyToOne_2_4_JoinFields(), this.getXmlJoinField_2_4(), null, "joinFields", null, 0, -1, XmlManyToOne_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlMappedSuperclass_2_4EClass, XmlMappedSuperclass_2_4.class, "XmlMappedSuperclass_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlMappedSuperclass_2_4_CacheIndex(), this.getXmlCacheIndex_2_4(), null, "cacheIndex", null, 0, 1, XmlMappedSuperclass_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlMultitenant_2_4EClass, XmlMultitenant_2_4.class, "XmlMultitenant_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlMultitenant_2_4_IncludeCriteria(), theXMLTypePackage.getBooleanObject(), "includeCriteria", null, 0, 1, XmlMultitenant_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlMultitenant_2_4_TenantTableDiscriminator(), this.getXmlTenantTableDiscriminator_2_4(), null, "tenantTableDiscriminator", null, 0, 1, XmlMultitenant_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlNoSql_2_4EClass, XmlNoSql_2_4.class, "XmlNoSql_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlNoSql_2_4_DataType(), theXMLTypePackage.getString(), "dataType", null, 0, 1, XmlNoSql_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlNoSql_2_4_DataFormat(), this.getDataFormatType(), "dataFormat", "", 0, 1, XmlNoSql_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlOneToMany_2_4EClass, XmlOneToMany_2_4.class, "XmlOneToMany_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getXmlOneToMany_2_4_JoinFields(), this.getXmlJoinField_2_4(), null, "joinFields", null, 0, -1, XmlOneToMany_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlOneToMany_2_4_DeleteAll(), theXMLTypePackage.getBoolean(), "deleteAll", null, 0, 1, XmlOneToMany_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlOneToOne_2_4EClass, XmlOneToOne_2_4.class, "XmlOneToOne_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getXmlOneToOne_2_4_JoinFields(), this.getXmlJoinField_2_4(), null, "joinFields", null, 0, -1, XmlOneToOne_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlTenantTableDiscriminator_2_4EClass, XmlTenantTableDiscriminator_2_4.class, "XmlTenantTableDiscriminator_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlTenantTableDiscriminator_2_4_ContextProperty(), theXMLTypePackage.getString(), "contextProperty", null, 0, 1, XmlTenantTableDiscriminator_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlTenantTableDiscriminator_2_4_Type(), this.getTenantTableDiscriminatorType(), "type", null, 0, 1, XmlTenantTableDiscriminator_2_4.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlUuidGenerator_2_4EClass, XmlUuidGenerator_2_4.class, "XmlUuidGenerator_2_4", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		// Initialize enums and add enum literals
 		initEEnum(databaseChangeNotificationTypeEEnum, DatabaseChangeNotificationType.class, "DatabaseChangeNotificationType");
 		addEEnumLiteral(databaseChangeNotificationTypeEEnum, DatabaseChangeNotificationType.NONE);
 		addEEnumLiteral(databaseChangeNotificationTypeEEnum, DatabaseChangeNotificationType.INVALIDATION);
+
+		initEEnum(tenantTableDiscriminatorTypeEEnum, TenantTableDiscriminatorType.class, "TenantTableDiscriminatorType");
+		addEEnumLiteral(tenantTableDiscriminatorTypeEEnum, TenantTableDiscriminatorType.SCHEMA);
+		addEEnumLiteral(tenantTableDiscriminatorTypeEEnum, TenantTableDiscriminatorType.SUFFIX);
+		addEEnumLiteral(tenantTableDiscriminatorTypeEEnum, TenantTableDiscriminatorType.PREFIX);
+
+		initEEnum(dataFormatTypeEEnum, DataFormatType.class, "DataFormatType");
+		addEEnumLiteral(dataFormatTypeEEnum, DataFormatType.XML);
+		addEEnumLiteral(dataFormatTypeEEnum, DataFormatType.INDEXED);
+		addEEnumLiteral(dataFormatTypeEEnum, DataFormatType.MAPPED);
 	}
 
 	/**
@@ -941,6 +2232,40 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 		public static final EAttribute XML_MULTITENANT_24__INCLUDE_CRITERIA = eINSTANCE.getXmlMultitenant_2_4_IncludeCriteria();
 
 		/**
+		 * The meta object literal for the '<em><b>Tenant Table Discriminator</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_MULTITENANT_24__TENANT_TABLE_DISCRIMINATOR = eINSTANCE.getXmlMultitenant_2_4_TenantTableDiscriminator();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlNoSql_2_4 <em>Xml No Sql 24</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlNoSql_2_4
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlNoSql_2_4()
+		 * @generated
+		 */
+		public static final EClass XML_NO_SQL_24 = eINSTANCE.getXmlNoSql_2_4();
+
+		/**
+		 * The meta object literal for the '<em><b>Data Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_NO_SQL_24__DATA_TYPE = eINSTANCE.getXmlNoSql_2_4_DataType();
+
+		/**
+		 * The meta object literal for the '<em><b>Data Format</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_NO_SQL_24__DATA_FORMAT = eINSTANCE.getXmlNoSql_2_4_DataFormat();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlElementCollection_2_4 <em>Xml Element Collection 24</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -951,12 +2276,56 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 		public static final EClass XML_ELEMENT_COLLECTION_24 = eINSTANCE.getXmlElementCollection_2_4();
 
 		/**
+		 * The meta object literal for the '<em><b>Field</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_ELEMENT_COLLECTION_24__FIELD = eINSTANCE.getXmlElementCollection_2_4_Field();
+
+		/**
 		 * The meta object literal for the '<em><b>Delete All</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		public static final EAttribute XML_ELEMENT_COLLECTION_24__DELETE_ALL = eINSTANCE.getXmlElementCollection_2_4_DeleteAll();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEmbeddable_2_4 <em>Xml Embeddable 24</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEmbeddable_2_4
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlEmbeddable_2_4()
+		 * @generated
+		 */
+		public static final EClass XML_EMBEDDABLE_24 = eINSTANCE.getXmlEmbeddable_2_4();
+
+		/**
+		 * The meta object literal for the '<em><b>No Sql</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_EMBEDDABLE_24__NO_SQL = eINSTANCE.getXmlEmbeddable_2_4_NoSql();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEmbedded_2_4 <em>Xml Embedded 24</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEmbedded_2_4
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlEmbedded_2_4()
+		 * @generated
+		 */
+		public static final EClass XML_EMBEDDED_24 = eINSTANCE.getXmlEmbedded_2_4();
+
+		/**
+		 * The meta object literal for the '<em><b>Field</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_EMBEDDED_24__FIELD = eINSTANCE.getXmlEmbedded_2_4_Field();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlOneToMany_2_4 <em>Xml One To Many 24</em>}' class.
@@ -969,12 +2338,74 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 		public static final EClass XML_ONE_TO_MANY_24 = eINSTANCE.getXmlOneToMany_2_4();
 
 		/**
+		 * The meta object literal for the '<em><b>Join Fields</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_ONE_TO_MANY_24__JOIN_FIELDS = eINSTANCE.getXmlOneToMany_2_4_JoinFields();
+
+		/**
 		 * The meta object literal for the '<em><b>Delete All</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		public static final EAttribute XML_ONE_TO_MANY_24__DELETE_ALL = eINSTANCE.getXmlOneToMany_2_4_DeleteAll();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlOneToOne_2_4 <em>Xml One To One 24</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlOneToOne_2_4
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlOneToOne_2_4()
+		 * @generated
+		 */
+		public static final EClass XML_ONE_TO_ONE_24 = eINSTANCE.getXmlOneToOne_2_4();
+
+		/**
+		 * The meta object literal for the '<em><b>Join Fields</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_ONE_TO_ONE_24__JOIN_FIELDS = eINSTANCE.getXmlOneToOne_2_4_JoinFields();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlTenantTableDiscriminator_2_4 <em>Xml Tenant Table Discriminator 24</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlTenantTableDiscriminator_2_4
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlTenantTableDiscriminator_2_4()
+		 * @generated
+		 */
+		public static final EClass XML_TENANT_TABLE_DISCRIMINATOR_24 = eINSTANCE.getXmlTenantTableDiscriminator_2_4();
+
+		/**
+		 * The meta object literal for the '<em><b>Context Property</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_TENANT_TABLE_DISCRIMINATOR_24__CONTEXT_PROPERTY = eINSTANCE.getXmlTenantTableDiscriminator_2_4_ContextProperty();
+
+		/**
+		 * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_TENANT_TABLE_DISCRIMINATOR_24__TYPE = eINSTANCE.getXmlTenantTableDiscriminator_2_4_Type();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlUuidGenerator_2_4 <em>Xml Uuid Generator 24</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlUuidGenerator_2_4
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlUuidGenerator_2_4()
+		 * @generated
+		 */
+		public static final EClass XML_UUID_GENERATOR_24 = eINSTANCE.getXmlUuidGenerator_2_4();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEntity_2_4 <em>Xml Entity 24</em>}' class.
@@ -995,6 +2426,50 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 		public static final EReference XML_ENTITY_24__CACHE_INDEX = eINSTANCE.getXmlEntity_2_4_CacheIndex();
 
 		/**
+		 * The meta object literal for the '<em><b>No Sql</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_ENTITY_24__NO_SQL = eINSTANCE.getXmlEntity_2_4_NoSql();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEntityMappings_2_4 <em>Xml Entity Mappings 24</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEntityMappings_2_4
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlEntityMappings_2_4()
+		 * @generated
+		 */
+		public static final EClass XML_ENTITY_MAPPINGS_24 = eINSTANCE.getXmlEntityMappings_2_4();
+
+		/**
+		 * The meta object literal for the '<em><b>Uuid Generators</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_ENTITY_MAPPINGS_24__UUID_GENERATORS = eINSTANCE.getXmlEntityMappings_2_4_UuidGenerators();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlField_2_4 <em>Xml Field 24</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlField_2_4
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlField_2_4()
+		 * @generated
+		 */
+		public static final EClass XML_FIELD_24 = eINSTANCE.getXmlField_2_4();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_FIELD_24__NAME = eINSTANCE.getXmlField_2_4_Name();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlBasic_2_4 <em>Xml Basic 24</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1003,6 +2478,14 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_BASIC_24 = eINSTANCE.getXmlBasic_2_4();
+
+		/**
+		 * The meta object literal for the '<em><b>Field</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_BASIC_24__FIELD = eINSTANCE.getXmlBasic_2_4_Field();
 
 		/**
 		 * The meta object literal for the '<em><b>Cache Index</b></em>' containment reference feature.
@@ -1049,6 +2532,24 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 		public static final EAttribute XML_CACHE_INDEX_24__COLUMN_NAMES = eINSTANCE.getXmlCacheIndex_2_4_ColumnNames();
 
 		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlGeneratorContainer2_4 <em>Xml Generator Container2 4</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlGeneratorContainer2_4
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlGeneratorContainer2_4()
+		 * @generated
+		 */
+		public static final EClass XML_GENERATOR_CONTAINER2_4 = eINSTANCE.getXmlGeneratorContainer2_4();
+
+		/**
+		 * The meta object literal for the '<em><b>Uuid Generator</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_GENERATOR_CONTAINER2_4__UUID_GENERATOR = eINSTANCE.getXmlGeneratorContainer2_4_UuidGenerator();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlId_2_4 <em>Xml Id 24</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1059,12 +2560,82 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 		public static final EClass XML_ID_24 = eINSTANCE.getXmlId_2_4();
 
 		/**
+		 * The meta object literal for the '<em><b>Field</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_ID_24__FIELD = eINSTANCE.getXmlId_2_4_Field();
+
+		/**
 		 * The meta object literal for the '<em><b>Cache Index</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		public static final EReference XML_ID_24__CACHE_INDEX = eINSTANCE.getXmlId_2_4_CacheIndex();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlJoinField_2_4 <em>Xml Join Field 24</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlJoinField_2_4
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlJoinField_2_4()
+		 * @generated
+		 */
+		public static final EClass XML_JOIN_FIELD_24 = eINSTANCE.getXmlJoinField_2_4();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_JOIN_FIELD_24__NAME = eINSTANCE.getXmlJoinField_2_4_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Referenced Field Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_JOIN_FIELD_24__REFERENCED_FIELD_NAME = eINSTANCE.getXmlJoinField_2_4_ReferencedFieldName();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlManyToMany_2_4 <em>Xml Many To Many 24</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlManyToMany_2_4
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlManyToMany_2_4()
+		 * @generated
+		 */
+		public static final EClass XML_MANY_TO_MANY_24 = eINSTANCE.getXmlManyToMany_2_4();
+
+		/**
+		 * The meta object literal for the '<em><b>Join Fields</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_MANY_TO_MANY_24__JOIN_FIELDS = eINSTANCE.getXmlManyToMany_2_4_JoinFields();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlManyToOne_2_4 <em>Xml Many To One 24</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlManyToOne_2_4
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlManyToOne_2_4()
+		 * @generated
+		 */
+		public static final EClass XML_MANY_TO_ONE_24 = eINSTANCE.getXmlManyToOne_2_4();
+
+		/**
+		 * The meta object literal for the '<em><b>Join Fields</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_MANY_TO_ONE_24__JOIN_FIELDS = eINSTANCE.getXmlManyToOne_2_4_JoinFields();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlMappedSuperclass_2_4 <em>Xml Mapped Superclass 24</em>}' class.
@@ -1093,6 +2664,26 @@ public class EclipseLinkOrmV2_4Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EEnum DATABASE_CHANGE_NOTIFICATION_TYPE = eINSTANCE.getDatabaseChangeNotificationType();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.TenantTableDiscriminatorType <em>Tenant Table Discriminator Type</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.TenantTableDiscriminatorType
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getTenantTableDiscriminatorType()
+		 * @generated
+		 */
+		public static final EEnum TENANT_TABLE_DISCRIMINATOR_TYPE = eINSTANCE.getTenantTableDiscriminatorType();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.DataFormatType <em>Data Format Type</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.DataFormatType
+		 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getDataFormatType()
+		 * @generated
+		 */
+		public static final EEnum DATA_FORMAT_TYPE = eINSTANCE.getDataFormatType();
 
 	}
 

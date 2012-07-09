@@ -22,6 +22,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
+import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
@@ -38,13 +39,16 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMapping
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmReadOnlyTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmTenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmUuidGenerator;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmVirtualTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAccessMethods;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTenantDiscriminatorColumn;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlUuidGenerator;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminatorColumn_2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlUuidGenerator_2_4;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -69,6 +73,7 @@ public class EclipseLinkEntityMappingsImpl
 	protected String specifiedSetMethod;
 	protected String defaultSetMethod;
 
+	protected final ContextListContainer<OrmUuidGenerator, XmlUuidGenerator_2_4> uuidGeneratorContainer;
 
 	public EclipseLinkEntityMappingsImpl(OrmXml parent, XmlEntityMappings resource) {
 		super(parent, resource);
@@ -78,6 +83,7 @@ public class EclipseLinkEntityMappingsImpl
 		this.defaultTenantDiscriminatorColumnContainer = this.buildDefaultTenantDiscriminatorColumnContainer();
 		this.specifiedGetMethod = this.buildSpecifiedGetMethod();
 		this.specifiedSetMethod = this.buildSpecifiedSetMethod();
+		this.uuidGeneratorContainer = this.buildUuidGeneratorContainer();
 	}
 
 
@@ -90,6 +96,7 @@ public class EclipseLinkEntityMappingsImpl
 		this.syncSpecifiedTenantDiscriminatorColumns();
 		this.setSpecifiedGetMethod_(this.buildSpecifiedGetMethod());
 		this.setSpecifiedSetMethod_(this.buildSpecifiedSetMethod());
+		this.syncUuidGenerators();
 	}
 
 	@Override
@@ -100,6 +107,7 @@ public class EclipseLinkEntityMappingsImpl
 		this.updateDefaultTenantDiscriminatorColumns();
 		this.setDefaultGetMethod(this.buildDefaultGetMethod());
 		this.setDefaultSetMethod(this.buildDefaultSetMethod());
+		this.updateNodes(this.getUuidGenerators());
 	}
 
 	@Override
@@ -546,6 +554,97 @@ public class EclipseLinkEntityMappingsImpl
 		}
 	}
 
+
+	// ********** uuid generators **********
+
+	public ListIterable<OrmUuidGenerator> getUuidGenerators() {
+		return this.uuidGeneratorContainer.getContextElements();
+	}
+
+	public int getUuidGeneratorsSize() {
+		return this.uuidGeneratorContainer.getContextElementsSize();
+	}
+
+	public OrmUuidGenerator addUuidGenerator() {
+		return this.addUuidGenerator(this.getUuidGeneratorsSize());
+	}
+
+	public OrmUuidGenerator addUuidGenerator(int index) {
+		XmlUuidGenerator xmlGenerator = this.buildXmlUuidGenerator();
+		OrmUuidGenerator uuidGenerator = this.uuidGeneratorContainer.addContextElement(index, xmlGenerator);
+		this.getXmlEntityMappings().getUuidGenerators().add(index, xmlGenerator);
+		return uuidGenerator;
+	}
+
+	protected XmlUuidGenerator buildXmlUuidGenerator() {
+		return EclipseLinkOrmFactory.eINSTANCE.createXmlUuidGenerator();
+	}
+
+	protected OrmUuidGenerator buildUuidGenerator(XmlUuidGenerator_2_4 xmlUuidGenerator) {
+		return new OrmEclipseLinkUuidGenerator(this, xmlUuidGenerator);
+	}
+
+	public void removeUuidGenerator(OrmUuidGenerator uuidGenerator) {
+		this.removeUuidGenerator(this.uuidGeneratorContainer.indexOfContextElement(uuidGenerator));
+	}
+
+	public void removeUuidGenerator(int index) {
+		this.uuidGeneratorContainer.removeContextElement(index);
+		this.getXmlEntityMappings().getUuidGenerators().remove(index);
+	}
+
+	public void moveUuidGenerator(int targetIndex, int sourceIndex) {
+		this.sequenceGeneratorContainer.moveContextElement(targetIndex, sourceIndex);
+		this.xmlEntityMappings.getSequenceGenerators().move(targetIndex, sourceIndex);
+	}
+
+	protected void syncUuidGenerators() {
+		this.uuidGeneratorContainer.synchronizeWithResourceModel();
+	}
+
+	protected ListIterable<XmlUuidGenerator_2_4> getXmlUuidGenerators() {
+		// clone to reduce chance of concurrency problems
+		return new LiveCloneListIterable<XmlUuidGenerator_2_4>(this.getXmlEntityMappings().getUuidGenerators());
+	}
+
+	protected ContextListContainer<OrmUuidGenerator, XmlUuidGenerator_2_4> buildUuidGeneratorContainer() {
+		UuidGeneratorContainer container = new UuidGeneratorContainer();
+		container.initialize();
+		return container;
+	}
+
+	/**
+	 * sequence generator container
+	 */
+	protected class UuidGeneratorContainer
+		extends ContextListContainer<OrmUuidGenerator, XmlUuidGenerator_2_4>
+	{
+		@Override
+		protected String getContextElementsPropertyName() {
+			return UUID_GENERATORS_LIST;
+		}
+		@Override
+		protected OrmUuidGenerator buildContextElement(XmlUuidGenerator_2_4 resourceElement) {
+			return EclipseLinkEntityMappingsImpl.this.buildUuidGenerator(resourceElement);
+		}
+		@Override
+		protected ListIterable<XmlUuidGenerator_2_4> getResourceElements() {
+			return EclipseLinkEntityMappingsImpl.this.getXmlUuidGenerators();
+		}
+		@Override
+		protected XmlUuidGenerator_2_4 getResourceElement(OrmUuidGenerator contextElement) {
+			return contextElement.getXmlGenerator();
+		}
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public Iterable<Generator> getMappingFileGenerators() {
+		return new CompositeIterable<Generator>(
+					super.getMappingFileGenerators(),
+					this.getUuidGenerators()
+				);
+	}
 
 	// ********** misc **********
 

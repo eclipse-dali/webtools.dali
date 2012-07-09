@@ -20,8 +20,11 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLink2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEmbedded_2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlField_2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
@@ -45,8 +48,18 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlEmbedded extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbedded implements XmlAttributeMapping
+public class XmlEmbedded extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbedded implements XmlEmbedded_2_4, XmlAttributeMapping
 {
+	/**
+	 * The cached value of the '{@link #getField() <em>Field</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getField()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlField_2_4 field;
+
 	/**
 	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -106,6 +119,66 @@ public class XmlEmbedded extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbedd
 	protected EClass eStaticClass()
 	{
 		return EclipseLinkOrmPackage.Literals.XML_EMBEDDED;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Field</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Field</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Field</em>' containment reference.
+	 * @see #setField(XmlField_2_4)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEmbedded_2_4_Field()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlField_2_4 getField()
+	{
+		return field;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetField(XmlField_2_4 newField, NotificationChain msgs)
+	{
+		XmlField_2_4 oldField = field;
+		field = newField;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_EMBEDDED__FIELD, oldField, newField);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEmbedded#getField <em>Field</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Field</em>' containment reference.
+	 * @see #getField()
+	 * @generated
+	 */
+	public void setField(XmlField_2_4 newField)
+	{
+		if (newField != field)
+		{
+			NotificationChain msgs = null;
+			if (field != null)
+				msgs = ((InternalEObject)field).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_EMBEDDED__FIELD, null, msgs);
+			if (newField != null)
+				msgs = ((InternalEObject)newField).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_EMBEDDED__FIELD, null, msgs);
+			msgs = basicSetField(newField, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_EMBEDDED__FIELD, newField, newField));
 	}
 
 	/**
@@ -236,6 +309,8 @@ public class XmlEmbedded extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbedd
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_EMBEDDED__FIELD:
+				return basicSetField(null, msgs);
 			case EclipseLinkOrmPackage.XML_EMBEDDED__ACCESS_METHODS:
 				return basicSetAccessMethods(null, msgs);
 			case EclipseLinkOrmPackage.XML_EMBEDDED__PROPERTIES:
@@ -254,6 +329,8 @@ public class XmlEmbedded extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbedd
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_EMBEDDED__FIELD:
+				return getField();
 			case EclipseLinkOrmPackage.XML_EMBEDDED__ACCESS_METHODS:
 				return getAccessMethods();
 			case EclipseLinkOrmPackage.XML_EMBEDDED__PROPERTIES:
@@ -275,6 +352,9 @@ public class XmlEmbedded extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbedd
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_EMBEDDED__FIELD:
+				setField((XmlField_2_4)newValue);
+				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDED__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)newValue);
 				return;
@@ -299,6 +379,9 @@ public class XmlEmbedded extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbedd
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_EMBEDDED__FIELD:
+				setField((XmlField_2_4)null);
+				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDED__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)null);
 				return;
@@ -322,6 +405,8 @@ public class XmlEmbedded extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbedd
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_EMBEDDED__FIELD:
+				return field != null;
 			case EclipseLinkOrmPackage.XML_EMBEDDED__ACCESS_METHODS:
 				return accessMethods != null;
 			case EclipseLinkOrmPackage.XML_EMBEDDED__PROPERTIES:
@@ -340,6 +425,14 @@ public class XmlEmbedded extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbedd
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlEmbedded_2_4.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_EMBEDDED__FIELD: return EclipseLinkOrmV2_4Package.XML_EMBEDDED_24__FIELD;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlAccessMethodsHolder.class)
 		{
 			switch (derivedFeatureID)
@@ -375,6 +468,14 @@ public class XmlEmbedded extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbedd
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlEmbedded_2_4.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_4Package.XML_EMBEDDED_24__FIELD: return EclipseLinkOrmPackage.XML_EMBEDDED__FIELD;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlAccessMethodsHolder.class)
 		{
 			switch (baseFeatureID)
@@ -441,7 +542,8 @@ public class XmlEmbedded extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbedd
 			buildAttributeOverrideTranslator(),
 			buildAssociationOverrideTranslator(),
 			buildPropertyTranslator(),
-			buildAccessMethodsTranslator()
+			buildAccessMethodsTranslator(),
+			buildFieldTranslator()
 		};
 	}
 	
@@ -455,6 +557,10 @@ public class XmlEmbedded extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbedd
 
 	protected static Translator buildAttributeTypeTranslator() {
 		return new Translator(EclipseLink2_1.ATTRIBUTE_TYPE,  EclipseLinkOrmPackage.eINSTANCE.getXmlAttributeMapping_AttributeType(), Translator.DOM_ATTRIBUTE);
+	}
+
+	protected static Translator buildFieldTranslator() {
+		return XmlField.buildTranslator(EclipseLink2_4.FIELD, EclipseLinkOrmV2_4Package.eINSTANCE.getXmlEmbedded_2_4_Field());
 	}
 
 }

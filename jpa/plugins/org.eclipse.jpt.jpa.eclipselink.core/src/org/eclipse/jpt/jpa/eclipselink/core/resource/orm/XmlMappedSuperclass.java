@@ -71,7 +71,9 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlRecord_2_3
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLink2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlCacheIndex_2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlGeneratorContainer2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlMappedSuperclass_2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlUuidGenerator_2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -447,6 +449,16 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	 * @ordered
 	 */
 	protected EList<XmlPlsqlTable> plsqlTables;
+
+	/**
+	 * The cached value of the '{@link #getUuidGenerator() <em>Uuid Generator</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getUuidGenerator()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlUuidGenerator_2_4 uuidGenerator;
 
 	/**
 	 * The cached value of the '{@link #getCacheIndex() <em>Cache Index</em>}' containment reference.
@@ -2666,6 +2678,66 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Uuid Generator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Uuid Generator</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Uuid Generator</em>' containment reference.
+	 * @see #setUuidGenerator(XmlUuidGenerator_2_4)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlGeneratorContainer2_4_UuidGenerator()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlUuidGenerator_2_4 getUuidGenerator()
+	{
+		return uuidGenerator;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetUuidGenerator(XmlUuidGenerator_2_4 newUuidGenerator, NotificationChain msgs)
+	{
+		XmlUuidGenerator_2_4 oldUuidGenerator = uuidGenerator;
+		uuidGenerator = newUuidGenerator;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__UUID_GENERATOR, oldUuidGenerator, newUuidGenerator);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMappedSuperclass#getUuidGenerator <em>Uuid Generator</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Uuid Generator</em>' containment reference.
+	 * @see #getUuidGenerator()
+	 * @generated
+	 */
+	public void setUuidGenerator(XmlUuidGenerator_2_4 newUuidGenerator)
+	{
+		if (newUuidGenerator != uuidGenerator)
+		{
+			NotificationChain msgs = null;
+			if (uuidGenerator != null)
+				msgs = ((InternalEObject)uuidGenerator).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__UUID_GENERATOR, null, msgs);
+			if (newUuidGenerator != null)
+				msgs = ((InternalEObject)newUuidGenerator).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__UUID_GENERATOR, null, msgs);
+			msgs = basicSetUuidGenerator(newUuidGenerator, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__UUID_GENERATOR, newUuidGenerator, newUuidGenerator));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Exclude Default Mappings</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -2766,6 +2838,8 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 				return ((InternalEList<?>)getPlsqlRecords()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_TABLES:
 				return ((InternalEList<?>)getPlsqlTables()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__UUID_GENERATOR:
+				return basicSetUuidGenerator(null, msgs);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INDEX:
 				return basicSetCacheIndex(null, msgs);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CUSTOMIZER:
@@ -2868,6 +2942,8 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 				return getPlsqlRecords();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_TABLES:
 				return getPlsqlTables();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__UUID_GENERATOR:
+				return getUuidGenerator();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INDEX:
 				return getCacheIndex();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__READ_ONLY:
@@ -3019,6 +3095,9 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_TABLES:
 				getPlsqlTables().clear();
 				getPlsqlTables().addAll((Collection<? extends XmlPlsqlTable>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__UUID_GENERATOR:
+				setUuidGenerator((XmlUuidGenerator_2_4)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INDEX:
 				setCacheIndex((XmlCacheIndex_2_4)newValue);
@@ -3180,6 +3259,9 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_TABLES:
 				getPlsqlTables().clear();
 				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__UUID_GENERATOR:
+				setUuidGenerator((XmlUuidGenerator_2_4)null);
+				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INDEX:
 				setCacheIndex((XmlCacheIndex_2_4)null);
 				return;
@@ -3304,6 +3386,8 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 				return plsqlRecords != null && !plsqlRecords.isEmpty();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_TABLES:
 				return plsqlTables != null && !plsqlTables.isEmpty();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__UUID_GENERATOR:
+				return uuidGenerator != null;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CACHE_INDEX:
 				return cacheIndex != null;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__READ_ONLY:
@@ -3495,6 +3579,14 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__NAMED_PLSQL_STORED_PROCEDURE_QUERIES: return EclipseLinkOrmV2_3Package.XML_MAPPED_SUPERCLASS_23__NAMED_PLSQL_STORED_PROCEDURE_QUERIES;
 				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_RECORDS: return EclipseLinkOrmV2_3Package.XML_MAPPED_SUPERCLASS_23__PLSQL_RECORDS;
 				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PLSQL_TABLES: return EclipseLinkOrmV2_3Package.XML_MAPPED_SUPERCLASS_23__PLSQL_TABLES;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlGeneratorContainer2_4.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__UUID_GENERATOR: return EclipseLinkOrmV2_4Package.XML_GENERATOR_CONTAINER2_4__UUID_GENERATOR;
 				default: return -1;
 			}
 		}
@@ -3719,6 +3811,14 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlGeneratorContainer2_4.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_4Package.XML_GENERATOR_CONTAINER2_4__UUID_GENERATOR: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__UUID_GENERATOR;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlMappedSuperclass_2_4.class)
 		{
 			switch (baseFeatureID)
@@ -3864,6 +3964,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 			buildCloneCopyPolicyTranslator(),
 			buildSequenceGeneratorTranslator(),
 			buildTableGeneratorTranslator(),
+			buildUuidGeneratorTranslator(),
 			buildNamedQueryTranslator(),
 			buildNamedNativeQueryTranslator(),
 			buildNamedStoredProcedureQueryTranslator(),
@@ -4016,5 +4117,9 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 
 	protected static Translator buildAdditionalCriteriaTranslator() {
 		return XmlAdditionalCriteria.buildTranslator(EclipseLink2_2.ADDITIONAL_CRITERIA, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlMappedSuperclass_2_2_AdditionalCriteria());
+	}
+
+	protected static Translator buildUuidGeneratorTranslator() {
+		return XmlUuidGenerator.buildTranslator(EclipseLink2_4.UUID_GENERATOR, EclipseLinkOrmV2_4Package.eINSTANCE.getXmlGeneratorContainer2_4_UuidGenerator());
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -30,6 +30,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscrimin
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLink2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlMultitenant_2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlTenantTableDiscriminator_2_4;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -88,6 +89,16 @@ public class XmlMultitenant extends AbstractJpaEObject implements XmlMultitenant
 	 * @ordered
 	 */
 	protected Boolean includeCriteria = INCLUDE_CRITERIA_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getTenantTableDiscriminator() <em>Tenant Table Discriminator</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTenantTableDiscriminator()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlTenantTableDiscriminator_2_4 tenantTableDiscriminator;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -207,6 +218,66 @@ public class XmlMultitenant extends AbstractJpaEObject implements XmlMultitenant
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Tenant Table Discriminator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Tenant Table Discriminator</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Tenant Table Discriminator</em>' containment reference.
+	 * @see #setTenantTableDiscriminator(XmlTenantTableDiscriminator_2_4)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMultitenant_2_4_TenantTableDiscriminator()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlTenantTableDiscriminator_2_4 getTenantTableDiscriminator()
+	{
+		return tenantTableDiscriminator;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetTenantTableDiscriminator(XmlTenantTableDiscriminator_2_4 newTenantTableDiscriminator, NotificationChain msgs)
+	{
+		XmlTenantTableDiscriminator_2_4 oldTenantTableDiscriminator = tenantTableDiscriminator;
+		tenantTableDiscriminator = newTenantTableDiscriminator;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MULTITENANT__TENANT_TABLE_DISCRIMINATOR, oldTenantTableDiscriminator, newTenantTableDiscriminator);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMultitenant#getTenantTableDiscriminator <em>Tenant Table Discriminator</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Tenant Table Discriminator</em>' containment reference.
+	 * @see #getTenantTableDiscriminator()
+	 * @generated
+	 */
+	public void setTenantTableDiscriminator(XmlTenantTableDiscriminator_2_4 newTenantTableDiscriminator)
+	{
+		if (newTenantTableDiscriminator != tenantTableDiscriminator)
+		{
+			NotificationChain msgs = null;
+			if (tenantTableDiscriminator != null)
+				msgs = ((InternalEObject)tenantTableDiscriminator).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MULTITENANT__TENANT_TABLE_DISCRIMINATOR, null, msgs);
+			if (newTenantTableDiscriminator != null)
+				msgs = ((InternalEObject)newTenantTableDiscriminator).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MULTITENANT__TENANT_TABLE_DISCRIMINATOR, null, msgs);
+			msgs = basicSetTenantTableDiscriminator(newTenantTableDiscriminator, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MULTITENANT__TENANT_TABLE_DISCRIMINATOR, newTenantTableDiscriminator, newTenantTableDiscriminator));
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -218,6 +289,8 @@ public class XmlMultitenant extends AbstractJpaEObject implements XmlMultitenant
 		{
 			case EclipseLinkOrmPackage.XML_MULTITENANT__TENANT_DISCRIMINATOR_COLUMNS:
 				return ((InternalEList<?>)getTenantDiscriminatorColumns()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_MULTITENANT__TENANT_TABLE_DISCRIMINATOR:
+				return basicSetTenantTableDiscriminator(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -238,6 +311,8 @@ public class XmlMultitenant extends AbstractJpaEObject implements XmlMultitenant
 				return getTenantDiscriminatorColumns();
 			case EclipseLinkOrmPackage.XML_MULTITENANT__INCLUDE_CRITERIA:
 				return getIncludeCriteria();
+			case EclipseLinkOrmPackage.XML_MULTITENANT__TENANT_TABLE_DISCRIMINATOR:
+				return getTenantTableDiscriminator();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -263,6 +338,9 @@ public class XmlMultitenant extends AbstractJpaEObject implements XmlMultitenant
 			case EclipseLinkOrmPackage.XML_MULTITENANT__INCLUDE_CRITERIA:
 				setIncludeCriteria((Boolean)newValue);
 				return;
+			case EclipseLinkOrmPackage.XML_MULTITENANT__TENANT_TABLE_DISCRIMINATOR:
+				setTenantTableDiscriminator((XmlTenantTableDiscriminator_2_4)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -286,6 +364,9 @@ public class XmlMultitenant extends AbstractJpaEObject implements XmlMultitenant
 			case EclipseLinkOrmPackage.XML_MULTITENANT__INCLUDE_CRITERIA:
 				setIncludeCriteria(INCLUDE_CRITERIA_EDEFAULT);
 				return;
+			case EclipseLinkOrmPackage.XML_MULTITENANT__TENANT_TABLE_DISCRIMINATOR:
+				setTenantTableDiscriminator((XmlTenantTableDiscriminator_2_4)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -306,6 +387,8 @@ public class XmlMultitenant extends AbstractJpaEObject implements XmlMultitenant
 				return tenantDiscriminatorColumns != null && !tenantDiscriminatorColumns.isEmpty();
 			case EclipseLinkOrmPackage.XML_MULTITENANT__INCLUDE_CRITERIA:
 				return INCLUDE_CRITERIA_EDEFAULT == null ? includeCriteria != null : !INCLUDE_CRITERIA_EDEFAULT.equals(includeCriteria);
+			case EclipseLinkOrmPackage.XML_MULTITENANT__TENANT_TABLE_DISCRIMINATOR:
+				return tenantTableDiscriminator != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -323,6 +406,7 @@ public class XmlMultitenant extends AbstractJpaEObject implements XmlMultitenant
 			switch (derivedFeatureID)
 			{
 				case EclipseLinkOrmPackage.XML_MULTITENANT__INCLUDE_CRITERIA: return EclipseLinkOrmV2_4Package.XML_MULTITENANT_24__INCLUDE_CRITERIA;
+				case EclipseLinkOrmPackage.XML_MULTITENANT__TENANT_TABLE_DISCRIMINATOR: return EclipseLinkOrmV2_4Package.XML_MULTITENANT_24__TENANT_TABLE_DISCRIMINATOR;
 				default: return -1;
 			}
 		}
@@ -342,6 +426,7 @@ public class XmlMultitenant extends AbstractJpaEObject implements XmlMultitenant
 			switch (baseFeatureID)
 			{
 				case EclipseLinkOrmV2_4Package.XML_MULTITENANT_24__INCLUDE_CRITERIA: return EclipseLinkOrmPackage.XML_MULTITENANT__INCLUDE_CRITERIA;
+				case EclipseLinkOrmV2_4Package.XML_MULTITENANT_24__TENANT_TABLE_DISCRIMINATOR: return EclipseLinkOrmPackage.XML_MULTITENANT__TENANT_TABLE_DISCRIMINATOR;
 				default: return -1;
 			}
 		}
@@ -385,7 +470,8 @@ public class XmlMultitenant extends AbstractJpaEObject implements XmlMultitenant
 		return new Translator[] {
 			buildTypeTranslator(),
 			buildIncludeCriteriaTranslator(),
-			buildTenantDiscriminatorColumnsTranslator()
+			buildTenantDiscriminatorColumnsTranslator(),
+			buildTenantTableDiscriminatorTranslator()
 		};
 	}
 
@@ -399,6 +485,10 @@ public class XmlMultitenant extends AbstractJpaEObject implements XmlMultitenant
 	
 	protected static Translator buildIncludeCriteriaTranslator() {
 		return new Translator(EclipseLink2_4.MULTITENANT__INCLUDE_CRITERIA, EclipseLinkOrmV2_4Package.eINSTANCE.getXmlMultitenant_2_4_IncludeCriteria(), Translator.DOM_ATTRIBUTE);
+	}
+
+	protected static Translator buildTenantTableDiscriminatorTranslator() {
+		return XmlTenantTableDiscriminator.buildTranslator(EclipseLink2_4.TENANT_TABLE_DISCRIMINATOR, EclipseLinkOrmV2_4Package.eINSTANCE.getXmlMultitenant_2_4_TenantTableDiscriminator());		
 	}
 
 } // XmlMultitenant

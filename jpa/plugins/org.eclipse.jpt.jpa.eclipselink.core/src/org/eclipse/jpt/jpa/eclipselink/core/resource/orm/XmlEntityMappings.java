@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -53,6 +53,9 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredFunc
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlRecord_2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlTenantDiscriminatorColumn_2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLink2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEntityMappings_2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlUuidGenerator_2_4;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -76,7 +79,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings implements XmlEntityMappings_2_1, XmlEntityMappings_2_2, XmlEntityMappings_2_3, XmlConverterContainer, XmlQueryContainer
+public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings implements XmlEntityMappings_2_1, XmlEntityMappings_2_2, XmlEntityMappings_2_3, XmlEntityMappings_2_4, XmlConverterContainer, XmlQueryContainer
 {
 	/**
 	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
@@ -227,6 +230,16 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	 * @ordered
 	 */
 	protected EList<XmlPlsqlTable> plsqlTables;
+
+	/**
+	 * The cached value of the '{@link #getUuidGenerators() <em>Uuid Generators</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getUuidGenerators()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlUuidGenerator_2_4> uuidGenerators;
 
 	/**
 	 * The cached value of the '{@link #getConverters() <em>Converters</em>}' containment reference list.
@@ -682,6 +695,29 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Uuid Generators</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlUuidGenerator_2_4}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Uuid Generators</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Uuid Generators</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntityMappings_2_4_UuidGenerators()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlUuidGenerator_2_4> getUuidGenerators()
+	{
+		if (uuidGenerators == null)
+		{
+			uuidGenerators = new EObjectContainmentEList<XmlUuidGenerator_2_4>(XmlUuidGenerator_2_4.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__UUID_GENERATORS);
+		}
+		return uuidGenerators;
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Converters</b></em>' containment reference list.
 	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlConverter}.
 	 * <!-- begin-user-doc -->
@@ -836,6 +872,8 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 				return ((InternalEList<?>)getPlsqlRecords()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PLSQL_TABLES:
 				return ((InternalEList<?>)getPlsqlTables()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__UUID_GENERATORS:
+				return ((InternalEList<?>)getUuidGenerators()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__CONVERTERS:
 				return ((InternalEList<?>)getConverters()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TYPE_CONVERTERS:
@@ -890,6 +928,8 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 				return getPlsqlRecords();
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PLSQL_TABLES:
 				return getPlsqlTables();
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__UUID_GENERATORS:
+				return getUuidGenerators();
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__CONVERTERS:
 				return getConverters();
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TYPE_CONVERTERS:
@@ -974,6 +1014,10 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 				getPlsqlTables().clear();
 				getPlsqlTables().addAll((Collection<? extends XmlPlsqlTable>)newValue);
 				return;
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__UUID_GENERATORS:
+				getUuidGenerators().clear();
+				getUuidGenerators().addAll((Collection<? extends XmlUuidGenerator_2_4>)newValue);
+				return;
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__CONVERTERS:
 				getConverters().clear();
 				getConverters().addAll((Collection<? extends XmlConverter>)newValue);
@@ -1053,6 +1097,9 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PLSQL_TABLES:
 				getPlsqlTables().clear();
 				return;
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__UUID_GENERATORS:
+				getUuidGenerators().clear();
+				return;
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__CONVERTERS:
 				getConverters().clear();
 				return;
@@ -1112,6 +1159,8 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 				return plsqlRecords != null && !plsqlRecords.isEmpty();
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PLSQL_TABLES:
 				return plsqlTables != null && !plsqlTables.isEmpty();
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__UUID_GENERATORS:
+				return uuidGenerators != null && !uuidGenerators.isEmpty();
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__CONVERTERS:
 				return converters != null && !converters.isEmpty();
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TYPE_CONVERTERS:
@@ -1174,6 +1223,14 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 				case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_PLSQL_STORED_PROCEDURE_QUERIES: return EclipseLinkOrmV2_3Package.XML_ENTITY_MAPPINGS_23__NAMED_PLSQL_STORED_PROCEDURE_QUERIES;
 				case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PLSQL_RECORDS: return EclipseLinkOrmV2_3Package.XML_ENTITY_MAPPINGS_23__PLSQL_RECORDS;
 				case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PLSQL_TABLES: return EclipseLinkOrmV2_3Package.XML_ENTITY_MAPPINGS_23__PLSQL_TABLES;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlEntityMappings_2_4.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__UUID_GENERATORS: return EclipseLinkOrmV2_4Package.XML_ENTITY_MAPPINGS_24__UUID_GENERATORS;
 				default: return -1;
 			}
 		}
@@ -1247,6 +1304,14 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 				case EclipseLinkOrmV2_3Package.XML_ENTITY_MAPPINGS_23__NAMED_PLSQL_STORED_PROCEDURE_QUERIES: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_PLSQL_STORED_PROCEDURE_QUERIES;
 				case EclipseLinkOrmV2_3Package.XML_ENTITY_MAPPINGS_23__PLSQL_RECORDS: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PLSQL_RECORDS;
 				case EclipseLinkOrmV2_3Package.XML_ENTITY_MAPPINGS_23__PLSQL_TABLES: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PLSQL_TABLES;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlEntityMappings_2_4.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_4Package.XML_ENTITY_MAPPINGS_24__UUID_GENERATORS: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__UUID_GENERATORS;
 				default: return -1;
 			}
 		}
@@ -1338,6 +1403,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 			XmlStructConverter.buildTranslator(EclipseLink.STRUCT_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterContainer_StructConverters()),
 			XmlSequenceGenerator.buildTranslator(JPA.SEQUENCE_GENERATOR, OrmPackage.eINSTANCE.getXmlEntityMappings_SequenceGenerators()),
 			XmlTableGenerator.buildTranslator(JPA.TABLE_GENERATOR, OrmPackage.eINSTANCE.getXmlEntityMappings_TableGenerators()),
+			XmlUuidGenerator.buildTranslator(EclipseLink2_4.UUID_GENERATOR, EclipseLinkOrmV2_4Package.eINSTANCE.getXmlEntityMappings_2_4_UuidGenerators()),
 			XmlPartitioning.buildTranslator(EclipseLink2_2.PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlEntityMappings_2_2_Partitioning()),
 			XmlReplicationPartitioning.buildTranslator(EclipseLink2_2.REPLICATION_PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlEntityMappings_2_2_ReplicationPartitioning()),
 			XmlRoundRobinPartitioning.buildTranslator(EclipseLink2_2.ROUND_ROBIN_PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlEntityMappings_2_2_RoundRobinPartitioning()),

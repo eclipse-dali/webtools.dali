@@ -32,13 +32,16 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlTypeMapping_2_1;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLink2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlEmbeddable_2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlEmbeddable_2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlPlsqlRecord_2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStruct_2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLink2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlEmbeddable_2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlNoSql_2_4;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -71,7 +74,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbeddable implements XmlTypeMapping, XmlEmbeddable_2_2, XmlEmbeddable_2_3, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlConverterContainer, XmlPropertyContainer
+public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbeddable implements XmlTypeMapping, XmlEmbeddable_2_2, XmlEmbeddable_2_3, XmlEmbeddable_2_4, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlConverterContainer, XmlPropertyContainer
 {
 	/**
 	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
@@ -152,6 +155,16 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 	 * @ordered
 	 */
 	protected XmlStruct_2_3 struct;
+
+	/**
+	 * The cached value of the '{@link #getNoSql() <em>No Sql</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNoSql()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlNoSql_2_4 noSql;
 
 	/**
 	 * The cached value of the '{@link #getCustomizer() <em>Customizer</em>}' containment reference.
@@ -539,6 +552,66 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 		}
 		else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT, newStruct, newStruct));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>No Sql</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>No Sql</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>No Sql</em>' containment reference.
+	 * @see #setNoSql(XmlNoSql_2_4)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEmbeddable_2_4_NoSql()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlNoSql_2_4 getNoSql()
+	{
+		return noSql;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetNoSql(XmlNoSql_2_4 newNoSql, NotificationChain msgs)
+	{
+		XmlNoSql_2_4 oldNoSql = noSql;
+		noSql = newNoSql;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_EMBEDDABLE__NO_SQL, oldNoSql, newNoSql);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEmbeddable#getNoSql <em>No Sql</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>No Sql</em>' containment reference.
+	 * @see #getNoSql()
+	 * @generated
+	 */
+	public void setNoSql(XmlNoSql_2_4 newNoSql)
+	{
+		if (newNoSql != noSql)
+		{
+			NotificationChain msgs = null;
+			if (noSql != null)
+				msgs = ((InternalEObject)noSql).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_EMBEDDABLE__NO_SQL, null, msgs);
+			if (newNoSql != null)
+				msgs = ((InternalEObject)newNoSql).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_EMBEDDABLE__NO_SQL, null, msgs);
+			msgs = basicSetNoSql(newNoSql, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_EMBEDDABLE__NO_SQL, newNoSql, newNoSql));
 	}
 
 	/**
@@ -1013,6 +1086,8 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 				return ((InternalEList<?>)getPlsqlTables()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT:
 				return basicSetStruct(null, msgs);
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__NO_SQL:
+				return basicSetNoSql(null, msgs);
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CUSTOMIZER:
 				return basicSetCustomizer(null, msgs);
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CHANGE_TRACKING:
@@ -1061,6 +1136,8 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 				return getPlsqlTables();
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT:
 				return getStruct();
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__NO_SQL:
+				return getNoSql();
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CUSTOMIZER:
 				return getCustomizer();
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CHANGE_TRACKING:
@@ -1122,6 +1199,9 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT:
 				setStruct((XmlStruct_2_3)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__NO_SQL:
+				setNoSql((XmlNoSql_2_4)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CUSTOMIZER:
 				setCustomizer((XmlClassReference)newValue);
@@ -1196,6 +1276,9 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT:
 				setStruct((XmlStruct_2_3)null);
 				return;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__NO_SQL:
+				setNoSql((XmlNoSql_2_4)null);
+				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CUSTOMIZER:
 				setCustomizer((XmlClassReference)null);
 				return;
@@ -1257,6 +1340,8 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 				return plsqlTables != null && !plsqlTables.isEmpty();
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT:
 				return struct != null;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__NO_SQL:
+				return noSql != null;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CUSTOMIZER:
 				return customizer != null;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CHANGE_TRACKING:
@@ -1344,6 +1429,14 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 				case EclipseLinkOrmPackage.XML_EMBEDDABLE__PLSQL_RECORDS: return EclipseLinkOrmV2_3Package.XML_EMBEDDABLE_23__PLSQL_RECORDS;
 				case EclipseLinkOrmPackage.XML_EMBEDDABLE__PLSQL_TABLES: return EclipseLinkOrmV2_3Package.XML_EMBEDDABLE_23__PLSQL_TABLES;
 				case EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT: return EclipseLinkOrmV2_3Package.XML_EMBEDDABLE_23__STRUCT;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlEmbeddable_2_4.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_EMBEDDABLE__NO_SQL: return EclipseLinkOrmV2_4Package.XML_EMBEDDABLE_24__NO_SQL;
 				default: return -1;
 			}
 		}
@@ -1449,6 +1542,14 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlEmbeddable_2_4.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_4Package.XML_EMBEDDABLE_24__NO_SQL: return EclipseLinkOrmPackage.XML_EMBEDDABLE__NO_SQL;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlCustomizerHolder.class)
 		{
 			switch (baseFeatureID)
@@ -1534,6 +1635,7 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 			buildCustomizerTranslator(),
 			buildChangeTrackingTranslator(),
 			XmlStruct.buildTranslator(EclipseLink2_3.STRUCT, EclipseLinkOrmV2_3Package.eINSTANCE.getXmlEmbeddable_2_3_Struct()),
+			buildNoSqlTranslator(),
 			buildConverterTranslator(),
 			buildTypeConverterTranslator(),
 			buildObjectTypeConverterTranslator(),
@@ -1598,7 +1700,7 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 	}
 
 	protected static Translator buildParentClassTranslator() {
-		return new Translator(EclipseLink2_2.PARENT_CLASS, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlTypeMapping_2_1_ParentClass(), Translator.DOM_ATTRIBUTE);
+		return new Translator(EclipseLink2_1.PARENT_CLASS, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlTypeMapping_2_1_ParentClass(), Translator.DOM_ATTRIBUTE);
 	}
 
 	protected static Translator buildAttributeOverrideTranslator() {
@@ -1608,4 +1710,9 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 	protected static Translator buildAssociationOverrideTranslator() {
 		return XmlAssociationOverride.buildTranslator(JPA.ASSOCIATION_OVERRIDE, OrmPackage.eINSTANCE.getXmlAssociationOverrideContainer_AssociationOverrides());
 	}
+
+	protected static Translator buildNoSqlTranslator() {
+		return XmlNoSql.buildTranslator(EclipseLink2_4.NO_SQL, EclipseLinkOrmV2_4Package.eINSTANCE.getXmlEmbeddable_2_4_NoSql());
+	}
+
 }

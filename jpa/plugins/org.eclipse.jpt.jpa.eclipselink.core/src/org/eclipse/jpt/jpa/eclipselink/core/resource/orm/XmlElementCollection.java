@@ -56,6 +56,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlElementCollecti
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLink2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlElementCollection_2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlField_2_4;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -394,6 +395,16 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	 * @ordered
 	 */
 	protected String compositeMember = COMPOSITE_MEMBER_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getField() <em>Field</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getField()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlField_2_4 field;
 
 	/**
 	 * The default value of the '{@link #isDeleteAll() <em>Delete All</em>}' attribute.
@@ -1366,6 +1377,66 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Field</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Field</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Field</em>' containment reference.
+	 * @see #setField(XmlField_2_4)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlElementCollection_2_4_Field()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlField_2_4 getField()
+	{
+		return field;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetField(XmlField_2_4 newField, NotificationChain msgs)
+	{
+		XmlField_2_4 oldField = field;
+		field = newField;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__FIELD, oldField, newField);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlElementCollection#getField <em>Field</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Field</em>' containment reference.
+	 * @see #getField()
+	 * @generated
+	 */
+	public void setField(XmlField_2_4 newField)
+	{
+		if (newField != field)
+		{
+			NotificationChain msgs = null;
+			if (field != null)
+				msgs = ((InternalEObject)field).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__FIELD, null, msgs);
+			if (newField != null)
+				msgs = ((InternalEObject)newField).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__FIELD, null, msgs);
+			msgs = basicSetField(newField, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__FIELD, newField, newField));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Delete All</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -1534,6 +1605,8 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 				return basicSetHashPartitioning(null, msgs);
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__UNION_PARTITIONING:
 				return basicSetUnionPartitioning(null, msgs);
+			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__FIELD:
+				return basicSetField(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -1596,6 +1669,8 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 				return isNoncacheable();
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__COMPOSITE_MEMBER:
 				return getCompositeMember();
+			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__FIELD:
+				return getField();
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__DELETE_ALL:
 				return isDeleteAll();
 		}
@@ -1691,6 +1766,9 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__COMPOSITE_MEMBER:
 				setCompositeMember((String)newValue);
 				return;
+			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__FIELD:
+				setField((XmlField_2_4)newValue);
+				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__DELETE_ALL:
 				setDeleteAll((Boolean)newValue);
 				return;
@@ -1780,6 +1858,9 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__COMPOSITE_MEMBER:
 				setCompositeMember(COMPOSITE_MEMBER_EDEFAULT);
 				return;
+			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__FIELD:
+				setField((XmlField_2_4)null);
+				return;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__DELETE_ALL:
 				setDeleteAll(DELETE_ALL_EDEFAULT);
 				return;
@@ -1845,6 +1926,8 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 				return noncacheable != NONCACHEABLE_EDEFAULT;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__COMPOSITE_MEMBER:
 				return COMPOSITE_MEMBER_EDEFAULT == null ? compositeMember != null : !COMPOSITE_MEMBER_EDEFAULT.equals(compositeMember);
+			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__FIELD:
+				return field != null;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__DELETE_ALL:
 				return deleteAll != DELETE_ALL_EDEFAULT;
 		}
@@ -1985,6 +2068,7 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 		{
 			switch (derivedFeatureID)
 			{
+				case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__FIELD: return EclipseLinkOrmV2_4Package.XML_ELEMENT_COLLECTION_24__FIELD;
 				case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__DELETE_ALL: return EclipseLinkOrmV2_4Package.XML_ELEMENT_COLLECTION_24__DELETE_ALL;
 				default: return -1;
 			}
@@ -2126,6 +2210,7 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 		{
 			switch (baseFeatureID)
 			{
+				case EclipseLinkOrmV2_4Package.XML_ELEMENT_COLLECTION_24__FIELD: return EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__FIELD;
 				case EclipseLinkOrmV2_4Package.XML_ELEMENT_COLLECTION_24__DELETE_ALL: return EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__DELETE_ALL;
 				default: return -1;
 			}
@@ -2238,6 +2323,7 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 			XmlObjectTypeConverter.buildTranslator(EclipseLink.OBJECT_TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterContainer_ObjectTypeConverters()),
 			XmlStructConverter.buildTranslator(EclipseLink.STRUCT_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterContainer_StructConverters()),
 			XmlCollectionTable.buildTranslator(JPA2_0.COLLECTION_TABLE, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_CollectionTable()),
+			buildFieldTranslator(),
 			buildCascadeOnDeleteTranslator(),
 			buildJoinFetchTranslator(),
 			buildBatchFetchTranslator(),
@@ -2302,6 +2388,10 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 	
 	protected static Translator buildDeleteAllTranslator() {
 		return new EmptyTagBooleanTranslator(EclipseLink2_4.DELETE_ALL, EclipseLinkOrmV2_4Package.eINSTANCE.getXmlElementCollection_2_4_DeleteAll());
+	}
+
+	protected static Translator buildFieldTranslator() {
+		return XmlField.buildTranslator(EclipseLink2_4.FIELD, EclipseLinkOrmV2_4Package.eINSTANCE.getXmlElementCollection_2_4_Field());
 	}
 
 	// *********** content assist ************

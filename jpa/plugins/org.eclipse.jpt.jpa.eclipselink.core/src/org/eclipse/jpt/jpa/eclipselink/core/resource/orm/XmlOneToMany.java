@@ -50,6 +50,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlUnionPartitioni
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlValuePartitioning_2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLink2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlJoinField_2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlOneToMany_2_4;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -295,6 +296,16 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 	 * @ordered
 	 */
 	protected boolean noncacheable = NONCACHEABLE_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getJoinFields() <em>Join Fields</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getJoinFields()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlJoinField_2_4> joinFields;
 
 	/**
 	 * The default value of the '{@link #isDeleteAll() <em>Delete All</em>}' attribute.
@@ -1317,6 +1328,29 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Join Fields</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlJoinField_2_4}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Join Fields</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Join Fields</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlOneToMany_2_4_JoinFields()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlJoinField_2_4> getJoinFields()
+	{
+		if (joinFields == null)
+		{
+			joinFields = new EObjectContainmentEList<XmlJoinField_2_4>(XmlJoinField_2_4.class, this, EclipseLinkOrmPackage.XML_ONE_TO_MANY__JOIN_FIELDS);
+		}
+		return joinFields;
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Delete All</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -1472,6 +1506,8 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 				return basicSetHashPartitioning(null, msgs);
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__UNION_PARTITIONING:
 				return basicSetUnionPartitioning(null, msgs);
+			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__JOIN_FIELDS:
+				return ((InternalEList<?>)getJoinFields()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__ACCESS_METHODS:
 				return basicSetAccessMethods(null, msgs);
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__PROPERTIES:
@@ -1526,6 +1562,8 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 				return getCascadeOnDelete();
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__NONCACHEABLE:
 				return isNoncacheable();
+			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__JOIN_FIELDS:
+				return getJoinFields();
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__DELETE_ALL:
 				return isDeleteAll();
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__ACCESS_METHODS:
@@ -1611,6 +1649,10 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 				return;
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__NONCACHEABLE:
 				setNoncacheable((Boolean)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__JOIN_FIELDS:
+				getJoinFields().clear();
+				getJoinFields().addAll((Collection<? extends XmlJoinField_2_4>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__DELETE_ALL:
 				setDeleteAll((Boolean)newValue);
@@ -1699,6 +1741,9 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__NONCACHEABLE:
 				setNoncacheable(NONCACHEABLE_EDEFAULT);
 				return;
+			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__JOIN_FIELDS:
+				getJoinFields().clear();
+				return;
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__DELETE_ALL:
 				setDeleteAll(DELETE_ALL_EDEFAULT);
 				return;
@@ -1767,6 +1812,8 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 				return CASCADE_ON_DELETE_EDEFAULT == null ? cascadeOnDelete != null : !CASCADE_ON_DELETE_EDEFAULT.equals(cascadeOnDelete);
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__NONCACHEABLE:
 				return noncacheable != NONCACHEABLE_EDEFAULT;
+			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__JOIN_FIELDS:
+				return joinFields != null && !joinFields.isEmpty();
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__DELETE_ALL:
 				return deleteAll != DELETE_ALL_EDEFAULT;
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY__ACCESS_METHODS:
@@ -1869,6 +1916,7 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 		{
 			switch (derivedFeatureID)
 			{
+				case EclipseLinkOrmPackage.XML_ONE_TO_MANY__JOIN_FIELDS: return EclipseLinkOrmV2_4Package.XML_ONE_TO_MANY_24__JOIN_FIELDS;
 				case EclipseLinkOrmPackage.XML_ONE_TO_MANY__DELETE_ALL: return EclipseLinkOrmV2_4Package.XML_ONE_TO_MANY_24__DELETE_ALL;
 				default: return -1;
 			}
@@ -2002,6 +2050,7 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 		{
 			switch (baseFeatureID)
 			{
+				case EclipseLinkOrmV2_4Package.XML_ONE_TO_MANY_24__JOIN_FIELDS: return EclipseLinkOrmPackage.XML_ONE_TO_MANY__JOIN_FIELDS;
 				case EclipseLinkOrmV2_4Package.XML_ONE_TO_MANY_24__DELETE_ALL: return EclipseLinkOrmPackage.XML_ONE_TO_MANY__DELETE_ALL;
 				default: return -1;
 			}
@@ -2129,6 +2178,7 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 			buildStructConverterTranslator(),
 			buildJoinTableTranslator(),
 			buildJoinColumnTranslator(),
+			buildJoinFieldTranslator(),
 			buildCascadeTranslator(),
 			buildCascadeOnDeleteTranslator(),
 			buildPrivateOwnedTranslator(),
@@ -2216,5 +2266,9 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
    
 	protected static Translator buildDeleteAllTranslator() {
 		return new EmptyTagBooleanTranslator(EclipseLink2_4.DELETE_ALL, EclipseLinkOrmV2_4Package.eINSTANCE.getXmlOneToMany_2_4_DeleteAll());
+	}
+
+	protected static Translator buildJoinFieldTranslator() {
+		return XmlJoinField.buildTranslator(EclipseLink2_4.JOIN_FIELD, EclipseLinkOrmV2_4Package.eINSTANCE.getXmlOneToMany_2_4_JoinFields());
 	}
 }

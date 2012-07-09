@@ -49,6 +49,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlReplicationPart
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlRoundRobinPartitioning_2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlUnionPartitioning_2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlValuePartitioning_2_2;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLink2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlJoinField_2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlManyToMany_2_4;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -72,7 +76,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlManyToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlManyToMany implements XmlManyToMany_2_0, XmlManyToMany_2_1, XmlManyToMany_2_2, XmlAttributeMapping, XmlJoinFetch
+public class XmlManyToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlManyToMany implements XmlManyToMany_2_0, XmlManyToMany_2_1, XmlManyToMany_2_2, XmlManyToMany_2_4, XmlAttributeMapping, XmlJoinFetch
 {
 	/**
 	 * The cached value of the '{@link #getMapKeyAssociationOverrides() <em>Map Key Association Overrides</em>}' containment reference list.
@@ -293,6 +297,16 @@ public class XmlManyToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlMany
 	 * @ordered
 	 */
 	protected boolean nonCacheable = NON_CACHEABLE_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getJoinFields() <em>Join Fields</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getJoinFields()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlJoinField_2_4> joinFields;
 
 	/**
 	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
@@ -1240,6 +1254,29 @@ public class XmlManyToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlMany
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Join Fields</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlJoinField_2_4}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Join Fields</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Join Fields</em>' containment reference list.
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlManyToMany_2_4_JoinFields()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlJoinField_2_4> getJoinFields()
+	{
+		if (joinFields == null)
+		{
+			joinFields = new EObjectContainmentEList<XmlJoinField_2_4>(XmlJoinField_2_4.class, this, EclipseLinkOrmPackage.XML_MANY_TO_MANY__JOIN_FIELDS);
+		}
+		return joinFields;
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Access Methods</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -1360,6 +1397,8 @@ public class XmlManyToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlMany
 				return basicSetHashPartitioning(null, msgs);
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__UNION_PARTITIONING:
 				return basicSetUnionPartitioning(null, msgs);
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__JOIN_FIELDS:
+				return ((InternalEList<?>)getJoinFields()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__ACCESS_METHODS:
 				return basicSetAccessMethods(null, msgs);
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__PROPERTIES:
@@ -1414,6 +1453,8 @@ public class XmlManyToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlMany
 				return getCascadeOnDelete();
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__NON_CACHEABLE:
 				return isNonCacheable();
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__JOIN_FIELDS:
+				return getJoinFields();
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__ACCESS_METHODS:
 				return getAccessMethods();
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__PROPERTIES:
@@ -1496,6 +1537,10 @@ public class XmlManyToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlMany
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__NON_CACHEABLE:
 				setNonCacheable((Boolean)newValue);
 				return;
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__JOIN_FIELDS:
+				getJoinFields().clear();
+				getJoinFields().addAll((Collection<? extends XmlJoinField_2_4>)newValue);
+				return;
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)newValue);
 				return;
@@ -1577,6 +1622,9 @@ public class XmlManyToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlMany
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__NON_CACHEABLE:
 				setNonCacheable(NON_CACHEABLE_EDEFAULT);
 				return;
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__JOIN_FIELDS:
+				getJoinFields().clear();
+				return;
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)null);
 				return;
@@ -1639,6 +1687,8 @@ public class XmlManyToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlMany
 				return CASCADE_ON_DELETE_EDEFAULT == null ? cascadeOnDelete != null : !CASCADE_ON_DELETE_EDEFAULT.equals(cascadeOnDelete);
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__NON_CACHEABLE:
 				return nonCacheable != NON_CACHEABLE_EDEFAULT;
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__JOIN_FIELDS:
+				return joinFields != null && !joinFields.isEmpty();
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__ACCESS_METHODS:
 				return accessMethods != null;
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__PROPERTIES:
@@ -1730,6 +1780,14 @@ public class XmlManyToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlMany
 			{
 				case EclipseLinkOrmPackage.XML_MANY_TO_MANY__CASCADE_ON_DELETE: return EclipseLinkOrmV2_2Package.XML_MANY_TO_MANY_22__CASCADE_ON_DELETE;
 				case EclipseLinkOrmPackage.XML_MANY_TO_MANY__NON_CACHEABLE: return EclipseLinkOrmV2_2Package.XML_MANY_TO_MANY_22__NON_CACHEABLE;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlManyToMany_2_4.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_MANY_TO_MANY__JOIN_FIELDS: return EclipseLinkOrmV2_4Package.XML_MANY_TO_MANY_24__JOIN_FIELDS;
 				default: return -1;
 			}
 		}
@@ -1850,6 +1908,14 @@ public class XmlManyToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlMany
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlManyToMany_2_4.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_4Package.XML_MANY_TO_MANY_24__JOIN_FIELDS: return EclipseLinkOrmPackage.XML_MANY_TO_MANY__JOIN_FIELDS;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlAccessMethodsHolder.class)
 		{
 			switch (baseFeatureID)
@@ -1955,6 +2021,7 @@ public class XmlManyToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlMany
 			buildObjectTypeConverterTranslator(),
 			buildStructConverterTranslator(),
 			buildJoinTableTranslator(),
+			buildJoinFieldTranslator(),
 			buildCascadeTranslator(),
 			buildCascadeOnDeleteTranslator(),
 			buildJoinFetchTranslator(),
@@ -2036,6 +2103,9 @@ public class XmlManyToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlMany
 
     protected static Translator buildPartitionedTranslator() {
 		return new Translator(EclipseLink2_2.PARTITIONING_GROUP__PARTITIONED, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlPartitioningGroup_2_2_Partitioned());
-	}	
+	}
 
+	protected static Translator buildJoinFieldTranslator() {
+		return XmlJoinField.buildTranslator(EclipseLink2_4.JOIN_FIELD, EclipseLinkOrmV2_4Package.eINSTANCE.getXmlManyToMany_2_4_JoinFields());
+	}
 }

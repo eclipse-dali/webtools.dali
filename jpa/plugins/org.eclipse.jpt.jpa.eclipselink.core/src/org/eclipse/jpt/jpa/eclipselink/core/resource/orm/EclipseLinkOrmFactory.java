@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008, 2011  Oracle. 
+ *  Copyright (c) 2008, 2012  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -106,10 +106,12 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS: return (EObject)createXmlEntityMappings();
 			case EclipseLinkOrmPackage.XML_FETCH_ATTRIBUTE: return (EObject)createXmlFetchAttribute();
 			case EclipseLinkOrmPackage.XML_FETCH_GROUP: return (EObject)createXmlFetchGroup();
+			case EclipseLinkOrmPackage.XML_FIELD: return (EObject)createXmlField();
 			case EclipseLinkOrmPackage.XML_HASH_PARTITIONING: return (EObject)createXmlHashPartitioning();
 			case EclipseLinkOrmPackage.XML_ID: return (EObject)createXmlId();
 			case EclipseLinkOrmPackage.XML_INDEX: return (EObject)createXmlIndex();
 			case EclipseLinkOrmPackage.XML_INSTANTIATION_COPY_POLICY: return (EObject)createXmlInstantiationCopyPolicy();
+			case EclipseLinkOrmPackage.XML_JOIN_FIELD: return (EObject)createXmlJoinField();
 			case EclipseLinkOrmPackage.XML_JOIN_TABLE: return (EObject)createXmlJoinTable();
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY: return (EObject)createXmlManyToMany();
 			case EclipseLinkOrmPackage.XML_MANY_TO_ONE: return (EObject)createXmlManyToOne();
@@ -120,6 +122,7 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_NAMED_PLSQL_STORED_PROCEDURE_QUERY: return (EObject)createXmlNamedPlsqlStoredProcedureQuery();
 			case EclipseLinkOrmPackage.XML_NAMED_STORED_FUNCTION_QUERY: return (EObject)createXmlNamedStoredFunctionQuery();
 			case EclipseLinkOrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY: return (EObject)createXmlNamedStoredProcedureQuery();
+			case EclipseLinkOrmPackage.XML_NO_SQL: return (EObject)createXmlNoSql();
 			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER: return (EObject)createXmlObjectTypeConverter();
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY: return (EObject)createXmlOneToMany();
 			case EclipseLinkOrmPackage.XML_ONE_TO_ONE: return (EObject)createXmlOneToOne();
@@ -146,11 +149,13 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_TABLE: return (EObject)createXmlTable();
 			case EclipseLinkOrmPackage.XML_TABLE_GENERATOR: return (EObject)createXmlTableGenerator();
 			case EclipseLinkOrmPackage.XML_TENANT_DISCRIMINATOR_COLUMN: return (EObject)createXmlTenantDiscriminatorColumn();
+			case EclipseLinkOrmPackage.XML_TENANT_TABLE_DISCRIMINATOR: return (EObject)createXmlTenantTableDiscriminator();
 			case EclipseLinkOrmPackage.XML_TIME_OF_DAY: return (EObject)createXmlTimeOfDay();
 			case EclipseLinkOrmPackage.XML_TRANSFORMATION: return (EObject)createXmlTransformation();
 			case EclipseLinkOrmPackage.XML_TRANSIENT: return (EObject)createXmlTransient();
 			case EclipseLinkOrmPackage.XML_TYPE_CONVERTER: return (EObject)createXmlTypeConverter();
 			case EclipseLinkOrmPackage.XML_UNION_PARTITIONING: return (EObject)createXmlUnionPartitioning();
+			case EclipseLinkOrmPackage.XML_UUID_GENERATOR: return (EObject)createXmlUuidGenerator();
 			case EclipseLinkOrmPackage.XML_VALUE_PARTITIONING: return (EObject)createXmlValuePartitioning();
 			case EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE: return (EObject)createXmlVariableOneToOne();
 			case EclipseLinkOrmPackage.XML_VERSION: return (EObject)createXmlVersion();
@@ -497,6 +502,17 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public XmlField createXmlField()
+	{
+		XmlField xmlField = new XmlField();
+		return xmlField;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public XmlId createXmlId()
 	{
 		XmlId xmlId = new XmlId();
@@ -523,6 +539,17 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		XmlInstantiationCopyPolicy xmlInstantiationCopyPolicy = new XmlInstantiationCopyPolicy();
 		return xmlInstantiationCopyPolicy;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlJoinField createXmlJoinField()
+	{
+		XmlJoinField xmlJoinField = new XmlJoinField();
+		return xmlJoinField;
 	}
 
 	/**
@@ -633,6 +660,17 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		XmlNamedStoredProcedureQuery xmlNamedStoredProcedureQuery = new XmlNamedStoredProcedureQuery();
 		return xmlNamedStoredProcedureQuery;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlNoSql createXmlNoSql()
+	{
+		XmlNoSql xmlNoSql = new XmlNoSql();
+		return xmlNoSql;
 	}
 
 	/**
@@ -849,6 +887,17 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public XmlTenantTableDiscriminator createXmlTenantTableDiscriminator()
+	{
+		XmlTenantTableDiscriminator xmlTenantTableDiscriminator = new XmlTenantTableDiscriminator();
+		return xmlTenantTableDiscriminator;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public XmlTimeOfDay createXmlTimeOfDay()
 	{
 		XmlTimeOfDay xmlTimeOfDay = new XmlTimeOfDay();
@@ -1007,6 +1056,17 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		XmlUnionPartitioning xmlUnionPartitioning = new XmlUnionPartitioning();
 		return xmlUnionPartitioning;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlUuidGenerator createXmlUuidGenerator()
+	{
+		XmlUuidGenerator xmlUuidGenerator = new XmlUuidGenerator();
+		return xmlUuidGenerator;
 	}
 
 	/**

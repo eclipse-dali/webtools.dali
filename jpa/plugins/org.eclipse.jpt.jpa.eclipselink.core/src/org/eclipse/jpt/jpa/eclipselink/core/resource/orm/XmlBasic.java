@@ -41,6 +41,9 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLink2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlBasic_2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlCacheIndex_2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlField_2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlGeneratorContainer2_4;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlUuidGenerator_2_4;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -131,6 +134,24 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 	 * @ordered
 	 */
 	protected XmlIndex_2_2 index;
+	/**
+	 * The cached value of the '{@link #getUuidGenerator() <em>Uuid Generator</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getUuidGenerator()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlUuidGenerator_2_4 uuidGenerator;
+	/**
+	 * The cached value of the '{@link #getField() <em>Field</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getField()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlField_2_4 field;
 	/**
 	 * The cached value of the '{@link #getCacheIndex() <em>Cache Index</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -804,6 +825,66 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Field</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Field</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Field</em>' containment reference.
+	 * @see #setField(XmlField_2_4)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBasic_2_4_Field()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlField_2_4 getField()
+	{
+		return field;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetField(XmlField_2_4 newField, NotificationChain msgs)
+	{
+		XmlField_2_4 oldField = field;
+		field = newField;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_BASIC__FIELD, oldField, newField);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasic#getField <em>Field</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Field</em>' containment reference.
+	 * @see #getField()
+	 * @generated
+	 */
+	public void setField(XmlField_2_4 newField)
+	{
+		if (newField != field)
+		{
+			NotificationChain msgs = null;
+			if (field != null)
+				msgs = ((InternalEObject)field).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_BASIC__FIELD, null, msgs);
+			if (newField != null)
+				msgs = ((InternalEObject)newField).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_BASIC__FIELD, null, msgs);
+			msgs = basicSetField(newField, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_BASIC__FIELD, newField, newField));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Cache Index</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -861,6 +942,66 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 		}
 		else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_BASIC__CACHE_INDEX, newCacheIndex, newCacheIndex));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Uuid Generator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Uuid Generator</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Uuid Generator</em>' containment reference.
+	 * @see #setUuidGenerator(XmlUuidGenerator_2_4)
+	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlGeneratorContainer2_4_UuidGenerator()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlUuidGenerator_2_4 getUuidGenerator()
+	{
+		return uuidGenerator;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetUuidGenerator(XmlUuidGenerator_2_4 newUuidGenerator, NotificationChain msgs)
+	{
+		XmlUuidGenerator_2_4 oldUuidGenerator = uuidGenerator;
+		uuidGenerator = newUuidGenerator;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_BASIC__UUID_GENERATOR, oldUuidGenerator, newUuidGenerator);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasic#getUuidGenerator <em>Uuid Generator</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Uuid Generator</em>' containment reference.
+	 * @see #getUuidGenerator()
+	 * @generated
+	 */
+	public void setUuidGenerator(XmlUuidGenerator_2_4 newUuidGenerator)
+	{
+		if (newUuidGenerator != uuidGenerator)
+		{
+			NotificationChain msgs = null;
+			if (uuidGenerator != null)
+				msgs = ((InternalEObject)uuidGenerator).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_BASIC__UUID_GENERATOR, null, msgs);
+			if (newUuidGenerator != null)
+				msgs = ((InternalEObject)newUuidGenerator).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_BASIC__UUID_GENERATOR, null, msgs);
+			msgs = basicSetUuidGenerator(newUuidGenerator, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_BASIC__UUID_GENERATOR, newUuidGenerator, newUuidGenerator));
 	}
 
 	/**
@@ -966,6 +1107,10 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 				return basicSetReturnInsert(null, msgs);
 			case EclipseLinkOrmPackage.XML_BASIC__INDEX:
 				return basicSetIndex(null, msgs);
+			case EclipseLinkOrmPackage.XML_BASIC__UUID_GENERATOR:
+				return basicSetUuidGenerator(null, msgs);
+			case EclipseLinkOrmPackage.XML_BASIC__FIELD:
+				return basicSetField(null, msgs);
 			case EclipseLinkOrmPackage.XML_BASIC__CACHE_INDEX:
 				return basicSetCacheIndex(null, msgs);
 			case EclipseLinkOrmPackage.XML_BASIC__ACCESS_METHODS:
@@ -1006,6 +1151,10 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 				return getReturnUpdate();
 			case EclipseLinkOrmPackage.XML_BASIC__INDEX:
 				return getIndex();
+			case EclipseLinkOrmPackage.XML_BASIC__UUID_GENERATOR:
+				return getUuidGenerator();
+			case EclipseLinkOrmPackage.XML_BASIC__FIELD:
+				return getField();
 			case EclipseLinkOrmPackage.XML_BASIC__CACHE_INDEX:
 				return getCacheIndex();
 			case EclipseLinkOrmPackage.XML_BASIC__ACCESS_METHODS:
@@ -1058,6 +1207,12 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 				return;
 			case EclipseLinkOrmPackage.XML_BASIC__INDEX:
 				setIndex((XmlIndex_2_2)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_BASIC__UUID_GENERATOR:
+				setUuidGenerator((XmlUuidGenerator_2_4)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_BASIC__FIELD:
+				setField((XmlField_2_4)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_BASIC__CACHE_INDEX:
 				setCacheIndex((XmlCacheIndex_2_4)newValue);
@@ -1126,6 +1281,12 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 			case EclipseLinkOrmPackage.XML_BASIC__INDEX:
 				setIndex((XmlIndex_2_2)null);
 				return;
+			case EclipseLinkOrmPackage.XML_BASIC__UUID_GENERATOR:
+				setUuidGenerator((XmlUuidGenerator_2_4)null);
+				return;
+			case EclipseLinkOrmPackage.XML_BASIC__FIELD:
+				setField((XmlField_2_4)null);
+				return;
 			case EclipseLinkOrmPackage.XML_BASIC__CACHE_INDEX:
 				setCacheIndex((XmlCacheIndex_2_4)null);
 				return;
@@ -1182,6 +1343,10 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 				return RETURN_UPDATE_EDEFAULT == null ? returnUpdate != null : !RETURN_UPDATE_EDEFAULT.equals(returnUpdate);
 			case EclipseLinkOrmPackage.XML_BASIC__INDEX:
 				return index != null;
+			case EclipseLinkOrmPackage.XML_BASIC__UUID_GENERATOR:
+				return uuidGenerator != null;
+			case EclipseLinkOrmPackage.XML_BASIC__FIELD:
+				return field != null;
 			case EclipseLinkOrmPackage.XML_BASIC__CACHE_INDEX:
 				return cacheIndex != null;
 			case EclipseLinkOrmPackage.XML_BASIC__ACCESS_METHODS:
@@ -1248,10 +1413,19 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlGeneratorContainer2_4.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_BASIC__UUID_GENERATOR: return EclipseLinkOrmV2_4Package.XML_GENERATOR_CONTAINER2_4__UUID_GENERATOR;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlBasic_2_4.class)
 		{
 			switch (derivedFeatureID)
 			{
+				case EclipseLinkOrmPackage.XML_BASIC__FIELD: return EclipseLinkOrmV2_4Package.XML_BASIC_24__FIELD;
 				case EclipseLinkOrmPackage.XML_BASIC__CACHE_INDEX: return EclipseLinkOrmV2_4Package.XML_BASIC_24__CACHE_INDEX;
 				default: return -1;
 			}
@@ -1352,10 +1526,19 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlGeneratorContainer2_4.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_4Package.XML_GENERATOR_CONTAINER2_4__UUID_GENERATOR: return EclipseLinkOrmPackage.XML_BASIC__UUID_GENERATOR;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlBasic_2_4.class)
 		{
 			switch (baseFeatureID)
 			{
+				case EclipseLinkOrmV2_4Package.XML_BASIC_24__FIELD: return EclipseLinkOrmPackage.XML_BASIC__FIELD;
 				case EclipseLinkOrmV2_4Package.XML_BASIC_24__CACHE_INDEX: return EclipseLinkOrmPackage.XML_BASIC__CACHE_INDEX;
 				default: return -1;
 			}
@@ -1468,6 +1651,7 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 			buildMutableTranslator(),
 			buildAttributeTypeTranslator(),
 			buildColumnTranslator(), 
+			buildFieldTranslator(), 
 			buildIndexTranslator(), 
 			buildCacheIndexTranslator(), 
 			buildGeneratedValueTranslator(), 
@@ -1481,6 +1665,7 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 			buildStructConverterTranslator(),
 			buildTableGeneratorTranslator(),
 			buildSequenceGeneratorTranslator(),
+			buildUuidGeneratorTranslator(),
 			buildPropertyTranslator(),
 			buildAccessMethodsTranslator(),
 			buildReturnInsertTranslator(),
@@ -1549,6 +1734,14 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 
 	protected static Translator buildAttributeTypeTranslator() {
 		return new Translator(EclipseLink2_1.ATTRIBUTE_TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlAttributeMapping_AttributeType(), Translator.DOM_ATTRIBUTE);
+	}
+
+	protected static Translator buildUuidGeneratorTranslator() {
+		return XmlUuidGenerator.buildTranslator(EclipseLink2_4.UUID_GENERATOR, EclipseLinkOrmV2_4Package.eINSTANCE.getXmlGeneratorContainer2_4_UuidGenerator());
+	}
+
+	protected static Translator buildFieldTranslator() {
+		return XmlField.buildTranslator(EclipseLink2_4.FIELD, EclipseLinkOrmV2_4Package.eINSTANCE.getXmlBasic_2_4_Field());
 	}
 
 	// *********** content assist ************

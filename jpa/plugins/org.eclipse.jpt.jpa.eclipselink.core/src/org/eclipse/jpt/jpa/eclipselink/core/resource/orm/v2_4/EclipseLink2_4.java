@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2012 Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -26,7 +26,17 @@ public interface EclipseLink2_4
 	String CACHE_INDEX = "cache-index";
 		String CACHE_INDEX__COLUMN_NAME = "column-name";
 	String DELETE_ALL = "delete-all";
+	String FIELD = "field";
+	String JOIN_FIELD = "join-field";
+		String JOIN_FIELD__NAME = "name";
+		String JOIN_FIELD__REFERENCED_FIELD_NAME = "referenced-field-name";
 	String MULTITENANT__INCLUDE_CRITERIA = "include-criteria";
-
+	String TENANT_TABLE_DISCRIMINATOR = "tenant-table-discriminator";
+		String TENANT_TABLE_DISCRIMINATOR__CONTEXT_PROPERTY = "context-property";
+		String TENANT_TABLE_DISCRIMINATOR__TYPE = "type";
+	String NO_SQL = "no-sql";
+		String NO_SQL__DATA_TYPE = "data-type";
+		String NO_SQL__DATA_FORMAT = "data-format";
+	String UUID_GENERATOR = "uuid-generator";
 
 }
