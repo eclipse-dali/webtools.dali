@@ -1359,6 +1359,10 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 				ArrayIterator<JavaPersistentAttribute> it = (ArrayIterator<JavaPersistentAttribute>) event.getItems().iterator();
 				while (it.hasNext()) {
 					JavaPersistentAttribute at = it.next();
+					if(at.getMapping() == null || at.getMapping().getMappingAnnotation() == null){
+						at.getResourceAttribute().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
+					}
+					
 					//Shape atShape = (Shape) featureProvider.getPictogramElementForBusinessObject(at);
 					//if (atShape != null)
 					//	continue;

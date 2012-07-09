@@ -36,6 +36,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.preferences.JPAEditorPreferenceInitializer;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.preferences.JPAEditorPreferencesPage;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -84,14 +85,7 @@ public class JPADiagramPropertyPage extends PropertyPage {
 	static public final QualifiedName PROP_DIRECT_EDIT_AFFECTS_CLASS 	= new QualifiedName(QUALIFIER, "directEditAffectsClass");	//$NON-NLS-1$;
 	static public final QualifiedName PROP_ACCESS_TYPE 					= new QualifiedName(QUALIFIER, "accessType");				//$NON-NLS-1$;
 	static public final QualifiedName PROP_COLLECTION_TYPE 				= new QualifiedName(QUALIFIER, "collectionType");			//$NON-NLS-1$;
-	static public final QualifiedName PROP_ONE_TO_MANY_OLD_STYLE		= new QualifiedName(QUALIFIER, "oneToManyOldStyle");		//$NON-NLS-1$;
-
-
-    public static final String COLLECTION_TYPE = "java.util.Collection"; //$NON-NLS-1$
-    public static final String LIST_TYPE = "java.util.List"; //$NON-NLS-1$
-    public static final String SET_TYPE = "java.util.Set"; //$NON-NLS-1$
-    public static final String MAP_TYPE = "java.util.Map"; //$NON-NLS-1$
-
+	static public final QualifiedName PROP_ONE_TO_MANY_OLD_STYLE = new QualifiedName(QUALIFIER, "oneToManyOldStyle");		//$NON-NLS-1$;
 
 	private IPreferenceStore store = JPADiagramEditorPlugin.getDefault().getPreferenceStore();
 
@@ -270,7 +264,7 @@ public class JPADiagramPropertyPage extends PropertyPage {
 
 	private void createCollectionTypeButton(Composite composite, GridData gd, String defaultCollectionType) {
 		btnCollectionType = new Button(groupCollectionType, SWT.RADIO | SWT.FLAT);
-		btnCollectionType.setText(COLLECTION_TYPE);
+		btnCollectionType.setText(JPAEditorConstants.COLLECTION_TYPE);
 		gd = new GridData();
 		btnCollectionType.setLayoutData(gd);
 		btnCollectionType.setSelection(defaultCollectionType.equals(JPAEditorPreferenceInitializer.PROPERTY_VAL_COLLECTION_TYPE));
@@ -284,7 +278,7 @@ public class JPADiagramPropertyPage extends PropertyPage {
 
 	private void createListTypeButton(Composite composite, GridData gd, String defaultCollectionType) {
 		btnListType = new Button(groupCollectionType, SWT.RADIO | SWT.FLAT);
-		btnListType.setText(LIST_TYPE);
+		btnListType.setText(JPAEditorConstants.LIST_TYPE);
 		gd = new GridData();
 		btnListType.setLayoutData(gd);
 		btnListType.setSelection(defaultCollectionType.equals(JPAEditorPreferenceInitializer.PROPERTY_VAL_LIST_TYPE));
@@ -298,7 +292,7 @@ public class JPADiagramPropertyPage extends PropertyPage {
 
 	private void createSetTypeButton(Composite composite, GridData gd, String defaultCollectionType) {
 		btnSetType = new Button(groupCollectionType, SWT.RADIO | SWT.FLAT);
-		btnSetType.setText(SET_TYPE);
+		btnSetType.setText(JPAEditorConstants.SET_TYPE);
 		gd = new GridData();
 		btnSetType.setLayoutData(gd);
 		btnSetType.setSelection(defaultCollectionType.equals(JPAEditorPreferenceInitializer.PROPERTY_VAL_SET_TYPE));
@@ -312,7 +306,7 @@ public class JPADiagramPropertyPage extends PropertyPage {
 
 	private void createMapTypeButton(Composite composite, GridData gd, String defaultCollectionType) {
 		btnMapType = new Button(groupCollectionType, SWT.RADIO | SWT.FLAT);
-		btnMapType.setText(MAP_TYPE);
+		btnMapType.setText(JPAEditorConstants.MAP_TYPE);
 		gd = new GridData();
 		btnMapType.setLayoutData(gd);
 		btnMapType.setSelection(defaultCollectionType.equals(JPAEditorPreferenceInitializer.PROPERTY_VAL_MAP_TYPE));

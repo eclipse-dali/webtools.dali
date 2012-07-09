@@ -57,40 +57,8 @@ public class OneToOneBiDirRelation extends OneToOneRelation implements IBidirect
 	}
 
 	private void createRelation(IJPAEditorFeatureProvider fp, ICompilationUnit ownerCU, ICompilationUnit inverseCU) {
-		String name = JPAEditorUtil.returnSimpleName(inverse.getName());
-		String actName = JPAEditorUtil.returnSimpleName(JpaArtifactFactory.instance().getEntityName(inverse));
-		String nameWithNonCapitalLetter = JPAEditorUtil.decapitalizeFirstLetter(name);
-		String actNameWithNonCapitalLetter = JPAEditorUtil.decapitalizeFirstLetter(actName);
-		
-		if (JpaArtifactFactory.instance().isMethodAnnotated(owner)) {
-			nameWithNonCapitalLetter = JPAEditorUtil.produceValidAttributeName(name);
-			actNameWithNonCapitalLetter = JPAEditorUtil.produceValidAttributeName(actName);
-		}
-		nameWithNonCapitalLetter = JPAEditorUtil.produceUniqueAttributeName(owner, nameWithNonCapitalLetter);
-		actNameWithNonCapitalLetter = JPAEditorUtil.produceUniqueAttributeName(owner, actNameWithNonCapitalLetter); 
-		
-		ownerAnnotatedAttribute = JpaArtifactFactory.instance().addAttribute(fp, owner, inverse, 
-																			 nameWithNonCapitalLetter, 
-																			 actNameWithNonCapitalLetter, false, 
-																			 ownerCU,
-																			 inverseCU);
-		
-		name = JPAEditorUtil.returnSimpleName(owner.getName());
-		actName = JPAEditorUtil.returnSimpleName(JpaArtifactFactory.instance().getEntityName(owner));
-		nameWithNonCapitalLetter = JPAEditorUtil.decapitalizeFirstLetter(name);
-		actNameWithNonCapitalLetter = JPAEditorUtil.decapitalizeFirstLetter(actName);		
-		
-		if (JpaArtifactFactory.instance().isMethodAnnotated(inverse)) {
-			nameWithNonCapitalLetter = JPAEditorUtil.produceValidAttributeName(name);
-			actNameWithNonCapitalLetter = JPAEditorUtil.produceValidAttributeName(actName);
-		}
-		nameWithNonCapitalLetter = JPAEditorUtil.produceUniqueAttributeName(inverse, nameWithNonCapitalLetter); 
-		actNameWithNonCapitalLetter = JPAEditorUtil.produceUniqueAttributeName(inverse, actNameWithNonCapitalLetter); 
-		inverseAnnotatedAttribute = JpaArtifactFactory.instance().addAttribute(fp, inverse, owner, 
-																			   nameWithNonCapitalLetter, actNameWithNonCapitalLetter, 
-																			   false, 
-																			   inverseCU,
-																			   ownerCU);
+		ownerAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, owner, inverse, ownerCU, inverseCU, false, null);
+		inverseAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, inverse, owner, inverseCU, ownerCU, false, null);
 		
 		JpaArtifactFactory.instance().addOneToOneBidirectionalRelation(fp, owner, ownerAnnotatedAttribute, inverse, inverseAnnotatedAttribute);		
 	} 	

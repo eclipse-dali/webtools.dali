@@ -36,6 +36,14 @@ public class JPAEditorConstants {
 	
 	public static final String HEADER_PREFIX_DIRTY = "* ";	//$NON-NLS-1$
 	
+	public static final String COLLECTION_TYPE = "java.util.Collection"; //$NON-NLS-1$
+	
+	public static final String LIST_TYPE = "java.util.List"; //$NON-NLS-1$
+	
+	public static final String SET_TYPE = "java.util.Set"; //$NON-NLS-1$
+	
+	public static final String MAP_TYPE = "java.util.Map"; //$NON-NLS-1$
+	
 	public static Hashtable<String, String> PRIMITIVE_TO_WRAPPER = new Hashtable<String,String>();
 	
 	public static HashSet<String> WRAPPER_SIMPLE_NAMES = new HashSet<String>();

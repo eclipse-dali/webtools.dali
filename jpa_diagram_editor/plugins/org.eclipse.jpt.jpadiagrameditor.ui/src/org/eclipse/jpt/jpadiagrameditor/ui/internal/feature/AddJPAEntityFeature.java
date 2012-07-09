@@ -44,6 +44,7 @@ import org.eclipse.graphiti.ui.services.GraphitiUi;
 import org.eclipse.graphiti.util.IColorConstant;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.internal.core.SourceType;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
@@ -137,6 +138,12 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 			ICompilationUnit cu = ((SourceType)newObj).getCompilationUnit();
 			jpt = JPAEditorUtil.getJPType(cu);
 		}
+		
+		CompilationUnit unit  = jpt.getJavaResourceType().getJavaResourceCompilationUnit().buildASTRoot();
+		jpt.getJavaResourceType().synchronizeWith(unit);
+		jpt.update();
+		jpt.synchronizeWithResourceModel();
+		
 		final Diagram targetDiagram = (Diagram) context.getTargetContainer();
 		final Wrp wrp = new Wrp();
 		createEntity(context, fp, targetDiagram, wrp, jpt);
