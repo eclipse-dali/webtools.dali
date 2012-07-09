@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,19 +19,14 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Connection;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logging;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Options;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.SchemaGeneration;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.caching.PersistenceXmlCachingTab;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.connection.PersistenceXmlConnectionTab;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.customization.PersistenceXmlCustomizationTab;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.general.EclipseLinkPersistenceUnitGeneralComposite;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.logging.PersistenceXmlLoggingTab;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.general.EclipseLinkPersistenceUnitGeneralTab;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.options.PersistenceXmlOptionsTab;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.schema.generation.PersistenceXmlSchemaGenerationTab;
-import org.eclipse.jpt.jpa.ui.details.JpaPageComposite;
-import org.eclipse.jpt.jpa.ui.internal.persistence.details.PersistenceUnitPropertiesComposite;
-import org.eclipse.jpt.jpa.ui.internal.persistence.details.PersistenceXmlUiFactory;
+import org.eclipse.jpt.jpa.ui.editors.JpaPageComposite;
+import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitPropertiesTab;
+import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceXmlUiFactory;
 import org.eclipse.swt.widgets.Composite;
 
 public class EclipseLinkPersistenceXmlUiFactory implements PersistenceXmlUiFactory
@@ -51,16 +46,11 @@ public class EclipseLinkPersistenceXmlUiFactory implements PersistenceXmlUiFacto
 
 		ArrayList<JpaPageComposite> pages = new ArrayList<JpaPageComposite>(8);
 
-		PropertyValueModel<EclipseLinkPersistenceUnit> eclipseLinkPersistenceUnitHolder = 
-			this.buildEclipseLinkPersistenceUnitHolder(subjectHolder);
-
 		pages.add(this.buildGeneralTab(subjectHolder, parent, widgetFactory));
 		pages.add(this.buildConnectionTab(subjectHolder, parent, widgetFactory));
-		pages.add(this.buildCustomizationTab(eclipseLinkPersistenceUnitHolder, parent, widgetFactory));
-		pages.add(this.buildCachingTab(eclipseLinkPersistenceUnitHolder, parent, widgetFactory));
-		pages.add(this.buildLoggingTab(eclipseLinkPersistenceUnitHolder, parent, widgetFactory));
+		pages.add(this.buildCustomizationTab(subjectHolder, parent, widgetFactory));
+		pages.add(this.buildCachingTab(subjectHolder, parent, widgetFactory));
 		pages.add(this.buildOptionsTab(subjectHolder, parent, widgetFactory));
-		pages.add(this.buildSchemaGenerationTab(eclipseLinkPersistenceUnitHolder, parent, widgetFactory));
 		pages.add(this.buildPropertiesTab(subjectHolder, parent, widgetFactory));
 
 		return pages.listIterator();
@@ -68,34 +58,32 @@ public class EclipseLinkPersistenceXmlUiFactory implements PersistenceXmlUiFacto
 
 	// ********** persistence unit tabs **********
 	
-	protected EclipseLinkPersistenceUnitGeneralComposite buildGeneralTab(
+	protected EclipseLinkPersistenceUnitGeneralTab buildGeneralTab(
 				PropertyValueModel<PersistenceUnit> subjectHolder,
 				Composite parent,
 				WidgetFactory widgetFactory) {
 
-		return new EclipseLinkPersistenceUnitGeneralComposite(subjectHolder, parent, widgetFactory);
+		return new EclipseLinkPersistenceUnitGeneralTab(subjectHolder, parent, widgetFactory);
 	}
 	
 	protected PersistenceXmlConnectionTab<? extends Connection> buildConnectionTab(
 				PropertyValueModel<PersistenceUnit> subjectHolder,
 				Composite parent,
 				WidgetFactory widgetFactory) {
-		PropertyValueModel<Connection> connectionHolder = this.buildConnectionHolder(subjectHolder);
 
-		return new PersistenceXmlConnectionTab<Connection>(connectionHolder, parent, widgetFactory);
+		return new PersistenceXmlConnectionTab<Connection>( this.buildConnectionHolder(subjectHolder), parent, widgetFactory);
 	}
 	
 	protected PersistenceXmlCustomizationTab<? extends Customization> buildCustomizationTab(
-				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder,
+				PropertyValueModel<PersistenceUnit> subjectHolder,
 				Composite parent,
 				WidgetFactory widgetFactory) {
-		PropertyValueModel<Customization> customizationHolder = this.buildCustomizationHolder(subjectHolder);
 
-		return new PersistenceXmlCustomizationTab<Customization>(customizationHolder, parent, widgetFactory);
+		return new PersistenceXmlCustomizationTab<Customization>(this.buildCustomizationHolder(subjectHolder), parent, widgetFactory);
 	}
 	
 	protected PersistenceXmlCachingTab<? extends Caching> buildCachingTab(
-				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder,
+				PropertyValueModel<PersistenceUnit> subjectHolder,
 				Composite parent,
 				WidgetFactory widgetFactory) {
 		PropertyValueModel<Caching> cachingHolder = this.buildCachingHolder(subjectHolder);
@@ -103,52 +91,23 @@ public class EclipseLinkPersistenceXmlUiFactory implements PersistenceXmlUiFacto
 		return new PersistenceXmlCachingTab<Caching>(cachingHolder, parent, widgetFactory);
 	}
 	
-	protected PersistenceXmlLoggingTab<? extends Logging> buildLoggingTab(
-				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder,
-				Composite parent,
-				WidgetFactory widgetFactory) {
-		PropertyValueModel<Logging> loggingHolder = this.buildLoggingHolder(subjectHolder);
-
-		return new PersistenceXmlLoggingTab<Logging>(loggingHolder, parent, widgetFactory);
-	}
-	
-	protected PersistenceXmlOptionsTab<? extends Options> buildOptionsTab(
-				PropertyValueModel<PersistenceUnit> subjectHolder,
-				Composite parent,
-				WidgetFactory widgetFactory) {
-		PropertyValueModel<Options> optionsHolder = this.buildOptionsHolder(subjectHolder);
-
-		return new PersistenceXmlOptionsTab<Options>(optionsHolder, parent, widgetFactory);
-	}
-	
-	protected PersistenceXmlSchemaGenerationTab buildSchemaGenerationTab(
-				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder,
-				Composite parent,
-				WidgetFactory widgetFactory) {
-		PropertyValueModel<SchemaGeneration> schemaGenHolder = this.buildSchemaGenerationHolder(subjectHolder);
-
-		return new PersistenceXmlSchemaGenerationTab(schemaGenHolder, parent, widgetFactory);
-	}
-	
-	protected PersistenceUnitPropertiesComposite buildPropertiesTab(
+	protected PersistenceXmlOptionsTab<? extends PersistenceUnit> buildOptionsTab(
 				PropertyValueModel<PersistenceUnit> subjectHolder,
 				Composite parent,
 				WidgetFactory widgetFactory) {
 
-		return new PersistenceUnitPropertiesComposite(subjectHolder, parent, widgetFactory);
+		return new PersistenceXmlOptionsTab<PersistenceUnit>(subjectHolder, parent, widgetFactory);
+	}
+	
+	protected PersistenceUnitPropertiesTab buildPropertiesTab(
+				PropertyValueModel<PersistenceUnit> subjectHolder,
+				Composite parent,
+				WidgetFactory widgetFactory) {
+
+		return new PersistenceUnitPropertiesTab(subjectHolder, parent, widgetFactory);
 	}
 
 	// ********** private methods **********
-	
-	private PropertyValueModel<EclipseLinkPersistenceUnit> buildEclipseLinkPersistenceUnitHolder(
-				PropertyValueModel<PersistenceUnit> subjectHolder) {
-		return new TransformationPropertyValueModel<PersistenceUnit, EclipseLinkPersistenceUnit>(subjectHolder) {
-			@Override
-			protected EclipseLinkPersistenceUnit transform_(PersistenceUnit value) {
-				return (EclipseLinkPersistenceUnit) value;
-			}
-		};
-	}
 	
 	private PropertyValueModel<Connection> buildConnectionHolder(
 				PropertyValueModel<PersistenceUnit> subjectHolder) {
@@ -156,58 +115,27 @@ public class EclipseLinkPersistenceXmlUiFactory implements PersistenceXmlUiFacto
 			@Override
 			protected Connection transform_(PersistenceUnit value) {
 
-				return ((EclipseLinkPersistenceUnit)value).getConnection();
+				return ((EclipseLinkPersistenceUnit) value).getConnection();
 			}
 		};
 	}
 	
 	protected PropertyValueModel<Customization> buildCustomizationHolder(
-				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
-		return new TransformationPropertyValueModel<EclipseLinkPersistenceUnit, Customization>(subjectHolder) {
+				PropertyValueModel<PersistenceUnit> subjectHolder) {
+		return new TransformationPropertyValueModel<PersistenceUnit, Customization>(subjectHolder) {
 			@Override
-			protected Customization transform_(EclipseLinkPersistenceUnit value) {
-				return value.getCustomization();
+			protected Customization transform_(PersistenceUnit value) {
+				return ((EclipseLinkPersistenceUnit) value).getCustomization();
 			}
 		};
 	}
 	
 	protected PropertyValueModel<Caching> buildCachingHolder(
-				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
-		return new TransformationPropertyValueModel<EclipseLinkPersistenceUnit, Caching>(subjectHolder) {
-			@Override
-			protected Caching transform_(EclipseLinkPersistenceUnit value) {
-				return value.getCaching();
-			}
-		};
-	}
-	
-	private PropertyValueModel<Logging> buildLoggingHolder(
-				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
-		return new TransformationPropertyValueModel<EclipseLinkPersistenceUnit, Logging>(subjectHolder) {
-			@Override
-			protected Logging transform_(EclipseLinkPersistenceUnit value) {
-				return value.getLogging();
-			}
-		};
-	}
-	
-	private PropertyValueModel<Options> buildOptionsHolder(
 				PropertyValueModel<PersistenceUnit> subjectHolder) {
-		return new TransformationPropertyValueModel<PersistenceUnit, Options>(subjectHolder) {
+		return new TransformationPropertyValueModel<PersistenceUnit, Caching>(subjectHolder) {
 			@Override
-			protected Options transform_(PersistenceUnit value) {
-
-				return ((EclipseLinkPersistenceUnit)value).getOptions();
-			}
-		};
-	}
-	
-	private PropertyValueModel<SchemaGeneration> buildSchemaGenerationHolder(
-				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder) {
-		return new TransformationPropertyValueModel<EclipseLinkPersistenceUnit, SchemaGeneration>(subjectHolder) {
-			@Override
-			protected SchemaGeneration transform_(EclipseLinkPersistenceUnit value) {
-				return value.getSchemaGeneration();
+			protected Caching transform_(PersistenceUnit value) {
+				return ((EclipseLinkPersistenceUnit) value).getCaching();
 			}
 		};
 	}

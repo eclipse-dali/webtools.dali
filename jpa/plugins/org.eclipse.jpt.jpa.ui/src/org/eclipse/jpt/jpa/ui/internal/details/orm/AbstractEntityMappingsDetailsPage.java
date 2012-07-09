@@ -10,21 +10,30 @@
 package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
 import java.util.Collection;
-
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
-import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.QueryContainer;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractJpaDetailsPage;
-import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
+import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.internal.details.QueriesComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.db.CatalogCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.SchemaCombo;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.events.ExpansionAdapter;
+import org.eclipse.ui.forms.events.ExpansionEvent;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Section;
 
 /**
  * Here the layout of this pane:
@@ -98,44 +107,56 @@ public abstract class AbstractEntityMappingsDetailsPage extends AbstractJpaDetai
 	}
 	
 	protected void initializeEntityMappingsCollapsibleSection(Composite container) {
-		container = addCollapsibleSection(
-			container,
-			JptUiDetailsOrmMessages.EntityMappingsSection_title,
-			new SimplePropertyValueModel<Boolean>(Boolean.TRUE)
-		);
-
-		this.initializeEntityMappingsSection(container);
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsOrmMessages.EntityMappingsSection_title);
+		section.setExpanded(true);
+		section.setClient(this.initializeEntityMappingsSection(section));
 	}
 	
-	protected void initializeEntityMappingsSection(Composite container) {
+	protected Control initializeEntityMappingsSection(Composite container) {
+		container = this.addSubPane(container, 2, 0, 0, 0, 0);
+
 		// Package widgets
+		this.addLabel(container, JptUiDetailsOrmMessages.EntityMappingsDetailsPage_package);
 		new OrmPackageChooser(this, container);
 
 		// Schema widgets
-		addLabeledComposite(
-			container,
-			JptUiDetailsOrmMessages.EntityMappingsDetailsPage_schema,
-			addSchemaCombo(container),
-			JpaHelpContextIds.ENTITY_ORM_SCHEMA
-		);
+		this.addLabel(container, JptUiDetailsOrmMessages.EntityMappingsDetailsPage_schema);
+		this.addSchemaCombo(container);
 
 		// Catalog widgets
-		addLabeledComposite(
-			container,
-			JptUiDetailsOrmMessages.EntityMappingsDetailsPage_catalog,
-			addCatalogCombo(container),
-			JpaHelpContextIds.ENTITY_ORM_CATALOG
-		);
+		this.addLabel(container, JptUiDetailsOrmMessages.EntityMappingsDetailsPage_catalog);
+		this.addCatalogCombo(container);
 
-		new AccessTypeComposite(this, getSubjectHolder(), container);
+		// Access type widgets
+		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
+		new AccessTypeComboViewer(this, getSubjectHolder(), container);
+
+		return container;
 	}
 
 	protected void initializePersistenceUnitMetadataCollapsibleSection(Composite container) {
-		new PersistenceUnitMetadataComposite(
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsOrmMessages.PersistenceUnitMetadataComposite_persistenceUnitSection);
+
+		section.addExpansionListener(new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanging(ExpansionEvent e) {
+				if (e.getState() && section.getClient() == null) {
+					section.setClient(initializePersistenceUnitMetadataSection(section));
+				}
+			}
+		});
+	}
+
+	protected Control initializePersistenceUnitMetadataSection(Composite container) {
+		return new PersistenceUnitMetadataComposite(
 			this,
 			buildPersistentUnitMetadataHolder(),
-			addSubPane(container, 5)
-		);
+			container
+		).getControl();
 	}
 
 	protected CatalogCombo<EntityMappings> addCatalogCombo(Composite container) {
@@ -162,6 +183,15 @@ public abstract class AbstractEntityMappingsDetailsPage extends AbstractJpaDetai
 			@Override
 			protected String getValue() {
 				return getSubject().getSpecifiedCatalog();
+			}
+
+			@Override
+			protected String getHelpId() {
+				return JpaHelpContextIds.ENTITY_ORM_CATALOG;
+			}
+			@Override
+			public String toString() {
+				return "AbstractEntityMappingsDetailsPage.catalogCombo"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -206,17 +236,62 @@ public abstract class AbstractEntityMappingsDetailsPage extends AbstractJpaDetai
 				return this.getSubject().getDbSchemaContainer();
 			}
 
+			@Override
+			protected String getHelpId() {
+				return JpaHelpContextIds.ENTITY_ORM_SCHEMA;
+			}
+
+			@Override
+			public String toString() {
+				return "AbstractEntityMappingsDetailsPage.schemaCombo"; //$NON-NLS-1$
+			}
 		};
 	}
 
 	protected void initializeGeneratorsCollapsibleSection(Composite container) {
-		new EntityMappingsGeneratorsComposite(
-			this,
-			container
-		);
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsOrmMessages.OrmGeneratorsComposite_groupBox);
+
+		section.addExpansionListener(new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanging(ExpansionEvent e) {
+				if (e.getState() && section.getClient() == null) {
+					section.setClient(initializeGeneratorsSection(section));
+				}
+			}
+		});
 	}
 
+	protected Control initializeGeneratorsSection(Composite container) {
+		return new EntityMappingsGeneratorsComposite(this, container).getControl();
+	}
+	
 	protected void initializeQueriesCollapsibleSection(Composite container) {
-		new OrmQueriesComposite(this, container);
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages.EntityComposite_queries);
+
+		section.addExpansionListener(new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanging(ExpansionEvent e) {
+				if (e.getState() && section.getClient() == null) {
+					section.setClient(initializeQueriesSection(section));
+				}
+			}
+		});
+	}
+
+	protected Control initializeQueriesSection(Composite container) {
+		return new QueriesComposite(this, this.buildQueryContainerHolder(), container).getControl();
+	}
+
+	protected PropertyValueModel<QueryContainer> buildQueryContainerHolder() {
+		return new PropertyAspectAdapter<EntityMappings, QueryContainer>(getSubjectHolder()) {
+			@Override
+			protected QueryContainer buildValue_() {
+				return this.subject.getQueryContainer();
+			}
+		};
 	}
 }

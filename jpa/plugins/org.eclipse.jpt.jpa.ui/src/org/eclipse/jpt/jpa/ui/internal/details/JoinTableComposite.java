@@ -30,9 +30,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.JoinColumnsComposite.JoinColumnsEditor;
-import org.eclipse.jpt.jpa.ui.internal.details.db.CatalogCombo;
-import org.eclipse.jpt.jpa.ui.internal.details.db.SchemaCombo;
-import org.eclipse.jpt.jpa.ui.internal.details.db.TableCombo;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -91,9 +89,10 @@ public class JoinTableComposite
 	public JoinTableComposite(
 			Pane<?> parentPane,
 			PropertyValueModel<? extends ReadOnlyJoinTable> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent) {
 
-		super(parentPane, subjectHolder, parent);
+		super(parentPane, subjectHolder, enabledModel, parent);
 	}
 
 	/**
@@ -114,50 +113,38 @@ public class JoinTableComposite
 	protected boolean tableIsVirtual(ReadOnlyJoinTable joinTable) {
 		return joinTable.getParent().getRelationship().isVirtual();
 	}
+
+	@Override
+	protected Composite addComposite(Composite container) {
+		return this.addSubPane(container, 2, 0, 0, 0, 0);
+	}
+
 	@Override
 	protected void initializeLayout(Composite container) {
-
-		int groupBoxMargin = getGroupBoxMargin();
-
 		// Name widgets
-		TableCombo<ReadOnlyJoinTable> tableCombo = addTableCombo(container);
-		Composite tablePane = addPane(container, groupBoxMargin);
-		addLabeledComposite(
-				tablePane,
-			JptUiDetailsMessages.JoinTableComposite_name,
-			tableCombo.getControl(),
-			JpaHelpContextIds.MAPPING_JOIN_TABLE_NAME
-		);
+		this.addLabel(container, JptUiDetailsMessages.JoinTableComposite_name);
+		this.addTableCombo(container, JpaHelpContextIds.MAPPING_JOIN_TABLE_NAME);
 		
 		// schema widgets
-		SchemaCombo<ReadOnlyJoinTable> schemaCombo = addSchemaCombo(container);
+		this.addLabel(container, JptUiDetailsMessages.JoinTableComposite_schema);
+		this.addSchemaCombo(container, JpaHelpContextIds.MAPPING_JOIN_TABLE_SCHEMA);
 
-		addLabeledComposite(
-			tablePane,
-			JptUiDetailsMessages.JoinTableComposite_schema,
-			schemaCombo.getControl(),
-			JpaHelpContextIds.MAPPING_JOIN_TABLE_SCHEMA
-		);
-		
 		// catalog widgets
-		CatalogCombo<ReadOnlyJoinTable> catalogCombo = addCatalogCombo(container);
-
-		addLabeledComposite(
-			tablePane,
-			JptUiDetailsMessages.JoinTableComposite_catalog,
-			catalogCombo.getControl(),
-			JpaHelpContextIds.MAPPING_JOIN_TABLE_CATALOG
-		);
+		this.addLabel(container, JptUiDetailsMessages.JoinTableComposite_catalog);
+		this.addCatalogCombo(container, JpaHelpContextIds.MAPPING_JOIN_TABLE_CATALOG);
 
 		// Join Columns group pane
 		Group joinColumnGroupPane = addTitledGroup(
 			container,
 			JptUiDetailsMessages.JoinTableComposite_joinColumn
 		);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		joinColumnGroupPane.setLayoutData(gridData);
 
 		// Override Default Join Columns check box
 		this.overrideDefaultJoinColumnsCheckBox = addCheckBox(
-			addSubPane(joinColumnGroupPane, 8),
+			joinColumnGroupPane,
 			JptUiDetailsMessages.JoinTableComposite_overrideDefaultJoinColumns,
 			buildOverrideDefaultJoinColumnHolder(),
 			null
@@ -166,20 +153,22 @@ public class JoinTableComposite
 		this.joinColumnsComposite = new JoinColumnsComposite<ReadOnlyJoinTable>(
 			this,
 			joinColumnGroupPane,
-			buildJoinColumnsEditor()
+			buildJoinColumnsEditor(),
+			buildJoinColumnsEnabledModel()
 		);
-
-		installJoinColumnsPaneEnabler(this.joinColumnsComposite);
 
 		// Inverse Join Columns group pane
 		Group inverseJoinColumnGroupPane = addTitledGroup(
 			container,
 			JptUiDetailsMessages.JoinTableComposite_inverseJoinColumn
 		);
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		inverseJoinColumnGroupPane.setLayoutData(gridData);
 
 		// Override Default Inverse Join Columns check box
 		this.overrideDefaultInverseJoinColumnsCheckBox = addCheckBox(
-			addSubPane(inverseJoinColumnGroupPane, 8),
+			inverseJoinColumnGroupPane,
 			JptUiDetailsMessages.JoinTableComposite_overrideDefaultInverseJoinColumns,
 			buildOverrideDefaultInverseJoinColumnHolder(),
 			null
@@ -188,17 +177,12 @@ public class JoinTableComposite
 		this.inverseJoinColumnsComposite = new JoinColumnsComposite<ReadOnlyJoinTable>(
 			this,
 			inverseJoinColumnGroupPane,
-			buildInverseJoinColumnsEditor()
+			buildInverseJoinColumnsEditor(),
+			new InverseJoinColumnPaneEnablerHolder()
 		);
-
-		installInverseJoinColumnsPaneEnabler(this.inverseJoinColumnsComposite);
 	}
 
-	private void installInverseJoinColumnsPaneEnabler(JoinColumnsComposite<ReadOnlyJoinTable> pane) {
-		pane.installJoinColumnsPaneEnabler(new InverseJoinColumnPaneEnablerHolder());
-	}
-
-	void addInverseJoinColumn(ReadOnlyJoinTable joinTable) {
+	JoinColumn addInverseJoinColumn(ReadOnlyJoinTable joinTable) {
 
 		InverseJoinColumnInJoinTableDialog dialog =
 			new InverseJoinColumnInJoinTableDialog(getShell(), joinTable, null);
@@ -206,18 +190,19 @@ public class JoinTableComposite
 		dialog.setBlockOnOpen(true);
 		dialog.open();
 		if (dialog.wasConfirmed()) {
-			addInverseJoinColumnFromDialog(dialog.getSubject());
+			return addInverseJoinColumnFromDialog(dialog.getSubject());
 		}
+		return null;
 	}
 
-	void addInverseJoinColumnFromDialog(InverseJoinColumnInJoinTableStateObject stateObject) {
+	JoinColumn addInverseJoinColumnFromDialog(InverseJoinColumnInJoinTableStateObject stateObject) {
 
 		JoinTable subject = (JoinTable) getSubject();
 		int index = subject.getSpecifiedInverseJoinColumnsSize();
 
 		JoinColumn joinColumn = subject.addSpecifiedInverseJoinColumn(index);
 		stateObject.updateJoinColumn(joinColumn);
-		this.setSelectedInverseJoinColumn(joinColumn);
+		return joinColumn;
 	}
 
 	private void setSelectedInverseJoinColumn(JoinColumn joinColumn) {
@@ -293,8 +278,8 @@ public class JoinTableComposite
 
 	class InverseJoinColumnsProvider implements JoinColumnsEditor<ReadOnlyJoinTable> {
 
-		public void addJoinColumn(ReadOnlyJoinTable subject) {
-			JoinTableComposite.this.addInverseJoinColumn(subject);
+		public JoinColumn addJoinColumn(ReadOnlyJoinTable subject) {
+			return JoinTableComposite.this.addInverseJoinColumn(subject);
 		}
 
 		public ReadOnlyJoinColumn getDefaultJoinColumn(ReadOnlyJoinTable subject) {
@@ -313,10 +298,8 @@ public class JoinTableComposite
 			return subject.hasSpecifiedInverseJoinColumns();
 		}
 
-		public void removeJoinColumns(ReadOnlyJoinTable subject, int[] selectedIndices) {
-			for (int index = selectedIndices.length; index-- > 0; ) {
-				((JoinTable) subject).removeSpecifiedInverseJoinColumn(selectedIndices[index]);
-			}
+		public void removeJoinColumn(ReadOnlyJoinTable subject, JoinColumn joinColumn) {
+			((JoinTable) subject).removeSpecifiedInverseJoinColumn(joinColumn);
 		}
 
 		public ListIterable<ReadOnlyJoinColumn> getSpecifiedJoinColumns(ReadOnlyJoinTable subject) {

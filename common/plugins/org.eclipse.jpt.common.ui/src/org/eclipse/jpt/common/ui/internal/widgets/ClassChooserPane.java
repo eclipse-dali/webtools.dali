@@ -40,6 +40,8 @@ import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
@@ -54,11 +56,11 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
  * <p>
  * Here the layout of this pane:
  * <pre>
- * -----------------------------------------------------------------------------
- * |        ---------------------------------------------------- ------------- |
- * | Label: | I                                                | | Browse... | |
- * |        ---------------------------------------------------- ------------- |
- * -----------------------------------------------------------------------------</pre>
+ * -----------------------------------------------------------------------
+ * |  ---------------------------------------------------- ------------- |
+ * |  | I                                                | | Browse... | |
+ * |  ---------------------------------------------------- ------------- |
+ * -----------------------------------------------------------------------</pre>
  *
  * @version 2.3
  * @since 2.0
@@ -88,6 +90,22 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 	/**
 	 * Creates a new <code>ClassChooserPane</code>.
 	 *
+	 * @param parentPane The parent pane of this one
+	 * @param parent The parent container
+	 * @param hyperlink include a Hyperlink widget to select/or create a Type
+	 */
+	public ClassChooserPane(Pane<? extends T> parentPane,
+        Composite parent,
+        Hyperlink hyperlink) {
+
+		super(parentPane, parent);
+		initialize(hyperlink);
+	}
+
+
+	/**
+	 * Creates a new <code>ClassChooserPane</code>.
+	 *
 	 * @param parentPane The parent container of this one
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
@@ -105,13 +123,47 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 	 * @param parentPane The parent container of this one
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
+	 * @param hyperlink include a Hyperlink widget to select/or create a Type
+	 */
+	public ClassChooserPane(Pane<?> parentPane,
+        PropertyValueModel<? extends T> subjectHolder,
+        Composite parent,
+        Hyperlink hyperlink) {
+
+		super(parentPane, subjectHolder, parent);
+		initialize(hyperlink);
+	}
+
+	/**
+	 * Creates a new <code>ClassChooserPane</code>.
+	 *
+	 * @param parentPane The parent container of this one
+	 * @param subjectHolder The holder of this pane's subject
+	 * @param parent The parent container
 	 */
 	public ClassChooserPane(Pane<?> parentPane,
 	                        PropertyValueModel<? extends T> subjectHolder,
-	                        Composite parent,
-	                        PropertyValueModel<Boolean> enabledModel) {
+	                        PropertyValueModel<Boolean> enabledModel,
+	                        Composite parent) {
 
-		super(parentPane, subjectHolder, parent, enabledModel);
+		super(parentPane, subjectHolder, enabledModel, parent);
+	}
+
+	/**
+	 * Creates a new <code>ClassChooserPane</code>.
+	 *
+	 * @param parentPane The parent container of this one
+	 * @param subjectHolder The holder of this pane's subject
+	 * @param parent The parent container
+	 */
+	public ClassChooserPane(Pane<?> parentPane,
+	                        PropertyValueModel<? extends T> subjectHolder,
+	                        PropertyValueModel<Boolean> enabledModel,
+	                        Composite parent,
+	                        Hyperlink hyperlink) {
+
+		this(parentPane, subjectHolder, enabledModel, parent);
+		this.initialize(hyperlink);
 	}
 
 	@Override
@@ -125,6 +177,21 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 		this.getSubjectHolder().addPropertyChangeListener(PropertyValueModel.VALUE, this.subjectChangeListener);
 
 		this.classChooserSubjectChanged(getSubject());
+	}
+
+	protected void initialize(Hyperlink hyperlink) {
+		final Runnable hyperLinkAction = this.buildHyperLinkAction();
+		hyperlink.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseUp(MouseEvent e) {
+
+				Hyperlink hyperLink = (Hyperlink) e.widget;
+
+				if (hyperLink.isEnabled()) {
+					hyperLinkAction.run();
+				}
+			}
+		});
 	}
 
 	protected JavaTypeCompletionProcessor buildJavaTypeCompletionProcessor() {
@@ -155,18 +222,6 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 		this.javaTypeCompletionProcessor.setPackageFragment(packageFragment);
 	}
 
-	@Override
-	protected Control addLeftControl(Composite container) {
-		if( ! this.allowTypeCreation()) {
-			return super.addLeftControl(container);
-		}
-		Hyperlink labelLink = this.addHyperlink(container,
-			this.getLabelText(),
-			this.buildHyperLinkAction()
-		);
-		return labelLink;
-	}
-
 	private Runnable buildHyperLinkAction() {
 		return new Runnable() {
 			public void run() {
@@ -180,7 +235,7 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 		if (type != null) {
 			openInEditor(type);	
 		}
-		else if (allowTypeCreation()){
+		else {
 			createType();
 		}
 	}
@@ -252,15 +307,6 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 		return null;
 	}
 	
-	/**
-	 * Override this if it does not make sense to allow the user to create a new type.
-	 * This will determine whether clicking the hyperlink opens the New Class wizard
-	 * @return
-	 */
-	protected boolean allowTypeCreation() {
-		return true;
-	}
-	
 	protected void openInEditor(IType type) {
 		try {
 			JavaUI.openInEditor(type, true, true);
@@ -286,15 +332,14 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 
 	@Override
 	protected Control addMainControl(Composite container) {
-		Composite subPane = addSubPane(container);
-		Text text = addText(subPane, buildTextHolder());
+		Text text = addText(container, buildTextHolder(), getHelpId());
 
 		ControlContentAssistHelper.createTextContentAssistant(
 			text,
 			javaTypeCompletionProcessor
 		);
 
-		return subPane;
+		return text;
 	}
 
 	/**

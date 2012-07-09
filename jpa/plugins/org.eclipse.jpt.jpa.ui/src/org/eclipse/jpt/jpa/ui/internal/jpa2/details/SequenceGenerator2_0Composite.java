@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009 Oracle. All rights reserved.
+* Copyright (c) 2009, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -42,38 +42,27 @@ public class SequenceGenerator2_0Composite extends SequenceGeneratorComposite
 	protected void initializeLayout(Composite container) {
 
 		// Name widgets
-		this.addLabeledText(
-			container,
-			JptUiDetailsMessages.SequenceGeneratorComposite_name,
-			this.buildGeneratorNameHolder(),
-			JpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR_NAME
-		);
+		this.addLabel(container, JptUiDetailsMessages.SequenceGeneratorComposite_name);
+		this.addText(container, this.buildGeneratorNameHolder(), JpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR_NAME);
 
 		// Sequence Generator widgets
-		this.addLabeledComposite(
-			container,
-			JptUiDetailsMessages.SequenceGeneratorComposite_sequence,
-			this.buildSequenceNameCombo(container),
-			JpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR_SEQUENCE
-		);
+		this.addLabel(container, JptUiDetailsMessages.SequenceGeneratorComposite_sequence);
+		this.buildSequenceNameCombo(container);
 
 		// Schema widgets
-		this.addLabeledComposite(
-			container,
-			JptUiDetailsMessages.SequenceGeneratorComposite_schema,
-			this.addSchemaCombo(container),
-			null	// JpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR_SCHEMA
-		);
+		this.addLabel(container, JptUiDetailsMessages.SequenceGeneratorComposite_schema);
+		this.addSchemaCombo(container);
 
 		// Catalog widgets
-		this.addLabeledComposite(
-			container,
-			JptUiDetailsMessages.SequenceGeneratorComposite_catalog,
-			this.addCatalogCombo(container),
-			null	// JpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR_CATALOG
-		);
+		this.addLabel(container, JptUiDetailsMessages.SequenceGeneratorComposite_catalog);
+		this.addCatalogCombo(container);
 
+		// Allocation size widgets
+		this.addLabel(container, JptUiDetailsMessages.GeneratorComposite_allocationSize);
 		this.addAllocationSizeCombo(container);
+
+		// Initial value widgets
+		this.addLabel(container, JptUiDetailsMessages.GeneratorComposite_initialValue);
 		this.addInitialValueCombo(container);
 	}
 
@@ -143,6 +132,11 @@ public class SequenceGenerator2_0Composite extends SequenceGeneratorComposite
 				// we overrode #getDbSchemaContainer() instead
 				throw new UnsupportedOperationException();
 			}
+
+			@Override
+			public String toString() {
+				return "SecquenceGenerator2_0Composite.schemaCombo"; //$NON-NLS-1$
+			}
 		};
 	}
 
@@ -183,6 +177,11 @@ public class SequenceGenerator2_0Composite extends SequenceGeneratorComposite
 			@Override
 			protected String getValue() {
 				return ((SequenceGenerator2_0) getSubject()).getSpecifiedCatalog();
+			}
+
+			@Override
+			public String toString() {
+				return "SecquenceGenerator2_0Composite.catalogCombo"; //$NON-NLS-1$
 			}
 		};
 	}

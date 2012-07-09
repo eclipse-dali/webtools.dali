@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import java.util.Collection;
 import java.util.Iterator;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
@@ -42,6 +43,14 @@ public class PersistentAttributeMapAsComposite
             Composite parent) {
 		
 		super(parentPane, parent);
+	}
+
+	public PersistentAttributeMapAsComposite(
+			Pane<? extends ReadOnlyPersistentAttribute> parentPane,
+	        Composite parent,
+	        PropertyValueModel<Boolean> enabledModel) {
+
+		super(parentPane, parent, enabledModel);
 	}
 	
 	

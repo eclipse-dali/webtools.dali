@@ -34,26 +34,43 @@ public class DerivedIdentity2_0Pane
 		super(parentPane, subjectHolder, parent);
 	}
 	
-	
+	@Override
+	protected Composite addComposite(Composite container) {
+		Composite composite = addCollapsibleSection(
+			container,
+			JptUiDetailsMessages2_0.DerivedIdentity_title);
+		return composite;
+	}
+
 	@Override
 	protected void initializeLayout(Composite container) {
-		Composite composite = addCollapsibleSection(
-				container,
-				JptUiDetailsMessages2_0.DerivedIdentity_title);
-		((GridLayout) composite.getLayout()).numColumns = 2;
-		
-		addNullDerivedIdentityPane(composite);
-		addIdDerivedIdentityPane(composite);
-		addMapsIdDerivedIdentityPane(composite);
-	}
-	
-	protected void addNullDerivedIdentityPane(Composite parent) {
-		Button button = addRadioButton(
-				parent,
-				JptUiDetailsMessages2_0.DerivedIdentity_nullDerivedIdentity,
-				buildUsesNullDerivedIdentityStrategyHolder(),
-				null);
+		((GridLayout) container.getLayout()).numColumns = 2;
+
+		//null derived identity
+		Button nullDerivedIdentityButton = this.addRadioButton(
+			container,
+			JptUiDetailsMessages2_0.DerivedIdentity_nullDerivedIdentity,
+			buildUsesNullDerivedIdentityStrategyHolder(),
+			null);
+		((GridData) nullDerivedIdentityButton.getLayoutData()).horizontalSpan = 2;
+
+		//id derived identity
+		Button button = this.addRadioButton(
+			container,
+			JptUiDetailsMessages2_0.DerivedIdentity_idDerivedIdentity,
+			buildUsesIdDerivedIdentityStrategyHolder(),
+			null);
 		((GridData) button.getLayoutData()).horizontalSpan = 2;
+
+		//maps id derived identity
+		ModifiablePropertyValueModel<Boolean> usesMapsIdModel = buildUsesMapsIdDerivedIdentityStrategyHolder();
+		this.addRadioButton(
+			container,
+			JptUiDetailsMessages2_0.DerivedIdentity_mapsIdDerivedIdentity,
+			usesMapsIdModel,
+			null);
+
+		this.buildMapsIdValueComboPane(container, usesMapsIdModel);
 	}
 	
 	protected ModifiablePropertyValueModel<Boolean> buildUsesNullDerivedIdentityStrategyHolder() {
@@ -74,16 +91,7 @@ public class DerivedIdentity2_0Pane
 			}
 		};
 	}
-	
-	protected void addIdDerivedIdentityPane(Composite parent) {
-		Button button = addRadioButton(
-				parent,
-				JptUiDetailsMessages2_0.DerivedIdentity_idDerivedIdentity,
-				buildUsesIdDerivedIdentityStrategyHolder(),
-				null);
-		((GridData) button.getLayoutData()).horizontalSpan = 2;
-	}
-	
+		
 	protected ModifiablePropertyValueModel<Boolean> buildUsesIdDerivedIdentityStrategyHolder() {
 		return new PropertyAspectAdapter<DerivedIdentity2_0, Boolean>(
 				getSubjectHolder(), DerivedIdentity2_0.PREDOMINANT_DERIVED_IDENTITY_STRATEGY_PROPERTY) {
@@ -101,17 +109,6 @@ public class DerivedIdentity2_0Pane
 				}
 			}
 		};
-	}
-	
-	protected void addMapsIdDerivedIdentityPane(Composite parent) {
-		ModifiablePropertyValueModel<Boolean> usesMapsIdModel = buildUsesMapsIdDerivedIdentityStrategyHolder();
-		addRadioButton(
-			parent,
-			JptUiDetailsMessages2_0.DerivedIdentity_mapsIdDerivedIdentity,
-			usesMapsIdModel,
-			null);
-
-		buildMapsIdValueComboPane(parent, usesMapsIdModel);
 	}
 	
 	protected ModifiablePropertyValueModel<Boolean> buildUsesMapsIdDerivedIdentityStrategyHolder() {
@@ -134,7 +131,7 @@ public class DerivedIdentity2_0Pane
 	}
 	
 	protected ComboPane buildMapsIdValueComboPane(Composite parent, PropertyValueModel<Boolean> usesMapsIdModel) {
-		return new MapsIdValueComboPane(this, buildMapsIdStrategyHolder(), parent, usesMapsIdModel);
+		return new MapsIdValueCombo(this, buildMapsIdStrategyHolder(), usesMapsIdModel, parent);
 	}
 	
 	protected PropertyValueModel<MapsIdDerivedIdentityStrategy2_0> buildMapsIdStrategyHolder() {
@@ -147,16 +144,16 @@ public class DerivedIdentity2_0Pane
 	}
 	
 	
-	private class MapsIdValueComboPane
+	private class MapsIdValueCombo
 		extends ComboPane<MapsIdDerivedIdentityStrategy2_0>
 	{
-		public MapsIdValueComboPane(
+		public MapsIdValueCombo(
 				Pane<?> parentPane,
 				PropertyValueModel<? extends MapsIdDerivedIdentityStrategy2_0> subjectHolder,
-				Composite parent,
-				PropertyValueModel<Boolean> enabledModel) {
+				PropertyValueModel<Boolean> enabledModel,
+				Composite parent) {
 			
-			super(parentPane, subjectHolder, parent, enabledModel);
+			super(parentPane, subjectHolder, enabledModel, parent);
 		}
 		
 		

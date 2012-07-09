@@ -44,9 +44,14 @@ public class IdMapping2_0MappedByRelationshipPane<T extends IdMapping2_0>
 		PageBook pageBook = new PageBook(container, SWT.NULL);
 		pageBook.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		this.mappedByRelationshipLabel = addLabel(pageBook, JptUiDetailsMessages2_0.IdMapping2_0MappedByRelationshipPane_label);
+		new ControlSwitcher(buildDerivedModel(), buildPaneTransformer(pageBook), pageBook);
+	}
 
-		new ControlSwitcher(buildDerivedModel(), buildPaneTransformer(), pageBook);
+	protected Label getMappedByRelationshipLabel(Composite container) {
+		if (this.mappedByRelationshipLabel == null) {
+			this.mappedByRelationshipLabel = this.addLabel(container, JptUiDetailsMessages2_0.IdMapping2_0MappedByRelationshipPane_label);
+		}
+		return this.mappedByRelationshipLabel;
 	}
 
 	protected ModifiablePropertyValueModel<Boolean> buildDerivedModel() {
@@ -58,13 +63,13 @@ public class IdMapping2_0MappedByRelationshipPane<T extends IdMapping2_0>
 		};
 	}
 
-	private Transformer<Boolean, Control> buildPaneTransformer() {
+	private Transformer<Boolean, Control> buildPaneTransformer(final Composite container) {
 		return new Transformer<Boolean, Control>() {
 			public Control transform(Boolean converter) {
 				if (converter == null || converter == Boolean.FALSE) {
 					return null;
 				}
-				return IdMapping2_0MappedByRelationshipPane.this.mappedByRelationshipLabel; 
+				return IdMapping2_0MappedByRelationshipPane.this.getMappedByRelationshipLabel(container); 
 			}
 		};
 	}

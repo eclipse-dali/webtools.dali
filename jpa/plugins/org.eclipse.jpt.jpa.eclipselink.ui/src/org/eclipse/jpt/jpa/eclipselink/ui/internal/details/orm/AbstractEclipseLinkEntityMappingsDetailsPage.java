@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,9 +23,14 @@ import org.eclipse.jpt.jpa.ui.internal.details.db.SchemaCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.AbstractEntityMappingsDetailsPage;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.EntityMappingsGeneratorsComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmPackageChooser;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmQueriesComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.PersistenceUnitMetadataComposite;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.events.ExpansionAdapter;
+import org.eclipse.ui.forms.events.ExpansionEvent;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Section;
 
 /**
  * Here the layout of this pane:
@@ -74,7 +79,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see EnumFormComboViewer
  * @see EntityMappingsGeneratorsComposite
  * @see OrmPackageChooser
- * @see OrmQueriesComposite
+ * @see QueriesComposite
  * @see PersistenceUnitMetadataComposite
  * @see SchemaCombo
  *
@@ -105,22 +110,24 @@ public abstract class AbstractEclipseLinkEntityMappingsDetailsPage extends Abstr
 	}
 
 	protected void initializeConvertersCollapsibleSection(Composite container) {
-		container = addCollapsibleSection(
-			container,
-			EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters
-		);
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters);
 
-		this.initializeConvertersSection(container);
+		section.addExpansionListener(new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanging(ExpansionEvent e) {
+				if (e.getState() && section.getClient() == null) {
+					section.setClient(initializeConvertersSection(section));
+				}
+			}
+		});
 	}
 
-	protected void initializeConvertersSection(Composite container) {
-		new EclipseLinkConvertersComposite(
-			this,
-			this.buildConverterHolder(),
-			container
-		);
+	protected Control initializeConvertersSection(Composite container) {
+		return new EclipseLinkConvertersComposite(this, this.buildConverterHolder(), container).getControl();
 	}
-	
+
 	private PropertyValueModel<OrmEclipseLinkConverterContainer> buildConverterHolder() {
 		return new PropertyAspectAdapter<EntityMappings, OrmEclipseLinkConverterContainer>(getSubjectHolder()) {
 			@Override
@@ -129,5 +136,4 @@ public abstract class AbstractEclipseLinkEntityMappingsDetailsPage extends Abstr
 			}
 		};
 	}
-
 }

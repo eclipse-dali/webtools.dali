@@ -11,20 +11,12 @@ package org.eclipse.jpt.common.ui.internal.widgets;
 
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
-import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.common.ui.internal.swt.ColumnAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.TableModelAdapter;
-import org.eclipse.jpt.common.ui.internal.swt.TableModelAdapter.SelectionChangeEvent;
-import org.eclipse.jpt.common.ui.internal.swt.TableModelAdapter.SelectionChangeListener;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.common.utility.model.Model;
-import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 
@@ -50,12 +42,8 @@ import org.eclipse.swt.widgets.Table;
  * @version 2.0
  * @since 1.0
  */
-public abstract class AddRemoveTablePane<T extends Model> extends AddRemovePane<T>
+public abstract class AddRemoveTablePane<T extends Model, E extends Object> extends AddRemovePane<T, E>
 {
-	/**
-	 * Flag used to prevent circular
-	 */
-	private boolean locked;
 
 	/**
 	 * The main widget of this add/remove pane.
@@ -75,16 +63,16 @@ public abstract class AddRemoveTablePane<T extends Model> extends AddRemovePane<
 	 */
 	public AddRemoveTablePane(Pane<? extends T> parentPane,
 	                          Composite parent,
-	                          Adapter adapter,
-	                          ListValueModel<?> listHolder,
-	                          ModifiablePropertyValueModel<?> selectedItemHolder,
+	                          Adapter<E> adapter,
+	                          ListValueModel<E> listHolder,
+	                          ModifiableCollectionValueModel<E> selectedItemsHolder,
 	                          ITableLabelProvider labelProvider) {
 
 		super(parentPane,
 		      parent,
 		      adapter,
 		      listHolder,
-		      selectedItemHolder,
+		      selectedItemsHolder,
 		      labelProvider);
 
 	}
@@ -103,9 +91,9 @@ public abstract class AddRemoveTablePane<T extends Model> extends AddRemovePane<
 	 */
 	public AddRemoveTablePane(Pane<? extends T> parentPane,
 	                          Composite parent,
-	                          Adapter adapter,
-	                          ListValueModel<?> listHolder,
-	                          ModifiablePropertyValueModel<?> selectedItemHolder,
+	                          Adapter<E> adapter,
+	                          ListValueModel<E> listHolder,
+	                          ModifiableCollectionValueModel<E> selectedItemsHolder,
 	                          ITableLabelProvider labelProvider,
 	                          String helpId) {
 
@@ -113,7 +101,7 @@ public abstract class AddRemoveTablePane<T extends Model> extends AddRemovePane<
 		      parent,
 		      adapter,
 		      listHolder,
-		      selectedItemHolder,
+		      selectedItemsHolder,
 		      labelProvider,
 		      helpId);
 	}
@@ -133,9 +121,9 @@ public abstract class AddRemoveTablePane<T extends Model> extends AddRemovePane<
 	public AddRemoveTablePane(Pane<?> parentPane,
 	                          PropertyValueModel<? extends T> subjectHolder,
 	                          Composite parent,
-	                          Adapter adapter,
-	                          ListValueModel<?> listHolder,
-	                          ModifiablePropertyValueModel<?> selectedItemHolder,
+	                          Adapter<E> adapter,
+	                          ListValueModel<E> listHolder,
+	                          ModifiableCollectionValueModel<E> selectedItemsHolder,
 	                          ITableLabelProvider labelProvider) {
 
 		super(parentPane,
@@ -143,7 +131,7 @@ public abstract class AddRemoveTablePane<T extends Model> extends AddRemovePane<
 		      parent,
 		      adapter,
 		      listHolder,
-		      selectedItemHolder,
+		      selectedItemsHolder,
 		      labelProvider);
 	}
 
@@ -163,9 +151,9 @@ public abstract class AddRemoveTablePane<T extends Model> extends AddRemovePane<
 	public AddRemoveTablePane(Pane<?> parentPane,
 	                          PropertyValueModel<? extends T> subjectHolder,
 	                          Composite parent,
-	                          Adapter adapter,
-	                          ListValueModel<?> listHolder,
-	                          ModifiablePropertyValueModel<?> selectedItemHolder,
+	                          Adapter<E> adapter,
+	                          ListValueModel<E> listHolder,
+	                          ModifiableCollectionValueModel<E> selectedItemsHolder,
 	                          ITableLabelProvider labelProvider,
 	                          String helpId) {
 
@@ -174,67 +162,19 @@ public abstract class AddRemoveTablePane<T extends Model> extends AddRemovePane<
 		      parent,
 		      adapter,
 		      listHolder,
-		      selectedItemHolder,
+		      selectedItemsHolder,
 		      labelProvider,
 		      helpId);
 	}
 
-	protected abstract ColumnAdapter<?> buildColumnAdapter();
-
-	private ModifiablePropertyValueModel<Object> buildSelectedItemHolder() {
-		return new SimplePropertyValueModel<Object>();
-	}
-
-	private PropertyChangeListener buildSelectedItemPropertyChangeListener() {
-		return new SWTPropertyChangeListenerWrapper(
-			buildSelectedItemPropertyChangeListener_()
-		);
-	}
-
-	private PropertyChangeListener buildSelectedItemPropertyChangeListener_() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent e) {
-				if (table.isDisposed()) {
-					return;
-				}
-
-				if (!locked) {
-					locked = true;
-
-					try {
-						Object value = e.getNewValue();
-						getSelectionModel().setSelectedValue(e.getNewValue());
-						int index = -1;
-
-						if (value != null) {
-							index = CollectionTools.indexOf(getListHolder().iterator(), value);
-						}
-
-						table.select(index);
-						updateButtons();
-					}
-					finally {
-						locked = false;
-					}
-				}
-			}
-		};
-	}
-
-	private SelectionChangeListener<Object> buildSelectionListener() {
-		return new SelectionChangeListener<Object>() {
-			public void selectionChanged(SelectionChangeEvent<Object> e) {
-				AddRemoveTablePane.this.selectionChanged();
-			}
-		};
-	}
+	protected abstract ColumnAdapter<E> buildColumnAdapter();
 
 	/*
 	 * (non-Javadoc)
 	 */
 	@Override
 	public Table getMainControl() {
-		return table;
+		return this.table;
 	}
 
 	/*
@@ -243,72 +183,22 @@ public abstract class AddRemoveTablePane<T extends Model> extends AddRemovePane<
 	@Override
 	@SuppressWarnings("unchecked")
 	protected void initializeMainComposite(Composite container,
-	                                       Adapter adapter,
+	                                       Adapter<E> adapter,
 	                                       ListValueModel<?> listHolder,
-	                                       ModifiablePropertyValueModel<?> selectedItemHolder,
+	                                       ModifiableCollectionValueModel<E> selectedItemsHolder,
 	                                       IBaseLabelProvider labelProvider,
 	                                       String helpId)
 	{
-		table = addUnmanagedTable(container, helpId);
-		table.setHeaderVisible(true);
+		this.table = addUnmanagedTable(container, helpId);
+		this.table.setHeaderVisible(true);
 
-		TableModelAdapter<Object> tableModel = TableModelAdapter.adapt(
-			(ListValueModel<Object>) listHolder,
-			buildSelectedItemHolder(),
-			table,
-			(ColumnAdapter<Object>) buildColumnAdapter(),
+		TableModelAdapter.adapt(
+			(ListValueModel<E>) listHolder,
+			selectedItemsHolder,
+			this.table,
+			buildColumnAdapter(),
 			(ITableLabelProvider) labelProvider
 		);
-
-		tableModel.addSelectionChangeListener(buildSelectionListener());
-
-		selectedItemHolder.addPropertyChangeListener(
-			PropertyValueModel.VALUE,
-			buildSelectedItemPropertyChangeListener()
-		);
 	}
 
-	/**
-	 * The selection has changed, update (1) the selected item holder, (2) the
-	 * selection model and (3) the buttons.
-	 */
-	private void selectionChanged() {
-
-		if (locked) {
-			return;
-		}
-
-		locked = true;
-
-		try {
-			ModifiablePropertyValueModel<Object> selectedItemHolder = getSelectedItemHolder();
-			ObjectListSelectionModel selectionModel = getSelectionModel();
-			int selectionCount = table.getSelectionCount();
-
-			if (selectionCount == 0) {
-				selectedItemHolder.setValue(null);
-				selectionModel.clearSelection();
-			}
-			else if (selectionCount != 1) {
-				selectedItemHolder.setValue(null);
-				selectionModel.clearSelection();
-
-				for (int index : table.getSelectionIndices()) {
-					selectionModel.addSelectionInterval(index, index);
-				}
-			}
-			else {
-				int selectedIndex = table.getSelectionIndex();
-				Object selectedItem = getListHolder().get(selectedIndex);
-
-				selectedItemHolder.setValue(selectedItem);
-				selectionModel.setSelectedValue(selectedItem);
-			}
-
-			updateButtons();
-		}
-		finally {
-			locked = false;
-		}
-	}
 }

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.model.value.CompositeBooleanPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -21,16 +21,21 @@ import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaElementCollectionMapping2_
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkConvertComposite;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkConvertCombo;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkElementCollectionMapping2_0Composite;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkJoinFetchComposite;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkJoinFetchComboViewer;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
-import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
+import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.CollectionTable2_0Composite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.TargetClassComposite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.JptUiDetailsMessages2_0;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.TargetClassChooser;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.forms.widgets.Hyperlink;
 
 public class JavaEclipseLinkElementCollectionMapping2_0Composite
 	extends EclipseLinkElementCollectionMapping2_0Composite<JavaElementCollectionMapping2_0>
@@ -43,18 +48,36 @@ public class JavaEclipseLinkElementCollectionMapping2_0Composite
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public JavaEclipseLinkElementCollectionMapping2_0Composite(PropertyValueModel<? extends JavaElementCollectionMapping2_0> subjectHolder,
-	                               Composite parent,
-	                               WidgetFactory widgetFactory) {
+									PropertyValueModel<Boolean> enabledModel,
+									Composite parent,
+									WidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 
 	@Override
-	protected void initializeElementCollectionSection(Composite container) {
-		new TargetClassComposite(this, container);
-		new FetchTypeComposite(this, container);
-		new EclipseLinkJoinFetchComposite(this, buildJoinFetchHolder(), container);
-		new CollectionTable2_0Composite(this, buildCollectionTableHolder(), container);
+	protected Control initializeElementCollectionSection(Composite container) {
+		container = this.addSubPane(container, 2, 0, 0, 0, 0);
+
+		// Target class widgets
+		Hyperlink hyperlink = this.addHyperlink(container, JptUiDetailsMessages2_0.TargetClassComposite_label);
+		new TargetClassChooser(this, container, hyperlink);
+
+		// Fetch type widgets
+		this.addLabel(container, JptUiDetailsMessages.BasicGeneralSection_fetchLabel);
+		new FetchTypeComboViewer(this, container);
+
+		// Join fetch widgets
+		this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkJoinFetchComposite_label);
+		new EclipseLinkJoinFetchComboViewer(this, buildJoinFetchHolder(), container);
+
+		// Collection table widgets
+		CollectionTable2_0Composite collectionTableComposite = new CollectionTable2_0Composite(this, buildCollectionTableHolder(), container);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		collectionTableComposite.getControl().setLayoutData(gridData);
+
+		return container;
 	}
 
 	protected PropertyValueModel<EclipseLinkJoinFetch> buildJoinFetchHolder() {
@@ -68,23 +91,25 @@ public class JavaEclipseLinkElementCollectionMapping2_0Composite
 
 
 	@Override
-	protected void initializeBasicValueTypeSection(Composite typeSection) {
-		super.initializeBasicValueTypeSection(typeSection);
+	protected void initializeBasicValueTypeSection(Composite container) {
+		super.initializeBasicValueTypeSection(container);
 		PropertyValueModel<Converter> converterHolder = buildConverterHolder();
 
 		// EclipseLink Converter
 		Button elConverterButton = addRadioButton(
-			typeSection, 
+			container, 
 			EclipseLinkUiDetailsMessages.TypeSection_converted, 
 			buildConverterBooleanHolder(EclipseLinkConvert.class), 
 			null);
 		((GridData) elConverterButton.getLayoutData()).horizontalSpan = 2;
 
-		Pane<EclipseLinkConvert> convertComposite = buildConvertComposite(buildEclipseLinkConverterHolder(converterHolder), typeSection);
-		GridData gridData = (GridData) convertComposite.getControl().getLayoutData();
-		gridData.horizontalSpan = 2;
+		PropertyValueModel<EclipseLinkConvert> convertHolder = buildEclipseLinkConverterHolder(converterHolder);
+		PropertyValueModel<Boolean> convertEnabledModel = CompositeBooleanPropertyValueModel.and(getEnabledModel(), buildEclipseLinkConvertBooleanHolder(convertHolder));
+		Label convertLabel = this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkConvertComposite_converterNameLabel, convertEnabledModel);
+		GridData gridData = new GridData();
 		gridData.horizontalIndent = 20;
-		registerSubPane(convertComposite);
+		convertLabel.setLayoutData(gridData);
+		registerSubPane(new EclipseLinkConvertCombo(convertHolder, convertEnabledModel, container, getWidgetFactory()));
 	}
 
 	protected PropertyValueModel<Converter> buildConverterHolder() {
@@ -111,10 +136,6 @@ public class JavaEclipseLinkElementCollectionMapping2_0Composite
 				}
 			}
 		};
-	}
-
-	protected Pane<EclipseLinkConvert> buildConvertComposite(PropertyValueModel<EclipseLinkConvert> convertHolder, Composite container) {
-		return new EclipseLinkConvertComposite(convertHolder, container, getWidgetFactory());
 	}
 
 	protected PropertyValueModel<EclipseLinkConvert> buildEclipseLinkConverterHolder(PropertyValueModel<Converter> converterHolder) {

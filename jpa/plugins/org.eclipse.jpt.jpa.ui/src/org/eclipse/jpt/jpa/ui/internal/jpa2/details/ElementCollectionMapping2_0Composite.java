@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -53,11 +53,11 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see BasicMapping
  * @see OrderColumnComposite
- * @see EnumTypeComposite
- * @see FetchTypeComposite
+ * @see EnumTypeComboViewer
+ * @see FetchTypeComboViewer
  * @see LobComposite
- * @see OptionalComposite
- * @see TemporalTypeComposite
+ * @see OptionalTriStateCheckBox
+ * @see TemporalTypeCombo
  *
  * @version 2.3
  * @since 2.3
@@ -72,10 +72,11 @@ public class ElementCollectionMapping2_0Composite extends AbstractElementCollect
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public ElementCollectionMapping2_0Composite(PropertyValueModel<? extends ElementCollectionMapping2_0> subjectHolder,
-	                             Composite parent,
-	                             WidgetFactory widgetFactory) {
+								PropertyValueModel<Boolean> enabledModel,
+								Composite parent,
+	                            WidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 
 }

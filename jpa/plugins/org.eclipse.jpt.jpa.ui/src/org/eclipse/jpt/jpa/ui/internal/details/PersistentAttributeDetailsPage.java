@@ -59,8 +59,7 @@ public abstract class PersistentAttributeDetailsPage<A extends ReadOnlyPersisten
 		
 		super(parent, widgetFactory);
 	}
-	
-	
+
 	@Override
 	protected void initialize() {
 		super.initialize();
@@ -69,11 +68,11 @@ public abstract class PersistentAttributeDetailsPage<A extends ReadOnlyPersisten
 
 	protected PageBook buildMappingPageBook(Composite parent) {
 		this.mappingPageBook = new PageBook(parent, SWT.NONE);
-		this.mappingPageBook.showPage(this.addLabel(this.mappingPageBook, "")); //$NON-NLS-1$
 
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment       = SWT.FILL;
 		gridData.verticalAlignment         = SWT.TOP;
+		gridData.verticalIndent = 5;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace   = true;
 
@@ -84,7 +83,7 @@ public abstract class PersistentAttributeDetailsPage<A extends ReadOnlyPersisten
 
 		return this.mappingPageBook;
 	}
-	
+
 	private Transformer<AttributeMapping, Control> buildPaneTransformer() {
 		return new Transformer<AttributeMapping, Control>() {
 			public Control transform(AttributeMapping attributeMapping) {
@@ -110,16 +109,19 @@ public abstract class PersistentAttributeDetailsPage<A extends ReadOnlyPersisten
 
 		return composite;
 	}
-	
+
 	protected JpaComposite buildMappingComposite(PageBook pageBook, String key) {
 		return getJpaPlatformUi().buildAttributeMappingComposite(
 				getSubject().getResourceType(),
 				key,
 				pageBook,
 				buildMappingHolder(key),
+				getMappingCompositeEnabledModel(),
 				getWidgetFactory());
 	}
-	
+
+	protected abstract PropertyValueModel<Boolean> getMappingCompositeEnabledModel();
+
 	private PropertyValueModel<AttributeMapping> buildMappingHolder(final String key) {
 		return new FilteringPropertyValueModel<AttributeMapping>(
 			this.mappingHolder,

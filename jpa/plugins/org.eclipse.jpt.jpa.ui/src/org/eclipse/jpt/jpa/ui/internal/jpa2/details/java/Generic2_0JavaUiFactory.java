@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.java.BaseJavaUiFactory;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.ElementCollectionMapping2_0Composite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.EmbeddedIdMapping2_0Composite;
-import org.eclipse.jpt.jpa.ui.internal.persistence.details.GenericPersistenceXmlUiFactory;
+import org.eclipse.jpt.jpa.ui.internal.persistence.GenericPersistenceXmlUiFactory;
 import org.eclipse.jpt.jpa.ui.jpa2.details.java.JavaUiFactory2_0;
 import org.eclipse.swt.widgets.Composite;
 
@@ -72,63 +72,71 @@ public class Generic2_0JavaUiFactory
 	@Override
 	public JpaComposite createJavaIdMappingComposite(
 			PropertyValueModel<JavaIdMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new JavaIdMapping2_0Composite(subjectHolder, parent, widgetFactory);
+		return new JavaIdMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 
 	@Override
 	public JpaComposite createJavaEmbeddedIdMappingComposite(
 			PropertyValueModel<JavaEmbeddedIdMapping> subjectHolder, 
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent, 
 			WidgetFactory widgetFactory) {
-		return new EmbeddedIdMapping2_0Composite(subjectHolder, parent, widgetFactory);
+		return new EmbeddedIdMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	@Override
 	public JpaComposite createJavaEmbeddedMappingComposite(
 			PropertyValueModel<JavaEmbeddedMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new JavaEmbeddedMapping2_0Composite(subjectHolder, parent, widgetFactory);
+		return new JavaEmbeddedMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	@Override
 	public JpaComposite createJavaManyToManyMappingComposite(
 			PropertyValueModel<JavaManyToManyMapping> subjectHolder, 
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent, 
 			WidgetFactory widgetFactory) {
-		return new JavaManyToManyMapping2_0Composite(subjectHolder, parent, widgetFactory);
+		return new JavaManyToManyMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	@Override
 	public JpaComposite createJavaManyToOneMappingComposite(
 			PropertyValueModel<JavaManyToOneMapping> subjectHolder, 
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent, 
 			WidgetFactory widgetFactory) {
-		return new JavaManyToOneMapping2_0Composite(subjectHolder, parent, widgetFactory);
+		return new JavaManyToOneMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 
 	@Override
 	public JpaComposite createJavaOneToManyMappingComposite(
 			PropertyValueModel<JavaOneToManyMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new JavaOneToManyMapping2_0Composite(subjectHolder, parent, widgetFactory);
+		return new JavaOneToManyMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	@Override
 	public JpaComposite createJavaOneToOneMappingComposite(
 			PropertyValueModel<JavaOneToOneMapping> subjectHolder, 
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent, 
 			WidgetFactory widgetFactory) {
-		return new JavaOneToOneMapping2_0Composite(subjectHolder, parent, widgetFactory);
+		return new JavaOneToOneMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	public JpaComposite createJavaElementCollectionMapping2_0Composite(
 			PropertyValueModel<JavaElementCollectionMapping2_0> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new ElementCollectionMapping2_0Composite(subjectHolder, parent, widgetFactory);
+		return new ElementCollectionMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 }

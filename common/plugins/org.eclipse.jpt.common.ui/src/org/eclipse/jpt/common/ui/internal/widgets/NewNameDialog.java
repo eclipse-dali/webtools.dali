@@ -146,17 +146,15 @@ public class NewNameDialog extends ValidatingDialog<NewNameStateObject>
 			};
 		}
 
-		/*
-		 * (non-Javadoc)
-		 */
+		@Override
+		protected Composite addComposite(Composite container) {
+			return this.addSubPane(container, 2, 0, 0, 0, 0);
+		}
+
 		@Override
 		protected void initializeLayout(Composite container) {
-
-			text = addLabeledText(
-				container,
-				labelText,
-				buildNameHolder()
-			);
+			this.addLabel(container, labelText);
+			this.addText(container, buildNameHolder());
 		}
 
 		void selectAll() {

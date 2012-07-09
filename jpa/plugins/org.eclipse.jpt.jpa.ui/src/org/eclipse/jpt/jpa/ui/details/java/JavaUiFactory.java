@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -142,6 +142,7 @@ public interface JavaUiFactory
 	 */
 	JpaComposite createJavaIdMappingComposite(
 		PropertyValueModel<JavaIdMapping> subjectHolder,
+		PropertyValueModel<Boolean> enabledModel,
 		Composite parent,
 		WidgetFactory widgetFactory);
 	
@@ -155,6 +156,7 @@ public interface JavaUiFactory
 	 */
 	JpaComposite createJavaEmbeddedIdMappingComposite(
 		PropertyValueModel<JavaEmbeddedIdMapping> subjectHolder,
+		PropertyValueModel<Boolean> enabledModel,
 		Composite parent,
 		WidgetFactory widgetFactory);
 	
@@ -168,6 +170,7 @@ public interface JavaUiFactory
 	 */
 	JpaComposite createJavaBasicMappingComposite(
 		PropertyValueModel<JavaBasicMapping> subjectHolder,
+		PropertyValueModel<Boolean> enabledModel,
 		Composite parent,
 		WidgetFactory widgetFactory);
 	
@@ -181,6 +184,7 @@ public interface JavaUiFactory
 	 */
 	JpaComposite createJavaVersionMappingComposite(
 		PropertyValueModel<JavaVersionMapping> subjectHolder,
+		PropertyValueModel<Boolean> enabledModel,
 		Composite parent,
 		WidgetFactory widgetFactory);
 	
@@ -194,6 +198,7 @@ public interface JavaUiFactory
 	 */
 	JpaComposite createJavaManyToOneMappingComposite(
 		PropertyValueModel<JavaManyToOneMapping> subjectHolder,
+		PropertyValueModel<Boolean> enabledModel,
 		Composite parent,
 		WidgetFactory widgetFactory);
 	
@@ -207,6 +212,7 @@ public interface JavaUiFactory
 	 */
 	JpaComposite createJavaOneToManyMappingComposite(
 		PropertyValueModel<JavaOneToManyMapping> subjectHolder,
+		PropertyValueModel<Boolean> enabledModel,
 		Composite parent,
 		WidgetFactory widgetFactory);
 	
@@ -220,6 +226,7 @@ public interface JavaUiFactory
 	 */
 	JpaComposite createJavaOneToOneMappingComposite(
 		PropertyValueModel<JavaOneToOneMapping> subjectHolder,
+		PropertyValueModel<Boolean> enabledModel,
 		Composite parent,
 		WidgetFactory widgetFactory);
 	
@@ -233,6 +240,7 @@ public interface JavaUiFactory
 	 */
 	JpaComposite createJavaManyToManyMappingComposite(
 		PropertyValueModel<JavaManyToManyMapping> subjectHolder,
+		PropertyValueModel<Boolean> enabledModel,
 		Composite parent,
 		WidgetFactory widgetFactory);
 	
@@ -246,6 +254,7 @@ public interface JavaUiFactory
 	 */
 	JpaComposite createJavaEmbeddedMappingComposite(
 		PropertyValueModel<JavaEmbeddedMapping> subjectHolder,
+		PropertyValueModel<Boolean> enabledModel,
 		Composite parent,
 		WidgetFactory widgetFactory);
 	
@@ -259,6 +268,7 @@ public interface JavaUiFactory
 	 */
 	JpaComposite createJavaTransientMappingComposite(
 		PropertyValueModel<JavaTransientMapping> subjectHolder,
+		PropertyValueModel<Boolean> enabledModel,
 		Composite parent,
 		WidgetFactory widgetFactory);
 	

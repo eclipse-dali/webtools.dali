@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,11 +15,16 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.AccessHolder;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
-import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.EntityNameComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.IdClassComposite;
+import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
+import org.eclipse.jpt.jpa.ui.internal.details.EntityNameCombo;
+import org.eclipse.jpt.jpa.ui.internal.details.IdClassChooser;
+import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.TableComposite;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.widgets.Hyperlink;
 
 /**
  * The pane used for an EclipseLink1.2 Java entity.
@@ -49,11 +54,28 @@ public class JavaEclipseLinkEntity1_2Composite
 	}
 
 	@Override
-	protected void initializeEntitySection(Composite container) {
-		new TableComposite(this, container);
-		new EntityNameComposite(this, container);	
-		new AccessTypeComposite(this, buildAccessHolder(), container);	
-		new IdClassComposite(this, buildIdClassReferenceHolder(), container);
+	protected Control initializeEntitySection(Composite container) {
+		container = this.addSubPane(container, 2, 0, 0, 0, 0);
+
+		// Table widgets
+		TableComposite tableComposite = new TableComposite(this, container);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		tableComposite.getControl().setLayoutData(gridData);
+
+		// Entity name widgets
+		this.addLabel(container, JptUiDetailsMessages.EntityNameComposite_name);
+		new EntityNameCombo(this, container);
+
+		// Access type widgets
+		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
+		new AccessTypeComboViewer(this, this.buildAccessHolder(), container);	
+
+		// Id class widgets
+		Hyperlink hyperlink = this.addHyperlink(container,JptUiDetailsMessages.IdClassComposite_label);
+		new IdClassChooser(this, this.buildIdClassReferenceHolder(), container, hyperlink);
+
+		return container;
 	}
 
 	protected PropertyValueModel<AccessHolder> buildAccessHolder() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,11 +11,14 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.EmbeddedMapping;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Section;
 
 /**
  * Here the layout of this pane:
@@ -45,10 +48,11 @@ public abstract class AbstractEmbeddedMappingComposite<T extends EmbeddedMapping
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	protected AbstractEmbeddedMappingComposite(PropertyValueModel<? extends T> subjectHolder,
-	                                Composite parent,
+									PropertyValueModel<Boolean> enabledModel,
+									Composite parent,
 	                                WidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 
 	@Override
@@ -57,19 +61,18 @@ public abstract class AbstractEmbeddedMappingComposite<T extends EmbeddedMapping
 	}
 	
 	protected void initializeEmbeddedCollapsibleSection(Composite container) {
-		container = addCollapsibleSection(
-			container,
-			JptUiDetailsMessages.EmbeddedSection_title,
-			new SimplePropertyValueModel<Boolean>(Boolean.TRUE)
-		);
-
-		this.initializeEmbeddedSection(container);
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages.EmbeddedSection_title);
+		section.setClient(this.initializeEmbeddedSection(section));
+		section.setExpanded(true);
 	}
 	
-	protected void initializeEmbeddedSection(Composite container) {
-		new EmbeddedMappingOverridesComposite(
-			this,
-			container
-		);
+	protected Control initializeEmbeddedSection(Composite container) {
+		//a Section having a Group as its client causes exceptions. EmbeddedMappingOverridesComposite
+		//uses a Group as its 'control' so I am adding an extra composite here.
+		container = this.addSubPane(container);
+		new EmbeddedMappingOverridesComposite(this, container);
+		return container;
 	}
 }

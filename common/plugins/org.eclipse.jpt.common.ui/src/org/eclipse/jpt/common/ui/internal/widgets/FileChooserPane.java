@@ -27,11 +27,11 @@ import org.eclipse.ui.dialogs.ISelectionStatusValidator;
  * <p>
  * Here the layout of this pane:
  * <pre>
- * -----------------------------------------------------------------------------
- * |        ---------------------------------------------------- ------------- |
- * | Label: | I                                                | | Browse... | |
- * |        ---------------------------------------------------- ------------- |
- * -----------------------------------------------------------------------------</pre>
+ * -----------------------------------------------------------------------
+ * |  ---------------------------------------------------- ------------- |
+ * |  | I                                                | | Browse... | |
+ * |  ---------------------------------------------------- ------------- |
+ * -----------------------------------------------------------------------</pre>
  *
  * @version 2.0
  * @since 2.0
@@ -96,7 +96,7 @@ public abstract class FileChooserPane<T extends Model> extends ChooserPane<T>
 
 	@Override
 	protected Control addMainControl(Composite container) {
-		return this.addText(container, this.textHolder);
+		return this.addText(container, this.textHolder, getHelpId());
 	}
 
 	/**

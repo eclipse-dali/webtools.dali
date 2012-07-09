@@ -241,7 +241,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject> extends BaseJ
 
 		// Insertable tri-state check box
 		addTriStateCheckBoxWithDefault(
-			addSubPane(container, 4),
+			container,
 			JptUiDetailsMessages.JoinColumnDialogPane_insertable,
 			buildInsertableHolder(),
 			buildInsertableStringHolder(),

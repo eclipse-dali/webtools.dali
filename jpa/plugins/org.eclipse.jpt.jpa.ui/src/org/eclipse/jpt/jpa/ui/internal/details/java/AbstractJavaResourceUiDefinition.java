@@ -156,7 +156,8 @@ public abstract class AbstractJavaResourceUiDefinition
 	public JpaComposite buildAttributeMappingComposite(
 			String key, 
 			PropertyValueModel<AttributeMapping> mappingHolder, 
-			Composite parent, 
+			PropertyValueModel<Boolean> enabledModel, 
+			Composite parent,
 			WidgetFactory widgetFactory) {
 		
 		JavaAttributeMappingUiDefinition<AttributeMapping> mappingUiDefinition = 
@@ -164,6 +165,7 @@ public abstract class AbstractJavaResourceUiDefinition
 		return mappingUiDefinition.buildAttributeMappingComposite(
 				getFactory(), 
 				mappingHolder,
+				enabledModel,
 				parent,
 				widgetFactory);
 	}

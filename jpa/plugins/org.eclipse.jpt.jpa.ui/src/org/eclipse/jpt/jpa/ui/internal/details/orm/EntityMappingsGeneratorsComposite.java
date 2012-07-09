@@ -11,27 +11,26 @@ package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
-import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
-import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
+import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.TableGenerator;
@@ -40,9 +39,9 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.jpa.ui.internal.details.GeneratorComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.GeneratorComposite.GeneratorBuilder;
 import org.eclipse.jpt.jpa.ui.internal.details.SequenceGeneratorComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.TableGeneratorComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.GeneratorComposite.GeneratorBuilder;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -81,10 +80,10 @@ import org.eclipse.ui.part.PageBook;
  */
 public class EntityMappingsGeneratorsComposite extends Pane<EntityMappings>
 {
-	private ModifiablePropertyValueModel<OrmGenerator> generatorHolder;
 	GeneratorComposite<SequenceGenerator> sequenceGeneratorPane;
 	TableGeneratorComposite tableGeneratorPane;
-	private AddRemoveListPane<EntityMappings> listPane;
+	ModifiableCollectionValueModel<OrmGenerator> selectedGeneratorsModel;
+	PropertyValueModel<OrmGenerator> selectedGeneratorModel;
 
 	/**
 	 * Creates a new <code>EntityMappingsGeneratorsComposite</code>.
@@ -96,20 +95,43 @@ public class EntityMappingsGeneratorsComposite extends Pane<EntityMappings>
 						Pane<? extends EntityMappings> parentPane,
 						Composite parent) {
 
-		super(parentPane, parent, false);
+		super(parentPane, parent);
+	}
+
+	@Override
+	protected void initialize() {
+		super.initialize();
+		this.selectedGeneratorsModel = this.buildSelectedGeneratorsModel();
+		this.selectedGeneratorModel = this.buildSelectedGeneratorModel(this.selectedGeneratorsModel);
+	}
+
+	private ModifiableCollectionValueModel<OrmGenerator> buildSelectedGeneratorsModel() {
+		return new SimpleCollectionValueModel<OrmGenerator>();
+	}
+
+	protected PropertyValueModel<OrmGenerator> buildSelectedGeneratorModel(ModifiableCollectionValueModel<OrmGenerator> selectedGeneratorsModel) {
+		return new CollectionPropertyValueModelAdapter<OrmGenerator, OrmGenerator>(selectedGeneratorsModel) {
+			@Override
+			protected OrmGenerator buildValue() {
+				if (this.collectionModel.size() == 1) {
+					return this.collectionModel.iterator().next();
+				}
+				return null;
+			}
+		};
 	}
 	
-	void addGenerator(ObjectListSelectionModel listSelectionModel) {
-		addGeneratorFromDialog(listSelectionModel, buildAddGeneratorDialog());
+	OrmGenerator addGenerator() {
+		return addGeneratorFromDialog(buildAddGeneratorDialog());
 	}
 	
 	protected AddGeneratorDialog buildAddGeneratorDialog() {
 		return new AddGeneratorDialog(getShell(), this.getSubject().getPersistenceUnit());
 	}
 
-	protected void addGeneratorFromDialog(ObjectListSelectionModel listSelectionModel, AddGeneratorDialog dialog) {
+	protected OrmGenerator addGeneratorFromDialog(AddGeneratorDialog dialog) {
 		if (dialog.open() != Window.OK) {
-			return;
+			return null;
 		}
 		String generatorType = dialog.getGeneratorType();
 		OrmGenerator generator;
@@ -123,8 +145,7 @@ public class EntityMappingsGeneratorsComposite extends Pane<EntityMappings>
 			throw new IllegalArgumentException();
 		}
 		generator.setName(dialog.getName());
-		this.generatorHolder.setValue(generator);//so that it gets selected in the List for the user to edit
-		listSelectionModel.setSelectedValue(generator);
+		return generator;
 	}
 
 	private ListValueModel<OrmGenerator> buildDisplayableGeneratorListHolder() {
@@ -134,30 +155,29 @@ public class EntityMappingsGeneratorsComposite extends Pane<EntityMappings>
 		);
 	}
 
-	private Adapter buildGeneratorAdapter() {
+	private Adapter<OrmGenerator> buildGeneratorAdapter() {
 
-		return new AddRemoveListPane.AbstractAdapter() {
-
-			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
-				addGenerator(listSelectionModel);
+		return new AddRemoveListPane.AbstractAdapter<OrmGenerator>() {
+			public OrmGenerator addNewItem() {
+				return addGenerator();
 			}
 
+			@Override
+			public PropertyValueModel<Boolean> buildRemoveButtonEnabledModel(CollectionValueModel<OrmGenerator> selectedItemsModel) {
+				return buildSingleSelectedItemEnabledModel(selectedItemsModel);
+			}
 
-			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
-				for (Object item : listSelectionModel.selectedValues()) {
-					if (item instanceof OrmSequenceGenerator) {
-						getSubject().removeSequenceGenerator((OrmSequenceGenerator) item);
-					}
-					else {
-						getSubject().removeTableGenerator((OrmTableGenerator) item);
-					}
+			public void removeSelectedItems(CollectionValueModel<OrmGenerator> selectedItemsModel) {
+				//assume only 1 item since remove button is disabled otherwise
+				OrmGenerator item = selectedItemsModel.iterator().next();
+				if (item instanceof OrmSequenceGenerator) {
+					getSubject().removeSequenceGenerator((OrmSequenceGenerator) item);
+				}
+				else {
+					getSubject().removeTableGenerator((OrmTableGenerator) item);
 				}
 			}
 		};
-	}
-
-	private ModifiablePropertyValueModel<OrmGenerator> buildGeneratorHolder() {
-		return new SimplePropertyValueModel<OrmGenerator>();
 	}
 
 	private ILabelProvider buildGeneratorLabelProvider() {
@@ -192,16 +212,7 @@ public class EntityMappingsGeneratorsComposite extends Pane<EntityMappings>
 		return new CompositeListValueModel<ListValueModel<? extends OrmGenerator>, OrmGenerator>(list);
 	}
 
-	private PropertyValueModel<Boolean> buildPaneEnablerHolder() {
-		return new TransformationPropertyValueModel<EntityMappings, Boolean>(getSubjectHolder()) {
-			@Override
-			protected Boolean transform(EntityMappings value) {
-				return Boolean.valueOf(value != null);
-			}
-		};
-	}
-
-	private Transformer<OrmGenerator, Control> buildPaneTransformer() {
+	private Transformer<OrmGenerator, Control> buildPaneTransformer(final Composite container) {
 		return new Transformer<OrmGenerator, Control>() {
 			public Control transform(OrmGenerator generator) {
 
@@ -210,16 +221,16 @@ public class EntityMappingsGeneratorsComposite extends Pane<EntityMappings>
 				}
 
 				if (generator instanceof OrmSequenceGenerator) {
-					return EntityMappingsGeneratorsComposite.this.sequenceGeneratorPane.getControl();
+					return EntityMappingsGeneratorsComposite.this.getSequenceGeneratorComposite(container).getControl();
 				}
 
-				return EntityMappingsGeneratorsComposite.this.tableGeneratorPane.getControl();
+				return EntityMappingsGeneratorsComposite.this.getTableGeneratorComposite(container).getControl();
 			}
 		};
 	}
 
 	private PropertyValueModel<SequenceGenerator> buildSequenceGeneratorHolder() {
-		return new TransformationPropertyValueModel<OrmGenerator, SequenceGenerator>(this.generatorHolder) {
+		return new TransformationPropertyValueModel<OrmGenerator, SequenceGenerator>(this.selectedGeneratorModel) {
 			@Override
 			protected SequenceGenerator transform_(OrmGenerator value) {
 				return (value instanceof SequenceGenerator) ? (SequenceGenerator) value : null;
@@ -244,7 +255,7 @@ public class EntityMappingsGeneratorsComposite extends Pane<EntityMappings>
 	}
 
 	private PropertyValueModel<TableGenerator> buildTableGeneratorHolder() {
-		return new TransformationPropertyValueModel<OrmGenerator, TableGenerator>(this.generatorHolder) {
+		return new TransformationPropertyValueModel<OrmGenerator, TableGenerator>(this.selectedGeneratorModel) {
 			@Override
 			protected TableGenerator transform_(OrmGenerator value) {
 				return (value instanceof TableGenerator) ? (TableGenerator) value : null;
@@ -268,52 +279,27 @@ public class EntityMappingsGeneratorsComposite extends Pane<EntityMappings>
 		};
 	}
 
-
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.generatorHolder = buildGeneratorHolder();
-	}
-
 	@Override
 	protected void initializeLayout(Composite container) {
-
-		container = addCollapsibleSection(
-			container,
-			JptUiDetailsOrmMessages.OrmGeneratorsComposite_groupBox
-		);
-
 		// List pane
-		this.listPane = addListPane(container);
-		this.installPaneEnabler();
+		addListPane(container);
 
 		// Property pane
-		PropertyValueModel<SequenceGenerator> sequenceGeneratorHolder =
-			this.buildSequenceGeneratorHolder();
-		PropertyValueModel<TableGenerator> tableGeneratorHolder =
-			this.buildTableGeneratorHolder();
 
 		PageBook pageBook = new PageBook(container, SWT.NULL);
 		pageBook.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		// Sequence Generator property pane
-		this.sequenceGeneratorPane = this.buildSequenceGeneratorComposite(
-			pageBook,
-			sequenceGeneratorHolder,
-			this.buildSequenceGeneratorBuilder()
-		);
-
-		// Table Generator property pane
-		this.tableGeneratorPane = new TableGeneratorComposite(
-			this,
-			tableGeneratorHolder,
-			pageBook,
-			this.buildTableGeneratorBuilder()
-		);
-
-		this.addAlignRight(this.sequenceGeneratorPane);
-		this.addAlignRight(this.tableGeneratorPane);
 		this.installPaneSwitcher(pageBook);
+	}
+
+	protected GeneratorComposite<SequenceGenerator> getSequenceGeneratorComposite(Composite container) {
+		if (this.sequenceGeneratorPane == null) {
+			this.sequenceGeneratorPane =
+				this.buildSequenceGeneratorComposite(container, 
+													this.buildSequenceGeneratorHolder(), 
+													this.buildSequenceGeneratorBuilder());
+		}
+		return this.sequenceGeneratorPane;
 	}
 
 	protected GeneratorComposite<SequenceGenerator> buildSequenceGeneratorComposite(
@@ -329,27 +315,31 @@ public class EntityMappingsGeneratorsComposite extends Pane<EntityMappings>
 		);
 	}
 
-	private AddRemoveListPane<EntityMappings> addListPane(Composite container) {
+	protected TableGeneratorComposite getTableGeneratorComposite(Composite container) {
+		if (this.tableGeneratorPane == null) {
+			this.tableGeneratorPane = 
+				new TableGeneratorComposite(this, 
+											this.buildTableGeneratorHolder(), 
+											container, 
+											this.buildTableGeneratorBuilder());
+		}
+		return this.tableGeneratorPane;
+	}
 
-		return new AddRemoveListPane<EntityMappings>(
+	private AddRemoveListPane<EntityMappings, OrmGenerator> addListPane(Composite container) {
+
+		return new AddRemoveListPane<EntityMappings, OrmGenerator>(
 			this,
 			container,
 			this.buildGeneratorAdapter(),
 			this.buildDisplayableGeneratorListHolder(),
-			this.generatorHolder,
+			this.selectedGeneratorsModel,
 			this.buildGeneratorLabelProvider()
 		);
 	}
 
-	private void installPaneEnabler() {
-		new PaneEnabler(
-			this.buildPaneEnablerHolder(),
-			this.listPane
-		);
-	}
-
 	private void installPaneSwitcher(PageBook pageBook) {
-		new ControlSwitcher(this.generatorHolder, this.buildPaneTransformer(), pageBook);
+		new ControlSwitcher(this.selectedGeneratorModel, this.buildPaneTransformer(pageBook), pageBook);
 	}	
 
 	private GeneratorBuilder<SequenceGenerator> buildSequenceGeneratorBuilder() {

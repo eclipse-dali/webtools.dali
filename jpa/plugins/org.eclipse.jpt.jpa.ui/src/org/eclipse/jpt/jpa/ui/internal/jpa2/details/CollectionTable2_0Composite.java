@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,9 +17,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.CollectionTable2_0;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.JoinColumnsComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.ReferenceTableComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.db.CatalogCombo;
-import org.eclipse.jpt.jpa.ui.internal.details.db.SchemaCombo;
-import org.eclipse.jpt.jpa.ui.internal.details.db.TableCombo;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
@@ -88,54 +86,41 @@ public class CollectionTable2_0Composite
 	}
 
 	@Override
+	protected Composite addComposite(Composite parent) {
+		return addTitledGroup(
+			parent,
+			JptUiDetailsMessages2_0.CollectionTable2_0Composite_title,
+			2,
+			null
+		);
+	}
+
+	@Override
 	protected void initializeLayout(Composite container) {
-		// collection table group pane
-		container = addTitledGroup(
-			container,
-			JptUiDetailsMessages2_0.CollectionTable2_0Composite_title
-		);
-
-		int groupBoxMargin = getGroupBoxMargin();
-
 		// Name widgets
-		TableCombo<ReadOnlyReferenceTable> tableCombo = addTableCombo(container);
-		Composite tablePane = addPane(container, groupBoxMargin);
-		addLabeledComposite(
-				tablePane,
-			JptUiDetailsMessages2_0.CollectionTable2_0Composite_name,
-			tableCombo.getControl(),
-			JpaHelpContextIds.MAPPING_COLLECTION_TABLE_NAME
-		);
+		this.addLabel(container, JptUiDetailsMessages2_0.CollectionTable2_0Composite_name);
+		this.addTableCombo(container, JpaHelpContextIds.MAPPING_COLLECTION_TABLE_NAME);
 		
 		// schema widgets
-		SchemaCombo<ReadOnlyReferenceTable> schemaCombo = addSchemaCombo(container);
-
-		addLabeledComposite(
-			tablePane,
-			JptUiDetailsMessages2_0.CollectionTable2_0Composite_schema,
-			schemaCombo.getControl(),
-			JpaHelpContextIds.MAPPING_COLLECTION_TABLE_SCHEMA
-		);
+		this.addLabel(container, JptUiDetailsMessages2_0.CollectionTable2_0Composite_schema);
+		addSchemaCombo(container, JpaHelpContextIds.MAPPING_COLLECTION_TABLE_SCHEMA);
 		
 		// catalog widgets
-		CatalogCombo<ReadOnlyReferenceTable> catalogCombo = addCatalogCombo(container);
-
-		addLabeledComposite(
-			tablePane,
-			JptUiDetailsMessages2_0.CollectionTable2_0Composite_catalog,
-			catalogCombo.getControl(),
-			JpaHelpContextIds.MAPPING_COLLECTION_TABLE_CATALOG
-		);
+		this.addLabel(container, JptUiDetailsMessages2_0.CollectionTable2_0Composite_catalog);
+		addCatalogCombo(container, JpaHelpContextIds.MAPPING_COLLECTION_TABLE_CATALOG);
 
 		// Join Columns group pane
 		Group joinColumnGroupPane = addTitledGroup(
 			container,
 			JptUiDetailsMessages2_0.CollectionTable2_0Composite_joinColumn
 		);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		joinColumnGroupPane.setLayoutData(gridData);
 
 		// Override Default Join Columns check box
 		this.overrideDefaultJoinColumnsCheckBox = addCheckBox(
-			addSubPane(joinColumnGroupPane, 8),
+			joinColumnGroupPane,
 			JptUiDetailsMessages2_0.CollectionTable2_0Composite_overrideDefaultJoinColumns,
 			buildOverrideDefaultJoinColumnHolder(),
 			null
@@ -144,10 +129,9 @@ public class CollectionTable2_0Composite
 		this.joinColumnsComposite = new JoinColumnsComposite<ReadOnlyReferenceTable>(
 			this,
 			joinColumnGroupPane,
-			buildJoinColumnsEditor()
+			buildJoinColumnsEditor(),
+			buildJoinColumnsEnabledModel()
 		);
-
-		installJoinColumnsPaneEnabler(this.joinColumnsComposite);
 	}
 	
 	@Override

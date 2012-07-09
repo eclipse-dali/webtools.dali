@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.Collection;
 
-import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -68,44 +67,36 @@ public class TableComposite extends Pane<Entity>
 	public TableComposite(Pane<? extends Entity> parentPane,
 	                      Composite parent) {
 
-		super(parentPane, parent, false);
+		super(parentPane, parent);
+	}
+
+	@Override
+	protected Composite addComposite(Composite parent) {
+		Group tableGroupPane = this.addTitledGroup(
+			parent,
+			JptUiDetailsMessages.TableComposite_tableSection,
+			2,
+			null
+		);
+		return tableGroupPane;
 	}
 
 	@Override
 	protected void initializeLayout(Composite container) {
-
-		// Table group pane
-		Group tableGroupPane = addTitledGroup(
-			container,
-			JptUiDetailsMessages.TableComposite_tableSection
-		);
-
 		PropertyValueModel<Table> subjectHolder = buildTableHolder();
+		PropertyValueModel<Boolean> enabledModel = buildTableEnabledModel();
+
 		// Table widgets
-		addLabeledComposite(
-			tableGroupPane,
-			JptUiDetailsMessages.TableChooser_label,
-			addTableCombo(subjectHolder, tableGroupPane),
-			JpaHelpContextIds.ENTITY_TABLE
-		);
+		this.addLabel(container, JptUiDetailsMessages.TableChooser_label, enabledModel);
+		this.addTableCombo(subjectHolder, enabledModel, container);
 
 		// Catalog widgets
-		addLabeledComposite(
-			tableGroupPane,
-			JptUiDetailsMessages.CatalogChooser_label,
-			addCatalogCombo(subjectHolder, tableGroupPane),
-			JpaHelpContextIds.ENTITY_CATALOG
-		);
+		this.addLabel(container, JptUiDetailsMessages.CatalogChooser_label, enabledModel);
+		this.addCatalogCombo(subjectHolder, enabledModel, container);
 
 		// Schema widgets
-		addLabeledComposite(
-			tableGroupPane,
-			JptUiDetailsMessages.SchemaChooser_label,
-			addSchemaCombo(subjectHolder, tableGroupPane),
-			JpaHelpContextIds.ENTITY_SCHEMA
-		);
-		
-		new PaneEnabler(buildTableEnabledHolder(), this);
+		this.addLabel(container, JptUiDetailsMessages.SchemaChooser_label, enabledModel);
+		this.addSchemaCombo(subjectHolder, enabledModel, container);
 	}
 	
 	protected ModifiablePropertyValueModel<Table> buildTableHolder() {
@@ -118,7 +109,7 @@ public class TableComposite extends Pane<Entity>
 		};
 	}
 	
-	protected ModifiablePropertyValueModel<Boolean> buildTableEnabledHolder() {
+	protected PropertyValueModel<Boolean> buildTableEnabledModel() {
 		return new PropertyAspectAdapter<Entity, Boolean>(getSubjectHolder(), Entity.SPECIFIED_TABLE_IS_ALLOWED_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -127,9 +118,8 @@ public class TableComposite extends Pane<Entity>
 		};
 	}
 
-	private CatalogCombo<Table> addCatalogCombo(PropertyValueModel<Table> tableHolder, Composite container) {
-
-		return new CatalogCombo<Table>(this, tableHolder, container) {
+	private CatalogCombo<Table> addCatalogCombo(PropertyValueModel<Table> tableHolder, PropertyValueModel<Boolean> enabledModel, Composite container) {
+		return new CatalogCombo<Table>(this, tableHolder, enabledModel, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -152,12 +142,21 @@ public class TableComposite extends Pane<Entity>
 			protected String getValue() {
 				return getSubject().getSpecifiedCatalog();
 			}
+
+			@Override
+			protected String getHelpId() {
+				return JpaHelpContextIds.ENTITY_CATALOG;
+			}
+
+			@Override
+			public String toString() {
+				return "TableComposite.catalogCombo"; //$NON-NLS-1$
+			}
 		};
 	}
 
-	private SchemaCombo<Table> addSchemaCombo(PropertyValueModel<Table> subjectHolder, Composite container) {
-
-		return new SchemaCombo<Table>(this, subjectHolder, container) {
+	private SchemaCombo<Table> addSchemaCombo(PropertyValueModel<Table> subjectHolder, PropertyValueModel<Boolean> enabledModel, Composite container) {
+		return new SchemaCombo<Table>(this, subjectHolder, enabledModel, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -185,12 +184,21 @@ public class TableComposite extends Pane<Entity>
 			protected SchemaContainer getDbSchemaContainer_() {
 				return this.getSubject().getDbSchemaContainer();
 			}
+
+			@Override
+			protected String getHelpId() {
+				return JpaHelpContextIds.ENTITY_SCHEMA;
+			}
+
+			@Override
+			public String toString() {
+				return "TableComposite.schemaCombo"; //$NON-NLS-1$
+			}
 		};
 	}
 
-	private TableCombo<Table> addTableCombo(PropertyValueModel<Table> subjectHolder, Composite container) {
-
-		return new TableCombo<Table>(this, subjectHolder, container) {
+	private TableCombo<Table> addTableCombo(PropertyValueModel<Table> subjectHolder, PropertyValueModel<Boolean> enabledModel, Composite container) {
+		return new TableCombo<Table>(this, subjectHolder, enabledModel, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -232,6 +240,16 @@ public class TableComposite extends Pane<Entity>
 			@Override
 			protected Schema getDbSchema_() {
 				return this.getSubject().getDbSchema();
+			}
+
+			@Override
+			protected String getHelpId() {
+				return JpaHelpContextIds.ENTITY_TABLE;
+			}
+
+			@Override
+			public String toString() {
+				return "TableComposite.tableCombo"; //$NON-NLS-1$
 			}
 		};
 	}

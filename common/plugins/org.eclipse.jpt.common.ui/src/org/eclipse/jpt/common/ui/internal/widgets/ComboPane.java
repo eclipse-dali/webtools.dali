@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,6 +20,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 /**
  * Pane with combo box support for automatic updating of:
@@ -56,18 +57,28 @@ public abstract class ComboPane<T extends Model>
 	protected ComboPane(
 			Pane<?> parentPane,
 			PropertyValueModel<? extends T> subjectHolder,
-			Composite parent,
-			PropertyValueModel<Boolean> enabledModel) {
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parent) {
 	
-		super(parentPane, subjectHolder, parent, enabledModel);
+		super(parentPane, subjectHolder, enabledModel, parent);
 	}
 	
 	
 	// **************** initialization ****************************************
-	
+
+	@Override
+	protected boolean addsComposite() {
+		return false;
+	}
+
+	@Override
+	public Control getControl() {
+		return this.comboBox;
+	}
+
 	@Override
 	protected void initializeLayout(Composite container) {
-		this.comboBox = this.addEditableCombo(container);
+		this.comboBox = this.addEditableCombo(container, getHelpId());
 		this.comboBox.addModifyListener(this.buildModifyListener());
 		SWTUtil.attachDefaultValueHandler(this.comboBox);
 	}
@@ -113,7 +124,10 @@ public abstract class ComboPane<T extends Model>
 	 * Set the specified value as the new value on the subject.
 	 */
 	protected abstract void setValue(String value);
-	
+
+	protected String getHelpId() {
+		return null;
+	}
 	
 	// **************** overrides *********************************************
 	

@@ -16,7 +16,6 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsPageManager;
-import org.eclipse.jpt.jpa.ui.internal.platform.JpaPlatformUiRegistry;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -32,6 +31,7 @@ public abstract class AbstractJpaDetailsPage<T extends JpaStructureNode>
 	extends Pane<T>
 	implements JpaDetailsPageManager<T>
 {
+
 	protected AbstractJpaDetailsPage(Composite parent, WidgetFactory widgetFactory) {
 		super(new SimplePropertyValueModel<T>(), parent, widgetFactory);
 	}

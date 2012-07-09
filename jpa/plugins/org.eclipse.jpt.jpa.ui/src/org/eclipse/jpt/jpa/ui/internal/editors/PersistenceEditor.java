@@ -39,7 +39,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.PersistenceXmlResourceUiDefinition;
-import org.eclipse.jpt.jpa.ui.details.JpaPageComposite;
+import org.eclipse.jpt.jpa.ui.editors.JpaPageComposite;
 import org.eclipse.jpt.jpa.ui.internal.persistence.JptUiPersistenceMessages;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.widgets.Composite;

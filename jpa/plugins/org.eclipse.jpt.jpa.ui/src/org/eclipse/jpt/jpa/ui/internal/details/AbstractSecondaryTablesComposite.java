@@ -12,16 +12,19 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.AbstractAdapter;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionPropertyValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
+import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
+import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmEntityComposite;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -59,26 +62,12 @@ public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends
 	public AbstractSecondaryTablesComposite(Pane<? extends T> parentPane,
 	                                Composite parent) {
 
-		super(parentPane, parent, false);
+		super(parentPane, parent);
 	}
 
-	/**
-	 * Creates a new <code>SecondaryTablesComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>IEntity</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public AbstractSecondaryTablesComposite(PropertyValueModel<? extends T> subjectHolder,
-	                                Composite parent,
-	                                WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
-	}
-
-	protected void addSecondaryTableFromDialog(SecondaryTableDialog dialog, ObjectListSelectionModel listSelectionModel) {
+	protected SecondaryTable addSecondaryTableFromDialog(SecondaryTableDialog dialog) {
 		if (dialog.open() != Window.OK) {
-			return;
+			return null;
 		}
 
 		SecondaryTable secondaryTable = this.getSubject().addSpecifiedSecondaryTable();
@@ -86,11 +75,23 @@ public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends
 		secondaryTable.setSpecifiedCatalog(dialog.getSelectedCatalog());
 		secondaryTable.setSpecifiedSchema(dialog.getSelectedSchema());
 
-		listSelectionModel.setSelectedValue(secondaryTable);
+		return secondaryTable;
 	}
 
-	protected ModifiablePropertyValueModel<SecondaryTable> buildSecondaryTableHolder() {
-		return new SimplePropertyValueModel<SecondaryTable>();
+	protected ModifiableCollectionValueModel<SecondaryTable> buildSelectedSecondaryTablesModel() {
+		return new SimpleCollectionValueModel<SecondaryTable>();
+	}
+
+	protected PropertyValueModel<SecondaryTable> buildSelectedSecondaryTableModel(CollectionValueModel<SecondaryTable> selectedSecondaryTablesModel) {
+		return new CollectionPropertyValueModelAdapter<SecondaryTable, SecondaryTable>(selectedSecondaryTablesModel) {
+			@Override
+			protected SecondaryTable buildValue() {
+				if (this.collectionModel.size() == 1) {
+					return this.collectionModel.iterator().next();
+				}
+				return null;
+			}
+		};
 	}
 
 	protected ILabelProvider buildSecondaryTableLabelProvider() {
@@ -111,12 +112,12 @@ public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends
 		return new SecondaryTableDialog(getShell(), getSubject().getJpaProject(), getSubject().getTable().getDefaultCatalog(), getSubject().getTable().getDefaultSchema());
 	}
 	
-	protected AddRemoveListPane.Adapter buildSecondaryTablesAdapter() {
-		return new AddRemoveListPane.AbstractAdapter() {
+	protected AddRemoveListPane.Adapter<SecondaryTable> buildSecondaryTablesAdapter() {
+		return new AbstractAdapter<SecondaryTable>() {
 
-			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
+			public SecondaryTable addNewItem() {
 				SecondaryTableDialog dialog = buildSecondaryTableDialogForAdd();
-				addSecondaryTableFromDialog(dialog, listSelectionModel);
+				return addSecondaryTableFromDialog(dialog);
 			}
 
 			@Override
@@ -130,37 +131,39 @@ public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends
 			}
 
 			@Override
-			public void optionOnSelection(ObjectListSelectionModel listSelectionModel) {
-				SecondaryTable secondaryTable = (SecondaryTable) listSelectionModel.selectedValue();
+			public void optionOnSelection(CollectionValueModel<SecondaryTable> selectedItemsModel) {
+				//assume only 1 item in the list based on the optionalButtonEnabledModel
+				SecondaryTable secondaryTable = selectedItemsModel.iterator().next();
 				SecondaryTableDialog dialog = new SecondaryTableDialog(getShell(), getSubject().getJpaProject(), secondaryTable);
 				editSecondaryTableFromDialog(dialog, secondaryTable);
 			}
 
-			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
-				Entity entity = getSubject();
-				int[] selectedIndices = listSelectionModel.selectedIndices();
+			public void removeSelectedItems(CollectionValueModel<SecondaryTable> selectedItemsModel) {
+				//assume only 1 item since remove button is disabled otherwise
+				SecondaryTable secondaryTable = selectedItemsModel.iterator().next();
+				getSubject().removeSpecifiedSecondaryTable(secondaryTable);
+			}
 
-				for (int index = selectedIndices.length; --index >= 0; ) {
-					entity.removeSpecifiedSecondaryTable(selectedIndices[index]);
-				}
-			}
-			
+			/**
+			 * If any of the selected secondary tables are virtual, the Remove button is disabled
+			 */
 			@Override
-			public boolean enableOptionOnSelectionChange(ObjectListSelectionModel listSelectionModel) {
-				if (listSelectionModel.selectedValuesSize() != 1) {
-					return false;
-				}
-				SecondaryTable secondaryTable = (SecondaryTable) listSelectionModel.selectedValue();
-				return !secondaryTable.isVirtual();
+			public PropertyValueModel<Boolean> buildRemoveButtonEnabledModel(CollectionValueModel<SecondaryTable> selectedItemsModel) {
+				return buildOptionalButtonEnabledModel(selectedItemsModel);
 			}
-			
+
 			@Override
-			public boolean enableRemoveOnSelectionChange(ObjectListSelectionModel listSelectionModel) {
-				if (listSelectionModel.selectedValue() == null) {
-					return false;
-				}
-				SecondaryTable secondaryTable = (SecondaryTable) listSelectionModel.selectedValue();
-				return !secondaryTable.isVirtual();				
+			public PropertyValueModel<Boolean> buildOptionalButtonEnabledModel(CollectionValueModel<SecondaryTable> selectedItemsModel) {
+				return new CollectionPropertyValueModelAdapter<Boolean, SecondaryTable>(selectedItemsModel) {
+					@Override
+					protected Boolean buildValue() {
+						if (this.collectionModel.size() == 1) {
+							SecondaryTable secondaryTable = this.collectionModel.iterator().next();
+							return Boolean.valueOf(!secondaryTable.isVirtual());				
+						}
+						return Boolean.FALSE;
+					}
+				};
 			}
 		};
 	}

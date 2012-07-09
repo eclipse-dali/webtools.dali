@@ -26,16 +26,15 @@ import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
+import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
+import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
 import org.eclipse.ui.progress.IProgressService;
@@ -58,7 +57,7 @@ public class SessionCustomizersComposite extends Pane<Customization>
 	}
 
 
-	private void addSessionCustomizerClass(ObjectListSelectionModel listSelectionModel) {
+	private String addSessionCustomizerClass() {
 
 		IType type = chooseType();
 
@@ -66,22 +65,27 @@ public class SessionCustomizersComposite extends Pane<Customization>
 			String className = type.getFullyQualifiedName('$');
 			if( ! this.getSubject().sessionCustomizerExists(className)) {
 				
-				String classRef = this.getSubject().addSessionCustomizer(className);
-				listSelectionModel.setSelectedValue(classRef);
+				return this.getSubject().addSessionCustomizer(className);
 			}
 		}
+		return null;
 	}
 
-	private Adapter buildAdapter() {
-		return new AddRemoveListPane.AbstractAdapter() {
-			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
-				addSessionCustomizerClass(listSelectionModel);
+	private Adapter<String> buildAdapter() {
+		return new AddRemoveListPane.AbstractAdapter<String>() {
+			public String addNewItem() {
+				return addSessionCustomizerClass();
 			}
 
-			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
-				for (Object item : listSelectionModel.selectedValues()) {
-					getSubject().removeSessionCustomizer((String) item);
-				}
+			@Override
+			public PropertyValueModel<Boolean> buildRemoveButtonEnabledModel(CollectionValueModel<String> selectedItemsModel) {
+				//enable the remove button only when 1 item is selected, same as the optional button
+				return this.buildSingleSelectedItemEnabledModel(selectedItemsModel);
+			}
+
+			public void removeSelectedItems(CollectionValueModel<String> selectedItemsModel) {
+				String item = selectedItemsModel.iterator().next();
+				getSubject().removeSessionCustomizer(item);
 			}
 		};
 	}
@@ -115,8 +119,8 @@ public class SessionCustomizersComposite extends Pane<Customization>
 		};
 	}
 
-	private ModifiablePropertyValueModel<String> buildSelectedItemHolder() {
-		return new SimplePropertyValueModel<String>();
+	private ModifiableCollectionValueModel<String> buildSelectedItemsModel() {
+		return new SimpleCollectionValueModel<String>();
 	}
 
 	/**
@@ -158,32 +162,24 @@ public class SessionCustomizersComposite extends Pane<Customization>
 	}
 
 	@Override
-	protected void initializeLayout(Composite container) {
-		// Description
-		container = addTitledGroup(
-			container,
+	protected Composite addComposite(Composite parent) {
+		return addTitledGroup(
+			parent,
 			EclipseLinkUiMessages.PersistenceXmlCustomizationTab_sessionCustomizerLabel
 		);
+	}
 
+	@Override
+	protected void initializeLayout(Composite container) {
 		// List pane
-		new AddRemoveListPane<Customization>(
+		new AddRemoveListPane<Customization, String>(
 			this,
 			container,
 			buildAdapter(),
 			buildListHolder(),
-			buildSelectedItemHolder(),
+			buildSelectedItemsModel(),
 			buildLabelProvider()
-		)
-		{
-			@Override
-			protected void initializeTable(Table table) {
-				super.initializeTable(table);
-
-				Composite container = table.getParent();
-				GridData gridData   = (GridData) container.getLayoutData();
-				gridData.heightHint = 75;
-			}
-		};
+		);
 	}
 
 	private IJavaProject getJavaProject() {

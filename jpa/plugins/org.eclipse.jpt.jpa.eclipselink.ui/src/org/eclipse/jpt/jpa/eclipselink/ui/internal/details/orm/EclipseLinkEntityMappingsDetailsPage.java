@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,6 @@ import org.eclipse.jpt.jpa.ui.internal.details.db.CatalogCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.SchemaCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.EntityMappingsGeneratorsComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmPackageChooser;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmQueriesComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.PersistenceUnitMetadataComposite;
 import org.eclipse.swt.widgets.Composite;
 
@@ -67,7 +66,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see EnumFormComboViewer
  * @see EntityMappingsGeneratorsComposite
  * @see OrmPackageChooser
- * @see OrmQueriesComposite
+ * @see QueriesComposite
  * @see PersistenceUnitMetadataComposite
  * @see SchemaCombo
  *

@@ -26,13 +26,15 @@ import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsM
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.TenantDiscriminatorColumnsComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.TenantDiscriminatorColumnsComposite.TenantDiscriminatorColumnsEditor;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComposite;
+import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.db.CatalogCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.SchemaCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.EntityMappingsDetailsPage;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.JptUiDetailsOrmMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.PersistenceUnitMetadataComposite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.Jpa2_0FlagTransformer;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -83,46 +85,39 @@ public class EclipseLink2_3PersistenceUnitMetadataComposite extends PersistenceU
 
 	@Override
 	protected void initializeLayout(Composite container) {
-
-		// Section
-		container = addCollapsibleSection(
-			container,
-			JptUiDetailsOrmMessages.PersistenceUnitMetadataComposite_persistenceUnitSection
-		);
-
 		// XML mapping metadata complete check box
-		addCheckBox(
+		Button metadataCompleteCheckBox = addCheckBox(
 			container,
 			JptUiDetailsOrmMessages.PersistenceUnitMetadataComposite_xmlMappingMetadataCompleteCheckBox,
 			buildXmlMappingMetadataCompleteHolder(),
 			JpaHelpContextIds.ENTITY_ORM_XML
 		);
+		GridData gridData = new GridData();
+		gridData.horizontalSpan = 2;
+		metadataCompleteCheckBox.setLayoutData(gridData);
 
 		// Cascade Persist check-box
-		addCheckBox(
+		Button cascadePersistCheckBox = addCheckBox(
 			container,
 			JptUiDetailsOrmMessages.PersistenceUnitMetadataComposite_cascadePersistCheckBox,
 			buildCascadePersistHolder(),
 			JpaHelpContextIds.ENTITY_ORM_CASCADE
 		);
+		gridData = new GridData();
+		gridData.horizontalSpan = 2;
+		cascadePersistCheckBox.setLayoutData(gridData);
 
 		// Schema widgets
-		addLabeledComposite(
-			container,
-			JptUiDetailsOrmMessages.PersistenceUnitMetadataComposite_schema,
-			addSchemaCombo(container),
-			JpaHelpContextIds.ENTITY_ORM_SCHEMA
-		);
+		this.addLabel(container, JptUiDetailsOrmMessages.PersistenceUnitMetadataComposite_schema);
+		this.addSchemaCombo(container);
 
 		// Catalog widgets
-		addLabeledComposite(
-			container,
-			JptUiDetailsOrmMessages.PersistenceUnitMetadataComposite_catalog,
-			addCatalogCombo(container),
-			JpaHelpContextIds.ENTITY_ORM_CATALOG
-		);
+		this.addLabel(container, JptUiDetailsOrmMessages.PersistenceUnitMetadataComposite_catalog);
+		this.addCatalogCombo(container);
 
-		new AccessTypeComposite(this, this.getPersistenceUnitDefaultsHolder(), container);
+		// Access type widgets
+		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
+		new AccessTypeComboViewer(this, this.getPersistenceUnitDefaultsHolder(), container);
 
 		// Delimited Identifiers check-box
 		Button diCheckBox = this.addCheckBox(
@@ -131,6 +126,9 @@ public class EclipseLink2_3PersistenceUnitMetadataComposite extends PersistenceU
 			this.buildDelimitedIdentifiersHolder(),
 			JpaHelpContextIds.ENTITY_ORM_DELIMITED_IDENTIFIERS
 		);
+		gridData = new GridData();
+		gridData.horizontalSpan = 2;
+		diCheckBox.setLayoutData(gridData);
 
 		SWTTools.controlVisibleState(Jpa2_0FlagTransformer.convertToFlagModel(this.getSubjectHolder()), diCheckBox);
 
@@ -140,19 +138,17 @@ public class EclipseLink2_3PersistenceUnitMetadataComposite extends PersistenceU
 			container,
 			EclipseLinkUiDetailsMessages.TenantDiscriminatorColumns_groupLabel
 		);
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		tenantDiscriminatorColumnGroupPane.setLayoutData(gridData);
 
 		this.tenantDiscriminatorColumnsComposite = new TenantDiscriminatorColumnsComposite<OrmPersistenceUnitDefaults>(
 			getPersistenceUnitDefaultsHolder(),
+			buildPaneEnablerHolder(),
 			tenantDiscriminatorColumnGroupPane,
 			getWidgetFactory(),
 			buildTenantDiscriminatorColumnsEditor()
 		);
-
-		installTenantDiscriminatorColumnsPaneEnabler(this.tenantDiscriminatorColumnsComposite);
-	}
-
-	protected void installTenantDiscriminatorColumnsPaneEnabler(TenantDiscriminatorColumnsComposite<OrmPersistenceUnitDefaults> pane) {
-		pane.installListPaneEnabler(buildPaneEnablerHolder());
 	}
 
 	private PropertyValueModel<Boolean> buildPaneEnablerHolder() {
@@ -170,9 +166,10 @@ public class EclipseLink2_3PersistenceUnitMetadataComposite extends PersistenceU
 
 	class TenantDiscriminatorColumnsProvider implements TenantDiscriminatorColumnsEditor<OrmPersistenceUnitDefaults> {
 
-		public void addTenantDiscriminatorColumn(OrmPersistenceUnitDefaults subject) {
+		public ReadOnlyTenantDiscriminatorColumn2_3 addTenantDiscriminatorColumn(OrmPersistenceUnitDefaults subject) {
 			OrmTenantDiscriminatorColumn2_3 column = ((EclipseLinkPersistenceUnitDefaults) subject).addTenantDiscriminatorColumn();
 			column.setSpecifiedName(ReadOnlyTenantDiscriminatorColumn2_3.DEFAULT_NAME);
+			return column;
 		}
 
 		public ListIterable<ReadOnlyTenantDiscriminatorColumn2_3> getDefaultTenantDiscriminatorColumns(OrmPersistenceUnitDefaults subject) {
@@ -203,10 +200,8 @@ public class EclipseLink2_3PersistenceUnitMetadataComposite extends PersistenceU
 			return ((EclipseLinkPersistenceUnitDefaults) subject).hasTenantDiscriminatorColumns();
 		}
 
-		public void removeTenantDiscriminatorColumns(OrmPersistenceUnitDefaults subject, int[] selectedIndices) {
-			for (int index = selectedIndices.length; index-- > 0; ) {
-				((EclipseLinkPersistenceUnitDefaults) subject).removeTenantDiscriminatorColumn(selectedIndices[index]);
-			}
+		public void removeTenantDiscriminatorColumn(OrmPersistenceUnitDefaults subject, ReadOnlyTenantDiscriminatorColumn2_3 column) {
+			((EclipseLinkPersistenceUnitDefaults) subject).removeTenantDiscriminatorColumn((OrmTenantDiscriminatorColumn2_3) column);
 		}
 	}
 

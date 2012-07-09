@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -61,64 +61,72 @@ public abstract class BaseEclipseLinkOrmXmlUiFactory extends BaseOrmXmlUiFactory
 	@Override
 	public JpaComposite createOrmIdMappingComposite(
 			PropertyValueModel<OrmIdMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new OrmEclipseLinkIdMappingComposite(subjectHolder, parent, widgetFactory);
+		return new OrmEclipseLinkIdMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
 	}	
 	
 	@Override
 	public JpaComposite createOrmBasicMappingComposite(
 			PropertyValueModel<OrmBasicMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new OrmEclipseLinkBasicMappingComposite(subjectHolder, parent, widgetFactory);
+		return new OrmEclipseLinkBasicMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	@Override
 	public JpaComposite createOrmVersionMappingComposite(
 			PropertyValueModel<OrmVersionMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new OrmEclipseLinkVersionMappingComposite(subjectHolder, parent, widgetFactory);
+		return new OrmEclipseLinkVersionMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	@Override
 	public JpaComposite createOrmManyToOneMappingComposite(
 			PropertyValueModel<OrmManyToOneMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new OrmEclipseLinkManyToOneMappingComposite(subjectHolder, parent, widgetFactory);
+		return new OrmEclipseLinkManyToOneMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	@Override
 	public JpaComposite createOrmOneToManyMappingComposite(
 			PropertyValueModel<OrmOneToManyMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new OrmEclipseLinkOneToManyMappingComposite(subjectHolder, parent, widgetFactory);
+		return new OrmEclipseLinkOneToManyMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	@Override
 	public JpaComposite createOrmOneToOneMappingComposite(
 			PropertyValueModel<OrmOneToOneMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new OrmEclipseLinkOneToOneMappingComposite(subjectHolder, parent, widgetFactory);
+		return new OrmEclipseLinkOneToOneMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	@Override
 	public JpaComposite createOrmManyToManyMappingComposite(
 			PropertyValueModel<OrmManyToManyMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new OrmEclipseLinkManyToManyMappingComposite(subjectHolder, parent, widgetFactory);
+		return new OrmEclipseLinkManyToManyMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	@Override
 	public JpaComposite createOrmTransientMappingComposite(
 			PropertyValueModel<OrmTransientMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new TransientMappingComposite(subjectHolder, parent, widgetFactory);
+		return new TransientMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 }

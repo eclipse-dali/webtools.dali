@@ -9,15 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details.java;
 
-import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
@@ -65,20 +63,6 @@ public class JavaSecondaryTablesComposite extends AbstractSecondaryTablesComposi
 		super(parentPane, parent);
 	}
 
-	/**
-	 * Creates a new <code>SecondaryTablesComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>IEntity</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public JavaSecondaryTablesComposite(PropertyValueModel<? extends JavaEntity> subjectHolder,
-	                                Composite parent,
-	                                WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
-	}
-
 	private ListValueModel<JavaSecondaryTable> buildSecondaryTablesListModel() {
 		return new ItemPropertyListValueModelAdapter<JavaSecondaryTable>(buildSecondaryTablesListHolder(), 
 			ReadOnlyTable.SPECIFIED_NAME_PROPERTY);
@@ -97,24 +81,18 @@ public class JavaSecondaryTablesComposite extends AbstractSecondaryTablesComposi
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initializeLayout(Composite container) {
-
-		int groupBoxMargin = getGroupBoxMargin();
-
-		ModifiablePropertyValueModel<SecondaryTable> secondaryTableHolder =
-			buildSecondaryTableHolder();
+		ModifiableCollectionValueModel<SecondaryTable> selectedSecondaryTablesModel =
+			buildSelectedSecondaryTablesModel();
 
 		// Secondary Tables add/remove list pane
-		new AddRemoveListPane<Entity>(
+		new AddRemoveListPane<Entity, SecondaryTable>(
 			this,
-			addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin),
+			container,
 			buildSecondaryTablesAdapter(),
 			buildSecondaryTablesListModel(),
-			secondaryTableHolder,
+			selectedSecondaryTablesModel,
 			buildSecondaryTableLabelProvider(),
 			JpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS//TODO need a help context id for this
 		);
@@ -122,7 +100,7 @@ public class JavaSecondaryTablesComposite extends AbstractSecondaryTablesComposi
 		// Primary Key Join Columns pane
 		new PrimaryKeyJoinColumnsInSecondaryTableComposite(
 			this,
-			secondaryTableHolder,
+			buildSelectedSecondaryTableModel(selectedSecondaryTablesModel),
 			container
 		);
 	}

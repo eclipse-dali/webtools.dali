@@ -356,6 +356,11 @@ public interface PersistenceUnit
 	void removeSpecifiedClassRef(ClassRef classRef);
 
 	/**
+	 * Remove the specified class refs from the persistence unit.
+	 */
+	void removeSpecifiedClassRefs(Iterable<ClassRef> classRefs);
+
+	/**
 	 * Remove the specified class ref at the specified index from the persistence unit.
 	 */
 	void removeSpecifiedClassRef(int index);

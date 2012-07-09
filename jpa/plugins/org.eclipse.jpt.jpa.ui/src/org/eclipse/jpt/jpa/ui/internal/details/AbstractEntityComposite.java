@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,14 +12,20 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.IdClassReference;
 import org.eclipse.jpt.jpa.core.context.QueryContainer;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.events.ExpansionAdapter;
+import org.eclipse.ui.forms.events.ExpansionEvent;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Hyperlink;
+import org.eclipse.ui.forms.widgets.Section;
 
 /**
  * Here the layout of this pane:
@@ -78,7 +84,6 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see Entity
- * @see EntityNameComposite
  * @see InheritanceComposite
  * @see IdClassComposite
  * @see EntityOverridesComposite
@@ -108,12 +113,7 @@ public abstract class AbstractEntityComposite<T extends Entity>
 		
 		super(subjectHolder, parent, widgetFactory);
 	}
-	
-	
-	protected abstract void initializeSecondaryTablesSection(Composite container);
-	
-	protected abstract void initializeInheritanceSection(Composite container);
-	
+
 	@Override
 	protected void initializeLayout(Composite container) {
 		this.initializeEntityCollapsibleSection(container);
@@ -125,19 +125,31 @@ public abstract class AbstractEntityComposite<T extends Entity>
 	}
 	
 	protected void initializeEntityCollapsibleSection(Composite container) {
-		container = addCollapsibleSection(
-			container,
-			JptUiDetailsMessages.EntitySection_title,
-			new SimplePropertyValueModel<Boolean>(Boolean.TRUE)
-		);
-
-		this.initializeEntitySection(container);
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages.EntitySection_title);
+		section.setExpanded(true);
+		section.setClient(this.initializeEntitySection(section));
 	}
 	
-	protected void initializeEntitySection(Composite container) {
-		new TableComposite(this, container);
-		new EntityNameComposite(this, container);
-		new IdClassComposite(this, buildIdClassReferenceHolder(), container);
+	protected Control initializeEntitySection(Composite container) {
+		container = this.addSubPane(container, 2, 0, 0, 0, 0);
+
+		//Table widgets
+		TableComposite tableComposite = new TableComposite(this, container);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		tableComposite.getControl().setLayoutData(gridData);
+
+		//Entity name widgets
+		this.addLabel(container, JptUiDetailsMessages.EntityNameComposite_name);
+		new EntityNameCombo(this, container);
+
+		//Id class widgets
+		Hyperlink hyperlink = this.addHyperlink(container, JptUiDetailsMessages.IdClassComposite_label);
+		new IdClassChooser(this, this.buildIdClassReferenceHolder(), container, hyperlink);
+
+		return container;
 	}
 	
 	protected PropertyValueModel<IdClassReference> buildIdClassReferenceHolder() {
@@ -150,17 +162,25 @@ public abstract class AbstractEntityComposite<T extends Entity>
 	}
 	
 	protected void initializeQueriesCollapsibleSection(Composite container) {
-		container = addCollapsibleSection(
-				container,
-				JptUiDetailsMessages.EntityComposite_queries);
-		this.initializeQueriesSection(container, buildQueryContainerHolder());
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages.EntityComposite_queries);
+
+		section.addExpansionListener(new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanging(ExpansionEvent e) {
+				if (e.getState() && section.getClient() == null) {
+					section.setClient(initializeQueriesSection(section));
+				}
+			}
+		});
+	}
+
+	protected Control initializeQueriesSection(Composite container) {
+		return new QueriesComposite(this, this.buildQueryContainerHolder(), container).getControl();
 	}
 	
-	protected void initializeQueriesSection(Composite container, PropertyValueModel<QueryContainer> queryContainerHolder) {
-		new QueriesComposite(this, queryContainerHolder, container);
-	}
-	
-	private PropertyValueModel<QueryContainer> buildQueryContainerHolder() {
+	protected PropertyValueModel<QueryContainer> buildQueryContainerHolder() {
 		return new PropertyAspectAdapter<Entity, QueryContainer>(getSubjectHolder()) {
 			@Override
 			protected QueryContainer buildValue_() {
@@ -168,37 +188,63 @@ public abstract class AbstractEntityComposite<T extends Entity>
 			}
 		};
 	}
-	
+
 	protected void initializeAttributeOverridesCollapsibleSection(Composite container) {
-		container = addCollapsibleSection(
-				container,
-				JptUiDetailsMessages.OverridesComposite_attributeOverridesSection);
-		initializeAttributeOverridesSection(container);
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages.OverridesComposite_attributeOverridesSection);
+
+		section.addExpansionListener(new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanging(ExpansionEvent e) {
+				if (e.getState() && section.getClient() == null) {
+					section.setClient(initializeAttributeOverridesSection(section));
+				}
+			}
+		});
 	}
 	
-	protected void initializeAttributeOverridesSection(Composite container) {
-		new EntityOverridesComposite(this, container);
+	protected Control initializeAttributeOverridesSection(Composite container) {
+		return new EntityOverridesComposite(this, container).getControl();
 	}
-	
+
 	protected void initializeInheritanceCollapsibleSection(Composite container) {
-		container = addCollapsibleSection(
-				container,
-				JptUiDetailsMessages.EntityComposite_inheritance);
-		initializeInheritanceSection(container);
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages.EntityComposite_inheritance);
+
+		section.addExpansionListener(new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanging(ExpansionEvent e) {
+				if (e.getState() && section.getClient() == null) {
+					section.setClient(initializeInheritanceSection(section));
+				}
+			}
+		});
 	}
+
+	protected abstract Control initializeInheritanceSection(Composite container);
 	
 	protected void initializeGeneratorsCollapsibleSection(Composite container) {
-		container = addCollapsibleSection(
-				container,
-				JptUiDetailsMessages.IdMappingComposite_primaryKeyGenerationSection);
-		initializeGeneratorsSection(container, buildGeneratorContainer());
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages.IdMappingComposite_primaryKeyGenerationSection);
+
+		section.addExpansionListener(new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanging(ExpansionEvent e) {
+				if (e.getState() && section.getClient() == null) {
+					section.setClient(initializeGeneratorsSection(section));
+				}
+			}
+		});
+	}
+
+	protected Control initializeGeneratorsSection(Composite container) {
+		return new GenerationComposite(this, this.buildGeneratorContainerHolder(), container).getControl();
 	}
 	
-	protected void initializeGeneratorsSection(Composite container, PropertyValueModel<GeneratorContainer> generatorContainerHolder) {
-		new GenerationComposite(this, generatorContainerHolder, container);
-	}
-	
-	private PropertyValueModel<GeneratorContainer> buildGeneratorContainer() {
+	protected PropertyValueModel<GeneratorContainer> buildGeneratorContainerHolder() {
 		return new PropertyAspectAdapter<Entity, GeneratorContainer>(getSubjectHolder()) {
 			@Override
 			protected GeneratorContainer buildValue_() {
@@ -208,9 +254,20 @@ public abstract class AbstractEntityComposite<T extends Entity>
 	}
 	
 	protected void initializeSecondaryTablesCollapsibleSection(Composite container) {
-		container = addCollapsibleSection(
-				container,
-				JptUiDetailsMessages.SecondaryTablesComposite_secondaryTables);
-		initializeSecondaryTablesSection(container);
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages.SecondaryTablesComposite_secondaryTables);
+
+		section.addExpansionListener(new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanging(ExpansionEvent e) {
+				if (e.getState() && section.getClient() == null) {
+					section.setClient(initializeSecondaryTablesSection(section));
+				}
+			}
+		});
 	}
+
+	protected abstract Control initializeSecondaryTablesSection(Composite container);
+
 }

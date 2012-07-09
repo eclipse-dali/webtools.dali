@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2011 Oracle. All rights reserved.
+* Copyright (c) 2009, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -59,56 +59,63 @@ public class EclipseLink2_0JavaUiFactory
 	@Override
 	public JpaComposite createJavaIdMappingComposite(
 			PropertyValueModel<JavaIdMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new JavaEclipseLinkIdMapping2_0Composite(subjectHolder, parent, widgetFactory);
+		return new JavaEclipseLinkIdMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	@Override
 	public JpaComposite createJavaEmbeddedIdMappingComposite(
 			PropertyValueModel<JavaEmbeddedIdMapping> subjectHolder, 
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent, 
 			WidgetFactory widgetFactory) {
-		return new EmbeddedIdMapping2_0Composite(subjectHolder, parent, widgetFactory);
+		return new EmbeddedIdMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	public JpaComposite createJavaElementCollectionMapping2_0Composite(
 			PropertyValueModel<JavaElementCollectionMapping2_0> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new JavaEclipseLinkElementCollectionMapping2_0Composite(subjectHolder, parent, widgetFactory);
+		return new JavaEclipseLinkElementCollectionMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	@Override
 	public JpaComposite createJavaOneToManyMappingComposite(
 			PropertyValueModel<JavaOneToManyMapping> subjectHolder, 
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent, 
 			WidgetFactory widgetFactory) {
-		return new JavaEclipseLinkOneToManyMapping2_0Composite(subjectHolder, parent, widgetFactory);
+		return new JavaEclipseLinkOneToManyMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	@Override
 	public JpaComposite createJavaOneToOneMappingComposite(
 		PropertyValueModel<JavaOneToOneMapping> subjectHolder,
+		PropertyValueModel<Boolean> enabledModel,
 		Composite parent,
 		WidgetFactory widgetFactory) {
-		return new JavaEclipseLinkOneToOneMapping2_0Composite(subjectHolder, parent, widgetFactory);
+		return new JavaEclipseLinkOneToOneMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	@Override
 	public JpaComposite createJavaManyToOneMappingComposite(
 		PropertyValueModel<JavaManyToOneMapping> subjectHolder,
+		PropertyValueModel<Boolean> enabledModel,
 		Composite parent,
 		WidgetFactory widgetFactory) {
-		return new JavaEclipseLinkManyToOneMapping2_0Composite(subjectHolder, parent, widgetFactory);
+		return new JavaEclipseLinkManyToOneMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	@Override
 	public JpaComposite createJavaManyToManyMappingComposite(
 			PropertyValueModel<JavaManyToManyMapping> subjectHolder, 
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent, 
 			WidgetFactory widgetFactory) {
-		return new JavaEclipseLinkManyToManyMapping2_0Composite(subjectHolder, parent, widgetFactory);
+		return new JavaEclipseLinkManyToManyMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 
 }

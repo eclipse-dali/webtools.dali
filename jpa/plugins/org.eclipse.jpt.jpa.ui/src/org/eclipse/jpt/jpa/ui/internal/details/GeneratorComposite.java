@@ -40,7 +40,7 @@ public abstract class GeneratorComposite<T extends Generator> extends Pane<T>
         Composite parent,
         GeneratorBuilder<T> generatorBuilder) {
 
-		super(parentPane, subjectHolder, parent, false);
+		super(parentPane, subjectHolder, parent);
 		this.generatorBuilder = generatorBuilder;
 	}
 
@@ -101,12 +101,7 @@ public abstract class GeneratorComposite<T extends Generator> extends Pane<T>
 
 	protected void addAllocationSizeCombo(Composite container) {
 		new IntegerCombo<Generator>(this, getSubjectHolder(), container) {
-			
-			@Override
-			protected String getLabelText() {
-				return JptUiDetailsMessages.GeneratorComposite_allocationSize;
-			}
-		
+
 			@Override
 			protected String getHelpId() {
 				return null;//JpaHelpContextIds.MAPPING_COLUMN_LENGTH;
@@ -141,12 +136,6 @@ public abstract class GeneratorComposite<T extends Generator> extends Pane<T>
 	
 	protected void addInitialValueCombo(Composite container) {
 		new IntegerCombo<Generator>(this, getSubjectHolder(), container) {
-			
-			@Override
-			protected String getLabelText() {
-				return JptUiDetailsMessages.GeneratorComposite_initialValue;
-			}
-		
 			@Override
 			protected String getHelpId() {
 				return null;//JpaHelpContextIds.MAPPING_COLUMN_LENGTH;

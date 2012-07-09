@@ -9,13 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
-import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -26,7 +23,13 @@ import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java.JavaEclipseLinkE
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.JptUiDetailsMessages2_0;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.forms.events.ExpansionAdapter;
+import org.eclipse.ui.forms.events.ExpansionEvent;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Section;
 
 /**
  * This pane shows the caching options.
@@ -49,8 +52,8 @@ import org.eclipse.swt.widgets.Composite;
  * @see Entity
  * @see EclipseLinkCaching
  * @see JavaEclipseLinkEntityComposite - The parent container
- * @see EclipseLinkCacheTypeComposite
- * @see EclipseLinkCacheSizeComposite
+ * @see EclipseLinkCacheTypeComboViewer
+ * @see EclipseLinkCacheSizeCombo
  * @see EclipseLinkAlwaysRefreshComposite
  * @see EclipseLinkRefreshOnlyIfNewerComposite
  * @see EclipseLinkDisableHitsComposite
@@ -58,14 +61,14 @@ import org.eclipse.swt.widgets.Composite;
  * @version 3.0
  * @since 3.0
  */
-public abstract class EclipseLinkCaching2_0Composite<T extends EclipseLinkCaching> extends Pane<T>
+public abstract class EclipseLinkCaching2_0Composite<T extends EclipseLinkCaching> extends EclipseLinkCachingComposite<T>
 {
 	
 	protected EclipseLinkCaching2_0Composite(Pane<?> parentPane,
         PropertyValueModel<T> subjectHolder,
         Composite parent) {
 
-		super(parentPane, subjectHolder, parent, false);
+		super(parentPane, subjectHolder, parent);
 	}
 	
 	@Override
@@ -73,32 +76,51 @@ public abstract class EclipseLinkCaching2_0Composite<T extends EclipseLinkCachin
 		PropertyValueModel<Cacheable2_0> cacheableHolder = buildCacheableHolder();
 		
 		//Shared Check box, uncheck this and the rest of the panel is disabled
-		addTriStateCheckBoxWithDefault(
-			addSubPane(container, 8),
+		TriStateCheckBox sharedCheckBox = addTriStateCheckBoxWithDefault(
+			container,
 			JptUiDetailsMessages2_0.Entity_cacheableLabel,
 			buildSpecifiedCacheableHolder(cacheableHolder),
 			buildCacheableStringHolder(cacheableHolder),
 			JpaHelpContextIds.ENTITY_CACHEABLE
 		);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		sharedCheckBox.getCheckBox().setLayoutData(gridData);
 
-		Composite subPane = addSubPane(container, 0, 16);
+		final PropertyValueModel<Boolean> cacheableEnableModel = buildCacheableEnabler(cacheableHolder);
 
-		Collection<Pane<?>> panes = new ArrayList<Pane<?>>();
-		
-		this.initializeTypeSection(subPane, panes);
+		Label cacheTypeLabel = this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkCacheTypeComposite_label, cacheableEnableModel);
+		gridData = new GridData();
+		gridData.horizontalIndent = 16;
+		cacheTypeLabel.setLayoutData(gridData);
+		new EclipseLinkCacheTypeComboViewer(this, container, cacheableEnableModel);
+
+		Label cacheSizeLabel = this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkCacheSizeComposite_size, cacheableEnableModel);
+		gridData = new GridData();
+		gridData.horizontalIndent = 16;
+		cacheSizeLabel.setLayoutData(gridData);
+		new EclipseLinkCacheSizeCombo(this, container, cacheableEnableModel);
 		
 		// Advanced sub-pane
-		Composite advancedSection = addCollapsibleSubSection(
-			subPane,
-			EclipseLinkUiDetailsMessages.EclipseLinkCachingComposite_advanced,
-			new SimplePropertyValueModel<Boolean>(Boolean.FALSE)
-		);
+		final Section advancedSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE);
+		gridData = new GridData(GridData.FILL_BOTH);
+		gridData.horizontalIndent = 16;
+		gridData.horizontalSpan = 2;
+		advancedSection.setLayoutData(gridData);
+		advancedSection.setText(EclipseLinkUiDetailsMessages.EclipseLinkCachingComposite_advanced);
 
-		initializeAdvancedPane(addSubPane(advancedSection, 0, 16), panes);
-			
-		new PaneEnabler(buildCacheableEnabler(cacheableHolder), panes);
+
+		advancedSection.addExpansionListener(new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanging(ExpansionEvent e) {
+				if (e.getState() && advancedSection.getClient() == null) {
+					Composite advancedClient = initializeAdvancedPane(advancedSection, cacheableEnableModel);
+					advancedSection.setClient(advancedClient);
+				}
+			}
+		});
 		
-		initializeExistenceCheckingComposite(addSubPane(container, 8));
+		initializeExistenceCheckingComposite(container);
 	}
 	
 	protected PropertyValueModel<Cacheable2_0> buildCacheableHolder() {
@@ -109,21 +131,6 @@ public abstract class EclipseLinkCaching2_0Composite<T extends EclipseLinkCachin
 			}
 		};
 	}
-
-	protected void initializeTypeSection(Composite container, Collection<Pane<?>> panes) {
-		panes.add(new EclipseLinkCacheTypeComposite(this, container));
-		panes.add(new EclipseLinkCacheSizeComposite(this, container));
-	}
-
-	protected void initializeAdvancedPane(Composite container, Collection<Pane<?>> panes) {
-		panes.add(new EclipseLinkExpiryComposite(this, container));
-		panes.add(new EclipseLinkAlwaysRefreshComposite(this, container));
-		panes.add(new EclipseLinkRefreshOnlyIfNewerComposite(this, container));
-		panes.add(new EclipseLinkDisableHitsComposite(this, container));
-		panes.add(new EclipseLinkCacheCoordinationTypeComposite(this, container));
-	}
-	
-	protected abstract void initializeExistenceCheckingComposite(Composite parent);
 	
 	private PropertyValueModel<Boolean> buildCacheableEnabler(PropertyValueModel<Cacheable2_0> cacheableHolder) {
 		return new PropertyAspectAdapter<Cacheable2_0, Boolean>(

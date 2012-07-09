@@ -11,18 +11,17 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterClassConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkStructConverter;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.forms.widgets.Hyperlink;
 
 /**
  * Here the layout of this pane:
@@ -34,7 +33,7 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see EclipseLinkConverter
- * @see EclipseLinkConvertComposite - A container of this widget
+ * @see EclipseLinkConvertCombo - A container of this widget
  *
  * @version 2.1
  * @since 2.1
@@ -56,18 +55,19 @@ public class EclipseLinkStructConverterComposite extends Pane<EclipseLinkStructC
 	}
 
 	@Override
-	protected void initializeLayout(Composite container) {
-		
-		addLabeledText(
-			container, 
-			EclipseLinkUiDetailsMessages.EclipseLinkConverterComposite_nameTextLabel, 
-			buildNameTextHolder());
-		
-		addClassChooser(container);
-		
-		new PaneEnabler(buildBooleanHolder(), this);
+	protected Composite addComposite(Composite container) {
+		return this.addSubPane(container, 2, 0, 0, 0, 0);
 	}
-	
+
+	@Override
+	protected void initializeLayout(Composite container) {
+		this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkConverterComposite_nameTextLabel);
+		this.addText(container, buildNameTextHolder());
+
+		Hyperlink classHyperlink = this.addHyperlink(container, EclipseLinkUiDetailsMessages.EclipseLinkConverterComposite_classLabel);
+		this.addClassChooser(container, classHyperlink);
+	}
+
 	protected ModifiablePropertyValueModel<String> buildNameTextHolder() {
 		return new PropertyAspectAdapter<EclipseLinkStructConverter, String>(
 				getSubjectHolder(), JpaNamedContextNode.NAME_PROPERTY) {
@@ -75,7 +75,7 @@ public class EclipseLinkStructConverterComposite extends Pane<EclipseLinkStructC
 			protected String buildValue_() {
 				return this.subject.getName();
 			}
-		
+
 			@Override
 			protected void setValue_(String value) {
 				if (value.length() == 0) {
@@ -86,10 +86,10 @@ public class EclipseLinkStructConverterComposite extends Pane<EclipseLinkStructC
 		};
 	}
 
-	
-	private ClassChooserPane<EclipseLinkStructConverter> addClassChooser(Composite container) {
 
-		return new ClassChooserPane<EclipseLinkStructConverter>(this, container) {
+	private ClassChooserPane<EclipseLinkStructConverter> addClassChooser(Composite container, Hyperlink hyperlink) {
+
+		return new ClassChooserPane<EclipseLinkStructConverter>(this, container, hyperlink) {
 
 			@Override
 			protected ModifiablePropertyValueModel<String> buildTextHolder() {
@@ -117,11 +117,6 @@ public class EclipseLinkStructConverterComposite extends Pane<EclipseLinkStructC
 			}
 
 			@Override
-			protected String getLabelText() {
-				return EclipseLinkUiDetailsMessages.EclipseLinkConverterComposite_classLabel;
-			}
-
-			@Override
 			protected IJavaProject getJavaProject() {
 				return getSubject().getJpaProject().getJavaProject();
 			}
@@ -144,15 +139,6 @@ public class EclipseLinkStructConverterComposite extends Pane<EclipseLinkStructC
 			@Override
 			protected String getFullyQualifiedClassName() {
 				return getSubject().getFullyQualifiedConverterClass();
-			}
-		};
-	}
-
-	protected PropertyValueModel<Boolean> buildBooleanHolder() {
-		return new TransformationPropertyValueModel<EclipseLinkStructConverter, Boolean>(getSubjectHolder()) {
-			@Override
-			protected Boolean transform(EclipseLinkStructConverter value) {
-				return Boolean.valueOf(value != null);
 			}
 		};
 	}

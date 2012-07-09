@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,6 @@ package org.eclipse.jpt.common.ui.internal.widgets;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -51,17 +50,13 @@ public abstract class EnumDialogComboViewer<T extends Model, V>
 		super(parentPane, subjectHolder, parent);
 	}
 
-	protected final Combo getCombo() {
-		return getComboViewer().getCombo();
-	}
-
 	@Override
 	void removeAll() {
-		getCombo().removeAll();
+		getControl().removeAll();
 	}
 
 	@Override
 	void updateCursor() {
-		getCombo().setSelection(new Point(0, 0));
+		getControl().setSelection(new Point(0, 0));
 	}
 }

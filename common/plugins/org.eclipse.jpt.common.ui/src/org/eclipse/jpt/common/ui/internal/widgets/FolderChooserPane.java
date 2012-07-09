@@ -71,7 +71,7 @@ public abstract class FolderChooserPane<T extends Model> extends ChooserPane<T>
 
 	@Override
 	protected Control addMainControl(Composite container) {
-		return this.addText(container, this.textHolder);
+		return this.addText(container, this.textHolder, getHelpId());
 	}
 
 	/**

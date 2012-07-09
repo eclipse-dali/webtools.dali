@@ -22,6 +22,7 @@ import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import com.ibm.icu.text.Collator;
 
@@ -66,6 +67,13 @@ abstract class EnumComboViewer<T extends Model, V> extends Pane<T>
 		super(parentPane, parent);
 	}
 
+	EnumComboViewer(Pane<? extends T> parentPane,
+					Composite parent,
+					PropertyValueModel<Boolean> enabledModel) {
+
+		super(parentPane, parent, enabledModel);
+	}
+
 	/**
 	 * Creates a new <code>EnumComboViewer</code>.
 	 *
@@ -80,6 +88,14 @@ abstract class EnumComboViewer<T extends Model, V> extends Pane<T>
 		super(parentPane, subjectHolder, parent);
 	}
 
+	EnumComboViewer(Pane<?> parentPane,
+        			PropertyValueModel<? extends T> subjectHolder,
+        			PropertyValueModel<Boolean> enabledModel,
+        			Composite parent) {
+
+		super(parentPane, subjectHolder, enabledModel, parent);
+	}
+
 	/**
 	 * Creates a new <code>EnumComboViewer</code>.
 	 *
@@ -88,10 +104,27 @@ abstract class EnumComboViewer<T extends Model, V> extends Pane<T>
 	 * @param widgetFactory The factory used to create various widgets
 	 */
 	EnumComboViewer(PropertyValueModel<? extends T> subjectHolder,
+        					PropertyValueModel<Boolean> enabledModel,
 	                        Composite parent,
 	                        WidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(subjectHolder, enabledModel, parent, widgetFactory);
+	}
+
+	@Override
+	protected boolean addsComposite() {
+		return false;
+	}
+
+	@Override
+	public Combo getControl() {
+		return this.comboViewer.getCombo();
+	}
+
+	@Override
+	protected final void initializeLayout(Composite container) {
+		this.comboViewer = this.addComboViewer(container);
+		this.comboViewer.addSelectionChangedListener(buildSelectionChangedListener());
 	}
 
 	/**
@@ -128,7 +161,7 @@ abstract class EnumComboViewer<T extends Model, V> extends Pane<T>
 	 * @return A new <code>ComboViewer</code> containing the right combo widget
 	 */
 	protected ComboViewer addComboViewer(Composite container) {
-		return addComboViewer(container, buildLabelProvider());
+		return this.addComboViewer(container, this.buildLabelProvider(), this.getHelpId());
 	}
 
 	private Comparator<Object> buildComparator() {
@@ -219,7 +252,11 @@ abstract class EnumComboViewer<T extends Model, V> extends Pane<T>
 	 * @return The localized text representing the given value
 	 */
 	protected abstract String displayString(V value);
-	
+
+	protected String getHelpId() {
+		return null;
+	}
+
 	/**
 	 * Returns the displayable string for a null value.
 	 */
@@ -251,16 +288,6 @@ abstract class EnumComboViewer<T extends Model, V> extends Pane<T>
 	 * @return The subject' value, which can be <code>null</code>
 	 */
 	protected abstract V getValue();
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected final void initializeLayout(Composite container) {
-
-		this.comboViewer = this.addComboViewer(container);
-		this.comboViewer.addSelectionChangedListener(buildSelectionChangedListener());
-	}
 
 	/**
 	 * Populates the combo by re-adding all the items.

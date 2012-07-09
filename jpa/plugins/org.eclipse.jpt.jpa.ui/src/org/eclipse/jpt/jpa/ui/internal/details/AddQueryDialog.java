@@ -122,20 +122,25 @@ public class AddQueryDialog extends ValidatingDialog<AddQueryStateObject> {
 		}
 
 		@Override
+		protected Composite addComposite(Composite container) {
+			return this.addSubPane(container, 2, 0, 0, 0, 0);
+		}
+
+		@Override
 		protected void initializeLayout(Composite container) {
-			this.nameText = addLabeledText(
+			this.addLabel(container, JptUiDetailsMessages.AddQueryDialog_name);
+			this.nameText = addText(
 				container,
-				JptUiDetailsMessages.AddQueryDialog_name,
 				buildNameHolder()
 			);
 			
-			addLabeledCombo(
+			this.addLabel(container, JptUiDetailsMessages.AddQueryDialog_queryType);
+			this.addCombo(
 				container, 
-				JptUiDetailsMessages.AddQueryDialog_queryType, 
 				buildQueryTypeListHolder(), 
 				buildQueryTypeHolder(), 
 				buildStringConverter(),
-				null);
+				(String) null);
 		}
 
 		protected ListValueModel<String> buildQueryTypeListHolder() {

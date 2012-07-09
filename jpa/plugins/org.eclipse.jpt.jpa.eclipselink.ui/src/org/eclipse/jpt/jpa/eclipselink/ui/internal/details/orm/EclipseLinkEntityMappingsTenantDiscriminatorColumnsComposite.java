@@ -34,23 +34,14 @@ import org.eclipse.swt.widgets.Group;
 
 public class EclipseLinkEntityMappingsTenantDiscriminatorColumnsComposite extends Pane<EntityMappings> {
 
-	private TenantDiscriminatorColumnsComposite<EntityMappings> tenantDiscriminatorColumnsComposite;
-
 	public EclipseLinkEntityMappingsTenantDiscriminatorColumnsComposite(Pane<? extends EntityMappings> parentPane,
 	                           Composite parent) {
 
 		super(parentPane, parent);
 	}
 
-
 	@Override
 	protected void initializeLayout(Composite container) {
-
-		container = this.addCollapsibleSection(
-			container,
-			EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_multitenancy
-		);
-
 		// Tenant discriminator columns group pane
 		Group tenantDiscriminatorColumnGroupPane = addTitledGroup(
 			container,
@@ -59,20 +50,19 @@ public class EclipseLinkEntityMappingsTenantDiscriminatorColumnsComposite extend
 
 		// Override Default Tenant Discriminator Columns check box
 		addCheckBox(
-			addSubPane(tenantDiscriminatorColumnGroupPane, 8),
+			tenantDiscriminatorColumnGroupPane,
 			EclipseLinkUiDetailsMessages.EclipseLinkMultitenancy_overrideDefaultTenantDiscriminatorColumns,
 			buildOverrideDefaultTenantDiscriminatorColumnHolder(),
 			null
 		);
 
-		this.tenantDiscriminatorColumnsComposite = this.buildTenantDiscriminatorColumnsComposite(tenantDiscriminatorColumnGroupPane);
-
-		this.tenantDiscriminatorColumnsComposite.installListPaneEnabler(new TenantDiscriminatorColumnPaneEnablerHolder());
+		this.buildTenantDiscriminatorColumnsComposite(tenantDiscriminatorColumnGroupPane);
 	}
 
 	protected TenantDiscriminatorColumnsComposite<EntityMappings>  buildTenantDiscriminatorColumnsComposite(Composite container) {
 		return new TenantDiscriminatorColumnsComposite<EntityMappings>(
 			getSubjectHolder(),
+			new TenantDiscriminatorColumnPaneEnablerHolder(),
 			container,
 			getWidgetFactory(),
 			buildTenantDiscriminatorColumnsEditor());
@@ -85,9 +75,10 @@ public class EclipseLinkEntityMappingsTenantDiscriminatorColumnsComposite extend
 
 	class TenantDiscriminatorColumnsProvider implements TenantDiscriminatorColumnsEditor<EntityMappings> {
 
-		public void addTenantDiscriminatorColumn(EntityMappings subject) {
+		public ReadOnlyTenantDiscriminatorColumn2_3 addTenantDiscriminatorColumn(EntityMappings subject) {
 			OrmTenantDiscriminatorColumn2_3 column = ((EclipseLinkEntityMappings) subject).addSpecifiedTenantDiscriminatorColumn();
 			column.setSpecifiedName(ReadOnlyTenantDiscriminatorColumn2_3.DEFAULT_NAME);
+			return column;
 		}
 
 		public ListIterable<ReadOnlyTenantDiscriminatorColumn2_3> getDefaultTenantDiscriminatorColumns(EntityMappings subject) {
@@ -118,15 +109,9 @@ public class EclipseLinkEntityMappingsTenantDiscriminatorColumnsComposite extend
 			return ((EclipseLinkEntityMappings) subject).hasSpecifiedTenantDiscriminatorColumns();
 		}
 
-		public void removeTenantDiscriminatorColumns(EntityMappings subject, int[] selectedIndices) {
-			for (int index = selectedIndices.length; index-- > 0; ) {
-				((EclipseLinkEntityMappings) subject).removeSpecifiedTenantDiscriminatorColumn(selectedIndices[index]);
-			}
+		public void removeTenantDiscriminatorColumn(EntityMappings subject, ReadOnlyTenantDiscriminatorColumn2_3 column) {
+			((EclipseLinkEntityMappings) subject).removeSpecifiedTenantDiscriminatorColumn((OrmTenantDiscriminatorColumn2_3) column);
 		}
-	}
-
-	void setSelectedTenantDiscriminatorColumn(ReadOnlyTenantDiscriminatorColumn2_3 tenantDiscriminatorColumn) {
-		this.tenantDiscriminatorColumnsComposite.setSelectedTenantDiscriminatorColumn(tenantDiscriminatorColumn);
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildOverrideDefaultTenantDiscriminatorColumnHolder() {
@@ -223,7 +208,7 @@ public class EclipseLinkEntityMappingsTenantDiscriminatorColumnsComposite extend
 
 		@Override
 		protected Boolean transform(EntityMappings v) {
-			return (v == null)  ? Boolean.FALSE : super.transform(v);
+			return (v == null) ? Boolean.FALSE : super.transform(v);
 		}
 
 		@Override

@@ -11,12 +11,14 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 /**
  * Here is the layout of this pane:  
@@ -54,8 +56,9 @@ public class MappedByJoiningStrategyPane
 	}
 
 	@Override
-	protected Composite buildStrategyDetailsComposite(Composite parent) {
-		return new MappedByPane(this, this.buildMappedByJoiningStrategyHolder(), parent).getControl();
+	protected Control buildStrategyDetailsComposite(Composite parent) {
+		MappedByPane mappedByPane = new MappedByPane(this, this.buildMappedByJoiningStrategyHolder(), buildMappedByRelationshipPaneEnablerHolder(), parent);
+		return mappedByPane.getControl();
 	}	
 
 	@Override
@@ -88,6 +91,16 @@ public class MappedByJoiningStrategyPane
 					this.subject.setStrategyToMappedBy();
 				}
 				//value == FALSE - selection of another radio button causes this strategy to get unset
+			}
+		};
+	}
+
+
+	private TransformationPropertyValueModel<MappedByRelationship, Boolean> buildMappedByRelationshipPaneEnablerHolder() {
+		return new TransformationPropertyValueModel<MappedByRelationship, Boolean>(getSubjectHolder()) {
+			@Override
+			protected Boolean transform_(MappedByRelationship v) {
+				return Boolean.valueOf(!v.isVirtual());
 			}
 		};
 	}

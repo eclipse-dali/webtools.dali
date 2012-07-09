@@ -9,14 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.widgets;
 
-import java.util.Arrays;
-
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTListChangeListenerWrapper;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.model.value.swing.ListModelAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.common.utility.model.event.ListChangeEvent;
@@ -25,9 +25,10 @@ import org.eclipse.jpt.common.utility.model.event.ListMoveEvent;
 import org.eclipse.jpt.common.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.common.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
+import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
@@ -42,44 +43,40 @@ import org.eclipse.swt.widgets.Composite;
  * @version 1.0
  * @since 2.0
  */
-public abstract class AddRemovePane<T extends Model> extends Pane<T>
+public abstract class AddRemovePane<T extends Model, E extends Object> extends Pane<T>
 {
-	private Adapter adapter;
+	private Adapter<E> adapter;
 	private Button addButton;
-	private Composite container;
-	private boolean enabled;
 	private IBaseLabelProvider labelProvider;
 	private ListValueModel<?> listHolder;
 	private Button optionalButton;
 	private Button removeButton;
-	private ModifiablePropertyValueModel<Object> selectedItemHolder;
-	private ObjectListSelectionModel selectionModel;
+	private ModifiableCollectionValueModel<E> selectedItemsModel;
 
 	/**
 	 * Creates a new <code>AddRemovePane</code>.
 	 *
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
-	 * @param adapter This <code>Adapter</code> is used to dictacte the behavior
+	 * @param adapter This <code>Adapter</code> is used to dictate the behavior
 	 * of this <code>AddRemovePane</code> and by delegating to it some of the
 	 * behavior
 	 * @param listHolder The <code>ListValueModel</code> containing the items
-	 * @param selectedItemHolder The holder of the selected item, if more than
-	 * one item or no items are selected, then <code>null</code> will be passed
+	 * @param selectedItemsModel The holder of the selected items
 	 * @param labelProvider The renderer used to format the list holder's items
 	 */
 	protected AddRemovePane(Pane<? extends T> parentPane,
 	                        Composite parent,
-	                        Adapter adapter,
+	                        Adapter<E> adapter,
 	                        ListValueModel<?> listHolder,
-	                        ModifiablePropertyValueModel<?> selectedItemHolder,
+	                        ModifiableCollectionValueModel<E> selectedItemsModel,
 	                        IBaseLabelProvider labelProvider) {
 
 		this(parentPane,
 		     parent,
 		     adapter,
 		     listHolder,
-		     selectedItemHolder,
+		     selectedItemsModel,
 		     labelProvider,
 		     null);
 	}
@@ -93,39 +90,7 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 	 * of this <code>AddRemovePane</code> and by delegating to it some of the
 	 * behavior
 	 * @param listHolder The <code>ListValueModel</code> containing the items
-	 * @param selectedItemHolder The holder of the selected item, if more than
-	 * one item or no items are selected, then <code>null</code> will be passed
-	 * @param labelProvider The renderer used to format the list holder's items
-	 * @param helpId The topic help ID to be registered with this pane
-	 */
-	protected AddRemovePane(Pane<? extends T> parentPane,
-	                        Composite parent,
-	                        Adapter adapter,
-	                        ListValueModel<?> listHolder,
-	                        ModifiablePropertyValueModel<?> selectedItemHolder,
-	                        IBaseLabelProvider labelProvider,
-	                        String helpId) {
-
-		this(parentPane,
-		     parent,
-		     adapter,
-		     listHolder,
-		     selectedItemHolder,
-		     labelProvider,
-		     helpId,
-		     true);
-	}
-	/**
-	 * Creates a new <code>AddRemovePane</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param parent The parent container
-	 * @param adapter This <code>Adapter</code> is used to dictacte the behavior
-	 * of this <code>AddRemovePane</code> and by delegating to it some of the
-	 * behavior
-	 * @param listHolder The <code>ListValueModel</code> containing the items
-	 * @param selectedItemHolder The holder of the selected item, if more than
-	 * one item or no items are selected, then <code>null</code> will be passed
+	 * @param selectedItemsModel The holder of the selected items
 	 * @param labelProvider The renderer used to format the list holder's items
 	 * @param helpId The topic help ID to be registered with this pane
 	 * @param parentManagePane <code>true</code> to have the parent pane manage
@@ -133,26 +98,52 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 	 */
 	protected AddRemovePane(Pane<? extends T> parentPane,
 	                        Composite parent,
-	                        Adapter adapter,
+	                        Adapter<E> adapter,
 	                        ListValueModel<?> listHolder,
-	                        ModifiablePropertyValueModel<?> selectedItemHolder,
+	                        ModifiableCollectionValueModel<E> selectedItemsModel,
 	                        IBaseLabelProvider labelProvider,
-	                        String helpId, 
-	                        boolean parentManagePane) {
+	                        String helpId) {
 
-		super(parentPane, parent, true, parentManagePane);
+		super(parentPane, parent);
 
 		initialize(
 			adapter,
 			listHolder,
-			selectedItemHolder,
+			selectedItemsModel,
 			labelProvider
 		);
 
 		initializeLayout(
 			adapter,
 			listHolder,
-			selectedItemHolder,
+			selectedItemsModel,
+			labelProvider,
+			helpId
+		);
+	}
+
+	protected AddRemovePane(Pane<? extends T> parentPane,
+        Composite parent,
+        Adapter<E> adapter,
+        ListValueModel<?> listHolder,
+        ModifiableCollectionValueModel<E> selectedItemsModel,
+        IBaseLabelProvider labelProvider,
+        PropertyValueModel<Boolean> enabledModel,
+        String helpId) {
+
+		super(parentPane, parent, enabledModel);
+
+		initialize(
+			adapter,
+			listHolder,
+			selectedItemsModel,
+			labelProvider
+		);
+		
+		initializeLayout(
+			adapter,
+			listHolder,
+			selectedItemsModel,
 			labelProvider,
 			helpId
 		);
@@ -163,21 +154,20 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 	 *
 	 * @param parentPane The parent container of this one
 	 * @param subjectHolder The holder of the subject
-	 * @param adapter This <code>Adapter</code> is used to dictacte the behavior
+	 * @param adapter This <code>Adapter</code> is used to dictate the behavior
 	 * of this <code>AddRemovePane</code> and by delegating to it some of the
 	 * behavior
 	 * @param parent The parent container
 	 * @param listHolder The <code>ListValueModel</code> containing the items
-	 * @param selectedItemHolder The holder of the selected item, if more than
-	 * one item or no items are selected, then <code>null</code> will be passed
+	 * @param selectedItemsModel The holder of the selected item
 	 * @param labelProvider The renderer used to format the list holder's items
 	 */
 	protected AddRemovePane(Pane<?> parentPane,
 	                        PropertyValueModel<? extends T> subjectHolder,
 	                        Composite parent,
-	                        Adapter adapter,
+	                        Adapter<E> adapter,
 	                        ListValueModel<?> listHolder,
-	                        ModifiablePropertyValueModel<?> selectedItemHolder,
+	                        ModifiableCollectionValueModel<E> selectedItemsModel,
 	                        IBaseLabelProvider labelProvider) {
 
 		this(parentPane,
@@ -185,7 +175,7 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 		     parent,
 		     adapter,
 		     listHolder,
-		     selectedItemHolder,
+		     selectedItemsModel,
 		     labelProvider,
 		     null);
 	}
@@ -195,22 +185,21 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 	 *
 	 * @param parentPane The parent container of this one
 	 * @param subjectHolder The holder of the subject
-	 * @param adapter This <code>Adapter</code> is used to dictacte the behavior
+	 * @param adapter This <code>Adapter</code> is used to dictate the behavior
 	 * of this <code>AddRemovePane</code> and by delegating to it some of the
 	 * behavior
 	 * @param parent The parent container
 	 * @param listHolder The <code>ListValueModel</code> containing the items
-	 * @param selectedItemHolder The holder of the selected item, if more than
-	 * one item or no items are selected, then <code>null</code> will be passed
+	 * @param selectedItemsModel The holder of the selected item
 	 * @param labelProvider The renderer used to format the list holder's items
 	 * @param helpId The topic help ID to be registered with this pane
 	 */
 	protected AddRemovePane(Pane<?> parentPane,
 	                        PropertyValueModel<? extends T> subjectHolder,
 	                        Composite parent,
-	                        Adapter adapter,
+	                        Adapter<E> adapter,
 	                        ListValueModel<?> listHolder,
-	                        ModifiablePropertyValueModel<?> selectedItemHolder,
+	                        ModifiableCollectionValueModel<E> selectedItemsModel,
 	                        IBaseLabelProvider labelProvider,
 	                        String helpId) {
 
@@ -219,14 +208,14 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 		initialize(
 			adapter,
 			listHolder,
-			selectedItemHolder,
+			selectedItemsModel,
 			labelProvider
 		);
 
 		initializeLayout(
 			adapter,
 			listHolder,
-			selectedItemHolder,
+			selectedItemsModel,
 			labelProvider,
 			helpId
 		);
@@ -262,21 +251,24 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 	 * @category Add
 	 */
 	protected void addItem() {
-		adapter.addNewItem(selectionModel);
+		E item = this.adapter.addNewItem();
+		if (item != null) {
+			this.selectedItemsModel.setValues(new SingleElementIterable<E>(item));
+		}
 	}
 
 	/**
 	 * @category Initialize
 	 */
-	protected Adapter buildAdapter() {
-		return adapter;
+	protected Adapter<E> buildAdapter() {
+		return null;
 	}
 
 	/**
 	 * @category Add
 	 */
 	protected Button addAddButton(Composite parent) {
-		return addUnmanagedButton(
+		return addButton(
 			parent,
 			adapter.addButtonText(),
 			buildAddItemAction()
@@ -336,30 +328,27 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 	}
 	
 	protected void itemsRemoved(ListRemoveEvent e) {
-		Object selectedItem = this.selectedItemHolder.getValue();
-
-		if (selectedItem == null) {
-			updateButtons();
-			return;
+		//clear the selection if any of the removed items were part of the selection
+		for (Object removedItem : e.getItems()) {
+			if (CollectionTools.contains(this.selectedItemsModel, removedItem)) {
+				this.selectedItemsModel.setValues(EmptyIterable.<E>instance());
+				break;
+			}
 		}
-
-		if (CollectionTools.contains(e.getItems(), selectedItem)) {
-			this.selectedItemHolder.setValue(null);
-			updateButtons();
-		}		
 	}
 	
 	protected void itemsReplaced(ListReplaceEvent e) {
-		
 	}
 	
 	protected void listChanged(ListChangeEvent e) {
+		//I believe listChanged happens when the subject changes, so clear the selectedItemsModel ??
+		//this fixes bug 379274
+		this.selectedItemsModel.setValues(EmptyListIterable.<E>instance());
 		
 	}
 	
 	protected void listCleared(ListClearEvent e) {
-		this.selectedItemHolder.setValue(null);
-		updateButtons();
+		this.selectedItemsModel.setValues(EmptyListIterable.<E>instance());
 	}
 	
 	
@@ -378,10 +367,11 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 	 * @category Option
 	 */
 	protected Button addOptionalButton(Composite container) {
-		return addUnmanagedButton(
+		return addButton(
 			container,
 			adapter.optionalButtonText(),
-			buildOptionalAction()
+			buildOptionalAction(),
+			adapter.buildOptionalButtonEnabledModel(this.selectedItemsModel)
 		);
 	}
 
@@ -389,10 +379,11 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 	 * @category Add
 	 */
 	protected Button addRemoveButton(Composite parent) {
-		return addUnmanagedButton(
+		return addButton(
 			parent,
 			adapter.removeButtonText(),
-			buildRemoveItemsAction()
+			buildRemoveItemsAction(),
+			adapter.buildRemoveButtonEnabledModel(this.selectedItemsModel)
 		);
 	}
 
@@ -407,43 +398,19 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 		};
 	}
 
-	protected ObjectListSelectionModel buildRowSelectionModel(ListValueModel<?> listModel) {
-		return new ObjectListSelectionModel(new ListModelAdapter(listModel));
-	}
-
 	/**
 	 * @category Option
 	 */
 	protected void editItem() {
-		this.adapter.optionOnSelection(getSelectionModel());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	public void enableWidgets(boolean enabled) {
-
-		super.enableWidgets(enabled);
-		this.enabled = enabled;
-
-		if (!this.getMainControl().isDisposed()) {
-			this.getMainControl().setEnabled(enabled);
-		}
-
-		this.updateButtons();
-	}
-
-	protected final Composite getContainer() {
-		return container;
+		this.adapter.optionOnSelection(this.selectedItemsModel);
 	}
 
 	protected IBaseLabelProvider getLabelProvider() {
-		return labelProvider;
+		return this.labelProvider;
 	}
 
 	protected final ListValueModel<?> getListHolder() {
-		return listHolder;
+		return this.listHolder;
 	}
 
 	/**
@@ -453,12 +420,8 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 	 */
 	public abstract Composite getMainControl();
 
-	protected final ModifiablePropertyValueModel<Object> getSelectedItemHolder() {
-		return selectedItemHolder;
-	}
-
-	public final ObjectListSelectionModel getSelectionModel() {
-		return selectionModel;
+	protected final ModifiableCollectionValueModel<E> getSelectedItemsModel() {
+		return this.selectedItemsModel;
 	}
 
 	/**
@@ -468,23 +431,21 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 	 * of this <code>AddRemovePane</code> and by delegating to it some of the
 	 * behavior
 	 * @param listHolder The <code>ListValueModel</code> containing the items
-	 * @param selectedItemHolder The holder of the selected item, if more than
+	 * @param selectedItemsModel The holder of the selected item, if more than
 	 * one item or no items are selected, then <code>null</code> will be passed
 	 * @param labelProvider The renderer used to format the list holder's items
 	 *
 	 * @category Initialization
 	 */
-	@SuppressWarnings("unchecked")
-	protected void initialize(Adapter adapter,
+	protected void initialize(Adapter<E> adapter,
 	                          ListValueModel<?> listHolder,
-	                          ModifiablePropertyValueModel<?> selectedItemHolder,
+	                          ModifiableCollectionValueModel<E> selectedItemsModel,
 	                          IBaseLabelProvider labelProvider)
 	{
 		this.listHolder         = listHolder;
 		this.labelProvider      = labelProvider;
 		this.adapter            = (adapter == null) ? buildAdapter() : adapter;
-		this.selectedItemHolder = (ModifiablePropertyValueModel<Object>) selectedItemHolder;
-		this.selectionModel     = new ObjectListSelectionModel(new ListModelAdapter(listHolder));
+		this.selectedItemsModel = selectedItemsModel;
 
 		this.listHolder.addListChangeListener(
 			ListValueModel.LIST_VALUES,
@@ -502,7 +463,6 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 	 * @category Layout
 	 */
 	protected void initializeButtonPane(Composite container, String helpId) {
-
 		container = addSubPane(container);
 
 		GridData gridData = new GridData();
@@ -512,7 +472,6 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 
 		// Add button
 		this.addButton = addAddButton(container);
-		addAlignRight(this.addButton);
 
 		// Custom button
 		addCustomButtonAfterAddButton(container, helpId);
@@ -520,23 +479,21 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 		// Optional button
 		if (this.adapter.hasOptionalButton()) {
 			this.optionalButton = addOptionalButton(container);
-			addAlignRight(this.optionalButton);
 		}
 
 		// Custom button
 		addCustomButtonAfterOptionalButton(container, helpId);
 
 		// Remove button
-		removeButton = addRemoveButton(container);
-		addAlignRight(removeButton);
+		this.removeButton = addRemoveButton(container);
 
 		// Update the help topic ID
 		if (helpId != null) {
-			getHelpSystem().setHelp(addButton, helpId);
-			getHelpSystem().setHelp(removeButton, helpId);
+			getHelpSystem().setHelp(this.addButton, helpId);
+			getHelpSystem().setHelp(this.removeButton, helpId);
 
-			if (optionalButton != null) {
-				getHelpSystem().setHelp(optionalButton, helpId);
+			if (this.optionalButton != null) {
+				getHelpSystem().setHelp(this.optionalButton, helpId);
 			}
 		}
 	}
@@ -545,41 +502,41 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 	 * Initializes this add/remove pane by creating the widgets. The subclass is
 	 * required to build the main widget.
 	 *
-	 * @param adapter This <code>Adapter</code> is used to dictacte the behavior
+	 * @param adapter This <code>Adapter</code> is used to dictate the behavior
 	 * of this <code>AddRemovePane</code> and by delegating to it some of the
 	 * behavior
 	 * @param listHolder The <code>ListValueModel</code> containing the items
-	 * @param selectedItemHolder The holder of the selected item, if more than
-	 * one item or no items are selected, then <code>null</code> will be passed
+	 * @param selectedItemsModel The holder of the selected item
 	 * @param labelProvider The renderer used to format the list holder's items
 	 * @param helpId The topic help ID to be registered with this pane
 	 *
 	 * @category Layout
 	 */
-	protected void initializeLayout(Adapter adapter,
+	protected void initializeLayout(Adapter<E> adapter,
     	                             ListValueModel<?> listHolder,
-   	                             ModifiablePropertyValueModel<?> selectedItemHolder,
+   	                             ModifiableCollectionValueModel<E> selectedItemsModel,
    	                             IBaseLabelProvider labelProvider,
    	                             String helpId) {
 
 		initializeMainComposite(
-			container,
+			(Composite) getControl(),
 			adapter,
 			listHolder,
-			selectedItemHolder,
+			selectedItemsModel,
 			labelProvider,
 			helpId);
 
-		initializeButtonPane(container, helpId);
-		enableWidgets(getSubject() != null);
+		initializeButtonPane((Composite) getControl(), helpId);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Override
+	protected Composite addComposite(Composite parent) {
+		return addSubPane(parent, 2, 0, 0, 0, 0);
+	}
+
 	@Override
 	protected void initializeLayout(Composite container) {
-		this.container = addSubPane(container, 2, 0, 0, 0, 0);
+		//see other initializeLayout
 	}
 
 	/**
@@ -590,7 +547,7 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 	 * of this <code>AddRemovePane</code> and by delegating to it some of the
 	 * behavior
 	 * @param listHolder The <code>ListValueModel</code> containing the items
-	 * @param selectedItemHolder The holder of the selected item, if more than
+	 * @param selectedItemsModel The holder of the selected item, if more than
 	 * one item or no items are selected, then <code>null</code> will be passed
 	 * @param labelProvider The renderer used to format the list holder's items
 	 * @param helpId The topic help ID to be registered with this pane or
@@ -599,9 +556,9 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 	 * @category Layout
 	 */
 	protected abstract void initializeMainComposite(Composite container,
-	                                                Adapter adapter,
+	                                                Adapter<E> adapter,
 	                   	                           ListValueModel<?> listHolder,
-	                  	                           ModifiablePropertyValueModel<?> selectedItemHolder,
+	                  	                           ModifiableCollectionValueModel<E> selectedItemsModel,
 	                  	                           IBaseLabelProvider labelProvider,
 	                  	                           String helpId);
 
@@ -609,25 +566,10 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 	 * @category Remove
 	 */
 	protected void removeItems() {
-
-		// Keep track of the selected indices so we can select an item
-		// before the lowest index
-		int[] indices = selectionModel.selectedIndices();
-		Arrays.sort(indices);
-
 		// Notify the adapter to remove the selected items
-		adapter.removeSelectedItems(selectionModel);
-
-		// Select a new item
-		if (getListHolder().size() > 0) {
-			int index = Math.min(indices[0], getListHolder().size() - 1);
-			Object item = getListHolder().get(index);
-			selectedItemHolder.setValue(item);
-		}
-		// The list is empty, clear the value
-		else {
-			selectedItemHolder.setValue(null);
-		}
+		this.adapter.removeSelectedItems(this.selectedItemsModel);
+		//clear the selection
+		this.selectedItemsModel.setValues(EmptyListIterable.<E>instance());
 	}
 
 	/**
@@ -635,54 +577,77 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 	 *
 	 * @param value The new selected value
 	 */
-	public void setSelectedItem(Object value) {
-		selectedItemHolder.setValue(value);
+	public void setSelectedItem(E value) {
+		this.selectedItemsModel.setValues(new SingleElementIterable<E>(value));
 	}
 
-	/**
-	 * @category UpdateButtons
-	 */
-	protected void updateAddButton(Button addButton) {
-		addButton.setEnabled(enabled);
-	}
 
 	/**
-	 * @category UpdateButtons
+	 * This adapter is used to perform the actual action when adding a new item
+	 * or removing the selected items. It is possible to add an optional button.
 	 */
-	protected void updateButtons() {
-		if (!container.isDisposed()) {
-			updateAddButton(addButton);
-			updateRemoveButton(removeButton);
-			updateOptionalButton(optionalButton);
-		}
-	}
+	public interface Adapter<E extends Object> {
 
-	/**
-	 * @category UpdateButtons
-	 */
-	protected void updateOptionalButton(Button optionalButton) {
-		if (optionalButton != null) {
-			optionalButton.setEnabled(
-				enabled &&
-				adapter.enableOptionOnSelectionChange(selectionModel)
-			);
-		}
-	}
+		/**
+		 * The add button's text.
+		 *
+		 * @return The text shown on the add button
+		 */
+		String addButtonText();
 
-	/**
-	 * @category UpdateButtons
-	 */
-	protected void updateRemoveButton(Button removeButton) {
-		removeButton.setEnabled(
-			enabled &&
-			adapter.enableRemoveOnSelectionChange(selectionModel)
-		);
+		/**
+		 * Invoked when the user selects the Add button.
+		 * Return the newly added item so it can be selected in the list
+		 */
+		E addNewItem();
+
+		/**
+		 * Build a PropertyValueModel to handle enablement of the remove button.
+		 */
+		PropertyValueModel<Boolean> buildRemoveButtonEnabledModel(CollectionValueModel<E> selectedItemsModel);
+
+		/**
+		 * Build a PropertyValueModel to handle enablement of the optional button.
+		 */
+		PropertyValueModel<Boolean> buildOptionalButtonEnabledModel(CollectionValueModel<E> selectedItemsModel);
+
+		/**
+		 * Determines whether an optional button should be added between the add
+		 * and remove buttons.
+		 *
+		 * @return <code>true</code> to show an optional button and to use the
+		 * behavior related to the optional button; <code>false</code> to not use
+		 * it
+		 */
+		boolean hasOptionalButton();
+
+		/**
+		 * Resource string key for the optional button.
+		 */
+		String optionalButtonText();
+
+		/**
+		 * Invoked when the user selects the optional button
+		 */
+		void optionOnSelection(CollectionValueModel<E> selectedItemsModel);
+
+		/**
+		 * The remove button's text.
+		 *
+		 * @return The text shown on the remove button
+		 */
+		String removeButtonText();
+
+		/**
+		 * Invoked when the user selects the Remove button.
+		 */
+		void removeSelectedItems(CollectionValueModel<E> selectedItemsModel);
 	}
 
 	/**
 	 * An abstract implementation of <code>Adapter</code>.
 	 */
-	public static abstract class AbstractAdapter implements Adapter {
+	public abstract static class AbstractAdapter<E extends Object> implements AddRemovePane.Adapter<E> {
 
 		/**
 		 * The text of the add button.
@@ -773,45 +738,61 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 		 * (non-Javadoc)
 		 */
 		public String addButtonText() {
-			return addButtonText;
+			return this.addButtonText;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 */
-		public boolean enableOptionOnSelectionChange(ObjectListSelectionModel listSelectionModel) {
-			return listSelectionModel.selectedValuesSize() == 1;
+		public PropertyValueModel<Boolean> buildOptionalButtonEnabledModel(CollectionValueModel<E> selectedItemsModel) {
+			return this.buildSingleSelectedItemEnabledModel(selectedItemsModel);
 		}
 
-		public boolean enableRemoveOnSelectionChange(ObjectListSelectionModel listSelectionModel) {
-			return listSelectionModel.selectedValue() != null;
+		protected PropertyValueModel<Boolean> buildSingleSelectedItemEnabledModel(CollectionValueModel<E> selectedItemsModel) {
+			return new CollectionPropertyValueModelAdapter<Boolean, Object>(selectedItemsModel) {
+				@Override
+				protected Boolean buildValue() {
+					return Boolean.valueOf(this.collectionModel.size() == 1);
+				}
+			};
+		}
+
+		public PropertyValueModel<Boolean> buildRemoveButtonEnabledModel(CollectionValueModel<E> selectedItemsModel) {
+			return this.buildMultipleSelectedItemsEnabledModel(selectedItemsModel);
+		}
+
+		protected PropertyValueModel<Boolean> buildMultipleSelectedItemsEnabledModel(CollectionValueModel<E> selectedItemsModel) {
+			return new CollectionPropertyValueModelAdapter<Boolean, E>(selectedItemsModel) {
+				@Override
+				protected Boolean buildValue() {
+					return Boolean.valueOf(this.collectionModel.size() >= 1);
+				}
+			};
 		}
 
 		/*
 		 * (non-Javadoc)
 		 */
 		public boolean hasOptionalButton() {
-			return hasOptionalButton;
+			return this.hasOptionalButton;
 		}
 
 		/*
 		 * (non-Javadoc)
 		 */
 		public String optionalButtonText() {
-			return optionalButtonText;
+			return this.optionalButtonText;
 		}
 
 		/*
 		 * (non-Javadoc)
 		 */
-		public void optionOnSelection(ObjectListSelectionModel listSelectionModel) {
+		public void optionOnSelection(CollectionValueModel<E> selectedItemsModel) {
+			//override as necessary
 		}
 
 		/*
 		 * (non-Javadoc)
 		 */
 		public String removeButtonText() {
-			return removeButtonText;
+			return this.removeButtonText;
 		}
 
 		/**
@@ -856,68 +837,5 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 		public void setRemoveButtonText(String removeButtonText) {
 			this.removeButtonText = removeButtonText;
 		}
-	}
-
-	/**
-	 * This adapter is used to perform the actual action when adding a new item
-	 * or removing the selected items. It is possible to add an optional button.
-	 */
-	public static interface Adapter {
-
-		/**
-		 * The add button's text.
-		 *
-		 * @return The text shown on the add button
-		 */
-		String addButtonText();
-
-		/**
-		 * Invoked when the user selects the Add button.
-		 */
-		void addNewItem(ObjectListSelectionModel listSelectionModel);
-
-		/**
-		 * Invoked when selection changes. Implementation dictates whether button
-		 * should be enabled.
-		 */
-		boolean enableOptionOnSelectionChange(ObjectListSelectionModel listSelectionModel);
-
-		/**
-		 * Invoked when selection changes. Implementation dictates whether remove button
-		 * should be enabled.
-		 */
-		boolean enableRemoveOnSelectionChange(ObjectListSelectionModel listSelectionModel);
-
-		/**
-		 * Determines whether an optional button should be added between the add
-		 * and remove buttons.
-		 *
-		 * @return <code>true</code> to show an optional button and to use the
-		 * behavior related to the optional button; <code>false</code> to not use
-		 * it
-		 */
-		boolean hasOptionalButton();
-
-		/**
-		 * Resource string key for the optional button.
-		 */
-		String optionalButtonText();
-
-		/**
-		 * Invoked when the user selects the optional button
-		 */
-		void optionOnSelection(ObjectListSelectionModel listSelectionModel);
-
-		/**
-		 * The remove button's text.
-		 *
-		 * @return The text shown on the remove button
-		 */
-		String removeButtonText();
-
-		/**
-		 * Invoked when the user selects the Remove button.
-		 */
-		void removeSelectedItems(ObjectListSelectionModel listSelectionModel);
 	}
 }

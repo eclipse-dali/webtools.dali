@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,6 @@ package org.eclipse.jpt.common.ui.internal.widgets;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -25,12 +24,9 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.forms.widgets.FormText;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
-import org.eclipse.ui.forms.widgets.TableWrapData;
-import org.eclipse.ui.forms.widgets.TableWrapLayout;
 
 /**
  * This <code>WidgetFactory</code> is responsible to create the widgets
@@ -87,7 +83,7 @@ public class FormWidgetFactory implements WidgetFactory {
 		gridData.horizontalAlignment       = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 
-		container = widgetFactory.createComposite(container);
+		container = this.widgetFactory.createComposite(container);
 		container.setLayoutData(gridData);
 		container.setLayout(layout);
 
@@ -111,36 +107,7 @@ public class FormWidgetFactory implements WidgetFactory {
 	 * @return The newly created <code>Button</code>
 	 */
 	protected Button createButton(Composite parent, String text, int style) {
-		return widgetFactory.createButton(parent, text, SWT.FLAT | style);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Deprecated
-	public CCombo createCCombo(Composite parent) {
-		return createCCombo(parent, SWT.READ_ONLY);
-	}
-
-	/**
-	 * Creates a new combo.
-	 *
-	 * @param parent The parent container
-	 * @param style The style to apply to the combo, usually read-only, flat
-	 * @return The newly created <code>CCombo</code>
-	 */
-	protected CCombo createCCombo(Composite parent, int style) {
-		parent = createBorderContainer(parent, 1, 1);
-
-		CCombo combo = new CCombo(parent, style);
-		widgetFactory.adapt(combo, true, false);
-
-		// Bugzilla 145837 - workaround for no borders on Windows XP
-		if (widgetFactory.getBorderStyle() == SWT.BORDER) {
-			combo.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
-		}
-
-		return combo;
+		return this.widgetFactory.createButton(parent, text, SWT.FLAT | style);
 	}
 
 	/**
@@ -176,13 +143,6 @@ public class FormWidgetFactory implements WidgetFactory {
 		return dateTime;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Deprecated
-	public CCombo createEditableCCombo(Composite parent) {
-		return createCCombo(parent, SWT.NULL);
-	}
 
 	/**
 	 * {@inheritDoc}
@@ -205,14 +165,14 @@ public class FormWidgetFactory implements WidgetFactory {
 	 * {@inheritDoc}
 	 */
 	public Hyperlink createHyperlink(Composite parent, String text) {
-		return widgetFactory.createHyperlink(parent, text, SWT.FLAT);
+		return this.widgetFactory.createHyperlink(parent, text, SWT.FLAT);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public Label createLabel(Composite container, String labelText) {
-		return widgetFactory.createLabel(container, labelText, SWT.WRAP);
+		return this.widgetFactory.createLabel(container, labelText, SWT.WRAP);
 	}
 
 	/**
@@ -222,33 +182,6 @@ public class FormWidgetFactory implements WidgetFactory {
 		List list = new List(container, SWT.FLAT | style);
 		list.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
 		return list;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public FormText createMultiLineLabel(Composite parent, String labelText) {
-
-		Composite container = widgetFactory.createComposite(parent, SWT.NONE);
-
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment       = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		container.setLayoutData(gridData);
-
-		TableWrapLayout layout = new TableWrapLayout();
-		layout.numColumns   = 1;
-		layout.bottomMargin = 0;
-		layout.leftMargin   = 0;
-		layout.rightMargin  = 0;
-		layout.topMargin    = 0;
-		container.setLayout(layout);
-
-		FormText text = widgetFactory.createFormText(container, true);
-		text.setLayoutData(new TableWrapData(TableWrapData.FILL_GRAB));
-		text.setText(labelText, false, false);
-
-		return text;
 	}
 
 	/**
@@ -283,7 +216,7 @@ public class FormWidgetFactory implements WidgetFactory {
 	 * {@inheritDoc}
 	 */
 	public Section createSection(Composite parent, int style) {
-		return widgetFactory.createSection(parent, SWT.FLAT | style);
+		return this.widgetFactory.createSection(parent, SWT.FLAT | style);
 	}
 
 	/**
@@ -294,7 +227,7 @@ public class FormWidgetFactory implements WidgetFactory {
 
 		Spinner spinner = new Spinner(parent, SWT.FLAT);
 		spinner.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
-		widgetFactory.adapt(spinner, true, false);
+		this.widgetFactory.adapt(spinner, true, false);
 
 		return spinner;
 	}
@@ -316,7 +249,7 @@ public class FormWidgetFactory implements WidgetFactory {
 	}
 
 	protected Text createText(Composite parent, int style) {
-		return widgetFactory.createText(parent, null, SWT.BORDER | SWT.FLAT | style);
+		return this.widgetFactory.createText(parent, null, SWT.BORDER | SWT.FLAT | style);
 	}
 
 	/**
@@ -333,6 +266,6 @@ public class FormWidgetFactory implements WidgetFactory {
 	 * @return The factory creating the widgets with the form style (flat-style)
 	 */
 	public FormToolkit getWidgetFactory() {
-		return widgetFactory;
+		return this.widgetFactory;
 	}
 }

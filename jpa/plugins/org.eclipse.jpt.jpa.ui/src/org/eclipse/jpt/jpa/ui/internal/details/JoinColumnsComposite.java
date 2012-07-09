@@ -13,22 +13,22 @@ import java.util.ArrayList;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.AbstractAdapter;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
+import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
+import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaNode;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
@@ -63,7 +63,7 @@ public class JoinColumnsComposite<T extends JpaNode> extends Pane<T>
 	 */
 	JoinColumnsEditor<T> joinColumnsEditor;
 
-	private AddRemoveListPane<T> listPane;
+	ModifiableCollectionValueModel<JoinColumn> selectedJoinColumnsModel;
 
 	/**
 	 * Creates a new <code>JoinColumnsComposite</code>.
@@ -75,29 +75,10 @@ public class JoinColumnsComposite<T extends JpaNode> extends Pane<T>
 	 */
 	public JoinColumnsComposite(Pane<? extends T> parentPane,
 	                            Composite parent,
-	                            JoinColumnsEditor<T> joinColumnsEditor) {
-
-		super(parentPane, parent);
-		this.joinColumnsEditor = joinColumnsEditor;
-		initializeLayout2();
-	}
-
-	/**
-	 * Creates a new <code>JoinColumnsComposite</code>.
-	 *
-	 * @param parentPane The parent controller of this one
-	 * @param subjectHolder The holder of this pane's subject
-	 * @param parent The parent container
-	 * @param joinColumnsEditor The editor used to perform the common behaviors
-	 * defined in the list pane
-	 */
-	public JoinColumnsComposite(Pane<?> parentPane,
-	                            PropertyValueModel<? extends T> subjectHolder,
-	                            Composite parent,
 	                            JoinColumnsEditor<T> joinColumnsEditor,
-	                            boolean automaticallyAlignWidgets) {
+	                            PropertyValueModel<Boolean> enabledModel) {
 
-		super(parentPane, subjectHolder, parent, automaticallyAlignWidgets);
+		super(parentPane, parent, enabledModel);
 		this.joinColumnsEditor = joinColumnsEditor;
 		initializeLayout2();
 	}
@@ -120,25 +101,35 @@ public class JoinColumnsComposite<T extends JpaNode> extends Pane<T>
 	}
 
 	@Override
+	public Composite getControl() {
+		return (Composite) super.getControl();
+	}
+
+	@Override
+	protected void initialize() {
+		super.initialize();
+		this.selectedJoinColumnsModel = this.buildSelectedJoinColumnsModel();
+	}
+
+	@Override
 	protected void initializeLayout(Composite container) {
 		//see intiailizeLayout2()
 	}
 
 	private void initializeLayout2() {
-		this.listPane = new AddRemoveListPane<T>(
+		new AddRemoveListPane<T, JoinColumn>(
 			this,
 			getControl(),
 			buildJoinColumnsAdapter(),
 			buildJoinColumnsListModel(),
-			buildSelectedJoinColumnHolder(),
+			this.selectedJoinColumnsModel,
 			buildJoinColumnsListLabelProvider(),
-			JpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS,
-			false
+			JpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS
 		);
 	}
 
-	private ModifiablePropertyValueModel<JoinColumn> buildSelectedJoinColumnHolder() {
-		return new SimplePropertyValueModel<JoinColumn>();
+	private ModifiableCollectionValueModel<JoinColumn> buildSelectedJoinColumnsModel() {
+		return new SimpleCollectionValueModel<JoinColumn>();
 	}
 
 	String buildJoinColumnLabel(ReadOnlyJoinColumn joinColumn) {
@@ -182,11 +173,23 @@ public class JoinColumnsComposite<T extends JpaNode> extends Pane<T>
 		);
 	}
 
-	private Adapter buildJoinColumnsAdapter() {
-		return new AbstractAdapter() {
+	private Adapter<JoinColumn> buildJoinColumnsAdapter() {
+		return new AbstractAdapter<JoinColumn>() {
 
-			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
-				JoinColumnsComposite.this.joinColumnsEditor.addJoinColumn(getSubject());
+			public JoinColumn addNewItem() {
+				return JoinColumnsComposite.this.joinColumnsEditor.addJoinColumn(getSubject());
+			}
+
+			@Override
+			public PropertyValueModel<Boolean> buildRemoveButtonEnabledModel(CollectionValueModel<JoinColumn> selectedItemsModel) {
+				//enable the remove button only when 1 item is selected, same as the optional button
+				return this.buildSingleSelectedItemEnabledModel(selectedItemsModel);
+			}
+
+			public void removeSelectedItems(CollectionValueModel<JoinColumn> selectedItemsModel) {
+				//assume only 1 item since remove button is disabled otherwise
+				JoinColumn joinColumn = selectedItemsModel.iterator().next();
+				JoinColumnsComposite.this.joinColumnsEditor.removeJoinColumn(getSubject(), joinColumn);
 			}
 
 			@Override
@@ -200,13 +203,9 @@ public class JoinColumnsComposite<T extends JpaNode> extends Pane<T>
 			}
 
 			@Override
-			public void optionOnSelection(ObjectListSelectionModel listSelectionModel) {
-				JoinColumn joinColumn = (JoinColumn) listSelectionModel.selectedValue();
+			public void optionOnSelection(CollectionValueModel<JoinColumn> selectedItemsModel) {
+				JoinColumn joinColumn = selectedItemsModel.iterator().next();
 				JoinColumnsComposite.this.joinColumnsEditor.editJoinColumn(getSubject(), joinColumn);
-			}
-
-			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
-				JoinColumnsComposite.this.joinColumnsEditor.removeJoinColumns(getSubject(), listSelectionModel.selectedIndices());
 			}
 		};
 	}
@@ -267,12 +266,8 @@ public class JoinColumnsComposite<T extends JpaNode> extends Pane<T>
 		};
 	}
 
-	public void installJoinColumnsPaneEnabler(PropertyValueModel<Boolean> joinColumnsPaneEnablerHolder) {
-		new PaneEnabler(joinColumnsPaneEnablerHolder, this.listPane);
-	}
-
 	public void setSelectedJoinColumn(JoinColumn joinColumn) {
-		this.listPane.setSelectedItem(joinColumn);
+		this.selectedJoinColumnsModel.setValues(new SingleElementIterable<JoinColumn>(joinColumn));
 	}
 
 	/**
@@ -283,7 +278,7 @@ public class JoinColumnsComposite<T extends JpaNode> extends Pane<T>
 		/**
 		 * Add a join column to the given subject and return it
 		 */
-		void addJoinColumn(T subject);
+		JoinColumn addJoinColumn(T subject);
 
 		/**
 		 * Edit the given join column, the Edit button was pressed
@@ -324,6 +319,6 @@ public class JoinColumnsComposite<T extends JpaNode> extends Pane<T>
 		/**
 		 * Remove the join columns at the specified indices from the subject
 		 */
-		void removeJoinColumns(T subject, int[] selectedIndices);
+		void removeJoinColumn(T subject, JoinColumn joinColumn);
 	}
 }

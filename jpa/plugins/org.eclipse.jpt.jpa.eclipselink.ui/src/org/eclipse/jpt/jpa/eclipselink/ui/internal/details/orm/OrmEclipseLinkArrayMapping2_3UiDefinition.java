@@ -47,9 +47,10 @@ public class OrmEclipseLinkArrayMapping2_3UiDefinition
 	public JpaComposite buildAttributeMappingComposite(
 			OrmXmlUiFactory factory, 
 			PropertyValueModel<EclipseLinkArrayMapping2_3> subjectHolder, 
-			Composite parent, 
+			PropertyValueModel<Boolean> enabledModel, 
+			Composite parent,
 			WidgetFactory widgetFactory) {
 		
-		return new EclipseLinkArrayMapping2_3Composite(subjectHolder, parent, widgetFactory);
+		return new EclipseLinkArrayMapping2_3Composite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 }

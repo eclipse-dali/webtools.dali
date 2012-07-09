@@ -64,71 +64,81 @@ public abstract class BaseOrmXmlUiFactory implements OrmXmlUiFactory
 	
 	public JpaComposite createOrmIdMappingComposite(
 			PropertyValueModel<OrmIdMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new OrmIdMappingComposite(subjectHolder, parent, widgetFactory);
+		return new OrmIdMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	public JpaComposite createOrmEmbeddedIdMappingComposite(
 			PropertyValueModel<OrmEmbeddedIdMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new OrmEmbeddedIdMappingComposite(subjectHolder, parent, widgetFactory);
+		return new OrmEmbeddedIdMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	public JpaComposite createOrmBasicMappingComposite(
 			PropertyValueModel<OrmBasicMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new OrmBasicMappingComposite(subjectHolder, parent, widgetFactory);
+		return new OrmBasicMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	public JpaComposite createOrmVersionMappingComposite(
 			PropertyValueModel<OrmVersionMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new OrmVersionMappingComposite(subjectHolder, parent, widgetFactory);
+		return new OrmVersionMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	public JpaComposite createOrmManyToOneMappingComposite(
 			PropertyValueModel<OrmManyToOneMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new OrmManyToOneMappingComposite(subjectHolder, parent, widgetFactory);
+		return new OrmManyToOneMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	public JpaComposite createOrmOneToManyMappingComposite(
 			PropertyValueModel<OrmOneToManyMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new OrmOneToManyMappingComposite(subjectHolder, parent, widgetFactory);
+		return new OrmOneToManyMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	public JpaComposite createOrmOneToOneMappingComposite(
 			PropertyValueModel<OrmOneToOneMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new OrmOneToOneMappingComposite(subjectHolder, parent, widgetFactory);
+		return new OrmOneToOneMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	public JpaComposite createOrmManyToManyMappingComposite(
 			PropertyValueModel<OrmManyToManyMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new OrmManyToManyMappingComposite(subjectHolder, parent, widgetFactory);
+		return new OrmManyToManyMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	public JpaComposite createOrmEmbeddedMappingComposite(
 			PropertyValueModel<OrmEmbeddedMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new OrmEmbeddedMappingComposite(subjectHolder, parent, widgetFactory);
+		return new OrmEmbeddedMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	public JpaComposite createOrmTransientMappingComposite(
 			PropertyValueModel<OrmTransientMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new TransientMappingComposite(subjectHolder, parent, widgetFactory);
+		return new TransientMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 }

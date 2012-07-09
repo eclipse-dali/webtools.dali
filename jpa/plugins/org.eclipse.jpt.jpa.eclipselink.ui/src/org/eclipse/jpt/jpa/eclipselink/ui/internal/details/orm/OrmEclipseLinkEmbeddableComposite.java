@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,11 +21,20 @@ import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkConverters
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkEmbeddableAdvancedComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
+import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEmbeddableComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.MetadataCompleteComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.JptUiDetailsOrmMessages;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.MetadataCompleteTriStateCheckBox;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmJavaClassChooser;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.events.ExpansionAdapter;
+import org.eclipse.ui.forms.events.ExpansionEvent;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Hyperlink;
+import org.eclipse.ui.forms.widgets.Section;
 
 /**
  * This pane does not have any widgets.
@@ -62,10 +71,24 @@ public class OrmEclipseLinkEmbeddableComposite
 	}
 
 	@Override
-	protected void initializeEmbeddableSection(Composite container) {
-		new OrmJavaClassChooser(this, getSubjectHolder(), container);
-		new AccessTypeComposite(this, buildAccessHolder(), container);
-		new MetadataCompleteComposite(this, getSubjectHolder(), container);
+	protected Control initializeEmbeddableSection(Composite container) {
+		container = this.addSubPane(container, 2, 0, 0, 0, 0);
+
+		// Java class widgets
+		Hyperlink javaClassHyperlink = this.addHyperlink(container, JptUiDetailsOrmMessages.OrmJavaClassChooser_javaClass);
+		new OrmJavaClassChooser(this, getSubjectHolder(), container, javaClassHyperlink);
+
+		// Access type widgets
+		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
+		new AccessTypeComboViewer(this, this.buildAccessHolder(), container);
+
+		// Metadata complete widgets
+		MetadataCompleteTriStateCheckBox metadataCompleteComposite = new MetadataCompleteTriStateCheckBox(this, getSubjectHolder(), container);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		metadataCompleteComposite.getControl().setLayoutData(gridData);
+
+		return container;
 	}
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
@@ -78,19 +101,26 @@ public class OrmEclipseLinkEmbeddableComposite
 			}
 		};
 	}
+
 	protected void initializeConvertersCollapsibleSection(Composite container) {
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters);
 
-		container = addCollapsibleSection(
-			container,
-			EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters
-		);
-		initializeConvertersSection(container, this.buildConverterContainerModel());
+		section.addExpansionListener(new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanging(ExpansionEvent e) {
+				if (e.getState() && section.getClient() == null) {
+					section.setClient(initializeConvertersSection(section));
+				}
+			}
+		});
 	}
 
-	protected void initializeConvertersSection(Composite container, PropertyValueModel<OrmEclipseLinkConverterContainer> converterHolder) {
-		new EclipseLinkConvertersComposite(this, converterHolder, container);
+	protected Control initializeConvertersSection(Composite container) {
+		return new EclipseLinkConvertersComposite(this, this.buildConverterContainerModel(), container).getControl();
 	}
-	
+
 	private PropertyValueModel<OrmEclipseLinkConverterContainer> buildConverterContainerModel() {
 		return new PropertyAspectAdapter<OrmEmbeddable, OrmEclipseLinkConverterContainer>(getSubjectHolder()) {
 			@Override
@@ -99,8 +129,23 @@ public class OrmEclipseLinkEmbeddableComposite
 			}
 		};
 	}
-	
+
 	protected void initializeAdvancedCollapsibleSection(Composite container) {
-		new EclipseLinkEmbeddableAdvancedComposite(this, container);
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_advanced);
+
+		section.addExpansionListener(new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanging(ExpansionEvent e) {
+				if (e.getState() && section.getClient() == null) {
+					section.setClient(initializeAdvancedSection(section));
+				}
+			}
+		});
+	}
+
+	protected Control initializeAdvancedSection(Composite container) {
+		return new EclipseLinkEmbeddableAdvancedComposite(this, container).getControl();
 	}
 }

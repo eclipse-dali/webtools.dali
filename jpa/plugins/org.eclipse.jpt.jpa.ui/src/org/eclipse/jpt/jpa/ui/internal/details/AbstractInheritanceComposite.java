@@ -24,9 +24,9 @@ import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Control;
 
 /**
  * Here the layout of this pane:
@@ -81,52 +81,48 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 	public AbstractInheritanceComposite(Pane<? extends T> parentPane,
 	                            Composite parent) {
 
-		super(parentPane, parent, false);
+		super(parentPane, parent);
+	}
+
+	@Override
+	protected Composite addComposite(Composite container) {
+		return this.addSubPane(container, 2, 0, 0, 0, 0);
 	}
 
 	@Override
 	protected void initializeLayout(Composite container) {
-
-		int groupBoxMargin = getGroupBoxMargin();
-
-		Composite subPane = addSubPane(
-			container, 0, groupBoxMargin, 0, groupBoxMargin
-		);
-
 		// Strategy widgets
-		addLabeledComposite(
-			subPane,
-			JptUiDetailsMessages.InheritanceComposite_strategy,
-			addStrategyCombo(subPane),
-			JpaHelpContextIds.ENTITY_INHERITANCE_STRATEGY
-		);
+		this.addLabel(container, JptUiDetailsMessages.InheritanceComposite_strategy);
+		this.addStrategyCombo(container);
 
 		// Discriminator Value widgets
 		PropertyValueModel<Boolean> dvEnabled = this.buildDiscriminatorValueEnabledHolder();
-		Combo discriminatorValueCombo = addEditableCombo(
-			subPane,
-			buildDiscriminatorValueListHolder(),
-			buildDiscriminatorValueHolder(),
-			StringConverter.Default.<String>instance(),
-			dvEnabled
-		);
-		Label discriminatorValueLabel = addLabel(
-			subPane, 
+		this.addLabel(
+			container, 
 			JptUiDetailsMessages.InheritanceComposite_discriminatorValue,
 			dvEnabled
 		);
-		addLabeledComposite(
-			subPane,
-			discriminatorValueLabel,
-			discriminatorValueCombo,
-			null,
+		this.addEditableCombo(
+			container,
+			buildDiscriminatorValueListHolder(),
+			buildDiscriminatorValueHolder(),
+			StringConverter.Default.<String>instance(),
+			dvEnabled,
 			JpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_VALUE
 		);
 	
-		new DiscriminatorColumnComposite<Entity>(this, container);
+		// Discriminator column widgets
+		DiscriminatorColumnComposite<Entity> discriminatorColumnComposite = new DiscriminatorColumnComposite<Entity>(this, container);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		gridData.verticalIndent = 10;
+		discriminatorColumnComposite.getControl().setLayoutData(gridData);
 
 		// Primary Key Join Columns widgets
-		addPrimaryKeyJoinColumnsComposite(addSubPane(container, 5));
+		Control pkJoinColumnsComposite = addPrimaryKeyJoinColumnsComposite(container);
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		pkJoinColumnsComposite.setLayoutData(gridData);
 	}
 	
 	protected ModifiablePropertyValueModel<Boolean> buildDiscriminatorValueEnabledHolder() {
@@ -195,7 +191,6 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 	}
 
 	private EnumFormComboViewer<Entity, InheritanceType> addStrategyCombo(Composite container) {
-
 		return new EnumFormComboViewer<Entity, InheritanceType>(this, container) {
 
 			@Override
@@ -238,9 +233,14 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 			protected void setValue(InheritanceType value) {
 				getSubject().setSpecifiedInheritanceStrategy(value);
 			}
+
+			@Override
+			protected String getHelpId() {
+				return JpaHelpContextIds.ENTITY_INHERITANCE_STRATEGY;
+			}
 		};
 	}
 
-	protected abstract void addPrimaryKeyJoinColumnsComposite(Composite container);
+	protected abstract Control addPrimaryKeyJoinColumnsComposite(Composite container);
 
 }

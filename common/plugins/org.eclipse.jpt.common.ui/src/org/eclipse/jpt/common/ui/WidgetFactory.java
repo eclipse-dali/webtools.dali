@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui;
 
-import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -20,7 +19,6 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.forms.widgets.FormText;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
 
@@ -48,16 +46,6 @@ public interface WidgetFactory {
 	 * @return A new <code>Button</code>
 	 */
 	Button createButton(Composite parent, String text);
-
-	/**
-	 * Creates a new non-editable custom <code>Combo</code>.
-	 *
-	 * @deprecated
-	 * @param parent The parent container
-	 * @return A new <code>CCombo</code>
-	 */
-	@Deprecated
-	CCombo createCCombo(Composite parent);
 
 	/**
 	 * Creates a new check box button.
@@ -93,16 +81,6 @@ public interface WidgetFactory {
 	 * @return A new <code>DateTime</code>
 	 */
 	DateTime createDateTime(Composite parent, int style);
-	
-	/**
-	 * Creates a new editable custom <code>CCombo</code>.
-	 *
-	 * @deprecated
-	 * @param parent The parent container
-	 * @return A new <code>CCombo</code>
-	 */
-	@Deprecated
-	CCombo createEditableCCombo(Composite parent);
 
 	/**
 	 * Creates a new editable <code>Combo</code>.
@@ -148,15 +126,6 @@ public interface WidgetFactory {
 	 * @return A new <code>Label</code>
 	 */
 	List createList(Composite container, int style);
-
-	/**
-	 * Creates a new label that can be wrapped on multiple lines.
-	 *
-	 * @param container The parent container
-	 * @param labelText The label's text
-	 * @return A new <code>FormText</code>
-	 */
-	FormText createMultiLineLabel(Composite container, String labelText);
 
 	/**
 	 * Creates a new editable text area.

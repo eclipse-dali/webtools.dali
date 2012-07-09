@@ -16,7 +16,6 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.swt.ColumnAdapter;
-import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveTablePane;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
@@ -27,11 +26,11 @@ import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrappe
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationListValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
+import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
@@ -39,8 +38,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.ui.forms.widgets.Hyperlink;
 
 /**
  * Here the layout of this pane:
@@ -52,7 +53,7 @@ import org.eclipse.swt.widgets.Group;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see EclipseLinkConverter
- * @see EclipseLinkConvertComposite - A container of this widget
+ * @see EclipseLinkConvertCombo - A container of this widget
  *
  * @version 2.1
  * @since 2.1
@@ -74,28 +75,34 @@ public class EclipseLinkObjectTypeConverterComposite extends Pane<EclipseLinkObj
 	}
 
 	@Override
-	protected void initializeLayout(Composite container) {
-		
-		addLabeledText(
-			container, 
-			EclipseLinkUiDetailsMessages.EclipseLinkConverterComposite_nameTextLabel, 
-			buildNameTextHolder());
-		
-		addDataTypeChooser(container);
-		addObjectTypeChooser(container);
-		
-		addConversionValuesTable(container);
+	protected Composite addComposite(Composite container) {
+		return this.addSubPane(container, 2, 0, 0, 0, 0);
+	}
 
-		addLabeledEditableCombo(
+	@Override
+	protected void initializeLayout(Composite container) {
+		this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkConverterComposite_nameTextLabel);
+		this.addText(container, buildNameTextHolder());
+		
+		Hyperlink dataTypeHyperlink = this.addHyperlink(container, EclipseLinkUiDetailsMessages.EclipseLinkObjectTypeConverterComposite_dataTypeLabel);
+		this.addDataTypeChooser(container, dataTypeHyperlink);
+		
+		Hyperlink objectTypeHyperlink = this.addHyperlink(container,  EclipseLinkUiDetailsMessages.EclipseLinkObjectTypeConverterComposite_objectTypeLabel);
+		this.addObjectTypeChooser(container, objectTypeHyperlink);
+		
+		Composite conversionValuesTable = addConversionValuesTable(container);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		conversionValuesTable.setLayoutData(gridData);
+
+		this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkObjectTypeConverterComposite_defaultObjectValueLabel);
+		this.addEditableCombo(
 			container,
-			EclipseLinkUiDetailsMessages.EclipseLinkObjectTypeConverterComposite_defaultObjectValueLabel,
 			buildDefaultObjectValueListHolder(),
 			buildDefaultObjectValueHolder(),
 			buildStringConverter(),
-			null
+			(String) null
 		);
-
-		new PaneEnabler(buildBooleanHolder(), this);
 	}
 	
 	protected ModifiablePropertyValueModel<String> buildNameTextHolder() {
@@ -116,9 +123,9 @@ public class EclipseLinkObjectTypeConverterComposite extends Pane<EclipseLinkObj
 		};
 	}
 	
-	private ClassChooserPane<EclipseLinkObjectTypeConverter> addDataTypeChooser(Composite container) {
+	private ClassChooserPane<EclipseLinkObjectTypeConverter> addDataTypeChooser(Composite container, Hyperlink hyperlink) {
 
-		return new ClassChooserPane<EclipseLinkObjectTypeConverter>(this, container) {
+		return new ClassChooserPane<EclipseLinkObjectTypeConverter>(this, container, hyperlink) {
 
 			@Override
 			protected ModifiablePropertyValueModel<String> buildTextHolder() {
@@ -146,11 +153,6 @@ public class EclipseLinkObjectTypeConverterComposite extends Pane<EclipseLinkObj
 			}
 
 			@Override
-			protected String getLabelText() {
-				return EclipseLinkUiDetailsMessages.EclipseLinkObjectTypeConverterComposite_dataTypeLabel;
-			}
-
-			@Override
 			protected IJavaProject getJavaProject() {
 				return getSubject().getJpaProject().getJavaProject();
 			}
@@ -172,9 +174,9 @@ public class EclipseLinkObjectTypeConverterComposite extends Pane<EclipseLinkObj
 		};
 	}
 
-	private ClassChooserPane<EclipseLinkObjectTypeConverter> addObjectTypeChooser(Composite container) {
+	private ClassChooserPane<EclipseLinkObjectTypeConverter> addObjectTypeChooser(Composite container, Hyperlink hyperlink) {
 
-		return new ClassChooserPane<EclipseLinkObjectTypeConverter>(this, container) {
+		return new ClassChooserPane<EclipseLinkObjectTypeConverter>(this, container, hyperlink) {
 
 			@Override
 			protected ModifiablePropertyValueModel<String> buildTextHolder() {
@@ -199,11 +201,6 @@ public class EclipseLinkObjectTypeConverterComposite extends Pane<EclipseLinkObj
 			@Override
 			protected String getClassName() {
 				return getSubject().getObjectType();
-			}
-
-			@Override
-			protected String getLabelText() {
-				return EclipseLinkUiDetailsMessages.EclipseLinkObjectTypeConverterComposite_objectTypeLabel;
 			}
 
 			@Override
@@ -233,23 +230,20 @@ public class EclipseLinkObjectTypeConverterComposite extends Pane<EclipseLinkObj
 		};
 	}
 	
-	protected void addConversionValuesTable(Composite container) {
-		
+	protected Composite addConversionValuesTable(Composite container) {
 		// Join Columns group pane
 		Group conversionValuesGroupPane = addTitledGroup(
 			container,
 			EclipseLinkUiDetailsMessages.EclipseLinkObjectTypeConverterComposite_conversionValuesGroupTitle
 		);
 
-		ModifiablePropertyValueModel<EclipseLinkConversionValue> conversionValueHolder =
-			buildConversionValueHolder();
 		// Conversion Values add/remove list pane
-		new AddRemoveTablePane<EclipseLinkObjectTypeConverter>(
+		new AddRemoveTablePane<EclipseLinkObjectTypeConverter, EclipseLinkConversionValue>(
 			this,
 			conversionValuesGroupPane,
 			buildConversionValuesAdapter(),
 			buildConversionValuesListModel(),
-			conversionValueHolder,
+			buildSelectedConversionValuesModel(),
 			buildConversionValuesLabelProvider(),
 			null//TODO need a help context id for this
 		) {
@@ -259,18 +253,19 @@ public class EclipseLinkObjectTypeConverterComposite extends Pane<EclipseLinkObj
 			}
 		};
 
+		return conversionValuesGroupPane;
 	}
 
-	protected ModifiablePropertyValueModel<EclipseLinkConversionValue> buildConversionValueHolder() {
-		return new SimplePropertyValueModel<EclipseLinkConversionValue>();
+	private ModifiableCollectionValueModel<EclipseLinkConversionValue> buildSelectedConversionValuesModel() {
+		return new SimpleCollectionValueModel<EclipseLinkConversionValue>();
 	}
 
-	protected AddRemoveListPane.Adapter buildConversionValuesAdapter() {
-		return new AddRemoveListPane.AbstractAdapter() {
+	protected AddRemoveListPane.Adapter<EclipseLinkConversionValue> buildConversionValuesAdapter() {
+		return new AddRemoveListPane.AbstractAdapter<EclipseLinkConversionValue>() {
 
-			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
+			public EclipseLinkConversionValue addNewItem() {
 				EclipseLinkConversionValueDialog dialog = buildConversionValueDialogForAdd();
-				addConversionValueFromDialog(dialog, listSelectionModel);
+				return addConversionValueFromDialog(dialog);
 			}
 
 			@Override
@@ -284,19 +279,23 @@ public class EclipseLinkObjectTypeConverterComposite extends Pane<EclipseLinkObj
 			}
 
 			@Override
-			public void optionOnSelection(ObjectListSelectionModel listSelectionModel) {
-				EclipseLinkConversionValue conversionValue = (EclipseLinkConversionValue) listSelectionModel.selectedValue();
+			public void optionOnSelection(CollectionValueModel<EclipseLinkConversionValue> selectedItemsModel) {
+				EclipseLinkConversionValue conversionValue = selectedItemsModel.iterator().next();
 				EclipseLinkConversionValueDialog dialog = new EclipseLinkConversionValueDialog(getShell(), getSubject(), conversionValue);
 				editConversionValueFromDialog(dialog, conversionValue);
 			}
 
-			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
-				EclipseLinkObjectTypeConverter converter = getSubject();
-				int[] selectedIndices = listSelectionModel.selectedIndices();
 
-				for (int index = selectedIndices.length; --index >= 0; ) {
-					converter.removeConversionValue(selectedIndices[index]);
-				}
+			@Override
+			public PropertyValueModel<Boolean> buildRemoveButtonEnabledModel(CollectionValueModel<EclipseLinkConversionValue> selectedItemsModel) {
+				//enable the remove button only when 1 item is selected, same as the optional button
+				return this.buildSingleSelectedItemEnabledModel(selectedItemsModel);
+			}
+
+			public void removeSelectedItems(CollectionValueModel<EclipseLinkConversionValue> selectedItemsModel) {
+				//assume only 1 item since remove button is disabled otherwise
+				EclipseLinkConversionValue item =  selectedItemsModel.iterator().next();
+				getSubject().removeConversionValue(item);
 			}
 		};
 	}
@@ -306,16 +305,16 @@ public class EclipseLinkObjectTypeConverterComposite extends Pane<EclipseLinkObj
 		return new EclipseLinkConversionValueDialog(getShell(), getSubject());
 	}
 
-	protected void addConversionValueFromDialog(EclipseLinkConversionValueDialog dialog, ObjectListSelectionModel listSelectionModel) {
+	protected EclipseLinkConversionValue addConversionValueFromDialog(EclipseLinkConversionValueDialog dialog) {
 		if (dialog.open() != Window.OK) {
-			return;
+			return null;
 		}
 
 		EclipseLinkConversionValue conversionValue = this.getSubject().addConversionValue();
 		conversionValue.setDataValue(dialog.getDataValue());
 		conversionValue.setObjectValue(dialog.getObjectValue());
 
-		listSelectionModel.setSelectedValue(conversionValue);
+		return conversionValue;
 	}
 
 	protected void editConversionValueFromDialog(EclipseLinkConversionValueDialog dialog, EclipseLinkConversionValue conversionValue) {
@@ -382,15 +381,6 @@ public class EclipseLinkObjectTypeConverterComposite extends Pane<EclipseLinkObj
 		return new StringConverter<String>() {
 			public String convertToString(String value) {
 				return (value == null) ? "" : value; //$NON-NLS-1$
-			}
-		};
-	}
-
-	protected PropertyValueModel<Boolean> buildBooleanHolder() {
-		return new TransformationPropertyValueModel<EclipseLinkObjectTypeConverter, Boolean>(getSubjectHolder()) {
-			@Override
-			protected Boolean transform(EclipseLinkObjectTypeConverter value) {
-				return Boolean.valueOf(value != null);
 			}
 		};
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,12 +11,15 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.details.java.JavaUiFactory;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Section;
 
 /**
  * This pane does not have any widgets.
@@ -45,22 +48,16 @@ public abstract class AbstractEmbeddableComposite<T extends Embeddable>
 
 		super(subjectHolder, parent, widgetFactory);
 	}
-
-	@Override
-	protected void initializeLayout(Composite container) {
-	}
 	
 	protected void initializeEmbeddableCollapsibleSection(Composite container) {
-		container = addCollapsibleSection(
-			container,
-			JptUiDetailsMessages.EmbeddableSection_title,
-			new SimplePropertyValueModel<Boolean>(Boolean.TRUE)
-		);
-
-		this.initializeEmbeddableSection(container);
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages.EmbeddableSection_title);
+		section.setExpanded(true);
+		section.setClient(this.initializeEmbeddableSection(section));
 	}
 	
-	protected void initializeEmbeddableSection(Composite container) {
-		
+	protected Control initializeEmbeddableSection(Composite container) {
+		throw new UnsupportedOperationException();
 	}
 }

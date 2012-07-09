@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -37,12 +37,12 @@ public class Queries2_0Composite
 	protected Pane<NamedQuery2_0> buildNamedQueryPropertyComposite(PageBook pageBook) {
 		return new NamedQueryProperty2_0Composite(
 			this,
-			this.buildNamedQuery2_0Holder(),
+			this.buildSelectedNamedQuery2_0Model(),
 			pageBook);
 	}
 	
-	protected PropertyValueModel<NamedQuery2_0> buildNamedQuery2_0Holder() {
-		return new TransformationPropertyValueModel<Query, NamedQuery2_0>(this.getQueryHolder()) {
+	protected PropertyValueModel<NamedQuery2_0> buildSelectedNamedQuery2_0Model() {
+		return new TransformationPropertyValueModel<Query, NamedQuery2_0>(this.getSelectedQueryModel()) {
 			@Override
 			protected NamedQuery2_0 transform_(Query value) {
 				return (value instanceof NamedQuery2_0) ? (NamedQuery2_0) value : null;

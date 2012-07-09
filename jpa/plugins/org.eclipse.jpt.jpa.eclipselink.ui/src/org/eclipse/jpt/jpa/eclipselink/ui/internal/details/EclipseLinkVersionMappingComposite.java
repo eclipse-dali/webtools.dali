@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.model.value.CompositeBooleanPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -25,11 +25,16 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVersionMapping;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractVersionMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.ColumnComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
-import org.eclipse.jpt.jpa.ui.internal.details.TemporalTypeComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.TemporalTypeCombo;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.forms.events.ExpansionAdapter;
+import org.eclipse.ui.forms.events.ExpansionEvent;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Section;
 
 /**
  * Here the layout of this pane:
@@ -54,7 +59,7 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see VersionMapping
  * @see ColumnComposite
- * @see TemporalTypeComposite
+ * @see TemporalTypeCombo
  *
  * @version 3.2
  * @since 2.1
@@ -70,21 +75,26 @@ public abstract class EclipseLinkVersionMappingComposite<T extends VersionMappin
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	protected EclipseLinkVersionMappingComposite(PropertyValueModel<? extends T> subjectHolder,
-	                               Composite parent,
-	                               WidgetFactory widgetFactory) {
+									PropertyValueModel<Boolean> enabledModel,
+									Composite parent,
+									WidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	@Override
-	protected void initializeVersionSection(Composite container) {
+	protected Control initializeVersionSection(Composite container) {
+		container = this.addSubPane(container);
+
 		new ColumnComposite(this, buildColumnHolder(), container);
-		new EclipseLinkMutableComposite(this, buildMutableHolder(), container);
+		new EclipseLinkMutableTriStateCheckBox(this, buildMutableHolder(), container);
+
+		return container;
 	}
 	
 	@Override
-	protected void initializeTypeSection(Composite container) {
-		((GridLayout) container.getLayout()).numColumns = 2;
+	protected Control initializeTypeSection(Composite container) {
+		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
 		// No converter
 		Button noConverterButton = addRadioButton(
@@ -101,7 +111,7 @@ public abstract class EclipseLinkVersionMappingComposite<T extends VersionMappin
 			JptUiDetailsMessages.TypeSection_temporal, 
 			buildConverterBooleanHolder(BaseTemporalConverter.class), 
 			null);
-		registerSubPane(new TemporalTypeComposite(buildTemporalConverterHolder(converterHolder), container, getWidgetFactory()));
+		registerSubPane(new TemporalTypeCombo(buildTemporalConverterHolder(converterHolder), getEnabledModel(), container, getWidgetFactory()));
 
 		// EclipseLink Converter
 		Button elConverterButton = addRadioButton(
@@ -111,15 +121,15 @@ public abstract class EclipseLinkVersionMappingComposite<T extends VersionMappin
 			null);
 		((GridData) elConverterButton.getLayoutData()).horizontalSpan = 2;
 
-		Pane<EclipseLinkConvert> convertComposite = buildConvertComposite(buildEclipseLinkConverterHolder(converterHolder), container);
-		GridData gridData = (GridData) convertComposite.getControl().getLayoutData();
-		gridData.horizontalSpan = 2;
+		PropertyValueModel<EclipseLinkConvert> convertHolder = buildEclipseLinkConverterHolder(converterHolder);
+		PropertyValueModel<Boolean> convertEnabledModel = CompositeBooleanPropertyValueModel.and(getEnabledModel(), buildEclipseLinkConvertBooleanHolder(convertHolder));
+		Label convertLabel = this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkConvertComposite_converterNameLabel, convertEnabledModel);
+		GridData gridData = new GridData();
 		gridData.horizontalIndent = 20;
-		registerSubPane(convertComposite);
-	}
-	
-	protected Pane<EclipseLinkConvert> buildConvertComposite(PropertyValueModel<EclipseLinkConvert> convertHolder, Composite container) {
-		return new EclipseLinkConvertComposite(convertHolder, container, getWidgetFactory());
+		convertLabel.setLayoutData(gridData);
+		registerSubPane(new EclipseLinkConvertCombo(convertHolder, convertEnabledModel, container, getWidgetFactory()));
+
+		return container;
 	}
 
 
@@ -137,6 +147,15 @@ public abstract class EclipseLinkVersionMappingComposite<T extends VersionMappin
 			@Override
 			protected Converter buildValue_() {
 				return this.subject.getConverter();
+			}
+		};
+	}
+
+	protected PropertyValueModel<Boolean> buildEclipseLinkConvertBooleanHolder(PropertyValueModel<EclipseLinkConvert> convertHolder) {
+		return new TransformationPropertyValueModel<EclipseLinkConvert, Boolean>(convertHolder) {
+			@Override
+			protected Boolean transform(EclipseLinkConvert value) {
+				return Boolean.valueOf(value != null);
 			}
 		};
 	}
@@ -160,15 +179,22 @@ public abstract class EclipseLinkVersionMappingComposite<T extends VersionMappin
 	}
 
 	protected void initializeConvertersCollapsibleSection(Composite container) {
-		container = addCollapsibleSection(
-			container,
-			EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters
-		);
-		initializeConvertersSection(container, this.buildConverterHolderValueModel());
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters);
+		section.addExpansionListener(new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanging(ExpansionEvent e) {
+				if (e.getState() && section.getClient() == null) {
+					section.setClient(EclipseLinkVersionMappingComposite.this.initializeConvertersSection(section));
+				}
+			}
+		});
+		section.setClient(initializeConvertersSection(section));
 	}
 
-	protected void initializeConvertersSection(Composite container, PropertyValueModel<EclipseLinkConverterContainer> converterHolder) {
-		new EclipseLinkConvertersComposite(this, converterHolder, container);
+	protected Control initializeConvertersSection(Composite container) {
+		return new EclipseLinkConvertersComposite(this, this.buildConverterHolderValueModel(), container).getControl();
 	}
 
 	protected PropertyValueModel<EclipseLinkConverterContainer> buildConverterHolderValueModel() {

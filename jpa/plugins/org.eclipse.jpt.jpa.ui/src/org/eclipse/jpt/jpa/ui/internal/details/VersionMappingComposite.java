@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,7 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.VersionMapping;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 /**
  * Here the layout of this pane:
@@ -32,7 +33,7 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see VersionMapping
  * @see ColumnComposite
- * @see TemporalTypeComposite
+ * @see TemporalTypeCombo
  *
  * @version 2.3
  * @since 1.0
@@ -48,14 +49,19 @@ public class VersionMappingComposite
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public VersionMappingComposite(PropertyValueModel<? extends VersionMapping> subjectHolder,
-	                               Composite parent,
-	                               WidgetFactory widgetFactory) {
+									PropertyValueModel<Boolean> enabledModel,
+									Composite parent,
+									WidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 
 	@Override
-	protected void initializeVersionSection(Composite container) {
+	protected Control initializeVersionSection(Composite container) {
+		container = this.addSubPane(container); //A Section with a Group(ColumnComposite) as its direct direct child throws exceptions
+
 		new ColumnComposite(this, buildColumnHolder(), container);
+
+		return container;
 	}
 }

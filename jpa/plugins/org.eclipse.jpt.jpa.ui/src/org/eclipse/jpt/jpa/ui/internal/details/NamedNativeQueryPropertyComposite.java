@@ -17,7 +17,11 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.forms.widgets.Hyperlink;
 
 /**
  * Here the layout of this pane:
@@ -67,9 +71,9 @@ public class NamedNativeQueryPropertyComposite extends Pane<NamedNativeQuery>
 		super(parentPane, subjectHolder, parent);
 	}
 
-	private ClassChooserPane<NamedNativeQuery> addClassChooser(Composite container) {
+	private ClassChooserPane<NamedNativeQuery> addResultClassChooser(Composite container, Hyperlink hyperlink) {
 
-		return new ClassChooserPane<NamedNativeQuery>(this, container) {
+		return new ClassChooserPane<NamedNativeQuery>(this, container, hyperlink) {
 
 			@Override
 			protected ModifiablePropertyValueModel<String> buildTextHolder() {
@@ -92,11 +96,6 @@ public class NamedNativeQueryPropertyComposite extends Pane<NamedNativeQuery>
 			@Override
 			protected String getClassName() {
 				return getSubject().getResultClass();
-			}
-
-			@Override
-			protected String getLabelText() {
-				return JptUiDetailsMessages.NamedNativeQueryPropertyComposite_resultClass;
 			}
 
 			@Override
@@ -136,38 +135,31 @@ public class NamedNativeQueryPropertyComposite extends Pane<NamedNativeQuery>
 	}
 
 	@Override
-	public void enableWidgets(boolean enabled) {
-		super.enableWidgets(enabled);
-		this.resultClassChooserPane.enableWidgets(enabled);
+	protected Composite addComposite(Composite container) {
+		return this.addSubPane(container, 2, 0, 0, 0, 0);
 	}
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		
-		addLabeledText(
-			container, 
-			JptUiDetailsMessages.NamedQueryComposite_nameTextLabel, 
-			buildNameTextHolder());
+		// Name widgets
+		this.addLabel(container, JptUiDetailsMessages.NamedQueryComposite_nameTextLabel);
+		this.addText(container, buildNameTextHolder());
 
 		// Result class chooser
-		this.resultClassChooserPane = addClassChooser(container);
+		Hyperlink resultClassHyperlink = this.addHyperlink(container, JptUiDetailsMessages.NamedNativeQueryPropertyComposite_resultClass);
+		this.resultClassChooserPane = this.addResultClassChooser(container, resultClassHyperlink);
 
 		// Query text area
-		addLabeledMultiLineText(
-			container,
-			JptUiDetailsMessages.NamedNativeQueryPropertyComposite_query,
-			buildQueryHolder(),
-			4,
-			null
-		);
+		Label queryLabel = this.addLabel(container, JptUiDetailsMessages.NamedNativeQueryPropertyComposite_query);
+		GridData gridData = new GridData();
+		gridData.verticalAlignment = SWT.TOP;
+		queryLabel.setLayoutData(gridData);
+		this.addMultiLineText(container, buildQueryHolder(), 4, null);
 
-		// Query Hints pane
-		container = addTitledGroup(
-			addSubPane(container, 5),
-			JptUiDetailsMessages.NamedNativeQueryPropertyComposite_queryHintsGroupBox
-		);
-
-		new QueryHintsComposite(this, container);
+		QueryHintsComposite hintsComposite = new QueryHintsComposite(this, container);
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		hintsComposite.getControl().setLayoutData(gridData);
 	}
 	
 	protected ModifiablePropertyValueModel<String> buildNameTextHolder() {

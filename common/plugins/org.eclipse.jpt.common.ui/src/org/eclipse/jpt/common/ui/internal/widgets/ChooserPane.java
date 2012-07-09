@@ -16,9 +16,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 /**
- * A chooser is simply a pane with three widgets, the label on the left, a main
+ * A chooser is simply a pane with two widgets, a main
  * widget, usually a text field, and a right widget which is usually a browse
- * button.
+ * button. A label for the ChooserPane will need to be built by the parent 
  *
  * @see ClassChooserPane
  * @see PackageChooserPane
@@ -28,15 +28,6 @@ import org.eclipse.swt.widgets.Control;
  */
 public abstract class ChooserPane<T extends Model> extends Pane<T>
 {
-	/**
-	 * The control shown after the label (left control).
-	 */
-	private Control mainControl;
-
-	/**
-	 * The control shown after the main control.
-	 */
-	private Control rightControl;
 
 	/**
 	 * Creates a new <code>ChooserPane</code>.
@@ -73,46 +64,22 @@ public abstract class ChooserPane<T extends Model> extends Pane<T>
 	 */
 	public ChooserPane(Pane<?> parentPane,
 	                           PropertyValueModel<? extends T> subjectHolder,
-	                           Composite parent,
-	                           PropertyValueModel<Boolean> enabledModel) {
+	                           PropertyValueModel<Boolean> enabledModel,
+	                           Composite parent) {
 
-		super(parentPane, subjectHolder, parent, enabledModel);
+		super(parentPane, subjectHolder, enabledModel, parent);
+	}
+
+	@Override
+	protected Composite addComposite(Composite parent) {
+		return this.addSubPane(parent, 2, 0, 0, 0, 0);
 	}
 
 	@Override
 	protected void initializeLayout(Composite container) {
-
-		this.mainControl  = addMainControl(container);
-		this.rightControl = addRightControl(container);
-
-		addLabeledComposite(
-			container,
-			addLeftControl(container),
-			this.mainControl,
-			this.rightControl,
-			getHelpId()
-		);
+		this.addMainControl(container);
+		this.addRightControl(container);
 	}
-
-	/**
-	 * Creates the left control. By default a label is created and its text is
-	 * retrieved by {@link #getLabelText()}.
-	 *
-	 * @param container The parent container
-	 * @return The newly created left control
-	 */
-	protected Control addLeftControl(Composite container) {
-		return addLabel(container, getLabelText());
-	}
-
-	/**
-	 * The text of the label. This method is called by
-	 * {@link #buildLeftControl(Composite)}.
-	 *
-	 * @return The localized text of the left control (which is a label by
-	 * default)
-	 */
-	protected abstract String getLabelText();
 
 	/**
 	 * Creates the main control of this pane.
@@ -134,6 +101,7 @@ public abstract class ChooserPane<T extends Model> extends Pane<T>
 		return addButton(
 			container,
 			getBrowseButtonText(),
+			getHelpId(),
 			buildBrowseAction()
 		);
 	}

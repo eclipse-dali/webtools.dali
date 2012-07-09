@@ -17,20 +17,19 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jpt.common.ui.internal.swt.ColumnAdapter;
-import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
+import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveTablePane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
+import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
+import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.QueryHint;
@@ -58,7 +57,7 @@ import org.eclipse.swt.widgets.TableItem;
 @SuppressWarnings("nls")
 public class QueryHintsComposite extends Pane<Query>
 {
-	private ModifiablePropertyValueModel<QueryHint> queryHintHolder;
+	private ModifiableCollectionValueModel<QueryHint> selectedQueryHintsModel;
 
 	/**
 	 * Creates a new <code>QueryHintsComposite</code>.
@@ -72,33 +71,30 @@ public class QueryHintsComposite extends Pane<Query>
 		super(parentPane, container);
 	}
 
-	private PropertyValueModel<Boolean> buildPaneEnableHolder() {
-		return new TransformationPropertyValueModel<Query, Boolean>(getSubjectHolder()) {
+	private Adapter<QueryHint> buildQueryHintAdapter() {
+		return new AddRemoveTablePane.AbstractAdapter<QueryHint>() {
+
+			public QueryHint addNewItem() {
+				return getSubject().addHint(getSubject().getHintsSize());
+			}
+
 			@Override
-			protected Boolean transform(Query query) {
-				return (query != null);
+			public PropertyValueModel<Boolean> buildRemoveButtonEnabledModel(CollectionValueModel<QueryHint> selectedItemsModel) {
+				//enable the remove button only when 1 item is selected, same as the optional button
+				return this.buildSingleSelectedItemEnabledModel(selectedItemsModel);
+			}
+
+			public void removeSelectedItems(CollectionValueModel<QueryHint> selectedItemsModel) {
+				//assume only 1 item since remove button is disabled otherwise
+				QueryHint hint = selectedItemsModel.iterator().next();
+				getSubject().removeHint(hint);
 			}
 		};
 	}
 
-	private Adapter buildQueryHintAdapter() {
-		return new AddRemoveTablePane.AbstractAdapter() {
-			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
-				QueryHint queryHint = getSubject().addHint(getSubject().getHintsSize());
-				queryHintHolder.setValue(queryHint);
-			}
-
-			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
-				for (Object item : listSelectionModel.selectedValues()) {
-					getSubject().removeHint((QueryHint) item);
-				}
-			}
-		};
+	private ModifiableCollectionValueModel<QueryHint> buildSelectedQueryHintsModel() {
+		return new SimpleCollectionValueModel<QueryHint>();
 	}
-
-	private ModifiablePropertyValueModel<QueryHint> buildQueryHintHolder() {
-		return new SimplePropertyValueModel<QueryHint>();
-	};
 
 	private ITableLabelProvider buildQueryHintLabelProvider() {
 		return new TableLabelProvider();
@@ -118,27 +114,23 @@ public class QueryHintsComposite extends Pane<Query>
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initialize() {
 		super.initialize();
-		queryHintHolder = buildQueryHintHolder();
+		this.selectedQueryHintsModel = buildSelectedQueryHintsModel();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
+	@Override
+	protected Composite addComposite(Composite parent) {
+		return this.addTitledGroup(
+			parent,
+			JptUiDetailsMessages.NamedQueryPropertyComposite_queryHintsGroupBox
+		);
+	}
+
 	@Override
 	protected void initializeLayout(Composite container) {
-
-		TablePane tablePane = new TablePane(container);
-		installPaneEnabler(tablePane);
-	}
-
-	private PaneEnabler installPaneEnabler(TablePane tablePane) {
-		return new PaneEnabler(buildPaneEnableHolder(), tablePane);
+		new TablePane(container);
 	}
 
 	private static class QueryHintColumnAdapter implements ColumnAdapter<QueryHint> {
@@ -236,14 +228,14 @@ public class QueryHintsComposite extends Pane<Query>
 		}
 	}
 
-	private class TablePane extends AddRemoveTablePane<Query> {
+	private class TablePane extends AddRemoveTablePane<Query, QueryHint> {
 
 		private TablePane(Composite parent) {
 			super(QueryHintsComposite.this,
 			      parent,
 			      buildQueryHintAdapter(),
 			      buildQueryHintListHolder(),
-			      queryHintHolder,
+			      QueryHintsComposite.this.selectedQueryHintsModel,
 			      buildQueryHintLabelProvider());
 		}
 
@@ -301,7 +293,7 @@ public class QueryHintsComposite extends Pane<Query>
 		}
 
 		@Override
-		protected ColumnAdapter<?> buildColumnAdapter() {
+		protected ColumnAdapter<QueryHint> buildColumnAdapter() {
 			return new QueryHintColumnAdapter();
 		}
 
@@ -314,9 +306,9 @@ public class QueryHintsComposite extends Pane<Query>
 
 		@Override
 		protected void initializeMainComposite(Composite container,
-		                                       Adapter adapter,
+		                                       Adapter<QueryHint> adapter,
 		                                       ListValueModel<?> listHolder,
-		                                       ModifiablePropertyValueModel<?> selectedItemHolder,
+		                                       ModifiableCollectionValueModel<QueryHint> selectedItemsModel,
 		                                       IBaseLabelProvider labelProvider,
 		                                       String helpId) {
 
@@ -324,7 +316,7 @@ public class QueryHintsComposite extends Pane<Query>
 				container,
 				adapter,
 				listHolder,
-				selectedItemHolder,
+				selectedItemsModel,
 				labelProvider,
 				helpId
 			);

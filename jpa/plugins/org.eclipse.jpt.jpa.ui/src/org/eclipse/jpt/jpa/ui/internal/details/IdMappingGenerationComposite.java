@@ -9,21 +9,40 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
+import java.util.Collection;
+import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.NonEmptyStringFilter;
+import org.eclipse.jpt.common.utility.internal.StringConverter;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.FilteringCollectionValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.SetCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.TransformationListValueModel;
+import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
+import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.GeneratedValue;
+import org.eclipse.jpt.jpa.core.context.GenerationType;
+import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
+import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.TableGenerator;
+import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.GeneratorComposite.GeneratorBuilder;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Section;
 
 /**
  * This panel is partially a copy of the GenerationComposite panel. The difference
@@ -90,7 +109,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 	public IdMappingGenerationComposite(Pane<? extends IdMapping> parentPane,
 	                           Composite parent)
 	{
-		super(parentPane, parent, false);
+		super(parentPane, parent);
 	}
 	
 	@Override
@@ -108,14 +127,19 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 	}
 
 	@Override
-	protected void initializeLayout(Composite container) {
+	protected Composite addComposite(Composite container) {
+		Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages.IdMappingComposite_primaryKeyGenerationSection);
+		section.setExpanded(true);
 
-		// Primary Key Generation section
-		container = addCollapsibleSection(
-			container,
-			JptUiDetailsMessages.IdMappingComposite_primaryKeyGenerationSection,
-			new SimplePropertyValueModel<Boolean>(Boolean.TRUE)
-		);
+		Composite subPane = this.addSubPane(section, 2, 0, 0, 0, 0);
+		section.setClient(subPane);
+		return subPane;
+	}
+
+	@Override
+	protected void initializeLayout(Composite container) {
 
 		// Primary Key Generation check box
 		Button primaryKeyGenerationCheckBox = addCheckBox(
@@ -124,26 +148,41 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 			buildPrimaryKeyGenerationHolder(),
 			JpaHelpContextIds.MAPPING_PRIMARY_KEY_GENERATION
 		);
-
-		// Generated Value widgets
-		GeneratedValueComposite generatedValueComposite = new GeneratedValueComposite(
-			this,
-			container
-		);
-
 		GridData gridData = new GridData();
-		gridData.horizontalAlignment       = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.horizontalIndent          = primaryKeyGenerationCheckBox.getBorderWidth() + 16;
+		gridData.horizontalSpan = 2;
+		primaryKeyGenerationCheckBox.setLayoutData(gridData);
 
-		generatedValueComposite.getControl().setLayoutData(gridData);
+		// Strategy widgets
+		Label strategyLabel = addLabel(container, JptUiDetailsMessages.GeneratedValueComposite_strategy);
+		gridData = new GridData();
+		gridData.horizontalIndent = primaryKeyGenerationCheckBox.getBorderWidth() + 16;
+		strategyLabel.setLayoutData(gridData);
+		this.addStrategyComboViewer(container);
+
+		Label nameLabel = this.addLabel(container, JptUiDetailsMessages.GeneratedValueComposite_generatorName);
+		gridData = new GridData();
+		gridData.horizontalIndent = primaryKeyGenerationCheckBox.getBorderWidth() + 16;
+		nameLabel.setLayoutData(gridData);
+		this.addEditableCombo(
+			container,
+			buildSortedGeneraterNamesModel(),
+			buildGeneratorNameHolder(),
+			StringConverter.Default.<String>instance(),
+			JpaHelpContextIds.MAPPING_GENERATED_VALUE_GENERATOR_NAME
+		);
 
 		PropertyValueModel<GeneratorContainer> generatorHolder = buildGeneratorContainer();
 		// Table Generator pane
-		initializeTableGeneratorPane(addSubPane(container, 10), generatorHolder);
+		Composite tableGeneratorComposite = initializeTableGeneratorPane(container, generatorHolder);
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		tableGeneratorComposite.setLayoutData(gridData);
 
 		// Sequence Generator pane
-		initializeSequenceGeneratorPane(addSubPane(container, 10), generatorHolder);
+		Composite sequenceGeneratorComposite = initializeSequenceGeneratorPane(container, generatorHolder);
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		sequenceGeneratorComposite.setLayoutData(gridData);
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildPrimaryKeyGenerationHolder() {
@@ -175,7 +214,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 		};
 	}
 
-	private void initializeSequenceGeneratorPane(Composite container, PropertyValueModel<GeneratorContainer> generatorHolder) {
+	private Composite initializeSequenceGeneratorPane(Composite container, PropertyValueModel<GeneratorContainer> generatorHolder) {
 
 		// Sequence Generator sub-section
 		container = addCollapsibleSubSection(
@@ -193,12 +232,16 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 		);
 
 		// Sequence Generator pane
-		this.buildSequenceGeneratorComposite(
+		SequenceGeneratorComposite sequenceGeneratorComposite = this.buildSequenceGeneratorComposite(
 			container, 
 			buildSequenceGeneratorHolder(generatorHolder),
-			buildSequenceGeneratorBuilder(generatorHolder),
-			0, 
-			sequenceGeneratorCheckBox.getBorderWidth() + 16);
+			buildSequenceGeneratorBuilder(generatorHolder));
+			
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalIndent = sequenceGeneratorCheckBox.getBorderWidth() + 16;
+		sequenceGeneratorComposite.getControl().setLayoutData(gridData);
+
+		return container.getParent();//return the Section
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildSequenceGeneratorBooleanHolder(PropertyValueModel<GeneratorContainer> generatorHolder) {
@@ -232,14 +275,12 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 	protected SequenceGeneratorComposite buildSequenceGeneratorComposite(
 			Composite container, 
 			PropertyValueModel<SequenceGenerator> sequenceGeneratorHolder,
-			GeneratorBuilder<SequenceGenerator> generatorBuilder,
-			int topMargin,
-			int leftMargin) {
+			GeneratorBuilder<SequenceGenerator> generatorBuilder) {
 
 		return new SequenceGeneratorComposite(
 			this,
 			sequenceGeneratorHolder,
-			this.addSubPane(container, topMargin, leftMargin),
+			container,
 			generatorBuilder
 		);
 	}
@@ -260,7 +301,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 		};
 	}
 	
-	private void initializeTableGeneratorPane(Composite container, PropertyValueModel<GeneratorContainer> generatorHolder) {
+	private Composite initializeTableGeneratorPane(Composite container, PropertyValueModel<GeneratorContainer> generatorHolder) {
 
 		// Table Generator sub-section
 		container = addCollapsibleSubSection(
@@ -276,26 +317,28 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 			JpaHelpContextIds.MAPPING_TABLE_GENERATOR
 		);
 
-		// Sequence Generator pane
-		this.buildTableGeneratorComposite(
+		// Table Generator pane
+		TableGeneratorComposite tableGeneratorComposite = this.buildTableGeneratorComposite(
 			container, 
 			buildTableGeneratorHolder(generatorHolder),
-			buildTableGeneratorBuilder(generatorHolder),
-			0, 
-			tableGeneratorCheckBox.getBorderWidth() + 16);
+			buildTableGeneratorBuilder(generatorHolder));
+
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalIndent = tableGeneratorCheckBox.getBorderWidth() + 16;
+		tableGeneratorComposite.getControl().setLayoutData(gridData);
+		
+		return container.getParent();//return the Section
 	}	
 	
 	protected TableGeneratorComposite buildTableGeneratorComposite(
 			Composite container, 
 			PropertyValueModel<TableGenerator> tableGeneratorHolder,
-			GeneratorBuilder<TableGenerator> generatorBuilder,
-			int topMargin,
-			int leftMargin) {
+			GeneratorBuilder<TableGenerator> generatorBuilder) {
 
 		return new TableGeneratorComposite(
 			this,
 			tableGeneratorHolder,
-			this.addSubPane(container, topMargin, leftMargin),
+			container,
 			generatorBuilder
 		);
 	}
@@ -344,5 +387,151 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 			}
 		};
 	}
+ 
+	private EnumFormComboViewer<GeneratedValue, GenerationType> addStrategyComboViewer(Composite parent) {
+		return new EnumFormComboViewer<GeneratedValue, GenerationType>(this, buildGeneratedValueHolder(), parent) {
 
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(GeneratedValue.DEFAULT_STRATEGY_PROPERTY);
+				propertyNames.add(GeneratedValue.SPECIFIED_STRATEGY_PROPERTY);
+			}
+
+			@Override
+			protected GenerationType[] getChoices() {
+				return GenerationType.values();
+			}
+
+			@Override
+			protected GenerationType getDefaultValue() {
+				return getSubject().getDefaultStrategy();
+			}
+
+			@Override
+			protected String displayString(GenerationType value) {
+				switch (value) {
+					case AUTO :
+						return JptUiDetailsMessages.GeneratedValueComposite_auto;
+					case IDENTITY :
+						return JptUiDetailsMessages.GeneratedValueComposite_identity;
+					case SEQUENCE :
+						return JptUiDetailsMessages.GeneratedValueComposite_sequence;
+					case TABLE :
+						return JptUiDetailsMessages.GeneratedValueComposite_table;
+					default :
+						throw new IllegalStateException();
+				}
+			}
+
+			@Override
+			protected GenerationType getValue() {
+				return getSubject().getSpecifiedStrategy();
+			}
+
+			@Override
+			protected void setValue(GenerationType value) {
+				getGeneratedValueForUpdate().setSpecifiedStrategy(value);
+			}
+
+			@Override
+			protected String getHelpId() {
+				return JpaHelpContextIds.MAPPING_GENERATED_VALUE_STRATEGY;
+			}
+		};
+	}
+
+	private PropertyValueModel<GeneratedValue> buildGeneratedValueHolder() {
+		return new PropertyAspectAdapter<IdMapping, GeneratedValue>(getSubjectHolder(), IdMapping.GENERATED_VALUE_PROPERTY) {
+			@Override
+			protected GeneratedValue buildValue_() {
+				return getSubject().getGeneratedValue();
+			}
+		};
+	}
+	
+	protected final ModifiablePropertyValueModel<String> buildGeneratorNameHolder() {
+		return new PropertyAspectAdapter<GeneratedValue, String>(buildGeneratedValueHolder(), GeneratedValue.SPECIFIED_GENERATOR_PROPERTY) {
+			@Override
+			protected String buildValue_() {
+				return this.subject.getSpecifiedGenerator();
+			}
+
+			@Override
+			public void setValue(String value) {
+				if (this.subject != null) {
+					setValue_(value);
+					return;
+				}
+				if (value.length() == 0) {
+					return;
+				}
+				getGeneratedValueForUpdate().setSpecifiedGenerator(value);
+			}
+
+			@Override
+			protected void setValue_(String value) {
+				if (value !=null && value.length() == 0) {
+					value = null;
+				}
+				this.subject.setSpecifiedGenerator(value);
+			}
+		};
+	}
+
+	protected ListValueModel<String> buildSortedGeneraterNamesModel() {
+		return new SortedListValueModelAdapter<String>(this.buildUniqueGeneratorNamesModel());
+	}
+
+	protected CollectionValueModel<String> buildUniqueGeneratorNamesModel() {
+		return new SetCollectionValueModel<String>(this.buildGeneratorNamesModel());
+	}
+
+	protected CollectionValueModel<String> buildGeneratorNamesModel() {
+		return new FilteringCollectionValueModel<String>(this.buildGeneratorNamesModel_(), NonEmptyStringFilter.instance());
+	}
+
+	protected ListValueModel<String> buildGeneratorNamesModel_() {
+		return new TransformationListValueModel<Generator, String>(this.buildGeneratorsModel()) {
+			@Override
+			protected String transformItem_(Generator generator) {
+				return generator.getName();
+			}
+		};
+	}
+
+	protected ListValueModel<Generator> buildGeneratorsModel() {
+		return new ItemPropertyListValueModelAdapter<Generator>(this.buildGeneratorsModel_(), JpaNamedContextNode.NAME_PROPERTY);
+	}
+
+	protected CollectionValueModel<Generator> buildGeneratorsModel_() {
+		return new CollectionAspectAdapter<PersistenceUnit, Generator>(this.buildPersistenceUnitModel(), PersistenceUnit.GENERATORS_COLLECTION) {
+			@Override
+			protected Iterable<Generator> getIterable() {
+				return this.subject.getGenerators();
+			}
+			@Override
+			protected int size_() {
+				return this.subject.getGeneratorsSize();
+			}
+		};
+	}
+
+	protected PropertyValueModel<PersistenceUnit> buildPersistenceUnitModel() {
+		return new PropertyAspectAdapter<IdMapping, PersistenceUnit>(getSubjectHolder()) {
+			@Override
+			protected PersistenceUnit buildValue_() {
+				return this.subject.getPersistenceUnit();
+			}
+		};
+	}
+
+	/* CU private */ GeneratedValue getGeneratedValueForUpdate() {
+		GeneratedValue generatedValue = getSubject().getGeneratedValue();
+
+		if (generatedValue == null) {
+			generatedValue = getSubject().addGeneratedValue();
+		}
+		return generatedValue;
+	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -98,6 +98,7 @@ public interface OrmXmlUiFactory
 	 */
 	JpaComposite createOrmIdMappingComposite(
 		PropertyValueModel<OrmIdMapping> subjectHolder,
+		PropertyValueModel<Boolean> enabledModel,
 		Composite parent,
 		WidgetFactory widgetFactory);
 	
@@ -111,6 +112,7 @@ public interface OrmXmlUiFactory
 	 */
 	JpaComposite createOrmEmbeddedIdMappingComposite(
 		PropertyValueModel<OrmEmbeddedIdMapping> subjectHolder,
+		PropertyValueModel<Boolean> enabledModel,
 		Composite parent,
 		WidgetFactory widgetFactory);
 	
@@ -124,6 +126,7 @@ public interface OrmXmlUiFactory
 	 */
 	JpaComposite createOrmBasicMappingComposite(
 		PropertyValueModel<OrmBasicMapping> subjectHolder,
+		PropertyValueModel<Boolean> enabledModel,
 		Composite parent,
 		WidgetFactory widgetFactory);
 	
@@ -137,6 +140,7 @@ public interface OrmXmlUiFactory
 	 */
 	JpaComposite createOrmVersionMappingComposite(
 		PropertyValueModel<OrmVersionMapping> subjectHolder,
+		PropertyValueModel<Boolean> enabledModel,
 		Composite parent,
 		WidgetFactory widgetFactory);
 	
@@ -150,6 +154,7 @@ public interface OrmXmlUiFactory
 	 */
 	JpaComposite createOrmManyToOneMappingComposite(
 		PropertyValueModel<OrmManyToOneMapping> subjectHolder,
+		PropertyValueModel<Boolean> enabledModel,
 		Composite parent,
 		WidgetFactory widgetFactory);
 	
@@ -163,6 +168,7 @@ public interface OrmXmlUiFactory
 	 */
 	JpaComposite createOrmOneToManyMappingComposite(
 		PropertyValueModel<OrmOneToManyMapping> subjectHolder,
+		PropertyValueModel<Boolean> enabledModel,
 		Composite parent,
 		WidgetFactory widgetFactory);
 	
@@ -176,6 +182,7 @@ public interface OrmXmlUiFactory
 	 */
 	JpaComposite createOrmOneToOneMappingComposite(
 		PropertyValueModel<OrmOneToOneMapping> subjectHolder,
+		PropertyValueModel<Boolean> enabledModel,
 		Composite parent,
 		WidgetFactory widgetFactory);
 	
@@ -189,6 +196,7 @@ public interface OrmXmlUiFactory
 	 */
 	JpaComposite createOrmManyToManyMappingComposite(
 		PropertyValueModel<OrmManyToManyMapping> subjectHolder,
+		PropertyValueModel<Boolean> enabledModel,
 		Composite parent,
 		WidgetFactory widgetFactory);
 		
@@ -202,6 +210,7 @@ public interface OrmXmlUiFactory
 	 */
 	JpaComposite createOrmEmbeddedMappingComposite(
 		PropertyValueModel<OrmEmbeddedMapping> subjectHolder,
+		PropertyValueModel<Boolean> enabledModel,
 		Composite parent,
 		WidgetFactory widgetFactory);
 	
@@ -215,6 +224,7 @@ public interface OrmXmlUiFactory
 	 */
 	JpaComposite createOrmTransientMappingComposite(
 		PropertyValueModel<OrmTransientMapping> subjectHolder,
+		PropertyValueModel<Boolean> enabledModel,
 		Composite parent,
 		WidgetFactory widgetFactory);
 }

@@ -52,79 +52,89 @@ public class EclipseLinkOrmXml2_0UiFactory
 	@Override
 	public JpaComposite createOrmIdMappingComposite(
 			PropertyValueModel<OrmIdMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new OrmEclipseLinkIdMapping2_0Composite(subjectHolder, parent, widgetFactory);
+		return new OrmEclipseLinkIdMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	@Override
 	public JpaComposite createOrmEmbeddedMappingComposite(
 			PropertyValueModel<OrmEmbeddedMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new OrmEclipseLinkEmbeddedMapping2_0Composite(subjectHolder, parent, widgetFactory);
+		return new OrmEclipseLinkEmbeddedMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	@Override
 	public JpaComposite createOrmEmbeddedIdMappingComposite(
 			PropertyValueModel<OrmEmbeddedIdMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new OrmEclipseLinkEmbeddedIdMapping2_0Composite(subjectHolder, parent, widgetFactory);
+		return new OrmEclipseLinkEmbeddedIdMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	@Override
 	public JpaComposite createOrmBasicMappingComposite(
 			PropertyValueModel<OrmBasicMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new OrmEclipseLinkBasicMapping1_1Composite(subjectHolder, parent, widgetFactory);
+		return new OrmEclipseLinkBasicMapping1_1Composite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	@Override
 	public JpaComposite createOrmVersionMappingComposite(
 			PropertyValueModel<OrmVersionMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new OrmEclipseLinkVersionMapping1_1Composite(subjectHolder, parent, widgetFactory);
+		return new OrmEclipseLinkVersionMapping1_1Composite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	@Override
 	public JpaComposite createOrmManyToOneMappingComposite(
 			PropertyValueModel<OrmManyToOneMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new OrmEclipseLinkManyToOneMapping2_0Composite(subjectHolder, parent, widgetFactory);
+		return new OrmEclipseLinkManyToOneMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	@Override
 	public JpaComposite createOrmOneToManyMappingComposite(
 			PropertyValueModel<OrmOneToManyMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new OrmEclipseLinkOneToManyMapping2_0Composite(subjectHolder, parent, widgetFactory);
+		return new OrmEclipseLinkOneToManyMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	@Override
 	public JpaComposite createOrmOneToOneMappingComposite(
 			PropertyValueModel<OrmOneToOneMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new OrmEclipseLinkOneToOneMapping2_0Composite(subjectHolder, parent, widgetFactory);
+		return new OrmEclipseLinkOneToOneMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	@Override
 	public JpaComposite createOrmManyToManyMappingComposite(
 			PropertyValueModel<OrmManyToManyMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new OrmEclipseLinkManyToManyMapping2_0Composite(subjectHolder, parent, widgetFactory);
+		return new OrmEclipseLinkManyToManyMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	public JpaComposite createOrmElementCollectionMapping2_0Composite(
 			PropertyValueModel<OrmElementCollectionMapping2_0> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new OrmEclipseLinkElementCollectionMapping2_0Composite(subjectHolder, parent, widgetFactory);
+		return new OrmEclipseLinkElementCollectionMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 }

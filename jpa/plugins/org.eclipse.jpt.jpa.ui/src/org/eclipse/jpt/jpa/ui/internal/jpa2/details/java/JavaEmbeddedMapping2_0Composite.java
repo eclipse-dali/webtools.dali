@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,6 +16,7 @@ import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEmbeddedMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.EmbeddedMapping2_0OverridesComposite;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 /**
  * Here the layout of this pane:
@@ -44,17 +45,19 @@ public class JavaEmbeddedMapping2_0Composite extends AbstractEmbeddedMappingComp
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public JavaEmbeddedMapping2_0Composite(PropertyValueModel<? extends JavaEmbeddedMapping> subjectHolder,
-	                                Composite parent,
+									PropertyValueModel<Boolean> enabledModel,
+									Composite parent,
 	                                WidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	@Override
-	protected void initializeEmbeddedSection(Composite container) {
-		new EmbeddedMapping2_0OverridesComposite(
-			this,
-			container
-		);
+	protected Control initializeEmbeddedSection(Composite container) {
+		//a Section appears to not like having a Group as its client. EmbeddedMappingOverridesComposite
+		//uses a Group as its 'control' so I am adding an extra composite here.
+		container = this.addSubPane(container);
+		new EmbeddedMapping2_0OverridesComposite(this, container);
+		return container;
 	}
 }

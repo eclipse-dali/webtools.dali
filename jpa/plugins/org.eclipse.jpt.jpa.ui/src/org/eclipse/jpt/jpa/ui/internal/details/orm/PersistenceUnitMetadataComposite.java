@@ -24,10 +24,12 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmPersistenceUnitDefaults2_0;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComposite;
+import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.db.CatalogCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.SchemaCombo;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.Jpa2_0XmlFlagModel;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
@@ -78,7 +80,7 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 	                                        PropertyValueModel<? extends OrmPersistenceUnitMetadata> subjectHolder,
 	                                        Composite parent) {
 
-		super(parentPane, subjectHolder, parent, false);
+		super(parentPane, subjectHolder, parent);
 	}
 
 	@Override
@@ -130,6 +132,16 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 			protected String getValue() {
 				return getSubject().getSpecifiedCatalog();
 			}
+
+			@Override
+			protected String getHelpId() {
+				return JpaHelpContextIds.ENTITY_ORM_CATALOG;
+			}
+
+			@Override
+			public String toString() {
+				return "PersistenceUnitMetadataComposite.catalogCombo"; //$NON-NLS-1$
+			}
 		};
 	}
 
@@ -173,6 +185,15 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 				return this.getSubject().getDbSchemaContainer();
 			}
 
+			@Override
+			protected String getHelpId() {
+				return JpaHelpContextIds.ENTITY_ORM_SCHEMA;
+			}
+
+			@Override
+			public String toString() {
+				return "PersistenceUnitMetadataComposite.schemaCombo"; //$NON-NLS-1$
+			}
 		};
 	}
 
@@ -212,47 +233,46 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 	}
 
 	@Override
+	protected Composite addComposite(Composite container) {
+		return this.addSubPane(container, 2, 0, 0, 0, 0);
+	}
+
+	@Override
 	protected void initializeLayout(Composite container) {
-
-		// Section
-		container = addCollapsibleSection(
-			container,
-			JptUiDetailsOrmMessages.PersistenceUnitMetadataComposite_persistenceUnitSection
-		);
-
 		// XML mapping metadata complete check box
-		addCheckBox(
+		Button metadataCompleteCheckBox = addCheckBox(
 			container,
 			JptUiDetailsOrmMessages.PersistenceUnitMetadataComposite_xmlMappingMetadataCompleteCheckBox,
 			buildXmlMappingMetadataCompleteHolder(),
 			JpaHelpContextIds.ENTITY_ORM_XML
 		);
+		GridData gridData = new GridData();
+		gridData.horizontalSpan = 2;
+		metadataCompleteCheckBox.setLayoutData(gridData);
 
 		// Cascade Persist check-box
-		addCheckBox(
+		Button cascadePersistCheckBox = addCheckBox(
 			container,
 			JptUiDetailsOrmMessages.PersistenceUnitMetadataComposite_cascadePersistCheckBox,
 			buildCascadePersistHolder(),
 			JpaHelpContextIds.ENTITY_ORM_CASCADE
 		);
+		gridData = new GridData();
+		gridData.horizontalSpan = 2;
+		cascadePersistCheckBox.setLayoutData(gridData);
+
 
 		// Schema widgets
-		addLabeledComposite(
-			container,
-			JptUiDetailsOrmMessages.PersistenceUnitMetadataComposite_schema,
-			addSchemaCombo(container),
-			JpaHelpContextIds.ENTITY_ORM_SCHEMA
-		);
+		this.addLabel(container, JptUiDetailsOrmMessages.PersistenceUnitMetadataComposite_schema);
+		this.addSchemaCombo(container);
 
 		// Catalog widgets
-		addLabeledComposite(
-			container,
-			JptUiDetailsOrmMessages.PersistenceUnitMetadataComposite_catalog,
-			addCatalogCombo(container),
-			JpaHelpContextIds.ENTITY_ORM_CATALOG
-		);
+		this.addLabel(container, JptUiDetailsOrmMessages.PersistenceUnitMetadataComposite_catalog);
+		this.addCatalogCombo(container);
 
-		new AccessTypeComposite(this, this.getPersistenceUnitDefaultsHolder(), container);
+		// Access type widgets
+		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
+		new AccessTypeComboViewer(this, getPersistenceUnitDefaultsHolder(), container);
 
 		// Delimited Identifiers check-box
 		Button diCheckBox = this.addCheckBox(
@@ -261,6 +281,9 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 			this.buildDelimitedIdentifiersHolder(),
 			JpaHelpContextIds.ENTITY_ORM_DELIMITED_IDENTIFIERS
 		);
+		gridData = new GridData();
+		gridData.horizontalSpan = 2;
+		diCheckBox.setLayoutData(gridData);
 		
 		SWTTools.controlVisibleState(new Jpa2_0XmlFlagModel<OrmPersistenceUnitMetadata>(this.getSubjectHolder()), diCheckBox);
 	}

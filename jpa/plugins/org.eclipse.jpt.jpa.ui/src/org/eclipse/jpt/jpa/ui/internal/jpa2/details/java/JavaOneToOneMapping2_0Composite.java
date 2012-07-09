@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,34 +16,61 @@ import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOneToOneRelationship2_0;
-import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.OptionalComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.TargetEntityComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
+import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.internal.details.OptionalTriStateCheckBox;
+import org.eclipse.jpt.jpa.ui.internal.details.TargetEntityClassChooser;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.AbstractOneToOneMapping2_0Composite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.CascadePane2_0;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.OneToOneJoiningStrategy2_0Pane;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.OrphanRemoval2_0Composite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.OrphanRemoval2_0TriStateCheckBox;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.widgets.Hyperlink;
 
 public class JavaOneToOneMapping2_0Composite
 	extends AbstractOneToOneMapping2_0Composite<JavaOneToOneMapping, JavaOneToOneRelationship2_0>
 {
 	public JavaOneToOneMapping2_0Composite(
 			PropertyValueModel<? extends JavaOneToOneMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		
-		super(subjectHolder, parent, widgetFactory);
+		super(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	
 	@Override
-	protected void initializeOneToOneSection(Composite container) {
-		new TargetEntityComposite(this, container);
-		new FetchTypeComposite(this, container);
-		new OptionalComposite(this, container);
-		new OrphanRemoval2_0Composite(this, buildOrphanRemovableHolder(), container);
-		new CascadePane2_0(this, buildCascadeHolder(),  addSubPane(container, 5));
+	protected Control initializeOneToOneSection(Composite container) {
+		container = this.addSubPane(container, 2, 0, 0, 0, 0);
+
+		// Target entity widgets
+		Hyperlink targetEntityHyperlink = this.addHyperlink(container, JptUiDetailsMessages.TargetEntityChooser_label);
+		new TargetEntityClassChooser(this, container, targetEntityHyperlink);
+
+		// Fetch type widgets
+		this.addLabel(container, JptUiDetailsMessages.BasicGeneralSection_fetchLabel);
+		new FetchTypeComboViewer(this, container);
+
+		// Optional widgets
+		OptionalTriStateCheckBox optionalCheckBox = new OptionalTriStateCheckBox(this, container);
+		GridData gridData = new GridData();
+		gridData.horizontalSpan = 2;
+		optionalCheckBox.getControl().setLayoutData(gridData);
+
+		// Orphan removal widgets
+		PropertyValueModel<OrphanRemovable2_0> orphanRemovableHolder = buildOrphanRemovableHolder();
+		new OrphanRemoval2_0TriStateCheckBox(this, orphanRemovableHolder, container);
+
+		// Cascade widgets
+		CascadePane2_0 cascadePane = new CascadePane2_0(this, buildCascadeHolder(), container);
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		cascadePane.getControl().setLayoutData(gridData);
+
+		return container;
 	}
 	
 	@Override

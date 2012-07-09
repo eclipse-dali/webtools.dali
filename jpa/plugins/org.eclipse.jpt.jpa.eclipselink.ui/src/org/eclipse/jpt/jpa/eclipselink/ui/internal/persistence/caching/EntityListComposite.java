@@ -20,18 +20,17 @@ import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
+import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CachingEntity;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiPlugin;
@@ -47,7 +46,8 @@ import org.eclipse.ui.progress.IProgressService;
  */
 public class EntityListComposite<T extends Caching> extends Pane<T>
 {
-	ModifiablePropertyValueModel<CachingEntity> entityHolder;
+	private ModifiableCollectionValueModel<CachingEntity> selectedEntitiesModel;
+	private PropertyValueModel<CachingEntity> selectedEntityModel;
 	
 	public EntityListComposite(Pane<T> parentComposite, Composite parent) {
 
@@ -57,54 +57,79 @@ public class EntityListComposite<T extends Caching> extends Pane<T>
 	@Override
 	protected void initialize() {
 		super.initialize();
-		this.entityHolder = this.buildEntityHolder();
+		this.selectedEntitiesModel = this.buildSelectedEntitiesModel();
+		this.selectedEntityModel = this.buildSelectedEntityModel(this.selectedEntitiesModel);
+	}
+
+	private ModifiableCollectionValueModel<CachingEntity> buildSelectedEntitiesModel() {
+		return new SimpleCollectionValueModel<CachingEntity>();
+	}
+
+	private PropertyValueModel<CachingEntity> buildSelectedEntityModel(CollectionValueModel<CachingEntity> selectedEntitiesModel) {
+		return new CollectionPropertyValueModelAdapter<CachingEntity, CachingEntity>(selectedEntitiesModel) {
+			@Override
+			protected CachingEntity buildValue() {
+				if (this.collectionModel.size() == 1) {
+					return this.collectionModel.iterator().next();
+				}
+				return null;
+			}
+		};
+	}
+
+	@Override
+	protected Composite addComposite(Composite parent) {
+		return this.addTitledGroup(
+			parent,
+			EclipseLinkUiMessages.CachingEntityListComposite_groupTitle
+		);
 	}
 
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		container = this.addTitledGroup(
-			container,
-			EclipseLinkUiMessages.CachingEntityListComposite_groupTitle
-		);
-
 		// Entities add/remove list pane
-		new AddRemoveListPane<Caching>(
+		new AddRemoveListPane<Caching, CachingEntity>(
 			this,
 			container,
 			this.buildEntitiesAdapter(),
 			this.buildEntitiesListHolder(),
-			this.entityHolder,
+			this.selectedEntitiesModel,
 			this.buildEntityLabelProvider(),
 			EclipseLinkHelpContextIds.PERSISTENCE_CACHING
 		);
 
 		// Entity Caching property pane
-		EntityCachingPropertyComposite pane = new EntityCachingPropertyComposite(
+		new EntityCachingPropertyComposite(
 			this,
-			this.entityHolder,
+			this.selectedEntityModel,
+			buildPaneEnablerModel(this.selectedEntityModel),
 			container
 		);
-		this.installPaneEnabler(this.entityHolder, pane);
 	}
 	
-	private AddRemoveListPane.Adapter buildEntitiesAdapter() {
-		return new AddRemoveListPane.AbstractAdapter() {
-			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
-				EntityListComposite.this.addEntities(listSelectionModel);
+	private AddRemoveListPane.Adapter<CachingEntity> buildEntitiesAdapter() {
+		return new AddRemoveListPane.AbstractAdapter<CachingEntity>() {
+
+			public CachingEntity addNewItem() {
+				return EntityListComposite.this.addEntity();
 			}
 
-			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
-				Caching caching = getSubject();
-				for (Object item : listSelectionModel.selectedValues()) {
-					CachingEntity entityCaching = (CachingEntity) item;
-					caching.removeEntity(entityCaching.getName());
-				}
+			@Override
+			public PropertyValueModel<Boolean> buildRemoveButtonEnabledModel(CollectionValueModel<CachingEntity> selectedItemsModel) {
+				//enable the remove button only when 1 item is selected, same as the optional button
+				return this.buildSingleSelectedItemEnabledModel(selectedItemsModel);
+			}
+
+			public void removeSelectedItems(CollectionValueModel<CachingEntity> selectedItemsModel) {
+				//assume only 1 item since remove button is disabled otherwise
+				CachingEntity cachingEntity = selectedItemsModel.iterator().next();
+				getSubject().removeEntity(cachingEntity.getName());
 			}
 		};
 	}
 	
-	private void addEntities(ObjectListSelectionModel listSelectionModel) {
+	private CachingEntity addEntity() {
 
 		IType type = this.chooseEntity();
 
@@ -115,13 +140,10 @@ public class EntityListComposite<T extends Caching> extends Pane<T>
 			}
 			
 			if( ! this.getSubject().entityExists(entityName)) {
-				this.getSubject().addEntity(entityName);
-				int index = CollectionTools.indexOf(this.getSubject().getEntityNames(), entityName);
-				CachingEntity entity = (CachingEntity) listSelectionModel.getListModel().getElementAt(index);
-				listSelectionModel.setSelectedValue(entity);
-				this.entityHolder.setValue(entity);
+				return this.getSubject().addEntity(entityName);
 			}
 		}
+		return null;
 	}
 
 	private String getEntityName(String fullyQualifiedTypeName) {
@@ -174,10 +196,6 @@ public class EntityListComposite<T extends Caching> extends Pane<T>
 		};
 	}
 
-	private ModifiablePropertyValueModel<CachingEntity> buildEntityHolder() {
-		return new SimplePropertyValueModel<CachingEntity>();
-	}
-
 	private ListValueModel<CachingEntity> buildEntitiesListHolder() {
 		return new ListAspectAdapter<Caching, CachingEntity>(
 					this.getSubjectHolder(), Caching.ENTITIES_LIST) {
@@ -192,20 +210,11 @@ public class EntityListComposite<T extends Caching> extends Pane<T>
 		};
 	}
 
-	private void installPaneEnabler(ModifiablePropertyValueModel<CachingEntity> entityHolder,
-	                                EntityCachingPropertyComposite pane) {
-
-		new PaneEnabler(
-			this.buildPaneEnablerHolder(entityHolder),
-			pane
-		);
-	}
-
-	private PropertyValueModel<Boolean> buildPaneEnablerHolder(ModifiablePropertyValueModel<CachingEntity> entityHolder) {
+	private PropertyValueModel<Boolean> buildPaneEnablerModel(PropertyValueModel<CachingEntity> entityHolder) {
 		return new TransformationPropertyValueModel<CachingEntity, Boolean>(entityHolder) {
 			@Override
 			protected Boolean transform_(CachingEntity value) {
-				return value.entityNameIsValid();
+				return Boolean.valueOf(value.entityNameIsValid());
 			}
 		};
 	}

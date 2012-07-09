@@ -15,13 +15,20 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.AccessHolder;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkBasicMappingComposite;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkMutableComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComposite;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkMutableTriStateCheckBox;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.ColumnComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.OptionalComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmMappingNameChooser;
+import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
+import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.internal.details.OptionalTriStateCheckBox;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.JptUiDetailsOrmMessages;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmMappingNameText;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.widgets.Hyperlink;
 
 public class OrmEclipseLinkBasicMapping1_1Composite extends EclipseLinkBasicMappingComposite<BasicMapping>
 {
@@ -33,10 +40,11 @@ public class OrmEclipseLinkBasicMapping1_1Composite extends EclipseLinkBasicMapp
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public OrmEclipseLinkBasicMapping1_1Composite(PropertyValueModel<? extends BasicMapping> subjectHolder,
-	                               Composite parent,
-	                               WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
+												PropertyValueModel<Boolean> enabledModel,
+												Composite parent,
+												WidgetFactory widgetFactory) {
+		
+		super(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 
 	@Override
@@ -47,14 +55,44 @@ public class OrmEclipseLinkBasicMapping1_1Composite extends EclipseLinkBasicMapp
 	}
 
 	@Override
-	protected void initializeBasicSection(Composite container) {
-		new ColumnComposite(this, buildColumnHolder(), container);
-		new OrmMappingNameChooser(this, getSubjectHolder(), container);
-		new OrmAttributeTypeComposite(this, getSubjectHolder(), container);
-		new AccessTypeComposite(this, buildAccessHolderHolder(), container);
-		new FetchTypeComposite(this, container);
-		new OptionalComposite(this, addSubPane(container, 4));
-		new EclipseLinkMutableComposite(this, buildMutableHolder(), container);
+	protected Control initializeBasicSection(Composite container) {
+		container = this.addSubPane(container, 2, 0, 0, 0, 0);
+
+		// Column widgets
+		ColumnComposite columnComposite = new ColumnComposite(this, buildColumnHolder(), container);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		columnComposite.getControl().setLayoutData(gridData);
+
+		// Name widgets
+		this.addLabel(container, JptUiDetailsOrmMessages.OrmMappingNameChooser_name);
+		new OrmMappingNameText(this, getSubjectHolder(), container);
+
+		// Attribute type widgets
+		Hyperlink attributeTypeHyperlink = this.addHyperlink(container, EclipseLinkUiDetailsMessages.OrmAttributeTypeComposite_attributeType);
+		new OrmAttributeTypeClassChooser(this, getSubjectHolder(), container, attributeTypeHyperlink);
+
+		// Access type widgets
+		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
+		new AccessTypeComboViewer(this, this.buildAccessHolderHolder(), container);
+
+		// Fetch type widgets
+		this.addLabel(container, JptUiDetailsMessages.BasicGeneralSection_fetchLabel);
+		new FetchTypeComboViewer(this, container);
+
+		// Optional widgets
+		OptionalTriStateCheckBox optionalCheckBox = new OptionalTriStateCheckBox(this, container);
+		gridData = new GridData();
+		gridData.horizontalSpan = 2;
+		optionalCheckBox.getControl().setLayoutData(gridData);
+
+		// Mutable widgets
+		EclipseLinkMutableTriStateCheckBox mutableCheckBox = new EclipseLinkMutableTriStateCheckBox(this, buildMutableHolder(), container);
+		gridData = new GridData();
+		gridData.horizontalSpan = 2;
+		mutableCheckBox.getControl().setLayoutData(gridData);
+
+		return container;
 	}
 
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {

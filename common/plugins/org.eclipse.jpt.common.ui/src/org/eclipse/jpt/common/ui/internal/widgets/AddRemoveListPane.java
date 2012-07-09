@@ -13,14 +13,10 @@ import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.common.ui.internal.swt.ColumnAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.TableModelAdapter;
-import org.eclipse.jpt.common.ui.internal.swt.TableModelAdapter.SelectionChangeEvent;
-import org.eclipse.jpt.common.ui.internal.swt.TableModelAdapter.SelectionChangeListener;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.common.utility.model.event.ListChangeEvent;
@@ -28,9 +24,8 @@ import org.eclipse.jpt.common.utility.model.event.ListClearEvent;
 import org.eclipse.jpt.common.utility.model.event.ListMoveEvent;
 import org.eclipse.jpt.common.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.common.utility.model.event.ListReplaceEvent;
-import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.swt.SWT;
@@ -48,7 +43,7 @@ import org.eclipse.swt.widgets.TableColumn;
  * as its main widget, a <code>List</code> can't be used because it doesn't
  * support showing images. However, the table is displayed like a list.
  * <p>
- * Here the layot of this pane:
+ * Here the layout of this pane:
  * <pre>
  * -----------------------------------------------------------------------------
  * | ------------------------------------------------------------- ----------- |
@@ -67,7 +62,7 @@ import org.eclipse.swt.widgets.TableColumn;
  * @since 1.0
  */
 @SuppressWarnings("nls")
-public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
+public class AddRemoveListPane<T extends Model, E extends Object> extends AddRemovePane<T, E>
 {
 
 	/**
@@ -82,22 +77,21 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	 * @param parent The parent container
 	 * @param adapter
 	 * @param listHolder The <code>ListValueModel</code> containing the items
-	 * @param selectedItemHolder The holder of the selected item, if more than
-	 * one item or no items are selected, then <code>null</code> will be passed
+	 * @param selectedItemsModel The holder of the selected items
 	 * @param labelProvider The renderer used to format the table holder's items
 	 */
 	public AddRemoveListPane(Pane<? extends T> parentPane,
 	                         Composite parent,
-	                         Adapter adapter,
+	                         Adapter<E> adapter,
 	                         ListValueModel<?> listHolder,
-	                         ModifiablePropertyValueModel<?> selectedItemHolder,
+	                         ModifiableCollectionValueModel<E> selectedItemsModel,
 	                         ILabelProvider labelProvider) {
 
 		super(parentPane,
 		      parent,
 		      adapter,
 		      listHolder,
-		      selectedItemHolder,
+		      selectedItemsModel,
 		      labelProvider);
 	}
 
@@ -108,16 +102,15 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	 * @param parent The parent container
 	 * @param adapter
 	 * @param listHolder The <code>ListValueModel</code> containing the items
-	 * @param selectedItemHolder The holder of the selected item, if more than
-	 * one item or no items are selected, then <code>null</code> will be passed
+	 * @param selectedItemsModel The holder of the selected items
 	 * @param labelProvider The renderer used to format the table holder's items
 	 * @param helpId The topic help ID to be registered with this pane
 	 */
 	public AddRemoveListPane(Pane<? extends T> parentPane,
 	                         Composite parent,
-	                         Adapter adapter,
+	                         Adapter<E> adapter,
 	                         ListValueModel<?> listHolder,
-	                         ModifiablePropertyValueModel<?> selectedItemHolder,
+	                         ModifiableCollectionValueModel<E> selectedItemsModel,
 	                         ILabelProvider labelProvider,
 	                         String helpId) {
 
@@ -125,42 +118,28 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 		      parent,
 		      adapter,
 		      listHolder,
-		      selectedItemHolder,
+		      selectedItemsModel,
 		      labelProvider,
 		      helpId);
 	}
 
-	/**
-	 * Creates a new <code>AddRemoveListPane</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param parent The parent container
-	 * @param adapter
-	 * @param listHolder The <code>ListValueModel</code> containing the items
-	 * @param selectedItemHolder The holder of the selected item, if more than
-	 * one item or no items are selected, then <code>null</code> will be passed
-	 * @param labelProvider The renderer used to format the table holder's items
-	 * @param helpId The topic help ID to be registered with this pane
-	 * @param parentManagePane <code>true</code> to have the parent pane manage
-	 * the enabled state of this pane
-	 */
 	public AddRemoveListPane(Pane<? extends T> parentPane,
-	                         Composite parent,
-	                         Adapter adapter,
-	                         ListValueModel<?> listHolder,
-	                         ModifiablePropertyValueModel<?> selectedItemHolder,
-	                         ILabelProvider labelProvider,
-	                         String helpId,
-	                         boolean parentManagePane) {
+        Composite parent,
+        Adapter<E> adapter,
+        ListValueModel<?> listHolder,
+        ModifiableCollectionValueModel<E> selectedItemsModel,
+        ILabelProvider labelProvider,
+        PropertyValueModel<Boolean> enabledModel,
+        String helpId) {
 
 		super(parentPane,
-		      parent,
-		      adapter,
-		      listHolder,
-		      selectedItemHolder,
-		      labelProvider,
-		      helpId,
-		      parentManagePane);
+				parent,
+				adapter,
+				listHolder,
+				selectedItemsModel,
+				labelProvider,
+				enabledModel,
+				helpId);
 	}
 
 	/**
@@ -171,16 +150,15 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	 * @param adapter
 	 * @param parent The parent container
 	 * @param listHolder The <code>ListValueModel</code> containing the items
-	 * @param selectedItemHolder The holder of the selected item, if more than
-	 * one item or no items are selected, then <code>null</code> will be passed
+	 * @param selectedItemsModel The holder of the selected items
 	 * @param labelProvider The renderer used to format the table holder's items
 	 */
 	public AddRemoveListPane(Pane<?> parentPane,
 	                         PropertyValueModel<? extends T> subjectHolder,
 	                         Composite parent,
-	                         Adapter adapter,
+	                         Adapter<E> adapter,
 	                         ListValueModel<?> listHolder,
-	                         ModifiablePropertyValueModel<?> selectedItemHolder,
+	                         ModifiableCollectionValueModel<E> selectedItemsModel,
 	                         ILabelProvider labelProvider) {
 
 		super(parentPane,
@@ -188,7 +166,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 		      parent,
 		      adapter,
 		      listHolder,
-		      selectedItemHolder,
+		      selectedItemsModel,
 		      labelProvider);
 	}
 
@@ -200,17 +178,16 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	 * @param adapter
 	 * @param parent The parent container
 	 * @param listHolder The <code>ListValueModel</code> containing the items
-	 * @param selectedItemHolder The holder of the selected item, if more than
-	 * one item or no items are selected, then <code>null</code> will be passed
+	 * @param selectedItemsModel The holder of the selected item
 	 * @param labelProvider The renderer used to format the table holder's items
 	 * @param helpId The topic help ID to be registered with this pane
 	 */
 	public AddRemoveListPane(Pane<?> parentPane,
 	                         PropertyValueModel<? extends T> subjectHolder,
 	                         Composite parent,
-	                         Adapter adapter,
+	                         Adapter<E> adapter,
 	                         ListValueModel<?> listHolder,
-	                         ModifiablePropertyValueModel<?> selectedItemHolder,
+	                         ModifiableCollectionValueModel<E> selectedItemsModel,
 	                         ILabelProvider labelProvider,
 	                         String helpId) {
 
@@ -219,16 +196,16 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 		      parent,
 		      adapter,
 		      listHolder,
-		      selectedItemHolder,
+		      selectedItemsModel,
 		      labelProvider,
 		      helpId);
 	}
 
-	private ColumnAdapter<Object> buildColumnAdapter() {
-		return new ColumnAdapter<Object>() {
-			public ModifiablePropertyValueModel<?>[] cellModels(Object subject) {
+	private ColumnAdapter<E> buildColumnAdapter() {
+		return new ColumnAdapter<E>() {
+			public ModifiablePropertyValueModel<?>[] cellModels(E subject) {
 				ModifiablePropertyValueModel<?>[] valueHolders = new ModifiablePropertyValueModel<?>[1];
-				valueHolders[0] = new SimplePropertyValueModel<Object>(subject);
+				valueHolders[0] = new SimplePropertyValueModel<E>(subject);
 				return valueHolders;
 			}
 
@@ -290,32 +267,6 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 				table.getParent().layout();
 			}
 		}});
-	}
-
-	private PropertyChangeListener buildSelectedItemPropertyChangeListener() {
-		return new SWTPropertyChangeListenerWrapper(
-			buildSelectedItemPropertyChangeListener_()
-		);
-	}
-
-	private PropertyChangeListener buildSelectedItemPropertyChangeListener_() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent e) {
-				if (table.isDisposed()) {
-					return;
-				}
-				getSelectionModel().setSelectedValue(e.getNewValue());
-				updateButtons();
-			}
-		};
-	}
-
-	private SelectionChangeListener<Object> buildSelectionListener() {
-		return new SelectionChangeListener<Object>() {
-			public void selectionChanged(SelectionChangeEvent<Object> e) {
-				AddRemoveListPane.this.selectionChanged();
-			}
-		};
 	}
 
 	private Composite addTableContainer(Composite container) {
@@ -445,7 +396,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	 */
 	@Override
 	public Table getMainControl() {
-		return table;
+		return this.table;
 	}
 
 	/*
@@ -454,35 +405,28 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	@Override
 	@SuppressWarnings("unchecked")
 	protected void initializeMainComposite(Composite container,
-	                                       Adapter adapter,
+	                                       Adapter<E> adapter,
 	                                       ListValueModel<?> listHolder,
-	                                       ModifiablePropertyValueModel<?> selectedItemHolder,
+	                                       ModifiableCollectionValueModel<E> selectedItemsModel,
 	                                       IBaseLabelProvider labelProvider,
 	                                       String helpId) {
 
-		table = addUnmanagedTable(
+		this.table = addTable(
 			addTableContainer(container),
 			SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.MULTI,
 			helpId
 		);
 
 
-		TableModelAdapter model = TableModelAdapter.adapt(
-			(ListValueModel<Object>) listHolder,
-			getSelectedItemHolder(),
-			table,
+		TableModelAdapter.adapt(
+			(ListValueModel<E>) listHolder,
+			getSelectedItemsModel(),
+			this.table,
 			buildColumnAdapter(),
 			buildTableLabelProvider(labelProvider)
 		);
 
-		model.addSelectionChangeListener(buildSelectionListener());
-
-		selectedItemHolder.addPropertyChangeListener(
-			PropertyValueModel.VALUE,
-			buildSelectedItemPropertyChangeListener()
-		);
-
-		initializeTable(table);
+		initializeTable(this.table);
 	}
 
 	/**
@@ -491,43 +435,15 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	 * @param table The main widget of this pane
 	 */
 	protected void initializeTable(Table table) {
-
 		table.setData("column.width", new Integer(0));
 		table.setHeaderVisible(false);
 		table.setLinesVisible(false);
+
+		Composite container = table.getParent();
+		GridData gridData   = (GridData) container.getLayoutData();
+		gridData.heightHint = 75;
 	}
 
-	/**
-	 * The selection has changed, update (1) the selected item holder, (2) the
-	 * selection model and (3) the buttons.
-	 */
-	private void selectionChanged() {
-		ModifiablePropertyValueModel<Object> selectedItemHolder = getSelectedItemHolder();
-		ObjectListSelectionModel selectionModel = getSelectionModel();
-		int selectionCount = this.table.getSelectionCount();
-
-		if (selectionCount == 0) {
-			selectedItemHolder.setValue(null);
-			selectionModel.clearSelection();
-		}
-		else if (selectionCount != 1) {
-			selectedItemHolder.setValue(null);
-			selectionModel.clearSelection();
-
-			for (int index : this.table.getSelectionIndices()) {
-				selectionModel.addSelectionInterval(index, index);
-			}
-		}
-		else {
-			int selectedIndex = this.table.getSelectionIndex();
-			Object selectedItem = getListHolder().get(selectedIndex);
-
-			selectedItemHolder.setValue(selectedItem);
-			selectionModel.setSelectedValue(selectedItem);
-		}
-
-		updateButtons();
-	}
 
 	/**
 	 * This label provider simply delegates the rendering to the provided

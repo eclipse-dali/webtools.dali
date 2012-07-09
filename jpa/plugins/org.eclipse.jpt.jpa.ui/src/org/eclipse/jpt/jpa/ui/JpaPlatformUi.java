@@ -111,6 +111,7 @@ public interface JpaPlatformUi {
 			String mappingKey, 
 			Composite parent,
 			PropertyValueModel<AttributeMapping> mappingHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			WidgetFactory widgetFactory);
 	
 	DefaultMappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping> 

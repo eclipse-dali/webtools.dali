@@ -14,14 +14,20 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.AccessHolder;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkJoinFetchComposite;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkJoinFetchComboViewer;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkOneToManyMappingComposite;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkPrivateOwnedComposite;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkPrivateOwnedCheckBox;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.CascadeComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.TargetEntityComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmMappingNameChooser;
+import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
+import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.internal.details.TargetEntityClassChooser;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.JptUiDetailsOrmMessages;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmMappingNameText;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.widgets.Hyperlink;
 
 
 public class OrmEclipseLinkOneToManyMappingComposite
@@ -29,20 +35,49 @@ public class OrmEclipseLinkOneToManyMappingComposite
 {
 	public OrmEclipseLinkOneToManyMappingComposite(
 			PropertyValueModel<? extends OneToManyMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		super(subjectHolder, parent, widgetFactory);
+		super(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 
 	@Override
-	protected void initializeOneToManySection(Composite container) {
-		new TargetEntityComposite(this, container);
-		new OrmMappingNameChooser(this, getSubjectHolder(), container);
-		new OrmAttributeTypeComposite(this, getSubjectHolder(), container);
-		new FetchTypeComposite(this, container);
-		new EclipseLinkJoinFetchComposite(this, buildJoinFetchableHolder(), container);
-		new EclipseLinkPrivateOwnedComposite(this, buildPrivateOwnableHolder(), container);
-		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 5));
+	protected Control initializeOneToManySection(Composite container) {
+		container = this.addSubPane(container, 2, 0, 0, 0, 0);
+
+		// Target entity widgets
+		Hyperlink targetEntityHyperlink = this.addHyperlink(container, JptUiDetailsMessages.TargetEntityChooser_label);
+		new TargetEntityClassChooser(this, container, targetEntityHyperlink);
+
+		// Name widgets
+		this.addLabel(container, JptUiDetailsOrmMessages.OrmMappingNameChooser_name);
+		new OrmMappingNameText(this, getSubjectHolder(), container);
+
+		// Attribute type widgets
+		Hyperlink attributeTypeHyperlink = this.addHyperlink(container, EclipseLinkUiDetailsMessages.OrmAttributeTypeComposite_attributeType);
+		new OrmAttributeTypeClassChooser(this, getSubjectHolder(), container, attributeTypeHyperlink);
+
+		// Fetch type widgets
+		this.addLabel(container, JptUiDetailsMessages.BasicGeneralSection_fetchLabel);
+		new FetchTypeComboViewer(this, container);
+
+		// Join fetch widgets
+		this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkJoinFetchComposite_label);
+		new EclipseLinkJoinFetchComboViewer(this, buildJoinFetchableHolder(), container);
+
+		// Private owned widgets
+		EclipseLinkPrivateOwnedCheckBox privateOwnedCheckBox = new EclipseLinkPrivateOwnedCheckBox(this, buildPrivateOwnableHolder(), container);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		privateOwnedCheckBox.getControl().setLayoutData(gridData);
+
+		// Cascade widgets
+		CascadeComposite cascadeComposite = new CascadeComposite(this, buildCascadeHolder(), container);
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		cascadeComposite.getControl().setLayoutData(gridData);
+
+		return container;
 	}
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {

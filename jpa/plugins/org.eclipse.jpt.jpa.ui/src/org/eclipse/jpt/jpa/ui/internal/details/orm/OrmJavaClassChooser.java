@@ -17,6 +17,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.forms.widgets.Hyperlink;
 
 /**
  * Here the layout of this pane:
@@ -39,7 +40,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class OrmJavaClassChooser extends Pane<OrmTypeMapping> {
+public class OrmJavaClassChooser extends ClassChooserPane<OrmTypeMapping> {
 
 	/**
 	 * Creates a new <code>XmlJavaClassChooser</code>.
@@ -50,68 +51,44 @@ public class OrmJavaClassChooser extends Pane<OrmTypeMapping> {
 	 */
 	public OrmJavaClassChooser(Pane<?> parentPane,
 	                           PropertyValueModel<? extends OrmTypeMapping> subjectHolder,
-	                           Composite parent) {
+	                           Composite parent,
+	                           Hyperlink hyperlink) {
 
-		super(parentPane, subjectHolder, parent);
+		super(parentPane, subjectHolder, parent, hyperlink);
 	}
 
-	public OrmJavaClassChooser(Pane<?> parentPane,
-        PropertyValueModel<? extends OrmTypeMapping> subjectHolder,
-        Composite parent,
-        boolean automaticallyAlignWidgets) {
-
-		super(parentPane, subjectHolder, parent, automaticallyAlignWidgets);
-	}
-
-
-	private ClassChooserPane<OrmTypeMapping> addClassChooser(Composite container) {
-
-		return new ClassChooserPane<OrmTypeMapping>(this, container) {
-
+	@Override
+	protected ModifiablePropertyValueModel<String> buildTextHolder() {
+		return new PropertyAspectAdapter<OrmTypeMapping, String>(getSubjectHolder(), OrmTypeMapping.CLASS_PROPERTY) {
 			@Override
-			protected ModifiablePropertyValueModel<String> buildTextHolder() {
-				return new PropertyAspectAdapter<OrmTypeMapping, String>(getSubjectHolder(), OrmTypeMapping.CLASS_PROPERTY) {
-					@Override
-					protected String buildValue_() {
-						return this.subject.getClass_();
-					}
-
-					@Override
-					protected void setValue_(String value) {
-						this.subject.setClass(value);
-					}
-				};
+			protected String buildValue_() {
+				return this.subject.getClass_();
 			}
 
 			@Override
-			protected String getClassName() {
-				return getSubject().getClass_();
-			}
-
-			@Override
-			protected String getLabelText() {
-				return JptUiDetailsOrmMessages.OrmJavaClassChooser_javaClass;
-			}
-			
-			@Override
-			protected IJavaProject getJavaProject() {
-				return getSubject().getJpaProject().getJavaProject();
-			}
-			
-			@Override
-			protected void setClassName(String className) {
-				getSubject().setClass(className);
-			}
-
-			@Override
-			protected String getFullyQualifiedClassName() {
-				return getSubject().getPersistentType().getName();
+			protected void setValue_(String value) {
+				this.subject.setClass(value);
 			}
 		};
 	}
 
 	@Override
-	protected void initializeLayout(Composite container) {
-		addClassChooser(container);
+	protected String getClassName() {
+		return getSubject().getClass_();
+	}
+
+	@Override
+	protected IJavaProject getJavaProject() {
+		return getSubject().getJpaProject().getJavaProject();
+	}
+
+	@Override
+	protected void setClassName(String className) {
+		getSubject().setClass(className);
+	}
+
+	@Override
+	protected String getFullyQualifiedClassName() {
+		return getSubject().getPersistentType().getName();
 	}
 }

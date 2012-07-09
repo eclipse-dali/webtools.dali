@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,12 +18,11 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.JpaConnection2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.JpaOptions2_0;
-import org.eclipse.jpt.jpa.ui.details.JpaPageComposite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.connection.GenericPersistenceUnit2_0ConnectionTab;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.options.GenericPersistenceUnit2_0OptionsTab;
-import org.eclipse.jpt.jpa.ui.internal.persistence.details.GenericPersistenceUnitGeneralComposite;
-import org.eclipse.jpt.jpa.ui.internal.persistence.details.PersistenceUnitPropertiesComposite;
-import org.eclipse.jpt.jpa.ui.internal.persistence.details.PersistenceXmlUiFactory;
+import org.eclipse.jpt.jpa.ui.editors.JpaPageComposite;
+import org.eclipse.jpt.jpa.ui.internal.persistence.GenericPersistenceUnitGeneralTab;
+import org.eclipse.jpt.jpa.ui.internal.persistence.GenericPersistenceXmlUiFactory;
+import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitPropertiesTab;
+import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceXmlUiFactory;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -51,10 +50,10 @@ public class Generic2_0PersistenceXmlUiFactory implements PersistenceXmlUiFactor
 		PropertyValueModel<JpaOptions2_0> options2_0Holder = 
 			this.buildJpaOptions2_0Holder(subjectHolder);
 		
-		pages.add(new GenericPersistenceUnitGeneralComposite(subjectHolder, parent, widgetFactory));
+		pages.add(new GenericPersistenceUnitGeneralTab(subjectHolder, parent, widgetFactory));
 		pages.add(new GenericPersistenceUnit2_0ConnectionTab(connection2_0Holder, parent, widgetFactory));
 		pages.add(new GenericPersistenceUnit2_0OptionsTab(options2_0Holder, parent, widgetFactory));
-		pages.add(new PersistenceUnitPropertiesComposite(subjectHolder, parent, widgetFactory));
+		pages.add(new PersistenceUnitPropertiesTab(subjectHolder, parent, widgetFactory));
 
 		return pages.listIterator();
 	}

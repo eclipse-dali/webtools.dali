@@ -14,8 +14,8 @@ import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.EclipseLinkPersistenceXmlUiDefinition;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.persistence.details.AbstractPersistenceXmlResourceUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.persistence.details.PersistenceXmlUiFactory;
+import org.eclipse.jpt.jpa.ui.internal.persistence.AbstractPersistenceXmlResourceUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceXmlUiFactory;
 
 public class EclipseLinkPersistenceXml2_0UiDefinition
 	extends AbstractPersistenceXmlResourceUiDefinition

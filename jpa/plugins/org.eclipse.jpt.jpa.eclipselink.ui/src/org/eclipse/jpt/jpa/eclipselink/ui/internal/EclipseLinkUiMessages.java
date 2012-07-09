@@ -187,6 +187,9 @@ public class EclipseLinkUiMessages {
 	public static String PersistenceXmlCustomizationTab_sectionTitle;
 	public static String PersistenceXmlCustomizationTab_sectionDescription;
 
+	public static String PersistenceXmlCustomizationTab_otherSection;
+	public static String PersistenceXmlCustomizationTab_customizersSection;
+
 	public static String PersistenceXmlCustomizationTab_weavingPropertiesGroupBox;
 	public static String PersistenceXmlCustomizationTab_weavingLabel;
 

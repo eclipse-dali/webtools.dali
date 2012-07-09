@@ -129,10 +129,11 @@ public abstract class AbstractJpaPlatformUi
 			String mappingKey, 
 			Composite parent, 
 			PropertyValueModel<AttributeMapping> mappingHolder, 
+			PropertyValueModel<Boolean> enabledModel,
 			WidgetFactory widgetFactory) {
 		
 		return getMappingResourceUiDefinition(resourceType).buildAttributeMappingComposite(
-				mappingKey, mappingHolder, parent, widgetFactory);
+				mappingKey, mappingHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	public DefaultMappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping> getDefaultAttributeMappingUiDefinition(JptResourceType resourceType, String mappingKey) {

@@ -13,9 +13,9 @@ import java.util.Collection;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -28,7 +28,12 @@ import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.db.ColumnCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.DatabaseObjectCombo;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.forms.events.ExpansionAdapter;
+import org.eclipse.ui.forms.events.ExpansionEvent;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Section;
 
 public class ColumnComposite
 	extends Pane<ReadOnlyColumn>
@@ -38,7 +43,7 @@ public class ColumnComposite
 			PropertyValueModel<? extends ReadOnlyColumn> subjectHolder,
 			Composite parent) {
 		
-		super(parentPane, subjectHolder, parent, false);
+		super(parentPane, subjectHolder, parent);
 	}
 	
 	
@@ -91,7 +96,12 @@ public class ColumnComposite
 						JptCommonUiMessages.DefaultWithOneParam,
 						JptCommonUiMessages.NoneSelected);
 			}
-			
+
+			@Override
+			protected String getHelpId() {
+				return JpaHelpContextIds.MAPPING_COLUMN;
+			}
+
 			@Override
 			public String toString() {
 				return "ColumnComposite.columnCombo"; //$NON-NLS-1$
@@ -244,7 +254,12 @@ public class ColumnComposite
 						JptCommonUiMessages.DefaultWithOneParam,
 						JptCommonUiMessages.NoneSelected);
 			}
-			
+
+			@Override
+			protected String getHelpId() {
+				return JpaHelpContextIds.MAPPING_COLUMN_TABLE;
+			}
+
 			@Override
 			public String toString() {
 				return "ColumnComposite.tableCombo"; //$NON-NLS-1$
@@ -348,207 +363,207 @@ public class ColumnComposite
 			}
 		};
 	}
-	
+
+	@Override
+	protected Composite addComposite(Composite parent) {
+		return addTitledGroup(
+				parent,
+				JptUiDetailsMessages.ColumnComposite_columnSection,
+				2,
+				null);
+	}
+
 	@Override
 	protected void initializeLayout(Composite container) {
-		// Column group pane
-		container = addTitledGroup(
-				container,
-				JptUiDetailsMessages.ColumnComposite_columnSection);
-		
 		// Column widgets
-		addLabeledComposite(
-				container,
-				JptUiDetailsMessages.ColumnComposite_name,
-				addColumnCombo(container),
-				JpaHelpContextIds.MAPPING_COLUMN);
-		
+		this.addLabel(container, JptUiDetailsMessages.ColumnComposite_name);
+		this.addColumnCombo(container);
+
 		// Table widgets
-		addLabeledComposite(
-				container,
-				JptUiDetailsMessages.ColumnComposite_table,
-				addTableCombo(container),
-				JpaHelpContextIds.MAPPING_COLUMN_TABLE);
-		
+		this.addLabel(container, JptUiDetailsMessages.ColumnComposite_table);
+		this.addTableCombo(container);
+
+
 		// Details sub-pane
-		container = addCollapsibleSubSection(
-				container,
-				JptUiDetailsMessages.ColumnComposite_details,
-				new SimplePropertyValueModel<Boolean>(Boolean.FALSE));
-		
-		new DetailsComposite(this, getSubjectHolder(), addSubPane(container, 0, 16));
+		final Section detailsSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE);
+		detailsSection.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		detailsSection.setText(JptUiDetailsMessages.ColumnComposite_details);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		detailsSection.setLayoutData(gridData);
+
+		detailsSection.addExpansionListener(new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanging(ExpansionEvent e) {
+				if (e.getState() && detailsSection.getClient() == null) {
+					detailsSection.setClient(ColumnComposite.this.initializeDetailsSection(detailsSection));
+				}
+			}
+		});
+	}
+
+	protected Composite initializeDetailsSection(Composite container) {
+		Composite detailsClient = this.addSubPane(container, 2, 0, 16, 0, 0);
+
+		// Insertable tri-state check box
+		TriStateCheckBox insertableCheckBox = addTriStateCheckBoxWithDefault(
+				detailsClient,
+				JptUiDetailsMessages.ColumnComposite_insertable,
+				buildInsertableHolder(),
+				buildInsertableStringHolder(),
+				JpaHelpContextIds.MAPPING_COLUMN_INSERTABLE);
+		GridData gridData = new GridData();
+		gridData.horizontalSpan = 2;
+		insertableCheckBox.getCheckBox().setLayoutData(gridData);
+
+		// Updatable tri-state check box
+		TriStateCheckBox updatableCheckBox = addTriStateCheckBoxWithDefault(
+				detailsClient,
+				JptUiDetailsMessages.ColumnComposite_updatable,
+				buildUpdatableHolder(),
+				buildUpdatableStringHolder(),
+				JpaHelpContextIds.MAPPING_COLUMN_UPDATABLE);
+		gridData = new GridData();
+		gridData.horizontalSpan = 2;
+		updatableCheckBox.getCheckBox().setLayoutData(gridData);
+
+		// Unique tri-state check box
+		TriStateCheckBox uniqueCheckBox = addTriStateCheckBoxWithDefault(
+				detailsClient,
+				JptUiDetailsMessages.ColumnComposite_unique,
+				buildUniqueHolder(),
+				buildUniqueStringHolder(),
+				JpaHelpContextIds.MAPPING_COLUMN_UNIQUE);
+		gridData = new GridData();
+		gridData.horizontalSpan = 2;
+		uniqueCheckBox.getCheckBox().setLayoutData(gridData);
+
+		// Nullable tri-state check box
+		TriStateCheckBox nullableCheckBox = addTriStateCheckBoxWithDefault(
+				detailsClient,
+				JptUiDetailsMessages.ColumnComposite_nullable,
+				buildNullableHolder(),
+				buildNullableStringHolder(),
+				JpaHelpContextIds.MAPPING_COLUMN_NULLABLE);
+		gridData = new GridData();
+		gridData.horizontalSpan = 2;
+		nullableCheckBox.getCheckBox().setLayoutData(gridData);
+
+		this.addLabel(detailsClient, JptUiDetailsMessages.ColumnComposite_length);		
+		this.addLengthCombo(detailsClient);
+
+		this.addLabel(detailsClient, JptUiDetailsMessages.ColumnComposite_precision);		
+		this.addPrecisionCombo(detailsClient);
+
+		this.addLabel(detailsClient, JptUiDetailsMessages.ColumnComposite_scale);		
+		this.addScaleCombo(detailsClient);
+
+		// Column Definition widgets
+		this.addLabel(detailsClient, JptUiDetailsMessages.ColumnComposite_columnDefinition);
+		this.addText(detailsClient, buildColumnDefinitionHolder());
+
+		return detailsClient;
 	}
 	
-	protected class DetailsComposite extends Pane<ReadOnlyColumn> {
-				
-		public DetailsComposite(
-				Pane<?> parentPane,
-	            PropertyValueModel<? extends ReadOnlyColumn> subjectHolder,
-	            Composite parent) {
+	private void addLengthCombo(Composite container) {
+		new IntegerCombo<ReadOnlyColumn>(this, container) {				
+			@Override
+			protected String getHelpId() {
+				return JpaHelpContextIds.MAPPING_COLUMN_LENGTH;
+			}
 			
-			super(parentPane, subjectHolder, parent, false);
-		}
-		
-		@Override
-		protected void initializeLayout(Composite container) {
-			// Insertable tri-state check box
-			addTriStateCheckBoxWithDefault(
-					addSubPane(container, 4),
-					JptUiDetailsMessages.ColumnComposite_insertable,
-					buildInsertableHolder(),
-					buildInsertableStringHolder(),
-					JpaHelpContextIds.MAPPING_COLUMN_INSERTABLE);
+			@Override
+			protected PropertyValueModel<Integer> buildDefaultHolder() {
+				return new PropertyAspectAdapter<ReadOnlyColumn, Integer>(getSubjectHolder(), ReadOnlyColumn.DEFAULT_LENGTH_PROPERTY) {
+					@Override
+					protected Integer buildValue_() {
+						return Integer.valueOf(this.subject.getDefaultLength());
+					}
+				};
+			}
 			
-			// Updatable tri-state check box
-			addTriStateCheckBoxWithDefault(
-					container,
-					JptUiDetailsMessages.ColumnComposite_updatable,
-					buildUpdatableHolder(),
-					buildUpdatableStringHolder(),
-					JpaHelpContextIds.MAPPING_COLUMN_UPDATABLE);
+			@Override
+			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
+				return new PropertyAspectAdapter<ReadOnlyColumn, Integer>(getSubjectHolder(), ReadOnlyColumn.SPECIFIED_LENGTH_PROPERTY) {
+					@Override
+					protected Integer buildValue_() {
+						return this.subject.getSpecifiedLength();
+					}
+					
+					@Override
+					protected void setValue_(Integer value) {
+						((Column) this.subject).setSpecifiedLength(value);
+					}
+				};
+			}
+		};
+	}
+
+	private void addPrecisionCombo(Composite container) {
+		new IntegerCombo<ReadOnlyColumn>(this, container) {					
+			@Override
+			protected String getHelpId() {
+				return JpaHelpContextIds.MAPPING_COLUMN_PRECISION;
+			}
 			
-			// Unique tri-state check box
-			addTriStateCheckBoxWithDefault(
-					container,
-					JptUiDetailsMessages.ColumnComposite_unique,
-					buildUniqueHolder(),
-					buildUniqueStringHolder(),
-					JpaHelpContextIds.MAPPING_COLUMN_UNIQUE);
+			@Override
+			protected PropertyValueModel<Integer> buildDefaultHolder() {
+				return new PropertyAspectAdapter<ReadOnlyColumn, Integer>(getSubjectHolder(), ReadOnlyColumn.DEFAULT_PRECISION_PROPERTY) {
+					@Override
+					protected Integer buildValue_() {
+						return Integer.valueOf(this.subject.getDefaultPrecision());
+					}
+				};
+			}
 			
-			// Nullable tri-state check box
-			addTriStateCheckBoxWithDefault(
-					container,
-					JptUiDetailsMessages.ColumnComposite_nullable,
-					buildNullableHolder(),
-					buildNullableStringHolder(),
-					JpaHelpContextIds.MAPPING_COLUMN_NULLABLE);
+			@Override
+			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
+				return new PropertyAspectAdapter<ReadOnlyColumn, Integer>(getSubjectHolder(), ReadOnlyColumn.SPECIFIED_PRECISION_PROPERTY) {
+					@Override
+					protected Integer buildValue_() {
+						return this.subject.getSpecifiedPrecision();
+					}
+					
+					@Override
+					protected void setValue_(Integer value) {
+						((Column) this.subject).setSpecifiedPrecision(value);
+					}
+				};
+			}
+		};
+	}
+
+	private void addScaleCombo(Composite container) {
+		new IntegerCombo<ReadOnlyColumn>(this, container) {					
+			@Override
+			protected String getHelpId() {
+				return JpaHelpContextIds.MAPPING_COLUMN_SCALE;
+			}
 			
-			addLengthCombo(container);
-			addPrecisionCombo(container);
-			addScaleCombo(container);
+			@Override
+			protected PropertyValueModel<Integer> buildDefaultHolder() {
+				return new PropertyAspectAdapter<ReadOnlyColumn, Integer>(getSubjectHolder(), ReadOnlyColumn.DEFAULT_SCALE_PROPERTY) {
+					@Override
+					protected Integer buildValue_() {
+						return Integer.valueOf(this.subject.getDefaultScale());
+					}
+				};
+			}
 			
-			// Column Definition widgets
-			addLabeledText(
-					container,
-					JptUiDetailsMessages.ColumnComposite_columnDefinition,
-					buildColumnDefinitionHolder());
-		}
-		
-		private void addLengthCombo(Composite container) {
-			new IntegerCombo<ReadOnlyColumn>(this, container) {
-				@Override
-				protected String getLabelText() {
-					return JptUiDetailsMessages.ColumnComposite_length;
-				}
-				
-				@Override
-				protected String getHelpId() {
-					return JpaHelpContextIds.MAPPING_COLUMN_LENGTH;
-				}
-				
-				@Override
-				protected PropertyValueModel<Integer> buildDefaultHolder() {
-					return new PropertyAspectAdapter<ReadOnlyColumn, Integer>(getSubjectHolder(), ReadOnlyColumn.DEFAULT_LENGTH_PROPERTY) {
-						@Override
-						protected Integer buildValue_() {
-							return Integer.valueOf(this.subject.getDefaultLength());
-						}
-					};
-				}
-				
-				@Override
-				protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-					return new PropertyAspectAdapter<ReadOnlyColumn, Integer>(getSubjectHolder(), ReadOnlyColumn.SPECIFIED_LENGTH_PROPERTY) {
-						@Override
-						protected Integer buildValue_() {
-							return this.subject.getSpecifiedLength();
-						}
-						
-						@Override
-						protected void setValue_(Integer value) {
-							((Column) this.subject).setSpecifiedLength(value);
-						}
-					};
-				}
-			};
-		}
-		
-		private void addPrecisionCombo(Composite container) {
-			new IntegerCombo<ReadOnlyColumn>(this, container) {	
-				@Override
-				protected String getLabelText() {
-					return JptUiDetailsMessages.ColumnComposite_precision;
-				}
-				
-				@Override
-				protected String getHelpId() {
-					return JpaHelpContextIds.MAPPING_COLUMN_PRECISION;
-				}
-				
-				@Override
-				protected PropertyValueModel<Integer> buildDefaultHolder() {
-					return new PropertyAspectAdapter<ReadOnlyColumn, Integer>(getSubjectHolder(), ReadOnlyColumn.DEFAULT_PRECISION_PROPERTY) {
-						@Override
-						protected Integer buildValue_() {
-							return Integer.valueOf(this.subject.getDefaultPrecision());
-						}
-					};
-				}
-				
-				@Override
-				protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-					return new PropertyAspectAdapter<ReadOnlyColumn, Integer>(getSubjectHolder(), ReadOnlyColumn.SPECIFIED_PRECISION_PROPERTY) {
-						@Override
-						protected Integer buildValue_() {
-							return this.subject.getSpecifiedPrecision();
-						}
-						
-						@Override
-						protected void setValue_(Integer value) {
-							((Column) this.subject).setSpecifiedPrecision(value);
-						}
-					};
-				}
-			};
-		}
-		
-		private void addScaleCombo(Composite container) {
-			new IntegerCombo<ReadOnlyColumn>(this, container) {	
-				@Override
-				protected String getLabelText() {
-					return JptUiDetailsMessages.ColumnComposite_scale;
-				}
-				
-				@Override
-				protected String getHelpId() {
-					return JpaHelpContextIds.MAPPING_COLUMN_SCALE;
-				}
-				
-				@Override
-				protected PropertyValueModel<Integer> buildDefaultHolder() {
-					return new PropertyAspectAdapter<ReadOnlyColumn, Integer>(getSubjectHolder(), ReadOnlyColumn.DEFAULT_SCALE_PROPERTY) {
-						@Override
-						protected Integer buildValue_() {
-							return Integer.valueOf(this.subject.getDefaultScale());
-						}
-					};
-				}
-				
-				@Override
-				protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
-					return new PropertyAspectAdapter<ReadOnlyColumn, Integer>(getSubjectHolder(), ReadOnlyColumn.SPECIFIED_SCALE_PROPERTY) {
-						@Override
-						protected Integer buildValue_() {
-							return this.subject.getSpecifiedScale();
-						}
-						
-						@Override
-						protected void setValue_(Integer value) {
-							((Column) this.subject).setSpecifiedScale(value);
-						}
-					};
-				}
-			};
-		}
+			@Override
+			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
+				return new PropertyAspectAdapter<ReadOnlyColumn, Integer>(getSubjectHolder(), ReadOnlyColumn.SPECIFIED_SCALE_PROPERTY) {
+					@Override
+					protected Integer buildValue_() {
+						return this.subject.getSpecifiedScale();
+					}
+					
+					@Override
+					protected void setValue_(Integer value) {
+						((Column) this.subject).setSpecifiedScale(value);
+					}
+				};
+			}
+		};
 	}
 }

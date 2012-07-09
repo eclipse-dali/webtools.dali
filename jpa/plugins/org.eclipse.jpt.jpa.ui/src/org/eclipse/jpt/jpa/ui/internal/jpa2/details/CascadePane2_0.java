@@ -14,40 +14,43 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.Cascade;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
 import org.eclipse.jpt.jpa.ui.internal.details.CascadeComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
 
-public class CascadePane2_0<T extends Cascade2_0>
-	extends CascadeComposite<T>
+public class CascadePane2_0
+	extends CascadeComposite
 {
 	public CascadePane2_0(
 			Pane<? extends RelationshipMapping> parentPane,
-	        PropertyValueModel<T> subjectHolder,
+	        PropertyValueModel<? extends Cascade> subjectHolder,
 	        Composite parent) {
 		
 		super(parentPane, subjectHolder, parent);
 	}
 	
 	public CascadePane2_0(
-			PropertyValueModel<T> subjectHolder,
+			PropertyValueModel<? extends Cascade> subjectHolder,
 			Composite parent,
 		    WidgetFactory widgetFactory) {
 		
 		super(subjectHolder, parent, widgetFactory);
 	}
 	
-	
 	@Override
-	protected void initializeLayout(Composite container) {
-		// Cascade group
-		Group cascadeGroup = addCascadeGroup(container);
-		
-		// Container of the check boxes
-		container = addSubPane(cascadeGroup, 6, 8, 0, 0, 0);
-		
+	protected Composite addComposite(Composite container) {
+		return addTitledGroup(
+			container,
+			JptUiDetailsMessages.CascadeComposite_cascadeTitle,
+			6,
+			null);
+	}
+
+	@Override
+	protected void initializeLayout(Composite container) {		
 		addAllCheckBox(container);
 		addPersistCheckBox(container);
 		addMergeCheckBox(container);
@@ -65,15 +68,15 @@ public class CascadePane2_0<T extends Cascade2_0>
 	}
 	
 	protected ModifiablePropertyValueModel<Boolean> buildCascadeTypeDetachHolder() {
-		return new PropertyAspectAdapter<Cascade2_0, Boolean>(getSubjectHolder(), Cascade2_0.DETACH_PROPERTY) {
+		return new PropertyAspectAdapter<Cascade, Boolean>(getSubjectHolder(), Cascade2_0.DETACH_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				return subject.isDetach();
+				return Boolean.valueOf(((Cascade2_0) this.subject).isDetach());
 			}
 			
 			@Override
 			protected void setValue_(Boolean value) {
-				subject.setDetach(value);
+				((Cascade2_0) this.subject).setDetach(value.booleanValue());
 			}
 		};
 	}	

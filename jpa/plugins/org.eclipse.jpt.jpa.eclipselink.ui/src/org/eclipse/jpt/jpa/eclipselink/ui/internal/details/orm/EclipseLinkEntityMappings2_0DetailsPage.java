@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,11 +16,11 @@ import org.eclipse.jpt.jpa.ui.internal.details.db.CatalogCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.SchemaCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.EntityMappingsGeneratorsComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmPackageChooser;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmQueriesComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.PersistenceUnitMetadataComposite;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Queries2_0Composite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.EntityMappingsGenerators2_0Composite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmQueries2_0Composite;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 /**
  * Here the layout of this pane:
@@ -91,12 +91,12 @@ public class EclipseLinkEntityMappings2_0DetailsPage extends AbstractEclipseLink
 	}
 	
 	@Override
-	protected void initializeGeneratorsCollapsibleSection(Composite container) {
-		new EntityMappingsGenerators2_0Composite(this, container);
+	protected Control initializeGeneratorsSection(Composite container) {
+		return new EntityMappingsGenerators2_0Composite(this, container).getControl();
 	}
 
 	@Override
-	protected void initializeQueriesCollapsibleSection(Composite container) {
-		new OrmQueries2_0Composite(this, container);
+	protected Control initializeQueriesSection(Composite container) {
+		return new Queries2_0Composite(this, this.buildQueryContainerHolder(), container).getControl();
 	}
 }

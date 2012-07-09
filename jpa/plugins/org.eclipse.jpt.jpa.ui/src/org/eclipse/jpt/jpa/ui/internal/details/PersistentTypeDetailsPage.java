@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -64,25 +64,20 @@ public class PersistentTypeDetailsPage extends AbstractJpaDetailsPage<Persistent
 	
 	@Override
 	protected void initializeLayout(Composite container) {
-
-		// Map As composite
-		new PersistentTypeMapAsComposite(
-			this,
-			addSubPane(container, 0, 0, 5, 0)
-		);
+		new PersistentTypeMapAsComposite(this, container);
 
 		// Type properties page
-		buildMappingPageBook(container);
+		this.buildMappingPageBook(container);
 	}
 
 	protected PageBook buildMappingPageBook(Composite parent) {
 
 		this.mappingPageBook = new PageBook(parent, SWT.NONE);
-		this.mappingPageBook.showPage(this.addLabel(this.mappingPageBook, ""));
 
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment       = SWT.FILL;
 		gridData.verticalAlignment         = SWT.TOP;
+		gridData.verticalIndent = 5;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace   = true;
 

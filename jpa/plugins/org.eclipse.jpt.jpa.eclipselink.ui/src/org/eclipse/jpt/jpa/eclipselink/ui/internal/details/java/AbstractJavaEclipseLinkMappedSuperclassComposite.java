@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,11 +18,17 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkConvertersComposite;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkMappedSuperclassAdvancedComposite;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkNonEmbeddableTypeMappingAdvancedComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractJavaMappedSuperclassComposite;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.events.ExpansionAdapter;
+import org.eclipse.ui.forms.events.ExpansionEvent;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Section;
 
 /**
  * The pane used for an EclipseLink Java Mapped Superclass.
@@ -62,19 +68,26 @@ public abstract class AbstractJavaEclipseLinkMappedSuperclassComposite
 		this.initializeAdvancedCollapsibleSection(container);
 	}
 
-	
 	protected void initializeCachingCollapsibleSection(Composite container) {
-		container = addCollapsibleSection(
-				container,
-				EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_caching);
-		this.initializeCachingSection(container, buildCachingHolder());
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_caching);
+
+		section.addExpansionListener(new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanging(ExpansionEvent e) {
+				if (e.getState() && section.getClient() == null) {
+					section.setClient(initializeCachingSection(section));
+				}
+			}
+		});
 	}
 	
-	protected void initializeCachingSection(Composite container, PropertyValueModel<JavaEclipseLinkCaching> cachingHolder) {
-		new JavaEclipseLinkCachingComposite(this, cachingHolder, container);
+	protected Control initializeCachingSection(Composite container) {
+		return new JavaEclipseLinkCachingComposite(this, buildCachingHolder(), container).getControl();
 	}
 	
-	private PropertyAspectAdapter<JavaMappedSuperclass, JavaEclipseLinkCaching> buildCachingHolder() {
+	protected PropertyAspectAdapter<JavaMappedSuperclass, JavaEclipseLinkCaching> buildCachingHolder() {
 		return new PropertyAspectAdapter<JavaMappedSuperclass, JavaEclipseLinkCaching>(getSubjectHolder()) {
 			@Override
 			protected JavaEclipseLinkCaching buildValue_() {
@@ -82,14 +95,26 @@ public abstract class AbstractJavaEclipseLinkMappedSuperclassComposite
 			}
 		};
 	}
-	
+
 	protected void initializeConvertersCollapsibleSection(Composite container) {
-		container = addCollapsibleSection(
-				container,
-				EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters);
-		this.initializeConvertersSection(container, buildConverterHolderValueModel());
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters);
+
+		section.addExpansionListener(new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanging(ExpansionEvent e) {
+				if (e.getState() && section.getClient() == null) {
+					section.setClient(initializeConvertersSection(section));
+				}
+			}
+		});
 	}
-	
+
+	protected Control initializeConvertersSection(Composite container) {
+		return new EclipseLinkConvertersComposite(this, this.buildConverterHolderValueModel(), container).getControl();
+	}
+
 	private PropertyValueModel<JavaEclipseLinkConverterContainer> buildConverterHolderValueModel() {
 		return new PropertyAspectAdapter<JavaMappedSuperclass, JavaEclipseLinkConverterContainer>(getSubjectHolder()) {
 			@Override
@@ -99,11 +124,22 @@ public abstract class AbstractJavaEclipseLinkMappedSuperclassComposite
 		};
 	}
 
-	protected void initializeConvertersSection(Composite container, PropertyValueModel<JavaEclipseLinkConverterContainer> converterHolder) {
-		new EclipseLinkConvertersComposite(this, converterHolder, container);
+	protected void initializeAdvancedCollapsibleSection(Composite container) {
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_advanced);
+
+		section.addExpansionListener(new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanging(ExpansionEvent e) {
+				if (e.getState() && section.getClient() == null) {
+					section.setClient(initializeAdvancedSection(section));
+				}
+			}
+		});
 	}
 
-	protected void initializeAdvancedCollapsibleSection(Composite container) {
-		new EclipseLinkMappedSuperclassAdvancedComposite(this, container);
+	protected Control initializeAdvancedSection(Composite container) {
+		return new EclipseLinkNonEmbeddableTypeMappingAdvancedComposite(this, container).getControl();
 	}
 }

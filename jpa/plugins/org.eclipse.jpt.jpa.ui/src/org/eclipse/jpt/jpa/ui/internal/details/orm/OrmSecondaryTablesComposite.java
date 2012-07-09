@@ -11,8 +11,6 @@ package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
@@ -21,7 +19,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValue
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
@@ -75,22 +73,8 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 		super(parentPane, parent);
 	}
 
-	/**
-	 * Creates a new <code>SecondaryTablesComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>IEntity</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public OrmSecondaryTablesComposite(PropertyValueModel<? extends OrmEntity> subjectHolder,
-	                                Composite parent,
-	                                WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
-	}
-
-	private ModifiablePropertyValueModel<Boolean> buildDefineInXmlHolder() {
-		return new DefineInXmlHolder();
+	private ModifiablePropertyValueModel<Boolean> buildDefineInXmlModel() {
+		return new DefineInXmlModel();
 	}
 
 	private ListValueModel<ReadOnlySecondaryTable> buildSecondaryTablesListHolder() {
@@ -135,48 +119,38 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 
 	@Override
 	protected void initializeLayout(Composite container) {
+		ModifiableCollectionValueModel<SecondaryTable> selectedSecondaryTablesModel =
+			buildSelectedSecondaryTablesModel();
 
-		int groupBoxMargin = getGroupBoxMargin();
-
-		ModifiablePropertyValueModel<SecondaryTable> secondaryTableHolder =
-			buildSecondaryTableHolder();
-
-		ModifiablePropertyValueModel<Boolean> defineInXmlHolder =
-			buildDefineInXmlHolder();
+		ModifiablePropertyValueModel<Boolean> defineInXmlModel =
+			buildDefineInXmlModel();
 
 		// Override Define In XML check box
 		addCheckBox(
-			addSubPane(container, 0, groupBoxMargin),
+			container,
 			JptUiDetailsMessages.OrmSecondaryTablesComposite_defineInXml,
-			defineInXmlHolder,
+			defineInXmlModel,
 			null
 		);
 
 		// Secondary Tables add/remove list pane
-		AddRemoveListPane<Entity> listPane = new AddRemoveListPane<Entity>(
+		new AddRemoveListPane<Entity, SecondaryTable>(
 			this,
-			addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin),
+			container,
 			buildSecondaryTablesAdapter(),
 			buildSecondaryTablesListModel(),
-			secondaryTableHolder,
+			selectedSecondaryTablesModel,
 			buildSecondaryTableLabelProvider(),
+			defineInXmlModel,
 			JpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS//TODO need a help context id for this
 		);
-
-		installListPaneEnabler(defineInXmlHolder, listPane);
 
 		// Primary Key Join Columns pane
 		new PrimaryKeyJoinColumnsInSecondaryTableComposite(
 			this,
-			secondaryTableHolder,
+			buildSelectedSecondaryTableModel(selectedSecondaryTablesModel),
 			container
 		);
-	}
-	
-	private void installListPaneEnabler(ModifiablePropertyValueModel<Boolean> defineInXmlHolder,
-	                                    AddRemoveListPane<Entity> listPane) {
-
-		new PaneEnabler(defineInXmlHolder, listPane);
 	}
 	
 	@Override
@@ -189,10 +163,10 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 			getSubject().getMappingFileRoot().getSchema());
 	}
 
-	private class DefineInXmlHolder extends ListPropertyValueModelAdapter<Boolean>
+	private class DefineInXmlModel extends ListPropertyValueModelAdapter<Boolean>
 		implements ModifiablePropertyValueModel<Boolean> {
 
-		public DefineInXmlHolder() {
+		public DefineInXmlModel() {
 			super(buildVirtualSecondaryTablesListHolder());
 		}
 

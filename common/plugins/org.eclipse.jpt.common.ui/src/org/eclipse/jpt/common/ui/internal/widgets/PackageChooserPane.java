@@ -129,9 +129,7 @@ public abstract class PackageChooserPane<T extends Model> extends ChooserPane<T>
 
 	@Override
 	protected Control addMainControl(Composite container) {
-		Composite subPane = addSubPane(container);
-
-		Text text = addText(subPane, buildTextHolder());
+		Text text = addText(container, buildTextHolder(), getHelpId());
 
 		Image image = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_CONTENT_PROPOSAL).getImage();
 		GridData data = new GridData(GridData.FILL_HORIZONTAL);
@@ -143,7 +141,7 @@ public abstract class PackageChooserPane<T extends Model> extends ChooserPane<T>
 			javaPackageCompletionProcessor
 		);
 
-		return subPane;
+		return text;
 	}
 
 	/**

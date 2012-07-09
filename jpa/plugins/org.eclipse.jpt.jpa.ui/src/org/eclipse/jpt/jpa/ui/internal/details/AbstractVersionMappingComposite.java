@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -23,9 +22,13 @@ import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.VersionMapping;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.events.ExpansionAdapter;
+import org.eclipse.ui.forms.events.ExpansionEvent;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Section;
 
 /**
  * Here the layout of this pane:
@@ -45,7 +48,7 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see VersionMapping
  * @see ColumnComposite
- * @see TemporalTypeComposite
+ * @see TemporalTypeCombo
  *
  * @version 2.3
  * @since 1.0
@@ -62,10 +65,11 @@ public abstract class AbstractVersionMappingComposite<T extends VersionMapping>
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	protected AbstractVersionMappingComposite(PropertyValueModel<? extends T> subjectHolder,
-	                               Composite parent,
-	                               WidgetFactory widgetFactory) {
+									PropertyValueModel<Boolean> enabledModel,
+									Composite parent,
+									WidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 
 	@Override
@@ -75,27 +79,31 @@ public abstract class AbstractVersionMappingComposite<T extends VersionMapping>
 	}
 	
 	protected void initializeVersionCollapsibleSection(Composite container) {
-		container = addCollapsibleSection(
-			container,
-			JptUiDetailsMessages.VersionSection_title,
-			new SimplePropertyValueModel<Boolean>(Boolean.TRUE)
-		);
-
-		this.initializeVersionSection(container);
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages.VersionSection_title);
+		section.setExpanded(true);
+		section.setClient(initializeVersionSection(section));
 	}
 
-	protected abstract void initializeVersionSection(Composite container);
+	protected abstract Control initializeVersionSection(Composite container);
 
 	protected void initializeTypeCollapsibleSection(Composite container) {
-		container = addCollapsibleSection(
-			container,
-			JptUiDetailsMessages.TypeSection_type
-		);
-		this.initializeTypeSection(container);
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages.TypeSection_type);
+		section.addExpansionListener(new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanging(ExpansionEvent e) {
+				if (e.getState() && section.getClient() == null) {
+					section.setClient(AbstractVersionMappingComposite.this.initializeTypeSection(section));
+				}
+			}
+		});
 	}
 	
-	protected void initializeTypeSection(Composite container) {
-		((GridLayout) container.getLayout()).numColumns = 2;
+	protected Control initializeTypeSection(Composite container) {
+		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
 		// No converter
 		Button noConverterButton = addRadioButton(
@@ -112,7 +120,9 @@ public abstract class AbstractVersionMappingComposite<T extends VersionMapping>
 			JptUiDetailsMessages.TypeSection_temporal, 
 			buildConverterBooleanHolder(BaseTemporalConverter.class), 
 			null);
-		registerSubPane(new TemporalTypeComposite(buildTemporalConverterHolder(converterHolder), container, getWidgetFactory()));
+		registerSubPane(new TemporalTypeCombo(buildTemporalConverterHolder(converterHolder), getEnabledModel(), container, getWidgetFactory()));
+
+		return container;
 	}
 
 	protected PropertyValueModel<Column> buildColumnHolder() {

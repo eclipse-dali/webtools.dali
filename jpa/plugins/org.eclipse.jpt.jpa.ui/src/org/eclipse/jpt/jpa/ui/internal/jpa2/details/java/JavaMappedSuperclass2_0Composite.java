@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,10 +16,14 @@ import org.eclipse.jpt.jpa.core.context.AccessHolder;
 import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComposite;
+import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractJavaMappedSuperclassComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.IdClassComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
+import org.eclipse.jpt.jpa.ui.internal.details.IdClassChooser;
+import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.widgets.Hyperlink;
 
 /**
  * Here the layout of this pane:
@@ -74,9 +78,17 @@ public class JavaMappedSuperclass2_0Composite
 	}
 	
 	@Override
-	protected void initializeMappedSuperclassSection(Composite container) {
-		new AccessTypeComposite(this, buildAccessHolder(), container);	
-		new IdClassComposite(this, buildIdClassReferenceHolder(), container);
+	protected Control initializeMappedSuperclassSection(Composite container) {
+		container = this.addSubPane(container, 2, 0, 0, 0, 0);
+
+		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
+		new AccessTypeComboViewer(this, buildAccessHolder(), container);
+
+		// Id class widgets
+		Hyperlink hyperlink = this.addHyperlink(container,JptUiDetailsMessages.IdClassComposite_label);
+		new IdClassChooser(this, this.buildIdClassReferenceHolder(), container, hyperlink);
+
+		return container;
 	}
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolder() {

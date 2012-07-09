@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -25,9 +24,13 @@ import org.eclipse.jpt.jpa.core.context.LobConverter;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.events.ExpansionAdapter;
+import org.eclipse.ui.forms.events.ExpansionEvent;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Section;
 
 /**
  * Here the layout of this pane:
@@ -67,11 +70,11 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see BasicMapping
  * @see ColumnComposite
- * @see EnumTypeComposite
- * @see FetchTypeComposite
+ * @see EnumTypeComboViewer
+ * @see FetchTypeComboViewer
  * @see LobComposite
- * @see OptionalComposite
- * @see TemporalTypeComposite
+ * @see OptionalTriStateCheckBox
+ * @see TemporalTypeCombo
  *
  * @version 2.3
  * @since 1.0
@@ -88,10 +91,11 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	protected AbstractBasicMappingComposite(PropertyValueModel<? extends T> subjectHolder,
+		 						 PropertyValueModel<Boolean> enabledModel,
 	                             Composite parent,
 	                             WidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 
 	@Override
@@ -101,31 +105,48 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 	}
 	
 	protected void initializeBasicCollapsibleSection(Composite container) {
-		container = addCollapsibleSection(
-			container,
-			JptUiDetailsMessages.BasicSection_title,
-			new SimplePropertyValueModel<Boolean>(Boolean.TRUE)
-		);
-
-		this.initializeBasicSection(container);
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages.BasicSection_title);
+		section.setExpanded(true);
+		section.setClient(this.initializeBasicSection(section));
 	}
 	
-	protected void initializeBasicSection(Composite container) {
-		new ColumnComposite(this, buildColumnHolder(), container);
-		new FetchTypeComposite(this, container);
-		new OptionalComposite(this, addSubPane(container, 4));
+	protected Control initializeBasicSection(Composite container) {
+		container = this.addSubPane(container, 2, 0, 0, 0, 0);
+
+		ColumnComposite columnComposite = new ColumnComposite(this, buildColumnHolder(), container);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		columnComposite.getControl().setLayoutData(gridData);
+
+		this.addLabel(container, JptUiDetailsMessages.BasicGeneralSection_fetchLabel);
+		new FetchTypeComboViewer(this, container);
+
+		OptionalTriStateCheckBox optionalCheckBox = new OptionalTriStateCheckBox(this, container);
+		gridData = new GridData();
+		gridData.horizontalSpan = 2;
+		optionalCheckBox.getControl().setLayoutData(gridData);
+
+		return container;
 	}
 	
 	protected void initializeTypeCollapsibleSection(Composite container) {
-		container = addCollapsibleSection(
-			container,
-			JptUiDetailsMessages.TypeSection_type
-		);
-		this.initializeTypeSection(container);
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages.TypeSection_type);
+		section.addExpansionListener(new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanging(ExpansionEvent e) {
+				if (e.getState() && section.getClient() == null) {
+					section.setClient(AbstractBasicMappingComposite.this.initializeTypeSection(section));
+				}
+			}
+		});
 	}
 
-	protected void initializeTypeSection(Composite container) {
-		((GridLayout) container.getLayout()).numColumns = 2;
+	protected Control initializeTypeSection(Composite container) {
+		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
 		// No converter
 		Button noConverterButton = addRadioButton(
@@ -150,7 +171,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 			JptUiDetailsMessages.TypeSection_temporal, 
 			buildConverterBooleanHolder(BaseTemporalConverter.class), 
 			null);
-		registerSubPane(new TemporalTypeComposite(buildTemporalConverterHolder(converterHolder), container, getWidgetFactory()));
+		registerSubPane(new TemporalTypeCombo(buildTemporalConverterHolder(converterHolder), getEnabledModel(), container, getWidgetFactory()));
 		
 		
 		// Enumerated
@@ -159,7 +180,8 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 			JptUiDetailsMessages.TypeSection_enumerated, 
 			buildConverterBooleanHolder(BaseEnumeratedConverter.class), 
 			null);
-		registerSubPane(new EnumTypeComposite(buildEnumeratedConverterHolder(converterHolder), container, getWidgetFactory()));
+		registerSubPane(new EnumTypeComboViewer(buildEnumeratedConverterHolder(converterHolder), getEnabledModel(), container, getWidgetFactory()));
+		return container;
 	}
 
 	protected PropertyValueModel<Column> buildColumnHolder() {

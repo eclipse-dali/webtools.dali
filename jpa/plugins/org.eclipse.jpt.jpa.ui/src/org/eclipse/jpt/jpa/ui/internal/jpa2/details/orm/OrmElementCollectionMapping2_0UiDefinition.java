@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
+ *  Copyright (c) 2009, 2012  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -48,9 +48,10 @@ public class OrmElementCollectionMapping2_0UiDefinition
 	public JpaComposite buildAttributeMappingComposite(
 			OrmXmlUiFactory factory, 
 			PropertyValueModel<OrmElementCollectionMapping2_0> subjectHolder, 
-			Composite parent, 
+			PropertyValueModel<Boolean> enabledModel, 
+			Composite parent,
 			WidgetFactory widgetFactory) {
 		
-		return ((OrmXmlUiFactory2_0) factory).createOrmElementCollectionMapping2_0Composite(subjectHolder, parent, widgetFactory);
+		return ((OrmXmlUiFactory2_0) factory).createOrmElementCollectionMapping2_0Composite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 }

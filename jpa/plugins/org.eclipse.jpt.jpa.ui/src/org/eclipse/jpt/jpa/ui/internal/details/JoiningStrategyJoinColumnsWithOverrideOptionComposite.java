@@ -62,7 +62,7 @@ public class JoiningStrategyJoinColumnsWithOverrideOptionComposite
 	protected void initializeLayout(Composite container) {
 		// Override Default Join Columns check box
 		addCheckBox(
-			addSubPane(container, 8),
+			container,
 			JptUiDetailsMessages.JoiningStrategyJoinColumnsComposite_overrideDefaultJoinColumns,
 			buildOverrideDefaultJoinColumnHolder(),
 			null

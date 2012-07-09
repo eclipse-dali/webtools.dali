@@ -17,7 +17,6 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Cascade;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
 
 /**
  * Here the layout of this pane:
@@ -40,7 +39,7 @@ import org.eclipse.swt.widgets.Group;
  * @version 2.0
  * @since 1.0
  */
-public class CascadeComposite<T extends Cascade> extends Pane<T>
+public class CascadeComposite extends Pane<Cascade>
 {
 	/**
 	 * Creates a new <code>CascadeComposite</code>.
@@ -51,10 +50,10 @@ public class CascadeComposite<T extends Cascade> extends Pane<T>
 	 */
 	public CascadeComposite(
 			Pane<? extends RelationshipMapping> parentPane,
-	        PropertyValueModel<T> subjectHolder,
+	        PropertyValueModel<? extends Cascade> subjectHolder,
 	        Composite parent) {
 		
-		super(parentPane, subjectHolder, parent, false);
+		super(parentPane, subjectHolder, parent);
 	}
 	
 	/**
@@ -65,22 +64,24 @@ public class CascadeComposite<T extends Cascade> extends Pane<T>
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public CascadeComposite(
-			PropertyValueModel<T> subjectHolder,
+			PropertyValueModel<? extends Cascade> subjectHolder,
 			Composite parent,
 		    WidgetFactory widgetFactory) {
 		
 		super(subjectHolder, parent, widgetFactory);
 	}
-	
+
+	@Override
+	protected Composite addComposite(Composite container) {
+		return addTitledGroup(
+			container,
+			JptUiDetailsMessages.CascadeComposite_cascadeTitle,
+			5,
+			null);
+	}
 	
 	@Override
-	protected void initializeLayout(Composite container) {
-		// Cascade group
-		Group cascadeGroup = addCascadeGroup(container);
-		
-		// Container of the check boxes
-		container = addSubPane(cascadeGroup, 5, 8, 0, 0, 0);
-		
+	protected void initializeLayout(Composite container) {		
 		addAllCheckBox(container);
 		addPersistCheckBox(container);
 		addMergeCheckBox(container);
@@ -132,13 +133,7 @@ public class CascadeComposite<T extends Cascade> extends Pane<T>
 				buildCascadeTypeRefreshHolder(),
 				null);
 	}
-	
-	protected Group addCascadeGroup(Composite container) {
-		return addTitledGroup(
-				container,
-				JptUiDetailsMessages.CascadeComposite_cascadeTitle);
-	}
-	
+		
 	protected ModifiablePropertyValueModel<Boolean> buildCascadeTypeAllHolder() {
 		return new PropertyAspectAdapter<Cascade, Boolean>(getSubjectHolder(), Cascade.ALL_PROPERTY) {
 			@Override

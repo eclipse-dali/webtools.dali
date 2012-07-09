@@ -159,16 +159,21 @@ public class EclipseLinkConversionValueDialog extends ValidatingDialog<EclipseLi
 		}
 
 		@Override
+		protected Composite addComposite(Composite container) {
+			return this.addSubPane(container, 2, 0, 0, 0, 0);
+		}
+
+		@Override
 		protected void initializeLayout(Composite container) {
-			this.dataValueText = addLabeledText(
+			this.addLabel(container,EclipseLinkUiDetailsMessages.EclipseLinkConversionValueDialog_dataValue);
+			this.dataValueText = this.addText(
 				container,
-				EclipseLinkUiDetailsMessages.EclipseLinkConversionValueDialog_dataValue,
 				buildDataValueHolder()
 			);
 			
-			this.objectValueText = addLabeledText(
+			this.addLabel(container,EclipseLinkUiDetailsMessages.EclipseLinkConversionValueDialog_objectValue);
+			this.objectValueText = this.addText(
 				container,
-				EclipseLinkUiDetailsMessages.EclipseLinkConversionValueDialog_objectValue,
 				buildObjectValueHolder()
 			);
 		}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,21 +13,25 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.AccessHolder;
-import org.eclipse.jpt.jpa.core.context.QueryContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CacheableHolder2_0;
+import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEntityComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.EntityNameComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.IdClassComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
+import org.eclipse.jpt.jpa.ui.internal.details.EntityNameCombo;
+import org.eclipse.jpt.jpa.ui.internal.details.IdClassChooser;
+import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.TableComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.java.JavaInheritanceComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.java.JavaSecondaryTablesComposite;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Cacheable2_0Pane;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Cacheable2_0TriStateCheckBox;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Entity2_0OverridesComposite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.Queries2_0Composite;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.widgets.Hyperlink;
 
 /**
  * The pane used for a Java entity.
@@ -57,12 +61,34 @@ public class JavaEntity2_0Composite
 	}
 	
 	@Override
-	protected void initializeEntitySection(Composite container) {
-		new TableComposite(this, container);
-		new EntityNameComposite(this, container);
-		new AccessTypeComposite(this, buildAccessHolder(), container);	
-		new IdClassComposite(this, buildIdClassReferenceHolder(), container);
-		new Cacheable2_0Pane(this, buildCacheableHolder(), container);
+	protected Control initializeEntitySection(Composite container) {
+		container = this.addSubPane(container, 2, 0, 0, 0, 0);
+
+		// Table widgets
+		TableComposite tableComposite = new TableComposite(this, container);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		tableComposite.getControl().setLayoutData(gridData);
+
+		// Entity name widgets
+		this.addLabel(container, JptUiDetailsMessages.EntityNameComposite_name);
+		new EntityNameCombo(this, container);
+
+		// Access type widgets
+		this.addLabel(container, JptUiMessages.AccessTypeComposite_access);
+		new AccessTypeComboViewer(this, buildAccessHolder(), container);
+
+		// Id class widgets
+		Hyperlink hyperlink = this.addHyperlink(container,JptUiDetailsMessages.IdClassComposite_label);
+		new IdClassChooser(this, this.buildIdClassReferenceHolder(), container, hyperlink);
+
+		// Cacheable widgets
+		Cacheable2_0TriStateCheckBox cacheableCheckBox = new Cacheable2_0TriStateCheckBox(this, buildCacheableHolder(), container);
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		cacheableCheckBox.getControl().setLayoutData(gridData);
+
+		return container;
 	}
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
@@ -84,22 +110,22 @@ public class JavaEntity2_0Composite
 	}
 
 	@Override
-	protected void initializeSecondaryTablesSection(Composite container) {
-		new JavaSecondaryTablesComposite(this, container);
+	protected Control initializeSecondaryTablesSection(Composite container) {
+		return new JavaSecondaryTablesComposite(this, container).getControl();
 	}
 
 	@Override
-	protected void initializeInheritanceSection(Composite container) {
-		new JavaInheritanceComposite(this, container);
+	protected Control initializeInheritanceSection(Composite container) {
+		return new JavaInheritanceComposite(this, container).getControl();
 	}
 
 	@Override
-	protected void initializeAttributeOverridesSection(Composite container) {
-		new Entity2_0OverridesComposite(this, container);
+	protected Control initializeAttributeOverridesSection(Composite container) {
+		return new Entity2_0OverridesComposite(this, container).getControl();
 	}
 
 	@Override
-	protected void initializeQueriesSection(Composite container, PropertyValueModel<QueryContainer> queryContainerHolder) {
-		new Queries2_0Composite(this, queryContainerHolder, container);
+	protected Control initializeQueriesSection(Composite container) {
+		return new Queries2_0Composite(this, this.buildQueryContainerHolder(), container).getControl();
 	}
 }

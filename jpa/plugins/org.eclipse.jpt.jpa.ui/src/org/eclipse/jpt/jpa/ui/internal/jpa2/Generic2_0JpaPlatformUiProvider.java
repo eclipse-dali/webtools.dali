@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.ui.internal.jpa2.details.java.Generic2_0JavaResourceU
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.EntityMappings2_0DetailsProvider;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmXml2_0UiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.PersistenceXml2_0UiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.persistence.details.PersistenceXmlUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceXmlUiDefinition;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once

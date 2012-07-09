@@ -13,15 +13,18 @@ import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.StringConverter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTimeOfDay;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 
 /**
  * Here is the layout of this pane:
@@ -50,9 +53,10 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 	protected PropertyValueModel<Boolean> ttlEnabled;
 
 	public EclipseLinkExpiryComposite(Pane<? extends EclipseLinkCaching> parentPane,
-	                          Composite parent) {
+	                          Composite parent,
+	                          PropertyValueModel<Boolean> enabledModel) {
 
-		super(parentPane, parent);
+		super(parentPane, parent, enabledModel);
 	}
 
 	/**
@@ -67,81 +71,81 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 	}
 
 	@Override
+	protected Composite addComposite(Composite container) {
+		Group group = this.getWidgetFactory().createGroup(container, EclipseLinkUiDetailsMessages.EclipseLinkExpiryComposite_expirySection);
+
+		GridLayout layout = new GridLayout(4, false);
+		layout.marginHeight = 0;
+		layout.marginWidth  = 0;
+		layout.marginTop    = 5;
+		layout.marginLeft   = 5;
+		layout.marginBottom = 5;
+		layout.marginRight  = 5;
+		group.setLayout(layout);
+
+		return group;
+	}
+
+	@Override
 	protected void initializeLayout(Composite container) {
-		// Expiry group pane
-		Group expiryGroupPane = addTitledGroup(
-			container,
-			EclipseLinkUiDetailsMessages.EclipseLinkExpiryComposite_expirySection,
-			2,
-			null
-		);
-				
 		// No Expiry radio button
 		Button button = addRadioButton(
-			expiryGroupPane,
+			container,
 			EclipseLinkUiDetailsMessages.EclipseLinkExpiryComposite_noExpiry,
 			buildNoExpiryHolder(),
 			null
 		);
 		GridData gridData = new GridData();
-		gridData.horizontalSpan = 2;
+		gridData.horizontalSpan = 4;
 		button.setLayoutData(gridData);
 
 		
 		// Time To Live Expiry radio button
 		addRadioButton(
-			expiryGroupPane,
+			container,
 			EclipseLinkUiDetailsMessages.EclipseLinkExpiryComposite_timeToLiveExpiry,
 			buildExpiryHolder(),
 			null
 		);
-		
-		addTimeToLiveComposite(expiryGroupPane);
-		
-		// Daily Expiry radio button
-		addRadioButton(
-			expiryGroupPane,
-			EclipseLinkUiDetailsMessages.EclipseLinkExpiryComposite_dailyExpiry,
-			buildTimeOfDayExpiryBooleanHolder(),
-			null
-		);
-		
-		addTimeOfDayComposite(expiryGroupPane);
-	}
-	
-	protected void addTimeToLiveComposite(Composite parent) {
-		Composite container = this.addSubPane(parent, 3, 0, 10, 0, 0);
 
-		addLabel(
+		Label expireAfterLabel = this.addLabel(
 			container,
 			EclipseLinkUiDetailsMessages.EclipseLinkExpiryComposite_timeToLiveExpiryExpireAfter,
 			this.getTtlEnabled()
 		);
-	
-		IntegerCombo<?> combo = addTimeToLiveExpiryCombo(container);
-		GridData gridData = new GridData();
-		gridData.grabExcessHorizontalSpace = false;
-		combo.getControl().setLayoutData(gridData);
+		gridData = new GridData();
+		gridData.horizontalIndent = 10;
+		expireAfterLabel.setLayoutData(gridData);
+
+		this.addTimeToLiveExpiryCombo(container);
 		
-		addLabel(
+		this.addLabel(
 			container,
 			EclipseLinkUiDetailsMessages.EclipseLinkExpiryComposite_timeToLiveExpiryMilliseconds,
 			this.getTtlEnabled()
 		);
-	}
-	
-	protected void addTimeOfDayComposite(Composite parent) {
-		Composite container = this.addSubPane(parent, 2, 0, 10, 0, 0);
+
+
+		// Daily Expiry radio button
+		addRadioButton(
+			container,
+			EclipseLinkUiDetailsMessages.EclipseLinkExpiryComposite_dailyExpiry,
+			buildTimeOfDayExpiryBooleanHolder(),
+			null
+		);
 
 		PropertyValueModel<Boolean> todEnabled = this.buildTimeOfDayExpiryEnabler();
-		addLabel(
+		Label expireAtLabel = addLabel(
 			container,
 			EclipseLinkUiDetailsMessages.EclipseLinkExpiryComposite_timeOfDayExpiryExpireAt,
 			todEnabled
 		);
+		gridData = new GridData();
+		gridData.horizontalIndent = 10;
+		expireAtLabel.setLayoutData(gridData);
 		
 		PropertyValueModel<EclipseLinkTimeOfDay> timeOfDayExpiryHolder = buildTimeOfDayExpiryHolder();
-		addDateTime(
+		DateTime dataTime = addDateTime(
 			container, 
 			buildTimeOfDayExpiryHourHolder(timeOfDayExpiryHolder), 
 			buildTimeOfDayExpiryMinuteHolder(timeOfDayExpiryHolder),
@@ -149,6 +153,10 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 			null,
 			todEnabled
 		);
+		
+		gridData = new GridData();
+		gridData.horizontalSpan = 2;
+		dataTime.setLayoutData(gridData);
 	}
 	
 	private ModifiablePropertyValueModel<Boolean> buildNoExpiryHolder() {
@@ -219,13 +227,7 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 						StringConverter.Default.<String>instance(),
 						EclipseLinkExpiryComposite.this.getTtlEnabled()
 					);
-			}
-		
-			@Override
-			protected String getLabelText() {
-				throw new UnsupportedOperationException();
-			}
-		
+			}		
 		
 			@Override
 			protected String getHelpId() {

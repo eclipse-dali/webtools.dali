@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,12 +12,10 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkCaching;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkAlwaysRefreshComposite;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkCacheSizeComposite;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkCacheTypeComposite;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkCacheSizeCombo;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkCacheTypeComboViewer;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkCachingComposite;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkDisableHitsComposite;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkRefreshOnlyIfNewerComposite;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java.JavaEclipseLinkEntityComposite;
 import org.eclipse.swt.widgets.Composite;
 
@@ -42,8 +40,8 @@ import org.eclipse.swt.widgets.Composite;
  * @see Entity
  * @see EclipseLinkCaching
  * @see JavaEclipseLinkEntityComposite - The parent container
- * @see EclipseLinkCacheTypeComposite
- * @see EclipseLinkCacheSizeComposite
+ * @see EclipseLinkCacheTypeComboViewer
+ * @see EclipseLinkCacheSizeCombo
  * @see EclipseLinkAlwaysRefreshComposite
  * @see EclipseLinkRefreshOnlyIfNewerComposite
  * @see EclipseLinkDisableHitsComposite
@@ -62,7 +60,8 @@ public class OrmEclipseLinkCachingComposite extends EclipseLinkCachingComposite<
 	}
 
 	@Override
-	protected void initializeExistenceCheckingComposite(Composite parent) {
-		new OrmEclipseLinkExistenceCheckingComposite(this, parent);
+	protected void initializeExistenceCheckingComposite(Composite container) {
+		this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkExistenceCheckingComposite_label);
+		this.addExistenceCheckingTypeCombo(container);
 	}
 }

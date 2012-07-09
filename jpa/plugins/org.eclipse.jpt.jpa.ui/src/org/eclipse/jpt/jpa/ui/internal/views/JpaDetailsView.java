@@ -23,7 +23,6 @@ import org.eclipse.jpt.jpa.ui.details.JpaDetailsPageManager;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.selection.JpaViewManager;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -122,10 +121,7 @@ public class JpaDetailsView
 	}
 
 	private Control buildDefaultPage() {
-		Composite composite = this.widgetFactory.createComposite(this.pageBook);
-		composite.setLayout(new FillLayout(SWT.VERTICAL));
-		this.widgetFactory.createLabel(composite, JptUiMessages.JpaDetailsView_viewNotAvailable);
-		return composite;
+		return this.widgetFactory.createLabel(this.pageBook, JptUiMessages.JpaDetailsView_viewNotAvailable);
 	}
 
 	private Manager buildManager() {

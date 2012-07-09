@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,14 +22,14 @@ import org.eclipse.swt.widgets.Composite;
 public abstract class ColumnCombo<T extends JpaNode>
 	extends DatabaseObjectCombo<T>
 {
-	public ColumnCombo(
+	protected ColumnCombo(
 			Pane<? extends T> parentPane, 
 			Composite parent) {
 		
 		super(parentPane, parent);
 	}
 	
-	public ColumnCombo(
+	protected ColumnCombo(
 			Pane<?> parentPane,
 			PropertyValueModel<? extends T> subjectHolder,
 			Composite parent) {
@@ -37,6 +37,15 @@ public abstract class ColumnCombo<T extends JpaNode>
 		super(parentPane, subjectHolder, parent);
 	}
 	
+	protected ColumnCombo(
+			Pane<?> parentPane,
+			PropertyValueModel<? extends T> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parent) {
+
+		super(parentPane, subjectHolder, enabledModel, parent);
+	}
+
 	
 	@Override
 	protected Iterable<String> getValues_() {

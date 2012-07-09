@@ -121,20 +121,25 @@ public class AddGeneratorDialog extends ValidatingDialog<AddGeneratorStateObject
 		}
 
 		@Override
+		protected Composite addComposite(Composite container) {
+			return this.addSubPane(container, 2, 0, 0, 0, 0);
+		}
+
+		@Override
 		protected void initializeLayout(Composite container) {
-			this.nameText = addLabeledText(
+			this.addLabel(container, JptUiDetailsOrmMessages.AddGeneratorDialog_name);
+			this.nameText = this.addText(
 				container,
-				JptUiDetailsOrmMessages.AddGeneratorDialog_name,
 				buildNameHolder()
 			);
 			
-			addLabeledCombo(
-				container, 
-				JptUiDetailsOrmMessages.AddGeneratorDialog_generatorType, 
+			this.addLabel(container, JptUiDetailsOrmMessages.AddGeneratorDialog_generatorType);
+			this.addCombo(
+				container,  
 				buildGeneratorTypeListHolder(), 
 				buildGeneratorTypeHolder(), 
 				buildStringConverter(),
-				null);
+				(String) null);
 		}
 
 		protected ListValueModel<String> buildGeneratorTypeListHolder() {

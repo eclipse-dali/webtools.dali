@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class OrmPackageChooser extends Pane<EntityMappings>
+public class OrmPackageChooser extends PackageChooserPane<EntityMappings>
 {
 	/**
 	 * Creates a new <code>XmlPackageChooser</code>.
@@ -47,52 +47,33 @@ public class OrmPackageChooser extends Pane<EntityMappings>
 		super(parentPane, parent);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
-	protected void initializeLayout(Composite container) {
-
-		addPackageChooserPane(container);
-	}
-
-	private void addPackageChooserPane(Composite container) {
-
-		new PackageChooserPane<EntityMappings>(this, container) {
+	protected ModifiablePropertyValueModel<String> buildTextHolder() {
+		return new PropertyAspectAdapter<EntityMappings, String>(getSubjectHolder(), EntityMappings.PACKAGE_PROPERTY) {
 			@Override
-			protected ModifiablePropertyValueModel<String> buildTextHolder() {
-				return new PropertyAspectAdapter<EntityMappings, String>(getSubjectHolder(), EntityMappings.PACKAGE_PROPERTY) {
-					@Override
-					protected String buildValue_() {
-						return subject.getPackage();
-					}
-
-					@Override
-					protected void setValue_(String value) {
-						subject.setPackage(value == "" ? null : value); //$NON-NLS-1$
-					}
-				};
+			protected String buildValue_() {
+				return subject.getPackage();
 			}
 
 			@Override
-			protected String getLabelText() {
-				return JptUiDetailsOrmMessages.EntityMappingsDetailsPage_package;
-			}
-
-			@Override
-			protected IJavaProject getJavaProject() {
-				return getSubject().getJpaProject().getJavaProject();
-			}
-
-			@Override
-			protected String getPackageName() {
-				return getSubject().getPackage();
-			}
-
-			@Override
-			protected void setPackageName(String packageName) {
-				getSubject().setPackage(packageName);
+			protected void setValue_(String value) {
+				subject.setPackage(value == "" ? null : value); //$NON-NLS-1$
 			}
 		};
+	}
+
+	@Override
+	protected IJavaProject getJavaProject() {
+		return getSubject().getJpaProject().getJavaProject();
+	}
+
+	@Override
+	protected String getPackageName() {
+		return getSubject().getPackage();
+	}
+
+	@Override
+	protected void setPackageName(String packageName) {
+		getSubject().setPackage(packageName);
 	}
 }

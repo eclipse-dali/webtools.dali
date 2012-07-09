@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,14 +10,14 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.java;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkCaching;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkAlwaysRefreshComposite;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkCacheSizeComposite;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkCacheTypeComposite;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkCacheSizeCombo;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkCacheTypeComboViewer;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkCaching2_0Composite;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkDisableHitsComposite;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkRefreshOnlyIfNewerComposite;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -41,8 +41,8 @@ import org.eclipse.swt.widgets.Composite;
  * @see Entity
  * @see EclipseLinkCaching
  * @see JavaEclipseLinkEntityComposite - The parent container
- * @see EclipseLinkCacheTypeComposite
- * @see EclipseLinkCacheSizeComposite
+ * @see EclipseLinkCacheTypeComboViewer
+ * @see EclipseLinkCacheSizeCombo
  * @see EclipseLinkAlwaysRefreshComposite
  * @see EclipseLinkRefreshOnlyIfNewerComposite
  * @see EclipseLinkDisableHitsComposite
@@ -61,7 +61,26 @@ public class JavaEclipseLinkCaching2_0Composite extends EclipseLinkCaching2_0Com
 	}
 
 	@Override
-	protected void initializeExistenceCheckingComposite(Composite parent) {
-		new JavaEclipseLinkExistenceCheckingComposite(this, parent);
+	protected void initializeExistenceCheckingComposite(Composite container) {
+		this.addCheckBox( 
+                 container, 
+                 EclipseLinkUiDetailsMessages.EclipseLinkExistenceCheckingComposite_label, 
+                 buildExistenceCheckingHolder(), 
+                 null);
+		this.addExistenceCheckingTypeCombo(container);
+	}
+
+	private ModifiablePropertyValueModel<Boolean> buildExistenceCheckingHolder() {
+		return new PropertyAspectAdapter<JavaEclipseLinkCaching, Boolean>(getSubjectHolder(), JavaEclipseLinkCaching.EXISTENCE_CHECKING_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				return Boolean.valueOf(this.subject.isExistenceChecking());
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				this.subject.setExistenceChecking(value.booleanValue());
+			}
+		};
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,9 @@ import org.eclipse.jpt.jpa.core.context.EmbeddedMapping;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEmbeddedMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.EmbeddedMappingOverridesComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.java.BaseJavaUiFactory;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 /**
  * Here the layout of this pane:
@@ -45,20 +47,30 @@ public class OrmEmbeddedMappingComposite
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public OrmEmbeddedMappingComposite(PropertyValueModel<? extends EmbeddedMapping> subjectHolder,
-	                                Composite parent,
+									PropertyValueModel<Boolean> enabledModel,
+									Composite parent,
 	                                WidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	@Override
-	protected void initializeEmbeddedSection(Composite container) {
-		new OrmMappingNameChooser(this, getSubjectHolder(), container);
+	protected Control initializeEmbeddedSection(Composite container) {
+		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
-		new EmbeddedMappingOverridesComposite(
-			this,
-			container
-		);
+		// Name widgets
+		this.addLabel(container, JptUiDetailsOrmMessages.OrmMappingNameChooser_name);
+		new OrmMappingNameText(this, getSubjectHolder(), container);
+
+		// Overrides widgets
+		EmbeddedMappingOverridesComposite overridesComposite = new EmbeddedMappingOverridesComposite(
+				this,
+				container);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		overridesComposite.getControl().setLayoutData(gridData);
+
+		return container;
 	}	
 
 }

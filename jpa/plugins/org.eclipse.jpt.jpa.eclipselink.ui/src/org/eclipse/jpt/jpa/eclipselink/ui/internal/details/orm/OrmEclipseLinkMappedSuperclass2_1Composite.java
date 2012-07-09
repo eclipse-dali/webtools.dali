@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,11 +14,16 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.QueryContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappedSuperclass;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
+import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.QueriesComposite;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.events.ExpansionAdapter;
+import org.eclipse.ui.forms.events.ExpansionEvent;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Section;
 
 public class OrmEclipseLinkMappedSuperclass2_1Composite
 	extends AbstractOrmEclipseLinkMappedSuperclassComposite {
@@ -40,20 +45,27 @@ public class OrmEclipseLinkMappedSuperclass2_1Composite
 	}
 
 	@Override
-	protected void initializeCachingSection(Composite container, PropertyValueModel<OrmEclipseLinkCaching> cachingHolder) {
-		new OrmEclipseLinkCaching2_0Composite(this, cachingHolder, container);
+	protected Control initializeCachingSection(Composite container) {
+		return new OrmEclipseLinkCaching2_0Composite(this, this.buildCachingHolder(), container).getControl();
 	}
-
+	
 	protected void initializeQueriesCollapsibleSection(Composite container) {
-		container = addCollapsibleSection(
-				container,
-				EclipseLinkUiDetailsMessages.EclipseLinkMappedSuperclassComposite_queries);
-		this.initializeQueriesSection(container, buildQueryContainerHolder());
-		
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages.EntityComposite_queries);
+
+		section.addExpansionListener(new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanging(ExpansionEvent e) {
+				if (e.getState() && section.getClient() == null) {
+					section.setClient(initializeQueriesSection(section));
+				}
+			}
+		});
 	}
 
-	protected void initializeQueriesSection(Composite container, PropertyValueModel<QueryContainer> queryContainerHolder) {
-		new QueriesComposite(this, queryContainerHolder, container);
+	protected Control initializeQueriesSection(Composite container) {
+		return new QueriesComposite(this, this.buildQueryContainerHolder(), container).getControl();
 	}
 
 	private PropertyValueModel<QueryContainer> buildQueryContainerHolder() {

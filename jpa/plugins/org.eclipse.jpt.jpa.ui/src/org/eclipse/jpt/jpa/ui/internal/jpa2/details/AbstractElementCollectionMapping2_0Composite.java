@@ -19,6 +19,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
+import org.eclipse.jpt.jpa.core.context.CollectionMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.ConvertibleMapping;
@@ -29,17 +30,21 @@ import org.eclipse.jpt.jpa.core.jpa2.context.CollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.ColumnComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.EnumTypeComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.EnumTypeComboViewer;
+import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
-import org.eclipse.jpt.jpa.ui.internal.details.OptionalComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.TemporalTypeComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.TemporalTypeCombo;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.events.ExpansionAdapter;
+import org.eclipse.ui.forms.events.ExpansionEvent;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Hyperlink;
+import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.PageBook;
 
 /**
@@ -80,11 +85,11 @@ import org.eclipse.ui.part.PageBook;
  *
  * @see BasicMapping
  * @see OrderColumnComposite
- * @see EnumTypeComposite
- * @see FetchTypeComposite
+ * @see EnumTypeComboViewer
+ * @see FetchTypeComboViewer
  * @see LobComposite
- * @see OptionalComposite
- * @see TemporalTypeComposite
+ * @see OptionalTriStateCheckBox
+ * @see TemporalTypeCombo
  *
  * @version 2.3
  * @since 2.3
@@ -94,9 +99,9 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 	implements JpaComposite
 {
 		
-	private Composite basicValueComposite;
+	private Control basicValueComposite;
 	
-	private Composite embeddableValueComposite;
+	private Control embeddableValueComposite;
 	
 	/**
 	 * Creates a new <code>BasicMappingComposite</code>.
@@ -106,11 +111,13 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	protected AbstractElementCollectionMapping2_0Composite(PropertyValueModel<? extends T> subjectHolder,
+								 PropertyValueModel<Boolean> enabledModel,
 	                             Composite parent,
 	                             WidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(subjectHolder, enabledModel, parent, widgetFactory);
 	}
+
 	@Override
 	protected void initializeLayout(Composite container) {
 		initializeElementCollectionCollapsibleSection(container);
@@ -120,68 +127,101 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 	}
 	
 	protected void initializeElementCollectionCollapsibleSection(Composite container) {
-		container = addCollapsibleSection(
-			container,
-			JptUiDetailsMessages2_0.ElementCollectionSection_title,
-			new SimplePropertyValueModel<Boolean>(Boolean.TRUE)
-		);
-
-		this.initializeElementCollectionSection(container);
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages2_0.ElementCollectionSection_title);
+		section.setExpanded(true);
+		section.setClient(this.initializeElementCollectionSection(section));
 	}
 
-	protected void initializeElementCollectionSection(Composite container) {
-		new TargetClassComposite(this, container);
-		new FetchTypeComposite(this, container);
-		new CollectionTable2_0Composite(this, buildCollectionTableHolder(), container);
-	}
+	protected Control initializeElementCollectionSection(Composite container) {
+		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
+		// Target class widgets
+		Hyperlink hyperlink = this.addHyperlink(container, JptUiDetailsMessages2_0.TargetClassComposite_label);
+		new TargetClassChooser(this, container, hyperlink);
+
+		// Fetch type widgets
+		this.addLabel(container, JptUiDetailsMessages.BasicGeneralSection_fetchLabel);
+		new FetchTypeComboViewer(this, container);
+
+		// Collection table widgets
+		CollectionTable2_0Composite collectionTableComposite = new CollectionTable2_0Composite(this, buildCollectionTableHolder(), container);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		collectionTableComposite.getControl().setLayoutData(gridData);
+
+		return container;
+	}
+	
 	protected void initializeOrderingCollapsibleSection(Composite container) {
-		new Ordering2_0Composite(this, container);
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages.OrderingComposite_orderingGroup);
+		section.setClient(initializeOrderingSection(section));
+		section.addExpansionListener(new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanging(ExpansionEvent e) {
+				if (e.getState() && section.getClient() == null) {
+					section.setClient(AbstractElementCollectionMapping2_0Composite.this.initializeOrderingSection(section));
+				}
+			}
+		});
+	}
+	
+	protected Control initializeOrderingSection(Composite container) {
+		return new Ordering2_0Composite(this, container).getControl();
 	}
 	
 	protected void initializeValueCollapsibleSection(Composite container) {
-		Composite valueSection = addCollapsibleSection(
-			container,
-			JptUiDetailsMessages2_0.AbstractElementCollectionMapping2_0_Composite_valueSectionTitle
-		);
-		initializeValueSection(valueSection);
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages2_0.AbstractElementCollectionMapping2_0_Composite_valueSectionTitle);
+		section.setClient(initializeValueSection(section));
 	}
 	
 	protected void initializeKeyCollapsibleSection(Composite container) {
-		
+		//nothing yet
 	}
 
-	protected void initializeValueSection(Composite container) {
+	protected Control initializeValueSection(Composite container) {
 		PageBook pageBook = new PageBook(container, SWT.NULL);
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalIndent = 5;
 		pageBook.setLayoutData(gd);
-
-		this.initializeBasicValueSection(pageBook);
-		this.initializeEmbeddableValueSection(pageBook);
 		
 		installValueControlSwitcher(pageBook);
+		return pageBook;
 	}
 
-	protected void initializeBasicValueSection(Composite container) {
-		this.basicValueComposite = addSubPane(container);
+	protected Control getBasicValueComposite(Composite container) {
+		if (this.basicValueComposite == null) {
+			this.basicValueComposite = buildBasicValueSection(container);
+		}
+		return this.basicValueComposite;
+	}
 
-		new ColumnComposite(this, buildValueColumnHolder(), this.basicValueComposite);
+	protected Control buildBasicValueSection(Composite container) {
+		Composite basicComposite = addSubPane(container);
+
+		new ColumnComposite(this, buildValueColumnHolder(), basicComposite);
 		// type section
 		Composite converterSection = addCollapsibleSubSection(
-			this.basicValueComposite,
+			basicComposite,
 			JptUiDetailsMessages.TypeSection_type,
 			new SimplePropertyValueModel<Boolean>(Boolean.FALSE)
 		);
-		((GridLayout) converterSection.getLayout()).numColumns = 2;
 
 		this.initializeBasicValueTypeSection(converterSection);
+
+		return basicComposite;
 	}
 
-	protected void initializeBasicValueTypeSection(Composite typeSection) {
+	protected void initializeBasicValueTypeSection(Composite container) {
+		((GridLayout) container.getLayout()).numColumns = 2;
 		// No converter
 		Button noConverterButton = addRadioButton(
-			typeSection, 
+			container, 
 			JptUiDetailsMessages.TypeSection_default, 
 			buildNoConverterHolder(), 
 			null);
@@ -189,7 +229,7 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 
 		// Lob
 		Button lobButton = addRadioButton(
-			typeSection, 
+			container, 
 			JptUiDetailsMessages.TypeSection_lob, 
 			buildLobConverterHolder(), 
 			null);
@@ -199,38 +239,45 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 		PropertyValueModel<Converter> converterHolder = buildConverterHolder();
 		// Temporal
 		addRadioButton(
-			typeSection, 
+			container, 
 			JptUiDetailsMessages.TypeSection_temporal, 
 			buildTemporalBooleanHolder(), 
 			null);
-		registerSubPane(new TemporalTypeComposite(buildTemporalConverterHolder(converterHolder), typeSection, getWidgetFactory()));
+		registerSubPane(new TemporalTypeCombo(buildTemporalConverterHolder(converterHolder), getEnabledModel(), container, getWidgetFactory()));
 
 
 		// Enumerated
 		addRadioButton(
-			typeSection, 
+			container, 
 			JptUiDetailsMessages.TypeSection_enumerated, 
 			buildEnumeratedBooleanHolder(), 
 			null);
-		registerSubPane(new EnumTypeComposite(buildEnumeratedConverterHolder(converterHolder), typeSection, getWidgetFactory()));
+		registerSubPane(new EnumTypeComboViewer(buildEnumeratedConverterHolder(converterHolder), getEnabledModel(), container, getWidgetFactory()));
 	}
 
-	protected void initializeEmbeddableValueSection(Composite container) {
-		this.embeddableValueComposite = new ElementCollectionValueOverridesComposite(this, container).getControl();
+	protected Control getEmbeddableValueComposite(Composite container) {
+		if (this.embeddableValueComposite == null) {
+			this.embeddableValueComposite = buildEmbeddableValueSection(container);
+		}
+		return this.embeddableValueComposite;
+	}
+
+	protected Control buildEmbeddableValueSection(Composite container) {
+		return new ElementCollectionValueOverridesComposite(this, container).getControl();
 	}
 
 	private void installValueControlSwitcher(PageBook pageBook) {
 
 		new ControlSwitcher(
 			buildValueHolder(),
-			buildPaneTransformer(),
+			buildPaneTransformer(pageBook),
 			pageBook
 		);
 	}
 	
 	protected PropertyValueModel<ElementCollectionMapping2_0.Type> buildValueHolder() {
 		return new PropertyAspectAdapter<T, ElementCollectionMapping2_0.Type>(
-				this.getSubjectHolder(), ElementCollectionMapping2_0.VALUE_TYPE_PROPERTY) {
+				this.getSubjectHolder(), CollectionMapping.VALUE_TYPE_PROPERTY) {
 			@Override
 			protected ElementCollectionMapping2_0.Type buildValue_() {
 				return this.subject.getValueType();
@@ -238,10 +285,10 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 		};
 	}
 
-	private Transformer<ElementCollectionMapping2_0.Type, Control> buildPaneTransformer() {
+	private Transformer<ElementCollectionMapping2_0.Type, Control> buildPaneTransformer(final Composite container) {
 		return new Transformer<ElementCollectionMapping2_0.Type, Control>() {
 			public Control transform(ElementCollectionMapping2_0.Type type) {
-				return AbstractElementCollectionMapping2_0Composite.this.transformValueType(type);
+				return AbstractElementCollectionMapping2_0Composite.this.transformValueType(type, container);
 			}
 		};
 	}
@@ -249,15 +296,15 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 	/**
 	 * Given the selected override, return the control that will be displayed
 	 */
-	protected Control transformValueType(ElementCollectionMapping2_0.Type type) {
+	protected Control transformValueType(ElementCollectionMapping2_0.Type type, Composite container) {
 		if (type == null) {
 			return null;
 		}
 		switch (type) {
 			case BASIC_TYPE :
-				return this.basicValueComposite;
+				return this.getBasicValueComposite(container);
 			case EMBEDDABLE_TYPE :
-				return this.embeddableValueComposite;
+				return this.getEmbeddableValueComposite(container);
 			default :
 				return null;
 		}

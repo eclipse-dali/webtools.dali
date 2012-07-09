@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008, 2009  Oracle. 
+ *  Copyright (c) 2008, 2012  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -48,9 +48,10 @@ public class OrmManyToManyMappingUiDefinition
 	public JpaComposite buildAttributeMappingComposite(
 			OrmXmlUiFactory factory,
 			PropertyValueModel<OrmManyToManyMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		
-		return factory.createOrmManyToManyMappingComposite(subjectHolder, parent, widgetFactory);
+		return factory.createOrmManyToManyMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008, 2009  Oracle. 
+ *  Copyright (c) 2008, 2012  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -48,9 +48,10 @@ public class OrmTransientMappingUiDefinition
 	public JpaComposite buildAttributeMappingComposite(
 			OrmXmlUiFactory factory,
 			PropertyValueModel<OrmTransientMapping> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		
-		return factory.createOrmTransientMappingComposite(subjectHolder, parent, widgetFactory);
+		return factory.createOrmTransientMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 }

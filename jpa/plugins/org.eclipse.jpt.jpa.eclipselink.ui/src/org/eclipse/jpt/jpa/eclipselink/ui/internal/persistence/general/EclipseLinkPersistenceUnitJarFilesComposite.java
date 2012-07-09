@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
+ *  Copyright (c) 2009, 2012  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -14,9 +14,9 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.ui.internal.persistence.details.ArchiveFileSelectionDialog;
-import org.eclipse.jpt.jpa.ui.internal.persistence.details.PersistenceUnitJarFilesComposite;
-import org.eclipse.jpt.jpa.ui.internal.persistence.details.ArchiveFileSelectionDialog.DeploymentPathCalculator;
+import org.eclipse.jpt.jpa.ui.internal.persistence.ArchiveFileSelectionDialog;
+import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitJarFilesComposite;
+import org.eclipse.jpt.jpa.ui.internal.persistence.ArchiveFileSelectionDialog.DeploymentPathCalculator;
 import org.eclipse.swt.widgets.Composite;
 
 public class EclipseLinkPersistenceUnitJarFilesComposite
@@ -45,9 +45,7 @@ public class EclipseLinkPersistenceUnitJarFilesComposite
 			if (JptJpaCorePlugin.projectHasWebFacet(file.getProject())) {
 				return "../" + baseDeploymentPath;
 			}
-			else {
-				return baseDeploymentPath;
-			}
+			return baseDeploymentPath;
 		}
 	}
 }

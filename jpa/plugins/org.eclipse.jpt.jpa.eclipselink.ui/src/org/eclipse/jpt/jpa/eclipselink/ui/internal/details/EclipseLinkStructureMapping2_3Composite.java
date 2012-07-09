@@ -20,10 +20,11 @@ public class EclipseLinkStructureMapping2_3Composite extends Pane<EclipseLinkStr
                                        implements JpaComposite
 {
 	public EclipseLinkStructureMapping2_3Composite(PropertyValueModel<? extends EclipseLinkStructureMapping2_3> subjectHolder,
-	                                 Composite parent,
-	                                 WidgetFactory widgetFactory) {
+									PropertyValueModel<Boolean> enabledModel,
+									Composite parent,
+	                                WidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 
 	@Override

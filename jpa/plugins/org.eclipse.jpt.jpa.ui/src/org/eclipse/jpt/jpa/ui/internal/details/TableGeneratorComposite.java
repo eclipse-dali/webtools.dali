@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -87,68 +87,46 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 		return GeneratorContainer.TABLE_GENERATOR_PROPERTY;
 	}
 
+	@Override
+	protected Composite addComposite(Composite container) {
+		return this.addSubPane(container, 2, 0, 0, 0, 0);
+	}
 	
 	@Override
 	protected void initializeLayout(Composite container) {
-
 		// Name widgets
-		addLabeledText(
-			container,
-			JptUiDetailsMessages.TableGeneratorComposite_name,
-			buildGeneratorNameHolder(),
-			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_NAME
-		);
+		this.addLabel(container, JptUiDetailsMessages.TableGeneratorComposite_name);
+		this.addText(container, this.buildGeneratorNameHolder(), JpaHelpContextIds.MAPPING_TABLE_GENERATOR_NAME);
 
 		// Table widgets
-		addLabeledComposite(
-			container,
-			JptUiDetailsMessages.TableGeneratorComposite_table,
-			addTableNameCombo(container),
-			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_TABLE
-		);
+		this.addLabel(container, JptUiDetailsMessages.TableGeneratorComposite_table);
+		this.addTableNameCombo(container);
 
 		// Schema widgets
-		addLabeledComposite(
-			container,
-			JptUiDetailsMessages.TableGeneratorComposite_schema,
-			addSchemaCombo(container),
-			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_SCHEMA
-		);
+		this.addLabel(container, JptUiDetailsMessages.TableGeneratorComposite_schema);
+		this.addSchemaCombo(container);
 
 		// Catalog widgets
-		addLabeledComposite(
-			container,
-			JptUiDetailsMessages.TableGeneratorComposite_catalog,
-			addCatalogCombo(container),
-			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_CATALOG
-		);
+		this.addLabel(container, JptUiDetailsMessages.TableGeneratorComposite_catalog);
+		this.addCatalogCombo(container);
 
 		// Primary Key Column widgets
-		addLabeledComposite(
-			container,
-			JptUiDetailsMessages.TableGeneratorComposite_pkColumn,
-			addPkColumnNameCombo(container),
-			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_PRIMARY_KEY_COLUMN
-		);
+		this.addLabel(container, JptUiDetailsMessages.TableGeneratorComposite_pkColumn);
+		this.addPkColumnNameCombo(container);
 
 		// Value Column widgets
-		addLabeledComposite(
-			container,
-			JptUiDetailsMessages.TableGeneratorComposite_valueColumn,
-			addValueColumnCombo(container),
-			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_VALUE_COLUMN
-		);
+		this.addLabel(container, JptUiDetailsMessages.TableGeneratorComposite_valueColumn);
+		this.addValueColumnCombo(container);
 
 		// Primary Key Column Value widgets
-		addLabeledComposite(
-			container,
-			JptUiDetailsMessages.TableGeneratorComposite_pkColumnValue,
-			addPkColumnValueCombo(container),
-			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_PRIMARY_KEY_COLUMN_VALUE
-		);
+		this.addLabel(container, JptUiDetailsMessages.TableGeneratorComposite_pkColumnValue);
+		this.addPkColumnValueCombo(container);
 
-		addAllocationSizeCombo(container);
-		addInitialValueCombo(container);
+		this.addLabel(container, JptUiDetailsMessages.GeneratorComposite_allocationSize);
+		this.addAllocationSizeCombo(container);
+
+		this.addLabel(container, JptUiDetailsMessages.GeneratorComposite_initialValue);
+		this.addInitialValueCombo(container);
 	}	
 
 	private CatalogCombo<TableGenerator> addCatalogCombo(Composite container) {
@@ -188,6 +166,16 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			@Override
 			protected String getValue() {
 				return getSubject().getSpecifiedCatalog();
+			}
+
+			@Override
+			protected String getHelpId() {
+				return JpaHelpContextIds.MAPPING_TABLE_GENERATOR_CATALOG;
+			}
+
+			@Override
+			public String toString() {
+				return "TableGeneratorComposite.catalogCombo"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -247,6 +235,16 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			protected String getValue() {
 				return getSubject().getSpecifiedPkColumnName();
 			}
+
+			@Override
+			protected String getHelpId() {
+				return JpaHelpContextIds.MAPPING_TABLE_GENERATOR_PRIMARY_KEY_COLUMN;
+			}
+
+			@Override
+			public String toString() {
+				return "TableGeneratorComposite.pkColumnNameCombo"; //$NON-NLS-1$
+			}
 		};
 	}
 
@@ -292,6 +290,16 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			@Override
 			protected String getValue() {
 				return getSubject().getSpecifiedPkColumnValue();
+			}
+
+			@Override
+			protected String getHelpId() {
+				return JpaHelpContextIds.MAPPING_TABLE_GENERATOR_PRIMARY_KEY_COLUMN_VALUE;
+			}
+
+			@Override
+			public String toString() {
+				return "TableGeneratorComposite.pkColumnValueCombo"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -361,6 +369,16 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			protected SchemaContainer getDbSchemaContainer_() {
 				// we overrode #getDbSchemaContainer() instead
 				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			protected String getHelpId() {
+				return JpaHelpContextIds.MAPPING_TABLE_GENERATOR_SCHEMA;
+			}
+
+			@Override
+			public String toString() {
+				return "TableGeneratorComposite.schemaCombo"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -436,6 +454,15 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 				throw new UnsupportedOperationException();
 			}
 
+			@Override
+			protected String getHelpId() {
+				return JpaHelpContextIds.MAPPING_TABLE_GENERATOR_TABLE;
+			}
+
+			@Override
+			public String toString() {
+				return "TableGeneratorComposite.tableNameCombo"; //$NON-NLS-1$
+			}
 		};
 	}
 
@@ -493,6 +520,16 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			@Override
 			protected String getValue() {
 				return getSubject().getSpecifiedValueColumnName();
+			}
+
+			@Override
+			protected String getHelpId() {
+				return JpaHelpContextIds.MAPPING_TABLE_GENERATOR_VALUE_COLUMN;
+			}
+
+			@Override
+			public String toString() {
+				return "TableGeneratorComposite.valueColumnCombo"; //$NON-NLS-1$
 			}
 		};
 	}

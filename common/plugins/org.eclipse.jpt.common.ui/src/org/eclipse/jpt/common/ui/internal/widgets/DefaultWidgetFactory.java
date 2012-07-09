@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,8 +11,6 @@ package org.eclipse.jpt.common.ui.internal.widgets;
 
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CCombo;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -23,12 +21,8 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.forms.widgets.FormText;
-import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
-import org.eclipse.ui.forms.widgets.TableWrapData;
-import org.eclipse.ui.forms.widgets.TableWrapLayout;
 
 /**
  * This <code>WidgetFactory</code> simply creates plain SWT widgets.
@@ -84,14 +78,6 @@ public class DefaultWidgetFactory implements WidgetFactory {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Deprecated
-	public CCombo createCCombo(Composite parent) {
-		return new CCombo(parent, SWT.BORDER | SWT.READ_ONLY);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
 	public Button createCheckBox(Composite parent, String text) {
 		return this.createButton(parent, text, SWT.CHECK);
 	}
@@ -115,14 +101,6 @@ public class DefaultWidgetFactory implements WidgetFactory {
 	 */
 	public DateTime createDateTime(Composite parent, int style) {
 		return new DateTime(parent, style);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Deprecated
-	public CCombo createEditableCCombo(Composite parent) {
-		return new CCombo(parent, SWT.BORDER);
 	}
 
 	/**
@@ -164,34 +142,6 @@ public class DefaultWidgetFactory implements WidgetFactory {
 	 */
 	public List createList(Composite parent, int style) {
 		return new List(parent, SWT.BORDER | style);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public FormText createMultiLineLabel(Composite parent, String labelText) {
-
-		Composite container = new Composite(parent, SWT.NONE);
-
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment       = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		container.setLayoutData(gridData);
-
-		TableWrapLayout layout = new TableWrapLayout();
-		layout.numColumns   = 1;
-		layout.bottomMargin = 0;
-		layout.leftMargin   = 0;
-		layout.rightMargin  = 0;
-		layout.topMargin    = 0;
-		container.setLayout(layout);
-
-		FormToolkit widgetFactory = new FormToolkit(parent.getDisplay());
-		FormText text = widgetFactory.createFormText(container, true);
-		text.setLayoutData(new TableWrapData(TableWrapData.FILL_GRAB));
-		text.setText(labelText, false, false);
-
-		return text;
 	}
 
 	/**

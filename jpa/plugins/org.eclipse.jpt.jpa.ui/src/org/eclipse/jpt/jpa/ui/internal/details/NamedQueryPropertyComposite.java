@@ -16,7 +16,10 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.ui.internal.jpql.JpaJpqlContentProposalProvider;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 
 /**
  * Here's the layout of this pane:
@@ -92,29 +95,26 @@ public class NamedQueryPropertyComposite<T extends NamedQuery> extends Pane<T> {
 		};
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Override
+	protected Composite addComposite(Composite container) {
+		return this.addSubPane(container, 2, 0, 0, 0, 0);
+	}
+
 	@Override
 	protected void initializeLayout(Composite container) {
-
 		// Name widgets
-		addLabeledText(
-			container,
-			JptUiDetailsMessages.NamedQueryComposite_nameTextLabel,
-			buildNameTextHolder());
+		this.addLabel(container, JptUiDetailsMessages.NamedQueryComposite_nameTextLabel);
+		this.addText(container, buildNameTextHolder());
+
+		Label queryLabel = this.addLabel(container, JptUiDetailsMessages.NamedQueryPropertyComposite_query);
+		GridData gridData = new GridData();
+		gridData.verticalAlignment = SWT.TOP;
+		queryLabel.setLayoutData(gridData);
 
 		JpaJpqlContentProposalProvider provider = new JpaJpqlContentProposalProvider(
 			container,
 			getSubjectHolder(),
 			buildQueryHolder()
-		);
-
-		// Query text area
-		Composite queryWidgets = this.addLabeledComposite(
-			container,
-			JptUiDetailsMessages.NamedQueryPropertyComposite_query,
-			provider.getStyledText()
 		);
 
 		// Install the content assist icon at the top left of the StyledText.
@@ -123,18 +123,14 @@ public class NamedQueryPropertyComposite<T extends NamedQuery> extends Pane<T> {
 		provider.installControlDecoration();
 
 		adjustMultiLineTextLayout(
-			queryWidgets,
 			4,
 			provider.getStyledText(),
 			provider.getStyledText().getLineHeight()
 		);
 
-		// Query Hints pane
-		container = this.addTitledGroup(
-			addSubPane(container, 5),
-			JptUiDetailsMessages.NamedQueryPropertyComposite_queryHintsGroupBox
-		);
-
-		new QueryHintsComposite(this, container);
+		QueryHintsComposite hintsComposite = new QueryHintsComposite(this, container);
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		hintsComposite.getControl().setLayoutData(gridData);
 	}
 }

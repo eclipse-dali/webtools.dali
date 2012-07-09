@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.AccessHolder;
@@ -20,7 +19,13 @@ import org.eclipse.jpt.jpa.core.context.Cascade;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.ManyToManyRelationship;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.events.ExpansionAdapter;
+import org.eclipse.ui.forms.events.ExpansionEvent;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Section;
 
 /**
  * Here the layout of this pane:
@@ -54,9 +59,9 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see {@link ManyToManyMapping}
- * @see {@link TargetEntityComposite}
+ * @see {@link TargetEntityClassChooser}
  * @see {@link ManyToManyJoiningStrategyPane}
- * @see {@link FetchTypeComposite}
+ * @see {@link FetchTypeComboViewer}
  * @see {@link CascadeComposite}
  * @see {@link OrderingComposite}
  *
@@ -75,10 +80,11 @@ public abstract class AbstractManyToManyMappingComposite<T extends ManyToManyMap
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	protected AbstractManyToManyMappingComposite(PropertyValueModel<? extends T> subjectHolder,
-	                                  Composite parent,
-	                                  WidgetFactory widgetFactory) {
+									PropertyValueModel<Boolean> enabledModel,
+									Composite parent,
+	                                WidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 
 	@Override
@@ -89,23 +95,36 @@ public abstract class AbstractManyToManyMappingComposite<T extends ManyToManyMap
 	}
 	
 	protected void initializeManyToManyCollapsibleSection(Composite container) {
-		container = addCollapsibleSection(
-			container,
-			JptUiDetailsMessages.ManyToManySection_title,
-			new SimplePropertyValueModel<Boolean>(Boolean.TRUE)
-		);
-
-		this.initializeManyToManySection(container);
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages.ManyToManySection_title);
+		section.setExpanded(true);
+		section.setClient(this.initializeManyToManySection(section));
 	}
 
-	protected abstract void initializeManyToManySection(Composite container);
+	protected abstract Control initializeManyToManySection(Composite container);
 
 	protected void initializeJoiningStrategyCollapsibleSection(Composite container) {
 		new ManyToManyJoiningStrategyPane(this, buildJoiningHolder(), container);
 	}
-
+	
 	protected void initializeOrderingCollapsibleSection(Composite container) {
-		new OrderingComposite(this, container);
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages.OrderingComposite_orderingGroup);
+
+		section.addExpansionListener(new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanging(ExpansionEvent e) {
+				if (e.getState() && section.getClient() == null) {
+					section.setClient(initializeOrderingSection(section));
+				}
+			}
+		});
+	}
+
+	protected Control initializeOrderingSection(Composite container) {
+		return new OrderingComposite(this, container).getControl();
 	}
 
 	

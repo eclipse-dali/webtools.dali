@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -60,13 +60,13 @@ public class UnsupportedOrmMappingUiDefinition
 	
 	public String getKey() {
 		return null;
-	}	
-	
+	}
 	public JpaComposite buildAttributeMappingComposite(
-			OrmXmlUiFactory factory,
-			PropertyValueModel subjectHolder,
-			Composite parent,
-			WidgetFactory widgetFactory) {
+		OrmXmlUiFactory factory, 
+		PropertyValueModel subjectHolder, 
+		PropertyValueModel enabledModel, 
+		Composite parent, 
+		WidgetFactory widgetFactory) {
 		
 		return new NullComposite(subjectHolder, parent, widgetFactory);
 	}

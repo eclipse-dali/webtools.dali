@@ -20,15 +20,18 @@ import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.resource.JFaceColors;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaNode;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.platform.JpaPlatformUiRegistry;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
@@ -43,6 +46,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.dialogs.FilteredItemsSelectionDialog;
 import com.ibm.icu.text.Collator;
 
@@ -66,8 +70,6 @@ import com.ibm.icu.text.Collator;
 public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 
 	protected boolean dragEvent;
-	protected boolean enabled;
-	protected Cursor handCursor;
 	protected MappingChangeHandler<T> mappingChangeHandler;
 	protected int mappingTypeLength;
 	protected int mappingTypeStart;
@@ -75,6 +77,7 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 	protected int nameLength;
 	protected int nameStart;
 	protected StyledText styledText;
+	protected PropertyChangeListener enabledModelListener;
 
 	/**
 	 * The constant ID used to retrieve the dialog settings.
@@ -91,6 +94,13 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 	                      Composite parent) {
 
 		super(parentPane, parent);
+	}
+
+	public MapAsComposite(Pane<? extends T> parentPane,
+							Composite parent,
+							PropertyValueModel<Boolean> enabledModel) {
+
+		super(parentPane, parent, enabledModel);
 	}
 	
 	/**
@@ -127,7 +137,7 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 	 *
 	 * @return A new <code>MappingChangeHandler</code>
 	 */
-	protected abstract MappingChangeHandler buildMappingChangeHandler();
+	protected abstract MappingChangeHandler<T> buildMappingChangeHandler();
 	
 	private MouseListener buildMouseListener() {
 		return new MouseListener() {
@@ -149,11 +159,11 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 					dragEvent = false;
 
 					if (isOverLink(offset)) {
-						text.setCursor(handCursor);
+						text.setCursor(getHandCursor());
 					}
 				}
 				else if (isOverLink(offset)) {
-					text.setCursor(handCursor);
+					text.setCursor(getHandCursor());
 					openMappingSelectionDialog();
 					text.setCursor(null);
 				}
@@ -184,13 +194,21 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 				}
 
 				if (isOverLink(offset)) {
-					text.setCursor(handCursor);
+					text.setCursor(getHandCursor());
 				}
 				else {
 					text.setCursor(null);
 				}
 			}
 		};
+	}
+
+	/**
+	 * no need to store this since we are not supposed to dispose of it.
+	 * @see Display#getSystemCursor(int)
+	 */
+	private Cursor getHandCursor() {
+		return getShell().getDisplay().getSystemCursor(SWT.CURSOR_HAND);
 	}
 
 	/**
@@ -230,46 +248,46 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 	 * (non-Javadoc)
 	 */
 	@Override
-	public void enableWidgets(boolean enabled) {
-		this.enabled = enabled;
-		super.enableWidgets(enabled);
-
-		if (!styledText.isDisposed()) {
-			styledText.setEnabled(enabled);
-
-			if (enabled) {
-				updateLinkRange();
-			}
-			else {
-				clearStyleRange();
-			}
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
 	protected void initialize() {
 
 		super.initialize();
-
-		this.enabled = true;
 		this.mappingChangeHandler = buildMappingChangeHandler();
+		this.enabledModelListener = this.buildEnabledModelListener();
+		this.getEnabledModel().addPropertyChangeListener(PropertyValueModel.VALUE, this.enabledModelListener);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
+	protected PropertyChangeListener buildEnabledModelListener() {
+		return new PropertyChangeListener() {
+			public void propertyChanged(PropertyChangeEvent event) {
+				if (!styledText.isDisposed()) {
+					if (((Boolean)event.getNewValue()).booleanValue()) {
+						updateLinkRange();
+					}
+					else {
+						clearStyleRange();					
+					}
+				}
+			}
+		};
+	}
 	@Override
-	protected void initializeLayout(Composite container) {
-
-		handCursor = getShell().getDisplay().getSystemCursor(SWT.CURSOR_HAND);
-
-		styledText = new StyledText(container, SWT.WRAP | SWT.READ_ONLY);
+	protected Composite addComposite(Composite parent) {
+		styledText = new StyledText(parent, SWT.WRAP | SWT.READ_ONLY);
+		SWTTools.controlEnabledState(getEnabledModel(), styledText);
 		styledText.addMouseListener(buildMouseListener());
 		styledText.addMouseMoveListener(buildMouseMoveListener());
 		styledText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		return styledText;
+	}
+
+	@Override
+	public Composite getControl() {
+		return (Composite) super.getControl();
+	}
+
+	@Override
+	protected void initializeLayout(Composite container) {
+		// see addComposite(Composite)
 	}
 
 	/**
@@ -350,7 +368,7 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 		clearStyleRange();
 		updateText();
 
-		if (enabled) {
+		if (getEnabledModel().getValue().booleanValue()) {
 			updateLinkRange();
 		}
 	}
@@ -411,6 +429,7 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 	@Override
 	public void dispose() {
 		this.styledText.dispose();
+		this.getEnabledModel().removePropertyChangeListener(PropertyValueModel.VALUE, this.enabledModelListener);
 		super.dispose();
 	}
 

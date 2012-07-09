@@ -9,16 +9,22 @@
 *******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 
+import java.util.Collection;
+import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Query;
+import org.eclipse.jpt.jpa.core.jpa2.context.LockModeType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.NamedQuery2_0;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.QueryHintsComposite;
 import org.eclipse.jpt.jpa.ui.internal.jpql.JpaJpqlContentProposalProvider;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 
 /**
  * Here's the layout of this pane:
@@ -97,29 +103,27 @@ public class NamedQueryProperty2_0Composite extends Pane<NamedQuery2_0> {
 		};
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Override
+	protected Composite addComposite(Composite container) {
+		return this.addSubPane(container, 2, 0, 0, 0, 0);
+	}
+
 	@Override
 	protected void initializeLayout(Composite container) {
-
 		// Name widgets
-		this.addLabeledText(
-			container,
-			JptUiDetailsMessages.NamedQueryComposite_nameTextLabel,
-			this.buildNameTextHolder());
+		this.addLabel(container, JptUiDetailsMessages.NamedQueryComposite_nameTextLabel);
+		this.addText(container, buildNameTextHolder());
+
+		// Query text area
+		Label queryLabel = this.addLabel(container, JptUiDetailsMessages.NamedQueryPropertyComposite_query);
+		GridData gridData = new GridData();
+		gridData.verticalAlignment = SWT.TOP;
+		queryLabel.setLayoutData(gridData);
 
 		JpaJpqlContentProposalProvider provider = new JpaJpqlContentProposalProvider(
 			container,
 			getSubjectHolder(),
 			buildQueryHolder()
-		);
-
-		// Query text area
-		Composite queryWidgets = this.addLabeledComposite(
-			container,
-			JptUiDetailsMessages.NamedQueryPropertyComposite_query,
-			provider.getStyledText()
 		);
 
 		// Install the content assist icon at the top left of the StyledText.
@@ -128,21 +132,75 @@ public class NamedQueryProperty2_0Composite extends Pane<NamedQuery2_0> {
 		provider.installControlDecoration();
 
 		adjustMultiLineTextLayout(
-			queryWidgets,
 			4,
 			provider.getStyledText(),
 			provider.getStyledText().getLineHeight()
 		);
 
 		// Lock Mode type
-		new LockModeComposite(this, container);
+		this.addLabel(container, JptUiDetailsMessages2_0.LockModeComposite_lockModeLabel);
+		this.addLockModeTypeCombo(container);
 
-		// Query Hints pane
-		container = this.addTitledGroup(
-			this.addSubPane(container, 5),
-			JptUiDetailsMessages.NamedQueryPropertyComposite_queryHintsGroupBox
-		);
+		QueryHintsComposite queryHintsComposite = new QueryHintsComposite(this, container);
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		queryHintsComposite.getControl().setLayoutData(gridData);
+	}
 
-		new QueryHintsComposite(this, container);
+	private EnumFormComboViewer<NamedQuery2_0, LockModeType2_0> addLockModeTypeCombo(Composite container) {
+
+		return new EnumFormComboViewer<NamedQuery2_0, LockModeType2_0>(this, container) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(NamedQuery2_0.DEFAULT_LOCK_MODE_PROPERTY);
+				propertyNames.add(NamedQuery2_0.SPECIFIED_LOCK_MODE_PROPERTY);
+			}
+
+			@Override
+			protected LockModeType2_0[] getChoices() {
+				return LockModeType2_0.values();
+			}
+
+			@Override
+			protected LockModeType2_0 getDefaultValue() {
+				return this.getSubject().getDefaultLockMode();
+			}
+
+			@Override
+			protected String displayString(LockModeType2_0 value) {
+				switch (value) {
+					case NONE :
+						return JptUiDetailsMessages2_0.LockModeComposite_none;
+					case OPTIMISTIC :
+						return JptUiDetailsMessages2_0.LockModeComposite_optimistic;
+					case OPTIMISTIC_FORCE_INCREMENT :
+						return JptUiDetailsMessages2_0.LockModeComposite_optimistic_force_increment;
+					case PESSIMISTIC_FORCE_INCREMENT :
+						return JptUiDetailsMessages2_0.LockModeComposite_pessimistic_force_increment;
+					case PESSIMISTIC_READ :
+						return JptUiDetailsMessages2_0.LockModeComposite_pessimistic_read;
+					case PESSIMISTIC_WRITE :
+						return JptUiDetailsMessages2_0.LockModeComposite_pessimistic_write;
+					case READ :
+						return JptUiDetailsMessages2_0.LockModeComposite_read;
+					case WRITE :
+						return JptUiDetailsMessages2_0.LockModeComposite_write;
+					default :
+						throw new IllegalStateException();
+				}
+			}
+
+			@Override
+			protected LockModeType2_0 getValue() {
+				return this.getSubject().getSpecifiedLockMode();
+			}
+
+			@Override
+			protected void setValue(LockModeType2_0 value) {
+				this.getSubject().setSpecifiedLockMode(value);
+			}
+		};
 	}
 }

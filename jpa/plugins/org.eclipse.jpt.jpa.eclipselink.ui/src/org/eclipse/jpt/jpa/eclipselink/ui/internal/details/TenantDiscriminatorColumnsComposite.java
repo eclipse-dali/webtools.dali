@@ -15,28 +15,31 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
-import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.AbstractAdapter;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
+import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
+import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.TenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.part.PageBook;
 
 /**
@@ -61,36 +64,27 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaNode> extends Pane
 	 */
 	TenantDiscriminatorColumnsEditor<T> tenantDiscriminatorColumnsEditor;
 
-	private AddRemoveListPane<T> listPane;
 	private Pane<ReadOnlyTenantDiscriminatorColumn2_3> tenantDiscriminatorColumnPane;
-	private ModifiablePropertyValueModel<ReadOnlyTenantDiscriminatorColumn2_3> tenantDiscriminatorColumnHolder;
+	private ModifiableCollectionValueModel<ReadOnlyTenantDiscriminatorColumn2_3> selectedTenantDiscriminatorColumnsModel;
+	private PropertyValueModel<ReadOnlyTenantDiscriminatorColumn2_3> selectedTenantDiscriminatorColumnModel;
 
 	public TenantDiscriminatorColumnsComposite(Pane<? extends T> parentPane,
 	                            Composite parent,
-	                            TenantDiscriminatorColumnsEditor<T> tenantDiscriminatorColumnsEditor) {
-
-		super(parentPane, parent);
-		this.tenantDiscriminatorColumnsEditor = tenantDiscriminatorColumnsEditor;
-		initializeLayout2();
-	}
-
-	public TenantDiscriminatorColumnsComposite(Pane<?> parentPane,
-	                            PropertyValueModel<? extends T> subjectHolder,
-	                            Composite parent,
 	                            TenantDiscriminatorColumnsEditor<T> tenantDiscriminatorColumnsEditor,
-	                            boolean automaticallyAlignWidgets) {
+	                            PropertyValueModel<Boolean> enabledModel) {
 
-		super(parentPane, subjectHolder, parent, automaticallyAlignWidgets);
+		super(parentPane, parent, enabledModel);
 		this.tenantDiscriminatorColumnsEditor = tenantDiscriminatorColumnsEditor;
 		initializeLayout2();
 	}
 
 	public TenantDiscriminatorColumnsComposite(PropertyValueModel<? extends T> subjectHolder,
+								PropertyValueModel<Boolean> enabledModel,
 	                            Composite parent,
 	                            WidgetFactory widgetFactory,
 	                            TenantDiscriminatorColumnsEditor<T> tenantDiscriminatorColumnsEditor) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(subjectHolder, enabledModel, parent, widgetFactory);
 		this.tenantDiscriminatorColumnsEditor = tenantDiscriminatorColumnsEditor;
 		initializeLayout2();
 	}
@@ -98,11 +92,24 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaNode> extends Pane
 	@Override
 	protected void initialize() {
 		super.initialize();
-		this.tenantDiscriminatorColumnHolder = buildTenantDiscriminatorColumnHolder();
+		this.selectedTenantDiscriminatorColumnsModel = this.buildSelectedTenantDiscriminatorColumnsModel();
+		this.selectedTenantDiscriminatorColumnModel = this.buildSelectedTenantDiscriminatorColumnModel(this.selectedTenantDiscriminatorColumnsModel);
 	}
 
-	private ModifiablePropertyValueModel<ReadOnlyTenantDiscriminatorColumn2_3> buildTenantDiscriminatorColumnHolder() {
-		return new SimplePropertyValueModel<ReadOnlyTenantDiscriminatorColumn2_3>();
+	private ModifiableCollectionValueModel<ReadOnlyTenantDiscriminatorColumn2_3> buildSelectedTenantDiscriminatorColumnsModel() {
+		return new SimpleCollectionValueModel<ReadOnlyTenantDiscriminatorColumn2_3>();
+	}
+
+	private PropertyValueModel<ReadOnlyTenantDiscriminatorColumn2_3> buildSelectedTenantDiscriminatorColumnModel(CollectionValueModel<ReadOnlyTenantDiscriminatorColumn2_3> selectedTenantDiscriminatorColumnsModel) {
+		return new CollectionPropertyValueModelAdapter<ReadOnlyTenantDiscriminatorColumn2_3, ReadOnlyTenantDiscriminatorColumn2_3>(selectedTenantDiscriminatorColumnsModel) {
+			@Override
+			protected ReadOnlyTenantDiscriminatorColumn2_3 buildValue() {
+				if (this.collectionModel.size() == 1) {
+					return this.collectionModel.iterator().next();
+				}
+				return null;
+			}
+		};
 	}
 
 	@Override
@@ -110,39 +117,57 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaNode> extends Pane
 		//see intiailizeLayout2()
 	}
 
+	@Override
+	public Composite getControl() {
+		return (Composite) super.getControl();
+	}
+
 	private void initializeLayout2() {
-		this.listPane = new AddRemoveListPane<T>(
+		new AddRemoveListPane<T, ReadOnlyTenantDiscriminatorColumn2_3>(
 			this,
 			getControl(),
 			buildTenantDiscriminatorColumnsAdapter(),
 			buildTenantDiscriminatorColumnsListModel(),
-			this.tenantDiscriminatorColumnHolder,
+			this.selectedTenantDiscriminatorColumnsModel,
 			buildTenantDiscriminatorColumnsListLabelProvider(),
-			EclipseLinkHelpContextIds.MULTITENANCY_TENANT_DISCRIMINATOR_COLUMNS,
-			false
+			EclipseLinkHelpContextIds.MULTITENANCY_TENANT_DISCRIMINATOR_COLUMNS
 		);
 
 		// Property pane
 		PageBook pageBook = new PageBook(getControl(), SWT.NULL);
 		pageBook.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		//Tenant Discriminator Column property pane
-		this.tenantDiscriminatorColumnPane = this.buildTenantDiscriminatorColumnComposite(pageBook);
-
-
 		installPaneSwitcher(pageBook);
+	}
+
+	protected Pane<ReadOnlyTenantDiscriminatorColumn2_3> getTenantDiscriminatorColumnComposite(PageBook pageBook) {
+		if (this.tenantDiscriminatorColumnPane == null) {
+			this.tenantDiscriminatorColumnPane = this.buildTenantDiscriminatorColumnComposite(pageBook);
+		}
+		return this.tenantDiscriminatorColumnPane;
 	}
 
 	protected Pane<ReadOnlyTenantDiscriminatorColumn2_3> buildTenantDiscriminatorColumnComposite(PageBook pageBook) {
 		return new TenantDiscriminatorColumnComposite(
 			this,
-			this.tenantDiscriminatorColumnHolder,
+			this.selectedTenantDiscriminatorColumnModel,
 			pageBook
 		);
 	}
 
 	private void installPaneSwitcher(PageBook pageBook) {
-		new ControlSwitcher(this.tenantDiscriminatorColumnHolder, this.tenantDiscriminatorColumnPane.getControl(), pageBook);
+		new ControlSwitcher(this.selectedTenantDiscriminatorColumnModel, buildPaneTransformer(pageBook), pageBook);
+	}
+
+	private Transformer<ReadOnlyTenantDiscriminatorColumn2_3, Control> buildPaneTransformer(final PageBook pageBook) {
+		return new Transformer<ReadOnlyTenantDiscriminatorColumn2_3, Control>() {
+			public Control transform(ReadOnlyTenantDiscriminatorColumn2_3 column) {
+				if (column == null) {
+					return null;
+				}
+				return getTenantDiscriminatorColumnComposite(pageBook).getControl();
+			}
+		};
 	}
 
 	String buildTenantDiscriminatorColumnLabel(ReadOnlyTenantDiscriminatorColumn2_3 tenantDiscriminatorColumn) {
@@ -155,11 +180,11 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaNode> extends Pane
 		return tenantDiscriminatorColumn.getName();
 	}
 
-	private Adapter buildTenantDiscriminatorColumnsAdapter() {
-		return new AbstractAdapter() {
+	private Adapter<ReadOnlyTenantDiscriminatorColumn2_3> buildTenantDiscriminatorColumnsAdapter() {
+		return new AbstractAdapter<ReadOnlyTenantDiscriminatorColumn2_3>() {
 
-			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
-				TenantDiscriminatorColumnsComposite.this.tenantDiscriminatorColumnsEditor.addTenantDiscriminatorColumn(getSubject());
+			public ReadOnlyTenantDiscriminatorColumn2_3 addNewItem() {
+				return TenantDiscriminatorColumnsComposite.this.tenantDiscriminatorColumnsEditor.addTenantDiscriminatorColumn(getSubject());
 			}
 
 			@Override
@@ -167,8 +192,14 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaNode> extends Pane
 				return false;
 			}
 
-			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
-				TenantDiscriminatorColumnsComposite.this.tenantDiscriminatorColumnsEditor.removeTenantDiscriminatorColumns(getSubject(), listSelectionModel.selectedIndices());
+			@Override
+			public PropertyValueModel<Boolean> buildRemoveButtonEnabledModel(CollectionValueModel<ReadOnlyTenantDiscriminatorColumn2_3> selectedItemsModel) {
+				return buildSingleSelectedItemEnabledModel(selectedItemsModel);
+			}
+
+			public void removeSelectedItems(CollectionValueModel<ReadOnlyTenantDiscriminatorColumn2_3> selectedItemsModel) {
+				TenantDiscriminatorColumn2_3 column = (TenantDiscriminatorColumn2_3) selectedItemsModel.iterator().next();
+				TenantDiscriminatorColumnsComposite.this.tenantDiscriminatorColumnsEditor.removeTenantDiscriminatorColumn(getSubject(), column);
 			}
 		};
 	}
@@ -223,20 +254,6 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaNode> extends Pane
 		};
 	}
 
-	public void installListPaneEnabler(PropertyValueModel<Boolean> paneEnablerHolder) {
-		new PaneEnabler(paneEnablerHolder, this.listPane);
-	}
-
-	@Override
-	public void enableWidgets(boolean enabled) {
-		super.enableWidgets(enabled);
-		this.listPane.enableWidgets(enabled);
-	}
-
-	public void setSelectedTenantDiscriminatorColumn(ReadOnlyTenantDiscriminatorColumn2_3 tenantDiscriminatorColumn) {
-		this.listPane.setSelectedItem(tenantDiscriminatorColumn);
-	}
-
 	/**
 	 * The editor is used to complete the behavior of this pane.
 	 */
@@ -245,7 +262,7 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaNode> extends Pane
 		/**
 		 * Add a tenant discriminator column to the given subject
 		 */
-		void addTenantDiscriminatorColumn(T subject);
+		ReadOnlyTenantDiscriminatorColumn2_3 addTenantDiscriminatorColumn(T subject);
 
 		/**
 		 * Return whether the subject has specified tenant discriminator columns
@@ -283,8 +300,8 @@ public class TenantDiscriminatorColumnsComposite<T extends JpaNode> extends Pane
 		String getDefaultTenantDiscriminatorsListPropertyName();
 
 		/**
-		 * Remove the tenant discriminator columns at the specified indices from the subject
+		 * Remove the tenant discriminator column from the subject
 		 */
-		void removeTenantDiscriminatorColumns(T subject, int[] selectedIndices);
+		void removeTenantDiscriminatorColumn(T subject, ReadOnlyTenantDiscriminatorColumn2_3 column);
 	}
 }

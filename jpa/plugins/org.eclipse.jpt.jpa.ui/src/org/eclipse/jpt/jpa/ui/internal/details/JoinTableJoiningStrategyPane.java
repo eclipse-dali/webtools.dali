@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
@@ -20,6 +21,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 /**
  * Here is the layout of this pane:  
@@ -60,8 +62,9 @@ public class JoinTableJoiningStrategyPane
 	}
 
 	@Override
-	protected Composite buildStrategyDetailsComposite(Composite parent) {
-		return new JoinTableComposite(this, buildJoinTableHolder(), parent).getControl();
+	protected Control buildStrategyDetailsComposite(Composite parent) {
+		JoinTableComposite joinTableComposite = new JoinTableComposite(this, buildJoinTableHolder(), buildJoinTablePaneEnablerHolder(), parent);
+		return joinTableComposite.getControl();
 	}
 
 	@Override
@@ -108,6 +111,15 @@ public class JoinTableJoiningStrategyPane
 					((JoinTableRelationship) this.subject).setStrategyToJoinTable();
 				}
 				//value == FALSE - selection of another radio button causes this strategy to get unset
+			}
+		};
+	}
+
+	private TransformationPropertyValueModel<ReadOnlyJoinTableRelationship, Boolean> buildJoinTablePaneEnablerHolder() {
+		return new TransformationPropertyValueModel<ReadOnlyJoinTableRelationship, Boolean>(getSubjectHolder()) {
+			@Override
+			protected Boolean transform_(ReadOnlyJoinTableRelationship v) {
+				return Boolean.valueOf(!v.isVirtual());
 			}
 		};
 	}

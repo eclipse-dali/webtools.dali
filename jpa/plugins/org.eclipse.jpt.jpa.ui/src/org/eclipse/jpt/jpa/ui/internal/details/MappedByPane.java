@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.core.internal.utility.ICUStringCollator;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.StringConverter;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
@@ -50,18 +51,24 @@ public class MappedByPane
 	public MappedByPane(
 			Pane<?> parentPane,
 			PropertyValueModel<MappedByRelationshipStrategy> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent) {
-		super(parentPane, subjectHolder, parent);
+		super(parentPane, subjectHolder, enabledModel, parent);
 	}
 	
-	
+	@Override
+	protected Composite addComposite(Composite container) {
+		return this.addSubPane(container, 2, 0, 0, 0, 0);
+	}
+
 	@Override
 	protected void initializeLayout(Composite container) {
-		addLabeledEditableCombo(
+		this.addLabel(container, JptUiDetailsMessages.Joining_mappedByAttributeLabel);
+		this.addEditableCombo(
 			container,
-			JptUiDetailsMessages.Joining_mappedByAttributeLabel,
 			buildCandidateAttributesListValueModel(),
 			buildAttributePropertyValueModel(),
+			StringConverter.Default.<String>instance(),
 			JpaHelpContextIds.MAPPING_MAPPED_BY);
 	}
 	

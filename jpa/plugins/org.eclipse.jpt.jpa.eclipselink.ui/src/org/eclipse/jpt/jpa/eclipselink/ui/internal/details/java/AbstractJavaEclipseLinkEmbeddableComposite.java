@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,13 @@ import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsM
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.details.java.JavaUiFactory;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEmbeddableComposite;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.events.ExpansionAdapter;
+import org.eclipse.ui.forms.events.ExpansionEvent;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Section;
 
 /**
  * This pane does not have any widgets.
@@ -58,16 +64,22 @@ public abstract class AbstractJavaEclipseLinkEmbeddableComposite extends Abstrac
 	}
 
 	protected void initializeConvertersCollapsibleSection(Composite container) {
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters);
 
-		container = addCollapsibleSection(
-			container,
-			EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters
-		);
-		initializeConvertersSection(container, this.buildConverterHolderValueModel());
+		section.addExpansionListener(new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanging(ExpansionEvent e) {
+				if (e.getState() && section.getClient() == null) {
+					section.setClient(initializeConvertersSection(section));
+				}
+			}
+		});
 	}
 
-	protected void initializeConvertersSection(Composite container, PropertyValueModel<JavaEclipseLinkConverterContainer> converterHolder) {
-		new EclipseLinkConvertersComposite(this, converterHolder, container);
+	protected Control initializeConvertersSection(Composite container) {
+		return new EclipseLinkConvertersComposite(this, this.buildConverterHolderValueModel(), container).getControl();
 	}
 
 	protected PropertyValueModel<JavaEclipseLinkConverterContainer> buildConverterHolderValueModel() {
@@ -78,8 +90,23 @@ public abstract class AbstractJavaEclipseLinkEmbeddableComposite extends Abstrac
 			}	
 		};
 	}
-	
+
 	protected void initializeAdvancedCollapsibleSection(Composite container) {
-		new EclipseLinkEmbeddableAdvancedComposite(this, container);
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_advanced);
+
+		section.addExpansionListener(new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanging(ExpansionEvent e) {
+				if (e.getState() && section.getClient() == null) {
+					section.setClient(initializeAdvancedSection(section));
+				}
+			}
+		});
+	}
+
+	protected Control initializeAdvancedSection(Composite container) {
+		return new EclipseLinkEmbeddableAdvancedComposite(this, container).getControl();
 	}
 }

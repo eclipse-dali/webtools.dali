@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -72,6 +72,15 @@ public abstract class DatabaseObjectCombo<T extends JpaNode>
 		super(parentPane, subjectHolder, parent);
 	}
 	
+	protected DatabaseObjectCombo(
+			Pane<?> parentPane,
+			PropertyValueModel<? extends T> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parent) {
+
+		super(parentPane, subjectHolder, enabledModel, parent);
+	}
+
 	
 	// ********** initialization **********
 	

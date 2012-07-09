@@ -13,8 +13,8 @@ import java.util.Collection;
 
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -26,7 +26,10 @@ import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.db.ColumnCombo;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Section;
 
 /**
  * Here the layout of this pane:
@@ -65,9 +68,10 @@ public class OrderColumnComposite extends Pane<OrderColumn2_0> {
 	 */
 	public OrderColumnComposite(Pane<?> parentPane,
 	                       PropertyValueModel<? extends OrderColumn2_0> subjectHolder,
+		                   PropertyValueModel<Boolean> enabledModel,
 	                       Composite parent) {
 
-		super(parentPane, subjectHolder, parent, false);
+		super(parentPane, subjectHolder, enabledModel, parent);
 	}
 
 
@@ -101,6 +105,12 @@ public class OrderColumnComposite extends Pane<OrderColumn2_0> {
 			protected String getValue() {
 				return getSubject().getSpecifiedName();
 			}
+
+			@Override
+			protected String getHelpId() {
+				return JpaHelpContextIds.MAPPING_ORDER_COLUMN_ORDERING_COLUMN;
+			}
+
 			@Override
 			public String toString() {
 				return "OrderColumnComposite.columnCombo"; //$NON-NLS-1$
@@ -265,70 +275,66 @@ public class OrderColumnComposite extends Pane<OrderColumn2_0> {
 	}
 
 	@Override
+	protected Composite addComposite(Composite container) {
+		return this.addSubPane(container, 2, 0, 0, 0, 0); //2 columns
+	}
+
+	@Override
 	protected void initializeLayout(Composite container) {
 		// Column widgets
-		addLabeledComposite(
-			container,
-			JptUiDetailsMessages.ColumnComposite_name,
-			addColumnCombo(container),
-			JpaHelpContextIds.MAPPING_ORDER_COLUMN_ORDERING_COLUMN
-		);
+		this.addLabel(container, JptUiDetailsMessages.ColumnComposite_name);
+		this.addColumnCombo(container);
 
 		// Details sub-pane
-		container = addCollapsibleSubSection(
-			container,
-			JptUiDetailsMessages.ColumnComposite_details,
-			new SimplePropertyValueModel<Boolean>(Boolean.FALSE)
+		Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		gridData.horizontalIndent = 16;
+		section.setLayoutData(gridData);
+		section.setText(JptUiDetailsMessages.ColumnComposite_details);
+
+		Composite detailsClient = this.addSubPane(section, 2, 0, 0, 0, 0);
+		section.setClient(detailsClient);
+		
+		// Insertable tri-state check box
+		TriStateCheckBox insertableCheckBox = addTriStateCheckBoxWithDefault(
+			detailsClient,
+			JptUiDetailsMessages.ColumnComposite_insertable,
+			buildInsertableHolder(),
+			buildInsertableStringHolder(),
+			JpaHelpContextIds.MAPPING_COLUMN_INSERTABLE
 		);
+		gridData = new GridData();
+		gridData.horizontalSpan = 2;
+		insertableCheckBox.getCheckBox().setLayoutData(gridData);
 
-		new DetailsComposite(this, getSubjectHolder(), addSubPane(container, 0, 16));
+		// Updatable tri-state check box
+		TriStateCheckBox updatableCheckBox = addTriStateCheckBoxWithDefault(
+			detailsClient,
+			JptUiDetailsMessages.ColumnComposite_updatable,
+			buildUpdatableHolder(),
+			buildUpdatableStringHolder(),
+			JpaHelpContextIds.MAPPING_COLUMN_UPDATABLE
+		);
+		gridData = new GridData();
+		gridData.horizontalSpan = 2;
+		updatableCheckBox.getCheckBox().setLayoutData(gridData);
+
+		// Nullable tri-state check box
+		TriStateCheckBox nullableCheckBox = addTriStateCheckBoxWithDefault(
+			detailsClient,
+			JptUiDetailsMessages.ColumnComposite_nullable,
+			buildNullableHolder(),
+			buildNullableStringHolder(),
+			JpaHelpContextIds.MAPPING_COLUMN_NULLABLE
+		);
+		gridData = new GridData();
+		gridData.horizontalSpan = 2;
+		nullableCheckBox.getCheckBox().setLayoutData(gridData);
+
+		// Column Definition widgets
+		this.addLabel(detailsClient, JptUiDetailsMessages.ColumnComposite_columnDefinition);
+		this.addText(detailsClient, buildColumnDefinitionHolder());
 	}
 
-	protected class DetailsComposite extends Pane<OrderColumn2_0> {
-				
-		public DetailsComposite(Pane<?> parentPane,
-            PropertyValueModel<? extends OrderColumn2_0> subjectHolder,
-            Composite parent) {
-
-			super(parentPane, subjectHolder, parent, false);
-		}
-
-		@Override
-		protected void initializeLayout(Composite container) {
-
-			// Insertable tri-state check box
-			addTriStateCheckBoxWithDefault(
-				addSubPane(container, 4),
-				JptUiDetailsMessages.ColumnComposite_insertable,
-				buildInsertableHolder(),
-				buildInsertableStringHolder(),
-				JpaHelpContextIds.MAPPING_COLUMN_INSERTABLE
-			);
-
-			// Updatable tri-state check box
-			addTriStateCheckBoxWithDefault(
-				container,
-				JptUiDetailsMessages.ColumnComposite_updatable,
-				buildUpdatableHolder(),
-				buildUpdatableStringHolder(),
-				JpaHelpContextIds.MAPPING_COLUMN_UPDATABLE
-			);
-
-			// Nullable tri-state check box
-			addTriStateCheckBoxWithDefault(
-				container,
-				JptUiDetailsMessages.ColumnComposite_nullable,
-				buildNullableHolder(),
-				buildNullableStringHolder(),
-				JpaHelpContextIds.MAPPING_COLUMN_NULLABLE
-			);
-
-			// Column Definition widgets
-			addLabeledText(
-				container,
-				JptUiDetailsMessages.ColumnComposite_columnDefinition,
-				buildColumnDefinitionHolder()
-			);
-		}
-	}
 }

@@ -120,13 +120,19 @@ public abstract class AbstractOrmXmlResourceUiDefinition
 	
 	// ********** ORM attribute mappings **********
 	
-	public JpaComposite buildAttributeMappingComposite(String key, PropertyValueModel<AttributeMapping> mappingHolder, Composite parent, WidgetFactory widgetFactory) {
+	public JpaComposite buildAttributeMappingComposite(
+							String key, 
+							PropertyValueModel<AttributeMapping> mappingHolder, 
+							PropertyValueModel<Boolean> enabledModel, 
+							Composite parent,
+							WidgetFactory widgetFactory) {
 
 		OrmAttributeMappingUiDefinition<AttributeMapping> mappingUiDefinition = 
 			(OrmAttributeMappingUiDefinition<AttributeMapping>) getOrmAttributeMappingUiDefinition(key);
 		return mappingUiDefinition.buildAttributeMappingComposite(
 			getFactory(), 
 			mappingHolder,
+			enabledModel,
 			parent,
 			widgetFactory
 		);

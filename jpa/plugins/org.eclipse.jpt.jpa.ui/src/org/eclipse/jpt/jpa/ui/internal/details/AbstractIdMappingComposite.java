@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -23,9 +22,13 @@ import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.events.ExpansionAdapter;
+import org.eclipse.ui.forms.events.ExpansionEvent;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Section;
 
 public abstract class AbstractIdMappingComposite<T extends IdMapping>
 	extends Pane<T>
@@ -33,10 +36,11 @@ public abstract class AbstractIdMappingComposite<T extends IdMapping>
 {
 	public AbstractIdMappingComposite(
 			PropertyValueModel<? extends T> subjectHolder,
-	        Composite parent,
+			PropertyValueModel<Boolean> enabledModel,
+			Composite parent,
 	        WidgetFactory widgetFactory) {
 		
-		super(subjectHolder, parent, widgetFactory);
+		super(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 	
 	
@@ -48,25 +52,31 @@ public abstract class AbstractIdMappingComposite<T extends IdMapping>
 	}
 	
 	protected void initializeIdCollapsibleSection(Composite container) {
-		container = addCollapsibleSection(
-				container,
-				JptUiDetailsMessages.IdSection_title,
-				new SimplePropertyValueModel<Boolean>(Boolean.TRUE));
-
-		this.initializeIdSection(container);
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages.IdSection_title);
+		section.setExpanded(true);
+		section.setClient(this.initializeIdSection(section));
 	}
 	
-	protected abstract void initializeIdSection(Composite container);
+	protected abstract Control initializeIdSection(Composite container);
 	
 	protected void initializeTypeCollapsibleSection(Composite container) {
-		container = addCollapsibleSection(
-				container,
-				JptUiDetailsMessages.TypeSection_type);
-		this.initializeTypeSection(container);
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages.TypeSection_type);
+		section.addExpansionListener(new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanging(ExpansionEvent e) {
+				if (e.getState() && section.getClient() == null) {
+					section.setClient(AbstractIdMappingComposite.this.initializeTypeSection(section));
+				}
+			}
+		});
 	}
 	
-	protected void initializeTypeSection(Composite container) {
-		((GridLayout) container.getLayout()).numColumns = 2;
+	protected Control initializeTypeSection(Composite container) {
+		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 		
 		// No converter
 		Button noConverterButton = addRadioButton(
@@ -83,7 +93,9 @@ public abstract class AbstractIdMappingComposite<T extends IdMapping>
 				JptUiDetailsMessages.TypeSection_temporal, 
 				buildConverterBooleanHolder(BaseTemporalConverter.class), 
 				null);
-		registerSubPane(new TemporalTypeComposite(buildTemporalConverterHolder(converterHolder), container, getWidgetFactory()));
+		registerSubPane(new TemporalTypeCombo(buildTemporalConverterHolder(converterHolder), getEnabledModel(), container, getWidgetFactory()));
+
+		return container;
 	}
 	
 	protected void initializeGenerationCollapsibleSection(Composite container) {

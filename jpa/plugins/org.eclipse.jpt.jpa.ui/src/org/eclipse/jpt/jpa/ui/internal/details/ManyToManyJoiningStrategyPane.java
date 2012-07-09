@@ -57,32 +57,32 @@ public class ManyToManyJoiningStrategyPane
 		
 		super(parentPane, subjectHolder, parent);
 	}
-	
-	
+
+	@Override
+	protected Composite addComposite(Composite container) {
+		return addCollapsibleSection(
+			container,
+			JptUiDetailsMessages.Joining_title,
+			new SimplePropertyValueModel<Boolean>(Boolean.TRUE));
+	}
+
 	@Override
 	protected void initializeLayout(Composite container) {
-		Composite composite = addCollapsibleSection(
-				container,
-				JptUiDetailsMessages.Joining_title,
-				new SimplePropertyValueModel<Boolean>(Boolean.TRUE));
-		
 		addRadioButton(
-			composite,
+			container,
 			JptUiDetailsMessages.Joining_mappedByLabel,
 			MappedByJoiningStrategyPane.buildUsesMappedByJoiningStrategyHolder(getSubjectHolder()),
 			null);
 
-		new MappedByJoiningStrategyPane(this, composite);
+		new MappedByJoiningStrategyPane(this, container);
 		
 		addRadioButton(
-			composite,
+			container,
 			JptUiDetailsMessages.Joining_joinTableJoiningLabel,
 			JoinTableJoiningStrategyPane.buildUsesJoinTableJoiningStrategyHolder(getSubjectHolder()),
 			null);
 
-		new JoinTableJoiningStrategyPane(this, composite);
-		
-		addSubPane(composite, 5);
+		new JoinTableJoiningStrategyPane(this, container);
 	}
 
 	protected ModifiablePropertyValueModel<Boolean> buildUsesMappedByStrategyHolder() {

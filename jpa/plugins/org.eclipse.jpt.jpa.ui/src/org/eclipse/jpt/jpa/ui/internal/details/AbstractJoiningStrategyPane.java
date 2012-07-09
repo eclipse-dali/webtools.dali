@@ -48,7 +48,7 @@ public abstract class AbstractJoiningStrategyPane
 		<R extends ReadOnlyRelationship, S extends ReadOnlyRelationshipStrategy> 
 	extends Pane<R>
 {
-	protected Composite strategyDetailsComposite;
+	protected Control strategyDetailsComposite;
 	
 	
 	/**
@@ -72,26 +72,45 @@ public abstract class AbstractJoiningStrategyPane
 	
 	protected abstract ModifiablePropertyValueModel<Boolean> buildUsesStrategyHolder();
 	
-	
+
 	@Override
-	protected void initializeLayout(Composite container) {
+	protected Composite addComposite(Composite container) {
 		PageBook pageBook = new PageBook(container, SWT.NULL);
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalIndent = 5;
 		pageBook.setLayoutData(gd);
-		
-		this.strategyDetailsComposite = buildStrategyDetailsComposite(pageBook);
-		
-		new ControlSwitcher(this.buildUsesStrategyHolder(), buildPageBookTransformer(), pageBook);
+		return pageBook;
+	}
+
+	@Override
+	public Composite getControl() {
+		return (Composite) super.getControl();
+	}
+
+	@Override
+	protected void initializeLayout(Composite container) {
+		this.strategyDetailsComposite = this.buildStrategyDetailsComposite(container);
+
+		new ControlSwitcher(
+			this.buildUsesStrategyHolder(), 
+			buildPageBookTransformer(container), 
+			(PageBook) container); //I know this is a PageBook, built in addComposite(Composite)
 	}
 	
-	protected abstract Composite buildStrategyDetailsComposite(Composite parent);
+	protected Control getStrategyDetailsComposite(Composite parent) {
+		if (this.strategyDetailsComposite == null) {
+			this.strategyDetailsComposite = this.buildStrategyDetailsComposite(parent);
+		}
+		return this.strategyDetailsComposite;
+	}
+
+	protected abstract Control buildStrategyDetailsComposite(Composite parent);
 	
-	protected Transformer<Boolean, Control> buildPageBookTransformer() {
+	protected Transformer<Boolean, Control> buildPageBookTransformer(final Composite parent) {
 		return new Transformer<Boolean, Control>() {
 			public Control transform(Boolean usesStrategy) {
 				return (usesStrategy.booleanValue()) ? 
-					AbstractJoiningStrategyPane.this.strategyDetailsComposite :
+					AbstractJoiningStrategyPane.this.getStrategyDetailsComposite(parent) :
 					null;
 			}
 		};

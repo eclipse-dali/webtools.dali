@@ -21,11 +21,19 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkRelationshipMappi
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractManyToManyMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.CascadeComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
+import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.ManyToManyJoiningStrategyPane;
 import org.eclipse.jpt.jpa.ui.internal.details.OrderingComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.TargetEntityComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.TargetEntityClassChooser;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.events.ExpansionAdapter;
+import org.eclipse.ui.forms.events.ExpansionEvent;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Hyperlink;
+import org.eclipse.ui.forms.widgets.Section;
 
 /**
  * Here the layout of this pane:
@@ -59,9 +67,9 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see {@link ManyToManyMapping}
- * @see {@link TargetEntityComposite}
+ * @see {@link TargetEntityClassChooser}
  * @see {@link ManyToManyJoiningStrategyPane}
- * @see {@link FetchTypeComposite}
+ * @see {@link FetchTypeComboViewer}
  * @see {@link CascadeComposite}
  * @see {@link OrderingComposite}
  *
@@ -80,18 +88,36 @@ public class EclipseLinkManyToManyMappingComposite<T extends ManyToManyMapping>
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public EclipseLinkManyToManyMappingComposite(PropertyValueModel<? extends T> subjectHolder,
-	                                  Composite parent,
-	                                  WidgetFactory widgetFactory) {
+									PropertyValueModel<Boolean> enabledModel,
+									Composite parent,
+	                                WidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 
 	@Override
-	protected void initializeManyToManySection(Composite container) {
-		new TargetEntityComposite(this, container);
-		new FetchTypeComposite(this, container);
-		new EclipseLinkJoinFetchComposite(this, buildJoinFetchableHolder(), container);
-		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 5));
+	protected Control initializeManyToManySection(Composite container) {
+		container = this.addSubPane(container, 2, 0, 0, 0, 0);
+
+		// Target entity widgets
+		Hyperlink targetEntityHyperlink = this.addHyperlink(container, JptUiDetailsMessages.TargetEntityChooser_label);
+		new TargetEntityClassChooser(this, container, targetEntityHyperlink);
+
+		// Fetch type widgets
+		this.addLabel(container, JptUiDetailsMessages.BasicGeneralSection_fetchLabel);
+		new FetchTypeComboViewer(this, container);
+		
+		// Join fetch widgets
+		this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkJoinFetchComposite_label);
+		new EclipseLinkJoinFetchComboViewer(this, buildJoinFetchableHolder(), container);
+
+		// Cascade widgets
+		CascadeComposite cascadeComposite = new CascadeComposite(this, buildCascadeHolder(), container);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		cascadeComposite.getControl().setLayoutData(gridData);
+
+		return container;
 	}
 
 	protected PropertyValueModel<EclipseLinkJoinFetch> buildJoinFetchableHolder() {
@@ -104,15 +130,22 @@ public class EclipseLinkManyToManyMappingComposite<T extends ManyToManyMapping>
 	}
 
 	protected void initializeConvertersCollapsibleSection(Composite container) {
-		container = addCollapsibleSection(
-			container,
-			EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters
-		);
-		initializeConvertersSection(container, this.buildConverterHolderValueModel());
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters);
+
+		section.addExpansionListener(new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanging(ExpansionEvent e) {
+				if (e.getState() && section.getClient() == null) {
+					section.setClient(initializeConvertersSection(section));
+				}
+			}
+		});
 	}
 
-	protected void initializeConvertersSection(Composite container, PropertyValueModel<EclipseLinkConverterContainer> converterHolder) {
-		new EclipseLinkConvertersComposite(this, converterHolder, container);
+	protected Control initializeConvertersSection(Composite container) {
+		return new EclipseLinkConvertersComposite(this, this.buildConverterHolderValueModel(), container).getControl();
 	}
 
 	protected PropertyValueModel<EclipseLinkConverterContainer> buildConverterHolderValueModel() {

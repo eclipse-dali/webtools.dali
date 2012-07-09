@@ -18,6 +18,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 /**
  * Here is the layout of this pane:  
@@ -104,7 +105,7 @@ public class JoinColumnJoiningStrategyPane
 	}
 
 	@Override
-	protected Composite buildStrategyDetailsComposite(Composite parent) {
+	protected Control buildStrategyDetailsComposite(Composite parent) {
 		PropertyValueModel<ReadOnlyJoinColumnRelationshipStrategy> joiningStrategyHolder = this.buildJoinColumnJoiningStrategyHolder();
 
 		return this.includeOverrideCheckBox ?

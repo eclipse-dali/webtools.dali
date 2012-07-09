@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,13 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.QueryContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappedSuperclass;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.events.ExpansionAdapter;
+import org.eclipse.ui.forms.events.ExpansionEvent;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Section;
 
 /**
  * Here the layout of this pane:
@@ -65,20 +71,26 @@ public abstract class AbstractJavaMappedSuperclassComposite extends
 		this.initializeQueriesCollapsibleSection(container);
 	}
 	
-	
 	protected void initializeQueriesCollapsibleSection(Composite container) {
-		container = addCollapsibleSection(
-				container,
-				JptUiDetailsMessages.MappedSuperclassComposite_queries);
-		this.initializeQueriesSection(container, buildQueryContainerHolder());
-		
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages.EntityComposite_queries);
+
+		section.addExpansionListener(new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanging(ExpansionEvent e) {
+				if (e.getState() && section.getClient() == null) {
+					section.setClient(initializeQueriesSection(section));
+				}
+			}
+		});
 	}
 
-	protected void initializeQueriesSection(Composite container, PropertyValueModel<QueryContainer> queryContainerHolder) {
-		new QueriesComposite(this, queryContainerHolder, container);
+	protected Control initializeQueriesSection(Composite container) {
+		return new QueriesComposite(this, this.buildQueryContainerHolder(), container).getControl();
 	}
 	
-	private PropertyValueModel<QueryContainer> buildQueryContainerHolder() {
+	protected PropertyValueModel<QueryContainer> buildQueryContainerHolder() {
 		return new PropertyAspectAdapter<JavaMappedSuperclass, QueryContainer>(getSubjectHolder()) {
 			@Override
 			protected QueryContainer buildValue_() {

@@ -834,7 +834,7 @@ public abstract class AbstractPersistenceUnit
 		this.specifiedClassRefContainer.removeContextElement(index).dispose();
 	}
 
-	protected void removeSpecifiedClassRefs(Iterable<ClassRef> classRefs) {
+	public void removeSpecifiedClassRefs(Iterable<ClassRef> classRefs) {
 		ArrayList<XmlJavaClassRef> xmlClassRefs = new ArrayList<XmlJavaClassRef>();
 		for (ClassRef classRef : classRefs) {
 			xmlClassRefs.add(classRef.getXmlClassRef());

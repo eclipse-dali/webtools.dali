@@ -13,21 +13,22 @@ import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
-import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.AbstractAdapter;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListPropertyValueModelAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelectionModel;
+import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
+import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
+import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
@@ -36,7 +37,6 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
 
 /**
  * Here the layout of this pane:
@@ -61,20 +61,21 @@ import org.eclipse.swt.widgets.Group;
  */
 public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> extends Pane<T>
 {
-	protected ModifiablePropertyValueModel<PrimaryKeyJoinColumn> joinColumnHolder;
+	protected ModifiableCollectionValueModel<PrimaryKeyJoinColumn> selectedPkJoinColumnsModel;
 
 	public AbstractPrimaryKeyJoinColumnsComposite(Pane<? extends T> subjectHolder,
 	                                      Composite parent) {
 
-		super(subjectHolder, parent, false);
+		super(subjectHolder, parent);
 	}
 
-	void addJoinColumn(PrimaryKeyJoinColumnStateObject stateObject) {
+	PrimaryKeyJoinColumn addJoinColumn(PrimaryKeyJoinColumnStateObject stateObject) {
 		PrimaryKeyJoinColumn joinColumn = getSubject().addSpecifiedPrimaryKeyJoinColumn();
 		stateObject.updateJoinColumn(joinColumn);
+		return joinColumn;
 	}
 
-	void addPrimaryKeyJoinColumn() {
+	PrimaryKeyJoinColumn addPrimaryKeyJoinColumn() {
 
 		PrimaryKeyJoinColumnDialog dialog = new PrimaryKeyJoinColumnDialog(
 			getShell(),
@@ -85,14 +86,15 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 		dialog.setBlockOnOpen(true);
 		dialog.open();
 		if (dialog.wasConfirmed()) {
-			addJoinColumn(dialog.getSubject());
+			return addJoinColumn(dialog.getSubject());
 		}
+		return null;
 	}
 
 	protected abstract ListValueModel<? extends ReadOnlyPrimaryKeyJoinColumn> buildDefaultJoinColumnsListHolder();
 
-	private ModifiablePropertyValueModel<PrimaryKeyJoinColumn> buildJoinColumnHolder() {
-		return new SimplePropertyValueModel<PrimaryKeyJoinColumn>();
+	private ModifiableCollectionValueModel<PrimaryKeyJoinColumn> buildSelectedJoinColumnsModel() {
+		return new SimpleCollectionValueModel<PrimaryKeyJoinColumn>();
 	}
 
 	String buildJoinColumnLabel(ReadOnlyPrimaryKeyJoinColumn joinColumn) {
@@ -135,10 +137,10 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 		);
 	}
 
-	private Adapter buildJoinColumnsAdapter() {
-		return new AbstractAdapter() {
-			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
-				addPrimaryKeyJoinColumn();
+	private Adapter<PrimaryKeyJoinColumn> buildJoinColumnsAdapter() {
+		return new AbstractAdapter<PrimaryKeyJoinColumn>() {
+			public PrimaryKeyJoinColumn addNewItem() {
+				return addPrimaryKeyJoinColumn();
 			}
 
 			@Override
@@ -152,18 +154,19 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 			}
 
 			@Override
-			public void optionOnSelection(ObjectListSelectionModel listSelectionModel) {
-				editPrimaryKeyJoinColumn(listSelectionModel);
+			public void optionOnSelection(CollectionValueModel<PrimaryKeyJoinColumn> selectedItemsModel) {
+				editPrimaryKeyJoinColumn(selectedItemsModel.iterator().next());
 			}
 
-			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
+			@Override
+			public PropertyValueModel<Boolean> buildRemoveButtonEnabledModel(CollectionValueModel<PrimaryKeyJoinColumn> selectedItemsModel) {
+				//enable the remove button only when 1 item is selected, same as the optional button
+				return this.buildSingleSelectedItemEnabledModel(selectedItemsModel);
+			}
 
-				int[] selectedIndices = listSelectionModel.selectedIndices();
-				Entity entity = getSubject();
-
-				for (int index = selectedIndices.length; --index >= 0; ) {
-					entity.removeSpecifiedPrimaryKeyJoinColumn(selectedIndices[index]);
-				}
+			public void removeSelectedItems(CollectionValueModel<PrimaryKeyJoinColumn> selectedItemsModel) {
+				PrimaryKeyJoinColumn joinColumn =selectedItemsModel.iterator().next();
+				getSubject().removeSpecifiedPrimaryKeyJoinColumn(joinColumn);
 			}
 		};
 	}
@@ -216,9 +219,7 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 		stateObject.updateJoinColumn(stateObject.getJoinColumn());
 	}
 
-	void editPrimaryKeyJoinColumn(ObjectListSelectionModel listSelectionModel) {
-
-		PrimaryKeyJoinColumn joinColumn = (PrimaryKeyJoinColumn) listSelectionModel.selectedValue();
+	void editPrimaryKeyJoinColumn(PrimaryKeyJoinColumn joinColumn) {
 
 		PrimaryKeyJoinColumnDialog dialog = new PrimaryKeyJoinColumnDialog(
 			getShell(),
@@ -239,47 +240,36 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 	@Override
 	protected void initialize() {
 		super.initialize();
-		joinColumnHolder = buildJoinColumnHolder();
+		this.selectedPkJoinColumnsModel = buildSelectedJoinColumnsModel();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
-	protected void initializeLayout(Composite container) {
-
-		// Primary Key Join Columns group pane
-		Group groupPane = addTitledGroup(
-			container,
+	protected Composite addComposite(Composite parent) {
+		return addTitledGroup(
+			parent,
 			JptUiDetailsMessages.PrimaryKeyJoinColumnsComposite_primaryKeyJoinColumn
 		);
+	}
 
+	@Override
+	protected void initializeLayout(Composite container) {
 		// Override Default Join Columns check box
 		addCheckBox(
-			addSubPane(groupPane, 8),
+			container,
 			JptUiDetailsMessages.PrimaryKeyJoinColumnsComposite_overrideDefaultPrimaryKeyJoinColumns,
 			buildOverrideDefaultJoinColumnHolder(),
 			null
 		);
-
 		// Primary Key Join Columns list pane
-		AddRemoveListPane<Entity> joinColumnsListPane = new AddRemoveListPane<Entity>(
+		new AddRemoveListPane<Entity, PrimaryKeyJoinColumn>(
 			this,
-			groupPane,
+			container,
 			buildJoinColumnsAdapter(),
 			buildPrimaryKeyJoinColumnsListModel(),
-			joinColumnHolder,
+			this.selectedPkJoinColumnsModel,
 			buildJoinColumnsListLabelProvider(),
-			JpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS
-		);
-
-		installJoinColumnsListPaneEnabler(joinColumnsListPane);
-	}
-
-	private void installJoinColumnsListPaneEnabler(AddRemoveListPane<Entity> pane) {
-		new PaneEnabler(
 			buildOverrideDefaultJoinColumnHolder(),
-			pane
+			JpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS
 		);
 	}
 
@@ -293,7 +283,6 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 		try {
 			if (selected) {
 				getSubject().convertDefaultPrimaryKeyJoinColumnsToSpecified();
-				this.joinColumnHolder.setValue(getSubject().getSpecifiedPrimaryKeyJoinColumn(0));
 			} else {
 				getSubject().clearSpecifiedPrimaryKeyJoinColumns();
 			}

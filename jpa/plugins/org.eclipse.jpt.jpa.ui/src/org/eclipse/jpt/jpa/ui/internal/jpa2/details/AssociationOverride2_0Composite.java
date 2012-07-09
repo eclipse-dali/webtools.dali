@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,7 +19,6 @@ import org.eclipse.jpt.jpa.ui.internal.details.AssociationOverrideComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.EntityOverridesComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.JoinColumnsComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.JoinTableJoiningStrategyPane;
-import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -55,19 +54,12 @@ public class AssociationOverride2_0Composite
 		
 		super(parentPane, subjectHolder, parent);
 	}
-	
-	
+
 	@Override
 	protected void initializeLayout(Composite container) {
-		Composite composite = addTitledGroup(
-				container,
-				JptUiDetailsMessages.Joining_title);
+		addJoinColumnJoiningStrategyPane(container);
 		
-		addJoinColumnJoiningStrategyPane(composite);
-		
-		addJoinTableJoiningStrategyPane(composite);
-		
-		addSubPane(composite, 5);
+		addJoinTableJoiningStrategyPane(container);
 	}
 	
 	protected void addJoinTableJoiningStrategyPane(Composite container) {

@@ -35,6 +35,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.TenantDiscriminatorColumn2_3
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.TenantDiscriminatorColumnsComposite.TenantDiscriminatorColumnsEditor;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
@@ -69,38 +70,35 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 								PropertyValueModel<? extends EclipseLinkMultitenancy2_3> subjectHolder,
 								Composite parent) {
 
-		super(parentPane, subjectHolder, parent, false);
+		super(parentPane, subjectHolder, parent);
+	}
+
+	@Override
+	protected Composite addComposite(Composite container) {
+		return this.addSubPane(container, 2, 0, 0, 0, 0);
 	}
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		int groupBoxMargin = getGroupBoxMargin();
-
-		Composite subPane = addSubPane(
-			container, 0, groupBoxMargin, 0, groupBoxMargin
-		);
-
 		// Strategy widgets
-		addLabeledComposite( 
-			subPane, 
-            addCheckBox( 
-                 container, 
-                 EclipseLinkUiDetailsMessages.EclipseLinkMultitenancyComposite_strategy, 
-                 builMultitenantHolder(), 
-                 null 
-            ), 
-            addMultitenantStrategyCombo(subPane).getControl(), 
-            EclipseLinkHelpContextIds.MULTITENANCY_STRATEGY
-            );
+		this.addCheckBox(
+			container,
+			EclipseLinkUiDetailsMessages.EclipseLinkMultitenancyComposite_strategy,
+			buildMultitenantHolder(),
+			null);
+		this.addMultitenantStrategyCombo(container).getControl();
 
 		// Include criteria tri-state check box
 		TriStateCheckBox includeCriteriaCheckBox = addTriStateCheckBoxWithDefault(
-			subPane,
+			container,
 			EclipseLinkUiDetailsMessages.EclipseLinkMultitenancyComposite_includeCriteria,
 			buildIncludeCriteriaHolder(),
 			buildIncludeCriteriaStringHolder(),
 			EclipseLinkHelpContextIds.MULTITENANCY_INCLUDE_CRITERIA);
 
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		includeCriteriaCheckBox.getCheckBox().setLayoutData(gridData);
 		SWTTools.controlVisibleState(new EclipseLink2_4ProjectFlagModel<EclipseLinkMultitenancy2_3>(this.getSubjectHolder()), includeCriteriaCheckBox.getCheckBox());
 
 		// Tenant discriminator columns group pane
@@ -108,21 +106,22 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 			container,
 			EclipseLinkUiDetailsMessages.TenantDiscriminatorColumns_groupLabel
 		);
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		tenantDiscriminatorColumnGroupPane.setLayoutData(gridData);
 
 		// Override Default Tenant Discriminator Columns check box
 		addCheckBox(
-			addSubPane(tenantDiscriminatorColumnGroupPane, 8),
+			tenantDiscriminatorColumnGroupPane,
 			EclipseLinkUiDetailsMessages.EclipseLinkMultitenancy_overrideDefaultTenantDiscriminatorColumns,
 			buildOverrideDefaultTenantDiscriminatorColumnHolder(),
 			null
 		);
 
 		this.tenantDiscriminatorColumnsComposite = this.buildTenantDiscriminatorColumnsComposite(tenantDiscriminatorColumnGroupPane);
-
-		this.tenantDiscriminatorColumnsComposite.installListPaneEnabler(new TenantDiscriminatorColumnPaneEnablerHolder());
 	}
 	
-	private ModifiablePropertyValueModel<Boolean> builMultitenantHolder() {
+	private ModifiablePropertyValueModel<Boolean> buildMultitenantHolder() {
 		return new PropertyAspectAdapter<EclipseLinkMultitenancy2_3, Boolean>(getSubjectHolder(), EclipseLinkMultitenancy2_3.SPECIFIED_MULTITENANT_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -179,6 +178,11 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 			protected void setValue(EclipseLinkMultitenantType2_3 value) {
 				getSubject().setSpecifiedType(value);
 			}
+
+			@Override
+			protected String getHelpId() {
+				return EclipseLinkHelpContextIds.MULTITENANCY_STRATEGY;
+			}
 		};
 	}
 
@@ -225,9 +229,11 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 		};
 	}
 
+	//TODO do i need to pass in the PaneEnabler from *this* pane as a Combined property value model?
 	protected TenantDiscriminatorColumnsComposite<EclipseLinkMultitenancy2_3>  buildTenantDiscriminatorColumnsComposite(Composite container) {
 		return new TenantDiscriminatorColumnsComposite<EclipseLinkMultitenancy2_3>(
 			getSubjectHolder(),
+			new TenantDiscriminatorColumnPaneEnablerHolder(),
 			container,
 			getWidgetFactory(),
 			buildTenantDiscriminatorColumnsEditor());
@@ -239,9 +245,10 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 
 	class TenantDiscriminatorColumnsProvider implements TenantDiscriminatorColumnsEditor<EclipseLinkMultitenancy2_3> {
 
-		public void addTenantDiscriminatorColumn(EclipseLinkMultitenancy2_3 subject) {
+		public ReadOnlyTenantDiscriminatorColumn2_3 addTenantDiscriminatorColumn(EclipseLinkMultitenancy2_3 subject) {
 			TenantDiscriminatorColumn2_3 column = subject.addSpecifiedTenantDiscriminatorColumn();
 			column.setSpecifiedName(ReadOnlyTenantDiscriminatorColumn2_3.DEFAULT_NAME);
+			return column;
 		}
 
 		public ListIterable<ReadOnlyTenantDiscriminatorColumn2_3> getDefaultTenantDiscriminatorColumns(EclipseLinkMultitenancy2_3 subject) {
@@ -272,15 +279,9 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 			return subject.hasSpecifiedTenantDiscriminatorColumns();
 		}
 
-		public void removeTenantDiscriminatorColumns(EclipseLinkMultitenancy2_3 subject, int[] selectedIndices) {
-			for (int index = selectedIndices.length; index-- > 0; ) {
-				subject.removeSpecifiedTenantDiscriminatorColumn(selectedIndices[index]);
-			}
+		public void removeTenantDiscriminatorColumn(EclipseLinkMultitenancy2_3 subject, ReadOnlyTenantDiscriminatorColumn2_3 column) {
+			subject.removeSpecifiedTenantDiscriminatorColumn((TenantDiscriminatorColumn2_3) column);
 		}
-	}
-
-	void setSelectedTenantDiscriminatorColumn(ReadOnlyTenantDiscriminatorColumn2_3 tenantDiscriminatorColumn) {
-		this.tenantDiscriminatorColumnsComposite.setSelectedTenantDiscriminatorColumn(tenantDiscriminatorColumn);
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildOverrideDefaultTenantDiscriminatorColumnHolder() {

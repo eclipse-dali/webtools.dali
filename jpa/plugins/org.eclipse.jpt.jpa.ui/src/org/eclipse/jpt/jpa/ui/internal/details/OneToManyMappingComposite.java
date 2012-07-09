@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,10 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.OneToManyRelationship;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.widgets.Hyperlink;
 
 /**
  * Here the layout of this pane:
@@ -48,10 +51,10 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see OneToManyMapping
  * @see CascadeComposite
- * @see FetchTypeComposite
+ * @see FetchTypeComboViewer
  * @see JoinTableComposite
  * @see OrderingComposite
- * @see TargetEntityComposite
+ * @see TargetEntityClassChooser
  *
  * @version 2.3
  * @since 1.0
@@ -67,16 +70,31 @@ public class OneToManyMappingComposite
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public OneToManyMappingComposite(PropertyValueModel<? extends OneToManyMapping> subjectHolder,
+		 							 PropertyValueModel<Boolean> enabledModel,
 	                                 Composite parent,
 	                                 WidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 
 	@Override
-	protected void initializeOneToManySection(Composite container) {
-		new TargetEntityComposite(this, container);
-		new FetchTypeComposite(this, container);
-		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 5));
+	protected Control initializeOneToManySection(Composite container) {
+		container = this.addSubPane(container, 2, 0, 0, 0, 0);
+
+		// Target entity widgets
+		Hyperlink targetEntityHyperlink = this.addHyperlink(container, JptUiDetailsMessages.TargetEntityChooser_label);
+		new TargetEntityClassChooser(this, container, targetEntityHyperlink);
+
+		// Fetch type widgets
+		this.addLabel(container, JptUiDetailsMessages.BasicGeneralSection_fetchLabel);
+		new FetchTypeComboViewer(this, container);
+
+		// Cascade widgets
+		CascadeComposite cascadeComposite = new CascadeComposite(this, buildCascadeHolder(), container);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		cascadeComposite.getControl().setLayoutData(gridData);
+
+		return container;
 	}
 }

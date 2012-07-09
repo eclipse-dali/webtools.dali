@@ -15,27 +15,37 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
 import org.eclipse.jpt.jpa.db.JptJpaDbPlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Connection;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.JptUiPersistence2_0Messages;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.FilteredItemsSelectionDialog;
+import org.eclipse.ui.forms.widgets.Hyperlink;
 
 /**
  *  JdbcConnectionPropertiesComposite
@@ -116,41 +126,134 @@ public class JdbcConnectionPropertiesComposite<T extends Connection>
 	}
 
 	@Override
+	protected Composite addComposite(Composite parent) {
+		return this.addSubPane(parent, 2, 0, 0, 0, 0);
+	}
+
+	@Override
 	protected void initializeLayout(Composite container) {
 
 		// Populate from Connection hyperlink
-		this.addHyperlink(
+		Hyperlink hyperLink = this.addHyperlink(
 			container,
 			JptUiPersistence2_0Messages.JdbcConnectionPropertiesComposite_populateFromConnectionHyperLink,
 			buildPopulateFromConnectionAction()
 		);
+		GridData gridData = new GridData();
+		gridData.horizontalSpan = 2;
+		hyperLink.setLayoutData(gridData);
 
 		// Driver
-		new JdbcDriverComposite(this, container);
+		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlConnectionTab_driverLabel);
+		this.initializeJdbcDriverClassChooser(container);
 
 		// Url
-		this.addLabeledText(
-			container,
-			EclipseLinkUiMessages.PersistenceXmlConnectionTab_urlLabel,
-			buildUrlHolder()
-		);
+		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlConnectionTab_urlLabel);
+		this.addText(container, buildUrlHolder());
 
 		// User
-		this.addLabeledText(
-			container,
-			EclipseLinkUiMessages.PersistenceXmlConnectionTab_userLabel,
-			buildUserHolder()
-		);
+		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlConnectionTab_userLabel);
+		this.addText(container, buildUserHolder());
 
 		// Password
-		this.addLabeledPasswordText(
-			container,
-			EclipseLinkUiMessages.PersistenceXmlConnectionTab_passwordLabel,
-			buildPasswordHolder()
-		);
+		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlConnectionTab_passwordLabel);
+		this.addPasswordText(container, buildPasswordHolder());
 
 		// Bind Parameters
-		new JdbcBindParametersComposite(this, container);
+
+		TriStateCheckBox bindParametersCheckBox = this.addTriStateCheckBoxWithDefault(
+			container,
+			EclipseLinkUiMessages.PersistenceXmlConnectionTab_bindParametersLabel,
+			this.buildBindParametersHolder(),
+			this.buildBindParametersStringHolder(),
+			JpaHelpContextIds.PERSISTENCE_XML_CONNECTION
+		);
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		bindParametersCheckBox.getCheckBox().setLayoutData(gridData);
+	}
+
+	private ClassChooserPane<Connection> initializeJdbcDriverClassChooser(Composite container) {
+
+		return new ClassChooserPane<Connection>(this, container) {
+
+			@Override
+			protected ModifiablePropertyValueModel<String> buildTextHolder() {
+				return new PropertyAspectAdapter<Connection, String>(
+							this.getSubjectHolder(), Connection.DRIVER_PROPERTY) {
+					@Override
+					protected String buildValue_() {
+						return this.subject.getDriver();
+					}
+
+					@Override
+					protected void setValue_(String value) {
+
+						if (value.length() == 0) {
+							value = null;
+						}
+						this.subject.setDriver(value);
+					}
+				};
+			}
+
+			@Override
+			protected String getClassName() {
+				return this.getSubject().getDriver();
+			}
+
+			@Override
+			protected IJavaProject getJavaProject() {
+				return getSubject().getJpaProject().getJavaProject();
+			}
+
+			@Override
+			protected void setClassName(String className) {
+				this.getSubject().setDriver(className);				
+			}
+		};
+	}
+
+	private ModifiablePropertyValueModel<Boolean> buildBindParametersHolder() {
+		return new PropertyAspectAdapter<Connection, Boolean>(getSubjectHolder(), Connection.BIND_PARAMETERS_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				return this.subject.getBindParameters();
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				this.subject.setBindParameters(value);
+			}
+		};
+	}
+
+	private PropertyValueModel<String> buildBindParametersStringHolder() {
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultBindParametersHolder()) {
+			@Override
+			protected String transform(Boolean value) {
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.Boolean_True : JptCommonUiMessages.Boolean_False;
+					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlConnectionTab_bindParametersLabelDefault, defaultStringValue);
+				}
+				return EclipseLinkUiMessages.PersistenceXmlConnectionTab_bindParametersLabel;
+			}
+		};
+	}
+
+	private PropertyValueModel<Boolean> buildDefaultBindParametersHolder() {
+		return new PropertyAspectAdapter<Connection, Boolean>(
+			getSubjectHolder(),
+			Connection.BIND_PARAMETERS_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				if (this.subject.getBindParameters() != null) {
+					return null;
+				}
+				return this.subject.getDefaultBindParameters();
+			}
+		};
 	}
 
 	void promptConnection() {

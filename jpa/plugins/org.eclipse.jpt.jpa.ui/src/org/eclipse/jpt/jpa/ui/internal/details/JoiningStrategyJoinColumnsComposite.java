@@ -57,18 +57,21 @@ public class JoiningStrategyJoinColumnsComposite
 		super(parentPane, subjectHolder, parent);
 	}
 
+	@Override
+	protected Composite addComposite(Composite container) {
+		this.joinColumnsComposite = new JoinColumnsComposite<ReadOnlyJoinColumnRelationshipStrategy>(this, container, buildJoinColumnsProvider(), new JoinColumnPaneEnablerHolder());
+		return this.joinColumnsComposite.getControl();
+	}
 
 	@Override
 	protected void initializeLayout(Composite container) {		
-		this.joinColumnsComposite = new JoinColumnsComposite<ReadOnlyJoinColumnRelationshipStrategy>(this, container, buildJoinColumnsProvider());
-		this.joinColumnsComposite.installJoinColumnsPaneEnabler(new JoinColumnPaneEnablerHolder());
 	}
 	
 	private JoinColumnsEditor<ReadOnlyJoinColumnRelationshipStrategy> buildJoinColumnsProvider() {
 		return new JoinColumnsEditor<ReadOnlyJoinColumnRelationshipStrategy>() {
 
-			public void addJoinColumn(ReadOnlyJoinColumnRelationshipStrategy subject) {
-				JoiningStrategyJoinColumnsComposite.this.addJoinColumn(subject);
+			public JoinColumn addJoinColumn(ReadOnlyJoinColumnRelationshipStrategy subject) {
+				return JoiningStrategyJoinColumnsComposite.this.addJoinColumn(subject);
 			}
 
 			public boolean hasSpecifiedJoinColumns(ReadOnlyJoinColumnRelationshipStrategy subject) {
@@ -91,10 +94,8 @@ public class JoiningStrategyJoinColumnsComposite
 				return ReadOnlyJoinColumnRelationshipStrategy.SPECIFIED_JOIN_COLUMNS_LIST;
 			}
 
-			public void removeJoinColumns(ReadOnlyJoinColumnRelationshipStrategy subject, int[] selectedIndices) {
-				for (int index = selectedIndices.length; --index >= 0; ) {
-					((JoinColumnRelationshipStrategy) subject).removeSpecifiedJoinColumn(selectedIndices[index]);
-				}				
+			public void removeJoinColumn(ReadOnlyJoinColumnRelationshipStrategy subject, JoinColumn joinColumn) {
+				((JoinColumnRelationshipStrategy) subject).removeSpecifiedJoinColumn(joinColumn);
 			}
 
 			public ListIterable<ReadOnlyJoinColumn> getSpecifiedJoinColumns(ReadOnlyJoinColumnRelationshipStrategy subject) {
@@ -107,22 +108,23 @@ public class JoiningStrategyJoinColumnsComposite
 		};
 	}
 	
-	void addJoinColumn(ReadOnlyJoinColumnRelationshipStrategy joiningStrategy) {
+	JoinColumn addJoinColumn(ReadOnlyJoinColumnRelationshipStrategy joiningStrategy) {
 		JoinColumnInJoiningStrategyDialog dialog =
 			new JoinColumnInJoiningStrategyDialog(getShell(), joiningStrategy, null);
 
 		dialog.setBlockOnOpen(true);
 		dialog.open();
 		if (dialog.wasConfirmed()) {
-			addJoinColumn(dialog.getSubject());
+			return addJoinColumn(dialog.getSubject());
 		}
+		return null;
 	}
 	
-	void addJoinColumn(JoinColumnInJoiningStrategyStateObject stateObject) {
+	JoinColumn addJoinColumn(JoinColumnInJoiningStrategyStateObject stateObject) {
 		JoinColumnRelationshipStrategy subject = (JoinColumnRelationshipStrategy) getSubject();
 		JoinColumn joinColumn = subject.addSpecifiedJoinColumn();
 		stateObject.updateJoinColumn(joinColumn);
-		this.setSelectedJoinColumn(joinColumn);
+		return joinColumn;
 	}
 
 	public void setSelectedJoinColumn(JoinColumn joinColumn) {

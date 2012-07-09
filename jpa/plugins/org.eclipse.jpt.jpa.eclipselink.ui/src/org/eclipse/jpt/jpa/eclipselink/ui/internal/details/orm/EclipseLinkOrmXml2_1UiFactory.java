@@ -23,9 +23,10 @@ public class EclipseLinkOrmXml2_1UiFactory
 	@Override
 	public JpaComposite createOrmElementCollectionMapping2_0Composite(
 			PropertyValueModel<OrmElementCollectionMapping2_0> subjectHolder,
+			PropertyValueModel<Boolean> enabledModel,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new OrmEclipseLinkElementCollectionMapping2_1Composite(subjectHolder, parent, widgetFactory);
+		return new OrmEclipseLinkElementCollectionMapping2_1Composite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 
 	@Override

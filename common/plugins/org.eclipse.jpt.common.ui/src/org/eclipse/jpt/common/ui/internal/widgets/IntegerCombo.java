@@ -12,6 +12,7 @@ package org.eclipse.jpt.common.ui.internal.widgets;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.utility.internal.StringConverter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationWritablePropertyValueModel;
@@ -52,6 +53,14 @@ public abstract class IntegerCombo<T extends Model>
 	}
 
 	protected IntegerCombo(
+		Pane<? extends T> parentPane,
+		Composite parent,
+		PropertyValueModel<Boolean> enabledModel
+		) {
+		super(parentPane, parent, enabledModel);
+	}
+
+	protected IntegerCombo(
 						Pane<?> parentPane,
 						PropertyValueModel<? extends T> subjectHolder,
 						Composite parent
@@ -59,15 +68,30 @@ public abstract class IntegerCombo<T extends Model>
 		super(parentPane, subjectHolder, parent);
 	}
 
-	public Combo getCombo() {
-		return this.comboBox;
+	protected IntegerCombo(
+						Pane<?> parentPane,
+						PropertyValueModel<? extends T> subjectHolder,
+						PropertyValueModel<Boolean> enabledModel,
+						Composite parent
+	) {
+		super(parentPane, subjectHolder, enabledModel, parent);
 	}
-	
+
 	// ********** initialization **********
 
 	@Override
+	protected boolean addsComposite() {
+		return false;
+	}
+
+	@Override
+	public Combo getControl() {
+		return this.comboBox;
+	}
+
+	@Override
 	protected void initializeLayout(Composite container) {
-		this.defaultValueHolder = buildDefaultStringHolder();
+		this.defaultValueHolder = this.buildDefaultStringHolder();
 		this.comboBox = this.addIntegerCombo(container);
 
 		int margin = FieldDecorationRegistry.getDefault().getMaximumDecorationWidth();
@@ -82,11 +106,11 @@ public abstract class IntegerCombo<T extends Model>
 	}
 	
 	protected Combo addIntegerCombo(Composite container) {
-		return this.addLabeledEditableCombo(
+		return this.addEditableCombo(
 				container,
-				getLabelText(),
 				buildDefaultListHolder(),
 				buildSelectedItemStringHolder(),
+				StringConverter.Default.<String>instance(),
 				getHelpId()
 				);
 		
@@ -151,8 +175,6 @@ public abstract class IntegerCombo<T extends Model>
 	}
 
 	// ********** abstract methods **********
-	
-	protected abstract String getLabelText();
 	
 	protected abstract String getHelpId();
 

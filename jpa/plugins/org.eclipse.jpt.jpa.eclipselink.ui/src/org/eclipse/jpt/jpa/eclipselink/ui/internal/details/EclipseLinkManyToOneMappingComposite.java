@@ -18,11 +18,15 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkRelationshipMapping;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractManyToOneMappingComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.CascadeComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.FetchTypeComboViewer;
+import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.ManyToOneJoiningStrategyPane;
-import org.eclipse.jpt.jpa.ui.internal.details.OptionalComposite;
-import org.eclipse.jpt.jpa.ui.internal.details.TargetEntityComposite;
+import org.eclipse.jpt.jpa.ui.internal.details.OptionalTriStateCheckBox;
+import org.eclipse.jpt.jpa.ui.internal.details.TargetEntityClassChooser;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.widgets.Hyperlink;
 
 /**
  * Here the layout of this pane:
@@ -56,9 +60,9 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see {@link ManyToOneMapping}
- * @see {@link TargetEntityComposite}
+ * @see {@link TargetEntityClassChooser}
  * @see {@link ManyToOneJoiningStrategyPane}
- * @see {@link FetchTypeComposite}
+ * @see {@link FetchTypeComboViewer}
  * @see {@link OptionalComposite}
  * @see {@link CascadeComposite}
  *
@@ -76,19 +80,42 @@ public class EclipseLinkManyToOneMappingComposite<T extends ManyToOneMapping>
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public EclipseLinkManyToOneMappingComposite(PropertyValueModel<? extends T> subjectHolder,
-	                                 Composite parent,
-	                                 WidgetFactory widgetFactory) {
+									PropertyValueModel<Boolean> enabledModel,
+									Composite parent,
+	                                WidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 
 	@Override
-	protected void initializeManyToOneSection(Composite container) {		
-		new TargetEntityComposite(this, container);
-		new FetchTypeComposite(this, container);
-		new EclipseLinkJoinFetchComposite(this, buildJoinFetchableHolder(), container);
-		new OptionalComposite(this, container);
-		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 5));
+	protected Control initializeManyToOneSection(Composite container) {
+		container = this.addSubPane(container, 2, 0, 0, 0, 0);
+
+		// Target entity widgets
+		Hyperlink targetEntityHyperlink = this.addHyperlink(container, JptUiDetailsMessages.TargetEntityChooser_label);
+		new TargetEntityClassChooser(this, container, targetEntityHyperlink);
+
+		// Fetch type widgets
+		this.addLabel(container, JptUiDetailsMessages.BasicGeneralSection_fetchLabel);
+		new FetchTypeComboViewer(this, container);
+
+		// Join fetch widgets
+		this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkJoinFetchComposite_label);
+		new EclipseLinkJoinFetchComboViewer(this, buildJoinFetchableHolder(), container);
+
+		// Optional widgets
+		OptionalTriStateCheckBox optionalCheckBox = new OptionalTriStateCheckBox(this, container);
+		GridData gridData = new GridData();
+		gridData.horizontalSpan = 2;
+		optionalCheckBox.getControl().setLayoutData(gridData);
+
+		// Cascade widgets
+		CascadeComposite cascadeComposite = new CascadeComposite(this, buildCascadeHolder(), container);
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		cascadeComposite.getControl().setLayoutData(gridData);
+
+		return container;
 	}
 	
 	protected PropertyValueModel<EclipseLinkJoinFetch> buildJoinFetchableHolder() {

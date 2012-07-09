@@ -58,8 +58,17 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 			PropertyValueModel<? extends T> subjectHolder,
 			Composite parent) {
 
-		super(parentPane, subjectHolder, parent, false);
+		super(parentPane, subjectHolder, parent);
 	}
+
+	protected ReferenceTableComposite(
+		Pane<?> parentPane,
+		PropertyValueModel<? extends T> subjectHolder,
+		PropertyValueModel<Boolean> enabledModel,
+		Composite parent) {
+
+	super(parentPane, subjectHolder, enabledModel, parent);
+}
 
 	/**
 	 * Creates a new <code>ReferenceTableComposite</code>.
@@ -76,11 +85,11 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 	}
 
 
-	protected void installJoinColumnsPaneEnabler(JoinColumnsComposite<T> pane) {
-		pane.installJoinColumnsPaneEnabler(new JoinColumnPaneEnablerHolder());
+	protected PropertyValueModel<Boolean> buildJoinColumnsEnabledModel() {
+		return new JoinColumnsEnabledModel();
 	}
 
-	void addJoinColumn(T referenceTable) {
+	JoinColumn addJoinColumn(T referenceTable) {
 
 		JoinColumnInReferenceTableDialog dialog =
 			new JoinColumnInReferenceTableDialog(getShell(), referenceTable, null);
@@ -88,18 +97,15 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 		dialog.setBlockOnOpen(true);
 		dialog.open();
 		if (dialog.wasConfirmed()) {
-			addJoinColumnFromDialog(dialog.getSubject());
+			return addJoinColumnFromDialog(dialog.getSubject());
 		}
+		return null;
 	}
 
-	void addJoinColumnFromDialog(JoinColumnInReferenceTableStateObject stateObject) {
+	JoinColumn addJoinColumnFromDialog(JoinColumnInReferenceTableStateObject stateObject) {
 		JoinColumn joinColumn = ((ReferenceTable) getSubject()).addSpecifiedJoinColumn();
 		stateObject.updateJoinColumn(joinColumn);
-		this.setSelectedJoinColumn(joinColumn);
-	}
-
-	private void setSelectedJoinColumn(JoinColumn joinColumn) {
-		this.joinColumnsComposite.setSelectedJoinColumn(joinColumn);
+		return joinColumn;
 	}
 
 	protected JoinColumnsProvider buildJoinColumnsEditor() {
@@ -124,11 +130,7 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 		};
 	}
 
-	protected Composite addPane(Composite container, int groupBoxMargin) {
-		return addSubPane(container, 0, groupBoxMargin, 10, groupBoxMargin);
-	}
-
-	protected TableCombo<T> addTableCombo(Composite container) {
+	protected TableCombo<T> addTableCombo(Composite container, final String helpId) {
 
 		return new TableCombo<T>(this, container) {
 
@@ -179,10 +181,20 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 				ReadOnlyReferenceTable table = this.getSubject();
 				return (table instanceof ReferenceTable) ? (ReferenceTable) table : null;
 			}
+
+			@Override
+			protected String getHelpId() {
+				return helpId;
+			}
+
+			@Override
+			public String toString() {
+				return "ReferenceTableComposite.tableCombo"; //$NON-NLS-1$
+			}
 		};
 	}
 	
-	protected SchemaCombo<T> addSchemaCombo(Composite container) {
+	protected SchemaCombo<T> addSchemaCombo(Composite container, final String helpId) {
 
 		return new SchemaCombo<T>(this, container) {
 
@@ -229,10 +241,20 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 				ReadOnlyReferenceTable table = this.getSubject();
 				return (table instanceof ReferenceTable) ? (ReferenceTable) table : null;
 			}
+
+			@Override
+			protected String getHelpId() {
+				return helpId;
+			}
+
+			@Override
+			public String toString() {
+				return "ReferenceTableComposite.schemaCombo"; //$NON-NLS-1$
+			}
 		};
 	}
 	
-	protected CatalogCombo<T> addCatalogCombo(Composite container) {
+	protected CatalogCombo<T> addCatalogCombo(Composite container, final String helpId) {
 
 		return new CatalogCombo<T>(this, container) {
 
@@ -256,6 +278,16 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 			@Override
 			protected String getValue() {
 				return this.getSubject().getSpecifiedCatalog();
+			}
+
+			@Override
+			protected String getHelpId() {
+				return helpId;
+			}
+
+			@Override
+			public String toString() {
+				return "ReferenceTableComposite.catalogCombo"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -301,10 +333,14 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 		}
 	}
 
+	private void setSelectedJoinColumn(JoinColumn joinColumn) {
+		this.joinColumnsComposite.setSelectedJoinColumn(joinColumn);
+	}
+
 	class JoinColumnsProvider implements JoinColumnsEditor<T> {
 
-		public void addJoinColumn(T subject) {
-			ReferenceTableComposite.this.addJoinColumn(subject);
+		public JoinColumn addJoinColumn(T subject) {
+			return ReferenceTableComposite.this.addJoinColumn(subject);
 		}
 
 		public ReadOnlyJoinColumn getDefaultJoinColumn(T subject) {
@@ -323,10 +359,8 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 			return subject.hasSpecifiedJoinColumns();
 		}
 
-		public void removeJoinColumns(T subject, int[] selectedIndices) {
-			for (int index = selectedIndices.length; index-- > 0; ) {
-				((ReferenceTable) subject).removeSpecifiedJoinColumn(selectedIndices[index]);
-			}
+		public void removeJoinColumn(T subject, JoinColumn joinColumn) {
+			((ReferenceTable) subject).removeSpecifiedJoinColumn(joinColumn);
 		}
 
 		public ListIterable<ReadOnlyJoinColumn> getSpecifiedJoinColumns(T subject) {
@@ -361,13 +395,13 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 	}
 
 	
-	/* CU private */ class JoinColumnPaneEnablerHolder 
+	/* CU private */ class JoinColumnsEnabledModel 
 		extends TransformationPropertyValueModel<T, Boolean> 
 	{
 		private StateChangeListener stateChangeListener;
 		
 		
-		JoinColumnPaneEnablerHolder() {
+		JoinColumnsEnabledModel() {
 			super(
 				new ValueListAdapter<T>(
 					new ReadOnlyWritablePropertyValueModelWrapper<T>(getSubjectHolder()), 
@@ -381,7 +415,7 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 		private StateChangeListener buildStateChangeListener() {
 			return new StateChangeListener() {
 				public void stateChanged(StateChangeEvent event) {
-					JoinColumnPaneEnablerHolder.this.valueStateChanged();
+					JoinColumnsEnabledModel.this.valueStateChanged();
 				}
 			};
 		}

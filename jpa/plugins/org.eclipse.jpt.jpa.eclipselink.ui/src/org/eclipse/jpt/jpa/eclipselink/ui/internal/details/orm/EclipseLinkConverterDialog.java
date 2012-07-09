@@ -114,20 +114,22 @@ public class EclipseLinkConverterDialog
 		}
 
 		@Override
+		protected Composite addComposite(Composite container) {
+			return this.addSubPane(container, 2, 0, 0, 0, 0);
+		}
+
+		@Override
 		protected void initializeLayout(Composite container) {
-			this.nameText = addLabeledText(
-				container,
-				EclipseLinkUiDetailsMessages.EclipseLinkConverterDialog_name,
-				buildNameHolder()
-			);
+			this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkConverterDialog_name);
+			this.addText(container, buildNameHolder());
 			
-			addLabeledCombo(
+			this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkConverterDialog_converterType);
+			this.addCombo(
 				container, 
-				EclipseLinkUiDetailsMessages.EclipseLinkConverterDialog_converterType, 
 				buildConverterTypeListHolder(), 
 				buildConverterTypeHolder(), 
 				buildStringConverter(),
-				null);
+				(String) null);
 		}
 
 		protected ListValueModel<Class<? extends EclipseLinkConverter>> buildConverterTypeListHolder() {
