@@ -82,7 +82,7 @@ public class OneToManyJoiningStrategy2_0Pane
 			null);
 
 		JoinColumnJoiningStrategyPane.
-			buildJoinColumnJoiningStrategyPaneWithIncludeOverrideCheckBox(this, container);
+			buildJoinColumnJoiningStrategyPaneWithoutIncludeOverrideCheckBox(this, container);
 		
 		addRadioButton(
 			container,

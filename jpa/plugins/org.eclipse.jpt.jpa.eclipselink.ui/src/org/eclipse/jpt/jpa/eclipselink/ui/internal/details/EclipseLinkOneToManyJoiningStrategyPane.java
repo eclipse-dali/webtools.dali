@@ -55,7 +55,7 @@ public class EclipseLinkOneToManyJoiningStrategyPane
 			null);
 
 		JoinColumnJoiningStrategyPane.
-			buildJoinColumnJoiningStrategyPaneWithIncludeOverrideCheckBox(this, container);
+			buildJoinColumnJoiningStrategyPaneWithoutIncludeOverrideCheckBox(this, container);
 		
 		addRadioButton(
 			container,
