@@ -127,7 +127,11 @@ public abstract class PropertyAspectAdapter<S extends Model, V>
 		}
 	}
 
-    protected void aspectChanged(@SuppressWarnings("unused") PropertyChangeEvent event) {
-		this.aspectChanged();
+	protected void aspectChanged(@SuppressWarnings("unused") PropertyChangeEvent event) {
+ 		//TODO we have multiple PropertyAspectAdapters that depend on the aspectChanged()
+    	//behavior because they do a transformation in the buildValue(). It would be
+    	//nice to use the new value from the event instead of rebuilding it.
+    	//this.fireAspectChanged((V) event.getOldValue(), this.value = (V) event.getNewValue());
+    	aspectChanged();
 	}
 }
