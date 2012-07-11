@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2011 Oracle. All rights reserved.
+* Copyright (c) 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,16 +10,17 @@
 package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.persistence;
 
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
+import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logging2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logging2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.LoggingLevel;
+import org.eclipse.jpt.jpa.eclipselink.core.platform.EclipseLinkPlatform;
+import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
-/**
- *  EclipseLink2_0LoggingTests
- */
-@SuppressWarnings("nls")
-public class EclipseLink2_0LoggingTests extends EclipseLink2_0PersistenceUnitTestCase
-{
+public class EclipseLink2_4LoggingTests extends EclipseLink2_0PersistenceUnitTestCase {
 	private Logging2_0 logging;
 
 	public static final String SQL_LOGGING_KEY = Logging2_0.ECLIPSELINK_SQL_CATEGORY_LOGGING_LEVEL;
@@ -62,14 +63,6 @@ public class EclipseLink2_0LoggingTests extends EclipseLink2_0PersistenceUnitTes
 	public static final LoggingLevel DMS_LOGGING_TEST_VALUE = LoggingLevel.off;
 	public static final LoggingLevel DMS_LOGGING_TEST_VALUE_2 = LoggingLevel.severe;
 
-	public static final String EJB_OR_METADATA_LOGGING_KEY = Logging2_0.ECLIPSELINK_EJB_OR_METADATA_CATEGORY_LOGGING_LEVEL;
-	public static final LoggingLevel EJB_OR_METADATA_LOGGING_TEST_VALUE = LoggingLevel.warning;
-	public static final LoggingLevel EJB_OR_METADATA_LOGGING_TEST_VALUE_2 = LoggingLevel.info;
-
-	public static final String METAMODEL_LOGGING_KEY = Logging2_0.ECLIPSELINK_JPA_METAMODEL_CATEGORY_LOGGING_LEVEL;
-	public static final LoggingLevel METAMODEL_LOGGING_TEST_VALUE = LoggingLevel.config;
-	public static final LoggingLevel METAMODEL_LOGGING_TEST_VALUE_2 = LoggingLevel.fine;
-
 	public static final String WEAVER_LOGGING_KEY = Logging2_0.ECLIPSELINK_WEAVER_CATEGORY_LOGGING_LEVEL;
 	public static final LoggingLevel WEAVER_LOGGING_TEST_VALUE = LoggingLevel.finer;
 	public static final LoggingLevel WEAVER_LOGGING_TEST_VALUE_2 = LoggingLevel.finest;
@@ -82,18 +75,44 @@ public class EclipseLink2_0LoggingTests extends EclipseLink2_0PersistenceUnitTes
 	public static final LoggingLevel SERVER_LOGGING_TEST_VALUE = LoggingLevel.severe;
 	public static final LoggingLevel SERVER_LOGGING_TEST_VALUE_2 = LoggingLevel.warning;
 
+	// logging categories introduced by EclipseLink 2.4
+	
+	public static final String METADATA_LOGGING_KEY = Logging2_4.ECLIPSELINK_METADATA_CATEGORY_LOGGING_LEVEL;
+	public static final LoggingLevel METADATA_LOGGING_TEST_VALUE = LoggingLevel.warning;
+	public static final LoggingLevel METADATA_LOGGING_TEST_VALUE_2 = LoggingLevel.info;
+
+	public static final String METAMODEL_LOGGING_KEY = Logging2_4.ECLIPSELINK_METAMODEL_CATEGORY_LOGGING_LEVEL;
+	public static final LoggingLevel METAMODEL_LOGGING_TEST_VALUE = LoggingLevel.config;
+	public static final LoggingLevel METAMODEL_LOGGING_TEST_VALUE_2 = LoggingLevel.fine;
+
+	public static final String JPA_LOGGING_KEY = Logging2_4.ECLIPSELINK_JPA_CATEGORY_LOGGING_LEVEL;
+	public static final LoggingLevel JPA_LOGGING_TEST_VALUE = LoggingLevel.all;
+	public static final LoggingLevel JPA_LOGGING_TEST_VALUE_2 = LoggingLevel.off;
+
+	public static final String DDL_LOGGING_KEY = Logging2_4.ECLIPSELINK_DDL_CATEGORY_LOGGING_LEVEL;
+	public static final LoggingLevel DDL_LOGGING_TEST_VALUE = LoggingLevel.severe;
+	public static final LoggingLevel DDL_LOGGING_TEST_VALUE_2 = LoggingLevel.warning;
+
 	// ********** constructors **********
-	public EclipseLink2_0LoggingTests(String name) {
+	public EclipseLink2_4LoggingTests(String name) {
 		super(name);
 	}
 
+	@Override
+	protected IDataModel buildJpaConfigDataModel() {
+		IDataModel dataModel = super.buildJpaConfigDataModel();
+		dataModel.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, JpaFacet.VERSION_2_0.getVersionString());	
+		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM, EclipseLinkPlatform.VERSION_2_4);
+		return dataModel;
+	}
+	
 	// ********** behavior **********
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.logging = (Logging2_0) this.subject.getLogging();
 		PropertyChangeListener propertyChangeListener = this.buildPropertyChangeListener();
-
+		
 		this.logging.addPropertyChangeListener(Logging2_0.SQL_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
 		this.logging.addPropertyChangeListener(Logging2_0.TRANSACTION_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
 		this.logging.addPropertyChangeListener(Logging2_0.EVENT_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
@@ -104,11 +123,14 @@ public class EclipseLink2_0LoggingTests extends EclipseLink2_0PersistenceUnitTes
 		this.logging.addPropertyChangeListener(Logging2_0.SEQUENCING_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
 		this.logging.addPropertyChangeListener(Logging2_0.EJB_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
 		this.logging.addPropertyChangeListener(Logging2_0.DMS_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
-		this.logging.addPropertyChangeListener(Logging2_0.EJB_OR_METADATA_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
-		this.logging.addPropertyChangeListener(Logging2_0.JPA_METAMODEL_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
 		this.logging.addPropertyChangeListener(Logging2_0.WEAVER_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
 		this.logging.addPropertyChangeListener(Logging2_0.PROPERTIES_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
 		this.logging.addPropertyChangeListener(Logging2_0.SERVER_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
+
+		this.logging.addPropertyChangeListener(Logging2_4.METADATA_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
+		this.logging.addPropertyChangeListener(Logging2_4.METAMODEL_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
+		this.logging.addPropertyChangeListener(Logging2_4.JPA_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
+		this.logging.addPropertyChangeListener(Logging2_4.DDL_CATEGORY_LOGGING_PROPERTY, propertyChangeListener);
 
 		this.clearEvent();
 	}
@@ -134,11 +156,14 @@ public class EclipseLink2_0LoggingTests extends EclipseLink2_0PersistenceUnitTes
 		this.persistenceUnitSetProperty(SEQUENCING_LOGGING_KEY, SEQUENCING_LOGGING_TEST_VALUE);
 		this.persistenceUnitSetProperty(EJB_LOGGING_KEY, EJB_LOGGING_TEST_VALUE);
 		this.persistenceUnitSetProperty(DMS_LOGGING_KEY, DMS_LOGGING_TEST_VALUE);
-		this.persistenceUnitSetProperty(EJB_OR_METADATA_LOGGING_KEY, EJB_OR_METADATA_LOGGING_TEST_VALUE);
-		this.persistenceUnitSetProperty(METAMODEL_LOGGING_KEY, METAMODEL_LOGGING_TEST_VALUE);
 		this.persistenceUnitSetProperty(WEAVER_LOGGING_KEY, WEAVER_LOGGING_TEST_VALUE);
 		this.persistenceUnitSetProperty(PROPERTIES_LOGGING_KEY, PROPERTIES_LOGGING_TEST_VALUE);
-		this.persistenceUnitSetProperty(SERVER_LOGGING_KEY, SERVER_LOGGING_TEST_VALUE);
+		this.persistenceUnitSetProperty(SERVER_LOGGING_KEY, SERVER_LOGGING_TEST_VALUE);		
+		
+		this.persistenceUnitSetProperty(METADATA_LOGGING_KEY, METADATA_LOGGING_TEST_VALUE);
+		this.persistenceUnitSetProperty(METAMODEL_LOGGING_KEY, METAMODEL_LOGGING_TEST_VALUE);
+		this.persistenceUnitSetProperty(JPA_LOGGING_KEY, JPA_LOGGING_TEST_VALUE);
+		this.persistenceUnitSetProperty(DDL_LOGGING_KEY, DDL_LOGGING_TEST_VALUE);
 
 	}
 
@@ -339,42 +364,6 @@ public class EclipseLink2_0LoggingTests extends EclipseLink2_0PersistenceUnitTes
 			DMS_LOGGING_TEST_VALUE_2);
 	}
 	
-	// ********** EJB or Metadata Level tests **********
-	public void testSetEJBOrMetadataLoggingLevel() throws Exception {
-		this.verifyModelInitialized(
-			EJB_OR_METADATA_LOGGING_KEY,
-			EJB_OR_METADATA_LOGGING_TEST_VALUE);
-		this.verifySetProperty(
-			EJB_OR_METADATA_LOGGING_KEY,
-			EJB_OR_METADATA_LOGGING_TEST_VALUE,
-			EJB_OR_METADATA_LOGGING_TEST_VALUE_2);
-	}
-
-	public void testAddRemoveEJBOrMetadataLoggingLevel() throws Exception {
-		this.verifyAddRemoveProperty(
-			EJB_OR_METADATA_LOGGING_KEY,
-			EJB_OR_METADATA_LOGGING_TEST_VALUE,
-			EJB_OR_METADATA_LOGGING_TEST_VALUE_2);
-	}
-	
-	// ********** Metamodel Level tests **********
-	public void testSetMetamodelLoggingLevel() throws Exception {
-		this.verifyModelInitialized(
-			METAMODEL_LOGGING_KEY,
-			METAMODEL_LOGGING_TEST_VALUE);
-		this.verifySetProperty(
-			METAMODEL_LOGGING_KEY,
-			METAMODEL_LOGGING_TEST_VALUE,
-			METAMODEL_LOGGING_TEST_VALUE_2);
-	}
-
-	public void testAddRemoveMetamodelLoggingLevel() throws Exception {
-		this.verifyAddRemoveProperty(
-			METAMODEL_LOGGING_KEY,
-			METAMODEL_LOGGING_TEST_VALUE,
-			METAMODEL_LOGGING_TEST_VALUE_2);
-	}
-	
 	// ********** Weaver Level tests **********
 	public void testSetWeaverLoggingLevel() throws Exception {
 		this.verifyModelInitialized(
@@ -427,5 +416,77 @@ public class EclipseLink2_0LoggingTests extends EclipseLink2_0PersistenceUnitTes
 			SERVER_LOGGING_KEY,
 			SERVER_LOGGING_TEST_VALUE,
 			SERVER_LOGGING_TEST_VALUE_2);
+	}
+	
+	// ********** Metadata Level tests **********
+	public void testSetMetadataLoggingLevel() throws Exception {
+		this.verifyModelInitialized(
+			METADATA_LOGGING_KEY,
+			METADATA_LOGGING_TEST_VALUE);
+		this.verifySetProperty(
+			METADATA_LOGGING_KEY,
+			METADATA_LOGGING_TEST_VALUE,
+			METADATA_LOGGING_TEST_VALUE_2);
+	}
+
+	public void testAddRemoveMetadataLoggingLevel() throws Exception {
+		this.verifyAddRemoveProperty(
+			METADATA_LOGGING_KEY,
+			METADATA_LOGGING_TEST_VALUE,
+			METADATA_LOGGING_TEST_VALUE_2);
+	}
+	
+	// ********** Metamodel Level tests **********
+	public void testSetMetamodelLoggingLevel() throws Exception {
+		this.verifyModelInitialized(
+			METAMODEL_LOGGING_KEY,
+			METAMODEL_LOGGING_TEST_VALUE);
+		this.verifySetProperty(
+			METAMODEL_LOGGING_KEY,
+			METAMODEL_LOGGING_TEST_VALUE,
+			METAMODEL_LOGGING_TEST_VALUE_2);
+	}
+
+	public void testAddRemoveMetamodelLoggingLevel() throws Exception {
+		this.verifyAddRemoveProperty(
+			METAMODEL_LOGGING_KEY,
+			METAMODEL_LOGGING_TEST_VALUE,
+			METAMODEL_LOGGING_TEST_VALUE_2);
+	}
+
+	// ********** JPA Level tests **********
+	public void testSetJPALoggingLevel() throws Exception {
+		this.verifyModelInitialized(
+			JPA_LOGGING_KEY,
+			JPA_LOGGING_TEST_VALUE);
+		this.verifySetProperty(
+			JPA_LOGGING_KEY,
+			JPA_LOGGING_TEST_VALUE,
+			JPA_LOGGING_TEST_VALUE_2);
+	}
+
+	public void testAddRemoveJPALoggingLevel() throws Exception {
+		this.verifyAddRemoveProperty(
+			JPA_LOGGING_KEY,
+			JPA_LOGGING_TEST_VALUE,
+			JPA_LOGGING_TEST_VALUE_2);
+	}
+	
+	// ********** DDL Level tests **********
+	public void testSetDDLLoggingLevel() throws Exception {
+		this.verifyModelInitialized(
+			DDL_LOGGING_KEY,
+			DDL_LOGGING_TEST_VALUE);
+		this.verifySetProperty(
+			DDL_LOGGING_KEY,
+			DDL_LOGGING_TEST_VALUE,
+			DDL_LOGGING_TEST_VALUE_2);
+	}
+
+	public void testAddRemoveDDLLoggingLevel() throws Exception {
+		this.verifyAddRemoveProperty(
+			DDL_LOGGING_KEY,
+			DDL_LOGGING_TEST_VALUE,
+			DDL_LOGGING_TEST_VALUE_2);
 	}
 }

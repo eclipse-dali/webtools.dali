@@ -42,6 +42,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJav
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_1Definition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_2Definition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_3Definition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLink2_0PersistenceXmlDefinition;
 
 
 public class EclipseLink2_3JpaPlatformProvider
@@ -87,6 +88,7 @@ public class EclipseLink2_3JpaPlatformProvider
 	}
 
 	protected static final ResourceDefinition[] RESOURCE_DEFINITIONS = new ResourceDefinition[] {
+		EclipseLink2_0PersistenceXmlDefinition.instance(),
 		EclipseLinkOrmXml2_1Definition.instance(),
 		EclipseLinkOrmXml2_2Definition.instance(),
 		EclipseLinkOrmXml2_3Definition.instance()

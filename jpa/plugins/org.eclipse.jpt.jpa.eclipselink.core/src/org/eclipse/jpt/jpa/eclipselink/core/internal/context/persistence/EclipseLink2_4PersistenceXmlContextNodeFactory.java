@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License v1.0, which accompanies this distribution
- * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
- * Contributors:
- *     Oracle - initial API and implementation
- ******************************************************************************/
+* Copyright (c) 2012 Oracle. All rights reserved.
+* This program and the accompanying materials are made available under the
+* terms of the Eclipse Public License v1.0, which accompanies this distribution
+* and is available at http://www.eclipse.org/legal/epl-v10.html.
+* 
+* Contributors:
+*     Oracle - initial API and implementation
+*******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence;
 
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
@@ -16,7 +16,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.JpaConnectio
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.JpaOptions2_0;
 
 
-public class EclipseLink2_0PersistenceXmlContextNodeFactory 
+public class EclipseLink2_4PersistenceXmlContextNodeFactory
 		extends AbstractEclipseLinkPersistenceXmlContextNodeFactory {
 
 	@Override
@@ -28,9 +28,9 @@ public class EclipseLink2_0PersistenceXmlContextNodeFactory
 	public JpaOptions2_0 buildOptions(PersistenceUnit parent) {
 		return new EclipseLinkOptions2_0((PersistenceUnit2_0) parent);
 	}
-
+	
 	@Override
 	public PersistenceUnitProperties buildLogging(PersistenceUnit parent) {
-		return new EclipseLinkLogging2_0((PersistenceUnit2_0) parent);
+		return new EclipseLinkLogging2_4((PersistenceUnit2_0) parent);
 	}
 }

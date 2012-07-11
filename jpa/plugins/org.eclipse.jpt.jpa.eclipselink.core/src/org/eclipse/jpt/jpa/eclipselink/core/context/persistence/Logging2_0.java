@@ -63,8 +63,8 @@ public interface Logging2_0 extends Logging
 		static final String EJB_OR_METADATA_CATEGORY_LOGGING_PROPERTY = "ejb_or_metadataLoggingLevel"; //$NON-NLS-1$
 		static final String ECLIPSELINK_EJB_OR_METADATA_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "ejb_or_metadata"; //$NON-NLS-1$
 	
-		static final String METAMODEL_CATEGORY_LOGGING_PROPERTY = "jpa_metamodelLoggingLevel"; //$NON-NLS-1$
-		static final String ECLIPSELINK_METAMODEL_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "jpa_metamodel"; //$NON-NLS-1$
+		static final String JPA_METAMODEL_CATEGORY_LOGGING_PROPERTY = "jpa_metamodelLoggingLevel"; //$NON-NLS-1$
+		static final String ECLIPSELINK_JPA_METAMODEL_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "jpa_metamodel"; //$NON-NLS-1$
 
 		static final String WEAVER_CATEGORY_LOGGING_PROPERTY = "weaverLoggingLevel"; //$NON-NLS-1$
 		static final String ECLIPSELINK_WEAVER_CATEGORY_LOGGING_LEVEL = CATEGORY_PREFIX_ + "weaver"; //$NON-NLS-1$

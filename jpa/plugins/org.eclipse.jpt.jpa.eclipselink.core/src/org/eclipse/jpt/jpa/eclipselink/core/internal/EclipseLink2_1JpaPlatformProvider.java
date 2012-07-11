@@ -16,6 +16,7 @@ import org.eclipse.jpt.jpa.core.JpaPlatformProvider;
 import org.eclipse.jpt.jpa.core.ResourceDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_1Definition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLink2_0PersistenceXmlDefinition;
 
 /**
  *  EclipseLink 2.1 platform config
@@ -58,6 +59,7 @@ public class EclipseLink2_1JpaPlatformProvider
 	@Override
 	protected void addResourceDefinitionsTo(ArrayList<ResourceDefinition> definitions) {
 		super.addResourceDefinitionsTo(definitions);
+		definitions.add(EclipseLink2_0PersistenceXmlDefinition.instance());
 		definitions.add(EclipseLinkOrmXml2_1Definition.instance());
 	}
 }

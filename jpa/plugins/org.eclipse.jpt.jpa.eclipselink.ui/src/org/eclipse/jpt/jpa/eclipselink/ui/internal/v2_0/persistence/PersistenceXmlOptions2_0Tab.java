@@ -120,7 +120,7 @@ public class PersistenceXmlOptions2_0Tab extends PersistenceXmlOptionsTab<Persis
 		return new EclipseLinkLogging2_0Composite(this.buildLoggingHolder(), section, getWidgetFactory()).getControl();
 	}
 
-	private PropertyValueModel<Logging2_0> buildLoggingHolder() {
+	protected PropertyValueModel<Logging2_0> buildLoggingHolder() {
 		return new TransformationPropertyValueModel<PersistenceUnit, Logging2_0>(getSubjectHolder()) {
 			@Override
 			protected Logging2_0 transform_(PersistenceUnit value) {

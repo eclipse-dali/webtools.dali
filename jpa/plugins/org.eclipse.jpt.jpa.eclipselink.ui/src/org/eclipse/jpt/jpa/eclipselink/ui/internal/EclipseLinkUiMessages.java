@@ -263,6 +263,10 @@ public class EclipseLinkUiMessages {
 	public static String PersistenceXmlLoggingTab_weaverLoggingLevelLabel;
 	public static String PersistenceXmlLoggingTab_propertiesLoggingLevelLabel;
 	public static String PersistenceXmlLoggingTab_serverLoggingLevelLabel;
+	public static String PersistenceXmlLoggingTab_metadataLoggingLevelLabel; // EclipseLink 2.4
+	public static String PersistenceXmlLoggingTab_metamodelLoggingLevelLabel; // EclipseLink 2.4
+	public static String PersistenceXmlLoggingTab_jpaLoggingLevelLabel; // EclipseLink 2.4
+	public static String PersistenceXmlLoggingTab_ddlLoggingLevelLabel; // EclipseLink 2.4
 		
 	public static String LoggingLevelComposite_off;
 	public static String LoggingLevelComposite_severe;

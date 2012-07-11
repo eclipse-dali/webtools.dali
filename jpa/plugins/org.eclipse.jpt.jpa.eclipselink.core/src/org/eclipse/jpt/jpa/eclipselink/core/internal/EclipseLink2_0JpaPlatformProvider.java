@@ -9,7 +9,10 @@
 *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal;
 
+import java.util.ArrayList;
 import org.eclipse.jpt.jpa.core.JpaPlatformProvider;
+import org.eclipse.jpt.jpa.core.ResourceDefinition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLink2_0PersistenceXmlDefinition;
 
 /**
  *  EclipseLink 2.0 platform config
@@ -34,5 +37,13 @@ public class EclipseLink2_0JpaPlatformProvider
 	 */
 	protected EclipseLink2_0JpaPlatformProvider() {
 		super();
+	}
+	
+	// ********** resource definitions **********
+
+	@Override
+	protected void addResourceDefinitionsTo(ArrayList<ResourceDefinition> definitions) {
+		super.addResourceDefinitionsTo(definitions);
+		definitions.add(EclipseLink2_0PersistenceXmlDefinition.instance());
 	}
 }

@@ -9,39 +9,24 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence;
 
-import org.eclipse.jpt.jpa.core.context.persistence.JarFileRef;
-import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlContextNodeFactory;
-import org.eclipse.jpt.jpa.core.resource.persistence.XmlJarFileRef;
-import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 
 
 public class EclipseLinkPersistenceXmlContextNodeFactory
-	extends AbstractPersistenceXmlContextNodeFactory
-		implements org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceXmlContextNodeFactory
-{
-	
-	@Override
-	public PersistenceUnit buildPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
-		return new EclipseLinkPersistenceUnit(parent, xmlPersistenceUnit);
-	}
-	
-	@Override
-	public JarFileRef buildJarFileRef(PersistenceUnit parent, XmlJarFileRef xmlJarFileRef) {
-		return new EclipseLinkJarFileRef(parent, xmlJarFileRef);
-	}
+		extends AbstractEclipseLinkPersistenceXmlContextNodeFactory {
 
+	@Override
 	public PersistenceUnitProperties buildConnection(PersistenceUnit parent) {
 		return new EclipseLinkConnection(parent);
 	}
 	
+	@Override
 	public PersistenceUnitProperties buildOptions(PersistenceUnit parent) {
 		return new EclipseLinkOptions(parent);
 	}
 	
+	@Override
 	public PersistenceUnitProperties buildLogging(PersistenceUnit parent) {
 		return new EclipseLinkLogging(parent);
 	}
