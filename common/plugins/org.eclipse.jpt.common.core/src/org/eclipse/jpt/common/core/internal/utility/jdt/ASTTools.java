@@ -12,6 +12,8 @@ package org.eclipse.jpt.common.core.internal.utility.jdt;
 import java.util.HashSet;
 import java.util.List;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
@@ -44,12 +46,27 @@ public class ASTTools {
 	 * with its bindings resolved (and the resultant performance hit).
 	 */
 	public static CompilationUnit buildASTRoot(ICompilationUnit compilationUnit) {
-		ASTParser parser = ASTParser.newParser(AST.JLS3);
+		ASTParser parser = astParser();
 		parser.setSource(compilationUnit);
+		return (CompilationUnit) parser.createAST(null);
+	}
+	
+	/**
+	 * Create an {@link IBinding} for the specified {@link IMember}
+	 * with its bindings resolved
+	 */
+	public static IBinding createBinding(IMember member) {
+		ASTParser parser = astParser();
+		parser.setProject(member.getJavaProject());
+		return parser.createBindings(new IJavaElement[] { member }, null)[0];
+	}
+	
+	private static ASTParser astParser() {
+		ASTParser parser = ASTParser.newParser(AST.JLS3);
 		parser.setIgnoreMethodBodies(true);  // we don't need method bodies
 		parser.setResolveBindings(true);
 		parser.setBindingsRecovery(true);  // see bugs 196200, 222735
-		return (CompilationUnit) parser.createAST(null);
+		return parser;
 	}
 
 

@@ -85,7 +85,7 @@ public abstract class AbstractJavaPersistentType
 	protected AbstractJavaPersistentType(PersistentType.Owner parent, JavaResourceType resourceType) {
 		super(parent);
 		this.resourceType = resourceType;
-		this.name = this.resourceType.getQualifiedName();
+		this.name = this.resourceType.getTypeBinding().getQualifiedName();
 		this.specifiedAccess = this.buildSpecifiedAccess();
 
 		// keep this non-null
@@ -102,7 +102,7 @@ public abstract class AbstractJavaPersistentType
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.setName(this.resourceType.getQualifiedName());
+		this.setName(this.resourceType.getTypeBinding().getQualifiedName());
 		this.setSpecifiedAccess_(this.buildSpecifiedAccess());
 		this.syncMapping();
 		this.synchronizeNodesWithResourceModel(this.getAttributes());
@@ -738,7 +738,7 @@ public abstract class AbstractJavaPersistentType
 			return false;
 		}
 
-		String returnTypeName = resourceMethod.getTypeName();
+		String returnTypeName = resourceMethod.getTypeBinding().getQualifiedName();
 		if (returnTypeName == null) {
 			return false;  // DOM method bindings can have a null name
 		}
@@ -764,7 +764,7 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	private static boolean methodIsBooleanGetter(JavaResourceMethod resourceMethod) {
-		String returnTypeName = resourceMethod.getTypeName();
+		String returnTypeName = resourceMethod.getTypeBinding().getQualifiedName();
 		String name = resourceMethod.getMethodName();
 		boolean booleanGetter = false;
 		if (name.startsWith("is")) { //$NON-NLS-1$
@@ -822,7 +822,7 @@ public abstract class AbstractJavaPersistentType
 	 */
 	public static JavaResourceMethod getValidSiblingSetMethod(JavaResourceMethod getMethod, Iterable<JavaResourceMethod> resourceMethods) {
 		String capitalizedSetAttributeName = "set" + StringTools.capitalize(getMethod.getName());//$NON-NLS-1$
-		String parameterTypeErasureName = getMethod.getTypeName();
+		String parameterTypeErasureName = getMethod.getTypeBinding().getQualifiedName();
 		for (JavaResourceMethod sibling : resourceMethods) {
 			if ((sibling.getParametersSize() == 1)
 				&& sibling.getMethodName().equals(capitalizedSetAttributeName)
@@ -847,7 +847,7 @@ public abstract class AbstractJavaPersistentType
 		if (resourceMethod.isConstructor()) {
 			return false;
 		}
-		String rtName = resourceMethod.getTypeName();
+		String rtName = resourceMethod.getTypeBinding().getQualifiedName();
 		if (rtName == null) {
 			return false;  // DOM method bindings can have a null name
 		}
@@ -1064,7 +1064,7 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	protected String getPackageName() {
-		return this.getJavaResourceType().getPackageName();
+		return this.getJavaResourceType().getTypeBinding().getPackageName();
 	}
 
 	public PersistentType getOverriddenPersistentType() {

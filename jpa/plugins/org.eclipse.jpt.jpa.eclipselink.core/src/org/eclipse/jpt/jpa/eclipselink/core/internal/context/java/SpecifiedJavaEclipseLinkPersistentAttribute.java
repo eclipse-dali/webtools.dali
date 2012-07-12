@@ -72,17 +72,17 @@ public class SpecifiedJavaEclipseLinkPersistentAttribute
 	 * <code>java.util.Date</code> or <code>java.util.Calendar</code>.
 	 */
 	public boolean typeIsDateOrCalendar() {
-		return this.getResourceAttribute().typeIsSubTypeOf(DATE_TYPE_NAME)
-				|| this.getResourceAttribute().typeIsSubTypeOf(CALENDAR_TYPE_NAME);
+		return this.getResourceAttribute().getTypeBinding().isSubTypeOf(DATE_TYPE_NAME)
+				|| this.getResourceAttribute().getTypeBinding().isSubTypeOf(CALENDAR_TYPE_NAME);
 	}
 
 	public boolean typeIsSerializable() {
-		return this.getResourceAttribute().typeIsVariablePrimitive()
-				|| this.getResourceAttribute().typeIsSubTypeOf(JDTTools.SERIALIZABLE_CLASS_NAME);
+		return this.getResourceAttribute().getTypeBinding().isVariablePrimitive()
+				|| this.getResourceAttribute().getTypeBinding().isSubTypeOf(JDTTools.SERIALIZABLE_CLASS_NAME);
 	}
 
 	public boolean typeIsValidForVariableOneToOne() {
-		return this.getResourceAttribute().typeIsInterface()
+		return this.getResourceAttribute().getTypeBinding().isInterface()
 				&& this.interfaceIsValidForVariableOneToOne();
 	}
 

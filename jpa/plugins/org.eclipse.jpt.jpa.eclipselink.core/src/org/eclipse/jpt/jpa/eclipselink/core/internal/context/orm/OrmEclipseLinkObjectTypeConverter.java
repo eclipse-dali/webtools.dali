@@ -309,7 +309,7 @@ public class OrmEclipseLinkObjectTypeConverter
 	}
 
 	protected boolean typeIsFor(JavaResourceAbstractType type, String typeName) {
-		return (type != null) && type.getQualifiedName().equals(typeName);
+		return (type != null) && type.getTypeBinding().getQualifiedName().equals(typeName);
 	}
 
 	protected boolean typeIsIn(JavaResourceAbstractType type, IPackageFragment packageFragment) {

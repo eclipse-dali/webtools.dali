@@ -215,7 +215,7 @@ public class GenericJavaAttributesContainer
 			return true;
 		}
 		//Lists do not have to have a corresponding setter method
-		else if (getterMethod.getTypeName().equals("java.util.List")) { //$NON-NLS-1$
+		else if (getterMethod.getTypeBinding().getQualifiedName().equals("java.util.List")) { //$NON-NLS-1$
 			return true;
 		}
 		else if (getterMethod.isAnnotated()) {
@@ -233,7 +233,7 @@ public class GenericJavaAttributesContainer
 				}
 			}
 			//Lists do not have to have a corresponding setter method
-			else if (getterMethod.getTypeName().equals("java.util.List")) { //$NON-NLS-1$
+			else if (getterMethod.getTypeBinding().getQualifiedName().equals("java.util.List")) { //$NON-NLS-1$
 				return true;
 			}
 			else if (getterMethod.isAnnotated()) {
@@ -524,7 +524,7 @@ public class GenericJavaAttributesContainer
 			return false;
 		}
 
-		String returnTypeName = resourceMethod.getTypeName();
+		String returnTypeName = resourceMethod.getTypeBinding().getQualifiedName();
 		if (returnTypeName == null) {
 			return false;  // DOM method bindings can have a null name
 		}
@@ -550,7 +550,7 @@ public class GenericJavaAttributesContainer
 	}
 
 	private static boolean methodIsBooleanGetter(JavaResourceMethod resourceMethod) {
-		String returnTypeName = resourceMethod.getTypeName();
+		String returnTypeName = resourceMethod.getTypeBinding().getQualifiedName();
 		String name = resourceMethod.getMethodName();
 		boolean booleanGetter = false;
 		if (name.startsWith("is")) { //$NON-NLS-1$
@@ -608,7 +608,7 @@ public class GenericJavaAttributesContainer
 	 */
 	private static JavaResourceMethod getValidSiblingSetMethod(JavaResourceMethod getMethod, Collection<JavaResourceMethod> resourceMethods) {
 		String capitalizedSetAttributeName = "set" + StringTools.capitalize(getMethod.getName());//$NON-NLS-1$
-		String parameterTypeErasureName = getMethod.getTypeName();
+		String parameterTypeErasureName = getMethod.getTypeBinding().getQualifiedName();
 		for (JavaResourceMethod sibling : resourceMethods) {
 			if ((sibling.getParametersSize() == 1)
 				&& sibling.getMethodName().equals(capitalizedSetAttributeName)
@@ -633,7 +633,7 @@ public class GenericJavaAttributesContainer
 		if (resourceMethod.isConstructor()) {
 			return false;
 		}
-		String rtName = resourceMethod.getTypeName();
+		String rtName = resourceMethod.getTypeBinding().getQualifiedName();
 		if (rtName == null) {
 			return false;  // DOM method bindings can have a null name
 		}

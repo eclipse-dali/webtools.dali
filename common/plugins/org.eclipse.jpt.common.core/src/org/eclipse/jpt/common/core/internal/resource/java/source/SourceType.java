@@ -10,9 +10,12 @@
 package org.eclipse.jpt.common.core.internal.resource.java.source;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.EnumDeclaration;
@@ -20,12 +23,16 @@ import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
+import org.eclipse.jdt.core.dom.IVariableBinding;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
+import org.eclipse.jpt.common.core.internal.resource.java.CounterMap;
+import org.eclipse.jpt.common.core.internal.resource.java.InheritedAttributeKey;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.JDTType;
+import org.eclipse.jpt.common.core.internal.utility.jdt.JavaResourceTypeBinding;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
@@ -43,26 +50,29 @@ import org.eclipse.jpt.common.utility.internal.iterables.TreeIterable;
  * Java source type (type or interface)
  */
 final class SourceType
-	extends SourceAbstractType<Type>
-	implements JavaResourceType
-{
-
+		extends SourceAbstractType<Type>
+		implements JavaResourceType {
+	
 	private String superclassQualifiedName;
-
+	
 	private boolean abstract_;  // 'abstract' is a reserved word
-
+	
 	private boolean hasNoArgConstructor;
-
+	
 	private boolean hasPrivateNoArgConstructor;
-
+	
 	private final Vector<JavaResourceType> types;
-
+	
 	private final Vector<JavaResourceEnum> enums;
-
+	
 	private final Vector<JavaResourceField> fields;
-
+	
 	private final Vector<JavaResourceMethod> methods;
-
+	
+	private final Map<InheritedAttributeKey, JavaResourceTypeBinding> inheritedFieldTypes;
+	
+	private final Map<InheritedAttributeKey, JavaResourceTypeBinding> inheritedMethodTypes;
+	
 
 	// ********** construction/initialization **********
 
@@ -110,6 +120,8 @@ final class SourceType
 		this.enums = new Vector<JavaResourceEnum>();
 		this.fields = new Vector<JavaResourceField>();
 		this.methods = new Vector<JavaResourceMethod>();
+		this.inheritedFieldTypes = new Hashtable<InheritedAttributeKey, JavaResourceTypeBinding>();
+		this.inheritedMethodTypes = new Hashtable<InheritedAttributeKey, JavaResourceTypeBinding>();
 	}
 
 	@Override
@@ -124,10 +136,13 @@ final class SourceType
 	@Override
 	protected void initialize(IBinding binding) {
 		super.initialize(binding);
-		this.superclassQualifiedName = this.buildSuperclassQualifiedName((ITypeBinding) binding);
-		this.abstract_ = this.buildAbstract((ITypeBinding) binding);
-		this.hasNoArgConstructor = this.buildHasNoArgConstructor((ITypeBinding) binding);
-		this.hasPrivateNoArgConstructor = this.buildHasPrivateNoArgConstructor((ITypeBinding) binding);
+		ITypeBinding typeBinding = (ITypeBinding) binding;
+		this.superclassQualifiedName = this.buildSuperclassQualifiedName(typeBinding);
+		this.abstract_ = this.buildAbstract(typeBinding);
+		this.hasNoArgConstructor = this.buildHasNoArgConstructor(typeBinding);
+		this.hasPrivateNoArgConstructor = this.buildHasPrivateNoArgConstructor(typeBinding);
+		initInheritedFieldTypes(typeBinding);
+		initInheritedMethodTypes(typeBinding);
 	}
 
 
@@ -145,10 +160,13 @@ final class SourceType
 	@Override
 	protected void synchronizeWith(IBinding binding) {
 		super.synchronizeWith(binding);
-		this.syncSuperclassQualifiedName(this.buildSuperclassQualifiedName((ITypeBinding) binding));
-		this.syncAbstract(this.buildAbstract((ITypeBinding) binding));
-		this.syncHasNoArgConstructor(this.buildHasNoArgConstructor((ITypeBinding) binding));
-		this.syncHasPrivateNoArgConstructor(this.buildHasPrivateNoArgConstructor((ITypeBinding) binding));
+		ITypeBinding typeBinding = (ITypeBinding) binding;
+		syncSuperclassQualifiedName(buildSuperclassQualifiedName(typeBinding));
+		syncAbstract(buildAbstract(typeBinding));
+		syncHasNoArgConstructor(buildHasNoArgConstructor(typeBinding));
+		syncHasPrivateNoArgConstructor(buildHasPrivateNoArgConstructor(typeBinding));
+		syncInheritedFieldTypes(typeBinding);
+		syncInheritedMethodTypes(typeBinding);
 	}
 
 
@@ -470,7 +488,7 @@ final class SourceType
 			for (VariableDeclarationFragment fragment : fragments(fieldDeclaration)) {
 				String fieldName = fragment.getName().getFullyQualifiedName();
 				int occurrence = counters.increment(fieldName);
-				this.fields.add(this.buildField(fieldName, occurrence, astRoot));
+				this.fields.add(this.buildField(fieldName, occurrence, fieldDeclaration, fragment));
 			}
 		}
 	}
@@ -486,18 +504,23 @@ final class SourceType
 
 				JavaResourceField field = this.getField(fieldName, occurrence);
 				if (field == null) {
-					this.addField(this.buildField(fieldName, occurrence, astRoot));
+					this.addField(this.buildField(fieldName, occurrence, fieldDeclaration, fragment));
 				} else {
 					fieldsToRemove.remove(field);
-					field.synchronizeWith(astRoot);
+					field.synchronizeWith(fieldDeclaration, fragment);
 				}
 			}
 		}
 		this.removeFields(fieldsToRemove);
 	}
 
-	private JavaResourceField buildField(String fieldName, int occurrence, CompilationUnit astRoot) {
-		return SourceField.newInstance(this, this.annotatedElement, fieldName, occurrence, this.getJavaResourceCompilationUnit(), astRoot);
+	private JavaResourceField buildField(
+			String fieldName, int occurrence, 
+			FieldDeclaration fieldDeclaration, VariableDeclarationFragment variableDeclaration) {
+		
+		return SourceField.newInstance(
+				this, this.annotatedElement, fieldName, occurrence, 
+				getJavaResourceCompilationUnit(), fieldDeclaration, variableDeclaration);
 	}
 
 	// minimize scope of suppressed warnings
@@ -618,5 +641,117 @@ final class SourceType
 			}
 		}
 		return null;
+	}
+	
+	
+	// ***** inherited field/method types *****
+	
+	private void initInheritedFieldTypes(ITypeBinding typeBinding) {
+		ITypeBinding scTypeBinding = typeBinding.getSuperclass();
+		while (scTypeBinding != null && ! scTypeBinding.isParameterizedType()) {
+			// if the superclass is not parameterized, 
+			// then this class will have no increased type information for inherited fields
+			initInheritedFieldTypes_(scTypeBinding);
+			scTypeBinding = scTypeBinding.getSuperclass();
+		}
+		
+	}
+	
+	private void initInheritedFieldTypes_(ITypeBinding typeBinding) {
+		String typeName = typeBinding.getQualifiedName();
+		IVariableBinding[] fields = typeBinding.getDeclaredFields();
+		CounterMap counters = new CounterMap(fields.length);
+		for (IVariableBinding field : fields) {
+			String fieldName = field.getName();
+			int occurrence = counters.increment(fieldName);
+			this.inheritedFieldTypes.put(new InheritedAttributeKey(typeName, fieldName, occurrence), new JavaResourceTypeBinding(field.getType()));
+		}
+	}
+	
+	private void syncInheritedFieldTypes(ITypeBinding typeBinding) {
+		ITypeBinding scTypeBinding = typeBinding.getSuperclass();
+		Map<InheritedAttributeKey, JavaResourceTypeBinding> removedTypes = 
+				new HashMap<InheritedAttributeKey, JavaResourceTypeBinding>(this.inheritedFieldTypes);
+		while (scTypeBinding != null && ! scTypeBinding.isParameterizedType()) {
+			// if the superclass is not parameterized, 
+			// then this class will have no increased type information for inherited fields
+			syncInheritedFieldTypes_(scTypeBinding, removedTypes);
+			scTypeBinding = scTypeBinding.getSuperclass();
+		}
+		for (InheritedAttributeKey removedTypeKey : removedTypes.keySet()) {
+			this.inheritedFieldTypes.remove(removedTypeKey);
+		}
+	}
+	
+	private void syncInheritedFieldTypes_(ITypeBinding typeBinding, Map<InheritedAttributeKey, JavaResourceTypeBinding> removedTypes) {
+		String typeName = typeBinding.getQualifiedName();
+		IVariableBinding[] fields = typeBinding.getDeclaredFields();
+		CounterMap counters = new CounterMap(fields.length);
+		for (IVariableBinding field : fields) {
+			String fieldName = field.getName();
+			int occurrence = counters.increment(fieldName);
+			InheritedAttributeKey key = new InheritedAttributeKey(typeName, fieldName, occurrence);
+			this.inheritedFieldTypes.put(key, new JavaResourceTypeBinding(field.getType()));
+			removedTypes.remove(key);
+		}
+	}
+	
+	private void initInheritedMethodTypes(ITypeBinding typeBinding) {
+		ITypeBinding scTypeBinding = typeBinding.getSuperclass();
+		while (scTypeBinding != null && ! scTypeBinding.isParameterizedType()) {
+			// if the superclass is not parameterized, 
+			// then this class will have no increased type information for inherited fields
+			initInheritedMethodTypes_(scTypeBinding);
+			scTypeBinding = scTypeBinding.getSuperclass();
+		}
+	}
+	
+	private void initInheritedMethodTypes_(ITypeBinding typeBinding) {
+		// we are choosing to only store types for methods with no parameters,
+		// as determining whether a method overrides another can be a bit tricky with generics,
+		// and in general, we are only really interested in types of "get" methods,
+		// which have no parameters
+		String typeName = typeBinding.getQualifiedName();
+		IMethodBinding[] methods = typeBinding.getDeclaredMethods();
+		CounterMap counters = new CounterMap(methods.length);
+		for (IMethodBinding method : methods) {
+			if (method.getParameterTypes().length == 0) {
+				String methodName = method.getName();
+				int occurrence = counters.increment(methodName);
+				this.inheritedMethodTypes.put(new InheritedAttributeKey(typeName, methodName, occurrence), new JavaResourceTypeBinding(method.getReturnType()));
+			}
+		}
+	}
+	
+	private void syncInheritedMethodTypes(ITypeBinding typeBinding) {
+		ITypeBinding scTypeBinding = typeBinding.getSuperclass();
+		Map<InheritedAttributeKey, JavaResourceTypeBinding> removedTypes = 
+				new HashMap<InheritedAttributeKey, JavaResourceTypeBinding>(this.inheritedMethodTypes);
+		while (scTypeBinding != null && ! scTypeBinding.isParameterizedType()) {
+			// if the superclass is not parameterized, 
+			// then this class will have no increased type information for inherited fields
+			syncInheritedMethodTypes_(scTypeBinding, removedTypes);
+			scTypeBinding = scTypeBinding.getSuperclass();
+		}
+		for (InheritedAttributeKey removedTypeKey : removedTypes.keySet()) {
+			this.inheritedMethodTypes.remove(removedTypeKey);
+		}
+	}
+	
+	private void syncInheritedMethodTypes_(ITypeBinding typeBinding, Map<InheritedAttributeKey, JavaResourceTypeBinding> removedTypes) {
+		// we are choosing to only store types for methods with no parameters,
+		// as determining whether a method overrides another can be a bit tricky with generics,
+		// and in general, we are only really interested in types of "get" methods,
+		// which have no parameters
+		String typeName = typeBinding.getQualifiedName();
+		IMethodBinding[] methods = typeBinding.getDeclaredMethods();
+		CounterMap counters = new CounterMap(methods.length);
+		for (IMethodBinding method : methods) {
+			String methodName = method.getName();
+			int occurrence = counters.increment(methodName);
+			InheritedAttributeKey key = new InheritedAttributeKey(typeName, methodName, occurrence);
+			this.inheritedMethodTypes.put(key, new JavaResourceTypeBinding(method.getReturnType()));
+			removedTypes.remove(key);
+		}
 	}
 }

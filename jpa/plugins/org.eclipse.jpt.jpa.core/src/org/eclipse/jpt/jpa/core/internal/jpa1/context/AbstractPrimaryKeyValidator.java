@@ -371,7 +371,7 @@ public abstract class AbstractPrimaryKeyValidator
 			messages.add(DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.TYPE_MAPPING_ID_CLASS_PROPERTY_METHOD_NOT_PUBLIC,
-					new String[] {idClass.getJavaResourceType().getQualifiedName(), methodName},
+					new String[] {idClass.getJavaResourceType().getTypeBinding().getQualifiedName(), methodName},
 					typeMapping(), 
 					textRangeResolver().getIdClassTextRange()
 					));

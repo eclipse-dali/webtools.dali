@@ -1255,7 +1255,7 @@ public abstract class AbstractJavaEntity
 	 * Return whether the entity's type is a member of another type.
 	 */
 	protected boolean isMember() {
-		return this.getJavaResourceType().isMemberType();
+		return this.getJavaResourceType().getTypeBinding().isMemberTypeDeclaration();
 	}
 
 	/**

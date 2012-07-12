@@ -102,7 +102,7 @@ public abstract class JpaMapping implements IMapping {
 			return EmptyIterable.instance();
 		}
 
-		return new TransformationIterable<String, ITypeDeclaration>(resource.getTypeTypeArgumentNames()) {
+		return new TransformationIterable<String, ITypeDeclaration>(resource.getTypeBinding().getTypeArgumentNames()) {
 			@Override
 			protected ITypeDeclaration transform(String next) {
 				return getTypeRepository().getType(next).getTypeDeclaration();

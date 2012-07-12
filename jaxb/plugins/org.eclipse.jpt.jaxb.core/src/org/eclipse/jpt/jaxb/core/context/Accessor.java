@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -13,6 +13,7 @@ import java.util.Collection;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
+import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 
 /**
@@ -64,35 +65,37 @@ public interface Accessor
 		public static final String OBJECT_CLASS_NAME = Object.class.getName();
 		
 		public static String getBaseTypeName(JavaResourceAttribute attribute) {
-			if (attribute.typeIsArray()) {
-				if (BYTE_ARRAY_CLASS_NAME.equals(attribute.getTypeName())) {
+			TypeBinding typeBinding = attribute.getTypeBinding();
+			if (typeBinding.isArray()) {
+				if (BYTE_ARRAY_CLASS_NAME.equals(typeBinding.getQualifiedName())) {
 					return BYTE_ARRAY_CLASS_NAME;
 				}
-				else if (attribute.getTypeArrayDimensionality() == 1) {
-					return attribute.getTypeArrayComponentTypeName();
+				else if (typeBinding.getArrayDimensionality() == 1) {
+					return typeBinding.getArrayComponentTypeName();
 				}
 			}
-			else if (attribute.typeIsSubTypeOf(COLLECTION_CLASS_NAME)) {
-				if (attribute.getTypeTypeArgumentNamesSize() == 1) {
-					return attribute.getTypeTypeArgumentName(0);
+			else if (typeBinding.isSubTypeOf(COLLECTION_CLASS_NAME)) {
+				if (typeBinding.getTypeArgumentNamesSize() == 1) {
+					return typeBinding.getTypeArgumentName(0);
 				}
 				return OBJECT_CLASS_NAME;
 			}
-			return attribute.getTypeName();
+			return typeBinding.getQualifiedName();
 		}
 		
 		/**
 		 * @see JaxbPersistentAttribute#isJavaResourceAttributeCollectionType()
 		 */
 		public static boolean isCollectionType(JavaResourceAttribute attribute) {
-			if (attribute.typeIsArray()) {
-				if (attribute.getTypeArrayDimensionality() == 1
-						&& ! BYTE_ARRAY_CLASS_NAME.equals(attribute.getTypeName())) {
+			TypeBinding typeBinding = attribute.getTypeBinding();
+			if (typeBinding.isArray()) {
+				if (typeBinding.getArrayDimensionality() == 1
+						&& ! BYTE_ARRAY_CLASS_NAME.equals(typeBinding.getQualifiedName())) {
 					return true;
 				}
 				return false;
 			}
-			else if (attribute.typeIsSubTypeOf(COLLECTION_CLASS_NAME)) {
+			else if (typeBinding.isSubTypeOf(COLLECTION_CLASS_NAME)) {
 				return true;
 			}
 			

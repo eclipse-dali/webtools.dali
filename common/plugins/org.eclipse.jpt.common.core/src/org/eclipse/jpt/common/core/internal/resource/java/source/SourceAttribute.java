@@ -9,119 +9,60 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.internal.resource.java.source;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
+import org.eclipse.jpt.common.core.internal.utility.jdt.JavaResourceTypeBinding;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.Attribute;
-import org.eclipse.jpt.common.utility.internal.ClassName;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 
 /**
  * Java source attribute (field or method)
  */
 abstract class SourceAttribute<A extends Attribute>
-	extends SourceMember<A>
-	implements JavaResourceAttribute
-{
+		extends SourceMember<A>
+		implements JavaResourceAttribute {
+	
 	private int modifiers;
-
-	private String typeName;
-
-	private boolean typeIsInterface;
-
-	private boolean typeIsEnum;
-
-	private boolean typeIsArray;
 	
-	private int typeArrayDimensionality;
+	private JavaResourceTypeBinding typeBinding;
 	
-	private String typeArrayComponentTypeName;
-
-	private final Vector<String> typeSuperclassNames = new Vector<String>();
-
-	private final Vector<String> typeInterfaceNames = new Vector<String>();
-
-	private final Vector<String> typeTypeArgumentNames = new Vector<String>();
-
-
+	
 	protected SourceAttribute(JavaResourceType parent, A attribute){
 		super(parent, attribute);
 	}
-
+	
+	
 	@Override
 	protected void initialize(IBinding binding) {
 		super.initialize(binding);
-		this.modifiers = this.buildModifiers(binding);
+		this.modifiers = buildModifiers(binding);
+		this.typeBinding = buildTypeBinding(getJdtTypeBinding(binding));
 	}
-
-	/**
-	 * subclasses need to call this method
-	 */
-	protected void initialize(ITypeBinding attributeTypeBinding) {
-		this.typeName = this.buildTypeName(attributeTypeBinding);
-		this.typeIsInterface = this.buildTypeIsInterface(attributeTypeBinding);
-		this.typeIsEnum = this.buildTypeIsEnum(attributeTypeBinding);
-		this.typeIsArray = this.buildTypeIsArray(attributeTypeBinding);
-		this.typeArrayDimensionality = buildTypeArrayDimensionality(attributeTypeBinding);
-		this.typeArrayComponentTypeName = buildTypeArrayComponentTypeName(attributeTypeBinding);
-		this.typeSuperclassNames.addAll(this.buildTypeSuperclassNames(attributeTypeBinding));
-		this.typeInterfaceNames.addAll(this.buildTypeInterfaceNames(attributeTypeBinding));
-		this.typeTypeArgumentNames.addAll(this.buildTypeTypeArgumentNames(attributeTypeBinding));		
-	}
-
-
+	
+	
 	// ******** overrides ********
-
+	
 	@Override
 	public void resolveTypes(CompilationUnit astRoot) {
 		super.resolveTypes(astRoot);
-		this.resolveTypes(this.getTypeBinding(astRoot));//build once, minor performance tweak for major benefit
+		syncTypeBinding(this.annotatedElement.getTypeBinding(astRoot));
 	}
-
-	protected void resolveTypes(ITypeBinding typeBinding) {
-		this.syncTypeName(this.buildTypeName(typeBinding));
-		this.syncTypeArrayComponentTypeName(this.buildTypeArrayComponentTypeName(typeBinding));
-		this.syncTypeSuperclassNames(this.buildTypeSuperclassNames(typeBinding));
-		this.syncTypeInterfaceNames(this.buildTypeInterfaceNames(typeBinding));
-		this.syncTypeTypeArgumentNames(this.buildTypeTypeArgumentNames(typeBinding));
-	}
-
-	/**
-	 * subclasses need to call this method
-	 */
-	protected void synchronizeWith(ITypeBinding attributeTypeBinding) {
-		this.syncTypeName(this.buildTypeName(attributeTypeBinding));
-		this.syncTypeIsInterface(this.buildTypeIsInterface(attributeTypeBinding));
-		this.syncTypeIsEnum(this.buildTypeIsEnum(attributeTypeBinding));
-		this.syncTypeIsArray(this.buildTypeIsArray(attributeTypeBinding));
-		this.syncTypeArrayDimensionality(this.buildTypeArrayDimensionality(attributeTypeBinding));
-		this.syncTypeArrayComponentTypeName(this.buildTypeArrayComponentTypeName(attributeTypeBinding));
-		this.syncTypeSuperclassNames(this.buildTypeSuperclassNames(attributeTypeBinding));
-		this.syncTypeInterfaceNames(this.buildTypeInterfaceNames(attributeTypeBinding));
-		this.syncTypeTypeArgumentNames(this.buildTypeTypeArgumentNames(attributeTypeBinding));
-	}
-
+	
 	@Override
 	protected void synchronizeWith(IBinding binding) {
 		super.synchronizeWith(binding);
-		this.syncModifiers(this.buildModifiers(binding));
+		setModifiers(buildModifiers(binding));
+		syncTypeBinding(getJdtTypeBinding(binding));
 	}
-
+	
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.getName());
 	}
-
+	
 	
 	// ******** JavaResourceAttribute implementation ********
 	
@@ -129,268 +70,59 @@ abstract class SourceAttribute<A extends Attribute>
 	public JavaResourceType getParent() {
 		return (JavaResourceType) super.getParent();
 	}
-
+	
 	public JavaResourceType getResourceType() {
 		return this.getParent();
 	}
-
+	
 	public String getName() {
 		return this.annotatedElement.getAttributeName();
 	}
-
-	public boolean typeIsSubTypeOf(String tn) {
-		if (this.typeName == null) {
-			return false;
-		}
-		return this.typeName.equals(tn)
-				|| this.typeInterfaceNames.contains(tn)
-				|| this.typeSuperclassNames.contains(tn);
-	}
-
-	public boolean typeIsVariablePrimitive() {
-		return (this.typeName != null) && ClassName.isVariablePrimitive(this.typeName);
-	}
-
-	protected ITypeBinding getTypeBinding(CompilationUnit astRoot) {
-		return this.annotatedElement.getTypeBinding(astRoot);
-	}
-
-
-	// ***** modifiers
+	
+	
+	// ***** modifiers *****
+	
 	public int getModifiers() {
 		return this.modifiers;
 	}
-
-	private void syncModifiers(int astModifiers) {
+	
+	private void setModifiers(int astModifiers) {
 		int old = this.modifiers;
 		this.modifiers = astModifiers;
 		this.firePropertyChanged(MODIFIERS_PROPERTY, old, astModifiers);
 	}
-
+	
 	/**
 	 * zero seems like a reasonable default...
 	 */
 	private int buildModifiers(IBinding binding) {
 		return (binding == null) ? 0 : binding.getModifiers();
 	}
-
-	// ***** type name
-	public String getTypeName() {
-		return this.typeName;
-	}
-
-	private void syncTypeName(String astTypeName) {
-		String old = this.typeName;
-		this.typeName = astTypeName;
-		this.firePropertyChanged(TYPE_NAME_PROPERTY, old, astTypeName);
-	}
-
-	/**
-	 * this can be an array (e.g. "java.lang.String[]");
-	 * but no generic type arguments
-	 */
-	private String buildTypeName(ITypeBinding typeBinding) {
-		if (typeBinding == null) {
-			return null;
-		}
-		
-		typeBinding = typeBinding.getErasure();
-		String tbName = typeBinding.getTypeDeclaration().getQualifiedName();
-		return (tbName.length() == 0) ? null : tbName;
-	}
-
-	// ***** type is interface
-	public boolean typeIsInterface() {
-		return this.typeIsInterface;
-	}
-
-	private void syncTypeIsInterface(boolean astTypeIsInterface) {
-		boolean old = this.typeIsInterface;
-		this.typeIsInterface = astTypeIsInterface;
-		this.firePropertyChanged(TYPE_IS_INTERFACE_PROPERTY, old, astTypeIsInterface);
-	}
-
-	private boolean buildTypeIsInterface(ITypeBinding typeBinding) {
-		return (typeBinding != null) && ( ! typeBinding.isArray()) && typeBinding.isInterface();
-	}
-
-	// ***** type is enum
-	public boolean typeIsEnum() {
-		return this.typeIsEnum;
-	}
-
-	private void syncTypeIsEnum(boolean astTypeIsEnum) {
-		boolean old = this.typeIsEnum;
-		this.typeIsEnum = astTypeIsEnum;
-		this.firePropertyChanged(TYPE_IS_ENUM_PROPERTY, old, astTypeIsEnum);
-	}
-
-	private boolean buildTypeIsEnum(ITypeBinding typeBinding) {
-		return (typeBinding != null) && ( ! typeBinding.isArray()) && typeBinding.isEnum();
-	}
-
-	// ***** type is array
-	public boolean typeIsArray() {
-		return this.typeIsArray;
-	}
-
-	private void syncTypeIsArray(boolean astTypeIsArray) {
-		boolean old = this.typeIsArray;
-		this.typeIsArray = astTypeIsArray;
-		this.firePropertyChanged(TYPE_IS_ARRAY_PROPERTY, old, astTypeIsArray);
-	}
-
-	private boolean buildTypeIsArray(ITypeBinding typeBinding) {
-		return (typeBinding != null) && typeBinding.isArray();
+	
+	
+	// ***** type binding *****
+	
+	public TypeBinding getTypeBinding() {
+		return this.typeBinding;
 	}
 	
-	// ***** type array dimensionality
-	public int getTypeArrayDimensionality() {
-		return this.typeArrayDimensionality;
+	protected void syncTypeBinding(ITypeBinding binding) {
+		if (this.typeBinding.isEquivalentTo(binding)) {
+			return;
+		}
+		TypeBinding old = this.typeBinding;
+		this.typeBinding = buildTypeBinding(binding);
+		firePropertyChanged(TYPE_BINDING_PROPERTY, old, this.typeBinding);
 	}
 	
-	private void syncTypeArrayDimensionality(int astTypeArrayDimensionality) {
-		int old = this.typeArrayDimensionality;
-		this.typeArrayDimensionality = astTypeArrayDimensionality;
-		firePropertyChanged(TYPE_ARRAY_DIMENSIONALITY_PROPERTY, old, astTypeArrayDimensionality);
+	protected JavaResourceTypeBinding buildTypeBinding(ITypeBinding binding) {
+		return new JavaResourceTypeBinding(binding);
 	}
 	
-	private int buildTypeArrayDimensionality(ITypeBinding typeBinding) {
-		return (typeBinding == null) ? 0 : typeBinding.getDimensions();
-	}
+	protected abstract ITypeBinding getJdtTypeBinding(IBinding binding);
 	
-	// ***** type array component type name
-	public String getTypeArrayComponentTypeName() {
-		return this.typeArrayComponentTypeName;
-	}
-	
-	private void syncTypeArrayComponentTypeName(String astTypeArrayComponentTypeName) {
-		String old = this.typeArrayComponentTypeName;
-		this.typeArrayComponentTypeName = astTypeArrayComponentTypeName;
-		firePropertyChanged(TYPE_ARRAY_COMPONENT_TYPE_NAME_PROPERTY, old, astTypeArrayComponentTypeName);
-	}
-	
-	private String buildTypeArrayComponentTypeName(ITypeBinding typeBinding) {
-		if (typeBinding == null || ! typeBinding.isArray()) {
-			return null;
-		}
-		
-		// the component type of String[][] is actually String[], whereas we want String
-		while (typeBinding.isArray()) {
-			typeBinding = typeBinding.getComponentType();
-			
-			if (typeBinding == null) {
-				return null;
-			}
-		}
-		
-		// a type variable is what is declared by a generic type;
-		// e.g. "E" is a type variable declared by the generic type "Collection" in
-		//     public interface Collection<E>
-		if (typeBinding.isTypeVariable()) {
-			// e.g. "E extends Number" has an erasure of "Number"
-			typeBinding = typeBinding.getErasure();
-		}
-		String tbName = typeBinding.getTypeDeclaration().getQualifiedName();
-		return (tbName.length() == 0) ? null : tbName;
-	}
-
-	// ***** type superclass hierarchy
-	public ListIterable<String> getTypeSuperclassNames() {
-		return new LiveCloneListIterable<String>(this.typeSuperclassNames);
-	}
-
-	private void syncTypeSuperclassNames(List<String> astTypeSuperclassNames) {
-		this.synchronizeList(astTypeSuperclassNames, this.typeSuperclassNames, TYPE_SUPERCLASS_NAMES_LIST);
-	}
-
-	private List<String> buildTypeSuperclassNames(ITypeBinding typeBinding) {
-		if (typeBinding == null) {
-			return Collections.emptyList();
-		}
-		ArrayList<String> names = new ArrayList<String>();
-		typeBinding = typeBinding.getSuperclass();
-		while (typeBinding != null) {
-			names.add(typeBinding.getErasure().getQualifiedName());
-			typeBinding = typeBinding.getSuperclass();
-		}
-		return names;
-	}
-
-	// ***** type interface hierarchy
-	public Iterable<String> getTypeInterfaceNames() {
-		return new LiveCloneIterable<String>(this.typeInterfaceNames);
-	}
-
-//	private boolean typeInterfaceNamesContains(String interfaceName) {
-//		return this.typeInterfaceNames.contains(interfaceName);
-//	}
-//
-	private void syncTypeInterfaceNames(Collection<String> astTypeInterfaceNames) {
-		this.synchronizeCollection(astTypeInterfaceNames, this.typeInterfaceNames, TYPE_INTERFACE_NAMES_COLLECTION);
-	}
-
-	private Collection<String> buildTypeInterfaceNames(ITypeBinding typeBinding) {
-		if (typeBinding == null) {
-			return Collections.emptySet();
-		}
-		HashSet<String> names = new HashSet<String>();
-		while (typeBinding != null) {
-			this.addInterfaceNamesTo(typeBinding, names);
-			typeBinding = typeBinding.getSuperclass();
-		}
-		return names;
-	}
-
-	private void addInterfaceNamesTo(ITypeBinding typeBinding, HashSet<String> names) {
-		for (ITypeBinding interfaceBinding : typeBinding.getInterfaces()) {
-			names.add(interfaceBinding.getTypeDeclaration().getErasure().getQualifiedName());
-			this.addInterfaceNamesTo(interfaceBinding, names);  // recurse
-		}
-	}
-
-	// ***** type type argument names
-	public ListIterable<String> getTypeTypeArgumentNames() {
-		return new LiveCloneListIterable<String>(this.typeTypeArgumentNames);
-	}
-
-	public int getTypeTypeArgumentNamesSize() {
-		return this.typeTypeArgumentNames.size();
-	}
-
-	public String getTypeTypeArgumentName(int index) {
-		return this.typeTypeArgumentNames.get(index);
-	}
-
-	private void syncTypeTypeArgumentNames(List<String> astTypeTypeArgumentNames) {
-		this.synchronizeList(astTypeTypeArgumentNames, this.typeTypeArgumentNames, TYPE_TYPE_ARGUMENT_NAMES_LIST);
-	}
-
-	/**
-	 * these types can be arrays (e.g. "java.lang.String[]");
-	 * but they won't have any further nested generic type arguments
-	 * (e.g. "java.util.Collection<java.lang.String>")
-	 */
-	private List<String> buildTypeTypeArgumentNames(ITypeBinding typeBinding) {
-		if (typeBinding == null) {
-			return Collections.emptyList();
-		}
-		
-		ITypeBinding[] typeArguments = typeBinding.getTypeArguments();
-		if (typeArguments.length == 0) {
-			return Collections.emptyList();
-		}
-
-		ArrayList<String> names = new ArrayList<String>(typeArguments.length);
-		for (ITypeBinding typeArgument : typeArguments) {
-			if (typeArgument == null) {
-				names.add(null);
-			} else {
-				// e.g. "? extends Number" has an erasure of "Number"
-				ITypeBinding erasure = typeArgument.getErasure();
-				names.add(erasure.getTypeDeclaration().getQualifiedName());
-			}
-		}
-		return names;
+	public TypeBinding getTypeBinding(JavaResourceType contextType) {
+		// TODO - use inherited information
+		return getTypeBinding();
 	}
 }

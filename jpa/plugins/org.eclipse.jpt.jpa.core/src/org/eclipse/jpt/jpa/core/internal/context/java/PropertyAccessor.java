@@ -144,10 +144,6 @@ public class PropertyAccessor
 		public void synchronizeWith(MethodDeclaration methodDeclaration) {
 			// NOP
 		}
-
-		public void initialize(MethodDeclaration methodDeclaration) {
-			// NOP
-		}
 	}
 
 }

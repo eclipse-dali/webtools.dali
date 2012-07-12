@@ -23,9 +23,8 @@ package org.eclipse.jpt.common.core.resource.java;
  * @since 2.0
  */
 public interface JavaResourceType
-	extends JavaResourceAbstractType
-{
-
+		extends JavaResourceAbstractType {
+	
 	/**
 	 * Return the fully qualified name of the type's superclass.
 	 */
@@ -37,7 +36,7 @@ public interface JavaResourceType
 	 */
 	boolean isAbstract();
 		String ABSTRACT_PROPERTY = "abstract"; //$NON-NLS-1$
-
+	
 	/**
 	 * Return whether the type has a no-arg constructor (private, protected, or public)
 	 */
@@ -87,21 +86,21 @@ public interface JavaResourceType
 	boolean hasHashCodeMethod();
 
 	// ********** fields **********
-
+	
 	/**
 	 * Return the type's fields.
 	 */
 	Iterable<JavaResourceField> getFields();
 		String FIELDS_COLLECTION = "fields"; //$NON-NLS-1$
-
-
+	
+	
 	// ********** methods **********
-
+	
 	/**
 	 * Return the type's methods. This returns *all* methods from the JDT Type
 	 */
 	Iterable<JavaResourceMethod> getMethods();
 		String METHODS_COLLECTION = "methods"; //$NON-NLS-1$
-
+	
 	JavaResourceMethod getMethod(String name);
 }

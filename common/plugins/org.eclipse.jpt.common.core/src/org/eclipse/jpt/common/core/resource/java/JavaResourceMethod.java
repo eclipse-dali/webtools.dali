@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.2
+ * @version 3.3
  * @since 3.0
  */
 public interface JavaResourceMethod
@@ -61,12 +61,6 @@ public interface JavaResourceMethod
 	 * method.
 	 */
 	boolean isFor(MethodSignature methodSignature, int occurrence);
-
-	/**
-	 * Call this instead of initialize(CompilationUnit)
-	 * TODO remove initialize(CompilationUnit) from the hierarchy
-	 */
-	void initialize(MethodDeclaration methodDeclaration);
 
 	/**
 	 * Call this instead of synchronizeWith(CompilationUnit)

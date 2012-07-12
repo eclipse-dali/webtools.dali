@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -225,7 +225,7 @@ public class GenericJavaElementFactoryMethod
 	protected void validateMethodReturnType(
 			JavaResourceMethod resourceMethod, List<IMessage> messages, CompilationUnit astRoot) {
 		
-		if (! JAXB.JAXB_ELEMENT.equals(resourceMethod.getTypeName())) {
+		if (! JAXB.JAXB_ELEMENT.equals(resourceMethod.getTypeBinding().getQualifiedName())) {
 			messages.add(
 					DefaultValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,

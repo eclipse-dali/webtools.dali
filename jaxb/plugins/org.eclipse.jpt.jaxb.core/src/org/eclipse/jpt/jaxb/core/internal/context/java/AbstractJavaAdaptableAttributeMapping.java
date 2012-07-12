@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -157,7 +157,7 @@ public abstract class AbstractJavaAdaptableAttributeMapping<A extends Annotation
 		// see if there is an xml adapter on the *type's* package
 		JavaResourceAbstractType resourceType = getJaxbProject().getJavaResourceType(boundTypeName);
 		if (resourceType != null) {
-			pkg = getContextRoot().getPackage(resourceType.getPackageName());
+			pkg = getContextRoot().getPackage(resourceType.getTypeBinding().getPackageName());
 			pkgInfo = (pkg == null) ? null : pkg.getPackageInfo();
 			if (pkgInfo != null) {
 				XmlJavaTypeAdapter xmlJavaTypeAdapter = pkgInfo.getXmlJavaTypeAdapter(boundTypeName);

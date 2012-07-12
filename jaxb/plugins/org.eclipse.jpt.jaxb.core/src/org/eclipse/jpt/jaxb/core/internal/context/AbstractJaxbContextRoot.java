@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -94,7 +94,7 @@ public abstract class AbstractJaxbContextRoot
 		
 		// process types with annotations and in jaxb.index files
 		for (JavaResourceAbstractType resourceType : calculateInitialTypes()) {
-			totalTypeNames.add(resourceType.getQualifiedName());
+			totalTypeNames.add(resourceType.getTypeBinding().getQualifiedName());
 			addType_(buildType(resourceType));
 		}
 		
@@ -202,7 +202,7 @@ public abstract class AbstractJaxbContextRoot
 		// while there are resource types to process or types to scan, continue to do so
 		while (! resourceTypesToProcess.isEmpty() || ! typesToScan.isEmpty()) {
 			for (JavaResourceAbstractType resourceType : new SnapshotCloneIterable<JavaResourceAbstractType>(resourceTypesToProcess)) {
-				String className = resourceType.getQualifiedName();
+				String className = resourceType.getTypeBinding().getQualifiedName();
 				typesToRemove.remove(className);
 				totalTypes.add(className);
 				typesToScan.add(className);
@@ -334,7 +334,7 @@ public abstract class AbstractJaxbContextRoot
 	
 	protected void processType(JavaResourceAbstractType resourceType, Set<String> typesToUpdate, boolean defaultMapped) {
 		JaxbType.Kind jaxbTypeKind = calculateJaxbTypeKind(resourceType);
-		String className = resourceType.getQualifiedName();
+		String className = resourceType.getTypeBinding().getQualifiedName();
 		
 		if (this.types.containsKey(className)) {
 			JaxbType type = this.types.get(className);

@@ -203,7 +203,7 @@ public class OrmEclipseLinkCustomizer
 
 	protected boolean isFor(String typeName) {
 		JavaResourceAbstractType customizerType = this.getResourceCustomizerType();
-		return (customizerType != null) && customizerType.getQualifiedName().equals(typeName);
+		return (customizerType != null) && customizerType.getTypeBinding().getQualifiedName().equals(typeName);
 	}
 
 	protected boolean isIn(IPackageFragment packageFragment) {

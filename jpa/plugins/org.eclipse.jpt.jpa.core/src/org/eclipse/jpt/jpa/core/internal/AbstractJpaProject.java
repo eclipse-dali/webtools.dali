@@ -672,7 +672,7 @@ public abstract class AbstractJpaProject
 		JavaResourceCompilationUnit jrcu = this.getExternalJavaResourceCompilationUnit(jdtType.getCompilationUnit());
 		String jdtTypeName = jdtType.getFullyQualifiedName('.');  // JDT member type names use '$'
 		for (JavaResourceAbstractType jrat : jrcu.getTypes()) {
-			if (jrat.getQualifiedName().equals(jdtTypeName)) {
+			if (jrat.getTypeBinding().getQualifiedName().equals(jdtTypeName)) {
 				return jrat;
 			}
 		}
@@ -807,7 +807,7 @@ public abstract class AbstractJpaProject
 		return new TransformationIterable<JavaResourceAbstractType, String>(this.getInternalAnnotatedSourceJavaResourceTypes()) {
 			@Override
 			protected String transform(JavaResourceAbstractType jraType) {
-				return jraType.getQualifiedName();
+				return jraType.getTypeBinding().getQualifiedName();
 			}
 		};
 	}
@@ -837,7 +837,7 @@ public abstract class AbstractJpaProject
 		return new TransformationIterable<JavaResourceAbstractType, String>(this.getInternalMappedSourceJavaResourceTypes()) {
 			@Override
 			protected String transform(JavaResourceAbstractType jraType) {
-				return jraType.getQualifiedName();
+				return jraType.getTypeBinding().getQualifiedName();
 			}
 		};
 	}
@@ -914,7 +914,7 @@ public abstract class AbstractJpaProject
 
 	public JavaResourceAbstractType getJavaResourceType(String typeName) {
 		for (JavaResourceAbstractType jraType : this.getJavaResourceTypes()) {
-			if (jraType.getQualifiedName().equals(typeName)) {
+			if (jraType.getTypeBinding().getQualifiedName().equals(typeName)) {
 				return jraType;
 			}
 		}

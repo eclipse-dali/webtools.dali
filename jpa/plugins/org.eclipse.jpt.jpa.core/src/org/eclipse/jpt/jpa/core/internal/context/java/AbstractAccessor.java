@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
@@ -195,9 +196,9 @@ public abstract class AbstractAccessor
 	 * Wrap another Java resource attribute and suppress all its annotations.
 	 */
 	protected abstract class UnannotatedJavaResourceAttribute<A extends JavaResourceAttribute>
-		extends UnannotatedJavaResourceMember<A>
-		implements JavaResourceAttribute
-	{
+			extends UnannotatedJavaResourceMember<A>
+			implements JavaResourceAttribute {
+		
 		public UnannotatedJavaResourceAttribute(A attribute){
 			super(attribute);
 		}
@@ -215,76 +216,32 @@ public abstract class AbstractAccessor
 
 
 		// ********** delegated behavior **********
-
+		
 		@Override
 		public JavaResourceType getParent() {
 			return this.member.getParent();
 		}
-
+		
 		public JavaResourceType getResourceType() {
 			return this.member.getResourceType();
 		}
-
+		
 		public String getName() {
 			return this.member.getName();
 		}
-
-		public boolean typeIsSubTypeOf(String tn) {
-			return this.member.typeIsSubTypeOf(tn);
-		}
-
-		public boolean typeIsVariablePrimitive() {
-			return this.member.typeIsVariablePrimitive();
-		}
-
+		
 		public int getModifiers() {
 			return this.member.getModifiers();
 		}
-
-		public String getTypeName() {
-			return this.member.getTypeName();
-		}
-
-		public boolean typeIsInterface() {
-			return this.member.typeIsInterface();
-		}
-
-		public boolean typeIsEnum() {
-			return this.member.typeIsEnum();
-		}
-
-		public boolean typeIsArray() {
-			return this.member.typeIsArray();
+		
+		public TypeBinding getTypeBinding() {
+			return this.member.getTypeBinding();
 		}
 		
-		public int getTypeArrayDimensionality() {
-			return this.member.getTypeArrayDimensionality();
+		public TypeBinding getTypeBinding(JavaResourceType contextType) {
+			return this.member.getTypeBinding(contextType);
 		}
 		
-		public String getTypeArrayComponentTypeName() {
-			return this.member.getTypeArrayComponentTypeName();
-		}
-
-		public ListIterable<String> getTypeSuperclassNames() {
-			return this.member.getTypeSuperclassNames();
-		}
-
-		public Iterable<String> getTypeInterfaceNames() {
-			return this.member.getTypeInterfaceNames();
-		}
-
-		public ListIterable<String> getTypeTypeArgumentNames() {
-			return this.member.getTypeTypeArgumentNames();
-		}
-
-		public int getTypeTypeArgumentNamesSize() {
-			return this.member.getTypeTypeArgumentNamesSize();
-		}
-
-		public String getTypeTypeArgumentName(int index) {
-			return this.member.getTypeTypeArgumentName(index);
-		}
-
 		@Override
 		public void toString(StringBuilder sb) {
 			sb.append(this.getName());

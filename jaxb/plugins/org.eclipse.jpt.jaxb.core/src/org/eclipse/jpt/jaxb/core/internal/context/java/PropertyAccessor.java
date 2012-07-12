@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -54,7 +54,7 @@ public class PropertyAccessor
 		JavaResourceAttribute getterMethod = getResourceGetterMethod();
 		//it's invalid to have a setter without a getter, so just return false in this case
 		//rather than attempting to use the setter's parameters
-		return getterMethod == null ? false : getterMethod.typeIsSubTypeOf(typeName);
+		return getterMethod == null ? false : getterMethod.getTypeBinding().isSubTypeOf(typeName);
 	}
 
 	public JavaResourceMethod getResourceGetterMethod() {

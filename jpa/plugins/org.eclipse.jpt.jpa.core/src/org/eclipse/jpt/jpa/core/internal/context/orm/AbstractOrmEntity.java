@@ -1704,7 +1704,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	 */
 	protected boolean isMember() {
 		JavaResourceType jrt = this.getJavaResourceType();
-		return (jrt != null) && jrt.isMemberType();
+		return (jrt != null) && jrt.getTypeBinding().isMemberTypeDeclaration();
 	}
 
 	/**

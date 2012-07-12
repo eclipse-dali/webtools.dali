@@ -9,9 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
+import org.eclipse.jdt.core.dom.IBinding;
+import org.eclipse.jdt.core.dom.ITypeBinding;
+import org.eclipse.jdt.core.dom.IVariableBinding;
+import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jpt.common.core.internal.utility.jdt.JDTFieldAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
@@ -36,7 +39,8 @@ final class SourceField
 			String name,
 			int occurrence,
 			JavaResourceCompilationUnit javaResourceCompilationUnit,
-			CompilationUnit astRoot) {
+			FieldDeclaration fieldDeclaration,
+			VariableDeclarationFragment variableDeclaration) {
 		
 		FieldAttribute field = new JDTFieldAttribute(
 				declaringType,
@@ -45,32 +49,52 @@ final class SourceField
 				javaResourceCompilationUnit.getCompilationUnit(),
 				javaResourceCompilationUnit.getModifySharedDocumentCommandExecutor(),
 				javaResourceCompilationUnit.getAnnotationEditFormatter());
-		JavaResourceField jrpa = new SourceField(parent, field);
-		jrpa.initialize(astRoot);
-		return jrpa;
+		SourceField sf = new SourceField(parent, field);
+		sf.initialize(fieldDeclaration, variableDeclaration);
+		return sf;
 	}
 	
 	
 	private SourceField(JavaResourceType parent, FieldAttribute field){
 		super(parent, field);
 	}
-
+	
+	
+	// call initialize(FieldDeclaration, VariableDeclarationFragment) now for performance
+	// trying to minimize API changes, this should be removed from the interface
+	// TODO other members of this hierarchy should have similar initialize methods
+	@Override
+	public void initialize(CompilationUnit astRoot) {
+		throw new UnsupportedOperationException();
+	}
+	
+	protected void initialize(FieldDeclaration fieldDeclaration, VariableDeclarationFragment variableDeclaration) {
+		super.initialize(fieldDeclaration);
+		initialize(variableDeclaration.resolveBinding());
+	}
+	
+	// call synchronizeWith(FieldDeclaration, VariableDeclarationFragment) now for performance
+	// trying to minimize API changes, this should be removed from the interface
+	// TODO other members of this hierarchy should have similar initialize methods
+	@Override
+	public void synchronizeWith(CompilationUnit astRoot) {
+		throw new UnsupportedOperationException();
+	}
+	
+	public void synchronizeWith(FieldDeclaration fieldDeclaration, VariableDeclarationFragment variableDeclaration) {
+		super.synchronizeWith(fieldDeclaration);
+		synchronizeWith(variableDeclaration.resolveBinding());
+	}
+	
+	@Override
+	protected ITypeBinding getJdtTypeBinding(IBinding binding) {
+		return ((IVariableBinding) binding).getType();
+	}
+	
+	
 	// ******** JavaResourceAnnotatedElement implementation ********
 	
 	public Kind getKind() {
 		return Kind.FIELD;
 	}
-
-	@Override
-	protected void initialize(ASTNode node) {
-		super.initialize(node);
-		this.initialize(((FieldDeclaration) node).getType().resolveBinding());
-	}
-
-	@Override
-	public void synchronizeWith(ASTNode node) {
-		super.synchronizeWith(node);
-		this.synchronizeWith(((FieldDeclaration) node).getType().resolveBinding());
-	}
-
 }

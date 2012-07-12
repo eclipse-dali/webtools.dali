@@ -771,7 +771,7 @@ public abstract class AbstractJaxbProject
 	
 	public JavaResourceAbstractType getJavaResourceType(String typeName) {
 		for (JavaResourceAbstractType type : this.getJavaResourceTypes()) {
-			if (type.getQualifiedName().equals(typeName)) {
+			if (type.getTypeBinding().getQualifiedName().equals(typeName)) {
 				return type;
 			}
 		}

@@ -522,10 +522,10 @@ public abstract class AbstractJavaPersistentAttribute
 		if (MappingTools.typeIsOtherValidBasicType(typeName)) {
 			return true;
 		}
-		if (this.getResourceAttribute().typeIsEnum()) {
+		if (this.getResourceAttribute().getTypeBinding().isEnum()) {
 			return true;
 		}
-		if (this.getResourceAttribute().typeIsSubTypeOf(JDTTools.SERIALIZABLE_CLASS_NAME)) {
+		if (this.getResourceAttribute().getTypeBinding().isSubTypeOf(JDTTools.SERIALIZABLE_CLASS_NAME)) {
 			return true;
 		}
 		return false;
@@ -592,7 +592,7 @@ public abstract class AbstractJavaPersistentAttribute
 	}
 
 	public String getTypeName() {
-		return this.getResourceAttribute().getTypeName();
+		return this.getResourceAttribute().getTypeBinding().getQualifiedName();
 	}
 
 	public boolean contains(int offset, CompilationUnit astRoot) {
@@ -709,7 +709,7 @@ public abstract class AbstractJavaPersistentAttribute
 	 */
 	protected JpaContainerDefinition buildJpaContainerDefinition() {
 		for (JpaContainerDefinition definition : this.getJpaContainerDefinitions()) {
-			if (this.getResourceAttribute().typeIsSubTypeOf(definition.getTypeName())) {
+			if (this.getResourceAttribute().getTypeBinding().isSubTypeOf(definition.getTypeName())) {
 				return definition;
 			}
 		}
@@ -776,8 +776,8 @@ public abstract class AbstractJavaPersistentAttribute
 		}
 
 		public String getMultiReferenceTargetTypeName(JavaResourceAttribute resourceAttribute) {
-			return (resourceAttribute.getTypeTypeArgumentNamesSize() == 1) ?
-				resourceAttribute.getTypeTypeArgumentName(0) :
+			return (resourceAttribute.getTypeBinding().getTypeArgumentNamesSize() == 1) ?
+				resourceAttribute.getTypeBinding().getTypeArgumentName(0) :
 						null;
 		}
 
@@ -805,14 +805,14 @@ public abstract class AbstractJavaPersistentAttribute
 		}
 
 		public String getMultiReferenceTargetTypeName(JavaResourceAttribute resourceAttribute) {
-			return (resourceAttribute.getTypeTypeArgumentNamesSize() == 2) ?
-						resourceAttribute.getTypeTypeArgumentName(1) :
+			return (resourceAttribute.getTypeBinding().getTypeArgumentNamesSize() == 2) ?
+						resourceAttribute.getTypeBinding().getTypeArgumentName(1) :
 						null;
 		}
 
 		public String getMultiReferenceMapKeyTypeName(JavaResourceAttribute resourceAttribute) {
-			return (resourceAttribute.getTypeTypeArgumentNamesSize() == 2) ?
-						resourceAttribute.getTypeTypeArgumentName(0) :
+			return (resourceAttribute.getTypeBinding().getTypeArgumentNamesSize() == 2) ?
+						resourceAttribute.getTypeBinding().getTypeArgumentName(0) :
 						null;
 		}
 

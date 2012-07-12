@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.common.core.resource.java;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
+import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 
 /**
  * Java source code or binary type.  This corresponds to a {@link AbstractTypeDeclaration}
@@ -23,43 +24,25 @@ import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 3.3
  * @since 3.0
  */
 public interface JavaResourceAbstractType
 		extends JavaResourceMember {
 	
 	/**
-	 * Property change String for the unqualified (short) type name.
-	 * @see JavaResourceMember#getName()
+	 * Return the type binding for this type
 	 */
-	String NAME_PROPERTY = "name"; //$NON-NLS-1$
-
-	/**
-	 * Return the fully qualified type name.
-	 */
-	String getQualifiedName();
-		String QUALIFIED_NAME_PROPERTY = "qualifiedName"; //$NON-NLS-1$
-
-	/**
-	 * Return the package name.
-	 */
-	String getPackageName();
-		String PACKAGE_NAME_PROPERTY = "packageName"; //$NON-NLS-1$
-
+	TypeBinding getTypeBinding();
+		String TYPE_BINDING_PROPERTY = "typeBinding"; //$//$NON-NLS-1$
+	
 	/**
 	 * Return the name of the type's "declaring type".
 	 * Return <code>null</code> if the type is a top-level type.
 	 */
 	String getDeclaringTypeName();
 		String DECLARING_TYPE_NAME_PROPERTY = "declaringTypeName"; //$NON-NLS-1$
-
-	/**
-	 * Return whether the type is a member type.
-	 */
-	boolean isMemberType();
-		String MEMBER_TYPE_PROPERTY = "memberType"; //$NON-NLS-1$
-
+	
 	boolean isIn(IPackageFragment packageFragment);
 
 	boolean isIn(IPackageFragmentRoot sourceFolder);
@@ -88,5 +71,4 @@ public interface JavaResourceAbstractType
 	 * etc.
 	 */
 	Iterable<JavaResourceEnum> getAllEnums();
-
 }

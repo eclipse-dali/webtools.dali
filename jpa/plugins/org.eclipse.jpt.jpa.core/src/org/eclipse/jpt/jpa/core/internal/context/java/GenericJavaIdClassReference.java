@@ -263,19 +263,19 @@ public class GenericJavaIdClassReference
 							DefaultJpaValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
 									JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_PUBLIC,
-									new String[] {jrt.getQualifiedName()}, 
+									new String[] {jrt.getTypeBinding().getQualifiedName()}, 
 									this,
 									this.getValidationTextRange(astRoot)
 									)
 							);
 				}
 
-				if (!JDTTools.typeIsSubType(this.getJpaProject().getJavaProject(), jrt.getQualifiedName(), JDTTools.SERIALIZABLE_CLASS_NAME)) {
+				if (!JDTTools.typeIsSubType(this.getJpaProject().getJavaProject(), jrt.getTypeBinding().getQualifiedName(), JDTTools.SERIALIZABLE_CLASS_NAME)) {
 					messages.add(
 							DefaultJpaValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
 									JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_IMPLEMENT_SERIALIZABLE,
-									new String[] {jrt.getQualifiedName()}, 
+									new String[] {jrt.getTypeBinding().getQualifiedName()}, 
 									this,
 									this.getValidationTextRange(astRoot)
 									)
@@ -287,7 +287,7 @@ public class GenericJavaIdClassReference
 							DefaultJpaValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
 									JpaValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_EQUALS_METHOD,
-									new String[] {jrt.getQualifiedName()}, 
+									new String[] {jrt.getTypeBinding().getQualifiedName()}, 
 									this,
 									this.getValidationTextRange(astRoot)
 									)
@@ -299,7 +299,7 @@ public class GenericJavaIdClassReference
 							DefaultJpaValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
 									JpaValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_HASHCODE_METHOD,
-									new String[] {jrt.getQualifiedName()}, 
+									new String[] {jrt.getTypeBinding().getQualifiedName()}, 
 									this,
 									this.getValidationTextRange(astRoot)
 									)

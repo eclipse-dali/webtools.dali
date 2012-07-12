@@ -18,6 +18,9 @@ import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.ITypeParameter;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.dom.IBinding;
+import org.eclipse.jdt.core.dom.IMethodBinding;
+import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
@@ -51,26 +54,33 @@ final class BinaryMethod
 		return JavaResourceAnnotatedElement.Kind.METHOD;
 	}
 	
+	
 	// ***** overrides *****
-
+	
 	@Override
 	protected void update(IMember member) {
 		super.update(member);
 		this.setConstructor(this.buildConstructor((IMethod) member));
 		this.setParameterTypeNames(this.buildParameterTypeNames((IMethod) member));
 	}
-
-	public void initialize(MethodDeclaration methodDeclaration) {
-		throw new UnsupportedOperationException();
-	}
-
+	
 	public void synchronizeWith(MethodDeclaration methodDeclaration) {
 		throw new UnsupportedOperationException();
 	}
-
+	
 	@Override
 	IMethod getMember() {
 		return (IMethod) super.getMember();
+	}
+	
+	@Override
+	protected ITypeBinding getJdtTypeBinding(IBinding jdtBinding) {
+		// bug 381503 - if the binary method is a constructor,
+		// the jdtBinding will be a JavaResourceTypeBinding already
+		if (jdtBinding.getKind() == IBinding.TYPE) {
+			return (ITypeBinding) jdtBinding;
+		}
+		return ((IMethodBinding) jdtBinding).getReturnType();
 	}
 	
 	

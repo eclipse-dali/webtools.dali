@@ -17,7 +17,11 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.ITypeParameter;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.dom.IBinding;
+import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
+import org.eclipse.jpt.common.core.internal.utility.jdt.JavaResourceTypeBinding;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
@@ -30,29 +34,20 @@ import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
  * binary persistent type
  */
 abstract class BinaryAbstractType
-	extends BinaryMember
-	implements JavaResourceAbstractType
-{
-	private String name;
-
-	private String qualifiedName;
-
-	private String packageName;
-
+		extends BinaryMember
+		implements JavaResourceAbstractType {
+	
+	private JavaResourceTypeBinding typeBinding;
+	
 	private String declaringTypeName;
-
-	private boolean memberType;
-
-
+	
+	
 	// ********** construction/initialization **********
-
+	
 	protected BinaryAbstractType(JavaResourceNode parent, IType type) {
 		super(parent, new TypeAdapter(type));
-		this.name = this.buildName(type);
-		this.qualifiedName = this.buildQualifiedName(type);
-		this.packageName = this.buildPackageName(type);
+		this.typeBinding = buildTypeBinding(createJdtTypeBinding(type));
 		this.declaringTypeName = this.buildDeclaringTypeName(type);
-		this.memberType = this.buildMemberType(type);
 	}
 
 
@@ -61,117 +56,70 @@ abstract class BinaryAbstractType
 	@Override
 	protected void update(IMember member) {
 		super.update(member);
-		this.setName(this.buildName((IType) member));
-		this.setQualifiedName(this.buildQualifiedName((IType) member));
-		this.setPackageName(this.buildPackageName((IType) member));
+		
+		// TODO - update type binding?
+		
 		this.setDeclaringTypeName(this.buildDeclaringTypeName((IType) member));
-		this.setMemberType(this.buildMemberType((IType) member));
 	}
-
+	
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(this.name);
+		sb.append(this.typeBinding.getSimpleName());
 	}
-
+	
 	
 	// ********** JavaResourceAbstractType implementation **********
-
+	
 	// ***** name
 	public String getName() {
-		return this.name;
+		return this.typeBinding.getSimpleName();
 	}
-
-	private void setName(String name) {
-		String old = this.name;
-		this.name = name;
-		this.firePropertyChanged(NAME_PROPERTY, old, name);
+	
+	// ***** type binding
+	public JavaResourceTypeBinding getTypeBinding() {
+		return this.typeBinding;
 	}
-
-	private String buildName(IType type) {
-		return type.getElementName();
+	
+	protected ITypeBinding createJdtTypeBinding(IType jdtType) {
+		IBinding jdtBinding = ASTTools.createBinding(jdtType);
+		return (ITypeBinding) jdtBinding;
 	}
-
-	// ***** qualified name
-	public String getQualifiedName() {
-		return this.qualifiedName;
+	
+	protected JavaResourceTypeBinding buildTypeBinding(ITypeBinding jdtTypeBinding) {
+		return new JavaResourceTypeBinding(jdtTypeBinding);
 	}
-
-	private void setQualifiedName(String qualifiedName) {
-		String old = this.qualifiedName;
-		this.qualifiedName = qualifiedName;
-		this.firePropertyChanged(QUALIFIED_NAME_PROPERTY, old, qualifiedName);
-	}
-
-	private String buildQualifiedName(IType type) {
-		return type.getFullyQualifiedName('.');  // no parameters are included here
-	}
-
+	
 	// ***** package
-	public String getPackageName() {
-		return this.packageName;
-	}
-
-	private void setPackageName(String packageName) {
-		String old = this.packageName;
-		this.packageName = packageName;
-		this.firePropertyChanged(PACKAGE_NAME_PROPERTY, old, packageName);
-	}
-
-	private String buildPackageName(IType type) {
-		return type.getPackageFragment().getElementName();
-	}
-
 	public boolean isIn(IPackageFragment packageFragment) {
-		return StringTools.stringsAreEqual(packageFragment.getElementName(), this.packageName);
+		return StringTools.stringsAreEqual(packageFragment.getElementName(), this.typeBinding.getPackageName());
 	}
-
+	
 	// ***** source folder
 	public boolean isIn(IPackageFragmentRoot sourceFolder) {
 		return getSourceFolder().equals(sourceFolder);
 	}
-
+	
 	private IPackageFragmentRoot getSourceFolder() {
 		return (IPackageFragmentRoot) this.getMember().getAncestor(IJavaElement.PACKAGE_FRAGMENT_ROOT);
 	}
-
+	
 	// ***** declaring type name
 	public String getDeclaringTypeName() {
 		return this.declaringTypeName;
 	}
-
+	
 	private void setDeclaringTypeName(String declaringTypeName) {
 		String old = this.declaringTypeName;
 		this.declaringTypeName = declaringTypeName;
 		this.firePropertyChanged(DECLARING_TYPE_NAME_PROPERTY, old, declaringTypeName);
 	}
-
+	
 	private String buildDeclaringTypeName(IType type) {
 		IType declaringType = type.getDeclaringType();
 		return (declaringType == null) ? null : declaringType.getFullyQualifiedName('.');  // no parameters are included here
 	}
-
-
-	// ***** member
-	public boolean isMemberType() {
-		return this.memberType;
-	}
-
-	private void setMemberType(boolean memberType) {
-		boolean old = this.memberType;
-		this.memberType = memberType;
-		this.firePropertyChanged(MEMBER_TYPE_PROPERTY, old, memberType);
-	}
-
-	private boolean buildMemberType(IType type) {
-		try {
-			return type.isMember();
-		} catch (JavaModelException ex) {
-			JptCommonCorePlugin.log(ex);
-			return false;
-		}
-	}
-
-
+	
+	
 	// ********** misc **********
 
 	@Override

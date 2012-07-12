@@ -306,7 +306,7 @@ public class GenericRootContextNode
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.PERSISTENT_TYPE_MAPPED_BUT_NOT_INCLUDED_IN_PERSISTENCE_UNIT,
-						new String[] {jrt.getQualifiedName()},
+						new String[] {jrt.getTypeBinding().getQualifiedName()},
 						jrt.getFile(),
 						jrt.getNameTextRange(jrcu.buildASTRoot())
 					)

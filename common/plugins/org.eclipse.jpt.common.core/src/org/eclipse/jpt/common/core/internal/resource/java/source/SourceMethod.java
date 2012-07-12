@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -58,37 +58,40 @@ final class SourceMethod
 				javaResourceCompilationUnit.getCompilationUnit(),
 				javaResourceCompilationUnit.getModifySharedDocumentCommandExecutor(),
 				javaResourceCompilationUnit.getAnnotationEditFormatter());
-		JavaResourceMethod jrm = new SourceMethod(parent, method);
-		jrm.initialize(methodDeclaration);
-		return jrm;
+		SourceMethod sm = new SourceMethod(parent, method);
+		sm.initialize(methodDeclaration);
+		return sm;
 	}
 	
 	
 	private SourceMethod(JavaResourceType parent, MethodAttribute method){
 		super(parent, method);
 	}
-
-	//call initialize(MethodDeclaration) now for performance
-	//trying to minimize API changes, this should be removed from the interface
-	//TODO other members of this hierarchy should have similar initialize methods
+	
+	
+	// call initialize(MethodDeclaration) now for performance
+	// trying to minimize API changes, this should be removed from the interface
+	// TODO other members of this hierarchy should have similar initialize methods
 	@Override
 	public void initialize(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	}
-
+	
+	public void initialize(MethodDeclaration methodDeclaration) {
+		super.initialize(methodDeclaration);
+		initialize(methodDeclaration.resolveBinding());
+	}
+	
 	@Override
 	protected void initialize(IBinding binding) {
 		super.initialize(binding);
 		this.constructor = this.buildConstructor((IMethodBinding) binding);
 		this.parameterTypeNames.addAll(this.buildParameterTypeNames((IMethodBinding) binding));
 	}
-
-	public void initialize(MethodDeclaration methodDeclaration) {
-		super.initialize(methodDeclaration);
-		IMethodBinding binding = methodDeclaration.resolveBinding();
-		this.initialize(binding.getReturnType());
-		this.initialize(binding);
-		
+	
+	@Override
+	protected ITypeBinding getJdtTypeBinding(IBinding binding) {
+		return ((IMethodBinding) binding).getReturnType();
 	}
 	
 	
@@ -113,21 +116,19 @@ final class SourceMethod
 	public void synchronizeWith(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	}
-
+	
 	public void synchronizeWith(MethodDeclaration methodDeclaration) {
 		super.synchronizeWith(methodDeclaration);
-		IMethodBinding binding = methodDeclaration.resolveBinding();
-		this.synchronizeWith(binding.getReturnType());
-		this.synchronizeWith(binding);
+		synchronizeWith(methodDeclaration.resolveBinding());
 	}
-
+	
 	@Override
 	public void synchronizeWith(IBinding binding) {
 		super.synchronizeWith(binding);
 		this.syncConstructor(this.buildConstructor((IMethodBinding) binding));
 		this.syncParameterTypeNames(this.buildParameterTypeNames((IMethodBinding) binding));
 	}
-
+	
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.getMethodName());

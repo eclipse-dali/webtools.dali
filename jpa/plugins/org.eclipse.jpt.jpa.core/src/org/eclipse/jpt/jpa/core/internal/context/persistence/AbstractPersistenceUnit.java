@@ -2231,7 +2231,7 @@ public abstract class AbstractPersistenceUnit
 		Set<String> packageNames = new HashSet<String>();
 		for (PersistentType pType : this.getJavaPersistentTypes()) {
 			JavaResourceType jrt = ((JavaPersistentType)pType).getJavaResourceType();
-			packageNames.add(jrt.getPackageName());
+			packageNames.add(jrt.getTypeBinding().getPackageName());
 		}
 		return packageNames;
 	}
