@@ -48,9 +48,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Java persistent attributes
  */
 public abstract class AbstractJavaPersistentAttribute
-	extends AbstractJavaJpaContextNode
-	implements JavaPersistentAttribute2_0
-{
+		extends AbstractJavaJpaContextNode
+		implements JavaPersistentAttribute2_0 {
+	
 	protected final Accessor accessor;
 
 	protected AccessType defaultAccess;
@@ -334,34 +334,12 @@ public abstract class AbstractJavaPersistentAttribute
 	}
 
 	/**
-	 * Look for a <em>specified</em> mapping and sync our mapping.
+	 * Sync existing mapping
 	 */
 	protected void syncMapping() {
-		JavaAttributeMappingDefinition definition = this.getSpecifiedMappingDefinition();
-		if (definition == null) {
-			if (this.mapping.isDefault()) {
-				// null/default => null/default
-				this.mapping.synchronizeWithResourceModel();
-			} else {
-				// specified => null/default
-				definition = this.getDefaultMappingDefinition();
-				this.setMapping(this.buildMapping(definition));
-			}
-		} else {
-			if (this.mapping.isDefault()) {
-				// null/default => specified
-				this.setMapping(this.buildMapping(definition));
-			} else {
-				// specified => specified
-				if (this.valuesAreEqual(definition.getKey(), this.mapping.getKey())) {
-					this.mapping.synchronizeWithResourceModel();
-				} else {
-					this.setMapping(this.buildMapping(definition));
-				}
-			}
-		}
+		this.mapping.synchronizeWithResourceModel();
 	}
-
+	
 	/**
 	 * Return the "specified" mapping definition for the specified key.
 	 */
@@ -410,21 +388,36 @@ public abstract class AbstractJavaPersistentAttribute
 	}
 
 	/**
-	 * If a mapping annotation is specified, we would have already set a
-	 * <em>specified</em> mapping in {@link #syncMapping()}. We need only check
-	 * for changes to the <em>default</em> mapping.
+	 * A default mapping may depend on another resource, and the specified mapping
+	 * may depend on the default mapping, so we must analyze both here.
 	 */
 	protected void updateMapping() {
-		JavaAttributeMappingDefinition definition = this.getDefaultMappingDefinition();
-		String newDefaultKey = (definition == null) ? null : definition.getKey();
-		if (this.mapping.isDefault() && Tools.valuesAreDifferent(this.mapping.getKey(), newDefaultKey)) {
-			this.setMapping(this.buildMapping(definition));  // the default mapping has changed
-		} else {
-			this.mapping.update();
+		JavaAttributeMappingDefinition newDefinition = null;
+		
+		JavaAttributeMappingDefinition defaultDefinition = this.getDefaultMappingDefinition();
+		String newDefaultKey = (defaultDefinition == null) ? null : defaultDefinition.getKey();
+		if (Tools.valuesAreDifferent(this.mapping.getKey(), newDefaultKey)) {
+			newDefinition = defaultDefinition;  // the default mapping has changed - hold on to the definition
 		}
 		this.setDefaultMappingKey(newDefaultKey);
+		
+		JavaAttributeMappingDefinition specifiedDefinition = this.getSpecifiedMappingDefinition();
+		String newSpecifiedKey = (specifiedDefinition == null) ? null : specifiedDefinition.getKey();
+		if (specifiedDefinition != null) {
+			newDefinition = null;  // unset definition if it was set from default calculation
+			if (this.mapping.isDefault() || Tools.valuesAreDifferent(this.mapping.getKey(), newSpecifiedKey)) {
+				newDefinition = specifiedDefinition; // mapping is now specified or a different specified
+			}
+		}
+		
+		if (newDefinition != null) {
+			setMapping(buildMapping(newDefinition));
+		}
+		else {
+			this.mapping.update();
+		}
 	}
-
+	
 	protected JavaAttributeMappingDefinition getDefaultMappingDefinition() {
 		for (DefaultJavaAttributeMappingDefinition definition : this.getDefaultMappingDefinitions()) {
 			if (definition.isDefault(this)) {
