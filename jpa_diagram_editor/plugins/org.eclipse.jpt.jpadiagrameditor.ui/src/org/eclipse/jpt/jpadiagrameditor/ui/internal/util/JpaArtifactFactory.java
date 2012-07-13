@@ -27,7 +27,6 @@ import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.Set;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -907,7 +906,7 @@ public class JpaArtifactFactory {
 				new String[0]);
 		if (!getAttributeMethod.exists()) {
 			JavaPersistentAttribute jpa = jpt.getAttributeNamed(attributeName);
-			String typeName = jpa.getResourceAttribute().getTypeName();
+			String typeName = jpa.getResourceAttribute().getTypeBinding().getQualifiedName();
 			if ("boolean".equals(typeName)) {										//$NON-NLS-1$
 				getterPrefix = "is";												//$NON-NLS-1$
 				methodName = getterPrefix + attrNameWithCapitalLetter; 				
@@ -1376,7 +1375,7 @@ public class JpaArtifactFactory {
 			JavaResourceAbstractType jrt = jrcu.getPrimaryType();
 			if (jrt == null)
 				continue;
-			String name = jrt.getQualifiedName();
+			String name = jrt.getTypeBinding().getQualifiedName();
 			JavaPersistentType jpt1 = (JavaPersistentType) pu
 					.getPersistentType(name);
 			if (jpt1 == null)
@@ -2196,8 +2195,8 @@ public class JpaArtifactFactory {
 			JavaResourceAttribute jra) {
 		String relTypeName = null;
 		try {
-			boolean isMap = jra.getTypeName().equals(JPAEditorConstants.MAP_TYPE);
-			relTypeName = jra.getTypeTypeArgumentName(isMap ? 1 : 0);
+			boolean isMap = jra.getTypeBinding().getQualifiedName().equals(JPAEditorConstants.MAP_TYPE);
+			relTypeName = jra.getTypeBinding().getTypeArgumentName(isMap ? 1 : 0);
 		} catch (Exception e) {}
 		if (relTypeName == null) 
 			relTypeName = an.getFullyQualifiedTargetEntityClassName();												

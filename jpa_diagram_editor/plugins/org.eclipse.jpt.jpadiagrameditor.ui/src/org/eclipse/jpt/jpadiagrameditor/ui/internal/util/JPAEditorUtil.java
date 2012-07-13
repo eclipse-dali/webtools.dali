@@ -34,7 +34,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -202,11 +201,11 @@ public class JPAEditorUtil {
     }    
     
     public static String getAttributeTypeName(JavaResourceAttribute at) {
-    	return at.getTypeName();
+    	return at.getTypeBinding().getQualifiedName();
     }        
     
     public static List<String> getAttributeTypeTypeNames(JavaResourceAttribute at) {
-    	ListIterator<String> tt = at.getTypeTypeArgumentNames().iterator();
+    	ListIterator<String> tt = at.getTypeBinding().getTypeArgumentNames().iterator();
     	if ((tt == null) || !tt.hasNext()) 
     		return null;
     	LinkedList<String> res = new LinkedList<String>();
@@ -222,7 +221,7 @@ public class JPAEditorUtil {
     
     public static String getAttributeTypeNameWithGenerics(JavaResourceAttribute at) {
     	StringBuilder res = new StringBuilder(getAttributeTypeName(at));
-    	ListIterator<String> it = at.getTypeTypeArgumentNames().iterator();
+    	ListIterator<String> it = at.getTypeBinding().getTypeArgumentNames().iterator();
     	if ((it != null) && it.hasNext()) {
 	    	res.append('<');
 	    	res.append(createCommaSeparatedListOfFullTypeNames(it));

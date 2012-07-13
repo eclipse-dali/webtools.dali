@@ -288,7 +288,7 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 				return;
 			JavaResourceCompilationUnit jrcu = (JavaResourceCompilationUnit)rm;
 			JavaResourceAbstractType jrt = jrcu.getPrimaryType();		
-			newJptName = jrt.getQualifiedName();
+			newJptName = jrt.getTypeBinding().getQualifiedName();
 			s.release();
 			if ((ats == null) || hasNameAnnotation)
 				return;

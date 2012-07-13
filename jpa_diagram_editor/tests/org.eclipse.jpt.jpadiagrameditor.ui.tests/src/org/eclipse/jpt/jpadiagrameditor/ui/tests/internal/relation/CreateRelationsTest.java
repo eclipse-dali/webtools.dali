@@ -15,14 +15,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.relation;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-import static org.easymock.EasyMock.replay;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.*;
 import java.util.Iterator;
 import java.util.Properties;
 import org.easymock.EasyMock;
@@ -104,7 +98,7 @@ public class CreateRelationsTest {
 		assertNotNull(customerType);
 		
 		
-		t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+		t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		
 		expect(featureProvider.getPictogramElementForBusinessObject(t1)).andStubReturn(isA(Shape.class));
 		cu1 = JavaCore.createCompilationUnitFrom(customerFile);
@@ -115,7 +109,7 @@ public class CreateRelationsTest {
 		assertNotNull(customerType);
 
 		
-		t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getQualifiedName());
+		t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		
 		expect(featureProvider.getPictogramElementForBusinessObject(t2)).andStubReturn(isA(Shape.class));
 		cu2 = JavaCore.createCompilationUnitFrom(addressFile);
@@ -300,7 +294,7 @@ public class CreateRelationsTest {
 			JavaResourceAbstractType customerType = jpa20Project.getJavaResourceType("com.test.Customer");
 			assertNotNull(customerType);
 					
-			JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpa20Project, customerType.getQualifiedName());
+			JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpa20Project, customerType.getTypeBinding().getQualifiedName());
 					
 			expect(featureProvider20.getPictogramElementForBusinessObject(t1)).andStubReturn(isA(Shape.class));
 			ICompilationUnit cu1 = JavaCore.createCompilationUnitFrom(customerFile);
@@ -311,7 +305,7 @@ public class CreateRelationsTest {
 			assertNotNull(customerType);
 	
 			
-			JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpa20Project, addressType.getQualifiedName());
+			JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpa20Project, addressType.getTypeBinding().getQualifiedName());
 
 			expect(featureProvider20.getPictogramElementForBusinessObject(t2)).andStubReturn(isA(Shape.class));
 			ICompilationUnit cu2 = JavaCore.createCompilationUnitFrom(addressFile);
@@ -366,7 +360,7 @@ public class CreateRelationsTest {
 			JavaResourceAbstractType employeeType = jpa20Project.getJavaResourceType("com.test.Employee");
 			assertNotNull(employeeType);
 					
-			JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpa20Project, employeeType.getQualifiedName());
+			JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpa20Project, employeeType.getTypeBinding().getQualifiedName());
 					
 			expect(featureProvider20.getPictogramElementForBusinessObject(t1)).andStubReturn(isA(Shape.class));
 			ICompilationUnit cu1 = JavaCore.createCompilationUnitFrom(employeeFile);
@@ -377,7 +371,7 @@ public class CreateRelationsTest {
 			assertNotNull(employeeType);
 	
 			
-			JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpa20Project, projectType.getQualifiedName());
+			JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpa20Project, projectType.getTypeBinding().getQualifiedName());
 
 			expect(featureProvider20.getPictogramElementForBusinessObject(t2)).andStubReturn(isA(Shape.class));
 			ICompilationUnit cu2 = JavaCore.createCompilationUnitFrom(projectFile);
@@ -425,7 +419,7 @@ public class CreateRelationsTest {
 			assertNotNull(employeeType);
 			
 					
-			JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpa20Project, employeeType.getQualifiedName());
+			JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpa20Project, employeeType.getTypeBinding().getQualifiedName());
 					
 			expect(featureProvider20.getPictogramElementForBusinessObject(t1)).andStubReturn(isA(Shape.class));
 			ICompilationUnit cu1 = JavaCore.createCompilationUnitFrom(employeeFile);
@@ -440,7 +434,7 @@ public class CreateRelationsTest {
 			assertNotNull(employeeType);
 	
 			
-			JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpa20Project, projectType.getQualifiedName());
+			JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpa20Project, projectType.getTypeBinding().getQualifiedName());
 			
 			expect(featureProvider20.getPictogramElementForBusinessObject(t2)).andStubReturn(isA(Shape.class));
 			ICompilationUnit cu2 = JavaCore.createCompilationUnitFrom(projectFile);

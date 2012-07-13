@@ -15,15 +15,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.util;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.*;
 import java.util.List;
-
 import org.easymock.EasyMock;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
@@ -181,7 +175,7 @@ public class JPAEditorUtilTest {
 		ICompilationUnit cu = createCompilationUnitFrom(customerFile);
 		Thread.sleep(2000);
 		JavaPersistentType jpt = JPAEditorUtil.getJPType(cu);
-		assertEquals(customerType.getQualifiedName(), jpt.getName());
+		assertEquals(customerType.getTypeBinding().getQualifiedName(), jpt.getName());
 	}
 	
 	@Test
@@ -270,11 +264,11 @@ public class JPAEditorUtilTest {
 		JavaResourceAbstractType customerType = jpaProject.getJavaResourceType("com.test.Customer");
 		assertNotNull(customerType);
 		
-		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		int cnt = 0;
 		while ((cnt < 25) && (t1 == null)) {
 			Thread.sleep(200);
-			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 			cnt++;
 		}
 		if (t1 == null)

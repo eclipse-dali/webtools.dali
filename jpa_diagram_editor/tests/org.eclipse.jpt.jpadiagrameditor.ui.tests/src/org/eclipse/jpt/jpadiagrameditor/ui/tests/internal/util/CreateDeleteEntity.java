@@ -15,10 +15,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.util;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -92,11 +89,11 @@ public class CreateDeleteEntity {
 			c++;
 		}
 		assertNotNull(persistenceType);
-		PersistentType t = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, persistenceType.getQualifiedName());
+		PersistentType t = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, persistenceType.getTypeBinding().getQualifiedName());
 		c = 0;
 		while ((t == null) && (c < 100)) {
 			Thread.sleep(500);
-			t = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, persistenceType.getQualifiedName());
+			t = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, persistenceType.getTypeBinding().getQualifiedName());
 			c++;
 		}
 		JpaArtifactFactory.instance().deletePersistenceTypeResource(t);

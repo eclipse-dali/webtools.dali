@@ -15,17 +15,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.relation;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-import static org.easymock.EasyMock.replay;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.*;
 import java.util.Set;
-
 import org.easymock.EasyMock;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
@@ -35,11 +27,7 @@ import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.resource.java.OwnableRelationshipMappingAnnotation;
@@ -98,10 +86,10 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertNotNull(customerType);
 		
 		
-		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		while (t1 == null) {
 			Thread.sleep(200);
-			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		}
 		
 		assertTrue(addressFile.exists());
@@ -109,10 +97,10 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertNotNull(customerType);
 
 		
-		JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getQualifiedName());
+		JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		while (t2 == null) {
 			Thread.sleep(200);
-			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getQualifiedName());
+			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		}
 		ICompilationUnit cu1 = createCompilationUnitFrom((IFile)t1.getResource());
 		AbstractRelation rel = new OneToOneUniDirRelation(featureProvider, t1, t2, "address",
@@ -150,10 +138,10 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertNotNull(customerType);
 		
 		
-		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		while (t1 == null) {
 			Thread.sleep(200);
-			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		}
 		
 		assertTrue(addressFile.exists());
@@ -161,10 +149,10 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertNotNull(customerType);
 
 		
-		JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getQualifiedName());
+		JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		while (t2 == null) {
 			Thread.sleep(200);
-			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getQualifiedName());
+			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		}
 		ICompilationUnit cu1 = createCompilationUnitFrom((IFile)t1.getResource());
 		ICompilationUnit cu2 = createCompilationUnitFrom((IFile)t2.getResource());
@@ -214,10 +202,10 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertNotNull(customerType);
 		
 		
-		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		while (t1 == null) {
 			Thread.sleep(200);
-			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		}
 		
 		assertTrue(addressFile.exists());
@@ -225,10 +213,10 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertNotNull(customerType);
 
 		
-		JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getQualifiedName());
+		JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		while (t2 == null) {
 			Thread.sleep(200);
-			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getQualifiedName());
+			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		}
 		ICompilationUnit cu1 = createCompilationUnitFrom((IFile)t1.getResource());
 		AbstractRelation rel = new OneToManyUniDirRelation(featureProvider, t1, t2, "address",
@@ -267,10 +255,10 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertNotNull(customerType);
 		
 		
-		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		while (t1 == null) {
 			Thread.sleep(200);
-			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		}
 		
 		assertTrue(addressFile.exists());
@@ -278,10 +266,10 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertNotNull(customerType);
 
 		
-		JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getQualifiedName());
+		JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		while (t2 == null) {
 			Thread.sleep(200);
-			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getQualifiedName());
+			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		}
 		ICompilationUnit cu1 = createCompilationUnitFrom((IFile)t1.getResource());
 		AbstractRelation rel = new ManyToOneUniDirRelation(featureProvider, t1, t2, "address",
@@ -320,10 +308,10 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertNotNull(customerType);
 		
 		
-		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		while (t1 == null) {
 			Thread.sleep(200);
-			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		}
 		
 		assertTrue(addressFile.exists());
@@ -331,10 +319,10 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertNotNull(customerType);
 
 		
-		JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getQualifiedName());
+		JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		while (t2 == null) {
 			Thread.sleep(200);
-			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getQualifiedName());
+			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		}
 		ICompilationUnit cu1 = createCompilationUnitFrom((IFile)t1.getResource());
 		ICompilationUnit cu2 = createCompilationUnitFrom((IFile)t2.getResource());
@@ -383,10 +371,10 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertNotNull(customerType);
 		
 		
-		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		while (t1 == null) {
 			Thread.sleep(200);
-			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		}
 		
 		assertTrue(addressFile.exists());
@@ -394,10 +382,10 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertNotNull(customerType);
 
 		
-		JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getQualifiedName());
+		JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		while (t2 == null) {
 			Thread.sleep(200);
-			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getQualifiedName());
+			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		}
 		ICompilationUnit cu1 = createCompilationUnitFrom((IFile)t1.getResource());
 		AbstractRelation rel = new ManyToManyUniDirRelation(featureProvider, t1, t2, "address",
@@ -436,10 +424,10 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertNotNull(customerType);
 		
 		
-		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+		JavaPersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		while (t1 == null) {
 			Thread.sleep(200);
-			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		}
 		
 		assertTrue(addressFile.exists());
@@ -447,10 +435,10 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		assertNotNull(customerType);
 
 		
-		JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getQualifiedName());
+		JavaPersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		while (t2 == null) {
 			Thread.sleep(200);
-			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getQualifiedName());
+			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		}
 		ICompilationUnit cu1 = createCompilationUnitFrom((IFile)t1.getResource());
 		ICompilationUnit cu2 = createCompilationUnitFrom((IFile)t2.getResource());

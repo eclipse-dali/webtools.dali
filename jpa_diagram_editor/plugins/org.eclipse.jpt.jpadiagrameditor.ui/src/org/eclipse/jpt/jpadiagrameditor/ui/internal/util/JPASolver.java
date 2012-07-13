@@ -25,7 +25,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.WeakHashMap;
-
 import org.eclipse.core.internal.resources.File;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarkerDelta;
@@ -1033,7 +1032,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 					continue;
 				JavaResourceCompilationUnit jrcu = (JavaResourceCompilationUnit)jrm;
 				JavaResourceAbstractType jrat = jrcu.getPrimaryType();
-				String name = jrat.getQualifiedName();
+				String name = jrat.getTypeBinding().getQualifiedName();
 				
 				JpaProject jpaProject = jpaFile.getJpaProject();
 				PersistenceUnit pu = JpaArtifactFactory.instance().getPersistenceUnit(jpaProject);

@@ -15,13 +15,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.relation;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-import static org.easymock.EasyMock.replay;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.*;
 import org.easymock.EasyMock;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
@@ -30,11 +25,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
@@ -98,10 +89,10 @@ public class CreateRelationAttributesTest {
 		assertNotNull(customerType);
 		
 		
-		PersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+		PersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		while (t1 == null) {
 			Thread.sleep(200);
-			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		}
 		
 		assertTrue(addressFile.exists());
@@ -109,10 +100,10 @@ public class CreateRelationAttributesTest {
 		assertNotNull(customerType);
 
 		
-		PersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getQualifiedName());
+		PersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		while (t2 == null) {
 			Thread.sleep(200);
-			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getQualifiedName());
+			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		}
  
 		JavaPersistentAttribute attr = JpaArtifactFactory.instance().
@@ -141,10 +132,10 @@ public class CreateRelationAttributesTest {
 		assertNotNull(customerType);
 		
 		
-		PersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+		PersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		while (t1 == null) {
 			Thread.sleep(200);
-			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		}
 		
 		assertTrue(addressFile.exists());
@@ -152,10 +143,10 @@ public class CreateRelationAttributesTest {
 		assertNotNull(customerType);
 
 		
-		PersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getQualifiedName());
+		PersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		while (t2 == null) {
 			Thread.sleep(200);
-			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getQualifiedName());
+			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		}
  
 		JavaPersistentAttribute attr = JpaArtifactFactory.instance().
@@ -166,10 +157,10 @@ public class CreateRelationAttributesTest {
 			
 		JpaArtifactFactory.instance().addOneToOneUnidirectionalRelation(featureProvider, (JavaPersistentType)t1, attr);
 		
-		PersistentType pt = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+		PersistentType pt = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		while (pt == null) {
 			Thread.sleep(200);
-			pt = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getQualifiedName());
+			pt = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		}
 		
 		ReadOnlyPersistentAttribute cPersistentAttribute = pt.resolveAttribute("address");	
@@ -192,10 +183,10 @@ public class CreateRelationAttributesTest {
 		assertNotNull(customerType);
 		
 		
-		PersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+		PersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		while (t1 == null) {
 			Thread.sleep(200);
-			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		}
 		
 		assertTrue(creditCardFile.exists());
@@ -203,10 +194,10 @@ public class CreateRelationAttributesTest {
 		assertNotNull(creditCardFile);
 
 		
-		PersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, creditCardType.getQualifiedName());
+		PersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, creditCardType.getTypeBinding().getQualifiedName());
 		while (t2 == null) {
 			Thread.sleep(200);
-			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, creditCardType.getQualifiedName());
+			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, creditCardType.getTypeBinding().getQualifiedName());
 		}
  
 		JavaPersistentAttribute attr = JpaArtifactFactory.instance().
@@ -223,10 +214,10 @@ public class CreateRelationAttributesTest {
 		
 		JpaArtifactFactory.instance().addOneToOneBidirectionalRelation(featureProvider, (JavaPersistentType)t1, attr, (JavaPersistentType)t2, attr2);
 		
-		PersistentType ownerPersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+		PersistentType ownerPersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		while (ownerPersistentType == null) {
 			Thread.sleep(200);
-			ownerPersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+			ownerPersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		}
 		
 		ReadOnlyPersistentAttribute ownerPersistentAttribute = ownerPersistentType.resolveAttribute("creditCard");
@@ -238,10 +229,10 @@ public class CreateRelationAttributesTest {
 		
 		assertTrue(((JavaOneToOneMapping)ownerSideMapping).isRelationshipOwner());
 		
-		PersistentType inversePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, creditCardType.getQualifiedName());
+		PersistentType inversePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, creditCardType.getTypeBinding().getQualifiedName());
 		while (inversePersistentType == null) {
 			Thread.sleep(200);
-			inversePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, creditCardType.getQualifiedName());
+			inversePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, creditCardType.getTypeBinding().getQualifiedName());
 		}
 		
 		ReadOnlyPersistentAttribute inversePersistentAttribute = inversePersistentType.resolveAttribute("customer");
@@ -269,10 +260,10 @@ public class CreateRelationAttributesTest {
 		assertNotNull(customerType);
 		
 		
-		PersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+		PersistentType t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		while (t1 == null) {
 			Thread.sleep(200);
-			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+			t1 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		}
 		
 		assertTrue(phoneFile.exists());
@@ -280,10 +271,10 @@ public class CreateRelationAttributesTest {
 		assertNotNull(customerType);
 
 		
-		PersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, phoneType.getQualifiedName());
+		PersistentType t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, phoneType.getTypeBinding().getQualifiedName());
 		while (t2 == null) {
 			Thread.sleep(200);
-			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, phoneType.getQualifiedName());
+			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, phoneType.getTypeBinding().getQualifiedName());
 		}
  
 		JavaPersistentAttribute attr = JpaArtifactFactory.instance().addAttribute(featureProvider, (JavaPersistentType)t1, (JavaPersistentType)t2, "phones", "phones", true, 
@@ -293,10 +284,10 @@ public class CreateRelationAttributesTest {
 			
 		JpaArtifactFactory.instance().addOneToManyUnidirectionalRelation(featureProvider, (JavaPersistentType)t1, attr, false);
 		
-		PersistentType pt = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+		PersistentType pt = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		while (pt == null) {
 			Thread.sleep(200);
-			pt = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, phoneType.getQualifiedName());
+			pt = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, phoneType.getTypeBinding().getQualifiedName());
 		}
 		
 		ReadOnlyPersistentAttribute cPersistentAttribute = pt.resolveAttribute("phones");		
@@ -323,10 +314,10 @@ public class CreateRelationAttributesTest {
 		assertNotNull(cruiseType);
 		
 		
-		PersistentType singleSidePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, cruiseType.getQualifiedName());
+		PersistentType singleSidePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, cruiseType.getTypeBinding().getQualifiedName());
 		while (singleSidePersistentType == null) {
 			Thread.sleep(200);
-			singleSidePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, cruiseType.getQualifiedName());
+			singleSidePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, cruiseType.getTypeBinding().getQualifiedName());
 		}
 		
 		assertTrue(reservationFile.exists());
@@ -334,10 +325,10 @@ public class CreateRelationAttributesTest {
 		assertNotNull(reservationFile);
 
 		
-		PersistentType manySidePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, reservationType.getQualifiedName());
+		PersistentType manySidePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, reservationType.getTypeBinding().getQualifiedName());
 		while (manySidePersistentType == null) {
 			Thread.sleep(200);
-			manySidePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, reservationType.getQualifiedName());
+			manySidePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, reservationType.getTypeBinding().getQualifiedName());
 		}
  
 		JavaPersistentAttribute singleSideAttribute = JpaArtifactFactory.instance().
@@ -355,10 +346,10 @@ public class CreateRelationAttributesTest {
 		JpaArtifactFactory.instance().addOneToManyBidirectionalRelation(featureProvider, (JavaPersistentType)singleSidePersistentType, singleSideAttribute, (JavaPersistentType)manySidePersistentType, manySideAttribute, false);
 		
 		// In one-to-many bidirectional relation many side is ALWAYS owner
-		PersistentType inversePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, cruiseType.getQualifiedName());
+		PersistentType inversePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, cruiseType.getTypeBinding().getQualifiedName());
 		while (inversePersistentType == null) {
 			Thread.sleep(200);
-			inversePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, cruiseType.getQualifiedName());
+			inversePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, cruiseType.getTypeBinding().getQualifiedName());
 		}
 		
 		ReadOnlyPersistentAttribute inversePersistentAttribute = inversePersistentType.resolveAttribute("reservations");
@@ -371,11 +362,11 @@ public class CreateRelationAttributesTest {
 		assertFalse(((JavaOneToManyMapping)inverseSideMapping).isRelationshipOwner());
 		
 		// In one-to-many bidirectional relation many side is ALWAYS owner
-		PersistentType ownerPersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, reservationType.getQualifiedName());
+		PersistentType ownerPersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, reservationType.getTypeBinding().getQualifiedName());
 		int c = 0;
 		while ((ownerPersistentType == null) && (c < 50)) {
 			Thread.sleep(200);
-			ownerPersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, reservationType.getQualifiedName());
+			ownerPersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, reservationType.getTypeBinding().getQualifiedName());
 			c++;
 		}
 		assertNotNull(ownerPersistentType);
@@ -418,10 +409,10 @@ public class CreateRelationAttributesTest {
 		JavaResourceAbstractType cruiseType = jpaProject.getJavaResourceType("com.Cruise");
 		assertNotNull(cruiseType);
 			
-		PersistentType manySidePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, cruiseType.getQualifiedName());
+		PersistentType manySidePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, cruiseType.getTypeBinding().getQualifiedName());
 		while (manySidePersistentType == null) {
 			Thread.sleep(200);
-			manySidePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, cruiseType.getQualifiedName());
+			manySidePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, cruiseType.getTypeBinding().getQualifiedName());
 		}
 		
 		assertTrue(shipFile.exists());
@@ -429,10 +420,10 @@ public class CreateRelationAttributesTest {
 		assertNotNull(cruiseType);
 
 		
-		PersistentType singleSidePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, shipType.getQualifiedName());
+		PersistentType singleSidePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, shipType.getTypeBinding().getQualifiedName());
 		while (singleSidePersistentType == null) {
 			Thread.sleep(200);
-			singleSidePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, shipType.getQualifiedName());
+			singleSidePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, shipType.getTypeBinding().getQualifiedName());
 		}
  
 		JavaPersistentAttribute mappedAttribute = JpaArtifactFactory.instance().
@@ -443,10 +434,10 @@ public class CreateRelationAttributesTest {
 			
 		JpaArtifactFactory.instance().addManyToOneUnidirectionalRelation(featureProvider, (JavaPersistentType)manySidePersistentType, mappedAttribute);
 		
-		PersistentType pt = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, cruiseType.getQualifiedName());
+		PersistentType pt = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, cruiseType.getTypeBinding().getQualifiedName());
 		while (pt == null) {
 			Thread.sleep(200);
-			pt = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, shipType.getQualifiedName());
+			pt = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, shipType.getTypeBinding().getQualifiedName());
 		}
 		
 		ReadOnlyPersistentAttribute cPersistentAttribute = pt.resolveAttribute("ship");	
@@ -484,10 +475,10 @@ public class CreateRelationAttributesTest {
 		JavaResourceAbstractType reservationType = jpaProject.getJavaResourceType("com.Reservation");
 		assertNotNull(reservationType);
 		
-		PersistentType ownerSidePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, reservationType.getQualifiedName());
+		PersistentType ownerSidePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, reservationType.getTypeBinding().getQualifiedName());
 		while (ownerSidePersistentType == null) {
 			Thread.sleep(200);
-			ownerSidePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, reservationType.getQualifiedName());
+			ownerSidePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, reservationType.getTypeBinding().getQualifiedName());
 		}
 		
 		assertTrue(customerFile.exists());
@@ -495,10 +486,10 @@ public class CreateRelationAttributesTest {
 		assertNotNull(customerFile);
 
 		
-		PersistentType inverseSidePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+		PersistentType inverseSidePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		while (inverseSidePersistentType == null) {
 			Thread.sleep(200);
-			inverseSidePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+			inverseSidePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		}
  
 		JavaPersistentAttribute ownerSideAttribute = JpaArtifactFactory.instance().
@@ -514,10 +505,10 @@ public class CreateRelationAttributesTest {
 		
 		JpaArtifactFactory.instance().addManyToManyBidirectionalRelation(featureProvider, (JavaPersistentType)ownerSidePersistentType, ownerSideAttribute, (JavaPersistentType)inverseSidePersistentType, inverseSideAttributes, false);
 		
-		PersistentType ownerPersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, reservationType.getQualifiedName());
+		PersistentType ownerPersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, reservationType.getTypeBinding().getQualifiedName());
 		while (ownerPersistentType == null) {
 			Thread.sleep(200);
-			ownerPersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, reservationType.getQualifiedName());
+			ownerPersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, reservationType.getTypeBinding().getQualifiedName());
 		}
 		
 		ReadOnlyPersistentAttribute ownerPersistentAttribute = ownerPersistentType.resolveAttribute("customers");
@@ -529,10 +520,10 @@ public class CreateRelationAttributesTest {
 		
 		assertTrue(((JavaManyToManyMapping)ownerSideMapping).isRelationshipOwner());
 	
-		PersistentType inversePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+		PersistentType inversePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		while (inversePersistentType == null) {
 			Thread.sleep(200);
-			inversePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getQualifiedName());
+			inversePersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, customerType.getTypeBinding().getQualifiedName());
 		}
 		
 		ReadOnlyPersistentAttribute inversePersistentAttribute = inversePersistentType.resolveAttribute("reservations");
@@ -557,10 +548,10 @@ public class CreateRelationAttributesTest {
 		JavaResourceAbstractType reservationType = jpaProject.getJavaResourceType("com.Reservation");
 		assertNotNull(reservationType);
 		
-		PersistentType annotatedPersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, reservationType.getQualifiedName());
+		PersistentType annotatedPersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, reservationType.getTypeBinding().getQualifiedName());
 		while (annotatedPersistentType == null) {
 			Thread.sleep(200);
-			annotatedPersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, reservationType.getQualifiedName());
+			annotatedPersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, reservationType.getTypeBinding().getQualifiedName());
 		}
 		
 		assertTrue(cabinFile.exists());
@@ -568,10 +559,10 @@ public class CreateRelationAttributesTest {
 		assertNotNull(cabinFile);
 
 		
-		PersistentType referencedPersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, cabinType.getQualifiedName());
+		PersistentType referencedPersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, cabinType.getTypeBinding().getQualifiedName());
 		while (referencedPersistentType == null) {
 			Thread.sleep(200);
-			referencedPersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, cabinType.getQualifiedName());
+			referencedPersistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, cabinType.getTypeBinding().getQualifiedName());
 		}
  
 		JavaPersistentAttribute annotatedSideAttribute = JpaArtifactFactory.instance().
@@ -582,10 +573,10 @@ public class CreateRelationAttributesTest {
 		
 		JpaArtifactFactory.instance().addManyToManyUnidirectionalRelation(featureProvider, (JavaPersistentType)annotatedPersistentType, annotatedSideAttribute, false);
 		
-		PersistentType persistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, reservationType.getQualifiedName());
+		PersistentType persistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, reservationType.getTypeBinding().getQualifiedName());
 		while (persistentType == null) {
 			Thread.sleep(200);
-			persistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, reservationType.getQualifiedName());
+			persistentType = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, reservationType.getTypeBinding().getQualifiedName());
 		}
 		
 		ReadOnlyPersistentAttribute persistentAttribute = persistentType.resolveAttribute("cabins");
