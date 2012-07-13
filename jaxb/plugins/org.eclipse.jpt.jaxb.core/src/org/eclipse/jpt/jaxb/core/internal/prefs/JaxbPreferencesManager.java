@@ -82,6 +82,15 @@ public class JaxbPreferencesManager
 	 */
 	public static final String SCHEMA_LOCATION_PREF_KEY = "location";  //$NON-NLS-1$
 
+	/**
+	 * The node for storing a JAXB class generator in the project's preferences.
+	 */
+	protected static final String CLASS_GEN_PREF_NODE = "classgen";  //$NON-NLS-1$
+
+	/**
+	 * The key for storing a package name in the project's preferences
+	 */
+	protected static final String PACKAGE_PREF_KEY = "package";  //$NON-NLS-1$
 
 	// ********** preferences **********
 
@@ -242,6 +251,24 @@ public class JaxbPreferencesManager
 			JptJaxbCorePlugin.log(bse);
 		}
 		return schemaLocations;
+	}
+
+	public String getClassGenPackage() {
+		Preferences prefs = this.getProjectPreferences();
+		Preferences classgenPrefs = prefs.node(CLASS_GEN_PREF_NODE);
+		return classgenPrefs.get(PACKAGE_PREF_KEY, "");  //$NON-NLS-1$
+	}
+
+	public void setClassGenPackage(String packageName) {
+		Preferences prefs = this.getProjectPreferences();
+		Preferences classgenPrefs = prefs.node(CLASS_GEN_PREF_NODE);
+		classgenPrefs.put(PACKAGE_PREF_KEY, packageName);
+		try {
+			classgenPrefs.flush();
+		}
+		catch (BackingStoreException bse) {
+			JptJaxbCorePlugin.log(bse);
+		}
 	}
 
 	public void setSchemaLocations(List<String> schemaLocations) {

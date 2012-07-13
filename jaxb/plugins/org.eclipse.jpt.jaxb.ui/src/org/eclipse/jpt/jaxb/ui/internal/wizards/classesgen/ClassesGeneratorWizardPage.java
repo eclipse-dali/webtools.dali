@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2010, 2011 Oracle. All rights reserved.
+* Copyright (c) 2010, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -53,6 +53,7 @@ import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGenerator;
+import org.eclipse.jpt.jaxb.core.internal.prefs.JaxbPreferencesManager;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformGroupDescription;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
@@ -143,12 +144,20 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 	@Override
 	protected IStatus packageChanged() {
 		IStatus status = super.packageChanged(); 
-		IPackageFragment packageFragment = getPackageFragment();
-		if(!status.matches(IStatus.ERROR)) {
+		IPackageFragment packageFragment = this.getPackageFragment();
+		if( ! status.matches(IStatus.ERROR)) {
+			String newPackageName = packageFragment.getElementName();
+
+			if( ! this.isPackageInitialInitialization(newPackageName)) {
+				JaxbPreferencesManager prefs = new JaxbPreferencesManager(this.getJavaProject().getProject());
+				if( ! newPackageName.equals(prefs.getClassGenPackage())) {
+					prefs.setClassGenPackage(newPackageName);
+				}
+			}
 			this.targetPackage = packageFragment.getElementName();
 		}
 		return status;
-	}			
+	}
 	
 	@Override
 	protected IStatus containerChanged() {
@@ -199,11 +208,18 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			}
 			this.validateProjectClasspath();
 
+			if(this.getPackageText().equals("")) {  //$NON-NLS-1$
+				String packagePref = (new JaxbPreferencesManager(this.getJavaProject().getProject()).getClassGenPackage());
+				if( ! StringTools.stringIsEmpty(packagePref)) {
+					this.setPackageName(this.getPackageFragmentRoot(), packagePref);
+				}
+			}
+
 			String schemaName = ((ClassesGeneratorWizard) getWizard()).getLocalSchemaUri().lastSegment();
 			this.setTitle(NLS.bind(JptJaxbUiMessages.ClassesGeneratorWizardPage_title, schemaName));
 		}
 	}
-    
+
 	/** 
 	 * Override to allow selection of source folder in current project only
 	 * @see org.eclipse.jdt.ui.wizards.NewContainerWizardPage#chooseContainer()
@@ -443,6 +459,21 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		JaxbPlatformDescription jaxbPlatform = JptJaxbCorePlugin.getJaxbPlatformDescription(this.getJavaProject().getProject());
 		JaxbPlatformGroupDescription jaxbPlatformGroup = (jaxbPlatform == null) ? null : jaxbPlatform.getGroup();
 		return jaxbPlatformGroup == ECLIPSELINK_PLATFORM_GROUP;
+	}
+	
+	private boolean isPackageInitialInitialization(String newPackageName) {
+		return this.targetPackage == null && newPackageName.equals("");  //$NON-NLS-1$
+	}
+
+	private void setPackageName(IPackageFragmentRoot packageFragmentRoot, String packageName) {
+		if( packageName == null || packageName.length() == 0 || packageFragmentRoot == null) {
+			return;
+		}
+		IPackageFragment packageFragment = packageFragmentRoot.getPackageFragment(packageName);
+		this.setPackageFragment(packageFragment, true);
+		
+		JaxbPreferencesManager prefs = new JaxbPreferencesManager(this.getJavaProject().getProject());
+		prefs.setClassGenPackage(packageName);
 	}
 	
 	private void displayWarning(String message) {
