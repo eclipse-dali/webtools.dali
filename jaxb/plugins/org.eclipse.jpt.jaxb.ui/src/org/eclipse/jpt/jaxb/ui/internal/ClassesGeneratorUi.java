@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2010 Oracle. All rights reserved.
+* Copyright (c) 2010, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.jaxb.ui.internal;
 
 import java.util.List;
 import java.util.Vector;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.emf.common.util.URI;
@@ -26,9 +27,9 @@ import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.SchemaLibrary;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGeneratorExtensionOptions;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGeneratorOptions;
-import org.eclipse.jpt.jaxb.core.internal.gen.GenerateJaxbClassesJob;
 import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
+import org.eclipse.jpt.jaxb.ui.internal.gen.GenerateJaxbClassesJob;
 import org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen.ClassesGeneratorWizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;

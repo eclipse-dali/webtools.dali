@@ -21,6 +21,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.JavaRuntime;
+import org.eclipse.jpt.common.core.gen.JptGenerator;
 import org.eclipse.jpt.common.core.internal.gen.AbstractJptGenerator;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 
@@ -42,7 +43,7 @@ public class StaticWeave extends AbstractJptGenerator
 	
 	// ********** static methods **********
 
-	public static void weave(
+	public static JptGenerator weave(
 			IJavaProject javaProject, 
 			String source, 
 			String target, 
@@ -54,7 +55,7 @@ public class StaticWeave extends AbstractJptGenerator
 			throw new NullPointerException("javaProject is null");   //$NON-NLS-1$
 		}
 		
-		new StaticWeave(javaProject,
+		return new StaticWeave(javaProject,
 			source, 
 			target,
 			loglevel, 
@@ -63,7 +64,7 @@ public class StaticWeave extends AbstractJptGenerator
 
 	// ********** constructors **********
 	
-	protected StaticWeave(
+	public StaticWeave(
 			IJavaProject javaProject, 
 			String source, 
 			String target, 
@@ -77,8 +78,6 @@ public class StaticWeave extends AbstractJptGenerator
 		this.persistenceinfo = persistenceinfo;
 
 		this.mainType = WEAVING_CLASS;
-
-		this.setDebug(false);
 	}
 
 	// ********** overrides **********
@@ -96,12 +95,6 @@ public class StaticWeave extends AbstractJptGenerator
 	@Override
 	protected void specifyJRE() {
 		// do nothing
-	}
-
-	@Override
-	protected void refreshProject() throws CoreException {
-		// do nothing
-		// 370895 - Static weaving results in infinite builder loop when enabled
 	}
 
 	// ********** behavior **********
@@ -154,22 +147,22 @@ public class StaticWeave extends AbstractJptGenerator
 		programArguments.append(' ');
 		programArguments.append(StringTools.quote(this.target));
 
-		this.launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, programArguments.toString());
+		this.getLaunchConfig().setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, programArguments.toString());
 	}
 
 	// ********** queries **********
 
 	private List<IRuntimeClasspathEntry> getContainersClasspathEntries() throws CoreException {
 		ArrayList<IRuntimeClasspathEntry> classpathEntries = new ArrayList<IRuntimeClasspathEntry>();
-		for(IClasspathEntry classpathEntry: this.javaProject.getRawClasspath()) {
+		for(IClasspathEntry classpathEntry: this.getJavaProject().getRawClasspath()) {
 			if(classpathEntry.getEntryKind() == IClasspathEntry.CPE_CONTAINER) {
-				IClasspathContainer container = JavaCore.getClasspathContainer(classpathEntry.getPath(), this.javaProject);
+				IClasspathContainer container = JavaCore.getClasspathContainer(classpathEntry.getPath(), this.getJavaProject());
 				if(container != null && container.getKind() == IClasspathContainer.K_SYSTEM) {
 					classpathEntries.add( 
 						JavaRuntime.newRuntimeContainerClasspathEntry(
 							container.getPath(), 
 							IRuntimeClasspathEntry.BOOTSTRAP_CLASSES, 
-							this.javaProject));
+							this.getJavaProject()));
 				}
 			}
 		}

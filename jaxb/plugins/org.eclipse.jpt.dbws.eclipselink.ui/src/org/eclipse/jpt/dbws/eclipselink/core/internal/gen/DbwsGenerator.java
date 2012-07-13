@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2010, 2011 Oracle. All rights reserved.
+* Copyright (c) 2010, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
+import org.eclipse.jpt.common.core.gen.JptGenerator;
 import org.eclipse.jpt.common.core.internal.gen.AbstractJptGenerator;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 
@@ -39,7 +40,7 @@ public class DbwsGenerator extends AbstractJptGenerator
 
 	// ********** static methods **********
 	
-	public static void generate(
+	public static JptGenerator generate(
 			IJavaProject javaProject, 
 			String builderFileName, 
 			String stageDirName, 
@@ -48,7 +49,7 @@ public class DbwsGenerator extends AbstractJptGenerator
 		if (javaProject == null) {
 			throw new NullPointerException();
 		}
-		new DbwsGenerator(javaProject, 
+		return new DbwsGenerator(javaProject, 
 			builderFileName, 
 			stageDirName, 
 			driverJarList).generate(monitor);
@@ -56,7 +57,7 @@ public class DbwsGenerator extends AbstractJptGenerator
 
 	// ********** constructors **********
 
-	private DbwsGenerator(
+	public DbwsGenerator(
 			IJavaProject javaProject, 
 			String builderFileName, 
 			String stageDirName, 
@@ -126,7 +127,7 @@ public class DbwsGenerator extends AbstractJptGenerator
 		// packageAs
 		programArguments.append(" -packageAs eclipse");	  //$NON-NLS-1$
 
-		this.launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, programArguments.toString());
+		this.getLaunchConfig().setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, programArguments.toString());
 	}
 
 	// ********** private methods **********

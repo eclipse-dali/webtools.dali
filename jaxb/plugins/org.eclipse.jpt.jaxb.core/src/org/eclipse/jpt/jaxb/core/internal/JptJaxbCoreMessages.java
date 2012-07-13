@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2010, 2011 Oracle. All rights reserved.
+* Copyright (c) 2010, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,9 +19,6 @@ public class JptJaxbCoreMessages {
 	public static String CONTEXT_MODEL_SYNC_JOB_NAME;
 	public static String UPDATE_JOB_NAME;
 	public static String PREFERENCES_FLUSH_JOB_NAME;
-	
-	public static String ClassesGenerator_generatingClasses;
-	public static String ClassesGenerator_generatingClassesTask;
 	
 	public static String JaxbFacetConfig_validatePlatformNotSpecified;
 	public static String JaxbFacetConfig_validatePlatformDoesNotSupportFacetVersion;

@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2010, 2011 Oracle. All rights reserved.
+* Copyright (c) 2010, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.jaxb.core.internal.gen;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -25,6 +26,7 @@ import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.JavaRuntime;
+import org.eclipse.jpt.common.core.gen.JptGenerator;
 import org.eclipse.jpt.common.core.internal.gen.AbstractJptGenerator;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 
@@ -50,7 +52,7 @@ public class ClassesGenerator extends AbstractJptGenerator
 
 	// ********** static methods **********
 	
-	public static void generate(
+	public static JptGenerator generate(
 			IJavaProject javaProject, 
 			String schemaPathOrUri, 
 			String outputDir, 
@@ -65,7 +67,7 @@ public class ClassesGenerator extends AbstractJptGenerator
 		if (javaProject == null) {
 			throw new NullPointerException();
 		}
-		new ClassesGenerator(javaProject, 
+		return new ClassesGenerator(javaProject, 
 			schemaPathOrUri, 
 			outputDir, 
 			targetPackage, 
@@ -136,7 +138,7 @@ public class ClassesGenerator extends AbstractJptGenerator
 
 	// ********** constructors **********
 	
-	protected ClassesGenerator(
+	public ClassesGenerator(
 			IJavaProject javaProject, 
 			String schemaPathOrUri, 
 			String outputDir, 
@@ -321,7 +323,7 @@ public class ClassesGenerator extends AbstractJptGenerator
 				programArguments.append(StringTools.quote(bindingsFileName));
 			}
 		}
-		this.launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, programArguments.toString());
+		this.getLaunchConfig().setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, programArguments.toString());
 	}
 
 
@@ -329,15 +331,15 @@ public class ClassesGenerator extends AbstractJptGenerator
 
 	private List<IRuntimeClasspathEntry> getContainersClasspathEntries() throws CoreException {
 		ArrayList<IRuntimeClasspathEntry> classpathEntries = new ArrayList<IRuntimeClasspathEntry>();
-		for(IClasspathEntry classpathEntry: this.javaProject.getRawClasspath()) {
+		for(IClasspathEntry classpathEntry: this.getJavaProject().getRawClasspath()) {
 			if(classpathEntry.getEntryKind() == IClasspathEntry.CPE_CONTAINER) {
-				IClasspathContainer container = JavaCore.getClasspathContainer(classpathEntry.getPath(), this.javaProject);
+				IClasspathContainer container = JavaCore.getClasspathContainer(classpathEntry.getPath(), this.getJavaProject());
 				if(container != null && container.getKind() == IClasspathContainer.K_SYSTEM) {
 					classpathEntries.add( 
 						JavaRuntime.newRuntimeContainerClasspathEntry(
 							container.getPath(), 
 							IRuntimeClasspathEntry.BOOTSTRAP_CLASSES, 
-							this.javaProject));
+							this.getJavaProject()));
 				}
 			}
 		}

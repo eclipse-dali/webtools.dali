@@ -72,14 +72,14 @@ public class Main
     	DBWSBuilderModel model = this.buildBuilderModel(this.builderFile);
 		if(model == null) {
 			this.logMessage(INFO, JptDbwsCoreMessages.NO_GENERATION_PERFORMED);
-	        return;
+			this.generationFailed();
 		}
 
         builder.setProperties(model.properties);
         builder.setOperations(model.operations);
 
         if( ! this.jdbcDriverIsOnClasspath(builder.getDriver())) {
-        	return;
+        	this.generationFailed();
         }
 		
         DBWSPackager packager = this.buildEclipsePackager();
@@ -92,13 +92,13 @@ public class Main
 		}
 		catch(WSDLException e) {
 			this.logMessage(SEVERE, JptDbwsCoreMessages.WSDL_EXCEPTION, e.getMessage());
-            return;
+			this.generationFailed();
 		}
 		catch(Exception e) {
 			//TODO Clean-up Stage dir. ?
 			this.logMessage(SEVERE, JptDbwsCoreMessages.GENERATION_FAILED, e.getMessage());
 			e.printStackTrace();
-            return;
+			this.generationFailed();
 		}
 		this.logMessage(INFO, JptDbwsCoreMessages.GENERATION_COMPLETED);
         return;
@@ -192,7 +192,11 @@ public class Main
 	private void logMessage(Level level, String key) {
 		Tools.logMessage(level, Tools.getString(key));
 	}
-
+	
+	private void generationFailed() {
+		System.exit(1);
+	}
+	
 	// ********** argument queries **********
 	
 	private String getArgumentBuilderFile(String[] args) {

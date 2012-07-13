@@ -11,6 +11,7 @@ package org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen;
 
 import java.util.List;
 import java.util.Vector;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -32,11 +33,11 @@ import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.SchemaLibrary;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGeneratorExtensionOptions;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGeneratorOptions;
-import org.eclipse.jpt.jaxb.core.internal.gen.GenerateJaxbClassesJob;
 import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiIcons;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
+import org.eclipse.jpt.jaxb.ui.internal.gen.GenerateJaxbClassesJob;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -158,9 +159,9 @@ public class ClassesGeneratorWizard
 		}
 
 		if (this.performsGeneration) {
-			if (displayOverwritingClassesWarning(this.generatorOptions)) {
-				generateJaxbClasses();
-				addSchemaToLibrary();
+			if (this.displayOverwritingClassesWarning(this.generatorOptions)) {
+				this.scheduleGenerateJaxbClassesJob();
+				this.addSchemaToLibrary();
 			}
 		}
 
@@ -346,9 +347,9 @@ public class ClassesGeneratorWizard
 		}
 	}
 	
-	private void generateJaxbClasses() {
+	private void scheduleGenerateJaxbClassesJob() {
 		try {
-			WorkspaceJob job = 
+			WorkspaceJob generateJaxbClassesJob = 
 					new GenerateJaxbClassesJob(
 						this.getJavaProject(),
 						this.getLocalSchemaUri().toString(),
@@ -359,7 +360,7 @@ public class ClassesGeneratorWizard
 						this.bindingsFileNames,
 						this.generatorOptions,
 						this.generatorExtensionOptions);
-			job.schedule();
+			generateJaxbClassesJob.schedule();
 		}
 		catch(RuntimeException re) {
 			JptJaxbUiPlugin.log(re);

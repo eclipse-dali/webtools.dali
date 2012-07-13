@@ -19,7 +19,11 @@ public class JptJpaEclipseLinkCoreMessages {
 	}
 	
 	public static String JAVA_METADATA_CONVERSION_CONVERT_CONVERTER;
+	
 
+	public static String EclipseLinkStaticWeavingBuilder_staticWeavingFailed;
+
+	
 	private JptJpaEclipseLinkCoreMessages() {
 		throw new UnsupportedOperationException();
 	}

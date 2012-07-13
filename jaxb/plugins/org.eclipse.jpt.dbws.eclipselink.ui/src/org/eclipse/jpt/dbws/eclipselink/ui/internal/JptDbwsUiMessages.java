@@ -48,6 +48,8 @@ public class JptDbwsUiMessages {
 	public static String DbwsGeneratorUi_notJavaProject;
 	public static String DbwsGeneratorUi_notWebDynamicProject;
 	
+	public static String DbwsGeneratorUi_generatingDbws;
+	
 	public static String BuilderXmlWizardPage_xmlCatalogTableTitle;
 	public static String BuilderXmlWizardPage_xmlCatalogKeyColumn;
 	public static String BuilderXmlWizardPage_xmlCatalogUriColumn;

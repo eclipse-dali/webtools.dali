@@ -28,6 +28,7 @@ Require-Bundle: org.eclipse.core.expressions;bundle-version="[3.4.0,4.0.0)",
  org.eclipse.wst.validation;bundle-version="[1.2.0,2.0.0)"
 Dali-Comment: We friend 'utility' to all non-EclipseLink, non-test bundles
 Export-Package: org.eclipse.jpt.common.core,
+ org.eclipse.jpt.common.core.gen,
  org.eclipse.jpt.common.core.internal;
   x-friends:="org.eclipse.jpt.jpa.core,
    org.eclipse.jpt.jaxb.core",

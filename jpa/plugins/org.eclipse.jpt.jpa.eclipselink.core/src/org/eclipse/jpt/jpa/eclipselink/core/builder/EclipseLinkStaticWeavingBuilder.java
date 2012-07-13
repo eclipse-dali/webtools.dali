@@ -12,11 +12,18 @@ package org.eclipse.jpt.jpa.eclipselink.core.builder;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jpt.common.core.gen.JptGenerator;
+import org.eclipse.jpt.common.core.gen.LaunchConfigListener;
+import org.eclipse.jpt.common.utility.internal.SynchronizedBoolean;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.JptJpaEclipseLinkCoreMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.weave.StaticWeave;
 
 public class EclipseLinkStaticWeavingBuilder extends IncrementalProjectBuilder
@@ -24,25 +31,86 @@ public class EclipseLinkStaticWeavingBuilder extends IncrementalProjectBuilder
     public static final String BUILDER_ID = JptJpaEclipseLinkCorePlugin.PLUGIN_ID + ".builder"; //$NON-NLS-1$
 
 	private EclipseLinkStaticWeavingBuilderConfigurator configurator;
+
+	private final SynchronizedBoolean generationCompleted;
+	private boolean generationSuccessful;
+
+	// ********** constructor **********
 	
-	// ********** overrides **********
+	public EclipseLinkStaticWeavingBuilder() {
+		this.generationCompleted = new SynchronizedBoolean(false);
+	}
 	
+	// ********** IncrementalProjectBuilder implementation **********
 	/**
      * Performs static weaving on project's model classes
      */
 	@Override
 	protected IProject[] build(int kind, Map<String, String> parameters, IProgressMonitor monitor) throws CoreException
 	{
-		StaticWeave.weave(
-			JavaCore.create(this.getProject()), 
-			this.configurator.getSourceLocationPreference(),
-			this.configurator.getTargetLocationPreference(),
-			this.configurator.getLogLevelPreference(),
-			this.configurator.getPersistenceInfoPreference(),
-			monitor);
+		this.staticWeaveGeneratorGenerate(monitor);
 
 		return new IProject[0];
 	}
+	
+	// ********** internal methods **********
+
+	private void staticWeaveGeneratorGenerate(IProgressMonitor monitor) throws CoreException {
+		this.generationCompleted.setFalse();
+		this.generationSuccessful = false;
+		
+		JptGenerator staticWeaveGenerator = new StaticWeave(
+								this.getJavaProject(),
+								this.configurator.getSourceLocationPreference(),
+								this.configurator.getTargetLocationPreference(),
+								this.configurator.getLogLevelPreference(),
+								this.configurator.getPersistenceInfoPreference());
+
+		LaunchConfigListener launchListener = this.buildLaunchListener();
+		staticWeaveGenerator.addLaunchConfigListener(launchListener);
+		staticWeaveGenerator.generate(monitor);
+		try {
+			this.generationCompleted.waitUntilTrue();
+		}
+		catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+		finally {
+			staticWeaveGenerator.removeLaunchConfigListener(launchListener);
+			this.generationCompleted.setFalse();
+		}
+		
+		this.postGenerate(this.generationSuccessful);
+	}
+	
+	protected void postGenerate(boolean generationSuccessful) throws CoreException {
+		if( ! generationSuccessful) {
+			throw new RuntimeException(JptJpaEclipseLinkCoreMessages.EclipseLinkStaticWeavingBuilder_staticWeavingFailed);
+		}
+		else {
+			this.refreshProject();
+		}
+	}
+
+	private void refreshProject() throws CoreException {
+		this.getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+	}
+	
+	private LaunchConfigListener buildLaunchListener() {
+		return new LaunchConfigListener() {
+			
+			public void launchCompleted(boolean generationSuccessful) {
+				EclipseLinkStaticWeavingBuilder.this.generationSuccessful = generationSuccessful;
+				EclipseLinkStaticWeavingBuilder.this.generationCompleted.setTrue();
+			}
+		};
+	}
+
+	private IJavaProject getJavaProject() {
+		return JavaCore.create(this.getProject());
+	}
+	
+	// ********** overrides **********
 
 	@Override
 	protected void startupOnInitialize() {
@@ -53,6 +121,7 @@ public class EclipseLinkStaticWeavingBuilder extends IncrementalProjectBuilder
 	@Override
 	protected void clean(IProgressMonitor monitor) throws CoreException {
 		super.clean(monitor);
-		
+		this.generationCompleted.setFalse();
+		this.generationSuccessful = false;
 	}
 }

@@ -18,6 +18,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
@@ -30,6 +31,7 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
+import org.eclipse.jpt.common.core.gen.JptGenerator;
 import org.eclipse.jpt.common.core.internal.gen.AbstractJptGenerator;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
@@ -62,7 +64,7 @@ public class SchemaGenerator extends AbstractJptGenerator
 
 	// ********** static methods **********
 	
-	public static void generate(
+	public static JptGenerator generate(
 			IJavaProject javaProject, 
 			String targetSchemaName, 
 			String[] sourceClassNames,
@@ -71,7 +73,7 @@ public class SchemaGenerator extends AbstractJptGenerator
 		if (javaProject == null) {
 			throw new NullPointerException();
 		}
-		new SchemaGenerator(javaProject, 
+		return new SchemaGenerator(javaProject, 
 			targetSchemaName, 
 			sourceClassNames,
 			useMoxy).generate(monitor);
@@ -79,7 +81,7 @@ public class SchemaGenerator extends AbstractJptGenerator
 
 	// ********** constructors **********
 	
-	protected SchemaGenerator(
+	public SchemaGenerator(
 			IJavaProject javaProject, 
 			String targetSchemaName, 
 			String[] sourceClassNames,
@@ -155,7 +157,7 @@ public class SchemaGenerator extends AbstractJptGenerator
 		programArguments.append(this.targetSchemaName);
 		programArguments.append('"');
 
-		this.launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, programArguments.toString());
+		this.getLaunchConfig().setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, programArguments.toString());
 	}
 
 	// ********** private methods **********
@@ -174,7 +176,7 @@ public class SchemaGenerator extends AbstractJptGenerator
 	 * Returns null if no "jaxb.properties" file is found.
 	 */
 	private IFile getJaxbPropertiesFile() {
-		return getJaxbPropertiesFileFromPackageRoots(JDTTools.getJavaSourceFolders(this.javaProject));
+		return getJaxbPropertiesFileFromPackageRoots(JDTTools.getJavaSourceFolders(this.getJavaProject()));
 	}
 	
 	private IFile getJaxbPropertiesFileFromPackageRoots(Iterable<IPackageFragmentRoot> packageFragmentRoots){
@@ -277,7 +279,7 @@ public class SchemaGenerator extends AbstractJptGenerator
 		String packageName = sourceClassName.substring(0, sourceClassName.lastIndexOf('.'));
 		
 		//Find the existing package fragment where we want to generate
-		for (IPackageFragmentRoot pfr : JDTTools.getJavaSourceFolders(this.javaProject)) {
+		for (IPackageFragmentRoot pfr : JDTTools.getJavaSourceFolders(this.getJavaProject())) {
 			//use the package of the first source class as the package for generation
 			IPackageFragment packageFragment = pfr.getPackageFragment(packageName);
 			if (packageFragment.exists()){
@@ -293,7 +295,7 @@ public class SchemaGenerator extends AbstractJptGenerator
 	}
 	
 	private IPackageFragmentRoot getFirstJavaSourceFolder() {
-		Iterator<IPackageFragmentRoot> i = JDTTools.getJavaSourceFolders(this.javaProject).iterator();
+		Iterator<IPackageFragmentRoot> i = JDTTools.getJavaSourceFolders(this.getJavaProject()).iterator();
 		return i.hasNext() ? i.next() : null;
 	}
 	

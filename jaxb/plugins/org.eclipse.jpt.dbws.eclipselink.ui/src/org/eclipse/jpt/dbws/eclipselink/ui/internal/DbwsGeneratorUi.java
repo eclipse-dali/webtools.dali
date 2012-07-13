@@ -16,11 +16,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
@@ -28,9 +24,12 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.jpt.dbws.eclipselink.core.internal.gen.DbwsGenerator;
-import org.eclipse.jpt.dbws.eclipselink.ui.internal.wizards.gen.DbwsGeneratorWizard;
+import org.eclipse.jpt.common.core.gen.JptGenerator;
+import org.eclipse.jpt.common.ui.gen.AbstractJptGenerateJob;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.dbws.eclipselink.core.internal.gen.DbwsGenerator;
+import org.eclipse.jpt.dbws.eclipselink.ui.JptDbwsUiPlugin;
+import org.eclipse.jpt.dbws.eclipselink.ui.internal.wizards.gen.DbwsGeneratorWizard;
 import org.eclipse.persistence.oxm.XMLContext;
 import org.eclipse.persistence.oxm.XMLUnmarshaller;
 import org.eclipse.persistence.tools.dbws.DBWSBuilderModel;
@@ -250,26 +249,40 @@ public class DbwsGeneratorUi
 
 	// ********** generate DBWS job **********
 
-	public static class GenerateDbwsJob extends WorkspaceJob {
-		private final IJavaProject project;
-		final String builderFileName;
-		final String stageDirName;
-		final String driverJarList;
+	public static class GenerateDbwsJob extends AbstractJptGenerateJob {
+		private final String builderFileName;
+		private final String stageDirName;
+		private final String driverJarList;
 
-		public GenerateDbwsJob(IJavaProject project, String builderFileName, String stageDirName, String driverJarList) {
-			super(JptDbwsUiMessages.DbwsGeneratorWizard_generatingDbws);
+		public GenerateDbwsJob(IJavaProject javaProject, String builderFileName, String stageDirName, String driverJarList) {
+			super(JptDbwsUiMessages.DbwsGeneratorWizard_generatingDbws, javaProject);
 
-			this.project = project ;
 			this.builderFileName = builderFileName;
 			this.stageDirName = stageDirName;
 			this.driverJarList = driverJarList;
 		}
 
+		// ********** overwrite AbstractJptGenerateJob **********
+
 		@Override
-		public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-			DbwsGenerator.generate(this.project, this.builderFileName, this.stageDirName, this.driverJarList, monitor);
-			return Status.OK_STATUS;
+		protected JptGenerator buildGenerator() {
+			return new DbwsGenerator(this.getJavaProject(), this.builderFileName, this.stageDirName, this.driverJarList);
 		}
-		
+
+		@Override
+		protected void postGenerate() {
+			this.refreshProject();
+		}
+
+		@Override
+		protected String getJobName() {
+			return JptDbwsUiMessages.DbwsGeneratorUi_generatingDbws;
+		}
+
+		@Override
+		protected void jptPluginLogException(Exception exception) {
+			JptDbwsUiPlugin.log(exception);
+		}
+
 	}
 }

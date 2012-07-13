@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2011 Oracle. All rights reserved.
+* Copyright (c) 2008, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,19 +12,19 @@ package org.eclipse.jpt.common.core.internal.gen;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -32,26 +32,32 @@ import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.ILaunchesListener2;
+import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.gen.JptGenerator;
+import org.eclipse.jpt.common.core.gen.LaunchConfigListener;
 import org.eclipse.jpt.common.core.internal.JptCommonCoreMessages;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.ListenerList;
 import org.eclipse.osgi.service.datalocation.Location;
 import org.osgi.framework.Bundle;
 
-public abstract class AbstractJptGenerator
+public abstract class AbstractJptGenerator implements JptGenerator
 {
 	public static final String PLUGINS_DIR = "plugins/";	  //$NON-NLS-1$
 
 	private IVMInstall jre;
-	protected ILaunchConfigurationWorkingCopy launchConfig;
+	private ILaunchConfigurationWorkingCopy launchConfig;
 	private ILaunch launch;
 	
-	protected final IJavaProject javaProject;
-	protected final String projectLocation;
+	private final IJavaProject javaProject;
+	private final String projectLocation;
+	private final ListenerList<LaunchConfigListener> launchConfigListenerList;
 
 	private boolean isDebug = false;
 
@@ -61,6 +67,7 @@ public abstract class AbstractJptGenerator
 		super();
 		this.javaProject = javaProject;
 		this.projectLocation = javaProject.getProject().getLocation().toString();
+		this.launchConfigListenerList = this.buildLaunchConfigListenerList();
 		this.initialize();
 	}
 
@@ -82,19 +89,19 @@ public abstract class AbstractJptGenerator
 	
 	protected void initialize() {
 		try {
+			this.launchConfig = this.buildLaunchConfiguration();
 			this.jre = this.getProjectJRE();
 			if (this.jre == null) {
 				String message = "Could not identify the VM."; //$NON-NLS-1$
 				throw new RuntimeException(message);
 			}
-			this.launchConfig = this.buildLaunchConfiguration();
 		} 
 		catch (CoreException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	protected void generate(IProgressMonitor monitor) {
+	public JptGenerator generate(IProgressMonitor monitor) {
 		SubMonitor sm = SubMonitor.convert(monitor, 10);
 		this.preGenerate(sm.newChild(2));
 		if (sm.isCanceled()) {
@@ -114,8 +121,10 @@ public abstract class AbstractJptGenerator
 			throw new OperationCanceledException();
 		}
 		this.launch = this.saveAndLaunchConfig(sm.newChild(6));
+
+		return this;
 	}
-	
+
 	private void initializeLaunchConfiguration() {
 		this.specifyJRE();
 		
@@ -133,22 +142,37 @@ public abstract class AbstractJptGenerator
 		this.getLaunchManager().addLaunchListener(this.buildLaunchListener());
 	}
 	
+	private void removeLaunchListener(ILaunchesListener2 listener) {
+
+		this.getLaunchManager().removeLaunchListener(listener);
+	}
+	
 	protected abstract void preGenerate(IProgressMonitor monitor);
 
-	protected void postGenerate() {
+	protected void postGenerate(boolean generationSuccessful) {
 		try {
 			if( ! this.isDebug) {
 				this.removeLaunchConfiguration();
 			}
-			this.refreshProject();
+			this.notifyLaunchConfigListeners(generationSuccessful);
 		}
 		catch(CoreException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	protected void refreshProject() throws CoreException {
-			this.getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+	private void notifyLaunchConfigListeners(boolean generationSuccessful) {
+		for(LaunchConfigListener launchConfigListener : this.launchConfigListenerList.getListeners()) {
+			launchConfigListener.launchCompleted(generationSuccessful);
+		}	
+	}
+	
+	private void generationSuccessful() {
+		this.postGenerate(true);
+	}
+	
+	private void generationFailed() {
+		this.postGenerate(false);
 	}
 
 	private ILaunchesListener2 buildLaunchListener() {
@@ -159,15 +183,38 @@ public abstract class AbstractJptGenerator
 					ILaunch launch = launches[i];
 					if (launch.equals(AbstractJptGenerator.this.getLaunch())) {
 						try {
-							AbstractJptGenerator.this.postGenerate();
-							AbstractJptGenerator.this.launch = null;
+							if(launch.isTerminated()) {
+								if(this.generationIsSuccessful(launch)) {
+									AbstractJptGenerator.this.generationSuccessful();
+								}
+								else {
+									AbstractJptGenerator.this.generationFailed();
+								}
+								AbstractJptGenerator.this.launch = null;
+							}
 						}
 						finally {
-							AbstractJptGenerator.this.getLaunchManager().removeLaunchListener(this);
+							AbstractJptGenerator.this.removeLaunchListener(this);
 						}
 						return;
 					}
 				}
+			}
+
+			private boolean generationIsSuccessful(ILaunch launch) {
+				Iterator<IProcess> processes = CollectionTools.iterator(launch.getProcesses());
+				int exitValue = -1;
+				while (processes.hasNext()) {
+					IProcess process = (IProcess)processes.next();
+					try {
+						exitValue = process.getExitValue();
+						break;
+					}
+					catch (DebugException e) {
+						throw new RuntimeException(e);
+					}
+				}
+				return (exitValue == 0);
 			}
 
 			public void launchesAdded(ILaunch[] launches) {
@@ -283,9 +330,21 @@ public abstract class AbstractJptGenerator
 	}
 
 	// ********** Queries **********
+
+	protected IJavaProject getJavaProject() {
+		return this.javaProject;
+	}
 	
 	protected ILaunch getLaunch() {
 		return this.launch;
+	}
+	
+	protected ILaunchConfigurationWorkingCopy getLaunchConfig() {
+		return this.launchConfig;
+	}
+
+	protected String getProjectLocation() {
+		return this.projectLocation;
 	}
 	
 	protected ILaunchManager getLaunchManager() {
@@ -387,4 +446,17 @@ public abstract class AbstractJptGenerator
 		this.isDebug = isDebug;
 	}
 	
+	private ListenerList<LaunchConfigListener> buildLaunchConfigListenerList() {
+		return new ListenerList<LaunchConfigListener>(LaunchConfigListener.class);
+	}
+
+	// ********** listener **********
+	
+	public void addLaunchConfigListener(LaunchConfigListener listener) {
+		this.launchConfigListenerList.add(listener);
+	}
+
+	public void removeLaunchConfigListener(LaunchConfigListener listener) {
+		this.launchConfigListenerList.remove(listener);
+	}
 }

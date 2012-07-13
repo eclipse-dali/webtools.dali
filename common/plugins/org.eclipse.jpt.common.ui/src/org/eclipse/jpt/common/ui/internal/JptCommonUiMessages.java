@@ -41,6 +41,9 @@ public class JptCommonUiMessages {
 	public static String NewNameStateObject_nameMustBeSpecified;
 	
 	public static String OptionalMessageDialog_doNotShowWarning;
+	
+	public static String AbstractJptGenerateJob_generationFailed;
+	public static String AbstractJptGenerateJob_error;
 
 	private static final String BUNDLE_NAME = "jpt_common_ui"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptCommonUiMessages.class;

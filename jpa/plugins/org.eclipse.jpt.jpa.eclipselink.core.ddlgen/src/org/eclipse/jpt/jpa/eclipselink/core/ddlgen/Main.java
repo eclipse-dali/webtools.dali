@@ -9,16 +9,21 @@
 *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.ddlgen;
 
+import static java.util.logging.Level.SEVERE;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
-import java.util.Map.Entry;
+import java.util.logging.Level;
+
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+
 import org.eclipse.persistence.config.PersistenceUnitProperties;
 import org.eclipse.persistence.dynamic.DynamicClassLoader;
 
@@ -52,7 +57,7 @@ import org.eclipse.persistence.dynamic.DynamicClassLoader;
  */
 public class Main
 {
-	protected EntityManagerFactory emf;
+	protected EntityManagerFactory entityManagerFactory;
 	private Map<String, Object> eclipseLinkProperties;
 	private String eclipseLinkPropertiesPath;
 	private boolean isDebugMode;
@@ -72,21 +77,25 @@ public class Main
 	protected void execute(String[] args) {
 		this.initializeWith(args);
 		
-		this.emf = Persistence.createEntityManagerFactory(this.getPUName(args), this.eclipseLinkProperties);
-		this.perform();
+		this.entityManagerFactory = this.buildEntityManagerFactory(this.getPUName(args), this.eclipseLinkProperties);
+		this.generate();
 		this.closeEntityManagerFactory();
 		
 		this.dispose();
 		return;
 	}
 	
-	protected void perform() {
+	private void generate() {
 		// create an EM to generate schema.
-		this.emf.createEntityManager().close();
+		this.entityManagerFactory.createEntityManager().close();
 	}
 	
-	protected void closeEntityManagerFactory() {
-		this.emf.close();
+	private EntityManagerFactory buildEntityManagerFactory(String puName,  Map<String, Object> properties) {
+		return Persistence.createEntityManagerFactory(puName, properties);
+	}
+	
+	private void closeEntityManagerFactory() {
+		this.entityManagerFactory.close();
 	}
 	
 	private void initializeWith(String[] args) {
@@ -98,7 +107,7 @@ public class Main
 	}
 
 	private void setDynamicClassLoaderProperty(String[] args) {
-		if (this.getEclipseLinkDynamic(args)) {
+		if(this.getEclipseLinkDynamic(args)) {
 			this.eclipseLinkProperties.put(PersistenceUnitProperties.CLASSLOADER, this.buildDynamicClassLoader());
 		}
 	}
@@ -119,7 +128,9 @@ public class Main
 			propertiesSet = this.loadEclipseLinkProperties(eclipseLinkPropertiesPath);
 		}
 		catch (IOException e) {
-			throw new RuntimeException("Missing: " + eclipseLinkPropertiesPath, e); //$NON-NLS-1$
+			this.logMessage(SEVERE, "Missing: " + eclipseLinkPropertiesPath); //$NON-NLS-1$
+			e.printStackTrace();
+			this.generationFailed();
 		}
 		
 		Map<String, Object> properties = new HashMap<String, Object>();
@@ -136,6 +147,10 @@ public class Main
         properties.load(stream);
         
         return properties.entrySet();
+	}
+	
+	private void generationFailed() {
+		System.exit(1);
 	}
 
 	// ********** argument queries **********
@@ -177,5 +192,16 @@ public class Main
 			}
 		}
 		return false;
+	}
+
+	// ********** argument queries **********
+	
+	public void logMessage(Level level, String message) {
+		if(level == SEVERE) {
+			System.err.println('\n' + message);
+		}
+		else {
+			System.out.println('\n' + message);
+		}
 	}
 }

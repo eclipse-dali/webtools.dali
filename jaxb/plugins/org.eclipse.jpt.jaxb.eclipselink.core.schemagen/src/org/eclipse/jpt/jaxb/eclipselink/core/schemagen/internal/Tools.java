@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2010 Oracle. All rights reserved.
+* Copyright (c) 2010, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,8 +9,11 @@
 *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.schemagen.internal;
 
+import static java.util.logging.Level.SEVERE;
+
 import java.io.File;
 import java.text.MessageFormat;
+import java.util.logging.Level;
 
 /**
  *  Tools
@@ -92,6 +95,23 @@ public final class Tools
 		return path.substring(0, path.lastIndexOf(File.separator));
 	}
 	
+	private static void logMessage_(Level level, String message) {
+		if(level == SEVERE) {
+			System.err.println('\n' + message);
+		}
+		else {
+			System.out.println('\n' + message);
+		}
+	}
+	
+	public static void logMessage(Level level, String key, Object argument) {
+		Tools.logMessage_(level, Tools.bind(key, argument));
+	}
+	
+	public static void logMessage(Level level, String key) {
+		Tools.logMessage_(level, Tools.getString(key));
+	}
+
 	// ********** NLS utilities **********
 
 	public static String getString(String key) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2011 Oracle. All rights reserved.
+* Copyright (c) 2008, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,9 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.ddlgen;
 
 import java.util.Properties;
+
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jpt.common.core.gen.JptGenerator;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Connection;
@@ -29,16 +31,17 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.OutputMode;
 public class EclipseLinkDDLGenerator extends AbstractEclipseLinkDDLGenerator
 {
 
-	// ********** constructors **********
 	
-	public static void generate(String puName, JpaProject project, OutputMode outputMode, IProgressMonitor monitor) {
+	public static JptGenerator generate(String puName, JpaProject project, OutputMode outputMode, IProgressMonitor monitor) {
 		if (puName == null || puName.length() == 0 || project == null) {
 			throw new NullPointerException();
 		}
-		new EclipseLinkDDLGenerator(puName, project, outputMode).generate(monitor);
+		return new EclipseLinkDDLGenerator(puName, project, outputMode).generate(monitor);
 	}
+	
+	// ********** constructors **********
 
-	private EclipseLinkDDLGenerator(String puName, JpaProject jpaProject, OutputMode outputMode) {
+	public EclipseLinkDDLGenerator(String puName, JpaProject jpaProject, OutputMode outputMode) {
 		super(puName, jpaProject, outputMode);
 	}
 

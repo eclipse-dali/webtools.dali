@@ -13,7 +13,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.WorkspaceJob;
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
@@ -127,7 +126,7 @@ public class DbwsGeneratorWizard extends Wizard implements IWorkbenchWizard {
 		this.jdbcDriversPage.finish();	// persist settings
 
 		if(DbwsGeneratorUi.displayOverridingWebContentWarning(this.getShell())) {
-			this.generateDbws(driverJarList);
+			this.scheduleGenerateDbwsJob(driverJarList);
 		}
 		return true;
 	}
@@ -179,7 +178,7 @@ public class DbwsGeneratorWizard extends Wizard implements IWorkbenchWizard {
 		return relativePath.toOSString();
 	}
 	
-	private void generateDbws(String driverJarList) {
+	private void scheduleGenerateDbwsJob(String driverJarList) {
 
 		String stageDirName = this.getJavaProject().getProject().getLocation().toOSString();
 

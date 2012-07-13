@@ -20,17 +20,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
@@ -38,7 +34,6 @@ import org.eclipse.jpt.common.core.internal.gen.AbstractJptGenerator;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
-import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
@@ -50,7 +45,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.LoggingLevel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.OutputMode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.SchemaGeneration;
 import org.eclipse.osgi.util.ManifestElement;
-import org.eclipse.wst.validation.ValidationFramework;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
 
@@ -67,9 +61,9 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 	public static final String NONE = "NONE";	  //$NON-NLS-1$
 	private static final String DYNAMIC_PROGRAM_ARGUMENT = "-dynamic"; 	  //$NON-NLS-1$
 
-	protected final String puName;
-	protected final JpaProject jpaProject;
-	protected final OutputMode outputMode;
+	private final String puName;
+	private final JpaProject jpaProject;
+	private final OutputMode outputMode;
 
 	// ********** constructors **********
 
@@ -112,10 +106,10 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 	}
 	
 	@Override
-	protected void postGenerate() {
-		super.postGenerate();
+	protected void postGenerate(boolean generationSuccessful) {
+		super.postGenerate(generationSuccessful);
+		
 		this.reconnect();
-		this.validateProject();
 	}
 
 	// ********** Setting Launch Configuration **********
@@ -124,7 +118,7 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 	protected void specifyProgramArguments() {
 		StringBuffer programArguments = new StringBuffer();
 		this.appendProgramArguments(programArguments);
-		this.launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, programArguments.toString());
+		this.getLaunchConfig().setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, programArguments.toString());
 	}
 
 	// ********** Main arguments **********
@@ -144,7 +138,7 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 
 	private void appendPropertiesFileArgument(StringBuffer sb) {
 		sb.append(" -p \""); //$NON-NLS-1$
-		sb.append(this.projectLocation).append("/").append(PROPERTIES_FILE_NAME).append("\""); //$NON-NLS-1$ //$NON-NLS-2$
+		sb.append(this.getProjectLocation()).append("/").append(PROPERTIES_FILE_NAME).append("\""); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	protected void appendDynamicArgument(StringBuffer sb) {
@@ -182,10 +176,6 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 		if (cp != null) {
 			cp.connect();
 		}
-	}
-
-	protected void validateProject() {
-		new ValidateJob(this.jpaProject.getProject()).schedule();
 	}
 
 	// ********** ClasspathEntry **********
@@ -269,7 +259,7 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 	private void buildProjectLocationProperty(Properties properties) {
 		this.putProperty(properties, 
 			SchemaGeneration.ECLIPSELINK_APPLICATION_LOCATION,
-			this.projectLocation);
+			this.getProjectLocation());
 	}
 	
 	private void buildDDLModeProperties(Properties properties) {
@@ -296,7 +286,7 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 	}
 	
 	private void saveLoginProperties() {
-		String propertiesFile  = this.projectLocation + "/" + PROPERTIES_FILE_NAME; 	  //$NON-NLS-1$
+		String propertiesFile  = this.getProjectLocation() + "/" + PROPERTIES_FILE_NAME; 	  //$NON-NLS-1$
 
 		Properties elProperties = new Properties();
 
@@ -339,30 +329,6 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 	private boolean metaInfIsNotOnClasspath() {
 		JpaXmlResource persistenceXmlResource = this.jpaProject.getPersistenceXmlResource();
 		return ! this.jpaProject.getJavaProject().isOnClasspath(persistenceXmlResource.getFile());
-	}
-
-	/**
-	 * Performs validation after tables have been generated
-	 */
-	/* CU private */ class ValidateJob
-		extends Job 
-	{	
-		private final IProject[] projects;
-		
-		ValidateJob(IProject project) {
-			super(JptCoreMessages.VALIDATE_JOB);
-			this.projects = new IProject[] {project};
-		}
-		
-		@Override
-		protected IStatus run(IProgressMonitor monitor) {
-			try {
-				ValidationFramework.getDefault().validate(this.projects, true, false, monitor);
-			} catch (CoreException ex) {
-				throw new RuntimeException(ex);
-			}
-			return Status.OK_STATUS;
-		}
 	}
 	
 	private IPath buildJdbcJarPath() {
