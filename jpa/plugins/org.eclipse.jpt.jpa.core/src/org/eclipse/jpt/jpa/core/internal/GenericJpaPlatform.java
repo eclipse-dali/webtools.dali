@@ -19,6 +19,8 @@ import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.DefaultAnnotationEditFormatter;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.EntityGeneratorDatabaseAnnotationNameBuilder;
@@ -198,6 +200,10 @@ public class GenericJpaPlatform
 	// ********** resource types and definitions **********
 
 	public boolean supportsResourceType(JptResourceType resourceType) {
+		if (JptCommonCorePlugin.JAVA_SOURCE_RESOURCE_TYPE.equals(resourceType)) {
+			// every platform supports java
+			return true;
+		}
 		for (ResourceDefinition resourceDefinition : this.platformProvider.getResourceDefinitions()) {
 			if (resourceDefinition.getResourceType().equals(resourceType)) {
 				return true;

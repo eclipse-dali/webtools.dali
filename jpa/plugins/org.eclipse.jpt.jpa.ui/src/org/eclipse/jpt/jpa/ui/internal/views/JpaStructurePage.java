@@ -35,8 +35,8 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
@@ -244,14 +244,13 @@ public class JpaStructurePage
 	private void setTreeViewerJpaFile(JpaFile jpaFile) {
 		if (jpaFile == null || jpaFile.getResourceModel().getResourceType() == null) {
 			this.setTreeViewerMessage(JptUiMessages.JpaStructureView_structureNotAvailable);
-		} else {
-			ItemTreeStateProviderFactoryProvider factoryProvider = this.getFactoryProvider(jpaFile);
-			if (factoryProvider == null) {
-				this.setTreeViewerMessage(this.buildMissingStructureProviderMessage(jpaFile));
-			} else {
-				this.setTreeViewerJpaFile(jpaFile, factoryProvider);
-				this.setTreeViewerJpaSelection_(this.getEditorJpaSelection());
-			}
+		} 
+		else if (! jpaFile.getJpaProject().getJpaPlatform().supportsResourceType(jpaFile.getResourceModel().getResourceType())) {
+			this.setTreeViewerMessage(this.buildMissingStructureProviderMessage(jpaFile));
+		} 
+		else {
+			this.setTreeViewerJpaFile(jpaFile, this.getFactoryProvider(jpaFile));
+			this.setTreeViewerJpaSelection_(this.getEditorJpaSelection());
 		}
 	}
 
