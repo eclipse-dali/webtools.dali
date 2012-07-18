@@ -79,12 +79,6 @@ public class JDTEnumConstant
 		return (declaration == null) ? null : ASTTools.buildTextRange(declaration.getName());
 	}
 
-	//As far as I can tell, enum constants are always "persistable", 
-	//there are no modifiers you can add to an enum constant
-	public boolean isPersistable(CompilationUnit astRoot) {
-		return true;
-	}
-
 
 	// ********** internal **********
 

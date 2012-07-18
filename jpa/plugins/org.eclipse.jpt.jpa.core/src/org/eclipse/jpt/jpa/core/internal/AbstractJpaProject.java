@@ -816,7 +816,7 @@ public abstract class AbstractJpaProject
 	 * Return only those valid annotated Java resource persistent types that are
 	 * directly part of the JPA project, ignoring those in JARs referenced in
 	 * <code>persistence.xml</code>.
-	 * @see org.eclipse.jpt.common.core.internal.utility.jdt.JPTTools#typeIsPersistable(org.eclipse.jpt.common.core.internal.utility.jdt.JPTTools.TypeAdapter)
+	 * @see JavaResourceAbstractType#isAnnotated()
 	 */
 	protected Iterable<JavaResourceAbstractType> getInternalAnnotatedSourceJavaResourceTypes() {
 		return new FilteringIterable<JavaResourceAbstractType>(this.getInternalSourceJavaResourceTypes()) {

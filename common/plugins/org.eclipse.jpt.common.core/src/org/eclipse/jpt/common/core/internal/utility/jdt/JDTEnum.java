@@ -88,10 +88,6 @@ public class JDTEnum
 		return (EnumDeclaration) super.getBodyDeclaration(astRoot);
 	}
 
-	public boolean isPersistable(CompilationUnit astRoot) {
-		return true;
-	}
-
 	public EnumConstantDeclaration[] getEnumConstants(CompilationUnit astRoot) {
 		List<EnumConstantDeclaration> enumConstants = enumConstants(getBodyDeclaration(astRoot));
 		return enumConstants.toArray(new EnumConstantDeclaration[enumConstants.size()]);

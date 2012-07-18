@@ -16,7 +16,6 @@ import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.EnumDeclaration;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
-import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
@@ -95,11 +94,6 @@ public class JDTType
 		return (TypeDeclaration) super.getBodyDeclaration(astRoot);
 	}
 
-	public boolean isPersistable(CompilationUnit astRoot) {
-		ITypeBinding binding = this.getBinding(astRoot);
-		return (binding == null) ? false : JPTTools.typeIsPersistable(new JPTToolsAdapter(binding));
-	}
-
 	public TypeDeclaration[] getTypes(CompilationUnit astRoot) {
 		return this.getBodyDeclaration(astRoot).getTypes();
 	}
@@ -152,57 +146,5 @@ public class JDTType
 	@Override
 	protected int getASTNodeType() {
 		return ASTNode.TYPE_DECLARATION;
-	}
-
-
-	// ********** JPT tools adapter **********
-
-	protected static class JPTToolsAdapter
-		implements JPTTools.TypeAdapter
-	{
-		private final ITypeBinding typeBinding;
-		protected JPTToolsAdapter(ITypeBinding typeBinding) {
-			super();
-			if (typeBinding == null) {
-				throw new NullPointerException();
-			}
-			this.typeBinding = typeBinding;
-		}
-
-		public int getModifiers() {
-			return this.typeBinding.getModifiers();
-		}
-
-		public boolean isAnnotation() {
-			return this.typeBinding.isAnnotation();
-		}
-
-		public boolean isAnonymous() {
-			return this.typeBinding.isAnonymous();
-		}
-
-		public boolean isArray() {
-			return this.typeBinding.isArray();
-		}
-
-		public boolean isEnum() {
-			return this.typeBinding.isEnum();
-		}
-
-		public boolean isInterface() {
-			return this.typeBinding.isInterface();
-		}
-
-		public boolean isLocal() {
-			return this.typeBinding.isLocal();
-		}
-
-		public boolean isMember() {
-			return this.typeBinding.isMember();
-		}
-
-		public boolean isPrimitive() {
-			return this.typeBinding.isPrimitive();
-		}
 	}
 }

@@ -97,11 +97,6 @@ public class JDTFieldAttribute
 		return true;
 	}
 
-	public boolean isPersistable(CompilationUnit astRoot) {
-		IVariableBinding binding = this.getBinding(astRoot);
-		return (binding == null) ? false : JPTTools.fieldIsPersistable(new JPTToolsAdapter(binding));
-	}
-
 
 	// ********** internal **********
 
@@ -193,28 +188,4 @@ public class JDTFieldAttribute
 				return "VARIABLE_DECLARATION_FRAGMENT_SELECTOR"; //$NON-NLS-1$
 			}
 		};
-
-
-	// ********** JPTTools adapter **********
-
-	/**
-	 * JPTTools needs an adapter so it can work with either an IField
-	 * or an IVariableBinding etc.
-	 */
-	protected static class JPTToolsAdapter implements JPTTools.FieldAdapter {
-		private final IVariableBinding fieldBinding;
-
-		protected JPTToolsAdapter(IVariableBinding fieldBinding) {
-			super();
-			if (fieldBinding == null) {
-				throw new NullPointerException();
-			}
-			this.fieldBinding = fieldBinding;
-		}
-
-		public int getModifiers() {
-			return this.fieldBinding.getModifiers();
-		}
-
-	}
 }
