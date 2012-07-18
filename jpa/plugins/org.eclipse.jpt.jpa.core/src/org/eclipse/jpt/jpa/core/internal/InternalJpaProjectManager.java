@@ -189,7 +189,7 @@ public class InternalJpaProjectManager
 
 	/**
 	 * Listen for Java changes (unless the Dali UI is active).
-	 * @see #asyncEventListenersAreActive()
+	 * @see #javaEventListenersAreActive()
 	 */
 	private final JavaElementChangeListener javaElementChangeListener = new JavaElementChangeListener();
 
@@ -202,7 +202,7 @@ public class InternalJpaProjectManager
 			ElementChangedEvent.POST_RECONCILE;
 
 	/**
-	 * A set of flags to activate/deactivate the asynchronous event listeners.
+	 * A set of flags to activate/deactivate the java event listener.
 	 * <p>
 	 * This set of flags hacks around our problems with bi-directional updates.
 	 * We must worry about changes to the Java source code that are
@@ -229,7 +229,7 @@ public class InternalJpaProjectManager
 	 * validation job. Once the Java source file is saved, the Dali composite
 	 * re-takes the focus and this listener is once again inactive.
 	 */
-	private final HashSet<BooleanReference> asyncEventListenerFlags = new HashSet<BooleanReference>();
+	private final HashSet<BooleanReference> javaEventListenerFlags = new HashSet<BooleanReference>();
 
 	/**
 	 * Support for modifying documents shared with the UI.
@@ -961,8 +961,8 @@ public class InternalJpaProjectManager
 			throw new IllegalStateException();
 		}
 
-		// de-activate async (Java) events
-		this.addAsyncEventListenerFlag(BooleanReference.False.instance());
+		// de-activate Java events
+		this.addJavaEventListenerFlag(BooleanReference.False.instance());
 		// save the current executor
 		SimpleJobCommandExecutor old = (SimpleJobCommandExecutor) this.commandExecutor;
 		// install a new (not-yet-started) executor
@@ -986,8 +986,8 @@ public class InternalJpaProjectManager
 
 		// no need to wait on a synchronous executor...
 		this.commandExecutor = this.buildAsynchronousCommandExecutor();
-		// re-activate async (Java) events
-		this.removeAsyncEventListenerFlag(BooleanReference.False.instance());
+		// re-activate Java events
+		this.removeJavaEventListenerFlag(BooleanReference.False.instance());
 	}
 
 	private SimpleJobCommandExecutor buildAsynchronousCommandExecutor() {
@@ -1278,7 +1278,7 @@ public class InternalJpaProjectManager
 		}
 
 		private boolean isActive() {
-			return InternalJpaProjectManager.this.asyncEventListenersAreActive();
+			return InternalJpaProjectManager.this.javaEventListenersAreActive();
 		}
 
 		@Override
@@ -1288,19 +1288,19 @@ public class InternalJpaProjectManager
 	}
 
 
-	// ********** async events **********
+	// ********** java events **********
 
-	boolean asyncEventListenersAreActive() {
-		synchronized (this.asyncEventListenerFlags) {
-			return this.asyncEventListenersAreActive_();
+	boolean javaEventListenersAreActive() {
+		synchronized (this.javaEventListenerFlags) {
+			return this.javaEventListenersAreActive_();
 		}
 	}
 
 	/**
 	 * All the flags must be <code>true</code>.
 	 */
-	private boolean asyncEventListenersAreActive_() {
-		for (BooleanReference flag : this.asyncEventListenerFlags) {
+	private boolean javaEventListenersAreActive_() {
+		for (BooleanReference flag : this.javaEventListenerFlags) {
 			if (flag.isFalse()) {
 				return false;
 			}
@@ -1308,26 +1308,26 @@ public class InternalJpaProjectManager
 		return true;
 	}
 
-	public void addAsyncEventListenerFlag(BooleanReference flag) {
-		synchronized (this.asyncEventListenerFlags) {
-			this.addAsyncEventListenerFlag_(flag);
+	public void addJavaEventListenerFlag(BooleanReference flag) {
+		synchronized (this.javaEventListenerFlags) {
+			this.addJavaEventListenerFlag_(flag);
 		}
 	}
 
-	private void addAsyncEventListenerFlag_(BooleanReference flag) {
-		if ( ! this.asyncEventListenerFlags.add(flag)) {
+	private void addJavaEventListenerFlag_(BooleanReference flag) {
+		if ( ! this.javaEventListenerFlags.add(flag)) {
 			throw new IllegalArgumentException("duplicate flag: " + flag); //$NON-NLS-1$
 		}
 	}
 
-	public void removeAsyncEventListenerFlag(BooleanReference flag) {
-		synchronized (this.asyncEventListenerFlags) {
-			this.removeAsyncEventListenerFlag_(flag);
+	public void removeJavaEventListenerFlag(BooleanReference flag) {
+		synchronized (this.javaEventListenerFlags) {
+			this.removeJavaEventListenerFlag_(flag);
 		}
 	}
 
-	private void removeAsyncEventListenerFlag_(BooleanReference flag) {
-		if ( ! this.asyncEventListenerFlags.remove(flag)) {
+	private void removeJavaEventListenerFlag_(BooleanReference flag) {
+		if ( ! this.javaEventListenerFlags.remove(flag)) {
 			throw new IllegalArgumentException("missing flag: " + flag); //$NON-NLS-1$
 		}
 	}

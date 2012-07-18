@@ -105,21 +105,22 @@ public interface JpaProjectManager
 
 	/**
 	 * Add a flag that will be used to determine whether the manager's
-	 * asynchronous event listeners are active:<ul>
-	 * <li>If all the flags are <code>true</code>, the listeners
-	 *     are active.
-	 * <li>If <em>any</em> flag is <code>false</code>, the listeners
-	 *     are <em><b>in</b></em>active
+	 * JDT java event listener is active:<ul>
+	 * <li>If all the flags are <code>true</code>, the java listener
+	 *     is active.
+	 * <li>If <em>any</em> flag is <code>false</code>, the java listener
+	 *     is <em><b>in</b></em>active
 	 * </ul>
 	 * This flag provides a way for clients to modify the context model directly
-	 * without worrying about collisions caused by asynchronous events.
+	 * without worrying about collisions caused by asynchronous JDT events.
 	 * @see #execute(Command, ExtendedCommandExecutor)
+	 *
 	 */
-	void addAsyncEventListenerFlag(BooleanReference flag);
+	void addJavaEventListenerFlag(BooleanReference flag);
 
 	/**
 	 * Remove the specified flag.
-	 * @see #addAsyncEventListenerFlag(BooleanReference)
+	 * @see #addJavaEventListenerFlag(BooleanReference)
 	 */
-	void removeAsyncEventListenerFlag(BooleanReference flag);
+	void removeJavaEventListenerFlag(BooleanReference flag);
 }

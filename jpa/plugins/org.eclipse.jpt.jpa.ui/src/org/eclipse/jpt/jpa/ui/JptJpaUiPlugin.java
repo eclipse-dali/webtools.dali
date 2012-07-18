@@ -231,7 +231,7 @@ public class JptJpaUiPlugin
 	@Override
 	public synchronized void start(BundleContext context) throws Exception {
 		super.start(context);
-		this.getJpaProjectManager().addAsyncEventListenerFlag(this.asyncEventListenerFlag);
+		this.getJpaProjectManager().addJavaEventListenerFlag(this.asyncEventListenerFlag);
 		Display.getDefault().addFilter(SWT.FocusIn, this.focusListener);
 	}
 
@@ -246,7 +246,7 @@ public class JptJpaUiPlugin
 	public synchronized void stop(BundleContext context) throws Exception {
 		try {
 			Display.getDefault().removeFilter(SWT.FocusIn, this.focusListener);
-			this.getJpaProjectManager().removeAsyncEventListenerFlag(this.asyncEventListenerFlag);
+			this.getJpaProjectManager().removeJavaEventListenerFlag(this.asyncEventListenerFlag);
 		} finally {
 			super.stop(context);
 		}
