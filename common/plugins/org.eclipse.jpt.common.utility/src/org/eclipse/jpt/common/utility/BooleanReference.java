@@ -149,7 +149,7 @@ public interface BooleanReference {
 		}
 
 		public boolean isFalse() {
-			return false;
+			return true;
 		}
 
 		@Override
