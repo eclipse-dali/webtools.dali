@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,11 +14,19 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 
 /**
  * Used to build NestableAnnotations discovered in the Java source code.
- * To provide new NestableAnnotationDefinitions, create a new JaxbPlatform
- * by implementing JaxbPlatformDefinition.
+ * Nestable annotations are part of a container/nestable annotation pair.
+ * Use an implementation of AnnotationProvider to provide NestableAnnotationDefinitions
+ * If the annotation is only a standalone annotation then use AnnotationDefinition
+ * instead.
+ * 
+ * 
+ * TODO provide an example. Somewhere in this api we need to explain how the container/nestable/standalone
+ * annotations are return via JavaResourceAnnotationElement.
+ * @Container(value = {@NestableAnnotation, @NestableAnnotation})
  * 
  * @see NestableAnnotation
- * @see org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition
+ * @see org.eclipse.jpt.common.core.AnnotationProvider
+ * @see AnnotationDefinition
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -26,7 +34,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 3.3
  * @since 3.0
  */
 public interface NestableAnnotationDefinition
@@ -37,8 +45,16 @@ public interface NestableAnnotationDefinition
 	 */
 	String getNestableAnnotationName();
 
+	/**
+	 * Return the name of the container annotation which will be used 
+	 * when multiple NestableAnnotations are created
+	 */
 	String getContainerAnnotationName();
 
+	/**
+	 * Return the element name used when the NestableAnnotation is nested
+	 * inside of the container annotation. Typically "value".
+	 */
 	String getElementName();
 
 	/**

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,6 +21,20 @@ import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 
 /**
+ * Implementation of AnnotationProvider that is constructed with 
+ * an array of AnnotationDefinitions and NestableAnnotationDefinitions
+ * 
+ * An AnnotationDefinition is needed if the annotation is only a stand-alone top-level annotation
+ * A NestableAnnotationDeifnition is needed if the annotation can be either stand-alone
+ * or nested within a container annotation.
+ * 
+ * A *Definition is not needed if the annotation is only ever nested within another annotation.
+ * 
+ * @see JavaResourceAnnotatedElement
+ * @see AnnotationDefinition
+ * @see NestableAnnotationDefinition
+ * 
+ * 
  * Delegate to annotation definition providers.
  * The platform factory will build an instance of this annotation provider,
  * passing in the appropriate array of annotation definition providers necessary
