@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -280,7 +280,7 @@ public class NamedQueriesTests extends JpaJavaResourceModelTestCase {
 		assertSourceContains(expected3, cu);
 		
 		assertNull(resourceType.getAnnotation(JPA.NAMED_QUERY));
-		assertNotNull(resourceType.getAnnotation(JPA.NAMED_QUERIES));
+		assertNotNull(resourceType.getContainerAnnotation(JPA.NAMED_QUERIES));
 		assertNotNull(resourceType.getAnnotation(0, JPA.NAMED_QUERY));
 		assertEquals(2, resourceType.getAnnotationsSize(JPA.NAMED_QUERY));
 	}
@@ -313,7 +313,7 @@ public class NamedQueriesTests extends JpaJavaResourceModelTestCase {
 		assertEquals("BAR", ((NamedQueryAnnotation) namedQueries.next()).getName());
 
 		assertNull(resourceType.getAnnotation(JPA.NAMED_QUERY));
-		assertNotNull(resourceType.getAnnotation(JPA.NAMED_QUERIES));
+		assertNotNull(resourceType.getContainerAnnotation(JPA.NAMED_QUERIES));
 		assertNotNull(resourceType.getAnnotation(0, JPA.NAMED_QUERY));
 		assertEquals(3, resourceType.getAnnotationsSize(JPA.NAMED_QUERY));
 	}

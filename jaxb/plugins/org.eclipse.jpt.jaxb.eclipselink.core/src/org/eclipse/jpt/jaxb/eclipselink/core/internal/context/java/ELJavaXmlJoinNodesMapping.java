@@ -61,7 +61,11 @@ public class ELJavaXmlJoinNodesMapping
 	protected String getAnnotationName() {
 		return ELJaxb.XML_JOIN_NODES;
 	}
-	
+
+	@Override
+	public Annotation getAnnotation() {
+		return getJavaResourceAttribute().getContainerAnnotation(getAnnotationName());
+	}
 	
 	// ***** overrides *****
 	

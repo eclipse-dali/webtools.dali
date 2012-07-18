@@ -79,7 +79,7 @@ abstract class BinaryAnnotatedElement
 	private void addAnnotation(IAnnotation jdtAnnotation) {
 		String jdtAnnotationName = jdtAnnotation.getElementName();
 		// check whether the annotation is a valid container annotation first
-		// because container validations are also valid annotations
+		// because container annotations are also valid annotations
 		// TODO remove container annotations from list of annotations???
 		if (this.annotationIsValidContainer(jdtAnnotationName)) {
 			String nestableAnnotationName = this.getAnnotationProvider().getNestableAnnotationName(jdtAnnotationName);
@@ -140,6 +140,11 @@ abstract class BinaryAnnotatedElement
 
 	public Annotation getAnnotation(String annotationName) {
 		return this.annotations.get(annotationName);
+	}
+
+	public Annotation getContainerAnnotation(String containerAnnotationName) {
+		AnnotationContainer container = this.annotationContainers.get(this.getAnnotationProvider().getNestableAnnotationName(containerAnnotationName));
+		return (container == null) ? null : container.getContainerAnnotation();		
 	}
 
 	public Annotation getNonNullAnnotation(String annotationName) {

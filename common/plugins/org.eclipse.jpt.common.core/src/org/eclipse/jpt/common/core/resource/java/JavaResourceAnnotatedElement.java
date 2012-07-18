@@ -23,9 +23,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
- * 
- * @version 3.0
- * @since 3.0
  */
 public interface JavaResourceAnnotatedElement
 	extends JavaResourceNode
@@ -43,25 +40,51 @@ public interface JavaResourceAnnotatedElement
 	String NESTABLE_ANNOTATIONS_COLLECTION = "nestableAnnotations"; //$NON-NLS-1$
 	
 	/**
-	 * Return the member's annotations in the order that they appear.
+	 * Return the member's top-level stand-alone annotations in the order that they appear.
+	 * <br>
 	 * Do not return duplicate annotations as this error is handled by the Java
 	 * compiler.
+	 * <br>
+	 * This is only used to return top-level annotations that are not container
+	 * or nestable annotations.
+	 * @see {@link #getContainerAnnotation(String)}
+	 * @see {@link #getAnnotations(String)}
 	 */
 	Iterable<Annotation> getAnnotations();
 	
 	/**
-	 * Return the number of annotations.
+	 * Return the number of top-level stand-alone annotations.
+	 * This does not include the number of container or nestable annotations
+	 * 
+	 * @see #getAnnotationsSize(String)
 	 */
 	int getAnnotationsSize();
 	
 	/**
 	 * Return the annotation with the specified name.
 	 * Return the first if there are duplicates in the source code.
+	 * <br>
+	 * This is only used to return a top-level standalone annotation.
+	 * It will not return container or nestable annotations
+	 * 
+	 * @see #getContainerAnnotation(String)
+	 * @see #getAnnotation(int, String)
 	 */
 	Annotation getAnnotation(String annotationName);
-	
+
 	/**
-	 * Return the specified annotation.
+	 * Return the "container" annotation with the specified name.
+	 * Return the first if there are duplicates in the source code.
+	 * <br>
+	 * This is only used to return a top-level container annotations.
+	 * 
+	 * @see #getAnnotation(String)
+	 * @see #getAnnotation(int, String)
+	 */
+	Annotation getContainerAnnotation(String containerAnnotationName);
+
+	/**
+	 * Return the specified top-level stand-alone annotation.
 	 * Return the first if there are duplicates in the source code.
 	 * Do not return null, but a Null Object instead if no annotation
 	 * with the specified name exists in the source code.
@@ -73,9 +96,10 @@ public interface JavaResourceAnnotatedElement
 	 * they appear.
 	 * If nestable and container annotations are both specified on the
 	 * member directly, the behavior is undefined
+	 * 
+	 * @see #getAnnotations()
+	 * @see #getContainerAnnotation(String)
 	 */
-	// TODO tie the singular and plural annotations together so we can generate
-	// a validation error when both are specified
 	ListIterable<NestableAnnotation> getAnnotations(String nestableAnnotationName);
 	
 	/**
@@ -93,8 +117,11 @@ public interface JavaResourceAnnotatedElement
 	NestableAnnotation getAnnotation(int index, String nestableAnnotationName);
 	
 	/**
-	 * Add an annotation with the specified name.
-	 * Return the newly-created annotation.
+	 * Add a top-level stand-alone annotation with the specified name
+	 * and return the newly-created annotation.
+	 * <br>
+	 * Do not use this to add nestable annotations or container annotations
+	 * @see #addAnnotation(int, String)
 	 */
 	Annotation addAnnotation(String annotationName);
 	
@@ -118,7 +145,11 @@ public interface JavaResourceAnnotatedElement
 	void moveAnnotation(int targetIndex, int sourceIndex, String nestableAnnotationName);
 	
 	/**
-	 * Remove the specified annotation.
+	 * Remove the specified top-level standalone annotation.
+	 * <br>
+	 * Do not use this to remove container or nestable annotations
+	 *
+	 * @see #removeAnnotation(int, String)
 	 */
 	void removeAnnotation(String annotationName);
 	
@@ -167,7 +198,9 @@ public interface JavaResourceAnnotatedElement
 	 * Return the text range for the nestable annotation if it is currently
 	 * unnested. If it is nested, return the text range for the corresponding
 	 * container annotation.
+	 * This is not used for stand-alone annotations
 	 * 
+	 * @see Annotation#getTextRange(CompilationUnit)
 	 * @see AnnotationProvider#getContainerAnnotationName(String)
 	 */
 	TextRange getTextRange(String nestableAnnotationName, CompilationUnit astRoot);

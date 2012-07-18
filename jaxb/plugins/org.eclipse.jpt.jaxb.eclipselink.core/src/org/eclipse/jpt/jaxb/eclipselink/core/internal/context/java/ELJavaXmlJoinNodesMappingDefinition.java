@@ -56,7 +56,7 @@ public class ELJavaXmlJoinNodesMappingDefinition
 	
 	@Override
 	public boolean isSpecified(JaxbPersistentAttribute persistentAttribute) {
-		return super.isSpecified(persistentAttribute) 
+		return persistentAttribute.getJavaResourceAttribute().getContainerAnnotation(getAnnotationName()) != null
 				|| ! CollectionTools.isEmpty(persistentAttribute.getJavaResourceAttribute().getAnnotations(ELJaxb.XML_JOIN_NODE));
 	}
 	

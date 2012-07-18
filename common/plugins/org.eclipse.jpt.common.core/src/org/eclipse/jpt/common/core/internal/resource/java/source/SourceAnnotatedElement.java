@@ -123,8 +123,7 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 		for (Map.Entry<String, org.eclipse.jdt.core.dom.Annotation> entry : astAnnotations.entrySet()) {
 			String annotationName = entry.getKey();
 			org.eclipse.jdt.core.dom.Annotation astAnnotation = entry.getValue();
-			Annotation annotation = this.buildAnnotation(annotationName);
-			annotation.initialize((CompilationUnit) astAnnotation.getRoot());  // TODO pass the AST annotation!
+			Annotation annotation = this.buildAnnotation(annotationName, astAnnotation);
 			this.annotations.put(annotationName, annotation);
 		}
 	}
@@ -182,30 +181,17 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 	}
 
 	public Annotation getAnnotation(String annotationName) {
-		// TODO one reason we search the containers is validation, we need to have separate API for getting the container annotation.
-		//The validation in org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlAnyElementMapping is an example 
-		if (this.annotationIsValidContainer(annotationName)) {
-			CombinationAnnotationContainer container = this.annotationContainers.get(this.getAnnotationProvider().getNestableAnnotationName(annotationName));
-			return (container == null) ? null : container.getContainerAnnotation();
-		}
 		return this.annotations.get(annotationName);
 	}
 
+	public Annotation getContainerAnnotation(String containerAnnotationName) {
+		CombinationAnnotationContainer container = this.annotationContainers.get(this.getAnnotationProvider().getNestableAnnotationName(containerAnnotationName));
+		return (container == null) ? null : container.getContainerAnnotation();		
+	}
+	
 	public Annotation getNonNullAnnotation(String annotationName) {
-		Annotation annotation = this.performantGetAnnotation(annotationName);
+		Annotation annotation = this.getAnnotation(annotationName);
 		return (annotation != null) ? annotation : this.getNullAnnotation(annotationName);
-	}
-
-	/**
-	 * TODO performance - hack for performance so we don't have to break API in M7.
-	 * Our calls to getNonNullAnnotation are never used for container annotations, so 
-	 * I can use this method to avoid the expensive {@link #annotationIsValidContainer(String)} check
-	 * in {@link #getAnnotation(String)}. In the next release I think we need
-	 * to change the genAnnotation api to not check for container annotations and instead have
-	 * separate API. 
-	 */
-	protected Annotation performantGetAnnotation(String annotationName) {
-		return this.annotations.get(annotationName);
 	}
 
 	private Annotation getNullAnnotation(String annotationName) {
@@ -230,9 +216,7 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 
 	public void removeAnnotation(String annotationName) {
 		Annotation annotation = this.annotations.remove(annotationName);
-		if (annotation != null) {
-			annotation.removeAnnotation();
-		}
+		annotation.removeAnnotation();
 	}
 
 	/* CU private */ boolean annotationIsValid(String annotationName) {
@@ -241,6 +225,13 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 
 	/* CU private */ Annotation buildAnnotation(String annotationName) {
 		return this.getAnnotationProvider().buildAnnotation(this, this.annotatedElement, annotationName);
+	}
+
+	/* CU private */ Annotation buildAnnotation(String annotationName, org.eclipse.jdt.core.dom.Annotation astAnnotation) {
+		//TODO pass the astAnnotation to the buildAnnotation() method
+		Annotation annotation = this.getAnnotationProvider().buildAnnotation(this, this.annotatedElement, annotationName);
+		annotation.initialize(astAnnotation);
+		return annotation;
 	}
 
 
@@ -421,11 +412,10 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 			org.eclipse.jdt.core.dom.Annotation astAnnotation = entry.getValue();
 			Annotation annotation = annotationsToRemove.remove(annotationName);
 			if (annotation == null) {
-				annotation = this.buildAnnotation(annotationName);
-				annotation.initialize((CompilationUnit) astAnnotation.getRoot());  // TODO pass the AST annotation!
+				annotation = this.buildAnnotation(annotationName, astAnnotation);
 				annotationsToAdd.put(annotationName, annotation);
 			} else {
-				annotation.synchronizeWith((CompilationUnit) astAnnotation.getRoot());  // TODO pass the AST annotation!
+				annotation.synchronizeWith(astAnnotation);
 			}
 		}
 
@@ -631,7 +621,7 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 				return;
 			}
 			// check whether the annotation is a valid container annotation first
-			// because container validations are also valid annotations
+			// because container annotations are also valid annotations
 			// TODO remove container annotations from list of annotations???
 			if (SourceAnnotatedElement.this.annotationIsValidContainer(astAnnotationName)) {
 				if (this.astContainerAnnotations.get(astAnnotationName) == null) {
@@ -728,11 +718,15 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 		@Override
 		public void initializeFromContainerAnnotation(org.eclipse.jdt.core.dom.Annotation astContainerAnnotation) {
 			super.initializeFromContainerAnnotation(astContainerAnnotation);
-			this.containerAnnotation = this.buildContainerAnnotation(this.containerAnnotationName);
+			this.containerAnnotation = this.buildContainerAnnotation(this.containerAnnotationName, astContainerAnnotation);
 		}
 
 		private Annotation buildContainerAnnotation(String name) {
 			return SourceAnnotatedElement.this.buildAnnotation(name);
+		}
+
+		private Annotation buildContainerAnnotation(String name, org.eclipse.jdt.core.dom.Annotation astContainerAnnotation) {
+			return SourceAnnotatedElement.this.buildAnnotation(name, astContainerAnnotation);
 		}
 
 		public Annotation getContainerAnnotation() {
@@ -770,7 +764,7 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 		void initializeFromStandaloneAnnotation(org.eclipse.jdt.core.dom.Annotation astStandaloneNestableAnnotation) {
 			NestableAnnotation nestedAnnotation = this.buildNestedAnnotation(0);
 			this.nestedAnnotations.add(nestedAnnotation);
-			nestedAnnotation.initialize((CompilationUnit) astStandaloneNestableAnnotation.getRoot());  // TODO pass the AST annotation!
+			nestedAnnotation.initialize(astStandaloneNestableAnnotation);
 		}
 
 		/**
@@ -783,7 +777,7 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 				// container annotation is present but empty
 				this.syncAddNestedAnnotation(astStandaloneNestableAnnotation);
 			} else {
-				this.nestedAnnotations.get(0).synchronizeWith((CompilationUnit) astStandaloneNestableAnnotation.getRoot());  // TODO pass the AST annotation!
+				this.nestedAnnotations.get(0).synchronizeWith(astStandaloneNestableAnnotation);
 				// remove any remaining nested annotations
 				this.syncRemoveNestedAnnotations(1);
 			}

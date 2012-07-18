@@ -528,7 +528,7 @@ public class JavaResourceAttributeTests extends JpaJavaResourceModelTestCase {
 		assertSourceContains("@AttributeOverrides({ @AttributeOverride(name = \"FOO\"), @AttributeOverride(name = \"BAR\") })", cu);
 		
 		assertNull(resourceAttribute.getAnnotation(JPA.ATTRIBUTE_OVERRIDE));
-		assertNotNull(resourceAttribute.getAnnotation(JPA.ATTRIBUTE_OVERRIDES));
+		assertNotNull(resourceAttribute.getContainerAnnotation(JPA.ATTRIBUTE_OVERRIDES));
 		assertNotNull(resourceAttribute.getAnnotation(0, JPA.ATTRIBUTE_OVERRIDE));
 		assertEquals(2, resourceAttribute.getAnnotationsSize(JPA.ATTRIBUTE_OVERRIDE));
 	}
@@ -549,7 +549,7 @@ public class JavaResourceAttributeTests extends JpaJavaResourceModelTestCase {
 		assertSourceContains("@AttributeOverrides({@AttributeOverride(name = \"FOO\"),@AttributeOverride(name = \"BAR\")})", cu);
 		
 		assertNull(resourceAttribute.getAnnotation(JPA.ATTRIBUTE_OVERRIDE));
-		assertNotNull(resourceAttribute.getAnnotation(JPA.ATTRIBUTE_OVERRIDES));
+		assertNotNull(resourceAttribute.getContainerAnnotation(JPA.ATTRIBUTE_OVERRIDES));
 		assertNotNull(resourceAttribute.getAnnotation(0, JPA.ATTRIBUTE_OVERRIDE));
 		assertEquals(2, resourceAttribute.getAnnotationsSize(JPA.ATTRIBUTE_OVERRIDE));
 	}
@@ -564,7 +564,7 @@ public class JavaResourceAttributeTests extends JpaJavaResourceModelTestCase {
 		assertSourceContains("@AttributeOverrides({@AttributeOverride(name = \"BAR\"),@AttributeOverride(name = \"FOO\")})", cu);
 		
 		assertNull(resourceAttribute.getAnnotation(JPA.ATTRIBUTE_OVERRIDE));
-		assertNotNull(resourceAttribute.getAnnotation(JPA.ATTRIBUTE_OVERRIDES));
+		assertNotNull(resourceAttribute.getContainerAnnotation(JPA.ATTRIBUTE_OVERRIDES));
 		assertNotNull(resourceAttribute.getAnnotation(0, JPA.ATTRIBUTE_OVERRIDE));
 		assertEquals(2, resourceAttribute.getAnnotationsSize(JPA.ATTRIBUTE_OVERRIDE));
 	}

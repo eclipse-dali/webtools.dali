@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -386,7 +386,7 @@ public class MapKeyJoinColumns2_0AnnotationTests extends JavaResourceModel2_0Tes
 		assertSourceContains(expected3, cu);
 		
 		assertNull(resourceField.getAnnotation(JPA2_0.MAP_KEY_JOIN_COLUMN));
-		assertNotNull(resourceField.getAnnotation(JPA2_0.MAP_KEY_JOIN_COLUMNS));
+		assertNotNull(resourceField.getContainerAnnotation(JPA2_0.MAP_KEY_JOIN_COLUMNS));
 		assertNotNull(resourceField.getAnnotation(0, JPA2_0.MAP_KEY_JOIN_COLUMN));
 		assertEquals(2, resourceField.getAnnotationsSize(JPA2_0.MAP_KEY_JOIN_COLUMN));
 	}
@@ -419,7 +419,7 @@ public class MapKeyJoinColumns2_0AnnotationTests extends JavaResourceModel2_0Tes
 		assertEquals("FOO", ((MapKeyJoinColumn2_0Annotation) joinColumns.next()).getName());
 		
 		assertNull(resourceField.getAnnotation(JPA2_0.MAP_KEY_JOIN_COLUMN));
-		assertNotNull(resourceField.getAnnotation(JPA2_0.MAP_KEY_JOIN_COLUMNS));
+		assertNotNull(resourceField.getContainerAnnotation(JPA2_0.MAP_KEY_JOIN_COLUMNS));
 		assertNotNull(resourceField.getAnnotation(0, JPA2_0.MAP_KEY_JOIN_COLUMN));
 		assertEquals(3, resourceField.getAnnotationsSize(JPA2_0.MAP_KEY_JOIN_COLUMN));
 	}
