@@ -11,13 +11,16 @@ package org.eclipse.jpt.jpa.core.tests.internal.context.java;
 
 import java.util.Iterator;
 import java.util.ListIterator;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
+import org.eclipse.jpt.common.utility.BooleanReference;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AccessType;
@@ -719,6 +722,12 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 	}
 	
 	public void testRenameAttribute() throws Exception {
+		//This test directly edits the JDT model (renames an IField)
+		//Thus we need to listen to the java events unlike in our other tests.
+		//Add this flag back at the end of the method so as not to affect other tests.
+		//See org.eclipse.jpt.jpa.core.tests.JptJpaCoreTestsPlugin#start(org.osgi.framework.BundleContext).
+		getJpaProjectManager().removeJavaEventListenerFlag(BooleanReference.False.instance());
+
 		ICompilationUnit testType = createTestEntityAnnotatedField();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
@@ -742,6 +751,12 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		assertEquals(nameAttribute, nameAttribute2);
 		assertEquals("name", nameAttribute2.getName());
 		assertFalse(attributes.hasNext());
+
+		getJpaProjectManager().addJavaEventListenerFlag(BooleanReference.False.instance());
+	}
+
+	private JpaProjectManager getJpaProjectManager() {
+		return (JpaProjectManager) ResourcesPlugin.getWorkspace().getAdapter(JpaProjectManager.class);
 	}
 
 	public void testSuperPersistentTypeGeneric() throws Exception {
