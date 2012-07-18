@@ -79,7 +79,7 @@ public class GenericJavaBaseTemporalConverter
 
 	protected void removeTemporalAnnotationIfUnset() {
 		if (this.temporalAnnotation.isUnset()) {
-			this.temporalAnnotation.removeAnnotation();
+			this.getResourceAttribute().removeAnnotation(this.temporalAnnotation.getAnnotationName());
 		}
 	}
 }

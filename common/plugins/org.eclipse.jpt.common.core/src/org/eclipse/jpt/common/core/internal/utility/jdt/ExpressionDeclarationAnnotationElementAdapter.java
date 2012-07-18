@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -64,12 +64,21 @@ public class ExpressionDeclarationAnnotationElementAdapter<E extends Expression>
 		return this.getExpression(declaration);
 	}
 
+	public E getValue(Annotation annotation) {
+		// return the expression unmodified
+		return this.getExpression(annotation);
+	}
+
 	public void setValue(E value, ModifiedDeclaration declaration) {
 		this.setValue(value, this.annotationAdapter.getAnnotation(declaration), declaration);
 	}
 
 	public E getExpression(ModifiedDeclaration declaration) {
 		return this.expression(this.annotationAdapter.getAnnotation(declaration));
+	}
+
+	public E getExpression(Annotation annotation) {
+		return this.expression(annotation);
 	}
 
 	public ASTNode getAstNode(ModifiedDeclaration declaration) {

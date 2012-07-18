@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.source;
 
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
@@ -85,12 +86,16 @@ public class SourceXmlPathAnnotation
 		return ELJaxb.XML_PATH;
 	}
 	
-	public void initialize(CompilationUnit astRoot) {
-		this.value = buildValue(astRoot);
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.value = buildValue(astAnnotation);
 	}
 	
-	public void synchronizeWith(CompilationUnit astRoot) {
-		syncValue(buildValue(astRoot));
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		syncValue(buildValue(astAnnotation));
 	}
 	
 	@Override
@@ -118,8 +123,8 @@ public class SourceXmlPathAnnotation
 		this.firePropertyChanged(VALUE_PROPERTY, old, astValue);
 	}
 	
-	private String buildValue(CompilationUnit astRoot) {
-		return this.valueAdapter.getValue(astRoot);
+	private String buildValue(Annotation astAnnotation) {
+		return this.valueAdapter.getValue(astAnnotation);
 	}
 	
 	public TextRange getValueTextRange(CompilationUnit astRoot) {

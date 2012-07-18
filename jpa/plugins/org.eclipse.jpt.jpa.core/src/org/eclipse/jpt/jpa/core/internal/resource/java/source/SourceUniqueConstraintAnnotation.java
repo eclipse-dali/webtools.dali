@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
 import java.util.Arrays;
 import java.util.Vector;
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotationStringArrayExpressionConverter;
@@ -54,14 +54,16 @@ public final class SourceUniqueConstraintAnnotation
 		return ANNOTATION_NAME;
 	}
 
-	public void initialize(CompilationUnit astRoot) {
-		this.initializeColumnNames(astRoot);
-		this.columnNamesTextRange = this.buildColumnNamesTextRange(astRoot);
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		this.initializeColumnNames(astAnnotation);
+		this.columnNamesTextRange = this.buildColumnNamesTextRange(astAnnotation);
 	}
 
-	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncColumnNames(astRoot);
-		this.columnNamesTextRange = this.buildColumnNamesTextRange(astRoot);
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		this.syncColumnNames(astAnnotation);
+		this.columnNamesTextRange = this.buildColumnNamesTextRange(astAnnotation);
 	}
 
 
@@ -108,20 +110,20 @@ public final class SourceUniqueConstraintAnnotation
 		this.columnNamesAdapter.setValue(this.columnNames.toArray(new String[this.columnNames.size()]));
 	}
 
-	private void initializeColumnNames(CompilationUnit astRoot) {
-		String[] astColumnNames = this.columnNamesAdapter.getValue(astRoot);
+	private void initializeColumnNames(Annotation astAnnotation) {
+		String[] astColumnNames = this.columnNamesAdapter.getValue(astAnnotation);
 		for (int i = 0; i < astColumnNames.length; i++) {
 			this.columnNames.add(astColumnNames[i]);
 		}
 	}
 
-	private void syncColumnNames(CompilationUnit astRoot) {
-		String[] javaColumnNames = this.columnNamesAdapter.getValue(astRoot);
+	private void syncColumnNames(Annotation astAnnotation) {
+		String[] javaColumnNames = this.columnNamesAdapter.getValue(astAnnotation);
 		this.synchronizeList(Arrays.asList(javaColumnNames), this.columnNames, COLUMN_NAMES_LIST);
 	}
 
-	private TextRange buildColumnNamesTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.columnNamesDeclarationAdapter, astRoot);
+	private TextRange buildColumnNamesTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.columnNamesDeclarationAdapter, astAnnotation);
 	}
 
 	public boolean columnNamesTouches(int pos) {

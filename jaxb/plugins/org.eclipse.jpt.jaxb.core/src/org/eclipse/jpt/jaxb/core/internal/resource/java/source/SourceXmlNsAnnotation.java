@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
@@ -68,14 +69,18 @@ public class SourceXmlNsAnnotation
 		return JAXB.XML_NS;
 	}
 	
-	public void initialize(CompilationUnit astRoot) {
-		this.namespaceURI = buildNamespaceURI(astRoot);
-		this.prefix = buildPrefix(astRoot);
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.namespaceURI = buildNamespaceURI(astAnnotation);
+		this.prefix = buildPrefix(astAnnotation);
 	}
 
-	public void synchronizeWith(CompilationUnit astRoot) {
-		syncNamespaceURI(buildNamespaceURI(astRoot));
-		syncPrefix(buildPrefix(astRoot));
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		syncNamespaceURI(buildNamespaceURI(astAnnotation));
+		syncPrefix(buildPrefix(astAnnotation));
 	}
 	
 	@Override
@@ -97,8 +102,8 @@ public class SourceXmlNsAnnotation
 		}
 	}
 	
-	private String buildNamespaceURI(CompilationUnit astRoot) {
-		return this.namespaceURIAdapter.getValue(astRoot);
+	private String buildNamespaceURI(Annotation astAnnotation) {
+		return this.namespaceURIAdapter.getValue(astAnnotation);
 	}
 	
 	private void syncNamespaceURI(String namespaceURI) {
@@ -129,8 +134,8 @@ public class SourceXmlNsAnnotation
 		}
 	}
 	
-	private String buildPrefix(CompilationUnit astRoot) {
-		return this.prefixAdapter.getValue(astRoot);
+	private String buildPrefix(Annotation astAnnotation) {
+		return this.prefixAdapter.getValue(astAnnotation);
 	}
 	
 	private void syncPrefix(String prefix) {

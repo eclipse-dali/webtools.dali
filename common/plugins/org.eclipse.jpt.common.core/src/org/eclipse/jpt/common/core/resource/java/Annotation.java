@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,13 +19,20 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
- * 
- * @version 3.0
- * @since 3.0
  */
 public interface Annotation
 	extends JavaResourceNode
 {
+	/**
+	 * Initialize the [source] node from the specified AST annotation.
+	 */
+	void initialize(org.eclipse.jdt.core.dom.Annotation astAnnotation);
+
+	/**
+	 * Synchronize the [source] node with the specified AST annotation.
+	 */
+	void synchronizeWith(org.eclipse.jdt.core.dom.Annotation astAnnotation);
+
 	/**
 	 * Return the annotation's fully qualified name, as opposed to the value of
 	 * the annotation's 'name' element. For example:
@@ -43,12 +50,21 @@ public interface Annotation
 
 	/**
 	 * Create and add the corresponding Java annotation to the JDT DOM.
+	 * <br>
+	 * Internal to the java resource model.
+	 * 
+	 * @see JavaResourceAnnotatedElement#addAnnotation(String)
 	 */
+	//TODO have a separate interface so that the context model does not have access to this method
 	void newAnnotation();
 
 	/**
 	 * Remove the corresponding Java annotation from the JDT DOM.
+	 * <br>
+	 * Internal to the java resource model.
+	 * @see JavaResourceAnnotatedElement#removeAnnotation(String)
 	 */
+	//TODO have a separate interface so that the context model does not have access to this method
 	void removeAnnotation();
 
 	/**

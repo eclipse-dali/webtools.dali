@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
@@ -37,6 +37,7 @@ public final class SourceEclipseLinkClassExtractorAnnotation2_1
 	private static final DeclarationAnnotationElementAdapter<String> VALUE_ADAPTER = buildValueAdapter();
 	private final AnnotationElementAdapter<String> valueAdapter;
 	private String value;
+	private TextRange valueTextRange;
 
 	/**
 	 * @see org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceIdClassAnnotation#fullyQualifiedClassName
@@ -55,12 +56,18 @@ public final class SourceEclipseLinkClassExtractorAnnotation2_1
 		return ANNOTATION_NAME;
 	}
 
-	public void initialize(CompilationUnit astRoot) {
-		this.value = this.buildValue(astRoot);
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.value = this.buildValue(astAnnotation);
+		this.valueTextRange = this.buildValueTextRange(astAnnotation);
 	}
 
-	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncValue(this.buildValue(astRoot));
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.syncValue(this.buildValue(astAnnotation));
+		this.valueTextRange = this.buildValueTextRange(astAnnotation);
 	}
 
 	@Override
@@ -103,12 +110,16 @@ public final class SourceEclipseLinkClassExtractorAnnotation2_1
 		this.firePropertyChanged(VALUE_PROPERTY, old, astValue);
 	}
 
-	private String buildValue(CompilationUnit astRoot) {
-		return this.valueAdapter.getValue(astRoot);
+	private String buildValue(Annotation astAnnotation) {
+		return this.valueAdapter.getValue(astAnnotation);
 	}
 
-	public TextRange getValueTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(VALUE_ADAPTER, astRoot);
+	public TextRange getValueTextRange() {
+		return this.valueTextRange;
+	}
+
+	private TextRange buildValueTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(VALUE_ADAPTER, astAnnotation);
 	}
 
 	// ***** fully-qualified class name

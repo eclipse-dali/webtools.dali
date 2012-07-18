@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.source;
 
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
@@ -71,12 +72,16 @@ public class SourceXmlDiscriminatorNodeAnnotation
 		return ELJaxb.XML_DISCRIMINATOR_NODE;
 	}
 	
-	public void initialize(CompilationUnit astRoot) {
-		this.value = buildValue(astRoot);
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.value = buildValue(astAnnotation);
 	}
 	
-	public void synchronizeWith(CompilationUnit astRoot) {
-		syncValue(buildValue(astRoot));
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		syncValue(buildValue(astAnnotation));
 	}
 	
 	@Override
@@ -104,8 +109,8 @@ public class SourceXmlDiscriminatorNodeAnnotation
 		this.firePropertyChanged(VALUE_PROPERTY, old, astValue);
 	}
 	
-	private String buildValue(CompilationUnit astRoot) {
-		return this.valueAdapter.getValue(astRoot);
+	private String buildValue(Annotation astAnnotation) {
+		return this.valueAdapter.getValue(astAnnotation);
 	}
 	
 	public TextRange getValueTextRange(CompilationUnit astRoot) {

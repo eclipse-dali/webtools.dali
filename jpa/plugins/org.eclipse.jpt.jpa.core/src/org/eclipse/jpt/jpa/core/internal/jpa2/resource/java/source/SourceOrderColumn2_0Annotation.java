@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -57,31 +57,31 @@ public final class SourceOrderColumn2_0Annotation
 	}
 	
 	@Override
-	public void initialize(CompilationUnit astRoot) {
-		super.initialize(astRoot);
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
 
-		this.nullable = this.buildNullable(astRoot);
-		this.nullableTextRange = this.buildNullableTextRange(astRoot);
+		this.nullable = this.buildNullable(astAnnotation);
+		this.nullableTextRange = this.buildNullableTextRange(astAnnotation);
 
-		this.insertable = this.buildInsertable(astRoot);
-		this.insertableTextRange = this.buildInsertableTextRange(astRoot);
+		this.insertable = this.buildInsertable(astAnnotation);
+		this.insertableTextRange = this.buildInsertableTextRange(astAnnotation);
 
-		this.updatable = this.buildUpdatable(astRoot);
-		this.updatableTextRange = this.buildUpdatableTextRange(astRoot);
+		this.updatable = this.buildUpdatable(astAnnotation);
+		this.updatableTextRange = this.buildUpdatableTextRange(astAnnotation);
 	}
 	
 	@Override
-	public void synchronizeWith(CompilationUnit astRoot) {
-		super.synchronizeWith(astRoot);
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
 
-		this.syncNullable(this.buildNullable(astRoot));
-		this.nullableTextRange = this.buildNullableTextRange(astRoot);
+		this.syncNullable(this.buildNullable(astAnnotation));
+		this.nullableTextRange = this.buildNullableTextRange(astAnnotation);
 
-		this.syncInsertable(this.buildInsertable(astRoot));
-		this.insertableTextRange = this.buildInsertableTextRange(astRoot);
+		this.syncInsertable(this.buildInsertable(astAnnotation));
+		this.insertableTextRange = this.buildInsertableTextRange(astAnnotation);
 
-		this.syncUpdatable(this.buildUpdatable(astRoot));
-		this.updatableTextRange = this.buildUpdatableTextRange(astRoot);
+		this.syncUpdatable(this.buildUpdatable(astAnnotation));
+		this.updatableTextRange = this.buildUpdatableTextRange(astAnnotation);
 	}
 	
 	public String getAnnotationName() {
@@ -119,16 +119,16 @@ public final class SourceOrderColumn2_0Annotation
 		this.firePropertyChanged(NULLABLE_PROPERTY, old, astNullable);
 	}
 
-	private Boolean buildNullable(CompilationUnit astRoot) {
-		return this.nullableAdapter.getValue(astRoot);
+	private Boolean buildNullable(Annotation astAnnotation) {
+		return this.nullableAdapter.getValue(astAnnotation);
 	}
 	
 	public TextRange getNullableTextRange() {
 		return this.nullableTextRange;
 	}
 	
-	private TextRange buildNullableTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.nullableDeclarationAdapter, astRoot);
+	private TextRange buildNullableTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.nullableDeclarationAdapter, astAnnotation);
 	}
 	
 	private DeclarationAnnotationElementAdapter<Boolean> buildNullableDeclarationAdapter() {
@@ -161,16 +161,16 @@ public final class SourceOrderColumn2_0Annotation
 		this.firePropertyChanged(INSERTABLE_PROPERTY, old, astInsertable);
 	}
 
-	private Boolean buildInsertable(CompilationUnit astRoot) {
-		return this.insertableAdapter.getValue(astRoot);
+	private Boolean buildInsertable(Annotation astAnnotation) {
+		return this.insertableAdapter.getValue(astAnnotation);
 	}
 	
 	public TextRange getInsertableTextRange() {
 		return this.insertableTextRange;
 	}
 	
-	private TextRange buildInsertableTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.insertableDeclarationAdapter, astRoot);
+	private TextRange buildInsertableTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.insertableDeclarationAdapter, astAnnotation);
 	}
 	
 	private DeclarationAnnotationElementAdapter<Boolean> buildInsertableDeclarationAdapter() {
@@ -203,16 +203,16 @@ public final class SourceOrderColumn2_0Annotation
 		this.firePropertyChanged(UPDATABLE_PROPERTY, old, astUpdatable);
 	}
 
-	private Boolean buildUpdatable(CompilationUnit astRoot) {
-		return this.updatableAdapter.getValue(astRoot);
+	private Boolean buildUpdatable(Annotation astAnnotation) {
+		return this.updatableAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getUpdatableTextRange() {
 		return this.updatableTextRange;
 	}
 	
-	private TextRange buildUpdatableTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.updatableDeclarationAdapter, astRoot);
+	private TextRange buildUpdatableTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.updatableDeclarationAdapter, astAnnotation);
 	}
 	
 	private DeclarationAnnotationElementAdapter<Boolean> buildUpdatableDeclarationAdapter() {

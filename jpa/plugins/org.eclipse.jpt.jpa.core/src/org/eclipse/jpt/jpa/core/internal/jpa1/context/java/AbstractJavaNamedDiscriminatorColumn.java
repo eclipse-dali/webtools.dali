@@ -35,18 +35,21 @@ public abstract class AbstractJavaNamedDiscriminatorColumn<A extends Discriminat
 
 	protected AbstractJavaNamedDiscriminatorColumn(JavaJpaContextNode parent, O owner, A columnAnnotation) {
 		super(parent, owner, columnAnnotation);
-		this.specifiedDiscriminatorType = this.buildSpecifiedDiscriminatorType();
-		this.specifiedLength = this.buildSpecifiedLength();
 	}
 
-
+	@Override
+	protected void initialize(A columnAnnotation) {
+		super.initialize(columnAnnotation);
+		this.specifiedDiscriminatorType = this.buildSpecifiedDiscriminatorType(columnAnnotation);
+		this.specifiedLength = this.buildSpecifiedLength(columnAnnotation);
+	}
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.setSpecifiedDiscriminatorType_(this.buildSpecifiedDiscriminatorType());
-		this.setSpecifiedLength_(this.buildSpecifiedLength());
+	protected void synchronizeWithResourceModel(A columnAnnotation) {
+		super.synchronizeWithResourceModel(columnAnnotation);
+		this.setSpecifiedDiscriminatorType_(this.buildSpecifiedDiscriminatorType(columnAnnotation));
+		this.setSpecifiedLength_(this.buildSpecifiedLength(columnAnnotation));
 	}
 
 	@Override
@@ -87,8 +90,8 @@ public abstract class AbstractJavaNamedDiscriminatorColumn<A extends Discriminat
 		this.firePropertyChanged(SPECIFIED_DISCRIMINATOR_TYPE_PROPERTY, old, discriminatorType);
 	}
 
-	protected DiscriminatorType buildSpecifiedDiscriminatorType() {
-		return DiscriminatorType.fromJavaResourceModel(this.getColumnAnnotation().getDiscriminatorType());
+	protected DiscriminatorType buildSpecifiedDiscriminatorType(A columnAnnotation) {
+		return DiscriminatorType.fromJavaResourceModel(columnAnnotation.getDiscriminatorType());
 	}
 
 	public DiscriminatorType getDefaultDiscriminatorType() {
@@ -130,8 +133,8 @@ public abstract class AbstractJavaNamedDiscriminatorColumn<A extends Discriminat
 		this.firePropertyChanged(SPECIFIED_LENGTH_PROPERTY, old, length);
 	}
 
-	protected Integer buildSpecifiedLength() {
-		return this.getColumnAnnotation().getLength();
+	protected Integer buildSpecifiedLength(A columnAnnotation) {
+		return columnAnnotation.getLength();
 	}
 
 	public int getDefaultLength() {

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.core.utility.jdt;
 
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.Expression;
 
 /**
@@ -37,8 +38,19 @@ public interface DeclarationAnnotationElementAdapter<T> {
 	 * Given the specified declaration, return the value of the
 	 * annotation element. Return null or an empty array
 	 * if the element is not present.
+	 * If the annotation is available, {@link #getValue(Annotation)} might
+	 * be more performant.
+	 * @see #getValue(Annotation)
 	 */
 	T getValue(ModifiedDeclaration declaration);
+
+	/**
+	 * Given the specified annotation, return the value of the
+	 * annotation element. Return null or an empty array
+	 * if the element is not present.
+	 * @see #getValue(ModifiedDeclaration)
+	 */
+	T getValue(Annotation astAnnotation);
 
 	/**
 	 * Given the specified declaration, set the value of the
@@ -51,8 +63,18 @@ public interface DeclarationAnnotationElementAdapter<T> {
 	/**
 	 * Given the specified declaration, return the element's value expression.
 	 * Return null if the element is not present.
+	 * If the annotation is available, {@link #getExpression(Annotation)} might
+	 * be more performant.
+	 * @see #getExpression(Annotation)
 	 */
 	Expression getExpression(ModifiedDeclaration declaration);
+
+	/**
+	 * Given the specified annotation, return the element's value expression.
+	 * Return null if the element is not present.
+	 * @see #getExpression(ModifiedDeclaration)
+	 */
+	Expression getExpression(Annotation astAnnotation);
 
 	/**
 	 * Given the specified declaration, return the AST node

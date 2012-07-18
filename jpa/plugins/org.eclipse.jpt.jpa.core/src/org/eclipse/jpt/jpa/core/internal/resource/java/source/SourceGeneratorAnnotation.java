@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
@@ -66,26 +66,30 @@ abstract class SourceGeneratorAnnotation
 		return new AnnotatedElementAnnotationElementAdapter<Integer>(this.annotatedElement, daea);
 	}
 
-	public void initialize(CompilationUnit astRoot) {
-		this.name = this.buildName(astRoot);
-		this.nameTextRange = this.buildNameTextRange(astRoot);
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.name = this.buildName(astAnnotation);
+		this.nameTextRange = this.buildNameTextRange(astAnnotation);
 
-		this.initialValue = this.buildInitialValue(astRoot);
-		this.initialValueTextRange = this.buildInitialValueTextRange(astRoot);
+		this.initialValue = this.buildInitialValue(astAnnotation);
+		this.initialValueTextRange = this.buildInitialValueTextRange(astAnnotation);
 
-		this.allocationSize = this.buildAllocationSize(astRoot);
-		this.allocationSizeTextRange = this.buildAllocationSizeTextRange(astRoot);
+		this.allocationSize = this.buildAllocationSize(astAnnotation);
+		this.allocationSizeTextRange = this.buildAllocationSizeTextRange(astAnnotation);
 	}
 
-	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncName(this.buildName(astRoot));
-		this.nameTextRange = this.buildNameTextRange(astRoot);
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.syncName(this.buildName(astAnnotation));
+		this.nameTextRange = this.buildNameTextRange(astAnnotation);
 
-		this.syncInitialValue(this.buildInitialValue(astRoot));
-		this.initialValueTextRange = this.buildInitialValueTextRange(astRoot);
+		this.syncInitialValue(this.buildInitialValue(astAnnotation));
+		this.initialValueTextRange = this.buildInitialValueTextRange(astAnnotation);
 
-		this.syncAllocationSize(this.buildAllocationSize(astRoot));
-		this.allocationSizeTextRange = this.buildAllocationSizeTextRange(astRoot);
+		this.syncAllocationSize(this.buildAllocationSize(astAnnotation));
+		this.allocationSizeTextRange = this.buildAllocationSizeTextRange(astAnnotation);
 	}
 
 	@Override
@@ -122,16 +126,16 @@ abstract class SourceGeneratorAnnotation
 		this.firePropertyChanged(NAME_PROPERTY, old, astName);
 	}
 
-	private String buildName(CompilationUnit astRoot) {
-		return this.nameAdapter.getValue(astRoot);
+	private String buildName(Annotation astAnnotation) {
+		return this.nameAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getNameTextRange() {
 		return this.nameTextRange;
 	}
 
-	private TextRange buildNameTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.nameDeclarationAdapter, astRoot);
+	private TextRange buildNameTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.nameDeclarationAdapter, astAnnotation);
 	}
 
 	abstract DeclarationAnnotationElementAdapter<String> getNameAdapter();
@@ -154,16 +158,16 @@ abstract class SourceGeneratorAnnotation
 		this.firePropertyChanged(INITIAL_VALUE_PROPERTY, old, astIinitialValue);
 	}
 
-	private Integer buildInitialValue(CompilationUnit astRoot) {
-		return this.initialValueAdapter.getValue(astRoot);
+	private Integer buildInitialValue(Annotation astAnnotation) {
+		return this.initialValueAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getInitialValueTextRange() {
 		return this.initialValueTextRange;
 	}
 
-	private TextRange buildInitialValueTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.initialValueDeclarationAdapter, astRoot);
+	private TextRange buildInitialValueTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.initialValueDeclarationAdapter, astAnnotation);
 	}
 
 	abstract DeclarationAnnotationElementAdapter<Integer> getInitialValueAdapter();
@@ -186,16 +190,16 @@ abstract class SourceGeneratorAnnotation
 		this.firePropertyChanged(ALLOCATION_SIZE_PROPERTY, old, astAllocationSize);
 	}
 
-	private Integer buildAllocationSize(CompilationUnit astRoot) {
-		return this.allocationSizeAdapter.getValue(astRoot);
+	private Integer buildAllocationSize(Annotation astAnnotation) {
+		return this.allocationSizeAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getAllocationSizeTextRange() {
 		return this.allocationSizeTextRange;
 	}
 
-	private TextRange buildAllocationSizeTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.allocationSizeDeclarationAdapter, astRoot);
+	private TextRange buildAllocationSizeTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.allocationSizeDeclarationAdapter, astAnnotation);
 	}
 
 	abstract DeclarationAnnotationElementAdapter<Integer> getAllocationSizeAdapter();

@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
@@ -44,14 +44,18 @@ public abstract class SourceBaseTemporalAnnotation
 		this.valueAdapter = new AnnotatedElementAnnotationElementAdapter<String>(element, this.valueDeclarationAdapter);
 	}
 
-	public void initialize(CompilationUnit astRoot) {
-		this.value = this.buildValue(astRoot);
-		this.valueTextRange = this.buildValueTextRange(astRoot);
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.value = this.buildValue(astAnnotation);
+		this.valueTextRange = this.buildValueTextRange(astAnnotation);
 	}
 
-	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncValue(this.buildValue(astRoot));
-		this.valueTextRange = this.buildValueTextRange(astRoot);
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.syncValue(this.buildValue(astAnnotation));
+		this.valueTextRange = this.buildValueTextRange(astAnnotation);
 	}
 
 	@Override
@@ -86,16 +90,16 @@ public abstract class SourceBaseTemporalAnnotation
 		this.firePropertyChanged(VALUE_PROPERTY, old, astValue);
 	}
 
-	private TemporalType buildValue(CompilationUnit astRoot) {
-		return TemporalType.fromJavaAnnotationValue(this.valueAdapter.getValue(astRoot));
+	private TemporalType buildValue(Annotation astAnnotation) {
+		return TemporalType.fromJavaAnnotationValue(this.valueAdapter.getValue(astAnnotation));
 	}
 
 	public TextRange getValueTextRange() {
 		return this.valueTextRange;
 	}
 
-	private TextRange buildValueTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.valueDeclarationAdapter, astRoot);
+	private TextRange buildValueTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.valueDeclarationAdapter, astAnnotation);
 	}
 
 	protected abstract String getValueElementName();

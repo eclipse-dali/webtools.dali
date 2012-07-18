@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
@@ -47,14 +47,16 @@ public final class SourceMapKeyAnnotation
 		return ANNOTATION_NAME;
 	}
 
-	public void initialize(CompilationUnit astRoot) {
-		this.name = this.buildName(astRoot);
-		this.nameTextRange = this.buildNameTextRange(astRoot);
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		this.name = this.buildName(astAnnotation);
+		this.nameTextRange = this.buildNameTextRange(astAnnotation);
 	}
 
-	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncName(this.buildName(astRoot));
-		this.nameTextRange = this.buildNameTextRange(astRoot);
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		this.syncName(this.buildName(astAnnotation));
+		this.nameTextRange = this.buildNameTextRange(astAnnotation);
 	}
 
 	@Override
@@ -89,16 +91,16 @@ public final class SourceMapKeyAnnotation
 		this.firePropertyChanged(NAME_PROPERTY, old, astName);
 	}
 
-	private String buildName(CompilationUnit astRoot) {
-		return this.nameAdapter.getValue(astRoot);
+	private String buildName(Annotation astAnnotation) {
+		return this.nameAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getNameTextRange() {
 		return this.nameTextRange;
 	}
 
-	public TextRange buildNameTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(NAME_ADAPTER, astRoot);
+	public TextRange buildNameTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(NAME_ADAPTER, astAnnotation);
 	}
 
 	public boolean nameTouches(int pos) {

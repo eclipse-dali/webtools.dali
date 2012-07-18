@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
@@ -45,7 +45,7 @@ public final class SourceIdClassAnnotation
 	 * parse with <em>every</em> context model <em>update</em>. (This property
 	 * is one that is read during the context model <em>update</em>, as opposed
 	 * to the context model <em>sync</em>.)
-	 * <li>We do not calculate it during {@link #synchronizeWith(CompilationUnit)}
+	 * <li>We do not calculate it during {@link #synchronizeWith(Annotation)}
 	 * because<ul>
 	 * <li>when the class name ({@link #value}) is changed via API from the UI,
 	 * we are ignoring Java change events; so we would need to calculate it
@@ -54,7 +54,7 @@ public final class SourceIdClassAnnotation
 	 * <li>when the class name ({@link #value}) is changed via API from a test,
 	 * we are handling Java change events synchronously;
 	 * so we would detect a change in the fully-qualified class name during
-	 * {@link #synchronizeWith(CompilationUnit)}, triggering an
+	 * {@link #synchronizeWith(Annotation)}, triggering an
 	 * unwanted context model <em>sync</em> (Any resource model changes via
 	 * API should <em>not</em> trigger a context model <em>sync</em>.)
 	 * </ul>
@@ -78,14 +78,18 @@ public final class SourceIdClassAnnotation
 		return ANNOTATION_NAME;
 	}
 
-	public void initialize(CompilationUnit astRoot) {
-		this.value = this.buildValue(astRoot);
-		this.valueTextRange = this.buildValueTextRange(astRoot);
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.value = this.buildValue(astAnnotation);
+		this.valueTextRange = this.buildValueTextRange(astAnnotation);
 	}
 
-	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncValue(this.buildValue(astRoot));
-		this.valueTextRange = this.buildValueTextRange(astRoot);
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.syncValue(this.buildValue(astAnnotation));
+		this.valueTextRange = this.buildValueTextRange(astAnnotation);
 	}
 
 	@Override
@@ -128,16 +132,16 @@ public final class SourceIdClassAnnotation
 		this.firePropertyChanged(VALUE_PROPERTY, old, astValue);
 	}
 
-	private String buildValue(CompilationUnit astRoot) {
-		return this.valueAdapter.getValue(astRoot);
+	private String buildValue(Annotation astAnnotation) {
+		return this.valueAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getValueTextRange() {
 		return this.valueTextRange;
 	}
 
-	private TextRange buildValueTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(VALUE_ADAPTER, astRoot);
+	private TextRange buildValueTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(VALUE_ADAPTER, astAnnotation);
 	}
 
 	// ***** fully-qualified class name

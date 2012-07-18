@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
@@ -53,17 +53,17 @@ public abstract class SourceBaseJoinColumnAnnotation
 	}
 
 	@Override
-	public void initialize(CompilationUnit astRoot) {
-		super.initialize(astRoot);
-		this.referencedColumnName = this.buildReferencedColumnName(astRoot);
-		this.referencedColumnNameTextRange = this.buildReferencedColumnNameTextRange(astRoot);
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.referencedColumnName = this.buildReferencedColumnName(astAnnotation);
+		this.referencedColumnNameTextRange = this.buildReferencedColumnNameTextRange(astAnnotation);
 	}
 
 	@Override
-	public void synchronizeWith(CompilationUnit astRoot) {
-		super.synchronizeWith(astRoot);
-		this.syncReferencedColumnName(this.buildReferencedColumnName(astRoot));
-		this.referencedColumnNameTextRange = this.buildReferencedColumnNameTextRange(astRoot);
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.syncReferencedColumnName(this.buildReferencedColumnName(astAnnotation));
+		this.referencedColumnNameTextRange = this.buildReferencedColumnNameTextRange(astAnnotation);
 	}
 
 
@@ -87,16 +87,16 @@ public abstract class SourceBaseJoinColumnAnnotation
 		this.firePropertyChanged(REFERENCED_COLUMN_NAME_PROPERTY, old, astReferencedColumnName);
 	}
 
-	private String buildReferencedColumnName(CompilationUnit astRoot) {
-		return this.referencedColumnNameAdapter.getValue(astRoot);
+	private String buildReferencedColumnName(Annotation astAnnotation) {
+		return this.referencedColumnNameAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getReferencedColumnNameTextRange() {
 		return this.referencedColumnNameTextRange;
 	}
 
-	private TextRange buildReferencedColumnNameTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.referencedColumnNameDeclarationAdapter, astRoot);
+	private TextRange buildReferencedColumnNameTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.referencedColumnNameDeclarationAdapter, astAnnotation);
 	}
 
 	public boolean referencedColumnNameTouches(int pos) {

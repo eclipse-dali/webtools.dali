@@ -65,18 +65,25 @@ public abstract class AbstractJavaNamedColumn<A extends NamedColumnAnnotation, O
 		super(parent);
 		this.owner = owner;
 		this.setColumnAnnotation(columnAnnotation);
-		this.specifiedName = this.buildSpecifiedName();
-		this.columnDefinition = this.buildColumnDefinition();
+		this.initialize(this.getColumnAnnotation());
 	}
 
+	protected void initialize(A columnAnnotation) {
+		this.specifiedName = this.buildSpecifiedName(columnAnnotation);
+		this.columnDefinition = this.buildColumnDefinition(columnAnnotation);
+	}
 
 	// ********** synchronize/update **********
 
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.setSpecifiedName_(this.buildSpecifiedName());
-		this.setColumnDefinition_(this.buildColumnDefinition());
+		this.synchronizeWithResourceModel(getColumnAnnotation());
+	}
+
+	protected void synchronizeWithResourceModel(A columnAnnotation) {
+		this.setSpecifiedName_(this.buildSpecifiedName(columnAnnotation));
+		this.setColumnDefinition_(this.buildColumnDefinition(columnAnnotation));		
 	}
 
 	@Override
@@ -137,8 +144,8 @@ public abstract class AbstractJavaNamedColumn<A extends NamedColumnAnnotation, O
 		this.firePropertyChanged(SPECIFIED_NAME_PROPERTY, old, name);
 	}
 
-	protected String buildSpecifiedName() {
-		return this.getColumnAnnotation().getName();
+	protected String buildSpecifiedName(A columnAnnotation) {
+		return columnAnnotation.getName();
 	}
 
 	public String getDefaultName() {
@@ -176,8 +183,8 @@ public abstract class AbstractJavaNamedColumn<A extends NamedColumnAnnotation, O
 		this.firePropertyChanged(COLUMN_DEFINITION_PROPERTY, old, columnDefinition);
 	}
 
-	public String buildColumnDefinition() {
-		return this.getColumnAnnotation().getColumnDefinition();
+	public String buildColumnDefinition(A columnAnnotation) {
+		return columnAnnotation.getColumnDefinition();
 	}
 
 

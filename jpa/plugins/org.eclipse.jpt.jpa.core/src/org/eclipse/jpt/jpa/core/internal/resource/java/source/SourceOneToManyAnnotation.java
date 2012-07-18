@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.BooleanExpressionConverter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
@@ -60,23 +60,23 @@ public final class SourceOneToManyAnnotation
 	}
 
 	@Override
-	public void initialize(CompilationUnit astRoot) {
-		super.initialize(astRoot);
-		this.mappedBy = this.buildMappedBy(astRoot);
-		this.mappedByTextRange = this.buildMappedByTextRange(astRoot);
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.mappedBy = this.buildMappedBy(astAnnotation);
+		this.mappedByTextRange = this.buildMappedByTextRange(astAnnotation);
 
-		this.orphanRemoval = this.buildOrphanRemoval(astRoot);
-		this.orphanRemovalTextRange = this.buildOrphanRemovalTextRange(astRoot);
+		this.orphanRemoval = this.buildOrphanRemoval(astAnnotation);
+		this.orphanRemovalTextRange = this.buildOrphanRemovalTextRange(astAnnotation);
 	}
 
 	@Override
-	public void synchronizeWith(CompilationUnit astRoot) {
-		super.synchronizeWith(astRoot);
-		this.syncMappedBy(this.buildMappedBy(astRoot));
-		this.mappedByTextRange = this.buildMappedByTextRange(astRoot);
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.syncMappedBy(this.buildMappedBy(astAnnotation));
+		this.mappedByTextRange = this.buildMappedByTextRange(astAnnotation);
 
-		this.syncOrphanRemoval(this.buildOrphanRemoval(astRoot));
-		this.orphanRemovalTextRange = this.buildOrphanRemovalTextRange(astRoot);
+		this.syncOrphanRemoval(this.buildOrphanRemoval(astAnnotation));
+		this.orphanRemovalTextRange = this.buildOrphanRemovalTextRange(astAnnotation);
 	}
 
 	@Override
@@ -124,16 +124,16 @@ public final class SourceOneToManyAnnotation
 		this.firePropertyChanged(MAPPED_BY_PROPERTY, old, astMappedBy);
 	}
 
-	private String buildMappedBy(CompilationUnit astRoot) {
-		return this.mappedByAdapter.getValue(astRoot);
+	private String buildMappedBy(Annotation astAnnotation) {
+		return this.mappedByAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getMappedByTextRange() {
 		return this.mappedByTextRange;
 	}
 
-	private TextRange buildMappedByTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(MAPPED_BY_ADAPTER, astRoot);
+	private TextRange buildMappedByTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(MAPPED_BY_ADAPTER, astAnnotation);
 	}
 
 	public boolean mappedByTouches(int pos) {
@@ -163,12 +163,12 @@ public final class SourceOneToManyAnnotation
 		return this.orphanRemovalTextRange;
 	}
 
-	private TextRange buildOrphanRemovalTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(ORPHAN_REMOVAL_ADAPTER, astRoot);
+	private TextRange buildOrphanRemovalTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(ORPHAN_REMOVAL_ADAPTER, astAnnotation);
 	}
 
-	private Boolean buildOrphanRemoval(CompilationUnit astRoot) {
-		return this.orphanRemovalAdapter.getValue(astRoot);
+	private Boolean buildOrphanRemoval(Annotation astAnnotation) {
+		return this.orphanRemovalAdapter.getValue(astAnnotation);
 	}
 
 

@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.BooleanExpressionConverter;
@@ -56,20 +56,24 @@ public final class SourceBasicAnnotation
 		return ANNOTATION_NAME;
 	}
 
-	public void initialize(CompilationUnit astRoot) {
-		this.optional = this.buildOptional(astRoot);
-		this.optionalTextRange = this.buildOptionalTextRange(astRoot);
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.optional = this.buildOptional(astAnnotation);
+		this.optionalTextRange = this.buildOptionalTextRange(astAnnotation);
 
-		this.fetch = this.buildFetch(astRoot);
-		this.fetchTextRange = this.buildFetchTextRange(astRoot);
+		this.fetch = this.buildFetch(astAnnotation);
+		this.fetchTextRange = this.buildFetchTextRange(astAnnotation);
 	}
 
-	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncOptional(this.buildOptional(astRoot));
-		this.optionalTextRange = this.buildOptionalTextRange(astRoot);
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.syncOptional(this.buildOptional(astAnnotation));
+		this.optionalTextRange = this.buildOptionalTextRange(astAnnotation);
 
-		this.syncFetch(this.buildFetch(astRoot));
-		this.fetchTextRange = this.buildFetchTextRange(astRoot);
+		this.syncFetch(this.buildFetch(astAnnotation));
+		this.fetchTextRange = this.buildFetchTextRange(astAnnotation);
 	}
 
 	@Override
@@ -105,16 +109,16 @@ public final class SourceBasicAnnotation
 		this.firePropertyChanged(OPTIONAL_PROPERTY, old, astOptional);
 	}
 
-	private Boolean buildOptional(CompilationUnit astRoot) {
-		return this.optionalAdapter.getValue(astRoot);
+	private Boolean buildOptional(Annotation astAnnotation) {
+		return this.optionalAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getOptionalTextRange() {
 		return this.optionalTextRange;
 	}
 
-	private TextRange buildOptionalTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(OPTIONAL_ADAPTER, astRoot);
+	private TextRange buildOptionalTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(OPTIONAL_ADAPTER, astAnnotation);
 	}
 
 	// ***** fetch
@@ -135,16 +139,16 @@ public final class SourceBasicAnnotation
 		this.firePropertyChanged(FETCH_PROPERTY, old, astFetch);
 	}
 
-	private FetchType buildFetch(CompilationUnit astRoot) {
-		return FetchType.fromJavaAnnotationValue(this.fetchAdapter.getValue(astRoot));
+	private FetchType buildFetch(Annotation astAnnotation) {
+		return FetchType.fromJavaAnnotationValue(this.fetchAdapter.getValue(astAnnotation));
 	}
 
 	public TextRange getFetchTextRange() {
 		return this.fetchTextRange;
 	}
 
-	private TextRange buildFetchTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(FETCH_ADAPTER, astRoot);
+	private TextRange buildFetchTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(FETCH_ADAPTER, astAnnotation);
 	}
 
 

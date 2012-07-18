@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
@@ -59,17 +59,17 @@ public abstract class SourceBaseDiscriminatorColumnAnnotation
 	}
 
 	@Override
-	public void initialize(CompilationUnit astRoot) {
-		super.initialize(astRoot);
-		this.discriminatorType = this.buildDiscriminatorType(astRoot);
-		this.length = this.buildLength(astRoot);
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.discriminatorType = this.buildDiscriminatorType(astAnnotation);
+		this.length = this.buildLength(astAnnotation);
 	}
 
 	@Override
-	public void synchronizeWith(CompilationUnit astRoot) {
-		super.synchronizeWith(astRoot);
-		this.syncLength(this.buildLength(astRoot));
-		this.syncDiscriminatorType(this.buildDiscriminatorType(astRoot));
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.syncLength(this.buildLength(astAnnotation));
+		this.syncDiscriminatorType(this.buildDiscriminatorType(astAnnotation));
 	}
 
 
@@ -93,8 +93,8 @@ public abstract class SourceBaseDiscriminatorColumnAnnotation
 		this.firePropertyChanged(DISCRIMINATOR_TYPE_PROPERTY, old, astDiscriminatorType);
 	}
 
-	private DiscriminatorType buildDiscriminatorType(CompilationUnit astRoot) {
-		return DiscriminatorType.fromJavaAnnotationValue(this.discriminatorTypeAdapter.getValue(astRoot));
+	private DiscriminatorType buildDiscriminatorType(Annotation astAnnotation) {
+		return DiscriminatorType.fromJavaAnnotationValue(this.discriminatorTypeAdapter.getValue(astAnnotation));
 	}
 
 	private DeclarationAnnotationElementAdapter<String> buildDiscriminatorTypeDeclarationAdapter() {
@@ -125,8 +125,8 @@ public abstract class SourceBaseDiscriminatorColumnAnnotation
 		this.firePropertyChanged(LENGTH_PROPERTY, old, astLength);
 	}
 
-	private Integer buildLength(CompilationUnit astRoot) {
-		return this.lengthAdapter.getValue(astRoot);
+	private Integer buildLength(Annotation astAnnotation) {
+		return this.lengthAdapter.getValue(astAnnotation);
 	}
 
 	private DeclarationAnnotationElementAdapter<Integer> buildLengthDeclarationAdapter() {

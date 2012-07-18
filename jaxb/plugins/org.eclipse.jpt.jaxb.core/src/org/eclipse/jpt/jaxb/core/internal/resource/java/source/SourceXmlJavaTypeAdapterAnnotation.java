@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
@@ -107,18 +108,22 @@ public final class SourceXmlJavaTypeAdapterAnnotation
 		return JAXB.XML_JAVA_TYPE_ADAPTER;
 	}
 	
-	public void initialize(CompilationUnit astRoot) {
-		this.value = buildValue(astRoot);
-		this.fullyQualifiedValue = buildFullyQualifiedValue(astRoot);
-		this.type = buildType(astRoot);
-		this.fullyQualifiedType = buildFullyQualifiedType(astRoot);
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.value = buildValue(astAnnotation);
+		this.fullyQualifiedValue = buildFullyQualifiedValue(astAnnotation);
+		this.type = buildType(astAnnotation);
+		this.fullyQualifiedType = buildFullyQualifiedType(astAnnotation);
 	}
 	
-	public void synchronizeWith(CompilationUnit astRoot) {
-		syncValue(buildValue(astRoot));
-		syncType(buildType(astRoot));
-		syncFullyQualifiedValue(buildFullyQualifiedValue(astRoot));
-		syncFullyQualifiedType(buildFullyQualifiedType(astRoot));
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		syncValue(buildValue(astAnnotation));
+		syncType(buildType(astAnnotation));
+		syncFullyQualifiedValue(buildFullyQualifiedValue(astAnnotation));
+		syncFullyQualifiedType(buildFullyQualifiedType(astAnnotation));
 		
 		this.suppressFQValueEventNotification = false;
 		this.suppressFQTypeEventNotification = false;
@@ -152,8 +157,8 @@ public final class SourceXmlJavaTypeAdapterAnnotation
 		this.firePropertyChanged(VALUE_PROPERTY, old, astValue);
 	}
 	
-	private String buildValue(CompilationUnit astRoot) {
-		return this.valueAdapter.getValue(astRoot);
+	private String buildValue(Annotation astAnnotation) {
+		return this.valueAdapter.getValue(astAnnotation);
 	}
 	
 	public TextRange getValueTextRange(CompilationUnit astRoot) {
@@ -172,8 +177,8 @@ public final class SourceXmlJavaTypeAdapterAnnotation
 		}
 	}
 	
-	private String buildFullyQualifiedValue(CompilationUnit astRoot) {
-		return (this.value == null) ? null : ASTTools.resolveFullyQualifiedName(this.valueAdapter.getExpression(astRoot));
+	private String buildFullyQualifiedValue(Annotation astAnnotation) {
+		return (this.value == null) ? null : ASTTools.resolveFullyQualifiedName(this.valueAdapter.getExpression(astAnnotation));
 	}
 	
 	// ***** type
@@ -196,8 +201,8 @@ public final class SourceXmlJavaTypeAdapterAnnotation
 		this.firePropertyChanged(TYPE_PROPERTY, old, astType);
 	}
 	
-	private String buildType(CompilationUnit astRoot) {
-		return this.typeAdapter.getValue(astRoot);
+	private String buildType(Annotation astAnnotation) {
+		return this.typeAdapter.getValue(astAnnotation);
 	}
 	
 	public TextRange getTypeTextRange(CompilationUnit astRoot) {
@@ -216,8 +221,8 @@ public final class SourceXmlJavaTypeAdapterAnnotation
 		}
 	}
 	
-	private String buildFullyQualifiedType(CompilationUnit astRoot) {
-		return (this.type == null) ? null : ASTTools.resolveFullyQualifiedName(this.typeAdapter.getExpression(astRoot));
+	private String buildFullyQualifiedType(Annotation astAnnotation) {
+		return (this.type == null) ? null : ASTTools.resolveFullyQualifiedName(this.typeAdapter.getExpression(astAnnotation));
 	}
 	
 	

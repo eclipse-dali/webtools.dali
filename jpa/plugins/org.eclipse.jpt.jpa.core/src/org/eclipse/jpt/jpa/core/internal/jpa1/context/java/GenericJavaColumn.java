@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -38,24 +38,28 @@ public class GenericJavaColumn
 
 	public GenericJavaColumn(JavaJpaContextNode parent, JavaColumn.Owner owner) {
 		super(parent, owner);
-		this.specifiedLength = this.buildSpecifiedLength();
-		this.specifiedPrecision = this.buildSpecifiedPrecision();
-		this.specifiedScale = this.buildSpecifiedScale();
 		//build defaults during construction for performance
 		this.defaultLength = this.buildDefaultLength();
 		this.defaultPrecision = this.buildDefaultPrecision();
 		this.defaultScale = this.buildDefaultScale();
 	}
 
+	@Override
+	protected void initialize(CompleteColumnAnnotation columnAnnotation) {
+		super.initialize(columnAnnotation);
+		this.specifiedLength = this.buildSpecifiedLength(columnAnnotation);
+		this.specifiedPrecision = this.buildSpecifiedPrecision(columnAnnotation);
+		this.specifiedScale = this.buildSpecifiedScale(columnAnnotation);
+	}
 
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.setSpecifiedLength_(this.buildSpecifiedLength());
-		this.setSpecifiedPrecision_(this.buildSpecifiedPrecision());
-		this.setSpecifiedScale_(this.buildSpecifiedScale());
+	public void synchronizeWithResourceModel(CompleteColumnAnnotation columnAnnotation) {
+		super.synchronizeWithResourceModel(columnAnnotation);
+		this.setSpecifiedLength_(this.buildSpecifiedLength(columnAnnotation));
+		this.setSpecifiedPrecision_(this.buildSpecifiedPrecision(columnAnnotation));
+		this.setSpecifiedScale_(this.buildSpecifiedScale(columnAnnotation));
 	}
 
 	@Override
@@ -104,8 +108,8 @@ public class GenericJavaColumn
 		this.firePropertyChanged(SPECIFIED_LENGTH_PROPERTY, old, length);
 	}
 
-	protected Integer buildSpecifiedLength() {
-		return this.getColumnAnnotation().getLength();
+	protected Integer buildSpecifiedLength(CompleteColumnAnnotation columnAnnotation) {
+		return columnAnnotation.getLength();
 	}
 
 	public int getDefaultLength() {
@@ -147,8 +151,8 @@ public class GenericJavaColumn
 		this.firePropertyChanged(SPECIFIED_PRECISION_PROPERTY, old, precision);
 	}
 
-	protected Integer buildSpecifiedPrecision() {
-		return this.getColumnAnnotation().getPrecision();
+	protected Integer buildSpecifiedPrecision(CompleteColumnAnnotation columnAnnotation) {
+		return columnAnnotation.getPrecision();
 	}
 
 	public int getDefaultPrecision() {
@@ -190,8 +194,8 @@ public class GenericJavaColumn
 		this.firePropertyChanged(SPECIFIED_SCALE_PROPERTY, old, scale);
 	}
 
-	protected Integer buildSpecifiedScale() {
-		return this.getColumnAnnotation().getScale();
+	protected Integer buildSpecifiedScale(CompleteColumnAnnotation columnAnnotation) {
+		return columnAnnotation.getScale();
 	}
 
 	public int getDefaultScale() {

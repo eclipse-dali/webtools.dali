@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,9 @@ package org.eclipse.jpt.common.core.utility.jdt;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.MarkerAnnotation;
+import org.eclipse.jdt.core.dom.NormalAnnotation;
+import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 
 /**
  * Adapt a Java annotation with a simple-to-use interface.
@@ -29,24 +32,23 @@ public interface AnnotationAdapter {
 	/**
 	 * Given the specified compilation unit, return the value of the
 	 * adapter's annotation.
-	 * @see #getAnnotation()
 	 */
 	Annotation getAnnotation(CompilationUnit astRoot);
 
 	/**
-	 * Build a new marker annotation, replacing the original annotation if present.
+	 * Build and return a new marker annotation, replacing the original annotation if present.
 	 */
-	void newMarkerAnnotation();
+	MarkerAnnotation newMarkerAnnotation();
 
 	/**
-	 * Build a new single member annotation, replacing the original annotation if present.
+	 * Build and return a new single member annotation, replacing the original annotation if present.
 	 */
-	void newSingleMemberAnnotation();
+	SingleMemberAnnotation newSingleMemberAnnotation();
 
 	/**
-	 * Build a new normal annotation, replacing the original annotation if present.
+	 * Build and return a new normal annotation, replacing the original annotation if present.
 	 */
-	void newNormalAnnotation();
+	NormalAnnotation newNormalAnnotation();
 
 	/**
 	 * Remove the annotation.

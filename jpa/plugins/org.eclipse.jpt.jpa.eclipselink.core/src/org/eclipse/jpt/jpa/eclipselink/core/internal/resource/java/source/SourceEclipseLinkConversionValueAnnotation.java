@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
@@ -59,20 +59,24 @@ final class SourceEclipseLinkConversionValueAnnotation
 		return ANNOTATION_NAME;
 	}
 
-	public void initialize(CompilationUnit astRoot) {
-		this.dataValue = this.buildDataValue(astRoot);
-		this.dataValueTextRange = this.buildDataValueTextRange(astRoot);
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.dataValue = this.buildDataValue(astAnnotation);
+		this.dataValueTextRange = this.buildDataValueTextRange(astAnnotation);
 
-		this.objectValue = this.buildObjectValue(astRoot);
-		this.objectValueTextRange = this.buildObjectValueTextRange(astRoot);
+		this.objectValue = this.buildObjectValue(astAnnotation);
+		this.objectValueTextRange = this.buildObjectValueTextRange(astAnnotation);
 	}
 
-	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncDataValue(this.buildDataValue(astRoot));
-		this.dataValueTextRange = this.buildDataValueTextRange(astRoot);
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.syncDataValue(this.buildDataValue(astAnnotation));
+		this.dataValueTextRange = this.buildDataValueTextRange(astAnnotation);
 
-		this.syncObjectValue(this.buildObjectValue(astRoot));
-		this.objectValueTextRange = this.buildObjectValueTextRange(astRoot);
+		this.syncObjectValue(this.buildObjectValue(astAnnotation));
+		this.objectValueTextRange = this.buildObjectValueTextRange(astAnnotation);
 	}
 
 
@@ -96,16 +100,16 @@ final class SourceEclipseLinkConversionValueAnnotation
 		this.firePropertyChanged(DATA_VALUE_PROPERTY, old, astDataValue);
 	}
 
-	private String buildDataValue(CompilationUnit astRoot) {
-		return this.dataValueAdapter.getValue(astRoot);
+	private String buildDataValue(Annotation astAnnotation) {
+		return this.dataValueAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getDataValueTextRange() {
 		return this.dataValueTextRange;
 	}
 
-	private TextRange buildDataValueTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.dataValueDeclarationAdapter, astRoot);
+	private TextRange buildDataValueTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.dataValueDeclarationAdapter, astAnnotation);
 	}
 
 	private DeclarationAnnotationElementAdapter<String> buildDataValueDeclarationAdapter() {
@@ -134,16 +138,16 @@ final class SourceEclipseLinkConversionValueAnnotation
 		this.firePropertyChanged(OBJECT_VALUE_PROPERTY, old, astObjectValue);
 	}
 
-	private String buildObjectValue(CompilationUnit astRoot) {
-		return this.objectValueAdapter.getValue(astRoot);
+	private String buildObjectValue(Annotation astAnnotation) {
+		return this.objectValueAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getObjectValueTextRange() {
 		return this.objectValueTextRange;
 	}
 
-	private TextRange buildObjectValueTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.objectValueDeclarationAdapter, astRoot);
+	private TextRange buildObjectValueTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.objectValueDeclarationAdapter, astAnnotation);
 	}
 
 	private DeclarationAnnotationElementAdapter<String> buildObjectValueDeclarationAdapter() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.core.internal.utility.jdt;
 
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
@@ -47,12 +48,20 @@ public class AnnotatedElementAnnotationElementAdapter<T>
 		return this.daea.getValue(this.annotatedElement.getModifiedDeclaration(astRoot));
 	}
 
+	public T getValue(Annotation annotation) {
+		return this.daea.getValue(annotation);
+	}
+
 	public void setValue(T value) {
 		this.edit(this.buildSetValueEditor(value));
 	}
 
 	public Expression getExpression(CompilationUnit astRoot) {
 		return this.daea.getExpression(this.annotatedElement.getModifiedDeclaration(astRoot));
+	}
+
+	public Expression getExpression(Annotation annotation) {
+		return this.daea.getExpression(annotation);
 	}
 
 	public ASTNode getAstNode(CompilationUnit astRoot) {

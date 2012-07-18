@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.source;
 
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
@@ -61,12 +62,16 @@ public class SourceXmlInverseReferenceAnnotation
 		return ELJaxb.XML_INVERSE_REFERENCE;
 	}
 	
-	public void initialize(CompilationUnit astRoot) {
-		this.mappedBy = buildMappedBy(astRoot);
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.mappedBy = buildMappedBy(astAnnotation);
 	}
 	
-	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncMappedBy(buildMappedBy(astRoot));
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.syncMappedBy(buildMappedBy(astAnnotation));
 	}
 	
 	@Override
@@ -94,8 +99,8 @@ public class SourceXmlInverseReferenceAnnotation
 		this.firePropertyChanged(MAPPED_BY_PROPERTY, old, this.mappedBy);
 	}
 	
-	private String buildMappedBy(CompilationUnit astRoot) {
-		return this.mappedByAdapter.getValue(astRoot);
+	private String buildMappedBy(Annotation astAnnotation) {
+		return this.mappedByAdapter.getValue(astAnnotation);
 	}
 	
 	public TextRange getMappedByTextRange(CompilationUnit astRoot) {

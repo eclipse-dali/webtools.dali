@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.CombinationIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
@@ -73,19 +73,19 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 	}
 
 	@Override
-	public void initialize(CompilationUnit astRoot) {
-		super.initialize(astRoot);
-		this.defaultObjectValue = this.buildDefaultObjectValue(astRoot);
-		this.defaultObjectValueTextRange = this.buildDefaultObjectValueTextRange(astRoot);
-		this.conversionValuesContainer.initializeFromContainerAnnotation(this.getAstAnnotation(astRoot));
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.defaultObjectValue = this.buildDefaultObjectValue(astAnnotation);
+		this.defaultObjectValueTextRange = this.buildDefaultObjectValueTextRange(astAnnotation);
+		this.conversionValuesContainer.initializeFromContainerAnnotation(astAnnotation);
 	}
 
 	@Override
-	public void synchronizeWith(CompilationUnit astRoot) {
-		super.synchronizeWith(astRoot);
-		this.syncDefaultObjectValue(this.buildDefaultObjectValue(astRoot));
-		this.defaultObjectValueTextRange = this.buildDefaultObjectValueTextRange(astRoot);
-		this.conversionValuesContainer.synchronize(this.getAstAnnotation(astRoot));
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.syncDefaultObjectValue(this.buildDefaultObjectValue(astAnnotation));
+		this.defaultObjectValueTextRange = this.buildDefaultObjectValueTextRange(astAnnotation);
+		this.conversionValuesContainer.synchronize(astAnnotation);
 	}
 
 	@Override
@@ -137,16 +137,16 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 		this.firePropertyChanged(DEFAULT_OBJECT_VALUE_PROPERTY, old, astDefaultObjectValue);
 	}
 
-	private String buildDefaultObjectValue(CompilationUnit astRoot) {
-		return this.defaultObjectValueAdapter.getValue(astRoot);
+	private String buildDefaultObjectValue(Annotation astAnnotation) {
+		return this.defaultObjectValueAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getDefaultObjectValueTextRange() {
 		return this.defaultObjectValueTextRange;
 	}
 
-	private TextRange buildDefaultObjectValueTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.defaultObjectValueDeclarationAdapter, astRoot);
+	private TextRange buildDefaultObjectValueTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.defaultObjectValueDeclarationAdapter, astAnnotation);
 	}
 
 	private DeclarationAnnotationElementAdapter<String> buildDefaultObjectValueAdapter() {

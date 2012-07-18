@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,9 @@ package org.eclipse.jpt.common.core.internal.utility.jdt;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.MarkerAnnotation;
+import org.eclipse.jdt.core.dom.NormalAnnotation;
+import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
@@ -41,16 +44,22 @@ public abstract class AbstractAnnotationAdapter implements AnnotationAdapter {
 		return this.daa.getAnnotation(this.annotatedElement.getModifiedDeclaration(astRoot));
 	}
 
-	public void newMarkerAnnotation() {
-		this.edit(this.buildNewMarkerAnnotationEditor());
+	public MarkerAnnotation newMarkerAnnotation() {
+		NewMarkerAnnotationEditor editor = this.buildNewMarkerAnnotationEditor();
+		this.edit(editor);
+		return editor.getResult();
 	}
 
-	public void newSingleMemberAnnotation() {
-		this.edit(this.buildNewSingleMemberAnnotationEditor());
+	public SingleMemberAnnotation newSingleMemberAnnotation() {
+		NewSingleMemberAnnotationEditor editor = this.buildNewSingleMemberAnnotationEditor();
+		this.edit(editor);
+		return editor.getResult();
 	}
 
-	public void newNormalAnnotation() {
-		this.edit(this.buildNewNormalAnnotationEditor());
+	public NormalAnnotation newNormalAnnotation() {
+		NewNormalAnnotationEditor editor = this.buildNewNormalAnnotationEditor();
+		this.edit(editor);
+		return editor.getResult();
 	}
 
 	public void removeAnnotation() {
@@ -76,15 +85,15 @@ public abstract class AbstractAnnotationAdapter implements AnnotationAdapter {
 
 	// ********** factory methods **********
 
-	protected AnnotatedElement.Editor buildNewMarkerAnnotationEditor() {
+	protected NewMarkerAnnotationEditor buildNewMarkerAnnotationEditor() {
 		return new NewMarkerAnnotationEditor(this.daa);
 	}
 
-	protected AnnotatedElement.Editor buildNewSingleMemberAnnotationEditor() {
+	protected NewSingleMemberAnnotationEditor buildNewSingleMemberAnnotationEditor() {
 		return new NewSingleMemberAnnotationEditor(this.daa);
 	}
 
-	protected AnnotatedElement.Editor buildNewNormalAnnotationEditor() {
+	protected NewNormalAnnotationEditor buildNewNormalAnnotationEditor() {
 		return new NewNormalAnnotationEditor(this.daa);
 	}
 
@@ -98,12 +107,17 @@ public abstract class AbstractAnnotationAdapter implements AnnotationAdapter {
 	protected static class NewMarkerAnnotationEditor implements AnnotatedElement.Editor {
 		private final DeclarationAnnotationAdapter daa;
 
+		private MarkerAnnotation result;
+
 		NewMarkerAnnotationEditor(DeclarationAnnotationAdapter daa) {
 			super();
 			this.daa = daa;
 		}
 		public void edit(ModifiedDeclaration declaration) {
-			this.daa.newMarkerAnnotation(declaration);
+			this.result = this.daa.newMarkerAnnotation(declaration);
+		}
+		public MarkerAnnotation getResult() {
+			return this.result;
 		}
 		@Override
 		public String toString() {
@@ -115,12 +129,17 @@ public abstract class AbstractAnnotationAdapter implements AnnotationAdapter {
 	protected static class NewSingleMemberAnnotationEditor implements AnnotatedElement.Editor {
 		private final DeclarationAnnotationAdapter daa;
 
+		private SingleMemberAnnotation result;
+
 		NewSingleMemberAnnotationEditor(DeclarationAnnotationAdapter daa) {
 			super();
 			this.daa = daa;
 		}
 		public void edit(ModifiedDeclaration declaration) {
-			this.daa.newSingleMemberAnnotation(declaration);
+			this.result = this.daa.newSingleMemberAnnotation(declaration);
+		}
+		public SingleMemberAnnotation getResult() {
+			return this.result;
 		}
 		@Override
 		public String toString() {
@@ -132,12 +151,17 @@ public abstract class AbstractAnnotationAdapter implements AnnotationAdapter {
 	protected static class NewNormalAnnotationEditor implements AnnotatedElement.Editor {
 		private final DeclarationAnnotationAdapter daa;
 
+		private NormalAnnotation result;
+
 		NewNormalAnnotationEditor(DeclarationAnnotationAdapter daa) {
 			super();
 			this.daa = daa;
 		}
 		public void edit(ModifiedDeclaration declaration) {
-			this.daa.newNormalAnnotation(declaration);
+			this.result = this.daa.newNormalAnnotation(declaration);
+		}
+		public NormalAnnotation getResult() {
+			return this.result;
 		}
 		@Override
 		public String toString() {

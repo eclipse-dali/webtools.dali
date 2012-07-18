@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. 
+ *  Copyright (c) 2011, 2012  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.BooleanExpressionConverter;
@@ -40,10 +40,12 @@ public class SourceEclipseLinkMultitenantAnnotation2_3
 	private static final DeclarationAnnotationElementAdapter<String> VALUE_ADAPTER = buildValueAdapter();
 	private final AnnotationElementAdapter<String> valueAdapter;
 	private MultitenantType2_3 value;
+	private TextRange valueTextRange;
 
 	private static final DeclarationAnnotationElementAdapter<Boolean> INCLUDE_CRITERIA_ADAPTER = buildIncludeCriteriaAdapter();
 	private final AnnotationElementAdapter<Boolean> includeCriteriaAdapter;
 	private Boolean includeCriteria;
+	private TextRange includeCriteriaTextRange;
 
 	public SourceEclipseLinkMultitenantAnnotation2_3(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
 		super(parent, element, DECLARATION_ANNOTATION_ADAPTER);
@@ -56,14 +58,22 @@ public class SourceEclipseLinkMultitenantAnnotation2_3
 		return ANNOTATION_NAME;
 	}
 
-	public void initialize(CompilationUnit astRoot) {
-		this.value = this.buildValue(astRoot);
-		this.includeCriteria = this.buildIncludeCriteria(astRoot);
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.value = this.buildValue(astAnnotation);
+		this.valueTextRange = this.buildValueTextRange(astAnnotation);
+		this.includeCriteria = this.buildIncludeCriteria(astAnnotation);
+		this.includeCriteriaTextRange = this.buildIncludeCriteriaTextRange(astAnnotation);
 	}
 
-	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncValue(this.buildValue(astRoot));
-		this.syncIncludeCriteria(this.buildIncludeCriteria(astRoot));
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.syncValue(this.buildValue(astAnnotation));
+		this.valueTextRange = this.buildValueTextRange(astAnnotation);
+		this.syncIncludeCriteria(this.buildIncludeCriteria(astAnnotation));
+		this.includeCriteriaTextRange = this.buildIncludeCriteriaTextRange(astAnnotation);
 	}
 
 	@Override
@@ -102,13 +112,18 @@ public class SourceEclipseLinkMultitenantAnnotation2_3
 		this.firePropertyChanged(VALUE_PROPERTY, old, astValue);
 	}
 
-	private MultitenantType2_3 buildValue(CompilationUnit astRoot) {
-		return MultitenantType2_3.fromJavaAnnotationValue(this.valueAdapter.getValue(astRoot));
+	private MultitenantType2_3 buildValue(Annotation astAnnotation) {
+		return MultitenantType2_3.fromJavaAnnotationValue(this.valueAdapter.getValue(astAnnotation));
 	}
 
-	public TextRange getValueTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(VALUE_ADAPTER, astRoot);
+	public TextRange getValueTextRange() {
+		return this.valueTextRange;
 	}
+
+	private TextRange buildValueTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(VALUE_ADAPTER, astAnnotation);
+	}
+
 
 	// ***** include criteria
 	public Boolean getIncludeCriteria() {
@@ -128,12 +143,16 @@ public class SourceEclipseLinkMultitenantAnnotation2_3
 		this.firePropertyChanged(INCLUDE_CRITERIA_PROPERTY, old, astIncludeCriteria);
 	}
 
-	private Boolean buildIncludeCriteria(CompilationUnit astRoot) {
-		return this.includeCriteriaAdapter.getValue(astRoot);
+	private Boolean buildIncludeCriteria(Annotation astAnnotation) {
+		return this.includeCriteriaAdapter.getValue(astAnnotation);
 	}
 
-	public TextRange getIncludeCriteriaTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(INCLUDE_CRITERIA_ADAPTER, astRoot);
+	public TextRange getIncludeCriteriaTextRange() {
+		return this.includeCriteriaTextRange;
+	}
+
+	private TextRange buildIncludeCriteriaTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(INCLUDE_CRITERIA_ADAPTER, astAnnotation);
 	}
 
 

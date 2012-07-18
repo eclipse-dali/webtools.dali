@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
@@ -32,12 +31,14 @@ public final class SourceNamedAnnotation
 		return this.annotationName;
 	}
 
-	public void initialize(CompilationUnit astRoot) {
-		//nothing
+	@Override
+	public void initialize(org.eclipse.jdt.core.dom.Annotation astAnnotation) {
+		//do nothing
 	}
-	
-	public void synchronizeWith(CompilationUnit astRoot) {
-		//nothing
+
+	@Override
+	public void synchronizeWith(org.eclipse.jdt.core.dom.Annotation astAnnotation) {
+		//do nothing
 	}
 
 	@Override

@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
@@ -48,14 +48,16 @@ public final class SourceMapsId2_0Annotation
 		return ANNOTATION_NAME;
 	}
 	
-	public void initialize(CompilationUnit astRoot) {
-		this.value = this.buildValue(astRoot);
-		this.valueTextRange = this.buildValueTextRange(astRoot);
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		this.value = this.buildValue(astAnnotation);
+		this.valueTextRange = this.buildValueTextRange(astAnnotation);
 	}
 	
-	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncValue(this.buildValue(astRoot));
-		this.valueTextRange = this.buildValueTextRange(astRoot);
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		this.syncValue(this.buildValue(astAnnotation));
+		this.valueTextRange = this.buildValueTextRange(astAnnotation);
 	}
 	
 	@Override
@@ -89,16 +91,16 @@ public final class SourceMapsId2_0Annotation
 		this.firePropertyChanged(VALUE_PROPERTY, old, astValue);
 	}
 
-	private String buildValue(CompilationUnit astRoot) {
-		return this.valueAdapter.getValue(astRoot);
+	private String buildValue(Annotation astAnnotation) {
+		return this.valueAdapter.getValue(astAnnotation);
 	}
 	
 	public TextRange getValueTextRange() {
 		return this.valueTextRange;
 	}
 	
-	private TextRange buildValueTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(VALUE_ADAPTER, astRoot);
+	private TextRange buildValueTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(VALUE_ADAPTER, astAnnotation);
 	}
 	
 	public boolean valueTouches(int pos) {

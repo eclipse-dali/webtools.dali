@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
@@ -96,18 +97,22 @@ public final class SourceXmlElementWrapperAnnotation
 		return JAXB.XML_ELEMENT_WRAPPER;
 	}
 
-	public void initialize(CompilationUnit astRoot) {
-		this.name = this.buildName(astRoot);
-		this.namespace = this.buildNamespace(astRoot);
-		this.nillable = this.buildNillable(astRoot);
-		this.required = this.buildRequired(astRoot);
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.name = this.buildName(astAnnotation);
+		this.namespace = this.buildNamespace(astAnnotation);
+		this.nillable = this.buildNillable(astAnnotation);
+		this.required = this.buildRequired(astAnnotation);
 	}
 
-	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncName(this.buildName(astRoot));
-		this.syncNamespace(this.buildNamespace(astRoot));
-		this.syncNillable(this.buildNillable(astRoot));
-		this.syncRequired(this.buildRequired(astRoot));
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.syncName(this.buildName(astAnnotation));
+		this.syncNamespace(this.buildNamespace(astAnnotation));
+		this.syncNillable(this.buildNillable(astAnnotation));
+		this.syncRequired(this.buildRequired(astAnnotation));
 	}
 
 	@Override
@@ -136,8 +141,8 @@ public final class SourceXmlElementWrapperAnnotation
 		this.firePropertyChanged(NAME_PROPERTY, old, astName);
 	}
 
-	private String buildName(CompilationUnit astRoot) {
-		return this.nameAdapter.getValue(astRoot);
+	private String buildName(Annotation astAnnotation) {
+		return this.nameAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
@@ -167,8 +172,8 @@ public final class SourceXmlElementWrapperAnnotation
 		this.firePropertyChanged(NAMESPACE_PROPERTY, old, astNamespace);
 	}
 
-	private String buildNamespace(CompilationUnit astRoot) {
-		return this.namespaceAdapter.getValue(astRoot);
+	private String buildNamespace(Annotation astAnnotation) {
+		return this.namespaceAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getNamespaceTextRange(CompilationUnit astRoot) {
@@ -198,8 +203,8 @@ public final class SourceXmlElementWrapperAnnotation
 		this.firePropertyChanged(NILLABLE_PROPERTY, old, astNillable);
 	}
 
-	private Boolean buildNillable(CompilationUnit astRoot) {
-		return this.nillableAdapter.getValue(astRoot);
+	private Boolean buildNillable(Annotation astAnnotation) {
+		return this.nillableAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getNillableTextRange(CompilationUnit astRoot) {
@@ -224,8 +229,8 @@ public final class SourceXmlElementWrapperAnnotation
 		this.firePropertyChanged(REQUIRED_PROPERTY, old, astRequired);
 	}
 
-	private Boolean buildRequired(CompilationUnit astRoot) {
-		return this.requiredAdapter.getValue(astRoot);
+	private Boolean buildRequired(Annotation astAnnotation) {
+		return this.requiredAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getRequiredTextRange(CompilationUnit astRoot) {

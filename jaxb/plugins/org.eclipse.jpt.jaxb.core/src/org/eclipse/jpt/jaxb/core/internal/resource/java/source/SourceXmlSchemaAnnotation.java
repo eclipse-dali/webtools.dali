@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
@@ -103,21 +104,25 @@ public class SourceXmlSchemaAnnotation
 	public String getAnnotationName() {
 		return JAXB.XML_SCHEMA;
 	}
-	
-	public void initialize(CompilationUnit astRoot) {
-		this.attributeFormDefault = buildAttributeFormDefault(astRoot);
-		this.elementFormDefault = buildElementFormDefault(astRoot);
-		this.location = buildLocation(astRoot);
-		this.namespace = buildNamespace(astRoot);
-		this.xmlnsContainer.initializeFromContainerAnnotation(this.getAstAnnotation(astRoot));
+
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.attributeFormDefault = buildAttributeFormDefault(astAnnotation);
+		this.elementFormDefault = buildElementFormDefault(astAnnotation);
+		this.location = buildLocation(astAnnotation);
+		this.namespace = buildNamespace(astAnnotation);
+		this.xmlnsContainer.initializeFromContainerAnnotation(astAnnotation);
 	}
 	
-	public void synchronizeWith(CompilationUnit astRoot) {
-		syncAttributeFormDefault(buildAttributeFormDefault(astRoot));
-		syncElementFormDefault(buildElementFormDefault(astRoot));
-		syncLocation(buildLocation(astRoot));
-		syncNamespace(buildNamespace(astRoot));
-		this.xmlnsContainer.synchronize(this.getAstAnnotation(astRoot));
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		syncAttributeFormDefault(buildAttributeFormDefault(astAnnotation));
+		syncElementFormDefault(buildElementFormDefault(astAnnotation));
+		syncLocation(buildLocation(astAnnotation));
+		syncNamespace(buildNamespace(astAnnotation));
+		this.xmlnsContainer.synchronize(astAnnotation);
 	}
 	
 	@Override
@@ -139,8 +144,8 @@ public class SourceXmlSchemaAnnotation
 		}
 	}
 	
-	private XmlNsForm buildAttributeFormDefault(CompilationUnit astRoot) {
-		return XmlNsForm.fromJavaAnnotationValue(this.attributeFormDefaultAdapter.getValue(astRoot));
+	private XmlNsForm buildAttributeFormDefault(Annotation astAnnotation) {
+		return XmlNsForm.fromJavaAnnotationValue(this.attributeFormDefaultAdapter.getValue(astAnnotation));
 	}
 	
 	private void syncAttributeFormDefault(XmlNsForm attributeFormDefault) {
@@ -167,8 +172,8 @@ public class SourceXmlSchemaAnnotation
 		}
 	}
 	
-	private XmlNsForm buildElementFormDefault(CompilationUnit astRoot) {
-		return XmlNsForm.fromJavaAnnotationValue(this.elementFormDefaultAdapter.getValue(astRoot));
+	private XmlNsForm buildElementFormDefault(Annotation astAnnotation) {
+		return XmlNsForm.fromJavaAnnotationValue(this.elementFormDefaultAdapter.getValue(astAnnotation));
 	}
 	
 	private void syncElementFormDefault(XmlNsForm elementFormDefault) {
@@ -195,8 +200,8 @@ public class SourceXmlSchemaAnnotation
 		}
 	}
 	
-	private String buildLocation(CompilationUnit astRoot) {
-		return this.locationAdapter.getValue(astRoot);
+	private String buildLocation(Annotation astAnnotation) {
+		return this.locationAdapter.getValue(astAnnotation);
 	}
 	
 	private void syncLocation(String location) {
@@ -223,8 +228,8 @@ public class SourceXmlSchemaAnnotation
 		}
 	}
 	
-	private String buildNamespace(CompilationUnit astRoot) {
-		return this.namespaceAdapter.getValue(astRoot);
+	private String buildNamespace(Annotation astAnnotation) {
+		return this.namespaceAdapter.getValue(astAnnotation);
 	}
 	
 	private void syncNamespace(String namespace) {

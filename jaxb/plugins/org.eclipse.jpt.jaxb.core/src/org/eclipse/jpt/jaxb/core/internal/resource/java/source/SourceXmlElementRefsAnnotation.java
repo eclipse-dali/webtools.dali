@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
@@ -50,14 +50,18 @@ public class SourceXmlElementRefsAnnotation
 		return JAXB.XML_ELEMENT_REFS;
 	}
 	
-	public void initialize(CompilationUnit astRoot) {
-		this.xmlElementRefsContainer.initializeFromContainerAnnotation(this.getAstAnnotation(astRoot));
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.xmlElementRefsContainer.initializeFromContainerAnnotation(astAnnotation);
 	}
 	
-	public void synchronizeWith(CompilationUnit astRoot) {
-		this.xmlElementRefsContainer.synchronize(this.getAstAnnotation(astRoot));
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.xmlElementRefsContainer.synchronize(astAnnotation);
 	}
-	
+		
 	
 	// **************** xml element refs **************************************
 	

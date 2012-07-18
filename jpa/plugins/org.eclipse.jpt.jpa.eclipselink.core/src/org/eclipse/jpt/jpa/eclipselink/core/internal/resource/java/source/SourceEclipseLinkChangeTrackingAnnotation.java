@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
@@ -48,14 +48,18 @@ public final class SourceEclipseLinkChangeTrackingAnnotation
 		return ANNOTATION_NAME;
 	}
 
-	public void initialize(CompilationUnit astRoot) {
-		this.value = this.buildValue(astRoot);
-		this.valueTextRange = this.buildValueTextRange(astRoot);
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.value = this.buildValue(astAnnotation);
+		this.valueTextRange = this.buildValueTextRange(astAnnotation);
 	}
 
-	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncValue(this.buildValue(astRoot));
-		this.valueTextRange = this.buildValueTextRange(astRoot);
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.syncValue(this.buildValue(astAnnotation));
+		this.valueTextRange = this.buildValueTextRange(astAnnotation);
 	}
 
 	@Override
@@ -90,16 +94,16 @@ public final class SourceEclipseLinkChangeTrackingAnnotation
 		this.firePropertyChanged(VALUE_PROPERTY, old, astValue);
 	}
 
-	private ChangeTrackingType buildValue(CompilationUnit astRoot) {
-		return ChangeTrackingType.fromJavaAnnotationValue(this.valueAdapter.getValue(astRoot));
+	private ChangeTrackingType buildValue(Annotation astAnnotation) {
+		return ChangeTrackingType.fromJavaAnnotationValue(this.valueAdapter.getValue(astAnnotation));
 	}
 
 	public TextRange getValueTextRange() {
 		return this.valueTextRange;
 	}
 
-	private TextRange buildValueTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(VALUE_ADAPTER, astRoot);
+	private TextRange buildValueTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(VALUE_ADAPTER, astAnnotation);
 	}
 
 

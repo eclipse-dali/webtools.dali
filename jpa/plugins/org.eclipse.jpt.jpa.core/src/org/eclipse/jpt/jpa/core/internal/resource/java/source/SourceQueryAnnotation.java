@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
@@ -54,20 +54,24 @@ abstract class SourceQueryAnnotation
 		this.queryAdapter = this.buildQueryAdapter();
 	}
 
-	public void initialize(CompilationUnit astRoot) {
-		this.name = this.buildName(astRoot);
-		this.nameTextRange = this.buildNameTextRange(astRoot);
-		this.query = this.buildQuery(astRoot);
-		this.queryTextRange = this.buildQueryTextRange(astRoot);
-		this.hintsContainer.initializeFromContainerAnnotation(this.getAstAnnotation(astRoot));
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.name = this.buildName(astAnnotation);
+		this.nameTextRange = this.buildNameTextRange(astAnnotation);
+		this.query = this.buildQuery(astAnnotation);
+		this.queryTextRange = this.buildQueryTextRange(astAnnotation);
+		this.hintsContainer.initializeFromContainerAnnotation(astAnnotation);
 	}
 
-	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncName(this.buildName(astRoot));
-		this.nameTextRange = this.buildNameTextRange(astRoot);
-		this.syncQuery(this.buildQuery(astRoot));
-		this.queryTextRange = this.buildQueryTextRange(astRoot);
-		this.hintsContainer.synchronize(this.getAstAnnotation(astRoot));
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.syncName(this.buildName(astAnnotation));
+		this.nameTextRange = this.buildNameTextRange(astAnnotation);
+		this.syncQuery(this.buildQuery(astAnnotation));
+		this.queryTextRange = this.buildQueryTextRange(astAnnotation);
+		this.hintsContainer.synchronize(astAnnotation);
 	}
 
 
@@ -91,16 +95,16 @@ abstract class SourceQueryAnnotation
 		this.firePropertyChanged(NAME_PROPERTY, old, astName);
 	}
 
-	private String buildName(CompilationUnit astRoot) {
-		return this.nameAdapter.getValue(astRoot);
+	private String buildName(Annotation astAnnotation) {
+		return this.nameAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getNameTextRange() {
 		return this.nameTextRange;
 	}
 
-	private TextRange buildNameTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.nameDeclarationAdapter, astRoot);
+	private TextRange buildNameTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.nameDeclarationAdapter, astAnnotation);
 	}
 
 	private DeclarationAnnotationElementAdapter<String> buildNameDeclarationAdapter() {
@@ -131,16 +135,16 @@ abstract class SourceQueryAnnotation
 		this.firePropertyChanged(QUERY_PROPERTY, old, annotationQuery);
 	}
 
-	private String buildQuery(CompilationUnit astRoot) {
-		return this.queryAdapter.getValue(astRoot);
+	private String buildQuery(Annotation astAnnotation) {
+		return this.queryAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getQueryTextRange() {
 		return this.queryTextRange;
 	}
 
-	private TextRange buildQueryTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.queryDeclarationAdapter, astRoot);
+	private TextRange buildQueryTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.queryDeclarationAdapter, astAnnotation);
 	}
 
 	private DeclarationAnnotationElementAdapter<String> buildQueryDeclarationAdapter() {

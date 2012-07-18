@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
@@ -61,17 +61,17 @@ public final class SourceNamedQuery2_0Annotation
 	}
 
 	@Override
-	public void initialize(CompilationUnit astRoot) {
-		super.initialize(astRoot);
-		this.lockMode = this.buildLockMode(astRoot);
-		this.lockModeTextRange = this.buildLockModeTextRange(astRoot);
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.lockMode = this.buildLockMode(astAnnotation);
+		this.lockModeTextRange = this.buildLockModeTextRange(astAnnotation);
 	}
 
 	@Override
-	public void synchronizeWith(CompilationUnit astRoot) {
-		super.synchronizeWith(astRoot);
-		this.syncLockMode(this.buildLockMode(astRoot));
-		this.lockModeTextRange = this.buildLockModeTextRange(astRoot);
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.syncLockMode(this.buildLockMode(astAnnotation));
+		this.lockModeTextRange = this.buildLockModeTextRange(astAnnotation);
 	}
 
 
@@ -94,16 +94,16 @@ public final class SourceNamedQuery2_0Annotation
 		this.firePropertyChanged(LOCK_MODE_PROPERTY, old, astLockMode);
 	}
 
-	private LockModeType_2_0 buildLockMode(CompilationUnit astRoot) {
-		return LockModeType_2_0.fromJavaAnnotationValue(this.lockModeAdapter.getValue(astRoot));
+	private LockModeType_2_0 buildLockMode(Annotation astAnnotation) {
+		return LockModeType_2_0.fromJavaAnnotationValue(this.lockModeAdapter.getValue(astAnnotation));
 	}
 
 	public TextRange getLockModeTextRange() {
 		return this.lockModeTextRange;
 	}
 
-	private TextRange buildLockModeTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.lockModeDeclarationAdapter, astRoot);
+	private TextRange buildLockModeTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.lockModeDeclarationAdapter, astAnnotation);
 	}
 
 	public boolean lockModeTouches(int pos) {

@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.CombinationIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
@@ -82,25 +82,25 @@ public final class SourceNamedNativeQueryAnnotation
 	}
 
 	@Override
-	public void initialize(CompilationUnit astRoot) {
-		super.initialize(astRoot);
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
 
-		this.resultClass = this.buildResultClass(astRoot);
-		this.resultClassTextRange = this.buildResultClassTextRange(astRoot);
+		this.resultClass = this.buildResultClass(astAnnotation);
+		this.resultClassTextRange = this.buildResultClassTextRange(astAnnotation);
 
-		this.resultSetMapping = this.buildResultSetMapping(astRoot);
-		this.resultSetMappingTextRange = this.buildResultSetMappingTextRange(astRoot);
+		this.resultSetMapping = this.buildResultSetMapping(astAnnotation);
+		this.resultSetMappingTextRange = this.buildResultSetMappingTextRange(astAnnotation);
 	}
 
 	@Override
-	public void synchronizeWith(CompilationUnit astRoot) {
-		super.synchronizeWith(astRoot);
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
 
-		this.syncResultClass(this.buildResultClass(astRoot));
-		this.resultClassTextRange = this.buildResultClassTextRange(astRoot);
+		this.syncResultClass(this.buildResultClass(astAnnotation));
+		this.resultClassTextRange = this.buildResultClassTextRange(astAnnotation);
 
-		this.syncResultSetMapping(this.buildResultSetMapping(astRoot));
-		this.resultSetMappingTextRange = this.buildResultSetMappingTextRange(astRoot);
+		this.syncResultSetMapping(this.buildResultSetMapping(astAnnotation));
+		this.resultSetMappingTextRange = this.buildResultSetMappingTextRange(astAnnotation);
 	}
 
 
@@ -155,16 +155,16 @@ public final class SourceNamedNativeQueryAnnotation
 		this.firePropertyChanged(RESULT_CLASS_PROPERTY, old, astResultClass);
 	}
 
-	private String buildResultClass(CompilationUnit astRoot) {
-		return this.resultClassAdapter.getValue(astRoot);
+	private String buildResultClass(Annotation astAnnotation) {
+		return this.resultClassAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getResultClassTextRange() {
 		return this.resultClassTextRange;
 	}
 
-	private TextRange buildResultClassTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.resultClassDeclarationAdapter, astRoot);
+	private TextRange buildResultClassTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.resultClassDeclarationAdapter, astAnnotation);
 	}
 
 	private DeclarationAnnotationElementAdapter<String> buildResultClassDeclarationAdapter() {
@@ -210,16 +210,16 @@ public final class SourceNamedNativeQueryAnnotation
 		this.firePropertyChanged(RESULT_SET_MAPPING_PROPERTY, old, astResultSetMapping);
 	}
 
-	private String buildResultSetMapping(CompilationUnit astRoot) {
-		return this.resultSetMappingAdapter.getValue(astRoot);
+	private String buildResultSetMapping(Annotation astAnnotation) {
+		return this.resultSetMappingAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getResultSetMappingTextRange() {
 		return this.resultSetMappingTextRange;
 	}
 
-	private TextRange buildResultSetMappingTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.resultSetMappingDeclarationAdapter, astRoot);
+	private TextRange buildResultSetMappingTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.resultSetMappingDeclarationAdapter, astAnnotation);
 	}
 
 	private DeclarationAnnotationElementAdapter<String> buildResultSetMappingAdapter(DeclarationAnnotationAdapter daAdapter) {

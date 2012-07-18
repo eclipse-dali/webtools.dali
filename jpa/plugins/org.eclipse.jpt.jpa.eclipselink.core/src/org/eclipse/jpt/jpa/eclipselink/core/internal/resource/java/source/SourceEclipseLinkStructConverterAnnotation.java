@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.CombinationIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
@@ -66,17 +66,17 @@ public final class SourceEclipseLinkStructConverterAnnotation
 	}
 
 	@Override
-	public void initialize(CompilationUnit astRoot) {
-		super.initialize(astRoot);
-		this.converter = this.buildConverter(astRoot);
-		this.converterTextRange = this.buildConverterTextRange(astRoot);
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.converter = this.buildConverter(astAnnotation);
+		this.converterTextRange = this.buildConverterTextRange(astAnnotation);
 	}
 
 	@Override
-	public void synchronizeWith(CompilationUnit astRoot) {
-		super.synchronizeWith(astRoot);
-		this.syncConverter(this.buildConverter(astRoot));
-		this.converterTextRange = this.buildConverterTextRange(astRoot);
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.syncConverter(this.buildConverter(astAnnotation));
+		this.converterTextRange = this.buildConverterTextRange(astAnnotation);
 	}
 
 	@Override
@@ -114,16 +114,16 @@ public final class SourceEclipseLinkStructConverterAnnotation
 		this.firePropertyChanged(CONVERTER_PROPERTY, old, astConverter);
 	}
 
-	private String buildConverter(CompilationUnit astRoot) {
-		return this.converterAdapter.getValue(astRoot);
+	private String buildConverter(Annotation astAnnotation) {
+		return this.converterAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getConverterTextRange() {
 		return this.converterTextRange;
 	}
 
-	private TextRange buildConverterTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.converterDeclarationAdapter, astRoot);
+	private TextRange buildConverterTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.converterDeclarationAdapter, astAnnotation);
 	}
 
 	private DeclarationAnnotationElementAdapter<String> buildConverterDeclarationAdapter() {

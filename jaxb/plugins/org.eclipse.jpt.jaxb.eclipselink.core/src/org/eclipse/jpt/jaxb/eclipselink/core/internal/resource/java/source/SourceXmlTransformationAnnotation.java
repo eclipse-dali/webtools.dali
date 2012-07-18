@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.source;
 
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
@@ -60,12 +61,16 @@ public class SourceXmlTransformationAnnotation
 		return ELJaxb.XML_TRANSFORMATION;
 	}
 	
-	public void initialize(CompilationUnit astRoot) {
-		this.optional = buildOptional(astRoot);
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.optional = buildOptional(astAnnotation);
 	}
 	
-	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncOptional(buildOptional(astRoot));
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.syncOptional(buildOptional(astAnnotation));
 	}
 	
 	@Override
@@ -93,8 +98,8 @@ public class SourceXmlTransformationAnnotation
 		this.firePropertyChanged(OPTIONAL_PROPERTY, old, this.optional);
 	}
 	
-	private Boolean buildOptional(CompilationUnit astRoot) {
-		return this.optionalAdapter.getValue(astRoot);
+	private Boolean buildOptional(Annotation astAnnotation) {
+		return this.optionalAdapter.getValue(astAnnotation);
 	}
 	
 	public TextRange getOptionalTextRange(CompilationUnit astRoot) {

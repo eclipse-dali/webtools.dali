@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source;
 
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
@@ -55,14 +56,18 @@ abstract class SourceEclipseLinkNamedConverterAnnotation
 		this.nameAdapter = new AnnotatedElementAnnotationElementAdapter<String>(this.annotatedElement, this.nameDeclarationAdapter);
 	}
 
-	public void initialize(CompilationUnit astRoot) {
-		this.name = this.buildName(astRoot);
-		this.nameTextRange = this.buildNameTextRange(astRoot);
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.name = this.buildName(astAnnotation);
+		this.nameTextRange = this.buildNameTextRange(astAnnotation);
 	}
 	
-	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncName(this.buildName(astRoot));
-		this.nameTextRange = this.buildNameTextRange(astRoot);
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.syncName(this.buildName(astAnnotation));
+		this.nameTextRange = this.buildNameTextRange(astAnnotation);
 	}
 	
 	@Override
@@ -97,16 +102,16 @@ abstract class SourceEclipseLinkNamedConverterAnnotation
 		this.firePropertyChanged(OverrideAnnotation.NAME_PROPERTY, old, astName);
 	}
 
-	private String buildName(CompilationUnit astRoot) {
-		return this.nameAdapter.getValue(astRoot);
+	private String buildName(Annotation astAnnotation) {
+		return this.nameAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getNameTextRange() {
 		return this.nameTextRange;
 	}
 
-	private TextRange buildNameTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.nameDeclarationAdapter, astRoot);
+	private TextRange buildNameTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.nameDeclarationAdapter, astAnnotation);
 	}
 
 	public boolean nameTouches(int pos, CompilationUnit astRoot) {

@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.source;
 
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
@@ -95,14 +96,18 @@ public class SourceXmlJoinNodeAnnotation
 		return ELJaxb.XML_JOIN_NODE;
 	}
 	
-	public void initialize(CompilationUnit astRoot) {
-		this.xmlPath = buildXmlPath(astRoot);
-		this.referencedXmlPath = buildReferencedXmlPath(astRoot);
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.xmlPath = buildXmlPath(astAnnotation);
+		this.referencedXmlPath = buildReferencedXmlPath(astAnnotation);
 	}
 	
-	public void synchronizeWith(CompilationUnit astRoot) {
-		syncXmlPath(buildXmlPath(astRoot));
-		syncReferencedXmlPath(buildReferencedXmlPath(astRoot));
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		syncXmlPath(buildXmlPath(astAnnotation));
+		syncReferencedXmlPath(buildReferencedXmlPath(astAnnotation));
 	}
 	
 	@Override
@@ -130,8 +135,8 @@ public class SourceXmlJoinNodeAnnotation
 		this.firePropertyChanged(XML_PATH_PROPERTY, old, astXmlPath);
 	}
 	
-	private String buildXmlPath(CompilationUnit astRoot) {
-		return this.xmlPathAdapter.getValue(astRoot);
+	private String buildXmlPath(Annotation astAnnotation) {
+		return this.xmlPathAdapter.getValue(astAnnotation);
 	}
 	
 	public TextRange getXmlPathTextRange(CompilationUnit astRoot) {
@@ -162,8 +167,8 @@ public class SourceXmlJoinNodeAnnotation
 		this.firePropertyChanged(REFERENCED_XML_PATH_PROPERTY, old, astReferencedXmlPath);
 	}
 	
-	private String buildReferencedXmlPath(CompilationUnit astRoot) {
-		return this.referencedXmlPathAdapter.getValue(astRoot);
+	private String buildReferencedXmlPath(Annotation astAnnotation) {
+		return this.referencedXmlPathAdapter.getValue(astAnnotation);
 	}
 	
 	public TextRange getReferencedXmlPathTextRange(CompilationUnit astRoot) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -39,24 +39,28 @@ public class GenericJavaOrderColumn2_0
 
 	public GenericJavaOrderColumn2_0(JavaOrderable2_0 parent, JavaReadOnlyNamedColumn.Owner owner) {
 		super(parent, owner);
-		this.specifiedNullable = this.buildSpecifiedNullable();
-		this.specifiedInsertable = this.buildSpecifiedInsertable();
-		this.specifiedUpdatable = this.buildSpecifiedUpdatable();
 		//build defaults during construction for performance
 		this.defaultNullable = this.buildDefaultNullable();
 		this.defaultInsertable = this.buildDefaultInsertable();
 		this.defaultUpdatable = this.buildDefaultUpdatable();
 	}
 
+	@Override
+	protected void initialize(OrderColumn2_0Annotation columnAnnotation) {
+		super.initialize(columnAnnotation);
+		this.specifiedNullable = this.buildSpecifiedNullable(columnAnnotation);
+		this.specifiedInsertable = this.buildSpecifiedInsertable(columnAnnotation);
+		this.specifiedUpdatable = this.buildSpecifiedUpdatable(columnAnnotation);
+	}
 
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.setSpecifiedNullable_(this.buildSpecifiedNullable());
-		this.setSpecifiedInsertable_(this.buildSpecifiedInsertable());
-		this.setSpecifiedUpdatable_(this.buildSpecifiedUpdatable());
+	public void synchronizeWithResourceModel(OrderColumn2_0Annotation columnAnnotation) {
+		super.synchronizeWithResourceModel(columnAnnotation);
+		this.setSpecifiedNullable_(this.buildSpecifiedNullable(columnAnnotation));
+		this.setSpecifiedInsertable_(this.buildSpecifiedInsertable(columnAnnotation));
+		this.setSpecifiedUpdatable_(this.buildSpecifiedUpdatable(columnAnnotation));
 	}
 
 	@Override
@@ -127,8 +131,8 @@ public class GenericJavaOrderColumn2_0
 		this.firePropertyChanged(SPECIFIED_NULLABLE_PROPERTY, old, nullable);
 	}
 
-	protected Boolean buildSpecifiedNullable() {
-		return this.getColumnAnnotation().getNullable();
+	protected Boolean buildSpecifiedNullable(OrderColumn2_0Annotation columnAnnotation) {
+		return columnAnnotation.getNullable();
 	}
 
 	public boolean isDefaultNullable() {
@@ -170,8 +174,8 @@ public class GenericJavaOrderColumn2_0
 		this.firePropertyChanged(SPECIFIED_INSERTABLE_PROPERTY, old, insertable);
 	}
 
-	protected Boolean buildSpecifiedInsertable() {
-		return this.getColumnAnnotation().getInsertable();
+	protected Boolean buildSpecifiedInsertable(OrderColumn2_0Annotation columnAnnotation) {
+		return columnAnnotation.getInsertable();
 	}
 
 	public boolean isDefaultInsertable() {
@@ -213,8 +217,8 @@ public class GenericJavaOrderColumn2_0
 		this.firePropertyChanged(SPECIFIED_UPDATABLE_PROPERTY, old, updatable);
 	}
 
-	protected Boolean buildSpecifiedUpdatable() {
-		return this.getColumnAnnotation().getUpdatable();
+	protected Boolean buildSpecifiedUpdatable(OrderColumn2_0Annotation columnAnnotation) {
+		return columnAnnotation.getUpdatable();
 	}
 
 	public boolean isDefaultUpdatable() {

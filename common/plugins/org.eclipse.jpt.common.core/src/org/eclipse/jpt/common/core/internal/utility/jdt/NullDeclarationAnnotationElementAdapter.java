@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.core.internal.utility.jdt;
 
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
@@ -45,6 +46,10 @@ public class NullDeclarationAnnotationElementAdapter<T>
 		return null;
 	}
 
+	public T getValue(Annotation astAnnotation) {
+		return null;
+	}
+
 	public void setValue(T value, ModifiedDeclaration declaration) {
 		// do nothing
 	}
@@ -57,4 +62,7 @@ public class NullDeclarationAnnotationElementAdapter<T>
 		return null;
 	}
 
+	public Expression getExpression(Annotation astAnnotation) {
+		return null;
+	}
 }

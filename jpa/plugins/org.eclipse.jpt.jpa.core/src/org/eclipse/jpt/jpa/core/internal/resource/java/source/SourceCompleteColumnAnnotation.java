@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
@@ -55,31 +55,31 @@ public abstract class SourceCompleteColumnAnnotation
 	}
 
 	@Override
-	public void initialize(CompilationUnit astRoot) {
-		super.initialize(astRoot);
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
 
-		this.length = this.buildLength(astRoot);
-		this.lengthTextRange = this.buildLengthTextRange(astRoot);
+		this.length = this.buildLength(astAnnotation);
+		this.lengthTextRange = this.buildLengthTextRange(astAnnotation);
 
-		this.precision = this.buildPrecision(astRoot);
-		this.precisionTextRange = this.buildPrecisionTextRange(astRoot);
+		this.precision = this.buildPrecision(astAnnotation);
+		this.precisionTextRange = this.buildPrecisionTextRange(astAnnotation);
 
-		this.scale = this.buildScale(astRoot);
-		this.scaleTextRange = this.buildScaleTextRange(astRoot);
+		this.scale = this.buildScale(astAnnotation);
+		this.scaleTextRange = this.buildScaleTextRange(astAnnotation);
 	}
 
 	@Override
-	public void synchronizeWith(CompilationUnit astRoot) {
-		super.synchronizeWith(astRoot);
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
 
-		this.syncLength(this.buildLength(astRoot));
-		this.lengthTextRange = this.buildLengthTextRange(astRoot);
+		this.syncLength(this.buildLength(astAnnotation));
+		this.lengthTextRange = this.buildLengthTextRange(astAnnotation);
 
-		this.syncPrecision(this.buildPrecision(astRoot));
-		this.precisionTextRange = this.buildPrecisionTextRange(astRoot);
+		this.syncPrecision(this.buildPrecision(astAnnotation));
+		this.precisionTextRange = this.buildPrecisionTextRange(astAnnotation);
 
-		this.syncScale(this.buildScale(astRoot));
-		this.scaleTextRange = this.buildScaleTextRange(astRoot);
+		this.syncScale(this.buildScale(astAnnotation));
+		this.scaleTextRange = this.buildScaleTextRange(astAnnotation);
 	}
 
 
@@ -103,16 +103,16 @@ public abstract class SourceCompleteColumnAnnotation
 		this.firePropertyChanged(LENGTH_PROPERTY, old, astLength);
 	}
 
-	private Integer buildLength(CompilationUnit astRoot) {
-		return this.lengthAdapter.getValue(astRoot);
+	private Integer buildLength(Annotation astAnnotation) {
+		return this.lengthAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getLengthTextRange() {
 		return this.lengthTextRange;
 	}
 	
-	protected TextRange buildLengthTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.lengthDeclarationAdapter, astRoot);
+	protected TextRange buildLengthTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.lengthDeclarationAdapter, astAnnotation);
 	}
 	
 	protected DeclarationAnnotationElementAdapter<Integer> buildLengthDeclarationAdapter() {
@@ -143,16 +143,16 @@ public abstract class SourceCompleteColumnAnnotation
 		this.firePropertyChanged(PRECISION_PROPERTY, old, astPrecision);
 	}
 
-	private Integer buildPrecision(CompilationUnit astRoot) {
-		return this.precisionAdapter.getValue(astRoot);
+	private Integer buildPrecision(Annotation astAnnotation) {
+		return this.precisionAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getPrecisionTextRange() {
 		return this.precisionTextRange;
 	}
 	
-	protected TextRange buildPrecisionTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.precisionDeclarationAdapter, astRoot);
+	protected TextRange buildPrecisionTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.precisionDeclarationAdapter, astAnnotation);
 	}
 	
 	protected DeclarationAnnotationElementAdapter<Integer> buildPrecisionDeclarationAdapter() {
@@ -183,16 +183,16 @@ public abstract class SourceCompleteColumnAnnotation
 		this.firePropertyChanged(SCALE_PROPERTY, old, astScale);
 	}
 
-	private Integer buildScale(CompilationUnit astRoot) {
-		return this.scaleAdapter.getValue(astRoot);
+	private Integer buildScale(Annotation astAnnotation) {
+		return this.scaleAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getScaleTextRange() {
 		return this.scaleTextRange;
 	}
 	
-	protected TextRange buildScaleTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.scaleDeclarationAdapter, astRoot);
+	protected TextRange buildScaleTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.scaleDeclarationAdapter, astAnnotation);
 	}
 	
 	protected DeclarationAnnotationElementAdapter<Integer> buildScaleDeclarationAdapter() {

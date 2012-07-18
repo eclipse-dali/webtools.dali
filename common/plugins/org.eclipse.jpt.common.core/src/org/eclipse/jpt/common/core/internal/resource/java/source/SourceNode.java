@@ -97,13 +97,12 @@ public abstract class SourceNode
 		protected abstract A buildNestedAnnotation(int index);
 
 		public void initializeFromContainerAnnotation(org.eclipse.jdt.core.dom.Annotation astContainerAnnotation) {
-			// ignore the nested AST annotations themselves
-			// TODO (maybe someday we can use them during initialization...)
-			int size = this.getNestedAstAnnotations(astContainerAnnotation).size();
+			ArrayList<org.eclipse.jdt.core.dom.Annotation> astAnnotations = this.getNestedAstAnnotations(astContainerAnnotation);
+			int size = astAnnotations.size();
 			for (int i = 0; i < size; i++) {
 				A nestedAnnotation = this.buildNestedAnnotation(i);
 				this.nestedAnnotations.add(i, nestedAnnotation);
-				nestedAnnotation.initialize((CompilationUnit) astContainerAnnotation.getRoot());
+				nestedAnnotation.initialize(astAnnotations.get(i));
 			}
 		}
 
@@ -118,8 +117,7 @@ public abstract class SourceNode
 			for (A nestedAnnotation : this.getNestedAnnotations()) {
 				if (astAnnotationStream.hasNext()) {
 					// matching AST annotation is present - synchronize the nested annotation
-					astAnnotationStream.next();  // TODO pass this to the update
-					nestedAnnotation.synchronizeWith((CompilationUnit) astContainerAnnotation.getRoot());
+					nestedAnnotation.synchronizeWith(astAnnotationStream.next());
 				} else {
 					// no more AST annotations - remove the remaining nested annotations and exit
 					this.syncRemoveNestedAnnotations(astAnnotations.size());
@@ -151,7 +149,6 @@ public abstract class SourceNode
 			A nestedAnnotation = this.buildNestedAnnotation(sourceIndex);
 			this.nestedAnnotations.add(sourceIndex, nestedAnnotation);
 			nestedAnnotation.newAnnotation();
-			nestedAnnotation.initialize(nestedAnnotation.getJavaResourceCompilationUnit().buildASTRoot());
 			// ...then move it to the specified index
 			this.moveNestedAnnotation(index, sourceIndex);
 			return nestedAnnotation;
@@ -333,7 +330,7 @@ public abstract class SourceNode
 		void syncAddNestedAnnotation(org.eclipse.jdt.core.dom.Annotation astAnnotation) {
 			int index = this.nestedAnnotations.size();
 			A nestedAnnotation = this.buildNestedAnnotation(index);
-			nestedAnnotation.initialize((CompilationUnit) astAnnotation.getRoot());
+			nestedAnnotation.initialize(astAnnotation);
 			this.nestedAnnotations.add(index, nestedAnnotation);
 			this.nestedAnnotationAdded(index, nestedAnnotation);
 		}

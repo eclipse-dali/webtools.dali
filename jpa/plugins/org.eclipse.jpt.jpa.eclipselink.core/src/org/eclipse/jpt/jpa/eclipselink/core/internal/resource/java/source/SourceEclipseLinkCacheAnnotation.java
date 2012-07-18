@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source;
 
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
@@ -110,75 +111,92 @@ public final class SourceEclipseLinkCacheAnnotation
 		return ANNOTATION_NAME;
 	}
 
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+
+		this.type = this.buildType(astAnnotation);
+		this.typeTextRange = this.buildTypeTextRange(astAnnotation);
+
+		this.size = this.buildSize(astAnnotation);
+		this.sizeTextRange = this.buildSizeTextRange(astAnnotation);
+
+		this.shared = this.buildShared(astAnnotation);
+		this.sharedTextRange = this.buildSharedTextRange(astAnnotation);
+
+		this.alwaysRefresh = this.buildAlwaysRefresh(astAnnotation);
+		this.alwaysRefreshTextRange = this.buildAlwaysRefreshTextRange(astAnnotation);
+
+		this.refreshOnlyIfNewer = this.buildRefreshOnlyIfNewer(astAnnotation);
+		this.refreshOnlyIfNewerTextRange = this.buildRefreshOnlyIfNewerTextRange(astAnnotation);
+
+		this.disableHits = this.buildDisableHits(astAnnotation);
+		this.disableHitsTextRange = this.buildDisableHitsTextRange(astAnnotation);
+
+		this.coordinationType = this.buildCoordinationType(astAnnotation);
+		this.coordinationTypeTextRange = this.buildCoordinationTypeTextRange(astAnnotation);
+
+		this.expiry = this.buildExpiry(astAnnotation);
+		this.expiryTextRange = this.buildExpiryTextRange(astAnnotation);
+
+		this.isolation = this.buildIsolation(astAnnotation);
+		this.isolationTextRange = this.buildIsolationTextRange(astAnnotation);
+	}
+
+	@Override
 	public void initialize(CompilationUnit astRoot) {
-		this.type = this.buildType(astRoot);
-		this.typeTextRange = this.buildTypeTextRange(astRoot);
-
-		this.size = this.buildSize(astRoot);
-		this.sizeTextRange = this.buildSizeTextRange(astRoot);
-
-		this.shared = this.buildShared(astRoot);
-		this.sharedTextRange = this.buildSharedTextRange(astRoot);
-
-		this.alwaysRefresh = this.buildAlwaysRefresh(astRoot);
-		this.alwaysRefreshTextRange = this.buildAlwaysRefreshTextRange(astRoot);
-
-		this.refreshOnlyIfNewer = this.buildRefreshOnlyIfNewer(astRoot);
-		this.refreshOnlyIfNewerTextRange = this.buildRefreshOnlyIfNewerTextRange(astRoot);
-
-		this.disableHits = this.buildDisableHits(astRoot);
-		this.disableHitsTextRange = this.buildDisableHitsTextRange(astRoot);
-
-		this.coordinationType = this.buildCoordinationType(astRoot);
-		this.coordinationTypeTextRange = this.buildCoordinationTypeTextRange(astRoot);
-
-		this.expiry = this.buildExpiry(astRoot);
-		this.expiryTextRange = this.buildExpiryTextRange(astRoot);
+		super.initialize(astRoot);
 
 		this.initializeExpiryTimeOfDay(astRoot);
 		this.expiryTimeOfDayTextRange = this.buildExpiryTimeOfDayTextRange(astRoot);
-
-		this.isolation = this.buildIsolation(astRoot);
-		this.isolationTextRange = this.buildIsolationTextRange(astRoot);
 	}
 
 	private void initializeExpiryTimeOfDay(CompilationUnit astRoot) {
-		if (this.expiryTimeOfDayAdapter.getAnnotation(astRoot) != null) {
+		Annotation annotation = this.expiryTimeOfDayAdapter.getAnnotation(astRoot);
+		if (annotation != null) {
 			this.expiryTimeOfDay = this.buildExpiryTimeOfDay();
-			this.expiryTimeOfDay.initialize(astRoot);
+			this.expiryTimeOfDay.initialize(annotation);
 		}
 	}
 
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+
+		this.syncType(this.buildType(astAnnotation));
+		this.typeTextRange = this.buildTypeTextRange(astAnnotation);
+
+		this.syncSize(this.buildSize(astAnnotation));
+		this.sizeTextRange = this.buildSizeTextRange(astAnnotation);
+
+		this.syncShared(this.buildShared(astAnnotation));
+		this.sharedTextRange = this.buildSharedTextRange(astAnnotation);
+
+		this.syncAlwaysRefresh(this.buildAlwaysRefresh(astAnnotation));
+		this.alwaysRefreshTextRange = this.buildAlwaysRefreshTextRange(astAnnotation);
+
+		this.syncRefreshOnlyIfNewer(this.buildRefreshOnlyIfNewer(astAnnotation));
+		this.refreshOnlyIfNewerTextRange = this.buildRefreshOnlyIfNewerTextRange(astAnnotation);
+
+		this.syncDisableHits(this.buildDisableHits(astAnnotation));
+		this.disableHitsTextRange = this.buildDisableHitsTextRange(astAnnotation);
+
+		this.syncCoordinationType(this.buildCoordinationType(astAnnotation));
+		this.coordinationTypeTextRange = this.buildCoordinationTypeTextRange(astAnnotation);
+
+		this.syncExpiry(this.buildExpiry(astAnnotation));
+		this.expiryTextRange = this.buildExpiryTextRange(astAnnotation);
+
+		this.syncIsolation(this.buildIsolation(astAnnotation));
+		this.isolationTextRange = this.buildIsolationTextRange(astAnnotation);
+	}
+
+	@Override
 	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncType(this.buildType(astRoot));
-		this.typeTextRange = this.buildTypeTextRange(astRoot);
-
-		this.syncSize(this.buildSize(astRoot));
-		this.sizeTextRange = this.buildSizeTextRange(astRoot);
-
-		this.syncShared(this.buildShared(astRoot));
-		this.sharedTextRange = this.buildSharedTextRange(astRoot);
-
-		this.syncAlwaysRefresh(this.buildAlwaysRefresh(astRoot));
-		this.alwaysRefreshTextRange = this.buildAlwaysRefreshTextRange(astRoot);
-
-		this.syncRefreshOnlyIfNewer(this.buildRefreshOnlyIfNewer(astRoot));
-		this.refreshOnlyIfNewerTextRange = this.buildRefreshOnlyIfNewerTextRange(astRoot);
-
-		this.syncDisableHits(this.buildDisableHits(astRoot));
-		this.disableHitsTextRange = this.buildDisableHitsTextRange(astRoot);
-
-		this.syncCoordinationType(this.buildCoordinationType(astRoot));
-		this.coordinationTypeTextRange = this.buildCoordinationTypeTextRange(astRoot);
-
-		this.syncExpiry(this.buildExpiry(astRoot));
-		this.expiryTextRange = this.buildExpiryTextRange(astRoot);
+		super.synchronizeWith(astRoot);
 
 		this.syncExpiryTimeOfDay(astRoot);
 		this.expiryTimeOfDayTextRange = this.buildExpiryTimeOfDayTextRange(astRoot);
-
-		this.syncIsolation(this.buildIsolation(astRoot));
-		this.isolationTextRange = this.buildIsolationTextRange(astRoot);
 	}
 
 	@Override
@@ -222,16 +240,16 @@ public final class SourceEclipseLinkCacheAnnotation
 		this.firePropertyChanged(TYPE_PROPERTY, old, astType);
 	}
 
-	private CacheType buildType(CompilationUnit astRoot) {
-		return CacheType.fromJavaAnnotationValue(this.typeAdapter.getValue(astRoot));
+	private CacheType buildType(Annotation astAnnotation) {
+		return CacheType.fromJavaAnnotationValue(this.typeAdapter.getValue(astAnnotation));
 	}
 
 	public TextRange getTypeTextRange() {
 		return this.typeTextRange;
 	}
 
-	private TextRange buildTypeTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(TYPE_ADAPTER, astRoot);
+	private TextRange buildTypeTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(TYPE_ADAPTER, astAnnotation);
 	}
 
 	// ***** size
@@ -252,16 +270,16 @@ public final class SourceEclipseLinkCacheAnnotation
 		this.firePropertyChanged(SIZE_PROPERTY, old, astSize);
 	}
 
-	private Integer buildSize(CompilationUnit astRoot) {
-		return this.sizeAdapter.getValue(astRoot);
+	private Integer buildSize(Annotation astAnnotation) {
+		return this.sizeAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getSizeTextRange() {
 		return this.sizeTextRange;
 	}
 
-	private TextRange buildSizeTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(SIZE_ADAPTER, astRoot);
+	private TextRange buildSizeTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(SIZE_ADAPTER, astAnnotation);
 	}
 
 	// ***** shared
@@ -282,16 +300,16 @@ public final class SourceEclipseLinkCacheAnnotation
 		this.firePropertyChanged(SHARED_PROPERTY, old, astShared);
 	}
 
-	private Boolean buildShared(CompilationUnit astRoot) {
-		return this.sharedAdapter.getValue(astRoot);
+	private Boolean buildShared(Annotation astAnnotation) {
+		return this.sharedAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getSharedTextRange() {
 		return this.sharedTextRange;
 	}
 
-	private TextRange buildSharedTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(SHARED_ADAPTER, astRoot);
+	private TextRange buildSharedTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(SHARED_ADAPTER, astAnnotation);
 	}
 
 	// ***** always refresh
@@ -312,16 +330,16 @@ public final class SourceEclipseLinkCacheAnnotation
 		this.firePropertyChanged(ALWAYS_REFRESH_PROPERTY, old, astAlwaysRefresh);
 	}
 
-	private Boolean buildAlwaysRefresh(CompilationUnit astRoot) {
-		return this.alwaysRefreshAdapter.getValue(astRoot);
+	private Boolean buildAlwaysRefresh(Annotation astAnnotation) {
+		return this.alwaysRefreshAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getAlwaysRefreshTextRange() {
 		return this.alwaysRefreshTextRange;
 	}
 
-	private TextRange buildAlwaysRefreshTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(ALWAYS_REFRESH_ADAPTER, astRoot);
+	private TextRange buildAlwaysRefreshTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(ALWAYS_REFRESH_ADAPTER, astAnnotation);
 	}
 
 	// ***** refresh only if newer
@@ -342,16 +360,16 @@ public final class SourceEclipseLinkCacheAnnotation
 		this.firePropertyChanged(REFRESH_ONLY_IF_NEWER_PROPERTY, old, astRefreshOnlyIfNewer);
 	}
 
-	private Boolean buildRefreshOnlyIfNewer(CompilationUnit astRoot) {
-		return this.refreshOnlyIfNewerAdapter.getValue(astRoot);
+	private Boolean buildRefreshOnlyIfNewer(Annotation astAnnotation) {
+		return this.refreshOnlyIfNewerAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getRefreshOnlyIfNewerTextRange() {
 		return this.refreshOnlyIfNewerTextRange;
 	}
 
-	private TextRange buildRefreshOnlyIfNewerTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(REFRESH_ONLY_IF_NEWER_ADAPTER, astRoot);
+	private TextRange buildRefreshOnlyIfNewerTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(REFRESH_ONLY_IF_NEWER_ADAPTER, astAnnotation);
 	}
 
 	// ***** disable hits
@@ -372,16 +390,16 @@ public final class SourceEclipseLinkCacheAnnotation
 		this.firePropertyChanged(DISABLE_HITS_PROPERTY, old, astDisableHits);
 	}
 
-	private Boolean buildDisableHits(CompilationUnit astRoot) {
-		return this.disableHitsAdapter.getValue(astRoot);
+	private Boolean buildDisableHits(Annotation astAnnotation) {
+		return this.disableHitsAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getDisableHitsTextRange() {
 		return this.disableHitsTextRange;
 	}
 
-	private TextRange buildDisableHitsTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(DISABLE_HITS_ADAPTER, astRoot);
+	private TextRange buildDisableHitsTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(DISABLE_HITS_ADAPTER, astAnnotation);
 	}
 
 	// ***** coordination type
@@ -402,16 +420,16 @@ public final class SourceEclipseLinkCacheAnnotation
 		this.firePropertyChanged(TYPE_PROPERTY, old, astCoordinationType);
 	}
 
-	private CacheCoordinationType buildCoordinationType(CompilationUnit astRoot) {
-		return CacheCoordinationType.fromJavaAnnotationValue(this.coordinationTypeAdapter.getValue(astRoot));
+	private CacheCoordinationType buildCoordinationType(Annotation astAnnotation) {
+		return CacheCoordinationType.fromJavaAnnotationValue(this.coordinationTypeAdapter.getValue(astAnnotation));
 	}
 
 	public TextRange getCoordinationTypeTextRange() {
 		return this.coordinationTypeTextRange;
 	}
 
-	private TextRange buildCoordinationTypeTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(COORDINATION_TYPE_ADAPTER, astRoot);
+	private TextRange buildCoordinationTypeTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(COORDINATION_TYPE_ADAPTER, astAnnotation);
 	}
 
 	// ***** expiry
@@ -432,16 +450,16 @@ public final class SourceEclipseLinkCacheAnnotation
 		this.firePropertyChanged(EXPIRY_PROPERTY, old, astExpiry);
 	}
 
-	private Integer buildExpiry(CompilationUnit astRoot) {
-		return this.expiryAdapter.getValue(astRoot);
+	private Integer buildExpiry(Annotation astAnnotation) {
+		return this.expiryAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getExpiryTextRange() {
 		return this.expiryTextRange;
 	}
 
-	private TextRange buildExpiryTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(EXPIRY_ADAPTER, astRoot);
+	private TextRange buildExpiryTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(EXPIRY_ADAPTER, astAnnotation);
 	}
 
 	// ***** expiry time of day
@@ -472,15 +490,16 @@ public final class SourceEclipseLinkCacheAnnotation
 	}
 
 	private void syncExpiryTimeOfDay(CompilationUnit astRoot) {
-		if (this.expiryTimeOfDayAdapter.getAnnotation(astRoot) == null) {
+		Annotation expirtyTimeOfDayAnnotation = this.expiryTimeOfDayAdapter.getAnnotation(astRoot);
+		if (expirtyTimeOfDayAnnotation == null) {
 			this.syncExpiryTimeOfDay_(null);
 		} else {
 			if (this.expiryTimeOfDay == null) {
 				EclipseLinkTimeOfDayAnnotation tod = this.buildExpiryTimeOfDay();
-				tod.initialize(astRoot);
+				tod.initialize(expirtyTimeOfDayAnnotation);
 				this.syncExpiryTimeOfDay_(tod);
 			} else {
-				this.expiryTimeOfDay.synchronizeWith(astRoot);
+				this.expiryTimeOfDay.synchronizeWith(expirtyTimeOfDayAnnotation);
 			}
 		}
 	}
@@ -496,7 +515,7 @@ public final class SourceEclipseLinkCacheAnnotation
 	}
 
 	private TextRange buildExpiryTimeOfDayTextRange(CompilationUnit astRoot) {
-		return this.buildTextRange(this.expiryTimeOfDayAdapter.getAstNode(astRoot));
+		return this.buildTextRange(astRoot);
 	}
 
 	// ***** isolation
@@ -517,16 +536,16 @@ public final class SourceEclipseLinkCacheAnnotation
 		this.firePropertyChanged(ISOLATION_PROPERTY, old, astIsolation);
 	}
 
-	private CacheIsolationType2_2 buildIsolation(CompilationUnit astRoot) {
-		return CacheIsolationType2_2.fromJavaAnnotationValue(this.isolationAdapter.getValue(astRoot));
+	private CacheIsolationType2_2 buildIsolation(Annotation astAnnotation) {
+		return CacheIsolationType2_2.fromJavaAnnotationValue(this.isolationAdapter.getValue(astAnnotation));
 	}
 
 	public TextRange getIsolationTextRange() {
 		return this.isolationTextRange;
 	}
 
-	private TextRange buildIsolationTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(ISOLATION_ADAPTER, astRoot);
+	private TextRange buildIsolationTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(ISOLATION_ADAPTER, astAnnotation);
 	}
 
 

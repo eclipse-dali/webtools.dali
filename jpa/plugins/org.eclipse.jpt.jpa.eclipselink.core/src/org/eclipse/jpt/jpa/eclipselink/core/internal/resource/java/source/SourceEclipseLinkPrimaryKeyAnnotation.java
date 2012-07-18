@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010, 2011  Oracle. 
+ *  Copyright (c) 2010, 2012  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
@@ -38,11 +38,13 @@ public class SourceEclipseLinkPrimaryKeyAnnotation
 		return ANNOTATION_NAME;
 	}
 	
-	public void initialize(CompilationUnit astRoot) {
+	@Override
+	public void initialize(Annotation astAnnotation) {
 		// nothing to initialize
 	}
 	
-	public void synchronizeWith(CompilationUnit astRoot) {
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
 		// nothing to sync
 	}
 }

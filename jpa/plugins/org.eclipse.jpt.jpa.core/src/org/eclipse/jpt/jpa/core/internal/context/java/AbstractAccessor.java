@@ -80,6 +80,10 @@ public abstract class AbstractAccessor
 			return null;
 		}
 
+		public Annotation getContainerAnnotation(String containerAnnotationName) {
+			return null;
+		}
+
 		public synchronized Annotation getNonNullAnnotation(String annotationName) {
 			Annotation annotation = this.nullAnnotationsCache.get(annotationName);
 			if (annotation == null) {

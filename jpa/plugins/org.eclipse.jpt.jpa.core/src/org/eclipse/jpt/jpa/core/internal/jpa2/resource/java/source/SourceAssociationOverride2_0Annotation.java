@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2011 Oracle. All rights reserved.
+* Copyright (c) 2009, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
 *******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source;
 
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
@@ -90,12 +91,15 @@ public final class SourceAssociationOverride2_0Annotation
 		this.nullJoinTable = this.buildNullJoinTable();
 	}
 
+	//TODO hmm, can we use initialize(Annotation)?
+	//that would be the AssociationOverride annotation, would need to get the JoinTable annotation from it
 	@Override
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
-		if (this.joinTableAdapter.getAnnotation(astRoot) != null) {
+		Annotation joinTableAnnotation = this.joinTableAdapter.getAnnotation(astRoot);
+		if (joinTableAnnotation != null) {
 			this.joinTable = buildJoinTableAnnotation(this, this.annotatedElement, this.daa);
-			this.joinTable.initialize(astRoot);
+			this.joinTable.initialize(joinTableAnnotation);
 		}
 	}
 
@@ -136,15 +140,16 @@ public final class SourceAssociationOverride2_0Annotation
 	}
 
 	private void syncJoinTable(CompilationUnit astRoot) {
-		if (this.joinTableAdapter.getAnnotation(astRoot) == null) {
+		Annotation joinTableAnnotation = this.joinTableAdapter.getAnnotation(astRoot);
+		if (joinTableAnnotation == null) {
 			this.syncJoinTable_(null);
 		} else {
 			if (this.joinTable == null) {
 				JoinTableAnnotation table = buildJoinTableAnnotation(this, this.annotatedElement, this.daa);
-				table.initialize(astRoot);
+				table.initialize(joinTableAnnotation);
 				this.syncJoinTable_(table);
 			} else {
-				this.joinTable.synchronizeWith(astRoot);
+				this.joinTable.synchronizeWith(joinTableAnnotation);
 			}
 		}
 	}

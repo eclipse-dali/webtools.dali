@@ -70,12 +70,28 @@ public abstract class SourceAnnotation
 
 	// ********** Annotation implementation **********
 
+	public void initialize(org.eclipse.jdt.core.dom.Annotation astAnnotation) {
+		initialize((CompilationUnit) astAnnotation.getRoot());
+	}
+
+	public void synchronizeWith(org.eclipse.jdt.core.dom.Annotation astAnnotation) {
+		synchronizeWith((CompilationUnit) astAnnotation.getRoot());
+	}
+
+	public void initialize(CompilationUnit astRoot) {
+		//use the more performant initialize(Annotation)
+	}
+
+	public void synchronizeWith(CompilationUnit astRoot) {
+		//use the more performant synchronizeWith(Annotation)
+	}
+
 	public org.eclipse.jdt.core.dom.Annotation getAstAnnotation(CompilationUnit astRoot) {
 		return this.annotationAdapter.getAnnotation(astRoot);
 	}
 
 	public void newAnnotation() {
-		this.annotationAdapter.newMarkerAnnotation();
+		this.initialize(this.annotationAdapter.newMarkerAnnotation());
 	}
 
 	public void removeAnnotation() {
@@ -126,6 +142,15 @@ public abstract class SourceAnnotation
 	}
 
 	/**
+	/**
+	 * Return the text range corresponding to the annotation.
+	 * If the annotation is missing, return <code>null</code>.
+	 */
+	protected TextRange getAnnotationTextRange(org.eclipse.jdt.core.dom.Annotation astAnnotation) {
+		return this.buildTextRange(astAnnotation);
+	}
+
+	/**
 	 * Convenience method.
 	 * Return the text range corresponding to the specified element.
 	 * If the specified element is missing, return the annotation's text range instead.
@@ -135,11 +160,28 @@ public abstract class SourceAnnotation
 	}
 
 	/**
+	 * Convenience method.
+	 * Return the text range corresponding to the specified element.
+	 * If the specified element is missing, return the annotation's text range instead.
+	 */
+	protected TextRange getElementTextRange(DeclarationAnnotationElementAdapter<?> elementAdapter, org.eclipse.jdt.core.dom.Annotation astAnnotation) {
+		return this.getElementTextRange(this.getAnnotationElementTextRange(elementAdapter, astAnnotation), astAnnotation);
+	}
+
+	/**
 	 * Convenience method. If the specified element text range is null
 	 * return the member's text range instead.
 	 */
 	protected TextRange getElementTextRange(TextRange elementTextRange, CompilationUnit astRoot) {
 		return (elementTextRange != null) ? elementTextRange : this.getAnnotationTextRange(astRoot);
+	}
+
+	/**
+	 * Convenience method. If the specified element text range is null
+	 * return the member's text range instead.
+	 */
+	protected TextRange getElementTextRange(TextRange elementTextRange, org.eclipse.jdt.core.dom.Annotation astAnnotation) {
+		return (elementTextRange != null) ? elementTextRange : this.getAnnotationTextRange(astAnnotation);
 	}
 
 	/**
@@ -169,11 +211,22 @@ public abstract class SourceAnnotation
 		return (astRoot == null) ? null : this.buildTextRange(this.getAnnotationElementExpression(adapter, astRoot));
 	}
 
+	protected TextRange getAnnotationElementTextRange(DeclarationAnnotationElementAdapter<?> adapter, org.eclipse.jdt.core.dom.Annotation astAnnotation) {
+		return (astAnnotation == null) ? null : this.buildTextRange(this.getAnnotationElementExpression(adapter, astAnnotation));
+	}
+
 	/**
 	 * Return the specified AST DOM element.
 	 */
 	protected Expression getAnnotationElementExpression(DeclarationAnnotationElementAdapter<?> adapter, CompilationUnit astRoot) {
 		return adapter.getExpression(this.annotatedElement.getModifiedDeclaration(astRoot));
+	}
+
+	/**
+	 * Return the specified AST DOM element.
+	 */
+	protected Expression getAnnotationElementExpression(DeclarationAnnotationElementAdapter<?> adapter, org.eclipse.jdt.core.dom.Annotation astAnnotation) {
+		return adapter.getExpression(astAnnotation);
 	}
 
 	/**

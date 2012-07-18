@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
@@ -79,25 +79,25 @@ abstract class SourceEclipseLinkBaseTypeConverterAnnotation
 	}
 
 	@Override
-	public void initialize(CompilationUnit astRoot) {
-		super.initialize(astRoot);
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
 
-		this.dataType = this.buildDataType(astRoot);
-		this.dataTypeTextRange = this.buildDataTypeTextRange(astRoot);
+		this.dataType = this.buildDataType(astAnnotation);
+		this.dataTypeTextRange = this.buildDataTypeTextRange(astAnnotation);
 
-		this.objectType = this.buildObjectType(astRoot);
-		this.objectTypeTextRange = this.buildObjectTypeTextRange(astRoot);
+		this.objectType = this.buildObjectType(astAnnotation);
+		this.objectTypeTextRange = this.buildObjectTypeTextRange(astAnnotation);
 	}
 
 	@Override
-	public void synchronizeWith(CompilationUnit astRoot) {
-		super.synchronizeWith(astRoot);
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
 
-		this.syncDataType(this.buildDataType(astRoot));
-		this.dataTypeTextRange = this.buildDataTypeTextRange(astRoot);
+		this.syncDataType(this.buildDataType(astAnnotation));
+		this.dataTypeTextRange = this.buildDataTypeTextRange(astAnnotation);
 
-		this.syncObjectType(this.buildObjectType(astRoot));
-		this.objectTypeTextRange = this.buildObjectTypeTextRange(astRoot);
+		this.syncObjectType(this.buildObjectType(astAnnotation));
+		this.objectTypeTextRange = this.buildObjectTypeTextRange(astAnnotation);
 	}
 
 	@Override
@@ -136,16 +136,16 @@ abstract class SourceEclipseLinkBaseTypeConverterAnnotation
 		this.firePropertyChanged(DATA_TYPE_PROPERTY, old, astDataType);
 	}
 
-	private String buildDataType(CompilationUnit astRoot) {
-		return this.dataTypeAdapter.getValue(astRoot);
+	private String buildDataType(Annotation astAnnotation) {
+		return this.dataTypeAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getDataTypeTextRange() {
 		return this.dataTypeTextRange;
 	}
 
-	private TextRange buildDataTypeTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.dataTypeDeclarationAdapter, astRoot);
+	private TextRange buildDataTypeTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.dataTypeDeclarationAdapter, astAnnotation);
 	}
 
 	abstract String getDataTypeElementName();
@@ -193,16 +193,16 @@ abstract class SourceEclipseLinkBaseTypeConverterAnnotation
 		this.firePropertyChanged(OBJECT_TYPE_PROPERTY, old, astObjectType);
 	}
 
-	private String buildObjectType(CompilationUnit astRoot) {
-		return this.objectTypeAdapter.getValue(astRoot);
+	private String buildObjectType(Annotation astAnnotation) {
+		return this.objectTypeAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getObjectTypeTextRange() {
 		return this.objectTypeTextRange;
 	}
 
-	private TextRange buildObjectTypeTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.objectTypeDeclarationAdapter, astRoot);
+	private TextRange buildObjectTypeTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.objectTypeDeclarationAdapter, astAnnotation);
 	}
 
 	abstract String getObjectTypeElementName();

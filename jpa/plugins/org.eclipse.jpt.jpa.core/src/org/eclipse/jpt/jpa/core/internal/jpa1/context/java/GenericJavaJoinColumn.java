@@ -44,16 +44,20 @@ public class GenericJavaJoinColumn
 
 	public GenericJavaJoinColumn(JavaJpaContextNode parent, JavaReadOnlyJoinColumn.Owner owner, CompleteJoinColumnAnnotation columnAnnotation) {
 		super(parent, owner, columnAnnotation);
-		this.specifiedReferencedColumnName = this.buildSpecifiedReferencedColumnName();
 	}
 
+	@Override
+	protected void initialize(CompleteJoinColumnAnnotation columnAnnotation) {
+		super.initialize(columnAnnotation);
+		this.specifiedReferencedColumnName = this.buildSpecifiedReferencedColumnName(columnAnnotation);
+	}
 
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.setSpecifiedReferencedColumnName_(this.buildSpecifiedReferencedColumnName());
+	public void synchronizeWithResourceModel(CompleteJoinColumnAnnotation columnAnnotation) {
+		super.synchronizeWithResourceModel(columnAnnotation);
+		this.setSpecifiedReferencedColumnName_(this.buildSpecifiedReferencedColumnName(columnAnnotation));
 	}
 
 	@Override
@@ -105,8 +109,8 @@ public class GenericJavaJoinColumn
 		this.firePropertyChanged(SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY, old, name);
 	}
 
-	protected String buildSpecifiedReferencedColumnName() {
-		return this.getColumnAnnotation().getReferencedColumnName();
+	protected String buildSpecifiedReferencedColumnName(CompleteJoinColumnAnnotation columnAnnotation) {
+		return columnAnnotation.getReferencedColumnName();
 	}
 
 	public String getDefaultReferencedColumnName() {

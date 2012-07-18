@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
@@ -41,9 +41,15 @@ public class SourceXmlCDATAAnnotation
 		return ELJaxb.XML_CDATA;
 	}
 	
-	public void initialize(CompilationUnit astRoot) {}
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		//no-op
+	}
 	
-	public void synchronizeWith(CompilationUnit astRoot) {}
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		//no-op
+	}
 	
 	@Override
 	public void toString(StringBuilder sb) {}

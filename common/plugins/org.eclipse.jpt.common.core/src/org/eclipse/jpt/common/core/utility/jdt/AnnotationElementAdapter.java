@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.core.utility.jdt;
 
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
 
@@ -29,9 +30,12 @@ public interface AnnotationElementAdapter<T> {
 	/**
 	 * Return the value of the adapter's annotation element.
 	 * Return null if the element is not present.
-	 * If the compilation unit is available, #value(CompilationUnit)
+	 * If the compilation unit is available, {@link #getValue(CompilationUnit)}
 	 * might be more performant.
-	 * @see #getValue(org.eclipse.jdt.core.dom.CompilationUnit)
+	 * If the annotation is available, {@link #getValue(Annotation)} might
+	 * be more performant.
+	 * @see #getValue(CompilationUnit)
+	 * @see #getValue(Annotation)
 	 */
 	T getValue();
 
@@ -39,9 +43,20 @@ public interface AnnotationElementAdapter<T> {
 	 * Given the specified compilation unit, return the value of the
 	 * adapter's annotation element.
 	 * Return null if the element is not present.
+	 * If the annotation is available, {@link #getValue(Annotation)} might
+	 * be more performant.
 	 * @see #getValue()
+	 * @see #getValue(Annotation)
 	 */
 	T getValue(CompilationUnit astRoot);
+	
+	/**
+	 * Given the specified annotation, return the value of the
+	 * adapter's annotation element.
+	 * Return null if the element is not present.
+	 * @see #getValue()
+	 */
+	T getValue(Annotation astAnnotation);
 
 	/**
 	 * Set the value of the adapter's annotation element.
@@ -54,14 +69,23 @@ public interface AnnotationElementAdapter<T> {
 	 * Given the specified compilation unit, return the expression value of the
 	 * adapter's annotation element.
 	 * Return null if the element is not present.
-	 * @see #getExpression()
+	 * If the annotation is available, {@link #getExpression(Annotation)} might
+	 * be more performant
+	 * @see #getExpression(Annotation)
 	 */
 	Expression getExpression(CompilationUnit astRoot);
+	
+	/**
+	 * Given the specified compilation unit, return the expression value of the
+	 * adapter's annotation element.
+	 * Return null if the element is not present.
+	 * @see #getExpression(CompilationUnit)
+	 */
+	Expression getExpression(Annotation astAnnotation);
 
 	/**
 	 * Return the AST node corresponding to the element.
 	 * If the element is missing, return the annotation's node.
-	 * @see #getAstNode()
 	 */
 	ASTNode getAstNode(CompilationUnit astRoot);
 

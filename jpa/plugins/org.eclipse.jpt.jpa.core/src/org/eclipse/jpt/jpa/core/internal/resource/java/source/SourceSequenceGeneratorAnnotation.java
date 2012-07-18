@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -51,17 +51,17 @@ public abstract class SourceSequenceGeneratorAnnotation
 	}
 
 	@Override
-	public void initialize(CompilationUnit astRoot) {
-		super.initialize(astRoot);
-		this.sequenceName = this.buildSequenceName(astRoot);
-		this.sequenceNameTextRange = this.buildSequenceNameTextRange(astRoot);
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.sequenceName = this.buildSequenceName(astAnnotation);
+		this.sequenceNameTextRange = this.buildSequenceNameTextRange(astAnnotation);
 	}
 
 	@Override
-	public void synchronizeWith(CompilationUnit astRoot) {
-		super.synchronizeWith(astRoot);
-		this.syncSequenceName(this.buildSequenceName(astRoot));
-		this.sequenceNameTextRange = this.buildSequenceNameTextRange(astRoot);
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.syncSequenceName(this.buildSequenceName(astAnnotation));
+		this.sequenceNameTextRange = this.buildSequenceNameTextRange(astAnnotation);
 	}
 
 	@Override
@@ -109,16 +109,16 @@ public abstract class SourceSequenceGeneratorAnnotation
 		this.firePropertyChanged(SEQUENCE_NAME_PROPERTY, old, astSequenceName);
 	}
 
-	private String buildSequenceName(CompilationUnit astRoot) {
-		return this.sequenceNameAdapter.getValue(astRoot);
+	private String buildSequenceName(Annotation astAnnotation) {
+		return this.sequenceNameAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getSequenceNameTextRange() {
 		return this.sequenceNameTextRange;
 	}
 
-	private TextRange buildSequenceNameTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(SEQUENCE_NAME_ADAPTER, astRoot);
+	private TextRange buildSequenceNameTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(SEQUENCE_NAME_ADAPTER, astAnnotation);
 	}
 
 	public boolean sequenceNameTouches(int pos) {

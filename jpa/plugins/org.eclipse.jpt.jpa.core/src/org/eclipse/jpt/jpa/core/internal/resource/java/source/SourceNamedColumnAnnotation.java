@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
@@ -59,20 +59,24 @@ public abstract class SourceNamedColumnAnnotation
 		this.columnDefinitionAdapter = this.buildColumnDefinitionAdapter();
 	}
 
-	public void initialize(CompilationUnit astRoot) {
-		this.name = this.buildName(astRoot);
-		this.nameTextRange = this.buildNameTextRange(astRoot);
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.name = this.buildName(astAnnotation);
+		this.nameTextRange = this.buildNameTextRange(astAnnotation);
 
-		this.columnDefinition = this.buildColumnDefinition(astRoot);
-		this.columnDefinitionTextRange = this.buildColumnDefinitionTextRange(astRoot);
+		this.columnDefinition = this.buildColumnDefinition(astAnnotation);
+		this.columnDefinitionTextRange = this.buildColumnDefinitionTextRange(astAnnotation);
 	}
 
-	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncName(this.buildName(astRoot));
-		this.nameTextRange = this.buildNameTextRange(astRoot);
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.syncName(this.buildName(astAnnotation));
+		this.nameTextRange = this.buildNameTextRange(astAnnotation);
 
-		this.syncColumnDefinition(this.buildColumnDefinition(astRoot));
-		this.columnDefinitionTextRange = this.buildColumnDefinitionTextRange(astRoot);
+		this.syncColumnDefinition(this.buildColumnDefinition(astAnnotation));
+		this.columnDefinitionTextRange = this.buildColumnDefinitionTextRange(astAnnotation);
 	}
 
 
@@ -100,16 +104,16 @@ public abstract class SourceNamedColumnAnnotation
 		this.firePropertyChanged(NAME_PROPERTY, old, astName);
 	}
 
-	private String buildName(CompilationUnit astRoot) {
-		return this.nameAdapter.getValue(astRoot);
+	private String buildName(Annotation astAnnotation) {
+		return this.nameAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getNameTextRange() {
 		return this.nameTextRange;
 	}
 
-	private TextRange buildNameTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.nameDeclarationAdapter, astRoot);
+	private TextRange buildNameTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.nameDeclarationAdapter, astAnnotation);
 	}
 
 	public boolean nameTouches(int pos) {
@@ -144,16 +148,16 @@ public abstract class SourceNamedColumnAnnotation
 		this.firePropertyChanged(COLUMN_DEFINITION_PROPERTY, old, astColumnDefinition);
 	}
 
-	private String buildColumnDefinition(CompilationUnit astRoot) {
-		return this.columnDefinitionAdapter.getValue(astRoot);
+	private String buildColumnDefinition(Annotation astAnnotation) {
+		return this.columnDefinitionAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getColumnDefinitionTextRange() {
 		return this.columnDefinitionTextRange;
 	}
 
-	private TextRange buildColumnDefinitionTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.columnDefinitionDeclarationAdapter, astRoot);
+	private TextRange buildColumnDefinitionTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.columnDefinitionDeclarationAdapter, astAnnotation);
 	}
 
 	private DeclarationAnnotationElementAdapter<String> buildColumnDefinitionDeclarationAdapter() {

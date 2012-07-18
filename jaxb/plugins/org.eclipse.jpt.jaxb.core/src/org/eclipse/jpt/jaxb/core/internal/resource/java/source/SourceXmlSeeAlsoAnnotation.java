@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 import java.util.Arrays;
 import java.util.Vector;
 import org.eclipse.jdt.core.dom.ASTNode;
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
@@ -75,38 +75,40 @@ public final class SourceXmlSeeAlsoAnnotation
 		return JAXB.XML_SEE_ALSO;
 	}
 	
-	public void initialize(CompilationUnit astRoot) {
-		for (String astClass : this.valueAdapter.getValue(astRoot)) {
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		for (String astClass : this.valueAdapter.getValue(astAnnotation)) {
 			this.classes.add(astClass);
 		}
-		CollectionTools.addAll(this.fullyQualifiedClasses, buildFullyQualifiedClasses(astRoot));
+		CollectionTools.addAll(this.fullyQualifiedClasses, buildFullyQualifiedClasses(astAnnotation));
 	}
 	
-	public void synchronizeWith(CompilationUnit astRoot) {
-		String[] astClasses = this.valueAdapter.getValue(astRoot);
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		String[] astClasses = this.valueAdapter.getValue(astAnnotation);
 		synchronizeList(Arrays.asList(astClasses), this.classes, CLASSES_LIST);
 		
 		if (this.suppressFQClassesEventNotification) {
 			this.fullyQualifiedClasses.clear();
-			CollectionTools.addAll(this.fullyQualifiedClasses, buildFullyQualifiedClasses(astRoot));
+			CollectionTools.addAll(this.fullyQualifiedClasses, buildFullyQualifiedClasses(astAnnotation));
 			this.suppressFQClassesEventNotification = false;
 		}
 		else {
-			synchronizeList(buildFullyQualifiedClasses(astRoot), this.fullyQualifiedClasses, FULLY_QUALIFIED_CLASSES_LIST);
+			synchronizeList(buildFullyQualifiedClasses(astAnnotation), this.fullyQualifiedClasses, FULLY_QUALIFIED_CLASSES_LIST);
 		}
 	}
 	
-	protected Iterable<String> buildFullyQualifiedClasses(final CompilationUnit astRoot) {
-		Expression expression = this.valueAdapter.getExpression(astRoot);
+	protected Iterable<String> buildFullyQualifiedClasses(final Annotation astAnnotation) {
+		Expression expression = this.valueAdapter.getExpression(astAnnotation);
 		if (expression == null) {
 			return EmptyIterable.<String>instance();
 		}
 		if (expression.getNodeType() == ASTNode.TYPE_LITERAL) {
 			return new SingleElementIterable<String>(ASTTools.resolveFullyQualifiedName(expression));
 		}
-		else {
-			return ASTTools.resolveFullyQualifiedNames(expression);
-		}
+		return ASTTools.resolveFullyQualifiedNames(expression);
 	}
 	
 	@Override

@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.BooleanExpressionConverter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
@@ -53,17 +53,17 @@ public final class SourceManyToOneAnnotation
 	}
 
 	@Override
-	public void initialize(CompilationUnit astRoot) {
-		super.initialize(astRoot);
-		this.optional = this.buildOptional(astRoot);
-		this.optionalTextRange = this.buildOptionalTextRange(astRoot);
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.optional = this.buildOptional(astAnnotation);
+		this.optionalTextRange = this.buildOptionalTextRange(astAnnotation);
 	}
 
 	@Override
-	public void synchronizeWith(CompilationUnit astRoot) {
-		super.synchronizeWith(astRoot);
-		this.syncOptional(this.buildOptional(astRoot));
-		this.optionalTextRange = this.buildOptionalTextRange(astRoot);
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.syncOptional(this.buildOptional(astAnnotation));
+		this.optionalTextRange = this.buildOptionalTextRange(astAnnotation);
 	}
 
 	@Override
@@ -111,16 +111,16 @@ public final class SourceManyToOneAnnotation
 		this.firePropertyChanged(OPTIONAL_PROPERTY, old, astOptional);
 	}
 
-	private Boolean buildOptional(CompilationUnit astRoot) {
-		return this.optionalAdapter.getValue(astRoot);
+	private Boolean buildOptional(Annotation astAnnotation) {
+		return this.optionalAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getOptionalTextRange() {
 		return this.optionalTextRange;
 	}
 
-	private TextRange buildOptionalTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(OPTIONAL_ADAPTER, astRoot);
+	private TextRange buildOptionalTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(OPTIONAL_ADAPTER, astAnnotation);
 	}
 
 

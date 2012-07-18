@@ -752,7 +752,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 					EclipseLinkJpaValidationMessages.MULTITENANT_VPD_INCLUDE_CRITERIA_WILL_BE_IGNORED,
 					EMPTY_STRING_ARRAY,
 					this,
-					this.getMultitenantAnnotation().getIncludeCriteriaTextRange(astRoot)
+					this.getMultitenantAnnotation().getIncludeCriteriaTextRange()
 				)
 			);			
 		}

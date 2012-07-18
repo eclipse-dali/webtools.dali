@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
@@ -52,17 +52,17 @@ public final class SourceManyToManyAnnotation
 	}
 
 	@Override
-	public void initialize(CompilationUnit astRoot) {
-		super.initialize(astRoot);
-		this.mappedBy = this.buildMappedBy(astRoot);
-		this.mappedByTextRange = this.buildMappedByTextRange(astRoot);
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.mappedBy = this.buildMappedBy(astAnnotation);
+		this.mappedByTextRange = this.buildMappedByTextRange(astAnnotation);
 	}
 
 	@Override
-	public void synchronizeWith(CompilationUnit astRoot) {
-		super.synchronizeWith(astRoot);
-		this.syncMappedBy(this.buildMappedBy(astRoot));
-		this.mappedByTextRange = this.buildMappedByTextRange(astRoot);
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.syncMappedBy(this.buildMappedBy(astAnnotation));
+		this.mappedByTextRange = this.buildMappedByTextRange(astAnnotation);
 	}
 
 	@Override
@@ -110,16 +110,16 @@ public final class SourceManyToManyAnnotation
 		this.firePropertyChanged(MAPPED_BY_PROPERTY, old, astMappedBy);
 	}
 
-	private String buildMappedBy(CompilationUnit astRoot) {
-		return this.mappedByAdapter.getValue(astRoot);
+	private String buildMappedBy(Annotation astAnnotation) {
+		return this.mappedByAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getMappedByTextRange() {
 		return this.mappedByTextRange;
 	}
 
-	private TextRange buildMappedByTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(MAPPED_BY_ADAPTER, astRoot);
+	private TextRange buildMappedByTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(MAPPED_BY_ADAPTER, astAnnotation);
 	}
 
 	public boolean mappedByTouches(int pos) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.core.internal.utility.jdt;
 
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
@@ -50,12 +51,20 @@ public class ShortCircuitAnnotationElementAdapter<T>
 		return this.adapter.getValue(astRoot);
 	}
 
+	public T getValue(Annotation astAnnotation) {
+		return this.adapter.getValue(astAnnotation);
+	}
+
 	public void setValue(T value) {
 		this.setValue(this.adapter.getValue(), value);
 	}
 
 	public Expression getExpression(CompilationUnit astRoot) {
 		return this.adapter.getExpression(astRoot);
+	}
+
+	public Expression getExpression(Annotation astAnnotation) {
+		return this.adapter.getExpression(astAnnotation);
 	}
 
 	public ASTNode getAstNode(CompilationUnit astRoot) {

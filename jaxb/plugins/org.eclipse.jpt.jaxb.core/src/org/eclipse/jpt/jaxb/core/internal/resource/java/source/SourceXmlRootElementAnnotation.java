@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
@@ -54,14 +55,18 @@ public final class SourceXmlRootElementAnnotation
 		return JAXB.XML_ROOT_ELEMENT;
 	}
 
-	public void initialize(CompilationUnit astRoot) {
-		this.name = this.buildName(astRoot);
-		this.namespace = this.buildNamespace(astRoot);
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.name = this.buildName(astAnnotation);
+		this.namespace = this.buildNamespace(astAnnotation);
 	}
 
-	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncName(this.buildName(astRoot));
-		this.syncNamespace(this.buildNamespace(astRoot));
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.syncName(this.buildName(astAnnotation));
+		this.syncNamespace(this.buildNamespace(astAnnotation));
 	}
 
 	@Override
@@ -90,8 +95,8 @@ public final class SourceXmlRootElementAnnotation
 		this.firePropertyChanged(NAME_PROPERTY, old, astName);
 	}
 
-	private String buildName(CompilationUnit astRoot) {
-		return this.nameAdapter.getValue(astRoot);
+	private String buildName(Annotation astAnnotation) {
+		return this.nameAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
@@ -121,8 +126,8 @@ public final class SourceXmlRootElementAnnotation
 		this.firePropertyChanged(NAMESPACE_PROPERTY, old, astNamespace);
 	}
 
-	private String buildNamespace(CompilationUnit astRoot) {
-		return this.namespaceAdapter.getValue(astRoot);
+	private String buildNamespace(Annotation astAnnotation) {
+		return this.namespaceAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getNamespaceTextRange(CompilationUnit astRoot) {

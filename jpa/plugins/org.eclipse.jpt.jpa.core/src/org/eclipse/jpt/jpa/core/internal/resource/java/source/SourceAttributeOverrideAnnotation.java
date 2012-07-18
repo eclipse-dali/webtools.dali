@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.jdt.CombinationIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter;
@@ -95,12 +96,18 @@ public final class SourceAttributeOverrideAnnotation
 		return ANNOTATION_NAME;
 	}
 
+//***************************************************************88
 	@Override
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
-		if (this.columnAdapter.getAnnotation(astRoot) != null) {
+		//TODO doesn't this have the possibility of breaking adopters since i had to change it to pass in the columnAnnotation?
+		//maybe in initialize(astRoot) I need to actually call the initialize(Annotation)
+		//should probably also test eclipselink without making any changes, or do we care the we are breaking adopters?? - probably
+		//TODO****************************************
+		Annotation columnAnnotation = this.columnAdapter.getAnnotation(astRoot);
+		if (columnAnnotation != null) {
 			this.column = SourceColumnAnnotation.createAttributeOverrideColumn(this, this.annotatedElement, this.daa);
-			this.column.initialize(astRoot);
+			this.column.initialize(columnAnnotation);
 		}
 	}
 
@@ -149,15 +156,16 @@ public final class SourceAttributeOverrideAnnotation
 	}
 
 	private void syncColumn(CompilationUnit astRoot) {
-		if (this.columnAdapter.getAnnotation(astRoot) == null) {
+		Annotation columnAnnotation = this.columnAdapter.getAnnotation(astRoot);
+		if (columnAnnotation == null) {
 			this.syncColumn_(null);
 		} else {
 			if (this.column == null) {
 				ColumnAnnotation col = SourceColumnAnnotation.createAttributeOverrideColumn(this, this.annotatedElement, this.daa);
-				col.initialize(astRoot);
+				col.initialize(columnAnnotation);
 				this.syncColumn_(col);
 			} else {
-				this.column.synchronizeWith(astRoot);
+				this.column.synchronizeWith(columnAnnotation);
 			}
 		}
 	}

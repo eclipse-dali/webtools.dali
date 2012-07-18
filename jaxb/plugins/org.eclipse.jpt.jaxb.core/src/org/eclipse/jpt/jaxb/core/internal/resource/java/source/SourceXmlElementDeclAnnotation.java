@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
@@ -117,24 +118,28 @@ public final class SourceXmlElementDeclAnnotation
 		return JAXB.XML_ELEMENT_DECL;
 	}
 	
-	public void initialize(CompilationUnit astRoot) {
-		this.scope = buildScope(astRoot);
-		this.fullyQualifiedScopeClassName = buildFullyQualifiedScopeClassName(astRoot);
-		this.namespace = buildNamespace(astRoot);
-		this.name = buildName(astRoot);
-		this.substitutionHeadNamespace = buildSubstitutionHeadNamespace(astRoot);
-		this.substitutionHeadName = buildSubstitutionHeadName(astRoot);
-		this.defaultValue = buildDefaultValue(astRoot);
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.scope = buildScope(astAnnotation);
+		this.fullyQualifiedScopeClassName = buildFullyQualifiedScopeClassName(astAnnotation);
+		this.namespace = buildNamespace(astAnnotation);
+		this.name = buildName(astAnnotation);
+		this.substitutionHeadNamespace = buildSubstitutionHeadNamespace(astAnnotation);
+		this.substitutionHeadName = buildSubstitutionHeadName(astAnnotation);
+		this.defaultValue = buildDefaultValue(astAnnotation);
 	}
 	
-	public void synchronizeWith(CompilationUnit astRoot) {
-		syncScope(buildScope(astRoot));
-		syncFullyQualifiedScopeClassName(buildFullyQualifiedScopeClassName(astRoot));
-		syncNamespace(buildNamespace(astRoot));
-		syncName(buildName(astRoot));
-		syncSubstitutionHeadNamespace(buildSubstitutionHeadNamespace(astRoot));
-		syncSubstitutionHeadName(buildSubstitutionHeadName(astRoot));
-		syncDefaultValue(buildDefaultValue(astRoot));
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		syncScope(buildScope(astAnnotation));
+		syncFullyQualifiedScopeClassName(buildFullyQualifiedScopeClassName(astAnnotation));
+		syncNamespace(buildNamespace(astAnnotation));
+		syncName(buildName(astAnnotation));
+		syncSubstitutionHeadNamespace(buildSubstitutionHeadNamespace(astAnnotation));
+		syncSubstitutionHeadName(buildSubstitutionHeadName(astAnnotation));
+		syncDefaultValue(buildDefaultValue(astAnnotation));
 	}
 	
 	@Override
@@ -162,8 +167,8 @@ public final class SourceXmlElementDeclAnnotation
 		firePropertyChanged(SCOPE_PROPERTY, old, astScope);
 	}
 	
-	private String buildScope(CompilationUnit astRoot) {
-		return this.scopeAdapter.getValue(astRoot);
+	private String buildScope(Annotation astAnnotation) {
+		return this.scopeAdapter.getValue(astAnnotation);
 	}
 	
 	public TextRange getScopeTextRange(CompilationUnit astRoot) {
@@ -183,8 +188,8 @@ public final class SourceXmlElementDeclAnnotation
 		firePropertyChanged(FULLY_QUALIFIED_SCOPE_CLASS_NAME_PROPERTY, old, name);
 	}
 	
-	private String buildFullyQualifiedScopeClassName(CompilationUnit astRoot) {
-		return (this.scope == null) ? null : ASTTools.resolveFullyQualifiedName(this.scopeAdapter.getExpression(astRoot));
+	private String buildFullyQualifiedScopeClassName(Annotation astAnnotation) {
+		return (this.scope == null) ? null : ASTTools.resolveFullyQualifiedName(this.scopeAdapter.getExpression(astAnnotation));
 	}
 	
 	
@@ -207,8 +212,8 @@ public final class SourceXmlElementDeclAnnotation
 		firePropertyChanged(NAMESPACE_PROPERTY, old, astNamespace);
 	}
 	
-	private String buildNamespace(CompilationUnit astRoot) {
-		return this.namespaceAdapter.getValue(astRoot);
+	private String buildNamespace(Annotation astAnnotation) {
+		return this.namespaceAdapter.getValue(astAnnotation);
 	}
 	
 	public TextRange getNamespaceTextRange(CompilationUnit astRoot) {
@@ -239,8 +244,8 @@ public final class SourceXmlElementDeclAnnotation
 		firePropertyChanged(NAME_PROPERTY, old, astName);
 	}
 	
-	private String buildName(CompilationUnit astRoot) {
-		return this.nameAdapter.getValue(astRoot);
+	private String buildName(Annotation astAnnotation) {
+		return this.nameAdapter.getValue(astAnnotation);
 	}
 	
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
@@ -271,8 +276,8 @@ public final class SourceXmlElementDeclAnnotation
 		firePropertyChanged(SUBSTITUTION_HEAD_NAMESPACE_PROPERTY, old, astSubstitutionHeadNamespace);
 	}
 	
-	private String buildSubstitutionHeadNamespace(CompilationUnit astRoot) {
-		return this.substitutionHeadNamespaceAdapter.getValue(astRoot);
+	private String buildSubstitutionHeadNamespace(Annotation astAnnotation) {
+		return this.substitutionHeadNamespaceAdapter.getValue(astAnnotation);
 	}
 	
 	public TextRange getSubstitutionHeadNamespaceTextRange(CompilationUnit astRoot) {
@@ -303,8 +308,8 @@ public final class SourceXmlElementDeclAnnotation
 		firePropertyChanged(SUBSTITUTION_HEAD_NAME_PROPERTY, old, astSubstitutionHeadName);
 	}
 	
-	private String buildSubstitutionHeadName(CompilationUnit astRoot) {
-		return this.substitutionHeadNameAdapter.getValue(astRoot);
+	private String buildSubstitutionHeadName(Annotation astAnnotation) {
+		return this.substitutionHeadNameAdapter.getValue(astAnnotation);
 	}
 	
 	public TextRange getSubstitutionHeadNameTextRange(CompilationUnit astRoot) {
@@ -335,8 +340,8 @@ public final class SourceXmlElementDeclAnnotation
 		firePropertyChanged(DEFAULT_VALUE_PROPERTY, old, astDefaultValue);
 	}
 	
-	private String buildDefaultValue(CompilationUnit astRoot) {
-		return this.defaultValueAdapter.getValue(astRoot);
+	private String buildDefaultValue(Annotation astAnnotation) {
+		return this.defaultValueAdapter.getValue(astAnnotation);
 	}
 	
 	public TextRange getDefaultValueTextRange(CompilationUnit astRoot) {

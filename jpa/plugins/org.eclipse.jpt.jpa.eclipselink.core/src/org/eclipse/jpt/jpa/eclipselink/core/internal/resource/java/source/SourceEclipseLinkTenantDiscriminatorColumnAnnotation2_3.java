@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.CombinationIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
@@ -101,31 +101,31 @@ public final class SourceEclipseLinkTenantDiscriminatorColumnAnnotation2_3
 	}
 
 	@Override
-	public void initialize(CompilationUnit astRoot) {
-		super.initialize(astRoot);
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
 
-		this.contextProperty = this.buildContextProperty(astRoot);
-		this.contextPropertyTextRange = this.buildContextPropertyTextRange(astRoot);
+		this.contextProperty = this.buildContextProperty(astAnnotation);
+		this.contextPropertyTextRange = this.buildContextPropertyTextRange(astAnnotation);
 
-		this.table = this.buildTable(astRoot);
-		this.tableTextRange = this.buildTableTextRange(astRoot);
+		this.table = this.buildTable(astAnnotation);
+		this.tableTextRange = this.buildTableTextRange(astAnnotation);
 
-		this.primaryKey = this.buildPrimaryKey(astRoot);
-		this.primaryKeyTextRange = this.buildPrimaryKeyTextRange(astRoot);
+		this.primaryKey = this.buildPrimaryKey(astAnnotation);
+		this.primaryKeyTextRange = this.buildPrimaryKeyTextRange(astAnnotation);
 	}
 
 	@Override
-	public void synchronizeWith(CompilationUnit astRoot) {
-		super.synchronizeWith(astRoot);
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
 
-		this.syncContextProperty(this.buildContextProperty(astRoot));
-		this.contextPropertyTextRange = this.buildContextPropertyTextRange(astRoot);
+		this.syncContextProperty(this.buildContextProperty(astAnnotation));
+		this.contextPropertyTextRange = this.buildContextPropertyTextRange(astAnnotation);
 
-		this.syncTable(this.buildTable(astRoot));
-		this.tableTextRange = this.buildTableTextRange(astRoot);
+		this.syncTable(this.buildTable(astAnnotation));
+		this.tableTextRange = this.buildTableTextRange(astAnnotation);
 
-		this.syncPrimaryKey(this.buildPrimaryKey(astRoot));
-		this.primaryKeyTextRange = this.buildPrimaryKeyTextRange(astRoot);
+		this.syncPrimaryKey(this.buildPrimaryKey(astAnnotation));
+		this.primaryKeyTextRange = this.buildPrimaryKeyTextRange(astAnnotation);
 	}
 
 	public String getAnnotationName() {
@@ -179,16 +179,16 @@ public final class SourceEclipseLinkTenantDiscriminatorColumnAnnotation2_3
 		this.firePropertyChanged(CONTEXT_PROPERTY_PROPERTY, old, astContextProperty);
 	}
 
-	private String buildContextProperty(CompilationUnit astRoot) {
-		return this.contextPropertyAdapter.getValue(astRoot);
+	private String buildContextProperty(Annotation astAnnotation) {
+		return this.contextPropertyAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getContextPropertyTextRange() {
 		return this.contextPropertyTextRange;
 	}
 
-	private TextRange buildContextPropertyTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.contextPropertyDeclarationAdapter, astRoot);
+	private TextRange buildContextPropertyTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.contextPropertyDeclarationAdapter, astAnnotation);
 	}
 
 	private DeclarationAnnotationElementAdapter<String> buildContextPropertyDeclarationAdapter() {
@@ -217,16 +217,16 @@ public final class SourceEclipseLinkTenantDiscriminatorColumnAnnotation2_3
 		this.firePropertyChanged(TABLE_PROPERTY, old, astTable);
 	}
 
-	private String buildTable(CompilationUnit astRoot) {
-		return this.tableAdapter.getValue(astRoot);
+	private String buildTable(Annotation astAnnotation) {
+		return this.tableAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getTableTextRange() {
 		return this.tableTextRange;
 	}
 
-	private TextRange buildTableTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.tableDeclarationAdapter, astRoot);
+	private TextRange buildTableTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.tableDeclarationAdapter, astAnnotation);
 	}
 
 	public boolean tableTouches(int pos) {
@@ -259,16 +259,16 @@ public final class SourceEclipseLinkTenantDiscriminatorColumnAnnotation2_3
 		this.firePropertyChanged(PRIMARY_KEY_PROPERTY, old, astPrimaryKey);
 	}
 
-	private Boolean buildPrimaryKey(CompilationUnit astRoot) {
-		return this.primaryKeyAdapter.getValue(astRoot);
+	private Boolean buildPrimaryKey(Annotation astAnnotation) {
+		return this.primaryKeyAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getPrimaryKeyTextRange() {
 		return this.primaryKeyTextRange;
 	}
 
-	private TextRange buildPrimaryKeyTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.primaryKeyDeclarationAdapter, astRoot);
+	private TextRange buildPrimaryKeyTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.primaryKeyDeclarationAdapter, astAnnotation);
 	}
 
 	private DeclarationAnnotationElementAdapter<Boolean> buildPrimaryKeyDeclarationAdapter() {

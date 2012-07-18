@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
@@ -52,20 +52,24 @@ abstract class SourceEclipseLinkTransformerAnnotation
 		this.methodAdapter = new AnnotatedElementAnnotationElementAdapter<String>(element, this.methodDeclarationAdapter);
 	}
 
-	public void initialize(CompilationUnit astRoot) {
-		this.transformerClass = this.buildTransformerClass(astRoot);
-		this.transformerClassTextRange = this.buildTransformerClassTextRange(astRoot);
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.transformerClass = this.buildTransformerClass(astAnnotation);
+		this.transformerClassTextRange = this.buildTransformerClassTextRange(astAnnotation);
 
-		this.method = this.buildMethod(astRoot);
-		this.methodTextRange = this.buildMethodTextRange(astRoot);
+		this.method = this.buildMethod(astAnnotation);
+		this.methodTextRange = this.buildMethodTextRange(astAnnotation);
 	}
 
-	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncTransformerClass(this.buildTransformerClass(astRoot));
-		this.transformerClassTextRange = this.buildTransformerClassTextRange(astRoot);
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.syncTransformerClass(this.buildTransformerClass(astAnnotation));
+		this.transformerClassTextRange = this.buildTransformerClassTextRange(astAnnotation);
 
-		this.syncMethod(this.buildMethod(astRoot));
-		this.methodTextRange = this.buildMethodTextRange(astRoot);
+		this.syncMethod(this.buildMethod(astAnnotation));
+		this.methodTextRange = this.buildMethodTextRange(astAnnotation);
 	}
 
 	@Override
@@ -101,16 +105,16 @@ abstract class SourceEclipseLinkTransformerAnnotation
 		this.firePropertyChanged(TRANSFORMER_CLASS_PROPERTY, old, astTransformerClass);
 	}
 
-	private String buildTransformerClass(CompilationUnit astRoot) {
-		return this.transformerClassAdapter.getValue(astRoot);
+	private String buildTransformerClass(Annotation astAnnotation) {
+		return this.transformerClassAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getTransformerClassTextRange() {
 		return this.transformerClassTextRange;
 	}
 
-	private TextRange buildTransformerClassTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.transformerClassDeclarationAdapter, astRoot);
+	private TextRange buildTransformerClassTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.transformerClassDeclarationAdapter, astAnnotation);
 	}
 
 	abstract String getTransformerClassElementName();
@@ -133,16 +137,16 @@ abstract class SourceEclipseLinkTransformerAnnotation
 		this.firePropertyChanged(METHOD_PROPERTY, old, astMethod);
 	}
 
-	private String buildMethod(CompilationUnit astRoot) {
-		return this.methodAdapter.getValue(astRoot);
+	private String buildMethod(Annotation astAnnotation) {
+		return this.methodAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getMethodTextRange() {
 		return this.methodTextRange;
 	}
 
-	private TextRange buildMethodTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.methodDeclarationAdapter, astRoot);
+	private TextRange buildMethodTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.methodDeclarationAdapter, astAnnotation);
 	}
 
 	abstract String getMethodElementName();

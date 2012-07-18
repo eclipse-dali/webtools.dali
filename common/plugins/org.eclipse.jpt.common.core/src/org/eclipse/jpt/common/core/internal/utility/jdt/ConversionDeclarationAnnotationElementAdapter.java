@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.core.internal.utility.jdt;
 
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
@@ -65,6 +66,11 @@ public class ConversionDeclarationAnnotationElementAdapter<T>
 		return this.converter.convert(expression);
 	}
 
+	public T getValue(Annotation astAnnotation) {
+		Expression expression = this.adapter.getValue(astAnnotation);
+		return this.converter.convert(expression);
+	}
+
 	public void setValue(T value, ModifiedDeclaration declaration) {
 		Expression expression;
 		try {
@@ -78,6 +84,10 @@ public class ConversionDeclarationAnnotationElementAdapter<T>
 
 	public Expression getExpression(ModifiedDeclaration declaration) {
 		return this.adapter.getExpression(declaration);
+	}
+
+	public Expression getExpression(Annotation astAnnotation) {
+		return this.adapter.getExpression(astAnnotation);
 	}
 
 	public ASTNode getAstNode(ModifiedDeclaration declaration) {

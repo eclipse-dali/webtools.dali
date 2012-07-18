@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
@@ -48,14 +48,18 @@ public final class SourceInheritanceAnnotation
 		return ANNOTATION_NAME;
 	}
 
-	public void initialize(CompilationUnit astRoot) {
-		this.strategy = this.buildStrategy(astRoot);
-		this.strategyTextRange = this.buildStrategyTextRange(astRoot);
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.strategy = this.buildStrategy(astAnnotation);
+		this.strategyTextRange = this.buildStrategyTextRange(astAnnotation);
 	}
 
-	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncStrategy(this.buildStrategy(astRoot));
-		this.strategyTextRange = this.buildStrategyTextRange(astRoot);
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.syncStrategy(this.buildStrategy(astAnnotation));
+		this.strategyTextRange = this.buildStrategyTextRange(astAnnotation);
 	}
 
 	@Override
@@ -90,16 +94,16 @@ public final class SourceInheritanceAnnotation
 		this.firePropertyChanged(STRATEGY_PROPERTY, old, astStrategy);
 	}
 
-	private InheritanceType buildStrategy(CompilationUnit astRoot) {
-		return InheritanceType.fromJavaAnnotationValue(this.strategyAdapter.getValue(astRoot));
+	private InheritanceType buildStrategy(Annotation astAnnotation) {
+		return InheritanceType.fromJavaAnnotationValue(this.strategyAdapter.getValue(astAnnotation));
 	}
 
 	public TextRange getStrategyTextRange() {
 		return this.strategyTextRange;
 	}
 
-	private TextRange buildStrategyTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(STRATEGY_ADAPTER, astRoot);
+	private TextRange buildStrategyTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(STRATEGY_ADAPTER, astAnnotation);
 	}
 
 

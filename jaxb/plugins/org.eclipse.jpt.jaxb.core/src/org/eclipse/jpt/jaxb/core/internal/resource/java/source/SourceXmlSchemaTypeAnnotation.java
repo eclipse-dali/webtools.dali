@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. All rights reserved.
+ *  Copyright (c) 2010, 2012  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
@@ -117,18 +118,22 @@ public class SourceXmlSchemaTypeAnnotation
 		return JAXB.XML_SCHEMA_TYPE;
 	}
 	
-	public void initialize(CompilationUnit astRoot) {
-		this.name = buildName(astRoot);
-		this.namespace = buildNamespace(astRoot);
-		this.type = buildType(astRoot);
-		this.fullyQualifiedType = buildFullyQualifiedType(astRoot);
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.name = buildName(astAnnotation);
+		this.namespace = buildNamespace(astAnnotation);
+		this.type = buildType(astAnnotation);
+		this.fullyQualifiedType = buildFullyQualifiedType(astAnnotation);
 	}
 	
-	public void synchronizeWith(CompilationUnit astRoot) {
-		syncName(buildName(astRoot));
-		syncNamespace(buildNamespace(astRoot));
-		syncType(buildType(astRoot));
-		syncFullyQualifiedType(buildFullyQualifiedType(astRoot));
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		syncName(buildName(astAnnotation));
+		syncNamespace(buildNamespace(astAnnotation));
+		syncType(buildType(astAnnotation));
+		syncFullyQualifiedType(buildFullyQualifiedType(astAnnotation));
 	}
 	
 	@Override
@@ -157,8 +162,8 @@ public class SourceXmlSchemaTypeAnnotation
 		this.firePropertyChanged(NAME_PROPERTY, old, astName);
 	}
 	
-	private String buildName(CompilationUnit astRoot) {
-		return this.nameAdapter.getValue(astRoot);
+	private String buildName(Annotation astAnnotation) {
+		return this.nameAdapter.getValue(astAnnotation);
 	}
 	
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
@@ -187,8 +192,8 @@ public class SourceXmlSchemaTypeAnnotation
 		this.firePropertyChanged(NAMESPACE_PROPERTY, old, astNamespace);
 	}
 	
-	private String buildNamespace(CompilationUnit astRoot) {
-		return this.namespaceAdapter.getValue(astRoot);
+	private String buildNamespace(Annotation astAnnotation) {
+		return this.namespaceAdapter.getValue(astAnnotation);
 	}
 	
 	public TextRange getNamespaceTextRange(CompilationUnit astRoot) {
@@ -217,8 +222,8 @@ public class SourceXmlSchemaTypeAnnotation
 		this.firePropertyChanged(TYPE_PROPERTY, old, astType);
 	}
 	
-	private String buildType(CompilationUnit astRoot) {
-		return this.typeAdapter.getValue(astRoot);
+	private String buildType(Annotation astAnnotation) {
+		return this.typeAdapter.getValue(astAnnotation);
 	}
 	
 	public TextRange getTypeTextRange(CompilationUnit astRoot) {
@@ -235,8 +240,8 @@ public class SourceXmlSchemaTypeAnnotation
 		this.firePropertyChanged(FULLY_QUALIFIED_TYPE_PROPERTY, old, name);
 	}
 	
-	private String buildFullyQualifiedType(CompilationUnit astRoot) {
-		return (this.type == null) ? null : ASTTools.resolveFullyQualifiedName(this.typeAdapter.getExpression(astRoot));
+	private String buildFullyQualifiedType(Annotation astAnnotation) {
+		return (this.type == null) ? null : ASTTools.resolveFullyQualifiedName(this.typeAdapter.getExpression(astAnnotation));
 	}
 	
 	

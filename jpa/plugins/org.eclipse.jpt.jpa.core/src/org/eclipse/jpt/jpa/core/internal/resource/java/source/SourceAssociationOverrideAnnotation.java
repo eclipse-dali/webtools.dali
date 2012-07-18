@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.CombinationIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
@@ -49,15 +49,15 @@ public abstract class SourceAssociationOverrideAnnotation
 	}
 
 	@Override
-	public void initialize(CompilationUnit astRoot) {
-		super.initialize(astRoot);
-		this.joinColumnsContainer.initializeFromContainerAnnotation(this.getAstAnnotation(astRoot));
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.joinColumnsContainer.initializeFromContainerAnnotation(astAnnotation);
 	}
 
 	@Override
-	public void synchronizeWith(CompilationUnit astRoot) {
-		super.synchronizeWith(astRoot);
-		this.joinColumnsContainer.synchronize(this.getAstAnnotation(astRoot));
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.joinColumnsContainer.synchronize(astAnnotation);
 	}
 
 	

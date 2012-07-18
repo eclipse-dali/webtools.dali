@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.core.internal.utility.jdt;
 
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
@@ -53,12 +54,20 @@ public class EnumDeclarationAnnotationElementAdapter
 		return this.resolve(this.adapter.getExpression(declaration));
 	}
 
+	public String getValue(Annotation astAnnotation) {
+		return this.resolve(this.adapter.getExpression(astAnnotation));
+	}
+
 	public void setValue(String value, ModifiedDeclaration declaration) {
 		this.adapter.setValue(convertToSourceCodeName(value, declaration), declaration);
 	}
 
 	public Expression getExpression(ModifiedDeclaration declaration) {
 		return this.adapter.getExpression(declaration);
+	}
+
+	public Expression getExpression(Annotation astAnnotation) {
+		return this.adapter.getExpression(astAnnotation);
 	}
 
 	public ASTNode getAstNode(ModifiedDeclaration declaration) {

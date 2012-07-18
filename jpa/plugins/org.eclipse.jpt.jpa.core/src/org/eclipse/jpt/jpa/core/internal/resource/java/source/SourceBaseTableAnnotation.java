@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter;
@@ -72,30 +72,36 @@ public abstract class SourceBaseTableAnnotation
 		this.catalogAdapter = this.buildCatalogAdapter();
 	}
 
-	public void initialize(CompilationUnit astRoot) {
-		this.name = this.buildName(astRoot);
-		this.nameTextRange = this.buildNameTextRange(astRoot);
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
 
-		this.schema = this.buildSchema(astRoot);
-		this.schemaTextRange = this.buildSchemaTextRange(astRoot);
+		this.name = this.buildName(astAnnotation);
+		this.nameTextRange = this.buildNameTextRange(astAnnotation);
 
-		this.catalog = this.buildCatalog(astRoot);
-		this.catalogTextRange = this.buildCatalogTextRange(astRoot);
+		this.schema = this.buildSchema(astAnnotation);
+		this.schemaTextRange = this.buildSchemaTextRange(astAnnotation);
 
-		this.uniqueConstraintsContainer.initializeFromContainerAnnotation(this.getAstAnnotation(astRoot));
+		this.catalog = this.buildCatalog(astAnnotation);
+		this.catalogTextRange = this.buildCatalogTextRange(astAnnotation);
+
+		this.uniqueConstraintsContainer.initializeFromContainerAnnotation(astAnnotation);
 	}
 
-	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncName(this.buildName(astRoot));
-		this.nameTextRange = this.buildNameTextRange(astRoot);
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
 
-		this.syncSchema(this.buildSchema(astRoot));
-		this.schemaTextRange = this.buildSchemaTextRange(astRoot);
+		this.syncName(this.buildName(astAnnotation));
+		this.nameTextRange = this.buildNameTextRange(astAnnotation);
 
-		this.syncCatalog(this.buildCatalog(astRoot));
-		this.catalogTextRange = this.buildCatalogTextRange(astRoot);
+		this.syncSchema(this.buildSchema(astAnnotation));
+		this.schemaTextRange = this.buildSchemaTextRange(astAnnotation);
 
-		this.uniqueConstraintsContainer.synchronize(this.getAstAnnotation(astRoot));
+		this.syncCatalog(this.buildCatalog(astAnnotation));
+		this.catalogTextRange = this.buildCatalogTextRange(astAnnotation);
+
+		this.uniqueConstraintsContainer.synchronize(astAnnotation);
 	}
 
 	/**
@@ -128,16 +134,16 @@ public abstract class SourceBaseTableAnnotation
 		this.firePropertyChanged(NAME_PROPERTY, old, astName);
 	}
 
-	private String buildName(CompilationUnit astRoot) {
-		return this.nameAdapter.getValue(astRoot);
+	private String buildName(Annotation astAnnotation) {
+		return this.nameAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getNameTextRange() {
 		return this.nameTextRange;
 	}
 
-	private TextRange buildNameTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.nameDeclarationAdapter, astRoot);
+	private TextRange buildNameTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.nameDeclarationAdapter, astAnnotation);
 	}
 
 	public boolean nameTouches(int pos) {
@@ -171,16 +177,16 @@ public abstract class SourceBaseTableAnnotation
 		this.firePropertyChanged(SCHEMA_PROPERTY, old, astSchema);
 	}
 
-	private String buildSchema(CompilationUnit astRoot) {
-		return this.schemaAdapter.getValue(astRoot);
+	private String buildSchema(Annotation astAnnotation) {
+		return this.schemaAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getSchemaTextRange() {
 		return this.schemaTextRange;
 	}
 
-	private TextRange buildSchemaTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.schemaDeclarationAdapter, astRoot);
+	private TextRange buildSchemaTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.schemaDeclarationAdapter, astAnnotation);
 	}
 
 	public boolean schemaTouches(int pos) {
@@ -214,16 +220,16 @@ public abstract class SourceBaseTableAnnotation
 		this.firePropertyChanged(CATALOG_PROPERTY, old, astCatalog);
 	}
 
-	private String buildCatalog(CompilationUnit astRoot) {
-		return this.catalogAdapter.getValue(astRoot);
+	private String buildCatalog(Annotation astAnnotation) {
+		return this.catalogAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getCatalogTextRange() {
 		return this.catalogTextRange;
 	}
 
-	private TextRange buildCatalogTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.catalogDeclarationAdapter, astRoot);
+	private TextRange buildCatalogTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.catalogDeclarationAdapter, astAnnotation);
 	}
 
 	public boolean catalogTouches(int pos) {

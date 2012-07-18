@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
@@ -46,21 +46,21 @@ public final class SourceSequenceGenerator2_0Annotation
 	}
 
 	@Override
-	public void initialize(CompilationUnit astRoot) {
-		super.initialize(astRoot);
-		this.catalog = this.buildCatalog(astRoot);
-		this.catalogTextRange = this.buildCatalogTextRange(astRoot);
-		this.schema = this.buildSchema(astRoot);
-		this.schemaTextRange = this.buildSchemaTextRange(astRoot);
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.catalog = this.buildCatalog(astAnnotation);
+		this.catalogTextRange = this.buildCatalogTextRange(astAnnotation);
+		this.schema = this.buildSchema(astAnnotation);
+		this.schemaTextRange = this.buildSchemaTextRange(astAnnotation);
 	}
 
 	@Override
-	public void synchronizeWith(CompilationUnit astRoot) {
-		super.synchronizeWith(astRoot);
-		this.syncCatalog(this.buildCatalog(astRoot));
-		this.catalogTextRange = this.buildCatalogTextRange(astRoot);
-		this.syncSchema(this.buildSchema(astRoot));
-		this.schemaTextRange = this.buildSchemaTextRange(astRoot);
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.syncCatalog(this.buildCatalog(astAnnotation));
+		this.catalogTextRange = this.buildCatalogTextRange(astAnnotation);
+		this.syncSchema(this.buildSchema(astAnnotation));
+		this.schemaTextRange = this.buildSchemaTextRange(astAnnotation);
 	}
 
 	@Override
@@ -89,16 +89,16 @@ public final class SourceSequenceGenerator2_0Annotation
 		this.firePropertyChanged(CATALOG_PROPERTY, old, astCatalog);
 	}
 
-	private String buildCatalog(CompilationUnit astRoot) {
-		return this.catalogAdapter.getValue(astRoot);
+	private String buildCatalog(Annotation astAnnotation) {
+		return this.catalogAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getCatalogTextRange() {
 		return this.catalogTextRange;
 	}
 
-	private TextRange buildCatalogTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(CATALOG_ADAPTER, astRoot);
+	private TextRange buildCatalogTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(CATALOG_ADAPTER, astAnnotation);
 	}
 
 	public boolean catalogTouches(int pos) {
@@ -123,16 +123,16 @@ public final class SourceSequenceGenerator2_0Annotation
 		this.firePropertyChanged(SCHEMA_PROPERTY, old, astSchema);
 	}
 
-	private String buildSchema(CompilationUnit astRoot) {
-		return this.schemaAdapter.getValue(astRoot);
+	private String buildSchema(Annotation astAnnotation) {
+		return this.schemaAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getSchemaTextRange() {
 		return this.schemaTextRange;
 	}
 
-	private TextRange buildSchemaTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(SCHEMA_ADAPTER, astRoot);
+	private TextRange buildSchemaTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(SCHEMA_ADAPTER, astAnnotation);
 	}
 
 	public boolean schemaTouches(int pos) {

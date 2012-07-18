@@ -11,6 +11,7 @@ package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
 import java.util.Arrays;
 import java.util.Vector;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
@@ -96,22 +97,26 @@ public final class SourceXmlTypeAnnotation
 		return JAXB.XML_TYPE;
 	}
 
-	public void initialize(CompilationUnit astRoot) {
-		this.factoryClass = this.buildFactoryClass(astRoot);
-		this.fullyQualifiedFactoryClassName = this.buildFullyQualifiedFactoryClassName(astRoot);
-		this.factoryMethod = this.buildFactoryMethod(astRoot);
-		this.name = this.buildName(astRoot);
-		this.namespace = this.buildNamespace(astRoot);
-		this.initializePropOrder(astRoot);
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.factoryClass = this.buildFactoryClass(astAnnotation);
+		this.fullyQualifiedFactoryClassName = this.buildFullyQualifiedFactoryClassName(astAnnotation);
+		this.factoryMethod = this.buildFactoryMethod(astAnnotation);
+		this.name = this.buildName(astAnnotation);
+		this.namespace = this.buildNamespace(astAnnotation);
+		this.initializePropOrder(astAnnotation);
 	}
 
-	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncFactoryClass(this.buildFactoryClass(astRoot));
-		this.syncFullyQualifiedFactoryClassName(this.buildFullyQualifiedFactoryClassName(astRoot));
-		this.syncFactoryMethod(this.buildFactoryMethod(astRoot));
-		this.syncName(this.buildName(astRoot));
-		this.syncNamespace(this.buildNamespace(astRoot));
-		this.syncPropOrder(astRoot);
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.syncFactoryClass(this.buildFactoryClass(astAnnotation));
+		this.syncFullyQualifiedFactoryClassName(this.buildFullyQualifiedFactoryClassName(astAnnotation));
+		this.syncFactoryMethod(this.buildFactoryMethod(astAnnotation));
+		this.syncName(this.buildName(astAnnotation));
+		this.syncNamespace(this.buildNamespace(astAnnotation));
+		this.syncPropOrder(astAnnotation);
 	}
 
 	@Override
@@ -140,8 +145,8 @@ public final class SourceXmlTypeAnnotation
 		this.firePropertyChanged(FACTORY_CLASS_PROPERTY, old, astFactoryClass);
 	}
 
-	private String buildFactoryClass(CompilationUnit astRoot) {
-		return this.factoryClassAdapter.getValue(astRoot);
+	private String buildFactoryClass(Annotation astAnnotation) {
+		return this.factoryClassAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getFactoryClassTextRange(CompilationUnit astRoot) {
@@ -159,8 +164,8 @@ public final class SourceXmlTypeAnnotation
 		this.firePropertyChanged(FULLY_QUALIFIED_FACTORY_CLASS_NAME_PROPERTY, old, name);
 	}
 
-	private String buildFullyQualifiedFactoryClassName(CompilationUnit astRoot) {
-		return (this.factoryClass == null) ? null : ASTTools.resolveFullyQualifiedName(this.factoryClassAdapter.getExpression(astRoot));
+	private String buildFullyQualifiedFactoryClassName(Annotation astAnnotation) {
+		return (this.factoryClass == null) ? null : ASTTools.resolveFullyQualifiedName(this.factoryClassAdapter.getExpression(astAnnotation));
 	}
 
 	// ***** factoryMethod
@@ -181,8 +186,8 @@ public final class SourceXmlTypeAnnotation
 		this.firePropertyChanged(FACTORY_METHOD_PROPERTY, old, astFactoryMethod);
 	}
 
-	private String buildFactoryMethod(CompilationUnit astRoot) {
-		return this.factoryMethodAdapter.getValue(astRoot);
+	private String buildFactoryMethod(Annotation astAnnotation) {
+		return this.factoryMethodAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getFactoryMethodTextRange(CompilationUnit astRoot) {
@@ -207,8 +212,8 @@ public final class SourceXmlTypeAnnotation
 		this.firePropertyChanged(NAME_PROPERTY, old, astName);
 	}
 
-	private String buildName(CompilationUnit astRoot) {
-		return this.nameAdapter.getValue(astRoot);
+	private String buildName(Annotation astAnnotation) {
+		return this.nameAdapter.getValue(astAnnotation);
 	}
 	
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
@@ -238,8 +243,8 @@ public final class SourceXmlTypeAnnotation
 		this.firePropertyChanged(NAMESPACE_PROPERTY, old, astNamespace);
 	}
 
-	private String buildNamespace(CompilationUnit astRoot) {
-		return this.namespaceAdapter.getValue(astRoot);
+	private String buildNamespace(Annotation astAnnotation) {
+		return this.namespaceAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getNamespaceTextRange(CompilationUnit astRoot) {
@@ -289,15 +294,15 @@ public final class SourceXmlTypeAnnotation
 		this.propOrderAdapter.setValue(this.propOrder.toArray(new String[this.propOrder.size()]));
 	}
 
-	private void initializePropOrder(CompilationUnit astRoot) {
-		String[] astPropOrder = this.propOrderAdapter.getValue(astRoot);
+	private void initializePropOrder(Annotation astAnnotation) {
+		String[] astPropOrder = this.propOrderAdapter.getValue(astAnnotation);
 		for (int i = 0; i < astPropOrder.length; i++) {
 			this.propOrder.add(astPropOrder[i]);
 		}
 	}
 
-	private void syncPropOrder(CompilationUnit astRoot) {
-		String[] astPropOrder = this.propOrderAdapter.getValue(astRoot);
+	private void syncPropOrder(Annotation astAnnotation) {
+		String[] astPropOrder = this.propOrderAdapter.getValue(astAnnotation);
 		this.synchronizeList(Arrays.asList(astPropOrder), this.propOrder, PROP_ORDER_LIST);
 	}
 	

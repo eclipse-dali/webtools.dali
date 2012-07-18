@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.common.core.internal.utility.jdt;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.ArrayInitializer;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
@@ -67,7 +68,12 @@ public class EnumArrayDeclarationAnnotationElementAdapter
 
 	public String[] getValue(ModifiedDeclaration declaration) {
 		// ignore the adapter's getValue() - we want the expression
-		return this.resolve(this.adapter.getExpression(declaration), declaration);
+		return this.resolve(this.getExpression(declaration));
+	}
+
+	public String[] getValue(Annotation astAnnotation) {
+		// ignore the adapter's getValue() - we want the expression
+		return this.resolve(this.getExpression(astAnnotation));
 	}
 
 	public void setValue(String[] value, ModifiedDeclaration declaration) {
@@ -76,6 +82,10 @@ public class EnumArrayDeclarationAnnotationElementAdapter
 
 	public Expression getExpression(ModifiedDeclaration declaration) {
 		return this.adapter.getExpression(declaration);
+	}
+
+	public Expression getExpression(Annotation astAnnotation) {
+		return this.adapter.getExpression(astAnnotation);
 	}
 
 	public ASTNode getAstNode(ModifiedDeclaration declaration) {
@@ -93,17 +103,17 @@ public class EnumArrayDeclarationAnnotationElementAdapter
 	 * or
 	 *     FOO
 	 */
-	protected String[] resolve(Expression expression, ModifiedDeclaration declaration) {
+	protected String[] resolve(Expression expression) {
 		if (expression == null) {
 			return StringTools.EMPTY_STRING_ARRAY;
 		} else if (expression.getNodeType() == ASTNode.ARRAY_INITIALIZER) {
-			return this.resolveArray((ArrayInitializer) expression, declaration);
+			return this.resolveArray((ArrayInitializer) expression);
 		} else {
-			return this.resolveSingleElement(expression, declaration);
+			return this.resolveSingleElement(expression);
 		}
 	}
 
-	protected String[] resolveArray(ArrayInitializer ai, @SuppressWarnings("unused") ModifiedDeclaration declaration) {
+	protected String[] resolveArray(ArrayInitializer ai) {
 		List<Expression> expressions = this.expressions(ai);
 		int len = expressions.size();
 		String[] enums = new String[len];
@@ -113,7 +123,7 @@ public class EnumArrayDeclarationAnnotationElementAdapter
 		return enums;
 	}
 
-	protected String[] resolveSingleElement(Expression enumExpression, @SuppressWarnings("unused") ModifiedDeclaration declaration) {
+	protected String[] resolveSingleElement(Expression enumExpression) {
 		return new String[] {this.resolveEnum(enumExpression)};
 	}
 
@@ -121,7 +131,7 @@ public class EnumArrayDeclarationAnnotationElementAdapter
 		return ASTTools.resolveEnum(expression);
 	}
 
-	// minimize scope of suppressd warnings
+	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
 	private List<Expression> expressions(ArrayInitializer arrayInitializer) {
 		return arrayInitializer.expressions();

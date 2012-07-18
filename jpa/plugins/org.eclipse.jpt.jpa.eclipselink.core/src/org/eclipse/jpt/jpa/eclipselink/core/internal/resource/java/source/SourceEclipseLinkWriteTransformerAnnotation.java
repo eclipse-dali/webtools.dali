@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source;
 
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.NestedDeclarationAnnotationAdapter;
@@ -53,9 +54,10 @@ public final class SourceEclipseLinkWriteTransformerAnnotation
 	@Override
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
-		if (this.columnAdapter.getAnnotation(astRoot) != null) {
+		Annotation columnAnnotation = this.columnAdapter.getAnnotation(astRoot);
+		if (columnAnnotation != null) {
 			this.column = createColumn(this, this.annotatedElement, this.daa);
-			this.column.initialize(astRoot);
+			this.column.initialize(columnAnnotation);
 		}
 		this.columnTextRange = this.buildColumnTextRange(astRoot);
 	}
@@ -117,15 +119,16 @@ public final class SourceEclipseLinkWriteTransformerAnnotation
 	}
 
 	private void syncColumn(CompilationUnit astRoot) {
-		if (this.columnAdapter.getAnnotation(astRoot) == null) {
+		Annotation columnAnnotation = this.columnAdapter.getAnnotation(astRoot);
+		if (columnAnnotation == null) {
 			this.syncColumn_(null);
 		} else {
 			if (this.column == null) {
 				ColumnAnnotation col = createColumn(this, this.annotatedElement, this.daa);
-				col.initialize(astRoot);
+				col.initialize(columnAnnotation);
 				this.syncColumn_(col);
 			} else {
-				this.column.synchronizeWith(astRoot);
+				this.column.synchronizeWith(columnAnnotation);
 			}
 		}
 	}

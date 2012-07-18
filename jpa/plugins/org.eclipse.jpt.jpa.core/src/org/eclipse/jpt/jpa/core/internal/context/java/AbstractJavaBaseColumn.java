@@ -50,11 +50,6 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 
 	protected AbstractJavaBaseColumn(JavaJpaContextNode parent, O owner, A columnAnnotation) {
 		super(parent, owner, columnAnnotation);
-		this.specifiedTable = this.buildSpecifiedTable();
-		this.specifiedUnique = this.buildSpecifiedUnique();
-		this.specifiedNullable = this.buildSpecifiedNullable();
-		this.specifiedInsertable = this.buildSpecifiedInsertable();
-		this.specifiedUpdatable = this.buildSpecifiedUpdatable();
 		//build defaults during construction for performance
 		this.defaultTable = this.buildDefaultTable();
 		this.defaultUnique = this.buildDefaultUnique();
@@ -63,17 +58,26 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 		this.defaultUpdatable = this.buildDefaultUpdatable();
 	}
 
+	@Override
+	protected void initialize(A columnAnnotation) {
+		super.initialize(columnAnnotation);
+		this.specifiedTable = this.buildSpecifiedTable(columnAnnotation);
+		this.specifiedUnique = this.buildSpecifiedUnique(columnAnnotation);
+		this.specifiedNullable = this.buildSpecifiedNullable(columnAnnotation);
+		this.specifiedInsertable = this.buildSpecifiedInsertable(columnAnnotation);
+		this.specifiedUpdatable = this.buildSpecifiedUpdatable(columnAnnotation);
+	}
 
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel() {
-		super.synchronizeWithResourceModel();
-		this.setSpecifiedTable_(this.buildSpecifiedTable());
-		this.setSpecifiedUnique_(this.buildSpecifiedUnique());
-		this.setSpecifiedNullable_(this.buildSpecifiedNullable());
-		this.setSpecifiedInsertable_(this.buildSpecifiedInsertable());
-		this.setSpecifiedUpdatable_(this.buildSpecifiedUpdatable());
+	protected void synchronizeWithResourceModel(A columnAnnotation) {
+		super.synchronizeWithResourceModel(columnAnnotation);
+		this.setSpecifiedTable_(this.buildSpecifiedTable(columnAnnotation));
+		this.setSpecifiedUnique_(this.buildSpecifiedUnique(columnAnnotation));
+		this.setSpecifiedNullable_(this.buildSpecifiedNullable(columnAnnotation));
+		this.setSpecifiedInsertable_(this.buildSpecifiedInsertable(columnAnnotation));
+		this.setSpecifiedUpdatable_(this.buildSpecifiedUpdatable(columnAnnotation));		
 	}
 
 	@Override
@@ -112,8 +116,8 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 		this.firePropertyChanged(SPECIFIED_TABLE_PROPERTY, old, table);
 	}
 
-	protected String buildSpecifiedTable() {
-		return this.getColumnAnnotation().getTable();
+	protected String buildSpecifiedTable(A columnAnnotation) {
+		return columnAnnotation.getTable();
 	}
 
 	public String getDefaultTable() {
@@ -159,8 +163,8 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 		this.firePropertyChanged(SPECIFIED_UNIQUE_PROPERTY, old, unique);
 	}
 
-	protected Boolean buildSpecifiedUnique() {
-		return this.getColumnAnnotation().getUnique();
+	protected Boolean buildSpecifiedUnique(A columnAnnotation) {
+		return columnAnnotation.getUnique();
 	}
 
 	public boolean isDefaultUnique() {
@@ -202,8 +206,8 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 		this.firePropertyChanged(SPECIFIED_NULLABLE_PROPERTY, old, nullable);
 	}
 
-	protected Boolean buildSpecifiedNullable() {
-		return this.getColumnAnnotation().getNullable();
+	protected Boolean buildSpecifiedNullable(A columnAnnotation) {
+		return columnAnnotation.getNullable();
 	}
 
 	public boolean isDefaultNullable() {
@@ -245,8 +249,8 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 		this.firePropertyChanged(SPECIFIED_INSERTABLE_PROPERTY, old, insertable);
 	}
 
-	protected Boolean buildSpecifiedInsertable() {
-		return this.getColumnAnnotation().getInsertable();
+	protected Boolean buildSpecifiedInsertable(A columnAnnotation) {
+		return columnAnnotation.getInsertable();
 	}
 
 	public boolean isDefaultInsertable() {
@@ -288,8 +292,8 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 		this.firePropertyChanged(SPECIFIED_UPDATABLE_PROPERTY, old, updatable);
 	}
 
-	protected Boolean buildSpecifiedUpdatable() {
-		return this.getColumnAnnotation().getUpdatable();
+	protected Boolean buildSpecifiedUpdatable(A columnAnnotation) {
+		return columnAnnotation.getUpdatable();
 	}
 
 	public boolean isDefaultUpdatable() {

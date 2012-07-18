@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
@@ -66,20 +66,24 @@ public final class SourceElementCollection2_0Annotation
 		return ANNOTATION_NAME;
 	}
 
-	public void initialize(CompilationUnit astRoot) {
-		this.targetClass = this.buildTargetClass(astRoot);
-		this.targetClassTextRange = this.buildTargetClassTextRange(astRoot);
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.targetClass = this.buildTargetClass(astAnnotation);
+		this.targetClassTextRange = this.buildTargetClassTextRange(astAnnotation);
 
-		this.fetch = this.buildFetch(astRoot);
-		this.fetchTextRange = this.buildFetchTextRange(astRoot);
+		this.fetch = this.buildFetch(astAnnotation);
+		this.fetchTextRange = this.buildFetchTextRange(astAnnotation);
 	}
 
-	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncTargetClass(this.buildTargetClass(astRoot));
-		this.targetClassTextRange = this.buildTargetClassTextRange(astRoot);
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.syncTargetClass(this.buildTargetClass(astAnnotation));
+		this.targetClassTextRange = this.buildTargetClassTextRange(astAnnotation);
 
-		this.syncFetch(this.buildFetch(astRoot));
-		this.fetchTextRange = this.buildFetchTextRange(astRoot);
+		this.syncFetch(this.buildFetch(astAnnotation));
+		this.fetchTextRange = this.buildFetchTextRange(astAnnotation);
 	}
 
 	@Override
@@ -123,16 +127,16 @@ public final class SourceElementCollection2_0Annotation
 		this.firePropertyChanged(TARGET_CLASS_PROPERTY, old, astTargetClass);
 	}
 
-	private String buildTargetClass(CompilationUnit astRoot) {
-		return this.targetClassAdapter.getValue(astRoot);
+	private String buildTargetClass(Annotation astAnnotation) {
+		return this.targetClassAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getTargetClassTextRange() {
 		return this.targetClassTextRange;
 	}
 
-	private TextRange buildTargetClassTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(TARGET_CLASS_ADAPTER, astRoot);
+	private TextRange buildTargetClassTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(TARGET_CLASS_ADAPTER, astAnnotation);
 	}
 
 	// ***** fully-qualified target entity class name
@@ -170,16 +174,16 @@ public final class SourceElementCollection2_0Annotation
 		this.firePropertyChanged(FETCH_PROPERTY, old, astFetch);
 	}
 
-	private FetchType buildFetch(CompilationUnit astRoot) {
-		return FetchType.fromJavaAnnotationValue(this.fetchAdapter.getValue(astRoot));
+	private FetchType buildFetch(Annotation astAnnotation) {
+		return FetchType.fromJavaAnnotationValue(this.fetchAdapter.getValue(astAnnotation));
 	}
 
 	public TextRange getFetchTextRange() {
 		return this.fetchTextRange;
 	}
 
-	private TextRange buildFetchTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(FETCH_ADAPTER, astRoot);
+	private TextRange buildFetchTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(FETCH_ADAPTER, astAnnotation);
 	}
 
 	// ********** static methods **********

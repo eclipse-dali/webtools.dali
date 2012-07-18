@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
@@ -84,16 +85,20 @@ public final class SourceXmlAnyElementAnnotation
 		return JAXB.XML_ANY_ELEMENT;
 	}
 
-	public void initialize(CompilationUnit astRoot) {
-		this.lax = this.buildLax(astRoot);
-		this.value = this.buildValue(astRoot);
-		this.fullyQualifiedValueClassName = this.buildFullyQualifiedValueClassName(astRoot);
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.lax = this.buildLax(astAnnotation);
+		this.value = this.buildValue(astAnnotation);
+		this.fullyQualifiedValueClassName = this.buildFullyQualifiedValueClassName(astAnnotation);
 	}
 
-	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncLax(this.buildLax(astRoot));
-		this.syncValue(this.buildValue(astRoot));
-		this.syncFullyQualifiedValueClassName(this.buildFullyQualifiedValueClassName(astRoot));
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.syncLax(this.buildLax(astAnnotation));
+		this.syncValue(this.buildValue(astAnnotation));
+		this.syncFullyQualifiedValueClassName(this.buildFullyQualifiedValueClassName(astAnnotation));
 	}
 
 	@Override
@@ -122,8 +127,8 @@ public final class SourceXmlAnyElementAnnotation
 		this.firePropertyChanged(LAX_PROPERTY, old, astLax);
 	}
 
-	private Boolean buildLax(CompilationUnit astRoot) {
-		return this.laxAdapter.getValue(astRoot);
+	private Boolean buildLax(Annotation astAnnotation) {
+		return this.laxAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getLaxTextRange(CompilationUnit astRoot) {
@@ -148,8 +153,8 @@ public final class SourceXmlAnyElementAnnotation
 		this.firePropertyChanged(VALUE_PROPERTY, old, astValue);
 	}
 
-	private String buildValue(CompilationUnit astRoot) {
-		return this.valueAdapter.getValue(astRoot);
+	private String buildValue(Annotation astAnnotation) {
+		return this.valueAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getValueTextRange(CompilationUnit astRoot) {
@@ -167,7 +172,7 @@ public final class SourceXmlAnyElementAnnotation
 		this.firePropertyChanged(FULLY_QUALIFIED_VALUE_CLASS_NAME_PROPERTY, old, name);
 	}
 
-	private String buildFullyQualifiedValueClassName(CompilationUnit astRoot) {
-		return (this.value == null) ? null : ASTTools.resolveFullyQualifiedName(this.valueAdapter.getExpression(astRoot));
+	private String buildFullyQualifiedValueClassName(Annotation astAnnotation) {
+		return (this.value == null) ? null : ASTTools.resolveFullyQualifiedName(this.valueAdapter.getExpression(astAnnotation));
 	}
 }

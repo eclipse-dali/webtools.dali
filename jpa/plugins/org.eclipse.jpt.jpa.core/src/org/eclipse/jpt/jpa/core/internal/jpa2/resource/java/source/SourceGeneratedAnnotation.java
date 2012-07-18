@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.source;
 
 import java.util.Arrays;
 import java.util.Vector;
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotationStringArrayExpressionConverter;
@@ -69,16 +69,20 @@ public final class SourceGeneratedAnnotation
 		return new AnnotatedElementAnnotationElementAdapter<String>(this.annotatedElement, daea);
 	}
 
-	public void initialize(CompilationUnit astRoot) {
-		this.initializeValues(astRoot);
-		this.date = this.buildDate(astRoot);
-		this.comments = this.buildComments(astRoot);
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.initializeValues(astAnnotation);
+		this.date = this.buildDate(astAnnotation);
+		this.comments = this.buildComments(astAnnotation);
 	}
 
-	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncValues(astRoot);
-		this.syncDate(this.buildDate(astRoot));
-		this.syncComments(this.buildComments(astRoot));
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.syncValues(astAnnotation);
+		this.syncDate(this.buildDate(astAnnotation));
+		this.syncComments(this.buildComments(astAnnotation));
 	}
 
 	@Override
@@ -138,15 +142,15 @@ public final class SourceGeneratedAnnotation
 		this.valueAdapter.setValue(this.values.toArray(new String[this.values.size()]));
 	}
 
-	private void initializeValues(CompilationUnit astRoot) {
-		String[] astValues = this.valueAdapter.getValue(astRoot);
+	private void initializeValues(Annotation astAnnotation) {
+		String[] astValues = this.valueAdapter.getValue(astAnnotation);
 		for (int i = 0; i < astValues.length; i++) {
 			this.values.add(astValues[i]);
 		}
 	}
 
-	private void syncValues(CompilationUnit astRoot) {
-		String[] astValues = this.valueAdapter.getValue(astRoot);
+	private void syncValues(Annotation astAnnotation) {
+		String[] astValues = this.valueAdapter.getValue(astAnnotation);
 		this.synchronizeList(Arrays.asList(astValues), this.values, VALUES_LIST);
 	}
 
@@ -168,8 +172,8 @@ public final class SourceGeneratedAnnotation
 		this.firePropertyChanged(DATE_PROPERTY, old, astDate);
 	}
 
-	private String buildDate(CompilationUnit astRoot) {
-		return this.dateAdapter.getValue(astRoot);
+	private String buildDate(Annotation astAnnotation) {
+		return this.dateAdapter.getValue(astAnnotation);
 	}
 
 	// ***** comments
@@ -190,8 +194,8 @@ public final class SourceGeneratedAnnotation
 		this.firePropertyChanged(COMMENTS_PROPERTY, old, astComments);
 	}
 
-	private String buildComments(CompilationUnit astRoot) {
-		return this.commentsAdapter.getValue(astRoot);
+	private String buildComments(Annotation astAnnotation) {
+		return this.commentsAdapter.getValue(astAnnotation);
 	}
 
 

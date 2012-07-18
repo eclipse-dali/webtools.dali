@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.CombinationIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
@@ -61,15 +61,15 @@ public final class SourceSecondaryTableAnnotation
 	}
 
 	@Override
-	public void initialize(CompilationUnit astRoot) {
-		super.initialize(astRoot);
-		this.pkJoinColumnsContainer.initializeFromContainerAnnotation(this.getAstAnnotation(astRoot));
+	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
+		this.pkJoinColumnsContainer.initializeFromContainerAnnotation(astAnnotation);
 	}
 
 	@Override
-	public void synchronizeWith(CompilationUnit astRoot) {
-		super.synchronizeWith(astRoot);
-		this.pkJoinColumnsContainer.synchronize(this.getAstAnnotation(astRoot));
+	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
+		this.pkJoinColumnsContainer.synchronize(astAnnotation);
 	}
 
 

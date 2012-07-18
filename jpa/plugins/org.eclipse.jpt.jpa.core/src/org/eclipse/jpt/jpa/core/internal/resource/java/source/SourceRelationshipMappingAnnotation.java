@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
@@ -83,26 +83,28 @@ abstract class SourceRelationshipMappingAnnotation
 		return new AnnotatedElementAnnotationElementAdapter<Boolean>(this.annotatedElement, daea);
 	}
 
-	public void initialize(CompilationUnit astRoot) {
-		this.targetEntity = this.buildTargetEntity(astRoot);
-		this.targetEntityTextRange = this.buildTargetEntityTextRange(astRoot);
+	@Override
+	public void initialize(Annotation astAnnotation) {
+		this.targetEntity = this.buildTargetEntity(astAnnotation);
+		this.targetEntityTextRange = this.buildTargetEntityTextRange(astAnnotation);
 
-		this.fetch = this.buildFetch(astRoot);
-		this.fetchTextRange = this.buildFetchTextRange(astRoot);
+		this.fetch = this.buildFetch(astAnnotation);
+		this.fetchTextRange = this.buildFetchTextRange(astAnnotation);
 
-		this.cascadeTypes = this.buildCascadeTypes(astRoot);
-		this.cascadeTextRange = this.buildCascadeTextRange(astRoot);
+		this.cascadeTypes = this.buildCascadeTypes(astAnnotation);
+		this.cascadeTextRange = this.buildCascadeTextRange(astAnnotation);
 	}
 
-	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncFetch(this.buildFetch(astRoot));
-		this.targetEntityTextRange = this.buildTargetEntityTextRange(astRoot);
+	@Override
+	public void synchronizeWith(Annotation astAnnotation) {
+		this.syncFetch(this.buildFetch(astAnnotation));
+		this.targetEntityTextRange = this.buildTargetEntityTextRange(astAnnotation);
 
-		this.syncTargetEntity(this.buildTargetEntity(astRoot));
-		this.fetchTextRange = this.buildFetchTextRange(astRoot);
+		this.syncTargetEntity(this.buildTargetEntity(astAnnotation));
+		this.fetchTextRange = this.buildFetchTextRange(astAnnotation);
 
-		this.syncCascadeTypes(this.buildCascadeTypes(astRoot));
-		this.cascadeTextRange = this.buildCascadeTextRange(astRoot);
+		this.syncCascadeTypes(this.buildCascadeTypes(astAnnotation));
+		this.cascadeTextRange = this.buildCascadeTextRange(astAnnotation);
 	}
 
 	@Override
@@ -147,16 +149,16 @@ abstract class SourceRelationshipMappingAnnotation
 		this.firePropertyChanged(TARGET_ENTITY_PROPERTY, old, astTargetEntity);
 	}
 
-	private String buildTargetEntity(CompilationUnit astRoot) {
-		return this.targetEntityAdapter.getValue(astRoot);
+	private String buildTargetEntity(Annotation astAnnotation) {
+		return this.targetEntityAdapter.getValue(astAnnotation);
 	}
 
 	public TextRange getTargetEntityTextRange() {
 		return this.targetEntityTextRange;
 	}
 
-	private TextRange buildTargetEntityTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.targetEntityDeclarationAdapter, astRoot);
+	private TextRange buildTargetEntityTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.targetEntityDeclarationAdapter, astAnnotation);
 	}
 
 	/**
@@ -199,16 +201,16 @@ abstract class SourceRelationshipMappingAnnotation
 		this.firePropertyChanged(FETCH_PROPERTY, old, astFetch);
 	}
 
-	private FetchType buildFetch(CompilationUnit astRoot) {
-		return FetchType.fromJavaAnnotationValue(this.fetchAdapter.getValue(astRoot));
+	private FetchType buildFetch(Annotation astAnnotation) {
+		return FetchType.fromJavaAnnotationValue(this.fetchAdapter.getValue(astAnnotation));
 	}
 
 	public TextRange getFetchTextRange() {
 		return this.fetchTextRange;
 	}
 
-	private TextRange buildFetchTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.fetchDeclarationAdapter, astRoot);
+	private TextRange buildFetchTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.fetchDeclarationAdapter, astAnnotation);
 	}
 
 	/**
@@ -246,8 +248,8 @@ abstract class SourceRelationshipMappingAnnotation
 		this.syncCascadeDetach(old);
 	}
 
-	private CascadeType[] buildCascadeTypes(CompilationUnit astRoot) {
-		return CascadeType.fromJavaAnnotationValues(this.cascadeAdapter.getValue(astRoot));
+	private CascadeType[] buildCascadeTypes(Annotation astAnnotation) {
+		return CascadeType.fromJavaAnnotationValues(this.cascadeAdapter.getValue(astAnnotation));
 	}
 
 	private boolean cascadeTypeIsTrue(CascadeType cascadeType) {
@@ -258,8 +260,8 @@ abstract class SourceRelationshipMappingAnnotation
 		return this.cascadeTextRange;
 	}
 
-	private TextRange buildCascadeTextRange(CompilationUnit astRoot) {
-		return getElementTextRange(this.cascadeDeclarationAdapter, astRoot);
+	private TextRange buildCascadeTextRange(Annotation astAnnotation) {
+		return getElementTextRange(this.cascadeDeclarationAdapter, astAnnotation);
 	}
 
 	/**
