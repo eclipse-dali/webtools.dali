@@ -9,9 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context.orm;
 
+import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmPersistentType2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessMethodsHolder;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAttributeMapping;
 
 /**
  * <code>eclipselink-orm.xml</code> persistent type:<ul>
@@ -32,7 +34,15 @@ public interface EclipseLinkOrmPersistentType
 	boolean isDynamic();
 		String DYNAMIC_PROPERTY = "dynamic"; //$NON-NLS-1$
 
-	OrmPersistentAttribute addVirtualAttribute(String attributeName, String mappingKey, String attributeType);
+	/**
+	 * Add a virtual attribute with the given attribute name and mapping key.
+	 * 'attributeType' and 'targetType' could be null depending on the mapping type.
+	 * 
+	 * @see XmlAttributeMapping#setVirtualAttributeTypes(String, String)
+	 * @see OrmAttributeMappingDefinition#isSingleRelationshipMapping()
+	 * @see OrmAttributeMappingDefinition#isCollectionMapping()
+	*/
+	OrmPersistentAttribute addVirtualAttribute(String attributeName, String mappingKey, String attributeType, String targetType);
 
 	//*************** covariant overrides *****************
 

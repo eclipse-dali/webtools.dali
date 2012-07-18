@@ -465,4 +465,10 @@ public class XmlStructure extends AbstractXmlAttributeMapping implements XmlAttr
 	protected static Translator buildAccessMethodsTranslator() {
 		return XmlAccessMethods.buildTranslator(EclipseLink.ACCESS_METHODS, EclipseLinkOrmPackage.eINSTANCE.getXmlAccessMethodsHolder_AccessMethods());
 	}
+	
+	// ******** virtual attribute ************
+	
+	public void setVirtualAttributeTypes(String attributeType, String targetType) {
+		this.setAttributeType(attributeType);
+	}
 } // XmlStructure

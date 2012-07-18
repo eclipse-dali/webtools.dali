@@ -71,8 +71,10 @@ public class NewDynamicEntityClassOperation extends NewEntityClassOperation {
 
 		public void execute() {
 			JpaXmlResource xmlResource = this.getOrmXmlResource();
-			EclipseLinkEntityMappings entityMappings = (EclipseLinkEntityMappings) this.getJpaProject().getJpaFile(xmlResource.getFile()).getRootStructureNodes().iterator().next();
-			EclipseLinkOrmPersistentType persistentType = (EclipseLinkOrmPersistentType) entityMappings.addPersistentType(this.typeMappingKey, this.model.getQualifiedJavaClassName());
+			EclipseLinkEntityMappings entityMappings = (EclipseLinkEntityMappings) this.getJpaProject().
+					getJpaFile(xmlResource.getFile()).getRootStructureNodes().iterator().next();
+			EclipseLinkOrmPersistentType persistentType = (EclipseLinkOrmPersistentType) entityMappings.
+					addPersistentType(this.typeMappingKey, this.model.getQualifiedJavaClassName());
 
 			this.updatePersistentType(entityMappings, persistentType);
 
@@ -88,31 +90,33 @@ public class NewDynamicEntityClassOperation extends NewEntityClassOperation {
 			setAccessType(entityMappings, persistentType);
 
 			if (this.model.isCompositePK()) {
-				EclipseLinkOrmPersistentType embeddable = (EclipseLinkOrmPersistentType) entityMappings.addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, this.model.getEmbeddableClassName());
+				EclipseLinkOrmPersistentType embeddable = (EclipseLinkOrmPersistentType) entityMappings.
+						addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, this.model.getEmbeddableClassName());
 				setAccessType(entityMappings, embeddable);
-				persistentType.addVirtualAttribute(this.model.getDefaultEmbeddedIdName(), MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, embeddable.getName());
+				persistentType.addVirtualAttribute(this.model.getDefaultEmbeddedIdName(),
+						MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, embeddable.getName(), null);
 
 				for (DynamicEntityField field : this.model.getPKFields()) {
-					String attributeType = field.getFqnTypeName();
+					String attributeType = field.getFqnAttributeType();
 					String name = field.getName();
 					String mappingType = MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
-					embeddable.addVirtualAttribute(name, mappingType, attributeType);
+					embeddable.addVirtualAttribute(name, mappingType, attributeType, null);
 				}
 
 				for (DynamicEntityField field : this.model.getEntityFields()) {
 					if (field.getMappingType().getKey() != MappingKeys.ID_ATTRIBUTE_MAPPING_KEY) {
-						String attributeType = field.getFqnTypeName();
-						String name = field.getName();
-						String mappingType = field.getMappingType().getKey();
-						persistentType.addVirtualAttribute(name, mappingType, attributeType);
+						persistentType.addVirtualAttribute(
+								field.getName(), field.getMappingType().getKey(), 
+								field.getFqnAttributeType(), field.getFqnTargetType()
+								);
 					}
 				}
 			} else {
 				for (DynamicEntityField field : this.model.getEntityFields()) {
-					String attributeType = field.getFqnTypeName();
-					String name = field.getName();
-					String mappingType = field.getMappingType().getKey();
-					persistentType.addVirtualAttribute(name, mappingType, attributeType);
+					persistentType.addVirtualAttribute(
+							field.getName(), field.getMappingType().getKey(), 
+							field.getFqnAttributeType(), field.getFqnTargetType()
+							);
 				}
 			}
 		}

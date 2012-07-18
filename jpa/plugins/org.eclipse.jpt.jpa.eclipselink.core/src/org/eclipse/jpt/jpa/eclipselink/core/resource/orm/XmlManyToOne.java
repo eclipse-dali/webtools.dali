@@ -1619,4 +1619,10 @@ public class XmlManyToOne extends org.eclipse.jpt.jpa.core.resource.orm.XmlManyT
 	protected static Translator buildJoinFieldTranslator() {
 		return XmlJoinField.buildTranslator(EclipseLink2_4.JOIN_FIELD, EclipseLinkOrmV2_4Package.eINSTANCE.getXmlManyToOne_2_4_JoinFields());
 	}
+	
+	// ******** virtual attribute ************
+	
+	public void setVirtualAttributeTypes(String attributeType, String targetEntity) {
+		this.setTargetEntity(targetEntity);
+	}
 }

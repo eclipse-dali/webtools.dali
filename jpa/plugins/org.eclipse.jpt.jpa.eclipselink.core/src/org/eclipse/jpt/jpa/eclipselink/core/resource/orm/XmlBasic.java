@@ -1754,4 +1754,10 @@ public class XmlBasic extends org.eclipse.jpt.jpa.core.resource.orm.XmlBasic imp
 		TextRange textRange = this.getConvertCodeAssistTextRange();
 		return (textRange != null) && (textRange.touches(pos));
 	}
+	
+	// ******** virtual attribute ************
+	
+	public void setVirtualAttributeTypes(String attributeType, String targetType) {
+		this.setAttributeType(attributeType);
+	}
 }

@@ -523,4 +523,10 @@ public class XmlBasicMap extends AbstractXmlAttributeMapping implements XmlAttri
 			buildAccessTranslator()
 		};
 	}
+	
+	// ******** virtual attribute ************
+	
+	public void setVirtualAttributeTypes(String attributeType, String targetType) {
+		this.setAttributeType(attributeType);
+	}
 }

@@ -562,5 +562,11 @@ public class XmlEmbedded extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbedd
 	protected static Translator buildFieldTranslator() {
 		return XmlField.buildTranslator(EclipseLink2_4.FIELD, EclipseLinkOrmV2_4Package.eINSTANCE.getXmlEmbedded_2_4_Field());
 	}
+	
+	// ******** virtual attribute ************
+	
+	public void setVirtualAttributeTypes(String attributeType, String targetType) {
+		this.setAttributeType(attributeType);
+	}
 
 }

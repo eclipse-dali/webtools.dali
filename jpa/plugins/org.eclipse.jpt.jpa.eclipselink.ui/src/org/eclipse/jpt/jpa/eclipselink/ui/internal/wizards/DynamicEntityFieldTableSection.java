@@ -67,6 +67,7 @@ public class DynamicEntityFieldTableSection extends Composite {
 	private final int NAME_COLUMN = 0;
 	private final int MAPPING_TYPE_COLUMN = 1;
 	private final int ATTRIBUTE_TYPE_COLUMN = 2;
+	private final int TARGET_TYPE_COLUMN = 3;
 	private Button addButton;
 	private Button editButton;
 	private Button removeButton;
@@ -104,6 +105,9 @@ public class DynamicEntityFieldTableSection extends Composite {
 
 		TableColumn attrTypeColumn = new TableColumn(mTableWidget, SWT.NONE);
 		attrTypeColumn.setText(EclipseLinkUiMessages.DynamicEntityFieldsWizardPage_attributeTypeColumnLabel);
+
+		TableColumn targetTypeColumn = new TableColumn(mTableWidget, SWT.NONE);
+		targetTypeColumn.setText(EclipseLinkUiMessages.DynamicEntityFieldsWizardPage_targetTypeColumnLabel);
 
 		mTableViewer = new TableViewer(mTableWidget);
 		mTableViewer.setContentProvider(new EntityRowContentProvider());
@@ -398,7 +402,10 @@ public class DynamicEntityFieldTableSection extends Composite {
 				return entity.getMappingType().getLabel();
 			}
 			if (columnIndex == ATTRIBUTE_TYPE_COLUMN) {
-				return entity.getFqnTypeName();
+				return entity.getFqnAttributeType();
+			}
+			if (columnIndex == TARGET_TYPE_COLUMN) {
+				return entity.getFqnTargetType();
 			}		
 			return "";
 		}
@@ -413,21 +420,20 @@ public class DynamicEntityFieldTableSection extends Composite {
 			String[] array = (String[]) element;
 			if (array.length > 0) {
 				return array[0];
-			} else {
-				return super.getText(element);
 			}
+			return super.getText(element);
 		}
 	}
 
 	// ********* Add dynamic entity field dialog ******************
 
 	/**
-	 * The dialog which collect the information (name, mapping type, and attribute type) for a new dynamic entity field
+	 * The dialog used to collect information for a new dynamic entity field
+	 * Information includes name, mapping type, attribute type and target type
 	 */
 	private class AddFieldDialog extends AddVirtualAttributeDialog {
 		
 		protected DynamicEntityField entityField;
-
 		protected final JpaProject jpaProject;
 
 		/**
@@ -450,7 +456,7 @@ public class DynamicEntityFieldTableSection extends Composite {
 			return composite;
 		}
 
-		/* Processes OK button pressed event.
+		/* Processes OK button pressed event
 		 * @see org.eclipse.jface.dialogs.Dialog#okPressed()
 		 */
 		@Override
@@ -459,9 +465,24 @@ public class DynamicEntityFieldTableSection extends Composite {
 			 * @see org.eclipse.jpt.jpa.eclipselink.ui.internal.entity.data.model.DynamicEntityField
 			 */
 			DynamicEntityField field = new DynamicEntityField();
-			field.setMappingType(this.getMappingUiDefinition(this.mappingCombo));
-			field.setFqnTypeName(this.attributeTypeText.getText());
 			field.setName(this.nameText.getText());
+			field.setMappingType(this.getMappingUiDefinition(this.mappingCombo));
+			String mappingKey = field.getMappingType().getKey();
+			
+			if (this.getAttributeMappingDefinition(mappingKey).isSingleRelationshipMapping()) {
+				// reset the unnecessary value to empty string to reduce confusion
+				field.setFqnAttributeType("");
+			} else {
+				field.setFqnAttributeType(this.attributeTypeText.getText());
+			}
+			
+			if (!this.getAttributeMappingDefinition(mappingKey).isSingleRelationshipMapping() &&
+					!this.getAttributeMappingDefinition(mappingKey).isCollectionMapping()) {
+				// reset the unnecessary value to empty string to reduce confusion
+				field.setFqnTargetType("");
+			} else {
+				field.setFqnTargetType(this.targetTypeText.getText());
+			}
 			entityField = field;
 
 			setReturnCode(OK);
@@ -500,6 +521,9 @@ public class DynamicEntityFieldTableSection extends Composite {
 
 	// ********* Edit dynamic entity field dialog ******************
 
+	/**
+	 * The dialog used to edit an existing dynamic entity field
+	 */
 	private class EditFieldDialog extends AddFieldDialog {
 
 		public EditFieldDialog(Shell shell, JpaProject jpaProject, DynamicEntityField field) {
@@ -515,7 +539,8 @@ public class DynamicEntityFieldTableSection extends Composite {
 
 			this.nameText.setText(this.entityField.getName());
 			this.mappingCombo.setSelection(new StructuredSelection(this.entityField.getMappingType()));
-			this.attributeTypeText.setText(this.entityField.getFqnTypeName());
+			this.attributeTypeText.setText(this.entityField.getFqnAttributeType());
+			this.targetTypeText.setText(this.entityField.getFqnTargetType());
 
 			return composite;
 		}

@@ -23,7 +23,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLink2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.XmlIndex_2_2;
@@ -986,5 +985,11 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 	public boolean convertTouches(int pos) {
 		TextRange textRange = this.getConvertCodeAssistTextRange();
 		return (textRange != null) && (textRange.touches(pos));
+	}
+	
+	// ******** virtual attribute ************
+	
+	public void setVirtualAttributeTypes(String attributeType, String targetType) {
+		this.setAttributeType(attributeType);
 	}
 }

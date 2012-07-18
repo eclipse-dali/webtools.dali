@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -61,5 +61,13 @@ public class OrmElementCollectionMapping2_0Definition
 			XmlAttributeMapping xmlMapping, 
 			OrmXmlContextNodeFactory factory) {
 		return ((OrmXml2_0ContextNodeFactory) factory).buildOrmElementCollectionMapping2_0(parent, (XmlElementCollection) xmlMapping);
+	}
+	
+	public boolean isSingleRelationshipMapping() {
+		return false;
+	}
+	
+	public boolean isCollectionMapping() {
+		return true;
 	}
 }

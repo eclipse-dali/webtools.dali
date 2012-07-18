@@ -28,6 +28,7 @@ import org.eclipse.jdt.core.JavaConventions;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
@@ -35,6 +36,8 @@ import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
+import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
+import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
@@ -264,15 +267,25 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 			if (errorMsg1 != null) {
 				return new Status(IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, errorMsg1);
 			}
-			// Ensure that the given type of the dynamic entity fields in the table are valid
+			// Ensure that the given attribute type of the dynamic entity fields in the table are valid
 			String errorMsg2 = checkInputFieldsAttributeTypeValidity(fields);
 			if (errorMsg2 != null) {
 				return new Status(IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, errorMsg2);
 			}
-			// Ensure that the given type of the dynamic entity fields in the table exist
-			String warningMsg = checkInputFieldsAttributeTypeExistence(fields);
-			if (warningMsg != null) {
-				return new Status(IStatus.WARNING, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, warningMsg);
+			// Ensure that the given target type of the dynamic entity fields in the table are valid
+			String errorMsg3 = checkInputFieldsTargetTypeValidity(fields);
+			if (errorMsg3 != null) {
+				return new Status(IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, errorMsg3);
+			}
+			// Ensure that the given attribute type of the dynamic entity fields in the table exist
+			String warningMsg1 = checkInputFieldsAttributeTypeExistence(fields);
+			if (warningMsg1 != null) {
+				return new Status(IStatus.WARNING, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, warningMsg1);
+			}
+			// Ensure that the given target type of the dynamic entity fields in the table exist
+			String warningMsg2 = checkInputFieldsTargetTypeExistence(fields);
+			if (warningMsg2 != null) {
+				return new Status(IStatus.WARNING, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, warningMsg2);
 			}
 		}
 		return Status.OK_STATUS;
@@ -322,22 +335,26 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 	private String checkInputFieldsAttributeTypeValidity(List<DynamicEntityField> fields) {
 		IStatus validateFieldTypeStatus = Status.OK_STATUS;
 		for (DynamicEntityField field: fields) {
+			// don't validate attribute type for a fields that is with single relationship mapping type
+			if (this.getAttributeMappingDefinition(field.getMappingType().getKey()).isSingleRelationshipMapping()) {
+				continue;
+			}
 			if (field.isKey() && !field.couldTypeBePKType()) {
 				String message = MessageFormat.format(
-						EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_invalidPKType, new Object[]{field.getFqnTypeName()});
-				validateFieldTypeStatus = new Status(IStatus.ERROR,	JptJpaEclipseLinkUiPlugin.PLUGIN_ID, message);
+						EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_invalidPKType, new Object[]{field.getFqnAttributeType()});
+				validateFieldTypeStatus = new Status(IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, message);
 				break;				
 			}
 			String sig = null;
 			try {
-				sig = Signature.createTypeSignature(field.getFqnTypeName(), true);
+				sig = Signature.createTypeSignature(field.getFqnAttributeType(), true);
 			} catch (IllegalArgumentException e) {
 				String message = MessageFormat.format(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_invalidArgument, new Object[]{e.getLocalizedMessage()});
 				validateFieldTypeStatus = new Status(IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, message);
 				break;
 			}
-			if (sig == null){
-				validateFieldTypeStatus = JavaConventions.validateJavaTypeName(field.getType(), JavaCore.VERSION_1_5, JavaCore.VERSION_1_5);
+			if (sig == null) {
+				validateFieldTypeStatus = JavaConventions.validateJavaTypeName(field.getAttributeType(), JavaCore.VERSION_1_5, JavaCore.VERSION_1_5);
 				break;
 			}
 			int sigType = Signature.getTypeSignatureKind(sig);
@@ -360,10 +377,14 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 	protected String checkInputFieldsAttributeTypeExistence(List<DynamicEntityField> fields) {
 		IStatus validateFieldTypeStatus=Status.OK_STATUS;
 		for (DynamicEntityField field: fields) {
-			String sig = Signature.createTypeSignature(field.getFqnTypeName() ,true);
+			// don't validate attribute type for a fields that is with single relationship mapping type
+			if (this.getAttributeMappingDefinition(field.getMappingType().getKey()).isSingleRelationshipMapping()) {
+				continue;
+			}
+			String sig = Signature.createTypeSignature(field.getFqnAttributeType(), true);
 			if (sig == null) {
 				String message = MessageFormat.format(
-						EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeNotInProjectClasspath, new Object[]{field.getFqnTypeName()});
+						EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeNotInProjectClasspath, new Object[]{field.getFqnAttributeType()});
 				validateFieldTypeStatus = new Status(IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, message);
 				break;
 			}
@@ -387,9 +408,8 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 				} 
 				if (type == null) {
 					String message = MessageFormat.format(
-							EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeNotInProjectClasspath, new Object[]{field.getFqnTypeName()});
-					validateFieldTypeStatus = new Status(IStatus.ERROR,
-							JptJpaEclipseLinkUiPlugin.PLUGIN_ID, message);
+							EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeNotInProjectClasspath, new Object[]{field.getFqnAttributeType()});
+					validateFieldTypeStatus = new Status(IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, message);
 					break;
 				}
 			} else {
@@ -397,16 +417,115 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 				IJavaProject javaProject = JavaCore.create(project);
 				IType type = null;
 				try {
-					type = javaProject.findType(field.getFqnTypeName());
+					type = javaProject.findType(field.getFqnAttributeType());
 				} catch (JavaModelException e) {
 					validateFieldTypeStatus = e.getStatus();
 					break;
 				}
 				if (type == null) {
 					String message = MessageFormat.format(
-							EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeNotInProjectClasspath, new Object[]{field.getFqnTypeName()});
-					validateFieldTypeStatus = new Status(IStatus.ERROR,
-							JptJpaEclipseLinkUiPlugin.PLUGIN_ID, message);
+							EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeNotInProjectClasspath, new Object[]{field.getFqnAttributeType()});
+					validateFieldTypeStatus = new Status(IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, message);
+					break;
+				}
+			}
+		}
+		if(!validateFieldTypeStatus.isOK()) {
+			return validateFieldTypeStatus.getMessage();
+		}
+		return null;
+	}
+	
+	private String checkInputFieldsTargetTypeValidity(List<DynamicEntityField> fields) {
+		IStatus validateFieldTypeStatus = Status.OK_STATUS;
+		for (DynamicEntityField field: fields) {
+			// don't validate target type for a fields that is not with relationship or collection mapping type
+			if (!this.getAttributeMappingDefinition(field.getMappingType().getKey()).isSingleRelationshipMapping() &&
+					!this.getAttributeMappingDefinition(field.getMappingType().getKey()).isCollectionMapping()) {
+				continue;
+			}
+			String sig = null;
+			try {
+				sig = Signature.createTypeSignature(field.getFqnTargetType(), true);
+			} catch (IllegalArgumentException e) {
+				String message = MessageFormat.format(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_invalidArgument, new Object[]{e.getLocalizedMessage()});
+				validateFieldTypeStatus = new Status(IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, message);
+				break;
+			}
+			if (sig == null){
+				validateFieldTypeStatus = JavaConventions.validateJavaTypeName(field.getTargetType(), JavaCore.VERSION_1_5, JavaCore.VERSION_1_5);
+				break;
+			}
+			int sigType = Signature.getTypeSignatureKind(sig);
+			if (sigType == Signature.BASE_TYPE_SIGNATURE) {
+				continue;
+			}
+			else if (sigType == Signature.ARRAY_TYPE_SIGNATURE) {
+				String elementSignature = Signature.getElementType(sig);
+				if (Signature.getTypeSignatureKind(elementSignature) == Signature.BASE_TYPE_SIGNATURE) {
+					continue;
+				}
+			}
+		}
+		if (!validateFieldTypeStatus.isOK()) {
+			return validateFieldTypeStatus.getMessage();
+		}
+		return null;
+	}
+
+	protected String checkInputFieldsTargetTypeExistence(List<DynamicEntityField> fields) {
+		IStatus validateFieldTypeStatus=Status.OK_STATUS;
+		for (DynamicEntityField field: fields) {
+			// don't validate target type for a fields that is not with relationship or collection mapping type
+			if (!this.getAttributeMappingDefinition(field.getMappingType().getKey()).isSingleRelationshipMapping() &&
+					!this.getAttributeMappingDefinition(field.getMappingType().getKey()).isCollectionMapping()) {
+				continue;
+			}
+			String sig = Signature.createTypeSignature(field.getFqnTargetType(), true);
+			if (sig == null) {
+				String message = MessageFormat.format(
+						EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeNotInProjectClasspath, new Object[]{field.getFqnTargetType()});
+				validateFieldTypeStatus = new Status(IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, message);
+				break;
+			}
+			int sigType = Signature.getTypeSignatureKind(sig);
+			if (sigType == Signature.BASE_TYPE_SIGNATURE){
+				continue;
+			} else if (sigType == Signature.ARRAY_TYPE_SIGNATURE) {
+				String elementSignature = Signature.getElementType(sig);
+				if(Signature.getTypeSignatureKind(elementSignature) == Signature.BASE_TYPE_SIGNATURE){
+					continue;
+				}
+				String qualifiedName = Signature.toString(elementSignature);
+				IProject project = getTargetProject();
+				IJavaProject javaProject = JavaCore.create(project);
+				IType type = null;
+				try {
+					type = javaProject.findType(qualifiedName);
+				} catch (JavaModelException e) {
+					validateFieldTypeStatus = e.getStatus();
+					break;
+				} 
+				if (type == null) {
+					String message = MessageFormat.format(
+							EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeNotInProjectClasspath, new Object[]{field.getFqnTargetType()});
+					validateFieldTypeStatus = new Status(IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, message);
+					break;
+				}
+			} else {
+				IProject project = getTargetProject();
+				IJavaProject javaProject = JavaCore.create(project);
+				IType type = null;
+				try {
+					type = javaProject.findType(field.getFqnTargetType());
+				} catch (JavaModelException e) {
+					validateFieldTypeStatus = e.getStatus();
+					break;
+				}
+				if (type == null) {
+					String message = MessageFormat.format(
+							EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeNotInProjectClasspath, new Object[]{field.getFqnTargetType()});
+					validateFieldTypeStatus = new Status(IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, message);
 					break;
 				}
 			}
@@ -589,5 +708,19 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 	protected PersistenceXml getPersistenceXml() {
 		JpaRootContextNode rcn = this.getJpaProject().getRootContextNode();
 		return (rcn == null) ? null : rcn.getPersistenceXml();
+	}
+	
+	protected OrmAttributeMappingDefinition getAttributeMappingDefinition(String mappingKey) {
+		return getOrmXmlDefinition().getAttributeMappingDefinition(mappingKey);
+	}
+	
+	// TODO bjv this can perhaps be removed once possible public API 
+	// (JpaContextNode.getMappingFileDefinition()?) introduced
+	private OrmXmlDefinition getOrmXmlDefinition() {
+		return (OrmXmlDefinition) getJpaProject().getJpaPlatform().getResourceDefinition(getJptResourceType());
+	}
+	
+	private JptResourceType getJptResourceType() {
+		return getOrmXmlResource(getStringProperty(XML_NAME)).getResourceType();
 	}
 }

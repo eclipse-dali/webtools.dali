@@ -66,6 +66,15 @@ public interface XmlAttributeMapping
 	 */
 	void setAttributeType(String value);
 
+	/**
+	 * Sets the value of the '<em>Attribute Type</em>' attribute and/or 
+	 * '<em>Target Entity </em>' or '<em>Target Class </em>' attribute for a virtual attribute mapping.
+	 * These will be null depending on the mapping type
+	 * 
+	 * @see EclipseLinkOrmPersistentType#addVirtualAttribute(String, String, String, String);
+	 */
+	void setVirtualAttributeTypes(String attributeType, String targetType);
+
 	TextRange getAttributeTypeTextRange();
 
 } // XmlAttributeMapping

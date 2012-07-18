@@ -2404,4 +2404,11 @@ public class XmlElementCollection extends org.eclipse.jpt.jpa.core.resource.orm.
 		TextRange textRange = this.getConvertCodeAssistTextRange();
 		return (textRange != null) && (textRange.touches(pos));
 	}
+	
+	// ******** virtual attribute ************
+	
+	public void setVirtualAttributeTypes(String attributeType, String targetClass) {
+		this.setAttributeType(attributeType);
+		this.setTargetClass(targetClass);
+	}
 }

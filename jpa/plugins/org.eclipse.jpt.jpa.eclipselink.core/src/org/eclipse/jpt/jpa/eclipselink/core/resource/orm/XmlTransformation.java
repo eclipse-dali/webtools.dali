@@ -459,5 +459,11 @@ public class XmlTransformation extends AbstractXmlAttributeMapping implements Xm
 	protected static Translator buildAttributeTypeTranslator() {
 		return new Translator(EclipseLink2_1.ATTRIBUTE_TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlAttributeMapping_AttributeType(), Translator.DOM_ATTRIBUTE);
 	}
+	
+	// ******** virtual attribute ************
+	
+	public void setVirtualAttributeTypes(String attributeType, String targetType) {
+		this.setAttributeType(attributeType);
+	}
 
 }

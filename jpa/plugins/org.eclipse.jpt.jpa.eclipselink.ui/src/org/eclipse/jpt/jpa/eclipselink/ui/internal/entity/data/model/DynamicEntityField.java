@@ -23,8 +23,11 @@ public class DynamicEntityField {
 	private static final String PACKAGE_JAVA_LANG = "java.lang."; //$NON-NLS-1$
 	private MappingUiDefinition<?,?> mappingType;
 	private String name = ""; //$NON-NLS-1$
-	private String type = ""; //$NON-NLS-1$
-	private String fqnTypeName = ""; //$NON-NLS-1$
+	private String attributeType;
+	private String fqnAttributeType;
+	private String targetType;
+	private String fqnTargetType;
+
 	private boolean key = false;
 
 	private final static String[] PK_TYPES = {"int", "long", "short", "char", "boolean", "byte", "double", "float",  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
@@ -69,47 +72,92 @@ public class DynamicEntityField {
 	}
 
 	/**
-	 * @return the type (as a simple name) of the dynamic entity field
+	 * @return the attribute type (as a simple name) of the dynamic entity field
 	 */
-	public String getType() {
-		return type;
+	public String getAttributeType() {
+		return attributeType;
 	}
 
 	/**
-	 * Sets the type (as a simple name) of the dynamic entity field
+	 * Sets the attribute type (as a simple name) of the dynamic entity field
 	 * 
 	 * @param type
 	 */
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	/**
-	 * @return the type (as fully qualified name) of the dynamic entity field
-	 */
-	public String getFqnTypeName() {
-		return fqnTypeName;
+	public void setAttributeType(String type) {
+		this.attributeType = type;
 	}
 	
 	/**
-	 * Sets the fully qualified type name of the dynamic entity field
+	 * @return the target type (as a simple name) of the dynamic entity field
+	 */
+	public String getTargetType() {
+		return targetType;
+	}
+
+	/**
+	 * Sets the target type (as a simple name) of the dynamic entity field
+	 * 
+	 * @param type
+	 */
+	public void setTargetType(String type) {
+		this.targetType = type;
+	}
+
+	/**
+	 * @return the attribute type (as fully qualified name) of the dynamic entity field
+	 */
+	public String getFqnAttributeType() {
+		return fqnAttributeType;
+	}
+	
+	/**
+	 * Sets the fully qualified attribute type name of the dynamic entity field
 	 * 
 	 * @param fqnTypeName
 	 */
-	public void setFqnTypeName(String fqnTypeName) {
+	public void setFqnAttributeType(String fqnTypeName) {
 		fqnTypeName = removeSpaces(fqnTypeName);
 		String fqnBasicTypeName = getBasicFQN(fqnTypeName);
 		if (fqnBasicTypeName.indexOf(DOT) == -1) {
 			if (VALID_PK_TYPES_SHORT.contains(fqnBasicTypeName)) {
-				this.fqnTypeName = PACKAGE_JAVA_LANG + fqnTypeName;
-				setType(fqnTypeName);
+				this.fqnAttributeType = PACKAGE_JAVA_LANG + fqnTypeName;
+				this.setAttributeType(fqnTypeName);
 			} else {
-				this.fqnTypeName = fqnTypeName;
-				setType(fqnTypeName);
+				this.fqnAttributeType = fqnTypeName;
+				this.setAttributeType(fqnTypeName);
 			}			
 		} else {
-			this.fqnTypeName = fqnTypeName;
-			setType(getSimpleName(fqnTypeName));
+			this.fqnAttributeType = fqnTypeName;
+			this.setAttributeType(getSimpleName(fqnTypeName));
+		}		
+	}
+	
+	/**
+	 * @return the target type (as fully qualified name) of the dynamic entity field
+	 */
+	public String getFqnTargetType() {
+		return fqnTargetType;
+	}
+	
+	/**
+	 * Sets the fully qualified target type name of the dynamic entity field
+	 * 
+	 * @param fqnTypeName
+	 */
+	public void setFqnTargetType(String fqnTypeName) {
+		fqnTypeName = removeSpaces(fqnTypeName);
+		String fqnBasicTypeName = getBasicFQN(fqnTypeName);
+		if (fqnBasicTypeName.indexOf(DOT) == -1) {
+			if (VALID_PK_TYPES_SHORT.contains(fqnBasicTypeName)) {
+				this.fqnTargetType = PACKAGE_JAVA_LANG + fqnTypeName;
+				this.setTargetType(fqnTypeName);
+			} else {
+				this.fqnTargetType = fqnTypeName;
+				this.setTargetType(fqnTypeName);
+			}			
+		} else {
+			this.fqnTargetType = fqnTypeName;
+			this.setTargetType(getSimpleName(fqnTypeName));
 		}		
 	}
 
@@ -172,7 +220,7 @@ public class DynamicEntityField {
 	 */
 	public boolean couldTypeBePKType() {
 		boolean result = false;
-		result = VALID_PK_TYPES.contains(getFqnTypeName());	
+		result = VALID_PK_TYPES.contains(getFqnAttributeType());	
 		return result;
 	}
 
@@ -181,16 +229,18 @@ public class DynamicEntityField {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((fqnTypeName == null) ? 0 : fqnTypeName.hashCode());
+				+ ((fqnAttributeType == null) ? 0 : fqnAttributeType.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime* result + (mappingType == null? 0 : mappingType.hashCode());
+		result = prime * result
+				+ ((fqnTargetType == null) ? 0 : fqnTargetType.hashCode());
 		return result;
 	}
 
 	/*
 	 * Implement equals, depending from name of the dynamic entity field
-	 * and its mapping and attribute types.
-	 * The attribute type is presented from the fully qualified name
+	 * and its mapping and attribute and target types.
+	 * The attribute and target types are presented from the fully qualified name
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -202,10 +252,10 @@ public class DynamicEntityField {
 		if (getClass() != obj.getClass())
 			return false;
 		final DynamicEntityField other = (DynamicEntityField) obj;
-		if (fqnTypeName == null) {
-			if (other.fqnTypeName != null)
+		if (fqnAttributeType == null) {
+			if (other.fqnAttributeType != null)
 				return false;
-		} else if (!fqnTypeName.equals(other.fqnTypeName))
+		} else if (!fqnAttributeType.equals(other.fqnAttributeType))
 			return false;
 		if (name == null) {
 			if (other.name != null)
@@ -216,6 +266,11 @@ public class DynamicEntityField {
 			if (other.mappingType != null)
 				return false;
 		} else if (!mappingType.equals(other.mappingType))
+			return false;
+		if (fqnTargetType == null) {
+			if (other.fqnTargetType != null)
+				return false;
+		} else if (!fqnTargetType.equals(other.fqnTargetType))
 			return false;
 		return true;
 	}

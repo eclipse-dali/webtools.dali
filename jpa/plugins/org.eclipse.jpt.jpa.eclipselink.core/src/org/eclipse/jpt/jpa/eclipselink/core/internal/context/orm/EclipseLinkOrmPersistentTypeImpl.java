@@ -23,8 +23,8 @@ import org.eclipse.jpt.jpa.core.resource.orm.Attributes;
 import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAccessMethods;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAccessMethodsHolder;
@@ -141,7 +141,7 @@ public class EclipseLinkOrmPersistentTypeImpl
 		return super.getOverriddenPersistentType();
 	}
 
-	public OrmPersistentAttribute addVirtualAttribute(String attributeName, String mappingKey, String attributeType) {
+	public OrmPersistentAttribute addVirtualAttribute(String attributeName, String mappingKey, String attributeType, String targetType) {
 		// force the creation of an empty xml attribute container beforehand or it will trigger
 		// a sync and, if we do this after adding the attribute, clear out our context attributes
 		Attributes xmlAttributes = this.getXmlAttributesForUpdate();
@@ -150,7 +150,7 @@ public class EclipseLinkOrmPersistentTypeImpl
 		OrmAttributeMappingDefinition md = this.getMappingFileDefinition().getAttributeMappingDefinition(mappingKey);
 		XmlAttributeMapping xmlMapping = (XmlAttributeMapping) md.buildResourceMapping(this.getResourceNodeFactory());
 		xmlMapping.setName(attributeName);
-		xmlMapping.setAttributeType(attributeType);
+		xmlMapping.setVirtualAttributeTypes(attributeType, targetType);
 		if (this.getAccess() != EclipseLinkAccessType.VIRTUAL) {
 			xmlMapping.setAccess(EclipseLinkAccessType.VIRTUAL.getOrmAccessType());
 		}

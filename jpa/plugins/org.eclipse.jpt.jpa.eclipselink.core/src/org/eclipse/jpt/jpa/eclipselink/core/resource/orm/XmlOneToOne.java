@@ -1785,4 +1785,10 @@ public class XmlOneToOne extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneToO
 	protected static Translator buildJoinFieldTranslator() {
 		return XmlJoinField.buildTranslator(EclipseLink2_4.JOIN_FIELD, EclipseLinkOrmV2_4Package.eINSTANCE.getXmlOneToOne_2_4_JoinFields());
 	}
+	
+	// ******** virtual attribute ************
+	
+	public void setVirtualAttributeTypes(String attributeType, String targetEntity) {
+		this.setTargetEntity(targetEntity);
+	}
 }

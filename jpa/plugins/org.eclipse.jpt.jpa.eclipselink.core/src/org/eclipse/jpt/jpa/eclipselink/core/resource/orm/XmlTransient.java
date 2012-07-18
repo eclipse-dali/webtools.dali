@@ -433,4 +433,10 @@ public class XmlTransient extends org.eclipse.jpt.jpa.core.resource.orm.XmlTrans
 			buildNameTranslator()
 		};
 	}
+	
+	// ******** virtual attribute ************
+	
+	public void setVirtualAttributeTypes(String attributeType, String targetType) {
+		this.setAttributeType(attributeType);
+	}
 }

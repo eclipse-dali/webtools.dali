@@ -1370,5 +1370,13 @@ public class XmlVariableOneToOne extends AbstractXmlAttributeMapping implements 
 	protected static Translator buildTargetInterfaceTranslator() {
 		return new Translator(EclipseLink.VARIABLE_ONE_TO_ONE__TARGET_INTERFACE, EclipseLinkOrmPackage.eINSTANCE.getXmlVariableOneToOne_TargetInterface(), Translator.DOM_ATTRIBUTE);
 	}
+	
+	// ******** virtual attribute ************
+	
+	public void setVirtualAttributeTypes(String attributeType, String targetInterface) {
+		this.setAttributeType(attributeType);
+		//TODO support this in the UI if we ever fully add Var 1-1 mapping support
+		this.setTargetInterface(targetInterface);
+	}
 
 }

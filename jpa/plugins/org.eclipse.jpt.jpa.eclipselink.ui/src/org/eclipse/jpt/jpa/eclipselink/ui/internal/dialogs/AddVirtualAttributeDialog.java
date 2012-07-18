@@ -38,7 +38,9 @@ import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
 import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
@@ -64,17 +66,19 @@ import org.eclipse.ui.dialogs.SelectionDialog;
 import org.eclipse.ui.progress.IProgressService;
 import com.ibm.icu.text.Collator;
 
-public class AddVirtualAttributeDialog extends StatusDialog
-{
+public class AddVirtualAttributeDialog extends StatusDialog {
+
 	private EclipseLinkOrmPersistentType persistentType;
+	private OrmPersistentAttribute addedAttribute;
+	
+	private Button attributeTypeBrowseButton;
+	private Button targetTypeBrowserButton;
+	
 	protected Text nameText;
 	protected ComboViewer mappingCombo;
 	
 	protected Text attributeTypeText;
-	
-	private Button attributeTypeBrowseButton;
-
-	private OrmPersistentAttribute addedAttribute;
+	protected Text targetTypeText;
 
 	public AddVirtualAttributeDialog(Shell parentShell, EclipseLinkOrmPersistentType persistentType) {
 		super(parentShell);
@@ -93,13 +97,7 @@ public class AddVirtualAttributeDialog extends StatusDialog
 		createLabel(composite, 1, EclipseLinkUiMessages.AddVirtualAttributeDialog_nameLabel);
 
 		this.nameText = createText(composite, 2);
-		this.nameText.addModifyListener(
-				new ModifyListener() {
-					public void modifyText(ModifyEvent e) {
-						validate();
-					}
-				}
-			);
+		this.nameText.addModifyListener(getTextModifyListener());
 
 		createLabel(composite, 1, EclipseLinkUiMessages.AddVirtualAttributeDialog_mappingLabel);
 
@@ -115,6 +113,19 @@ public class AddVirtualAttributeDialog extends StatusDialog
 				});
 		this.mappingCombo.addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
+				String mappingKey = AddVirtualAttributeDialog.this.getMappingKey();
+				OrmAttributeMappingDefinition mapping = 
+						AddVirtualAttributeDialog.this.getAttributeMappingDefinition(mappingKey);
+				if (mapping.isSingleRelationshipMapping()) {
+					AddVirtualAttributeDialog.this.enableAttributeType(false);
+					AddVirtualAttributeDialog.this.enableTargetType(true);
+				} else if  (mapping.isCollectionMapping()) {
+					AddVirtualAttributeDialog.this.enableAttributeType(true);
+					AddVirtualAttributeDialog.this.enableTargetType(true);
+				} else {
+					AddVirtualAttributeDialog.this.enableAttributeType(true);
+					AddVirtualAttributeDialog.this.enableTargetType(false);
+				}
 				validate();
 			}
 		});
@@ -122,27 +133,21 @@ public class AddVirtualAttributeDialog extends StatusDialog
 		
 		createLabel(composite, 1, EclipseLinkUiMessages.AddVirtualAttributeDialog_attributeTypeLabel);
 			
-		this.attributeTypeText = createAttributeTypeText(composite);
-		this.attributeTypeText.addModifyListener(
-				new ModifyListener() {
-					public void modifyText(ModifyEvent e) {
-						validate();
-					}
-				}
-			);
-		
+		this.attributeTypeText = createTypeText(composite);
+		this.attributeTypeText.addModifyListener(getTextModifyListener());
+
 		this.attributeTypeBrowseButton = createButton(composite, JptUiMessages.General_browse);
-		this.attributeTypeBrowseButton.addSelectionListener(new SelectionListener() {
-			public void widgetSelected(SelectionEvent e) {
-				IType type = chooseType();
-				if (type != null) {
-					attributeTypeText.setText(type.getFullyQualifiedName('$'));
-				}
-			}
-			public void widgetDefaultSelected(SelectionEvent e) {
-				widgetSelected(e);
-			}
-		});
+		this.attributeTypeBrowseButton.addSelectionListener(addButtonSelectionListener(attributeTypeText));
+
+		createLabel(composite, 1, EclipseLinkUiMessages.AddVirtualAttributeDialog_targetTypeLabel);
+
+		this.targetTypeText = createTypeText(composite);
+		this.targetTypeText.addModifyListener(getTextModifyListener());
+		this.targetTypeText.setEnabled(false);
+
+		this.targetTypeBrowserButton = createButton(composite, JptUiMessages.General_browse);
+		this.targetTypeBrowserButton.addSelectionListener(addButtonSelectionListener(targetTypeText));
+		this.targetTypeBrowserButton.setEnabled(false);
 
 		this.nameText.setFocus();
 
@@ -151,6 +156,38 @@ public class AddVirtualAttributeDialog extends StatusDialog
 		validate();
 
 		return dialogArea;
+	}
+
+	private ModifyListener getTextModifyListener() {
+		return new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				validate();
+			}
+		};
+	}
+
+	private SelectionListener addButtonSelectionListener(final Text text) {
+		return new SelectionListener() {
+			public void widgetSelected(SelectionEvent e) {
+				IType type = chooseType(text.getText());
+				if (type != null) {
+					text.setText(type.getFullyQualifiedName('$'));
+				}
+			}
+			public void widgetDefaultSelected(SelectionEvent e) {
+				widgetSelected(e);
+			}
+		};
+	}
+
+	private void enableAttributeType(boolean enabled) {
+		this.attributeTypeText.setEnabled(enabled);
+		this.attributeTypeBrowseButton.setEnabled(enabled);
+	}
+
+	private void enableTargetType(boolean enabled) {
+		this.targetTypeText.setEnabled(enabled);
+		this.targetTypeBrowserButton.setEnabled(enabled);
 	}
 
 	protected JpaPlatformUi getJpaPlatformUi() {
@@ -180,6 +217,16 @@ public class AddVirtualAttributeDialog extends StatusDialog
 		return this.persistentType.getResourceType();
 	}
 
+	protected OrmAttributeMappingDefinition getAttributeMappingDefinition(String mappingKey) {
+		return this.getOrmXmlDefinition().getAttributeMappingDefinition(mappingKey);
+	}
+	
+	// TODO bjv this can perhaps be removed once possible public API 
+	// (JpaContextNode.getMappingFileDefinition()?) introduced
+	private OrmXmlDefinition getOrmXmlDefinition() {
+		return (OrmXmlDefinition) this.getJpaProject().getJpaPlatform().getResourceDefinition(this.getJptResourceType());
+	}
+	
 	protected Comparator<MappingUiDefinition<?,?>> getProvidersComparator() {
 		return new Comparator<MappingUiDefinition<?,?>>() {
 			public int compare(MappingUiDefinition<?,?> item1, MappingUiDefinition<?,?> item2) {
@@ -201,14 +248,11 @@ public class AddVirtualAttributeDialog extends StatusDialog
 
 	private Text createText(Composite container, int span) {
 		Text text = new Text(container, SWT.BORDER | SWT.SINGLE);
-		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalSpan = span;
-		gd.widthHint = 250;
-		text.setLayoutData(gd);
+		text.setLayoutData(getFieldGridData(span));
 		return text;
 	}
 
-	private Text createAttributeTypeText(Composite container) {
+	private Text createTypeText(Composite container) {
 		// TODO bug 156185 - when this is fixed there should be api for this
 		JavaTypeCompletionProcessor javaTypeCompletionProcessor = new JavaTypeCompletionProcessor(true/*enableBaseTypes*/, false);
 		IPackageFragmentRoot pfr = getPackageFragmentRoot();
@@ -223,14 +267,15 @@ public class AddVirtualAttributeDialog extends StatusDialog
 			javaTypeCompletionProcessor
 		);
 		
-		text.setLayoutData(getFieldGridData());
+		text.setLayoutData(getFieldGridData(1));
 		return text;
 	}
 	
-	protected GridData getFieldGridData() {
+	protected GridData getFieldGridData(int span) {
 		int margin = FieldDecorationRegistry.getDefault()
 				.getMaximumDecorationWidth();
 		GridData data = new GridData();
+		data.horizontalSpan = span;
 		data.horizontalAlignment = SWT.FILL;
 		data.widthHint = IDialogConstants.ENTRY_FIELD_WIDTH + margin;
 		data.horizontalIndent = margin;
@@ -249,9 +294,7 @@ public class AddVirtualAttributeDialog extends StatusDialog
 
 	private Combo createCombo(Composite container, int span) {
 		Combo combo = new Combo(container, SWT.BORDER | SWT.SINGLE | SWT.READ_ONLY);
-		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalSpan = span;
-		combo.setLayoutData(gd);
+		combo.setLayoutData(getFieldGridData(span));
 		return combo;
 	}
 	
@@ -278,7 +321,11 @@ public class AddVirtualAttributeDialog extends StatusDialog
 		return (selection.isEmpty()) ? null : ((MappingUiDefinition<?,?>) selection.getFirstElement()).getKey();
 	}
 	
-	protected IType chooseType() {
+	public String getTargetType() {
+		return this.targetTypeText.getText();
+	}
+
+	protected IType chooseType(String type) {
 		IJavaElement[] elements= new IJavaElement[] { getJpaProject().getJavaProject() };
 		IJavaSearchScope scope= SearchEngine.createJavaSearchScope(elements);
 		IProgressService service = PlatformUI.getWorkbench().getProgressService();
@@ -289,7 +336,7 @@ public class AddVirtualAttributeDialog extends StatusDialog
 				JavaUI.createTypeDialog(
 						getShell(), service, scope, 
 						IJavaElementSearchConstants.CONSIDER_ALL_TYPES, 
-						false, getAttributeType());
+						false, type);
 		}
 		catch (JavaModelException e) {
 			JptJpaEclipseLinkUiPlugin.log(e);
@@ -319,21 +366,30 @@ public class AddVirtualAttributeDialog extends StatusDialog
 					EclipseLinkUiMessages.AddVirtualAttributeDialog_noMappingKeyError));
 			return;
 		}
-		if (StringTools.stringIsEmpty(this.getAttributeType())) {
+		if (!this.getAttributeMappingDefinition(this.getMappingKey()).isSingleRelationshipMapping() && 
+				StringTools.stringIsEmpty(this.getAttributeType())) {
 			updateStatus(
 				new Status(
 					IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID,
 					EclipseLinkUiMessages.AddVirtualAttributeDialog_noAttributeTypeError));
 			return;
 		}
+		if ((this.getAttributeMappingDefinition(this.getMappingKey()).isSingleRelationshipMapping() || 
+				this.getAttributeMappingDefinition(this.getMappingKey()).isCollectionMapping()) &&
+				StringTools.stringIsEmpty(this.getTargetType())) {
+			updateStatus(
+				new Status(
+					IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID,
+					EclipseLinkUiMessages.AddVirtualAttributeDialog_noTargetTypeError));
+			return;
+		}
 
 		updateStatus(Status.OK_STATUS);
 	}
 
-	
 	@Override
 	protected void okPressed() {
-		this.addedAttribute = this.persistentType.addVirtualAttribute(getAttributeName(), getMappingKey(), getAttributeType());
+		this.addedAttribute = this.persistentType.addVirtualAttribute(getAttributeName(), getMappingKey(), getAttributeType(), getTargetType());
 		super.okPressed();
 	}
 

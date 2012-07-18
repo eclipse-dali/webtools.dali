@@ -456,8 +456,9 @@ public class EclipseLinkUiMessages {
 	public static String DynamicEntityFieldsWizardPage_mappingTypeColumnLabel;
 	public static String DynamicEntityFieldsWizardPage_nameColumnLabel;
 	public static String DynamicEntityFieldsWizardPage_noJpaProjects;
-	public static String DynamicEntityFieldsWizardPage_title;
 	public static String DynamicEntityFieldsWizardPage_removeButtonLabel;
+	public static String DynamicEntityFieldsWizardPage_title;
+	public static String DynamicEntityFieldsWizardPage_targetTypeColumnLabel;
 
 	public static String AddVirtualAttributeDialog_title;
 	public static String AddVirtualAttributeDialog_nameLabel;
@@ -466,6 +467,8 @@ public class EclipseLinkUiMessages {
 	public static String AddVirtualAttributeDialog_noMappingKeyError;
 	public static String AddVirtualAttributeDialog_noNameError;
 	public static String AddVirtualAttributeDialog_noAttributeTypeError;
+	public static String AddVirtualAttributeDialog_targetTypeLabel;
+	public static String AddVirtualAttributeDialog_noTargetTypeError;
 	
 	private static final String BUNDLE_NAME = "eclipselink_ui"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = EclipseLinkUiMessages.class;

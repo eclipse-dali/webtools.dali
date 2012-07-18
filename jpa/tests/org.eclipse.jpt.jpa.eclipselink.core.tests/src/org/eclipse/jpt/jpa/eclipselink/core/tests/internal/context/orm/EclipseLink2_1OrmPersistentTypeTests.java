@@ -15,8 +15,11 @@ import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdMapping;
+import org.eclipse.jpt.jpa.core.context.orm.OrmManyToManyMapping;
+import org.eclipse.jpt.jpa.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlManyToMany;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
@@ -26,6 +29,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlId;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlManyToOne;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.EclipseLink2_1ContextModelTestCase;
 
 @SuppressWarnings("nls")
@@ -239,23 +243,55 @@ public class EclipseLink2_1OrmPersistentTypeTests
 
 	public void testAddVirtualAttribute() throws Exception {
 		EclipseLinkOrmPersistentType persistentType = (EclipseLinkOrmPersistentType) getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Employee");
-		OrmPersistentAttribute persistentAttribute = persistentType.addVirtualAttribute("id", MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "int");
+		XmlEntityMappings xmlEntityMappings = getXmlEntityMappings();
+		XmlEntity xmlEntity = (XmlEntity) xmlEntityMappings.getEntities().get(0);
+		
+		// test virtual attribute mapping that only needs to set attribute type
+		OrmPersistentAttribute persistentAttribute = persistentType.addVirtualAttribute("id", MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "int", null);
 
 		assertEquals("id", persistentAttribute.getName());
 		assertEquals(EclipseLinkAccessType.VIRTUAL, persistentAttribute.getSpecifiedAccess());
 		OrmIdMapping idMapping = (OrmIdMapping) persistentAttribute.getMapping();
 		assertEquals("int", idMapping.getAttributeType());
 		
-		XmlEntityMappings xmlEntityMappings = getXmlEntityMappings();
-		XmlEntity xmlEntity = (XmlEntity) xmlEntityMappings.getEntities().get(0);
 		XmlId xmlId = (XmlId) xmlEntity.getAttributes().getIds().get(0);
 		assertEquals("id", xmlId.getName());
 		assertEquals("int", xmlId.getAttributeType());
 		assertEquals("VIRTUAL", xmlId.getAccess());
+		
+		// test virtual attribute mapping that only needs to set target type
+		persistentAttribute = persistentType.addVirtualAttribute("many2one", MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, null, "model.Project");
+
+		assertEquals("many2one", persistentAttribute.getName());
+		assertEquals(EclipseLinkAccessType.VIRTUAL, persistentAttribute.getSpecifiedAccess());
+		OrmManyToOneMapping many2oneMapping = (OrmManyToOneMapping) persistentAttribute.getMapping();
+		assertNull(many2oneMapping.getAttributeType());
+		assertEquals("model.Project", many2oneMapping.getTargetEntity());
+		
+		XmlManyToOne xmlManyToOne = (XmlManyToOne) xmlEntity.getAttributes().getManyToOnes().get(0);
+		assertEquals("many2one", xmlManyToOne.getName());
+		assertNull(xmlManyToOne.getAttributeType());
+		assertEquals("model.Project", xmlManyToOne.getTargetEntity());
+		assertEquals("VIRTUAL", xmlManyToOne.getAccess());
+
+		// test virtual attribute mapping that needs to set both attribute type and target type
+		persistentAttribute = persistentType.addVirtualAttribute("many2many", MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "java.util.List", "model.Project");
+
+		assertEquals("many2many", persistentAttribute.getName());
+		assertEquals(EclipseLinkAccessType.VIRTUAL, persistentAttribute.getSpecifiedAccess());
+		OrmManyToManyMapping many2manyMapping = (OrmManyToManyMapping) persistentAttribute.getMapping();
+		assertEquals("java.util.List", many2manyMapping.getAttributeType());
+		assertEquals("model.Project", many2manyMapping.getTargetEntity());
+		
+		XmlManyToMany xmlManyToMany = (XmlManyToMany) xmlEntity.getAttributes().getManyToManys().get(0);
+		assertEquals("many2many", xmlManyToMany.getName());
+		assertEquals("java.util.List", xmlManyToMany.getAttributeType());
+		assertEquals("model.Project", xmlManyToMany.getTargetEntity());
+		assertEquals("VIRTUAL", xmlManyToMany.getAccess());
 
 		//if the entity access is set to VIRTUAL, test that the added virtual attribute mapping has no specified access
 		persistentType.setSpecifiedAccess(EclipseLinkAccessType.VIRTUAL);
-		persistentAttribute = persistentType.addVirtualAttribute("name", MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "String");
+		persistentAttribute = persistentType.addVirtualAttribute("name", MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "String", null);
 
 		assertEquals("name", persistentAttribute.getName());
 		assertNull(persistentAttribute.getSpecifiedAccess());
