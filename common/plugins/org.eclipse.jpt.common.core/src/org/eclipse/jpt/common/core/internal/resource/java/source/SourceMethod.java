@@ -77,7 +77,7 @@ final class SourceMethod
 		throw new UnsupportedOperationException();
 	}
 	
-	public void initialize(MethodDeclaration methodDeclaration) {
+	protected void initialize(MethodDeclaration methodDeclaration) {
 		super.initialize(methodDeclaration);
 		initialize(methodDeclaration.resolveBinding());
 	}
