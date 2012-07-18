@@ -31,6 +31,10 @@ public interface EclipseLinkOrmPersistentType
 
 	//*************** dynamic *****************
 
+	/**
+	 * The dynamic state is only based on the JavaResourceType being null.
+	 * The access type should be VIRTUAL, but we will use validation to check this
+	 */
 	boolean isDynamic();
 		String DYNAMIC_PROPERTY = "dynamic"; //$NON-NLS-1$
 
