@@ -156,7 +156,6 @@ public abstract class JavaResourceModelTestCase
 
 	private JavaResourceAbstractType buildJavaResourceType_(ICompilationUnit cu) {
 		this.javaResourceCompilationUnit = this.buildJavaResourceCompilationUnit(cu);
-		this.javaResourceCompilationUnit.resolveTypes();
 		return this.hackJavaResourceType();
 	}
 

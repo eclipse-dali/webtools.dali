@@ -143,7 +143,6 @@ public class JavaResourceModelTestCase
 
 	protected JavaResourceType buildJavaResourceType(ICompilationUnit cu) {
 		this.javaResourceCompilationUnit = this.buildJavaResourceCompilationUnit(cu);
-		this.javaResourceCompilationUnit.resolveTypes();
 		return this.hackJavaResourceType();
 	}
 
