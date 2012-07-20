@@ -43,7 +43,11 @@ public interface OrmAttributeMapping
 
 	void setName(String name);
 		String NAME_PROPERTY = "name"; //$NON-NLS-1$
-
+	
+	/**
+	 * Return either the (possibly unqualified) type specified here or, if unspecified, the 
+	 * (qualified) default type.
+	 */
 	String getAttributeType();
 
 	String getFullyQualifiedAttributeType();
