@@ -112,6 +112,12 @@ final class DTPConnectionProfileWrapper
 		return this.database;
 	}
 
+	public synchronized void refresh() {
+		if (this.database != null) {  // don't trigger database creation
+			this.database.refresh();
+		}
+	}
+
 
 	// ********** ConnectionProfile implementation **********
 
@@ -288,7 +294,11 @@ final class DTPConnectionProfileWrapper
 	}
 
 	private DTPDatabaseWrapper buildDatabase() {
-		return this.isInactive() ? null : new DTPDatabaseWrapper(this, this.buildDTPDatabase());
+		return this.isInactive() ? null : this.buildDatabase_();
+	}
+
+	private DTPDatabaseWrapper buildDatabase_() {
+		return new DTPDatabaseWrapper(this, this.buildDTPDatabase());
 	}
 
 	private org.eclipse.datatools.modelbase.sql.schema.Database buildDTPDatabase() {

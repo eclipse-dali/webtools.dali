@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,15 +21,17 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Vector;
 import junit.framework.TestCase;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.datatools.connectivity.ConnectionProfileException;
 import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.ProfileManager;
@@ -40,6 +42,8 @@ import org.eclipse.datatools.connectivity.drivers.XMLFileManager;
 import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
 import org.eclipse.datatools.connectivity.internal.ConnectivityPlugin;
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
+import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObjectListener;
+import org.eclipse.datatools.connectivity.sqm.core.rte.RefreshManager;
 import org.eclipse.jpt.common.utility.IndentingPrintWriter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.ReflectionTools;
@@ -53,13 +57,13 @@ import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
 import org.eclipse.jpt.jpa.db.ConnectionProfileListener;
 import org.eclipse.jpt.jpa.db.Database;
 import org.eclipse.jpt.jpa.db.DatabaseIdentifierAdapter;
+import org.eclipse.jpt.jpa.db.DatabaseObject;
 import org.eclipse.jpt.jpa.db.ForeignKey;
-import org.eclipse.jpt.jpa.db.JptJpaDbPlugin;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.jpt.jpa.db.Sequence;
 import org.eclipse.jpt.jpa.db.Table;
-import org.eclipse.jpt.jpa.db.tests.internal.JptJpaDbTestsPlugin;
+import org.eclipse.jpt.jpa.db.tests.internal.plugin.JptJpaDbTestsPlugin;
 
 /**
  * Base class for testing DTP wrappers on various databases.
@@ -122,7 +126,38 @@ public abstract class DTPPlatformTests extends TestCase {
 		this.connectionProfile = null;
 		this.platformProperties = null;
 
+		this.checkForListenerLeak();
+
 		super.tearDown();
+	}
+
+	/**
+	 * See bug 379458
+	 */
+	protected void checkForListenerLeak() {
+		for (Map.Entry<ICatalogObject, Vector<ICatalogObjectListener>> entry : this.getDTPRefreshListeners().entrySet()) {
+			checkForListenerLeak(entry.getValue());
+		}
+		checkForListenerLeak(this.getDTPGlobalRefreshListeners());
+	}
+
+	protected void checkForListenerLeak(Vector<ICatalogObjectListener> listeners) {
+		String pkg = DatabaseObject.class.getPackage().getName();
+		for (ICatalogObjectListener listener : listeners) {
+			if (listener.getClass().getName().startsWith(pkg)) {
+				fail("listener leak: " + listener);
+			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	protected Hashtable<ICatalogObject, Vector<ICatalogObjectListener>> getDTPRefreshListeners() {
+		return (Hashtable<ICatalogObject, Vector<ICatalogObjectListener>>) ReflectionTools.getFieldValue(RefreshManager.getInstance(), "listeners");
+	}
+
+	@SuppressWarnings("unchecked")
+	protected Vector<ICatalogObjectListener> getDTPGlobalRefreshListeners() {
+		return (Vector<ICatalogObjectListener>) ReflectionTools.getFieldValue(RefreshManager.getInstance(), "globalListeners");
 	}
 
 	// ***** platform properties file
@@ -133,11 +168,7 @@ public abstract class DTPPlatformTests extends TestCase {
 	}
 
 	private URL buildPlatformPropertiesFileURL() {
-		return Platform.getBundle(this.getTestPluginBundleID()).getEntry(this.getPlatformPropertiesFilePath());
-	}
-
-	private String getTestPluginBundleID() {
-		return JptJpaDbTestsPlugin.BUNDLE_ID;
+		return JptJpaDbTestsPlugin.instance().getBundle().getEntry(this.getPlatformPropertiesFilePath());
 	}
 
 	private String getPlatformPropertiesFilePath() {
@@ -551,7 +582,7 @@ public abstract class DTPPlatformTests extends TestCase {
 	// ********** convenience methods **********
 
 	protected ConnectionProfileFactory getConnectionProfileFactory() {
-		return JptJpaDbPlugin.getConnectionProfileFactory();
+		return (ConnectionProfileFactory) ResourcesPlugin.getWorkspace().getAdapter(ConnectionProfileFactory.class);
 	}
 
 	protected ConnectionProfile getConnectionProfile() {
@@ -618,11 +649,15 @@ public abstract class DTPPlatformTests extends TestCase {
 	}
 
 	protected org.eclipse.datatools.modelbase.sql.schema.Database getDTPDatabase() {
-		return getDTPDatabase(this.connectionProfile.getDatabase());
+		return this.extractDTPDatabase(this.connectionProfile.getDatabase());
 	}
 
-	protected static org.eclipse.datatools.modelbase.sql.schema.Database getDTPDatabase(Database database) {
-		return (org.eclipse.datatools.modelbase.sql.schema.Database) ReflectionTools.getFieldValue(database, "dtpDatabase");
+	protected org.eclipse.datatools.modelbase.sql.schema.Database extractDTPDatabase(Database database) {
+		return (org.eclipse.datatools.modelbase.sql.schema.Database) this.extractDTPObject(database);
+	}
+
+	protected Object extractDTPObject(DatabaseObject databaseObject) {
+		return ReflectionTools.getFieldValue(databaseObject, "dtpObject");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -635,19 +670,19 @@ public abstract class DTPPlatformTests extends TestCase {
 	}
 
 	protected org.eclipse.datatools.modelbase.sql.schema.Catalog getDTPCatalogNamed(String name) {
-		return getDTPCatalog(this.getDatabase().getCatalogNamed(name));
+		return extractDTPCatalog(this.getDatabase().getCatalogNamed(name));
 	}
 
-	protected static org.eclipse.datatools.modelbase.sql.schema.Catalog getDTPCatalog(Catalog catalog) {
-		return (org.eclipse.datatools.modelbase.sql.schema.Catalog) ReflectionTools.getFieldValue(catalog, "dtpCatalog");
+	protected org.eclipse.datatools.modelbase.sql.schema.Catalog extractDTPCatalog(Catalog catalog) {
+		return (org.eclipse.datatools.modelbase.sql.schema.Catalog) this.extractDTPObject(catalog);
 	}
 
 	protected org.eclipse.datatools.modelbase.sql.schema.Schema getDTPSchemaNamed(String name) {
-		return getDTPSchema(this.getDatabase().getSchemaNamed(name));
+		return extractDTPSchema(this.getDatabase().getSchemaNamed(name));
 	}
 
-	protected static org.eclipse.datatools.modelbase.sql.schema.Schema getDTPSchema(Schema schema) {
-		return (org.eclipse.datatools.modelbase.sql.schema.Schema) ReflectionTools.getFieldValue(schema, "dtpSchema");
+	protected org.eclipse.datatools.modelbase.sql.schema.Schema extractDTPSchema(Schema schema) {
+		return (org.eclipse.datatools.modelbase.sql.schema.Schema) this.extractDTPObject(schema);
 	}
 
 

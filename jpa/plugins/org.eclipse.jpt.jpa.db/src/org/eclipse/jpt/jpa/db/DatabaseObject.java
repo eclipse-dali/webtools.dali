@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,9 @@
 package org.eclipse.jpt.jpa.db;
 
 import java.util.Comparator;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Transformer;
+import org.eclipse.jpt.common.utility.internal.TransformerAdapter;
 import com.ibm.icu.text.Collator;
 
 /**
@@ -63,40 +65,46 @@ public interface DatabaseObject {
 	 */
 	ConnectionProfile getConnectionProfile();
 
+	/**
+	 * Refresh the database object's state from the underlying database server,
+	 * if appropriate.
+	 */
+	void refresh();
+
 
 	/**
 	 * Sort by name.
 	 */
-	Comparator<DatabaseObject> DEFAULT_COMPARATOR =
-			new Comparator<DatabaseObject>() {
-				public int compare(DatabaseObject dbObject1, DatabaseObject dbObject2) {
-					return Collator.getInstance().compare(dbObject1.getName(), dbObject2.getName());
-				}
-				@Override
-				public String toString() {
-					return this.getClass().getEnclosingClass().getSimpleName() + ".DEFAULT_COMPARATOR"; //$NON-NLS-1$
-				}
-			};
+	Comparator<DatabaseObject> DEFAULT_COMPARATOR = new DefaultComparator();
+	class DefaultComparator
+		implements Comparator<DatabaseObject>
+	{
+		public int compare(DatabaseObject dbObject1, DatabaseObject dbObject2) {
+			return Collator.getInstance().compare(dbObject1.getName(), dbObject2.getName());
+		}
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this);
+		}
+	}
 
-	Transformer<DatabaseObject, String> NAME_TRANSFORMER =
-			new Transformer<DatabaseObject, String>() {
-				public String transform(DatabaseObject dbObject) {
-					return dbObject.getName();
-				}
-				@Override
-				public String toString() {
-					return this.getClass().getEnclosingClass().getSimpleName() + ".NAME_TRANSFORMER"; //$NON-NLS-1$
-				}
-			};
+	Transformer<DatabaseObject, String> NAME_TRANSFORMER = new NameTransformer();
+	class NameTransformer
+		extends TransformerAdapter<DatabaseObject, String>
+	{
+		@Override
+		public String transform(DatabaseObject dbObject) {
+			return dbObject.getName();
+		}
+	}
 
-	Transformer<DatabaseObject, String> IDENTIFIER_TRANSFORMER =
-			new Transformer<DatabaseObject, String>() {
-				public String transform(DatabaseObject dbObject) {
-					return dbObject.getIdentifier();
-				}
-				@Override
-				public String toString() {
-					return this.getClass().getEnclosingClass().getSimpleName() + ".IDENTIFIER_TRANSFORMER"; //$NON-NLS-1$
-				}
-			};
+	Transformer<DatabaseObject, String> IDENTIFIER_TRANSFORMER = new IdentifierTransformer();
+	class IdentifierTransformer
+		extends TransformerAdapter<DatabaseObject, String>
+	{
+		@Override
+		public String transform(DatabaseObject dbObject) {
+			return dbObject.getIdentifier();
+		}
+	}
 }

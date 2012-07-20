@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,35 +10,21 @@
 package org.eclipse.jpt.jpa.db.internal;
 
 import java.util.List;
-
-import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.jpt.jpa.db.Catalog;
 
 /**
  * Wrap a DTP Catalog
  */
 final class DTPCatalogWrapper
-	extends DTPSchemaContainerWrapper<DTPDatabaseWrapper>
+	extends DTPSchemaContainerWrapper<DTPDatabaseWrapper, org.eclipse.datatools.modelbase.sql.schema.Catalog>
 	implements Catalog
 {
-	/** the wrapped DTP catalog */
-	private final org.eclipse.datatools.modelbase.sql.schema.Catalog dtpCatalog;
-
-
-	// ********** constructor **********
-
 	DTPCatalogWrapper(DTPDatabaseWrapper database, org.eclipse.datatools.modelbase.sql.schema.Catalog dtpCatalog) {
-		super(database);
-		this.dtpCatalog = dtpCatalog;
+		super(database, dtpCatalog);
 	}
 
 
 	// ********** DTPDatabaseObjectWrapper implementation **********
-
-	@Override
-	ICatalogObject getCatalogObject() {
-		return (ICatalogObject) this.dtpCatalog;
-	}
 
 	@Override
 	synchronized void catalogObjectChanged() {
@@ -52,7 +38,7 @@ final class DTPCatalogWrapper
 	@Override
 	@SuppressWarnings("unchecked")
 	List<org.eclipse.datatools.modelbase.sql.schema.Schema> getDTPSchemas() {
-		return this.dtpCatalog.getSchemas();
+		return this.dtpObject.getSchemas();
 	}
 
 	@Override
@@ -80,17 +66,9 @@ final class DTPCatalogWrapper
 	}
 
 
-	// ********** DatabaseObject implementation **********
-
-	public String getName() {
-		return this.dtpCatalog.getName();
-	}
-
-
 	// ********** internal methods **********
 
 	boolean wraps(org.eclipse.datatools.modelbase.sql.schema.Catalog catalog) {
-		return this.dtpCatalog == catalog;
+		return this.dtpObject == catalog;
 	}
-
 }

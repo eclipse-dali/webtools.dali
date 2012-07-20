@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.db.internal;
 
-import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.datatools.modelbase.dbdefinition.PredefinedDataTypeDefinition;
 import org.eclipse.datatools.modelbase.sql.datatypes.CharacterStringDataType;
 import org.eclipse.datatools.modelbase.sql.datatypes.DataType;
@@ -23,30 +22,18 @@ import org.eclipse.jpt.common.utility.internal.SimpleJavaType;
 import org.eclipse.jpt.jpa.db.Column;
 
 /**
- *  Wrap a DTP Column
+ * Wrap a DTP Column
  */
 final class DTPColumnWrapper
-	extends DTPDatabaseObjectWrapper<DTPTableWrapper>
+	extends DTPDatabaseObjectWrapper<DTPTableWrapper, org.eclipse.datatools.modelbase.sql.tables.Column>
 	implements Column
 {
-	/** the wrapped DTP column */
-	private final org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn;
-
-
-	// ********** constructor **********
-
 	DTPColumnWrapper(DTPTableWrapper table, org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn) {
-		super(table);
-		this.dtpColumn = dtpColumn;
+		super(table, dtpColumn);
 	}
 
 
 	// ********** DTPDatabaseObjectWrapper implementation **********
-
-	@Override
-	ICatalogObject getCatalogObject() {
-		return (ICatalogObject) this.dtpColumn;
-	}
 
 	@Override
 	synchronized void catalogObjectChanged() {
@@ -56,10 +43,6 @@ final class DTPColumnWrapper
 
 
 	// ********** Column implementation **********
-
-	public String getName() {
-		return this.dtpColumn.getName();
-	}
 
 	public DTPTableWrapper getTable() {
 		return this.parent;
@@ -74,45 +57,45 @@ final class DTPColumnWrapper
 	}
 
 	public boolean isPartOfUniqueConstraint() {
-		return this.dtpColumn.isPartOfUniqueConstraint();
+		return this.dtpObject.isPartOfUniqueConstraint();
 	}
 
 	public boolean isNullable() {
-		return this.dtpColumn.isNullable();
+		return this.dtpObject.isNullable();
 	}
 
 	public String getDataTypeName() {
-		DataType dataType = this.dtpColumn.getDataType();
+		DataType dataType = this.dtpObject.getDataType();
 		return (dataType == null) ? null : dataType.getName();
 	}
 
 	public boolean isNumeric() {
-		return this.dtpColumn.getDataType() instanceof NumericalDataType;
+		return this.dtpObject.getDataType() instanceof NumericalDataType;
 	}	
 
 	public int getPrecision() {
-		DataType dataType = this.dtpColumn.getDataType();
+		DataType dataType = this.dtpObject.getDataType();
 		return (dataType instanceof NumericalDataType) ?
 						((NumericalDataType) dataType).getPrecision() :
 						-1;
 	}
 
 	public int getScale(){
-		DataType dataType = this.dtpColumn.getDataType();
+		DataType dataType = this.dtpObject.getDataType();
 		return (dataType instanceof ExactNumericDataType) ?
 						((ExactNumericDataType) dataType).getScale() :
 						-1;
 	}
 
 	public int getLength() {
-		DataType dataType = this.dtpColumn.getDataType();
+		DataType dataType = this.dtpObject.getDataType();
 		return (dataType instanceof CharacterStringDataType) ?
 						((CharacterStringDataType) dataType).getLength() :
 						-1;
 	}
 
 	public boolean isLOB() {
-		DataType dataType = this.dtpColumn.getDataType();
+		DataType dataType = this.dtpObject.getDataType();
 		return (dataType instanceof PredefinedDataType) ?
 						primitiveTypeIsLob(((PredefinedDataType) dataType).getPrimitiveType()) :
 						false;
@@ -123,7 +106,7 @@ final class DTPColumnWrapper
 	}
 
 	public JavaType getJavaType() {
-		DataType dataType = this.dtpColumn.getDataType();
+		DataType dataType = this.dtpObject.getDataType();
 		return (dataType instanceof PredefinedDataType) ?
 			convertToJPAJavaType(this.getJavaType((PredefinedDataType) dataType)) :
 			DEFAULT_JAVA_TYPE;
@@ -151,7 +134,7 @@ final class DTPColumnWrapper
 	// ********** internal methods **********
 
 	boolean wraps(org.eclipse.datatools.modelbase.sql.tables.Column column) {
-		return this.dtpColumn == column;
+		return this.dtpObject == column;
 	}
 
 	@Override
@@ -231,5 +214,4 @@ final class DTPColumnWrapper
 
 	private static final JavaType BIG_DECIMAL_JAVA_TYPE = new SimpleJavaType(java.math.BigDecimal.class);
 	private static final JavaType LONG_JAVA_TYPE = new SimpleJavaType(long.class);
-
 }

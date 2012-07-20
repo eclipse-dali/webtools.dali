@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,7 @@ import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.ForeignKey;
 import org.eclipse.jpt.jpa.db.Schema;
+import org.eclipse.jpt.jpa.db.Sequence;
 import org.eclipse.jpt.jpa.db.Table;
 
 @SuppressWarnings("nls")
@@ -444,43 +445,42 @@ public class PostgreSQLTests extends DTPPlatformTests {
 		}
 	}
 
-// see 241578/241557
-//	public void testSequence() throws Exception {
-//		this.connectionProfile.connect();
-//		TestConnectionListener listener = new TestConnectionListener();
-//		this.connectionProfile.addConnectionListener(listener);
-//
-//		this.dropSequence("SEQUENCE_TEST", "FOO");
-//		this.dropSchema("SEQUENCE_TEST");
-//
-//		this.executeUpdate("CREATE SCHEMA SEQUENCE_TEST");
-//		this.executeUpdate("SET search_path TO SEQUENCE_TEST");
-//
-//		this.executeUpdate(this.buildBarDDL());
-//		this.executeUpdate("CREATE SEQUENCE FOO START 1");
-////		List<Object[]> list = this.execute("SELECT nextval('foo')");
-////		System.out.println(list);
-//		((ICatalogObject) this.getDTPDatabase()).refresh();
-//
-//		Schema schema = this.getDefaultCatalog().getSchemaNamed("SEQUENCE_TEST");
-//		Sequence sequence = schema.getSequenceNamed("FOO");
-//		assertNotNull(sequence);
-//		assertEquals("foo_seq", sequence.getName());
-//
-//		this.dropSequence("SEQUENCE_TEST", "FOO");
-//		this.dropSchema("SEQUENCE_TEST");
-//
-//		this.connectionProfile.removeConnectionListener(listener);
-//		this.connectionProfile.disconnect();
-//	}
-//
-//	private void dropSequence(String schemaName, String sequenceName) throws Exception {
-//		Schema schema= this.getDefaultCatalog().getSchemaNamed(schemaName);
-//		if (schema != null) {
-//			if (schema.getSequenceNamed(sequenceName) != null) {
-//				this.executeUpdate("DROP SEQUENCE " + schemaName + '.' + sequenceName);
-//			}
-//		}
-//	}
-//
+	public void testSequence() throws Exception {
+		this.connectionProfile.connect();
+		TestConnectionListener listener = new TestConnectionListener();
+		this.connectionProfile.addConnectionListener(listener);
+
+		this.dropSequence("SEQUENCE_TEST", "FOO");
+		this.dropSchema("SEQUENCE_TEST");
+
+		this.executeUpdate("CREATE SCHEMA SEQUENCE_TEST");
+		this.executeUpdate("SET search_path TO SEQUENCE_TEST");
+
+		this.executeUpdate(this.buildBarDDL());
+		this.executeUpdate("CREATE SEQUENCE FOO START 1");
+//		List<Object[]> list = this.execute("SELECT nextval('foo')");
+//		System.out.println(list);
+		((ICatalogObject) this.getDTPDatabase()).refresh();
+
+		Schema schema = this.getDefaultCatalog().getSchemaForIdentifier("SEQUENCE_TEST");
+		Sequence sequence = schema.getSequenceForIdentifier("FOO");
+		assertNotNull(sequence);
+		assertEquals("foo", sequence.getName());
+
+		this.dropSequence("SEQUENCE_TEST", "FOO");
+		this.dropSchema("SEQUENCE_TEST");
+
+		this.connectionProfile.removeConnectionListener(listener);
+		this.connectionProfile.disconnect();
+	}
+
+	private void dropSequence(String schemaName, String sequenceName) throws Exception {
+		Schema schema= this.getDefaultCatalog().getSchemaNamed(schemaName);
+		if (schema != null) {
+			if (schema.getSequenceNamed(sequenceName) != null) {
+				this.executeUpdate("DROP SEQUENCE " + schemaName + '.' + sequenceName);
+			}
+		}
+	}
+
 }

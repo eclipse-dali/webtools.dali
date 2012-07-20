@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -146,7 +146,7 @@ public class MySQLTests extends DTPPlatformTests {
 		// the MySQL database does NOT refresh - see bug 279721...
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 		// ...refresh the single schema instead
-		((ICatalogObject) getDTPSchema(this.getDefaultSchema())).refresh();
+		((ICatalogObject) extractDTPSchema(this.getDefaultSchema())).refresh();
 
 		Schema schema = this.getDefaultSchema();
 
@@ -281,7 +281,7 @@ public class MySQLTests extends DTPPlatformTests {
 		// the MySQL database does NOT refresh - see bug 279721...
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 		// ...refresh the single schema instead
-		((ICatalogObject) getDTPSchema(this.getDefaultSchema())).refresh();
+		((ICatalogObject) extractDTPSchema(this.getDefaultSchema())).refresh();
 
 		Schema schema = this.getDefaultSchema();
 
@@ -311,7 +311,11 @@ public class MySQLTests extends DTPPlatformTests {
 		// the underscore is a wild character on MySQL, so we need to escape it
 		ArrayList<HashMap<String, Object>> rows = this.execute("show variables like 'lower\\_case\\_table\\_names'");
 		Map<String, Object> row = rows.get(0);
-		return Integer.valueOf((String) row.get("Value")).intValue();
+		String value = (String) row.get("Value");  // Windows?
+		if (value == null) {
+			value = (String) row.get("VARIABLE_VALUE");  // MySQL 5.1.62 on Ubuntu 10.04 LTS Lucid Lynx
+		}
+		return Integer.valueOf(value).intValue();
 	}
 
 	/**
@@ -333,7 +337,7 @@ public class MySQLTests extends DTPPlatformTests {
 		// the MySQL database does NOT refresh - see bug 279721...
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 		// ...refresh the single schema instead
-		((ICatalogObject) getDTPSchema(this.getDefaultSchema())).refresh();
+		((ICatalogObject) extractDTPSchema(this.getDefaultSchema())).refresh();
 
 		Table table = this.getDefaultSchema().getTableNamed("test");
 		assertNotNull(table.getColumnNamed("id"));
@@ -348,7 +352,7 @@ public class MySQLTests extends DTPPlatformTests {
 		// the MySQL database does NOT refresh - see bug 279721...
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 		// ...refresh the single schema instead
-		((ICatalogObject) getDTPSchema(this.getDefaultSchema())).refresh();
+		((ICatalogObject) extractDTPSchema(this.getDefaultSchema())).refresh();
 
 		table = this.getDefaultSchema().getTableNamed("test");
 		assertNotNull(table.getColumnNamed("ID"));
@@ -363,7 +367,7 @@ public class MySQLTests extends DTPPlatformTests {
 		// the MySQL database does NOT refresh - see bug 279721...
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 		// ...refresh the single schema instead
-		((ICatalogObject) getDTPSchema(this.getDefaultSchema())).refresh();
+		((ICatalogObject) extractDTPSchema(this.getDefaultSchema())).refresh();
 
 		table = this.getDefaultSchema().getTableNamed("test");
 		assertNotNull(table.getColumnNamed("Id"));
@@ -378,7 +382,7 @@ public class MySQLTests extends DTPPlatformTests {
 		// the MySQL database does NOT refresh - see bug 279721...
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 		// ...refresh the single schema instead
-		((ICatalogObject) getDTPSchema(this.getDefaultSchema())).refresh();
+		((ICatalogObject) extractDTPSchema(this.getDefaultSchema())).refresh();
 
 		table = this.getDefaultSchema().getTableNamed("test");
 		assertNotNull(table.getColumnNamed("Id"));

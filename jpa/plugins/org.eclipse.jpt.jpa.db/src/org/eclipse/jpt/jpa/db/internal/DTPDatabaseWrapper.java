@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,9 +11,7 @@ package org.eclipse.jpt.jpa.db.internal;
 
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.datatools.connectivity.sqm.core.definition.DatabaseDefinition;
-import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.datatools.connectivity.sqm.internal.core.RDBCorePlugin;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
@@ -58,12 +56,9 @@ import org.eclipse.jpt.jpa.db.internal.driver.DTPDriverAdapterManager;
  * be case-insensitive).
  */
 final class DTPDatabaseWrapper
-	extends DTPSchemaContainerWrapper<DTPConnectionProfileWrapper>
+	extends DTPSchemaContainerWrapper<DTPConnectionProfileWrapper, org.eclipse.datatools.modelbase.sql.schema.Database>
 	implements Database
 {
-	/** the wrapped DTP database */
-	private final org.eclipse.datatools.modelbase.sql.schema.Database dtpDatabase;
-
 	/** database-specific behavior */
 	private final DTPDriverAdapter dtpDriverAdapter;
 
@@ -74,18 +69,12 @@ final class DTPDatabaseWrapper
 	// ********** constructor **********
 
 	DTPDatabaseWrapper(DTPConnectionProfileWrapper connectionProfile, org.eclipse.datatools.modelbase.sql.schema.Database dtpDatabase) {
-		super(connectionProfile);
-		this.dtpDatabase = dtpDatabase;
+		super(connectionProfile, dtpDatabase);
 		this.dtpDriverAdapter = DTPDriverAdapterManager.instance().buildAdapter(this.getVendorName(), this);
 	}
 
 
 	// ********** DTPDatabaseObjectWrapper implementation **********
-
-	@Override
-	ICatalogObject getCatalogObject() {
-		return (ICatalogObject) this.dtpDatabase;
-	}
 
 	/* TODO
 	 * We might want to listen to the "virtual" catalog; but that's probably
@@ -267,7 +256,10 @@ final class DTPDatabaseWrapper
 
 	// ********** names vs. identifiers **********
 
-	// override to make method public since it's in the Database interface
+	/**
+	 * Override to make method public since it's in the {@link Database}
+	 * interface.
+	 */
 	@Override
 	public String convertNameToIdentifier(String name) {
 		return super.convertNameToIdentifier(name);
@@ -277,19 +269,15 @@ final class DTPDatabaseWrapper
 	// ********** misc **********
 
 	public org.eclipse.datatools.modelbase.sql.schema.Database getDTPDatabase() {
-		return this.dtpDatabase;
-	}
-
-	public String getName() {
-		return this.dtpDatabase.getName();
+		return this.dtpObject;
 	}
 
 	public String getVendorName() {
-		return this.dtpDatabase.getVendor();
+		return this.dtpObject.getVendor();
 	}
 
 	public String getVersion() {
-		return this.dtpDatabase.getVersion();
+		return this.dtpObject.getVersion();
 	}
 
 	@Override
@@ -303,7 +291,7 @@ final class DTPDatabaseWrapper
 
 	// TODO add to interface? (so it can be used by AbstractDTPDriverAdapter)
 	DatabaseDefinition getDTPDefinition() {
-		return RDBCorePlugin.getDefault().getDatabaseDefinitionRegistry().getDefinition(this.dtpDatabase);
+		return RDBCorePlugin.getDefault().getDatabaseDefinitionRegistry().getDefinition(this.dtpObject);
 	}
 
 

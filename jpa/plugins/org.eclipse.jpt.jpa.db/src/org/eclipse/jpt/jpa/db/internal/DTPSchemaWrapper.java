@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,10 +11,8 @@ package org.eclipse.jpt.jpa.db.internal;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.core.runtime.IProduct;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.datatools.modelbase.sql.tables.SQLTablesPackage;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
@@ -28,12 +26,9 @@ import org.eclipse.jpt.jpa.db.Table;
  *  Wrap a DTP Schema
  */
 final class DTPSchemaWrapper
-	extends DTPDatabaseObjectWrapper<DTPSchemaContainerWrapper<?>>
+	extends DTPDatabaseObjectWrapper<DTPSchemaContainerWrapper<?, ?>, org.eclipse.datatools.modelbase.sql.schema.Schema>
 	implements Schema
 {
-	/** the wrapped DTP schema */
-	private final org.eclipse.datatools.modelbase.sql.schema.Schema dtpSchema;
-
 	/** lazy-initialized */
 	private DTPTableWrapper[] tables;
 
@@ -49,18 +44,12 @@ final class DTPSchemaWrapper
 
 	// ********** constructor **********
 
-	DTPSchemaWrapper(DTPSchemaContainerWrapper<?> container, org.eclipse.datatools.modelbase.sql.schema.Schema dtpSchema) {
-		super(container);
-		this.dtpSchema = dtpSchema;
+	DTPSchemaWrapper(DTPSchemaContainerWrapper<?, ?> container, org.eclipse.datatools.modelbase.sql.schema.Schema dtpSchema) {
+		super(container, dtpSchema);
 	}
 
 
 	// ********** DTPDatabaseObjectWrapper implementation **********
-
-	@Override
-	ICatalogObject getCatalogObject() {
-		return (ICatalogObject) this.dtpSchema;
-	}
 
 	@Override
 	synchronized void catalogObjectChanged() {
@@ -71,11 +60,7 @@ final class DTPSchemaWrapper
 
 	// ********** Schema implementation **********
 
-	public String getName() {
-		return this.dtpSchema.getName();
-	}
-
-	public DTPSchemaContainerWrapper<?> getContainer() {
+	public DTPSchemaContainerWrapper<?, ?> getContainer() {
 		return this.parent;
 	}
 
@@ -113,7 +98,7 @@ final class DTPSchemaWrapper
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
 	private List<org.eclipse.datatools.modelbase.sql.tables.Table> getDTPTables_() {
-		return this.dtpSchema.getTables();
+		return this.dtpObject.getTables();
 	}
 
 	private boolean hack() {
@@ -208,7 +193,7 @@ final class DTPSchemaWrapper
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
 	private List<org.eclipse.datatools.modelbase.sql.schema.Sequence> getDTPSequences() {
-		return this.dtpSchema.getSequences();
+		return this.dtpObject.getSequences();
 	}
 
 	public int getSequencesSize() {
@@ -228,17 +213,11 @@ final class DTPSchemaWrapper
 		return this.getDTPDriverAdapter().selectSequenceForIdentifier(this.getSequences(), identifier);
 	}
 
-	// ***** refresh
-	
-	public void refresh() {
-		
-		this.getCatalogObject().refresh();
-	}
 
 	// ********** internal methods **********
 
 	boolean wraps(org.eclipse.datatools.modelbase.sql.schema.Schema schema) {
-		return this.dtpSchema == schema;
+		return this.dtpObject == schema;
 	}
 
 	/**

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.db.internal;
 
 import java.util.List;
-
+import org.eclipse.datatools.modelbase.sql.schema.SQLObject;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
@@ -22,8 +22,8 @@ import org.eclipse.jpt.jpa.db.SchemaContainer;
 /**
  * Coalesce behavior for a schema container (i.e. database or catalog).
  */
-abstract class DTPSchemaContainerWrapper<P extends DTPDatabaseObject>
-	extends DTPDatabaseObjectWrapper<P>
+abstract class DTPSchemaContainerWrapper<P extends DTPDatabaseObject, S extends SQLObject>
+	extends DTPDatabaseObjectWrapper<P, S>
 	implements SchemaContainer
 {
 	/** lazy-initialized */
@@ -32,8 +32,8 @@ abstract class DTPSchemaContainerWrapper<P extends DTPDatabaseObject>
 
 	// ********** constructor **********
 
-	DTPSchemaContainerWrapper(P parent) {
-		super(parent);
+	DTPSchemaContainerWrapper(P parent, S dtpObject) {
+		super(parent, dtpObject);
 	}
 
 

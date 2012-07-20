@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,6 @@
 package org.eclipse.jpt.jpa.db.internal;
 
 import java.util.List;
-
-import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.datatools.modelbase.sql.constraints.PrimaryKey;
 import org.eclipse.datatools.modelbase.sql.tables.BaseTable;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
@@ -23,15 +21,12 @@ import org.eclipse.jpt.jpa.db.ForeignKey;
 import org.eclipse.jpt.jpa.db.Table;
 
 /**
- *  Wrap a DTP Table
+ * Wrap a DTP Table
  */
 final class DTPTableWrapper
-	extends DTPDatabaseObjectWrapper<DTPSchemaWrapper>
+	extends DTPDatabaseObjectWrapper<DTPSchemaWrapper, org.eclipse.datatools.modelbase.sql.tables.Table>
 	implements Table
 {
-	/** the wrapped DTP table */
-	private final org.eclipse.datatools.modelbase.sql.tables.Table dtpTable;
-
 	/** lazy-initialized */
 	private DTPColumnWrapper[] columns;
 
@@ -49,8 +44,7 @@ final class DTPTableWrapper
 	// ********** constructor **********
 
 	DTPTableWrapper(DTPSchemaWrapper schema, org.eclipse.datatools.modelbase.sql.tables.Table dtpTable) {
-		super(schema);
-		this.dtpTable = dtpTable;
+		super(schema, dtpTable);
 	}
 
 
@@ -83,7 +77,7 @@ final class DTPTableWrapper
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
 	private List<org.eclipse.datatools.modelbase.sql.tables.Column> getDTPColumns() {
-		return this.dtpTable.getColumns();
+		return this.dtpObject.getColumns();
 	}
 
 	public int getColumnsSize() {
@@ -148,10 +142,10 @@ final class DTPTableWrapper
 	}
 
 	private DTPColumnWrapper[] buildPrimaryKeyColumnArray() {
-		if ( ! (this.dtpTable instanceof BaseTable)) {
+		if ( ! (this.dtpObject instanceof BaseTable)) {
 			return EMPTY_COLUMNS;
 		}
-		PrimaryKey pk = ((BaseTable) this.dtpTable).getPrimaryKey();
+		PrimaryKey pk = ((BaseTable) this.dtpObject).getPrimaryKey();
 		if (pk == null) {
 			// no PK was defined
 			return EMPTY_COLUMNS;
@@ -193,7 +187,7 @@ final class DTPTableWrapper
 	}
 
 	private DTPForeignKeyWrapper[] buildForeignKeyArray() {
-		if ( ! (this.dtpTable instanceof BaseTable)) {
+		if ( ! (this.dtpObject instanceof BaseTable)) {
 			return EMPTY_FOREIGN_KEYS;
 		}
 		List<org.eclipse.datatools.modelbase.sql.constraints.ForeignKey> dtpForeignKeys = this.getDTPForeignKeys();
@@ -206,7 +200,7 @@ final class DTPTableWrapper
 
 	@SuppressWarnings("unchecked")
 	private List<org.eclipse.datatools.modelbase.sql.constraints.ForeignKey> getDTPForeignKeys() {
-		return ((BaseTable) this.dtpTable).getForeignKeys();
+		return ((BaseTable) this.dtpObject).getForeignKeys();
 	}
 
 	public int getForeignKeysSize() {
@@ -301,15 +295,6 @@ final class DTPTableWrapper
 		return this.parent;
 	}
 
-	public String getName() {
-		return this.dtpTable.getName();
-	}
-
-	@Override
-	ICatalogObject getCatalogObject() {
-		return (ICatalogObject) this.dtpTable;
-	}
-
 	@Override
 	synchronized void catalogObjectChanged() {
 		super.catalogObjectChanged();
@@ -317,7 +302,7 @@ final class DTPTableWrapper
 	}
 
 	boolean wraps(org.eclipse.datatools.modelbase.sql.tables.Table table) {
-		return this.dtpTable == table;
+		return this.dtpObject == table;
 	}
 
 	/**

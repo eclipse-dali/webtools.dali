@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.db.internal;
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObjectListener;
 import org.eclipse.datatools.connectivity.sqm.core.rte.RefreshManager;
+import org.eclipse.datatools.modelbase.sql.schema.SQLObject;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.db.DatabaseObject;
 import org.eclipse.jpt.jpa.db.internal.driver.DTPDriverAdapter;
@@ -19,27 +20,32 @@ import org.eclipse.jpt.jpa.db.internal.driver.DTPDriverAdapter;
 /**
  * DTP Object Wrapper base class
  */
-abstract class DTPDatabaseObjectWrapper<P extends DTPDatabaseObject>
+abstract class DTPDatabaseObjectWrapper<P extends DTPDatabaseObject, S extends SQLObject>
 	implements DTPDatabaseObject
 {
 	/** we need a way to get to the connection profile */
 	final P parent;
 
-	/** listen for the "catalog object" being refreshed */
+	/** the wrapped DTP SQL object */
+	final S dtpObject;
+
+	/** listen for the "catalog object" to be refreshed */
 	private final ICatalogObjectListener catalogObjectListener;
 
 
 	// ********** constructor **********
 
-	DTPDatabaseObjectWrapper(P parent) {
+	DTPDatabaseObjectWrapper(P parent, S dtpObject) {
 		super();
 		this.parent = parent;
-		if (this.getConnectionProfile().isConnected()) {
+		this.dtpObject = dtpObject;
+		ICatalogObject catalogObject = this.getCatalogObject();
+		if ((catalogObject != null) && this.getConnectionProfile().isConnected()) {
 			// we only listen to "live" connections (as opposed to "off-line" connections);
 			// and the model is rebuilt when the connection connects or disconnects
 			this.catalogObjectListener = this.buildCatalogObjectListener();
 			if (this.getConnectionProfile().hasAnyListeners()) {
-				this.startListening();
+				this.startListening(catalogObject);
 			}
 		} else {
 			this.catalogObjectListener = null;
@@ -48,6 +54,10 @@ abstract class DTPDatabaseObjectWrapper<P extends DTPDatabaseObject>
 
 
 	// ********** names vs. identifiers **********
+
+	public String getName() {
+		return this.dtpObject.getName();
+	}
 
 	/**
 	 * Examples:<ul>
@@ -71,7 +81,7 @@ abstract class DTPDatabaseObjectWrapper<P extends DTPDatabaseObject>
 	 * </code></ul>
 	 * </ul>
 	 */
-	public String getIdentifier(String defaultName) {
+	public final String getIdentifier(String defaultName) {
 		return this.getDTPDriverAdapter().convertNameToIdentifier(this.getName(), defaultName);
 	}
 
@@ -107,10 +117,13 @@ abstract class DTPDatabaseObjectWrapper<P extends DTPDatabaseObject>
 	 * </code></ul>
 	 * </ul>
 	 */
-	public String getIdentifier() {
+	public final String getIdentifier() {
 		return this.convertNameToIdentifier(this.getName());
 	}
 
+	/**
+	 * @see DTPDatabaseWrapper#convertNameToIdentifier(String)
+	 */
 	String convertNameToIdentifier(String name) {
 		return this.getDTPDriverAdapter().convertNameToIdentifier(name);
 	}
@@ -119,20 +132,29 @@ abstract class DTPDatabaseObjectWrapper<P extends DTPDatabaseObject>
 	// ********** DTP database object listener **********
 
 	private ICatalogObjectListener buildCatalogObjectListener() {
-		return new ICatalogObjectListener() {
-			public void notifyChanged(ICatalogObject dmElement, int eventType) {
-				if (dmElement == DTPDatabaseObjectWrapper.this.getCatalogObject()) {
-					// 'eventType' doesn't seem to be very useful, so drop it
-					DTPDatabaseObjectWrapper.this.catalogObjectChanged();
-				}
-			}
-		};
+		return new CatalogObjectListener();
+	}
+
+	/* CU private */ class CatalogObjectListener
+		implements ICatalogObjectListener
+	{
+		public void notifyChanged(ICatalogObject dmElement, int eventType) {
+			// 'eventType' doesn't seem to be very useful, so drop it
+			DTPDatabaseObjectWrapper.this.catalogObjectChanged();
+		}
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this);
+		}
 	}
 
 	/**
-	 * Typically, return the wrapped DTP database object.
+	 * Return the wrapped DTP database object if it is a DTP "catalog" object;
+	 * otherwise, return <code>null</code>.
 	 */
-	abstract ICatalogObject getCatalogObject();
+	final ICatalogObject getCatalogObject() {
+		return (this.dtpObject instanceof ICatalogObject) ? (ICatalogObject) this.dtpObject : null;
+	}
 
 	/**
 	 * Typically, a subclass will override this method to
@@ -149,16 +171,35 @@ abstract class DTPDatabaseObjectWrapper<P extends DTPDatabaseObject>
 	 */
 	abstract void clear();
 
-	// this should only be called when the connection profile is "live" and has listeners
+	/**
+	 * This should only be called when the connection profile is "live" and has
+	 * listeners.
+	 */
 	void startListening() {
-		this.checkListener();
-		RefreshManager.getInstance().AddListener(this.getCatalogObject(), this.catalogObjectListener);
+		ICatalogObject catalogObject = this.getCatalogObject();
+		if (catalogObject != null) {
+			this.checkListener();
+			this.startListening(catalogObject);
+		}
 	}
 
-	// this should only be called when the connection profile is "live" and has no listeners
+	/**
+	 * Pre-conditions: catalog listener and object are both present
+	 */
+	private void startListening(ICatalogObject catalogObject) {
+		RefreshManager.getInstance().AddListener(catalogObject, this.catalogObjectListener);
+	}
+
+	/**
+	 * This should only be called when the connection profile is "live" and has
+	 * no listeners.
+	 */
 	void stopListening() {
-		this.checkListener();
-        RefreshManager.getInstance().removeListener(this.getCatalogObject(), this.catalogObjectListener);
+		ICatalogObject catalogObject = this.getCatalogObject();
+		if (catalogObject != null) {
+			this.checkListener();
+			RefreshManager.getInstance().removeListener(catalogObject, this.catalogObjectListener);
+		}
 	}
 
 	/**
@@ -175,12 +216,25 @@ abstract class DTPDatabaseObjectWrapper<P extends DTPDatabaseObject>
 
 	// ********** misc **********
 
-	public DTPConnectionProfileWrapper getConnectionProfile() {
+	/**
+	 * @see DTPConnectionProfileWrapper#getConnectionProfile()
+	 */
+	public final DTPConnectionProfileWrapper getConnectionProfile() {
 		return this.parent.getConnectionProfile();
 	}
 
+	/**
+	 * @see DTPDatabaseWrapper#getDatabase()
+	 */
 	public DTPDatabaseWrapper getDatabase() {
 		return this.parent.getDatabase();
+	}
+
+	public final void refresh() {
+		ICatalogObject catalogObject = this.getCatalogObject();
+		if (catalogObject != null) {
+			catalogObject.refresh();
+		}
 	}
 
 	DTPDriverAdapter getDTPDriverAdapter() {
@@ -190,7 +244,7 @@ abstract class DTPDatabaseObjectWrapper<P extends DTPDatabaseObject>
 	/**
 	 * Convenience method.
 	 */
-	<T extends DatabaseObject> T selectDatabaseObjectNamed(Iterable<T> databaseObjects, String name) {
+	final <T extends DatabaseObject> T selectDatabaseObjectNamed(Iterable<T> databaseObjects, String name) {
 		for (T databaseObject : databaseObjects) {
 			if (databaseObject.getName().equals(name)) {
 				return databaseObject;

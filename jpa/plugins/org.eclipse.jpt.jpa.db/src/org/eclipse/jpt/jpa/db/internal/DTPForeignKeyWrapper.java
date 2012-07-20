@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,8 +11,6 @@ package org.eclipse.jpt.jpa.db.internal;
 
 import java.util.Arrays;
 import java.util.List;
-
-import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -26,12 +24,9 @@ import org.eclipse.jpt.jpa.db.ForeignKey;
  *  Wrap a DTP ForeignKey
  */
 final class DTPForeignKeyWrapper
-	extends DTPDatabaseObjectWrapper<DTPTableWrapper>
+	extends DTPDatabaseObjectWrapper<DTPTableWrapper, org.eclipse.datatools.modelbase.sql.constraints.ForeignKey>
 	implements ForeignKey
 {
-	/** the wrapped DTP foreign key */
-	private final org.eclipse.datatools.modelbase.sql.constraints.ForeignKey dtpForeignKey;
-
 	/** lazy-initialized */
 	private DTPTableWrapper referencedTable;
 
@@ -46,17 +41,11 @@ final class DTPForeignKeyWrapper
 	// ********** constructor **********
 
 	DTPForeignKeyWrapper(DTPTableWrapper baseTable, org.eclipse.datatools.modelbase.sql.constraints.ForeignKey dtpForeignKey) {
-		super(baseTable);
-		this.dtpForeignKey = dtpForeignKey;
+		super(baseTable, dtpForeignKey);
 	}
 
 
 	// ********** DTPDatabaseObjectWrapper implementation **********
-
-	@Override
-	ICatalogObject getCatalogObject() {
-		return (ICatalogObject) this.dtpForeignKey;
-	}
 
 	@Override
 	synchronized void catalogObjectChanged() {
@@ -72,17 +61,13 @@ final class DTPForeignKeyWrapper
 
 	// ********** ForeignKey implementation **********
 
-	public String getName() {
-		return this.dtpForeignKey.getName();
-	}
-
 	public DTPTableWrapper getBaseTable() {
 		return this.parent;
 	}
 
 	public synchronized DTPTableWrapper getReferencedTable() {
 		if (this.referencedTable == null) {
-			this.referencedTable = this.getBaseTable().getTable(this.dtpForeignKey.getUniqueConstraint().getBaseTable());
+			this.referencedTable = this.getBaseTable().getTable(this.dtpObject.getUniqueConstraint().getBaseTable());
 		}
 		return this.referencedTable;
 	}
@@ -143,13 +128,13 @@ final class DTPForeignKeyWrapper
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
 	private List<org.eclipse.datatools.modelbase.sql.tables.Column> getDTPBaseColumns() {
-		return this.dtpForeignKey.getMembers();
+		return this.dtpObject.getMembers();
 	}
 
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
 	private List<org.eclipse.datatools.modelbase.sql.tables.Column> getDTPReferenceColumns() {
-		return this.dtpForeignKey.getUniqueConstraint().getMembers();
+		return this.dtpObject.getUniqueConstraint().getMembers();
 	}
 
 	public int getColumnPairsSize() {
@@ -290,7 +275,7 @@ final class DTPForeignKeyWrapper
 	// ********** internal methods **********
 
 	boolean wraps(org.eclipse.datatools.modelbase.sql.constraints.ForeignKey foreignKey) {
-		return this.dtpForeignKey == foreignKey;
+		return this.dtpObject == foreignKey;
 	}
 
 	@Override
@@ -333,5 +318,4 @@ final class DTPForeignKeyWrapper
 		}
 
 	}
-
 }
