@@ -96,13 +96,13 @@ public class ELJavaXmlDiscriminatorValue
 								IMessage.HIGH_SEVERITY,
 								ELJaxbValidationMessages.XML_DISCRIMINATOR_VALUE__NOT_SPECIFIED,
 								ELJavaXmlDiscriminatorValue.this,
-								getValueTextRange(astRoot)));
+								getValueTextRange()));
 			return;
 		}
 	}
 	
-	protected TextRange getValueTextRange(CompilationUnit astRoot) {
+	protected TextRange getValueTextRange() {
 		// should never be null
-		return getAnnotation().getValueTextRange(astRoot);
+		return getAnnotation().getValueTextRange();
 	}
 }

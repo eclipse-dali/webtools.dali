@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.2
+ * @version 3.3
  * @since 3.0
  */
 public interface XmlInverseReferenceAnnotation
@@ -50,7 +50,7 @@ public interface XmlInverseReferenceAnnotation
 	 * Return the text range associated with the 'mappedBy' element.
 	 * Return the text range of this annotation if the element is absent.
 	 */
-	TextRange getMappedByTextRange(CompilationUnit astRoot);
+	TextRange getMappedByTextRange();
 	
 	/**
 	 * Return whether the specified text position is within the 'mappedBy' element.

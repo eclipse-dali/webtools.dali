@@ -36,6 +36,7 @@ public final class SourceXmlEnumValueAnnotation
 	private static final DeclarationAnnotationElementAdapter<String> VALUE_ADAPTER = buildValueAdapter();
 	private final AnnotationElementAdapter<String> valueAdapter;
 	private String value;
+	private TextRange valueTextRange;
 
 	public SourceXmlEnumValueAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
 		super(parent, annotatedElement, DECLARATION_ANNOTATION_ADAPTER);
@@ -54,12 +55,14 @@ public final class SourceXmlEnumValueAnnotation
 	public void initialize(Annotation astAnnotation) {
 		super.initialize(astAnnotation);
 		this.value = this.buildValue(astAnnotation);
+		this.valueTextRange = this.buildValueTextRange(astAnnotation);
 	}
 
 	@Override
 	public void synchronizeWith(Annotation astAnnotation) {
 		super.synchronizeWith(astAnnotation);
 		this.syncValue(this.buildValue(astAnnotation));
+		this.valueTextRange = this.buildValueTextRange(astAnnotation);
 	}
 
 	@Override
@@ -91,8 +94,12 @@ public final class SourceXmlEnumValueAnnotation
 		return this.valueAdapter.getValue(astAnnotation);
 	}
 
-	public TextRange getValueTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(VALUE_ADAPTER, astRoot);
+	public TextRange getValueTextRange() {
+		return this.valueTextRange;
+	}
+
+	private TextRange buildValueTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(VALUE_ADAPTER, astAnnotation);
 	}
 	
 	public boolean valueTouches(int pos, CompilationUnit astRoot) {

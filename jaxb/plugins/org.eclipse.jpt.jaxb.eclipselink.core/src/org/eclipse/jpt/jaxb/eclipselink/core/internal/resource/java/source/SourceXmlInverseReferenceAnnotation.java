@@ -37,6 +37,7 @@ public class SourceXmlInverseReferenceAnnotation
 	private final DeclarationAnnotationElementAdapter<String> mappedByDeclarationAdapter;
 	private final AnnotationElementAdapter<String> mappedByAdapter;
 	private String mappedBy;
+	private TextRange mappedByTextRange;
 	
 	
 	public SourceXmlInverseReferenceAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
@@ -66,12 +67,14 @@ public class SourceXmlInverseReferenceAnnotation
 	public void initialize(Annotation astAnnotation) {
 		super.initialize(astAnnotation);
 		this.mappedBy = buildMappedBy(astAnnotation);
+		this.mappedByTextRange = this.buildMappedByTextRange(astAnnotation);
 	}
 	
 	@Override
 	public void synchronizeWith(Annotation astAnnotation) {
 		super.synchronizeWith(astAnnotation);
 		this.syncMappedBy(buildMappedBy(astAnnotation));
+		this.mappedByTextRange = this.buildMappedByTextRange(astAnnotation);
 	}
 	
 	@Override
@@ -102,9 +105,13 @@ public class SourceXmlInverseReferenceAnnotation
 	private String buildMappedBy(Annotation astAnnotation) {
 		return this.mappedByAdapter.getValue(astAnnotation);
 	}
-	
-	public TextRange getMappedByTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.mappedByDeclarationAdapter, astRoot);
+
+	public TextRange getMappedByTextRange() {
+		return this.mappedByTextRange;
+	}
+
+	private TextRange buildMappedByTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.mappedByDeclarationAdapter, astAnnotation);
 	}
 	
 	public boolean mappedByTouches(int pos, CompilationUnit astRoot) {

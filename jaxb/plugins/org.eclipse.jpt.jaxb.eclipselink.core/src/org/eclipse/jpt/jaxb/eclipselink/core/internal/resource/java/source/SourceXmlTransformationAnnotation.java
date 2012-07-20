@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.Annotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
@@ -36,6 +35,7 @@ public class SourceXmlTransformationAnnotation
 	private final DeclarationAnnotationElementAdapter<Boolean> optionalDeclarationAdapter;
 	private final AnnotationElementAdapter<Boolean> optionalAdapter;
 	private Boolean optional;
+	private TextRange optionalTextRange;
 	
 	
 	public SourceXmlTransformationAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
@@ -65,12 +65,14 @@ public class SourceXmlTransformationAnnotation
 	public void initialize(Annotation astAnnotation) {
 		super.initialize(astAnnotation);
 		this.optional = buildOptional(astAnnotation);
+		this.optionalTextRange = this.buildOptionalTextRange(astAnnotation);
 	}
 	
 	@Override
 	public void synchronizeWith(Annotation astAnnotation) {
 		super.synchronizeWith(astAnnotation);
 		this.syncOptional(buildOptional(astAnnotation));
+		this.optionalTextRange = this.buildOptionalTextRange(astAnnotation);
 	}
 	
 	@Override
@@ -101,8 +103,12 @@ public class SourceXmlTransformationAnnotation
 	private Boolean buildOptional(Annotation astAnnotation) {
 		return this.optionalAdapter.getValue(astAnnotation);
 	}
-	
-	public TextRange getOptionalTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.optionalDeclarationAdapter, astRoot);
+
+	public TextRange getOptionalTextRange() {
+		return this.optionalTextRange;
+	}
+
+	private TextRange buildOptionalTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.optionalDeclarationAdapter, astAnnotation);
 	}
 }

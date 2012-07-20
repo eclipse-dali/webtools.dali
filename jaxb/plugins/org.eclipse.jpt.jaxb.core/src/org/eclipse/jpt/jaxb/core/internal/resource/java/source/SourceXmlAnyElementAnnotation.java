@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.Annotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
@@ -41,10 +40,12 @@ public final class SourceXmlAnyElementAnnotation
 	private final DeclarationAnnotationElementAdapter<Boolean> laxDeclarationAdapter;
 	private final AnnotationElementAdapter<Boolean> laxAdapter;
 	private Boolean lax;
+	private TextRange laxTextRange;
 
 	private final DeclarationAnnotationElementAdapter<String> valueDeclarationAdapter;
 	private final AnnotationElementAdapter<String> valueAdapter;
 	private String value;
+	private TextRange valueTextRange;
 	private String fullyQualifiedValueClassName;
 
 
@@ -89,7 +90,9 @@ public final class SourceXmlAnyElementAnnotation
 	public void initialize(Annotation astAnnotation) {
 		super.initialize(astAnnotation);
 		this.lax = this.buildLax(astAnnotation);
+		this.laxTextRange = this.buildLaxTextRange(astAnnotation);
 		this.value = this.buildValue(astAnnotation);
+		this.valueTextRange = this.buildValueTextRange(astAnnotation);
 		this.fullyQualifiedValueClassName = this.buildFullyQualifiedValueClassName(astAnnotation);
 	}
 
@@ -97,7 +100,9 @@ public final class SourceXmlAnyElementAnnotation
 	public void synchronizeWith(Annotation astAnnotation) {
 		super.synchronizeWith(astAnnotation);
 		this.syncLax(this.buildLax(astAnnotation));
+		this.laxTextRange = this.buildLaxTextRange(astAnnotation);
 		this.syncValue(this.buildValue(astAnnotation));
+		this.valueTextRange = this.buildValueTextRange(astAnnotation);
 		this.syncFullyQualifiedValueClassName(this.buildFullyQualifiedValueClassName(astAnnotation));
 	}
 
@@ -131,8 +136,12 @@ public final class SourceXmlAnyElementAnnotation
 		return this.laxAdapter.getValue(astAnnotation);
 	}
 
-	public TextRange getLaxTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.laxDeclarationAdapter, astRoot);
+	public TextRange getLaxTextRange() {
+		return this.laxTextRange;
+	}
+
+	private TextRange buildLaxTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.laxDeclarationAdapter, astAnnotation);
 	}
 
 	// ***** value
@@ -157,8 +166,12 @@ public final class SourceXmlAnyElementAnnotation
 		return this.valueAdapter.getValue(astAnnotation);
 	}
 
-	public TextRange getValueTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.valueDeclarationAdapter, astRoot);
+	public TextRange getValueTextRange() {
+		return this.valueTextRange;
+	}
+
+	private TextRange buildValueTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.valueDeclarationAdapter, astAnnotation);
 	}
 	
 	// ***** fully-qualified value class name

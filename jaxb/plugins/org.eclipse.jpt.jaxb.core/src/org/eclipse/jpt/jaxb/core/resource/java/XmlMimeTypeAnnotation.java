@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 
@@ -23,7 +22,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 3.3
  * @since 3.0
  */
 public interface XmlMimeTypeAnnotation
@@ -46,6 +45,6 @@ public interface XmlMimeTypeAnnotation
 	 * Return the {@link TextRange} for the 'value' element. If the element 
 	 * does not exist return the {@link TextRange} for the XmlMimeType annotation.
 	 */
-	TextRange getValueTextRange(CompilationUnit astRoot);
+	TextRange getValueTextRange();
 
 }

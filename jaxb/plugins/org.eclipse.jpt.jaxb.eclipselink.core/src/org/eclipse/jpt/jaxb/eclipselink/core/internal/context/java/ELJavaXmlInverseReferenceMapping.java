@@ -220,7 +220,7 @@ public class ELJavaXmlInverseReferenceMapping
 	};
 	
 	protected TextRange getMappedByTextRange(CompilationUnit astRoot) {
-		TextRange textRange = getXmlInverseReferenceAnnotation().getMappedByTextRange(astRoot);
+		TextRange textRange = getXmlInverseReferenceAnnotation().getMappedByTextRange();
 		return (textRange != null) ? textRange : getValidationTextRange(astRoot);
 	}
 }

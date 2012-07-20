@@ -67,7 +67,7 @@ public class BinaryXmlDiscriminatorValueAnnotation
 		return (String) this.getJdtMemberValue(ELJaxb.XML_DISCRIMINATOR_VALUE__VALUE);
 	}
 	
-	public TextRange getValueTextRange(CompilationUnit astRoot) {
+	public TextRange getValueTextRange() {
 		throw new UnsupportedOperationException();
 	}
 	

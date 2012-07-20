@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.Annotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
@@ -37,6 +36,7 @@ public final class SourceXmlAccessorOrderAnnotation
 	private static final DeclarationAnnotationElementAdapter<String> VALUE_ADAPTER = buildValueAdapter();
 	private final AnnotationElementAdapter<String> valueAdapter;
 	private XmlAccessOrder value;
+	private TextRange valueTextRange;
 
 
 	public SourceXmlAccessorOrderAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
@@ -52,12 +52,14 @@ public final class SourceXmlAccessorOrderAnnotation
 	public void initialize(Annotation astAnnotation) {
 		super.initialize(astAnnotation);
 		this.value = this.buildValue(astAnnotation);
+		this.valueTextRange = this.buildValueTextRange(astAnnotation);
 	}
 
 	@Override
 	public void synchronizeWith(Annotation astAnnotation) {
 		super.synchronizeWith(astAnnotation);
 		this.syncValue(this.buildValue(astAnnotation));
+		this.valueTextRange = this.buildValueTextRange(astAnnotation);
 	}
 
 	@Override
@@ -90,8 +92,12 @@ public final class SourceXmlAccessorOrderAnnotation
 		return XmlAccessOrder.fromJavaAnnotationValue(this.valueAdapter.getValue(astAnnotation));
 	}
 
-	public TextRange getValueTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(VALUE_ADAPTER, astRoot);
+	public TextRange getValueTextRange() {
+		return this.valueTextRange;
+	}
+
+	private TextRange buildValueTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(VALUE_ADAPTER, astAnnotation);
 	}
 
 
