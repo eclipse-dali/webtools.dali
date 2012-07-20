@@ -12,9 +12,7 @@ package org.eclipse.jpt.common.core.internal.utility.jdt;
 
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.IPackageBinding;
 import org.eclipse.jdt.core.dom.PackageDeclaration;
-import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedPackage;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
@@ -46,16 +44,7 @@ public class JDTPackage
 		return new JDTModifiedDeclaration(this.getBodyDeclaration(astRoot));
 	}
 
-	public IPackageBinding getBinding(CompilationUnit astRoot) {
-		PackageDeclaration pd = this.getBodyDeclaration(astRoot);
-		return (pd == null) ? null : pd.resolveBinding();
-	}
-
 	public PackageDeclaration getBodyDeclaration(CompilationUnit astRoot) {
 		return astRoot.getPackage();
-	}
-
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return ASTTools.buildTextRange(this.getBodyDeclaration(astRoot).getName());
 	}
 }

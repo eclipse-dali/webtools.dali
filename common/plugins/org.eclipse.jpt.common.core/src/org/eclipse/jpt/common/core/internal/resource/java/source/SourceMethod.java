@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
@@ -67,26 +66,16 @@ final class SourceMethod
 	private SourceMethod(JavaResourceType parent, MethodAttribute method){
 		super(parent, method);
 	}
-	
-	
-	// call initialize(MethodDeclaration) now for performance
-	// trying to minimize API changes, this should be removed from the interface
-	// TODO other members of this hierarchy should have similar initialize methods
-	@Override
-	public void initialize(CompilationUnit astRoot) {
-		throw new UnsupportedOperationException();
-	}
-	
+		
 	protected void initialize(MethodDeclaration methodDeclaration) {
-		super.initialize(methodDeclaration);
-		initialize(methodDeclaration.resolveBinding());
+		super.initialize(methodDeclaration, methodDeclaration.getName());
+		this.initialize(methodDeclaration.resolveBinding());
 	}
 	
-	@Override
-	protected void initialize(IBinding binding) {
+	protected void initialize(IMethodBinding binding) {
 		super.initialize(binding);
-		this.constructor = this.buildConstructor((IMethodBinding) binding);
-		this.parameterTypeNames.addAll(this.buildParameterTypeNames((IMethodBinding) binding));
+		this.constructor = this.buildConstructor(binding);
+		this.parameterTypeNames.addAll(this.buildParameterTypeNames(binding));
 	}
 	
 	@Override
@@ -104,29 +93,19 @@ final class SourceMethod
 	
 	// ******** overrides ********
 	
-	@Override
-	public void resolveTypes(CompilationUnit astRoot) {
-		super.resolveTypes(astRoot);
-	}
-
-	//call synchronizeWith(MethodDeclaration) now for performance
-	//trying to minimize API changes, this should be removed from the interface
-	//TODO other members of this hierarchy should have similar synchronizeWith methods
-	@Override
-	public void synchronizeWith(CompilationUnit astRoot) {
-		throw new UnsupportedOperationException();
+	public void resolveTypes(MethodDeclaration methodDeclaration) {
+		super.resolveTypes(methodDeclaration.resolveBinding());
 	}
 	
 	public void synchronizeWith(MethodDeclaration methodDeclaration) {
-		super.synchronizeWith(methodDeclaration);
-		synchronizeWith(methodDeclaration.resolveBinding());
+		super.synchronizeWith(methodDeclaration, methodDeclaration.getName());
+		this.synchronizeWith(methodDeclaration.resolveBinding());
 	}
 	
-	@Override
-	public void synchronizeWith(IBinding binding) {
+	protected void synchronizeWith(IMethodBinding binding) {
 		super.synchronizeWith(binding);
-		this.syncConstructor(this.buildConstructor((IMethodBinding) binding));
-		this.syncParameterTypeNames(this.buildParameterTypeNames((IMethodBinding) binding));
+		this.syncConstructor(this.buildConstructor(binding));
+		this.syncParameterTypeNames(this.buildParameterTypeNames(binding));
 	}
 	
 	@Override

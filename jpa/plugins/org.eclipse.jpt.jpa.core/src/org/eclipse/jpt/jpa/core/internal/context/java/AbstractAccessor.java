@@ -57,14 +57,6 @@ public abstract class AbstractAccessor
 			this.member = member;
 		}
 
-		public void initialize(CompilationUnit astRoot) {
-			// NOP
-		}
-
-		public void synchronizeWith(CompilationUnit astRoot) {
-			// NOP
-		}
-
 
 		// ********** annotations **********
 
@@ -179,18 +171,14 @@ public abstract class AbstractAccessor
 			return this.member.getTextRange(astRoot);
 		}
 
-		public TextRange getNameTextRange(CompilationUnit astRoot) {
+		public TextRange getNameTextRange() {
 			// should never be null
-			return this.member.getNameTextRange(astRoot);
+			return this.member.getNameTextRange();
 		}
 
 		public TextRange getTextRange(String nestableAnnotationName, CompilationUnit astRoot) {
 			// should never be null
 			return this.member.getTextRange(nestableAnnotationName, astRoot);
-		}
-
-		public void resolveTypes(CompilationUnit astRoot) {
-			// NOP
 		}
 	}
 

@@ -9,9 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.utility.jdt;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.ITypeBinding;
-
 /**
  * Attributes are either represented by fields ('foo') or properties/method
  * pairs ('getFoo()'/'setFoo()').
@@ -31,12 +28,6 @@ public interface Attribute extends Member {
 	 * (e.g. "getFoo()" returns "foo").
 	 */
 	String getAttributeName();
-
-	/**
-	 * Return the type binding for the attribute's declared type,
-	 * as opposed to its declaring type.
-	 */
-	ITypeBinding getTypeBinding(CompilationUnit astRoot);
 
 	/**
 	 * Return whether the attribute is a field.

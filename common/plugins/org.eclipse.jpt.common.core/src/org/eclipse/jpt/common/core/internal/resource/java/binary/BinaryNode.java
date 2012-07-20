@@ -52,14 +52,6 @@ public abstract class BinaryNode
 		throw new UnsupportedOperationException();
 	}
 
-	public void initialize(CompilationUnit astRoot) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void synchronizeWith(CompilationUnit astRoot) {
-		throw new UnsupportedOperationException();
-	}
-
 
 	// ********** member value-pairs **********
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Vector;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.EnumConstantDeclaration;
 import org.eclipse.jdt.core.dom.EnumDeclaration;
 import org.eclipse.jpt.common.core.internal.utility.jdt.JDTEnum;
@@ -47,15 +46,14 @@ final class SourceEnum
 	 */
 	static JavaResourceEnum newInstance(
 			JavaResourceCompilationUnit javaResourceCompilationUnit,
-			EnumDeclaration enumDeclaration,
-			CompilationUnit astRoot) {
+			EnumDeclaration enumDeclaration) {
 		Enum _enum = new JDTEnum(
 			enumDeclaration,
 				javaResourceCompilationUnit.getCompilationUnit(),
 				javaResourceCompilationUnit.getModifySharedDocumentCommandExecutor(),
 				javaResourceCompilationUnit.getAnnotationEditFormatter());
-		JavaResourceEnum jre = new SourceEnum(javaResourceCompilationUnit, _enum);
-		jre.initialize(astRoot);
+		SourceEnum jre = new SourceEnum(javaResourceCompilationUnit, _enum);
+		jre.initialize(enumDeclaration);
 		return jre;
 	}
 
@@ -66,8 +64,7 @@ final class SourceEnum
 			JavaResourceCompilationUnit javaResourceCompilationUnit,
 			Type declaringType,
 			EnumDeclaration enumDeclaration,
-			int occurrence,
-			CompilationUnit astRoot) {
+			int occurrence) {
 		Enum _enum = new JDTEnum(
 				declaringType,
 				enumDeclaration,
@@ -75,8 +72,8 @@ final class SourceEnum
 				javaResourceCompilationUnit.getCompilationUnit(),
 				javaResourceCompilationUnit.getModifySharedDocumentCommandExecutor(),
 				javaResourceCompilationUnit.getAnnotationEditFormatter());
-		JavaResourceEnum jre = new SourceEnum(javaResourceCompilationUnit, _enum);
-		jre.initialize(astRoot);
+		SourceEnum jre = new SourceEnum(javaResourceCompilationUnit, _enum);
+		jre.initialize(enumDeclaration);
 		return jre;
 	}
 
@@ -85,30 +82,27 @@ final class SourceEnum
 		this.enumConstants = new Vector<JavaResourceEnumConstant>();
 	}
 
-	@Override
-	public void initialize(CompilationUnit astRoot) {
-		super.initialize(astRoot);
-		this.initializeEnumConstants(astRoot);
+	protected void initialize(EnumDeclaration enumDeclaration) {
+		super.initialize(enumDeclaration);
+		this.initializeEnumConstants(enumDeclaration);
 	}
 
 
 	// ********** update **********
 
-	@Override
-	public void synchronizeWith(CompilationUnit astRoot) {
-		super.synchronizeWith(astRoot);
-		this.syncEnumConstants(astRoot);
+	public void synchronizeWith(EnumDeclaration enumDeclaration) {
+		super.synchronizeWith(enumDeclaration);
+		this.syncEnumConstants(enumDeclaration);
 	}
 
 
 	// ********** SourceAnnotatedElement implementation **********
 
-	@Override
-	public void resolveTypes(CompilationUnit astRoot) {
-		super.resolveTypes(astRoot);
-
+	public void resolveTypes(EnumDeclaration enumDeclaration) {
+		EnumConstantDeclaration[] enumConstantDeclarations = this.annotatedElement.getEnumConstants(enumDeclaration);
+		int i = 0;
 		for (JavaResourceEnumConstant enumConstant : this.getEnumConstants()) {
-			enumConstant.resolveTypes(astRoot);
+			enumConstant.resolveTypes(enumConstantDeclarations[i++]);
 		}
 	}
 
@@ -143,18 +137,18 @@ final class SourceEnum
 		this.removeItemsFromCollection(remove, this.enumConstants, ENUM_CONSTANTS_COLLECTION);
 	}
 
-	private void initializeEnumConstants(CompilationUnit astRoot) {
-		EnumConstantDeclaration[] enumConstantDeclarations = this.annotatedElement.getEnumConstants(astRoot);
+	private void initializeEnumConstants(EnumDeclaration enumDeclaration) {
+		EnumConstantDeclaration[] enumConstantDeclarations = this.annotatedElement.getEnumConstants(enumDeclaration);
 		CounterMap counters = new CounterMap(enumConstantDeclarations.length);
 		for (EnumConstantDeclaration enumConstantDeclaration : enumConstantDeclarations) {
 			String constantName = enumConstantDeclaration.getName().getFullyQualifiedName();
 			int occurrence = counters.increment(constantName);
-			this.enumConstants.add(this.buildEnumConstant(constantName, occurrence, astRoot));
+			this.enumConstants.add(this.buildEnumConstant(constantName, occurrence, enumConstantDeclaration));
 		}
 	}
 
-	private void syncEnumConstants(CompilationUnit astRoot) {
-		EnumConstantDeclaration[] enumConstantDeclarations = this.annotatedElement.getEnumConstants(astRoot);
+	private void syncEnumConstants(EnumDeclaration enumDeclaration) {
+		EnumConstantDeclaration[] enumConstantDeclarations = this.annotatedElement.getEnumConstants(enumDeclaration);
 		CounterMap counters = new CounterMap(enumConstantDeclarations.length);
 		HashSet<JavaResourceEnumConstant> enumConstantsToRemove = new HashSet<JavaResourceEnumConstant>(this.enumConstants);
 		for (EnumConstantDeclaration enumConstantDeclaration : enumConstantDeclarations) {
@@ -163,17 +157,17 @@ final class SourceEnum
 
 			JavaResourceEnumConstant enumConstant = this.getEnumConstant(constantName, occurrence);
 			if (enumConstant == null) {
-				this.addEnumConstant(this.buildEnumConstant(constantName, occurrence, astRoot));
+				this.addEnumConstant(this.buildEnumConstant(constantName, occurrence, enumConstantDeclaration));
 			} else {
 				enumConstantsToRemove.remove(enumConstant);
-				enumConstant.synchronizeWith(astRoot);
+				enumConstant.synchronizeWith(enumConstantDeclaration);
 			}
 		}
 		this.removeEnumConstants(enumConstantsToRemove);
 	}
 
-	private JavaResourceEnumConstant buildEnumConstant(String fieldName, int occurrence, CompilationUnit astRoot) {
-		return SourceEnumConstant.newInstance(this, this.annotatedElement, fieldName, occurrence, this.getJavaResourceCompilationUnit(), astRoot);
+	private JavaResourceEnumConstant buildEnumConstant(String fieldName, int occurrence, EnumConstantDeclaration enumConstantDeclaration) {
+		return SourceEnumConstant.newInstance(this, this.annotatedElement, fieldName, occurrence, this.getJavaResourceCompilationUnit(), enumConstantDeclaration);
 	}
 
 

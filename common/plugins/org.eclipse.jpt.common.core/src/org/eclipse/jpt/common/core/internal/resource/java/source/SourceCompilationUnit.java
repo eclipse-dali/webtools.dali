@@ -60,10 +60,6 @@ public abstract class SourceCompilationUnit
 		this.resourceModelListenerList = new ListenerList<JptResourceModelListener>(JptResourceModelListener.class);
 	}
 
-	public void initialize(CompilationUnit astRoot) {
-		// never called?
-	}
-
 	void openCompilationUnit() {
 		try {
 			this.compilationUnit.open(null);
@@ -134,7 +130,6 @@ public abstract class SourceCompilationUnit
 		return this.annotationEditFormatter;
 	}
 	
-	@Override
 	public CompilationUnit buildASTRoot() {
 		return ASTTools.buildASTRoot(this.compilationUnit);
 	}
@@ -156,6 +151,8 @@ public abstract class SourceCompilationUnit
 	public void synchronizeWithJavaSource() {
 		this.synchronizeWith(this.buildASTRoot());
 	}
+
+	protected abstract void synchronizeWith(CompilationUnit astRoot);
 
 
 	// ********** internal **********

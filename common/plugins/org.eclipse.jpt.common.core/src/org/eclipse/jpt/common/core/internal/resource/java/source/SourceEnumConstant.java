@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.EnumConstantDeclaration;
+import org.eclipse.jdt.core.dom.IVariableBinding;
 import org.eclipse.jpt.common.core.internal.utility.jdt.JDTEnumConstant;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
@@ -34,7 +35,7 @@ final class SourceEnumConstant
 			String name,
 			int occurrence,
 			JavaResourceCompilationUnit javaResourceCompilationUnit,
-			CompilationUnit astRoot) {
+			EnumConstantDeclaration enumConstantDeclaration) {
 		
 		EnumConstant enumConstant = new JDTEnumConstant(
 				declaringEnum,
@@ -43,8 +44,8 @@ final class SourceEnumConstant
 				javaResourceCompilationUnit.getCompilationUnit(),
 				javaResourceCompilationUnit.getModifySharedDocumentCommandExecutor(),
 				javaResourceCompilationUnit.getAnnotationEditFormatter());
-		JavaResourceEnumConstant jrec = new SourceEnumConstant(parent, enumConstant);
-		jrec.initialize(astRoot);
+		SourceEnumConstant jrec = new SourceEnumConstant(parent, enumConstant);
+		jrec.initialize(enumConstantDeclaration);
 		return jrec;
 	}
 	
@@ -54,12 +55,15 @@ final class SourceEnumConstant
 	}
 	
 	
-	@Override
-	public void initialize(CompilationUnit astRoot) {
-		super.initialize(astRoot);
+	protected void initialize(EnumConstantDeclaration enumConstantDeclaration) {
+		super.initialize(enumConstantDeclaration, enumConstantDeclaration.getName());
+		this.initialize(enumConstantDeclaration.resolveVariable());
 	}
 	
-	
+	protected void initialize(IVariableBinding binding) {
+		super.initialize(binding);
+	}
+
 	// ******** JavaResourceAnnotatedElement implementation ********
 	
 	public Kind getKind() {
@@ -69,14 +73,17 @@ final class SourceEnumConstant
 	
 	// ******** overrides ********
 
-	@Override
-	public void resolveTypes(CompilationUnit astRoot) {
-		super.resolveTypes(astRoot);
+	public void resolveTypes(EnumConstantDeclaration enumConstantDeclaration) {
+		//no-op
 	}
 
-	@Override
-	public void synchronizeWith(CompilationUnit astRoot) {
-		super.synchronizeWith(astRoot);
+	public void synchronizeWith(EnumConstantDeclaration enumConstantDeclaration) {
+		super.synchronizeWith(enumConstantDeclaration, enumConstantDeclaration.getName());
+		this.synchronizeWith(enumConstantDeclaration.resolveVariable());
+	}
+
+	protected void synchronizeWith(IVariableBinding binding) {
+		super.synchronizeWith(binding);
 	}
 
 	@Override

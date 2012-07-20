@@ -94,20 +94,20 @@ public class JDTType
 		return (TypeDeclaration) super.getBodyDeclaration(astRoot);
 	}
 
-	public TypeDeclaration[] getTypes(CompilationUnit astRoot) {
-		return this.getBodyDeclaration(astRoot).getTypes();
+	public TypeDeclaration[] getTypes(TypeDeclaration typeDeclaration) {
+		return typeDeclaration.getTypes();
 	}
 
-	public EnumDeclaration[] getEnums(CompilationUnit astRoot) {
-		return getEnums(this.getBodyDeclaration(astRoot));
+	public EnumDeclaration[] getEnums(TypeDeclaration typeDeclaration) {
+		return enums(typeDeclaration);
 	}
 
-	public FieldDeclaration[] getFields(CompilationUnit astRoot) {
-		return this.getBodyDeclaration(astRoot).getFields();
+	public FieldDeclaration[] getFields(TypeDeclaration typeDeclaration) {
+		return typeDeclaration.getFields();
 	}
 
-	public MethodDeclaration[] getMethods(CompilationUnit astRoot) {
-		return this.getBodyDeclaration(astRoot).getMethods();
+	public MethodDeclaration[] getMethods(TypeDeclaration typeDeclaration) {
+		return typeDeclaration.getMethods();
 	}
 
 

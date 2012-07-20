@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -58,17 +58,6 @@ public interface JavaResourceNode
 	 * Return the [source] node's text range in the compilation unit's file.
 	 */
 	TextRange getTextRange(CompilationUnit astRoot);
-
-	/**
-	 * Initialize the [source] node from the specified AST.
-	 */
-	void initialize(CompilationUnit astRoot);
-
-	/**
-	 * Synchronize the [source] node with the specified AST.
-	 */
-	void synchronizeWith(CompilationUnit astRoot);
-
 
 	/**
 	 * Root of Java resource model containment hierarchy.

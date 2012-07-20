@@ -88,8 +88,8 @@ public class JDTEnum
 		return (EnumDeclaration) super.getBodyDeclaration(astRoot);
 	}
 
-	public EnumConstantDeclaration[] getEnumConstants(CompilationUnit astRoot) {
-		List<EnumConstantDeclaration> enumConstants = enumConstants(getBodyDeclaration(astRoot));
+	public EnumConstantDeclaration[] getEnumConstants(EnumDeclaration enumDeclaration) {
+		List<EnumConstantDeclaration> enumConstants = enumConstants(enumDeclaration);
 		return enumConstants.toArray(new EnumConstantDeclaration[enumConstants.size()]);
 	}
 
@@ -113,7 +113,7 @@ public class JDTEnum
 
 	@Override
 	protected EnumDeclaration getNestedTypeDeclaration(TypeDeclaration declaringTypeDeclaration) {
-		return this.getTypeDeclaration(getEnums(declaringTypeDeclaration));
+		return this.getTypeDeclaration(enums(declaringTypeDeclaration));
 	}
 
 	@Override

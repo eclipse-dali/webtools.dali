@@ -21,9 +21,9 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IAnnotationBinding;
-import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
+import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
@@ -72,6 +72,7 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 	 */
 	private final Hashtable<String, CombinationAnnotationContainer> annotationContainers = new Hashtable<String, CombinationAnnotationContainer>();
 
+	protected TextRange nameTextRange;
 
 	// ********** construction/initialization **********
 
@@ -81,35 +82,29 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 	}
 
 	/**
-	 * There are 2 initialize calls, 1 for ASTNode and one for IBinding.
-	 * This is a performance enhancement because finding a MethodDeclaration
-	 * for a SourceMethod is very non-performant. SourceMethod actually overrides
-	 * this as unsupported and instead uses initialize(MethodDeclaration).
-	 * TODO continue the pattern in SourceMethod with the other classes in this hierarchy
-	 * trying not to change much API in 3.2M7
-	 * 
-	 * This is also to handle multiple fields declared in a single statement:
-	 * 		private int foo, bar;
-	 * JDTFieldAttribute.getBodyDeclaration(CompilationUnit) returns the FieldDeclaration
-	 * in the call to getBodyDeclaration, this is the ASTNode for a field and
-	 * has the annotations on it.
-	 * JDTFieldAttribute.getBinding(CompiltationUnit) returns the IVariableBinding of the 
-	 * VariableDeclarationFragment which is the ASTNode for the particular field.
+	 * Subclasses are responsible for calling this initialize method.
+	 * The ASTNode will be used to initialize the annotations and the Name node
+	 * will be used to cache the name text range.
 	 */
-	public void initialize(CompilationUnit astRoot) {
-		this.initialize(this.annotatedElement.getBodyDeclaration(astRoot));
-		this.initialize(this.annotatedElement.getBinding(astRoot));
-	}
-
-	protected void initialize(IBinding binding) {
-		//do nothing
+	//TODO We need some sort of "initializer" object to clean up this initialization dance.
+	//SourceMember has yet another initialize(IBinding) method that subclasses have to call
+	//then subclasses could just call initialize(adapterObject) or even pass it in the constructor.
+	//same object would be used for the synchronize method as well
+	// The "initializer" interface might look like this: 
+	//  getNameNode() : Name
+	//  getAnnotationNode() : ASTNode - the ASTNode that has the annotations on it
+	//  getBinding() : IBinding - SourceMember and its subclasses have an initialize that takes an IBinding
+	//  getTypeBinding() : ITypeBinding  - this is for SourceAttribute
+	protected void initialize(ASTNode node, Name nameNode) {
+		this.nameTextRange = ASTTools.buildTextRange(nameNode);
+		this.initializeAnnotations(node);
 	}
 
 	/**
 	 * Gather up all the significant AST annotations
 	 * and build the corresponding Dali annotations.
 	 */
-	protected void initialize(ASTNode node) {
+	private void initializeAnnotations(ASTNode node) {
 		AnnotationVisitor visitor = new AnnotationVisitor(node);
 		node.accept(visitor);
 		this.initializeAnnotations(visitor.astAnnotations);
@@ -154,21 +149,14 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 	}
 
 	/**
-	 * @see #initialize(CompilationUnit)
+	 * Subclasses are responsible for calling this synchronizeWith method.
+	 * The ASTNode will be used to sync the annotations and the Name node
+	 * will be used to cache the name text range.
 	 */
-	public void synchronizeWith(CompilationUnit astRoot) {
-		this.synchronizeWith(this.annotatedElement.getBodyDeclaration(astRoot));
-		this.synchronizeWith(this.annotatedElement.getBinding(astRoot));
+	protected void synchronizeWith(ASTNode node, Name nameNode) {
+		this.nameTextRange = ASTTools.buildTextRange(nameNode);
+		this.syncAnnotations(node);
 	}
-
-	protected void synchronizeWith(ASTNode bodyDeclaration) {
-		this.syncAnnotations(bodyDeclaration);
-	}
-
-	protected void synchronizeWith(IBinding binding) {
-		//do nothing
-	}
-
 
 	// ********** annotations **********
 
@@ -541,11 +529,8 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 		return (astRoot == null) ? null : this.buildTextRange(this.annotatedElement.getBodyDeclaration(astRoot));
 	}
 
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		// the AST is null for virtual Java attributes
-		// TODO remove the AST null check once we start storing text ranges
-		// in the resource model
-		return (astRoot == null) ? null : this.annotatedElement.getNameTextRange(astRoot);
+	public TextRange getNameTextRange() {
+		return this.nameTextRange;
 	}
 
 	public TextRange getTextRange(String nestableAnnotationName, CompilationUnit astRoot) {

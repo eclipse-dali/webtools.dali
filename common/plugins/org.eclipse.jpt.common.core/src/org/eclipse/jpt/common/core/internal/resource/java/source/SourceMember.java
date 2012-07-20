@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
@@ -18,7 +17,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.jdt.Member;
 
 /**
- * Java source member (annotations, "persistable")
+ * Java source member (annotations, modifiers)
  */
 abstract class SourceMember<M extends Member>
 	extends SourceAnnotatedElement<M>
@@ -40,9 +39,10 @@ abstract class SourceMember<M extends Member>
 		super(parent, member);
 	}
 
-	@Override
+	/**
+	 * Subclasses are responsible for calling this initialize method.
+	 */
 	protected void initialize(IBinding binding) {
-		super.initialize(binding);
 		this.final_ = this.buildFinal(binding);
 		this.transient_ = this.buildTransient(binding);
 		this.public_ = this.buildPublic(binding);
@@ -50,9 +50,10 @@ abstract class SourceMember<M extends Member>
 		this.protected_ = this.buildProtected(binding);
 	}
 
-	@Override
+	/**
+	 * Subclasses are responsible for calling this initialize method.
+	 */
 	protected void synchronizeWith(IBinding binding) {
-		super.synchronizeWith(binding);
 		this.syncFinal(this.buildFinal(binding));
 		this.syncTransient(this.buildTransient(binding));
 		this.syncPublic(this.buildPublic(binding));
@@ -144,10 +145,6 @@ abstract class SourceMember<M extends Member>
 	@Override
 	public Annotation setPrimaryAnnotation(String primaryAnnotationName, Iterable<String> supportingAnnotationNames) {
 		return super.setPrimaryAnnotation(primaryAnnotationName, supportingAnnotationNames);
-	}
-
-	public void resolveTypes(CompilationUnit astRoot) {
-		// do nothing?
 	}
 
 	public boolean isPublicOrProtected() {

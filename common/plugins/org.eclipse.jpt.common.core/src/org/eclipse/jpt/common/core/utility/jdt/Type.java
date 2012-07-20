@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -36,21 +36,25 @@ public interface Type extends AbstractType {
 	/**
 	 * Return the type's nested types (does not include annotations or enums).
 	 */
-	TypeDeclaration[] getTypes(CompilationUnit astRoot);
+	//TODO remove this, implementation now just calls typeDeclaration.getTypes()
+	TypeDeclaration[] getTypes(TypeDeclaration typeDeclaration);
 
 	/**
 	 * Return the type's nested enums.
 	 */
-	EnumDeclaration[] getEnums(CompilationUnit astRoot);
+	//TODO remove this
+	EnumDeclaration[] getEnums(TypeDeclaration typeDeclaration);
 
 	/**
 	 * Return the type's fields.
 	 */
-	FieldDeclaration[] getFields(CompilationUnit astRoot);
+	//TODO remove this
+	FieldDeclaration[] getFields(TypeDeclaration typeDeclaration);
 
 	/**
 	 * Return the type's methods.
 	 */
-	MethodDeclaration[] getMethods(CompilationUnit astRoot);
+	//TODO remove this
+	MethodDeclaration[] getMethods(TypeDeclaration typeDeclaration);
 
 }

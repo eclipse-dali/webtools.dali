@@ -1,7 +1,7 @@
 /*******************************************************************************
  * <copyright>
  *
- * Copyright (c) 2005, 2011 SAP AG and others.
+ * Copyright (c) 2005, 2012 SAP AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -135,6 +135,7 @@ public class JpaArtifactFactory {
 			return;
 		TransactionalEditingDomain ted = fp.getTransactionalEditingDomain();
 		RecordingCommand rc = new RecordingCommand(ted) {
+			@Override
 			protected void doExecute() {
 				addIsARelations(fp, isARels);
 				fp.removeAllRedundantIsARelations();
@@ -255,7 +256,7 @@ public class JpaArtifactFactory {
 		Annotation annotation = mapping.getMappingAnnotation();
 		if (annotation == null) {
 			resolvedAttr.getResourceAttribute().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
-			annotation = (OwnableRelationshipMappingAnnotation) mapping.getMappingAnnotation();
+			annotation = mapping.getMappingAnnotation();
 		}
 		if (!(annotation instanceof OwnableRelationshipMappingAnnotation))
 			return;
@@ -1470,8 +1471,10 @@ public class JpaArtifactFactory {
 		refreshEntityModel(fp, jpt);
 		JavaPersistentAttribute newAt = jpt.getAttributeNamed(newName);
 		if (newAt == null) {
-			CompilationUnit unit  = jpt.getJavaResourceType().getJavaResourceCompilationUnit().buildASTRoot();
-			jpt.getJavaResourceType().synchronizeWith(unit);
+			//TODO this is wrong, should not need to do any of these updates or syncs.
+			//should be changing the dali model synchronously so that all the syncs/updates are completed
+			//take a look at the JpaProjectManager.execute(Command, ExtendedCommandExecutor) 
+			jpt.getJavaResourceType().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
 			jpt.update();
 			jpt.synchronizeWithResourceModel();
 			newAt = jpt.getAttributeNamed(newName);
@@ -1994,7 +1997,10 @@ public class JpaArtifactFactory {
 		this.refreshEntityModel(null, jpt);
 		PersistentAttribute at = jpt.getAttributeNamed(attributeName);
 		if (at == null) {
-			jpt.getJavaResourceType().synchronizeWith(jpt.getJavaResourceType().getJavaResourceCompilationUnit().buildASTRoot());
+			//TODO this is wrong, should not need to do any of these updates or syncs.
+			//should be changing the dali model synchronously so that all the syncs/updates are completed
+			//take a look at the JpaProjectManager.execute(Command, ExtendedCommandExecutor) 
+			jpt.getJavaResourceType().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
 			jpt.update();
 		}
 		int c = 0;

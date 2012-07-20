@@ -1,7 +1,7 @@
 /*******************************************************************************
  * <copyright>
  *
- * Copyright (c) 2005, 2011 SAP AG.
+ * Copyright (c) 2005, 2012 SAP AG.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -44,7 +44,6 @@ import org.eclipse.graphiti.ui.services.GraphitiUi;
 import org.eclipse.graphiti.util.IColorConstant;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.internal.core.SourceType;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
@@ -138,9 +137,11 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 			ICompilationUnit cu = ((SourceType)newObj).getCompilationUnit();
 			jpt = JPAEditorUtil.getJPType(cu);
 		}
-		
-		CompilationUnit unit  = jpt.getJavaResourceType().getJavaResourceCompilationUnit().buildASTRoot();
-		jpt.getJavaResourceType().synchronizeWith(unit);
+	
+		//TODO this is wrong, should not need to do any of these updates or syncs.
+		//should be changing the dali model synchronously so that all the syncs/updates are completed
+		//take a look at the JpaProjectManager.execute(Command, ExtendedCommandExecutor) 
+		jpt.getJavaResourceType().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
 		jpt.update();
 		jpt.synchronizeWithResourceModel();
 		
@@ -156,6 +157,7 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 		TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(targetDiagram);
 		
 		ted.getCommandStack().execute(new RecordingCommand(ted) {
+			@Override
 			protected void doExecute() {
 
 				ContainerShape entityShape = Graphiti.getPeService().createContainerShape(targetDiagram, true);

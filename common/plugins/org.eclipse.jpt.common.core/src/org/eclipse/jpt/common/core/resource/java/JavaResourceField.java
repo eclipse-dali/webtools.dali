@@ -28,8 +28,19 @@ public interface JavaResourceField
 		extends JavaResourceAttribute {
 	
 	/**
-	 * Call this instead of synchronizeWith(CompilationUnit)
-	 * TODO remove synchronizeWith(CompilationUnit) from the hierarchy
+	 * The [source] field must be sychronized with both the ASTFieldDeclaration and the
+	 * VariableDeclarationFragment.
+	 * This is to handle multiple fields declared in a single statement:
+	 * 		private int foo, bar;
+	 * The FieldDeclaration is the ASTNode that has the annotations on it.
+	 * The VariableDeclarationFragment contains the name and return the
+	 * IVariableBinding for the particular field.
 	 */
 	void synchronizeWith(FieldDeclaration fieldDeclaration, VariableDeclarationFragment variableDeclaration);
+
+	/**
+	 * Resolve type information that could be dependent on changes elsewhere
+	 * in the workspace.
+	 */
+	void resolveTypes(FieldDeclaration fieldDeclaration, VariableDeclarationFragment variableDeclaration);
 }

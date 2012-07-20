@@ -68,7 +68,7 @@ public class FieldAccessor
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.getResourceAttribute().getNameTextRange(astRoot);
+		return this.getResourceAttribute().getNameTextRange();
 	}
 
 	public JavaPersistentAttribute buildUnannotatedJavaAttribute(PersistentType parent) {
@@ -106,8 +106,11 @@ public class FieldAccessor
 			return Kind.FIELD;
 		}
 		
-		public void synchronizeWith(
-				FieldDeclaration fieldDeclaration, VariableDeclarationFragment variableDeclaration) {
+		public void synchronizeWith(FieldDeclaration fieldDeclaration, VariableDeclarationFragment variableDeclaration) {
+			// NOP
+		}
+
+		public void resolveTypes(FieldDeclaration fieldDeclaration, VariableDeclarationFragment variableDeclaration) {
 			// NOP
 		}
 	}

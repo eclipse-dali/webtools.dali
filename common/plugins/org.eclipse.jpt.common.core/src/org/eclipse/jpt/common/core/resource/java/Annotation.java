@@ -23,6 +23,19 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 public interface Annotation
 	extends JavaResourceNode
 {
+
+	/**
+	 * Initialize the [source] node from the specified AST.
+	 */
+	//TODO potentially remove this, or leave it for backwards compatibility for adopters
+	void initialize(CompilationUnit astRoot);
+
+	/**
+	 * Synchronize the [source] node with the specified AST.
+	 */
+	//TODO potentially remove this, or leave it for backwards compatibility for adopters
+	void synchronizeWith(CompilationUnit astRoot);
+
 	/**
 	 * Initialize the [source] node from the specified AST annotation.
 	 */

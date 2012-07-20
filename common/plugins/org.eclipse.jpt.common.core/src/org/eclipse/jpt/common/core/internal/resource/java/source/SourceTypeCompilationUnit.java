@@ -20,6 +20,8 @@ import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.common.utility.command.CommandExecutor;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
@@ -64,7 +66,8 @@ public final class SourceTypeCompilationUnit
 
 	// ********** JavaResourceNode implementation **********
 
-	public void synchronizeWith(CompilationUnit astRoot) {
+	@Override
+	protected void synchronizeWith(CompilationUnit astRoot) {
 		this.syncPrimaryType(astRoot);
 	}
 
@@ -92,7 +95,13 @@ public final class SourceTypeCompilationUnit
 
 	public void resolveTypes() {
 		if (this.primaryType != null) {
-			this.primaryType.resolveTypes(this.buildASTRoot());
+			AbstractTypeDeclaration td = this.getPrimaryTypeOrEnumDeclaration(this.buildASTRoot());
+			if (this.primaryType.getKind().getAstNodeType() == ASTNode.TYPE_DECLARATION) {
+				((JavaResourceType) this.primaryType).resolveTypes((TypeDeclaration) td);
+			}
+			else {
+				((JavaResourceEnum) this.primaryType).resolveTypes((EnumDeclaration) td);					
+			}
 		}
 	}
 
@@ -105,7 +114,7 @@ public final class SourceTypeCompilationUnit
 
 	private JavaResourceAbstractType buildPrimaryType(CompilationUnit astRoot) {
 		AbstractTypeDeclaration td = this.getPrimaryTypeOrEnumDeclaration(astRoot);
-		return (td == null) ? null : this.buildPrimaryType(astRoot, td);
+		return (td == null) ? null : this.buildPrimaryType(td);
 	}
 
 
@@ -115,9 +124,14 @@ public final class SourceTypeCompilationUnit
 			this.syncPrimaryType_(null);
 		} else {
 			if (this.primaryType == null || (!typeMatchesASTNodeType(this.primaryType, td))) {
-				this.syncPrimaryType_(this.buildPrimaryType(astRoot, td));
+				this.syncPrimaryType_(this.buildPrimaryType(td));
 			} else {
-				this.primaryType.synchronizeWith(astRoot);
+				if (this.primaryType.getKind().getAstNodeType() == ASTNode.TYPE_DECLARATION) {
+					((JavaResourceType) this.primaryType).synchronizeWith((TypeDeclaration) td);
+				}
+				else {
+					((JavaResourceEnum) this.primaryType).synchronizeWith((EnumDeclaration) td);					
+				}
 			}
 		}
 	}
@@ -138,12 +152,12 @@ public final class SourceTypeCompilationUnit
 
 	// ********** internal **********
 
-	private JavaResourceAbstractType buildPrimaryType(CompilationUnit astRoot, AbstractTypeDeclaration typeDeclaration) {
+	private JavaResourceAbstractType buildPrimaryType( AbstractTypeDeclaration typeDeclaration) {
 		if (typeDeclaration.getNodeType() == ASTNode.TYPE_DECLARATION) {
-			return SourceType.newInstance(this, (TypeDeclaration) typeDeclaration, astRoot);
+			return SourceType.newInstance(this, (TypeDeclaration) typeDeclaration);
 		}
 		else if (typeDeclaration.getNodeType() == ASTNode.ENUM_DECLARATION) {
-			return SourceEnum.newInstance(this, (EnumDeclaration) typeDeclaration, astRoot);
+			return SourceEnum.newInstance(this, (EnumDeclaration) typeDeclaration);
 		}
 		throw new IllegalArgumentException();
 	}

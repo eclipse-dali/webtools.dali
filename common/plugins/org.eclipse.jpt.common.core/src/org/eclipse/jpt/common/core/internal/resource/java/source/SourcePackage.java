@@ -11,8 +11,6 @@
   ******************************************************************************/
 package org.eclipse.jpt.common.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.IPackageBinding;
 import org.eclipse.jdt.core.dom.PackageDeclaration;
 import org.eclipse.jpt.common.core.internal.utility.jdt.JDTPackage;
@@ -37,15 +35,14 @@ public final class SourcePackage
 	 */
 	public static JavaResourcePackage newInstance(
 			JavaResourceCompilationUnit parent,
-			PackageDeclaration declaringPackage,
-			CompilationUnit astRoot) {
+			PackageDeclaration declaringPackage) {
 		AnnotatedPackage pack = new JDTPackage(
 				declaringPackage,
 				parent.getCompilationUnit(), 
 				parent.getModifySharedDocumentCommandExecutor(),
 				parent.getAnnotationEditFormatter());
-		JavaResourcePackage jrpp = new SourcePackage(parent, pack);
-		jrpp.initialize(astRoot);
+		SourcePackage jrpp = new SourcePackage(parent, pack);
+		jrpp.initialize(declaringPackage);
 		return jrpp;
 	}	
 
@@ -56,10 +53,13 @@ public final class SourcePackage
 	}
 
 
-	@Override
-	protected void initialize(IBinding binding) {
-		super.initialize(binding);
-		this.name = this.buildName((IPackageBinding) binding);
+	protected void initialize(PackageDeclaration packageDeclaration) {
+		super.initialize(packageDeclaration, packageDeclaration.getName());
+		this.initialize(packageDeclaration.resolveBinding());
+	}
+
+	protected void initialize(IPackageBinding packageBinding) {
+		this.name = this.buildName(packageBinding);
 	}
 
 	// ******** JavaResourceAnnotatedElement implementation ********
@@ -91,10 +91,13 @@ public final class SourcePackage
 
 	// ********** Java changes **********
 
-	@Override
-	protected void synchronizeWith(IBinding binding) {
-		super.synchronizeWith(binding);
-		this.syncName(this.buildName((IPackageBinding) binding));
+	public void synchronizeWith(PackageDeclaration packageDeclaration) {
+		super.synchronizeWith(packageDeclaration, packageDeclaration.getName());
+		this.synchronizeWith(packageDeclaration.resolveBinding());
+	}
+
+	protected void synchronizeWith(IPackageBinding packageBinding) {
+		this.syncName(this.buildName(packageBinding));
 	}
 
 	@Override

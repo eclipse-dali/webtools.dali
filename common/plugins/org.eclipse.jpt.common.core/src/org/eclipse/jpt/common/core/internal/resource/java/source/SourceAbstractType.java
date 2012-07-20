@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.core.internal.resource.java.source;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.core.dom.IBinding;
+import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jpt.common.core.internal.utility.jdt.JavaResourceTypeBinding;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
@@ -39,23 +39,29 @@ abstract class SourceAbstractType<A extends AbstractType>
 		super(javaResourceCompilationUnit, type);
 	}
 
-	@Override
-	protected void initialize(IBinding binding) {
+	protected void initialize(ITypeBinding binding) {
 		super.initialize(binding);
-		this.typeBinding = buildTypeBinding((ITypeBinding) binding);
-		this.declaringTypeName = this.buildDeclaringTypeName((ITypeBinding) binding);
+		this.typeBinding = buildTypeBinding(binding);
+		this.declaringTypeName = this.buildDeclaringTypeName(binding);
 	}
 
+	protected void initialize(AbstractTypeDeclaration typeDeclaration) {
+		super.initialize(typeDeclaration, typeDeclaration.getName());
+		this.initialize(typeDeclaration.resolveBinding()); 
+}
 
-	// ********** update **********
 
-	@Override
-	protected void synchronizeWith(IBinding binding) {
+	// ********** synchronize **********
+
+	protected void synchronizeWith(ITypeBinding binding) {
 		super.synchronizeWith(binding);
-		this.syncTypeBinding((ITypeBinding) binding);
-		this.syncDeclaringTypeName(this.buildDeclaringTypeName((ITypeBinding) binding));
+		this.syncTypeBinding(binding);
+		this.syncDeclaringTypeName(this.buildDeclaringTypeName(binding));
 	}
-	
+
+	public void synchronizeWith(AbstractTypeDeclaration typeDeclaration) {
+		super.synchronizeWith(typeDeclaration, typeDeclaration.getName());
+	}
 	
 	@Override
 	public void toString(StringBuilder sb) {

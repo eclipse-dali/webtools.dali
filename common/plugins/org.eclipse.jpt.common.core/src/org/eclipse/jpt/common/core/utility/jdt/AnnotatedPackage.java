@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Red Hat, Inc.
+ * Copyright (c) 2010, 2012 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -11,7 +11,6 @@
 package org.eclipse.jpt.common.core.utility.jdt;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.IPackageBinding;
 import org.eclipse.jdt.core.dom.PackageDeclaration;
 
 /**
@@ -26,11 +25,6 @@ import org.eclipse.jdt.core.dom.PackageDeclaration;
  * This interface is not intended to be implemented by clients.
  */
 public interface AnnotatedPackage extends AnnotatedElement {	
-
-	/**
-	 * Covariant override.
-	 */
-	IPackageBinding getBinding(CompilationUnit astRoot);
 
 	/**
 	 * Covariant override.

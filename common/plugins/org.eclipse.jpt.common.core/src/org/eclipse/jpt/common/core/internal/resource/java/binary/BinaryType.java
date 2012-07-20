@@ -22,6 +22,7 @@ import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.IVariableBinding;
 import org.eclipse.jdt.core.dom.Modifier;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.resource.java.CounterMap;
 import org.eclipse.jpt.common.core.internal.resource.java.InheritedAttributeKey;
@@ -108,7 +109,15 @@ final class BinaryType
 	
 	
 	// ********** JavaResourceType implementation **********
-	
+
+	public void synchronizeWith(TypeDeclaration typeDeclaration) {
+		throw new UnsupportedOperationException();		
+	}
+
+	public void resolveTypes(TypeDeclaration typeDeclaration) {
+		throw new UnsupportedOperationException();
+	}
+
 	// ***** superclass qualified name
 	public String getSuperclassQualifiedName() {
 		return this.superclassQualifiedName;

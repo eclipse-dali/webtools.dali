@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,8 +11,6 @@ package org.eclipse.jpt.common.core.utility.jdt;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.IBinding;
-import org.eclipse.jpt.common.core.utility.TextRange;
 
 /**
  * Dali manipulates annotations on elements (packages, types, fields, and methods).
@@ -35,27 +33,19 @@ public interface AnnotatedElement {
 	 * This can be null if the annotated element is no longer present in the AST
 	 * because the source has been changed in another thread.
 	 */
+	//TODO remove once we start caching text ranges?
 	ASTNode getBodyDeclaration(CompilationUnit astRoot);
-
-	/**
-	 * Return the annotated element's binding from the specified AST.
-	 */
-	IBinding getBinding(CompilationUnit astRoot);
 
 	/**
 	 * Return the annotated element's "modified" declaration from the specified AST.
 	 */
+	//TODO remove this>?
 	ModifiedDeclaration getModifiedDeclaration(CompilationUnit astRoot);
 
 	/**
 	 * Return the annotated element's "modified" declaration from a newly-generated AST.
 	 */
 	ModifiedDeclaration getModifiedDeclaration();
-
-	/**
-	 * Return the annotated element's name text range from the specified AST.
-	 */
-	TextRange getNameTextRange(CompilationUnit astRoot);
 
 	/**
 	 * Edit the annotated element's declaration using the specified editor.

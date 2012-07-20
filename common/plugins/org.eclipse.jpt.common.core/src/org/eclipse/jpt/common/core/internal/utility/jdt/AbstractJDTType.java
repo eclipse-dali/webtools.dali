@@ -17,9 +17,7 @@ import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.EnumDeclaration;
-import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
-import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AbstractType;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.common.core.utility.jdt.Type;
@@ -92,11 +90,6 @@ public abstract class AbstractJDTType
 	}
 
 	// ********** Member/Type implementation **********
-	
-	public ITypeBinding getBinding(CompilationUnit astRoot) {
-		AbstractTypeDeclaration td = this.getBodyDeclaration(astRoot);
-		return (td == null) ? null : td.resolveBinding();
-	}
 
 	/**
 	 * find the type's body declaration in the specified AST
@@ -111,13 +104,6 @@ public abstract class AbstractJDTType
 		// the type declaration can be null when the source is completely hosed
 		return (typeDeclaration == null) ? null : this.getNestedTypeDeclaration(typeDeclaration);
 	}
-
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		AbstractTypeDeclaration bodyDeclaration = this.getBodyDeclaration(astRoot);
-		// the declaration can be null if the resource is out of sync with the file system
-		return (bodyDeclaration) == null ? null : ASTTools.buildTextRange(bodyDeclaration.getName());
-	}
-
 
 	// ********** internal **********
 
@@ -173,7 +159,7 @@ public abstract class AbstractJDTType
 		return astRoot.types();
 	}
 
-	protected static EnumDeclaration[] getEnums(TypeDeclaration declaringTypeDeclaration) {
+	protected static EnumDeclaration[] enums(TypeDeclaration declaringTypeDeclaration) {
 		List<BodyDeclaration> bd = bodyDeclarations(declaringTypeDeclaration);
 		int typeCount = 0;
 		for (Iterator<BodyDeclaration> it = bd.listIterator(); it.hasNext(); ) {

@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
@@ -58,34 +57,31 @@ final class SourceField
 	private SourceField(JavaResourceType parent, FieldAttribute field){
 		super(parent, field);
 	}
-	
-	
-	// call initialize(FieldDeclaration, VariableDeclarationFragment) now for performance
-	// trying to minimize API changes, this should be removed from the interface
-	// TODO other members of this hierarchy should have similar initialize methods
-	@Override
-	public void initialize(CompilationUnit astRoot) {
-		throw new UnsupportedOperationException();
-	}
-	
+
+	/**
+	 * A SourceField must be initialized with both the FieldDeclaration and the
+	 * VariableDeclarationFragment.
+	 * This is to handle multiple fields declared in a single statement:
+	 * 		private int foo, bar;
+	 * The FieldDeclaration is the ASTNode that has the annotations on it.
+	 * The VariableDeclarationFragment contains the name and return the
+	 * IVariableBinding for the particular field.
+	 */
 	protected void initialize(FieldDeclaration fieldDeclaration, VariableDeclarationFragment variableDeclaration) {
-		super.initialize(fieldDeclaration);
-		initialize(variableDeclaration.resolveBinding());
-	}
-	
-	// call synchronizeWith(FieldDeclaration, VariableDeclarationFragment) now for performance
-	// trying to minimize API changes, this should be removed from the interface
-	// TODO other members of this hierarchy should have similar initialize methods
-	@Override
-	public void synchronizeWith(CompilationUnit astRoot) {
-		throw new UnsupportedOperationException();
+		super.initialize(fieldDeclaration, variableDeclaration.getName());
+		this.initialize(variableDeclaration.resolveBinding());
 	}
 	
 	public void synchronizeWith(FieldDeclaration fieldDeclaration, VariableDeclarationFragment variableDeclaration) {
-		super.synchronizeWith(fieldDeclaration);
-		synchronizeWith(variableDeclaration.resolveBinding());
+		super.synchronizeWith(fieldDeclaration, variableDeclaration.getName());
+		this.synchronizeWith(variableDeclaration.resolveBinding());
 	}
-	
+
+	public void resolveTypes(FieldDeclaration fieldDeclaration, VariableDeclarationFragment variableDeclaration) {
+		super.resolveTypes(variableDeclaration.resolveBinding());
+		
+	}
+
 	@Override
 	protected ITypeBinding getJdtTypeBinding(IBinding binding) {
 		return ((IVariableBinding) binding).getType();

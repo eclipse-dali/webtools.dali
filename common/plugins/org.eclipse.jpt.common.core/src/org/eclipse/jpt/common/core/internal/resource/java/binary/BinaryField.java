@@ -45,11 +45,13 @@ final class BinaryField
 		return ((IVariableBinding) jdtBinding).getType();
 	}
 	
-	public void synchronizeWith(
-			FieldDeclaration fieldDeclaration, VariableDeclarationFragment variableDeclaration) {
+	public void synchronizeWith(FieldDeclaration fieldDeclaration, VariableDeclarationFragment variableDeclaration) {
 		throw new UnsupportedOperationException();
 	}
-	
+
+	public void resolveTypes(FieldDeclaration fieldDeclaration, VariableDeclarationFragment variableDeclaration) {
+		throw new UnsupportedOperationException();
+	}
 	
 	// ********** adapters **********
 

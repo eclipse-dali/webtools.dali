@@ -14,11 +14,8 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
-import org.eclipse.jdt.core.dom.ITypeBinding;
-import org.eclipse.jdt.core.dom.IVariableBinding;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
-import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.common.core.utility.jdt.FieldAttribute;
 import org.eclipse.jpt.common.core.utility.jdt.Type;
@@ -70,27 +67,13 @@ public class JDTFieldAttribute
 		return (Type) super.getDeclaringType();
 	}
 
-	public IVariableBinding getBinding(CompilationUnit astRoot) {
-		return this.getFragment(astRoot).resolveBinding();
-	}
-
 	@Override
 	public FieldDeclaration getBodyDeclaration(CompilationUnit astRoot) {
 		return this.getSelectedDeclaration(astRoot, FIELD_DECLARATION_SELECTOR);
 	}
 
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		VariableDeclarationFragment fragment = this.getFragment(astRoot);
-		// the fragment can be null if the resource is out of sync with the file system
-		return (fragment == null) ? null : ASTTools.buildTextRange(fragment.getName());
-	}
-
 	public String getAttributeName() {
 		return this.getName();
-	}
-
-	public ITypeBinding getTypeBinding(CompilationUnit astRoot) {
-		return this.getBodyDeclaration(astRoot).getType().resolveBinding();
 	}
 
 	public boolean isField() {

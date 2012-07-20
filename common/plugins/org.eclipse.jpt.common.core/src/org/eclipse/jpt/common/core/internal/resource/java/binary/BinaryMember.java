@@ -17,7 +17,6 @@ import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.ITypeParameter;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
@@ -292,10 +291,6 @@ abstract class BinaryMember
 	// ********** unsupported JavaResourceMember implementation **********
 
 	public Annotation setPrimaryAnnotation(String primaryAnnotationName, Iterable<String> supportingAnnotationNames) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void resolveTypes(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	}
 

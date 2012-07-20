@@ -13,12 +13,9 @@ import java.util.Arrays;
 import java.util.List;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.IMethodBinding;
-import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
-import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.common.core.utility.jdt.MethodAttribute;
 import org.eclipse.jpt.common.core.utility.jdt.Type;
@@ -96,10 +93,6 @@ public class JDTMethodAttribute
 	public boolean isField() {
 		return false;
 	}
-	
-	public IMethodBinding getBinding(CompilationUnit astRoot) {
-		return this.getBodyDeclaration(astRoot).resolveBinding();
-	}
 
 	@Override
 	public MethodDeclaration getBodyDeclaration(CompilationUnit astRoot) {
@@ -143,22 +136,11 @@ public class JDTMethodAttribute
 		throw new UnsupportedOperationException("Use #matches(MethodSignature, int)."); //$NON-NLS-1$
 	}
 
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		MethodDeclaration methodDeclaration = this.getBodyDeclaration(astRoot);
-		// the declaration can be null if the resource is out of sync with the file system
-		return (methodDeclaration == null) ? null : ASTTools.buildTextRange(methodDeclaration.getName());
-	}
-
 	/**
 	 * return "foo" for a method named "getFoo", "isFoo", "setFoo"
 	 */
 	public String getAttributeName() {
 		return NameTools.convertGetterSetterMethodNameToPropertyName(this.getName());
-	}
-
-	public ITypeBinding getTypeBinding(CompilationUnit astRoot) {
-		IMethodBinding methodBinding = getBodyDeclaration(astRoot).resolveBinding();
-		return (methodBinding == null) ? null : methodBinding.getReturnType();
 	}
 
 

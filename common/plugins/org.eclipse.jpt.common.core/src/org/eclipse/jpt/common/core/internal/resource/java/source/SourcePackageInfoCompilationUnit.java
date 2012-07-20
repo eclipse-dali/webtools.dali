@@ -70,7 +70,8 @@ public final class SourcePackageInfoCompilationUnit
 
 	// ********** Java changes **********
 
-	public void synchronizeWith(CompilationUnit astRoot) {
+	@Override
+	protected void synchronizeWith(CompilationUnit astRoot) {
 		this.syncPackage(astRoot);
 	}
 
@@ -88,7 +89,7 @@ public final class SourcePackageInfoCompilationUnit
 	}
 
 	private JavaResourcePackage buildPackage(CompilationUnit astRoot) {
-		return this.buildPackage(astRoot, this.getPackageDeclaration(astRoot));
+		return this.buildPackage(this.getPackageDeclaration(astRoot));
 	}
 
 	private void syncPackage(CompilationUnit astRoot) {
@@ -97,9 +98,9 @@ public final class SourcePackageInfoCompilationUnit
 			this.syncPackage_(null);
 		} else {
 			if (this.package_ == null) {
-				this.syncPackage_(this.buildPackage(astRoot, pd));
+				this.syncPackage_(this.buildPackage(pd));
 			} else {
-				this.package_.synchronizeWith(astRoot);
+				this.package_.synchronizeWith(pd);
 			}
 		}
 	}
@@ -114,8 +115,8 @@ public final class SourcePackageInfoCompilationUnit
 		this.firePropertyChanged(PACKAGE, old, astPackage);
 	}
 
-	private JavaResourcePackage buildPackage(CompilationUnit astRoot, PackageDeclaration packageDeclaration) {
-		return SourcePackage.newInstance(this, packageDeclaration, astRoot);
+	private JavaResourcePackage buildPackage(PackageDeclaration pd) {
+		return SourcePackage.newInstance(this, pd);
 	}
 
 }

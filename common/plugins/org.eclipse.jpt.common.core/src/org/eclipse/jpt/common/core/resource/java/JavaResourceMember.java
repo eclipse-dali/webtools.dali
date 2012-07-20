@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-
 /**
  * Java source code or binary persistent member.
  * <p>
@@ -71,12 +69,6 @@ public interface JavaResourceMember
 
 	// ********** behavior **********
 	
-	/**
-	 * Resolve type information that could be dependent on changes elsewhere
-	 * in the workspace.
-	 */
-	void resolveTypes(CompilationUnit astRoot);
-
 	/**
 	 * Return whether the Java resource member is public or protected
 	 */

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,8 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.common.core.resource.java;
+
+import org.eclipse.jdt.core.dom.EnumConstantDeclaration;
 
 /**
  * Java source code or binary enum constant
@@ -29,4 +31,15 @@ public interface JavaResourceEnumConstant
 	 */
 	String getName();
 
+	/**
+	 * Synchronize the [source] enum constant with the specified AST EnumConstantDeclaration.
+	 */
+	void synchronizeWith(EnumConstantDeclaration astEnumConstant);
+
+	/**
+	 * Resolve type information that could be dependent on changes elsewhere
+	 * in the workspace.
+	 */
+	void resolveTypes(EnumConstantDeclaration astEnumConstant);
+	
 }

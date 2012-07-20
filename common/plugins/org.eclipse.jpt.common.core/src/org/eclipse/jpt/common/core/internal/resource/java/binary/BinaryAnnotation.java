@@ -47,14 +47,18 @@ public abstract class BinaryAnnotation
 
 	// ********** Annotation implementation **********
 
+	public void initialize(CompilationUnit astRoot) {
+		throw new UnsupportedOperationException();
+	}
+	public void synchronizeWith(CompilationUnit astRoot) {
+		throw new UnsupportedOperationException();
+	}
 	public void initialize(org.eclipse.jdt.core.dom.Annotation astAnnotation) {
 		throw new UnsupportedOperationException();
 	}
-
 	public void synchronizeWith(org.eclipse.jdt.core.dom.Annotation astAnnotation) {
 		throw new UnsupportedOperationException();
 	}
-
 	public org.eclipse.jdt.core.dom.Annotation getAstAnnotation(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	}

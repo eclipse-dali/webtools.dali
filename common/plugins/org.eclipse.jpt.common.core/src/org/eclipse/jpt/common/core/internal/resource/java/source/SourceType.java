@@ -17,10 +17,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.EnumDeclaration;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
-import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.IVariableBinding;
@@ -81,15 +79,14 @@ final class SourceType
 	 */
 	static JavaResourceType newInstance(
 			JavaResourceCompilationUnit javaResourceCompilationUnit,
-			TypeDeclaration typeDeclaration,
-			CompilationUnit astRoot) {
+			TypeDeclaration typeDeclaration) {
 		Type type = new JDTType(
 				typeDeclaration,
 				javaResourceCompilationUnit.getCompilationUnit(),
 				javaResourceCompilationUnit.getModifySharedDocumentCommandExecutor(),
 				javaResourceCompilationUnit.getAnnotationEditFormatter());
-		JavaResourceType jrpt = new SourceType(javaResourceCompilationUnit, type);
-		jrpt.initialize(astRoot);
+		SourceType jrpt = new SourceType(javaResourceCompilationUnit, type);
+		jrpt.initialize(typeDeclaration);
 		return jrpt;
 	}
 
@@ -100,8 +97,7 @@ final class SourceType
 			JavaResourceCompilationUnit javaResourceCompilationUnit,
 			Type declaringType,
 			TypeDeclaration typeDeclaration,
-			int occurrence,
-			CompilationUnit astRoot) {
+			int occurrence) {
 		Type type = new JDTType(
 				declaringType,
 				typeDeclaration,
@@ -109,8 +105,8 @@ final class SourceType
 				javaResourceCompilationUnit.getCompilationUnit(),
 				javaResourceCompilationUnit.getModifySharedDocumentCommandExecutor(),
 				javaResourceCompilationUnit.getAnnotationEditFormatter());
-		JavaResourceType jrpt = new SourceType(javaResourceCompilationUnit, type);
-		jrpt.initialize(astRoot);
+		SourceType jrpt = new SourceType(javaResourceCompilationUnit, type);
+		jrpt.initialize(typeDeclaration);
 		return jrpt;
 	}
 
@@ -124,19 +120,17 @@ final class SourceType
 		this.inheritedMethodTypes = new Hashtable<InheritedAttributeKey, JavaResourceTypeBinding>();
 	}
 
-	@Override
-	public void initialize(CompilationUnit astRoot) {
-		super.initialize(astRoot);
-		this.initializeTypes(astRoot);
-		this.initializeEnums(astRoot);
-		this.initializeFields(astRoot);
-		this.initializeMethods(astRoot);
+	protected void initialize(TypeDeclaration typeDeclaration) {
+		super.initialize(typeDeclaration);
+		this.initializeTypes(typeDeclaration);
+		this.initializeEnums(typeDeclaration);
+		this.initializeFields(typeDeclaration);
+		this.initializeMethods(typeDeclaration);
 	}
 
 	@Override
-	protected void initialize(IBinding binding) {
-		super.initialize(binding);
-		ITypeBinding typeBinding = (ITypeBinding) binding;
+	protected void initialize(ITypeBinding typeBinding) {
+		super.initialize(typeBinding);
 		this.superclassQualifiedName = this.buildSuperclassQualifiedName(typeBinding);
 		this.abstract_ = this.buildAbstract(typeBinding);
 		this.hasNoArgConstructor = this.buildHasNoArgConstructor(typeBinding);
@@ -148,19 +142,17 @@ final class SourceType
 
 	// ********** update **********
 
-	@Override
-	public void synchronizeWith(CompilationUnit astRoot) {
-		super.synchronizeWith(astRoot);
-		this.syncTypes(astRoot);
-		this.syncEnums(astRoot);
-		this.syncFields(astRoot);
-		this.syncMethods(astRoot);
+	public void synchronizeWith(TypeDeclaration typeDeclaration) {
+		super.synchronizeWith(typeDeclaration);
+		this.syncTypes(typeDeclaration);
+		this.syncEnums(typeDeclaration);
+		this.syncFields(typeDeclaration);
+		this.syncMethods(typeDeclaration);
 	}
 
 	@Override
-	protected void synchronizeWith(IBinding binding) {
-		super.synchronizeWith(binding);
-		ITypeBinding typeBinding = (ITypeBinding) binding;
+	protected void synchronizeWith(ITypeBinding typeBinding) {
+		super.synchronizeWith(typeBinding);
 		syncSuperclassQualifiedName(buildSuperclassQualifiedName(typeBinding));
 		syncAbstract(buildAbstract(typeBinding));
 		syncHasNoArgConstructor(buildHasNoArgConstructor(typeBinding));
@@ -172,34 +164,39 @@ final class SourceType
 
 	// ********** SourceAnnotatedElement implementation **********
 
-	@Override
-	public void resolveTypes(CompilationUnit astRoot) {
-		super.resolveTypes(astRoot);
+	public void resolveTypes(TypeDeclaration typeDeclaration) {
 
-		this.syncSuperclassQualifiedName(this.buildSuperclassQualifiedName(this.annotatedElement.getBinding(astRoot)));
+		this.syncSuperclassQualifiedName(this.buildSuperclassQualifiedName(typeDeclaration.resolveBinding()));
 
-		for (JavaResourceField field : this.getFields()) {
-			field.resolveTypes(astRoot);
+		FieldDeclaration[] fieldDeclarations = this.annotatedElement.getFields(typeDeclaration);
+		CounterMap counters = new CounterMap(fieldDeclarations.length);
+		for (FieldDeclaration fieldDeclaration : fieldDeclarations) {
+			for (VariableDeclarationFragment fragment : fragments(fieldDeclaration)) {
+				String fieldName = fragment.getName().getFullyQualifiedName();
+				int occurrence = counters.increment(fieldName);
+
+				JavaResourceField field = this.getField(fieldName, occurrence);
+				field.resolveTypes(fieldDeclaration, fragment);
+			}
 		}
 
 		// a new type can trigger a method parameter type to be a resolved,
 		// fully-qualified name, so we need to rebuild our list of methods:
 		//     "setFoo(Foo)" is not the same as "setFoo(com.bar.Foo)"
 		// and, vice-versa, a removed type can "unresolve" a parameter type
-		this.syncMethods(astRoot);
+		//thus we are not calling resolveTypes on methods, that would be redundant to syncMethods 
+		this.syncMethods(typeDeclaration);
 
-		// this is commented out because the above syncMethods() calls 
-		// JavaResourceMethod.sysynchronizeWith(MethodDeclaration)
-		// on all the methods. resolveTypes() is a subset of synchronizeWith()
-		// so it is redundant and expensive to do both of these.
-		//for (JavaResourceMethod method : this.getMethods()) {
-		//	method.resolveTypes(astRoot);
-		//}
+		TypeDeclaration[] typeDeclarations = this.annotatedElement.getTypes(typeDeclaration);
+		int i = 0;
 		for (JavaResourceType type : this.getTypes()) {
-			type.resolveTypes(astRoot);
+			type.resolveTypes(typeDeclarations[i++]);
 		}
+		
+		EnumDeclaration[] enumDeclarations = this.annotatedElement.getEnums(typeDeclaration);
+		i = 0;
 		for (JavaResourceEnum enum_ : this.getEnums()) {
-			enum_.resolveTypes(astRoot);
+			enum_.resolveTypes(enumDeclarations[i++]);
 		}
 	}
 
@@ -363,37 +360,37 @@ final class SourceType
 		this.removeItemsFromCollection(remove, this.types, TYPES_COLLECTION);
 	}
 
-	private void initializeTypes(CompilationUnit astRoot) {
-		TypeDeclaration[] typeDeclarations = this.annotatedElement.getTypes(astRoot);
+	private void initializeTypes(TypeDeclaration typeDeclaration) {
+		TypeDeclaration[] typeDeclarations = this.annotatedElement.getTypes(typeDeclaration);
 		CounterMap counters = new CounterMap(typeDeclarations.length);
-		for (TypeDeclaration td : typeDeclarations) {
-			String tdName = td.getName().getFullyQualifiedName();
+		for (TypeDeclaration nestedTypeDeclaration : typeDeclarations) {
+			String tdName = nestedTypeDeclaration.getName().getFullyQualifiedName();
 			int occurrence = counters.increment(tdName);
-			this.types.add(this.buildType(td, occurrence, astRoot));
+			this.types.add(this.buildType(nestedTypeDeclaration, occurrence));
 		}
 	}
 
-	private void syncTypes(CompilationUnit astRoot) {
-		TypeDeclaration[] typeDeclarations = this.annotatedElement.getTypes(astRoot);
+	private void syncTypes(TypeDeclaration typeDeclaration) {
+		TypeDeclaration[] typeDeclarations = this.annotatedElement.getTypes(typeDeclaration);
 		CounterMap counters = new CounterMap(typeDeclarations.length);
 		HashSet<JavaResourceType> typesToRemove = new HashSet<JavaResourceType>(this.types);
-		for (TypeDeclaration typeDeclaration : typeDeclarations) {
-			String tdName = typeDeclaration.getName().getFullyQualifiedName();
+		for (TypeDeclaration nestedTypeDeclaration : typeDeclarations) {
+			String tdName = nestedTypeDeclaration.getName().getFullyQualifiedName();
 			int occurrence = counters.increment(tdName);
 
 			JavaResourceType type = this.getType(tdName, occurrence);
 			if (type == null) {
-				this.addType(this.buildType(typeDeclaration, occurrence, astRoot));
+				this.addType(this.buildType(nestedTypeDeclaration, occurrence));
 			} else {
 				typesToRemove.remove(type);
-				type.synchronizeWith(astRoot);
+				type.synchronizeWith(nestedTypeDeclaration);
 			}
 		}
 		this.removeTypes(typesToRemove);
 	}
 
-	private JavaResourceType buildType(TypeDeclaration nestedTypeDeclaration, int occurrence, CompilationUnit astRoot) {
-		return newInstance(this.getJavaResourceCompilationUnit(), this.annotatedElement, nestedTypeDeclaration, occurrence, astRoot);
+	private JavaResourceType buildType(TypeDeclaration nestedTypeDeclaration, int occurrence) {
+		return newInstance(this.getJavaResourceCompilationUnit(), this.annotatedElement, nestedTypeDeclaration, occurrence);
 	}
 
 
@@ -424,18 +421,18 @@ final class SourceType
 		this.removeItemsFromCollection(remove, this.enums, ENUMS_COLLECTION);
 	}
 
-	private void initializeEnums(CompilationUnit astRoot) {
-		EnumDeclaration[] enumDeclarations = this.annotatedElement.getEnums(astRoot);
+	private void initializeEnums(TypeDeclaration typeDeclaration) {
+		EnumDeclaration[] enumDeclarations = this.annotatedElement.getEnums(typeDeclaration);
 		CounterMap counters = new CounterMap(enumDeclarations.length);
 		for (EnumDeclaration ed : enumDeclarations) {
 			String tdName = ed.getName().getFullyQualifiedName();
 			int occurrence = counters.increment(tdName);
-			this.enums.add(this.buildEnum(ed, occurrence, astRoot));
+			this.enums.add(this.buildEnum(ed, occurrence));
 		}
 	}
 
-	private void syncEnums(CompilationUnit astRoot) {
-		EnumDeclaration[] enumDeclarations = this.annotatedElement.getEnums(astRoot);
+	private void syncEnums(TypeDeclaration typeDeclaration) {
+		EnumDeclaration[] enumDeclarations = this.annotatedElement.getEnums(typeDeclaration);
 		CounterMap counters = new CounterMap(enumDeclarations.length);
 		HashSet<JavaResourceEnum> enumsToRemove = new HashSet<JavaResourceEnum>(this.enums);
 		for (EnumDeclaration enumDeclaration : enumDeclarations) {
@@ -444,17 +441,17 @@ final class SourceType
 
 			JavaResourceEnum enum_ = this.getEnum(tdName, occurrence);
 			if (enum_ == null) {
-				this.addEnum(this.buildEnum(enumDeclaration, occurrence, astRoot));
+				this.addEnum(this.buildEnum(enumDeclaration, occurrence));
 			} else {
 				enumsToRemove.remove(enum_);
-				enum_.synchronizeWith(astRoot);
+				enum_.synchronizeWith(enumDeclaration);
 			}
 		}
 		this.removeEnums(enumsToRemove);
 	}
 
-	private JavaResourceEnum buildEnum(EnumDeclaration nestedEnumDeclaration, int occurrence, CompilationUnit astRoot) {
-		return SourceEnum.newInstance(this.getJavaResourceCompilationUnit(), this.annotatedElement, nestedEnumDeclaration, occurrence, astRoot);
+	private JavaResourceEnum buildEnum(EnumDeclaration nestedEnumDeclaration, int occurrence) {
+		return SourceEnum.newInstance(this.getJavaResourceCompilationUnit(), this.annotatedElement, nestedEnumDeclaration, occurrence);
 	}
 
 
@@ -481,8 +478,8 @@ final class SourceType
 		this.removeItemsFromCollection(remove, this.fields, FIELDS_COLLECTION);
 	}
 
-	private void initializeFields(CompilationUnit astRoot) {
-		FieldDeclaration[] fieldDeclarations = this.annotatedElement.getFields(astRoot);
+	private void initializeFields(TypeDeclaration typeDeclaration) {
+		FieldDeclaration[] fieldDeclarations = this.annotatedElement.getFields(typeDeclaration);
 		CounterMap counters = new CounterMap(fieldDeclarations.length);
 		for (FieldDeclaration fieldDeclaration : fieldDeclarations) {
 			for (VariableDeclarationFragment fragment : fragments(fieldDeclaration)) {
@@ -493,8 +490,8 @@ final class SourceType
 		}
 	}
 
-	private void syncFields(CompilationUnit astRoot) {
-		FieldDeclaration[] fieldDeclarations = this.annotatedElement.getFields(astRoot);
+	private void syncFields(TypeDeclaration typeDeclaration) {
+		FieldDeclaration[] fieldDeclarations = this.annotatedElement.getFields(typeDeclaration);
 		CounterMap counters = new CounterMap(fieldDeclarations.length);
 		HashSet<JavaResourceField> fieldsToRemove = new HashSet<JavaResourceField>(this.fields);
 		for (FieldDeclaration fieldDeclaration : fieldDeclarations) {
@@ -553,8 +550,8 @@ final class SourceType
 		this.removeItemsFromCollection(remove, this.methods, METHODS_COLLECTION);
 	}
 
-	private void initializeMethods(CompilationUnit astRoot) {
-		MethodDeclaration[] methodDeclarations = this.annotatedElement.getMethods(astRoot);
+	private void initializeMethods(TypeDeclaration typeDeclaration) {
+		MethodDeclaration[] methodDeclarations = this.annotatedElement.getMethods(typeDeclaration);
 		CounterMap counters = new CounterMap(methodDeclarations.length);
 		for (MethodDeclaration methodDeclaration : methodDeclarations) {
 			MethodSignature signature = ASTTools.buildMethodSignature(methodDeclaration);
@@ -563,8 +560,8 @@ final class SourceType
 		}
 	}
 
-	private void syncMethods(CompilationUnit astRoot) {
-		MethodDeclaration[] methodDeclarations = this.annotatedElement.getMethods(astRoot);
+	private void syncMethods(TypeDeclaration typeDeclaration) {
+		MethodDeclaration[] methodDeclarations = this.annotatedElement.getMethods(typeDeclaration);
 		CounterMap counters = new CounterMap(methodDeclarations.length);
 		HashSet<JavaResourceMethod> methodsToRemove = new HashSet<JavaResourceMethod>(this.methods);
 		for (MethodDeclaration methodDeclaration : methodDeclarations) {

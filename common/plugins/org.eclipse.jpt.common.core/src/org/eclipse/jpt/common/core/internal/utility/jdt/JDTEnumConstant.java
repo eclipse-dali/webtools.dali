@@ -14,8 +14,6 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.EnumConstantDeclaration;
 import org.eclipse.jdt.core.dom.EnumDeclaration;
-import org.eclipse.jdt.core.dom.IVariableBinding;
-import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.common.core.utility.jdt.Enum;
 import org.eclipse.jpt.common.core.utility.jdt.EnumConstant;
@@ -64,21 +62,10 @@ public class JDTEnumConstant
 
 	// ********** AnnotatedElement/EnumConstant implementation **********
 
-	public IVariableBinding getBinding(CompilationUnit astRoot) {
-		return this.getBodyDeclaration(astRoot).resolveVariable();
-	}
-
 	@Override
 	public EnumConstantDeclaration getBodyDeclaration(CompilationUnit astRoot) {
 		return this.getSelectedDeclaration(astRoot);
 	}
-
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		EnumConstantDeclaration declaration = this.getBodyDeclaration(astRoot);
-		// the declaration can be null if the resource is out of sync with the file system
-		return (declaration == null) ? null : ASTTools.buildTextRange(declaration.getName());
-	}
-
 
 	// ********** internal **********
 

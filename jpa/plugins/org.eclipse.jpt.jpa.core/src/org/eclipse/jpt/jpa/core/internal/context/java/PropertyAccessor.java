@@ -95,7 +95,7 @@ public class PropertyAccessor
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.getResourceAttribute().getNameTextRange(astRoot);
+		return this.getResourceAttribute().getNameTextRange();
 	}
 
 

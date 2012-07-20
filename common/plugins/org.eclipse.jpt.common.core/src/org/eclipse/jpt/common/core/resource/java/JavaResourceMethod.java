@@ -26,7 +26,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
  * @since 3.0
  */
 public interface JavaResourceMethod
-		extends JavaResourceAttribute {
+		extends JavaResourceAttribute {	
 	
 	// ***** method name *****
 	
@@ -63,8 +63,7 @@ public interface JavaResourceMethod
 	boolean isFor(MethodSignature methodSignature, int occurrence);
 
 	/**
-	 * Call this instead of synchronizeWith(CompilationUnit)
-	 * TODO remove synchronizeWith(CompilationUnit) from the hierarchy
+	 * Synchronize the [source] method with the specified AST MethodDeclaration.
 	 */
 	void synchronizeWith(MethodDeclaration methodDeclaration);
 }

@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jpt.common.core.internal.utility.jdt.JavaResourceTypeBinding;
@@ -44,11 +43,9 @@ abstract class SourceAttribute<A extends Attribute>
 	
 	
 	// ******** overrides ********
-	
-	@Override
-	public void resolveTypes(CompilationUnit astRoot) {
-		super.resolveTypes(astRoot);
-		syncTypeBinding(this.annotatedElement.getTypeBinding(astRoot));
+
+	protected void resolveTypes(IBinding binding) {
+		syncTypeBinding(getJdtTypeBinding(binding));
 	}
 	
 	@Override

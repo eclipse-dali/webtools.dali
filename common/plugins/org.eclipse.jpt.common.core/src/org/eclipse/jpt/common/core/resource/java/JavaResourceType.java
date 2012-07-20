@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.resource.java;
 
+import org.eclipse.jdt.core.dom.TypeDeclaration;
+
 
 /**
  * Java source code or binary class or interface.
@@ -24,7 +26,18 @@ package org.eclipse.jpt.common.core.resource.java;
  */
 public interface JavaResourceType
 		extends JavaResourceAbstractType {
-	
+
+	/**
+	 * Synchronize the [source] type with the specified AST TypeDeclaration.
+	 */
+	void synchronizeWith(TypeDeclaration typeDeclaration);
+
+	/**
+	 * Resolve type information that could be dependent on changes elsewhere
+	 * in the workspace.
+	 */
+	void resolveTypes(TypeDeclaration typeDeclaration);
+
 	/**
 	 * Return the fully qualified name of the type's superclass.
 	 */
