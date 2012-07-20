@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,22 +9,21 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.iterables;
 
-import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterators.PeekableIterator;
 
 /**
  * A <code>PeekableIterable</code> wraps another {@link Iterable}
  * and returns an {@link PeekableIterator} that allows a
  * {@link PeekableIterator#peek() peek} at the next element to be 
- * returned by {@link Iterator#next()}.
+ * returned by {@link java.util.Iterator#next()}.
  * <p>
  * One, possibly undesirable, side-effect of using this iterator is that
  * the nested iterator's <code>next()</code> method will be invoked
- * <em>before</em> the peekable iterator's {@link Iterator#next()}
+ * <em>before</em> the peekable iterator's {@link java.util.Iterator#next()}
  * method is invoked. This is because the "next" element must be
  * pre-loaded for the {@link PeekableIterator#peek()} method.
  * This also prevents a peekable iterator from supporting the optional
- * {@link Iterator#remove()} method.
+ * {@link java.util.Iterator#remove()} method.
  * 
  * @param <E> the type of elements returned by the iterable's iterator
  * 
@@ -50,7 +49,6 @@ public class PeekableIterable<E>
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.iterable);
+		return this.iterable.toString();
 	}
-
 }

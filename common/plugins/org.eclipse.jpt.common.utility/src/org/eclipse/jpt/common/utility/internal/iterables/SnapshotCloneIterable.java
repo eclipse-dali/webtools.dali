@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,9 +12,7 @@ package org.eclipse.jpt.common.utility.internal.iterables;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterators.CloneIterator;
 
 /**
@@ -31,7 +29,8 @@ import org.eclipse.jpt.common.utility.internal.iterators.CloneIterator;
  * By default, the iterator returned by a <code>SnapshotCloneIterable</code> does not
  * support the {@link Iterator#remove()} operation; this is because it does not
  * have access to the original collection. But if the <code>SnapshotCloneIterable</code>
- * is supplied with a {@link CloneIterator.Remover} it will delegate the
+ * is supplied with a {@link org.eclipse.jpt.common.utility.internal.iterators.CloneIterator.Remover}
+ * it will delegate the
  * {@link Iterator#remove()} operation to the <code>Remover</code>.
  * Alternatively, a subclass can override the iterable's {@link #remove(Object)}
  * method.
@@ -106,7 +105,7 @@ public class SnapshotCloneIterable<E>
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, Arrays.toString(this.array));
+		return Arrays.toString(this.array);
 	}
 
 
@@ -120,5 +119,4 @@ public class SnapshotCloneIterable<E>
 			super(remover, array);
 		}
 	}
-
 }

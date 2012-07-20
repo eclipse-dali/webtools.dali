@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,8 +11,7 @@ package org.eclipse.jpt.common.utility.internal.iterables;
 
 import java.util.Arrays;
 import java.util.Iterator;
-
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterators.GraphIterator;
 
 /**
@@ -38,8 +37,9 @@ import org.eclipse.jpt.common.utility.internal.iterators.GraphIterator;
  * <p>
  * To use, supply:<ul>
  * <li> either the initial node of the graph or an {@link Iterable}
- * of the initial collection of graph nodes
- * <li> a {@link GraphIterator.MisterRogers} that tells who the neighbors are
+ *     of the initial collection of graph nodes
+ * <li> a {@link org.eclipse.jpt.common.utility.internal.iterators.GraphIterator.MisterRogers}
+ *     that tells who the neighbors are
  * of each node
  * (alternatively, subclass <code>GraphIterable</code>
  * and override the {@link #neighbors(Object)} method)
@@ -63,7 +63,7 @@ public class GraphIterable<E>
 	 * and a default Mr. Rogers that calls back to the iterable.
 	 * Use this constructor if you want to override the
 	 * {@link #neighbors(Object)} method instead of building
-	 * a {@link GraphIterator.MisterRogers}.
+	 * a {@link org.eclipse.jpt.common.utility.internal.iterators.GraphIterator.MisterRogers}.
 	 */
 	public GraphIterable(E root) {
 		this(new SingleElementIterable<E>(root));
@@ -83,7 +83,7 @@ public class GraphIterable<E>
 	 * and a default Mr. Rogers that calls back to the iterable.
 	 * Use this constructor if you want to override the
 	 * {@link #neighbors(Object)} method instead of building
-	 * a {@link GraphIterator.MisterRogers}.
+	 * a {@link org.eclipse.jpt.common.utility.internal.iterators.GraphIterator.MisterRogers}.
 	 */
 	public GraphIterable(E... roots) {
 		this(Arrays.asList(roots));
@@ -103,7 +103,7 @@ public class GraphIterable<E>
 	 * and a default Mr. Rogers that calls back to the iterable.
 	 * Use this constructor if you want to override the
 	 * {@link #neighbors(Object)} method instead of building
-	 * a {@link GraphIterator.MisterRogers}.
+	 * a {@link org.eclipse.jpt.common.utility.internal.iterators.GraphIterator.MisterRogers}.
 	 */
 	public GraphIterable(Iterable<? extends E> roots) {
 		super();
@@ -133,7 +133,8 @@ public class GraphIterable<E>
 	 * Return the immediate neighbors of the specified object.
 	 * <p>
 	 * This method can be overridden by a subclass as an
-	 * alternative to building a {@link GraphIterator.MisterRogers}.
+	 * alternative to building a
+	 * {@link org.eclipse.jpt.common.utility.internal.iterators.GraphIterator.MisterRogers}.
 	 */
 	protected Iterator<? extends E> neighbors(@SuppressWarnings("unused") E next) {
 		throw new RuntimeException("This method was not overridden."); //$NON-NLS-1$
@@ -141,7 +142,7 @@ public class GraphIterable<E>
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.roots);
+		return CollectionTools.list(this).toString();
 	}
 
 
@@ -152,5 +153,4 @@ public class GraphIterable<E>
 			return GraphIterable.this.neighbors(node);
 		}
 	}
-
 }

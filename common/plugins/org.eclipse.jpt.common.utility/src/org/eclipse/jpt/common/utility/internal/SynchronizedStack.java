@@ -312,7 +312,7 @@ public class SynchronizedStack<E>
 	@Override
 	public String toString() {
 		synchronized (this.mutex) {
-			return '[' + this.stack.toString() + ']';
+			return this.stack.toString();
 		}
 	}
 
@@ -321,5 +321,4 @@ public class SynchronizedStack<E>
 			s.defaultWriteObject();
 		}
 	}
-
 }

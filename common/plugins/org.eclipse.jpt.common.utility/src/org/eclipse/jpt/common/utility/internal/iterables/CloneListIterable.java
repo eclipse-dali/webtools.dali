@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -34,6 +34,9 @@ public abstract class CloneListIterable<E>
 
 	protected CloneListIterable(CloneListIterator.Mutator<E> mutator) {
 		super();
+		if (mutator == null) {
+			throw new NullPointerException();
+		}
 		this.mutator = mutator;
 	}
 
@@ -48,7 +51,8 @@ public abstract class CloneListIterable<E>
 	 * At the specified index, add the specified element to the original list.
 	 * <p>
 	 * This method can be overridden by a subclass as an
-	 * alternative to building a {@link CloneListIterator.Mutator}.
+	 * alternative to building a
+	 * {@link org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator.Mutator}.
 	 */
 	protected void add(@SuppressWarnings("unused") int index, @SuppressWarnings("unused") E element) {
 		throw new RuntimeException("This method was not overridden."); //$NON-NLS-1$
@@ -58,7 +62,8 @@ public abstract class CloneListIterable<E>
 	 * Remove the element at the specified index from the original list.
 	 * <p>
 	 * This method can be overridden by a subclass as an
-	 * alternative to building a {@link CloneListIterator.Mutator}.
+	 * alternative to building a
+	 * {@link org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator.Mutator}.
 	 */
 	protected void remove(@SuppressWarnings("unused") int index) {
 		throw new RuntimeException("This method was not overridden."); //$NON-NLS-1$
@@ -68,7 +73,8 @@ public abstract class CloneListIterable<E>
 	 * At the specified index, set the specified element in the original list.
 	 * <p>
 	 * This method can be overridden by a subclass as an
-	 * alternative to building a {@link CloneListIterator.Mutator}.
+	 * alternative to building a
+	 * {@link org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator.Mutator}.
 	 */
 	protected void set(@SuppressWarnings("unused") int index, @SuppressWarnings("unused") E element) {
 		throw new RuntimeException("This method was not overridden."); //$NON-NLS-1$
@@ -88,5 +94,4 @@ public abstract class CloneListIterable<E>
 			CloneListIterable.this.set(index, element);
 		}
 	}
-
 }

@@ -11,7 +11,6 @@ package org.eclipse.jpt.common.utility.internal.iterables;
 
 import java.io.Serializable;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.common.utility.internal.iterators.EmptyListIterator;
 
 /**
@@ -53,7 +52,7 @@ public final class EmptyListIterable<E>
 
 	@Override
 	public String toString() {
-		return this.getClass().getSimpleName();
+		return "[]"; //$NON-NLS-1$
 	}
 
 	private static final long serialVersionUID = 1L;
@@ -61,5 +60,4 @@ public final class EmptyListIterable<E>
 		// replace this object with the singleton
 		return INSTANCE;
 	}
-
 }

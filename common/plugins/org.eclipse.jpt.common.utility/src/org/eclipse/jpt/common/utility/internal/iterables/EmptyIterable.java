@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,6 @@ package org.eclipse.jpt.common.utility.internal.iterables;
 
 import java.io.Serializable;
 import java.util.Iterator;
-
 import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
 
 /**
@@ -53,7 +52,7 @@ public final class EmptyIterable<E>
 
 	@Override
 	public String toString() {
-		return this.getClass().getSimpleName();
+		return "[]"; //$NON-NLS-1$
 	}
 
 	private static final long serialVersionUID = 1L;
@@ -61,5 +60,4 @@ public final class EmptyIterable<E>
 		// replace this object with the singleton
 		return INSTANCE;
 	}
-
 }

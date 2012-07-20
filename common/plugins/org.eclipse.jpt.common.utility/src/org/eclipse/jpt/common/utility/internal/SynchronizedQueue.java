@@ -335,7 +335,7 @@ public class SynchronizedQueue<E>
 	@Override
 	public String toString() {
 		synchronized (this.mutex) {
-			return '[' + this.queue.toString() + ']';
+			return this.queue.toString();
 		}
 	}
 

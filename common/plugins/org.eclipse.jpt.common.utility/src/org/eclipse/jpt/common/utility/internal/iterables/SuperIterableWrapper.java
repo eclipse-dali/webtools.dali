@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,6 @@
 package org.eclipse.jpt.common.utility.internal.iterables;
 
 import java.util.Iterator;
-
-import org.eclipse.jpt.common.utility.internal.StringTools;
 
 /**
  * Wrap an iterable of elements of any sub-type of <code>E</code>, converting it into an
@@ -29,6 +27,9 @@ public class SuperIterableWrapper<E>
 	@SuppressWarnings("unchecked")
 	public SuperIterableWrapper(Iterable<? extends E> iterable) {
 		super();
+		if (iterable == null) {
+			throw new NullPointerException();
+		}
 		// this should be a safe cast - the iterator will only ever
 		// return E (or a sub-type) from #next()
 		this.iterable = (Iterable<E>) iterable;
@@ -40,6 +41,6 @@ public class SuperIterableWrapper<E>
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.iterable);
+		return this.iterable.toString();
 	}
 }

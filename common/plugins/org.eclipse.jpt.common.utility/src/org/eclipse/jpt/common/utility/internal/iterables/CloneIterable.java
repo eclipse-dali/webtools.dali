@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -34,6 +34,9 @@ public abstract class CloneIterable<E>
 
 	protected CloneIterable(CloneIterator.Remover<E> remover) {
 		super();
+		if (remover == null) {
+			throw new NullPointerException();
+		}
 		this.remover = remover;
 	}
 
@@ -48,7 +51,8 @@ public abstract class CloneIterable<E>
 	 * Remove the specified element from the original collection.
 	 * <p>
 	 * This method can be overridden by a subclass as an
-	 * alternative to building a {@link CloneIterator.Remover}.
+	 * alternative to building a
+	 * {@link org.eclipse.jpt.common.utility.internal.iterators.CloneIterator.Remover}.
 	 */
 	protected void remove(@SuppressWarnings("unused") E element) {
 		throw new RuntimeException("This method was not overridden."); //$NON-NLS-1$
@@ -62,5 +66,4 @@ public abstract class CloneIterable<E>
 			CloneIterable.this.remove(element);
 		}
 	}
-
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,7 @@
 package org.eclipse.jpt.common.utility.internal.iterables;
 
 import java.util.Iterator;
-
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
 
@@ -45,6 +44,9 @@ public class TransformationIterable<E1, E2>
 	 */
 	public TransformationIterable(Iterable<? extends E1> iterable) {
 		super();
+		if (iterable == null) {
+			throw new NullPointerException();
+		}
 		this.iterable = iterable;
 		this.transformer = this.buildDefaultTransformer();
 	}
@@ -55,6 +57,9 @@ public class TransformationIterable<E1, E2>
 	 */
 	public TransformationIterable(Iterable<? extends E1> iterable, Transformer<E1, ? extends E2> transformer) {
 		super();
+		if ((iterable == null) || (transformer == null)) {
+			throw new NullPointerException();
+		}
 		this.iterable = iterable;
 		this.transformer = transformer;
 	}
@@ -76,7 +81,7 @@ public class TransformationIterable<E1, E2>
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.iterable);
+		return CollectionTools.list(this).toString();
 	}
 
 
@@ -87,5 +92,4 @@ public class TransformationIterable<E1, E2>
 			return TransformationIterable.this.transform(o);
 		}
 	}
-
 }

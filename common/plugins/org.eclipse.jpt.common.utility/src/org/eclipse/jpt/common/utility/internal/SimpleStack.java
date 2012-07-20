@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -92,9 +92,13 @@ public class SimpleStack<E>
 		}
 	}
 
+	/**
+	 * Print the elements in the order in which they are "pushed" on to
+	 * the stack (as opposed to the order in which they will be "popped"
+	 * off of the stack).
+	 */
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.peek());
+		return this.elements.toString();
 	}
-
 }

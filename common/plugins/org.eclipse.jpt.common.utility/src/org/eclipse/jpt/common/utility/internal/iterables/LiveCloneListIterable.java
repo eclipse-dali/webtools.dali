@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,8 +11,6 @@ package org.eclipse.jpt.common.utility.internal.iterables;
 
 import java.util.List;
 import java.util.ListIterator;
-
-import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
 
 /**
@@ -29,7 +27,8 @@ import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
  * By default, the list iterator returned by a <code>LiveCloneListIterable</code>
  * does not support the modify operations; this is because it does not
  * have access to the original list. But if the <code>LiveCloneListIterable</code>
- * is supplied with an {@link CloneListIterator.Mutator} it will delegate the
+ * is supplied with an {@link org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator.Mutator}
+ * it will delegate the
  * modify operations to the <code>Mutator</code>.
  * Alternatively, a subclass can override the list iterable's mutation
  * methods.
@@ -57,6 +56,9 @@ public class LiveCloneListIterable<E>
 	 */
 	public LiveCloneListIterable(List<? extends E> list) {
 		super();
+		if (list == null) {
+			throw new NullPointerException();
+		}
 		this.list = list;
 	}
 
@@ -67,6 +69,9 @@ public class LiveCloneListIterable<E>
 	 */
 	public LiveCloneListIterable(List<? extends E> list, CloneListIterator.Mutator<E> mutator) {
 		super(mutator);
+		if (list == null) {
+			throw new NullPointerException();
+		}
 		this.list = list;
 	}
 
@@ -79,7 +84,6 @@ public class LiveCloneListIterable<E>
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.list);
+		return this.list.toString();
 	}
-
 }

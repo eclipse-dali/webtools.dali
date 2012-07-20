@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,8 +11,7 @@ package org.eclipse.jpt.common.utility.internal.iterables;
 
 import java.util.Arrays;
 import java.util.Iterator;
-
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterators.TreeIterator;
 
 /**
@@ -25,7 +24,8 @@ import org.eclipse.jpt.common.utility.internal.iterators.TreeIterator;
  * To use, supply:<ul>
  * <li> either the root element of the tree or, if the tree has
  * multiple roots, an {@link Iterable} of the set of roots
- * <li> a {@link TreeIterator.Midwife} that delivers the children of each child
+ * <li> a {@link org.eclipse.jpt.common.utility.internal.iterators.TreeIterator.Midwife}
+ * that delivers the children of each child
  * (alternatively, subclass <code>TreeIterable</code>
  * and override the {@link #children(Object)} method)
  * </ul>
@@ -46,7 +46,7 @@ public class TreeIterable<E>
 	 * and a default midwife that calls back to the iterable.
 	 * Use this constructor if you want to override the
 	 * {@link #children(Object)} method instead of building
-	 * a {@link TreeIterator.Midwife}.
+	 * a {@link org.eclipse.jpt.common.utility.internal.iterators.TreeIterator.Midwife}.
 	 */
 	public TreeIterable(E root) {
 		this(new SingleElementIterable<E>(root));
@@ -65,7 +65,7 @@ public class TreeIterable<E>
 	 * and a default midwife that calls back to the iterable.
 	 * Use this constructor if you want to override the
 	 * {@link #children(Object)} method instead of building
-	 * a {@link TreeIterator.Midwife}.
+	 * a {@link org.eclipse.jpt.common.utility.internal.iterators.TreeIterator.Midwife}.
 	 */
 	public TreeIterable(E... roots) {
 		this(Arrays.asList(roots));
@@ -84,10 +84,13 @@ public class TreeIterable<E>
 	 * and a default midwife that calls back to the iterable.
 	 * Use this constructor if you want to override the
 	 * {@link #children(Object)} method instead of building
-	 * a {@link TreeIterator.Midwife}.
+	 * a {@link org.eclipse.jpt.common.utility.internal.iterators.TreeIterator.Midwife}.
 	 */
 	public TreeIterable(Iterable<? extends E> roots) {
 		super();
+		if (roots == null) {
+			throw new NullPointerException();
+		}
 		this.roots = roots;
 		this.midwife = this.buildDefaultMidwife();
 	}
@@ -98,6 +101,9 @@ public class TreeIterable<E>
 	 */
 	public TreeIterable(Iterable<? extends E> roots, TreeIterator.Midwife<E> midwife) {
 		super();
+		if ((roots == null) || (midwife == null)) {
+			throw new NullPointerException();
+		}
 		this.roots = roots;
 		this.midwife = midwife;
 	}
@@ -114,7 +120,8 @@ public class TreeIterable<E>
 	 * Return the immediate children of the specified object.
 	 * <p>
 	 * This method can be overridden by a subclass as an
-	 * alternative to building a {@link TreeIterator.Midwife}.
+	 * alternative to building a
+	 * {@link org.eclipse.jpt.common.utility.internal.iterators.TreeIterator.Midwife}.
 	 */
 	protected Iterator<? extends E> children(@SuppressWarnings("unused") E next) {
 		throw new RuntimeException("This method was not overridden."); //$NON-NLS-1$
@@ -122,7 +129,7 @@ public class TreeIterable<E>
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.roots);
+		return CollectionTools.list(this).toString();
 	}
 
 
@@ -133,5 +140,4 @@ public class TreeIterable<E>
 			return TreeIterable.this.children(node);
 		}
 	}
-
 }

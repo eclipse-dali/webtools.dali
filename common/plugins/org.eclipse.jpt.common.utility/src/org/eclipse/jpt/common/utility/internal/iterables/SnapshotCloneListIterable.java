@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,8 +12,6 @@ package org.eclipse.jpt.common.utility.internal.iterables;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
-
-import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
 
 /**
@@ -31,7 +29,8 @@ import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
  * By default, the list iterator returned by a <code>SnapshotCloneListIterable</code> does not
  * support the {@link ListIterator} mutation operations; this is because it does not
  * have access to the original list. But if the <code>SnapshotCloneListIterable</code>
- * is supplied with a {@link CloneListIterator.Mutator} it will delegate the
+ * is supplied with a {@link org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator.Mutator}
+ * it will delegate the
  * {@link ListIterator} mutation operations to the <code>Mutator</code>.
  * Alternatively, a subclass can override the list iterable's mutation
  * methods.
@@ -84,7 +83,7 @@ public class SnapshotCloneListIterable<E>
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, Arrays.toString(this.array));
+		return Arrays.toString(this.array);
 	}
 
 
@@ -98,5 +97,4 @@ public class SnapshotCloneListIterable<E>
 			super(mutator, array);
 		}
 	}
-
 }
