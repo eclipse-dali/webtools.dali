@@ -275,7 +275,7 @@ public abstract class AbstractOrmVersionMapping<X extends XmlVersion>
 	}
 
 	protected void validateAttributeType(List<IMessage> messages) {
-		if (!ArrayTools.contains(SUPPORTED_TYPE_NAMES, this.getAttributeType())) {
+		if (! ArrayTools.contains(SUPPORTED_TYPE_NAMES, this.getFullyQualifiedAttributeType())) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 							IMessage.NORMAL_SEVERITY,

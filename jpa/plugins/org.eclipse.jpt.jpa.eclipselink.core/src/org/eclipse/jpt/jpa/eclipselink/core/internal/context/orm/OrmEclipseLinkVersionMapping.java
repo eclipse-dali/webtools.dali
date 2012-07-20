@@ -186,7 +186,7 @@ public class OrmEclipseLinkVersionMapping
 				return;
 			}
 		}
-		if (!ArrayTools.contains(SUPPORTED_TYPE_NAMES, this.getAttributeType())) {
+		if (!ArrayTools.contains(SUPPORTED_TYPE_NAMES, this.getFullyQualifiedAttributeType())) {
 			messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
