@@ -10,9 +10,6 @@
 package org.eclipse.jpt.common.core.utility.jdt;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.EnumDeclaration;
-import org.eclipse.jdt.core.dom.FieldDeclaration;
-import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 /**
@@ -32,29 +29,5 @@ public interface Type extends AbstractType {
 	 * Covariant override.
 	 */
 	TypeDeclaration getBodyDeclaration(CompilationUnit astRoot);
-
-	/**
-	 * Return the type's nested types (does not include annotations or enums).
-	 */
-	//TODO remove this, implementation now just calls typeDeclaration.getTypes()
-	TypeDeclaration[] getTypes(TypeDeclaration typeDeclaration);
-
-	/**
-	 * Return the type's nested enums.
-	 */
-	//TODO remove this
-	EnumDeclaration[] getEnums(TypeDeclaration typeDeclaration);
-
-	/**
-	 * Return the type's fields.
-	 */
-	//TODO remove this
-	FieldDeclaration[] getFields(TypeDeclaration typeDeclaration);
-
-	/**
-	 * Return the type's methods.
-	 */
-	//TODO remove this
-	MethodDeclaration[] getMethods(TypeDeclaration typeDeclaration);
 
 }

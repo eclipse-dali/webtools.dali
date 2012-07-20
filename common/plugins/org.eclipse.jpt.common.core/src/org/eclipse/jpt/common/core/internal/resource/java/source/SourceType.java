@@ -17,6 +17,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.EnumDeclaration;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.IMethodBinding;
@@ -171,7 +173,7 @@ final class SourceType
 
 		this.syncSuperclassQualifiedName(this.buildSuperclassQualifiedName(typeDeclaration.resolveBinding()));
 
-		FieldDeclaration[] fieldDeclarations = this.annotatedElement.getFields(typeDeclaration);
+		FieldDeclaration[] fieldDeclarations = typeDeclaration.getFields();
 		CounterMap counters = new CounterMap(fieldDeclarations.length);
 		for (FieldDeclaration fieldDeclaration : fieldDeclarations) {
 			for (VariableDeclarationFragment fragment : fragments(fieldDeclaration)) {
@@ -190,13 +192,13 @@ final class SourceType
 		//thus we are not calling resolveTypes on methods, that would be redundant to syncMethods 
 		this.syncMethods(typeDeclaration);
 
-		TypeDeclaration[] typeDeclarations = this.annotatedElement.getTypes(typeDeclaration);
+		TypeDeclaration[] typeDeclarations = typeDeclaration.getTypes();
 		int i = 0;
 		for (JavaResourceType type : this.getTypes()) {
 			type.resolveTypes(typeDeclarations[i++]);
 		}
 		
-		EnumDeclaration[] enumDeclarations = this.annotatedElement.getEnums(typeDeclaration);
+		EnumDeclaration[] enumDeclarations = enums(typeDeclaration);
 		i = 0;
 		for (JavaResourceEnum enum_ : this.getEnums()) {
 			enum_.resolveTypes(enumDeclarations[i++]);
@@ -364,7 +366,7 @@ final class SourceType
 	}
 
 	private void initializeTypes(TypeDeclaration typeDeclaration) {
-		TypeDeclaration[] typeDeclarations = this.annotatedElement.getTypes(typeDeclaration);
+		TypeDeclaration[] typeDeclarations = typeDeclaration.getTypes();
 		CounterMap counters = new CounterMap(typeDeclarations.length);
 		for (TypeDeclaration nestedTypeDeclaration : typeDeclarations) {
 			String tdName = nestedTypeDeclaration.getName().getFullyQualifiedName();
@@ -374,7 +376,7 @@ final class SourceType
 	}
 
 	private void syncTypes(TypeDeclaration typeDeclaration) {
-		TypeDeclaration[] typeDeclarations = this.annotatedElement.getTypes(typeDeclaration);
+		TypeDeclaration[] typeDeclarations = typeDeclaration.getTypes();
 		CounterMap counters = new CounterMap(typeDeclarations.length);
 		HashSet<JavaResourceType> typesToRemove = new HashSet<JavaResourceType>(this.types);
 		for (TypeDeclaration nestedTypeDeclaration : typeDeclarations) {
@@ -425,7 +427,7 @@ final class SourceType
 	}
 
 	private void initializeEnums(TypeDeclaration typeDeclaration) {
-		EnumDeclaration[] enumDeclarations = this.annotatedElement.getEnums(typeDeclaration);
+		EnumDeclaration[] enumDeclarations = enums(typeDeclaration);
 		CounterMap counters = new CounterMap(enumDeclarations.length);
 		for (EnumDeclaration ed : enumDeclarations) {
 			String tdName = ed.getName().getFullyQualifiedName();
@@ -435,7 +437,7 @@ final class SourceType
 	}
 
 	private void syncEnums(TypeDeclaration typeDeclaration) {
-		EnumDeclaration[] enumDeclarations = this.annotatedElement.getEnums(typeDeclaration);
+		EnumDeclaration[] enumDeclarations = enums(typeDeclaration);
 		CounterMap counters = new CounterMap(enumDeclarations.length);
 		HashSet<JavaResourceEnum> enumsToRemove = new HashSet<JavaResourceEnum>(this.enums);
 		for (EnumDeclaration enumDeclaration : enumDeclarations) {
@@ -482,7 +484,7 @@ final class SourceType
 	}
 
 	private void initializeFields(TypeDeclaration typeDeclaration) {
-		FieldDeclaration[] fieldDeclarations = this.annotatedElement.getFields(typeDeclaration);
+		FieldDeclaration[] fieldDeclarations = typeDeclaration.getFields();
 		CounterMap counters = new CounterMap(fieldDeclarations.length);
 		for (FieldDeclaration fieldDeclaration : fieldDeclarations) {
 			for (VariableDeclarationFragment fragment : fragments(fieldDeclaration)) {
@@ -494,7 +496,7 @@ final class SourceType
 	}
 
 	private void syncFields(TypeDeclaration typeDeclaration) {
-		FieldDeclaration[] fieldDeclarations = this.annotatedElement.getFields(typeDeclaration);
+		FieldDeclaration[] fieldDeclarations = typeDeclaration.getFields();
 		CounterMap counters = new CounterMap(fieldDeclarations.length);
 		HashSet<JavaResourceField> fieldsToRemove = new HashSet<JavaResourceField>(this.fields);
 		for (FieldDeclaration fieldDeclaration : fieldDeclarations) {
@@ -554,7 +556,7 @@ final class SourceType
 	}
 
 	private void initializeMethods(TypeDeclaration typeDeclaration) {
-		MethodDeclaration[] methodDeclarations = this.annotatedElement.getMethods(typeDeclaration);
+		MethodDeclaration[] methodDeclarations = typeDeclaration.getMethods();
 		CounterMap counters = new CounterMap(methodDeclarations.length);
 		for (MethodDeclaration methodDeclaration : methodDeclarations) {
 			MethodSignature signature = ASTTools.buildMethodSignature(methodDeclaration);
@@ -564,7 +566,7 @@ final class SourceType
 	}
 
 	private void syncMethods(TypeDeclaration typeDeclaration) {
-		MethodDeclaration[] methodDeclarations = this.annotatedElement.getMethods(typeDeclaration);
+		MethodDeclaration[] methodDeclarations = typeDeclaration.getMethods();
 		CounterMap counters = new CounterMap(methodDeclarations.length);
 		HashSet<JavaResourceMethod> methodsToRemove = new HashSet<JavaResourceMethod>(this.methods);
 		for (MethodDeclaration methodDeclaration : methodDeclarations) {
@@ -800,5 +802,46 @@ final class SourceType
 			counter.increment();
 			return counter.getValue();
 		}
+	}
+
+
+	public TypeDeclaration[] getTypes(TypeDeclaration typeDeclaration) {
+		return typeDeclaration.getTypes();
+	}
+
+	public EnumDeclaration[] getEnums(TypeDeclaration typeDeclaration) {
+		return enums(typeDeclaration);
+	}
+
+	public FieldDeclaration[] getFields(TypeDeclaration typeDeclaration) {
+		return typeDeclaration.getFields();
+	}
+
+	public MethodDeclaration[] getMethods(TypeDeclaration typeDeclaration) {
+		return typeDeclaration.getMethods();
+	}
+
+	protected static EnumDeclaration[] enums(TypeDeclaration declaringTypeDeclaration) {
+		List<BodyDeclaration> bd = bodyDeclarations(declaringTypeDeclaration);
+		int typeCount = 0;
+		for (Iterator<BodyDeclaration> it = bd.listIterator(); it.hasNext(); ) {
+			if (it.next().getNodeType() == ASTNode.ENUM_DECLARATION) {
+				typeCount++;
+			}
+		}
+		EnumDeclaration[] memberEnums = new EnumDeclaration[typeCount];
+		int next = 0;
+		for (Iterator<BodyDeclaration> it = bd.listIterator(); it.hasNext(); ) {
+			BodyDeclaration decl = it.next();
+			if (decl.getNodeType() == ASTNode.ENUM_DECLARATION) {
+				memberEnums[next++] = (EnumDeclaration) decl;
+			}
+		}
+		return memberEnums;
+	}
+
+	@SuppressWarnings("unchecked")
+	protected static List<BodyDeclaration> bodyDeclarations(TypeDeclaration typeDeclaration) {
+		return typeDeclaration.bodyDeclarations();
 	}
 }

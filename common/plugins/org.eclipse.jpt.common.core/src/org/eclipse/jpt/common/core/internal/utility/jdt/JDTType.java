@@ -14,9 +14,6 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.EnumDeclaration;
-import org.eclipse.jdt.core.dom.FieldDeclaration;
-import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.common.core.utility.jdt.Type;
@@ -92,22 +89,6 @@ public class JDTType
 	@Override
 	public TypeDeclaration getBodyDeclaration(CompilationUnit astRoot) {
 		return (TypeDeclaration) super.getBodyDeclaration(astRoot);
-	}
-
-	public TypeDeclaration[] getTypes(TypeDeclaration typeDeclaration) {
-		return typeDeclaration.getTypes();
-	}
-
-	public EnumDeclaration[] getEnums(TypeDeclaration typeDeclaration) {
-		return enums(typeDeclaration);
-	}
-
-	public FieldDeclaration[] getFields(TypeDeclaration typeDeclaration) {
-		return typeDeclaration.getFields();
-	}
-
-	public MethodDeclaration[] getMethods(TypeDeclaration typeDeclaration) {
-		return typeDeclaration.getMethods();
 	}
 
 
