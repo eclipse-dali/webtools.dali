@@ -9,19 +9,17 @@
  *******************************************************************************/
 package org.eclipse.jpt.common.core.internal.resource.java;
 
+
 public class InheritedAttributeKey {
 	
 	private String typeName;
 	
 	private String attributeName;
 	
-	private int occurrence;
 	
-	
-	public InheritedAttributeKey(String typeName, String attributeName, int occurrence) {
+	public InheritedAttributeKey(String typeName, String attributeName) {
 		this.typeName = typeName;
 		this.attributeName = attributeName;
-		this.occurrence = occurrence;
 	}
 	
 	
@@ -32,14 +30,12 @@ public class InheritedAttributeKey {
 		}
 		InheritedAttributeKey other = (InheritedAttributeKey) obj;
 		return this.typeName.equals(other.typeName)
-				&& this.attributeName.equals(other.attributeName)
-				&& this.occurrence == other.occurrence;
+				&& this.attributeName.equals(other.attributeName);
 	}
 	
 	@Override
 	public int hashCode() {
 		return this.typeName.hashCode() 
-				* this.attributeName.hashCode() 
-				* this.occurrence;
+				* this.attributeName.hashCode() ;
 	}
 }
