@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
 
 /**
- * An exception handler that collects and hold the exceptions handed to it.
+ * An exception handler that collects and holds the exceptions handed to it.
  * They can be retrieved at a later time via calls to {@link #getExceptions()}
  * and {{@link #clearExceptions()}.
  */

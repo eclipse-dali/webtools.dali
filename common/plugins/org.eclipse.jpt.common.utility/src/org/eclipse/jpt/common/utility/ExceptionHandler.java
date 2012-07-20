@@ -61,7 +61,8 @@ public interface ExceptionHandler {
 
 	/**
 	 * Singleton implementation of the exception handler interface that
-	 * wraps the exception in a runtime exception and throws it.
+	 * wraps the exception in a runtime exception and throws the runtime
+	 * exception.
 	 */
 	final class Runtime
 		implements ExceptionHandler, Serializable
@@ -80,6 +81,38 @@ public interface ExceptionHandler {
 				throw (RuntimeException) t;
 			}
 			throw new RuntimeException(t);
+		}
+		@Override
+		public String toString() {
+			return StringTools.buildSingletonToString(this);
+		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return INSTANCE;
+		}
+	}
+
+	/**
+	 * Singleton implementation of the exception handler interface that,
+	 * like what happens with an unhandled exception
+	 * (see {@link ThreadGroup#uncaughtException(Thread, Throwable)}),
+	 * prints the exception's stack trace to {@link System#err the
+	 * "standard" error output stream}.
+	 */
+	final class Default
+		implements ExceptionHandler, Serializable
+	{
+		public static final ExceptionHandler INSTANCE = new Default();
+		public static ExceptionHandler instance() {
+			return INSTANCE;
+		}
+		// ensure single instance
+		private Default() {
+			super();
+		}
+		public void handleException(Throwable t) {
+			t.printStackTrace();
 		}
 		@Override
 		public String toString() {

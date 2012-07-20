@@ -196,7 +196,7 @@ public class ConsumerThreadCoordinator {
 					// we were interrupted while waiting, must be Quittin' Time
 					Thread.currentThread().interrupt();  // set the Thread's interrupt status
 					return;
-				} catch (RuntimeException ex) {
+				} catch (Throwable ex) {
 					ConsumerThreadCoordinator.this.exceptionHandler.handleException(ex);
 					return;  // hmmm... kill the thread?
 				}
@@ -213,7 +213,7 @@ public class ConsumerThreadCoordinator {
 		private void consume() {
 			try {
 				this.consumer.consume();
-			} catch (RuntimeException ex) {
+			} catch (Throwable ex) {
 				ConsumerThreadCoordinator.this.exceptionHandler.handleException(ex);
 			}
 		}

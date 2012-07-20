@@ -45,7 +45,7 @@ public abstract class AbstractSafeCommandExecutor<E extends CommandExecutor>
 	public void execute(Command command) {
 		try {
 			this.commandExecutor.execute(command);
-		} catch (RuntimeException ex) {
+		} catch (Throwable ex) {
 			this.exceptionHandler.handleException(ex);
 		}
 	}

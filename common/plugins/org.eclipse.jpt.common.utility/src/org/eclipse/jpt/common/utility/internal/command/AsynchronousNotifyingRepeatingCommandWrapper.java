@@ -111,7 +111,7 @@ public class AsynchronousNotifyingRepeatingCommandWrapper
 		for (Listener listener : this.listenerList.getListeners()) {
 			try {
 				listener.executionQuiesced(this);
-			} catch (RuntimeException ex) {
+			} catch (Throwable ex) {
 				// we could let the ConsumerThreadCoordinator handle these;
 				// but then the loop would be stopped with the first exception...
 				this.exceptionHandler.handleException(ex);

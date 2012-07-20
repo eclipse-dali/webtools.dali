@@ -47,7 +47,7 @@ public class SafeExtendedCommandExecutor
 	public void waitToExecute(Command command) throws InterruptedException {
 		try {
 			this.commandExecutor.waitToExecute(command);
-		} catch (RuntimeException ex) {
+		} catch (Throwable ex) {
 			this.exceptionHandler.handleException(ex);
 		}
 	}
@@ -55,7 +55,7 @@ public class SafeExtendedCommandExecutor
 	public boolean waitToExecute(Command command, long timeout) throws InterruptedException {
 		try {
 			return this.commandExecutor.waitToExecute(command, timeout);
-		} catch (RuntimeException ex) {
+		} catch (Throwable ex) {
 			this.exceptionHandler.handleException(ex);
 			return true;  // hmmm... seems like we get here only if the command executed
 		}
