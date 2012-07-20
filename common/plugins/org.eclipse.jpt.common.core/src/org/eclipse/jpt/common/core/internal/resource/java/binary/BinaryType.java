@@ -24,15 +24,16 @@ import org.eclipse.jdt.core.dom.IVariableBinding;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
-import org.eclipse.jpt.common.core.internal.resource.java.CounterMap;
 import org.eclipse.jpt.common.core.internal.resource.java.InheritedAttributeKey;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.JavaResourceTypeBinding;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
@@ -397,11 +398,9 @@ final class BinaryType
 			Map<InheritedAttributeKey, JavaResourceTypeBinding> inheritedFieldTypes, ITypeBinding typeBinding) {
 		String typeName = typeBinding.getQualifiedName();
 		IVariableBinding[] fields = typeBinding.getDeclaredFields();
-		CounterMap counters = new CounterMap(fields.length);
 		for (IVariableBinding field : fields) {
 			String fieldName = field.getName();
-			int occurrence = counters.increment(fieldName);
-			inheritedFieldTypes.put(new InheritedAttributeKey(typeName, fieldName, occurrence), new JavaResourceTypeBinding(field.getType()));
+			inheritedFieldTypes.put(new InheritedAttributeKey(typeName, fieldName), new JavaResourceTypeBinding(field.getType()));
 		}
 	}
 	
@@ -421,11 +420,22 @@ final class BinaryType
 			Map<InheritedAttributeKey, JavaResourceTypeBinding> inheritedFieldTypes, ITypeBinding typeBinding) {
 		String typeName = typeBinding.getQualifiedName();
 		IMethodBinding[] methods = typeBinding.getDeclaredMethods();
-		CounterMap counters = new CounterMap(methods.length);
 		for (IMethodBinding method : methods) {
 			String methodName = method.getName();
-			int occurrence = counters.increment(methodName);
-			inheritedFieldTypes.put(new InheritedAttributeKey(typeName, methodName, occurrence), new JavaResourceTypeBinding(method.getReturnType()));
+			inheritedFieldTypes.put(new InheritedAttributeKey(typeName, methodName), new JavaResourceTypeBinding(method.getReturnType()));
+		}
+	}
+	
+	public TypeBinding getInheritedAttributeTypeBinding(JavaResourceAttribute attribute) {
+		if (attribute.getParent() == this) {
+			return attribute.getTypeBinding();
+		}
+		InheritedAttributeKey key = new InheritedAttributeKey(attribute.getParent().getName(), attribute.getName());
+		if (attribute.getKind() == JavaResourceAnnotatedElement.Kind.FIELD) {
+			return this.inheritedFieldTypes.get(key);
+		}
+		else /* attribute.getKind() == JavaResourceAnnotatedElement.Kind.METHOD */ {
+			return this.inheritedMethodTypes.get(key);
 		}
 	}
 }

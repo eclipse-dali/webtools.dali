@@ -26,19 +26,22 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
-import org.eclipse.jpt.common.core.internal.resource.java.CounterMap;
 import org.eclipse.jpt.common.core.internal.resource.java.InheritedAttributeKey;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.JDTType;
 import org.eclipse.jpt.common.core.internal.utility.jdt.JavaResourceTypeBinding;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.Type;
+import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 import org.eclipse.jpt.common.utility.MethodSignature;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.SimpleIntReference;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
@@ -661,7 +664,9 @@ final class SourceType
 		for (IVariableBinding field : fields) {
 			String fieldName = field.getName();
 			int occurrence = counters.increment(fieldName);
-			this.inheritedFieldTypes.put(new InheritedAttributeKey(typeName, fieldName, occurrence), new JavaResourceTypeBinding(field.getType()));
+			if (occurrence == 1) { // only keep the first occurrence
+				this.inheritedFieldTypes.put(new InheritedAttributeKey(typeName, fieldName), new JavaResourceTypeBinding(field.getType()));
+			}
 		}
 	}
 	
@@ -687,9 +692,11 @@ final class SourceType
 		for (IVariableBinding field : fields) {
 			String fieldName = field.getName();
 			int occurrence = counters.increment(fieldName);
-			InheritedAttributeKey key = new InheritedAttributeKey(typeName, fieldName, occurrence);
-			this.inheritedFieldTypes.put(key, new JavaResourceTypeBinding(field.getType()));
-			removedTypes.remove(key);
+			if (occurrence == 1) { // only keep the first occurrence
+				InheritedAttributeKey key = new InheritedAttributeKey(typeName, fieldName);
+				this.inheritedFieldTypes.put(key, new JavaResourceTypeBinding(field.getType()));
+				removedTypes.remove(key);
+			}
 		}
 	}
 	
@@ -715,7 +722,9 @@ final class SourceType
 			if (method.getParameterTypes().length == 0) {
 				String methodName = method.getName();
 				int occurrence = counters.increment(methodName);
-				this.inheritedMethodTypes.put(new InheritedAttributeKey(typeName, methodName, occurrence), new JavaResourceTypeBinding(method.getReturnType()));
+				if (occurrence == 1) { // only keep the first occurrence
+					this.inheritedMethodTypes.put(new InheritedAttributeKey(typeName, methodName), new JavaResourceTypeBinding(method.getReturnType()));
+				}
 			}
 		}
 	}
@@ -746,9 +755,50 @@ final class SourceType
 		for (IMethodBinding method : methods) {
 			String methodName = method.getName();
 			int occurrence = counters.increment(methodName);
-			InheritedAttributeKey key = new InheritedAttributeKey(typeName, methodName, occurrence);
-			this.inheritedMethodTypes.put(key, new JavaResourceTypeBinding(method.getReturnType()));
-			removedTypes.remove(key);
+			if (occurrence == 1) { // only keep the first occurrence
+				InheritedAttributeKey key = new InheritedAttributeKey(typeName, methodName);
+				this.inheritedMethodTypes.put(key, new JavaResourceTypeBinding(method.getReturnType()));
+				removedTypes.remove(key);
+			}
+		}
+	}
+	
+	public TypeBinding getInheritedAttributeTypeBinding(JavaResourceAttribute attribute) {
+		if (attribute.getParent() == this) {
+			return attribute.getTypeBinding();
+		}
+		InheritedAttributeKey key = 
+				new InheritedAttributeKey(attribute.getParent().getName(), attribute.getName());
+		if (attribute.getKind() == JavaResourceAnnotatedElement.Kind.FIELD) {
+			return this.inheritedFieldTypes.get(key);
+		}
+		else /* attribute.getKind() == JavaResourceAnnotatedElement.Kind.METHOD */ {
+			return this.inheritedMethodTypes.get(key);
+		}
+	}
+	
+	
+	// ***** CounterMap *****
+
+	protected static class CounterMap {
+		private final HashMap<Object, SimpleIntReference> counters;
+
+		protected CounterMap(int initialCapacity) {
+			super();
+			this.counters = new HashMap<Object, SimpleIntReference>(initialCapacity);
+		}
+
+		/**
+		 * Return the incremented count for the specified object.
+		 */
+		int increment(Object o) {
+			SimpleIntReference counter = this.counters.get(o);
+			if (counter == null) {
+				counter = new SimpleIntReference();
+				this.counters.put(o, counter);
+			}
+			counter.increment();
+			return counter.getValue();
 		}
 	}
 }
