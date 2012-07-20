@@ -129,7 +129,10 @@ public abstract class SourceAnnotation
 		return new AnnotatedElementAnnotationElementAdapter<Integer>(this.annotatedElement, daea);
 	}
 
-	/**
+	protected CompilationUnit buildASTRoot() {
+		return this.getJavaResourceCompilationUnit().buildASTRoot();
+	}
+
 	/**
 	 * Return the text range corresponding to the annotation.
 	 * If the annotation is missing, return <code>null</code>.
@@ -141,7 +144,6 @@ public abstract class SourceAnnotation
 		return (astRoot == null) ? null : this.buildTextRange(this.getAstAnnotation(astRoot));
 	}
 
-	/**
 	/**
 	 * Return the text range corresponding to the annotation.
 	 * If the annotation is missing, return <code>null</code>.

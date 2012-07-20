@@ -192,7 +192,7 @@ public interface JavaResourceAnnotatedElement
 	/**
 	 * Return the text range for the member's name.
 	 */
-	TextRange getNameTextRange(CompilationUnit astRoot);
+	TextRange getNameTextRange();
 	
 	/**
 	 * Return the text range for the nestable annotation if it is currently

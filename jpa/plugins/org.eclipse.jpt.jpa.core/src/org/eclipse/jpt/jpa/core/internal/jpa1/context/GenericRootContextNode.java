@@ -18,7 +18,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.HashBag;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -292,15 +291,9 @@ public class GenericRootContextNode
 			}
 		}
 
-		// TODO remove 'jrcu'
-		// replace jrcu.getFile() with jrpt.getFile()
-		// replace jrpt.getMappingAnnotation().getTextRange(jrcu.buildASTRoot())
-		//    with jrpt.getMappingAnnotation().getTextRange()
-		//    (new method #getTextRange() ?)
 		Iterable<String> typeMappingAnnotationNames = this.jpaProject.getTypeMappingAnnotationNames();
 		for (String orphan : orphans) {
 			JavaResourceAbstractType jrt = this.jpaProject.getJavaResourceType(orphan);
-			JavaResourceCompilationUnit jrcu = jrt.getJavaResourceCompilationUnit();
 			if (jrt.isAnnotatedWithAnyOf(typeMappingAnnotationNames)) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
@@ -308,7 +301,7 @@ public class GenericRootContextNode
 						JpaValidationMessages.PERSISTENT_TYPE_MAPPED_BUT_NOT_INCLUDED_IN_PERSISTENCE_UNIT,
 						new String[] {jrt.getTypeBinding().getQualifiedName()},
 						jrt.getFile(),
-						jrt.getNameTextRange(jrcu.buildASTRoot())
+						jrt.getNameTextRange()
 					)
 				);
 			}
@@ -319,7 +312,7 @@ public class GenericRootContextNode
 						JpaValidationMessages.PERSISTENT_TYPE_ANNOTATED_BUT_NOT_INCLUDED_IN_PERSISTENCE_UNIT,
 						new String[] {jrt.getName()},
 						jrt.getFile(),
-						jrt.getNameTextRange(jrcu.buildASTRoot())
+						jrt.getNameTextRange()
 					)
 				);
 			}

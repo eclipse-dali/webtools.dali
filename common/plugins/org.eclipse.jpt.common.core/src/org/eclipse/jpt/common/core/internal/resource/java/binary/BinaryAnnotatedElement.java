@@ -327,7 +327,7 @@ abstract class BinaryAnnotatedElement
 		throw new UnsupportedOperationException();
 	}
 
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
+	public TextRange getNameTextRange() {
 		throw new UnsupportedOperationException();
 	}
 

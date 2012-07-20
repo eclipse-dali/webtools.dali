@@ -447,15 +447,7 @@ public abstract class AbstractJavaPersistentAttribute
 	}
 
 	public TextRange getSelectionTextRange() {
-		return this.getSelectionTextRange(this.buildASTRoot());
-	}
-
-	protected TextRange getSelectionTextRange(CompilationUnit astRoot) {
-		return this.getResourceAttribute().getNameTextRange(astRoot);
-	}
-
-	protected CompilationUnit buildASTRoot() {
-		return this.getResourceAttribute().getJavaResourceCompilationUnit().buildASTRoot();
+		return this.getResourceAttribute().getNameTextRange();
 	}
 
 	public void dispose() {
@@ -608,7 +600,7 @@ public abstract class AbstractJavaPersistentAttribute
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		return this.isVirtual() ?
 				this.getOwningPersistentType().getValidationTextRange() :
-				this.getSelectionTextRange(astRoot);
+				this.getSelectionTextRange();
 	}
 
 	@Override

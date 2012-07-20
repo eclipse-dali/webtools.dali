@@ -922,11 +922,7 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	public TextRange getSelectionTextRange() {
-		return this.getSelectionTextRange(this.buildASTRoot());
-	}
-
-	protected TextRange getSelectionTextRange(CompilationUnit astRoot) {
-		return this.resourceType.getNameTextRange(astRoot);
+		return this.resourceType.getNameTextRange();
 	}
 
 	public void dispose() {
@@ -1015,7 +1011,7 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.getSelectionTextRange(astRoot);
+		return this.getValidationTextRange();
 	}
 
 	public TextRange getValidationTextRange() {

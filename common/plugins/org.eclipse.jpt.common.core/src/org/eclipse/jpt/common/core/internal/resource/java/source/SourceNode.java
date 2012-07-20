@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Vector;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ArrayInitializer;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MemberValuePair;
@@ -45,10 +44,6 @@ public abstract class SourceNode
 
 	public JavaResourceCompilationUnit getJavaResourceCompilationUnit() {
 		return (JavaResourceCompilationUnit) this.getRoot();
-	}
-
-	protected CompilationUnit buildASTRoot() {
-		return this.getJavaResourceCompilationUnit().buildASTRoot();
 	}
 
 	protected void nestedAnnotationAdded(String listName, int index, NestableAnnotation addedAnnotation) {

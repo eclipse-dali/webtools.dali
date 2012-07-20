@@ -126,6 +126,6 @@ public class GenericJavaXmlAdapter
 	
 	@Override
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return getJavaResourceType().getNameTextRange(astRoot);
+		return getJavaResourceType().getNameTextRange();
 	}
 }

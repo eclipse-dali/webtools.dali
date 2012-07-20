@@ -311,7 +311,7 @@ public abstract class AbstractJavaType
 	 */
 	@Override
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return getJavaResourceType().getNameTextRange(astRoot);
+		return getJavaResourceType().getNameTextRange();
 	}
 	
 	public void validate(List<IMessage> messages, IReporter reporter) {
