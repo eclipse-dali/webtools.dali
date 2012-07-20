@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.core.utility.jdt;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
 /**
- * Java source code or binary type binding
+ * Represents a java type declaration, field type, method return type, etc.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
