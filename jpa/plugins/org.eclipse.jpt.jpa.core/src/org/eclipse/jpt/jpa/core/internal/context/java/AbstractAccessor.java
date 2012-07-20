@@ -230,10 +230,6 @@ public abstract class AbstractAccessor
 			return this.member.getTypeBinding();
 		}
 		
-		public TypeBinding getTypeBinding(JavaResourceType contextType) {
-			return this.member.getTypeBinding(contextType);
-		}
-		
 		@Override
 		public void toString(StringBuilder sb) {
 			sb.append(this.getName());

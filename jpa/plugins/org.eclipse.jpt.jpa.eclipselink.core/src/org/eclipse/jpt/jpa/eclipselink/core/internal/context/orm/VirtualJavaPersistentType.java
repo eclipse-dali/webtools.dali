@@ -44,10 +44,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class VirtualJavaPersistentType
-	extends AbstractJavaJpaContextNode
-	implements JavaPersistentType2_0
-{
-
+		extends AbstractJavaJpaContextNode
+		implements JavaPersistentType2_0 {
+	
 	private final XmlTypeMapping xmlTypeMapping;
 
 	protected final JavaTypeMapping mapping;
@@ -231,8 +230,12 @@ public class VirtualJavaPersistentType
 	public ReadOnlyPersistentAttribute resolveAttribute(String attributeName) {
 		return null;
 	}
-
-
+	
+	public String getAttributeTypeName(ReadOnlyPersistentAttribute attribute) {
+		return null;
+	}
+	
+	
 	// ********** inheritance **********
 
 	public Iterable<PersistentType> getInheritanceHierarchy() {

@@ -47,10 +47,4 @@ public interface JavaResourceAttribute
 	String TYPE_BINDING_PROPERTY = "typeBinding"; //$//$NON-NLS-1$
 	
 	TypeBinding getTypeBinding();
-	
-	/**
-	 * Return the type binding for this attribute within the context of the given type.
-	 * (This may very well be different if this attribute has a generic type.)
-	 */
-	TypeBinding getTypeBinding(JavaResourceType contextType);
 }

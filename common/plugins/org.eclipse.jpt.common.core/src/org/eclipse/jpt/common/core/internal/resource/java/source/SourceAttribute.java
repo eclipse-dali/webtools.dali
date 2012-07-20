@@ -117,9 +117,4 @@ abstract class SourceAttribute<A extends Attribute>
 	}
 	
 	protected abstract ITypeBinding getJdtTypeBinding(IBinding binding);
-	
-	public TypeBinding getTypeBinding(JavaResourceType contextType) {
-		// TODO - use inherited information
-		return getTypeBinding();
-	}
 }

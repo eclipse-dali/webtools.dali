@@ -129,11 +129,6 @@ abstract class BinaryAttribute
 		return new JavaResourceTypeBinding(jdtTypeBinding);
 	}
 	
-	public TypeBinding getTypeBinding(JavaResourceType contextType) {
-		// TODO - use inherited information
-		return getTypeBinding();
-	}
-	
 	
 	// ***** adapters *****
 
