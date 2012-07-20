@@ -1,19 +1,17 @@
 /*******************************************************************************
- *  Copyright (c) 2008, 2009  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
-import org.eclipse.jpt.jpa.ui.internal.JpaMappingImageHelper;
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
 
 public abstract class AbstractOneToManyMappingUiDefinition<M, T extends OneToManyMapping>
 	extends AbstractMappingUiDefinition<M, T>
@@ -21,10 +19,9 @@ public abstract class AbstractOneToManyMappingUiDefinition<M, T extends OneToMan
 	protected AbstractOneToManyMappingUiDefinition() {
 		super();
 	}
-	
-	
-	public Image getImage() {
-		return JpaMappingImageHelper.imageForAttributeMapping(getKey());
+
+	public String getKey() {
+		return MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
 	
 	public String getLabel() {
@@ -34,8 +31,9 @@ public abstract class AbstractOneToManyMappingUiDefinition<M, T extends OneToMan
 	public String getLinkLabel() {
 		return JptUiDetailsMessages.OneToManyMappingUiProvider_linkLabel;
 	}
-	
-	public String getKey() {
-		return MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY;
+
+	@Override
+	protected String getImageKey() {
+		return JptUiIcons.ONE_TO_MANY;
 	}
 }

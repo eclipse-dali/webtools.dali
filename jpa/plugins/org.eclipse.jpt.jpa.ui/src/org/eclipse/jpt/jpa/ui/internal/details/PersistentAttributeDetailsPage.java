@@ -12,18 +12,18 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.ui.internal.Tracing;
 import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.common.utility.internal.model.value.FilteringPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -148,7 +148,7 @@ public abstract class PersistentAttributeDetailsPage<A extends ReadOnlyPersisten
 
 	@Override
 	public void dispose() {
-		log(Tracing.UI_DETAILS_VIEW, "PersistentAttributeDetailsPage.dispose()"); //$NON-NLS-1$
+		JptJpaUiPlugin.instance().trace(TRACE_OPTION, "dispose"); //$NON-NLS-1$
 
 		for (JpaComposite mappingComposite : this.mappingComposites.values()) {
 			mappingComposite.dispose();
@@ -157,16 +157,7 @@ public abstract class PersistentAttributeDetailsPage<A extends ReadOnlyPersisten
 		super.dispose();
 	}
 
-	@Override
-	protected void log(String flag, String message) {
-		super.log(flag, message);
-
-		if (Tracing.UI_DETAILS_VIEW.equals(flag) &&
-		    Tracing.booleanDebugOption(Tracing.UI_DETAILS_VIEW))
-		{
-			Tracing.log(message);
-		}
-	}
+	private static final String TRACE_OPTION = PersistentAttributeDetailsPage.class.getSimpleName();
 
 	private class MappingFilter implements Filter<AttributeMapping> {
 		private String mappingKey;

@@ -31,7 +31,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 
 /**
  * JPA Java code-completion proposal computer
@@ -153,7 +153,7 @@ public class JpaJavaCompletionProposalComputer
 		try {
 			return (IFile) cu.getCorrespondingResource();
 		} catch (JavaModelException ex) {
-			JptJpaUiPlugin.log(ex);
+			JptJpaUiPlugin.instance().logError(ex);
 			return null;
 		}
 	}

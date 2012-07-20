@@ -10,12 +10,12 @@
 package org.eclipse.jpt.jpa.ui.internal.jpa2;
 
 import java.io.Serializable;
-import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.common.utility.internal.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaNode;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 
 /**
  * Transform a JPA node into a
@@ -50,7 +50,7 @@ public final class Jpa2_0FlagTransformer<T extends JpaNode>
 
 	@Override
 	protected Boolean transform_(T jpaNode) {
-		return Boolean.valueOf(JptJpaCorePlugin.nodeIsJpa2_0Compatible(jpaNode));
+		return Boolean.valueOf(jpaNode.getJpaProject().getJpaPlatform().getJpaVersion().isCompatibleWithJpaVersion(JpaProject2_0.FACET_VERSION_STRING));
 	}
 
 	private static final long serialVersionUID = 1L;

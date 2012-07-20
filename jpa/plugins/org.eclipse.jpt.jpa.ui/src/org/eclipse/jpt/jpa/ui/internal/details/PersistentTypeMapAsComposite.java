@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -51,40 +51,41 @@ public class PersistentTypeMapAsComposite
 
 	@Override
 	protected MappingChangeHandler buildMappingChangeHandler() {
-		return new MappingChangeHandler() {
+		return new TypeMappingChangeHandler();
+	}
 
-			public String getLabelText() {
-				String mappingKey = getMappingKey();
+	protected class TypeMappingChangeHandler
+		implements MappingChangeHandler
+	{
+		public String getLabelText() {
+			String mappingKey = getMappingKey();
+			return (mappingKey != null) ?
+					JptUiDetailsMessages.MapAsComposite_mappedTypeText :
+					JptUiDetailsMessages.MapAsComposite_unmappedTypeText;
+		}
 
-				if (mappingKey != null) {
-					return JptUiDetailsMessages.MapAsComposite_mappedTypeText;
-				}
+		public String getMappingText() {
+			String mappingKey = getMappingKey();
+			return (mappingKey == null) ?
+					JptUiDetailsMessages.MapAsComposite_changeMappingType :
+					getMappingUiDefinition(mappingKey).getLinkLabel();
+		}
 
-				return JptUiDetailsMessages.MapAsComposite_unmappedTypeText;
-			}
+		public void morphMapping(MappingUiDefinition definition) {
+			getSubject().setMappingKey(definition.getKey());
+		}
 
-			public String getMappingText() {
-				String mappingKey = getMappingKey();
+		public String getName() {
+			return getSubject().getSimpleName();
+		}
 
-				if (mappingKey == null) {
-					return JptUiDetailsMessages.MapAsComposite_changeMappingType;
-				}
+		public Iterable<? extends MappingUiDefinition<? extends PersistentType, ?>> getMappingUiDefinitions() {
+			return getTypeMappingUiDefinitions();
+		}
 
-				return getMappingUiDefinition(mappingKey).getLinkLabel();
-			}
-
-			public void morphMapping(MappingUiDefinition definition) {
-				getSubject().setMappingKey(definition.getKey());
-			}
-
-			public String getName() {
-				return getSubject().getSimpleName();
-			}
-
-			public Iterator<? extends MappingUiDefinition<? extends PersistentType, ?>> mappingUiDefinitions() {
-				return typeMappingUiDefinitions();
-			}
-		};
+		public MappingUiDefinition getMappingUiDefinition(String mappingKey) {
+			return getTypeMappingUiDefinition(mappingKey);
+		}
 	}
 
 	/**
@@ -92,8 +93,12 @@ public class PersistentTypeMapAsComposite
 	 *
 	 * @return The supported types of mapping
 	 */
-	protected Iterator<? extends MappingUiDefinition<? extends PersistentType, ?>> typeMappingUiDefinitions() {
-		return getJpaPlatformUi().typeMappingUiDefinitions(getSubject().getResourceType());
+	protected Iterable<? extends MappingUiDefinition<? extends PersistentType, ?>> getTypeMappingUiDefinitions() {
+		return getJpaPlatformUi().getTypeMappingUiDefinitions(getSubject().getResourceType());
+	}
+	
+	protected MappingUiDefinition<? extends PersistentType, ?> getTypeMappingUiDefinition(String mappingKey) {
+		return getJpaPlatformUi().getTypeMappingUiDefinition(getSubject().getResourceType(), mappingKey);
 	}
 	
 	@Override

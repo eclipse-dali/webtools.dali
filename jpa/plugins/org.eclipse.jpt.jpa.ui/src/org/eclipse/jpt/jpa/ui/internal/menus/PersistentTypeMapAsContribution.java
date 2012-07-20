@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.menus;
 
-import java.util.Iterator;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -49,16 +48,12 @@ public class PersistentTypeMapAsContribution
 	}
 	
 	@Override
-	protected Iterator<? extends MappingUiDefinition<PersistentType, ?>> mappingUiDefinitions(
-			JpaPlatformUi jpaPlatformUi, JptResourceType resourceType) {
-		
-		return jpaPlatformUi.typeMappingUiDefinitions(resourceType);
+	protected Iterable<? extends MappingUiDefinition<PersistentType, ?>> getMappingUiDefinitions(JpaPlatformUi jpaPlatformUi, JptResourceType resourceType) {
+		return jpaPlatformUi.getTypeMappingUiDefinitions(resourceType);
 	}
 	
 	@Override
-	protected DefaultMappingUiDefinition<PersistentType, ?> getDefaultMappingUiDefinition(
-			JpaPlatformUi jpaPlatformUi, PersistentType node) {
-		
+	protected DefaultMappingUiDefinition<PersistentType, ?> getDefaultMappingUiDefinition(JpaPlatformUi jpaPlatformUi, PersistentType node) {
 		return jpaPlatformUi.getDefaultTypeMappingUiDefinition(node.getResourceType());
 	}
 }

@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.SortedSet;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.resource.ResourceManager;
@@ -29,12 +30,12 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.db.ConnectionAdapter;
 import org.eclipse.jpt.jpa.db.ConnectionListener;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
-import org.eclipse.jpt.jpa.db.JptJpaDbPlugin;
+import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.jpt.jpa.db.ui.internal.DTPUiTools;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.ImageRepository;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -208,7 +209,7 @@ public class DatabaseGroup
 	}
 
 	private SortedSet<String> buildSortedConnectionProfileNames() {
-		return CollectionTools.sortedSet(JptJpaDbPlugin.getConnectionProfileFactory().getConnectionProfileNames());
+		return CollectionTools.sortedSet(this.getConnectionProfileFactory().getConnectionProfileNames());
 	}
 
 	/**
@@ -257,7 +258,11 @@ public class DatabaseGroup
 	}
 
 	private ConnectionProfile buildConnectionProfile(String name) {
-		return JptJpaDbPlugin.getConnectionProfileFactory().buildConnectionProfile(name);
+		return this.getConnectionProfileFactory().buildConnectionProfile(name);
+	}
+
+	private ConnectionProfileFactory getConnectionProfileFactory() {
+		return (ConnectionProfileFactory) ResourcesPlugin.getWorkspace().getAdapter(ConnectionProfileFactory.class);
 	}
 
 
@@ -334,7 +339,7 @@ public class DatabaseGroup
 								DatabaseGroup.this.selectedConnectionProfile.connect();
 							} 
 							catch (Exception ex) {
-								JptJpaUiPlugin.log(ex);
+								JptJpaUiPlugin.instance().logError(ex);
 							} 
 							finally {
 								finished.setTrue();
@@ -353,7 +358,7 @@ public class DatabaseGroup
 			});
 		} 
 		catch (Exception e) {
-			JptJpaUiPlugin.log(e);
+			JptJpaUiPlugin.instance().logError(e);
 		}
 		this.wizardContainer.updateButtons();
 	}

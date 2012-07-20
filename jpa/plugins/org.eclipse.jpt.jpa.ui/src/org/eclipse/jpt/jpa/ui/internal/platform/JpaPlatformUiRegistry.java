@@ -1,11 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2006, 2009 Oracle. All rights reserved. This
- *  program and the accompanying materials are made available under the terms of
- *  the Eclipse Public License v1.0 which accompanies this distribution, and is
- *  available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: Oracle. - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.platform;
 
 import java.util.HashMap;
@@ -22,7 +23,7 @@ import org.eclipse.jpt.common.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUiFactory;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 
 public class JpaPlatformUiRegistry 
 {
@@ -136,7 +137,7 @@ public class JpaPlatformUiRegistry
 	private Iterator<IConfigurationElement> allConfigElements() {
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		IExtensionPoint extensionPoint = 
-			registry.getExtensionPoint(JptJpaUiPlugin.PLUGIN_ID, EXTENSION_ID);
+			registry.getExtensionPoint(JptJpaUiPlugin.instance().getPluginID(), EXTENSION_ID);
 		IExtension[] extensions = extensionPoint.getExtensions();
 		
 		return new CompositeIterator<IConfigurationElement>(
@@ -159,7 +160,7 @@ public class JpaPlatformUiRegistry
 			+ "\" is missing a required attribute \""
 			+ attributeName
 			+ "\".";
-		JptJpaUiPlugin.log(message);
+		JptJpaUiPlugin.instance().logError(message);
 	}
 	
 	// TODO externalize strings
@@ -172,7 +173,7 @@ public class JpaPlatformUiRegistry
 			+ otherConfigElement.getContributor().getName()
 			+ "\" have registered a duplicate attribute \"id\" "
 			+ "for the extension element \"jpaPlatformUi\".";
-		JptJpaUiPlugin.log(message);
+		JptJpaUiPlugin.instance().logError(message);
 	}
 		
 	// TODO externalize strings
@@ -185,6 +186,6 @@ public class JpaPlatformUiRegistry
 			+ "\" in the plugin \""
 			+ configElement.getContributor().getName()
 			+ "\".";
-		JptJpaUiPlugin.log(message);
+		JptJpaUiPlugin.instance().logError(message);
 	}
 }

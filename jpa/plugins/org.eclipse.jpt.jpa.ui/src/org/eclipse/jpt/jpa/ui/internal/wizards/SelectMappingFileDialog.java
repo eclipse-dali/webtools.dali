@@ -14,16 +14,14 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.orm.EmbeddedMappingFileWizard;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -111,10 +109,10 @@ public class SelectMappingFileDialog
 		TreeSelection selection = (TreeSelection)getTreeViewer().getSelection();
 		IResource selectedResource = (IResource) selection.getFirstElement();
 		if (selectedResource instanceof IFile) {
-			updateStatus(new Status(IStatus.OK, JptJpaUiPlugin.PLUGIN_ID, "")); //$NON-NLS-1$
+			updateStatus(JptJpaUiPlugin.instance().buildOKStatus());
 		}
 		else {
-			updateStatus(new Status(IStatus.ERROR, JptJpaUiPlugin.PLUGIN_ID, "")); //$NON-NLS-1$
+			updateStatus(JptJpaUiPlugin.instance().buildErrorStatus());
 		}
 	}
 	

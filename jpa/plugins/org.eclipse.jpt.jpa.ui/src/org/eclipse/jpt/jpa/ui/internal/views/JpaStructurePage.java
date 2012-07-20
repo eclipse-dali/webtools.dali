@@ -23,7 +23,6 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.internal.jface.AbstractSelectionProvider;
 import org.eclipse.jpt.common.ui.internal.jface.ItemTreeStateProviderManager;
 import org.eclipse.jpt.common.ui.internal.jface.SelectionChangedAdapter;
@@ -263,10 +262,7 @@ public class JpaStructurePage
 	}
 
 	private String buildMissingStructureProviderMessage(JpaFile jpaFile) {
-		JptResourceType resourceType = jpaFile.getResourceModel().getResourceType();
-		String contentType = resourceType.getContentType().getName();
-		String version = resourceType.getVersion();
-		return NLS.bind(JptUiMessages.JpaStructureView_structureProviderNotAvailable, contentType, version);
+		return NLS.bind(JptUiMessages.JpaStructureView_structureProviderNotAvailable, jpaFile.getResourceModel().getResourceType());
 	}
 
 	private void setTreeViewerJpaFile(JpaFile jpaFile, ItemTreeStateProviderFactoryProvider factoryProvider) {

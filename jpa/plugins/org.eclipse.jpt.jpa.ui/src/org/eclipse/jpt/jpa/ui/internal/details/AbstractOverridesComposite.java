@@ -28,7 +28,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ModifiablePropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationWritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.TransformationModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -224,7 +224,7 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 	}
 	
 	private ModifiablePropertyValueModel<Boolean> buildOverrideVirtualOverrideHolder() {
-		return new TransformationWritablePropertyValueModel<ReadOnlyOverride, Boolean>(this.selectedOverrideModel) {
+		return new TransformationModifiablePropertyValueModel<ReadOnlyOverride, Boolean>(this.selectedOverrideModel) {
 			@Override
 			public void setValue(Boolean value) {
 				updateOverride(value.booleanValue());

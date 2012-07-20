@@ -14,8 +14,8 @@ import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.swt.graphics.Image;
 
 public class ClassRefItemLabelProvider
@@ -34,9 +34,7 @@ public class ClassRefItemLabelProvider
 	}
 
 	protected Image buildImage() {
-		return this.item.isVirtual() ?
-				JptUiIcons.ghost(JptUiIcons.CLASS_REF) :
-				JptJpaUiPlugin.getImage(JptUiIcons.CLASS_REF);
+		return JptJpaUiPlugin.instance().getImage(JptUiIcons.CLASS_REF, this.item.isVirtual());
 	}
 
 	@Override

@@ -17,9 +17,9 @@ import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropert
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.ui.JpaRootContextNodeModel;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.swt.graphics.Image;
 
 public class RootContextNodeModelItemLabelProvider
@@ -41,9 +41,7 @@ public class RootContextNodeModelItemLabelProvider
 	{
 		@Override
 		public Image transform(JpaRootContextNode root) {
-			return (root != null) ?
-					JptJpaUiPlugin.getImage(JptUiIcons.JPA_CONTENT) :
-					JptUiIcons.ghost(JptUiIcons.JPA_CONTENT);
+			return JptJpaUiPlugin.instance().getImage(JptUiIcons.JPA_CONTENT, (root == null));
 		}
 	}
 

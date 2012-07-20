@@ -16,20 +16,16 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.details.orm.OrmAttributeMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.orm.OrmXmlUiFactory;
-import org.eclipse.jpt.jpa.ui.internal.JpaMappingImageHelper;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractMappingUiDefinition;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
-public class UnsupportedOrmMappingUiDefinition
+public class UnsupportedOrmAttributeMappingUiDefinition
 	extends AbstractMappingUiDefinition
 	implements OrmAttributeMappingUiDefinition
 {
 	// singleton
-	private static final UnsupportedOrmMappingUiDefinition INSTANCE = 
-			new UnsupportedOrmMappingUiDefinition();
-	
-	
+	private static final OrmAttributeMappingUiDefinition INSTANCE = new UnsupportedOrmAttributeMappingUiDefinition();
+
 	/**
 	 * Return the singleton.
 	 */
@@ -41,14 +37,13 @@ public class UnsupportedOrmMappingUiDefinition
 	/**
 	 * Ensure single instance.
 	 */
-	private UnsupportedOrmMappingUiDefinition() {
+	private UnsupportedOrmAttributeMappingUiDefinition() {
 		super();
 	}
-	
-	
-	public Image getImage() {
-		return JpaMappingImageHelper.imageForAttributeMapping(getKey());
-	}
+
+	public String getKey() {
+		return null;
+	}	
 	
 	public String getLabel() {
 		return JptUiDetailsOrmMessages.UnsupportedOrmMappingUiProvider_label;
@@ -58,32 +53,20 @@ public class UnsupportedOrmMappingUiDefinition
 		return JptUiDetailsOrmMessages.UnsupportedOrmMappingUiProvider_linkLabel;
 	}
 	
-	public String getKey() {
-		return null;
-	}
-	public JpaComposite buildAttributeMappingComposite(
-		OrmXmlUiFactory factory, 
-		PropertyValueModel subjectHolder, 
-		PropertyValueModel enabledModel, 
-		Composite parent, 
-		WidgetFactory widgetFactory) {
-		
-		return new NullComposite(subjectHolder, parent, widgetFactory);
+	public JpaComposite buildAttributeMappingComposite(OrmXmlUiFactory factory, PropertyValueModel mappingModel, PropertyValueModel enabledModel, Composite parent, WidgetFactory widgetFactory) {
+		return new NullComposite(mappingModel, parent, widgetFactory);
 	}
 	
-	public static class NullComposite extends Pane<JavaAttributeMapping>
+	public static class NullComposite
+		extends Pane<JavaAttributeMapping>
 		implements JpaComposite
 	{
-		NullComposite(
-				PropertyValueModel<JavaAttributeMapping> subjectHolder,
-		        Composite parent,
-		        WidgetFactory widgetFactory) {
-			
-			super(subjectHolder, parent, widgetFactory);
+		NullComposite(PropertyValueModel<JavaAttributeMapping> mappingModel, Composite parent, WidgetFactory widgetFactory) {
+			super(mappingModel, parent, widgetFactory);
 		}
-		
-		
 		@Override
-		protected void initializeLayout(Composite container) {}
+		protected void initializeLayout(Composite container) {
+			// NOP
+		}
 	}
 }

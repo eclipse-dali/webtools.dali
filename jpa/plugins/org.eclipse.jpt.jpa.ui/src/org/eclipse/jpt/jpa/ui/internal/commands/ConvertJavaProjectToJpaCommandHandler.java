@@ -28,9 +28,9 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.jpa.core.JpaFacet;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
+import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -96,11 +96,11 @@ public class ConvertJavaProjectToJpaCommandHandler
 				}
 			}
 			catch (InvocationTargetException ex) {
-				JptJpaUiPlugin.log(ex);
+				JptJpaUiPlugin.instance().logError(ex);
 			}
 			catch(InterruptedException ex) {
 				Thread.currentThread().interrupt();
-				JptJpaUiPlugin.log(ex);
+				JptJpaUiPlugin.instance().logError(ex);
 				removeFacetNature(project);
 			}
 		}
@@ -118,7 +118,7 @@ public class ConvertJavaProjectToJpaCommandHandler
 				project.setDescription(description, null);
 			}
 			catch (CoreException ce) {
-				JptJpaUiPlugin.log(ce);
+				JptJpaUiPlugin.instance().logError(ce);
 			}
 		}
 		
@@ -146,8 +146,8 @@ public class ConvertJavaProjectToJpaCommandHandler
 				this.fprojwc = fproj.createWorkingCopy();
 				this.fprojwc.detect(detectProgressMonitor);
 				
-				if (! this.fprojwc.hasProjectFacet(JpaFacet.FACET)) {
-					this.fprojwc.addProjectFacet(JpaFacet.FACET.getDefaultVersion());
+				if (! this.fprojwc.hasProjectFacet(JpaProject.FACET)) {
+					this.fprojwc.addProjectFacet(JpaProject.FACET.getDefaultVersion());
 				}
 			}
 			catch(CoreException e) {

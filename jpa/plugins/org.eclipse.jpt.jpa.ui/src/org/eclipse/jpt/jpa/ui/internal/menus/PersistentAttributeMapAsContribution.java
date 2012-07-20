@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.menus;
 
-import java.util.Iterator;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
@@ -62,10 +61,8 @@ public class PersistentAttributeMapAsContribution
 	}
 	
 	@Override
-	protected Iterator<? extends MappingUiDefinition<ReadOnlyPersistentAttribute, ?>> mappingUiDefinitions(
-			JpaPlatformUi jpaPlatformUi, JptResourceType resourceType) {
-		
-		return jpaPlatformUi.attributeMappingUiDefinitions(resourceType);
+	protected Iterable<? extends MappingUiDefinition<ReadOnlyPersistentAttribute, ?>> getMappingUiDefinitions(JpaPlatformUi jpaPlatformUi, JptResourceType resourceType) {
+		return jpaPlatformUi.getAttributeMappingUiDefinitions(resourceType);
 	}
 	
 	@Override

@@ -10,11 +10,10 @@
 package org.eclipse.jpt.jpa.ui.internal.jpa2.persistence;
 
 import java.util.Comparator;
-
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
@@ -29,8 +28,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.JpaConnection2_0;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
-import org.eclipse.jpt.jpa.db.JptJpaDbPlugin;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -172,7 +170,7 @@ public class JdbcConnectionPropertiesComposite extends Pane<JpaConnection2_0>
 		// take the settings from it (user, password, etc.) and give them
 		// to the persistence connection, so we go
 		// to the db plug-in directly to get the factory
-		return JptJpaDbPlugin.getConnectionProfileFactory();
+		return (ConnectionProfileFactory) ResourcesPlugin.getWorkspace().getAdapter(ConnectionProfileFactory.class);
 	}
 
 	// broaden access a bit
@@ -311,11 +309,8 @@ public class JdbcConnectionPropertiesComposite extends Pane<JpaConnection2_0>
 
 		@Override
 		protected IStatus validateItem(Object item) {
-
-			if (item == null) {
-				return new Status(IStatus.ERROR, JptJpaUiPlugin.PLUGIN_ID, IStatus.ERROR, "", null);
-			}
-			return Status.OK_STATUS;
+			int severity = (item == null) ? IStatus.ERROR : IStatus.OK;
+			return JptJpaUiPlugin.instance().buildStatus(severity);
 		}
 
 		/**

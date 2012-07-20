@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.wizards.proj;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.eclipse.jpt.jpa.core.JpaFacet;
+import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.internal.facet.FacetTools;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
@@ -62,7 +62,7 @@ public class JpaProjectWizardFirstPage
 	
 	@Override
 	protected String getModuleTypeID() {
-		return JpaFacet.ID;
+		return JpaProject.FACET_ID;
 	}
 	
 	@Override

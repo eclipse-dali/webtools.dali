@@ -13,6 +13,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.jpql;
 
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.BASIC;
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.ELEMENT_COLLECTION;
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.EMBEDDED;
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.EMBEDDED_ID;
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.ID;
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.MANY_TO_MANY;
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.MANY_TO_ONE;
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.ONE_TO_MANY;
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.ONE_TO_ONE;
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.VERSION;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -20,11 +30,11 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
-import org.eclipse.jpt.jpa.core.prefs.JpaJpqlPreferencesManager;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.persistence.jpa.jpql.ContentAssistProposals;
 import org.eclipse.persistence.jpa.jpql.WordParser;
 import org.eclipse.persistence.jpa.jpql.parser.Expression;
@@ -33,8 +43,6 @@ import org.eclipse.persistence.jpa.jpql.spi.IEntity;
 import org.eclipse.persistence.jpa.jpql.spi.IMapping;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
-
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.*;
 
 /**
  * The abstract definition of JPQL content assist support.
@@ -329,20 +337,20 @@ abstract class JpqlCompletionProposalComputer<T> {
 	}
 
 	private Image getImage(String key) {
-		ImageRegistry imageRegistry = getImageRegistry();
-		Image image = imageRegistry.get(key);
+		ImageRegistry registry = getImageRegistry();
+		Image image = registry.get(key);
 		if (image == null) {
-			imageRegistry.put(key, getImageDescriptor(key));
-			image = imageRegistry.get(key);
+			registry.put(key, buildImageDescriptor(key));
+			image = registry.get(key);
 		}
 		return image;
 	}
 
-	private ImageDescriptor getImageDescriptor(String key) {
-		return JptJpaUiPlugin.getImageDescriptor(key);
+	private ImageDescriptor buildImageDescriptor(String key) {
+		return JptJpaUiPlugin.instance().buildImageDescriptor(key);
 	}
 
-	private ImageRegistry getImageRegistry() {
+	private synchronized ImageRegistry getImageRegistry() {
 		if (imageRegistry == null) {
 			imageRegistry = new ImageRegistry(Display.getCurrent());
 		}
@@ -430,12 +438,11 @@ abstract class JpqlCompletionProposalComputer<T> {
 	}
 
 	private boolean shouldMatchFirstCharacterCase() {
-		return JpaJpqlPreferencesManager.getMatchFirstCharacterCaseWorkspacePreference();
+		return JpaPreferences.getJpqlIdentifierMatchFirstCharacterCase();
 	}
 
 	private boolean shouldUseLowercaseIdentifiers() {
-		String value = JpaJpqlPreferencesManager.getIdentifiersCaseWorkspacePreference();
-		return JpaJpqlPreferencesManager.JPQL_IDENTIFIER_LOWERCASE_PREF_VALUE.equals(value);
+		return JpaPreferences.getJpqlIdentifierLowercase();
 	}
 
 	private <I extends Comparable<? super I>> Iterable<I> sort(Iterable<I> iterator) {

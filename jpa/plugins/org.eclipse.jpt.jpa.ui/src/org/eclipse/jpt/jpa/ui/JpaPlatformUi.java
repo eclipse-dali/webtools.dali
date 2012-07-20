@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui;
 
-import java.util.Iterator;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.WidgetFactory;
@@ -55,57 +54,57 @@ import org.eclipse.swt.widgets.Composite;
  */
 public interface JpaPlatformUi {
 	// ********** navigator provider **********
-	
+
 	/**
 	 * Return the platform's Navigator factory provider.
 	 * This is used by the Common Navigator to build and maintain the JPA
 	 * content and labels.
 	 */
 	ItemTreeStateProviderFactoryProvider getNavigatorFactoryProvider();
-	
-	
+
+
 	// ********** structure view factory providers **********
-	
+
 	/**
 	 * Return a structure provider for the specified JPA file.
 	 */
 	ItemTreeStateProviderFactoryProvider getStructureViewFactoryProvider(JpaFile jpaFile);
-	
-	
+
+
 	// ********** details providers **********
-	
+
 	JpaDetailsPageManager<? extends JpaStructureNode> buildJpaDetailsPageManager(
 			Composite parent,
 			JpaStructureNode structureNode,
 			WidgetFactory widgetFactory);
-	
-	
+
+
 	// ********** file ui definitions **********
-	
+
 	/**
 	 * Return a resource ui definition for the specified resource type.
 	 */
 	ResourceUiDefinition getResourceUiDefinition(JptResourceType resourceType);
-	
-	
+
+
 	// ********** type mappings **********
-	
+
 	JpaComposite buildTypeMappingComposite(
 			JptResourceType resourceType, 
 			String mappingKey, 
 			Composite parent, 
 			PropertyValueModel<TypeMapping> mappingHolder,
 			WidgetFactory widgetFactory);
-	
-	DefaultMappingUiDefinition<PersistentType, ? extends TypeMapping>
-			getDefaultTypeMappingUiDefinition(JptResourceType resourceType);
-	
-	Iterator<MappingUiDefinition<PersistentType, ? extends TypeMapping>>
-			typeMappingUiDefinitions(JptResourceType resourceType);
-	
-	
+
+	Iterable<MappingUiDefinition<PersistentType, ? extends TypeMapping>> getTypeMappingUiDefinitions(JptResourceType resourceType);
+
+	MappingUiDefinition<PersistentType, ? extends TypeMapping> getTypeMappingUiDefinition(JptResourceType resourceType, String mappingKey);
+
+	DefaultMappingUiDefinition<PersistentType, ? extends TypeMapping> getDefaultTypeMappingUiDefinition(JptResourceType resourceType);
+
+
 	// ********** attribute mappings **********
-	
+
 	JpaComposite buildAttributeMappingComposite(
 			JptResourceType resourceType, 
 			String mappingKey, 
@@ -113,25 +112,27 @@ public interface JpaPlatformUi {
 			PropertyValueModel<AttributeMapping> mappingHolder,
 			PropertyValueModel<Boolean> enabledModel,
 			WidgetFactory widgetFactory);
-	
-	DefaultMappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping> 
-			getDefaultAttributeMappingUiDefinition(JptResourceType resourceType, String mappingKey);
-	
-	Iterator<MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping>>
-			attributeMappingUiDefinitions(JptResourceType resourceType);
-	
+
+	Iterable<MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping>> getAttributeMappingUiDefinitions(JptResourceType resourceType);
+
+	MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping> getAttributeMappingUiDefinition(JptResourceType resourceType, String mappingKey);
+
+	DefaultMappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping> getDefaultAttributeMappingUiDefinition(JptResourceType resourceType, String mappingKey);
+
+
 	// ********** metadata conversion **********
 
 	void convertJavaQueryMetadataToGlobal(JpaProject project);
-	
+
 	void convertJavaGeneratorMetadataToGlobal(JpaProject project);
-	
+
+
 	// ********** entity generation **********
-	
+
 	void generateEntities(JpaProject project, IStructuredSelection selection);
-	
-	
+
+
 	// ********** DDL generation **********
-	
+
 	void generateDDL(JpaProject project, IStructuredSelection selection);
 }

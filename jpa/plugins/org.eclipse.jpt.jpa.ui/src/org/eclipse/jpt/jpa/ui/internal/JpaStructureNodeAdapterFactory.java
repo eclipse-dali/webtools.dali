@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Composite;
  * Factory to build adapters for a {@link JpaStructureNode}:<ul>
  * <li>{@link org.eclipse.jpt.jpa.ui.details.JpaDetailsPageManager.Factory}
  * </ul>
- * See <code>org.eclipse.jpt.jpa.ui/plugin.xml</code>.
+ * See <code>org.eclipse.jpt.jpa.ui/plugin.xml:org.eclipse.core.runtime.adapters</code>.
  */
 public class JpaStructureNodeAdapterFactory
 	implements IAdapterFactory

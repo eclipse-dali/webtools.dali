@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -43,7 +43,7 @@ public class AssociationsListComposite extends FigureCanvas {
 		this.resourceManager = resourceManager;
 		
 		setBounds(10, 10 , 500, 200);
-		Color backgroundColor = new Color(Display.getDefault(), 255,255,255);
+		Color backgroundColor = new Color(getDisplay(), 255,255,255);
 		setBackground(backgroundColor);
 		backgroundColor.dispose();
 		

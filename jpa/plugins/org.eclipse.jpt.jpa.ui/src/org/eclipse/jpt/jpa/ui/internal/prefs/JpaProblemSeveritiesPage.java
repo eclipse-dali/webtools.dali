@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRunnable;
@@ -22,7 +21,6 @@ import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.preferences.PropertyAndPreferencePage;
 import org.eclipse.jdt.internal.ui.preferences.ScrolledPageContent;
 import org.eclipse.jface.dialogs.IDialogSettings;
@@ -31,11 +29,11 @@ import org.eclipse.jface.layout.PixelConverter;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.resource.JFaceResources;
-import org.eclipse.jpt.jpa.core.prefs.JpaValidationPreferencesManager;
+import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.JptUiValidationPreferenceMessages;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -151,8 +149,6 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	public static final String SETTINGS_SECTION_NAME = "JpaProblemSeveritiesPage"; //$NON-NLS-1$
 
 
-	private JpaValidationPreferencesManager preferencesManager;
-	
 	private Boolean hasProjectSpecificPreferences = null;
 
 	/**
@@ -169,14 +165,6 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		this.setDescription(JptUiMessages.JpaProblemSeveritiesPage_Description);
 	}
 
-	@Override
-	protected Control createContents(Composite parent) {
-		if(this.isProjectPreferencePage()) {
-			this.preferencesManager = new JpaValidationPreferencesManager(this.getProject());
-		}
-		return super.createContents(parent);
-	}
-	
 	protected void initialize() {
 		this.combos = new ArrayList<Combo>();
 		this.expandablePanes = new ArrayList<ExpandableComposite>();
@@ -189,22 +177,22 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	protected Map<String, String> buildDefaultSeverities() {
 		 Map<String, String> result = new HashMap<String, String>();
 
-		 result.put(JpaValidationMessages.PERSISTENCE_MULTIPLE_PERSISTENCE_UNITS, 												JpaValidationPreferencesManager.WARNING);
-		 result.put(JpaValidationMessages.PROJECT_NO_CONNECTION, 																			JpaValidationPreferencesManager.WARNING);
-		 result.put(JpaValidationMessages.PROJECT_INVALID_CONNECTION, 																	JpaValidationPreferencesManager.WARNING);
-		 result.put(JpaValidationMessages.PROJECT_INACTIVE_CONNECTION, 																	JpaValidationPreferencesManager.WARNING);
-		 result.put(JpaValidationMessages.MAPPING_FILE_EXTRANEOUS_PERSISTENCE_UNIT_METADATA, 						JpaValidationPreferencesManager.WARNING);
-		 result.put(JpaValidationMessages.PERSISTENT_TYPE_DUPLICATE_CLASS, 															JpaValidationPreferencesManager.WARNING); //3.0 M7
-		 result.put(JpaValidationMessages.PERSISTENCE_UNIT_JAR_FILE_DEPLOYMENT_PATH_WARNING, 						JpaValidationPreferencesManager.WARNING);
-		 result.put(JpaValidationMessages.PERSISTENT_ATTRIBUTE_INHERITED_ATTRIBUTES_NOT_SUPPORTED, 				JpaValidationPreferencesManager.WARNING);
-		 result.put(JpaValidationMessages.PERSISTENT_TYPE_ANNOTATED_BUT_NOT_INCLUDED_IN_PERSISTENCE_UNIT, 	JpaValidationPreferencesManager.WARNING);
-		 result.put(JpaValidationMessages.ENTITY_ABSTRACT_DISCRIMINATOR_VALUE_DEFINED,										JpaValidationPreferencesManager.WARNING);
-		 result.put(JpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE, 							JpaValidationPreferencesManager.WARNING); //3.0 M7
-		 result.put(JpaValidationMessages.ENTITY_TABLE_PER_CLASS_DISCRIMINATOR_VALUE_DEFINED, 						JpaValidationPreferencesManager.WARNING);
-		 result.put(JpaValidationMessages.ENTITY_TABLE_PER_CLASS_NOT_PORTABLE_ON_PLATFORM, 							JpaValidationPreferencesManager.WARNING);
+		 result.put(JpaValidationMessages.PERSISTENCE_MULTIPLE_PERSISTENCE_UNITS, JpaPreferences.PROBLEM_WARNING);
+		 result.put(JpaValidationMessages.PROJECT_NO_CONNECTION, JpaPreferences.PROBLEM_WARNING);
+		 result.put(JpaValidationMessages.PROJECT_INVALID_CONNECTION, JpaPreferences.PROBLEM_WARNING);
+		 result.put(JpaValidationMessages.PROJECT_INACTIVE_CONNECTION, JpaPreferences.PROBLEM_WARNING);
+		 result.put(JpaValidationMessages.MAPPING_FILE_EXTRANEOUS_PERSISTENCE_UNIT_METADATA, JpaPreferences.PROBLEM_WARNING);
+		 result.put(JpaValidationMessages.PERSISTENT_TYPE_DUPLICATE_CLASS, JpaPreferences.PROBLEM_WARNING); //3.0 M7
+		 result.put(JpaValidationMessages.PERSISTENCE_UNIT_JAR_FILE_DEPLOYMENT_PATH_WARNING, JpaPreferences.PROBLEM_WARNING);
+		 result.put(JpaValidationMessages.PERSISTENT_ATTRIBUTE_INHERITED_ATTRIBUTES_NOT_SUPPORTED, JpaPreferences.PROBLEM_WARNING);
+		 result.put(JpaValidationMessages.PERSISTENT_TYPE_ANNOTATED_BUT_NOT_INCLUDED_IN_PERSISTENCE_UNIT, JpaPreferences.PROBLEM_WARNING);
+		 result.put(JpaValidationMessages.ENTITY_ABSTRACT_DISCRIMINATOR_VALUE_DEFINED, JpaPreferences.PROBLEM_WARNING);
+		 result.put(JpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE, JpaPreferences.PROBLEM_WARNING); //3.0 M7
+		 result.put(JpaValidationMessages.ENTITY_TABLE_PER_CLASS_DISCRIMINATOR_VALUE_DEFINED, JpaPreferences.PROBLEM_WARNING);
+		 result.put(JpaValidationMessages.ENTITY_TABLE_PER_CLASS_NOT_PORTABLE_ON_PLATFORM, JpaPreferences.PROBLEM_WARNING);
 
-		 result.put(JpaValidationMessages.XML_VERSION_NOT_LATEST, 																			JpaValidationPreferencesManager.INFO);
-		 result.put(JpaValidationMessages.PERSISTENCE_UNIT_REDUNDANT_CLASS, 														JpaValidationPreferencesManager.INFO);
+		 result.put(JpaValidationMessages.XML_VERSION_NOT_LATEST, JpaPreferences.PROBLEM_INFO);
+		 result.put(JpaValidationMessages.PERSISTENCE_UNIT_REDUNDANT_CLASS, JpaPreferences.PROBLEM_INFO);
 		 return result;
 	}
 
@@ -704,11 +692,10 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	protected String getPreferenceValue(String preferenceKey) {
 		String preference = null;
 		if (this.isProjectPreferencePage() && this.hasProjectSpecificOptions(this.getProject())) { //useProjectSettings() won't work since the page is being built
-			preference = this.preferencesManager.getProjectLevelProblemPreference(preferenceKey);
-		}
-		else {
+			preference = JpaPreferences.getProblemSeverity(this.getProject(), preferenceKey);
+		} else {
 			//don't get the workspace preference when the project has overridden workspace preferences
-			preference = JpaValidationPreferencesManager.getWorkspaceLevelProblemPreference(preferenceKey);
+			preference = JpaPreferences.getProblemSeverity(preferenceKey);
 		}
 		if (preference == null) {
 			preference = getDefaultPreferenceValue(preferenceKey);
@@ -721,20 +708,20 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	 */
 	protected String getDefaultPreferenceValue(String preferenceKey) {
 		String preference = this.defaultSeverities.get(preferenceKey);
-		return preference == null ? JpaValidationPreferencesManager.ERROR : preference;
+		return preference == null ? JpaPreferences.PROBLEM_ERROR : preference;
 	}
 
 	protected int convertPreferenceValueToComboIndex(String preferenceValue) {
-		if (JpaValidationPreferencesManager.ERROR.equals(preferenceValue)) {
+		if (JpaPreferences.PROBLEM_ERROR.equals(preferenceValue)) {
 			return ERROR_INDEX;
 		}
-		if (JpaValidationPreferencesManager.WARNING.equals(preferenceValue)) {
+		if (JpaPreferences.PROBLEM_WARNING.equals(preferenceValue)) {
 			return WARNING_INDEX;
 		}
-		if (JpaValidationPreferencesManager.INFO.equals(preferenceValue)) {
+		if (JpaPreferences.PROBLEM_INFO.equals(preferenceValue)) {
 			return INFO_INDEX;
 		}
-		if (JpaValidationPreferencesManager.IGNORE.equals(preferenceValue)) {
+		if (JpaPreferences.PROBLEM_IGNORE.equals(preferenceValue)) {
 			return IGNORE_INDEX;
 		}
 		throw new IllegalStateException();
@@ -742,10 +729,10 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 
 	protected String convertToPreferenceValue(int selectionIndex) {
 		switch (selectionIndex) {
-			case ERROR_INDEX:   return JpaValidationPreferencesManager.ERROR;
-			case WARNING_INDEX: return JpaValidationPreferencesManager.WARNING;
-			case INFO_INDEX:    return JpaValidationPreferencesManager.INFO;
-			case IGNORE_INDEX:  return JpaValidationPreferencesManager.IGNORE;
+			case ERROR_INDEX:   return JpaPreferences.PROBLEM_ERROR;
+			case WARNING_INDEX: return JpaPreferences.PROBLEM_WARNING;
+			case INFO_INDEX:    return JpaPreferences.PROBLEM_INFO;
+			case IGNORE_INDEX:  return JpaPreferences.PROBLEM_IGNORE;
 			default:            return null;
 		}
 	}
@@ -771,7 +758,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 
 	@Override
 	protected boolean hasProjectSpecificOptions(IProject project) {
-		return this.preferencesManager.projectHasSpecificOptions();
+		return JpaPreferences.getWorkspaceValidationPreferencesOverridden(project);
 	}
 
 	@Override
@@ -821,7 +808,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	protected void overrideWorkspacePreferences() {
 		for (Combo combo : this.combos) {
 			String preferenceKey = (String) combo.getData(PREFERENCE_KEY);
-			String workspacePreference = JpaValidationPreferencesManager.getWorkspaceLevelProblemPreference(preferenceKey);
+			String workspacePreference = JpaPreferences.getProblemSeverity(preferenceKey);
 			String defaultPreference = getDefaultPreferenceValue(preferenceKey);
 			if (workspacePreference != null && !workspacePreference.equals(defaultPreference)) {
 				combo.select(convertPreferenceValueToComboIndex(workspacePreference));
@@ -840,7 +827,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	public boolean performOk() {
 		super.performOk();
 		if (this.hasProjectSpecificPreferences != null) {
-			this.preferencesManager.setProjectHasSpecificOptions(this.hasProjectSpecificPreferences.booleanValue());
+			JpaPreferences.setWorkspaceValidationPreferencesOverridden(this.getProject(), this.hasProjectSpecificPreferences.booleanValue());
 		}
 		for (String validationPreferenceKey : this.severityLevels.keySet()) {
 			this.updatePreference(validationPreferenceKey, this.severityLevels.get(validationPreferenceKey));
@@ -863,10 +850,9 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 
 	protected void updatePreference(String preferenceKey, String value) {
 		if (this.isProjectPreferencePage()) {
-			this.preferencesManager.setProjectLevelProblemPreference(preferenceKey, value);
-		}
-		else {
-			JpaValidationPreferencesManager.setWorkspaceLevelProblemPreference(preferenceKey, value);
+			JpaPreferences.setProblemSeverity(this.getProject(), preferenceKey, value);
+		} else {
+			JpaPreferences.setProblemSeverity(preferenceKey, value);
 		}
 	}
 
@@ -904,11 +890,15 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	}
 
 	void performOk_(IProgressMonitor monitor) throws CoreException {
-		//if project is null this is a workspace preference page
-		if (this.getProject()==null) {
-			JavaPlugin.getWorkspace().build(IncrementalProjectBuilder.FULL_BUILD, monitor);
+		int buildKind = IncrementalProjectBuilder.FULL_BUILD;
+		IProject project = this.getProject();
+		if (project != null) {
+			// project preference page
+			project.build(buildKind, monitor);
+		} else {
+			// workspace preference page
+			ResourcesPlugin.getWorkspace().build(buildKind, monitor);
 		}
-		else this.getProject().build(IncrementalProjectBuilder.FULL_BUILD, monitor);
 	}
 
 	@Override

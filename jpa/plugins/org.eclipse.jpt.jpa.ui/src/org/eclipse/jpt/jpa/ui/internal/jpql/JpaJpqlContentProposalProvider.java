@@ -64,10 +64,10 @@ import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWra
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
+import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.persistence.jpa.jpql.JPQLQueryProblem;
@@ -77,6 +77,7 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -519,7 +520,7 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 			resourceBundle = ResourceBundle.getBundle(
 				"jpa_jpql_validation",
 				Locale.getDefault(),
-				JptJpaCorePlugin.class.getClassLoader()
+				JpaJpqlQueryHelper.class.getClassLoader()
 			);
 		}
 		return resourceBundle;

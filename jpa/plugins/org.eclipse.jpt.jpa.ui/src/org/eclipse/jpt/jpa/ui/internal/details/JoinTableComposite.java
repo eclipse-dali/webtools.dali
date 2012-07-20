@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListPropertyValueModelAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.ReadOnlyWritablePropertyValueModelWrapper;
+import org.eclipse.jpt.common.utility.internal.model.value.ReadOnlyModifiablePropertyValueModelWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ValueListAdapter;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
@@ -342,7 +342,7 @@ public class JoinTableComposite
 		public InverseJoinColumnPaneEnablerHolder() {
 			super(
 				new ValueListAdapter<ReadOnlyJoinTable>(
-					new ReadOnlyWritablePropertyValueModelWrapper<ReadOnlyJoinTable>(getSubjectHolder()), 
+					new ReadOnlyModifiablePropertyValueModelWrapper<ReadOnlyJoinTable>(getSubjectHolder()), 
 					ReadOnlyJoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST));
 			this.stateListener = new StateListener();
 		}

@@ -47,7 +47,8 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
+import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.model.EntityRow;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.model.IEntityDataModelProperties;
 import org.eclipse.jst.j2ee.internal.common.operations.INewJavaClassDataModelProperties;
@@ -144,7 +145,7 @@ public class EntityRowTableWizardSection extends Composite {
 		try {
 			ks = KeyStroke.getInstance("Ctrl+Space");			
 		} catch (ParseException e1) {
-			JptJpaUiPlugin.log(e1);
+			JptJpaUiPlugin.instance().logError(e1);
 		} 
 	}
 
@@ -428,10 +429,9 @@ public class EntityRowTableWizardSection extends Composite {
 			return false;
 		}
 		public Object[] getElements(Object element) {
-			if (element instanceof List) {
-				return ((List) element).toArray();
-			}
-			return new Object[0];
+			return (element instanceof List) ?
+					((List<?>) element).toArray() :
+					Tools.EMPTY_OBJECT_ARRAY;
 		}
 		public void inputChanged(Viewer aViewer, Object oldInput, Object newInput) {
 			//Default nothing

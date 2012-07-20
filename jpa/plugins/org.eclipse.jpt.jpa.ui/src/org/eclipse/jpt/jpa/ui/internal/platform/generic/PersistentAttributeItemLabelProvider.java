@@ -11,11 +11,15 @@ package org.eclipse.jpt.jpa.ui.internal.platform.generic;
 
 import org.eclipse.jpt.common.ui.internal.jface.AbstractItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
+import org.eclipse.jpt.common.utility.internal.Transformer;
+import org.eclipse.jpt.common.utility.internal.TransformerAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
-import org.eclipse.jpt.jpa.ui.internal.JpaMappingImageHelper;
-import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
+import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
+import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.swt.graphics.Image;
 
 public class PersistentAttributeItemLabelProvider
@@ -25,25 +29,57 @@ public class PersistentAttributeItemLabelProvider
 		super(persistentAttribute, manager);
 	}
 
+
+	// ********** image **********
+
 	@Override
 	protected PropertyValueModel<Image> buildImageModel() {
-		return new ImageModel(this.item);
+		return new TransformationPropertyValueModel<AttributeMapping, Image>(this.buildMappingModel(), IMAGE_TRANSFORMER);
 	}
 
-	protected static class ImageModel
-		extends PropertyAspectAdapter<ReadOnlyPersistentAttribute, Image>
+	protected PropertyValueModel<AttributeMapping> buildMappingModel() {
+		return new MappingModel(this.item);
+	}
+
+	protected static class MappingModel
+		extends PropertyAspectAdapter<ReadOnlyPersistentAttribute, AttributeMapping>
 	{
-		public ImageModel(ReadOnlyPersistentAttribute subject) {
+		public MappingModel(ReadOnlyPersistentAttribute subject) {
 			super(ReadOnlyPersistentAttribute.MAPPING_PROPERTY, subject);
 		}
 		@Override
-		protected Image buildValue_() {
-			String mappingKey = this.subject.getMappingKey();
-			return this.subject.isVirtual() ?
-					JptUiIcons.ghost(JpaMappingImageHelper.iconKeyForAttributeMapping(mappingKey)) :
-					JpaMappingImageHelper.imageForAttributeMapping(mappingKey);
+		protected AttributeMapping buildValue_() {
+			return this.subject.getMapping();
 		}
 	}
+
+	protected static final Transformer<AttributeMapping, Image> IMAGE_TRANSFORMER = new ImageTransformer();
+
+	/**
+	 * Transform an attribute mapping into the appropriate image.
+	 */
+	protected static class ImageTransformer
+		extends TransformerAdapter<AttributeMapping, Image>
+	{
+		@Override
+		public Image transform(AttributeMapping attributeMapping) {
+			MappingUiDefinition<? extends ReadOnlyPersistentAttribute, ?> definition = this.getAttributeMappingUiDefinition(attributeMapping);
+			return attributeMapping.getPersistentAttribute().isVirtual() ?
+					definition.getGhostImage() :
+					definition.getImage();
+		}
+
+		private MappingUiDefinition<? extends ReadOnlyPersistentAttribute, ?> getAttributeMappingUiDefinition(AttributeMapping attributeMapping) {
+			return this.getJpaPlatformUi(attributeMapping).getAttributeMappingUiDefinition(attributeMapping.getResourceType(), attributeMapping.getKey());
+		}
+
+		private JpaPlatformUi getJpaPlatformUi(AttributeMapping attributeMapping) {
+			return (JpaPlatformUi) attributeMapping.getJpaProject().getJpaPlatform().getAdapter(JpaPlatformUi.class);
+		}
+	}
+
+
+	// ********** text **********
 
 	@Override
 	protected PropertyValueModel<String> buildTextModel() {
@@ -61,6 +97,9 @@ public class PersistentAttributeItemLabelProvider
 			return this.subject.getName();
 		}
 	}
+
+
+	// ********** description **********
 
 	@Override
 	@SuppressWarnings("unchecked")

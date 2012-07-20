@@ -1,60 +1,16 @@
 /*******************************************************************************
- *  Copyright (c) 2007, 2010 Oracle.
- *  All rights reserved.  This program and the accompanying materials
- *  are made available under the terms of the Eclipse Public License v1.0
- *  which accompanies this distribution, and is available at
- *  http://www.eclipse.org/legal/epl-v10.html
- *
- *  Contributors:
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal;
 
-import org.eclipse.draw2d.ImageUtilities;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
-
 @SuppressWarnings("nls")
-public class JptUiIcons
-{
-    /**
-	 * Creates and returns a new SWT image that is a grayed out version of the image 
-	 * corresponding  to the passed in key. Stores this gray image in the JptJpaUiPlugin 
-	 * ImageRegistry with -gray appended to the key.
-	 * Clients of this method should not dispose of the image.
-	 * 
-	 * This method is synchronized to prevent concurrent access of the ImageRegistry by
-	 * multiple threads.
-	 * 
-	 * @return a new grayed out image
-	 */
-	public static synchronized Image ghost(String key) {
-		Image existingImage = JptJpaUiPlugin.instance().getImageRegistry().get(key + "-gray");
-		if (existingImage != null) {
-			return existingImage;
-		}
-
-		Image grayImage = buildGhostImage(key);
-		JptJpaUiPlugin.instance().getImageRegistry().put(key + "-gray", grayImage);
-		return grayImage;
-	}
-	
-	private static Image buildGhostImage(String key) {
-		Image originalImage = JptJpaUiPlugin.getImage(key);
-		Color lightGray = new Color(originalImage.getDevice(), 223, 223, 223);
-		ImageData imageData = ImageUtilities.createShadedImage(originalImage, lightGray);
-
-		Image shadedImage = new Image(originalImage.getDevice(), imageData);
-		Image grayImage = new Image(originalImage.getDevice(), shadedImage, SWT.IMAGE_GRAY);
-
-		lightGray.dispose();
-		shadedImage.dispose();
-		return grayImage;
-	}	
-
+public class JptUiIcons {
 
 	// **************** General JPA icons **************************************
 	

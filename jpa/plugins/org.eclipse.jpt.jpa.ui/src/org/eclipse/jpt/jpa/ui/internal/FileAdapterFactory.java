@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.ui.JpaProjectModel;
  * are applicable here also):<ul>
  * <li>{@link org.eclipse.jpt.jpa.ui.JpaFileModel JpaFileModel}
  * </ul>
- * See <code>org.eclipse.jpt.jpa.ui/plugin.xml</code>.
+ * See <code>org.eclipse.jpt.jpa.ui/plugin.xml:org.eclipse.core.runtime.adapters</code>.
  * 
  * @see ProjectAdapterFactory
  */

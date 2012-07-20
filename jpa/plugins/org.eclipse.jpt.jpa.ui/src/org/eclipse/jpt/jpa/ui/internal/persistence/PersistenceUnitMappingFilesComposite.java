@@ -14,7 +14,6 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
@@ -30,13 +29,13 @@ import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
+import org.eclipse.jpt.jpa.core.resource.ResourceMappingFile;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
 import org.eclipse.jpt.jpa.ui.internal.jface.XmlMappingFileViewerFilter;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
@@ -86,7 +85,7 @@ public abstract class PersistenceUnitMappingFilesComposite
 		dialog.setValidator(buildValidator());
 		dialog.setTitle(JptUiPersistenceMessages.PersistenceUnitMappingFilesComposite_mappingFileDialog_title);
 		dialog.setMessage(JptUiPersistenceMessages.PersistenceUnitMappingFilesComposite_mappingFileDialog_message);
-		dialog.addFilter(new XmlMappingFileViewerFilter(getSubject().getJpaProject(), JptJpaCorePlugin.MAPPING_FILE_CONTENT_TYPE));
+		dialog.addFilter(new XmlMappingFileViewerFilter(getSubject().getJpaProject(), ResourceMappingFile.Root.CONTENT_TYPE));
 		dialog.setInput(getSubject().getJpaProject().getProject());
 		dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));
 
@@ -136,7 +135,7 @@ public abstract class PersistenceUnitMappingFilesComposite
 		return new LabelProvider() {
 			@Override
 			public Image getImage(Object element) {
-				return JptJpaUiPlugin.getImage(JptUiIcons.MAPPING_FILE_REF);
+				return JptJpaUiPlugin.instance().getImage(JptUiIcons.MAPPING_FILE_REF);
 			}
 			
 			@Override
@@ -187,16 +186,16 @@ public abstract class PersistenceUnitMappingFilesComposite
 			public IStatus validate(Object[] selection) {
 
 				if (selection.length == 0) {
-					return new Status(IStatus.ERROR, JptJpaUiPlugin.PLUGIN_ID, "");
+					return JptJpaUiPlugin.instance().buildErrorStatus();
 				}
 
 				for (Object item : selection) {
 					if (item instanceof IFolder) {
-						return new Status(IStatus.ERROR, JptJpaUiPlugin.PLUGIN_ID, "");
+						return JptJpaUiPlugin.instance().buildErrorStatus();
 					}
 				}
 
-				return new Status(IStatus.OK, JptJpaUiPlugin.PLUGIN_ID, "");
+				return JptJpaUiPlugin.instance().buildOKStatus();
 			}
 		};
 	}

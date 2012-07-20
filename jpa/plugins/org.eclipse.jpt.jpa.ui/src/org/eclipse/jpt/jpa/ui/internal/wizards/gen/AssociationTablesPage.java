@@ -100,7 +100,7 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 		browser1.addSelectionListener(new SelectionListener(){
 			public void widgetDefaultSelected(SelectionEvent e) {}
 			public void widgetSelected(SelectionEvent e) {
-				SelectTableDialog dlg = new SelectTableDialog(Display.getDefault().getActiveShell(), resourceManager, customizer.getTableNames());
+				SelectTableDialog dlg = new SelectTableDialog(SWTUtil.getShell(), resourceManager, customizer.getTableNames());
 				if( dlg.open() ==Dialog.OK ){
 					table1TextField.setText( dlg.getSelectedTable() );
 					getWizardDataModel().put( NewAssociationWizard.ASSOCIATION_REFERRER_TABLE, table1TextField.getText());
@@ -125,7 +125,7 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 		browser2.addSelectionListener(new SelectionListener(){
 			public void widgetDefaultSelected(SelectionEvent e) {}
 			public void widgetSelected(SelectionEvent e) {
-				SelectTableDialog dlg = new SelectTableDialog( Display.getDefault().getActiveShell(), resourceManager, customizer.getTableNames());
+				SelectTableDialog dlg = new SelectTableDialog( SWTUtil.getShell(), resourceManager, customizer.getTableNames());
 				if( dlg.open() == Dialog.OK){
 					table2TextField.setText( dlg.getSelectedTable() );
 					getWizardDataModel().put( NewAssociationWizard.ASSOCIATION_REFERENCED_TABLE, table2TextField.getText());
@@ -152,7 +152,7 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 			public void widgetDefaultSelected(SelectionEvent e) {}
 
 			public void widgetSelected(SelectionEvent e) {
-				SelectTableDialog dlg = new SelectTableDialog( Display.getDefault().getActiveShell(), resourceManager, customizer.getSchema() );
+				SelectTableDialog dlg = new SelectTableDialog( SWTUtil.getShell(), resourceManager, customizer.getSchema() );
 				if( dlg.open() == Dialog.OK){
 					joinTableTextField.setText( dlg.getSelectedTable() );
 					getWizardDataModel().put( NewAssociationWizard.ASSOCIATION_JOIN_TABLE, joinTableTextField.getText() );

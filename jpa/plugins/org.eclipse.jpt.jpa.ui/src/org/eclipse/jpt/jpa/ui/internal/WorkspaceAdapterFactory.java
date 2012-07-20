@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
+import org.eclipse.jpt.jpa.core.JpaWorkspace;
 import org.eclipse.jpt.jpa.ui.JpaProjectsModel;
 
 /**
@@ -26,7 +27,7 @@ import org.eclipse.jpt.jpa.ui.JpaProjectsModel;
  *     any uncreated JPA projects but should be notified if the JPA project
  *     <em>is</em> ever created (e.g. UI views).
  * </ul>
- * See <code>org.eclipse.jpt.jpa.ui/plugin.xml</code>.
+ * See <code>org.eclipse.jpt.jpa.ui/plugin.xml:org.eclipse.core.runtime.adapters</code>.
  */
 public class WorkspaceAdapterFactory
 	implements IAdapterFactory
@@ -86,8 +87,8 @@ public class WorkspaceAdapterFactory
 			return this.subject.getJpaProjectsSize();
 		}
 
-		public IWorkspace getWorkspace() {
-			return this.subject.getWorkspace();
+		public JpaWorkspace getJpaWorkspace() {
+			return this.subject.getJpaWorkspace();
 		}
 	}
 }

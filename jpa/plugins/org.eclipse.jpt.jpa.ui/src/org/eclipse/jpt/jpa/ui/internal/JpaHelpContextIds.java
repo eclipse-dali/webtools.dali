@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal;
 
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 
 /**
  * Help context ids for the Dali JPA UI.
@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 public interface JpaHelpContextIds {
 
 	//ContextID prefix
-	public static final String PREFIX = JptJpaUiPlugin.PLUGIN_ID + ".";
+	public static final String PREFIX = JptJpaUiPlugin.instance().getPluginID() + ".";
 
 	//Persistent Type composites
 	public static final String ENTITY_ACCESS_TYPE = PREFIX + "entity_accessType";

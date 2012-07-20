@@ -11,7 +11,6 @@
  ***********************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.operation;
 
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -47,9 +46,9 @@ import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.ui.internal.utility.SynchronousUiCommandExecutor;
 import org.eclipse.jpt.common.utility.command.Command;
+import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.Entity;
@@ -58,13 +57,14 @@ import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdTypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.jpa.core.internal.context.java.JavaSourceFileDefinition;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.AnnotatedEntityTemplate;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.EntityTemplate;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.EntityWizardMsg;
@@ -191,7 +191,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 			try {
 				pack = packRoot.createPackageFragment(packName, true, null);
 			} catch (JavaModelException e) {
-				JptJpaUiPlugin.log(e);
+				JptJpaUiPlugin.instance().logError(e);
 			}
 		}
 		// Return the package
@@ -262,7 +262,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
         }
                        
         if (tempModel.isArtifactsAnnotated()) {
-	        if ( ! JptJpaCorePlugin.getDiscoverAnnotatedClasses(project)) {
+	        if ( ! JpaPreferences.getDiscoverAnnotatedClasses(project)) {
 	        	registerClassInPersistenceXml(tempModel, project).schedule();
 	        }
         } else {
@@ -334,7 +334,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 	        cleanUpOldEmitterProject();
 	        WTPJETEmitter emitter = new WTPJETEmitter(templateURL.toString(), this.getClass().getClassLoader());
 	        emitter.setIntelligentLinkingEnabled(true);
-	        emitter.addVariable(WTP_CUSTOMIZATION_PLUGIN, JptJpaUiPlugin.PLUGIN_ID);
+	        emitter.addVariable(WTP_CUSTOMIZATION_PLUGIN, JptJpaUiPlugin.instance().getPluginID());
 	        return emitter.generate(monitor, new Object[] { templateModel });
 		} else {
 			Method method = templateImpl.getClass().getMethod(GENERATE_METHOD, new Class[] { Object.class });
@@ -383,7 +383,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 			try {
 				((IFolder) container).create(true, true, null);
 			} catch (CoreException e) {
-				JptJpaUiPlugin.log(e);
+				JptJpaUiPlugin.instance().logError(e);
 			}
 		}
 		// Return the source folder
@@ -456,7 +456,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 			try {
 				xmlResource.saveIfNecessary();
 			} catch (Exception e) {
-				JptJpaUiPlugin.log(e);
+				JptJpaUiPlugin.instance().logError(e);
 			}
 		}
 
@@ -487,7 +487,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 			if ( ! this.model.isFieldAccess()) {
 				accessTypeString = PROPERTY;
 			}
-			return AccessType.fromOrmResourceModel(accessTypeString, getJpaProject().getJpaPlatform(), JptCommonCorePlugin.JAVA_SOURCE_RESOURCE_TYPE);// TODO
+			return AccessType.fromOrmResourceModel(accessTypeString, getJpaProject().getJpaPlatform(), JavaSourceFileDefinition.instance().getResourceType());// TODO
 		}
 
 		protected JpaProject getJpaProject() {

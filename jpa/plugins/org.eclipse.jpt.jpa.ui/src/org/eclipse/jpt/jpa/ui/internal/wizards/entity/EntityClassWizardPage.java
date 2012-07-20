@@ -27,11 +27,12 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.resource.ResourceMappingFile;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.jface.XmlMappingFileViewerFilter;
@@ -130,7 +131,7 @@ public class EntityClassWizardPage
 				boolean isChecked = xmlSupportButton.getSelection();
 				enableMappingXMLChooseGroup(isChecked);
 				if (isFirstCheck) {
-					ormXmlName.setText(JptJpaCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH.toString());
+					ormXmlName.setText(XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 					isFirstCheck = false;
 				}
 			}
@@ -373,7 +374,7 @@ public class EntityClassWizardPage
 	 * @return new instance of viewer filter for the SelectMappingXMLDialog
 	 */
 	protected ViewerFilter getDialogViewerFilter(JpaProject jpaProject) {
-		return new XmlMappingFileViewerFilter(jpaProject, JptJpaCorePlugin.MAPPING_FILE_CONTENT_TYPE);
+		return new XmlMappingFileViewerFilter(jpaProject, ResourceMappingFile.Root.CONTENT_TYPE);
 	}
 	
 	private void enableMappingXMLChooseGroup(boolean enabled) {
@@ -396,7 +397,7 @@ public class EntityClassWizardPage
 	 */
 	@Override
 	protected boolean isProjectValid(IProject project) {
-		return (project.isAccessible() && JpaFacet.isInstalled(project));	
+		return (project.isAccessible() && ProjectTools.hasFacet(project, JpaProject.FACET));
 	}
 	
 	protected final IWorkbenchHelpSystem getHelpSystem() {

@@ -10,24 +10,22 @@
 package org.eclipse.jpt.jpa.ui.internal.persistence;
 
 import java.util.Collections;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.ui.internal.jface.ArchiveFileViewerFilter;
 import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -140,15 +138,15 @@ public class ArchiveFileSelectionDialog
 		public IStatus validate(Object[] selection) {
 			int nSelected= selection.length;
 			if (nSelected == 0 || (nSelected > 1)) {
-				return new Status(IStatus.ERROR, JptJpaUiPlugin.PLUGIN_ID, "");  //$NON-NLS-1$
+				return JptJpaUiPlugin.instance().buildErrorStatus();
 			}
 			for (int i= 0; i < selection.length; i++) {
 				Object curr= selection[i];
 				if (curr instanceof IFile) {
-					return new Status(IStatus.OK, JptJpaUiPlugin.PLUGIN_ID, "");  //$NON-NLS-1$
+					return JptJpaUiPlugin.instance().buildOKStatus();
 				}
 			}
-			return new Status(IStatus.ERROR, JptJpaUiPlugin.PLUGIN_ID, "");  //$NON-NLS-1$
+			return JptJpaUiPlugin.instance().buildErrorStatus();
 		}
 	}	
 	
@@ -206,7 +204,7 @@ public class ArchiveFileSelectionDialog
 				}
 			}
 			catch (CoreException ce) {
-				JptJpaUiPlugin.log(ce);
+				JptJpaUiPlugin.instance().logError(ce);
 			}
 			
 			return null;
@@ -214,7 +212,7 @@ public class ArchiveFileSelectionDialog
 		
 		protected String calculatePersistenceRootRelativePath(IVirtualFile vFile) {
 			IProject project = vFile.getProject();
-			IPath puRootPath = JptJpaCorePlugin.getJarRuntimeRootPath(project);
+			IPath puRootPath = ProjectTools.getJarRuntimeRootPath(project);
 			
 			IPath path = vFile.getRuntimePath().makeRelativeTo(puRootPath);
 			

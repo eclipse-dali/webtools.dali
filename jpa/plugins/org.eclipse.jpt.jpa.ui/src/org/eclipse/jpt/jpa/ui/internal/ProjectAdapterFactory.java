@@ -36,7 +36,7 @@ import org.eclipse.jpt.jpa.ui.JpaRootContextNodeModel;
  *     This adapter is much like the {@link org.eclipse.jpt.jpa.ui.JpaProjectModel JpaProjectModel}
  *     adapter described above.
  * </ul>
- * See <code>org.eclipse.jpt.jpa.ui/plugin.xml</code>.
+ * See <code>org.eclipse.jpt.jpa.ui/plugin.xml:org.eclipse.core.runtime.adapters</code>.
  */
 public class ProjectAdapterFactory
 	implements IAdapterFactory

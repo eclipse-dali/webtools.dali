@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.ui.internal.platform.JpaPlatformUiRegistry;
  * Factory to build adapters for a {@link JpaPlatform}:<ul>
  * <li>{@link JpaPlatformUi}
  * </ul>
- * See <code>org.eclipse.jpt.jpa.ui/plugin.xml</code>.
+ * See <code>org.eclipse.jpt.jpa.ui/plugin.xml:org.eclipse.core.runtime.adapters</code>.
  * 
  * @see JpaPlatformUiRegistry
  */

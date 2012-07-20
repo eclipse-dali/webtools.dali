@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.platform.base;
 
-import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -30,7 +29,6 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUiProvider;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.MappingResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
@@ -38,6 +36,7 @@ import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsPageManager;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.conversion.java.JavaMetadataConversionWizard;
 import org.eclipse.jpt.jpa.ui.internal.wizards.conversion.java.JavaMetadataConversionWizardPage;
 import org.eclipse.swt.widgets.Composite;
@@ -47,10 +46,10 @@ public abstract class AbstractJpaPlatformUi
 	implements JpaPlatformUi
 {
 	private final ItemTreeStateProviderFactoryProvider navigatorFactoryProvider;
-	
+
 	private final JpaPlatformUiProvider platformUiProvider;
-	
-	
+
+
 	protected AbstractJpaPlatformUi(
 			ItemTreeStateProviderFactoryProvider navigatorFactoryProvider,
 			JpaPlatformUiProvider platformUiProvider
@@ -62,105 +61,114 @@ public abstract class AbstractJpaPlatformUi
 		this.navigatorFactoryProvider = navigatorFactoryProvider;
 		this.platformUiProvider = platformUiProvider;
 	}
-	
-	
+
+
 	// ********** navigator provider **********
-	
+
 	public ItemTreeStateProviderFactoryProvider getNavigatorFactoryProvider() {
 		return this.navigatorFactoryProvider;
 	}
-	
-	
+
+
 	// ********** structure view factory providers **********
-	
+
 	public ItemTreeStateProviderFactoryProvider getStructureViewFactoryProvider(JpaFile jpaFile) {
 		JptResourceType resourceType = jpaFile.getResourceModel().getResourceType();
 		return (resourceType == null) ? null : this.getStructureViewFactoryProvider(resourceType);
 	}
-	
+
 	protected ItemTreeStateProviderFactoryProvider getStructureViewFactoryProvider(JptResourceType resourceType) {
 		try {
 			return this.getResourceUiDefinition(resourceType).getStructureViewFactoryProvider();
 		} catch (IllegalArgumentException iae) {
-			JptJpaUiPlugin.log(iae);
+			JptJpaUiPlugin.instance().logError(iae);
 			return null;
 		}
 	}
-	
-	
+
+
 	// ********** details providers **********
-	
+
 	public JpaDetailsPageManager<? extends JpaStructureNode> buildJpaDetailsPageManager(
 			Composite parent, JpaStructureNode structureNode, WidgetFactory widgetFactory) {
-		
-		JpaDetailsProvider jpaDetailsProvider = getDetailsProvider(structureNode);
+
+		JpaDetailsProvider jpaDetailsProvider = this.getDetailsProvider(structureNode);
 		return jpaDetailsProvider == null ? null : jpaDetailsProvider.buildDetailsPageManager(parent, widgetFactory);
 	}
-	
+
 	protected JpaDetailsProvider getDetailsProvider(JpaStructureNode structureNode) {
-		for (JpaDetailsProvider provider : CollectionTools.iterable(this.detailsProviders())) {
+		for (JpaDetailsProvider provider : this.getDetailsProviders()) {
 			if (provider.providesDetails(structureNode)) {
 				return provider;
 			}
 		}
 		return null;//return null, some structure nodes do not have a details page
 	}
-	
-	protected ListIterator<JpaDetailsProvider> detailsProviders() {
-		return this.platformUiProvider.detailsProviders();
+
+	protected Iterable<JpaDetailsProvider> getDetailsProviders() {
+		return this.platformUiProvider.getDetailsProviders();
 	}
-	
-	
-	// ********** mapping ui definitions **********
-	
+
+
+	// ********** type mappings **********
+
 	public JpaComposite buildTypeMappingComposite(
-			JptResourceType resourceType, 
-			String mappingKey, 
-			Composite parent, 
-			PropertyValueModel<TypeMapping> mappingHolder, 
-			WidgetFactory widgetFactory) {
-		
-		return getMappingResourceUiDefinition(resourceType).buildTypeMappingComposite(
-				mappingKey, mappingHolder, parent, widgetFactory);
+			JptResourceType resourceType,
+			String mappingKey,
+			Composite parent,
+			PropertyValueModel<TypeMapping> mappingHolder,
+			WidgetFactory widgetFactory
+	) {
+		return this.getMappingResourceUiDefinition(resourceType).buildTypeMappingComposite(mappingKey, mappingHolder, parent, widgetFactory);
 	}
-	
-	public JpaComposite buildAttributeMappingComposite(
-			JptResourceType resourceType, 
-			String mappingKey, 
-			Composite parent, 
-			PropertyValueModel<AttributeMapping> mappingHolder, 
-			PropertyValueModel<Boolean> enabledModel,
-			WidgetFactory widgetFactory) {
-		
-		return getMappingResourceUiDefinition(resourceType).buildAttributeMappingComposite(
-				mappingKey, mappingHolder, enabledModel, parent, widgetFactory);
+
+	public Iterable<MappingUiDefinition<PersistentType, ? extends TypeMapping>> getTypeMappingUiDefinitions(JptResourceType resourceType) {
+		return this.getMappingResourceUiDefinition(resourceType).getTypeMappingUiDefinitions();
 	}
-	
-	public DefaultMappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping> getDefaultAttributeMappingUiDefinition(JptResourceType resourceType, String mappingKey) {
-		return getMappingResourceUiDefinition(resourceType).getDefaultAttributeMappingUiDefinition(mappingKey);
+
+	public MappingUiDefinition<PersistentType, ? extends TypeMapping> getTypeMappingUiDefinition(JptResourceType resourceType, String mappingKey) {
+		return this.getMappingResourceUiDefinition(resourceType).getTypeMappingUiDefinition(mappingKey);
 	}
-	
-	public Iterator<MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping>> attributeMappingUiDefinitions(JptResourceType resourceType) {
-		return getMappingResourceUiDefinition(resourceType).attributeMappingUiDefinitions();
-	}
-	
+
 	public DefaultMappingUiDefinition<PersistentType, ? extends TypeMapping> getDefaultTypeMappingUiDefinition(JptResourceType resourceType) {
-		return getMappingResourceUiDefinition(resourceType).getDefaultTypeMappingUiDefinition();
+		return this.getMappingResourceUiDefinition(resourceType).getDefaultTypeMappingUiDefinition();
 	}
-	
-	public Iterator<MappingUiDefinition<PersistentType, ? extends TypeMapping>> typeMappingUiDefinitions(JptResourceType resourceType) {
-		return getMappingResourceUiDefinition(resourceType).typeMappingUiDefinitions();
+
+
+	// ********** attribute mappings **********
+
+	public JpaComposite buildAttributeMappingComposite(
+			JptResourceType resourceType,
+			String mappingKey,
+			Composite parent,
+			PropertyValueModel<AttributeMapping> mappingHolder,
+			PropertyValueModel<Boolean> enabledModel,
+			WidgetFactory widgetFactory
+	) {
+		return this.getMappingResourceUiDefinition(resourceType).buildAttributeMappingComposite(mappingKey, mappingHolder, enabledModel, parent, widgetFactory);
 	}
-	
-	
+
+	public Iterable<MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping>> getAttributeMappingUiDefinitions(JptResourceType resourceType) {
+		return this.getMappingResourceUiDefinition(resourceType).getAttributeMappingUiDefinitions();
+	}
+
+	public MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping> getAttributeMappingUiDefinition(JptResourceType resourceType, String mappingKey) {
+		return this.getMappingResourceUiDefinition(resourceType).getAttributeMappingUiDefinition(mappingKey);
+	}
+
+	public DefaultMappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping> getDefaultAttributeMappingUiDefinition(JptResourceType resourceType, String mappingKey) {
+		return this.getMappingResourceUiDefinition(resourceType).getDefaultAttributeMappingUiDefinition(mappingKey);
+	}
+
+
 	// ********** resource ui definitions **********
-	
-	protected ListIterator<ResourceUiDefinition> resourceUiDefinitions() {
-		return this.platformUiProvider.resourceUiDefinitions();
+
+	protected Iterable<ResourceUiDefinition> getResourceUiDefinitions() {
+		return this.platformUiProvider.getResourceUiDefinitions();
 	}
-	
+
 	public ResourceUiDefinition getResourceUiDefinition(JptResourceType resourceType) {
-		for (ResourceUiDefinition definition : CollectionTools.iterable(this.resourceUiDefinitions())) {
+		for (ResourceUiDefinition definition : this.getResourceUiDefinitions()) {
 			if (definition.providesUi(resourceType)) {
 				return definition;
 			}
@@ -168,8 +176,8 @@ public abstract class AbstractJpaPlatformUi
 		// TODO (bug 313632) - return a null resource ui definition?
 		throw new IllegalArgumentException("No resource UI definition for the resource type: " + resourceType); //$NON-NLS-1$
 	}
-	
-	public MappingResourceUiDefinition getMappingResourceUiDefinition(JptResourceType resourceType) {
+
+	protected MappingResourceUiDefinition getMappingResourceUiDefinition(JptResourceType resourceType) {
 		ResourceUiDefinition def = this.getResourceUiDefinition(resourceType);
 		try {
 			return (MappingResourceUiDefinition) def;
@@ -178,23 +186,23 @@ public abstract class AbstractJpaPlatformUi
 			throw new IllegalArgumentException("No mapping resource UI definition for the resource type: " + resourceType, cce); //$NON-NLS-1$
 		}
 	}
-	
-	
+
+
 	// ********** entity generation **********
-	
+
 	public void generateEntities(JpaProject project, IStructuredSelection selection) {
 		EntitiesGenerator.generate(project, selection);
 	}
-	
-	
+
+
 	// ********** convenience methods **********
-	
+
 	protected void displayMessage(String title, String message) {
 	    MessageDialog.openInformation(SWTUtil.getShell(), title, message);
 	}
 
 	protected void openInDialog(JavaMetadataConversionWizardPage wizardPage) {
-		openInDialog(new JavaMetadataConversionWizard(wizardPage));
+		this.openInDialog(new JavaMetadataConversionWizard(wizardPage));
 	}
 
 	protected void openInDialog(IWizard wizard) {

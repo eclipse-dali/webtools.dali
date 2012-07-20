@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.ui.internal.menus;
 
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -19,9 +18,9 @@ import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.internal.jface.ImageImageDescriptor;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.CompositeIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.FilteringIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
@@ -85,7 +84,7 @@ public abstract class MapAsContribution<T extends JpaStructureNode>
 		
 		return 
 			ArrayTools.array(
-				new TransformationIterator<MappingUiDefinition<T, ?>, IContributionItem>(mappingUiDefinitions(node)) {
+				new TransformationIterable<MappingUiDefinition<T, ?>, IContributionItem>(this.getMappingUiDefinitions(node)) {
 					@Override
 					protected IContributionItem transform(MappingUiDefinition<T, ?> next) {
 						return createContributionItem(next);
@@ -114,13 +113,13 @@ public abstract class MapAsContribution<T extends JpaStructureNode>
 	 * of providers to return
 	 * @return The list of registered {@link MappingUiDefinition}s
 	 */
-	protected <U extends T> Iterator<? extends MappingUiDefinition<T, ?>> mappingUiDefinitions(final T node) {
+	protected <U extends T> Iterable<? extends MappingUiDefinition<T, ?>> getMappingUiDefinitions(final T node) {
 		JpaPlatformUi jpaPlatformUi = (JpaPlatformUi) node.getJpaPlatform().getAdapter(JpaPlatformUi.class);
 		
-		Iterator<? extends MappingUiDefinition<T, ?>> sortedMappingUiDefinitions = 
+		Iterable<? extends MappingUiDefinition<T, ?>> sortedMappingUiDefinitions = 
 				CollectionTools.sort(
-					new FilteringIterator<MappingUiDefinition<T, ?>>(
-							mappingUiDefinitions(jpaPlatformUi, node.getResourceType())) {
+					new FilteringIterable<MappingUiDefinition<T, ?>>(
+							getMappingUiDefinitions(jpaPlatformUi, node.getResourceType())) {
 						 @Override
 						protected boolean accept(MappingUiDefinition<T, ?> o) {
 							return o.isEnabledFor(node);
@@ -129,10 +128,9 @@ public abstract class MapAsContribution<T extends JpaStructureNode>
 					getDefinitionsComparator());
 		
 		DefaultMappingUiDefinition<T, ?> defaultDefinition = getDefaultMappingUiDefinition(jpaPlatformUi, node);
-		if (defaultDefinition != null) {
-			return new CompositeIterator<MappingUiDefinition<T, ?>>(defaultDefinition, sortedMappingUiDefinitions);
-		}
-		return sortedMappingUiDefinitions;
+		return (defaultDefinition == null) ?
+				sortedMappingUiDefinitions :
+				new CompositeIterable<MappingUiDefinition<T, ?>>(defaultDefinition, sortedMappingUiDefinitions);
 	}
 
 	/**
@@ -145,8 +143,7 @@ public abstract class MapAsContribution<T extends JpaStructureNode>
 	* @param node A test node to determine type of providers to return
 	* @return The list of registered {@link MappingUiDefinition}s
 	*/
-	protected abstract Iterator<? extends MappingUiDefinition<T, ?>> 
-		mappingUiDefinitions(JpaPlatformUi platformUi, JptResourceType resourceType);
+	protected abstract Iterable<? extends MappingUiDefinition<T, ?>> getMappingUiDefinitions(JpaPlatformUi platformUi, JptResourceType resourceType);
 	
 	/**
 	* Creates the default provider responsible for clearing the mapping type.

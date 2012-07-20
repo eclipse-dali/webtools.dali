@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ResourceManager;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
@@ -143,7 +143,7 @@ public final class ImageRepository {
 
 
 	private static ImageDescriptor buildImageDescriptor(String fileName) {
-		return AbstractUIPlugin.imageDescriptorFromPlugin(JptJpaUiPlugin.PLUGIN_ID, "images/" + fileName);
+		return AbstractUIPlugin.imageDescriptorFromPlugin(JptJpaUiPlugin.instance().getPluginID(), "images/" + fileName);
 	}
 
 

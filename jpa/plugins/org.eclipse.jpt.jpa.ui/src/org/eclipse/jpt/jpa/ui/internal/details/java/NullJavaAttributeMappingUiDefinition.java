@@ -18,10 +18,9 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.details.java.DefaultJavaAttributeMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.java.JavaUiFactory;
-import org.eclipse.jpt.jpa.ui.internal.JpaMappingImageHelper;
+import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 public class NullJavaAttributeMappingUiDefinition
@@ -29,17 +28,16 @@ public class NullJavaAttributeMappingUiDefinition
 	implements DefaultJavaAttributeMappingUiDefinition<JavaAttributeMapping>
 {
 	// singleton
-	private static final NullJavaAttributeMappingUiDefinition INSTANCE = 
-		new NullJavaAttributeMappingUiDefinition();
-	
+	private static final NullJavaAttributeMappingUiDefinition INSTANCE = new NullJavaAttributeMappingUiDefinition();
+
 	/**
 	 * Return the singleton.
 	 */
 	public static DefaultJavaAttributeMappingUiDefinition<JavaAttributeMapping> instance() {
 		return INSTANCE;
 	}
-	
-	
+
+
 	/**
 	 * Ensure single instance.
 	 */
@@ -47,47 +45,45 @@ public class NullJavaAttributeMappingUiDefinition
 		super();
 	}
 
-	public Image getImage() {
-		return JpaMappingImageHelper.imageForAttributeMapping(getKey());
-	}
-	
-	public String getLabel() {
-		return JptUiDetailsMessages.NullAttributeMappingUiProvider_label;
-	}
-	
-	public String getLinkLabel() {
-		return null;
-	}
-	
 	public String getKey() {
-		return null;
+		return MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY;
 	}
-	
+
 	public String getDefaultKey() {
 		return MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY;
 	}
-	
-	public JpaComposite buildAttributeMappingComposite(
-			JavaUiFactory factory,
-			PropertyValueModel<JavaAttributeMapping> subjectHolder,
-			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new NullComposite(subjectHolder, parent, widgetFactory);
+
+	public String getLabel() {
+		return JptUiDetailsMessages.NullAttributeMappingUiProvider_label;
+	}
+
+	public String getLinkLabel() {
+		return null;
+	}
+
+	@Override
+	protected String getImageKey() {
+		return JptUiIcons.NULL_ATTRIBUTE_MAPPING;
+	}
+
+	public JpaComposite buildAttributeMappingComposite(JavaUiFactory factory, PropertyValueModel<JavaAttributeMapping> mappingModel, PropertyValueModel<Boolean> enabledModel, Composite parent, WidgetFactory widgetFactory) {
+		return new NullComposite(mappingModel, parent, widgetFactory);
 	}
 	
-	
-	public static class NullComposite extends Pane<JavaAttributeMapping>
+
+	// ********** null composite **********
+
+	/* CU private */ static class NullComposite
+		extends Pane<JavaAttributeMapping>
 		implements JpaComposite
 	{
-		NullComposite(
-				PropertyValueModel<JavaAttributeMapping> subjectHolder,
-		        Composite parent,
-		        WidgetFactory widgetFactory) {
-			super(subjectHolder, parent, widgetFactory);
+		NullComposite(PropertyValueModel<JavaAttributeMapping> mappingModel, Composite parent, WidgetFactory widgetFactory) {
+			super(mappingModel, parent, widgetFactory);
 		}
 		
 		@Override
-		protected void initializeLayout(Composite container) {}
+		protected void initializeLayout(Composite container) {
+			// NOP
+		}
 	}
 }

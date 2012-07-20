@@ -18,9 +18,9 @@ import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsPageManager;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.selection.JpaViewManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -159,7 +159,7 @@ public class JpaDetailsView
 				try {
 					this.currentPageManager.setSubject(null);
 				} catch (RuntimeException ex) {
-					JptJpaUiPlugin.log(ex);
+					JptJpaUiPlugin.instance().logError(ex);
 				}
 				this.currentPageManager = null;
 				pageChange = true;
@@ -172,7 +172,7 @@ public class JpaDetailsView
 						this.currentPageManager.setSubject(node);
 						pageChange = true;
 					} catch (RuntimeException ex) {
-						JptJpaUiPlugin.log(ex);
+						JptJpaUiPlugin.instance().logError(ex);
 						this.currentPageManager = null;  // leave default page
 					}
 				}
@@ -182,7 +182,7 @@ public class JpaDetailsView
 					try {
 						this.currentPageManager.setSubject(null);
 					} catch (RuntimeException ex) {
-						JptJpaUiPlugin.log(ex);
+						JptJpaUiPlugin.instance().logError(ex);
 					}
 					this.currentPageManager = pageManager;
 					pageChange = true;
@@ -191,7 +191,7 @@ public class JpaDetailsView
 					try {
 						this.currentPageManager.setSubject(node);
 					} catch (RuntimeException ex) {
-						JptJpaUiPlugin.log(ex);
+						JptJpaUiPlugin.instance().logError(ex);
 						this.currentPageManager = null;  // show default page
 						pageChange = true;
 					}

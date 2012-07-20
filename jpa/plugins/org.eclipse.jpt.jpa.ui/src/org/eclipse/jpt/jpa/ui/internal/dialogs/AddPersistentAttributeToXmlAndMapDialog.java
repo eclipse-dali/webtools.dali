@@ -26,9 +26,9 @@ import org.eclipse.jpt.common.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -85,7 +85,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 					return ArrayTools.array(
 						CollectionTools.sort(
 							new FilteringIterator<MappingUiDefinition<ReadOnlyPersistentAttribute, ?>>(
-									((JpaPlatformUi) inputElement).attributeMappingUiDefinitions(unmappedPersistentAttribute.getResourceType())) {
+									((JpaPlatformUi) inputElement).getAttributeMappingUiDefinitions(unmappedPersistentAttribute.getResourceType())) {
 								@Override
 								protected boolean accept(MappingUiDefinition<ReadOnlyPersistentAttribute, ?> o) {
 									return o.isEnabledFor(AddPersistentAttributeToXmlAndMapDialog.this.unmappedPersistentAttribute);
@@ -179,10 +179,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 //
 		String mappingKey = getMappingKey();
 		if (mappingKey == null) {
-			updateStatus(
-				new Status(
-					IStatus.ERROR, JptJpaUiPlugin.PLUGIN_ID,
-					JptUiMessages.AddPersistentAttributeDialog_noMappingKeyError));
+			updateStatus(JptJpaUiPlugin.instance().buildErrorStatus(JptUiMessages.AddPersistentAttributeDialog_noMappingKeyError));
 			return;
 		}
 

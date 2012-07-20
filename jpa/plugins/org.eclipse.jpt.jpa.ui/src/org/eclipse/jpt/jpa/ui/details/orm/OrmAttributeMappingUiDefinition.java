@@ -35,15 +35,10 @@ public interface OrmAttributeMappingUiDefinition<T extends AttributeMapping>
 	 *
 	 * @param factory The UI factory responsible to create the right composite
 	 * for any mapping type
-	 * @param subjectHolder The holder of the subject being displayed
+	 * @param mappingModel The model of the mapping being displayed
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create the various widgets
 	 * @return The composite displaying the information for a certain mapping
 	 */
-	JpaComposite buildAttributeMappingComposite(
-			OrmXmlUiFactory factory,
-			PropertyValueModel<T> subjectHolder,
-			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory);
+	JpaComposite buildAttributeMappingComposite(OrmXmlUiFactory factory, PropertyValueModel<T> mappingModel, PropertyValueModel<Boolean> enabledModel, Composite parent, WidgetFactory widgetFactory);
 }

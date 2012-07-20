@@ -34,6 +34,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
+import org.eclipse.jpt.jpa.core.context.XmlFile;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
@@ -184,10 +185,10 @@ public class PersistenceEditor
 	}
 
 	private PropertyValueModel<Persistence> buildPersistenceHolder() {
-		return new PropertyAspectAdapter<PersistenceXml, Persistence>(buildPersistenceXmlHolder(), PersistenceXml.PERSISTENCE_PROPERTY) {
+		return new PropertyAspectAdapter<PersistenceXml, Persistence>(buildPersistenceXmlHolder(), XmlFile.ROOT_PROPERTY) {
 			@Override
 			protected Persistence buildValue_() {
-				return subject.getPersistence();
+				return subject.getRoot();
 			}
 		};
 	}

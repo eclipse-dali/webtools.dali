@@ -11,10 +11,15 @@ package org.eclipse.jpt.jpa.ui.internal.platform.generic;
 
 import org.eclipse.jpt.common.ui.internal.jface.AbstractItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
+import org.eclipse.jpt.common.utility.internal.Transformer;
+import org.eclipse.jpt.common.utility.internal.TransformerAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.ui.internal.JpaMappingImageHelper;
+import org.eclipse.jpt.jpa.core.context.TypeMapping;
+import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
+import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.swt.graphics.Image;
 
 public class PersistentTypeItemLabelProvider
@@ -24,23 +29,55 @@ public class PersistentTypeItemLabelProvider
 		super(persistentType, manager);
 	}
 	
+
+	// ********** image **********
+
 	@Override
 	protected PropertyValueModel<Image> buildImageModel() {
-		return new ImageModel(this.item);
+		return new TransformationPropertyValueModel<TypeMapping, Image>(this.buildMappingModel(), IMAGE_TRANSFORMER);
 	}
 	
-	protected static class ImageModel
-		extends PropertyAspectAdapter<PersistentType, Image>
+	protected PropertyValueModel<TypeMapping> buildMappingModel() {
+		return new MappingModel(this.item);
+	}
+
+	protected static class MappingModel
+		extends PropertyAspectAdapter<PersistentType, TypeMapping>
 	{
-		public ImageModel(PersistentType subject) {
+		public MappingModel(PersistentType subject) {
 			super(PersistentType.MAPPING_PROPERTY, subject);
 		}
 		@Override
-		protected Image buildValue_() {
-			return JpaMappingImageHelper.imageForTypeMapping(this.subject.getMappingKey());
+		protected TypeMapping buildValue_() {
+			return this.subject.getMapping();
 		}
 	}
-	
+
+	protected static final Transformer<TypeMapping, Image> IMAGE_TRANSFORMER = new ImageTransformer();
+
+	/**
+	 * Transform a type mapping into the appropriate image.
+	 */
+	protected static class ImageTransformer
+		extends TransformerAdapter<TypeMapping, Image>
+	{
+		@Override
+		public Image transform(TypeMapping typeMapping) {
+			return this.getTypeMappingUiDefinition(typeMapping).getImage();
+		}
+
+		private MappingUiDefinition<? extends PersistentType, ?> getTypeMappingUiDefinition(TypeMapping typeMapping) {
+			return this.getJpaPlatformUi(typeMapping).getTypeMappingUiDefinition(typeMapping.getResourceType(), typeMapping.getKey());
+		}
+
+		private JpaPlatformUi getJpaPlatformUi(TypeMapping typeMapping) {
+			return (JpaPlatformUi) typeMapping.getJpaProject().getJpaPlatform().getAdapter(JpaPlatformUi.class);
+		}
+	}
+
+
+	// ********** text **********
+
 	@Override
 	protected PropertyValueModel<String> buildTextModel() {
 		return new TextModel(this.item);
@@ -58,6 +95,9 @@ public class PersistentTypeItemLabelProvider
 		}
 	}
 	
+
+	// ********** description **********
+
 	@Override
 	@SuppressWarnings("unchecked")
 	protected PropertyValueModel<String> buildDescriptionModel() {

@@ -11,22 +11,22 @@ package org.eclipse.jpt.jpa.ui.internal;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayListIterator;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUiProvider;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
 
 /**
- * All the state in the JPA platform ui provider should be "static" (i.e. unchanging once
- * it is initialized).
+ * All the state in the JPA platform ui provider should be "static"
+ * (i.e. unchanging once it is initialized).
  */
-public abstract class AbstractJpaPlatformUiProvider implements JpaPlatformUiProvider
+public abstract class AbstractJpaPlatformUiProvider
+	implements JpaPlatformUiProvider
 {
-	private JpaDetailsProvider[] detailsProviders;
+	private ArrayList<JpaDetailsProvider> detailsProviders;
 
-	private ResourceUiDefinition[] resourceUiDefinitions;
-	
+	private ArrayList<ResourceUiDefinition> resourceUiDefinitions;
+
+
 	/**
 	 * zero-argument constructor
 	 */
@@ -37,47 +37,39 @@ public abstract class AbstractJpaPlatformUiProvider implements JpaPlatformUiProv
 
 	// ********** details providers **********
 
-	public ListIterator<JpaDetailsProvider> detailsProviders() {
-		return new ArrayListIterator<JpaDetailsProvider>(getDetailsProviders());
-	}
-	
-	protected synchronized JpaDetailsProvider[] getDetailsProviders() {
+	public synchronized Iterable<JpaDetailsProvider> getDetailsProviders() {
 		if (this.detailsProviders == null) {
 			this.detailsProviders = this.buildDetailsProviders();
 		}
 		return this.detailsProviders;
 	}
 
-	protected JpaDetailsProvider[] buildDetailsProviders() {
+	protected ArrayList<JpaDetailsProvider> buildDetailsProviders() {
 		ArrayList<JpaDetailsProvider> providers = new ArrayList<JpaDetailsProvider>();
 		this.addDetailsProvidersTo(providers);
-		return providers.toArray(new JpaDetailsProvider[providers.size()]);
+		return providers;
 	}
 
 	/**
 	 * Implement this to specify JPA details providers.
 	 */
 	protected abstract void addDetailsProvidersTo(List<JpaDetailsProvider> providers);
-	
-	
-	
+
+
+
 	// ********** structure providers **********
 
-	public ListIterator<ResourceUiDefinition> resourceUiDefinitions() {
-		return new ArrayListIterator<ResourceUiDefinition>(getResourceUiDefinitions());
-	}
-	
-	protected synchronized ResourceUiDefinition[] getResourceUiDefinitions() {
+	public Iterable<ResourceUiDefinition> getResourceUiDefinitions() {
 		if (this.resourceUiDefinitions == null) {
 			this.resourceUiDefinitions = this.buildResourceUiDefinitions();
 		}
 		return this.resourceUiDefinitions;
 	}
 
-	protected ResourceUiDefinition[] buildResourceUiDefinitions() {
+	protected ArrayList<ResourceUiDefinition> buildResourceUiDefinitions() {
 		ArrayList<ResourceUiDefinition> definitions = new ArrayList<ResourceUiDefinition>();
 		this.addResourceUiDefinitionsTo(definitions);
-		return definitions.toArray(new ResourceUiDefinition[definitions.size()]);
+		return definitions;
 	}
 
 	/**

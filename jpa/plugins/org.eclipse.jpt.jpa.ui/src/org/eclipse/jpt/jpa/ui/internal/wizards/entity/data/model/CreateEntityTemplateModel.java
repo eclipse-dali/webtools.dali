@@ -23,7 +23,7 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.Signature;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jst.j2ee.internal.common.operations.INewJavaClassDataModelProperties;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.wst.common.componentcore.internal.operation.IArtifactEditOperationDataModelProperties;
@@ -244,7 +244,7 @@ public class CreateEntityTemplateModel {
 		if (getMappingXMLName().equals(IEntityDataModelProperties.EMPTY_STRING)) {
 			return true;
 		}
-		return getMappingXMLName().equals(JptJpaCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH.toString());
+		return getMappingXMLName().equals(XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 	}
 	
 	public String getMappingXMLName() {

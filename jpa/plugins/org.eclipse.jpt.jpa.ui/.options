@@ -1,14 +1,16 @@
-# Debugging options for org.eclipse.jpt.jpa.ui plug-in
+# debugging options for the plug-in org.eclipse.jpt.jpa.ui
 
-# Turn on debugging for the org.eclipse.jpt.jpa.ui plugin.
-org.eclipse.jpt.jpa.ui/debug=false
+# turn on debugging for the plug-in org.eclipse.jpt.jpa.ui
+org.eclipse.jpt.jpa.ui/debug=true
 
-# Turn on debugging for unit-tests
-org.eclipse.jpt.jpa.ui/debug/unit-tests=false
+# turn on debugging for the JPA selection managers
+org.eclipse.jpt.jpa.ui/debug/JpaSelectionManager=false
 
-# Turn on debugging for events occurring in the UI panes
-org.eclipse.jpt.jpa.ui/debug/ui/layout=false
-org.eclipse.jpt.jpa.ui/debug/ui/detailsView=false
+# turn on debugging for the persistent type details pages
+org.eclipse.jpt.jpa.ui/debug/PersistentTypeDetailsPage=false
 
-# Turn on debugging for events coming from ConnectionProfile
-org.eclipse.jpt.jpa.ui/debug/ui/db=false
+# turn on debugging for the persistent attribute details pages
+org.eclipse.jpt.jpa.ui/debug/PersistentAttributeDetailsPage=false
+
+# turn on debugging for the database combos
+org.eclipse.jpt.jpa.ui/debug/DatabaseObjectCombo=false

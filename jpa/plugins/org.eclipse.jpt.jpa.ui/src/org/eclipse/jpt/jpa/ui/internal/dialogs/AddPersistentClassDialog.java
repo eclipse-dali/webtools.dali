@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -36,12 +36,12 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmEmbeddableUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmEntityUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.OrmMappedSuperclassUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -194,7 +194,7 @@ public class AddPersistentClassDialog extends StatusDialog
 		try {
 			return this.getJpaProject().getJavaProject().getPackageFragmentRoots()[0];
 		} catch (JavaModelException ex) {
-			JptJpaUiPlugin.log(ex);
+			JptJpaUiPlugin.instance().logError(ex);
 			return null;
 		}
 	}
@@ -241,7 +241,7 @@ public class AddPersistentClassDialog extends StatusDialog
 						false, getClassName());
 		}
 		catch (JavaModelException e) {
-			JptJpaUiPlugin.log(e);
+			JptJpaUiPlugin.instance().logError(e);
 			throw new RuntimeException(e);
 		}
 		typeSelectionDialog.setTitle(JptUiMessages.AddPersistentClassDialog_classDialog_title); 
@@ -257,10 +257,7 @@ public class AddPersistentClassDialog extends StatusDialog
 		String className = getClassName();
 		
 		if (StringTools.stringIsEmpty(className)) {
-			updateStatus(
-				new Status(
-					IStatus.ERROR, JptJpaUiPlugin.PLUGIN_ID, 
-					JptUiMessages.AddPersistentClassDialog_noClassError));
+			updateStatus(JptJpaUiPlugin.instance().buildErrorStatus(JptUiMessages.AddPersistentClassDialog_noClassError));
 			return;
 		}
 		className = className.replace('$', '.');
@@ -274,27 +271,18 @@ public class AddPersistentClassDialog extends StatusDialog
 		}
 		
 		if (type == null) {
-			updateStatus(
-				new Status(
-					IStatus.WARNING, JptJpaUiPlugin.PLUGIN_ID,
-					JptUiMessages.AddPersistentClassDialog_classNotFoundWarning));
+			updateStatus(JptJpaUiPlugin.instance().buildWarningStatus(JptUiMessages.AddPersistentClassDialog_classNotFoundWarning));
 			return;
 		}
 		
 		if (this.entityMappings.containsPersistentType(className)) {
-			updateStatus(
-				new Status(
-					IStatus.WARNING, JptJpaUiPlugin.PLUGIN_ID, 
-					JptUiMessages.AddPersistentClassDialog_duplicateClassWarning));
+			updateStatus(JptJpaUiPlugin.instance().buildWarningStatus(JptUiMessages.AddPersistentClassDialog_duplicateClassWarning));
 			return;
 		}
 		
 		String mappingKey = getMappingKey();
 		if (mappingKey == null) {
-			updateStatus(
-				new Status(
-					IStatus.ERROR, JptJpaUiPlugin.PLUGIN_ID,
-					JptUiMessages.AddPersistentClassDialog_noMappingKeyError));
+			updateStatus(JptJpaUiPlugin.instance().buildErrorStatus(JptUiMessages.AddPersistentClassDialog_noMappingKeyError));
 			return;
 		}
 		

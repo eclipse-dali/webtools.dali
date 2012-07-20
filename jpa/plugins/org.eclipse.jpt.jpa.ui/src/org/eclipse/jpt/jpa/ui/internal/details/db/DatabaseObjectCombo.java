@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details.db;
 
-import org.eclipse.jpt.common.ui.internal.Tracing;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.common.ui.internal.widgets.ComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -30,6 +29,7 @@ import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.Sequence;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.ui.internal.listeners.SWTConnectionListenerWrapper;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -267,15 +267,6 @@ public abstract class DatabaseObjectCombo<T extends JpaNode>
 		// do nothing by default
 	}
 	
-	@Override
-	protected void log(String flag, String message) {
-		if (flag.equals(Tracing.UI_DB) && Tracing.booleanDebugOption(Tracing.UI_DB)) {
-			this.log(message);
-		} else {
-			super.log(flag, message);
-		}
-	}
-
 	// broaden accessibility a bit
 	@Override
 	protected void repopulateComboBox() {
@@ -293,66 +284,63 @@ public abstract class DatabaseObjectCombo<T extends JpaNode>
 		}
 		
 		public void opened(ConnectionProfile profile) {
-			this.log("opened: " + profile.getName());
+			JptJpaUiPlugin.instance().trace(TRACE_OPTION, "opened: {0}", profile);
 			DatabaseObjectCombo.this.repopulateComboBox();
 		}
 		
 		public void modified(ConnectionProfile profile) {
-			this.log("modified: " + profile.getName());
+			JptJpaUiPlugin.instance().trace(TRACE_OPTION, "modified: {0}", profile);
 			DatabaseObjectCombo.this.repopulateComboBox();
 		}
 		
 		public boolean okToClose(ConnectionProfile profile) {
-			this.log("OK to close: " + profile.getName());
+			JptJpaUiPlugin.instance().trace(TRACE_OPTION, "OK to close: {0}", profile);
 			return true;
 		}
 		
 		public void aboutToClose(ConnectionProfile profile) {
-			this.log("about to close: " + profile.getName());
+			JptJpaUiPlugin.instance().trace(TRACE_OPTION, "about to close: {0}", profile);
 		}
 		
 		public void closed(ConnectionProfile profile) {
-			this.log("closed: " + profile.getName());
+			JptJpaUiPlugin.instance().trace(TRACE_OPTION, "closed: {0}", profile);
 			DatabaseObjectCombo.this.repopulateComboBox();
 		}
 		
 		public void databaseChanged(ConnectionProfile profile, Database database) {
-			this.log("database changed: " + database.getName());
+			JptJpaUiPlugin.instance().trace(TRACE_OPTION, "database changed: {0}", database);
 			DatabaseObjectCombo.this.databaseChanged(database);
 		}
 		
 		public void catalogChanged(ConnectionProfile profile, Catalog catalog) {
-			this.log("catalog changed: " + catalog.getName());
+			JptJpaUiPlugin.instance().trace(TRACE_OPTION, "catalog changed: {0}", catalog);
 			DatabaseObjectCombo.this.catalogChanged(catalog);
 		}
 		
 		public void schemaChanged(ConnectionProfile profile, Schema schema) {
-			this.log("schema changed: " + schema.getName());
+			JptJpaUiPlugin.instance().trace(TRACE_OPTION, "schema changed: {0}", schema);
 			DatabaseObjectCombo.this.schemaChanged(schema);
 		}
 		
 		public void sequenceChanged(ConnectionProfile profile, Sequence sequence) {
-			this.log("sequence changed: " + sequence.getName());
+			JptJpaUiPlugin.instance().trace(TRACE_OPTION, "sequence changed: {0}", sequence);
 			DatabaseObjectCombo.this.sequenceChanged(sequence);
 		}
 		
 		public void tableChanged(ConnectionProfile profile, Table table) {
-			this.log("table changed: " + table.getName());
+			JptJpaUiPlugin.instance().trace(TRACE_OPTION, "table changed: {0}", table);
 			DatabaseObjectCombo.this.tableChanged(table);
 		}
 		
 		public void columnChanged(ConnectionProfile profile, Column column) {
-			this.log("column changed: " + column.getName());
+			JptJpaUiPlugin.instance().trace(TRACE_OPTION, "column changed: {0}", column);
 			DatabaseObjectCombo.this.columnChanged(column);
 		}
 		
 		public void foreignKeyChanged(ConnectionProfile profile, ForeignKey foreignKey) {
-			this.log("foreign key changed: " + foreignKey.getName());
+			JptJpaUiPlugin.instance().trace(TRACE_OPTION, "foreign key changed: {0}", foreignKey);
 			DatabaseObjectCombo.this.foreignKeyChanged(foreignKey);
 		}
-		
-		protected void log(String message) {
-			DatabaseObjectCombo.this.log(Tracing.UI_DB, message);
-		}
 	}	
+	/* CU private */ static final String TRACE_OPTION = DatabaseObjectCombo.class.getSimpleName();
 }

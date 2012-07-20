@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.JavaConventions;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenTable;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -227,7 +227,7 @@ public class TableGenPanel
 			
 			
 		} catch (Exception e) {
-			JptJpaUiPlugin.log(e);
+			JptJpaUiPlugin.instance().logError(e);
 		}
 		
 		isUpdatingControls = false;
@@ -381,7 +381,7 @@ public class TableGenPanel
 			sequenceNameNoteLabel.setEnabled(false);
 		} else {
 			sequenceNameField.setEnabled(true);
-			Color NOTE_LABEL_COLOR = new Color( Display.getDefault(), 102,102,102);
+			Color NOTE_LABEL_COLOR = new Color( sequenceNameField.getDisplay(), 102,102,102);
 			sequenceNameNoteLabel.setForeground( NOTE_LABEL_COLOR );
 			NOTE_LABEL_COLOR.dispose();
 			sequenceNameNoteLabel.setEnabled(true);

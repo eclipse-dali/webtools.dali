@@ -20,8 +20,8 @@ import org.eclipse.jpt.jpa.core.context.java.JarFile;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 
 /**
  * This factory builds item label providers for the JPA content in the
@@ -105,7 +105,7 @@ public class GenericNavigatorItemLabelProviderFactory
 
 	protected ItemExtendedLabelProvider buildResourceItemLabelProvider(IResource resource, String imageKey) {
 		return new StaticItemExtendedLabelProvider(
-					JptJpaUiPlugin.getImage(imageKey),
+					JptJpaUiPlugin.instance().getImage(imageKey),
 					resource.getName(),
 					this.buildResourceDescription(resource)
 				);

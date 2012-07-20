@@ -1,24 +1,13 @@
 /*******************************************************************************
  * Copyright (c) 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License v1.0 and Eclipse Distribution License v. 1.0
- * which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
- * and the Eclipse Distribution License is available at
- * http://www.eclipse.org/org/documents/edl-v10.php.
- *
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
  * Contributors:
  *     Oracle - initial API and implementation
- *
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal;
-
-/**
- * This computer adds content assist support for a mapping file (ORM Configuration).
- *
- * @version 2.3
- * @since 2.3
- */
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,8 +26,8 @@ import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.JpaXmlStructureNode;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
+import org.eclipse.jpt.jpa.core.context.XmlFile;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.wst.sse.ui.contentassist.CompletionProposalInvocationContext;
 import org.eclipse.wst.sse.ui.internal.contentassist.CustomCompletionProposal;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
@@ -50,6 +39,12 @@ import org.eclipse.wst.xml.ui.internal.contentassist.XMLRelevanceConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
+/**
+ * This computer adds content assist support for a mapping file (ORM Configuration).
+ *
+ * @version 2.3
+ * @since 2.3
+ */
 public class JpaXmlCompletionProposalComputer extends DefaultJpaXmlCompletionProposalComputer {
 
 	public JpaXmlCompletionProposalComputer() {
@@ -66,7 +61,7 @@ public class JpaXmlCompletionProposalComputer extends DefaultJpaXmlCompletionPro
 				// and then return an empty list to prevent code completion process from 
 				// crashing. We need to determine if runtime exceptions should be 
 				// expected. If so, we could remove the log(ex) in the future.
-				JptJpaUiPlugin.log(ex);
+				JptJpaUiPlugin.instance().logError(ex);
 				return Collections.emptyList();
 			}
 		}
@@ -149,7 +144,7 @@ public class JpaXmlCompletionProposalComputer extends DefaultJpaXmlCompletionPro
 				if ((matchString.length() == 0) || StringTools.stringStartsWithIgnoreCase(possibleValue, matchString)) {
 					CustomCompletionProposal proposal = new CustomCompletionProposal(
 							possibleValue, begin, length, possibleValue.length(), 
-							JptJpaUiPlugin.getImage(JptUiIcons.JPA_CONTENT), 
+							JptJpaUiPlugin.instance().getImage(JptUiIcons.JPA_CONTENT), 
 							possibleValue, null, null, XMLRelevanceConstants.R_TAG_INSERTION);
 					contentAssistRequest.addProposal(proposal);
 				}
@@ -164,7 +159,6 @@ public class JpaXmlCompletionProposalComputer extends DefaultJpaXmlCompletionPro
 	 * Retrieves all of the possible valid values for this attribute/element declaration
 	 */
 	private List<String> getProposedValues(CompletionProposalInvocationContext context) {
-		List<String> list = new ArrayList<String>();
 		int documentPosition = context.getInvocationOffset();
 		if (documentPosition == -1) return Collections.emptyList();
 
@@ -183,14 +177,9 @@ public class JpaXmlCompletionProposalComputer extends DefaultJpaXmlCompletionPro
 			return Collections.emptyList();
 		}
 
+		List<String> list = new ArrayList<String>();
 		for (JpaStructureNode node : rootStructureNodes) {
-			Iterable<String> strings = ((JpaXmlStructureNode) node).getXmlCompletionProposals(documentPosition);
-			if (strings != null) {
-				CollectionTools.addAll(list, strings);
-			} else {
-				return Collections.emptyList();
-			}
-
+			CollectionTools.addAll(list, ((XmlFile.Root) node).getXmlCompletionProposals(documentPosition));
 		}
 		return list;
 	}

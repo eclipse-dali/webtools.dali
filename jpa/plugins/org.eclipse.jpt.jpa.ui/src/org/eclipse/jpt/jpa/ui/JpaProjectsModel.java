@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui;
 
-import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.JpaWorkspace;
 
 /**
  * Standard adapter for retrieving a model of a workspace's
@@ -27,7 +27,7 @@ public interface JpaProjectsModel
 	extends CollectionValueModel<JpaProject>
 {
 	/**
-	 * Return the workspace corresponding to the JPA projects model.
+	 * Return the JPA workspace corresponding to the JPA projects model.
 	 */
-	IWorkspace getWorkspace();
+	JpaWorkspace getJpaWorkspace();
 }

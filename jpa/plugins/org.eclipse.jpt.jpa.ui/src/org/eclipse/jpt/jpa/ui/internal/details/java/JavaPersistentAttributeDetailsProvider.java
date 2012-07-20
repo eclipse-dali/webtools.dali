@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details.java;
 
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
@@ -47,7 +47,7 @@ public class JavaPersistentAttributeDetailsProvider
 	
 	public boolean providesDetails(JpaStructureNode structureNode) {
 			return Tools.valuesAreEqual(structureNode.getType(), JavaPersistentAttribute.class)
-				&& structureNode.getResourceType().getContentType().equals(JptCommonCorePlugin.JAVA_SOURCE_CONTENT_TYPE);
+				&& structureNode.getResourceType().getContentType().equals(JavaResourceCompilationUnit.CONTENT_TYPE);
 	}
 	
 	public JpaDetailsPageManager<JavaPersistentAttribute> buildDetailsPageManager(

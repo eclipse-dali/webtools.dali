@@ -23,7 +23,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -33,17 +32,17 @@ import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
-import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProvider;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.INewWizard;
@@ -82,7 +81,7 @@ public class MappingFileWizard extends Wizard
 		super();
 		this.dataModel = dataModel;
 		setWindowTitle(JptUiMessages.MappingFileWizard_title);
-		setDefaultPageImageDescriptor(JptJpaUiPlugin.getImageDescriptor(JptUiIcons.JPA_FILE_WIZ_BANNER));
+		setDefaultPageImageDescriptor(JptJpaUiPlugin.instance().buildImageDescriptor(JptUiIcons.JPA_FILE_WIZ_BANNER));
 	}
 	
 	
@@ -121,7 +120,7 @@ public class MappingFileWizard extends Wizard
 		if (jpaProject != null) {
 			PersistenceXml persistenceXml = jpaProject.getRootContextNode().getPersistenceXml();
 			if (persistenceXml != null){
-				Persistence persistence = persistenceXml.getPersistence();
+				Persistence persistence = persistenceXml.getRoot();
 				if ((persistence != null) && (persistence.getPersistenceUnitsSize() > 0)) {
 					return persistence.getPersistenceUnit(0);
 				}
@@ -180,7 +179,7 @@ public class MappingFileWizard extends Wizard
 	}
 	
 	private IContainer getDefaultContainer(IProject project) {
-		if (JpaFacet.isInstalled(project)) {
+		if (ProjectTools.hasFacet(project, JpaProject.FACET)) {
 			ProjectResourceLocator locator = (ProjectResourceLocator) project.getAdapter(ProjectResourceLocator.class);
 			return locator.getDefaultResourceLocation();
 		}
@@ -237,7 +236,7 @@ public class MappingFileWizard extends Wizard
 		try {
 			postPerformFinish();
 		} catch (Exception e) {
-			JptJpaUiPlugin.log(e);
+			JptJpaUiPlugin.instance().logError(e);
 		}
 		return true;
 	}
@@ -264,7 +263,7 @@ public class MappingFileWizard extends Wizard
 			}
 		}
 		catch (Exception e) {
-			JptJpaUiPlugin.log(e);
+			JptJpaUiPlugin.instance().logError(e);
 			ErrorDialog.openError(
 					getShell(), 
 					WTPCommonUIResourceHandler.getString(WTPCommonUIResourceHandler.WTPWizard_UI_0, new Object[]{getWindowTitle()}), 
@@ -304,15 +303,14 @@ public class MappingFileWizard extends Wizard
 		if (runnable.caught == null) {
 			return runnable.status;
 		}
-		else {
-			JptJpaUiPlugin.log(runnable.caught);
-			ErrorDialog.openError(
-					getShell(), 
-					WTPCommonUIResourceHandler.getString(WTPCommonUIResourceHandler.WTPWizard_UI_0, new Object[]{getWindowTitle()}), 
-					WTPCommonUIResourceHandler.getString(WTPCommonUIResourceHandler.WTPWizard_UI_1, new Object[]{getWindowTitle()}), 
-					runnable.caught, 0, false);
-			return new Status(IStatus.ERROR, "id", 0, runnable.caught.getMessage(), runnable.caught); //$NON-NLS-1$
-		}
+
+		JptJpaUiPlugin.instance().logError(runnable.caught);
+		ErrorDialog.openError(
+				getShell(), 
+				WTPCommonUIResourceHandler.getString(WTPCommonUIResourceHandler.WTPWizard_UI_0, new Object[]{getWindowTitle()}), 
+				WTPCommonUIResourceHandler.getString(WTPCommonUIResourceHandler.WTPWizard_UI_1, new Object[]{getWindowTitle()}), 
+				runnable.caught, 0, false);
+		return JptJpaUiPlugin.instance().buildErrorStatus(runnable.caught);
 	}
 	
 	protected void postPerformFinish()
@@ -339,7 +337,7 @@ public class MappingFileWizard extends Wizard
                         IDE.openEditor(page, file, true);
                     }
                     catch (PartInitException e) {
-                    	JptJpaUiPlugin.log(e);
+                    	JptJpaUiPlugin.instance().logError(e);
                     }
                 }
             });

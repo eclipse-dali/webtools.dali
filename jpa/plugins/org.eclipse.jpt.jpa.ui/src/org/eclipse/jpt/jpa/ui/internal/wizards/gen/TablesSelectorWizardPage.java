@@ -50,10 +50,10 @@ import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.ImageRepository;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
@@ -339,7 +339,7 @@ public class TablesSelectorWizardPage extends WizardPage {
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true ;
 		
-		Color backgroundColor = new Color(Display.getDefault(), 255, 0,0);
+		Color backgroundColor = new Color(parent.getDisplay(), 255, 0,0);
 		parent.setLayoutData(gridData);
 		parent.setBackground(backgroundColor);
 		backgroundColor.dispose();
@@ -659,7 +659,7 @@ public class TablesSelectorWizardPage extends WizardPage {
 				});
 			} 
 			catch (Exception e) {
-				JptJpaUiPlugin.log(e);
+				JptJpaUiPlugin.instance().logError(e);
 			}
 		}
 	}

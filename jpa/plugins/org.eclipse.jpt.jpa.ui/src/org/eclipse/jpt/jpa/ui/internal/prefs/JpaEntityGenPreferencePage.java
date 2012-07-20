@@ -1,18 +1,18 @@
 /*******************************************************************************
-* Copyright (c) 2012 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.prefs;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jpa.core.prefs.JpaEntityGenPreferencesManager;
+import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -26,7 +26,6 @@ import org.eclipse.ui.dialogs.PropertyPage;
 
 public class JpaEntityGenPreferencePage extends PropertyPage {
 
-	private JpaEntityGenPreferencesManager prefsManager;
 	private EntityGenComposite entityGenComposite;
 	
 	// ********** constructors **********
@@ -49,7 +48,6 @@ public class JpaEntityGenPreferencePage extends PropertyPage {
 
 	@Override
 	protected Control createContents(Composite parent) {
-		this.prefsManager = new JpaEntityGenPreferencesManager(this.getProject());
 		
 		Composite composite = new Composite(parent, SWT.NULL);
 		composite.setLayout(new GridLayout());
@@ -62,13 +60,8 @@ public class JpaEntityGenPreferencePage extends PropertyPage {
 	// ********** preferences **********
 	
 	private void updateProjectEntityGenPreferences() {
-
-		if(StringTools.stringIsEmpty(this.getDefaultPackage())) {
-			this.prefsManager.removeDefaultPackagePreference();
-		}
-		else {
-			this.prefsManager.setDefaultPackagePreference(this.getDefaultPackage());
-		}
+		String pkgName = this.getDefaultPackage();
+		JpaPreferences.setEntityGenDefaultPackageName(this.getProject(), (StringTools.stringIsNotEmpty(pkgName) ? pkgName : null));
 	}
 
 	// ********** internal methods **********
@@ -87,7 +80,7 @@ public class JpaEntityGenPreferencePage extends PropertyPage {
 	// ********** queries *********
 
 	private String getDefaultPackagePreference() {
-		return this.prefsManager.getDefaultPackagePreference();
+		return JpaPreferences.getEntityGenDefaultPackageName(this.getProject());
 	}
 	
 	// ********** EntityGenComposite **********

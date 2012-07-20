@@ -11,8 +11,8 @@ package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsPageManager;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEntityMappingsDetailsProvider;
@@ -48,7 +48,7 @@ public class EntityMappingsDetailsProvider
 	
 	@Override
 	protected boolean providesDetails(JptResourceType resourceType) {
-		return resourceType.equals(JptJpaCorePlugin.ORM_XML_1_0_RESOURCE_TYPE);
+		return resourceType.equals(GenericOrmXmlDefinition.instance().getResourceType());
 	}
 	
 	public JpaDetailsPageManager<EntityMappings> buildDetailsPageManager(

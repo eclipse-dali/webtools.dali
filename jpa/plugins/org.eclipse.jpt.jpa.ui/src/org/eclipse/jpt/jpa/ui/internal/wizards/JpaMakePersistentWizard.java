@@ -7,7 +7,6 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-
 package org.eclipse.jpt.jpa.ui.internal.wizards;
 
 import java.lang.reflect.InvocationTargetException;
@@ -21,13 +20,13 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 
 public class JpaMakePersistentWizard extends Wizard {	
 	
-	public static final String HELP_CONTEXT_ID = JptJpaUiPlugin.PLUGIN_ID + ".GenerateEntitiesFromSchemaWizard"; //$NON-NLS-1$
+	public static final String HELP_CONTEXT_ID = JptJpaUiPlugin.instance().getPluginID() + ".GenerateEntitiesFromSchemaWizard"; //$NON-NLS-1$
 
 	final JpaProject jpaProject;
 
@@ -43,7 +42,7 @@ public class JpaMakePersistentWizard extends Wizard {
 		this.selectedTypes = selectedTypes;
 		this.resourceManager = new LocalResourceManager(JFaceResources.getResources());
 		this.setWindowTitle(JptUiMessages.JpaMakePersistentWizardPage_title);
-		this.setDefaultPageImageDescriptor(JptJpaUiPlugin.getImageDescriptor(JptUiIcons.ENTITY_WIZ_BANNER));
+		this.setDefaultPageImageDescriptor(JptJpaUiPlugin.instance().buildImageDescriptor(JptUiIcons.ENTITY_WIZ_BANNER));
 	}
 	
 	@Override
@@ -59,7 +58,7 @@ public class JpaMakePersistentWizard extends Wizard {
 		try {
 			this.makePersistentWizardPage.performFinish();
 		} catch (InvocationTargetException e) {
-			JptJpaUiPlugin.log(e);
+			JptJpaUiPlugin.instance().logError(e);
 		}
 		return true;
 	}
@@ -67,7 +66,7 @@ public class JpaMakePersistentWizard extends Wizard {
 	protected PersistenceUnit getPersistenceUnit(JpaProject jpaProject) {
 		PersistenceXml persistenceXml = jpaProject.getRootContextNode().getPersistenceXml();
 		if (persistenceXml != null) {
-			Persistence persistence = persistenceXml.getPersistence();
+			Persistence persistence = persistenceXml.getRoot();
 			if (persistence != null && persistence.getPersistenceUnitsSize() > 0) {
 				return persistence.getPersistenceUnits().iterator().next();
 			}

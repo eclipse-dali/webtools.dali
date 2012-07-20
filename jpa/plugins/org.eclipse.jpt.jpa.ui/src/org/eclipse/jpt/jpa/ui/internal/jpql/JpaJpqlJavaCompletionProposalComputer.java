@@ -41,14 +41,13 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.persistence.jpa.jpql.ExpressionTools;
 import org.eclipse.swt.graphics.Image;
 
@@ -108,8 +107,8 @@ public final class JpaJpqlJavaCompletionProposalComputer extends JpqlCompletionP
 			try {
 				return computeCompletionProposals((JavaContentAssistInvocationContext) context, monitor);
 			}
-			catch (Exception e) {
-				JptJpaUiPlugin.log(JptUiMessages.JpaJpqlJavaCompletionProposalComputer_Error, e);
+			catch (Exception ex) {
+				JptJpaUiPlugin.instance().logError(ex, JptUiMessages.JpaJpqlJavaCompletionProposalComputer_Error);
 			}
 			finally {
 				monitor.done();
@@ -196,7 +195,7 @@ public final class JpaJpqlJavaCompletionProposalComputer extends JpqlCompletionP
 			return (IFile) compilationUnit.getCorrespondingResource();
 		}
 		catch (JavaModelException ex) {
-			JptJpaCorePlugin.log(ex);
+			JptJpaUiPlugin.instance().logError(ex);
 			return null;
 		}
 	}

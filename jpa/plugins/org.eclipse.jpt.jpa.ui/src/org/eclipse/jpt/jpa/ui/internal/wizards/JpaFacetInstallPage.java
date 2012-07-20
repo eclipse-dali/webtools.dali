@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,11 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.wizards;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProperties;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
-import org.eclipse.jpt.jpa.db.JptJpaDbPlugin;
+import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
 import org.eclipse.jpt.jpa.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
@@ -209,9 +210,13 @@ public class JpaFacetInstallPage
 		
 		private ConnectionProfile getConnectionProfile() {
 			// we just use the connection profile to log in, so go to the the db plug-in
-			return JptJpaDbPlugin.getConnectionProfileFactory().buildConnectionProfile(model.getStringProperty(CONNECTION));
+			return this.getConnectionProfileFactory().buildConnectionProfile(model.getStringProperty(CONNECTION));
 		}
-		
+
+		private ConnectionProfileFactory getConnectionProfileFactory() {
+			return (ConnectionProfileFactory) ResourcesPlugin.getWorkspace().getAdapter(ConnectionProfileFactory.class);
+		}
+
 		private void updateConnectLink(ConnectionProfile cp) {
 			connectLink.setEnabled((cp != null) && cp.isDisconnected());
 			if (cp != null && cp.isConnected()) {

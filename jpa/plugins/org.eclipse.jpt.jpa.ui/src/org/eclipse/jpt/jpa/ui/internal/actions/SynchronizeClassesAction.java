@@ -33,8 +33,8 @@ import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
@@ -79,10 +79,10 @@ public class SynchronizeClassesAction
 			IRunnableWithProgress runnable = new SyncRunnable(this.persistenceXmlFile);
 			this.buildProgressMonitorDialog().run(true, true, runnable);  // true => fork; true => cancellable
 		} catch (InvocationTargetException ex) {
-			JptJpaUiPlugin.log(ex);
+			JptJpaUiPlugin.instance().logError(ex);
 		} catch (InterruptedException ex) {
 			Thread.currentThread().interrupt();
-			JptJpaUiPlugin.log(ex);
+			JptJpaUiPlugin.instance().logError(ex);
 		}
 	}
 
@@ -170,7 +170,7 @@ public class SynchronizeClassesAction
 				return;  // unlikely...
 			}
 
-			Persistence persistence = persistenceXml.getPersistence();
+			Persistence persistence = persistenceXml.getRoot();
 			if (persistence == null) {
 				return;  // unlikely...
 			}

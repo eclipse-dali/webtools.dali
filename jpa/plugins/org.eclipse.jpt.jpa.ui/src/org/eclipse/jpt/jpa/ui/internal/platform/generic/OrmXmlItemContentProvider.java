@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.XmlFile;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
@@ -59,7 +59,7 @@ public class OrmXmlItemContentProvider
 		extends PropertyAspectAdapter<OrmXml, EntityMappings>
 	{
 		public EntityMappingsModel(OrmXml subject) {
-			super(OrmXml.ROOT_PROPERTY, subject);
+			super(XmlFile.ROOT_PROPERTY, subject);
 		}
 		@Override
 		protected EntityMappings buildValue_() {

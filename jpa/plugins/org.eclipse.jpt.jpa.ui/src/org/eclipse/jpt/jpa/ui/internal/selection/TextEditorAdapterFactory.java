@@ -17,7 +17,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
  * Factory to build JPA selection adapters for a {@link ITextEditor}:<ul>
  * <li>{@link org.eclipse.jpt.jpa.ui.selection.JpaEditorManager}
  * </ul>
- * See <code>org.eclipse.jpt.jpa.ui/plugin.xml</code>.
+ * See <code>org.eclipse.jpt.jpa.ui/plugin.xml:org.eclipse.core.runtime.adapters</code>.
  */
 public class TextEditorAdapterFactory
 	implements IAdapterFactory

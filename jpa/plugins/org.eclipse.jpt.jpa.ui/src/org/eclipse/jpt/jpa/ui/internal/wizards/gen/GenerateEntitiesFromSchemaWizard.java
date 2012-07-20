@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.ui.internal.wizards.gen;
 
 import java.io.File;
 import java.io.IOException;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceRuleFactory;
@@ -40,8 +39,8 @@ import org.eclipse.jpt.common.ui.internal.dialogs.OptionalMessageDialog;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.EntityGeneratorDatabaseAnnotationNameBuilder;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
+import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.prefs.JpaEntityGenPreferencesManager;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.ForeignKey;
@@ -52,9 +51,9 @@ import org.eclipse.jpt.jpa.gen.internal.DatabaseAnnotationNameBuilder;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenTable;
 import org.eclipse.jpt.jpa.gen.internal.PackageGenerator;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -65,7 +64,7 @@ import org.eclipse.ui.IWorkbench;
 public class GenerateEntitiesFromSchemaWizard extends Wizard 
 	implements INewWizard  {	
 	
-	public static final String HELP_CONTEXT_ID = JptJpaUiPlugin.PLUGIN_ID + ".GenerateEntitiesFromSchemaWizard"; //$NON-NLS-1$
+	public static final String HELP_CONTEXT_ID = JptJpaUiPlugin.instance().getPluginID() + ".GenerateEntitiesFromSchemaWizard"; //$NON-NLS-1$
 
 	protected JpaProject jpaProject;
 
@@ -96,7 +95,7 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 		this.selection = selection;
 		this.resourceManager = new LocalResourceManager(JFaceResources.getResources());
 		this.setWindowTitle( JptUiEntityGenMessages.GenerateEntitiesWizard_generateEntities);
-		this.setDefaultPageImageDescriptor(JptJpaUiPlugin.getImageDescriptor(JptUiIcons.ENTITY_WIZ_BANNER));
+		this.setDefaultPageImageDescriptor(JptJpaUiPlugin.instance().buildImageDescriptor(JptUiIcons.ENTITY_WIZ_BANNER));
 	}
 	
 	@Override
@@ -182,8 +181,7 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 			}
 		}
 		else if (newDefaultTable.getPackage().equals(StringTools.EMPTY_STRING)) {
-			JpaEntityGenPreferencesManager preferencesManager = this.buildEntityGenPreferencesManager();
-			newDefaultTable.setPackage(preferencesManager.getDefaultPackagePreference());
+			newDefaultTable.setPackage(JpaPreferences.getEntityGenDefaultPackageName(this.jpaProject.getProject()));
 		}
 			
 		return this.customizer;
@@ -224,7 +222,7 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 			this.customizer.setDatabaseAnnotationNameBuilder(this.buildDatabaseAnnotationNameBuilder());
 			this.customizer.save();
 		} catch (IOException e) {
-			JptJpaUiPlugin.log(e);
+			JptJpaUiPlugin.instance().logError(e);
 		}
 		OverwriteConfirmer overwriteConfirmer = null;
 		if (showOverwriteWarning()) {
@@ -239,10 +237,6 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 			OverwriteConfirmer overwriteConfirmer) {
 		WorkspaceJob genEntitiesJob = new GenerateEntitiesJob(this.jpaProject, getCustomizer(), overwriteConfirmer, false);
 		genEntitiesJob.schedule();
-	}
-	
-	private JpaEntityGenPreferencesManager buildEntityGenPreferencesManager() {
-		return new JpaEntityGenPreferencesManager(this.jpaProject.getProject());
 	}
 
 	// ********** generate entities job **********

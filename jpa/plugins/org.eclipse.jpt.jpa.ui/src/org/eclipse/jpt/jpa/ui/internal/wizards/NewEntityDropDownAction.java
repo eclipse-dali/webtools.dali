@@ -33,7 +33,7 @@ import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowPulldownDelegate2;
@@ -128,7 +128,7 @@ public class NewEntityDropDownAction extends Action implements IMenuCreator, IWo
 				
 				notifyResult(res == Window.OK);
 			} catch (CoreException e) {
-				JptJpaUiPlugin.log(e);
+				JptJpaUiPlugin.instance().logError(e);
 			}
 		}
 

@@ -29,11 +29,11 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
+import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.EntityWizardMsg;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.operation.NewEntityClassOperation;
 import org.eclipse.jst.j2ee.internal.common.J2EECommonMessages;
@@ -44,7 +44,6 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelProvider;
 import org.eclipse.wst.common.frameworks.internal.plugin.WTPCommonPlugin;
-import com.ibm.icu.text.MessageFormat;
 
 public class EntityDataModelProvider extends NewJavaClassDataModelProvider implements IEntityDataModelProperties{
 
@@ -149,7 +148,7 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 		}
 		catch (JavaModelException jme) {
 			// fall through
-			JptJpaUiPlugin.log(jme);
+			JptJpaUiPlugin.instance().logError(jme);
 		}
 		return null;
 	}
@@ -275,14 +274,10 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 			if (project != null) {
 				JpaXmlResource ormXmlResource = StringTools.stringIsEmpty(xmlName) ? null : getOrmXmlResource(xmlName);
 				if (ormXmlResource == null) {
-					return new Status(
-							IStatus.ERROR, JptJpaUiPlugin.PLUGIN_ID,
-							EntityWizardMsg.INVALID_XML_NAME);
+					return JptJpaUiPlugin.instance().buildErrorStatus(EntityWizardMsg.INVALID_XML_NAME);
 				}
 				else if (getTargetJpaProject().getJpaFile(ormXmlResource.getFile()).getRootStructureNodesSize() == 0) {
-					return new Status(
-						IStatus.ERROR, JptJpaUiPlugin.PLUGIN_ID,
-						EntityWizardMsg.MAPPING_FILE_NOT_LISTED_ERROR);
+					return JptJpaUiPlugin.instance().buildErrorStatus(EntityWizardMsg.MAPPING_FILE_NOT_LISTED_ERROR);
 				}
 			}
 		}
@@ -327,18 +322,14 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 		IStatus validateFieldTypeStatus = Status.OK_STATUS;
 		for (EntityRow entityRow: inputElements) {
 			if (entityRow.isKey() && !entityRow.couldBeKey()) {
-				String message = MessageFormat.format(
-						EntityWizardMsg.EntityDataModelProvider_invalidPKType, new Object[]{entityRow.getFqnTypeName()});
-				validateFieldTypeStatus = new Status(IStatus.ERROR,
-						JptJpaUiPlugin.PLUGIN_ID, message);
+				validateFieldTypeStatus = JptJpaUiPlugin.instance().buildErrorStatus(EntityWizardMsg.EntityDataModelProvider_invalidPKType, entityRow.getFqnTypeName());
 				break;				
 			}			
 			String sig = null;
 			try {
 				sig = Signature.createTypeSignature(entityRow.getFqnTypeName(), true);
-			} catch (IllegalArgumentException e) {
-				String message = MessageFormat.format(EntityWizardMsg.EntityDataModelProvider_invalidArgument, new Object[]{e.getLocalizedMessage()});
-				validateFieldTypeStatus = new Status(IStatus.ERROR, JptJpaUiPlugin.PLUGIN_ID, message);
+			} catch (IllegalArgumentException ex) {
+				validateFieldTypeStatus = JptJpaUiPlugin.instance().buildErrorStatus(EntityWizardMsg.EntityDataModelProvider_invalidArgument, ex.getLocalizedMessage());
 				break;
 			}
 			if (sig == null){
@@ -367,10 +358,7 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 		for (EntityRow entityRow: inputElements) {
 			String sig = Signature.createTypeSignature(entityRow.getFqnTypeName() ,true);
 			if (sig == null) {
-				String message = MessageFormat.format(
-						EntityWizardMsg.EntityDataModelProvider_typeNotInProjectClasspath, new Object[]{entityRow.getFqnTypeName()});
-				validateFieldTypeStatus = new Status(IStatus.ERROR,
-						JptJpaUiPlugin.PLUGIN_ID, message);
+				validateFieldTypeStatus = JptJpaUiPlugin.instance().buildErrorStatus(EntityWizardMsg.EntityDataModelProvider_typeNotInProjectClasspath, entityRow.getFqnTypeName());
 				break;
 			}
 			int sigType = Signature.getTypeSignatureKind(sig);
@@ -393,10 +381,7 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 					break;
 				}
 				if (type == null) {
-					String message = MessageFormat.format(
-							EntityWizardMsg.EntityDataModelProvider_typeNotInProjectClasspath, new Object[]{entityRow.getFqnTypeName()});
-					validateFieldTypeStatus = new Status(IStatus.ERROR,
-							JptJpaUiPlugin.PLUGIN_ID, message);
+					validateFieldTypeStatus = JptJpaUiPlugin.instance().buildErrorStatus(EntityWizardMsg.EntityDataModelProvider_typeNotInProjectClasspath, entityRow.getFqnTypeName());
 					break;
 				}
 			}
@@ -411,10 +396,7 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 					break;
 				}
 				if (type == null) {
-					String message = MessageFormat.format(
-							EntityWizardMsg.EntityDataModelProvider_typeNotInProjectClasspath, new Object[]{entityRow.getFqnTypeName()});
-					validateFieldTypeStatus = new Status(IStatus.ERROR,
-							JptJpaUiPlugin.PLUGIN_ID, message);
+					validateFieldTypeStatus = JptJpaUiPlugin.instance().buildErrorStatus(EntityWizardMsg.EntityDataModelProvider_typeNotInProjectClasspath, entityRow.getFqnTypeName());
 					break;
 				}
 			}
@@ -455,7 +437,7 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 	
 	protected JpaProject getTargetJpaProject() {
 		IProject project = getTargetProject();
-		return ((project != null) && JpaFacet.isInstalled(project)) ?
+		return ((project != null) && ProjectTools.hasFacet(project, JpaProject.FACET)) ?
 				this.getJpaProject(project) :
 				null;
 	}
@@ -483,7 +465,7 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 		}
 		catch (JavaModelException jme) {
 			// fall through
-			JptJpaUiPlugin.log(jme);
+			JptJpaUiPlugin.instance().logError(jme);
 		}
 		return null;
 	}

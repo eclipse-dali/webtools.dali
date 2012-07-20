@@ -37,13 +37,16 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
+import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
+import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.JpaMappingImageHelper;
 import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
@@ -229,17 +232,25 @@ public class PersistenceUnitClassesComposite extends Pane<PersistenceUnit>
 			public Image getImage(Object element) {
 				ClassRef classRef = (ClassRef) element;
 				JavaPersistentType persistentType = classRef.getJavaPersistentType();
-				Image image = null;
-
 				if (persistentType != null) {
-					image = JpaMappingImageHelper.imageForTypeMapping(persistentType.getMappingKey());
+					String mappingKey = persistentType.getMappingKey();
+					if (mappingKey != null) {
+						return this.getImage(persistentType, mappingKey);
+					}
 				}
+				return JptJpaUiPlugin.instance().getImage(JptUiIcons.WARNING);
+			}
 
-				if (image != null) {
-					return image;
-				}
+			private Image getImage(JavaPersistentType persistentType, String mappingKey) {
+				return this.getTypeMappingUiDefinition(persistentType, mappingKey).getImage();
+			}
 
-				return JptJpaUiPlugin.getImage(JptUiIcons.WARNING);
+			private MappingUiDefinition<PersistentType, ? extends TypeMapping> getTypeMappingUiDefinition(JavaPersistentType persistentType, String mappingKey) {
+				return this.getJpaPlatformUi(persistentType).getTypeMappingUiDefinition(persistentType.getResourceType(), mappingKey);
+			}
+
+			private JpaPlatformUi getJpaPlatformUi(JavaPersistentType persistentType) {
+				return (JpaPlatformUi) persistentType.getJpaPlatform().getAdapter(JpaPlatformUi.class);
 			}
 
 			@Override
@@ -306,7 +317,7 @@ public class PersistenceUnitClassesComposite extends Pane<PersistenceUnit>
 			);
 		}
 		catch (JavaModelException e) {
-			JptJpaUiPlugin.log(e);
+			JptJpaUiPlugin.instance().logError(e);
 			return null;
 		}
 
@@ -328,7 +339,7 @@ public class PersistenceUnitClassesComposite extends Pane<PersistenceUnit>
 				return getSubject().getJpaProject().getJavaProject().findType(className.replace('$', '.'));
 			}
 			catch (JavaModelException e) {
-				JptJpaUiPlugin.log(e);
+				JptJpaUiPlugin.instance().logError(e);
 			}
 		}
 
@@ -345,10 +356,10 @@ public class PersistenceUnitClassesComposite extends Pane<PersistenceUnit>
 				JavaUI.openInEditor(javaElement, true, true);
 			}
 			catch (PartInitException e) {
-				JptJpaUiPlugin.log(e);
+				JptJpaUiPlugin.instance().logError(e);
 			}
 			catch (JavaModelException e) {
-				JptJpaUiPlugin.log(e);
+				JptJpaUiPlugin.instance().logError(e);
 			}
 		}
 	}

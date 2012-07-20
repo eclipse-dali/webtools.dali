@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,18 +7,14 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-
 package org.eclipse.jpt.jpa.ui.internal.wizards.gen;
 
 
 import static org.eclipse.jpt.jpa.ui.internal.wizards.gen.SWTUtil.fillColumns;
 import static org.eclipse.jpt.jpa.ui.internal.wizards.gen.SWTUtil.newLabel;
 import static org.eclipse.jpt.jpa.ui.internal.wizards.gen.SWTUtil.newLabelWithIndent;
-
 import java.util.List;
-
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.JavaConventions;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.ui.dialogs.StatusUtil;
@@ -50,7 +46,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
@@ -151,7 +146,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 		});
 		
 		deleteAssociationLink = new Button(c, SWT.NONE);
-		Color foreground = new Color(Display.getDefault(), 0,0,255);
+		Color foreground = new Color(deleteAssociationLink.getDisplay(), 0,0,255);
 		deleteAssociationLink.setForeground(foreground);
 		foreground.dispose();
 		deleteAssociationLink.setImage( ImageRepository.getDeleteButtonImage(this.resourceManager));
@@ -313,7 +308,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 		setPageComplete(!status.matches(IStatus.ERROR));
 		
 		StatusUtil.applyToStatusLine(this, status);
-		if( status.getCode() == Status.OK ){
+		if( status.getCode() == IStatus.OK ){
 			setMessage(JptUiEntityGenMessages.GenerateEntitiesWizard_assocPage_desc);
 		}
 	}
@@ -500,7 +495,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 	private void createAssociationsListPanel(Composite parent) {
 		Composite composite = new Composite( parent, SWT.NULL );
 		composite.setLayout( new FillLayout());
-		Color backgroundColor = new Color(Display.getDefault(),255, 0,0);
+		Color backgroundColor = new Color(composite.getDisplay(),255, 0,0);
 		composite.setBackground(backgroundColor);
 		backgroundColor.dispose();
 		GridData layoutData = new GridData();

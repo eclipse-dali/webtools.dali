@@ -43,11 +43,11 @@ import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.internal.utility.SynchronousUiCommandExecutor;
 import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.common.utility.command.Command;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
@@ -60,7 +60,6 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -68,14 +67,18 @@ import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
+import org.eclipse.jpt.jpa.core.internal.context.java.JavaSourceFileDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractEntityMappings;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnit;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
+import org.eclipse.jpt.jpa.core.resource.ResourceMappingFile;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.jface.XmlMappingFileViewerFilter;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.EntityWizardMsg;
 import org.eclipse.jpt.jpa.ui.internal.wizards.orm.EmbeddedMappingFileWizard;
 import org.eclipse.swt.SWT;
@@ -123,7 +126,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 		this.jpaProject = jpaProject;
 
 		this.selectedTypes = this.buildTypes(selectedTypes);
-		this.jptResourceType = JptCommonCorePlugin.JAVA_SOURCE_RESOURCE_TYPE;
+		this.jptResourceType = JavaSourceFileDefinition.instance().getResourceType();
 		this.helpContextId = helpContextId;
 		this.annotateInJavaModel = new SimplePropertyValueModel<Boolean>(Boolean.TRUE);
 		this.mappingFileModel = new SimplePropertyValueModel<String>();
@@ -175,7 +178,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 		javaAnnotationButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				JpaMakePersistentWizardPage.this.annotateInJavaModel.setValue(Boolean.TRUE);
-				JpaMakePersistentWizardPage.this.jptResourceType = JptCommonCorePlugin.JAVA_SOURCE_RESOURCE_TYPE;
+				JpaMakePersistentWizardPage.this.jptResourceType = JavaSourceFileDefinition.instance().getResourceType();
 				JpaMakePersistentWizardPage.this.validate();
 			}
 			
@@ -195,7 +198,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 			public void widgetSelected(SelectionEvent e) {
 				JpaMakePersistentWizardPage.this.annotateInJavaModel.setValue(Boolean.FALSE);
 				if (JpaMakePersistentWizardPage.this.isFirstCheck) {
-					JpaMakePersistentWizardPage.this.mappingFileModel.setValue(JptJpaCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH.toString());
+					JpaMakePersistentWizardPage.this.mappingFileModel.setValue(XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 					JpaMakePersistentWizardPage.this.isFirstCheck = false;
 				}
 				JpaMakePersistentWizardPage.this.validate();
@@ -254,7 +257,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 			public void propertyChanged(PropertyChangeEvent event) {
 				JpaXmlResource ormXmlResource = getOrmXmlResource();
 				if (ormXmlResource == null) {
-					jptResourceType = JptJpaCorePlugin.ORM_XML_1_0_RESOURCE_TYPE; //just default to 1.0 orm resource type
+					jptResourceType = GenericOrmXmlDefinition.instance().getResourceType(); //just default to 1.0 orm resource type
 				}
 				else {
 					jptResourceType = ormXmlResource.getResourceType();
@@ -317,7 +320,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 	 * @return new instance of viewer filter for the SelectMappingXMLDialog
 	 */
 	protected ViewerFilter buildMappingFileDialogViewerFilter() {
-		return new XmlMappingFileViewerFilter(this.jpaProject, JptJpaCorePlugin.MAPPING_FILE_CONTENT_TYPE);
+		return new XmlMappingFileViewerFilter(this.jpaProject, ResourceMappingFile.Root.CONTENT_TYPE);
 	}
 
 	private void openNewMappingFileWizard() {
@@ -393,7 +396,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 	protected IStructuredContentProvider buildMappingComboCellEditorContentProvider() {
 		return new IStructuredContentProvider() {
 			public Object[] getElements(Object inputElement) {
-				return CollectionTools.collection(((Type) inputElement).typeMappingUiDefinitions()).toArray();
+				return ArrayTools.array(((Type) inputElement).typeMappingUiDefinitions());
 			}
 
 			public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
@@ -423,12 +426,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 	}
 
 	protected MappingUiDefinition<? extends PersistentType, ?> getMappingUiDefinition(String mappingKey) {
-		for (MappingUiDefinition<? extends PersistentType, ?> provider : typeMappingUiDefinitions(this.jptResourceType)) {
-			if (provider.getKey() == mappingKey) {
-				return provider;
-			}
-		}
-		throw new IllegalArgumentException();	
+		return this.getJpaPlatformUi().getTypeMappingUiDefinition(this.jptResourceType, mappingKey);
 	}
 
 	protected Iterable<String> typeMappingKeys(Iterable<? extends MappingUiDefinition<? extends PersistentType, ?>> mappingUiDefinitions) {
@@ -438,10 +436,6 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 				return next.getKey();
 			}
 		};
-	}
-
-	protected Iterable<? extends MappingUiDefinition<? extends PersistentType, ?>> typeMappingUiDefinitions(JptResourceType jpaResourceType) {
-		return CollectionTools.iterable(getJpaPlatformUi().typeMappingUiDefinitions(jpaResourceType));
 	}
 
 	protected void validate() {
@@ -494,10 +488,10 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 		try {
 			this.buildProgressMonitorDialog().run(true, true, runnable);  // true => fork; true => cancellable
 		} catch (InvocationTargetException ex) {
-			JptJpaUiPlugin.log(ex);
+			JptJpaUiPlugin.instance().logError(ex);
 		} catch (InterruptedException ex) {
 			Thread.currentThread().interrupt();
-			JptJpaUiPlugin.log(ex);
+			JptJpaUiPlugin.instance().logError(ex);
 		}
 	}
 
@@ -514,7 +508,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 						IDE.openEditor(page, file, true);
 					}
 					catch (PartInitException e) {
-						JptJpaUiPlugin.log(e);
+						JptJpaUiPlugin.instance().logError(e);
 					}
 				}
 			});
@@ -570,7 +564,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 		}
 
 		protected Iterable<? extends MappingUiDefinition<? extends PersistentType, ?>> typeMappingUiDefinitions() {
-			return CollectionTools.iterable(getJpaPlatformUi().typeMappingUiDefinitions(JpaMakePersistentWizardPage.this.jptResourceType));
+			return getJpaPlatformUi().getTypeMappingUiDefinitions(JpaMakePersistentWizardPage.this.jptResourceType);
 		}
 	}
 	
@@ -849,7 +843,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 
 		protected Persistence getPersistence() {
 			PersistenceXml pxml = this.getPersistenceXml();
-			return (pxml == null) ? null : pxml.getPersistence();
+			return (pxml == null) ? null : pxml.getRoot();
 		}
 
 		protected PersistenceXml getPersistenceXml() {

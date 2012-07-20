@@ -29,9 +29,9 @@ import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaNode;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
@@ -110,7 +110,7 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 	 * @return The UI platform of the JPT plug-in
 	 */
 	protected JpaPlatformUi getJpaPlatformUi() {
-        return (JpaPlatformUi) getSubject().getJpaProject().getJpaPlatform().getAdapter(JpaPlatformUi.class);
+		return (JpaPlatformUi) getSubject().getJpaProject().getJpaPlatform().getAdapter(JpaPlatformUi.class);
 	}
 
 	/**
@@ -123,12 +123,7 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 	protected abstract DefaultMappingUiDefinition getDefaultDefinition(String mappingKey);
 	
 	protected MappingUiDefinition getMappingUiDefinition(String mappingKey) {
-		for (MappingUiDefinition<T, ?> provider : CollectionTools.iterable(this.mappingChangeHandler.mappingUiDefinitions())) {
-			if (provider.getKey() == mappingKey) {
-				return provider;
-			}
-		}
-		return null;		
+		return this.mappingChangeHandler.getMappingUiDefinition(mappingKey);
 	}
 	
 	/**
@@ -298,16 +293,7 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 	 * mapping being edited
 	 */
 	protected MappingUiDefinition initialSelection() {
-
-		for (Iterator<? extends MappingUiDefinition> iter = this.mappingChangeHandler.mappingUiDefinitions(); iter.hasNext(); ) {
-			MappingUiDefinition definition = iter.next();
-
-			if (getMappingKey() == definition.getKey()) {
-				return definition;
-			}
-		}
-
-		return null;
+		return this.mappingChangeHandler.getMappingUiDefinition(getMappingKey());
 	}
 
 	/**
@@ -474,14 +460,23 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 		 *
 		 * @return The supported types of mapping
 		 */
-		Iterator<MappingUiDefinition<T, ?>> mappingUiDefinitions();
+		Iterable<MappingUiDefinition<T, ?>> getMappingUiDefinitions();
+
+		/**
+		 * Returns the mapping UI definition for the specified mapping key
+		 * that is registered with the JPT plugin.
+		 *
+		 * @return The supported types of mapping
+		 */
+		MappingUiDefinition<T, ?> getMappingUiDefinition(String mappingKey);
 	}
 
 	/**
 	 * This dialog shows the list of possible mapping types and lets the user
 	 * the option to filter them using a search field.
 	 */
-	protected class MappingSelectionDialog extends FilteredItemsSelectionDialog 
+	protected class MappingSelectionDialog
+		extends FilteredItemsSelectionDialog 
 	{
 		private MappingUiDefinition<?,?> defaultDefinition;
 		
@@ -497,29 +492,20 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 		}
 
 		private ILabelProvider buildLabelProvider() {
-			return new LabelProvider() {
+			return new MappingUiDefinitionLabelProvider();
+		}
 
-				@Override
-				public Image getImage(Object element) {
-
-					if (element == null) {
-						return null;
-					}
-
-					MappingUiDefinition<?,?> definition = (MappingUiDefinition<?,?>) element;
-					return definition.getImage();
-				}
-
-				@Override
-				public String getText(Object element) {
-					if (element == null) {
-						return "";
-					}
-					
-					MappingUiDefinition<?,?> definition = (MappingUiDefinition<?,?>) element;
-					return definition.getLabel();
-				}
-			};
+		class MappingUiDefinitionLabelProvider
+			extends LabelProvider
+		{
+			@Override
+			public Image getImage(Object element) {
+				return (element == null) ? null : ((MappingUiDefinition<?,?>) element).getImage();
+			}
+			@Override
+			public String getText(Object element) {
+				return (element == null) ? "" : ((MappingUiDefinition<?,?>) element).getLabel();
+			}
 		}
 
 		@Override
@@ -549,8 +535,7 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 				}
 
 				// Add the registered mapping providers to the dialog
-				for (Iterator<MappingUiDefinition<T, ?>> iter = mappingChangeHandler.mappingUiDefinitions(); iter.hasNext(); ) {
-					MappingUiDefinition mappingDefinition = iter.next();
+				for (MappingUiDefinition mappingDefinition : mappingChangeHandler.getMappingUiDefinitions()) {
 					if (mappingDefinition.isEnabledFor(getSubject())) {
 						provider.add(mappingDefinition, itemsFilter);
 					}
@@ -604,7 +589,7 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 		protected IStatus validateItem(Object item) {
 
 			if (item == null) {
-				return new Status(IStatus.ERROR, JptJpaUiPlugin.PLUGIN_ID, IStatus.ERROR, "", null);
+				return JptJpaUiPlugin.instance().buildErrorStatus();
 			}
 
 			return Status.OK_STATUS;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -35,14 +35,10 @@ public interface JavaTypeMappingUiDefinition<T extends TypeMapping>
 	 *
 	 * @param factory The UI factory responsible to create the right composite
 	 * for any mapping type
-	 * @param subjectHolder The holder of the subject being displayed
+	 * @param mappingModel The model of the mapping being displayed
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create the various widgets
 	 * @return The composite displaying the information for a certain mapping
 	 */
-	JpaComposite buildTypeMappingComposite(
-			JavaUiFactory factory,
-			PropertyValueModel<T> subjectHolder,
-			Composite parent,
-			WidgetFactory widgetFactory);
+	JpaComposite buildTypeMappingComposite(JavaUiFactory factory, PropertyValueModel<T> mappingModel, Composite parent, WidgetFactory widgetFactory);
 }

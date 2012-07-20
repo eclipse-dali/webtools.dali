@@ -19,7 +19,9 @@ import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.orm.UnsupportedOrmMappingUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.details.MapAsComposite.MappingChangeHandler;
+import org.eclipse.jpt.jpa.ui.internal.details.PersistentTypeMapAsComposite.TypeMappingChangeHandler;
+import org.eclipse.jpt.jpa.ui.internal.details.orm.UnsupportedOrmAttributeMappingUiDefinition;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -61,50 +63,61 @@ public class PersistentAttributeMapAsComposite
 
 	@Override
 	protected MappingChangeHandler buildMappingChangeHandler() {
-		return new MappingChangeHandler() {
+		return new AttributeMappingChangeHandler();
+	}
 
-			public String getLabelText() {
-				String mappingKey = getMappingKey();
+	protected class AttributeMappingChangeHandler
+		implements MappingChangeHandler
+	{
+		public String getLabelText() {
+			String mappingKey = getMappingKey();
 
-				if (mappingKey != MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY) {
-					return JptUiDetailsMessages.MapAsComposite_mappedAttributeText;
-				}
-				if (getSubject().isVirtual()) {
-					return JptUiDetailsMessages.MapAsComposite_virtualAttributeText;
-				}
-
-				return JptUiDetailsMessages.MapAsComposite_unmappedAttributeText;
+			if (mappingKey != MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY) {
+				return JptUiDetailsMessages.MapAsComposite_mappedAttributeText;
+			}
+			if (getSubject().isVirtual()) {
+				return JptUiDetailsMessages.MapAsComposite_virtualAttributeText;
 			}
 
-			public String getMappingText() {
-				AttributeMapping mapping = getSubject().getMapping();
-				String mappingKey = mapping.getKey();
+			return JptUiDetailsMessages.MapAsComposite_unmappedAttributeText;
+		}
 
-				if (mappingKey == null) {
-					return JptUiDetailsMessages.MapAsComposite_changeMappingType;
-				}
+		public String getMappingText() {
+			AttributeMapping mapping = getSubject().getMapping();
+			String mappingKey = mapping.getKey();
 
-				return mapping.isDefault() ? 
-                              getDefaultDefinition(mappingKey).getLinkLabel() : 
-                              getMappingUiDefinition(mappingKey).getLinkLabel();
+			if (mappingKey == null) {
+				return JptUiDetailsMessages.MapAsComposite_changeMappingType;
 			}
-			
-			public void morphMapping(MappingUiDefinition definition) {
-				((PersistentAttribute) getSubject()).setMappingKey(definition.getKey());
-			}
-			
-			public String getName() {
-				return getSubject().getName();
-			}
-			
-			public Iterator<? extends MappingUiDefinition<? extends ReadOnlyPersistentAttribute, ?>> mappingUiDefinitions() {
-				return attributeMappingUiDefinitions();
-			}
-		};
+
+			return mapping.isDefault() ? 
+                          getDefaultDefinition(mappingKey).getLinkLabel() : 
+                          getMappingUiDefinition(mappingKey).getLinkLabel();
+		}
+		
+		public void morphMapping(MappingUiDefinition definition) {
+			((PersistentAttribute) getSubject()).setMappingKey(definition.getKey());
+		}
+		
+		public String getName() {
+			return getSubject().getName();
+		}
+		
+		public Iterable<? extends MappingUiDefinition<? extends ReadOnlyPersistentAttribute, ?>> getMappingUiDefinitions() {
+			return getAttributeMappingUiDefinitions();
+		}
+
+		public MappingUiDefinition getMappingUiDefinition(String mappingKey) {
+			return getAttributeMappingUiDefinition(mappingKey);
+		}
 	}
 	
-	protected Iterator<? extends MappingUiDefinition<? extends ReadOnlyPersistentAttribute, ?>> attributeMappingUiDefinitions() {
-		return getJpaPlatformUi().attributeMappingUiDefinitions(getSubject().getResourceType());
+	protected Iterable<? extends MappingUiDefinition<? extends ReadOnlyPersistentAttribute, ?>> getAttributeMappingUiDefinitions() {
+		return getJpaPlatformUi().getAttributeMappingUiDefinitions(getSubject().getResourceType());
+	}
+	
+	protected MappingUiDefinition<? extends ReadOnlyPersistentAttribute, ?> getAttributeMappingUiDefinition(String mappingKey) {
+		return getJpaPlatformUi().getAttributeMappingUiDefinition(getSubject().getResourceType(), mappingKey);
 	}
 	
 	@Override
@@ -120,7 +133,7 @@ public class PersistentAttributeMapAsComposite
 	@Override
 	protected MappingUiDefinition getMappingUiDefinition(String mappingKey) {
 		MappingUiDefinition definition = super.getMappingUiDefinition(mappingKey);
-		return (definition != null) ? definition : UnsupportedOrmMappingUiDefinition.instance();
+		return (definition != null) ? definition : UnsupportedOrmAttributeMappingUiDefinition.instance();
 	}
 	
 	@Override

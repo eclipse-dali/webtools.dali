@@ -7,21 +7,20 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.ui;
+package org.eclipse.jpt.jpa.ui.internal.plugin;
 
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.jpt.common.core.internal.utility.JptPlugin;
 import org.eclipse.jpt.common.ui.internal.JptUIPlugin;
 import org.eclipse.jpt.common.utility.internal.AbstractBooleanReference;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
+import org.eclipse.jpt.jpa.core.JpaWorkspace;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
-import org.osgi.framework.BundleContext;
 
 /**
  * Dali JPA UI plug-in.
@@ -32,7 +31,6 @@ import org.osgi.framework.BundleContext;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-@SuppressWarnings("nls")
 public class JptJpaUiPlugin
 	extends JptUIPlugin
 {
@@ -40,34 +38,8 @@ public class JptJpaUiPlugin
 	 * @see #focusIn(Control)
 	 */
 	private final AsyncEventListenerFlag asyncEventListenerFlag = new AsyncEventListenerFlag();
-	private final Listener focusListener;
-
-
-	// ********** constants **********
-
-	/**
-	 * The plug-in identifier of JPA UI support (value {@value}).
-	 */
-	public static final String PLUGIN_ID = "org.eclipse.jpt.jpa.ui";
-	public static final String PLUGIN_ID_ = PLUGIN_ID + '.';
-
-	private static final String DALI_UI_KEY = PLUGIN_ID;
-	private static final Object DALI_UI_DATA = new Object();
-
-
-	// ********** Preference keys **********
-	/**
-	 * The preference key used to retrieve the case used for JPQL identifiers.
-	 * @deprecated - Use JpaJpqlPreferencesManager instead
-	 */
-	@Deprecated
-	public static final String JPQL_IDENTIFIER_CASE_PREF_KEY = PLUGIN_ID + ".jpqlIdentifier.case";
-	@Deprecated
-	public static final String JPQL_IDENTIFIER_LOWERCASE_PREF_VALUE = "lowercase";
-	@Deprecated
-	public static final String JPQL_IDENTIFIER_UPPERCASE_PREF_VALUE = "uppercase";
-	@Deprecated
-	public static final String JPQL_IDENTIFIER_MATCH_FIRST_CHARACTER_CASE_PREF_KEY = PLUGIN_ID + ".jpqlIdentifier.matchFirstCharacterCase";
+	private Display display;
+	private final Listener focusListener = new FocusListener();
 
 
 	// ********** singleton **********
@@ -82,89 +54,82 @@ public class JptJpaUiPlugin
 	}
 
 
-	// ********** logging **********
-
-	/**
-	 * Log the specified message.
-	 */
-	public static void log(String msg) {
-        INSTANCE.logError(msg);
-    }
-
-	/**
-	 * Log the specified exception or error.
-	 */
-	public static void log(Throwable throwable) {
-        INSTANCE.logError(throwable);
-	}
-
-	/**
-	 * Log the specified message and exception or error.
-	 */
-	public static void log(String msg, Throwable throwable) {
-        INSTANCE.logError(msg, throwable);
-	}
-
-
-	// ********** images **********
-
-	/**
-	 * Return an image descriptor for the specified <code>.gif<code>
-	 * file in the icons folder.
-	 */
-	public static ImageDescriptor getImageDescriptor(String key) {
-		if ( ! key.startsWith("icons/")) {
-			key = "icons/" + key;
-		}
-		if ( ! key.endsWith(".gif")) {
-			key = key + ".gif";
-		}
-		return imageDescriptorFromPlugin(PLUGIN_ID, key);
-	}
-
-	/**
-	 * Return an image for the specified <code>.gif<code>
-	 * file in the icons folder.
-	 */
-	//TODO we are using the ImageRegistry here and storing all our icons for the life of the plugin,
-	//which means until the workspace is closed.  This is better than before where we constantly
-	//created new images. Bug 306437 is about cleaning this up and using Local Resource Managers
-	//on our views so that closing the JPA perspective would mean our icons are disposed.
-	public static Image getImage(String key) {
-		ImageRegistry imageRegistry = instance().getImageRegistry();
-		Image image = imageRegistry.get(key);
-		if (image == null) {
-			imageRegistry.put(key, getImageDescriptor(key));
-			image = imageRegistry.get(key);
-		}
-		return image;
-	}
-
-
-	// ********** construction **********
+	// ********** Dali plug-in **********
 
 	public JptJpaUiPlugin() {
 		super();
-		this.focusListener = this.buildFocusListener();
-		if (INSTANCE != null) {
-			throw new IllegalStateException();
-		}
-		INSTANCE = this;
+	}
+
+	@Override
+	protected void setInstance(JptPlugin plugin) {
+		INSTANCE = (JptJpaUiPlugin) plugin;
 	}
 
 	/**
-	 * We are registered to receive only {@link SWT#FocusIn} events
+	 * Register our SWT listener with the display so we receive notification
+	 * of every "focus in" event.
 	 */
-	private Listener buildFocusListener() {
-		return new Listener() {
-			public void handleEvent(Event event) {
-				JptJpaUiPlugin.this.focusIn((Control) event.widget);
+	@Override
+	public void start_() throws Exception {
+		super.start_();
+		// no leak here - the flag has no backpointer to the plug-in
+		this.getJpaProjectManager().addJavaEventListenerFlag(this.asyncEventListenerFlag);
+
+		// must be on UI thread...
+		this.display = Display.getCurrent();
+		// a little pre-construction leakage, but it should be OK as the listener
+		// interacts mostly with the 'asyncEventListenerFlag' and only once the
+		// plug-in is "active"
+		if ((this.display != null) && ( ! this.display.isDisposed())) {
+			this.display.addFilter(SWT.FocusIn, this.focusListener);
+		}
+	}
+
+	private JpaProjectManager getJpaProjectManager() {
+		return this.getJpaWorkspace().getJpaProjectManager();
+	}
+
+	private JpaWorkspace getJpaWorkspace() {
+		return (JpaWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JpaWorkspace.class);
+	}
+
+	/**
+	 * Unregister our SWT listener with the display.
+	 */
+	@Override
+	public void stop_() throws Exception {
+		try {
+			// must be on UI thread...
+			if ((this.display != null) && ( ! this.display.isDisposed())) {
+				this.display.removeFilter(SWT.FocusIn, this.focusListener);
 			}
-		};
+			this.getJpaProjectManager().removeJavaEventListenerFlag(this.asyncEventListenerFlag);
+		} finally {
+			this.display = null;
+			super.stop_();
+		}
 	}
 
 
-	// ********** focus handling **********
+	// ********** focus listener **********
+
+	/**
+	 * This listener is registered to receive only {@link SWT#FocusIn} events.
+	 */
+	/* CU private */ class FocusListener
+		implements Listener
+	{
+		public void handleEvent(Event event) {
+			JptJpaUiPlugin.this.focusIn((Control) event.widget);
+		}
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this);
+		}
+	}
+
+
+	// ********** focus event handling **********
 
 	/**
 	 * This method is called whenever a {@link SWT#FocusIn} event is generated.
@@ -201,8 +166,12 @@ public class JptJpaUiPlugin
 	 * @see #controlAffectsJavaSource(Control)
 	 */
 	private boolean controlIsDali(Control control) {
+		String id = this.getPluginID();
+		if (id == null) {
+			return false;
+		}
 		while (control != null) {
-			if (control.getData(DALI_UI_KEY) == DALI_UI_DATA) {
+			if (control.getData(id) == DALI_UI_DATA) {
 				return true;
 			}
 			control = control.getParent();
@@ -218,40 +187,16 @@ public class JptJpaUiPlugin
 	 * @see #controlIsDali(Control)
 	 */
 	public void controlAffectsJavaSource(Control control) {
-		control.setData(DALI_UI_KEY, DALI_UI_DATA);
-	}
-
-
-	// ********** plug-in implementation **********
-
-	/**
-	 * Register our SWT listener with the display so we receive notification
-	 * of every "focus in" event.
-	 */
-	@Override
-	public synchronized void start(BundleContext context) throws Exception {
-		super.start(context);
-		this.getJpaProjectManager().addJavaEventListenerFlag(this.asyncEventListenerFlag);
-		Display.getDefault().addFilter(SWT.FocusIn, this.focusListener);
-	}
-
-	private JpaProjectManager getJpaProjectManager() {
-		return (JpaProjectManager) ResourcesPlugin.getWorkspace().getAdapter(JpaProjectManager.class);
-	}
-
-	/**
-	 * Unregister our SWT listener with the display.
-	 */
-	@Override
-	public synchronized void stop(BundleContext context) throws Exception {
-		try {
-			Display.getDefault().removeFilter(SWT.FocusIn, this.focusListener);
-			this.getJpaProjectManager().removeJavaEventListenerFlag(this.asyncEventListenerFlag);
-		} finally {
-			super.stop(context);
+		String id = this.getPluginID();
+		if (id != null) {
+			control.setData(id, DALI_UI_DATA);
 		}
 	}
 
+	private static final Object DALI_UI_DATA = new Object();
+
+
+	// ********** async event listener flag **********
 
 	/**
 	 * This flag's value depends on the current thread. If the current thread is

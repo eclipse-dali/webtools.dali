@@ -47,17 +47,17 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
+import org.eclipse.jpt.jpa.core.resource.ResourceMappingFile;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.jface.XmlMappingFileViewerFilter;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.SelectMappingFileDialog;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -95,7 +95,7 @@ public abstract class JavaMetadataConversionWizardPage
 	private final SimplePropertyValueModel<String> mappingFileNameModel = new SimplePropertyValueModel<String>();
 
 	private static final String PAGE_NAME = "JavaMetadataConversion"; //$NON-NLS-1$
-	public static final String HELP_CONTEXT_ID = JptJpaUiPlugin.PLUGIN_ID_ + PAGE_NAME;
+	public static final String HELP_CONTEXT_ID = JptJpaUiPlugin.instance().getPluginID() + '.' + PAGE_NAME;
 
 
 	protected JavaMetadataConversionWizardPage(JpaProject jpaProject, String title, String description) {
@@ -119,7 +119,7 @@ public abstract class JavaMetadataConversionWizardPage
 		if (persistenceXml == null) {
 			return null;
 		}
-		Persistence persistence = persistenceXml.getPersistence();
+		Persistence persistence = persistenceXml.getRoot();
 		if (persistence == null) {
 			return null;
 		}
@@ -150,9 +150,11 @@ public abstract class JavaMetadataConversionWizardPage
 		for (MappingFileRef ref : this.persistenceUnit.getMappingFileRefs()) {
 			MappingFile mappingFile = ref.getMappingFile();
 			if (mappingFile != null) {
-				IFile file = mappingFile.getXmlResource().getFile();
-				if (this.jpaProject.getJpaFile(file).getContentType().isKindOf(this.getMappingFileContentType())) {
-					return file.getFullPath();
+				IResource file = mappingFile.getResource();
+				if (file instanceof IFile) {
+					if (this.jpaProject.getJpaFile((IFile) file).getContentType().isKindOf(this.getMappingFileContentType())) {
+						return file.getFullPath();
+					}
 				}
 			}
 		}
@@ -160,7 +162,7 @@ public abstract class JavaMetadataConversionWizardPage
 	}
 
 	protected IContentType getMappingFileContentType() {
-		return JptJpaCorePlugin.MAPPING_FILE_CONTENT_TYPE;
+		return ResourceMappingFile.Root.CONTENT_TYPE;
 	}
 
 	protected IPath convertToRuntimPath(IPath path) {
@@ -407,7 +409,7 @@ public abstract class JavaMetadataConversionWizardPage
 		try {
 			this.buildProgressMonitorDialog().run(true, true, this.buildConversionRunnable());
 		} catch (InvocationTargetException ex) {
-			JptJpaUiPlugin.log(ex);
+			JptJpaUiPlugin.instance().logError(ex);
 		} catch (InterruptedException ex) {
 			Thread.currentThread().interrupt();  // runnable cancelled
 		}
@@ -605,7 +607,7 @@ public abstract class JavaMetadataConversionWizardPage
 			try {
 				IDE.openEditor(page, this.file);
 			} catch (PartInitException ex) {
-				JptJpaUiPlugin.log(ex);
+				JptJpaUiPlugin.instance().logError(ex);
 			}
 		}
 

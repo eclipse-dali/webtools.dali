@@ -25,7 +25,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.JpaMakePersistentWizard;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -111,7 +111,7 @@ public class MakePersistentAction implements IObjectActionDelegate {
 			return packageFragment.getCompilationUnits();
 		}
 		catch (JavaModelException e) {
-			JptJpaUiPlugin.log(e);
+			JptJpaUiPlugin.instance().logError(e);
 		}
 		return new ICompilationUnit[0];
 	}
@@ -121,7 +121,7 @@ public class MakePersistentAction implements IObjectActionDelegate {
 			return packageFragmentRoot.getChildren();
 		}
 		catch (JavaModelException e) {
-			JptJpaUiPlugin.log(e);
+			JptJpaUiPlugin.instance().logError(e);
 		}
 		return new IJavaElement[0];
 	}

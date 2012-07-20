@@ -17,8 +17,8 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.swt.graphics.Image;
 
 public class PersistenceUnitItemLabelProvider
@@ -37,7 +37,7 @@ public class PersistenceUnitItemLabelProvider
 	}
 
 	protected Image buildImage() {
-		return JptJpaUiPlugin.getImage(JptUiIcons.PERSISTENCE_UNIT);
+		return JptJpaUiPlugin.instance().getImage(JptUiIcons.PERSISTENCE_UNIT);
 	}
 	
 	@Override

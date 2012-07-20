@@ -37,8 +37,8 @@ import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenTable;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -244,7 +244,7 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 					}
 					return true;
 				} catch (JavaModelException e) {
-					JptJpaUiPlugin.log(e); // just log, no UI in validation
+					JptJpaUiPlugin.instance().logError(e); // just log, no UI in validation
 				}
 				return false;
 			}

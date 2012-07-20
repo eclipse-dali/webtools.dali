@@ -17,10 +17,8 @@ import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.details.java.DefaultJavaAttributeMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.java.JavaUiFactory;
-import org.eclipse.jpt.jpa.ui.internal.JpaMappingImageHelper;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractBasicMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 public class DefaultBasicMappingUiDefinition
@@ -28,35 +26,34 @@ public class DefaultBasicMappingUiDefinition
 	implements DefaultJavaAttributeMappingUiDefinition<JavaBasicMapping>
 {
 	// singleton
-	private static final DefaultBasicMappingUiDefinition INSTANCE = 
-		new DefaultBasicMappingUiDefinition();
-	
-	
+	private static final DefaultBasicMappingUiDefinition INSTANCE = new DefaultBasicMappingUiDefinition();
+
+
 	/**
 	 * Return the singleton.
 	 */
 	public static DefaultJavaAttributeMappingUiDefinition<JavaBasicMapping> instance() {
 		return INSTANCE;
 	}
-	
-	
+
+
 	/**
 	 * Ensure single instance.
 	 */
 	private DefaultBasicMappingUiDefinition() {
 		super();
 	}
-	
-	
+
+
 	@Override
 	public String getKey() {
 		return null;
 	}
-	
+
 	public String getDefaultKey() {
 		return MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
 	}
-	
+
 	@Override
 	public String getLabel() {
 		return JptUiDetailsMessages.DefaultBasicMappingUiProvider_label;
@@ -67,18 +64,13 @@ public class DefaultBasicMappingUiDefinition
 		return JptUiDetailsMessages.DefaultBasicMappingUiProvider_linkLabel;
 	}
 
-	@Override
-	public Image getImage() {
-		return JpaMappingImageHelper.imageForAttributeMapping(getDefaultKey());
-	}
-
 	public JpaComposite buildAttributeMappingComposite(
 				JavaUiFactory factory,
 				PropertyValueModel<JavaBasicMapping> subjectHolder,
 				PropertyValueModel<Boolean> enabledModel,
 				Composite parent,
 				WidgetFactory widgetFactory) {
-		
+
 		return factory.createJavaBasicMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 }

@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.ListCollectionValueMo
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
+import org.eclipse.jpt.jpa.core.context.XmlFile;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
@@ -58,11 +59,11 @@ public class PersistenceXmlItemContentProvider
 		extends PropertyAspectAdapter<PersistenceXml, Persistence>
 	{
 		public PersistenceModel(PersistenceXml subject) {
-			super(PersistenceXml.PERSISTENCE_PROPERTY, subject);
+			super(XmlFile.ROOT_PROPERTY, subject);
 		}
 		@Override
 		protected Persistence buildValue_() {
-			return this.subject.getPersistence();
+			return this.subject.getRoot();
 		}
 	}
 }

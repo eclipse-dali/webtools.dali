@@ -13,7 +13,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.ui.internal.wizards.SelectMappingFileDialog;
 import org.eclipse.jpt.jpa.ui.internal.wizards.orm.EmbeddedMappingFileWizard;
 
@@ -26,12 +26,12 @@ public abstract class GenericJavaMetadataConversionWizardPage
 
 	@Override
 	protected IPath getDefaultMappingFileRuntimPath() {
-		return JptJpaCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH;
+		return XmlEntityMappings.DEFAULT_RUNTIME_PATH;
 	}
 	
 	@Override
 	protected IContentType getMappingFileContentType() {
-		return JptJpaCorePlugin.ORM_XML_CONTENT_TYPE;
+		return XmlEntityMappings.CONTENT_TYPE;
 	}
 
 	@Override

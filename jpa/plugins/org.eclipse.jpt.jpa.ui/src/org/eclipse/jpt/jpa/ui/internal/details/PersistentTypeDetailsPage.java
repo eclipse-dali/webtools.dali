@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.ui.internal.Tracing;
 import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.Transformer;
@@ -22,6 +21,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -125,7 +125,7 @@ public class PersistentTypeDetailsPage extends AbstractJpaDetailsPage<Persistent
 	}
 
 	
-	private JpaComposite getMappingComposite(String key) {
+	/* CU private */ JpaComposite getMappingComposite(String key) {
 		JpaComposite mappingComposite = this.mappingComposites.get(key);
 		if (mappingComposite != null) {
 			return mappingComposite;
@@ -152,7 +152,7 @@ public class PersistentTypeDetailsPage extends AbstractJpaDetailsPage<Persistent
 
 	@Override
 	public void dispose() {
-		log(Tracing.UI_DETAILS_VIEW, "PersistentTypeDetailsPage.dispose()");
+		JptJpaUiPlugin.instance().trace(TRACE_OPTION, "dispose"); //$NON-NLS-1$
 
 		for (JpaComposite mappingComposite : this.mappingComposites.values()) {
 			mappingComposite.dispose();
@@ -161,4 +161,5 @@ public class PersistentTypeDetailsPage extends AbstractJpaDetailsPage<Persistent
 		super.dispose();
 	}
 
+	private static final String TRACE_OPTION = PersistentTypeDetailsPage.class.getSimpleName();
 }

@@ -20,15 +20,13 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 
 /**
  * This filter will deny showing any file that are not XML mapping files or folders
  * that don't contain any XML mapping files in its sub-hierarchy. An XML mapping
  * file is one that has a corresponding JpaFile in the project with a mapping file
  * content type.
- * @see JptJpaCorePlugin.MAPPING_FILE_CONTENT_TYPE
  */
 public class XmlMappingFileViewerFilter
 		extends ViewerFilter {
@@ -64,7 +62,7 @@ public class XmlMappingFileViewerFilter
 				}
 				catch (CoreException ce) {
 					// fall through
-					JptJpaUiPlugin.log(ce);
+					JptJpaUiPlugin.instance().logError(ce);
 				}
 			}
 		}
@@ -77,6 +75,6 @@ public class XmlMappingFileViewerFilter
 	 */
 	private boolean isMappingFile(IFile file) {
 		JpaFile jpaFile = this.jpaProject.getJpaFile(file);
-		return jpaFile != null ? jpaFile.getContentType().isKindOf(contentType): false;
+		return jpaFile != null ? jpaFile.getContentType().isKindOf(this.contentType): false;
 	}
 }

@@ -22,8 +22,8 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.model.EntityDataModelProvider;
 import org.eclipse.jst.j2ee.internal.plugin.J2EEEditorUtility;
 import org.eclipse.ui.INewWizard;
@@ -47,7 +47,7 @@ public class EntityWizard
     public EntityWizard(IDataModel model) {
 		super(model);
         setWindowTitle(EntityWizardMsg.ENTITY_WIZARD_TITLE);
-        setDefaultPageImageDescriptor(JptJpaUiPlugin.getImageDescriptor(JptUiIcons.ENTITY_WIZ_BANNER));        
+        setDefaultPageImageDescriptor(JptJpaUiPlugin.instance().buildImageDescriptor(JptUiIcons.ENTITY_WIZ_BANNER));        
 	}    
  
 	public EntityWizard(){
@@ -96,7 +96,7 @@ public class EntityWizard
             IFile file = (IFile) javaProject.findType(className).getResource();
             openEditor(file);
         } catch (Exception cantOpen) {
-        	JptJpaUiPlugin.log(cantOpen);
+        	JptJpaUiPlugin.instance().logError(cantOpen);
         } 
     }
 	
@@ -114,7 +114,7 @@ public class EntityWizard
     						IDE.openEditor(page, file, true);
     					}
     					catch (PartInitException e) {
-    						JptJpaUiPlugin.log(e);
+    						JptJpaUiPlugin.instance().logError(e);
     					}
     				}
     			});
