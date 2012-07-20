@@ -12,17 +12,18 @@ package org.eclipse.jpt.jpa.ui.internal.selection;
 import java.util.HashMap;
 import java.util.HashSet;
 import org.eclipse.jpt.common.ui.internal.utility.PartAdapter2;
+import org.eclipse.jpt.common.utility.internal.AbstractTransformer;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Transformer;
-import org.eclipse.jpt.common.utility.internal.AbstractTransformer;
 import org.eclipse.jpt.common.utility.internal.model.value.DoubleModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.DoublePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.selection.JpaEditorManager;
 import org.eclipse.jpt.jpa.ui.selection.JpaSelectionManager;
 import org.eclipse.jpt.jpa.ui.selection.JpaViewManager;
@@ -48,7 +49,7 @@ import org.eclipse.ui.IWorkbenchPartReference;
  * which should notify the appropriate view managers etc.
  */
 class JpaPageManager
-	implements JpaSelectionManager, JpaViewManager.PageManager
+	implements JpaSelectionManager, JpaViewManager.PageManager, SetJpaSelectionJob.Manager
 {
 	/**
 	 * The manager's parent window manager.
@@ -170,10 +171,18 @@ class JpaPageManager
 	// ********** selection **********
 
 	/**
-	 * This should only be called from the
-	 * {@link #windowManager window manager}.
+	 * @see JpaWorkbenchManager#setSelection(JpaStructureNode)
 	 */
 	public void setSelection(JpaStructureNode selection) {
+		new SetJpaSelectionJob(this, selection).schedule();
+	}
+
+	/**
+	 * Set the JPA selection for the page. Any interested editors or views
+	 * will be listening to the {@link #jpaSelectionModel model}.
+	 * @see SetJpaSelectionJob.SetJpaSelectionRunnable#run()
+	 */
+	public void setSelection_(JpaStructureNode selection) {
 		this.jpaSelectionModel.setValue(selection);
 	}
 
@@ -189,7 +198,7 @@ class JpaPageManager
 		if (editorManager == null) {
 			editorManager = this.buildEditorManager(editor);
 			if (editorManager != null) {
-				JpaWorkbenchManager.debug("add editor manager:", editor); //$NON-NLS-1$
+				JptJpaUiPlugin.instance().trace(TRACE_OPTION, "add editor manager: {0}", editor); //$NON-NLS-1$
 				this.editorManagers.put(editor, editorManager);
 			}
 		}
@@ -211,7 +220,7 @@ class JpaPageManager
 	// ********** view managers **********
 
 	public synchronized void addViewManager(JpaViewManager viewManager) {
-		JpaWorkbenchManager.debug("add view manager:", viewManager); //$NON-NLS-1$
+		JptJpaUiPlugin.instance().trace(TRACE_OPTION, "add view manager: {0}", viewManager); //$NON-NLS-1$
 		if (this.disposed) {
 			// This can happen if the page manager's last view manager is removed
 			// after a page manager was returned to a new view manager but before that
@@ -224,7 +233,7 @@ class JpaPageManager
 	}
 
 	public synchronized void removeViewManager(JpaViewManager viewManager) {
-		JpaWorkbenchManager.debug("remove view manager:", viewManager); //$NON-NLS-1$
+		JptJpaUiPlugin.instance().trace(TRACE_OPTION, "remove view manager: {0}", viewManager); //$NON-NLS-1$
 		if ( ! this.viewManagers.remove(viewManager)) {
 			throw new IllegalArgumentException("missing view manager: " + viewManager); //$NON-NLS-1$
 		}
@@ -284,7 +293,7 @@ class JpaPageManager
 	/* CU private */ synchronized void partClosed(IWorkbenchPart part) {
 		JpaEditorManager editorManager = this.editorManagers.remove(part);
 		if (editorManager != null) {
-			JpaWorkbenchManager.debug("removed editor manager:", part); //$NON-NLS-1$
+			JptJpaUiPlugin.instance().trace(TRACE_OPTION, "removed editor manager: {0}", part); //$NON-NLS-1$
 			editorManager.dispose();
 		}
 		this.updateEditorManagerModel();
@@ -293,4 +302,29 @@ class JpaPageManager
 	/* CU private */ void updateEditorManagerModel() {
 		this.editorManagerModel.setValue(this.getEditorManager(this.page.getActiveEditor()));
 	}
+
+
+	// ********** static methods **********
+
+	/**
+	 * Return <em>null</em> if a manager does not exist.
+	 * @see WorkbenchPageAdapterFactory
+	 */
+	static JpaPageManager forPage(IWorkbenchPage page) {
+		JpaWindowManager manager = JpaWindowManager.forWindow(page.getWorkbenchWindow());
+		return (manager == null) ? null : manager.getPageManager(page);
+	}
+
+	/**
+	 * Construct a new manager if a manager does not exist.
+	 * @see ViewPartAdapterFactory
+	 */
+	static JpaPageManager forPage_(IWorkbenchPage page) {
+		return JpaWindowManager.forWindow_(page.getWorkbenchWindow()).getPageManager_(page);
+	}
+
+
+	// ********** tracing **********
+
+	private static final String TRACE_OPTION = JpaSelectionManager.class.getSimpleName();
 }

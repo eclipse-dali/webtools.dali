@@ -17,7 +17,7 @@ import org.eclipse.ui.IViewPart;
  * Factory to build JPA selection adapters for a {@link IViewPart}:<ul>
  * <li>{@link org.eclipse.jpt.jpa.ui.selection.JpaViewManager.PageManager}
  * </ul>
- * See <code>org.eclipse.jpt.jpa.ui/plugin.xml</code>.
+ * See <code>org.eclipse.jpt.jpa.ui/plugin.xml:org.eclipse.core.runtime.adapters</code>.
  */
 public class ViewPartAdapterFactory
 	implements IAdapterFactory
@@ -43,10 +43,10 @@ public class ViewPartAdapterFactory
 	}
 
 	/**
-	 * This will trigger the creation of the appropriate page manager if it does
-	 * not already exist.
+	 * Trigger the creation of the appropriate page manager if it does
+	 * not already exist (i.e. never return <code>null</code>).
 	 */
 	private JpaViewManager.PageManager getPageManager(IViewPart view) {
-		return JpaWorkbenchManager.getPageManager(view);
+		return JpaPageManager.forPage_(view.getSite().getPage());
 	}
 }

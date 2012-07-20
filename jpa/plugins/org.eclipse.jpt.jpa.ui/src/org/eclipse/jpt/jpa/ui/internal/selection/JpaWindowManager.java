@@ -12,8 +12,8 @@ package org.eclipse.jpt.jpa.ui.internal.selection;
 import java.util.Hashtable;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.selection.JpaSelectionManager;
-import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 
@@ -21,10 +21,10 @@ import org.eclipse.ui.IWorkbenchWindow;
  * Maintain a collection of
  * {@link JpaSelectionManager JPA selection managers}
  * keyed by {@link IWorkbenchPage workbench page}.
- * Forward the selection to the manager for the active page.
+ * Forward the JPA selection to the manager for the active page.
  */
 class JpaWindowManager
-	implements JpaSelectionManager
+	implements JpaSelectionManager, SetJpaSelectionJob.Manager
 {
 	/**
 	 * The manager's parent workbench manager.
@@ -46,52 +46,54 @@ class JpaWindowManager
 
 	JpaWindowManager(JpaWorkbenchManager workbenchManager, IWorkbenchWindow window) {
 		super();
-		if (window == null) {
-			throw new NullPointerException();
-		}
 		this.workbenchManager = workbenchManager;
 		this.window = window;
 	}
 
 
-	// ********** selection **********
+	// ********** JPA selection **********
+
+	/**
+	 * @see JpaWorkbenchManager#setSelection(JpaStructureNode)
+	 */
+	public void setSelection(JpaStructureNode selection) {
+		new SetJpaSelectionJob(this, selection).schedule();
+	}
 
 	/**
 	 * Forward to the manager for the window's active page.
+	 * @see SetJpaSelectionJob.SetJpaSelectionRunnable#run()
 	 */
-	public void setSelection(JpaStructureNode selection) {
-		this.getPageManager(this.window.getActivePage()).setSelection(selection);
+	public void setSelection_(JpaStructureNode selection) {
+		IWorkbenchPage page = this.window.getActivePage();
+		if (page != null) {
+			JpaPageManager manager = this.pageManagers.get(page);
+			if (manager != null) {
+				// use internal method since we are on the UI thread here
+				manager.setSelection_(selection);
+			}
+		}
 	}
 
 
 	// ********** page managers **********
 
 	/**
-	 * Return the JPA selection manager for the specified
-	 * workbench page.
+	 * Return <code>null</code> if a manager does not exist.
+	 * @see #getPageManager_(IWorkbenchPage)
 	 */
-	private JpaSelectionManager getPageManager(IWorkbenchPage page) {
-		return (page == null) ?
-				JpaSelectionManager.Null.instance() :
-				this.getPageManager_(page);
-	}
-
-	private JpaSelectionManager getPageManager_(IWorkbenchPage page) {
-		JpaPageManager manager = this.pageManagers.get(page);
-		return (manager == null) ?
-				JpaSelectionManager.Null.instance() :
-				manager;
+	JpaPageManager getPageManager(IWorkbenchPage page) {
+		return this.pageManagers.get(page);
 	}
 
 	/**
 	 * <strong>NB:</strong> May trigger construction of page manager.
 	 */
-	JpaPageManager getPageManager(IViewPart view) {
-		IWorkbenchPage page = view.getSite().getPage();
+	JpaPageManager getPageManager_(IWorkbenchPage page) {
 		synchronized (this.pageManagers) {
 			JpaPageManager manager = this.pageManagers.get(page);
 			if (manager == null) {
-				JpaWorkbenchManager.debug("add page manager:", page); //$NON-NLS-1$
+				JptJpaUiPlugin.instance().trace(TRACE_OPTION, "add page manager: {0}", page); //$NON-NLS-1$
 				manager = new JpaPageManager(this, page);
 				this.pageManagers.put(page, manager);
 			}
@@ -104,7 +106,7 @@ class JpaWindowManager
 	 */
 	void removePageManager(IWorkbenchPage page) {
 		synchronized (this.pageManagers) {
-			JpaWorkbenchManager.debug("remove page manager:", page); //$NON-NLS-1$
+			JptJpaUiPlugin.instance().trace(TRACE_OPTION, "remove page manager: {0}", page); //$NON-NLS-1$
 			this.pageManagers.remove(page);
 			if (this.pageManagers.isEmpty()) {
 				this.dispose();
@@ -123,4 +125,28 @@ class JpaWindowManager
 	public String toString() {
 		return StringTools.buildToStringFor(this, this.window);
 	}
+
+
+	// ********** static methods **********
+
+	/**
+	 * Return <em>null</em> if a manager does not exist.
+	 * @see WorkbenchWindowAdapterFactory
+	 */
+	static JpaWindowManager forWindow(IWorkbenchWindow window) {
+		JpaWorkbenchManager manager = JpaWorkbenchManager.forWorkbench(window.getWorkbench());
+		return (manager == null) ? null : manager.getWindowManager(window);
+	}
+
+	/**
+	 * <strong>NB:</strong> May trigger construction of window manager.
+	 */
+	static JpaWindowManager forWindow_(IWorkbenchWindow window) {
+		return JpaWorkbenchManager.forWorkbench_(window.getWorkbench()).getWindowManager_(window);
+	}
+
+
+	// ********** tracing **********
+
+	private static final String TRACE_OPTION = JpaSelectionManager.class.getSimpleName();
 }

@@ -11,17 +11,17 @@ package org.eclipse.jpt.jpa.ui.internal.selection;
 
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.jpt.jpa.ui.selection.JpaSelectionManager;
-import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.IWorkbenchPage;
 
 /**
- * Factory to build JPA selection adapters for a {@link IWorkbenchWindow}:<ul>
+ * Factory to build JPA selection adapters for a {@link IWorkbenchPage}:<ul>
  * <li>{@link JpaSelectionManager}
  * </ul>
  * See <code>org.eclipse.jpt.jpa.ui/plugin.xml:org.eclipse.core.runtime.adapters</code>.
  * 
  * @see JpaWorkbenchManager
  */
-public class WorkbenchWindowAdapterFactory
+public class WorkbenchPageAdapterFactory
 	implements IAdapterFactory
 {
 	private static final Class<?>[] ADAPTER_LIST = new Class[] { JpaSelectionManager.class };
@@ -31,15 +31,15 @@ public class WorkbenchWindowAdapterFactory
 	}
 
 	public Object getAdapter(Object adaptableObject, @SuppressWarnings("rawtypes") Class adapterType) {
-		if (adaptableObject instanceof IWorkbenchWindow) {
-			return this.getAdapter((IWorkbenchWindow) adaptableObject, adapterType);
+		if (adaptableObject instanceof IWorkbenchPage) {
+			return this.getAdapter((IWorkbenchPage) adaptableObject, adapterType);
 		}
 		return null;
 	}
 
-	private Object getAdapter(IWorkbenchWindow workbenchWindow, Class<?> adapterType) {
+	private Object getAdapter(IWorkbenchPage workbenchPage, Class<?> adapterType) {
 		if (adapterType == JpaSelectionManager.class) {
-			return this.getJpaSelectionManager(workbenchWindow);
+			return this.getJpaSelectionManager(workbenchPage);
 		}
 		return null;
 	}
@@ -47,8 +47,8 @@ public class WorkbenchWindowAdapterFactory
 	/**
 	 * Never return <code>null</code>.
 	 */
-	private JpaSelectionManager getJpaSelectionManager(IWorkbenchWindow workbenchWindow) {
-		JpaSelectionManager manager = JpaWindowManager.forWindow(workbenchWindow);
+	private JpaSelectionManager getJpaSelectionManager(IWorkbenchPage workbenchPage) {
+		JpaSelectionManager manager = JpaPageManager.forPage(workbenchPage);
 		return (manager != null) ? manager : JpaSelectionManager.Null.instance();
 	}
 }

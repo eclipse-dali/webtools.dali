@@ -14,16 +14,16 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 
 /**
- * Each {@link org.eclipse.ui.IWorkbench workbench}
- * and {@link org.eclipse.ui.IWorkbenchWindow workbench window} has a corresponding
+ * Each {@link org.eclipse.ui.IWorkbench workbench},
+ * {@link org.eclipse.ui.IWorkbenchWindow workbench window},
+ * and {@link org.eclipse.ui.IWorkbenchPage workbench page} has a corresponding
  * {@link JpaSelectionManager JPA selection manager}
- * that can be used to set the JPA selection in that workbench or window.
+ * that can be used to set the JPA selection in that workbench, window, or page.
  * <p>
  * To access a workbench's JPA selection manager:
  * <pre>
  *     JpaStructureNode structureNode = ...;
- *     IWorkbenchWindow window = ...;
- *     IWorkbench workbench = window.getWorkbench();
+ *     IWorkbench workbench = PlatformUI.getWorkbench();
  *     // even though IWorkbench extends IAdaptable, it does not delegate to the
  *     // Platform adapter manager; so registered adapter factories are *not* used... :-(
  *     // JpaSelectionManager selectionManager = (JpaSelectionManager) workbench.getAdapter(JpaSelectionManager.class);
@@ -39,16 +39,26 @@ import org.eclipse.jpt.jpa.core.JpaStructureNode;
  *     JpaSelectionManager selectionManager = PlatformTools.getAdapter(window, JpaSelectionManager.class);
  *     selectionManager.setSelection(structureNode);
  * </pre>
+ * <p>
+ * To access a workbench page's JPA selection manager:
+ * <pre>
+ *     JpaStructureNode structureNode = ...;
+ *     IWorkbenchPage page = ...;
+ *     // IWorkbenchPage does not extend IAdaptable(!)
+ *     JpaSelectionManager selectionManager = PlatformTools.getAdapter(page, JpaSelectionManager.class);
+ *     selectionManager.setSelection(structureNode);
+ * </pre>
  * 
  * @see org.eclipse.jpt.jpa.ui.internal.selection.WorkbenchAdapterFactory
  * @see org.eclipse.jpt.jpa.ui.internal.selection.WorkbenchWindowAdapterFactory
+ * @see org.eclipse.jpt.jpa.ui.internal.selection.WorkbenchPageAdapterFactory
  * @see org.eclipse.jpt.jpa.ui.internal.selection.JpaWorkbenchManager
  */
 public interface JpaSelectionManager {
 	/**
 	 * Set the JPA selection for the selection manager's subject.
 	 */
-	public void setSelection(JpaStructureNode selection);
+	void setSelection(JpaStructureNode selection);
 
 
 	/**

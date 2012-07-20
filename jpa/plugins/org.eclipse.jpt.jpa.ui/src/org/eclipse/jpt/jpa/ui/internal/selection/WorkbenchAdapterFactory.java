@@ -17,7 +17,7 @@ import org.eclipse.ui.IWorkbench;
  * Factory to build JPA selection adapters for a {@link IWorkbench}:<ul>
  * <li>{@link JpaSelectionManager}
  * </ul>
- * See <code>org.eclipse.jpt.jpa.ui/plugin.xml</code>.
+ * See <code>org.eclipse.jpt.jpa.ui/plugin.xml:org.eclipse.core.runtime.adapters</code>.
  * 
  * @see JpaWorkbenchManager
  */
@@ -48,6 +48,7 @@ public class WorkbenchAdapterFactory
 	 * Never return <code>null</code>.
 	 */
 	private JpaSelectionManager getJpaSelectionManager(IWorkbench workbench) {
-		return JpaWorkbenchManager.forWorkbench(workbench);
+		JpaSelectionManager manager = JpaWorkbenchManager.forWorkbench(workbench);
+		return (manager != null) ? manager : JpaSelectionManager.Null.instance();
 	}
 }

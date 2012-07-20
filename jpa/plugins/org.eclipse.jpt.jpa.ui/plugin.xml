@@ -99,6 +99,13 @@
 			<adapter type="org.eclipse.jpt.jpa.ui.selection.JpaSelectionManager"/>
 		</factory>
 
+		<!-- IWorkbenchPage -> JpaSelectionManager -->
+		<factory
+			adaptableType="org.eclipse.ui.IWorkbenchPage"
+			class="org.eclipse.jpt.jpa.ui.internal.selection.WorkbenchPageAdapterFactory">
+			<adapter type="org.eclipse.jpt.jpa.ui.selection.JpaSelectionManager"/>
+		</factory>
+
 		<!-- ITextEditor -> JpaEditorManager -->
 		<factory
 			adaptableType="org.eclipse.ui.texteditor.ITextEditor"
