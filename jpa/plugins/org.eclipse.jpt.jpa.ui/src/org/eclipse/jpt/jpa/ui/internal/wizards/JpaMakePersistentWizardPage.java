@@ -176,6 +176,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 			public void widgetSelected(SelectionEvent e) {
 				JpaMakePersistentWizardPage.this.annotateInJavaModel.setValue(Boolean.TRUE);
 				JpaMakePersistentWizardPage.this.jptResourceType = JptCommonCorePlugin.JAVA_SOURCE_RESOURCE_TYPE;
+				JpaMakePersistentWizardPage.this.validate();
 			}
 			
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -197,6 +198,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 					JpaMakePersistentWizardPage.this.mappingFileModel.setValue(JptJpaCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH.toString());
 					JpaMakePersistentWizardPage.this.isFirstCheck = false;
 				}
+				JpaMakePersistentWizardPage.this.validate();
 			}
 			
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -225,8 +227,6 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 		SWTTools.controlVisibleState(this.annotateInJavaModel, persistenceXmlCheckBox);
 		
 		setControl(composite);
-		
-		this.validate();
 	}
 	
 	private Composite createMappingFileControl(Composite parent) {
