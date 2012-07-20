@@ -34,7 +34,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  *     for the JPA project every time it executes and its results are only
  *     temporary (e.g. UI menus).
  * </ul>
- * See <code>org.eclipse.jpt.jpa.core/plugin.xml</code>.
+ * See <code>org.eclipse.jpt.jpa.core/plugin.xml:org.eclipse.core.runtime.adapters</code>.
  */
 public class ProjectAdapterFactory
 	implements IAdapterFactory
@@ -66,16 +66,25 @@ public class ProjectAdapterFactory
 	}
 
 	private JpaProject.Reference getJpaProjectReference(IProject project) {
-		return new JpaProjectReference(this.getJpaProjectManager(project.getWorkspace()), project);
+		InternalJpaProjectManager jpaProjectManager = this.getJpaProjectManager(project);
+		return (jpaProjectManager == null) ? null : new JpaProjectReference(jpaProjectManager, project);
 	}
 
 	private JpaProject getJpaProject(IProject project) {
-		for (JpaProject jpaProject : this.getJpaProjectManager(project.getWorkspace()).getJpaProjects_()) {
+		InternalJpaProjectManager jpaProjectManager = this.getJpaProjectManager(project);
+		if (jpaProjectManager == null) {
+			return null;
+		}
+		for (JpaProject jpaProject : jpaProjectManager.getJpaProjects_()) {
 			if (jpaProject.getProject().equals(project)) {
 				return jpaProject;
 			}
 		}
 		return null;
+	}
+
+	private InternalJpaProjectManager getJpaProjectManager(IProject project) {
+		return this.getJpaProjectManager(project.getWorkspace());
 	}
 
 	private InternalJpaProjectManager getJpaProjectManager(IWorkspace workspace) {
