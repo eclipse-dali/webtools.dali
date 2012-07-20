@@ -48,6 +48,8 @@ public final class SimpleJavaType
 	/**
 	 * Use this factory method for performance. Standard java types will be cached.
 	 */
+	//TODO SimpleJavaType(String, int) used incorrectly when building method parameter types
+	//buildSimpleType(java.lang.String[], 1) - this gets passed in for a method parameter String[]
 	public static JavaType buildSimpleJavaType(String elementTypeName, int arrayDepth) {
 		if (arrayDepth == 0) {
 			JavaType javaType = stardardJavaTypesCache.get(elementTypeName);
