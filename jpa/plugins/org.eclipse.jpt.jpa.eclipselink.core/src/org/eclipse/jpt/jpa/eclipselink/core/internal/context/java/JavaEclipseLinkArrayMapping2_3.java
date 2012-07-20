@@ -93,7 +93,7 @@ public class JavaEclipseLinkArrayMapping2_3
 	public void update() {
 		super.update();
 		this.column.update();
-		this.syncConverter();
+		this.converter.update();
 		this.converterContainer.update();
 	}
 
@@ -248,7 +248,7 @@ public class JavaEclipseLinkArrayMapping2_3
 
 	@Override
 	public String getMetamodelTypeName() {
-		//TODO should get this from targetClass
+		//TODO should get this from targetClass, also need metamodel support for OrmEclipseLinkArrayMapping2_3 bug 385638
 		String targetTypeName = this.getPersistentAttribute().getMultiReferenceTargetTypeName();
 		return (targetTypeName != null) ? targetTypeName : MetamodelField.DEFAULT_TYPE_NAME;
 	}
