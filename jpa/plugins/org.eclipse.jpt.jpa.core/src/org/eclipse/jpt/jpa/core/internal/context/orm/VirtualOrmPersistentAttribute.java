@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.Accessor;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
@@ -370,6 +371,20 @@ public class VirtualOrmPersistentAttribute
 
 	public String getTypeName() {
 		return this.getJavaPersistentAttribute().getTypeName();
+	}
+	
+	public String getTypeName(PersistentType contextType) {
+		while (contextType != null) {
+			if (contextType == getParent()) {
+				return getTypeName();
+			}
+			String typeName = contextType.getAttributeTypeName(this);
+			if (typeName != null) {
+				return typeName;
+			}
+			contextType = contextType.getSuperPersistentType();
+		}
+		return null;
 	}
 
 	@Override

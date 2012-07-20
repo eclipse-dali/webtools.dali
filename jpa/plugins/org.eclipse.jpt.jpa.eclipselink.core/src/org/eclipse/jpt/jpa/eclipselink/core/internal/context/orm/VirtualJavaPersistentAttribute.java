@@ -22,6 +22,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.CollectionMapping;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.Accessor;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
@@ -37,9 +38,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAttributeMapping;
 
-public class VirtualJavaPersistentAttribute extends AbstractJavaJpaContextNode
-	implements JavaPersistentAttribute2_0, JavaEclipseLinkPersistentAttribute
-{
+public class VirtualJavaPersistentAttribute
+		extends AbstractJavaJpaContextNode
+		implements JavaPersistentAttribute2_0, JavaEclipseLinkPersistentAttribute {
+	
 	private final XmlAttributeMapping xmlAttributeMapping;
 	
 	private final JavaAttributeMapping attributeMapping;
@@ -91,10 +93,15 @@ public class VirtualJavaPersistentAttribute extends AbstractJavaJpaContextNode
 	}
 
 	public String getTypeName() {
-		String typeName = this.xmlAttributeMapping.getAttributeType();
-		return typeName == null ? null : this.getEntityMappings().getFullyQualifiedName(typeName);
+		// virtual java attributes have no type
+		return null;
 	}
-
+	
+	public String getTypeName(PersistentType contextType) {
+		// virtual java attributes have no type
+		return null;
+	}
+	
 	public boolean typeIsBasic() {
 		return false;//not valid for a default basic mapping, specified in orm.xml
 	}

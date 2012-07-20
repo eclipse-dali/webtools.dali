@@ -83,9 +83,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * </ul>
  */
 public abstract class SpecifiedOrmPersistentType
-	extends AbstractOrmXmlContextNode
-	implements OrmPersistentType2_0
-{
+		extends AbstractOrmXmlContextNode
+		implements OrmPersistentType2_0 {
+	
 	protected OrmTypeMapping mapping;  // never null
 
 	protected String name;
@@ -419,8 +419,12 @@ public abstract class SpecifiedOrmPersistentType
 			}
 		};
 	}
-
-
+	
+	public String getAttributeTypeName(ReadOnlyPersistentAttribute attribute) {
+		return (this.javaPersistentType == null) ? null : this.javaPersistentType.getAttributeTypeName(attribute);
+	}
+	
+	
 	// ********** attribute conversions **********
 
 	public OrmPersistentAttribute addAttributeToXml(OrmReadOnlyPersistentAttribute defaultAttribute) {

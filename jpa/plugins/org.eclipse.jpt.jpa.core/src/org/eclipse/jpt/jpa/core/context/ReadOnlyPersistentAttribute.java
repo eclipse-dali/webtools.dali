@@ -20,6 +20,9 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @version 3.3
+ * @since ... a while?
  */
 public interface ReadOnlyPersistentAttribute
 	extends JpaContextNode, JpaStructureNode, ReadOnlyAccessHolder
@@ -79,6 +82,15 @@ public interface ReadOnlyPersistentAttribute
 	 * <code>"java.util.Collection"</code>).
 	 */
 	String getTypeName();
+
+	/**
+	 * Return the resolved, qualified name of the attribute's type (see {@link #getTypeName()})
+	 *  in the context of the given {@link PersistentType}.
+	 * (In some cases, the attribute's type may be further constrained by a subclass of the 
+	 *  persistent type that actually contains the attribute.)
+	 * Return null if a type cannot be determined for this attribute in the given context.
+	 */
+	String getTypeName(PersistentType contextType);
 	
 	/**
 	 * If the attribute is mapped to a primary key column, return the

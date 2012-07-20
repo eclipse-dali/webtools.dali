@@ -579,7 +579,21 @@ public abstract class AbstractJavaPersistentAttribute
 	public String getTypeName() {
 		return this.getResourceAttribute().getTypeBinding().getQualifiedName();
 	}
-
+	
+	public String getTypeName(PersistentType contextType) {
+		while (contextType != null) {
+			if (contextType == getParent()) {
+				return getTypeName();
+			}
+			String typeName = contextType.getAttributeTypeName(this);
+			if (typeName != null) {
+				return typeName;
+			}
+			contextType = contextType.getSuperPersistentType();
+		}
+		return null;
+	}
+	
 	public boolean contains(int offset, CompilationUnit astRoot) {
 		TextRange fullTextRange = this.getResourceAttribute().getTextRange(astRoot);
 		// 'fullTextRange' will be null if the attribute no longer exists in the java;

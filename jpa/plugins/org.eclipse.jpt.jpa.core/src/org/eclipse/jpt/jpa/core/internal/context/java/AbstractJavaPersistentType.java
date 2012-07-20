@@ -19,6 +19,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
@@ -26,6 +27,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.ClassName;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
@@ -65,9 +67,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * </ul>
  */
 public abstract class AbstractJavaPersistentType
-	extends AbstractJavaJpaContextNode
-	implements JavaPersistentType
-{
+		extends AbstractJavaJpaContextNode
+		implements JavaPersistentType {
+	
 	protected final JavaResourceType resourceType;
 
 	protected String name;
@@ -885,8 +887,44 @@ public abstract class AbstractJavaPersistentType
 			}
 		};
 	}
-
-
+	
+	protected Iterable<JavaResourceType> getResourceInheritanceHierarchy() {
+		// keep track of visited resource types to kill cyclical inheritance
+		final HashSet<JavaResourceType> visitedResourceTypes = new HashSet<JavaResourceType>();
+		return new ChainIterable<JavaResourceType>(this.resourceType) {
+			@Override
+			protected JavaResourceType nextLink(JavaResourceType currentLink) {
+				visitedResourceTypes.add(currentLink);
+				JavaResourceType nextLink = (JavaResourceType)
+						AbstractJavaPersistentType.this.getJpaProject().getJavaResourceType(
+								currentLink.getSuperclassQualifiedName(), 
+								JavaResourceAbstractType.Kind.TYPE);
+				if (nextLink == null || visitedResourceTypes.contains(nextLink)) {
+					return null;
+				}
+				return nextLink;
+			}
+		};
+	}
+	
+	public String getAttributeTypeName(ReadOnlyPersistentAttribute attribute) {
+		JavaResourceAttribute resourceAttribute = attribute.getJavaPersistentAttribute().getResourceAttribute();
+		if (resourceAttribute == null) {
+			return null;
+		}
+		
+		for (JavaResourceType resourceType : getResourceInheritanceHierarchy()) {
+			TypeBinding attributeType = resourceType.getInheritedAttributeTypeBinding(resourceAttribute);
+			if (attributeType != null) {
+				return attributeType.getQualifiedName();
+			}
+		}
+		
+		// attribute was not found in this context
+		throw new IllegalArgumentException(attribute.toString());
+	}
+	
+	
 	// ********** JpaStructureNode implementation **********
 
 	public ContextType getContextType() {

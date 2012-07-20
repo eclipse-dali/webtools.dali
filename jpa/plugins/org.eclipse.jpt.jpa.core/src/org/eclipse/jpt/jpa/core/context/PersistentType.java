@@ -26,7 +26,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.3
  * @since 2.0
  */
 public interface PersistentType
@@ -107,6 +107,11 @@ public interface PersistentType
 	 * is distinct and exists within the context of the persistent type.
 	 */
 	ReadOnlyPersistentAttribute resolveAttribute(String attributeName);
+	
+	/**
+	 * Return qualified type name of given attribute within the context of this type.
+	 */
+	String getAttributeTypeName(ReadOnlyPersistentAttribute attribute);
 
 
 	// ********** inheritance **********

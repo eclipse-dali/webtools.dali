@@ -23,6 +23,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.CollectionMapping;
+import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -50,9 +51,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <em>specified</em> <code>orm.xml</code> persistent attribute
  */
 public abstract class SpecifiedOrmPersistentAttribute
-	extends AbstractOrmXmlContextNode
-	implements OrmPersistentAttribute2_0
-{
+		extends AbstractOrmXmlContextNode
+		implements OrmPersistentAttribute2_0 {
+	
 	protected OrmAttributeMapping mapping;  // never null
 
 	/**
@@ -571,7 +572,21 @@ public abstract class SpecifiedOrmPersistentAttribute
 	}
 
 	public String getTypeName() {
-		return this.mapping.getAttributeType();
+		return this.mapping.getFullyQualifiedAttributeType();
+	}
+	
+	public String getTypeName(PersistentType contextType) {
+		while (contextType != null) {
+			if (contextType == getParent()) {
+				return getTypeName();
+			}
+			String typeName = contextType.getAttributeTypeName(this);
+			if (typeName != null) {
+				return typeName;
+			}
+			contextType = contextType.getSuperPersistentType();
+		}
+		return null;
 	}
 
 	@Override

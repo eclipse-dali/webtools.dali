@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.core.resource.java;
 
 import org.eclipse.jdt.core.dom.TypeDeclaration;
+import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 
 
 /**
@@ -21,7 +22,7 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 3.3
  * @since 2.0
  */
 public interface JavaResourceType
@@ -116,4 +117,14 @@ public interface JavaResourceType
 		String METHODS_COLLECTION = "methods"; //$NON-NLS-1$
 	
 	JavaResourceMethod getMethod(String name);
+	
+	
+	// ***** misc *****
+	
+	/**
+	 * Return a {@link TypeBinding} for the given attribute, whether that attribute
+	 * is owned directly by this type or this type has specific inherited type information
+	 * for it.  (This type may constrain the generic type of the attribute from a superclass.)
+	 */
+	TypeBinding getInheritedAttributeTypeBinding(JavaResourceAttribute attribute);
 }

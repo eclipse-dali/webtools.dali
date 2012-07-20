@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
@@ -43,10 +44,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
  * </ul>
  */
 public class EclipseLinkOrmPersistentTypeImpl
-	extends SpecifiedOrmPersistentType
-	implements EclipseLinkOrmPersistentType
-{
-
+		extends SpecifiedOrmPersistentType
+		implements EclipseLinkOrmPersistentType {
+	
 	protected String specifiedGetMethod;
 	protected String defaultGetMethod;
 
@@ -163,7 +163,17 @@ public class EclipseLinkOrmPersistentTypeImpl
 
 		return specifiedAttribute;
 	}
-
+	
+	@Override
+	public String getAttributeTypeName(ReadOnlyPersistentAttribute attribute) {
+		if (isDynamic()) {
+			PersistentType superPersistentType = getSuperPersistentType();
+			return (superPersistentType == null) ? null : superPersistentType.getAttributeTypeName(attribute);
+		}
+		return super.getAttributeTypeName(attribute);
+	}
+	
+	
 	//*************** get method *****************
 
 	public String getGetMethod() {
