@@ -9,13 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.resource.java;
 
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.common.utility.command.CommandExecutor;
 
 /**
- * Dali resource for JDT compilation unit.
+ * Dali resource for JDT compilation unit (i.e. a Java source code file).
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -70,4 +74,17 @@ public interface JavaResourceCompilationUnit
 	 * Build an AST for the compilation unit with its bindings resolved.
 	 */
 	CompilationUnit buildASTRoot();
+
+
+	// ********** content types **********
+
+	/**
+	 * The content type for Java source code files.
+	 */
+	IContentType CONTENT_TYPE = Platform.getContentTypeManager().getContentType(JavaCore.JAVA_SOURCE_CONTENT_TYPE);
+
+	/**
+	 * The content type for <code>package-info</code> Java source code files.
+	 */
+	IContentType PACKAGE_INFO_CONTENT_TYPE = JptCommonCorePlugin.instance().getContentType("javaPackageInfo"); //$NON-NLS-1$
 }

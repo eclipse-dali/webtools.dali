@@ -26,16 +26,17 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.ui.internal.plugin.JptCommonUiPlugin;
+import org.eclipse.jpt.common.ui.internal.properties.JptProjectPropertiesPage.OkRunnableWithProgress.OkWorkspaceRunnable;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.model.value.BufferedWritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.BufferedModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.Model;
-import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.AbstractChangeListener;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jst.common.project.facet.core.libprov.IPropertyChangeListener;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.jst.common.project.facet.ui.libprov.LibraryFacetPropertyPage;
@@ -59,7 +60,7 @@ public abstract class JptProjectPropertiesPage
 		extends LibraryFacetPropertyPage {
 
 	protected final ModifiablePropertyValueModel<IProject> projectModel;
-	protected final BufferedWritablePropertyValueModel.Trigger trigger;
+	protected final BufferedModifiablePropertyValueModel.Trigger trigger;
 
 	protected final ChangeListener validationListener;
 
@@ -68,7 +69,7 @@ public abstract class JptProjectPropertiesPage
 		super();
 
 		this.projectModel = new SimplePropertyValueModel<IProject>();
-		this.trigger = new BufferedWritablePropertyValueModel.Trigger();
+		this.trigger = new BufferedModifiablePropertyValueModel.Trigger();
 
 		this.buildModels();
 
@@ -328,7 +329,7 @@ public abstract class JptProjectPropertiesPage
 	 * Return whether any of the models are buffering a change.
 	 */
 	private boolean isBuffering() {
-		for (BufferedWritablePropertyValueModel<?> model : this.buildBufferedModels()) {
+		for (BufferedModifiablePropertyValueModel<?> model : this.buildBufferedModels()) {
 			if (model.isBuffering()) {
 				return true;
 			}
@@ -336,7 +337,7 @@ public abstract class JptProjectPropertiesPage
 		return false;
 	}
 
-	protected abstract BufferedWritablePropertyValueModel<?>[] buildBufferedModels();
+	protected abstract BufferedModifiablePropertyValueModel<?>[] buildBufferedModels();
 
 	@Override
 	protected void performDefaults() {
@@ -411,7 +412,7 @@ public abstract class JptProjectPropertiesPage
 	}
 
 	protected IStatus buildStatus(int severity, String message) {
-		return new Status(severity, JptCommonCorePlugin.PLUGIN_ID, message);
+		return JptCommonUiPlugin.instance().buildStatus(severity, message);
 	}
 
 	@Override

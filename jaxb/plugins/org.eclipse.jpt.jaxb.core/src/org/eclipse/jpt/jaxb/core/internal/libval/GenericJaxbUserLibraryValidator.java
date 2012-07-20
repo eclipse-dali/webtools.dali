@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2010, 2011 Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.libval;
 
 import java.util.HashSet;
@@ -54,10 +54,7 @@ public class GenericJaxbUserLibraryValidator
 		// null here implies something prior to jaxb 2.1
 		if (jreJaxbVersion != null) {
 			if (jreJaxbVersion.compareTo(jaxbVersion) < 0) {
-				String message = NLS.bind(
-						JptJaxbCoreMessages.UserLibraryValidator_incompatibleJavaLibrary,
-						new String[] {jaxbVersion.getVersionString()});
-				return new Status(IStatus.ERROR, JptJaxbCorePlugin.PLUGIN_ID, message);
+				return JptJaxbCorePlugin.instance().buildErrorStatus(JptJaxbCoreMessages.UserLibraryValidator_incompatibleJavaLibrary, jaxbVersion.getVersionString());
 			}
 		}
 		// if jre is enough for jaxb version, we don't look for classes in the library
@@ -82,10 +79,7 @@ public class GenericJaxbUserLibraryValidator
 		
 		// null here implies something prior to jaxb 2.1
 		if (javaJaxbVersion != null && javaJaxbVersion.compareTo(jaxbVersion) < 0) {
-			String message = NLS.bind(
-					JptJaxbCoreMessages.UserLibraryValidator_incompatibleJavaFacet,
-					new String[] {javaVersion.getVersionString(), jaxbVersion.getVersionString()});
-			return new Status(IStatus.WARNING, JptJaxbCorePlugin.PLUGIN_ID, message);
+			return JptJaxbCorePlugin.instance().buildStatus(IStatus.WARNING, JptJaxbCoreMessages.UserLibraryValidator_incompatibleJavaFacet, javaVersion.getVersionString(), jaxbVersion.getVersionString());
 		}
 		
 		return Status.OK_STATUS;

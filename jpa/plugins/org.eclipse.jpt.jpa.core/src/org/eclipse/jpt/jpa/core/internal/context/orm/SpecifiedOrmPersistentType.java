@@ -42,7 +42,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
@@ -58,6 +57,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.java.PropertyAccessor;
+import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType;
@@ -1273,7 +1273,7 @@ public abstract class SpecifiedOrmPersistentType
 		try {
 			this.mapping.validate(messages, reporter);
 		} catch(Throwable t) {
-			JptJpaCorePlugin.log(t);
+			JptJpaCorePlugin.instance().logError(t);
 		}
 	}
 
@@ -1287,7 +1287,7 @@ public abstract class SpecifiedOrmPersistentType
 		try {
 			attribute.validate(messages, reporter);
 		} catch(Throwable t) {
-			JptJpaCorePlugin.log(t);
+			JptJpaCorePlugin.instance().logError(t);
 		}
 	}
 

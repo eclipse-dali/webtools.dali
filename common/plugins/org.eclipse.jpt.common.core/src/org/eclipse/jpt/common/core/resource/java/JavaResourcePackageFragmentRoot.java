@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,10 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.resource.java;
 
+import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
+
 
 /**
- * Java package fragement root
- * 
+ * Java package fragement root (i.e. a claspath entry: either a directory or
+ * a <code>.jar</code>).
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -26,6 +30,11 @@ public interface JavaResourcePackageFragmentRoot
 	extends JavaResourceNode.Root
 {
 	/**
+	 * The content type for Java archives (<code>.jar</code>).
+	 */
+	IContentType JAR_CONTENT_TYPE = JptCommonCorePlugin.instance().getContentType("jar"); //$NON-NLS-1$
+
+	/**
 	 * Return the package fragment root's package fragments.
 	 */
 	Iterable<JavaResourcePackageFragment> getPackageFragments();
@@ -35,5 +44,4 @@ public interface JavaResourcePackageFragmentRoot
 	 * Return the size of the package fragment root's package fragments.
 	 */
 	int getPackageFragmentsSize();
-
 }

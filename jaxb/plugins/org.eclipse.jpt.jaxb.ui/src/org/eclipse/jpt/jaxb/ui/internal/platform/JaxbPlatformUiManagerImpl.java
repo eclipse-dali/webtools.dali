@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.platform;
 
-import static org.eclipse.jpt.common.core.internal.utility.XPointTools.*;
+import static org.eclipse.jpt.common.core.internal.utility.XPointTools.findRequiredAttribute;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -17,11 +17,13 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jpt.common.core.internal.JptCommonCoreMessages;
+import org.eclipse.jpt.common.core.internal.utility.XPointTools;
 import org.eclipse.jpt.common.core.internal.utility.XPointTools.XPointException;
 import org.eclipse.jpt.common.utility.internal.KeyedSet;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
-import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
+import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.platform.JaxbPlatformUi;
 import org.eclipse.jpt.jaxb.ui.platform.JaxbPlatformUiManager;
 
@@ -29,7 +31,7 @@ public class JaxbPlatformUiManagerImpl
 		implements JaxbPlatformUiManager {
 	
 	static final String EXTENSION_POINT_ID = "jaxbPlatformUis"; //$NON-NLS-1$
-	static final String QUALIFIED_EXTENSION_POINT_ID = JptJaxbUiPlugin.PLUGIN_ID_ + EXTENSION_POINT_ID; //$NON-NLS-1$
+	static final String QUALIFIED_EXTENSION_POINT_ID = JptJaxbUiPlugin.instance().getPluginID() + '.' + EXTENSION_POINT_ID; //$NON-NLS-1$
 	static final String PLATFORM_UI_ELEMENT = "jaxbPlatformUi"; //$NON-NLS-1$
 	static final String ID_ATTRIBUTE = "id"; //$NON-NLS-1$	
 	static final String PLATFORM_ATTRIBUTE = "jaxbPlatform"; //$NON-NLS-1$	
@@ -62,7 +64,7 @@ public class JaxbPlatformUiManagerImpl
 		final IExtensionRegistry registry = Platform.getExtensionRegistry();
 		
 		final IExtensionPoint xpoint 
-				= registry.getExtensionPoint(JptJaxbUiPlugin.PLUGIN_ID, EXTENSION_POINT_ID);
+				= registry.getExtensionPoint(JptJaxbUiPlugin.instance().getPluginID(), EXTENSION_POINT_ID);
 		
 		if (xpoint == null) {
 			throw new IllegalStateException();
@@ -94,7 +96,7 @@ public class JaxbPlatformUiManagerImpl
 			platformUiConfig.setId(findRequiredAttribute(element, ID_ATTRIBUTE));
 			
 			if (this.platformUiConfigs.containsKey(platformUiConfig.getId())) {
-				logDuplicateExtension(QUALIFIED_EXTENSION_POINT_ID, ID_ATTRIBUTE, platformUiConfig.getId());
+				this.logError(JptCommonCoreMessages.REGISTRY_DUPLICATE, QUALIFIED_EXTENSION_POINT_ID, platformUiConfig.getPluginId(), ID_ATTRIBUTE, platformUiConfig.getId());
 				throw new XPointException();
 			}
 			
@@ -104,11 +106,11 @@ public class JaxbPlatformUiManagerImpl
 					JptJaxbCorePlugin.getJaxbPlatformManager().getJaxbPlatform(jaxbPlatformId);
 			
 			if (jaxbPlatform == null) {
-				logInvalidValue(element, PLATFORM_ATTRIBUTE, jaxbPlatformId);
+				this.logError(XPointTools.buildInvalidValueMessage(element, PLATFORM_ATTRIBUTE, jaxbPlatformId));
 			}
 			
 			if (this.platformToUiConfigs.containsKey(jaxbPlatform)) {
-				logDuplicateExtension(QUALIFIED_EXTENSION_POINT_ID, PLATFORM_ATTRIBUTE, jaxbPlatformId);
+				this.logError(JptCommonCoreMessages.REGISTRY_DUPLICATE, QUALIFIED_EXTENSION_POINT_ID, platformUiConfig.getPluginId(), PLATFORM_ATTRIBUTE, jaxbPlatformId);
 				throw new XPointException();
 			}
 			
@@ -129,5 +131,13 @@ public class JaxbPlatformUiManagerImpl
 	public JaxbPlatformUi getJaxbPlatformUi(JaxbPlatformDescription platformDesc) {
 		JaxbPlatformUiConfig config = this.platformToUiConfigs.getItem(platformDesc);
 		return (config == null) ? null : config.getPlatformUi();
+	}
+
+	private void logError(String msg, Object... args) {
+		JptJaxbUiPlugin.instance().logError(msg, args);
+	}
+
+	private void logError(String msg) {
+		JptJaxbUiPlugin.instance().logError(msg);
 	}
 }

@@ -118,10 +118,8 @@
          <meta.section type="examples"/>
       </appinfo>
       <documentation>
-         &lt;br&gt;
-&lt;p&gt;
-The following example is the included simple Java resource locator, which is used for simple Java projects.  It is of &quot;lowest&quot; priority, since all JPT projects will at their roots be simple Java projects.
-&lt;p&gt;
+         &lt;p&gt;
+&lt;br&gt;The following example is the included simple Java resource locator, which is used for simple Java projects.  It is of &quot;lowest&quot; priority, since all JPT projects will at their roots be simple Java projects.
 &lt;pre&gt;
 &lt;extension  
  point=&quot;org.eclipse.jpt.common.core.resourceLocators&quot;&gt;
@@ -138,6 +136,7 @@ The following example is the included simple Java resource locator, which is use
 &lt;/extension&gt;
 &lt;/pre&gt;
 &lt;/p&gt;
+
       </documentation>
    </annotation>
 

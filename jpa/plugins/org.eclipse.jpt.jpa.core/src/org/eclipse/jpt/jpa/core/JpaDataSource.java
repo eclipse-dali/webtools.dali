@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.db.Table;
 
 /**
  * Interface to the connection profile.
- * 
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -26,8 +26,8 @@ import org.eclipse.jpt.jpa.db.Table;
  * @since 2.0
  */
 public interface JpaDataSource
-	extends JpaNode {
-
+	extends JpaNode
+{
 	/**
 	 * Return the data source's connection profile name.
 	 * The connection profile is looked up based on this setting.
@@ -83,5 +83,4 @@ public interface JpaDataSource
 	 * Dispose the data source.
 	 */
 	void dispose();
-
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,11 +15,9 @@ import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
-import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory.SimpleVersion;
 import org.eclipse.jpt.jpa.core.internal.context.AbstractXmlContextNode;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmXml;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_0Definition;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
-import org.eclipse.wst.common.project.facet.core.VersionFormatException;
 
 /**
  * Use this abstract class for context nodes that are part of an
@@ -42,28 +40,20 @@ public abstract class AbstractOrmXmlContextNode
 		return (EntityMappings) super.getMappingFileRoot();
 	}
 
-	// TODO bjv need to cascade up containment hierarchy... (need public API:
-	// JpaContextNode.getMappingFileDefinition() ?)
+	protected OrmXml getOrmXml() {
+		return this.getMappingFileRoot().getOrmXml();
+	}
+
 	protected OrmXmlDefinition getMappingFileDefinition() {
-		OrmXml ormXml = this.getMappingFileRoot().getParent();
-		if (ormXml instanceof GenericOrmXml) {
-			return ((GenericOrmXml) ormXml).getMappingFileDefinition();
-		}
-		return (OrmXmlDefinition) this.getJpaPlatform().getResourceDefinition(this.getResourceType());
+		return this.getOrmXml().getDefinition();
 	}
 
 	protected EFactory getResourceNodeFactory() {
 		return this.getMappingFileDefinition().getResourceNodeFactory();
 	}
 
-	// TODO bjv need to add API and delegate to orm.xml/entity mappings interface...
 	protected boolean isOrmXml2_0Compatible() {
-		String version = this.getMappingFileRoot().getVersion();
-		try {
-			return (version != null) && SimpleVersion.VERSION_COMPARATOR.compare(version, "2.0") >= 0; //$NON-NLS-1$
-		} catch (VersionFormatException ex) {
-			return false;
-		}
+		return this.getResourceType().isKindOf(GenericOrmXml2_0Definition.instance().getResourceType());
 	}
 
 	/**

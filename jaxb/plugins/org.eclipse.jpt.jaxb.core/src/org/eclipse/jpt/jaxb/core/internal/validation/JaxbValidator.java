@@ -34,6 +34,14 @@ public class JaxbValidator
 		extends AbstractValidator
 		implements IValidator {
 
+	public static final String RELATIVE_MARKER_ID = "problemMarker";  //$NON-NLS-1$
+
+	/**
+	 * The identifier for the JAXB validation marker
+	 * (value <code>"org.eclipse.jpt.jaxb.core.problemMarker"</code>).
+	 */
+	public static final String MARKER_ID = JptJaxbCorePlugin.instance().getPluginID() + '.' + RELATIVE_MARKER_ID;
+
 	public JaxbValidator() {
 		super();
 	}
@@ -73,12 +81,12 @@ public class JaxbValidator
 		try {
 			this.clearMarkers_(project);
 		} catch (CoreException ex) {
-			JptJaxbCorePlugin.log(ex);
+			JptJaxbCorePlugin.instance().logError(ex);
 		}
 	}
 
 	private void clearMarkers_(IProject project) throws CoreException {
-		IMarker[] markers = project.findMarkers(JptJaxbCorePlugin.VALIDATION_MARKER_ID, true, IResource.DEPTH_INFINITE);
+		IMarker[] markers = project.findMarkers(JaxbValidator.MARKER_ID, true, IResource.DEPTH_INFINITE);
 		for (IMarker marker : markers) {
 			marker.delete();
 		}
@@ -95,7 +103,7 @@ public class JaxbValidator
 	}
 
 	private Iterable<IMessage> buildValidationMessages(IReporter reporter, IProject project) {
-		JaxbProject jaxbProject = JptJaxbCorePlugin.getJaxbProject(project);
+		JaxbProject jaxbProject = JptJaxbCorePlugin.instance().getProjectManager().getJaxbProject(project);
 		if (jaxbProject != null) {
 			return jaxbProject.getValidationMessages(reporter);
 		}

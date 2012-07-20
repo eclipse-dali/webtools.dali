@@ -29,10 +29,10 @@ import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
+import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.CompositeChange;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
@@ -50,7 +50,8 @@ import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.text.edits.TextEdit;
 
 /**
- * Participant in the rename refactoring of {@link IFile}s with content type {@link JptJpaCorePlugin#MAPPING_FILE_CONTENT_TYPE}.
+ * Participant in the rename refactoring of {@link IFile}s with content type
+ * {@link org.eclipse.jpt.jpa.core.resource.ResourceMappingFile.Root#CONTENT_TYPE}.
  * If the renamed mapping file is listed in a persistence.xml file of any JpaProject
  * then a Change object is created that will rename that reference from the file.
  * If the renamed mapping file is an implied mapping file, then an actual reference to the mapping file will be specified.
@@ -61,7 +62,8 @@ public class JpaMoveMappingFileParticipant
 {
 
 	/**
-	 * Store the {@link IFile}s to be renamed with content type {@link JptJpaCorePlugin#MAPPING_FILE_CONTENT_TYPE}
+	 * Store the {@link IFile}s to be renamed with content type
+	 * {@link org.eclipse.jpt.jpa.core.resource.ResourceMappingFile.Root#CONTENT_TYPE}
 	 * and their corresponding {@link MoveArguments}
 	 */
 	protected final Map<IFile, MoveArguments> originalMappingFiles;
@@ -233,7 +235,7 @@ public class JpaMoveMappingFileParticipant
 		if (persistenceXml == null) {
 			return null;
 		}
-		Persistence persistence = persistenceXml.getPersistence();
+		Persistence persistence = persistenceXml.getRoot();
 		if (persistence == null) {
 			return null;
 		}
@@ -250,7 +252,7 @@ public class JpaMoveMappingFileParticipant
 			}
 			catch (MalformedTreeException e) {
 				//log exception and don't add this persistence.xml type deletion to the conflicting change object
-				JptJpaCorePlugin.log(e);
+				JptJpaCorePlugin.instance().logError(e);
 			}
 		}
 	}

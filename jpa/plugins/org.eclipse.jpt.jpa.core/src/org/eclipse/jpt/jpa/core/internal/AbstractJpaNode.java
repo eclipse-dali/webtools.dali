@@ -37,9 +37,9 @@ import org.eclipse.jpt.jpa.core.JpaNode;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.jpa2.JpaFactory2_0;
+import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Database;
 
@@ -128,6 +128,10 @@ public abstract class AbstractJpaNode
 		return this.getJpaProject().getManager();
 	}
 
+	public JpaPlatform getJpaPlatform() {
+		return this.getJpaProject().getJpaPlatform();
+	}
+	
 
 	// ********** convenience methods **********
 
@@ -135,20 +139,12 @@ public abstract class AbstractJpaNode
 		return this.getJpaProject().getJavaProject();
 	}
 
-	/**
-	 * This is <code>public</code> as a convenience because various subclasses
-	 * implement interfaces that require this method.
-	 */
-	public JpaPlatform getJpaPlatform() {
-		return this.getJpaProject().getJpaPlatform();
-	}
-	
 	protected JpaPlatform.Version getJpaPlatformVersion() {
 		return this.getJpaPlatform().getJpaVersion();
 	}
 
 	protected boolean isJpa2_0Compatible() {
-		return JptJpaCorePlugin.nodeIsJpa2_0Compatible(this);
+		return this.getJpaPlatformVersion().isCompatibleWithJpaVersion(JpaProject2_0.FACET_VERSION_STRING);
 	}
 
 	/**

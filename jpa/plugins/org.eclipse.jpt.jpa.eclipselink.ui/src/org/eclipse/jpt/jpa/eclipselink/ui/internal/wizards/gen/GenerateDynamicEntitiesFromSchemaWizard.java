@@ -7,11 +7,9 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards.gen;
 
 import java.lang.reflect.InvocationTargetException;
-
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -31,9 +29,8 @@ import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.eclipselink.core.platform.EclipseLinkPlatform;
-import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiPlugin;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.gen.GenerateEntitiesFromSchemaWizard;
 import org.eclipse.jpt.jpa.ui.internal.wizards.gen.PromptJPAProjectWizardPage;
 import org.eclipse.jpt.jpa.ui.internal.wizards.gen.TableAssociationsWizardPage;
@@ -48,7 +45,7 @@ import org.eclipse.ui.ide.IDE;
 public class GenerateDynamicEntitiesFromSchemaWizard extends GenerateEntitiesFromSchemaWizard 
 	implements INewWizard  {	
 	
-	public static final String HELP_CONTEXT_ID = JptJpaUiPlugin.PLUGIN_ID + ".GenerateEntitiesFromSchemaWizard"; //$NON-NLS-1$
+	public static final String HELP_CONTEXT_ID = JptJpaEclipseLinkUiPlugin.instance().getPluginID() + ".GenerateEntitiesFromSchemaWizard"; //$NON-NLS-1$
 
 	// ********** constructor **********
 
@@ -130,7 +127,7 @@ public class GenerateDynamicEntitiesFromSchemaWizard extends GenerateEntitiesFro
 		if(jpaProject == null) {
 			return false;
 		}
-		return jpaProject.getJpaPlatform().getDescription().getGroup().getId().
+		return jpaProject.getJpaPlatform().getDescription().getGroupDescription().getId().
 			equals(EclipseLinkPlatform.GROUP.getId());
 	}
 	
@@ -161,7 +158,7 @@ public class GenerateDynamicEntitiesFromSchemaWizard extends GenerateEntitiesFro
 			try {
 				postGeneration(this.jpaProject,this.mappingFile);
 			} catch (InvocationTargetException e) {
-				throw new CoreException(new Status(IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, "error", e));
+				throw new CoreException(JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus());
 			}
 			return Status.OK_STATUS;
 		}
@@ -184,7 +181,7 @@ public class GenerateDynamicEntitiesFromSchemaWizard extends GenerateEntitiesFro
 							IDE.openEditor(page, file, true);
 						}
 						catch (PartInitException e) {
-							JptJpaUiPlugin.log(e);
+							JptJpaEclipseLinkUiPlugin.instance().logError(e);
 						}
 					}
 				});

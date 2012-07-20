@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
@@ -29,10 +28,10 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
-import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
@@ -43,20 +42,16 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.entity.data.operation.NewDynamicEntityClassOperation;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.model.IEntityDataModelProperties;
 import org.eclipse.jst.j2ee.internal.common.J2EECommonMessages;
 import org.eclipse.jst.j2ee.internal.common.operations.NewJavaClassDataModelProvider;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelProvider;
 import org.eclipse.wst.common.frameworks.internal.plugin.WTPCommonPlugin;
-
-import com.ibm.icu.text.MessageFormat;
 
 public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvider implements IEntityDataModelProperties {
 
@@ -154,7 +149,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 					rootList.toArray(packRoots);
 				} catch (JavaModelException e) {
 					// fall through
-					JptJpaEclipseLinkUiPlugin.log(e);
+					JptJpaEclipseLinkUiPlugin.instance().logError(e);
 				}
 			}
 		}
@@ -191,9 +186,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 	 */
 	private IStatus validateJavaPackage(String packName) {		
 		if (packName == null || packName.equals(EMPTY_STRING)) {
-			return new Status(
-					IStatus.WARNING, JptJpaEclipseLinkUiPlugin.PLUGIN_ID,
-					EclipseLinkUiMessages.DynamicEntityClassWizardPage_defaultPackageWarning);
+			return JptJpaEclipseLinkUiPlugin.instance().buildStatus(IStatus.WARNING, EclipseLinkUiMessages.DynamicEntityClassWizardPage_defaultPackageWarning);
 		}			
 		// Use standard java conventions to validate the package name
 		IStatus javaStatus = JavaConventions.validatePackageName(packName, JavaCore.VERSION_1_5, JavaCore.VERSION_1_5);
@@ -223,14 +216,10 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 		if (project != null) {
 			JpaXmlResource ormXmlResource = StringTools.stringIsEmpty(xmlName) ? null : getOrmXmlResource(xmlName);
 			if (ormXmlResource == null) {
-				return new Status(
-						IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID,
-						EclipseLinkUiMessages.DynamicEntityClassWizardPage_invalidXMLName);
+				return JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.DynamicEntityClassWizardPage_invalidXMLName);
 			}
 			else if (this.getJpaProject().getJpaFile(ormXmlResource.getFile()).getRootStructureNodesSize() == 0) {
-				return new Status(
-						IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID,
-						EclipseLinkUiMessages.DynamicEntityClassWizardPage_xmlNotListedError);
+				return JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.DynamicEntityClassWizardPage_xmlNotListedError);
 			}
 		}
 		return Status.OK_STATUS;
@@ -257,35 +246,33 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 			// Ensure there are no dynamic entity fields that have the same name in the table
 			boolean hasDuplicates = hasDuplicatesInEntityFields(fields);
 			if (hasDuplicates) {
-				return new Status(
-						IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID,
-						EclipseLinkUiMessages.DynamicEntityFieldsWizardPage_duplicateEntityFieldsError);
+				return JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.DynamicEntityFieldsWizardPage_duplicateEntityFieldsError);
 			}
 			// Ensure ID and EmbeddedID mapping are not defined at the same time
 			// and also ensure there's no multiple EmbeddedID mappings defined
 			String errorMsg1 = checkInputFieldsMappingTypes(fields);
 			if (errorMsg1 != null) {
-				return new Status(IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, errorMsg1);
+				return JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(errorMsg1);
 			}
 			// Ensure that the given attribute type of the dynamic entity fields in the table are valid
 			String errorMsg2 = checkInputFieldsAttributeTypeValidity(fields);
 			if (errorMsg2 != null) {
-				return new Status(IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, errorMsg2);
+				return JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(errorMsg2);
 			}
 			// Ensure that the given target type of the dynamic entity fields in the table are valid
-			String errorMsg3 = checkInputFieldsTargetTypeValidity(fields);
+			String errorMsg3 = checkInputFieldsAttributeTypeExistence(fields);
 			if (errorMsg3 != null) {
-				return new Status(IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, errorMsg3);
+				return JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(errorMsg3);
 			}
 			// Ensure that the given attribute type of the dynamic entity fields in the table exist
 			String warningMsg1 = checkInputFieldsAttributeTypeExistence(fields);
 			if (warningMsg1 != null) {
-				return new Status(IStatus.WARNING, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, warningMsg1);
+				return JptJpaEclipseLinkUiPlugin.instance().buildWarningStatus(warningMsg1);
 			}
 			// Ensure that the given target type of the dynamic entity fields in the table exist
 			String warningMsg2 = checkInputFieldsTargetTypeExistence(fields);
 			if (warningMsg2 != null) {
-				return new Status(IStatus.WARNING, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, warningMsg2);
+				return JptJpaEclipseLinkUiPlugin.instance().buildWarningStatus(warningMsg2);
 			}
 		}
 		return Status.OK_STATUS;
@@ -295,11 +282,9 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 		IStatus validateFieldMappingTypeStatus = Status.OK_STATUS;
 		Iterable<String> mappingKeys = this.getMappingKeys(fields);
 		if (hasIDAndEmbeddedIDMappingDefined(mappingKeys)) {
-			validateFieldMappingTypeStatus = new Status(IStatus.ERROR, JptJpaUiPlugin.PLUGIN_ID, 
-					EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_bothIDAndEmbeddedIDDefinedError);
+			validateFieldMappingTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_bothIDAndEmbeddedIDDefinedError);
 		} else if (hasMultipleEmbeddedIDMappings(mappingKeys)) {
-			validateFieldMappingTypeStatus = new Status(IStatus.ERROR, JptJpaUiPlugin.PLUGIN_ID, 
-					EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_multipleEmbeddedIDsDefinedError);
+			validateFieldMappingTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_multipleEmbeddedIDsDefinedError);
 		}
 		if (!validateFieldMappingTypeStatus.isOK()) {
 			return validateFieldMappingTypeStatus.getMessage();
@@ -340,17 +325,14 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 				continue;
 			}
 			if (field.isKey() && !field.couldTypeBePKType()) {
-				String message = MessageFormat.format(
-						EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_invalidPKType, new Object[]{field.getFqnAttributeType()});
-				validateFieldTypeStatus = new Status(IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, message);
+				validateFieldTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_invalidPKType, field.getFqnAttributeType());
 				break;				
 			}
 			String sig = null;
 			try {
 				sig = Signature.createTypeSignature(field.getFqnAttributeType(), true);
 			} catch (IllegalArgumentException e) {
-				String message = MessageFormat.format(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_invalidArgument, new Object[]{e.getLocalizedMessage()});
-				validateFieldTypeStatus = new Status(IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, message);
+				validateFieldTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_invalidArgument, e.getLocalizedMessage());
 				break;
 			}
 			if (sig == null) {
@@ -383,9 +365,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 			}
 			String sig = Signature.createTypeSignature(field.getFqnAttributeType(), true);
 			if (sig == null) {
-				String message = MessageFormat.format(
-						EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeNotInProjectClasspath, new Object[]{field.getFqnAttributeType()});
-				validateFieldTypeStatus = new Status(IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, message);
+				validateFieldTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeNotInProjectClasspath, field.getFqnAttributeType());
 				break;
 			}
 			int sigType = Signature.getTypeSignatureKind(sig);
@@ -407,9 +387,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 					break;
 				} 
 				if (type == null) {
-					String message = MessageFormat.format(
-							EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeNotInProjectClasspath, new Object[]{field.getFqnAttributeType()});
-					validateFieldTypeStatus = new Status(IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, message);
+					validateFieldTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeNotInProjectClasspath, field.getFqnAttributeType());
 					break;
 				}
 			} else {
@@ -423,9 +401,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 					break;
 				}
 				if (type == null) {
-					String message = MessageFormat.format(
-							EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeNotInProjectClasspath, new Object[]{field.getFqnAttributeType()});
-					validateFieldTypeStatus = new Status(IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, message);
+					validateFieldTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeNotInProjectClasspath, field.getFqnAttributeType());
 					break;
 				}
 			}
@@ -435,7 +411,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 		}
 		return null;
 	}
-	
+
 	private String checkInputFieldsTargetTypeValidity(List<DynamicEntityField> fields) {
 		IStatus validateFieldTypeStatus = Status.OK_STATUS;
 		for (DynamicEntityField field: fields) {
@@ -448,8 +424,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 			try {
 				sig = Signature.createTypeSignature(field.getFqnTargetType(), true);
 			} catch (IllegalArgumentException e) {
-				String message = MessageFormat.format(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_invalidArgument, new Object[]{e.getLocalizedMessage()});
-				validateFieldTypeStatus = new Status(IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, message);
+				validateFieldTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_invalidArgument, e.getLocalizedMessage());
 				break;
 			}
 			if (sig == null){
@@ -483,9 +458,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 			}
 			String sig = Signature.createTypeSignature(field.getFqnTargetType(), true);
 			if (sig == null) {
-				String message = MessageFormat.format(
-						EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeNotInProjectClasspath, new Object[]{field.getFqnTargetType()});
-				validateFieldTypeStatus = new Status(IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, message);
+				validateFieldTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeNotInProjectClasspath, field.getFqnTargetType());
 				break;
 			}
 			int sigType = Signature.getTypeSignatureKind(sig);
@@ -507,9 +480,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 					break;
 				} 
 				if (type == null) {
-					String message = MessageFormat.format(
-							EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeNotInProjectClasspath, new Object[]{field.getFqnTargetType()});
-					validateFieldTypeStatus = new Status(IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, message);
+					validateFieldTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeNotInProjectClasspath, field.getFqnTargetType());
 					break;
 				}
 			} else {
@@ -523,9 +494,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 					break;
 				}
 				if (type == null) {
-					String message = MessageFormat.format(
-							EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeNotInProjectClasspath, new Object[]{field.getFqnTargetType()});
-					validateFieldTypeStatus = new Status(IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, message);
+					validateFieldTypeStatus = JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeNotInProjectClasspath, field.getFqnTargetType());
 					break;
 				}
 			}
@@ -572,12 +541,9 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 	 * @return boolean true if duplicate fields exist; otherwise, false
 	 */
 	private IStatus validatePrimaryKeyFieldsList(ArrayList<DynamicEntityField> pkFields) {
-		if (pkFields.size() > 1) {
-			return new Status(
-					IStatus.INFO, JptJpaEclipseLinkUiPlugin.PLUGIN_ID,
-					EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_applyEmbeddedIdMappingInfo);
-		}
-		return null;
+		return (pkFields.size() > 1) ?
+				JptJpaEclipseLinkUiPlugin.instance().buildStatus(IStatus.INFO, EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_applyEmbeddedIdMappingInfo) :
+				null;
 	}
 
 	/**
@@ -606,37 +572,24 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 		//there is no need for a separate validation of it.
 		for (String name : this.getJavaTypeNames()) {
 			if (StringTools.stringsAreEqual(name, fullyQualifiedName)) {
-				String message = NLS.bind(
-						EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeExistsWarning, 
-						new Object[] { fullyQualifiedName });
-				return new Status(IStatus.WARNING, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, message);
+				return JptJpaEclipseLinkUiPlugin.instance().buildStatus(IStatus.WARNING, EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeExistsWarning, fullyQualifiedName);
 
 			} else if (StringTools.stringsAreEqualIgnoreCase(name, fullyQualifiedName)) {
-				String message = NLS.bind(
-						EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeWithDiffCaseExistsWarning, 
-						new Object[] { fullyQualifiedName });
-				return new Status(IStatus.WARNING, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, message);
+				return JptJpaEclipseLinkUiPlugin.instance().buildStatus(IStatus.WARNING, EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeWithDiffCaseExistsWarning, fullyQualifiedName);
 			}
 		}
 		PersistenceUnit pu = this.getPersistenceUnit();
 		if (pu != null) {
 			for (String name : ((EclipseLinkPersistenceUnit)this.getPersistenceUnit()).getEclipseLinkDynamicPersistentTypeNames()) {
 				if (StringTools.stringsAreEqual(name, fullyQualifiedName)) {
-					String message = NLS.bind(
-							EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_dynamicTypeExistsError, 
-							new Object[] { fullyQualifiedName });
-					return new Status(IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, message);
+					return JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_dynamicTypeExistsError, fullyQualifiedName);
 
 				} else if (StringTools.stringsAreEqualIgnoreCase(name, fullyQualifiedName)) {
-					String message = NLS.bind(
-							EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_dynamicTypeWithDiffCaseExistsError, 
-							new Object[] { fullyQualifiedName });
-					return new Status(IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, message);
+					return JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_dynamicTypeWithDiffCaseExistsError, fullyQualifiedName);
 				}
 			}
 		} else {
-			return new Status(IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, 
-					EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_persistenceUnitNotFoundError);
+			return JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_persistenceUnitNotFoundError);
 		}
 		return Status.OK_STATUS;
 	}
@@ -672,7 +625,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 				}
 			} catch (JavaModelException e) {
 				// fall through
-				JptJpaEclipseLinkUiPlugin.log(e);
+				JptJpaEclipseLinkUiPlugin.instance().logError(e);
 			}
 		}	
 		return typesList;
@@ -682,7 +635,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 
 	protected JpaProject getJpaProject() {
 		IProject project = getTargetProject();
-		return ((project != null) && JpaFacet.isInstalled(project)) ?
+		return ((project != null) && ProjectTools.hasFacet(project, JpaProject.FACET)) ?
 				this.getJpaProject(project) :
 					null;
 	}
@@ -702,7 +655,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 
 	protected Persistence getPersistence() {
 		PersistenceXml pxml = this.getPersistenceXml();
-		return (pxml == null) ? null : pxml.getPersistence();
+		return (pxml == null) ? null : pxml.getRoot();
 	}
 
 	protected PersistenceXml getPersistenceXml() {

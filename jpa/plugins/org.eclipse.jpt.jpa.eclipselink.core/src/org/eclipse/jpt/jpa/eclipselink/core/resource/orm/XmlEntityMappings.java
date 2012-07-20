@@ -12,7 +12,9 @@ package org.eclipse.jpt.jpa.eclipselink.core.resource.orm;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -28,6 +30,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.SqlResultSetMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedQuery;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlSequenceGenerator;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.plugin.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v1_2.EclipseLink1_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_0.EclipseLink2_0;
@@ -1336,21 +1339,24 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
-	
-	
-	// **************** version -> schema location mapping ********************
-	
-	private static String namespace = EclipseLink.SCHEMA_NAMESPACE;
-	
+
+
+	// ********** version -> schema location mapping **********
+
 	@Override
 	protected String getNamespace() {
-		return namespace;
+		return EclipseLink.SCHEMA_NAMESPACE;
 	}
-	
-	private static Map<String, String> versionsToSchemaLocations = buildVersionsToSchemaLocations();
-	
-	private static Map<String, String> buildVersionsToSchemaLocations() {
-		Map<String, String> map = new HashMap<String, String>();
+
+	@Override
+	protected String getSchemaLocationForVersion(String schemaVersion) {
+		return SCHEMA_LOCATIONS.get(schemaVersion);
+	}
+
+	private static HashMap<String, String> SCHEMA_LOCATIONS = buildSchemaLocations();
+
+	private static HashMap<String, String> buildSchemaLocations() {
+		HashMap<String, String> map = new HashMap<String, String>();
 		map.put(EclipseLink.SCHEMA_VERSION, EclipseLink.SCHEMA_LOCATION);
 		map.put(EclipseLink1_1.SCHEMA_VERSION, EclipseLink1_1.SCHEMA_LOCATION);
 		map.put(EclipseLink1_2.SCHEMA_VERSION, EclipseLink1_2.SCHEMA_LOCATION);
@@ -1362,13 +1368,24 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 		return map;
 	}
 	
-	@Override
-	protected String getSchemaLocationForVersion(String version) {
-		return versionsToSchemaLocations.get(version);
-	}
+
+	// ********** content/resource type **********
+
+	/**
+	 * The content type for <code>eclipselink-orm.xml</code> mapping files.
+	 * @see org.eclipse.jpt.jpa.core.resource.ResourceMappingFile.Root#CONTENT_TYPE
+	 */
+	public static final IContentType CONTENT_TYPE = JptJpaEclipseLinkCorePlugin.instance().getContentType("orm"); //$NON-NLS-1$
+
+
+	// ********** default runtime path **********
 	
-	
-	// **************** translators *******************************************
+	public static final String DEFAULT_RUNTIME_PATH_NAME = "META-INF/eclipselink-orm.xml"; //$NON-NLS-1$
+
+	public static final IPath DEFAULT_RUNTIME_PATH = new Path(DEFAULT_RUNTIME_PATH_NAME);
+
+
+	// ********** translators **********
 	
 	private static final Translator ROOT_TRANSLATOR = buildRootTranslator();
 	
@@ -1377,18 +1394,15 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	}
 	
 	private static Translator buildRootTranslator() {
-		return new SimpleRootTranslator(
-				JPA.ENTITY_MAPPINGS,
-				EclipseLinkOrmPackage.eINSTANCE.getXmlEntityMappings(),
-				buildTranslatorChildren());
+		return new SimpleRootTranslator(JPA.ENTITY_MAPPINGS, EclipseLinkOrmPackage.eINSTANCE.getXmlEntityMappings(), buildTranslatorChildren());
 	}
 	
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
-			buildVersionTranslator(versionsToSchemaLocations),
-			buildNamespaceTranslator(namespace),
+			buildVersionTranslator(SCHEMA_LOCATIONS),
+			buildNamespaceTranslator(EclipseLink.SCHEMA_NAMESPACE),
 			buildSchemaNamespaceTranslator(),
-			buildSchemaLocationTranslator(namespace, versionsToSchemaLocations),
+			buildSchemaLocationTranslator(EclipseLink.SCHEMA_NAMESPACE, SCHEMA_LOCATIONS),
 			buildDescriptionTranslator(),
 			XmlPersistenceUnitMetadata.buildTranslator(JPA.PERSISTENCE_UNIT_METADATA, OrmPackage.eINSTANCE.getXmlEntityMappings_PersistenceUnitMetadata()),
 			buildPackageTranslator(),
@@ -1430,5 +1444,4 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 	protected static Translator buildAccessMethodsTranslator() {
 		return XmlAccessMethods.buildTranslator(EclipseLink.ACCESS_METHODS, EclipseLinkOrmPackage.eINSTANCE.getXmlAccessMethodsHolder_AccessMethods());
 	}
-
 }

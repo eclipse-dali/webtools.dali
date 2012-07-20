@@ -19,7 +19,7 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IParent;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
@@ -40,7 +40,7 @@ public final class JDTTools {
 		try {
 			return packageFragmentRootIsSourceFolder_(pfr);
 		} catch (JavaModelException ex) {
-			JptCommonCorePlugin.log(ex);
+			JptCommonCorePlugin.instance().logError(ex);
 			return false;
 		}
 	}
@@ -58,7 +58,7 @@ public final class JDTTools {
 		} catch (JavaModelException ex) {
 			// ignore FNFE - which can happen when the workspace is out of sync with O/S file system
 			if ( ! (ex.getCause() instanceof FileNotFoundException)) {
-				JptCommonCorePlugin.log(ex);
+				JptCommonCorePlugin.instance().logError(ex);
 			}
 			return EMPTY_JAVA_ELEMENT_ARRAY;
 		}
@@ -74,7 +74,7 @@ public final class JDTTools {
 			return typeIsSubType(javaProject, javaProject.findType(potentialSubType), javaProject.findType(potentialSuperType));
 		}
 		catch (JavaModelException ex) {
-			JptCommonCorePlugin.log(ex);
+			JptCommonCorePlugin.instance().logError(ex);
 			return false;
 		}
 	}
@@ -84,7 +84,7 @@ public final class JDTTools {
 			return typeIsSubType_(javaProject, potentialSubType, potentialSuperType);
 		}
 		catch (JavaModelException ex) {
-			JptCommonCorePlugin.log(ex);
+			JptCommonCorePlugin.instance().logError(ex);
 			return false;
 		}
 	}
@@ -173,7 +173,7 @@ public final class JDTTools {
 		try {
 			return javaProject.findType(fullyQualifiedName);
 		} catch (JavaModelException ex) {
-			JptCommonCorePlugin.log(ex);
+			JptCommonCorePlugin.instance().logError(ex);
 			return null;
 		}
 	}
@@ -196,7 +196,7 @@ public final class JDTTools {
 		try {
 			return getPackageFragmentRoots_(javaProject);
 		} catch (JavaModelException ex) {
-			JptCommonCorePlugin.log(ex);
+			JptCommonCorePlugin.instance().logError(ex);
 			return EmptyIterable.instance();
 		}
 	}
@@ -212,7 +212,7 @@ public final class JDTTools {
 			}
 		}
 		catch (JavaModelException e) {
-			JptCommonCorePlugin.log(e);
+			JptCommonCorePlugin.instance().logError(e);
 		}
 		return false;
 	}
@@ -249,7 +249,7 @@ public final class JDTTools {
 				return true;
 			}
 		} catch (JavaModelException ex) {
-			JptCommonCorePlugin.log(ex);
+			JptCommonCorePlugin.instance().logError(ex);
 		}
 		return false;
 	}

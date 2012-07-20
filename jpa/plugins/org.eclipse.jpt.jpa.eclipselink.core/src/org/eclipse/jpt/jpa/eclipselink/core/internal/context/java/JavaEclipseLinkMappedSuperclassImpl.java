@@ -26,7 +26,6 @@ import org.eclipse.jpt.jpa.core.jpa2.context.CacheableHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableHolder2_0;
 import org.eclipse.jpt.jpa.core.resource.java.MappedSuperclassAnnotation;
-import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
@@ -35,8 +34,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMultitenancy2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_3JpaPlatformFactory;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkMappedSuperclassPrimaryKeyValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkMappedSuperclassValidator;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.plugin.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -189,7 +191,12 @@ public class JavaEclipseLinkMappedSuperclassImpl
 	}
 
 	protected boolean isEclipseLink2_3Compatible() {
-		return JptJpaEclipseLinkCorePlugin.nodeIsEclipseLink2_3Compatible(this);
+		return this.getJpaPlatformVersion().isCompatibleWithEclipseLinkVersion(EclipseLink2_3JpaPlatformFactory.VERSION);
+	}
+
+	@Override
+	protected EclipseLinkJpaPlatformVersion getJpaPlatformVersion() {
+		return (EclipseLinkJpaPlatformVersion) super.getJpaPlatformVersion();
 	}
 
 	public boolean isMultitenantMetadataAllowed() {

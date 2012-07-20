@@ -1,15 +1,14 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.common.core.internal.libval;
 
-import static org.eclipse.jst.common.project.facet.core.internal.FacetedProjectFrameworkJavaPlugin.PLUGIN_ID;
 import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
@@ -23,7 +22,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.core.internal.JptCommonCoreMessages;
-import org.eclipse.osgi.util.NLS;
+import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 
 
 public class LibValUtil {
@@ -79,11 +78,8 @@ public class LibValUtil {
 			final int count = entry.getValue();
 			
 			if (count == 0) {
-				final String classFileName = entry.getKey();
-				final String className = classFileNameToClassName.get(classFileName);
-				final String message = 
-						NLS.bind(JptCommonCoreMessages.USER_LIBRARY_VALIDATOR__CLASS_NOT_FOUND, className);
-				return new Status(IStatus.ERROR, PLUGIN_ID, message);
+				final String className = classFileNameToClassName.get(entry.getKey());
+				return JptCommonCorePlugin.instance().buildErrorStatus(JptCommonCoreMessages.USER_LIBRARY_VALIDATOR__CLASS_NOT_FOUND, className);
 			}
 		}
 		

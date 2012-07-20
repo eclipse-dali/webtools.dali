@@ -46,7 +46,7 @@ public class TestJaxbProject
 		return getSystemProperty(JAXB_JAR_NAME_SYSTEM_PROPERTY);
 	}
 	
-	public static String eclipselinkJarName() {
+	public static String eclipseLinkJarName() {
 		return getSystemProperty(ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY);
 	}
 	
@@ -79,11 +79,13 @@ public class TestJaxbProject
 		String jaxbFacetVersion = 
 				((IProjectFacetVersion) config.getProperty(IFacetDataModelProperties.FACET_VERSION)).getVersionString();
 		this.installFacet(JaxbFacet.ID, jaxbFacetVersion, config);
-		this.addJar(jaxbJarName());
-		if (eclipselinkJarName() != null) {
-			this.addJar(eclipselinkJarName());
+		String jaxbJarName = jaxbJarName();
+		this.addJar(jaxbJarName);
+		String eclipseLinkJarName = eclipseLinkJarName();
+		if ((eclipseLinkJarName != null) && ! eclipseLinkJarName.equals(jaxbJarName)) {
+			this.addJar(eclipseLinkJarName);
 		}
-		this.jaxbProject = JptJaxbCorePlugin.getJaxbProject(this.getProject());
+		this.jaxbProject = JptJaxbCorePlugin.instance().getProjectManager().getJaxbProject(this.getProject());
 		this.jaxbProject.setContextModelSynchronizer(this.buildSynchronousContextModelSynchronizer());
 		this.jaxbProject.setUpdateSynchronizer(this.buildSynchronousUpdateSynchronizer());
 	}

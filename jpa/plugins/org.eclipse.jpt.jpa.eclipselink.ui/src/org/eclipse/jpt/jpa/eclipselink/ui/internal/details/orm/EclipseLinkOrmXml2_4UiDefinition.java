@@ -1,18 +1,18 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_4Definition;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.orm.OrmAttributeMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.orm.OrmXmlUiFactory;
@@ -30,8 +30,8 @@ import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmElementCollectionMapp
 
 
 public class EclipseLinkOrmXml2_4UiDefinition
-		extends EclipseLinkOrmXml2_1UiDefinition {
-
+	extends EclipseLinkOrmXml2_1UiDefinition
+{
 	// singleton
 	private static final ResourceUiDefinition INSTANCE = new EclipseLinkOrmXml2_4UiDefinition();
 
@@ -58,7 +58,7 @@ public class EclipseLinkOrmXml2_4UiDefinition
 
 	@Override
 	public boolean providesUi(JptResourceType resourceType) {
-		return resourceType.equals(JptJpaEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_2_4_RESOURCE_TYPE);
+		return resourceType.equals(EclipseLinkOrmXml2_4Definition.instance().getResourceType());
 	}
 
 	@Override

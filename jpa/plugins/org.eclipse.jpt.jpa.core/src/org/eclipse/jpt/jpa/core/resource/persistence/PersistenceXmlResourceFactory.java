@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,6 @@
 package org.eclipse.jpt.jpa.core.resource.persistence;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.wst.common.internal.emf.resource.Renderer;
 import org.eclipse.wst.common.internal.emf.resource.RendererFactory;
@@ -47,6 +46,6 @@ public class PersistenceXmlResourceFactory extends TranslatorResourceFactory
 	 */
 	@Override
 	protected TranslatorResource createResource(URI uri, Renderer renderer) {
-		return new JpaXmlResource(uri, renderer, JptJpaCorePlugin.PERSISTENCE_XML_CONTENT_TYPE, XmlPersistence.getRootTranslator());
+		return new JpaXmlResource(uri, renderer, XmlPersistence.CONTENT_TYPE, XmlPersistence.getRootTranslator());
 	}
 }

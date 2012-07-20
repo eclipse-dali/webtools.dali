@@ -11,7 +11,6 @@ package org.eclipse.jpt.dbws.eclipselink.ui.internal;
 
 import java.io.File;
 import java.util.Map;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.WorkspaceJob;
@@ -28,7 +27,7 @@ import org.eclipse.jpt.common.core.gen.JptGenerator;
 import org.eclipse.jpt.common.ui.gen.AbstractJptGenerateJob;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.dbws.eclipselink.core.internal.gen.DbwsGenerator;
-import org.eclipse.jpt.dbws.eclipselink.ui.JptDbwsUiPlugin;
+import org.eclipse.jpt.dbws.eclipselink.ui.internal.plugin.JptDbwsEclipseLinkUiPlugin;
 import org.eclipse.jpt.dbws.eclipselink.ui.internal.wizards.gen.DbwsGeneratorWizard;
 import org.eclipse.persistence.oxm.XMLContext;
 import org.eclipse.persistence.oxm.XMLUnmarshaller;
@@ -77,7 +76,7 @@ public class DbwsGeneratorUi
          catch (CoreException e) {
              return false;
          }
-         return (facetedProject == null) ? false : facetedProject.hasProjectFacet(projectFacet);
+         return (facetedProject != null) && facetedProject.hasProjectFacet(projectFacet);
     }
     
 	public static IPath getWebContentPath(IProject project){
@@ -281,8 +280,7 @@ public class DbwsGeneratorUi
 
 		@Override
 		protected void jptPluginLogException(Exception exception) {
-			JptDbwsUiPlugin.log(exception);
+			JptDbwsEclipseLinkUiPlugin.instance().logError(exception);
 		}
-
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,8 +26,9 @@ import org.eclipse.jpt.jpa.core.internal.context.orm.OrmOneToManyMappingDefiniti
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmOneToOneMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmTransientMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmVersionMappingDefinition;
-import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformProvider;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLink;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
 
 public class EclipseLinkOrmXmlDefinition
 	extends AbstractEclipseLinkOrmXmlDefinition
@@ -51,7 +52,7 @@ public class EclipseLinkOrmXmlDefinition
 	}
 
 	public JptResourceType getResourceType() {
-		return JptJpaEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_1_0_RESOURCE_TYPE;
+		return this.getResourceType(XmlEntityMappings.CONTENT_TYPE, EclipseLink.SCHEMA_VERSION);
 	}
 
 	@Override

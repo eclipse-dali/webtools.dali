@@ -1,21 +1,21 @@
 /*******************************************************************************
- *  Copyright (c) 2010, 2011  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.wizards.facet;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetDataModelProperties;
-import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiIcons;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
+import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.jst.common.project.facet.ui.libprov.LibraryProviderFrameworkUi;
 import org.eclipse.swt.SWT;
@@ -39,7 +39,7 @@ public abstract class JaxbFacetPage
 		super(pageName);
 		setTitle(JptJaxbUiMessages.JaxbFacetWizardPage_title);
 		setDescription(JptJaxbUiMessages.JaxbFacetWizardPage_desc);
-		setImageDescriptor(JptJaxbUiPlugin.getImageDescriptor(JptJaxbUiIcons.JAXB_WIZ_BANNER));
+		setImageDescriptor(JptJaxbUiPlugin.instance().buildImageDescriptor(JptJaxbUiIcons.JAXB_WIZ_BANNER));
 	}
 	
 	

@@ -18,6 +18,7 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionListener;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.Tools;
 
 /**
  * This ListSelectionModel is aware of the ListModel and
@@ -156,7 +157,7 @@ public class ObjectListSelectionModel
 		int max = this.getMaxSelectionIndex();
 
 		if ((min < 0) || (max < 0)) {
-			return new Object[0];
+			return Tools.EMPTY_OBJECT_ARRAY;
 		}
 
 		int maxSize = (max - min) + 1;

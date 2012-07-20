@@ -1,18 +1,19 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
@@ -37,7 +38,7 @@ public abstract class AbstractJavaContextNode
 	
 	@Override
 	public JptResourceType getResourceType() {
-		return JptCommonCorePlugin.JAVA_SOURCE_RESOURCE_TYPE;
+		return PlatformTools.getResourceType(JavaResourceCompilationUnit.CONTENT_TYPE);
 	}
 	
 	// **************** content assist ****************************************
@@ -53,7 +54,7 @@ public abstract class AbstractJavaContextNode
 	public abstract TextRange getValidationTextRange(CompilationUnit astRoot);
 	
 	/**
-	 * All subclass implementations {@link #validate(List, CompilationUnit))} 
+	 * All subclass implementations {@link #validate(List, IReporter, CompilationUnit)} 
 	 * should be preceded by a "super" call to this method
 	 */
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {

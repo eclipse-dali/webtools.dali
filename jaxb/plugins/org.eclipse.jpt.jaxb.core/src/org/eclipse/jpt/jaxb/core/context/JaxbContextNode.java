@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
-import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.JptResourceTypeReference;
 import org.eclipse.jpt.jaxb.core.JaxbNode;
 
 /**
@@ -26,18 +26,13 @@ import org.eclipse.jpt.jaxb.core.JaxbNode;
  * @since 3.0
  */
 public interface JaxbContextNode
-		extends JaxbNode {
+		extends JaxbNode, JptResourceTypeReference {
 	
 	/**
 	 * Return the root of the context model
 	 */
 	JaxbContextRoot getContextRoot();
 	
-	/**
-	 * Return the resource type of the context node's resource.
-	 */
-	JptResourceType getResourceType();
-
 
 	// ********** updating **********
 

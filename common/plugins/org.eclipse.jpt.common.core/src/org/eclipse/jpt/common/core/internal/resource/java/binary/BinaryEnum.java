@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.EnumDeclaration;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnumConstant;
@@ -95,7 +95,7 @@ final class BinaryEnum
 		try {
 			return type.getFields();
 		} catch (JavaModelException ex) {
-			JptCommonCorePlugin.log(ex);
+			JptCommonCorePlugin.instance().logError(ex);
 			return EMPTY_FIELD_ARRAY;
 		}
 	}
@@ -106,7 +106,7 @@ final class BinaryEnum
 		try {
 			return field.isEnumConstant();
 		} catch (JavaModelException ex) {
-			JptCommonCorePlugin.log(ex);
+			JptCommonCorePlugin.instance().logError(ex);
 			return false;
 		}
 	}

@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.common.utility.internal.StringConverter;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectPropertyValueModelAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.BufferedWritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.BufferedModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SetCollectionValueModel;
@@ -62,7 +62,7 @@ public class JaxbProjectPropertiesPage
 	
 	private PropertyValueModel<JaxbProject> jaxbProjectModel;
 	
-	private BufferedWritablePropertyValueModel<JaxbPlatformDescription> platformModel;
+	private BufferedModifiablePropertyValueModel<JaxbPlatformDescription> platformModel;
 	private PropertyChangeListener platformListener;
 	
 	/* private */ static final Comparator<String> STRING_COMPARATOR = new ICUStringCollator();
@@ -85,8 +85,8 @@ public class JaxbProjectPropertiesPage
 	
 	// ***** platform ID model
 	
-	private BufferedWritablePropertyValueModel<JaxbPlatformDescription> buildPlatformModel() {
-		return new BufferedWritablePropertyValueModel<JaxbPlatformDescription>(
+	private BufferedModifiablePropertyValueModel<JaxbPlatformDescription> buildPlatformModel() {
+		return new BufferedModifiablePropertyValueModel<JaxbPlatformDescription>(
 				new PlatformModel(this.jaxbProjectModel), this.trigger);
 	}
 	
@@ -252,12 +252,12 @@ public class JaxbProjectPropertiesPage
 	@Override
 	protected void rebuildProject() {
 		// if the JAXB platform is changed, we need to completely rebuild the JAXB project
-		JptJaxbCorePlugin.getProjectManager().rebuildJaxbProject(getProject());
+		JptJaxbCorePlugin.instance().getProjectManager().rebuildJaxbProject(getProject());
 	}
 	
 	@Override
-	protected BufferedWritablePropertyValueModel<?>[] buildBufferedModels() {
-		return new BufferedWritablePropertyValueModel[] {
+	protected BufferedModifiablePropertyValueModel<?>[] buildBufferedModels() {
+		return new BufferedModifiablePropertyValueModel[] {
 			this.platformModel
 		};
 	}

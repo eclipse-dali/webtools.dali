@@ -10,10 +10,11 @@
 package org.eclipse.jpt.jpa.core.internal;
 
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.jpa.core.JpaFacet;
+import org.eclipse.jpt.common.utility.internal.VersionComparator;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPlatformFactory;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
+import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.internal.jpa1.GenericJpaFactory;
 import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar1_0;
@@ -25,6 +26,16 @@ import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar1_0;
 public class GenericJpaPlatformFactory
 	implements JpaPlatformFactory
 {
+	/**
+	 * See <code>org.eclipse.jpt.jpa.core/plugin.xml:org.eclipse.jpt.jpa.core.jpaPlatforms</code>.
+	 */
+	public static final String ID = "generic"; //$NON-NLS-1$
+
+	/**
+	 * See <code>org.eclipse.jpt.jpa.core/plugin.xml:org.eclipse.jpt.jpa.core.jpaPlatforms</code>.
+	 */
+	public static final String GROUP_ID = "generic"; //$NON-NLS-1$
+
 	/**
 	 * zero-argument constructor
 	 */
@@ -44,7 +55,7 @@ public class GenericJpaPlatformFactory
 	}
 
 	private JpaPlatform.Version buildJpaVersion() {
-		return new SimpleVersion(JpaFacet.VERSION_1_0.getVersionString());
+		return new GenericJpaPlatformVersion(JpaProject.FACET_VERSION_STRING);
 	}
 
 	protected JpaPlatformVariation buildJpaPlatformVariation() {
@@ -61,16 +72,21 @@ public class GenericJpaPlatformFactory
 		};
 	}
 
-	public static class SimpleVersion implements JpaPlatform.Version {
+	/**
+	 * Generic JPA platform version
+	 */
+	public static class GenericJpaPlatformVersion
+		implements JpaPlatform.Version
+	{
 		protected final String jpaVersion;
 
-		public SimpleVersion(String jpaVersion) {
+		public GenericJpaPlatformVersion(String jpaVersion) {
 			super();
 			this.jpaVersion = jpaVersion;
 		}
 
 		/**
-		 * The generic platform's version is the same as the JPA version.
+		 * The generic JPA platform's version is the same as the JPA version.
 		 */
 		public String getVersion() {
 			return this.getJpaVersion();
@@ -84,12 +100,12 @@ public class GenericJpaPlatformFactory
 		 * For now, generic platforms are backward-compatible.
 		 */
 		public boolean isCompatibleWithJpaVersion(String version) {
-			return VERSION_COMPARATOR.compare(this.jpaVersion, version) >= 0;
+			return VersionComparator.INTEGER_VERSION_COMPARATOR.compare(this.jpaVersion, version) >= 0;
 		}
 
 		@Override
 		public String toString() {
-			return "JPA version: " + this.getJpaVersion(); //$NON-NLS-1$
+			return "JPA " + this.jpaVersion; //$NON-NLS-1$
 		}
 	}
 }

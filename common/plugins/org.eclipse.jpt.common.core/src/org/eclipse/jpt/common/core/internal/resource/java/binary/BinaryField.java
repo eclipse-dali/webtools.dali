@@ -18,7 +18,7 @@ import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.IVariableBinding;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
@@ -77,7 +77,7 @@ final class BinaryField
 				return new ArrayIterable<ITypeParameter>(this.field.getDeclaringType().getTypeParameters());
 			}
 			catch (JavaModelException jme) {
-				JptCommonCorePlugin.log(jme);
+				JptCommonCorePlugin.instance().logError(jme);
 			}
 			return EmptyIterable.instance();
 		}

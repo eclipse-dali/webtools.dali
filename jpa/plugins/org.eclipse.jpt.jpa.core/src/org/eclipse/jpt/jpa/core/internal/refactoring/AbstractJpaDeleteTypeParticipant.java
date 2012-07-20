@@ -29,11 +29,11 @@ import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
+import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.CompositeChange;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
@@ -91,7 +91,7 @@ public abstract class AbstractJpaDeleteTypeParticipant
 			nestedTypes = type.getTypes();
 		}
 		catch (JavaModelException ex) {
-			JptJpaCorePlugin.log(ex);
+			JptJpaCorePlugin.instance().logError(ex);
 			return;
 		}
 
@@ -278,7 +278,7 @@ public abstract class AbstractJpaDeleteTypeParticipant
 		if (persistenceXml == null) {
 			return null;
 		}
-		Persistence persistence = persistenceXml.getPersistence();
+		Persistence persistence = persistenceXml.getRoot();
 		if (persistence == null) {
 			return null;
 		}
@@ -295,7 +295,7 @@ public abstract class AbstractJpaDeleteTypeParticipant
 			}
 			catch (MalformedTreeException ex) {
 				//log exception and don't add this persistence.xml type deletion to the conflicting change object
-				JptJpaCorePlugin.log(ex);
+				JptJpaCorePlugin.instance().logError(ex);
 			}
 		}
 	}

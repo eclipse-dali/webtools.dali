@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,8 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
+
+import org.eclipse.jpt.common.core.utility.TextRange;
 
 /**
  * Persistence unit metadata held by a mapping file.
@@ -19,12 +21,12 @@ package org.eclipse.jpt.jpa.core.context;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface MappingFilePersistenceUnitMetadata
-	extends XmlContextNode
+	extends JpaContextNode
 {
 	/**
 	 * Covariant override.
 	 */
-	MappingFileRoot getParent();
+	MappingFile.Root getParent();
 
 	/**
 	 * Return whether any annotations on the persistent types associated with
@@ -44,4 +46,8 @@ public interface MappingFilePersistenceUnitMetadata
 	 * return <code>true</code>; otherwise <code>false</code>.
 	 */
 	boolean resourceExists();
+
+	// TODO remove when XmlContextNode.validate(...)
+	// is moved to JpaContextNode (and JavaJpaContextNode.validate(...) is gone as a result)
+	TextRange getValidationTextRange();
 }

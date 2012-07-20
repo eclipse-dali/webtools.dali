@@ -31,7 +31,6 @@ import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheableHolder2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlCacheable_2_0;
-import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
@@ -42,10 +41,13 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterC
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_3JpaPlatformFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkDynamicTypeMappingValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkEntityPrimaryKeyValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkTypeMappingValidator;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.plugin.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkClassExtractorAnnotation2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntity;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -206,7 +208,12 @@ public class OrmEclipseLinkEntityImpl
 	}
 
 	protected boolean isEclipseLink2_3Compatible() {
-		return JptJpaEclipseLinkCorePlugin.nodeIsEclipseLink2_3Compatible(this);
+		return this.getJpaPlatformVersion().isCompatibleWithEclipseLinkVersion(EclipseLink2_3JpaPlatformFactory.VERSION);
+	}
+
+	@Override
+	protected EclipseLinkJpaPlatformVersion getJpaPlatformVersion() {
+		return (EclipseLinkJpaPlatformVersion) super.getJpaPlatformVersion();
 	}
 
 	public boolean isMultitenantMetadataAllowed() {

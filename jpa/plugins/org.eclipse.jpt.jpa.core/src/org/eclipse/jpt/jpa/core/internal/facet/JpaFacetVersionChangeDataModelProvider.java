@@ -16,15 +16,12 @@ import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
+import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
 
 public class JpaFacetVersionChangeDataModelProvider
 	extends JpaFacetDataModelProvider
 {
-	protected static final IStatus PLATFORM_DOES_NOT_SUPPORT_FACET_VERSION_STATUS = 
-			buildErrorStatus(JptCoreMessages.VALIDATE_PLATFORM_DOES_NOT_SUPPORT_FACET_VERSION);
-	
-	
 	/**
 	 * required default constructor
 	 */
@@ -58,7 +55,7 @@ public class JpaFacetVersionChangeDataModelProvider
 	// **************** defaults **********************************************
 	
 	@Override
-	protected JpaPlatformDescription getDefaultPlatform() {
+	protected JpaPlatformDescription getDefaultPlatformDescription() {
 		return getJpaProject().getJpaPlatform().getDescription();
 	}
 	
@@ -111,8 +108,8 @@ public class JpaFacetVersionChangeDataModelProvider
 	protected Iterable<JpaPlatformDescription> buildValidPlatformDescriptions() {
 		// add existing platform to list of choices
 		Iterable<JpaPlatformDescription> validPlatformDescs = super.buildValidPlatformDescriptions();
-		if (! CollectionTools.contains(validPlatformDescs, getDefaultPlatform())) {
-			validPlatformDescs = new CompositeIterable<JpaPlatformDescription>(getDefaultPlatform(), validPlatformDescs);
+		if (! CollectionTools.contains(validPlatformDescs, getDefaultPlatformDescription())) {
+			validPlatformDescs = new CompositeIterable<JpaPlatformDescription>(getDefaultPlatformDescription(), validPlatformDescs);
 		}
 		return validPlatformDescs;
 	}
@@ -126,7 +123,7 @@ public class JpaFacetVersionChangeDataModelProvider
 		
 		if (status.isOK()) {
 			if (! getPlatform().supportsJpaFacetVersion(getProjectFacetVersion())) {
-				status = PLATFORM_DOES_NOT_SUPPORT_FACET_VERSION_STATUS;
+				status = JptJpaCorePlugin.instance().buildErrorStatus(JptCoreMessages.VALIDATE_PLATFORM_DOES_NOT_SUPPORT_FACET_VERSION);
 			}
 		}
 		

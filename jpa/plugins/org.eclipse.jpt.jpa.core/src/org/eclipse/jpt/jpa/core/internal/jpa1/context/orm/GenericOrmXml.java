@@ -21,15 +21,17 @@ import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.Generator;
+import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.Query;
+import org.eclipse.jpt.jpa.core.context.XmlFile;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
+import org.eclipse.jpt.jpa.core.resource.ResourceMappingFile;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.text.edits.DeleteEdit;
@@ -168,8 +170,7 @@ public class GenericOrmXml
 		return this.resourceType;
 	}
 
-	@Override
-	public OrmXmlDefinition getMappingFileDefinition() {
+	public OrmXmlDefinition getDefinition() {
 		return this.definition;
 	}
 
@@ -187,7 +188,9 @@ public class GenericOrmXml
 	protected void setRoot(EntityMappings root) {
 		EntityMappings old = this.root;
 		this.root = root;
-		this.firePropertyChanged(ROOT_PROPERTY, old, root);
+		// dual-purpose state!
+		this.firePropertyChanged(XmlFile.ROOT_PROPERTY, old, root);
+		this.firePropertyChanged(MappingFile.ROOT_PROPERTY, old, root);
 	}
 
 	protected EntityMappings buildRoot(XmlEntityMappings xmlEntityMappings) {
@@ -212,7 +215,7 @@ public class GenericOrmXml
 		if (resource == null) {
 			throw new NullPointerException();
 		}
-		if ( ! resource.getContentType().isKindOf(JptJpaCorePlugin.MAPPING_FILE_CONTENT_TYPE)) {
+		if ( ! resource.getContentType().isKindOf(ResourceMappingFile.Root.CONTENT_TYPE)) {
 			throw new IllegalArgumentException("Content type is not 'mapping file': " + resource); //$NON-NLS-1$
 		}
 	}
@@ -229,6 +232,20 @@ public class GenericOrmXml
 
 	protected JpaFile getJpaFile() {
 		return this.getJpaFile(this.xmlResource.getFile());
+	}
+
+	/**
+	 * All the the <code>orm.xml</code> objects go up through the containment
+	 * hierarchy to the mapping file root (entity mappings);
+	 * but we are "above" the entity mappings here, so simply return itself.
+	 */
+	@Override
+	protected OrmXml getOrmXml() {
+		return this;
+	}
+
+	public JpaXmlResource getXmlResource() {
+		return this.xmlResource;
 	}
 
 	public boolean isLatestSupportedVersion() {
@@ -286,7 +303,7 @@ public class GenericOrmXml
 
 	// ********** MappingFile implementation **********
 
-	public JpaXmlResource getXmlResource() {
+	public Object getResourceMappingFile() {
 		return this.xmlResource;
 	}
 

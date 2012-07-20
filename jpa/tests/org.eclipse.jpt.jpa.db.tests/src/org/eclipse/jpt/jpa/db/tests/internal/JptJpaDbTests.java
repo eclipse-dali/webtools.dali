@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,8 @@ package org.eclipse.jpt.jpa.db.tests.internal;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
+import org.eclipse.jpt.common.core.tests.BundleActivatorTest;
+import org.eclipse.jpt.jpa.db.Database;
 import org.eclipse.jpt.jpa.db.tests.internal.platforms.AllPlatformTests;
 
 /**
@@ -21,7 +23,8 @@ public class JptJpaDbTests {
     public static Test suite() {
 		TestSuite suite = new TestSuite(JptJpaDbTests.class.getPackage().getName());
     
-        suite.addTest( AllPlatformTests.suite());
+        suite.addTest(AllPlatformTests.suite());
+		suite.addTest(new BundleActivatorTest(Database.class));
     
         return suite;
     }
@@ -30,5 +33,4 @@ public class JptJpaDbTests {
         super();
         throw new UnsupportedOperationException();
     }
-
 }

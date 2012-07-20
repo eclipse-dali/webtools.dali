@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,9 +13,8 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
-import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
@@ -23,11 +22,11 @@ import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProvider;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
-import org.eclipse.jpt.jpa.core.tests.extension.resource.ExtensionTestPlugin;
 import org.eclipse.jpt.jpa.core.tests.extension.resource.JavaTestAttributeMapping;
 import org.eclipse.jpt.jpa.core.tests.extension.resource.JavaTestAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.tests.extension.resource.JavaTestTypeMapping;
 import org.eclipse.jpt.jpa.core.tests.extension.resource.JavaTestTypeMappingDefinition;
+import org.eclipse.jpt.jpa.core.tests.extension.resource.TestExtensionPlugin;
 import org.eclipse.jpt.jpa.core.tests.extension.resource.TestJavaBasicMapping;
 import org.eclipse.jpt.jpa.core.tests.extension.resource.TestJavaEntity;
 import org.eclipse.jpt.jpa.core.tests.extension.resource.TestJpaFactory;
@@ -44,7 +43,7 @@ public class JpaPlatformTests
 {
 	protected TestJpaProject testProject;
 	
-	public static final String TEST_PLUGIN_CLASS = ExtensionTestPlugin.class.getName();
+	public static final String TEST_PLUGIN_CLASS = TestExtensionPlugin.class.getName();
 	public static final String TEST_PLUGIN_ID = "org.eclipse.jpt.jpa.core.tests.extension.resource";
 
 	public static final String TEST_PLATFORM_CLASS_NAME = TestJpaPlatformProvider.class.getName();
@@ -71,10 +70,10 @@ public class JpaPlatformTests
 	protected IDataModel buildConfig() throws Exception {
 		IActionConfigFactory configFactory = new JpaFacetInstallDataModelProvider();
 		IDataModel config = (IDataModel) configFactory.create();
-		config.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, JpaFacet.VERSION_1_0.getVersionString());
+		config.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, JpaProject.FACET_VERSION_STRING);
 		config.setProperty(
 					JpaFacetDataModelProperties.PLATFORM, 
-					JptJpaCorePlugin.getJpaPlatformManager().getJpaPlatform(TestJpaPlatformProvider.ID));
+					this.getJpaPlatformManager().getJpaPlatform(TestJpaPlatformProvider.ID));
 		return config;
 	}
 

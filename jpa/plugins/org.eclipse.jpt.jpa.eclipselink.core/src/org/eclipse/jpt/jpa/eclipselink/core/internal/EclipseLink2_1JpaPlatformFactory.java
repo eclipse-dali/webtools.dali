@@ -1,33 +1,37 @@
 /*******************************************************************************
- *  Copyright (c) 2010, 2012  Oracle.
- *  All rights reserved.  This program and the accompanying materials are
- *  made available under the terms of the Eclipse Public License v1.0 which
- *  accompanies this distribution, and is available at
- *  http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  *
- *  Contributors:
- *  	Oracle - initial API and implementation
+ * Contributors:
+ *     Oracle - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal;
 
 import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
+import org.eclipse.jpt.jpa.core.JpaPlatformFactory;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatform;
 import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa2.Generic2_0JpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
+import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkVersion;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_1Definition;
 import org.eclipse.persistence.jpa.jpql.parser.EclipseLinkJPQLGrammar2_1;
 
 public class EclipseLink2_1JpaPlatformFactory
-	extends EclipseLink2_0JpaPlatformFactory
+	implements JpaPlatformFactory
 {
+	/**
+	 * Version string for EclipseLink platform version 2.1
+	 */
+	public static final String VERSION = "2.1";  //$NON-NLS-1$
+
 	/**
 	 * zero-argument constructor
 	 */
@@ -35,7 +39,6 @@ public class EclipseLink2_1JpaPlatformFactory
 		super();
 	}
 
-	@Override
 	public JpaPlatform buildJpaPlatform(String id) {
 		return new GenericJpaPlatform(
 			id,
@@ -47,21 +50,16 @@ public class EclipseLink2_1JpaPlatformFactory
 			EclipseLinkJPQLGrammar2_1.instance());
 	}
 
-	@Override
 	protected JpaPlatform.Version buildJpaVersion() {
-		return new EclipseLinkVersion(
-				JptJpaEclipseLinkCorePlugin.ECLIPSELINK_PLATFORM_VERSION_2_1,
-				JpaFacet.VERSION_2_0.getVersionString());
+		return new EclipseLinkJpaPlatformVersion(VERSION, JpaProject2_0.FACET_VERSION_STRING);
 	}
 
-	@Override
 	protected AnnotationProvider buildAnnotationProvider() {
 		return new JpaAnnotationProvider(
 			Generic2_0JpaAnnotationDefinitionProvider.instance(),
 			EclipseLink2_1JpaAnnotationDefinitionProvider.instance());
 	}
 
-	@Override
 	protected JpaPlatformVariation buildJpaVariation() {
 		return new JpaPlatformVariation() {
 			public Supported getTablePerConcreteClassInheritanceIsSupported() {
@@ -71,18 +69,16 @@ public class EclipseLink2_1JpaPlatformFactory
 				return true;
 			}
 			public AccessType[] getSupportedAccessTypes(JptResourceType resourceType) {
-				if (resourceType.getContentType() == JptJpaEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE) {
-					if (this.versionIsEclipseLink2_1Compatibile(resourceType)) {
-						return ECLIPSELINK_SUPPORTED_ACCESS_TYPES;
-					}
-				}
-				return GENERIC_SUPPORTED_ACCESS_TYPES;
-			}
-			protected boolean versionIsEclipseLink2_1Compatibile(JptResourceType resourceType) {
-				return JptJpaCorePlugin.resourceTypeIsCompatible(resourceType, JptJpaEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_2_1_RESOURCE_TYPE.getVersion());
+				return resourceType.isKindOf(EclipseLinkOrmXml2_1Definition.instance().getResourceType()) ?
+						SUPPORTED_ACCESS_TYPES :
+						GENERIC_SUPPORTED_ACCESS_TYPES;
 			}
 		};
 	}
 
-	public static final AccessType[] ECLIPSELINK_SUPPORTED_ACCESS_TYPES = new AccessType[] {AccessType.FIELD, AccessType.PROPERTY, EclipseLinkAccessType.VIRTUAL};
+	public static final AccessType[] SUPPORTED_ACCESS_TYPES = new AccessType[] {
+		AccessType.FIELD,
+		AccessType.PROPERTY,
+		EclipseLinkAccessType.VIRTUAL
+	};
 }

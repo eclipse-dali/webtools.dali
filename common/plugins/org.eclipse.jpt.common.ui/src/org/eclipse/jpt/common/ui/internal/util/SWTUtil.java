@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Widget;
+import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 
@@ -79,12 +80,13 @@ public class SWTUtil {
 	 * Execute the specified runnable if the current thread is the UI thread;
 	 * otherwise asynchrounously dispatch the runnable to the UI thread,
 	 * returning immediately. This is useful for event handlers when it is not
-	 * obviously whether the events are fired on the UI thread.
+	 * obvious whether the events are fired on the UI thread.
 	 * 
 	 * @see Display#asyncExec(Runnable)
 	 * @see #asyncExec(Runnable)
 	 * @see #syncExec(Runnable)
 	 * @see #timerExec(int, Runnable)
+	 * @see IWorkbench#getDisplay()
 	 */
 	public static void execute(Runnable runnable) {
 		Display display = Display.getCurrent();
@@ -92,7 +94,7 @@ public class SWTUtil {
 			// the current thread is the UI thread
 			runnable.run();
 		} else {
-			Display.getDefault().asyncExec(runnable);
+			getWorkbenchDisplay().asyncExec(runnable);
 		}
 	}
 
@@ -166,7 +168,7 @@ public class SWTUtil {
 		}
 
 		// No shell could be found, revert back to the active workbench window
-		shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+		shell = getWorkbench().getActiveWorkbenchWindow().getShell();
 		return (shell != null) ? shell : new Shell();
 	}
 
@@ -174,11 +176,25 @@ public class SWTUtil {
 	 * Return the most appropriate {@link Display display}; i.e. return the
 	 * {@link Display#getCurrent() display associated with the current thread}
 	 * if it is present; otherwise return the
-	 * {@link Display#getDefault() default display}.
+	 * {@link IWorkbench#getDisplay() Eclipse workbench
+	 * display} (but, explicitly, not the "default display"
+	 * {@link Display#getDefault()} -
+	 * see the comment at {@link IWorkbench#getDisplay()}).
 	 */
 	public static Display getDisplay() {
 		Display display = Display.getCurrent();
-		return (display != null) ? display : Display.getDefault();
+		return (display != null) ? display : getWorkbenchDisplay();
+	}
+
+	public static Display getWorkbenchDisplay() {
+		return getWorkbench().getDisplay();
+	}
+
+	public static IWorkbench getWorkbench() {
+		if ( ! PlatformUI.isWorkbenchRunning()) {
+			throw new IllegalStateException("workbench is not running"); //$NON-NLS-1$
+		}
+		return PlatformUI.getWorkbench();
 	}
 
 	/**

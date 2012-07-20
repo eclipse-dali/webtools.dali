@@ -19,7 +19,6 @@ import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
-import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.internal.resource.AbstractJaxbFileResourceModel;
 import org.eclipse.jpt.jaxb.core.resource.jaxbindex.JaxbIndexResource;
 
@@ -86,6 +85,6 @@ public class JaxbIndexResourceImpl
 	}
 
 	public JptResourceType getResourceType() {
-		return JptJaxbCorePlugin.JAXB_INDEX_RESOURCE_TYPE;
+		return RESOURCE_TYPE;
 	}
 }

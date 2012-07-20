@@ -19,13 +19,13 @@ import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.AbstractOrmElementCollectionMapping2_0;
-import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_0JpaPlatformFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlElementCollection;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -84,7 +84,7 @@ public class EclipseLinkOrmElementCollectionMapping2_0
 	// ********** join fetch **********
 
 	public EclipseLinkJoinFetch getJoinFetch() {
-		if (getJpaPlatformVersion().getVersion().equals(JptJpaEclipseLinkCorePlugin.ECLIPSELINK_PLATFORM_VERSION_2_0)) {
+		if (getJpaPlatformVersion().getVersion().equals(EclipseLink2_0JpaPlatformFactory.VERSION)) {
 			throw new UnsupportedOperationException("join-fetch not supported in EclipseLink 2.0 platform"); //$NON-NLS-1$
 		}
 		return this.joinFetch;

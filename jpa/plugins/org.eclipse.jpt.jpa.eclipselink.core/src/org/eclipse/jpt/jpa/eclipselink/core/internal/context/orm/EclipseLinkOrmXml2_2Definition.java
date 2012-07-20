@@ -1,13 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2010, 2011  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import java.util.ArrayList;
@@ -16,14 +15,14 @@ import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
-import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLink2_2;
 
 public class EclipseLinkOrmXml2_2Definition
 	extends AbstractEclipseLinkOrmXmlDefinition
 {
 	// singleton
-	private static final OrmXmlDefinition INSTANCE = 
-			new EclipseLinkOrmXml2_2Definition();
+	private static final OrmXmlDefinition INSTANCE = new EclipseLinkOrmXml2_2Definition();
 	
 	
 	/**
@@ -32,7 +31,7 @@ public class EclipseLinkOrmXml2_2Definition
 	public static OrmXmlDefinition instance() {
 		return INSTANCE;
 	}
-	
+
 	
 	/**
 	 * Enforce singleton usage
@@ -48,7 +47,7 @@ public class EclipseLinkOrmXml2_2Definition
 	}
 	
 	public JptResourceType getResourceType() {
-		return JptJpaEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_2_2_RESOURCE_TYPE;
+		return this.getResourceType(XmlEntityMappings.CONTENT_TYPE, EclipseLink2_2.SCHEMA_VERSION);
 	}
 	
 	@Override

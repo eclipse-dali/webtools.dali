@@ -11,6 +11,8 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.JpaPlatform.Version;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -21,11 +23,13 @@ import org.eclipse.jpt.jpa.core.internal.context.orm.SpecifiedOrmPersistentType;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.orm.Attributes;
-import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmTypeMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_1JpaPlatformFactory;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.plugin.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAccessMethods;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAccessMethodsHolder;
@@ -112,8 +116,13 @@ public class EclipseLinkOrmPersistentTypeImpl
 	//and then the hierarchy affects the access type and we get stuck in an update.
 	//Validation will check that virtual access is set if it is dynamic.
 	protected boolean buildDynamic() {
-		return JptJpaEclipseLinkCorePlugin.nodeIsEclipseLinkVersionCompatible(this, JptJpaEclipseLinkCorePlugin.ECLIPSELINK_PLATFORM_VERSION_2_1)
+		return this.getJpaPlatformVersion().isCompatibleWithEclipseLinkVersion(EclipseLink2_1JpaPlatformFactory.VERSION)
 			&& this.resolveJavaResourceType() == null;
+	}
+
+	@Override
+	protected EclipseLinkJpaPlatformVersion getJpaPlatformVersion() {
+		return (EclipseLinkJpaPlatformVersion) super.getJpaPlatformVersion();
 	}
 
 	protected boolean isVirtualAccess() {

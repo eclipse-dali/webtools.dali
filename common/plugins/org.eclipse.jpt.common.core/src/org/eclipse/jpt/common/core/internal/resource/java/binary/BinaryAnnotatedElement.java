@@ -17,7 +17,7 @@ import org.eclipse.jdt.core.IMemberValuePair;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.AnnotationProvider;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
@@ -283,7 +283,7 @@ abstract class BinaryAnnotatedElement
 		try {
 			return this.adapter.getAnnotations();
 		} catch (JavaModelException ex) {
-			JptCommonCorePlugin.log(ex);
+			JptCommonCorePlugin.instance().logError(ex);
 			return EMPTY_JDT_ANNOTATION_ARRAY;
 		}
 	}
@@ -336,7 +336,6 @@ abstract class BinaryAnnotatedElement
 	}
 
 	/* CU private */ static final IMemberValuePair[] EMPTY_MEMBER_VALUE_PAIR_ARRAY = new IMemberValuePair[0];
-	/* CU private */ static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
 
 
 	// ********** annotation container **********

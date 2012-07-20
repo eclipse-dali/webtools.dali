@@ -29,6 +29,17 @@ public interface XmlFile
 	extends XmlContextNode, JpaStructureNode
 {
 	/**
+	 * Return the XML file's root element.
+	 * This may be <code>null</code>.
+	 */
+	Root getRoot();
+
+	/**
+	 * String constant associated with changes to the root property.
+	 */
+	String ROOT_PROPERTY = "root"; //$NON-NLS-1$
+
+	/**
 	 * Return the resource model object
 	 */
 	JpaXmlResource getXmlResource();
@@ -40,11 +51,23 @@ public interface XmlFile
 	boolean isLatestSupportedVersion();
 
 
+	// ********** XML file root element **********
+
+	/**
+	 * Common interface for the root element for a JPA XML file
+	 * (e.g. <code>persistence</code>, <code>entity-mappings</code>).
+	 */
+	interface Root
+		extends XmlContextNode, JpaStructureNode
+	{
+		// combine interfaces
+	}
+
+
 	/**
 	 * Common implementations.
 	 */
 	class XmlFile_ {
-
 		/**
 		 * @see #isLatestSupportedVersion()
 		 */

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -67,7 +67,7 @@ public class VersionComparatorTests
 	}
 
 	public void testVersionIsGreater_integer_comma() {
-		Comparator<String> versionComparator = new VersionComparator<BigDecimal>(",", DecimalSegmentParser.instance());
+		Comparator<String> versionComparator = new VersionComparator<BigDecimal>(',', DecimalSegmentParser.instance());
 		assertTrue(versionComparator.compare("2,0,2", "2,0,1") > 0);
 		assertTrue(versionComparator.compare("2,0,2.1", "2,0,1") > 0);
 		assertTrue(versionComparator.compare("2,0,2", "2,0,1.9") > 0);
@@ -75,16 +75,7 @@ public class VersionComparatorTests
 	}
 
 	public void testVersionIsEqual_subclass() {
-		Comparator<String> versionComparator = new VersionComparator<Integer>() {
-				@Override
-				protected Integer parseSegment(int index, String s) {
-					return Integer.valueOf(s);
-				}
-				@Override
-				protected Integer getZero() {
-					return Integer.valueOf(0);
-				}
-			};
+		Comparator<String> versionComparator = VersionComparator.INTEGER_VERSION_COMPARATOR;
 		assertTrue(versionComparator.compare("2.0.0", "2.0.0") == 0);
 		assertTrue(versionComparator.compare("2.0.0", "2.0.0.0") == 0);
 		assertTrue(versionComparator.compare("2.0.0.0", "2.0") == 0);
@@ -92,16 +83,7 @@ public class VersionComparatorTests
 	}
 
 	public void testVersionIsLess_subclass() {
-		Comparator<String> versionComparator = new VersionComparator<Integer>() {
-				@Override
-				protected Integer parseSegment(int index, String s) {
-					return Integer.valueOf(s);
-				}
-				@Override
-				protected Integer getZero() {
-					return Integer.valueOf(0);
-				}
-			};
+		Comparator<String> versionComparator = VersionComparator.INTEGER_VERSION_COMPARATOR;
 		assertTrue(versionComparator.compare("2.0.0", "2.0.1") < 0);
 		assertTrue(versionComparator.compare("2.5.0", "2.14") < 0);
 		assertTrue(versionComparator.compare("2.5.0", "2.5.0.0.1.0") < 0);
@@ -110,16 +92,7 @@ public class VersionComparatorTests
 	}
 
 	public void testVersionIsGreater_subclass() {
-		Comparator<String> versionComparator = new VersionComparator<Integer>() {
-				@Override
-				protected Integer parseSegment(int index, String s) {
-					return Integer.valueOf(s);
-				}
-				@Override
-				protected Integer getZero() {
-					return Integer.valueOf(0);
-				}
-			};
+		Comparator<String> versionComparator = VersionComparator.INTEGER_VERSION_COMPARATOR;
 		assertTrue(versionComparator.compare("2.0.2", "2.0.1") > 0);
 		assertTrue(versionComparator.compare("2.0.2", "2.0.1") > 0);
 		assertTrue(versionComparator.compare("2.5.0.0.1.0", "2.5.0") > 0);
@@ -133,40 +106,6 @@ public class VersionComparatorTests
 			// note the letter 'O' instead of the numeral '0'
 			assertTrue(VersionComparator.INTEGER_VERSION_COMPARATOR.compare("2.0.0", "2.O.O") == 0);
 		} catch (NumberFormatException ex) {
-			exCaught = true;
-		}
-		assertTrue(exCaught);
-	}
-
-	public void testBogusSubclass1() {
-		Comparator<String> versionComparator = new VersionComparator<Integer>() {
-				// bogus - must override parseSegment(...)
-				@Override
-				protected Integer getZero() {
-					return Integer.valueOf(0);
-				}
-			};
-		boolean exCaught = false;
-		try {
-			assertTrue(versionComparator.compare("2.0.0", "2.0.0") == 0);
-		} catch (UnsupportedOperationException ex) {
-			exCaught = true;
-		}
-		assertTrue(exCaught);
-	}
-
-	public void testBogusSubclass2() {
-		Comparator<String> versionComparator = new VersionComparator<Integer>() {
-				@Override
-				protected Integer parseSegment(int index, String s) {
-					return Integer.valueOf(s);
-				}
-				// bogus - must getZero()
-			};
-		boolean exCaught = false;
-		try {
-			assertTrue(versionComparator.compare("2.0.0", "2.0.0.0.0") == 0);
-		} catch (UnsupportedOperationException ex) {
 			exCaught = true;
 		}
 		assertTrue(exCaught);

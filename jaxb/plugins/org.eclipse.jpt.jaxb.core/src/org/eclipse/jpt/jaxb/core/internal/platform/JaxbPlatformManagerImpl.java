@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.platform;
 
-import static org.eclipse.jpt.common.core.internal.utility.XPointTools.*;
+import static org.eclipse.jpt.common.core.internal.utility.XPointTools.findRequiredAttribute;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.core.resources.IProject;
@@ -18,6 +18,8 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jpt.common.core.internal.JptCommonCoreMessages;
+import org.eclipse.jpt.common.core.internal.utility.XPointTools;
 import org.eclipse.jpt.common.core.internal.utility.XPointTools.XPointException;
 import org.eclipse.jpt.common.utility.internal.KeyedSet;
 import org.eclipse.jpt.common.utility.internal.iterables.SuperIterableWrapper;
@@ -34,7 +36,7 @@ public class JaxbPlatformManagerImpl
 		implements JaxbPlatformManager {
 	
 	static final String EXTENSION_POINT_ID = "jaxbPlatforms"; //$NON-NLS-1$
-	static final String QUALIFIED_EXTENSION_POINT_ID = JptJaxbCorePlugin.PLUGIN_ID_ + EXTENSION_POINT_ID;
+	static final String QUALIFIED_EXTENSION_POINT_ID = JptJaxbCorePlugin.instance().getPluginID() + '.' + EXTENSION_POINT_ID;
 	static final String PLATFORM_GROUP_ELEMENT = "jaxbPlatformGroup"; //$NON-NLS-1$
 	static final String PLATFORM_ELEMENT = "jaxbPlatform"; //$NON-NLS-1$
 	static final String ID_ATTRIBUTE = "id"; //$NON-NLS-1$
@@ -71,7 +73,7 @@ public class JaxbPlatformManagerImpl
 		final IExtensionRegistry registry = Platform.getExtensionRegistry();
 		
 		final IExtensionPoint xpoint 
-				= registry.getExtensionPoint(JptJaxbCorePlugin.PLUGIN_ID, EXTENSION_POINT_ID);
+				= registry.getExtensionPoint(JptJaxbCorePlugin.instance().getPluginID(), EXTENSION_POINT_ID);
 		
 		if (xpoint == null) {
 			throw new IllegalStateException();
@@ -111,7 +113,7 @@ public class JaxbPlatformManagerImpl
 			desc.setId(findRequiredAttribute(element, ID_ATTRIBUTE));
 			
 			if (this.platformGroupDescriptions.containsKey(desc.getId())) {
-				logDuplicateExtension(QUALIFIED_EXTENSION_POINT_ID, ID_ATTRIBUTE, desc.getId());
+				this.logError(JptCommonCoreMessages.REGISTRY_DUPLICATE, QUALIFIED_EXTENSION_POINT_ID, desc.getPluginId(), ID_ATTRIBUTE, desc.getId());
 				throw new XPointException();
 			}
 			
@@ -137,7 +139,7 @@ public class JaxbPlatformManagerImpl
 			desc.setId(findRequiredAttribute(element, ID_ATTRIBUTE));
 			
 			if (this.platformDescriptions.containsKey(desc.getId())) {
-				logDuplicateExtension(QUALIFIED_EXTENSION_POINT_ID, ID_ATTRIBUTE, desc.getId());
+				this.logError(JptCommonCoreMessages.REGISTRY_DUPLICATE, QUALIFIED_EXTENSION_POINT_ID, desc.getPluginId(), ID_ATTRIBUTE, desc.getId());
 				throw new XPointException();
 			}
 			
@@ -155,7 +157,7 @@ public class JaxbPlatformManagerImpl
 					desc.setJaxbFacetVersion(jpaFacetVersion);
 				}
 				else {
-					logInvalidValue(element, JAXB_FACET_VERSION_ATTRIBUTE, jaxbFacetVersionString);
+					this.logError(XPointTools.buildInvalidValueMessage(element, JAXB_FACET_VERSION_ATTRIBUTE, jaxbFacetVersionString));
 					throw new XPointException();
 				}
 			}
@@ -170,7 +172,7 @@ public class JaxbPlatformManagerImpl
 					desc.setDefault(false);
 				}
 				else {
-					logInvalidValue(element, DEFAULT_ATTRIBUTE, defaultString);
+					this.logError(XPointTools.buildInvalidValueMessage(element, DEFAULT_ATTRIBUTE, defaultString));
 					throw new XPointException();
 				}
 			}
@@ -184,7 +186,7 @@ public class JaxbPlatformManagerImpl
 					group.addPlatform(desc);
 				}
 				else {
-					logInvalidValue(element, GROUP_ELEMENT, groupId);
+					this.logError(XPointTools.buildInvalidValueMessage(element, GROUP_ELEMENT, groupId));
 					throw new XPointException();
 				}
 			}
@@ -196,7 +198,7 @@ public class JaxbPlatformManagerImpl
 				group.addPlatform(desc);
 				
 				if (this.platformGroupDescriptions.containsKey(group.getId())) {
-					logInvalidValue(element, GROUP_ELEMENT, groupId);
+					this.logError(XPointTools.buildInvalidValueMessage(element, GROUP_ELEMENT, groupId));
 					throw new XPointException();
 				}
 				
@@ -249,5 +251,13 @@ public class JaxbPlatformManagerImpl
 			throw new IllegalArgumentException("Project does not have a recognized JAXB platform."); //$NON-NLS-1$
 		}
 		return platformDesc.buildJaxbPlatformDefinition();
+	}
+
+	private void logError(String msg, Object... args) {
+		JptJaxbCorePlugin.instance().logError(msg, args);
+	}
+
+	private void logError(String msg) {
+		JptJaxbCorePlugin.instance().logError(msg);
 	}
 }

@@ -4,7 +4,7 @@ Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.dbws.eclipselink.ui;singleton:=true
 Bundle-Version: 1.0.200.qualifier
-Bundle-Activator: org.eclipse.jpt.dbws.eclipselink.ui.JptDbwsUiPlugin
+Bundle-Activator: org.eclipse.jpt.dbws.eclipselink.ui.internal.plugin.JptDbwsEclipseLinkUiPlugin
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
 Bundle-Localization: plugin
@@ -24,7 +24,6 @@ Require-Bundle: org.eclipse.debug.core;bundle-version="[3.4.0,4.0.0)",
  org.eclipse.wst.common.uriresolver;bundle-version="[1.1.401,2.0.0)",
  org.eclipse.wst.xml.core;bundle-version="[1.1.500,2.0.0)"
 Export-Package: org.eclipse.jpt.dbws.eclipselink.core.internal.gen;x-internal:=true,
- org.eclipse.jpt.dbws.eclipselink.ui,
  org.eclipse.jpt.dbws.eclipselink.ui.internal;x-internal:=true,
  org.eclipse.jpt.dbws.eclipselink.ui.internal.actions;x-internal:=true,
  org.eclipse.jpt.dbws.eclipselink.ui.internal.wizards.gen;x-internal:=true

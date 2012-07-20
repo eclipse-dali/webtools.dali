@@ -1,12 +1,12 @@
 /*******************************************************************************
-* Copyright (c) 2010, 2012 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen;
 
 import org.eclipse.core.resources.IProject;
@@ -14,8 +14,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jaxb.core.JaxbFacet;
-import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
+import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -106,7 +106,7 @@ public class ClassesGeneratorExtensionOptionsWizardPage extends WizardPage
 			facetedProject = ProjectFacetsManager.create(this.getProject());
 		}
 		catch(CoreException e) {
-			JptJaxbUiPlugin.log(e);
+			JptJaxbUiPlugin.instance().logError(e);
 			return null;
 		}
 		return (facetedProject == null) ? null : facetedProject.getProjectFacetVersion(JaxbFacet.FACET);

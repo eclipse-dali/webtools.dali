@@ -21,15 +21,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jpa.core.prefs.JpaEntityGenPreferencesManager;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.Table;
+import org.eclipse.jpt.jpa.gen.internal.plugin.JptJpaGenPlugin;
 import org.eclipse.jpt.jpa.gen.internal.util.DTPUtil;
 import org.eclipse.jpt.jpa.gen.internal.util.FileUtil;
 import org.eclipse.jpt.jpa.gen.internal.util.ForeignKeyInfo;
@@ -202,7 +198,7 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 				restore(customizer);
 			}
 		} catch (Exception ex) {
-			JptJpaGenPlugin.logException("***ORMGenCustomizer.load failed "+file, ex);				
+			JptJpaGenPlugin.instance().logError(ex, "***ORMGenCustomizer.load failed {0}", file); //$NON-NLS-1$
 		}
 		finally 
 		{
@@ -266,9 +262,7 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 			deleteIt = false;
 		} catch (Exception ex) {
 			//deleteIt is true, so the cache is not saved.
-			CoreException ce = new CoreException(new Status(IStatus.ERROR, JptJpaGenPlugin.PLUGIN_ID,
-					"Unable to save the ORMGenCustomizer file: "+mFile,ex));
-			JptJpaGenPlugin.logException( ce );
+			JptJpaGenPlugin.instance().logError(ex, "Unable to save the ORMGenCustomizer file: {0}", mFile); //$NON-NLS-1$
 		} finally {
 			try {
 				if (oos!=null) oos.close();

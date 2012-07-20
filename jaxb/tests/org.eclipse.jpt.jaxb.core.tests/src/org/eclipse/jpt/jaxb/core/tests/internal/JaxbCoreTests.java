@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,10 +19,13 @@ import org.eclipse.jpt.jaxb.core.tests.internal.resource.JaxbCoreResourceModelTe
 public class JaxbCoreTests {
 
 	public static Test suite() {
+		// ***** keep test.xml in sync with this list *****
+		// test.xml is split up because this test suite was taking too
+		// long and triggering a time-out during the WTP build
 		TestSuite suite = new TestSuite(JaxbCoreTests.class.getPackage().getName());
-		suite.addTestSuite(SchemaLibraryTests.class);
 		suite.addTest(JaxbCoreResourceModelTests.suite());
 		suite.addTest(JaxbCoreContextModelTests.suite());
+		suite.addTest(JaxbCoreMiscTests.suite());
 		return suite;
 	}
 	

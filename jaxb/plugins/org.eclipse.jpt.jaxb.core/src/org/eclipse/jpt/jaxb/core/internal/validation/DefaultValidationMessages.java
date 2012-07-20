@@ -58,11 +58,11 @@ public class DefaultValidationMessages {
 
 	public static IMessage buildMessage(int defaultSeverity, String messageId, String[] parms, IResource targetObject, TextRange textRange, MessageFactory messageFactory) {
 		IMessage message = messageFactory.buildMessage(defaultSeverity, messageId, parms, targetObject);
-		message.setMarkerId(JptJaxbCorePlugin.VALIDATION_MARKER_ID);
+		message.setMarkerId(JaxbValidator.MARKER_ID);
 		if (textRange == null) {
 			textRange = DEFAULT_TEXT_RANGE;
 			// log the exception but allow the message to still be used
-			JptJaxbCorePlugin.log(new NullPointerException("Null text range for message ID: " + messageId)); //$NON-NLS-1$
+			JptJaxbCorePlugin.instance().logError(new NullPointerException("Null text range for message ID: " + messageId)); //$NON-NLS-1$
 		}
 		int lineNumber = textRange.getLineNumber();
 		message.setLineNo(lineNumber);
@@ -103,7 +103,7 @@ public class DefaultValidationMessages {
 //				severity = prefSeverity;
 //			}
 			IMessage message = new Message(JaxbValidationMessages.BUNDLE_NAME, severity, messageId, parms, targetObject);
-			message.setMarkerId(JptJaxbCorePlugin.VALIDATION_MARKER_ID);
+			message.setMarkerId(JaxbValidator.MARKER_ID);
 			return message;
 		}
 		@Override

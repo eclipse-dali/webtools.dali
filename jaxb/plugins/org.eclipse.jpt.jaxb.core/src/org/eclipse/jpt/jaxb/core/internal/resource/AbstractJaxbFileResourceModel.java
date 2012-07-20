@@ -86,7 +86,7 @@ public abstract class AbstractJaxbFileResourceModel<S>
 			// workspace out of sync - no underlying file - simply don't load
 		}
 		catch (Exception ex) {
-			JptJaxbCorePlugin.log(ex);
+			JptJaxbCorePlugin.instance().logError(ex);
 		}
 		finally {
 			this.closeStream(stream);
@@ -104,7 +104,7 @@ public abstract class AbstractJaxbFileResourceModel<S>
 				stream.close();
 			}
 		} catch (IOException ex) {
-			JptJaxbCorePlugin.log(ex);
+			JptJaxbCorePlugin.instance().logError(ex);
 		}
 	}
 

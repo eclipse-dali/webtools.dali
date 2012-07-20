@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,8 +9,19 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.db;
 
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.jdt.core.IClasspathContainer;
+
 /**
  * Database connection profile factory
+ * <p>
+ * To retrieve the connection profile factory corresponding to an Eclipse workspace:
+ * <pre>
+ * IWorkspace workspace = ResourcesPlugin.getWorkspace();
+ * ConnectionProfileFactory factory = (ConnectionProfileFactory) workspace.getAdapter(ConnectionProfileFactory.class);
+ * </pre>
+ * <p>
+ * See <code>org.eclipse.jpt.jpa.db/plugin.xml:org.eclipse.core.runtime.adapters</code>.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -19,6 +30,11 @@ package org.eclipse.jpt.jpa.db;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface ConnectionProfileFactory {
+
+	/**
+	 * Return the factory's workspace.
+	 */
+	IWorkspace getWorkspace();
 
 	/**
 	 * Return the names of the DTP connection profiles the factory can wrap with
@@ -47,6 +63,12 @@ public interface ConnectionProfileFactory {
 	 * use the default database identifier adapter.
 	 */
 	ConnectionProfile buildConnectionProfile(String name);
+
+	/**
+	 * Build a Java classpath container for the specified driver.
+	 * @see ConnectionProfile#getDriverName()
+	 */
+	IClasspathContainer buildDriverClasspathContainer(String driverName);
 
 	/**
 	 * Add a listener that will be notified of changes to the DTP

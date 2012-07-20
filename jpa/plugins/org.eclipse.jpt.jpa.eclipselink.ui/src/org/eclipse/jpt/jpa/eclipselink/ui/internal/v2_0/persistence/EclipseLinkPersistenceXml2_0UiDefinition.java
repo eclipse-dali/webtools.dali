@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.v2_0.persistence;
 
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.GenericPersistenceXml2_0Definition;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.EclipseLinkPersistenceXmlUiDefinition;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.persistence.AbstractPersistenceXmlResourceUiDefinition;
@@ -22,8 +22,7 @@ public class EclipseLinkPersistenceXml2_0UiDefinition
 {
 	// singleton
 	private static final ResourceUiDefinition INSTANCE = new EclipseLinkPersistenceXml2_0UiDefinition();
-	
-	
+
 	/**
 	 * Return the singleton
 	 */
@@ -39,14 +38,13 @@ public class EclipseLinkPersistenceXml2_0UiDefinition
 		super();
 	}
 	
-	
 	@Override
 	protected PersistenceXmlUiFactory buildPersistenceXmlUiFactory() {
 		return new EclipseLink2_0PersistenceXmlUiFactory();
 	}
 	
 	public boolean providesUi(JptResourceType resourceType) {
-		return resourceType.equals(JptJpaCorePlugin.PERSISTENCE_XML_2_0_RESOURCE_TYPE);
+		return resourceType.equals(GenericPersistenceXml2_0Definition.instance().getResourceType());
 	}
 	
 	public ItemTreeStateProviderFactoryProvider getStructureViewFactoryProvider() {

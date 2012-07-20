@@ -22,9 +22,9 @@ public class JptUtilityModelValueTests {
 		suite.addTest(JptUtilityModelValuePrefsTests.suite());
 		suite.addTest(JptUtilityModelValueSwingTests.suite());
 
-		suite.addTestSuite(BufferedWritablePropertyValueModelTests.class);
+		suite.addTestSuite(BufferedModifiablePropertyValueModelTests.class);
 		suite.addTestSuite(CachingTransformationPropertyValueModelTests.class);
-		suite.addTestSuite(CachingTransformationWritablePropertyValueModelTests.class);
+		suite.addTestSuite(TransformationModifiablePropertyValueModelTests.class);
 		suite.addTestSuite(CollectionAspectAdapterTests.class);
 		suite.addTestSuite(CollectionListValueModelAdapterTests.class);
 		suite.addTestSuite(CollectionPropertyValueModelAdapterTests.class);
@@ -50,7 +50,7 @@ public class JptUtilityModelValueTests {
 		suite.addTestSuite(PropertyAspectAdapterTests.class);
 		suite.addTestSuite(PropertyCollectionValueModelAdapterTests.class);
 		suite.addTestSuite(PropertyListValueModelAdapterTests.class);
-		suite.addTestSuite(ReadOnlyWritablePropertyValueModelWrapperTests.class);
+		suite.addTestSuite(ReadOnlyModifiablePropertyValueModelWrapperTests.class);
 		suite.addTestSuite(SetCollectionValueModelTests.class);
 		suite.addTestSuite(SimpleCollectionValueModelTests.class);
 		suite.addTestSuite(SimpleListValueModelTests.class);

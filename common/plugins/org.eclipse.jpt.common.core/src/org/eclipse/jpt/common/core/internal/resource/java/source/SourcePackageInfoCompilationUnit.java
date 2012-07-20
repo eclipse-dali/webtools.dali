@@ -13,8 +13,8 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.PackageDeclaration;
 import org.eclipse.jpt.common.core.AnnotationProvider;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageInfoCompilationUnit;
@@ -64,7 +64,7 @@ public final class SourcePackageInfoCompilationUnit
 	// ********** JptResourceModel implementation **********
 
 	public JptResourceType getResourceType() {
-		return JptCommonCorePlugin.JAVA_SOURCE_PACKAGE_INFO_RESOURCE_TYPE;
+		return PlatformTools.getResourceType(PACKAGE_INFO_CONTENT_TYPE);
 	}
 
 

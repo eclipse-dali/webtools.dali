@@ -16,7 +16,6 @@ import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaNode;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
@@ -24,6 +23,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
@@ -40,7 +40,7 @@ public class JpaFileTests
 	protected void setUp() throws Exception {
 		super.setUp();
 		XmlMappingFileRef mappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
-		mappingFileRef.setFileName(JptJpaCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH.toString());
+		mappingFileRef.setFileName(XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 		getXmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
 		getPersistenceXmlResource().save(null);
 	}
@@ -147,7 +147,7 @@ public class JpaFileTests
 	public void testUpdatePersistenceRootStructureNodePersistenceRemoved() throws Exception {
 		IFile file = getPersistenceXmlResource().getFile();
 		JpaFile persistenceXmlJpaFile = this.getJpaFile(file);
-		assertEquals(getRootContextNode().getPersistenceXml().getPersistence(), persistenceXmlJpaFile.getRootStructureNodes().iterator().next());
+		assertEquals(getRootContextNode().getPersistenceXml().getRoot(), persistenceXmlJpaFile.getRootStructureNodes().iterator().next());
 		
 		JpaXmlResource resource = (JpaXmlResource) persistenceXmlJpaFile.getResourceModel();
 		resource.getContents().remove(resource.getRootObject());
@@ -190,8 +190,8 @@ public class JpaFileTests
 	public void testPersistenceRootStructureNodeRemovedFromResourceModel() throws Exception {
 		IFile file = getPersistenceXmlResource().getFile();
 		JpaFile persistenceXmlJpaFile = this.getJpaFile(file);
-		getRootContextNode().getPersistenceXml().getPersistence();
-		assertEquals(getRootContextNode().getPersistenceXml().getPersistence(), persistenceXmlJpaFile.getRootStructureNodes().iterator().next());
+		getRootContextNode().getPersistenceXml().getRoot();
+		assertEquals(getRootContextNode().getPersistenceXml().getRoot(), persistenceXmlJpaFile.getRootStructureNodes().iterator().next());
 		
 		getPersistenceXmlResource().getContents().remove(getXmlPersistence());
 		
@@ -347,7 +347,7 @@ public class JpaFileTests
 		JavaPersistentType javaPersistentType = ormPersistentType.getJavaPersistentType();
 		assertEquals(javaPersistentType, javaJpaFile.getRootStructureNodes().iterator().next());
 		
-		getJpaProject().getRootContextNode().getPersistenceXml().getPersistence().removePersistenceUnit(0);
+		getJpaProject().getRootContextNode().getPersistenceXml().getRoot().removePersistenceUnit(0);
 
 		assertFalse(javaJpaFile.getRootStructureNodes().iterator().hasNext());
 		assertEquals(0, javaJpaFile.getRootStructureNodesSize());

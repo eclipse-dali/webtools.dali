@@ -42,8 +42,8 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
-import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
@@ -203,7 +203,7 @@ public class AddVirtualAttributeDialog extends StatusDialog {
 			public Object[] getElements(Object inputElement) {
 				return ArrayTools.array(
 					CollectionTools.sort(
-						((JpaPlatformUi) inputElement).attributeMappingUiDefinitions(AddVirtualAttributeDialog.this.getJptResourceType()),
+						((JpaPlatformUi) inputElement).getAttributeMappingUiDefinitions(AddVirtualAttributeDialog.this.getJptResourceType()),
 						getProvidersComparator()));
 			}
 
@@ -287,7 +287,7 @@ public class AddVirtualAttributeDialog extends StatusDialog {
 		try {
 			return this.getJpaProject().getJavaProject().getPackageFragmentRoots()[0];
 		} catch (JavaModelException ex) {
-			JptJpaEclipseLinkUiPlugin.log(ex);
+			JptJpaEclipseLinkUiPlugin.instance().logError(ex);
 			return null;
 		}
 	}
@@ -339,7 +339,7 @@ public class AddVirtualAttributeDialog extends StatusDialog {
 						false, type);
 		}
 		catch (JavaModelException e) {
-			JptJpaEclipseLinkUiPlugin.log(e);
+			JptJpaEclipseLinkUiPlugin.instance().logError(e);
 			throw new RuntimeException(e);
 		}
 		typeSelectionDialog.setTitle(JptUiMessages.AddPersistentClassDialog_classDialog_title); 
@@ -353,34 +353,22 @@ public class AddVirtualAttributeDialog extends StatusDialog {
 
 	private void validate() {
 		if (StringTools.stringIsEmpty(this.getAttributeName())) {
-			updateStatus(
-				new Status(
-					IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID,
-					EclipseLinkUiMessages.AddVirtualAttributeDialog_noNameError));
+			updateStatus(JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.AddVirtualAttributeDialog_noNameError));
 			return;
 		}
 		if (this.getMappingKey() == null) {
-			updateStatus(
-				new Status(
-					IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID,
-					EclipseLinkUiMessages.AddVirtualAttributeDialog_noMappingKeyError));
+			updateStatus(JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.AddVirtualAttributeDialog_noMappingKeyError));
 			return;
 		}
 		if (!this.getAttributeMappingDefinition(this.getMappingKey()).isSingleRelationshipMapping() && 
 				StringTools.stringIsEmpty(this.getAttributeType())) {
-			updateStatus(
-				new Status(
-					IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID,
-					EclipseLinkUiMessages.AddVirtualAttributeDialog_noAttributeTypeError));
+			updateStatus(JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.AddVirtualAttributeDialog_noAttributeTypeError));
 			return;
 		}
 		if ((this.getAttributeMappingDefinition(this.getMappingKey()).isSingleRelationshipMapping() || 
 				this.getAttributeMappingDefinition(this.getMappingKey()).isCollectionMapping()) &&
 				StringTools.stringIsEmpty(this.getTargetType())) {
-			updateStatus(
-				new Status(
-					IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID,
-					EclipseLinkUiMessages.AddVirtualAttributeDialog_noTargetTypeError));
+			updateStatus(JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.AddVirtualAttributeDialog_noTargetTypeError));
 			return;
 		}
 

@@ -14,9 +14,10 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
-import org.eclipse.jpt.jpa.core.prefs.JpaValidationPreferencesManager;
+import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.wst.validation.AbstractValidator;
 import org.eclipse.wst.validation.ValidationResult;
 import org.eclipse.wst.validation.ValidationState;
@@ -31,9 +32,18 @@ import org.eclipse.wst.validation.internal.provisional.core.IValidator;
  * WTP validator extension point.
  */
 public class JpaValidator
-		extends AbstractValidator
-		implements IValidator {
-	
+	extends AbstractValidator
+	implements IValidator
+{
+
+	public static final String RELATIVE_MARKER_ID = "problemMarker";  //$NON-NLS-1$
+
+	/**
+	 * The identifier for the JPA validation marker
+	 * (value <code>"org.eclipse.jpt.jpa.core.problemMarker"</code>).
+	 */
+	public static final String MARKER_ID = JptJpaCorePlugin.instance().getPluginID() + '.' + RELATIVE_MARKER_ID;
+
 	public JpaValidator() {
 		super();
 	}
@@ -72,12 +82,12 @@ public class JpaValidator
 		try {
 			this.clearMarkers_(project);
 		} catch (CoreException ex) {
-			JptJpaCorePlugin.log(ex);
+			JptJpaCorePlugin.instance().logError(ex);
 		}
 	}
 
 	private void clearMarkers_(IProject project) throws CoreException {
-		IMarker[] markers = project.findMarkers(JptJpaCorePlugin.VALIDATION_MARKER_ID, true, IResource.DEPTH_INFINITE);
+		IMarker[] markers = project.findMarkers(MARKER_ID, true, IResource.DEPTH_INFINITE);
 		for (IMarker marker : markers) {
 			marker.delete();
 		}
@@ -91,10 +101,9 @@ public class JpaValidator
 		// wait until we actually get the new messages before we clear out the old messages
 		this.clearMarkers(project);
 		
-		JpaValidationPreferencesManager prefsManager = new JpaValidationPreferencesManager(project);
 		for (IMessage message : messages) {
 			// check preferences for IGNORE
-			if (prefsManager.problemIsNotIgnored(message.getId())) {
+			if (Tools.valuesAreDifferent(JpaPreferences.getProblemSeverity(project, message.getId()), JpaPreferences.PROBLEM_IGNORE)) {
 				reporter.addMessage(this, message);
 			}
 		}

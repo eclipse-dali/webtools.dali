@@ -16,7 +16,6 @@
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.feature;
 
 import java.text.MessageFormat;
-
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
@@ -26,8 +25,8 @@ import org.eclipse.graphiti.features.context.IMultiDeleteInfo;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.ui.features.DefaultDeleteFeature;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
@@ -75,7 +74,7 @@ public class DeleteJPAEntityFeature extends DefaultDeleteFeature {
 			
 			JpaArtifactFactory.instance().forceSaveEntityClass(jpt, getFeatureProvider());
 			JpaArtifactFactory.instance().deleteEntityClass(jpt, getFeatureProvider());
-			if (!JptJpaCorePlugin.getDiscoverAnnotatedClasses(jpt.getJpaProject().getProject())) {
+			if (! JpaPreferences.getDiscoverAnnotatedClasses(jpt.getJpaProject().getProject())) {
 				JPAEditorUtil.createUnregisterEntityFromXMLJob(jpaProject, name);
 			}
 						

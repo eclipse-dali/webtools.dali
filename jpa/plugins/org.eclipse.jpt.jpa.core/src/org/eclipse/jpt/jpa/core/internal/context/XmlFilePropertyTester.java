@@ -14,7 +14,7 @@ import org.eclipse.jpt.jpa.core.context.XmlFile;
 
 /**
  * Property tester for {@link XmlFile}.
- * See <code>org.eclipse.jpt.jpa.core/plugin.xml</code>
+ * See <code>org.eclipse.jpt.jpa.core/plugin.xml:org.eclipse.core.expressions.propertyTesters</code>
  */
 public class XmlFilePropertyTester
 	extends PropertyTester

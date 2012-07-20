@@ -13,7 +13,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
-import org.eclipse.jpt.common.ui.JptCommonUiPlugin;
+import org.eclipse.jpt.common.ui.internal.plugin.JptCommonUiPlugin;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -115,12 +115,8 @@ public abstract class FileChooserPane<T extends Model> extends ChooserPane<T>
 	protected ISelectionStatusValidator buildValidator() {
 		return new ISelectionStatusValidator() {
 			public IStatus validate(Object[] selection) {
-
-				if (selection.length != 1) {
-					return new Status(IStatus.ERROR, JptCommonUiPlugin.PLUGIN_ID, "");
-				}
-
-				return new Status(IStatus.OK, JptCommonUiPlugin.PLUGIN_ID, "");
+				int status = (selection.length == 1) ? IStatus.OK : IStatus.ERROR;
+				return JptCommonUiPlugin.instance().buildStatus(status);
 			}
 		};
 	}

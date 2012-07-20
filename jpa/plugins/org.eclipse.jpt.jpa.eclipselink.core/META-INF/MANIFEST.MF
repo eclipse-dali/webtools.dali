@@ -4,7 +4,7 @@ Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.jpa.eclipselink.core;singleton:=true
 Bundle-Version: 2.2.0.qualifier
-Bundle-Activator: org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin
+Bundle-Activator: org.eclipse.jpt.jpa.eclipselink.core.internal.plugin.JptJpaEclipseLinkCorePlugin
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
 Bundle-Localization: plugin

@@ -150,7 +150,7 @@ class GenericJaxbProjectManager
 		implements ExceptionHandler
 	{
 		public void handleException(Throwable t) {
-			JptJaxbCorePlugin.log(t);
+			JptJaxbCorePlugin.instance().logError(t);
 		}
 		@Override
 		public String toString() {
@@ -241,7 +241,7 @@ class GenericJaxbProjectManager
 			FacetedProjectFramework.addListener(this.facetedProjectListener, FACETED_PROJECT_EVENT_TYPES);
 			JavaCore.addElementChangedListener(this.javaElementChangeListener, JAVA_CHANGE_EVENT_TYPES);
 		} catch (RuntimeException ex) {
-			JptJaxbCorePlugin.log(ex);
+			JptJaxbCorePlugin.instance().logError(ex);
 			this.stop_();
 		}
 	}
@@ -255,7 +255,7 @@ class GenericJaxbProjectManager
 		} catch (CoreException ex) {
 			// if we have a problem, leave the currently built JAXB projects in
 			// place and keep executing (should be OK...)
-			JptJaxbCorePlugin.log(ex);
+			JptJaxbCorePlugin.instance().logError(ex);
 		}
 	}
 
@@ -420,7 +420,7 @@ class GenericJaxbProjectManager
 			return platformDefinition.getFactory().buildJaxbProject(config);
 		}
 		catch (RuntimeException ex) {
-			JptJaxbCorePlugin.log(ex);
+			JptJaxbCorePlugin.instance().logError(ex);
 			return null;
 		}
 	}
@@ -777,7 +777,7 @@ class GenericJaxbProjectManager
 				GenericJaxbProjectManager.this.lock.acquire();
 				this.execute_();
 			} catch (RuntimeException ex) {
-				JptJaxbCorePlugin.log(ex);
+				JptJaxbCorePlugin.instance().logError(ex);
 			} finally {
 				GenericJaxbProjectManager.this.lock.release();
 			}

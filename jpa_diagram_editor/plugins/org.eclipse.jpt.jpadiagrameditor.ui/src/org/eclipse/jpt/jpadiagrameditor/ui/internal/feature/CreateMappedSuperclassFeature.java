@@ -16,7 +16,6 @@
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.feature;
 
 import java.util.List;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ICreateContext;
@@ -24,8 +23,8 @@ import org.eclipse.graphiti.features.impl.AbstractCreateFeature;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
@@ -79,7 +78,7 @@ public class CreateMappedSuperclassFeature extends
 						JPADiagramPropertyPage.getDefaultPackage(jpaProject.getProject()),
 						getFeatureProvider());
 		
-		if (!JptJpaCorePlugin.getDiscoverAnnotatedClasses(jpaProject.getProject())) {
+		if (! JpaPreferences.getDiscoverAnnotatedClasses(jpaProject.getProject())) {
 			JPAEditorUtil.createRegisterEntityInXMLJob(jpaProject, mappedSuperclassName);
 		}
 				

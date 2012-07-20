@@ -9,273 +9,349 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal;
 
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.draw2d.ImageUtilities;
+import org.eclipse.jface.dialogs.DialogSettings;
+import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.jpt.common.core.internal.utility.JptPlugin;
+import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.osgi.service.debug.DebugOptions;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.osgi.framework.BundleContext;
-import org.osgi.util.tracker.ServiceTracker;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.preferences.ScopedPreferenceStore;
+import org.osgi.framework.Bundle;
 
 /**
- * Common Dali UI plug-in behavior.
- * See JptPlugin
+ * Common Dali UI plug-in behavior:<ul>
+ * <li>dialog settings
+ * <li>image registry
+ * <li>UI preference store
+ * </ul>
  */
-public class JptUIPlugin
-	extends AbstractUIPlugin
+public abstract class JptUIPlugin
+	extends JptPlugin
 {
-	protected BundleContext bundleContext;
-	protected ServiceTracker<DebugOptions, DebugOptions> debugOptionsServiceTracker;
+	// NB: the plug-in must be synchronized whenever accessing any of this state
+	private IDialogSettings dialogSettings;
+	private ImageRegistry imageRegistry;
+	private IPreferenceStore preferenceStore;
 
 
+	/**
+	 * Default constructor is required. Of course, subclass constructors must
+	 * be <code>public</code>.
+	 */
 	protected JptUIPlugin() {
 		super();
 	}
 
 
-	// ********** logging **********
-
-	/**
-	 * Log the specified message with a severity of
-	 * {@link IStatus#ERROR ERROR}.
-	 * @see #log(int, String)
-	 * @see IStatus
-	 */
-	public void logError(String message) {
-        this.log(IStatus.ERROR, message);
-    }
-
-	/**
-	 * Log the specified message with the specified severity.
-	 * @see IStatus#getSeverity()
-	 */
-	public void log(int severity, String message) {
-        this.log(severity, message, null);
-    }
-
-	/**
-	 * Log the specified exception or error with a severity of
-	 * {@link IStatus#ERROR ERROR}.
-	 * @see #log(int, Throwable)
-	 * @see IStatus
-	 */
-	public void logError(Throwable throwable) {
-        this.log(IStatus.ERROR, throwable);
-	}
-
-	/**
-	 * Log the specified exception or error with the specified severity.
-	 * @see IStatus#getSeverity()
-	 */
-	public void log(int severity, Throwable throwable) {
-		this.log(severity, throwable.getLocalizedMessage(), throwable);
-	}
-
-	/**
-	 * Log the specified message and exception or error with a severity of
-	 * {@link IStatus#ERROR ERROR}.
-	 * @see #log(int, String, Throwable)
-	 * @see IStatus
-	 */
-	public void logError(String msg, Throwable throwable) {
-		this.log(IStatus.ERROR, msg, throwable);
-	}
-
-	/**
-	 * Log the specified message and exception or error
-	 * with the specified severity.
-	 * @see IStatus#getSeverity()
-	 * @see IStatus#getCode()
-	 */
-	public void log(int severity, String msg, Throwable throwable) {
-		this.log(severity, IStatus.OK, msg, throwable);
-	}
-
-	/**
-	 * Log the specified message and exception or error
-	 * with the specified severity and code.
-	 * @see IStatus#getSeverity()
-	 * @see IStatus#getCode()
-	 */
-	public void log(int severity, int code, String msg, Throwable throwable) {
-		this.getLog().log(new Status(severity, this.getPluginID(), code, msg, throwable));
-	}
-
-
-	// ********** debug options **********
-
-	/**
-	 * Return the specified debug option as a <code>boolean</code> value.
-	 * Return <code>false</code> if no such option is found.
-	 * <p>
-	 * The debug option is within the scope of the plug-in's debug options
-	 * (e.g. for the plug-in <code>"org.eclipse.jpt.common.core"</code>,
-	 * the specified option <code>"foo"</code> will be mapped to
-	 * the {@link Platform} option
-	 * <code>"org.eclipse.jpt.common.core/debug/foo"</code>).
-	 */
-	public boolean getBooleanDebugOption(String option) {
-		return this.getBooleanDebugOption(option, false);
-	}
-
-	/**
-	 * Return the specified debug option as a <code>boolean</code> value.
-	 * Return the specified default value if no such option is found.
-	 * <p>
-	 * The debug option is within the scope of the plug-in's debug options
-	 * (e.g. for the plug-in <code>"org.eclipse.jpt.common.core"</code>,
-	 * the specified option <code>"foo"</code> will be mapped to
-	 * the {@link Platform} option
-	 * <code>"org.eclipse.jpt.common.core/debug/foo"</code>).
-	 */
-	public boolean getBooleanDebugOption(String option, boolean defaultValue) {
-		String value = this.getDebugOption(option);
-		return (value == null) ? defaultValue : Boolean.parseBoolean(value.trim());
-	}
-
-	/**
-	 * Return the specified debug option as an <code>int</code> value.
-	 * Return <code>-1</code> if no such option is found.
-	 * <p>
-	 * The debug option is within the scope of the plug-in's debug options
-	 * (e.g. for the plug-in <code>"org.eclipse.jpt.common.core"</code>,
-	 * the specified option <code>"foo"</code> will be mapped to
-	 * the {@link Platform} option
-	 * <code>"org.eclipse.jpt.common.core/debug/foo"</code>).
-	 */
-	public int getIntegerDebugOption(String option) {
-		return this.getIntegerDebugOption(option, -1);
-	}
-
-	/**
-	 * Return the specified debug option as an <code>int</code> value.
-	 * Return the specified default value if no such option is found.
-	 * <p>
-	 * The debug option is within the scope of the plug-in's debug options
-	 * (e.g. for the plug-in <code>"org.eclipse.jpt.common.core"</code>,
-	 * the specified option <code>"foo"</code> will be mapped to
-	 * the {@link Platform} option
-	 * <code>"org.eclipse.jpt.common.core/debug/foo"</code>).
-	 */
-	public int getIntegerDebugOption(String option, int defaultValue) {
-		String value = this.getDebugOption(option);
-		return (value == null) ? defaultValue : Integer.parseInt(value.trim());
-	}
-
-	/**
-	 * Return the specified debug option.
-	 * Return <code>null</code> if no such option is found.
-	 * <p>
-	 * The debug option is within the scope of the plug-in's debug options
-	 * (e.g. for the plug-in <code>"org.eclipse.jpt.common.core"</code>,
-	 * the specified option <code>"foo"</code> will be mapped to
-	 * the {@link Platform} option
-	 * <code>"org.eclipse.jpt.common.core/debug/foo"</code>).
-	 */
-	public String getDebugOption(String option) {
-		return this.getDebugOption(option, null);
-	}
-
-	/**
-	 * Return the specified debug option.
-	 * Return the specified default value if no such option is found.
-	 * <p>
-	 * The debug option is within the scope of the plug-in's debug options
-	 * (e.g. for the plug-in <code>"org.eclipse.jpt.common.core"</code>,
-	 * the specified option <code>"foo"</code> will be mapped to
-	 * the {@link Platform} option
-	 * <code>"org.eclipse.jpt.common.core/debug/foo"</code>).
-	 */
-	public String getDebugOption(String option, String defaultValue) {
-		return this.isDebugging() ? this.getDebugOption_(option, defaultValue) : defaultValue;
-	}
-
-	protected String getDebugOption_(String option, String defaultValue) {
-		if (StringTools.stringIsEmpty(option)) {
-			throw new IllegalArgumentException("debug option cannot be blank"); //$NON-NLS-1$
-		}
-		String value = this.getDebugOption_(option);
-		return (value != null) ? value : defaultValue;
-	}
-
-	protected String getDebugOption_(String option) {
-		DebugOptions debugOptions = this.getDebugOptions();
-		return (debugOptions == null) ? null : debugOptions.getOption(this.getPluginDebugOption() + option);
-	}
-
-	protected DebugOptions getDebugOptions() {
-		ServiceTracker<DebugOptions, DebugOptions> tracker = this.getDebugOptionsServiceTracker();
-		return (tracker == null) ? null : tracker.getService();
-	}
-
-	private synchronized ServiceTracker<DebugOptions, DebugOptions> getDebugOptionsServiceTracker() {
-		if (this.isActive() && (this.debugOptionsServiceTracker == null)) {
-			this.debugOptionsServiceTracker = this.buildDebugOptionsServiceTracker();
-			this.debugOptionsServiceTracker.open();
-		}
-		return this.debugOptionsServiceTracker;
-	}
-
-	private ServiceTracker<DebugOptions, DebugOptions> buildDebugOptionsServiceTracker() {
-		return new ServiceTracker<DebugOptions, DebugOptions>(this.bundleContext, DebugOptions.class, null);
-	}
-
-	/**
-	 * Return the plug-in's debug option path.
-	 */
-	protected String getPluginDebugOption() {
-		return this.getPluginID() + DEBUG_OPTION_SCOPE;
-	}
-	protected static final String DEBUG_OPTION_SCOPE = "/debug/"; //$NON-NLS-1$
-
-
 	// ********** plug-in lifecycle **********
 
 	@Override
-	public synchronized void start(BundleContext context) throws Exception {
-		super.start(context);
-		this.bundleContext = context;
+	protected void start_() throws Exception {
+		super.start_();
 	}
 
 	@Override
-	public synchronized void stop(BundleContext context) throws Exception {
-		try {
-			this.stop_();
-		} finally {
-			this.bundleContext = null;
-			super.stop(context);
-		}
-	}
-
 	protected void stop_() throws Exception {
-		if (this.debugOptionsServiceTracker != null) {
-			this.debugOptionsServiceTracker.close();
-			this.debugOptionsServiceTracker = null;
+		try {
+			if (this.imageRegistry != null) {
+				this.imageRegistry.dispose();
+			}
+			if (this.dialogSettings != null) {
+				this.saveDialogSettings();
+			}
+		} finally {
+			this.imageRegistry = null;
+			this.dialogSettings = null;
+			super.stop_();
 		}
 	}
 
 
-	// ********** misc **********
+	// ********** dialog settings **********
 
-	public String getPluginID() {
-		return this.getBundle().getSymbolicName();
+	/**
+	 * Return the dialog settings for the UI plug-in.
+	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#getDialogSettings()
+	 */
+	public synchronized IDialogSettings getDialogSettings() {
+		if ((this.dialogSettings == null) && this.isActive()) {
+			this.dialogSettings = this.buildDialogSettings();
+		}
+		return dialogSettings;
 	}
 
 	/**
-	 * Return whether the plug-in is active; i.e. it has been
-	 * {@link #start(BundleContext) started}.
+	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#loadDialogSettings()
 	 */
-	public synchronized boolean isActive() {
-		return this.bundleContext != null;
+	protected IDialogSettings buildDialogSettings() {
+		IDialogSettings result = this.buildDialogSettings_();
+		String settingsFileName = this.getDialogSettingsFileName();
+		if (settingsFileName == null) {
+			return result;
+		}
+		File settingsFile = new File(settingsFileName);
+		if (settingsFile.exists()) {
+			try {
+				result.load(settingsFileName);
+			} catch (IOException ex) {
+				// if there are problems, return an empty settings container
+				return this.buildDialogSettings_();
+			}
+		}
+		return result;
+	}
+
+	protected IDialogSettings buildDialogSettings_() {
+		return new DialogSettings(this.getDialogSettingsSectionName());
+	}
+
+	protected String getDialogSettingsSectionName() {
+		return DIALOG_SETTINGS_SECTION_NAME;
 	}
 
 	/**
-	 * Return whether the plug-in is inactive; i.e. it has been
-	 * {@link #stop(BundleContext) stopped} or not yet
-	 * {@link #start(BundleContext) started}.
+	 * Value: <code>{@value}</code>
 	 */
-	public boolean isInactive() {
-		return ! this.isActive();
+	protected static final String DIALOG_SETTINGS_SECTION_NAME = "Workbench"; //$NON-NLS-1$
+
+	/**
+	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#saveDialogSettings()
+	 */
+	protected void saveDialogSettings() {
+		String settingsFileName = this.getDialogSettingsFileName();
+		if (settingsFileName != null) {
+			try {
+				this.dialogSettings.save(settingsFileName);
+			} catch (IOException ex) {
+				// ignore silently
+			}
+		}
+	}
+
+	protected String getDialogSettingsFileName() {
+		IPath stateLocation = this.getStateLocation();
+		if (stateLocation == null) {
+			return null;
+		}
+		return stateLocation.append(this.getRelativeDialogSettingsFileName()).toOSString();
+	}
+
+	protected String getRelativeDialogSettingsFileName() {
+		return RELATIVE_DIALOG_SETTINGS_FILE_NAME;
+	}
+
+	/**
+	 * Value: <code>{@value}</code>
+	 */
+	protected static final String RELATIVE_DIALOG_SETTINGS_FILE_NAME = "dialog_settings.xml"; //$NON-NLS-1$
+
+
+	// ********** images **********
+
+	/**
+	 * Return a "normal" (as opposed to "ghost") image for the specified key.
+	 * The key will be transformed into the name of a
+	 * <code>.gif</code> file in the plug-in's <code>icons</code> folder.
+	 * This image is built, held, and disposed by the plug-in.
+	 * 
+	 * @see #getGhostImage(String)
+	 * @see #getImage(String, boolean)
+	 * @see org.eclipse.ui.IWorkbench#getSharedImages()
+	 */
+	public Image getImage(String key) {
+		return this.getImage(key, false); // false = normal (non-ghost)
+	}
+
+	/**
+	 * Return a "ghost" image for the specified key.
+	 * The key will be transformed into the name of a
+	 * <code>.gif</code> file in the plug-in's <code>icons</code> folder.
+	 * This image is built, held, and disposed by the plug-in.
+	 * 
+	 * @see #getImage(String)
+	 * @see #getImage(String, boolean)
+	 * @see org.eclipse.ui.IWorkbench#getSharedImages()
+	 */
+	public Image getGhostImage(String key) {
+		return this.getImage(key, true); // true = ghost
+	}
+
+	/**
+	 * Return an image for the specified key. "Ghost" the image if the specified
+	 * flag is <code>true</code>.
+	 * The key will be transformed into the name of a
+	 * <code>.gif</code> file in the plug-in's <code>icons</code> folder.
+	 * This image is built, held, and disposed by the plug-in.
+	 * 
+	 * @see #getGhostImage(String)
+	 * @see #getImage(String)
+	 * @see org.eclipse.ui.IWorkbench#getSharedImages()
+	 */
+	public Image getImage(String key, boolean ghost) {
+		this.checkImageKey(key);
+		ImageRegistry registry = this.getImageRegistry();
+		if (registry == null) {
+			return null;
+		}
+		// lock the registry while retrieving (and possibly building) the image
+		synchronized (registry) {
+			return ghost ? this.getGhostImage(registry, key) : this.getImage(registry, key);
+		}
+	}
+
+	/**
+	 * Pre-condition: The specified registry is <code>synchronized</code>.
+	 */
+	protected Image getGhostImage(ImageRegistry registry, String key) {
+		String ghostKey = this.buildGhostImageKey(key);
+		Image ghostImage = registry.get(ghostKey);
+		if (ghostImage == null) {
+			ghostImage = this.buildGhostImage(registry, key);
+			registry.put(ghostKey, ghostImage);
+		}
+		return ghostImage;
+	}
+
+	protected String buildGhostImageKey(String key) {
+		return key + '-' + this.getGhostImageKeySuffix();
+	}
+
+	protected String getGhostImageKeySuffix() {
+		return GHOST_IMAGE_KEY_SUFFIX;
+	}
+
+	/**
+	 * Value: <code>{@value}</code>
+	 */
+	protected static final String GHOST_IMAGE_KEY_SUFFIX = "gray"; //$NON-NLS-1$
+
+	protected Image buildGhostImage(ImageRegistry registry, String key) {
+		Image image = this.getImage(registry, key);
+		Color lightGray = new Color(image.getDevice(), 223, 223, 223);
+		Image shadedImage = new Image(image.getDevice(), ImageUtilities.createShadedImage(image, lightGray));
+		Image ghostImage = new Image(image.getDevice(), shadedImage, SWT.IMAGE_GRAY);
+		shadedImage.dispose();
+		lightGray.dispose();
+		return ghostImage;
+	}
+
+	/**
+	 * Pre-condition: The specified registry is <code>synchronized</code>.
+	 */
+	protected Image getImage(ImageRegistry registry, String key) {
+		Image image = registry.get(key);
+		if (image == null) {
+			// a bad image descriptor will result in a "default" image
+			registry.put(key, this.buildImageDescriptor_(key));
+			image = registry.get(key);
+		}
+		return image;
+	}
+
+	/**
+	 * Return an image descriptor for the specified key.
+	 * The key will be transformed into the name of a
+	 * <code>.gif</code> file in the plug-in's <code>icons</code> folder.
+	 */
+	public ImageDescriptor buildImageDescriptor(String key) {
+		this.checkImageKey(key);
+		return this.buildImageDescriptor_(key);
+	}
+
+	/**
+	 * Pre-condition: the specified key is not blank.
+	 */
+	protected ImageDescriptor buildImageDescriptor_(String key) {
+		Bundle bundle = this.getBundle();
+		if (bundle == null) {
+			return null;
+		}
+
+		IPath path = this.buildImageFilePath(key);
+		URL url = FileLocator.find(bundle, path, null);
+		return (url == null) ? null : ImageDescriptor.createFromURL(url);
+	}
+
+	protected IPath buildImageFilePath(String key) {
+		return new Path(this.buildRelativeImageFileName(key));
+	}
+
+	protected String buildRelativeImageFileName(String key) {
+		return this.getRelativeImageDirectoryName() + '/' + key + '.' + this.getImageFileExt();
+	}
+
+	protected String getRelativeImageDirectoryName() {
+		return RELATIVE_IMAGE_DIRECTORY_NAME;
+	}
+	/**
+	 * Value: <code>{@value}</code>
+	 */
+	protected static final String RELATIVE_IMAGE_DIRECTORY_NAME = "icons"; //$NON-NLS-1$
+
+	protected String getImageFileExt() {
+		return IMAGE_FILE_EXT;
+	}
+	/**
+	 * Value: <code>{@value}</code>
+	 */
+	protected static final String IMAGE_FILE_EXT = "gif"; //$NON-NLS-1$
+
+	protected void checkImageKey(String key) {
+		if (StringTools.stringIsEmpty(key)) {
+			throw new IllegalArgumentException("image key cannot be blank"); //$NON-NLS-1$
+		}
+	}
+
+	/**
+	 * Return the image registry for the UI plug-in.
+	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#getImageRegistry()
+	 */
+	protected synchronized ImageRegistry getImageRegistry() {
+		if ((this.imageRegistry == null) && this.isActive()) {
+			this.imageRegistry = this.buildImageRegistry();
+		}
+		return imageRegistry;
+	}
+
+	// TODO the image registry holds icons for the life of the plug-in
+	// (i.e. until the workspace is closed). This is better than before when
+	// we constantly created new images(!), but:
+	// Bug 306437 is about cleaning this up and using Local Resource Managers
+	// on our views so that closing the JPA perspective would mean the icons are disposed.
+	// But then do we have multiple versions of the same icon?
+	protected ImageRegistry buildImageRegistry() {
+		return new ImageRegistry(SWTUtil.getDisplay());
+	}
+
+
+	// ********** preference store **********
+
+	/**
+	 * Return the preference store for the UI plug-in.
+	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#getPreferenceStore()
+	 */
+	public synchronized IPreferenceStore getPreferenceStore() {
+		if ((this.preferenceStore == null) && this.isActive()) {
+			this.preferenceStore = this.buildPreferenceStore();
+		}
+		return preferenceStore;
+	}
+
+	protected IPreferenceStore buildPreferenceStore() {
+		String id = this.getPluginID();
+		return (id == null) ? null : new ScopedPreferenceStore(InstanceScope.INSTANCE, id);
 	}
 }

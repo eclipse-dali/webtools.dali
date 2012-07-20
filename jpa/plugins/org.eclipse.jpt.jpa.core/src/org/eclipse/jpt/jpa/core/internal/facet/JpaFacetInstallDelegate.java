@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.facet;
 import static org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties.CONTAINER_PATH;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -22,10 +23,10 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProvider;
 import org.eclipse.jpt.jpa.core.internal.operations.PersistenceFileCreationDataModelProvider;
-import org.eclipse.jpt.jpa.db.JptJpaDbPlugin;
+import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
@@ -70,27 +71,24 @@ public class JpaFacetInstallDelegate
 		}
 		String driverName = dataModel.getStringProperty(DB_DRIVER_NAME);
 		
-		IClasspathContainer container = JptJpaDbPlugin.instance().buildDriverClasspathContainerFor(driverName);
+		IClasspathContainer container = this.getConnectionProfileFactory().buildDriverClasspathContainer(driverName);
 		IClasspathEntry entry = JavaCore.newContainerEntry(container.getPath());
 		this.addClasspathEntryToProject(entry, javaProject, monitor);
 	}
 	
+	private ConnectionProfileFactory getConnectionProfileFactory() {
+		return (ConnectionProfileFactory) ResourcesPlugin.getWorkspace().getAdapter(ConnectionProfileFactory.class);
+	}
+
 	private void addClasspathEntryToProject(
 			IClasspathEntry classpathEntry, IJavaProject javaProject, IProgressMonitor monitor) 
 			throws CoreException {
 		
-		// if the classpathEntry is already there, do nothing
+		// add the classpath entry to the classpath if it is not already present
 		IClasspathEntry[] classpath = javaProject.getRawClasspath();
-		if (ArrayTools.contains(classpath, classpathEntry)) {
-			return;
+		if ( ! ArrayTools.contains(classpath, classpathEntry)) {
+			javaProject.setRawClasspath(ArrayTools.add(classpath, classpathEntry), monitor);
 		}
-		
-		// add the given classpathEntry to the project classpath
-		int len = classpath.length;
-		IClasspathEntry[] newClasspath = new IClasspathEntry[len + 1];
-		System.arraycopy(classpath, 0, newClasspath, 0, len);
-		newClasspath[len] = classpathEntry;
-		javaProject.setRawClasspath(newClasspath, monitor);
 	}
 	
 	private void createProjectXml(IProject project, boolean buildOrmXml, IProgressMonitor monitor) {
@@ -113,7 +111,7 @@ public class JpaFacetInstallDelegate
 		try {
 			config.getDefaultOperation().execute(sm.newChild(4), null);
 		} catch (ExecutionException ex) {
-			JptJpaCorePlugin.log(ex);
+			JptJpaCorePlugin.instance().logError(ex);
 		}
 	}
 
@@ -127,14 +125,14 @@ public class JpaFacetInstallDelegate
 		try {
 			config.getDefaultOperation().execute(sm.newChild(4), null);
 		} catch (ExecutionException ex) {
-			JptJpaCorePlugin.log(ex);
+			JptJpaCorePlugin.instance().logError(ex);
 		}
 	}
 	
 	protected IPath defaultResourceLocation(IProject project) {
 		ProjectResourceLocator resourceLocator = (ProjectResourceLocator) project.getAdapter(ProjectResourceLocator.class);
 		if (resourceLocator == null) {
-			JptJpaCorePlugin.log("No resource locator for project: " + project); //$NON-NLS-1$
+			JptJpaCorePlugin.instance().logError("No resource locator for project: " + project); //$NON-NLS-1$
 			return null;
 		}
 		return resourceLocator.getDefaultResourceLocation().getFullPath();

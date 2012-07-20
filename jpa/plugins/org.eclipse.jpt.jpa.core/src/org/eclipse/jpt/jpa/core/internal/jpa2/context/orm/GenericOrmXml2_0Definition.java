@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.orm.NullOrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
@@ -31,6 +30,8 @@ import org.eclipse.jpt.jpa.core.internal.context.orm.OrmTransientMappingDefiniti
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmVersionMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.Generic2_0JpaPlatformProvider;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
+import org.eclipse.jpt.jpa.core.resource.orm.v2_0.JPA2_0;
 
 public class GenericOrmXml2_0Definition
 	extends AbstractOrmXmlDefinition
@@ -54,7 +55,7 @@ public class GenericOrmXml2_0Definition
 	}
 
 	public JptResourceType getResourceType() {
-		return JptJpaCorePlugin.ORM_XML_2_0_RESOURCE_TYPE;
+		return this.getResourceType(XmlEntityMappings.CONTENT_TYPE, JPA2_0.SCHEMA_VERSION);
 	}
 
 	public EFactory getResourceNodeFactory() {

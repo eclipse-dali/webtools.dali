@@ -1,0 +1,173 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.jpt.common.core" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appinfo>
+         <meta.schema plugin="org.eclipse.jpt.common.core" id="resourceTypes" name="Resource Types"/>
+      </appinfo>
+      <documentation>
+         Used to define resource types. A resource type is a combination of a content type (as defined as an extension to &apos;org.eclipse.core.contenttype.contentTypes&apos;) and an optional version. A resource type can also specify what other resource types it extends.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appinfo>
+            <meta.element />
+         </appinfo>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="resource-type" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="resource-type">
+      <annotation>
+         <documentation>
+            Declares a resource type.  See &lt;samp&gt;org.eclipse.jpt.common.core.JptResourceType&lt;/samp&gt; for more information on resource types.
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="base-type" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  A unique identifier for the declared resource type.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="content-type" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The identifier of the resource type&apos;s content type, as specified in an extension to &apos;org.eclipse.core.contenttype.contentTypes&apos;.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="version" type="string">
+            <annotation>
+               <documentation>
+                  Rhe resource type&apos;s version. A resource type is compatible with another resource type with the same content type if the resource type&apos;s version is greater than or equal to the other resource type&apos;s version. A resource type with an unspecified version is compatible with itself but not with a resource type with a specified version. A resource type with a specified version is compatible with a resource type with an unspecified version.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="base-type">
+      <annotation>
+         <documentation>
+            Specifies a base resource type.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The identifier of a compatible resource type.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="since"/>
+      </appinfo>
+      <documentation>
+         JPT 3.3
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="examples"/>
+      </appinfo>
+      <documentation>
+         &lt;br&gt;
+&lt;p&gt;
+The following example is the included simple Java source resource type.
+&lt;/p&gt;&lt;p&gt;
+&lt;pre&gt;
+&lt;extension  
+ point=&quot;org.eclipse.jpt.common.core.resourceTypes&quot;&gt;
+ &lt;resource-type
+  id=&quot;org.eclipse.jpt.common.core.resourceType.javaSource&quot;
+  content-type=&quot;org.eclipse.jdt.core.javaSource&quot;&gt;
+ &lt;/resource-type&gt;
+&lt;/extension&gt;
+&lt;/pre&gt;
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="apiinfo"/>
+      </appinfo>
+      <documentation>
+         &lt;p&gt;
+The specified content types can be retrieved from the &lt;code&gt;org.eclipse.jpt.common.core.JptResourceTypeManager&lt;/code&gt;.
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="implementation"/>
+      </appinfo>
+      <documentation>
+         &lt;p&gt;The org.eclipse.jpt.common.core plug-in provides the following resource types:
+&lt;ul&gt;
+&lt;li&gt;jar&lt;/li&gt;
+&lt;li&gt;javaPackageInfo&lt;/li&gt;
+&lt;li&gt;javaSource&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="copyright"/>
+      </appinfo>
+      <documentation>
+         Copyright (c) 2012 Oracle. All rights reserved.
+This program and the accompanying materials are made available under the
+terms of the Eclipse Public License v1.0, which accompanies this distribution
+and is available at http://www.eclipse.org/legal/epl-v10.html.
+ 
+Contributors:
+Oracle - initial API and implementation
+      </documentation>
+   </annotation>
+
+</schema>

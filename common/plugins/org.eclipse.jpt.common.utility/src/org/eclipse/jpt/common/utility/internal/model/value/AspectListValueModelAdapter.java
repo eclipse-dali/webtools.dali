@@ -15,6 +15,7 @@ import java.util.ListIterator;
 
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
@@ -68,11 +69,6 @@ public abstract class AspectListValueModelAdapter<S, E>
 	extends AspectAdapter<S, List<E>>
 	implements ListValueModel<E>
 {
-	private static final Object[] EMPTY_ARRAY = new Object[0];
-
-
-	// ********** constructors **********
-
 	/**
 	 * Construct a list value model adapter for an aspect of the
 	 * specified subject.
@@ -146,7 +142,7 @@ public abstract class AspectListValueModelAdapter<S, E>
 	 * Return an array manifestation of the subject's list aspect.
 	 */
 	public Object[] toArray() {
-		return this.subject == null ? EMPTY_ARRAY : this.toArray_();
+		return this.subject == null ? Tools.EMPTY_OBJECT_ARRAY : this.toArray_();
 	}
 
 	/**

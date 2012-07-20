@@ -17,8 +17,8 @@ import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.ui.internal.Tracing;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
+import org.eclipse.jpt.common.ui.internal.plugin.JptCommonUiPlugin;
 import org.eclipse.jpt.common.ui.internal.swt.ComboModelAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.DateTimeModelAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.SpinnerModelAdapter;
@@ -35,8 +35,8 @@ import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -2353,7 +2353,7 @@ public abstract class Pane<T extends Model>
 	 * @category Populate
 	 */
 	protected void doPopulate() {
-		this.log(Tracing.UI_LAYOUT, "   ->doPopulate()");
+		JptCommonUiPlugin.instance().trace(TRACE_OPTION, "doPopulate");
 	}
 
 	private void controlEnabledState(Control... controls) {
@@ -2402,7 +2402,7 @@ public abstract class Pane<T extends Model>
 	 * specified subject is not null
 	 */
 	protected void engageListeners_(T subject) {
-		this.log(Tracing.UI_LAYOUT, "   ->engageListeners_(" + subject + ')');
+		JptCommonUiPlugin.instance().trace(TRACE_OPTION, "engageListeners_({0})", subject);
 
 		for (String propertyName : this.getPropertyNames()) {
 			subject.addPropertyChangeListener(propertyName, this.aspectChangeListener);
@@ -2422,7 +2422,7 @@ public abstract class Pane<T extends Model>
 	 * specified subject is not null
 	 */
 	protected void disengageListeners_(T subject) {
-		this.log(Tracing.UI_LAYOUT, "   ->disengageListeners_(" + subject + ')');
+		JptCommonUiPlugin.instance().trace(TRACE_OPTION, "disengageListeners_({0})", subject);
 
 		for (String propertyName : this.getPropertyNames()) {
 			subject.removePropertyChangeListener(propertyName, this.aspectChangeListener);
@@ -2493,37 +2493,13 @@ public abstract class Pane<T extends Model>
 	}
 
 	/**
-	 * Logs the given message if the <code>Tracing.DEBUG_LAYOUT</code> is enabled.
-	 *
-	 * @param flag
-	 * @param message The logging message
-	 */
-	protected void log(String flag, String message) {
-		if (flag.equals(Tracing.UI_LAYOUT) && Tracing.booleanDebugOption(Tracing.UI_LAYOUT)) {
-			this.log(message);
-		}
-	}
-
-	protected void log(String message) {
-		Class<?> thisClass = this.getClass();
-		String className = thisClass.getSimpleName();
-
-		if (thisClass.isAnonymousClass()) {
-			className = className.substring(0, className.indexOf('$'));
-			className += "->" + thisClass.getSuperclass().getSimpleName();
-		}
-
-		Tracing.log(className + ": " + message);
-	}
-
-	/**
 	 * Notifies this pane to populate itself using the subject's information.
 	 *
 	 * @category Populate
 	 */
 	private void populate() {
 		if (!this.getControl().isDisposed()) {
-			this.log(Tracing.UI_LAYOUT, "populate()");
+			JptCommonUiPlugin.instance().trace(TRACE_OPTION, "populate");
 			this.repopulate();
 		}
 	}
@@ -2560,8 +2536,7 @@ public abstract class Pane<T extends Model>
 	 * @category Populate
 	 */
 	protected final void repopulate() {
-
-		this.log(Tracing.UI_LAYOUT, "   ->repopulate()");
+		JptCommonUiPlugin.instance().trace(TRACE_OPTION, "repopulate");
 
 		// Populate this pane
 		try {
@@ -2638,7 +2613,7 @@ public abstract class Pane<T extends Model>
 	protected final void subjectChanged(T oldSubject, T newSubject) {
 		if (!this.getControl().isDisposed()) {
 
-			this.log(Tracing.UI_LAYOUT, "subjectChanged()");
+			JptCommonUiPlugin.instance().trace(TRACE_OPTION, "subjectChanged({0}, {1})", oldSubject, newSubject);
 			this.disengageListeners(oldSubject);
 
 			this.repopulate();
@@ -2688,7 +2663,7 @@ public abstract class Pane<T extends Model>
 	}
 
 	public void dispose() {
-		this.log(Tracing.UI_LAYOUT, "dispose()");
+		JptCommonUiPlugin.instance().trace(TRACE_OPTION, "dispose");
 
 		// Dispose this pane
 		this.disengageListeners(getSubject());
@@ -2700,4 +2675,5 @@ public abstract class Pane<T extends Model>
 		}
 	}
 
+	private static final String TRACE_OPTION = Pane.class.getSimpleName();
 }

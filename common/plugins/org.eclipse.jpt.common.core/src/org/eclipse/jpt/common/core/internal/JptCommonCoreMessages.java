@@ -16,13 +16,21 @@ import org.eclipse.osgi.util.NLS;
  */
 public class JptCommonCoreMessages {
 
+	private static final String BUNDLE_NAME = "jpt_common_core"; //$NON-NLS-1$
+	private static final Class<?> BUNDLE_CLASS = JptCommonCoreMessages.class;
+	static {
+		NLS.initializeMessages(BUNDLE_NAME, BUNDLE_CLASS);
+	}
+
 	public static String DALI_JOB_NAME;
 	public static String DALI_EVENT_HANDLER_THREAD_NAME;
 	public static String GENERATION_CREATING_LAUNCH_CONFIG_TASK;
 	public static String GENERATION_SAVING_LAUNCH_CONFIG_TASK;
 	public static String GENERATION_LAUNCHING_CONFIG_TASK;
+	public static String PREFERENCES_FLUSH_JOB_NAME;
 	public static String REGISTRY_MISSING_ATTRIBUTE;
 	public static String REGISTRY_INVALID_VALUE;
+	public static String REGISTRY_MISSING_BUNDLE;
 	public static String REGISTRY_DUPLICATE;
 	public static String REGISTRY_FAILED_CLASS_LOAD;
 	public static String REGISTRY_FAILED_INTERFACE_ASSIGNMENT;
@@ -31,13 +39,9 @@ public class JptCommonCoreMessages {
 	public static String VALIDATE_CONTAINER_NOT_SPECIFIED;
 	public static String VALIDATE_FILE_NAME_NOT_SPECIFIED;
 	public static String VALIDATE_FILE_ALREADY_EXISTS;
-	
-	private static final String BUNDLE_NAME = "jpt_common_core"; //$NON-NLS-1$
-	private static final Class<?> BUNDLE_CLASS = JptCommonCoreMessages.class;
-	static {
-		NLS.initializeMessages(BUNDLE_NAME, BUNDLE_CLASS);
-	}
-	
+	public static String RESOURCE_TYPE_INVALID_CONTENT_TYPE;
+	public static String RESOURCE_TYPE_INVALID_BASE_TYPE;
+
 	private JptCommonCoreMessages() {
 		throw new UnsupportedOperationException();
 	}

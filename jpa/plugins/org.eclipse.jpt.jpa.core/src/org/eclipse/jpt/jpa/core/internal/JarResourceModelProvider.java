@@ -13,9 +13,9 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryPackageFragmentRoot;
+import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaResourceModelProvider;
 
@@ -43,7 +43,7 @@ public class JarResourceModelProvider
 	}
 
 	public IContentType getContentType() {
-		return JptCommonCorePlugin.JAR_CONTENT_TYPE;
+		return JavaResourcePackageFragmentRoot.JAR_CONTENT_TYPE;
 	}
 
 	/**

@@ -2042,7 +2042,7 @@ public class JpaArtifactFactory {
 	public PersistenceUnit getPersistenceUnit(JpaProject project) {
 		if(project.getRootContextNode().getPersistenceXml() == null)
 			return null;
-		return project.getRootContextNode().getPersistenceXml().getPersistence()
+		return project.getRootContextNode().getPersistenceXml().getRoot()
 				.getPersistenceUnits().iterator().next();
 	}
 	

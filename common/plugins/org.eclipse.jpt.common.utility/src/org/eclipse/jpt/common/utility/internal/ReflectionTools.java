@@ -38,7 +38,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 public final class ReflectionTools {
 
 	public static final Class<?>[] ZERO_PARAMETER_TYPES = new Class[0];
-	public static final Object[] ZERO_ARGUMENTS = new Object[0];
 	private static final String CR = StringTools.CR;
 
 	public static final Class<?> VOID_CLASS = void.class;
@@ -283,7 +282,7 @@ public final class ReflectionTools {
 	 * <code>Object.execute(String methodName)</code>
 	 */
 	public static Object executeMethod(Object receiver, String methodName) {
-		return executeMethod(receiver, methodName, ZERO_PARAMETER_TYPES, ZERO_ARGUMENTS);
+		return executeMethod(receiver, methodName, ZERO_PARAMETER_TYPES, Tools.EMPTY_OBJECT_ARRAY);
 	}
 
 	/**
@@ -295,7 +294,7 @@ public final class ReflectionTools {
 	 * <p>
 	 * <code>Object.execute(String methodName, Class<?> parameterType, Object argument)</code>
 	 */
-	public static Object executeMethod(Object receiver, String methodName, Class<?> parameterType, Object argument) {
+	public static <T> Object executeMethod(Object receiver, String methodName, Class<T> parameterType, T argument) {
 		return executeMethod(receiver, methodName, new Class[] {parameterType}, new Object[] {argument});
 	}
 
@@ -339,7 +338,7 @@ public final class ReflectionTools {
 	public static Object executeMethod_(Object receiver, String methodName)
 		throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
 	{
-		return executeMethod_(receiver, methodName, ZERO_PARAMETER_TYPES, ZERO_ARGUMENTS);
+		return executeMethod_(receiver, methodName, ZERO_PARAMETER_TYPES, Tools.EMPTY_OBJECT_ARRAY);
 	}
 
 	/**
@@ -383,7 +382,7 @@ public final class ReflectionTools {
 	 * <code>Class.executeStaticMethod(String methodName)</code>
 	 */
 	public static Object executeStaticMethod(Class<?> javaClass, String methodName) {
-		return executeStaticMethod(javaClass, methodName, ZERO_PARAMETER_TYPES, ZERO_ARGUMENTS);
+		return executeStaticMethod(javaClass, methodName, ZERO_PARAMETER_TYPES, Tools.EMPTY_OBJECT_ARRAY);
 	}
 
 	/**
@@ -431,7 +430,7 @@ public final class ReflectionTools {
 	public static Object executeStaticMethod_(Class<?> javaClass, String methodName)
 		throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
 	{
-		return executeStaticMethod_(javaClass, methodName, ZERO_PARAMETER_TYPES, ZERO_ARGUMENTS);
+		return executeStaticMethod_(javaClass, methodName, ZERO_PARAMETER_TYPES, Tools.EMPTY_OBJECT_ARRAY);
 	}
 
 	/**
@@ -1101,7 +1100,7 @@ public final class ReflectionTools {
 	 * <code>Class.newInstance()</code>
 	 */
 	public static <T> T newInstance(Class<T> javaClass) {
-		return newInstance(javaClass, ZERO_PARAMETER_TYPES, ZERO_ARGUMENTS);
+		return newInstance(javaClass, ZERO_PARAMETER_TYPES, Tools.EMPTY_OBJECT_ARRAY);
 	}
 
 	/**
@@ -1145,7 +1144,7 @@ public final class ReflectionTools {
 	public static <T> T newInstance_(Class<T> javaClass)
 		throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
 	{
-		return newInstance_(javaClass, ZERO_PARAMETER_TYPES, ZERO_ARGUMENTS);
+		return newInstance_(javaClass, ZERO_PARAMETER_TYPES, Tools.EMPTY_OBJECT_ARRAY);
 	}
 
 	/**

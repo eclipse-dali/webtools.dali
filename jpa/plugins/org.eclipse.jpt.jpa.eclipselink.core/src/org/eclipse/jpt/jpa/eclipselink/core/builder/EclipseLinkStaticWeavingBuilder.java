@@ -1,12 +1,12 @@
 /*******************************************************************************
-* Copyright (c) 2012 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.builder;
 
 import java.util.Map;
@@ -22,13 +22,13 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.common.core.gen.JptGenerator;
 import org.eclipse.jpt.common.core.gen.LaunchConfigListener;
 import org.eclipse.jpt.common.utility.internal.SynchronizedBoolean;
-import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.plugin.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.JptJpaEclipseLinkCoreMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.weave.StaticWeave;
 
 public class EclipseLinkStaticWeavingBuilder extends IncrementalProjectBuilder
 {
-    public static final String BUILDER_ID = JptJpaEclipseLinkCorePlugin.PLUGIN_ID + ".builder"; //$NON-NLS-1$
+    public static final String BUILDER_ID = JptJpaEclipseLinkCorePlugin.instance().getPluginID() + ".builder"; //$NON-NLS-1$
 
 	private EclipseLinkStaticWeavingBuilderConfigurator configurator;
 

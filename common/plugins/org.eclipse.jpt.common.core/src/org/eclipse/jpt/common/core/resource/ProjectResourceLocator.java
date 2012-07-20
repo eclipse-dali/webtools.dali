@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.IPath;
  * ProjectResourceLocator locator = (ProjectResourceLocator) project.getAdapter(ProjectResourceLocator.class);
  * </pre>
  * <p>
- * See <code>org.eclipse.jpt.common.core/plugin.xml</code>.
+ * See <code>org.eclipse.jpt.common.core/plugin.xml:org.eclipse.core.runtime.adapters</code>.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching

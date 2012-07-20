@@ -1,17 +1,16 @@
 /*******************************************************************************
-* Copyright (c) 2010, 2012 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -56,8 +55,8 @@ import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGenerator;
 import org.eclipse.jpt.jaxb.core.internal.prefs.JaxbPreferencesManager;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformGroupDescription;
-import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
+import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -243,7 +242,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 					return true;
 				} 
 				catch (JavaModelException e) {
-					JptJaxbUiPlugin.log(e); // just log, no UI in validation
+					JptJaxbUiPlugin.instance().logError(e); // just log, no UI in validation
 				}
 				return false;
 			}
@@ -258,7 +257,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 						return (((IPackageFragmentRoot)element).getKind() == IPackageFragmentRoot.K_SOURCE);
 					} 
 					catch (JavaModelException e) {
-						JptJaxbUiPlugin.log(e.getStatus()); // just log, no UI in validation
+						JptJaxbUiPlugin.instance().logError(e); // just log, no UI in validation
 						return false;
 					}
 				}
@@ -452,7 +451,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 	}
 
 	private boolean projectPlatformIsJaxb() {
-		return JptJaxbCorePlugin.getJaxbProject(this.getJavaProject().getProject()) != null;
+		return JptJaxbCorePlugin.instance().getProjectManager().getJaxbProject(this.getJavaProject().getProject()) != null;
 	}
 
 	private boolean projectJaxbPlatformIsEclipseLink() {

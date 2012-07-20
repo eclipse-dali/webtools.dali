@@ -300,4 +300,9 @@ public abstract class ComboPane<T extends Model>
 		return (this.comboBox.getItemCount() > 0)
 				&& value.equals(this.comboBox.getItem(0));
 	}
+
+	@Override
+	public String toString() {
+		return StringTools.buildToStringFor(this);
+	}
 }

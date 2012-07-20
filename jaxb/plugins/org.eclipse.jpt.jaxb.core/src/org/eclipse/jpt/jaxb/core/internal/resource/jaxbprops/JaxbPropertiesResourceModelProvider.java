@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.resource.jaxbprops;
 
 import java.util.HashMap;
@@ -68,7 +68,7 @@ public class JaxbPropertiesResourceModelProvider
 	}
 	
 	public IContentType getContentType() {
-		return JptJaxbCorePlugin.JAXB_PROPERTIES_CONTENT_TYPE;
+		return JaxbPropertiesResource.CONTENT_TYPE;
 	}
 	
 	public JptResourceModel buildResourceModel(JaxbProject jaxbProject, IFile file) {
@@ -111,7 +111,7 @@ public class JaxbPropertiesResourceModelProvider
 		}
 		catch (CoreException ce) {
 			// shouldn't happen
-			JptJaxbCorePlugin.log(ce);
+			JptJaxbCorePlugin.instance().logError(ce);
 		}
 	}
 	

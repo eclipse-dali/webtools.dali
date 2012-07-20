@@ -9,12 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core;
 
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.model.Model;
-
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 
 /**
  * Interface implemented by any object to appear in the JPA Structure view
@@ -31,7 +29,7 @@ import org.eclipse.jpt.common.utility.model.Model;
  * @since 2.0
  */
 public interface JpaStructureNode
-	extends Model, IAdaptable
+	extends JpaContextNode
 {
 	/**
 	 * Return the structure node at the specified offset in the structure node's

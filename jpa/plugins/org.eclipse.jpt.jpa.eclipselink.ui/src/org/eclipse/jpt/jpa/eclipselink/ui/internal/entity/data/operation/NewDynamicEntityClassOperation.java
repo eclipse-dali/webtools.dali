@@ -24,9 +24,9 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmTypeMapping;
-import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.entity.data.model.DynamicEntityField;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.entity.data.model.DynamicEntityTemplateModel;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.operation.NewEntityClassOperation;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.internal.plugin.WTPCommonPlugin;
@@ -81,7 +81,7 @@ public class NewDynamicEntityClassOperation extends NewEntityClassOperation {
 			try {
 				xmlResource.saveIfNecessary();
 			} catch (Exception e) {
-				JptJpaEclipseLinkUiPlugin.log(e);
+				JptJpaEclipseLinkUiPlugin.instance().logError(e);
 			}
 		}
 

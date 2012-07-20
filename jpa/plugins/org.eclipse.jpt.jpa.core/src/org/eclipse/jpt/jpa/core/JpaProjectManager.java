@@ -9,24 +9,19 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core;
 
-import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.jpt.common.utility.BooleanReference;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
 import org.eclipse.jpt.common.utility.model.Model;
 
 /**
- * The JPA project manager holds all the JPA projects in the Eclipse workspace
+ * The JPA project manager holds all the JPA projects in an Eclipse workspace
  * and provides support for executing long-running commands that modify the
  * context model.
  * <p>
- * To retrieve the JPA project manager corresponding to an Eclipse workspace:
- * <pre>
- * IWorkspace workspace = ResourcesPlugin.getWorkspace();
- * JpaProjectManager jpaProjectManager = (JpaProjectManager) workspace.getAdapter(JpaProjectManager.class);
- * </pre>
+ * Retrieve a JPA project manager from a {#link JpaWorkspace JPA workspace}.
  * <p>
- * See <code>org.eclipse.jpt.jpa.core/plugin.xml</code>.
+ * Not intended to be implemented by clients.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -41,9 +36,9 @@ public interface JpaProjectManager
 	extends Model
 {
 	/**
-	 * Return the JPA project manager's workspace.
+	 * Return the JPA project manager's JPA workspace.
 	 */
-	IWorkspace getWorkspace();
+	JpaWorkspace getJpaWorkspace();
 
 
 	// ********** JPA projects **********

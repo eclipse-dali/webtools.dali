@@ -28,9 +28,13 @@ import org.eclipse.text.edits.ReplaceEdit;
 
 /**
  * Context model corresponding to the
- * XML resource model {@link XmlMappingFileRef},
- * which corresponds to the <code>mapping-file</code> element
+ * <code>mapping-file</code> element
  * in the <code>persistence.xml</code> file.
+ * <p>
+ * <strong>NB:</strong>
+ * While this context model corresponds to an XML resource model, the mapping
+ * file it references does <em>not</em> necessarily correspond to an XML
+ * resource model.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -67,11 +71,6 @@ public interface MappingFileRef
 	 */
 	void setFileName(String fileName);
 
-	/**
-	 * Return whether the mapping file ref is a reference to the specified file.
-	 */
-	boolean isFor(IFile file);
-
 
 	// ********** mapping file (orm.xml) **********
 
@@ -82,7 +81,8 @@ public interface MappingFileRef
 
 	/**
 	 * Return mapping file corresponding to the mapping file ref's file name.
-	 * This can be <code>null</code> if the file name is invalid.
+	 * This can be <code>null</code> if the file name is invalid or if the
+	 * file's content is unsupported.
 	 */
 	MappingFile getMappingFile();
 
@@ -119,10 +119,11 @@ public interface MappingFileRef
 	XmlMappingFileRef getXmlMappingFileRef();
 
 	/**
-	 * Return whether the mapping file ref is "implied" by (as opposed to
-	 * explicitly specified in) the <code>persistence.xml</code>.
+	 * Return whether the mapping file ref is a
+	 * <code>persistence.xml</code> default (as opposed to
+	 * explicitly specified).
 	 */
-	boolean isImplied();
+	boolean isDefault();
 
 	/**
 	 * Return whether the specified text offset is within
@@ -144,66 +145,68 @@ public interface MappingFileRef
 	// ********** refactoring **********
 
 	/**
-	 * Create DeleteEdits for deleting any references to the given type 
-	 * that is about to be deleted.
-	 * Return an EmptyIterable if there are not any references to the given type.
+	 * Create delete edits for deleting any references
+	 * to the specified (about to be deleted) type.
+	 * Return an empty collection if there are no references to the specified type.
 	 */
 	Iterable<DeleteEdit> createDeleteTypeEdits(IType type);
 
 	/**
-	 * If this {@link #isFor(IFile)} the given IFile, create a text 
-	 * DeleteEdit for deleting the mapping file element and any text that precedes it
-	 * from the persistence.xml.
-	 * Otherwise return an EmptyIterable.
-	 * Though this will contain 1 or 0 DeleteEdits, using an Iterable
-	 * for ease of use with other createDeleteEdit API.
-	 */
-	Iterable<DeleteEdit> createDeleteMappingFileEdits(IFile file);
-
-	/**
-	 * Create ReplaceEdits for renaming any references to the originalType to the newName.
-	 * The originalType has not yet been renamed, the newName is the new short name.
+	 * Create replace edits for renaming any references to
+	 * the specified original type to the specified new name.
+	 * The specified original type has not yet been renamed; and the specified
+	 * new name is a "simple" (unqualified) name.
 	 */
 	Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName);
 
 	/**
-	 * Create ReplaceEdits for moving any references to the originalType to the newPackage.
-	 * The originalType has not yet been moved.
+	 * Create replace edits for moving any references to
+	 * the specified original type to the specified new package.
+	 * The specified original type has not yet been moved.
 	 */
 	Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage);
 
 	/**
-	 * Create ReplaceEdits for renaming any references to the originalPackage to the newName.
-	 * The originalPackage has not yet been renamed.
+	 * Create replace edits for renaming any references to
+	 * the specified original package to the specified new name.
+	 * The specified original package has not yet been renamed.
 	 */
 	Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName);
 
 	/**
-	 * Create ReplaceEdits for renaming any references to the originalFolder to the newName.
-	 * The originalFolder has not yet been renamed.
+	 * If the ref is for the specified file, create a text 
+	 * delete edit for deleting the mapping file element and any text that precedes it
+	 * in the <code>persistence.xml</code> file.
+	 * Otherwise return an empty collection.
+	 */
+	Iterable<DeleteEdit> createDeleteMappingFileEdits(IFile file);
+
+	/**
+	 * Create replace edits for renaming any references to the specified
+	 * original folder to the specified new name.
+	 * The specified original folder has not yet been renamed.
 	 */
 	Iterable<ReplaceEdit> createRenameFolderEdits(IFolder originalFolder, String newName);
 
 	/**
-	 * If this {@link #isFor(IFile)} the given IFile, create a text 
-	 * ReplaceEdit for renaming the mapping file element to the new name.
-	 * Otherwise return an EmptyIterable.
-	 * Though this will contain 1 or 0 ReplaceEdits, using an Iterable
-	 * for ease of use with other createReplaceMappingFileEdits API.
+	 * If the ref is for the specified file, create a text 
+	 * replace edit for renaming the mapping file element to the new name.
+	 * Otherwise return an empty collection.
 	 */
 	Iterable<ReplaceEdit> createRenameMappingFileEdits(IFile originalFile, String newName);
 
 	/**
-	 * If this {@link #isFor(IFile)} the given IFile create a text
-	 * ReplaceEdit for moving the originalFile to the destination.
-	 * Otherwise return an EmptyIterable.
-	 * The originalFile has not been moved yet.
+	 * If the ref is for the specified file, create a text replace edit for
+	 * moving the specified original file to the specified destination.
+	 * Otherwise return an empty collection.
+	 * The specified original file has not been moved yet.
 	 */
-	Iterable<ReplaceEdit> createMoveMappingFileEdits(IFile originalFile, IPath runtineDestination);
+	Iterable<ReplaceEdit> createMoveMappingFileEdits(IFile originalFile, IPath destination);
 
 	/**
-	 * Create ReplaceEdits for moving any references to the originalFolder to the runtimeDestination.
-	 * The runtimeDestination already includes the original folder name.
+	 * Create replace edits for moving any references to the specified
+	 * original folder to the specified destination.
+	 * The specified destination already includes the original folder name.
 	 */
-	Iterable<ReplaceEdit> createMoveFolderEdits(IFolder originalFolder, IPath runtimeDestination);
+	Iterable<ReplaceEdit> createMoveFolderEdits(IFolder originalFolder, IPath destination);
 }

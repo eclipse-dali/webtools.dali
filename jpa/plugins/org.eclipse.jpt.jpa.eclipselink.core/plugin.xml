@@ -11,7 +11,9 @@
  -->
 
 <plugin>
-	
+
+	<!-- ***** content types ***** -->
+
 	<extension
 		point="org.eclipse.core.contenttype.contentTypes">
 		
@@ -28,8 +30,74 @@
 		</content-type>
 		
 	</extension>
-	
-	
+
+
+	<!-- ***** resource types ***** -->
+
+	<extension 
+		point="org.eclipse.jpt.common.core.resourceTypes">
+
+		<resource-type
+			id="org.eclipse.jpt.jpa.eclipselink.core.resource.orm_1_0"
+			content-type="org.eclipse.jpt.jpa.eclipselink.core.content.orm"
+			version="1.0">
+			<base-type id="org.eclipse.jpt.jpa.core.resource.orm_1_0"/>
+		</resource-type>
+
+		<resource-type
+			id="org.eclipse.jpt.jpa.eclipselink.core.resource.orm_1_1"
+			content-type="org.eclipse.jpt.jpa.eclipselink.core.content.orm"
+			version="1.1">
+			<base-type id="org.eclipse.jpt.jpa.core.resource.orm_1_0"/>
+		</resource-type>
+
+		<resource-type
+			id="org.eclipse.jpt.jpa.eclipselink.core.resource.orm_1_2"
+			content-type="org.eclipse.jpt.jpa.eclipselink.core.content.orm"
+			version="1.2">
+			<base-type id="org.eclipse.jpt.jpa.core.resource.orm_1_0"/>
+		</resource-type>
+
+		<resource-type
+			id="org.eclipse.jpt.jpa.eclipselink.core.resource.orm_2_0"
+			content-type="org.eclipse.jpt.jpa.eclipselink.core.content.orm"
+			version="2.0">
+			<base-type id="org.eclipse.jpt.jpa.core.resource.orm_2_0"/>
+		</resource-type>
+
+		<resource-type
+			id="org.eclipse.jpt.jpa.eclipselink.core.resource.orm_2_1"
+			content-type="org.eclipse.jpt.jpa.eclipselink.core.content.orm"
+			version="2.1">
+			<base-type id="org.eclipse.jpt.jpa.core.resource.orm_2_0"/>
+		</resource-type>
+
+		<resource-type
+			id="org.eclipse.jpt.jpa.eclipselink.core.resource.orm_2_2"
+			content-type="org.eclipse.jpt.jpa.eclipselink.core.content.orm"
+			version="2.2">
+			<base-type id="org.eclipse.jpt.jpa.core.resource.orm_2_0"/>
+		</resource-type>
+
+		<resource-type
+			id="org.eclipse.jpt.jpa.eclipselink.core.resource.orm_2_3"
+			content-type="org.eclipse.jpt.jpa.eclipselink.core.content.orm"
+			version="2.3">
+			<base-type id="org.eclipse.jpt.jpa.core.resource.orm_2_0"/>
+		</resource-type>
+
+		<resource-type
+			id="org.eclipse.jpt.jpa.eclipselink.core.resource.orm_2_4"
+			content-type="org.eclipse.jpt.jpa.eclipselink.core.content.orm"
+			version="2.4">
+			<base-type id="org.eclipse.jpt.jpa.core.resource.orm_2_0"/>
+		</resource-type>
+
+	</extension>
+
+
+	<!-- ***** JPA platforms ***** -->
+
 	<extension
 		point="org.eclipse.jpt.jpa.core.jpaPlatforms">
 		
@@ -95,6 +163,8 @@
 	</extension>
 	
 	
+	<!-- ***** library validators ***** -->
+
 	<extension
 		point="org.eclipse.jpt.common.core.libraryValidators">
 		
@@ -137,8 +207,10 @@
 		</libraryValidator>
 		
 	</extension>
-	
-	
+
+
+	<!-- ***** WTP Library Provider Framework Integration ***** -->
+
 	<extension 
 		point="org.eclipse.jst.common.project.facet.core.libraryProviders">
 		
@@ -175,23 +247,25 @@
 	</extension>
 	
 	
-	<extension 
-		id="builder" 
-		name="%builderName"
-		point="org.eclipse.core.resources.builders">
-		
+	<!-- ***** builders ***** -->
+
+	<extension
+		point="org.eclipse.core.resources.builders"
+		id="builder"
+		name="%builderName">
+
 		<builder hasNature="false">
 			<run class="org.eclipse.jpt.jpa.eclipselink.core.builder.EclipseLinkStaticWeavingBuilder"/>
 		</builder>
+
 	</extension>
-	
-	
-	
-	<!-- ***** WTP extensions ***** -->
+
+
+	<!-- ***** WTP resource factories ***** -->
 
 	<extension
 		point="org.eclipse.wst.common.modulecore.resourceFactories">
-		
+
 		<resourceFactory
 			class="org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmXmlResourceFactory"
 			isDefault="true">
@@ -199,7 +273,7 @@
 				contentTypeId="org.eclipse.jpt.jpa.eclipselink.core.content.orm">
 			</contentTypeBinding>
 		</resourceFactory>
-	    
+
 	</extension>
-	
+
 </plugin>

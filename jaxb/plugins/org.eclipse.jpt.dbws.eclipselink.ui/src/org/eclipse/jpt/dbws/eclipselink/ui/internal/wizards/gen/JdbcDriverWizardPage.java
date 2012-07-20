@@ -1,12 +1,12 @@
 /*******************************************************************************
-* Copyright (c) 2010, 2011 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.jpt.dbws.eclipselink.ui.internal.wizards.gen;
 
 import java.io.File;
@@ -30,9 +30,9 @@ import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.util.TableLayoutComposite;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.dbws.eclipselink.ui.JptDbwsUiPlugin;
 import org.eclipse.jpt.dbws.eclipselink.ui.internal.JptDbwsUiIcons;
 import org.eclipse.jpt.dbws.eclipselink.ui.internal.JptDbwsUiMessages;
+import org.eclipse.jpt.dbws.eclipselink.ui.internal.plugin.JptDbwsEclipseLinkUiPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -74,7 +74,7 @@ public class JdbcDriverWizardPage extends WizardPage
 	protected void initialize() {
 		this.setTitle(JptDbwsUiMessages.JdbcDriverWizardPage_title);
 		this.setDescription(JptDbwsUiMessages.JdbcDriverWizardPage_desc);
-		this.setImageDescriptor(JptDbwsUiPlugin.getImageDescriptor(JptDbwsUiIcons.DBWS_GEN_WIZ_BANNER));
+		this.setImageDescriptor(JptDbwsEclipseLinkUiPlugin.instance().buildImageDescriptor(JptDbwsUiIcons.DBWS_GEN_WIZ_BANNER));
 	}
 
 	// ********** intra-wizard methods **********

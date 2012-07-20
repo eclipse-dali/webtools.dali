@@ -29,7 +29,7 @@ import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
-import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
+import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.platform.JaxbPlatformUi;
 
 /**
@@ -53,7 +53,7 @@ public class JaxbNavigatorContentProvider
 	public JaxbNavigatorContentProvider() {
 		super();
 		this.jaxbProjectListener = this.buildJaxbProjectListener();
-		JptJaxbCorePlugin.getProjectManager().addCollectionChangeListener(JaxbProjectManager.JAXB_PROJECTS_COLLECTION, this.jaxbProjectListener);
+		JptJaxbCorePlugin.instance().getProjectManager().addCollectionChangeListener(JaxbProjectManager.JAXB_PROJECTS_COLLECTION, this.jaxbProjectListener);
 	}
 	
 	protected CollectionChangeListener buildJaxbProjectListener() {
@@ -82,7 +82,7 @@ public class JaxbNavigatorContentProvider
 			IProject project = (IProject) ((IAdaptable) element).getAdapter(IProject.class);
 			
 			if (project != null) {
-				JaxbProject jaxbProject = JptJaxbCorePlugin.getJaxbProject(project);
+				JaxbProject jaxbProject = JptJaxbCorePlugin.instance().getProjectManager().getJaxbProject(project);
 				if (jaxbProject != null) {
 					JaxbPlatformDescription desc = jaxbProject.getPlatform().getDescription();
 					JaxbPlatformUi platformUi = 
@@ -101,7 +101,7 @@ public class JaxbNavigatorContentProvider
 			IProject project = (IProject) ((IAdaptable) parentElement).getAdapter(IProject.class);
 			
 			if (project != null) {
-				JaxbProject jaxbProject = JptJaxbCorePlugin.getJaxbProject(project);
+				JaxbProject jaxbProject = JptJaxbCorePlugin.instance().getProjectManager().getJaxbProject(project);
 				if (jaxbProject != null) {
 					JaxbPlatformDescription desc = jaxbProject.getPlatform().getDescription();
 					JaxbPlatformUi platformUi = 
@@ -119,7 +119,7 @@ public class JaxbNavigatorContentProvider
 	@Override
 	public void dispose() {
 		super.dispose();
-		JptJaxbCorePlugin.getProjectManager().removeCollectionChangeListener(JaxbProjectManager.JAXB_PROJECTS_COLLECTION, this.jaxbProjectListener);
+		JptJaxbCorePlugin.instance().getProjectManager().removeCollectionChangeListener(JaxbProjectManager.JAXB_PROJECTS_COLLECTION, this.jaxbProjectListener);
 	}
 	
 	

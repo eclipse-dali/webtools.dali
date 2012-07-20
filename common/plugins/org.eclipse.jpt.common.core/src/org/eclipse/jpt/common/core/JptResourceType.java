@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,10 +10,11 @@
 package org.eclipse.jpt.common.core;
 
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.common.utility.internal.Transformer;
+import org.eclipse.jpt.common.utility.internal.TransformerAdapter;
 
 /**
- * Describes the file content type and version for JPA resources.
- * This is a value object that defines an {@link #equals(Object)} method.
+ * Specifies the file content type and version for Dali resources.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -21,79 +22,77 @@ import org.eclipse.core.runtime.content.IContentType;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @see JptResourceTypeManager
+ * @version 3.3
  * @since 2.3
  */
-public class JptResourceType
+public interface JptResourceType
+	extends ContentTypeReference, Comparable<JptResourceType>
 {
-	private final IContentType contentType;
-
-	private final String version;
-
+	/**
+	 * Return the resource type's manager.
+	 */
+	JptResourceTypeManager getManager();
 
 	/**
-	 * Version used when version can not be determined or when there is no
-	 * sense of version (e.g. Java).
+	 * Return the resource type's extension-supplied ID.
+	 * This is unique among all the resource types.
 	 */
-	public static final String UNDETERMINED_VERSION = "<undetermined>"; //$NON-NLS-1$
+	String getId();
 
+	/**
+	 * Return the resource type's version.
+	 * @see org.eclipse.jpt.common.utility.internal.VersionComparator
+	 */
+	String getVersion();
 
-	public JptResourceType(IContentType contentType) {
-		this(contentType, UNDETERMINED_VERSION);
-	}
+	/**
+	 * Version used when version cannot be determined or when there is no
+	 * sense of version relevant to JPA (e.g. Java). An indeterminate version
+	 * is compatible only with another indeterminate version; while all
+	 * specified versions are compatible with an indeterminate version.
+	 */
+	String UNDETERMINED_VERSION = "<undetermined>"; //$NON-NLS-1$
 
-	public JptResourceType(IContentType contentType, String version) {
-		super();
-		if (contentType == null) {
-			throw new NullPointerException("content type"); //$NON-NLS-1$
+	/**
+	 * Return the resource type's base types.
+	 * @see #isKindOf(JptResourceType)
+	 */
+	Iterable<JptResourceType> getBaseTypes();
+
+	/**
+	 * Return whether either of the following is <code>true</code>:
+	 * <li>Both of the following are <code>true</code>:<ul>
+	 *     <li>the resource type's content type
+	 *         {@link IContentType#isKindOf(IContentType) is a kind of} the
+	 *         specified resource type's content type
+	 *     <li>the resource type's version is compatible with the
+	 *         specified resource type's version
+	 *         (i.e. the resource type's version is greater than or
+	 *         equal to the specified resource type's version);
+	 *         if the resource type's version is {@link #UNDETERMINED_VERSION
+	 *         indeterminate}, it is compatible only if the specified resource
+	 *         type's version is also indeterminate
+	 *     </ul>
+	 * <li>Any one of the resource type's {@link #getBaseTypes() base types}
+	 *     {@link #isKindOf(JptResourceType) is a kind of} the specified
+	 *     resource type
+	 * <ul>
+	 */
+	boolean isKindOf(JptResourceType resourceType);
+
+	/**
+	 * Return the ID of the plug-in that contributed the resource type.
+	 */
+	String getPluginId();
+
+	Transformer<JptResourceType, String> VERSION_TRANSFORMER = new VersionTransformer();
+	class VersionTransformer
+		extends TransformerAdapter<JptResourceType, String>
+	{
+		@Override
+		public String transform(JptResourceType resourceType) {
+			return resourceType.getVersion();
 		}
-		if (version == null) {
-			throw new NullPointerException("version"); //$NON-NLS-1$
-		}
-		this.contentType = contentType;
-		this.version = version;
-	}
-
-
-	public IContentType getContentType() {
-		return this.contentType;
-	}
-
-	public String getVersion() {
-		return this.version;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if ((obj == null) || (obj.getClass() != this.getClass())) {
-			return false;
-		}
-		JptResourceType other = (JptResourceType) obj;
-		return this.contentType.equals(other.contentType) && this.version.equals(other.version);
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int hash = 17;
-		hash = hash * prime + this.contentType.hashCode();
-		hash = hash * prime + this.version.hashCode();
-		return hash;
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(this.getClass().getSimpleName());
-		sb.append("(content = "); //$NON-NLS-1$
-		sb.append(this.contentType);
-		sb.append(", "); //$NON-NLS-1$
-		sb.append("version = "); //$NON-NLS-1$
-		sb.append(this.version);
-		sb.append(')');
-		return sb.toString();
 	}
 }

@@ -17,7 +17,7 @@ import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.ITypeParameter;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
@@ -83,7 +83,7 @@ abstract class BinaryMember
 		try {
 			return Flags.isFinal(member.getFlags());
 		} catch (JavaModelException ex) {
-			JptCommonCorePlugin.log(ex);
+			JptCommonCorePlugin.instance().logError(ex);
 			return false;
 		}
 	}
@@ -103,7 +103,7 @@ abstract class BinaryMember
 		try {
 			return Flags.isTransient(member.getFlags());
 		} catch (JavaModelException ex) {
-			JptCommonCorePlugin.log(ex);
+			JptCommonCorePlugin.instance().logError(ex);
 			return false;
 		}
 	}
@@ -123,7 +123,7 @@ abstract class BinaryMember
 		try {
 			return Flags.isPublic(member.getFlags());
 		} catch (JavaModelException ex) {
-			JptCommonCorePlugin.log(ex);
+			JptCommonCorePlugin.instance().logError(ex);
 			return false;
 		}
 	}
@@ -143,7 +143,7 @@ abstract class BinaryMember
 		try {
 			return Flags.isStatic(member.getFlags());
 		} catch (JavaModelException ex) {
-			JptCommonCorePlugin.log(ex);
+			JptCommonCorePlugin.instance().logError(ex);
 			return false;
 		}
 	}
@@ -163,7 +163,7 @@ abstract class BinaryMember
 		try {
 			return Flags.isProtected(member.getFlags());
 		} catch (JavaModelException ex) {
-			JptCommonCorePlugin.log(ex);
+			JptCommonCorePlugin.instance().logError(ex);
 			return false;
 		}
 	}
@@ -219,7 +219,7 @@ abstract class BinaryMember
 				}
 			}
 			catch (JavaModelException jme) {
-				JptCommonCorePlugin.log(jme);
+				JptCommonCorePlugin.instance().logError(jme);
 			}
 		}
 		else if (Signature.getTypeSignatureKind(erasureSignature) == Signature.ARRAY_TYPE_SIGNATURE) {

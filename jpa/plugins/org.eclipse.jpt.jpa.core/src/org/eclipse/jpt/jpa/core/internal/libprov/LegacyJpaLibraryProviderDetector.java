@@ -1,17 +1,16 @@
 /*******************************************************************************
- *  Copyright (c) 2009, 2010  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.libprov;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.jpt.jpa.core.JpaFacet;
+import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
 import org.eclipse.jst.common.project.facet.core.libprov.LegacyLibraryProviderDetector;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryProviderFramework;
@@ -27,7 +26,7 @@ public class LegacyJpaLibraryProviderDetector
 	@Override
 	public ILibraryProvider detect(
 			final IProject project, final IProjectFacet facet) {
-		if (facet.equals(JpaFacet.FACET)) {
+		if (facet.equals(JpaProject.FACET)) {
 			return LibraryProviderFramework.getProvider(LEGACY_JPA_LIBRARY_PROVIDER_ID);
 		}
 		return null;

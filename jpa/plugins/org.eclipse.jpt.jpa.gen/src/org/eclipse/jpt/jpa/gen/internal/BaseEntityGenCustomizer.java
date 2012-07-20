@@ -12,8 +12,6 @@ package org.eclipse.jpt.jpa.gen.internal;
 import java.io.File;
 import java.util.List;
 import java.util.Set;
-
-import org.eclipse.jpt.jpa.core.prefs.JpaEntityGenPreferencesManager;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.gen.internal.util.DTPUtil;

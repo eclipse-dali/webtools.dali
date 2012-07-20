@@ -17,7 +17,7 @@ import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformGroupDescription;
 
 /**
  * Property tester for {@link JaxbPlatformDescription}.
- * See <code>org.eclipse.jpt.jaxb.core/plugin.xml</code>
+ * See <code>org.eclipse.jpt.jaxb.core/plugin.xml:org.eclipse.core.expressions.propertyTesters</code>
  */
 public class JaxbPlatformTester
 	extends PropertyTester

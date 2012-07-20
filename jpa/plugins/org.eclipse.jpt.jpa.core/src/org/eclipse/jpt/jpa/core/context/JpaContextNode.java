@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.JptResourceTypeReference;
 import org.eclipse.jpt.jpa.core.JpaNode;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.db.Catalog;
@@ -30,13 +30,8 @@ import org.eclipse.jpt.jpa.db.SchemaContainer;
  * @since 2.0
  */
 public interface JpaContextNode
-	extends JpaNode
+	extends JpaNode, JptResourceTypeReference
 {
-	/**
-	 * Return the resource type of the context node's resource.
-	 */
-	JptResourceType getResourceType();
-
 	/**
 	 * Return the persistence unit if the context node is within a 
 	 * persistence unit. Otherwise throw an exception.
@@ -47,7 +42,7 @@ public interface JpaContextNode
 	 * Return the mapping file root if the context node is within a 
 	 * mapping file. Otherwise throw an exception.
 	 */
-	MappingFileRoot getMappingFileRoot();
+	MappingFile.Root getMappingFileRoot();
 
 
 	// ********** database stuff **********

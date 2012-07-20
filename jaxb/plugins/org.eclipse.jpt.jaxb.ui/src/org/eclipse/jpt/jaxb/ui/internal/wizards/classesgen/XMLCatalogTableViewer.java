@@ -25,7 +25,7 @@ import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
-import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
+import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
@@ -40,10 +40,10 @@ public class XMLCatalogTableViewer extends TableViewer {
 
 	protected static String ERROR_STATE_KEY = "errorstatekey"; //$NON-NLS-1$
 
-	protected static Image dtdFileImage = JptJaxbUiPlugin.getImage("icons/full/obj16/dtdfile.gif"); //$NON-NLS-1$
-	protected static Image unknownFileImage = JptJaxbUiPlugin.getImage("icons/full/obj16/text.gif"); //$NON-NLS-1$
-	protected static Image xsdFileImage = JptJaxbUiPlugin.getImage("icons/full/obj16/XSDFile.gif"); //$NON-NLS-1$
-	protected static Image errorImage = JptJaxbUiPlugin.getImage("icons/full/ovr16/error_ovr.gif"); //$NON-NLS-1$
+	protected static Image dtdFileImage = JptJaxbUiPlugin.instance().getImage("full/obj16/dtdfile"); //$NON-NLS-1$
+	protected static Image unknownFileImage = JptJaxbUiPlugin.instance().getImage("full/obj16/text"); //$NON-NLS-1$
+	protected static Image xsdFileImage = JptJaxbUiPlugin.instance().getImage("full/obj16/XSDFile"); //$NON-NLS-1$
+	protected static Image errorImage = JptJaxbUiPlugin.instance().getImage("full/ovr16/error_ovr"); //$NON-NLS-1$
 
 	// ********** constructor **********
 

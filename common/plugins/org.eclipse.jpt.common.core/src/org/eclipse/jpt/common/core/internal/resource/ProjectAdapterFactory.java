@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
  * Factory to build Dali adapters for an {@link IProject}:<ul>
  * <li>{@link org.eclipse.jpt.common.core.resource.ProjectResourceLocator}
  * </ul>
- * See <code>org.eclipse.jpt.common.core/plugin.xml</code>.
+ * See <code>org.eclipse.jpt.common.core/plugin.xml:org.eclipse.core.runtime.adapters</code>.
  */
 public class ProjectAdapterFactory
 	implements IAdapterFactory

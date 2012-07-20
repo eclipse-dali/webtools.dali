@@ -23,10 +23,10 @@ import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
+import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.CompositeChange;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
@@ -44,7 +44,8 @@ import org.eclipse.text.edits.MultiTextEdit;
 import org.eclipse.text.edits.TextEdit;
 
 /**
- * Participant in the delete refactoring of {@link IFile}s with content type {@link JptJpaCorePlugin#MAPPING_FILE_CONTENT_TYPE}.
+ * Participant in the delete refactoring of {@link IFile}s with content type
+ * {@link org.eclipse.jpt.jpa.core.resource.ResourceMappingFile.Root#CONTENT_TYPE}.
  * If the deleted mapping file is listed in a persistence.xml file of any JpaProject
  * then a Change object is created that will delete that reference from the file.
  */
@@ -54,7 +55,8 @@ public class JpaDeleteMappingFileParticipant
 {
 
 	/**
-	 * Store the {@link IFile}s to be deleted with content type {@link JptJpaCorePlugin#MAPPING_FILE_CONTENT_TYPE}
+	 * Store the {@link IFile}s to be deleted with content type
+	 * {@link org.eclipse.jpt.jpa.core.resource.ResourceMappingFile.Root#CONTENT_TYPE}
 	 * and their corresponding {@link DeleteArguments}
 	 */
 	protected final Map<IFile, DeleteArguments> mappingFiles;
@@ -200,7 +202,7 @@ public class JpaDeleteMappingFileParticipant
 		if (persistenceXml == null) {
 			return null;
 		}
-		Persistence persistence = persistenceXml.getPersistence();
+		Persistence persistence = persistenceXml.getRoot();
 		if (persistence == null) {
 			return null;
 		}
@@ -217,7 +219,7 @@ public class JpaDeleteMappingFileParticipant
 			}
 			catch (MalformedTreeException e) {
 				//log exception and don't add this persistence.xml type deletion to the conflicting change object
-				JptJpaCorePlugin.log(e);
+				JptJpaCorePlugin.instance().logError(e);
 			}
 		}
 	}

@@ -17,7 +17,6 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal.feature;
 
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -33,8 +32,8 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditor;
@@ -130,7 +129,7 @@ public class CreateJPAEntityFeature extends AbstractCreateFeature {
 			return new Object[] {};
 		}
 		
-		if (!JptJpaCorePlugin.getDiscoverAnnotatedClasses(targetProject)) {
+		if (! JpaPreferences.getDiscoverAnnotatedClasses(targetProject)) {
 			JPAEditorUtil.createRegisterEntityInXMLJob(jpaProject, entityName);
 		}
 		
@@ -157,7 +156,7 @@ public class CreateJPAEntityFeature extends AbstractCreateFeature {
 			JPADiagramEditorPlugin.logError("Cannot refresh the project", e1);  //$NON-NLS-1$		 
 		}
 		
-		ListIterator<PersistenceUnit> lit = jpaProject.getRootContextNode().getPersistenceXml().getPersistence().getPersistenceUnits().iterator();		
+		ListIterator<PersistenceUnit> lit = jpaProject.getRootContextNode().getPersistenceXml().getRoot().getPersistenceUnits().iterator();		
 		PersistenceUnit pu = lit.next();
 		JavaPersistentType jpt = (JavaPersistentType)pu.getPersistentType(entityName);
 

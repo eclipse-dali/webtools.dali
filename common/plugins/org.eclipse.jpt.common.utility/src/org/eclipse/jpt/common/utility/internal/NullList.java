@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -129,9 +129,8 @@ public final class NullList<E>
 		return this;
 	}
 
-	private static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
 	public Object[] toArray() {
-		return EMPTY_OBJECT_ARRAY;
+		return Tools.EMPTY_OBJECT_ARRAY;
 	}
 
 	public <T> T[] toArray(T[] a) {

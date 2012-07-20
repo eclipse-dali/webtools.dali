@@ -23,6 +23,7 @@ import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -35,6 +36,7 @@ import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IElementChangedListener;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.common.core.internal.JptCommonCoreMessages;
+import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.core.internal.utility.command.CommandJobCommandAdapter;
 import org.eclipse.jpt.common.core.internal.utility.command.SimpleJobCommandExecutor;
 import org.eclipse.jpt.common.core.internal.utility.command.SingleUseQueueingExtendedJobCommandExecutor;
@@ -51,15 +53,19 @@ import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
+import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.JpaWorkspace;
+import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
-import org.eclipse.osgi.util.NLS;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
+import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
+import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -91,12 +97,12 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  *     {@link #start() start} a JPA project manager as appropriate.
  *     This will trigger the manager to find and add all pre-existing
  *     JPA projects.
- * 
+ *
  * <li>Project created and facet installed<p>
  *     {@link IResourceChangeEvent#POST_CHANGE}
  * <li>Project facet uninstalled<p>
  *     {@link IResourceChangeEvent#POST_CHANGE}
- * 
+ *
  * <li>Project opened<p>
  *     {@link IResourceChangeEvent#POST_CHANGE}<p>
  *     -> {@link IResource#FILE}<p>
@@ -108,7 +114,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  *     -> {@link IResource#FILE}<p>
  *     -> {@link IResourceDelta#REMOVED}
  *     <p>facet settings file
- * 
+ *
  * <li>Pre-existing project imported from directory or archive (created and opened)<p>
  *     {@link IResourceChangeEvent#POST_CHANGE}<p>
  *     -> {@link IResource#FILE}<p>
@@ -126,7 +132,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  *     -> {@link IResource#FILE}<p>
  *     -> {@link IResourceDelta#REMOVED}<p>
  *     facet settings file
- * 
+ *
  * <li>Project facet installed by editing the facets settings file directly<p>
  *     {@link IResourceChangeEvent#POST_CHANGE}<p>
  *     -> {@link IResource#FILE}<p>
@@ -144,9 +150,9 @@ public class InternalJpaProjectManager
 	implements JpaProjectManager, JpaProject.Manager
 {
 	/**
-	 * The workspace the JPA project manager corresponds to.
+	 * The JPA workspace the JPA project manager corresponds to.
 	 */
-	private final IWorkspace workspace;
+	private final JpaWorkspace jpaWorkspace;
 
 	/**
 	 * Determine how commands (Resource and Java change events etc.) are
@@ -236,31 +242,16 @@ public class InternalJpaProjectManager
 	 */
 	private final ThreadLocalExtendedCommandExecutor modifySharedDocumentCommandExecutor = new ThreadLocalExtendedCommandExecutor();
 
-	/**
-	 * Log any exceptions appropriately.
-	 */
-	private final ExceptionHandler exceptionHandler;
-
-	/**
-	 * See org.eclipse.jpt.jpa.core.tests.JptJpaCoreTestsPlugin#start(org.osgi.framework.BundleContext).
-	 */
-	/* CU private */ volatile boolean test = false;
-
 
 	// ********** constructor **********
 
 	/**
 	 * Internal: Called <em>only</em> by the
-	 * {@link JptJpaCorePlugin#getJpaProjectManager_(IWorkspace) Dali plug-in}.
+	 * {@link InternalJpaWorkspace#buildJpaProjectManager() JPA workspace}.
 	 */
-	public InternalJpaProjectManager(IWorkspace workspace) {
+	public InternalJpaProjectManager(JpaWorkspace jpaWorkspace) {
 		super();
-		this.workspace = workspace;
-		this.exceptionHandler = this.buildExceptionHandler();
-	}
-
-	private ExceptionHandler buildExceptionHandler() {
-		return new LocalExceptionHandler();
+		this.jpaWorkspace = jpaWorkspace;
 	}
 
 
@@ -268,39 +259,39 @@ public class InternalJpaProjectManager
 
 	/**
 	 * Internal: Called <em>only</em> by the
-	 * {@link JptJpaCorePlugin#getJpaProjectManager_(IWorkspace) Dali plug-in}.
+	 * {@link InternalJpaWorkspace#getJpaProjectManager() JPA workspace}.
 	 * The JPA project manager will not be returned to any clients by the
-	 * {@link JptJpaCorePlugin Dali plug-in} until <em>after</em>
+	 * {@link JpaWorkspace JPA workspace} until <em>after</em>
 	 * the manager has been started (i.e. this method has been called).
 	 * As a result, we need not synchronize with the scheduling rule.
 	 */
 	public void start() {
-		debug("*** JPA project manager START ***"); //$NON-NLS-1$
+		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "*** JPA project manager START ***"); //$NON-NLS-1$
 		try {
 			this.commandExecutor = this.buildAsynchronousCommandExecutor();
 			this.buildJpaProjects();
-			this.workspace.addResourceChangeListener(this.resourceChangeListener, RESOURCE_CHANGE_EVENT_TYPES);
+			this.getWorkspace().addResourceChangeListener(this.resourceChangeListener, RESOURCE_CHANGE_EVENT_TYPES);
 			JavaCore.addElementChangedListener(this.javaElementChangeListener, JAVA_CHANGE_EVENT_TYPES);
 		} catch (RuntimeException ex) {
-			this.log(ex);
+			JptJpaCorePlugin.instance().logError(ex);
 			this.stop();
 		}
 	}
 
 	/**
 	 * Internal: Called <em>only</em> by the
-	 * {@link JptJpaCorePlugin#stop(org.osgi.framework.BundleContext) Dali plug-in}.
+	 * {@link InternalJpaWorkspace#stop() JPA workspace}.
 	 * The JPA project manager will <em>not</em> be restarted.
 	 */
 	public void stop() {
-		debug("*** JPA project manager STOP ***"); //$NON-NLS-1$
+		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "*** JPA project manager STOP ***"); //$NON-NLS-1$
 		JavaCore.removeElementChangedListener(this.javaElementChangeListener);
-		this.workspace.removeResourceChangeListener(this.resourceChangeListener);
+		this.getWorkspace().removeResourceChangeListener(this.resourceChangeListener);
 		this.clearJpaProjects();
 		// if the current executor is async, commands can continue to execute
 		// after we replace it here, but there will be no JPA projects for them to process...
 		this.commandExecutor = ExtendedJobCommandExecutor.Inactive.instance();
-		debug("*** JPA project manager DEAD ***"); //$NON-NLS-1$
+		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "*** JPA project manager DEAD ***"); //$NON-NLS-1$
 	}
 
 
@@ -311,7 +302,7 @@ public class InternalJpaProjectManager
 	 * Side-effect: {@link #jpaProjects} populated.
 	 */
 	private void buildJpaProjects() {
-		debug("dispatch: build JPA projects"); //$NON-NLS-1$
+		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: build JPA projects"); //$NON-NLS-1$
 		BuildJpaProjectsCommand command = new BuildJpaProjectsCommand();
 		this.execute(command, JptCoreMessages.BUILD_JPA_PROJECTS_JOB_NAME, this.getWorkspaceRoot());
 	}
@@ -326,15 +317,15 @@ public class InternalJpaProjectManager
 	}
 
 	/* CU private */ void buildJpaProjects_(IProgressMonitor monitor) {
-		debug("execute: build JPA projects"); //$NON-NLS-1$
+		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "execute: build JPA projects"); //$NON-NLS-1$
 		try {
 			this.getWorkspaceRoot().accept(new ResourceProxyVisitor(monitor), IResource.NONE);
 		} catch (Exception ex) {
 			// if we have a problem, leave the currently built JPA projects in
 			// place and keep executing (should be OK...)
-			this.log(ex);
+			JptJpaCorePlugin.instance().logError(ex);
 		}
-		debug("end: build JPA projects"); //$NON-NLS-1$
+		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "end: build JPA projects"); //$NON-NLS-1$
 	}
 
 
@@ -356,19 +347,19 @@ public class InternalJpaProjectManager
 	}
 
 	private void clearJpaProjects_() {
-		debug("execute: clear JPA projects"); //$NON-NLS-1$
+		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "execute: clear JPA projects"); //$NON-NLS-1$
 		// clone the collection to prevent concurrent modification exception
 		for (JpaProject jpaProject : this.getJpaProjects()) {
 			this.removeJpaProject(jpaProject);
 		}
-		debug("end: clear JPA projects"); //$NON-NLS-1$
+		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "end: clear JPA projects"); //$NON-NLS-1$
 	}
 
 
 	// ********** get JPA projects **********
 
 	public Iterable<JpaProject> waitToGetJpaProjects() throws InterruptedException {
-		debug("dispatch: get JPA projects"); //$NON-NLS-1$
+		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: get JPA projects"); //$NON-NLS-1$
 		GetJpaProjectsCommand command = new GetJpaProjectsCommand();
 		this.waitToExecute(command, JptCoreMessages.GET_JPA_PROJECTS_JOB_NAME, this.getWorkspaceRoot());
 		return command.result;
@@ -387,7 +378,7 @@ public class InternalJpaProjectManager
 	 * Pre-condition: called from {@link GetJpaProjectsCommand#execute()}
 	 */
 	/* CU private */ Iterable<JpaProject> getJpaProjects_() {
-		debug("execute: get JPA projects: {0}", this.jpaProjects); //$NON-NLS-1$
+		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "execute: get JPA projects: {0}", this.jpaProjects); //$NON-NLS-1$
 		// clone the JPA projects immediately, while we have the lock
 		return this.getJpaProjects();
 	}
@@ -407,7 +398,7 @@ public class InternalJpaProjectManager
 	 * @see ProjectAdapterFactory.JpaProjectReference#getValue()
 	 */
 	JpaProject waitToGetJpaProject(IProject project) throws InterruptedException {
-		debug("dispatch: get JPA project: {0}", project.getName()); //$NON-NLS-1$
+		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: get JPA project: {0}", project.getName()); //$NON-NLS-1$
 		GetJpaProjectCommand command = new GetJpaProjectCommand(project);
 		this.waitToExecute(command, JptCoreMessages.GET_JPA_PROJECT_JOB_NAME, project);
 		return command.result;
@@ -425,13 +416,13 @@ public class InternalJpaProjectManager
 	// @see ProjectAdapterFactory.JpaProjectReference#getValue(ModifiableObjectReference, long)
 	@SuppressWarnings("unused")
 	private boolean waitToGetJpaProject(ModifiableObjectReference<JpaProject> jpaProjectRef, IProject project, long timeout) throws InterruptedException {
-		debug("dispatch: get JPA project (time-out): {0}", project.getName()); //$NON-NLS-1$
+		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: get JPA project (time-out): {0}", project.getName()); //$NON-NLS-1$
 		GetJpaProjectCommand command = new GetJpaProjectCommand(project);
 		boolean result = this.waitToExecute(command, JptCoreMessages.GET_JPA_PROJECT_JOB_NAME, project, timeout);
 		if (result) {
 			jpaProjectRef.setValue(command.result);
 		} else {
-			debug("time-out: get JPA project: {0}", project.getName()); //$NON-NLS-1$
+			JptJpaCorePlugin.instance().trace(TRACE_OPTION, "time-out: get JPA project: {0}", project.getName()); //$NON-NLS-1$
 		}
 		return result;
 	}
@@ -453,11 +444,11 @@ public class InternalJpaProjectManager
 	 * Pre-condition: called from {@link GetJpaProjectCommand#execute()}
 	 */
 	/* CU private */ JpaProject getJpaProjectUnsafe(IProject project) {
-		debug("execute: get JPA project: {0}", project.getName()); //$NON-NLS-1$
+		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "execute: get JPA project: {0}", project.getName()); //$NON-NLS-1$
 		// no need to clone here, since we have the lock
 		JpaProject jpaProject = selectJpaProject(this.jpaProjects, project);
 		if (jpaProject == null) {
-			debug("not found: get JPA project: {0}", project.getName()); //$NON-NLS-1$
+			JptJpaCorePlugin.instance().trace(TRACE_OPTION, "not found: get JPA project: {0}", project.getName()); //$NON-NLS-1$
 		}
 		return jpaProject;
 	}
@@ -486,7 +477,7 @@ public class InternalJpaProjectManager
 	 */
 	// e.g. changed JPA platform
 	JpaProject rebuildJpaProject(IProject project) throws InterruptedException {
-		debug("dispatch: rebuild JPA project: {0}", project.getName()); //$NON-NLS-1$
+		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: rebuild JPA project: {0}", project.getName()); //$NON-NLS-1$
 		RebuildJpaProjectCommand command = new RebuildJpaProjectCommand(project);
 		this.waitToExecute(command, JptCoreMessages.REBUILD_JPA_PROJECT_JOB_NAME, project);
 		return command.result;
@@ -507,7 +498,7 @@ public class InternalJpaProjectManager
 	}
 
 	/* CU private */ JpaProject rebuildJpaProject_(IProject project, IProgressMonitor monitor) {
-		debug("execute: rebuild JPA project: {0}", project.getName()); //$NON-NLS-1$
+		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "execute: rebuild JPA project: {0}", project.getName()); //$NON-NLS-1$
 		this.removeJpaProject(this.getJpaProject_(project));
 		if (monitor.isCanceled()) {
 			throw new OperationCanceledException();
@@ -522,7 +513,7 @@ public class InternalJpaProjectManager
 	 * @see ProjectAdapterFactory.JpaProjectReference#buildValidationMessages(IReporter)
 	 */
 	Iterable<IMessage> buildValidationMessages(IProject project, IReporter reporter) throws InterruptedException {
-		debug("dispatch: build validation messages: {0}", project.getName()); //$NON-NLS-1$
+		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: build validation messages: {0}", project.getName()); //$NON-NLS-1$
 		BuildValidationMessagesCommand command = new BuildValidationMessagesCommand(project, reporter);
 		this.waitToExecute(command, JptCoreMessages.BUILD_VALIDATION_MESSAGES_JOB_NAME, project);
 		return command.result;
@@ -544,15 +535,16 @@ public class InternalJpaProjectManager
 	}
 
 	/* CU private */ Iterable<IMessage> buildValidationMessages_(IProject project, IReporter reporter) {
-		debug("execute: build validation messages: {0}", project.getName()); //$NON-NLS-1$
+		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "execute: build validation messages: {0}", project.getName()); //$NON-NLS-1$
 		JpaProject jpaProject = this.getJpaProject_(project);
 		if (jpaProject == null) {
 			return this.buildNoJpaProjectMessages(project);
 		}
 		try {
+			// TODO catch exceptions further down too - so we get at least some msgs
 			return jpaProject.getValidationMessages(reporter);
 		} catch (RuntimeException ex) {
-			this.log(ex);
+			JptJpaCorePlugin.instance().logError(ex);
 			return EmptyIterable.<IMessage>instance();
 		}
 	}
@@ -582,9 +574,9 @@ public class InternalJpaProjectManager
 		JpaProject jpaProject = this.buildJpaProject(project);
 		// figure out exactly when JPA projects are added
 		if (jpaProject == null) {
-			dumpStackTrace("add JPA project fail: {0}", project); //$NON-NLS-1$
+			JptJpaCorePlugin.instance().dumpStackTrace(TRACE_OPTION, "add JPA project fail: {0}", project); //$NON-NLS-1$
 		} else {
-			dumpStackTrace("add JPA project: {0}", jpaProject); //$NON-NLS-1$
+			JptJpaCorePlugin.instance().dumpStackTrace(TRACE_OPTION, "add JPA project: {0}", jpaProject); //$NON-NLS-1$
 		}
 		// the JPA project will be null if we have any problems building it...
 		// (e.g. if we have problems getting the JPA platform)
@@ -612,10 +604,14 @@ public class InternalJpaProjectManager
 	 * Return <code>null</code> if we have any problems....
 	 */
 	private JpaProject buildJpaProject(JpaPlatform jpaPlatform, JpaProject.Config config) {
+		if (jpaPlatform == null) {
+			JptJpaCorePlugin.instance().logError(new IllegalArgumentException(), "null JPA platform: {0}", config.getProject()); //$NON-NLS-1$
+			return null;
+		}
 		try {
-			return (jpaPlatform == null) ? null : jpaPlatform.getJpaFactory().buildJpaProject(config);
+			return jpaPlatform.getJpaFactory().buildJpaProject(config);
 		} catch (RuntimeException ex) {
-			this.log(ex);
+			JptJpaCorePlugin.instance().logError(ex);
 			return null;
 		}
 	}
@@ -624,13 +620,50 @@ public class InternalJpaProjectManager
 		SimpleJpaProjectConfig config = new SimpleJpaProjectConfig();
 		config.setJpaProjectManager(this);
 		config.setProject(project);
-		config.setJpaPlatform(JptJpaCorePlugin.getJpaPlatformManager().buildJpaPlatformImplementation(project));
-		config.setConnectionProfileName(JptJpaCorePlugin.getConnectionProfileName(project));
-		config.setUserOverrideDefaultCatalog(JptJpaCorePlugin.getUserOverrideDefaultCatalog(project));
-		config.setUserOverrideDefaultSchema(JptJpaCorePlugin.getUserOverrideDefaultSchema(project));
-		config.setDiscoverAnnotatedClasses(JptJpaCorePlugin.getDiscoverAnnotatedClasses(project));
-		config.setMetamodelSourceFolderName(JptJpaCorePlugin.getMetamodelSourceFolderName(project));
+		config.setJpaPlatform(this.getJpaPlatform(project));
+		config.setConnectionProfileName(JpaPreferences.getConnectionProfileName(project));
+		config.setUserOverrideDefaultCatalog(JpaPreferences.getUserOverrideDefaultCatalog(project));
+		config.setUserOverrideDefaultSchema(JpaPreferences.getUserOverrideDefaultSchema(project));
+		config.setDiscoverAnnotatedClasses(JpaPreferences.getDiscoverAnnotatedClasses(project));
+		config.setMetamodelSourceFolderName(JpaPreferences.getMetamodelSourceFolderName(project));
 		return config;
+	}
+
+	private JpaPlatform getJpaPlatform(IProject project) {
+		JpaPlatformManager mgr = this.jpaWorkspace.getJpaPlatformManager();
+		String jpaPlatformID = JpaPreferences.getJpaPlatformID(project);
+		if (jpaPlatformID != null) {
+			return mgr.getJpaPlatform(jpaPlatformID);
+		}
+		// the ID taken from the JPA preferences can be null if the JPA facet is
+		// added by editing the facet metadata file directly and there are no
+		// pre-existing Dali project preferences in the project .settings directory
+		jpaPlatformID = this.getDefaultJpaPlatformID(project);
+		// it's unlikely the default ID will be null...
+		return (jpaPlatformID == null) ? null : mgr.getJpaPlatform(jpaPlatformID);
+	}
+
+	/**
+	 * Return the default JPA platform ID for the specified project.
+	 * This will be determined by the current default JPA platform for the
+	 * project's JPA facet version.
+	 */
+	private String getDefaultJpaPlatformID(IProject project) {
+		IProjectFacetVersion jpaFacetVersion = this.getJpaFacetVersion(project);
+		if (jpaFacetVersion == null) {
+			return null;
+		}
+		JpaPlatformDescription desc = this.jpaWorkspace.getJpaPlatformManager().getDefaultJpaPlatformDescription(jpaFacetVersion);
+		return (desc == null) ? null : desc.getId();
+	}
+
+	private IProjectFacetVersion getJpaFacetVersion(IProject project) {
+		try {
+			return ProjectFacetsManager.create(project).getProjectFacetVersion(JpaProject.FACET);
+		} catch (CoreException ex) {
+			JptJpaCorePlugin.instance().logError(ex);
+			return null;
+		}
 	}
 
 
@@ -641,12 +674,12 @@ public class InternalJpaProjectManager
 	 */
 	private void removeJpaProject(JpaProject jpaProject) {
 		// figure out exactly when JPA projects are removed
-		dumpStackTrace("remove JPA project: {0}", jpaProject); //$NON-NLS-1$
+		JptJpaCorePlugin.instance().dumpStackTrace(TRACE_OPTION, "remove JPA project: {0}", jpaProject); //$NON-NLS-1$
 		this.removeItemFromCollection(jpaProject, this.jpaProjects, JPA_PROJECTS_COLLECTION);
 		try {
 			jpaProject.dispose();
 		} catch (RuntimeException ex) {
-			this.log(ex);
+			JptJpaCorePlugin.instance().logError(ex);
 		}
 	}
 
@@ -654,7 +687,7 @@ public class InternalJpaProjectManager
 	// ********** Project POST_CHANGE **********
 
 	/* CU private */ void projectChanged(IResourceDelta delta) {
-		debug("dispatch: project changed: {0}", delta.getResource()); //$NON-NLS-1$
+		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: project changed: {0}", delta.getResource()); //$NON-NLS-1$
 		ProjectChangeEventHandlerCommand command = new ProjectChangeEventHandlerCommand(delta);
 		this.execute(command, JptCoreMessages.PROJECT_CHANGE_EVENT_HANDLER_JOB_NAME, this.getWorkspaceRoot());
 	}
@@ -677,13 +710,13 @@ public class InternalJpaProjectManager
 	 * they will each determine whether the event is significant.
 	 */
 	/* CU private */ void projectChanged_(IResourceDelta delta, IProgressMonitor monitor) {
-		debug("execute: project changed: {0}", delta.getResource()); //$NON-NLS-1$
+		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "execute: project changed: {0}", delta.getResource()); //$NON-NLS-1$
 //		debug("execute: project changed: ", ((org.eclipse.core.internal.events.ResourceDelta) delta).toDeepDebugString()); //$NON-NLS-1$
 		for (JpaProject jpaProject : this.jpaProjects) {
 			try {
 				jpaProject.projectChanged(delta);
 			} catch (RuntimeException ex) {
-				this.log(ex);
+				JptJpaCorePlugin.instance().logError(ex);
 			}
 			if (monitor.isCanceled()) {
 				throw new OperationCanceledException();
@@ -695,7 +728,7 @@ public class InternalJpaProjectManager
 	// ********** Project POST_BUILD (CLEAN_BUILD) **********
 
 	/* CU private */ void projectPostCleanBuild(IProject project) {
-		debug("dispatch: post clean build: {0}", project.getName()); //$NON-NLS-1$
+		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: post clean build: {0}", project.getName()); //$NON-NLS-1$
 		ProjectPostCleanBuildEventHandlerCommand command = new ProjectPostCleanBuildEventHandlerCommand(project);
 		this.execute(command, JptCoreMessages.PROJECT_POST_CLEAN_BUILD_EVENT_HANDLER_JOB_NAME, project);
 	}
@@ -714,7 +747,7 @@ public class InternalJpaProjectManager
 	}
 
 	/* CU private */ void projectPostCleanBuild_(IProject project, IProgressMonitor monitor) {
-		debug("execute: post clean build: {0}", project.getName()); //$NON-NLS-1$
+		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "execute: post clean build: {0}", project.getName()); //$NON-NLS-1$
 		JpaProject jpaProject = this.getJpaProject_(project);
 		if (jpaProject != null) {
 			this.removeJpaProject(jpaProject);
@@ -734,7 +767,7 @@ public class InternalJpaProjectManager
 	 * project.
 	 */
 	/* CU private */ void checkForJpaFacetTransition(IProject project) {
-		debug("dispatch: project facet file changed: {0}", project.getName()); //$NON-NLS-1$
+		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: project facet file changed: {0}", project.getName()); //$NON-NLS-1$
 		FacetFileChangeEventHandlerCommand command = new FacetFileChangeEventHandlerCommand(project);
 		this.execute(command, JptCoreMessages.FACET_FILE_CHANGE_EVENT_HANDLER_JOB_NAME, project);
 	}
@@ -752,10 +785,10 @@ public class InternalJpaProjectManager
 	}
 
 	/* CU private */ void checkForJpaFacetTransition_(IProject project) {
-		debug("execute: project facet file changed: {0}", project.getName()); //$NON-NLS-1$
+		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "execute: project facet file changed: {0}", project.getName()); //$NON-NLS-1$
 		JpaProject jpaProject = this.getJpaProject_(project);
 
-		if (JpaFacet.isInstalled(project)) {
+		if (ProjectTools.hasFacet(project, JpaProject.FACET)) {
 			if (jpaProject == null) {  // JPA facet added
 				this.addJpaProject(project);
 			}
@@ -770,7 +803,7 @@ public class InternalJpaProjectManager
 	// ********** Java element changed **********
 
 	/* CU private */ void javaElementChanged(ElementChangedEvent event) {
-		debug("dispatch: Java element changed: {0}", event.getDelta()); //$NON-NLS-1$
+		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: Java element changed: {0}", event.getDelta()); //$NON-NLS-1$
 		JavaChangeEventHandlerCommand command = new JavaChangeEventHandlerCommand(event);
 		this.execute(command, JptCoreMessages.JAVA_CHANGE_EVENT_HANDLER_JOB_NAME, this.getWorkspaceRoot());
 	}
@@ -793,12 +826,12 @@ public class InternalJpaProjectManager
 	 * as the event could affect multiple projects.
 	 */
 	/* CU private */ void javaElementChanged_(ElementChangedEvent event, IProgressMonitor monitor) {
-		debug("execute: Java element changed: {0}", event.getDelta()); //$NON-NLS-1$
+		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "execute: Java element changed: {0}", event.getDelta()); //$NON-NLS-1$
 		for (JpaProject jpaProject : this.jpaProjects) {
 			try {
 				jpaProject.javaElementChanged(event);
 			} catch (RuntimeException ex) {
-				this.log(ex);
+				JptJpaCorePlugin.instance().logError(ex);
 			}
 			if (monitor.isCanceled()) {
 				throw new OperationCanceledException();
@@ -821,45 +854,34 @@ public class InternalJpaProjectManager
 	// ********** logging **********
 
 	public void log(String msg) {
-		JptJpaCorePlugin.log(msg);
+		JptJpaCorePlugin.instance().logError(msg);
 	}
 
 	public void log(Throwable throwable) {
-		JptJpaCorePlugin.log(throwable);
+		JptJpaCorePlugin.instance().logError(throwable);
 	}
 
 	public void log(String msg, Throwable throwable) {
-		JptJpaCorePlugin.log(msg, throwable);
+		JptJpaCorePlugin.instance().logError(throwable, msg);
 	}
 
 	public ExceptionHandler getExceptionHandler() {
-		return this.exceptionHandler;
-	}
-
-	/* CU private */ class LocalExceptionHandler
-		implements ExceptionHandler
-	{
-		public void handleException(Throwable t) {
-			InternalJpaProjectManager.this.log(t);
-			if (InternalJpaProjectManager.this.test) {
-				t.printStackTrace();
-			}
-		}
-		@Override
-		public String toString() {
-			return StringTools.buildToStringFor(this);
-		}
+		return JptJpaCorePlugin.instance().getExceptionHandler();
 	}
 
 
 	// ********** misc **********
 
-	public IWorkspace getWorkspace() {
-		return this.workspace;
+	public JpaWorkspace getJpaWorkspace() {
+		return this.jpaWorkspace;
+	}
+
+	private IWorkspace getWorkspace() {
+		return this.jpaWorkspace.getWorkspace();
 	}
 
 	private IWorkspaceRoot getWorkspaceRoot() {
-		return this.workspace.getRoot();
+		return this.getWorkspace().getRoot();
 	}
 
 	private ISchedulingRule getCurrentRule() {
@@ -886,7 +908,7 @@ public class InternalJpaProjectManager
 	 * @see org.eclipse.jpt.jpa.core.internal.AbstractJpaProject.ManagerJobCommandExecutor#execute(JobCommand, String)
 	 */
 	public void execute(JobCommand command, String jobName, JpaProject jpaProject) {
-		debug("dispatch: client command: {0}", command); //$NON-NLS-1$
+		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "dispatch: client command: {0}", command); //$NON-NLS-1$
 		this.execute(new ClientJobCommandWrapper(command, jpaProject), jobName, jpaProject.getProject());
 	}
 
@@ -922,7 +944,7 @@ public class InternalJpaProjectManager
 	private boolean waitToExecute(JobCommand command, String jobName, ISchedulingRule schedulingRule, long timeout) throws InterruptedException {
 		ISchedulingRule currentRule = this.getCurrentRule();
 		if ((currentRule != null) && schedulingRule.isConflicting(currentRule)) {
-			dumpStackTrace("scheduling rule conflict: {0} vs. {1}", schedulingRule, currentRule); //$NON-NLS-1$
+			JptJpaCorePlugin.instance().dumpStackTrace(TRACE_OPTION, "scheduling rule conflict: {0} vs. {1}", schedulingRule, currentRule); //$NON-NLS-1$
 			command.execute(new NullProgressMonitor());
 			return true;
 		}
@@ -953,7 +975,7 @@ public class InternalJpaProjectManager
 	 * 0.5 second delay).
 	 * <p>
 	 * See org.eclipse.jpt.jpa.core.tests.JptJpaCoreTestsPlugin#start(org.osgi.framework.BundleContext).
-	 * 
+	 *
 	 * @see #executeCommandsAsynchronously()
 	 */
 	private synchronized void executeCommandsSynchronously() throws InterruptedException {
@@ -1032,10 +1054,10 @@ public class InternalJpaProjectManager
 	 */
 	/* CU private */ void execute_(JobCommand command, IProgressMonitor monitor, JpaProject jpaProject) {
 		if (this.jpaProjects.contains(jpaProject)) {
-			debug("execute: client command: {0}", command); //$NON-NLS-1$
+			JptJpaCorePlugin.instance().trace(TRACE_OPTION, "execute: client command: {0}", command); //$NON-NLS-1$
 			command.execute(monitor);
 		} else {
-			debug("ignore: client command: {0}", command); //$NON-NLS-1$
+			JptJpaCorePlugin.instance().trace(TRACE_OPTION, "ignore: client command: {0}", command); //$NON-NLS-1$
 		}
 	}
 
@@ -1075,7 +1097,7 @@ public class InternalJpaProjectManager
 		private void processProject(IResourceProxy resourceProxy) {
 			if (resourceProxy.isAccessible()) {  // the project exists and is open
 				IProject project = (IProject) resourceProxy.requestResource();
-				if (JpaFacet.isInstalled(project)) {
+				if (ProjectTools.hasFacet(project, JpaProject.FACET)) {
 					InternalJpaProjectManager.this.addJpaProject(project);
 				}
 			}
@@ -1097,7 +1119,7 @@ public class InternalJpaProjectManager
 		implements IResourceChangeListener
 	{
 		/**
-		 * PRE_UNINSTALL is the only facet event we use for 
+		 * PRE_UNINSTALL is the only facet event we use for
 		 * removing JPA projects. These are the cases where we listen for resource events.
 		 * <p>
 		 * Check for:<ul>
@@ -1123,7 +1145,7 @@ public class InternalJpaProjectManager
 					break;
 
 				// project-only events
-				case IResourceChangeEvent.PRE_CLOSE :  
+				case IResourceChangeEvent.PRE_CLOSE :
 					break;  // ignore
 				case IResourceChangeEvent.PRE_DELETE :
 					break;  // ignore
@@ -1133,7 +1155,7 @@ public class InternalJpaProjectManager
 		}
 
 		private void processPostChangeEvent(IResourceChangeEvent event) {
-			debug("Resource POST_CHANGE event: {0}", event.getResource()); //$NON-NLS-1$
+			JptJpaCorePlugin.instance().trace(TRACE_OPTION, "Resource POST_CHANGE event: {0}", event.getResource()); //$NON-NLS-1$
 			this.processPostChangeDelta(event.getDelta());
 		}
 
@@ -1191,12 +1213,12 @@ public class InternalJpaProjectManager
 				this.checkForFacetFileChanges(file, delta);
 			}
 		}
-		
+
 		private void checkForFacetFileChanges(IFile file, IResourceDelta delta) {
 			switch (delta.getKind()) {
 				case IResourceDelta.ADDED :
 				case IResourceDelta.REMOVED :
-				case IResourceDelta.CHANGED : 
+				case IResourceDelta.CHANGED :
 					InternalJpaProjectManager.this.checkForJpaFacetTransition(file.getProject());
 					break;
 				case IResourceDelta.ADDED_PHANTOM :
@@ -1221,7 +1243,7 @@ public class InternalJpaProjectManager
 		 */
 		// ***** POST_BUILD
 		private void processPostBuildEvent(IResourceChangeEvent event) {
-			debug("Resource POST_BUILD event: {0}", event.getDelta().getResource()); //$NON-NLS-1$
+			JptJpaCorePlugin.instance().trace(TRACE_OPTION, "Resource POST_BUILD event: {0}", event.getDelta().getResource()); //$NON-NLS-1$
 			if (event.getBuildKind() == IncrementalProjectBuilder.CLEAN_BUILD) {
 				this.processPostCleanBuildDelta(event.getDelta());
 			}
@@ -1252,7 +1274,7 @@ public class InternalJpaProjectManager
 		}
 
 		private void processProjectPostCleanBuild(IProject project) {
-			debug("\tProject CLEAN event: {0}", project.getName()); //$NON-NLS-1$
+			JptJpaCorePlugin.instance().trace(TRACE_OPTION, "\tProject CLEAN event: {0}", project.getName()); //$NON-NLS-1$
 			InternalJpaProjectManager.this.projectPostCleanBuild(project);
 		}
 
@@ -1333,46 +1355,16 @@ public class InternalJpaProjectManager
 	}
 
 
-	// ********** DEBUG **********
+	// ********** tracing **********
 
-	/* CU private */ static void debug(String message) {
-		debug(message, EMPTY_OBJECT_ARRAY);
-	}
-	private static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
+	/* CU private */ static final String TRACE_OPTION = JpaProjectManager.class.getSimpleName();
 
-	/* CU private */ static void debug(String message, Object... args) {
-		if (debug()) {
-			debug_(message, args);
-		}
+	/**
+	 * This method should be invoked (reflectively) <em>only</em> from the tests.
+	 * See <code>JpaProjectManagerTests.trace(String)</code>.
+	 */
+	@SuppressWarnings("unused")
+	private static void trace(String message) {
+		JptJpaCorePlugin.instance().trace(TRACE_OPTION, message);
 	}
-
-	private static void debug_(String message, Object... args) {
-		JptJpaCorePlugin.instance().log(IStatus.INFO, NLS.bind(message, args));
-	}
-
-	private static boolean debug() {
-		return JptJpaCorePlugin.instance().getBooleanDebugOption(DEBUG_OPTION);
-	}
-	private static final String DEBUG_OPTION = JpaProjectManager.class.getSimpleName();
-	private static final String DEBUG_OPTION_ = DEBUG_OPTION + '.';
-
-	/* CU private */ static void dumpStackTrace(String message) {
-		dumpStackTrace(message, EMPTY_OBJECT_ARRAY);
-	}
-
-	/* CU private */ static void dumpStackTrace(String message, Object... args) {
-		if (debug()) {
-			dumpStackTrace_(message, args);
-		}
-	}
-
-	private static void dumpStackTrace_(String message, Object... args) {
-		Exception ex = debugStackTrace() ? new Exception() : null;
-		JptJpaCorePlugin.instance().log(IStatus.INFO, NLS.bind(message, args), ex);
-	}
-
-	private static boolean debugStackTrace() {
-		return JptJpaCorePlugin.instance().getBooleanDebugOption(DEBUG_STACK_TRACE_OPTION);
-	}
-	private static final String DEBUG_STACK_TRACE_OPTION = DEBUG_OPTION_ + "stack_trace"; //$NON-NLS-1$
 }

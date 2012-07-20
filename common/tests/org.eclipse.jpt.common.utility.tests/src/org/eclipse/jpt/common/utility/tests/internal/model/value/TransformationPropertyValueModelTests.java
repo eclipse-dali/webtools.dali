@@ -13,7 +13,7 @@ import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationWritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.TransformationModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
@@ -39,7 +39,7 @@ public class TransformationPropertyValueModelTests
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.objectHolder = new SimplePropertyValueModel<String>("foo");
-		this.transformationObjectHolder = new TransformationWritablePropertyValueModel<String, String>(this.objectHolder, this.buildTransformer(), this.buildReverseTransformer());
+		this.transformationObjectHolder = new TransformationModifiablePropertyValueModel<String, String>(this.objectHolder, this.buildTransformer(), this.buildReverseTransformer());
 	}
 
 	private Transformer<String, String> buildTransformer() {

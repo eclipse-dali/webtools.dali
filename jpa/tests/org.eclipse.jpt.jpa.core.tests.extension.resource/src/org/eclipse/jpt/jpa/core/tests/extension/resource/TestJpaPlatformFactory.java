@@ -10,14 +10,14 @@
 package org.eclipse.jpt.jpa.core.tests.extension.resource;
 
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPlatformFactory;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
+import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatform;
-import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory.SimpleVersion;
+import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory.GenericJpaPlatformVersion;
 import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
 import org.eclipse.persistence.jpa.jpql.parser.DefaultJPQLGrammar;
 
@@ -48,7 +48,7 @@ public class TestJpaPlatformFactory
 	}
 
 	private JpaPlatform.Version buildJpaVersion() {
-		return new SimpleVersion(JpaFacet.VERSION_1_0.getVersionString()) {
+		return new GenericJpaPlatformVersion(JpaProject.FACET_VERSION_STRING) {
 			@Override
 			public String getVersion() {
 				return "BOOOYAH!";

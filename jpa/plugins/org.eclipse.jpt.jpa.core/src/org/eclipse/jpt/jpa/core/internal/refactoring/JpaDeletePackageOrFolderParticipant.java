@@ -28,13 +28,15 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatform;
+import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.resource.ResourceMappingFile;
 import org.eclipse.ltk.core.refactoring.participants.ISharableParticipant;
 import org.eclipse.ltk.core.refactoring.participants.RefactoringArguments;
 import org.eclipse.ltk.core.refactoring.participants.RenameProcessor;
@@ -144,7 +146,7 @@ public class JpaDeletePackageOrFolderParticipant
 			}
 		}
 		catch (JavaModelException ex) {
-			JptJpaCorePlugin.log(ex);
+			JptJpaCorePlugin.instance().logError(ex);
 		}
 	}
 	
@@ -179,7 +181,7 @@ public class JpaDeletePackageOrFolderParticipant
 				protected boolean accept(IFile file) {
 					if (javaProject.isOnClasspath(file)) {
 						IContentType contentType = GenericJpaPlatform.getContentType(file);
-						return contentType != null && contentType.isKindOf(JptJpaCorePlugin.MAPPING_FILE_CONTENT_TYPE);
+						return contentType != null && contentType.isKindOf(ResourceMappingFile.Root.CONTENT_TYPE);
 					}
 					return false;
 				}
@@ -222,13 +224,11 @@ public class JpaDeletePackageOrFolderParticipant
 			return packageFragment.getNonJavaResources();
 		}
 		catch (JavaModelException e) {
-			JptJpaCorePlugin.log(e);
-			return EMPTY_OBJECT_ARRAY;
+			JptJpaCorePlugin.instance().logError(e);
+			return Tools.EMPTY_OBJECT_ARRAY;
 		}
 	}
 	
-	private static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
-
 	protected class FolderResourceProxyVisitor implements IResourceProxyVisitor {
 		private Collection<IFile> files;
 		protected FolderResourceProxyVisitor(Collection<IFile> files) {

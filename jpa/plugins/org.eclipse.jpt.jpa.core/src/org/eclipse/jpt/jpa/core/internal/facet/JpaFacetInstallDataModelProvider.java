@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core.internal.facet;
 
 import java.util.Set;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.Database;
@@ -84,8 +83,8 @@ public class JpaFacetInstallDataModelProvider
 	}
 	
 	@Override
-	protected JpaPlatformDescription getDefaultPlatform() {
-		return JptJpaCorePlugin.getDefaultJpaPlatform(getProjectFacetVersion());
+	protected JpaPlatformDescription getDefaultPlatformDescription() {
+		return this.getJpaPlatformManager().getDefaultJpaPlatformDescription(this.getProjectFacetVersion());
 	}
 	
 	@Override

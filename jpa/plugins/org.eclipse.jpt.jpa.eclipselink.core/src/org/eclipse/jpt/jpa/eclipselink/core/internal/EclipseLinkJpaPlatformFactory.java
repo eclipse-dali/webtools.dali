@@ -11,16 +11,16 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal;
 
 import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.jpa.core.JpaFacet;
+import org.eclipse.jpt.common.utility.internal.VersionComparator;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPlatformFactory;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
+import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatform;
-import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory.SimpleVersion;
+import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory.GenericJpaPlatformVersion;
 import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
-import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.persistence.jpa.jpql.parser.EclipseLinkJPQLGrammar1;
 
 /**
@@ -30,6 +30,11 @@ import org.eclipse.persistence.jpa.jpql.parser.EclipseLinkJPQLGrammar1;
 public class EclipseLinkJpaPlatformFactory
 	implements JpaPlatformFactory
 {
+	/**
+	 * Version string for EclipseLink platform version 1.0
+	 */
+	public static final String VERSION = "1.0";  //$NON-NLS-1$
+
 
 	/**
 	 * zero-argument constructor
@@ -50,9 +55,7 @@ public class EclipseLinkJpaPlatformFactory
 	}
 
 	private JpaPlatform.Version buildJpaVersion() {
-		return new EclipseLinkVersion(
-				JptJpaEclipseLinkCorePlugin.ECLIPSELINK_PLATFORM_VERSION_1_0,
-				JpaFacet.VERSION_1_0.getVersionString());
+		return new EclipseLinkJpaPlatformVersion(VERSION, JpaProject.FACET_VERSION_STRING);
 	}
 
 	protected AnnotationProvider buildAnnotationProvider() {
@@ -75,12 +78,15 @@ public class EclipseLinkJpaPlatformFactory
 		};
 	}
 
-
-	public static class EclipseLinkVersion extends SimpleVersion {
-
+	/**
+	 * EclipseLink JPA platform version
+	 */
+	public static class EclipseLinkJpaPlatformVersion
+		extends GenericJpaPlatformVersion
+	{
 		protected final String eclipseLinkVersion;
 
-		public EclipseLinkVersion(String eclipseLinkVersion, String jpaVersion) {
+		public EclipseLinkJpaPlatformVersion(String eclipseLinkVersion, String jpaVersion) {
 			super(jpaVersion);
 			this.eclipseLinkVersion = eclipseLinkVersion;
 		}
@@ -92,21 +98,21 @@ public class EclipseLinkJpaPlatformFactory
 
 		/**
 		 * Return whether the platform is compatible with the specified EclipseLink version.
-		 * @see JptJpaEclipseLinkCorePlugin#ECLIPSELINK_PLATFORM_VERSION_1_0
-		 * @see JptJpaEclipseLinkCorePlugin#ECLIPSELINK_PLATFORM_VERSION_1_1
-		 * @see JptJpaEclipseLinkCorePlugin#ECLIPSELINK_PLATFORM_VERSION_1_2
-		 * @see JptJpaEclipseLinkCorePlugin#ECLIPSELINK_PLATFORM_VERSION_2_0
-		 * @see JptJpaEclipseLinkCorePlugin#ECLIPSELINK_PLATFORM_VERSION_2_1
-		 * @see JptJpaEclipseLinkCorePlugin#ECLIPSELINK_PLATFORM_VERSION_2_2
-		 * @see JptJpaEclipseLinkCorePlugin#ECLIPSELINK_PLATFORM_VERSION_2_3
+		 * @see EclipseLinkJpaPlatformFactory#VERSION
+		 * @see EclipseLink1_1JpaPlatformFactory#VERSION
+		 * @see EclipseLink1_2JpaPlatformFactory#VERSION
+		 * @see EclipseLink2_0JpaPlatformFactory#VERSION
+		 * @see EclipseLink2_1JpaPlatformFactory#VERSION
+		 * @see EclipseLink2_2JpaPlatformFactory#VERSION
+		 * @see EclipseLink2_3JpaPlatformFactory#VERSION
 		 */
-		public boolean isCompatibleWithVersion(String version) {
-			return VERSION_COMPARATOR.compare(this.eclipseLinkVersion, version) >= 0;
+		public boolean isCompatibleWithEclipseLinkVersion(String version) {
+			return VersionComparator.INTEGER_VERSION_COMPARATOR.compare(this.eclipseLinkVersion, version) >= 0;
 		}
 
 		@Override
 		public String toString() {
-			return super.toString() + " EclipseLink version: " + this.getVersion(); //$NON-NLS-1$
+			return super.toString() + "/EclipseLink " + this.eclipseLinkVersion; //$NON-NLS-1$
 		}
 	}
 }

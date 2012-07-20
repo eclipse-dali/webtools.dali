@@ -4,10 +4,12 @@ Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.dbws.eclipselink.core.gen;singleton:=true
 Bundle-Version: 1.0.0.qualifier
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: .
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.eclipse.persistence.dbws.builder;bundle-version="[2.3.0,3.0.0)",
  javax.wsdl;bundle-version="[1.6.2,2.0.0)"
+Import-Package: org.eclipse.persistence.oxm
 Export-Package: org.eclipse.jpt.dbws.eclipselink.core.gen,
  org.eclipse.jpt.dbws.eclipselink.core.gen.internal;x-internal:=true
-Import-Package: org.eclipse.persistence.oxm

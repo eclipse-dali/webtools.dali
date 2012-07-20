@@ -1,12 +1,12 @@
 /*******************************************************************************
-* Copyright (c) 2012 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.prefs;
 
 import java.util.List;
@@ -98,7 +98,7 @@ public class JaxbPreferencesManager
 	 * Return the Dali preferences for the specified context.
 	 */
 	private static IEclipsePreferences getPreferences(IScopeContext context) {
-		return context.getNode(JptJaxbCorePlugin.PLUGIN_ID);
+		return context.getNode(JptJaxbCorePlugin.instance().getPluginID());
 	}
 
 	/**
@@ -169,7 +169,7 @@ public class JaxbPreferencesManager
 				prefs.flush();
 			} 
 			catch(BackingStoreException ex) {
-				JptJaxbCorePlugin.log(ex);
+				JptJaxbCorePlugin.instance().logError(ex);
 			}
 			return Status.OK_STATUS;
 		}
@@ -192,10 +192,10 @@ public class JaxbPreferencesManager
 			return fproj.getPreferences(JaxbFacet.FACET);
 		}
 		catch (BackingStoreException bse) {
-			JptJaxbCorePlugin.log(bse);
+			JptJaxbCorePlugin.instance().logError(bse);
 		}
 		catch (CoreException ce) {
-			JptJaxbCorePlugin.log(ce);
+			JptJaxbCorePlugin.instance().logError(ce);
 		}
 		return null;
 	}
@@ -222,7 +222,7 @@ public class JaxbPreferencesManager
 			platformPrefs.flush();
 		}
 		catch (BackingStoreException bse) {
-			JptJaxbCorePlugin.log(bse);
+			JptJaxbCorePlugin.instance().logError(bse);
 		}
 	}
 
@@ -248,7 +248,7 @@ public class JaxbPreferencesManager
 		}
 		catch (BackingStoreException bse) {
 			// this means that the prefs are corrupted, in which case reading anything is unlikely
-			JptJaxbCorePlugin.log(bse);
+			JptJaxbCorePlugin.instance().logError(bse);
 		}
 		return schemaLocations;
 	}
@@ -267,7 +267,7 @@ public class JaxbPreferencesManager
 			classgenPrefs.flush();
 		}
 		catch (BackingStoreException bse) {
-			JptJaxbCorePlugin.log(bse);
+			JptJaxbCorePlugin.instance().logError(bse);
 		}
 	}
 
@@ -282,8 +282,7 @@ public class JaxbPreferencesManager
 				schemaPref.put(SCHEMA_LOCATION_PREF_KEY, location);
 				i ++;
 			}
-			boolean checkAnotherNode = true;
-			for ( ; checkAnotherNode; i++ ) {
+			for (boolean checkAnotherNode = true; checkAnotherNode; i++ ) {
 				String nodeName = SCHEMA_PREF_NODE_PREFIX + String.valueOf(i);
 				if (schemasPrefs.nodeExists(nodeName)) {
 					schemasPrefs.node(nodeName).removeNode();
@@ -296,7 +295,7 @@ public class JaxbPreferencesManager
 		}
 		catch (BackingStoreException bse) {
 			// this means that the prefs are corrupted, in which case reading anything is unlikely
-			JptJaxbCorePlugin.log(bse);
+			JptJaxbCorePlugin.instance().logError(bse);
 		}
 	}
 	

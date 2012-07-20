@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.orm.OrmAttributeMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.orm.OrmTypeMappingUiDefinition;
@@ -64,7 +64,7 @@ public class EclipseLinkOrmXmlUiDefinition
 	}
 	
 	public boolean providesUi(JptResourceType resourceType) {
-		return resourceType.equals(JptJpaEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_1_0_RESOURCE_TYPE);
+		return resourceType.equals(EclipseLinkOrmXmlDefinition.instance().getResourceType());
 	}
 	
 	public ItemTreeStateProviderFactoryProvider getStructureViewFactoryProvider() {

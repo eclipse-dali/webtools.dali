@@ -44,7 +44,6 @@ import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitMetadata;
-import org.eclipse.jpt.jpa.core.context.MappingFileRoot;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -57,12 +56,11 @@ import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnit;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.ImpliedMappingFileRef;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.VirtualOrmXmlRef;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkJpaProject;
-import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
@@ -81,6 +79,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.Eclipse
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkCustomization;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkGeneralProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkSchemaGeneration;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -131,7 +130,7 @@ public class EclipseLinkPersistenceUnit
 
 	public EclipseLinkPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
 		super(parent, xmlPersistenceUnit);
-		this.potentialImpliedEclipseLinkMappingFileRef = this.buildEclipseLinkImpliedMappingFileRef();
+		this.potentialImpliedEclipseLinkMappingFileRef = this.buildEclipseLinkVirtualMappingFileRef();
 	}
 
 
@@ -301,8 +300,8 @@ public class EclipseLinkPersistenceUnit
 		this.firePropertyChanged(IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_PROPERTY, old, mappingFileRef);
 	}
 
-	private ImpliedMappingFileRef buildEclipseLinkImpliedMappingFileRef() {
-		return new ImpliedMappingFileRef(this, JptJpaEclipseLinkCorePlugin.DEFAULT_ECLIPSELINK_ORM_XML_RUNTIME_PATH.toString());
+	private VirtualOrmXmlRef buildEclipseLinkVirtualMappingFileRef() {
+		return new VirtualOrmXmlRef(this, XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 	}
 
 	@Override
@@ -352,7 +351,7 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	protected boolean impliedEclipseLinkMappingFileIsSpecified() {
-		return this.mappingFileIsSpecified(JptJpaEclipseLinkCorePlugin.DEFAULT_ECLIPSELINK_ORM_XML_RUNTIME_PATH.toString());
+		return this.mappingFileIsSpecified(XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 	}
 
 	protected boolean impliedEclipseLinkMappingFileExists() {
@@ -464,7 +463,7 @@ public class EclipseLinkPersistenceUnit
 		return new TransformationIterable<MappingFile, Iterable<EclipseLinkConverter>>(this.getMappingFiles()) {
 					@Override
 					protected Iterable<EclipseLinkConverter> transform(MappingFile mappingFile) {
-						MappingFileRoot root = mappingFile.getRoot();
+						MappingFile.Root root = mappingFile.getRoot();
 						return (root instanceof EclipseLinkEntityMappings) ?
 								((EclipseLinkEntityMappings) root).getMappingFileConverters() :
 								EmptyIterable.<EclipseLinkConverter>instance();

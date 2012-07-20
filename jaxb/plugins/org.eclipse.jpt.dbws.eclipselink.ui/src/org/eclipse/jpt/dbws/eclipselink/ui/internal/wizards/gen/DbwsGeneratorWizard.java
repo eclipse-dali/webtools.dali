@@ -1,12 +1,12 @@
 /*******************************************************************************
-* Copyright (c) 2010, 2012 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.jpt.dbws.eclipselink.ui.internal.wizards.gen;
 
 import org.eclipse.core.resources.IFile;
@@ -20,10 +20,10 @@ import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.jpt.dbws.eclipselink.ui.JptDbwsUiPlugin;
 import org.eclipse.jpt.dbws.eclipselink.ui.internal.DbwsGeneratorUi;
 import org.eclipse.jpt.dbws.eclipselink.ui.internal.JptDbwsUiIcons;
 import org.eclipse.jpt.dbws.eclipselink.ui.internal.JptDbwsUiMessages;
+import org.eclipse.jpt.dbws.eclipselink.ui.internal.plugin.JptDbwsEclipseLinkUiPlugin;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWizard;
 
@@ -64,7 +64,7 @@ public class DbwsGeneratorWizard extends Wizard implements IWorkbenchWizard {
 	
 	private void initialize() {
 		if(this.getDialogSettings() == null) {
-			IDialogSettings dbwsSettings = JptDbwsUiPlugin.instance().getDialogSettings();
+			IDialogSettings dbwsSettings = JptDbwsEclipseLinkUiPlugin.instance().getDialogSettings();
 			IDialogSettings wizardSettings = dbwsSettings.getSection(DBWS_SECTION_NAME);
 			if(wizardSettings == null) {
 				wizardSettings = dbwsSettings.addNewSection(DBWS_SECTION_NAME);
@@ -80,7 +80,7 @@ public class DbwsGeneratorWizard extends Wizard implements IWorkbenchWizard {
 
 		this.setWindowTitle(JptDbwsUiMessages.DbwsGeneratorWizard_title);
 
-		this.setDefaultPageImageDescriptor(JptDbwsUiPlugin.getImageDescriptor(JptDbwsUiIcons.DBWS_GEN_WIZ_BANNER));
+		this.setDefaultPageImageDescriptor(JptDbwsEclipseLinkUiPlugin.instance().buildImageDescriptor(JptDbwsUiIcons.DBWS_GEN_WIZ_BANNER));
 		this.setNeedsProgressMonitor(true);
 	}
 

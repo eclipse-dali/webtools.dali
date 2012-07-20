@@ -11,8 +11,8 @@ package org.eclipse.jpt.common.utility.internal.model.value;
 
 import java.util.Iterator;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.common.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
@@ -104,9 +104,8 @@ public class PropertyListValueModelAdapter<E>
 		return this.value;
 	}
 
-	protected static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
 	public Object[] toArray() {
-		return (this.value == null) ? EMPTY_OBJECT_ARRAY : new Object[] {this.value};
+		return (this.value == null) ? Tools.EMPTY_OBJECT_ARRAY : new Object[] {this.value};
 	}
 
 

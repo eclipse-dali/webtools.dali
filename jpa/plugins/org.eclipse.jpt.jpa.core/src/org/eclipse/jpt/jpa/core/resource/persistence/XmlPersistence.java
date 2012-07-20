@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,12 +7,13 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-
 package org.eclipse.jpt.jpa.core.resource.persistence;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -21,6 +22,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleRootTranslator;
+import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.resource.persistence.v2_0.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaRootEObject;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
@@ -58,6 +60,7 @@ public class XmlPersistence extends AbstractJpaRootEObject
 	 * @ordered
 	 */
 	protected EList<XmlPersistenceUnit> persistenceUnits;
+
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -196,53 +199,63 @@ public class XmlPersistence extends AbstractJpaRootEObject
 		}
 		return super.eIsSet(featureID);
 	}
-	
-	
-	// **************** version -> schema location mapping ********************
-	
-	private static String namespace = JPA.SCHEMA_NAMESPACE;
-	
+
+
+	// ********** version -> schema location mapping **********
+
 	@Override
 	protected String getNamespace() {
-		return namespace;
+		return JPA.SCHEMA_NAMESPACE;
 	}
-	
-	private static Map<String, String> versionsToSchemaLocations = buildVersionsToSchemaLocations();
-	
-	private static Map<String, String> buildVersionsToSchemaLocations() {
-		Map<String, String> map = new HashMap<String, String>();
+
+	@Override
+	protected String getSchemaLocationForVersion(String schemaVersion) {
+		return SCHEMA_LOCATIONS.get(schemaVersion);
+	}
+
+	private static final HashMap<String, String> SCHEMA_LOCATIONS = buildSchemaLocations();
+
+	private static HashMap<String, String> buildSchemaLocations() {
+		HashMap<String, String> map = new HashMap<String, String>();
 		map.put(JPA.SCHEMA_VERSION, JPA.SCHEMA_LOCATION);
 		map.put(JPA2_0.SCHEMA_VERSION, JPA2_0.SCHEMA_LOCATION);
 		return map;
 	}
-	
-	@Override
-	protected String getSchemaLocationForVersion(String version) {
-		return versionsToSchemaLocations.get(version);
-	}
-	
-	
-	// **************** translators *******************************************
-	
-	private static final Translator ROOT_TRANSLATOR = buildRootTranslator();
-	
+
+
+	// ********** content/resource type **********
+
+	/**
+	 * The content type for <code>persistence.xml</code> files.
+	 */
+	public static final IContentType CONTENT_TYPE = JptJpaCorePlugin.instance().getContentType("persistence"); //$NON-NLS-1$
+
+
+	// ********** default runtime path **********
+
+	public static final String DEFAULT_RUNTIME_PATH_NAME = "META-INF/persistence.xml"; //$NON-NLS-1$
+
+	public static final IPath DEFAULT_RUNTIME_PATH = new Path(DEFAULT_RUNTIME_PATH_NAME);
+
+
+	// ********** translators **********
+
 	public static Translator getRootTranslator() {
 		return ROOT_TRANSLATOR;
 	}
 	
+	private static final Translator ROOT_TRANSLATOR = buildRootTranslator();
+
 	private static Translator buildRootTranslator() {
-		return new SimpleRootTranslator(
-				JPA.PERSISTENCE,
-				PersistencePackage.eINSTANCE.getXmlPersistence(),
-				buildTranslatorChildren());
+		return new SimpleRootTranslator(JPA.PERSISTENCE, PersistencePackage.eINSTANCE.getXmlPersistence(), buildTranslatorChildren());
 	}
 	
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
-				buildVersionTranslator(versionsToSchemaLocations),
-				buildNamespaceTranslator(namespace),
+				buildVersionTranslator(SCHEMA_LOCATIONS),
+				buildNamespaceTranslator(JPA.SCHEMA_NAMESPACE),
 				buildSchemaNamespaceTranslator(),
-				buildSchemaLocationTranslator(namespace, versionsToSchemaLocations),
+				buildSchemaLocationTranslator(JPA.SCHEMA_NAMESPACE, SCHEMA_LOCATIONS),
 				XmlPersistenceUnit.buildTranslator(JPA.PERSISTENCE_UNIT, PersistencePackage.eINSTANCE.getXmlPersistence_PersistenceUnits())
 			};
 	}

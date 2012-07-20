@@ -1376,7 +1376,7 @@ public class JPAEditorUtil {
 	static private HashSet<String> getEntityNames(JpaProject jpaProject) {
 		HashSet<String> names = new HashSet<String>();
 		ListIterator<PersistenceUnit> lit = jpaProject.getRootContextNode().getPersistenceXml().
-												getPersistence().getPersistenceUnits().iterator();
+												getRoot().getPersistenceUnits().iterator();
 		PersistenceUnit pu = lit.next();
 		for (ClassRef cf : pu.getClassRefs()) {
 			names.add(cf.getClassName());
@@ -1387,7 +1387,7 @@ public class JPAEditorUtil {
 	static private HashSet<String> getEntitySimpleNames(JpaProject jpaProject) {
 		HashSet<String> names = new HashSet<String>();
 		ListIterator<PersistenceUnit> lit = jpaProject.getRootContextNode().getPersistenceXml().
-												getPersistence().getPersistenceUnits().iterator();
+												getRoot().getPersistenceUnits().iterator();
 		PersistenceUnit pu = lit.next();			
 		for (ClassRef cf : pu.getClassRefs()) {
 			names.add(returnSimpleName(cf.getClassName()).toLowerCase(Locale.ENGLISH));
@@ -1419,13 +1419,13 @@ public class JPAEditorUtil {
 		try {
 			fproj = ProjectFacetsManager.create(project);
 		} catch (CoreException e) {
-			JPADiagramEditorPlugin.logError("Could not create faceted project from " + project.getName(), e); //$NON-NLS-1$		
+			JPADiagramEditorPlugin.logError("Could not create faceted project from " + project.getName(), e); //$NON-NLS-1$
 		}
 		Set<IProjectFacetVersion> projFacets = fproj.getProjectFacets();
 		Iterator<IProjectFacetVersion> it = projFacets.iterator();
 		while (it.hasNext()) {
 			IProjectFacetVersion fv = it.next();
-			if (fv.getProjectFacet().getId().equals("jpt.jpa")) {	//$NON-NLS-1$
+			if (fv.getProjectFacet().getId().equals(JpaProject.FACET_ID)) {
 				return fv.getVersionString().equals(version);	
 			}
 		}

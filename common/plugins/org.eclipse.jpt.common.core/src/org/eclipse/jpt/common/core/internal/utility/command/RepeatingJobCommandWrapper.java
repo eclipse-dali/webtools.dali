@@ -14,7 +14,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
 import org.eclipse.jpt.common.core.utility.command.JobCommandExecutor;
 import org.eclipse.jpt.common.core.utility.command.RepeatingJobCommand;
@@ -85,7 +85,7 @@ public class RepeatingJobCommandWrapper
 	private final ArrayList<StackTrace> stackTraces = debug() ? new ArrayList<StackTrace>() : null;
 
 	private static boolean debug() {
-		return JptCommonCorePlugin.instance().isDebugging();
+		return JptCommonCorePlugin.instance().isDebugEnabled();
 	}
 
 

@@ -1,5 +1,5 @@
 <?xml version="1.0"?><!--
-  Copyright (c) 2007, 2010 Oracle. All rights reserved.  This program and the accompanying materials are made available under the  terms of the Eclipse Public License v1.0, which accompanies this distribution  and is available at http://www.eclipse.org/legal/epl-v10.html.  Contributors:    Oracle - initial API and implementation -->
+  Copyright (c) 2007, 2012 Oracle. All rights reserved.  This program and the accompanying materials are made available under the  terms of the Eclipse Public License v1.0, which accompanies this distribution  and is available at http://www.eclipse.org/legal/epl-v10.html.  Contributors:    Oracle - initial API and implementation -->
 
 <project name="testsuite" default="run" basedir=".">
 	<!-- The property ${eclipse-home} should be passed into this script -->
@@ -20,8 +20,7 @@
 		</delete>
 	</target>
 
-	<!-- This target defines the tests that need to be run. -->
-	<target name="suite1">
+	<!-- This target defines the tests that need to be run. -->	<target name="suite">
     	<property file="${testRoot}/testServer.properties"/>
 	    <property name="jpt-folder" value="${eclipse-home}/jpt_folder"/>
 	    <delete dir="${jpt-folder}" quiet="true"/>
@@ -40,6 +39,6 @@
 
 	<!-- This target runs the test suite. Any actions that need to happen -->
 	<!-- after all the tests have been run should go here. -->
-	<target name="run" depends="init, suite1,cleanup">
+	<target name="run" depends="init, suite, cleanup">
 	</target>
 </project>

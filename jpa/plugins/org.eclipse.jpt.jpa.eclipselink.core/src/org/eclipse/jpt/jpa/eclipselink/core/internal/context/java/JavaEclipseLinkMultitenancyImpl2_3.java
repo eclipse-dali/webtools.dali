@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrappe
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
-import org.eclipse.jpt.jpa.core.context.MappingFileRoot;
+import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
@@ -33,7 +33,6 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.jpa.db.Table;
-import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMultitenantType2_3;
@@ -48,6 +47,8 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMapping
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.TargetDatabase;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_4JpaPlatformFactory;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.TenantDiscriminatorColumnValidator2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.NullEclipseLinkTenantDiscriminatorColumnAnnotation2_3;
@@ -585,7 +586,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 	}
 
 	public EclipseLinkEntityMappings getEclipseLinkEntityMappings() {
-		MappingFileRoot mfRoot = super.getMappingFileRoot();
+		MappingFile.Root mfRoot = super.getMappingFileRoot();
 		if (mfRoot instanceof EclipseLinkEntityMappings) {
 			return (EclipseLinkEntityMappings) mfRoot;
 		}
@@ -674,7 +675,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		if (getSpecifiedType() == EclipseLinkMultitenantType2_3.TABLE_PER_TENANT && !JptJpaEclipseLinkCorePlugin.nodeIsEclipseLink2_4Compatible(this)) {
+		if (getSpecifiedType() == EclipseLinkMultitenantType2_3.TABLE_PER_TENANT && ! this.getJpaPlatformVersion().isCompatibleWithEclipseLinkVersion(EclipseLink2_4JpaPlatformFactory.VERSION)) {
 			messages.add(
 				DefaultEclipseLinkJpaValidationMessages.buildMessage(
 					IMessage.NORMAL_SEVERITY,
@@ -756,6 +757,11 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 				)
 			);			
 		}
+	}
+
+	@Override
+	protected EclipseLinkJpaPlatformVersion getJpaPlatformVersion() {
+		return (EclipseLinkJpaPlatformVersion) super.getJpaPlatformVersion();
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {

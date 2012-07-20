@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core.tests.internal.context.orm;
 
 import java.util.Iterator;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
@@ -25,6 +24,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEmbedded;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEmbeddedId;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntity;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlId;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlManyToMany;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlManyToOne;
@@ -55,7 +55,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 	protected void setUp() throws Exception {
 		super.setUp();
 		XmlMappingFileRef mappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
-		mappingFileRef.setFileName(JptJpaCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH.toString());
+		mappingFileRef.setFileName(XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 		getXmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
 		getPersistenceXmlResource().save(null);
 	}	

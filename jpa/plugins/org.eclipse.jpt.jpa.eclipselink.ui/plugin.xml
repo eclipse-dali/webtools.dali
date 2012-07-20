@@ -257,7 +257,7 @@
 						<count value="1"/>
 						<iterate operator="and">
 							<instanceof value="org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType"/>
-							<test property="org.eclipse.jpt.jpa.core.isCompatibleVersion" value="&apos;2.1&apos;"/>
+							<test property="org.eclipse.jpt.common.core.resourceTypeIsKindOf" value="org.eclipse.jpt.jpa.eclipselink.core.content.orm:2.1"/>
 						</iterate>
 					</with>
 				</and>
@@ -325,7 +325,7 @@
 						<count value="1"/>
 						<iterate operator="and">
 							<instanceof value="org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType"/>
-							<test property="org.eclipse.jpt.jpa.core.isCompatibleVersion" value="&apos;2.1&apos;"/>
+							<test property="org.eclipse.jpt.common.core.resourceTypeIsKindOf" value="org.eclipse.jpt.jpa.eclipselink.core.content.orm:2.1"/>
 						</iterate>
 					</with>
 				</visibleWhen>

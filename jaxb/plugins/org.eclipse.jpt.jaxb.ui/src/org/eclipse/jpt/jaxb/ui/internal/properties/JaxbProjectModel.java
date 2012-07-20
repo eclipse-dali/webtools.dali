@@ -61,20 +61,20 @@ class JaxbProjectModel
 	
 	@Override
 	protected void engageSubject_() {
-		JptJaxbCorePlugin.getProjectManager().addCollectionChangeListener(
+		JptJaxbCorePlugin.instance().getProjectManager().addCollectionChangeListener(
 					JaxbProjectManager.JAXB_PROJECTS_COLLECTION, 
 					this.projectManagerListener);
 	}
 	
 	@Override
 	protected void disengageSubject_() {
-		JptJaxbCorePlugin.getProjectManager().removeCollectionChangeListener(
+		JptJaxbCorePlugin.instance().getProjectManager().removeCollectionChangeListener(
 					JaxbProjectManager.JAXB_PROJECTS_COLLECTION, 
 					this.projectManagerListener);
 	}
 	
 	@Override
 	protected JaxbProject buildValue_() {
-		return JptJaxbCorePlugin.getJaxbProject(this.subject);
+		return JptJaxbCorePlugin.instance().getProjectManager().getJaxbProject(this.subject);
 	}		
 }

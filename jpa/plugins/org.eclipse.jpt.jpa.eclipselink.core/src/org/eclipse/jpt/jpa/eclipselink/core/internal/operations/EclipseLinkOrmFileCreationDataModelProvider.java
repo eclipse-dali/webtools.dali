@@ -9,13 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.operations;
 
-import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProvider;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
-import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.platform.EclipseLinkPlatform;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLink;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v1_2.EclipseLink1_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_0.EclipseLink2_0;
@@ -43,36 +43,29 @@ public class EclipseLinkOrmFileCreationDataModelProvider
 	
 	@Override
 	protected String getDefaultFileName() {
-		return JptJpaEclipseLinkCorePlugin.DEFAULT_ECLIPSELINK_ORM_XML_RUNTIME_PATH.lastSegment();
+		return XmlEntityMappings.DEFAULT_RUNTIME_PATH.lastSegment();
 	}
 	
 	@Override
-	protected String getDefaultVersion() {
-		JpaProject jpaProject = this.getJpaProject();
-		if (jpaProject == null) {
-			return null;
-		}
-		try {
-			return jpaProject.getJpaPlatform().getMostRecentSupportedResourceType(
-					JptJpaEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE).getVersion();
-		}
-		catch (IllegalArgumentException iae) {
-			// eclipselink content not supported for project
-			return null;
-		}
+	protected IContentType getContentType() {
+		return XmlEntityMappings.CONTENT_TYPE;
 	}
 	
 	@Override
 	protected boolean fileVersionSupported(String fileVersion) {
-		return fileVersion.equals(EclipseLink.SCHEMA_VERSION)
-				|| fileVersion.equals(EclipseLink1_1.SCHEMA_VERSION)
-				|| fileVersion.equals(EclipseLink1_2.SCHEMA_VERSION)
-				|| fileVersion.equals(EclipseLink2_0.SCHEMA_VERSION)
-				|| fileVersion.equals(EclipseLink2_1.SCHEMA_VERSION)
-				|| fileVersion.equals(EclipseLink2_2.SCHEMA_VERSION)
-				|| fileVersion.equals(EclipseLink2_3.SCHEMA_VERSION)
-				|| fileVersion.equals(EclipseLink2_4.SCHEMA_VERSION);
+		return ArrayTools.contains(ECLIPSE_LINK_SCHEMA_VERSIONS, fileVersion);
 	}
+
+	protected static final String[] ECLIPSE_LINK_SCHEMA_VERSIONS = new String[] {
+		EclipseLink.SCHEMA_VERSION,
+		EclipseLink1_1.SCHEMA_VERSION,
+		EclipseLink1_2.SCHEMA_VERSION,
+		EclipseLink2_0.SCHEMA_VERSION,
+		EclipseLink2_1.SCHEMA_VERSION,
+		EclipseLink2_2.SCHEMA_VERSION,
+		EclipseLink2_3.SCHEMA_VERSION,
+		EclipseLink2_4.SCHEMA_VERSION
+	};
 	
 	@Override
 	protected boolean fileVersionSupportedForFacetVersion(String fileVersion, String jpaFacetVersion) {
@@ -81,11 +74,7 @@ public class EclipseLinkOrmFileCreationDataModelProvider
 	}
 	
 	@Override
-	protected boolean isSupportedPlatformId(String id) {
-		JpaPlatformDescription platform = JptJpaCorePlugin.getJpaPlatformManager().getJpaPlatform(id);
-		if (platform == null) {
-			return false;
-		}
-		return EclipseLinkPlatform.GROUP.equals(platform.getGroup());
+	protected boolean platformIsSupported(JpaPlatform jpaPlatform) {
+		return jpaPlatform.getDescription().getGroupDescription().equals(EclipseLinkPlatform.GROUP);
 	}
 }

@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.libval;
 
 import org.eclipse.core.runtime.IStatus;
@@ -30,7 +30,7 @@ public class JaxbJreLibraryValidator
 				= (JaxbLibraryProviderInstallOperationConfig) config;
 		
 		if (! jaxbConfig.getJaxbPlatform().getGroup().equals(GenericJaxbPlatform.GROUP)) {
-			return new Status(IStatus.ERROR, JptJaxbCorePlugin.PLUGIN_ID, JptJaxbCoreMessages.JreLibraryValidator_invalidPlatform);
+			return JptJaxbCorePlugin.instance().buildErrorStatus(JptJaxbCoreMessages.JreLibraryValidator_invalidPlatform);
 		}
 		
 		IProjectFacetVersion jaxbVersion = config.getProjectFacetVersion();
@@ -43,10 +43,7 @@ public class JaxbJreLibraryValidator
 		
 		// null here implies something prior to jaxb 2.1
 		if (jreJaxbVersion == null || jreJaxbVersion.compareTo(jaxbVersion) < 0) {
-			String message = NLS.bind(
-					JptJaxbCoreMessages.JreLibraryValidator_invalidJavaLibrary,
-					new String[] {jaxbVersion.getVersionString()});
-			return new Status(IStatus.ERROR, JptJaxbCorePlugin.PLUGIN_ID, message);
+			return JptJaxbCorePlugin.instance().buildErrorStatus(JptJaxbCoreMessages.JreLibraryValidator_invalidJavaLibrary, jaxbVersion.getVersionString());
 		}
 		
 		// runtime portion of validation - warn if java facet is insufficient to provide jaxb api.
@@ -55,10 +52,7 @@ public class JaxbJreLibraryValidator
 		
 		// null here implies something prior to jaxb 2.1
 		if (javaJaxbVersion == null || javaJaxbVersion.compareTo(jaxbVersion) < 0) {
-			String message = NLS.bind(
-					JptJaxbCoreMessages.JreLibraryValidator_invalidJavaFacet,
-					new String[] {javaVersion.getVersionString(), jaxbVersion.getVersionString()});
-			return new Status(IStatus.WARNING, JptJaxbCorePlugin.PLUGIN_ID, message);
+			return JptJaxbCorePlugin.instance().buildStatus(IStatus.WARNING, JptJaxbCoreMessages.JreLibraryValidator_invalidJavaFacet, javaVersion.getVersionString(), jaxbVersion.getVersionString());
 		}
 		
 		// TODO - check for xjc classes when we support jdk version of xjc

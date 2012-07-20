@@ -10,9 +10,9 @@
 package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.persistence;
 
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetDataModelProperties;
+import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logging2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logging2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.LoggingLevel;
@@ -101,7 +101,7 @@ public class EclipseLink2_4LoggingTests extends EclipseLink2_0PersistenceUnitTes
 	@Override
 	protected IDataModel buildJpaConfigDataModel() {
 		IDataModel dataModel = super.buildJpaConfigDataModel();
-		dataModel.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, JpaFacet.VERSION_2_0.getVersionString());	
+		dataModel.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, JpaProject2_0.FACET_VERSION_STRING);
 		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM, EclipseLinkPlatform.VERSION_2_4);
 		return dataModel;
 	}

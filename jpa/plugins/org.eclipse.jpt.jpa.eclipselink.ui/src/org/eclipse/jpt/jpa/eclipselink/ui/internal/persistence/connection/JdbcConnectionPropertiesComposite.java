@@ -1,15 +1,16 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2012 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-*
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.connection;
 
 import java.util.Comparator;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -32,10 +33,9 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
-import org.eclipse.jpt.jpa.db.JptJpaDbPlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Connection;
-import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.JptUiPersistence2_0Messages;
 import org.eclipse.osgi.util.NLS;
@@ -279,7 +279,7 @@ public class JdbcConnectionPropertiesComposite<T extends Connection>
 		// take the settings from it (user, password, etc.) and give them
 		// to the EclipseLink connection, so we go
 		// to the db plug-in directly to get the factory
-		return JptJpaDbPlugin.getConnectionProfileFactory();
+		return (ConnectionProfileFactory) ResourcesPlugin.getWorkspace().getAdapter(ConnectionProfileFactory.class);
 	}
 
 	// broaden access a bit
@@ -318,25 +318,16 @@ public class JdbcConnectionPropertiesComposite<T extends Connection>
 			};
 		}
 
-		/*
-		 * (non-Javadoc)
-		 */
 		@Override
 		protected Control createExtendedContentArea(Composite parent) {
 			return null;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 */
 		@Override
 		protected ItemsFilter createFilter() {
 			return new ConnectionItemsFilter();
 		}
 
-		/*
-		 * (non-Javadoc)
-		 */
 		@Override
 		protected void fillContentProvider(AbstractContentProvider provider,
 		                                   ItemsFilter itemsFilter,
@@ -356,9 +347,6 @@ public class JdbcConnectionPropertiesComposite<T extends Connection>
 			return JdbcConnectionPropertiesComposite.this.getConnectionProfileFactory().getConnectionProfileNames();
 		}
 
-		/*
-		 * (non-Javadoc)
-		 */
 		@Override
 		protected IDialogSettings getDialogSettings() {
 
@@ -372,17 +360,11 @@ public class JdbcConnectionPropertiesComposite<T extends Connection>
 			return settings;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 */
 		@Override
 		public String getElementName(Object object) {
 			return object.toString();
 		}
 
-		/*
-		 * (non-Javadoc)
-		 */
 		@Override
 		protected Comparator<String> getItemsComparator() {
 			return new Comparator<String>() {
@@ -392,17 +374,11 @@ public class JdbcConnectionPropertiesComposite<T extends Connection>
 			};
 		}
 
-		/*
-		 * (non-Javadoc)
-		 */
 		@Override
 		protected IStatus validateItem(Object item) {
-
-			if (item == null) {
-				return new Status(IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID, IStatus.ERROR, "", null);
-			}
-
-			return Status.OK_STATUS;
+			return (item == null) ?
+					JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus() :
+					Status.OK_STATUS;
 		}
 
 		/**

@@ -14,7 +14,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFile;
@@ -53,7 +53,7 @@ public class ModuleResourceLocator
 		try {
 			return this.getVirtualFile_(vFolder, file);
 		} catch (CoreException ex) {
-			JptCommonCorePlugin.log(ex);
+			JptCommonCorePlugin.instance().logError(ex);
 			return null;
 		}
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -42,9 +42,9 @@ public interface PersistenceXmlContextNodeFactory
 	MappingFileRef buildMappingFileRef(PersistenceUnit parent, XmlMappingFileRef xmlMappingFileRef);
 
 	/**
-	 * Build a "implied" mapping file ref.
+	 * Build a "virtual" mapping file ref.
 	 */
-	MappingFileRef buildImpliedMappingFileRef(PersistenceUnit parent);
+	MappingFileRef buildVirtualMappingFileRef(PersistenceUnit parent);
 
 	/**
 	 * Build a "specified" class ref.
@@ -52,7 +52,7 @@ public interface PersistenceXmlContextNodeFactory
 	ClassRef buildClassRef(PersistenceUnit parent, XmlJavaClassRef xmlClassRef);
 	
 	/**
-	 * Build an "implied" class ref.
+	 * Build a "virtual" class ref.
 	 */
 	ClassRef buildClassRef(PersistenceUnit parent, String className);
 	

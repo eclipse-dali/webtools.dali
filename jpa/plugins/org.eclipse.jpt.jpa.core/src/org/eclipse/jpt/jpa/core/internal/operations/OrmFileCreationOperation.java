@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.internal.resource.orm.OrmXmlResourceProvider;
-import org.eclipse.jpt.jpa.core.resource.AbstractXmlResourceProvider;
+import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResourceProvider;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 public class OrmFileCreationOperation
@@ -58,7 +58,7 @@ public class OrmFileCreationOperation
 		if (persistenceXml == null) {
 			throw new ExecutionException("Project does not have a persistence.xml file"); //$NON-NLS-1$
 		}
-		Persistence persistence = persistenceXml.getPersistence();
+		Persistence persistence = persistenceXml.getRoot();
 		if (persistence == null) {
 			throw new ExecutionException("persistence.xml does not have a persistence node."); //$NON-NLS-1$
 		}
@@ -100,7 +100,7 @@ public class OrmFileCreationOperation
 	}
 
 	@Override
-	protected AbstractXmlResourceProvider getXmlResourceProvider(IFile file) {
+	protected JpaXmlResourceProvider getXmlResourceProvider(IFile file) {
 		return OrmXmlResourceProvider.getXmlResourceProvider(file);
 	}
 }

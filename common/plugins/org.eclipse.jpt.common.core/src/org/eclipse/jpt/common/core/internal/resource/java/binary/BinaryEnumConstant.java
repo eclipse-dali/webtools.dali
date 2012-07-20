@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.ITypeParameter;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.EnumConstantDeclaration;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnumConstant;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
@@ -80,7 +80,7 @@ final class BinaryEnumConstant
 				return new ArrayIterable<ITypeParameter>(this.enumConstant.getDeclaringType().getTypeParameters());
 			}
 			catch (JavaModelException jme) {
-				JptCommonCorePlugin.log(jme);
+				JptCommonCorePlugin.instance().logError(jme);
 			}
 			return EmptyIterable.instance();
 		}

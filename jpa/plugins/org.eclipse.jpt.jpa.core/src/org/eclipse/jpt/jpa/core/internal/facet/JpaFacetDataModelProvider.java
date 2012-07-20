@@ -1,13 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2009, 2010  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.facet;
 
 import java.util.ArrayList;
@@ -16,30 +15,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
-import org.eclipse.jpt.jpa.core.JpaFacet;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.JpaWorkspace;
 import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
+import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.libprov.JpaLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
 import org.eclipse.jpt.jpa.db.Database;
 import org.eclipse.jpt.jpa.db.DatabaseIdentifierAdapter;
-import org.eclipse.jpt.jpa.db.JptJpaDbPlugin;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
 import org.eclipse.jst.common.project.facet.core.libprov.IPropertyChangeListener;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryProviderOperationConfig;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.common.componentcore.datamodel.FacetInstallDataModelProvider;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelPropertyDescriptor;
@@ -54,18 +52,6 @@ public abstract class JpaFacetDataModelProvider
 	implements JpaFacetDataModelProperties
 {
 	protected static final String EJB_FACET_ID = IModuleConstants.JST_EJB_MODULE;
-	
-	protected static final IStatus PLATFORM_NOT_SPECIFIED_STATUS = 
-			buildErrorStatus(JptCoreMessages.VALIDATE_PLATFORM_NOT_SPECIFIED);
-	
-	protected static final IStatus CONNECTION_NOT_CONNECTED_STATUS = 
-			buildInfoStatus(JptCoreMessages.VALIDATE_CONNECTION_NOT_CONNECTED);
-	
-	protected static final IStatus USER_OVERRIDE_DEFAULT_CATALOG_NOT_SPECIFIED_STATUS = 
-			buildErrorStatus(JptCoreMessages.VALIDATE_DEFAULT_CATALOG_NOT_SPECIFIED);
-	
-	protected static final IStatus USER_OVERRIDE_DEFAULT_SCHEMA_NOT_SPECIFIED_STATUS = 
-			buildErrorStatus(JptCoreMessages.VALIDATE_DEFAULT_SCHEMA_NOT_SPECIFIED);
 	
 	
 	private LibraryInstallDelegate defaultLibraryProvider;
@@ -175,13 +161,13 @@ public abstract class JpaFacetDataModelProvider
 	@Override
 	public Object getDefaultProperty(String propertyName) {
 		if (propertyName.equals(FACET_ID)) {
-			return JpaFacet.ID;
+			return JpaProject.FACET_ID;
 		}
 		if (propertyName.equals(RUNTIME)) {
 			return null;
 		}
 		if (propertyName.equals(PLATFORM)) {
-			return getDefaultPlatform();
+			return getDefaultPlatformDescription();
 		}
 		if (propertyName.equals(LIBRARY_PROVIDER_DELEGATE)) {
 			return getDefaultLibraryProvider();
@@ -214,7 +200,7 @@ public abstract class JpaFacetDataModelProvider
 		return super.getDefaultProperty(propertyName);
 	}
 	
-	protected abstract JpaPlatformDescription getDefaultPlatform();
+	protected abstract JpaPlatformDescription getDefaultPlatformDescription();
 	
 	protected LibraryInstallDelegate getDefaultLibraryProvider() {
 		// delegate itself changes only when facet version changes
@@ -468,13 +454,7 @@ public abstract class JpaFacetDataModelProvider
 	}
 	
 	protected Iterable<JpaPlatformDescription> buildValidPlatformDescriptions() {
-		return new FilteringIterable<JpaPlatformDescription>(
-					JptJpaCorePlugin.getJpaPlatformManager().getJpaPlatforms()) {
-				@Override
-				protected boolean accept(JpaPlatformDescription o) {
-					return o.supportsJpaFacetVersion(getProjectFacetVersion());
-				}
-			};
+		return this.getJpaPlatformManager().getJpaPlatformDescriptions(this.getProjectFacetVersion());
 	}
 	
 	protected static final Comparator<DataModelPropertyDescriptor> DESCRIPTOR_COMPARATOR =
@@ -569,10 +549,6 @@ public abstract class JpaFacetDataModelProvider
 		return new DataModelPropertyDescriptor(platform, platform.getLabel());
 	}
 	
-	protected String getPlatformLabel(String platformId) {
-		return JptJpaCorePlugin.getJpaPlatformManager().getJpaPlatform(platformId).getLabel();
-	}
-	
 	protected DataModelPropertyDescriptor buildConnectionDescriptor(String connectionName) {
 		String description = (connectionName == null) ? JptCoreMessages.NONE : null;
 		return new DataModelPropertyDescriptor(connectionName, description);
@@ -642,7 +618,7 @@ public abstract class JpaFacetDataModelProvider
 	
 	protected ConnectionProfileFactory getConnectionProfileFactory() {
 		// we don't have a JPA project yet, so go to the db plug-in directly to get the factory
-		return JptJpaDbPlugin.getConnectionProfileFactory();
+		return (ConnectionProfileFactory) ResourcesPlugin.getWorkspace().getAdapter(ConnectionProfileFactory.class);
 	}
 	
 	
@@ -675,7 +651,9 @@ public abstract class JpaFacetDataModelProvider
 	}
 	
 	protected IStatus validatePlatform() {
-		return (this.getPlatform() == null) ? PLATFORM_NOT_SPECIFIED_STATUS : OK_STATUS;
+		return (this.getPlatform() == null) ?
+					JptJpaCorePlugin.instance().buildErrorStatus(JptCoreMessages.VALIDATE_PLATFORM_NOT_SPECIFIED) :
+					OK_STATUS;
 	}
 	
 	protected IStatus validateConnection() {
@@ -686,10 +664,10 @@ public abstract class JpaFacetDataModelProvider
 	protected IStatus validateNonNullConnection(String connectionName) {
 		ConnectionProfile cp = this.getConnectionProfile(connectionName);
 		if (cp == null) {
-			return buildErrorStatus(NLS.bind(JptCoreMessages.VALIDATE_CONNECTION_INVALID, connectionName));
+			return JptJpaCorePlugin.instance().buildErrorStatus(JptCoreMessages.VALIDATE_CONNECTION_INVALID, connectionName);
 		}
 		if ( ! cp.isActive()) {
-			return CONNECTION_NOT_CONNECTED_STATUS;
+			return JptJpaCorePlugin.instance().buildStatus(IStatus.INFO, JptCoreMessages.VALIDATE_CONNECTION_NOT_CONNECTED);
 		}
 		return OK_STATUS;
 	}
@@ -697,7 +675,7 @@ public abstract class JpaFacetDataModelProvider
 	protected IStatus validateUserOverrideDefaultCatalog() {
 		if (this.userWantsToOverrideDefaultCatalog()) {
 			if (this.getUserOverrideDefaultCatalog() == null) {
-				return USER_OVERRIDE_DEFAULT_CATALOG_NOT_SPECIFIED_STATUS;
+				return JptJpaCorePlugin.instance().buildErrorStatus(JptCoreMessages.VALIDATE_DEFAULT_CATALOG_NOT_SPECIFIED);
 			}
 		}
 		return OK_STATUS;
@@ -706,7 +684,7 @@ public abstract class JpaFacetDataModelProvider
 	protected IStatus validateUserOverrideDefaultSchema() {
 		if (this.userWantsToOverrideDefaultSchema()) {
 			if (this.getUserOverrideDefaultSchema() == null) {
-				return USER_OVERRIDE_DEFAULT_SCHEMA_NOT_SPECIFIED_STATUS;
+				return JptJpaCorePlugin.instance().buildErrorStatus(JptCoreMessages.VALIDATE_DEFAULT_SCHEMA_NOT_SPECIFIED);
 			}
 		}
 		return OK_STATUS;
@@ -719,22 +697,14 @@ public abstract class JpaFacetDataModelProvider
 	}
 	
 	
-	// ********** static methods **********
+	// ********** misc **********
 	
-	protected static IStatus buildInfoStatus(String message) {
-		return buildStatus(IStatus.INFO, message);
+	protected JpaPlatformManager getJpaPlatformManager() {
+		return this.getJpaWorkspace().getJpaPlatformManager();
 	}
-	
-//	private static IStatus buildWarningStatus(String message) {
-//		return buildStatus(IStatus.WARNING, message);
-//	}
-	
-	protected static IStatus buildErrorStatus(String message) {
-		return buildStatus(IStatus.ERROR, message);
-	}
-	
-	protected static IStatus buildStatus(int severity, String message) {
-		return new Status(severity, JptJpaCorePlugin.PLUGIN_ID, message);
+
+	protected JpaWorkspace getJpaWorkspace() {
+		return (JpaWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JpaWorkspace.class);
 	}
 	
 	@Override
@@ -743,5 +713,4 @@ public abstract class JpaFacetDataModelProvider
 		this.defaultLibraryProvider.removeListener(this.libraryProviderListener);
 		this.defaultLibraryProvider.dispose();
 	}
-	
 }

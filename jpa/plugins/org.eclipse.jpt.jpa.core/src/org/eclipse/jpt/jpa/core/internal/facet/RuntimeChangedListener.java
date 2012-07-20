@@ -14,9 +14,8 @@ import java.util.Map;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.libprov.JpaLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
@@ -34,7 +33,7 @@ public class RuntimeChangedListener
 		if (fpb == null) {
 			fpb = facetedProjectEvent.getProject();
 		}
-		IProjectFacetVersion pfv = fpb.getProjectFacetVersion(JpaFacet.FACET);
+		IProjectFacetVersion pfv = fpb.getProjectFacetVersion(JpaProject.FACET);
 		if (pfv != null) {
 			Map<String, Object> enablementVariables = new HashMap<String, Object>();
 			enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_ENABLEMENT_EXP, getJpaPlatformId(fpb.getProject()));
@@ -44,7 +43,7 @@ public class RuntimeChangedListener
 				lp.execute(new NullProgressMonitor());
 			}
 			catch (CoreException ce) {
-				JptJpaCorePlugin.log(ce);
+				JptJpaCorePlugin.instance().logError(ce);
 			}
 			finally {
 				lp.dispose();

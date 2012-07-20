@@ -23,14 +23,9 @@ import org.eclipse.core.resources.IFile;
  * @version 2.3
  * @since 2.2
  */
-public interface JptResourceModel {
-	/**
-	 * Return the model's resource type. This can change.
-	 * Return <code>null</code> if the resource type cannot be determined,
-	 * the content type is <code>null</code> or the version is <code>null</code>.
-	 */
-	JptResourceType getResourceType();
-
+public interface JptResourceModel
+	extends JptResourceTypeReference
+{
 	/**
 	 * Return the model's file.
 	 */

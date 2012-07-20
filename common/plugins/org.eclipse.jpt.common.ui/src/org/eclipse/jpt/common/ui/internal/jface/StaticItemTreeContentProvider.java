@@ -11,6 +11,7 @@ package org.eclipse.jpt.common.ui.internal.jface;
 
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.Tools;
 
 /**
  * Item tree content provider that contains unchanging parent and children.
@@ -36,7 +37,7 @@ public class StaticItemTreeContentProvider
 	 * parent but no children.
 	 */
 	public StaticItemTreeContentProvider(Object parent) {
-		this(parent, EMPTY_ARRAY);
+		this(parent, Tools.EMPTY_OBJECT_ARRAY);
 	}
 
 	/**

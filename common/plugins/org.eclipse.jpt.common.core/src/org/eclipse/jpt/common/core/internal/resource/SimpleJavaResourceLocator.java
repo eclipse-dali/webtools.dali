@@ -20,7 +20,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.ResourceLocator;
 import org.eclipse.jpt.common.utility.Filter;
@@ -45,7 +45,7 @@ public class SimpleJavaResourceLocator
 		try {
 			return this.resourceLocationIsValid_(project, container);
 		} catch (JavaModelException ex) {
-			JptCommonCorePlugin.log(ex);
+			JptCommonCorePlugin.instance().logError(ex);
 			// happens if the Java project does not exist
 			return false;
 		}
@@ -91,7 +91,7 @@ public class SimpleJavaResourceLocator
 		try {
 			return this.getDefaultResourceLocation_(project);
 		} catch (Exception ex) {
-			JptCommonCorePlugin.log(ex);
+			JptCommonCorePlugin.instance().logError(ex);
 			// happens if the Java project does not exist or there is a problem with the
 			// Java resources
 			return null;
@@ -121,7 +121,7 @@ public class SimpleJavaResourceLocator
 		try {
 			return this.getResourcePath_(project, runtimePath);
 		} catch (Exception ex) {
-			JptCommonCorePlugin.log(ex);
+			JptCommonCorePlugin.instance().logError(ex);
 			return null;
 		}
 	}
@@ -146,7 +146,7 @@ public class SimpleJavaResourceLocator
 		try {
 			return this.getRuntimePath_(project, resourcePath);
 		} catch (Exception ex) {
-			JptCommonCorePlugin.log(ex);
+			JptCommonCorePlugin.instance().logError(ex);
 			return resourcePath.makeRelativeTo(project.getFullPath());
 		}
 	}

@@ -53,7 +53,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
@@ -86,6 +85,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitTransactionTy
 import org.eclipse.jpt.jpa.core.context.persistence.PersistentTypeContainer;
 import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
+import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.JpaFactory2_0;
@@ -97,6 +97,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.SharedCacheMode;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.ValidationMode;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJarFileRef;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJavaClassRef;
@@ -628,7 +629,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected MappingFileRef buildImpliedMappingFileRef() {
-		return this.getContextNodeFactory().buildImpliedMappingFileRef(this);
+		return this.getContextNodeFactory().buildVirtualMappingFileRef(this);
 	}
 
 	protected void syncImpliedMappingFileRef() {
@@ -656,7 +657,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected boolean impliedMappingFileIsSpecified() {
-		return this.mappingFileIsSpecified(JptJpaCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH.toString());
+		return this.mappingFileIsSpecified(XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 	}
 
 	protected boolean mappingFileIsSpecified(String impliedMappingFileName) {
@@ -2999,7 +3000,7 @@ public abstract class AbstractPersistenceUnit
 		try {
 			return this.getJpaProject().getJavaProject().findType(typeName);
 		} catch (JavaModelException ex) {
-			JptJpaCorePlugin.log(ex);
+			JptJpaCorePlugin.instance().logError(ex);
 			return null;
 		}
 	}
@@ -3008,7 +3009,7 @@ public abstract class AbstractPersistenceUnit
 		try {
 			this.deleteMetamodelFile_(file);
 		} catch (CoreException ex) {
-			JptJpaCorePlugin.log(ex);
+			JptJpaCorePlugin.instance().logError(ex);
 		}
 	}
 

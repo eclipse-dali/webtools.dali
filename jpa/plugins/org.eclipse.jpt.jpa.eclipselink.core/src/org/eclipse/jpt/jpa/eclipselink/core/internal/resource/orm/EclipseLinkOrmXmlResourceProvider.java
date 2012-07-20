@@ -13,16 +13,15 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProperties;
-import org.eclipse.jpt.jpa.core.resource.AbstractXmlResourceProvider;
+import org.eclipse.jpt.jpa.core.internal.resource.xml.AbstractJpaXmlResourceProvider;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlPersistenceUnitMetadata;
-import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 public class EclipseLinkOrmXmlResourceProvider
-	extends AbstractXmlResourceProvider
+	extends AbstractJpaXmlResourceProvider
 	implements OrmFileCreationDataModelProperties
 {
 	/**
@@ -46,7 +45,7 @@ public class EclipseLinkOrmXmlResourceProvider
 	 * the given project in the default runtime location
 	 */
 	public static EclipseLinkOrmXmlResourceProvider getDefaultXmlResourceProvider(IProject project) {
-		return getXmlResourceProvider(project, JptJpaEclipseLinkCorePlugin.DEFAULT_ECLIPSELINK_ORM_XML_RUNTIME_PATH);
+		return getXmlResourceProvider(project, XmlEntityMappings.DEFAULT_RUNTIME_PATH);
 	}
 	
 	private static EclipseLinkOrmXmlResourceProvider getXmlResourceProvider_(IProject project, IPath fullPath) {
@@ -55,11 +54,11 @@ public class EclipseLinkOrmXmlResourceProvider
 	
 	
 	public EclipseLinkOrmXmlResourceProvider(IProject project) {
-		this(project, JptJpaEclipseLinkCorePlugin.DEFAULT_ECLIPSELINK_ORM_XML_RUNTIME_PATH);
+		this(project, XmlEntityMappings.DEFAULT_RUNTIME_PATH);
 	}
 	
 	public EclipseLinkOrmXmlResourceProvider(IProject project, IPath filePath) {
-		super(project, filePath, JptJpaEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE);
+		super(project, filePath, XmlEntityMappings.CONTENT_TYPE);
 	}
 	
 	

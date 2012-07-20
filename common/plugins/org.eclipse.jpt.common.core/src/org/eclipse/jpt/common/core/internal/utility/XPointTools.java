@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,128 +11,175 @@ package org.eclipse.jpt.common.core.internal.utility;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.JptCommonCoreMessages;
 import org.eclipse.osgi.util.NLS;
 import org.osgi.framework.Bundle;
 
 /**
- * Utilities for extension point management, validation, etc.
+ * Utilities for Eclipse extension point management, validation, etc.
  */
 public class XPointTools {
-	
-	public static String findRequiredAttribute(
-			IConfigurationElement configElement, String attributeName)
-			throws XPointException {
-		
-		String val = configElement.getAttribute(attributeName);
-		if (val == null) {
-			logMissingAttribute(configElement, attributeName);
+	/**
+	 * Return the value of the specified attribute of the specified element.
+	 * @exception XPointException if the value is <code>null</code>.
+	 */
+	public static String findRequiredAttribute(IConfigurationElement element, String attributeName) throws XPointException {
+		String value = element.getAttribute(attributeName);
+		if (value == null) {
+			logMissingAttribute(element, attributeName);
 			throw new XPointException();
 		}
-		return val;
+		return value;
 	}
-	
-	public static <T> T instantiate(String pluginId, String extensionPoint, String className, Class<T> interfaze) {
-		Class<T> clazz = loadClass(pluginId, extensionPoint, className, interfaze);
-		return (clazz == null) ? null : instantiate(pluginId, extensionPoint, clazz);
+
+	private static void logMissingAttribute(IConfigurationElement element, String attributeName) {
+		logError(buildMissingAttributeMessage(element, attributeName));
+    }
+
+	/**
+	 * Return a helpful message indicating the specified attribute is missing
+	 * from the specified element.
+	 */
+	public static String buildMissingAttributeMessage(IConfigurationElement element, String attributeName) {
+		return bind(JptCommonCoreMessages.REGISTRY_MISSING_ATTRIBUTE,
+						attributeName,
+						element.getName(),
+						element.getDeclaringExtension().getExtensionPointUniqueIdentifier(),
+						element.getContributor().getName()
+					);
     }
 	
 	/**
-	 * Instantiate the specified class.
+	 * Return a helpful message indicating the specified attribute
+	 * from the specified element has an invalid value.
 	 */
-	public static <T> T instantiate(String pluginId, String extensionPoint, Class<T> clazz) {
-		try {
-			return clazz.newInstance();
-		} catch (Exception ex) {
-			logFailedInstantiation(ex, pluginId, extensionPoint, clazz.getName());
-			return null;
-		}
+	public static String buildInvalidValueMessage(IConfigurationElement element, String attributeName, String invalidValue) {
+		return bind(JptCommonCoreMessages.REGISTRY_INVALID_VALUE,
+						invalidValue,
+						attributeName,
+						element.getDeclaringExtension().getExtensionPointUniqueIdentifier(),
+						element.getContributor().getName()
+					);
 	}
 
-	/**	
-	 * Load the specified class and cast it to the specified interface.
+	private static String bind(String msg, Object... args) {
+		return NLS.bind(msg, args);
+	}
+	
+	/**
+	 * Load the specified class, using the specified bundle, and, if it is a
+	 * sub-type the specified interface, instantiate it and return the resulting
+	 * object, cast appropriately.
+	 * Log an error and return <code>null</code> for any of the following
+	 * conditions:<ul>
+	 * <li>the bundle cannot be resolved
+	 * <li>the class fails to load
+	 * <li>the loaded class is not a sub-type of the specified interface
+	 * <li>the loaded class cannot be instantiated.
+	 * </ul>
 	 */
-	private static <T> Class<T> loadClass(String pluginId, String extensionPoint, String className, Class<T> interfaze) {
-		Bundle bundle = Platform.getBundle(pluginId);
+	public static <T> T instantiate(String pluginID, String extensionPoint, String className, Class<T> interfaze) {
+		Class<T> clazz = loadClass(pluginID, extensionPoint, className, interfaze);
+		return (clazz == null) ? null : instantiate(pluginID, extensionPoint, clazz);
+    }
+	
+	/**	
+	 * Load the specified class, using the specified bundle, and cast it to the
+	 * specified interface before returning it.
+	 * Log an error and return <code>null</code> for any of the following
+	 * conditions:<ul>
+	 * <li>the bundle cannot be resolved
+	 * <li>the class fails to load
+	 * <li>the loaded class is not a sub-type of the specified interface
+	 * </ul>
+	 */
+	private static <T> Class<T> loadClass(String pluginID, String extensionPoint, String className, Class<T> interfaze) {
+		Bundle bundle = Platform.getBundle(pluginID);
+		if (bundle == null) {
+			logMissingBundle(pluginID);
+			return null;
+		}
 
 		Class<?> clazz;
 		try {
 			clazz = bundle.loadClass(className);
 		} catch (Exception ex) {
-			logFailedClassLoad(ex, pluginId, extensionPoint, className);
+			logFailedClassLoad(ex, pluginID, extensionPoint, className);
 			return null;
 		}
-		
-		if (interfaze.isAssignableFrom(clazz)) {
-			@SuppressWarnings("unchecked")
-			Class<T> clazzT = (Class<T>) clazz;
-			return clazzT;
+
+		if ( ! interfaze.isAssignableFrom(clazz)) {
+			logFailedInterfaceAssignment(pluginID, extensionPoint, clazz, interfaze);
+			return null;
 		}
-		
-		logFailedInterfaceAssignment(pluginId, extensionPoint, className, interfaze.getName());
-		return null;
+
+		@SuppressWarnings("unchecked")
+		Class<T> clazzT = (Class<T>) clazz;
+		return clazzT;
     }
 	
-	public static void logDuplicateExtension(String extensionPoint, String nodeName, String value) {
-		log(JptCommonCoreMessages.REGISTRY_DUPLICATE, extensionPoint, nodeName, value);
+	private static void logMissingBundle(String pluginID) {
+		logError(JptCommonCoreMessages.REGISTRY_MISSING_BUNDLE, pluginID);
 	}
 	
-	public static void logMissingAttribute(IConfigurationElement configElement, String attributeName) {
-		log(JptCommonCoreMessages.REGISTRY_MISSING_ATTRIBUTE,
-				attributeName,
-				configElement.getName(),
-				configElement.getDeclaringExtension().getExtensionPointUniqueIdentifier(),
-				configElement.getContributor().getName());
-    }
-	
-	public static void logInvalidValue(
-			IConfigurationElement configElement, String nodeName, String invalidValue) {
-		
-		log(JptCommonCoreMessages.REGISTRY_INVALID_VALUE,
-				invalidValue,
-				nodeName,
-				configElement.getDeclaringExtension().getExtensionPointUniqueIdentifier(),
-				configElement.getContributor().getName());
-	}
-	
-	private static void logFailedClassLoad(Exception ex, String pluginId, String extensionPoint, String className) {
-		log(ex, JptCommonCoreMessages.REGISTRY_FAILED_CLASS_LOAD,
+	private static void logFailedClassLoad(Exception ex, String pluginID, String extensionPoint, String className) {
+		logError(ex, JptCommonCoreMessages.REGISTRY_FAILED_CLASS_LOAD,
 				className,
 				extensionPoint,
-				pluginId);
+				pluginID
+			);
 	}
 	
-	private static void logFailedInterfaceAssignment(
-			String pluginId, String extensionPoint, String className, String interfaceName) {
-		
-		log(JptCommonCoreMessages.REGISTRY_FAILED_INTERFACE_ASSIGNMENT,
-				className,
+	private static void logFailedInterfaceAssignment(String pluginID, String extensionPoint, Class<?> clazz, Class<?> interfaze) {
+		logError(JptCommonCoreMessages.REGISTRY_FAILED_INTERFACE_ASSIGNMENT,
+				clazz.getName(),
 				extensionPoint,
-				pluginId,
-				interfaceName);
+				pluginID,
+				interfaze.getName()
+			);
 	}
 	
-	private static void logFailedInstantiation(Exception ex, String pluginId, String extensionPoint, String className) {
-		log(ex, JptCommonCoreMessages.REGISTRY_FAILED_INSTANTIATION,
-				className,
+	/**
+	 * Instantiate the specified class.
+	 * Log an error and return <code>null</code> if the instantiation fails.
+	 */
+	private static <T> T instantiate(String pluginID, String extensionPoint, Class<T> clazz) {
+		try {
+			return clazz.newInstance();
+		} catch (Exception ex) {
+			logFailedInstantiation(ex, pluginID, extensionPoint, clazz);
+			return null;
+		}
+	}
+
+	private static void logFailedInstantiation(Exception ex, String pluginID, String extensionPoint, Class<?> clazz) {
+		logError(ex, JptCommonCoreMessages.REGISTRY_FAILED_INSTANTIATION,
+				clazz.getName(),
 				extensionPoint,
-				pluginId);
+				pluginID
+			);
 	}
 	
-	public static void log(String msg, String... bindings) {
-		JptCommonCorePlugin.log(NLS.bind(msg, bindings));
+	private static void logError(String msg, Object... args) {
+		JptCommonCorePlugin.instance().logError(msg, args);
 	}
 	
-	public static void log(Throwable ex, String msg, String... bindings) {
-		JptCommonCorePlugin.log(NLS.bind(msg, bindings), ex);
+	private static void logError(Throwable ex, String msg, Object... args) {
+		JptCommonCorePlugin.instance().logError(ex, msg, args);
 	}
-	
-	public static void log(Throwable ex) {
-		JptCommonCorePlugin.log(ex);
+
+	private static void logError(String msg) {
+		JptCommonCorePlugin.instance().logError(msg);
 	}
-	
-	
+
+	private XPointTools() {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * exception
+	 */
 	public static final class XPointException extends Exception {
 		private static final long serialVersionUID = 1L;
 	}

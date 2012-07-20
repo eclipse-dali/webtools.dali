@@ -27,8 +27,8 @@ import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.OutputMode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.SchemaGeneration;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.ddlgen.EclipseLinkDDLGenerator;
-import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.wizards.DatabaseSchemaWizardPage;
 import org.eclipse.osgi.util.NLS;
@@ -204,7 +204,7 @@ public class GenerateDDLWizard extends Wizard {
 
 		@Override
 		protected void jptPluginLogException(Exception exception) {
-			JptJpaEclipseLinkUiPlugin.log(exception);
+			JptJpaEclipseLinkUiPlugin.instance().logError(exception);
 		}
 
 		// ********** internal methods **********

@@ -45,10 +45,10 @@ import org.eclipse.jpt.jpa.core.jpa2.context.persistence.options.ValidationMode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logging2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Options2_0;
-import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.options.PersistenceXmlOptionsTab;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.JptUiPersistence2_0Messages;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -470,7 +470,7 @@ public class PersistenceXmlOptions2_0Tab extends PersistenceXmlOptionsTab<Persis
 			);
 		}
 		catch (JavaModelException e) {
-			JptJpaEclipseLinkUiPlugin.log(e);
+			JptJpaEclipseLinkUiPlugin.instance().logError(e);
 			return null;
 		}
 

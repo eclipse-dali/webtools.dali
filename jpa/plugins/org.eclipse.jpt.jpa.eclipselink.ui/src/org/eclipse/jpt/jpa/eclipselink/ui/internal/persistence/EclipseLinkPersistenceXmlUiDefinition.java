@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.internal.jface.SimpleItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.GenericPersistenceXmlDefinition;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.structure.EclipseLinkPersistenceStructureItemContentProviderFactory;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.persistence.AbstractPersistenceXmlResourceUiDefinition;
@@ -48,7 +48,7 @@ public class EclipseLinkPersistenceXmlUiDefinition
 	}
 	
 	public boolean providesUi(JptResourceType resourceType) {
-		return resourceType.equals(JptJpaCorePlugin.PERSISTENCE_XML_1_0_RESOURCE_TYPE);
+		return resourceType.equals(GenericPersistenceXmlDefinition.instance().getResourceType());
 	}
 	
 	public ItemTreeStateProviderFactoryProvider getStructureViewFactoryProvider() {

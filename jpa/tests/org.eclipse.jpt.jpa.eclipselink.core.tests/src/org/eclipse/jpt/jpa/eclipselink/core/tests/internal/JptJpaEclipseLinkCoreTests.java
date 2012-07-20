@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,27 +14,30 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.eclipse.jpt.jpa.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.JptJpaEclipseLinkCoreContextModelTests;
-import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.metadata.JptJpaEclipseLinkCoreMetadataTests;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.resource.JptJpaEclipselinkCoreResourceModelTests;
 
 /**
  * decentralize test creation code
- * 
- * Required Java system property:
- *    -Dorg.eclipse.jpt.jpa.jar=<jpa.jar path>
- *    -Dorg.eclipse.jpt.eclipselink.jar=<eclipselink.jar path>
+ * <p>
+ * Required Java system properties:<code><ul>
+ * <li>-Dorg.eclipse.jpt.jpa.jar=&lt;jpa.jar path&gt;
+ * <li>-Dorg.eclipse.jpt.eclipselink.jar=&lt;eclipselink.jar path&gt;
+ * </ul></code>
  */
 @SuppressWarnings("nls")
-public class JptJpaEclipseLinkCoreTests
-{
+public class JptJpaEclipseLinkCoreTests {
+
 	private static final String JPA_JAR_PROPERTY = TestJpaProject.JPA_JAR_NAME_SYSTEM_PROPERTY;
 	private static final String ECLIPSELINK_JAR_PROPERTY = TestJpaProject.ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY;
 
 	public static Test suite() {
+		// ***** keep test.xml in sync with this list *****
+		// test.xml is split up because this test suite was taking too
+		// long and triggering a time-out during the WTP build
 		TestSuite suite = new TestSuite(JptJpaEclipseLinkCoreTests.class.getPackage().getName());
 		suite.addTest(JptJpaEclipselinkCoreResourceModelTests.suite());
 		suite.addTest(JptJpaEclipseLinkCoreContextModelTests.suite());
-		suite.addTest(JptJpaEclipseLinkCoreMetadataTests.suite());
+		suite.addTest(JptJpaEclipseLinkCoreMiscTests.suite());
 		return suite;
 	}
 

@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2011, 2012 Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal;
 
 import java.util.ArrayList;
@@ -24,16 +24,16 @@ import org.eclipse.jdt.ui.text.java.IJavaCompletionProposalComputer;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
-import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
+import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 
 
 public class JaxbJavaCompletionProposalComputer
@@ -101,11 +101,11 @@ public class JaxbJavaCompletionProposalComputer
 		IFile file = (cu != null) ? getCorrespondingResource(cu) : null;
 		IContentType contentType = (file != null) ? PlatformTools.getContentType(file) : null;
 		
-		if (contentType == null  || ! contentType.isKindOf(JptCommonCorePlugin.JAVA_SOURCE_CONTENT_TYPE)) {
+		if (contentType == null  || ! contentType.isKindOf(JavaResourceCompilationUnit.CONTENT_TYPE)) {
 			return Collections.emptyList();
 		}
 		
-		JaxbProject jaxbProject = JptJaxbCorePlugin.getJaxbProject(file.getProject());
+		JaxbProject jaxbProject = JptJaxbCorePlugin.instance().getProjectManager().getJaxbProject(file.getProject());
 		if (jaxbProject == null) {
 			return Collections.emptyList();
 		}
@@ -155,7 +155,7 @@ public class JaxbJavaCompletionProposalComputer
 		try {
 			return (IFile) cu.getCorrespondingResource();
 		} catch (JavaModelException ex) {
-			JptJaxbUiPlugin.log(ex);
+			JptJaxbUiPlugin.instance().logError(ex);
 			return null;
 		}
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.internal.libval;
 
-import static org.eclipse.jpt.common.core.internal.utility.XPointTools.*;
+import static org.eclipse.jpt.common.core.internal.utility.XPointTools.findRequiredAttribute;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.core.expressions.Expression;
@@ -20,7 +20,8 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.JptCommonCoreMessages;
+import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.utility.XPointTools.XPointException;
 import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.common.core.libval.LibraryValidator;
@@ -31,7 +32,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 public class LibraryValidatorManager {
 	
 	public static final String EXTENSION_POINT_ID = "libraryValidators"; //$NON-NLS-1$
-	public static final String QUALIFIED_EXTENSION_POINT_ID = JptCommonCorePlugin.PLUGIN_ID_ + EXTENSION_POINT_ID;
+	public static final String QUALIFIED_EXTENSION_POINT_ID = JptCommonCorePlugin.instance().getPluginID() + '.' + EXTENSION_POINT_ID;
 	public static final String LIBRARY_VALIDATOR_ELEMENT = "libraryValidator"; //$NON-NLS-1$
 	public static final String ID_ATTRIBUTE = "id"; //$NON-NLS-1$
 	public static final String CLASS_ATTRIBUTE = "class"; //$NON-NLS-1$
@@ -116,7 +117,7 @@ public class LibraryValidatorManager {
 			lvConfig.setId(findRequiredAttribute(element, ID_ATTRIBUTE));
 			
 			if (this.libraryValidatorConfigs.containsKey(lvConfig.getId())) {
-				logDuplicateExtension(QUALIFIED_EXTENSION_POINT_ID, ID_ATTRIBUTE, lvConfig.getId());
+				JptCommonCorePlugin.instance().logError(JptCommonCoreMessages.REGISTRY_DUPLICATE, QUALIFIED_EXTENSION_POINT_ID, lvConfig.getPluginId(), ID_ATTRIBUTE, lvConfig.getId());
 				throw new XPointException();
 			}
 			
@@ -132,7 +133,7 @@ public class LibraryValidatorManager {
 						expr = ExpressionConverter.getDefault().perform(child);
 					}
 					catch (CoreException e) {
-						log(e);
+						JptCommonCorePlugin.instance().logError(e);
 						throw new XPointException();
 					}
 					lvConfig.setEnablementCondition(expr);

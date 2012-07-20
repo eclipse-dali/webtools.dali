@@ -17,6 +17,7 @@ import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -112,31 +113,32 @@ public interface ClassRef
 	// ********** refactoring **********
 
 	/**
-	 * If this {@link #isFor(String)} the given IType, create a text 
-	 * DeleteEdit for deleting the class element and any text that precedes it.
-	 * Otherwise return an EmptyIterable.
-	 * Though this will contain 1 or 0 DeleteEdits, using an Iterable
-	 * for ease of use with other createDeleteEdit API.
+	 * If this {@link #isFor(String)} the specified type,
+	 * create a text delete edit for deleting the type mapping element and
+	 * any text that precedes it.
+	 * Otherwise return an empty collection.
 	 */
 	Iterable<DeleteEdit> createDeleteTypeEdits(IType type);
 
 	/**
-	 * Create ReplaceEdits for renaming the class element to the newName.
-	 * The originalType has not yet been renamed, the newName is the new short name.
-	 * If this ClassRef does not match the original type, then return an empty Iterable.
+	 * Create replace edits for renaming any references to
+	 * the specified original type to the specified new name.
+	 * The specified original type has not yet been renamed; and the specified
+	 * new name is a "simple" (unqualified) name.
 	 */
 	Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName);
 
 	/**
-	 * Create ReplaceEdits for moving any references to the originalType to the newPackage.
-	 * The originalType has not yet been moved.
+	 * Create replace edits for moving any references to
+	 * the specified original type to the specified new package.
+	 * The specified original type has not yet been moved.
 	 */
 	Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage);
 
 	/**
-	 * Create ReplaceEdits for renaming the class's package to the newName.
-	 * The originalPackage has not yet been renamed.
-	 * If this class is not a part of the original package, then return an empty Iterable.
+	 * Create replace edits for renaming any references to
+	 * the specified original package to the specified new name.
+	 * The specified original package has not yet been renamed.
 	 */
 	Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName);
 }

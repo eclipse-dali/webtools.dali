@@ -16,13 +16,14 @@ import java.util.List;
 import java.util.Vector;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
+import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.wst.xml.core.internal.XMLCorePlugin;
 import org.eclipse.wst.xml.core.internal.catalog.provisional.ICatalog;
 import org.eclipse.wst.xml.core.internal.catalog.provisional.ICatalogEntry;
 import org.eclipse.wst.xml.core.internal.catalog.provisional.INextCatalog;
@@ -94,12 +95,12 @@ public class SelectXMLCatalogIdPanel extends Composite {
 						INextCatalog catalog = nextCatalogs[i];
 						ICatalog referencedCatalog = catalog.getReferencedCatalog();
 						if (referencedCatalog != null) {
-							if (JptJaxbUiPlugin.SYSTEM_CATALOG_ID.equals(referencedCatalog.getId())) {
+							if (XMLCorePlugin.SYSTEM_CATALOG_ID.equals(referencedCatalog.getId())) {
 								ICatalog systemCatalog = referencedCatalog;
 								addXMLCatalogEntries(result, systemCatalog.getCatalogEntries());
 
 							}
-							else if (JptJaxbUiPlugin.USER_CATALOG_ID.equals(referencedCatalog.getId())) {
+							else if (XMLCorePlugin.USER_CATALOG_ID.equals(referencedCatalog.getId())) {
 								ICatalog userCatalog = referencedCatalog;
 								addXMLCatalogEntries(result, userCatalog.getCatalogEntries());
 

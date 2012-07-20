@@ -13,6 +13,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 /**
  * JPA 2.0 project.
@@ -26,9 +27,24 @@ import org.eclipse.jpt.jpa.core.JpaProject;
  * @version 2.3
  * @since 2.3
  */
+// TODO no need to extend MetamodelSynchronizer - methods should be internal...
 public interface JpaProject2_0
 	extends JpaProject, MetamodelSynchronizer
 {
+	// ********** JPA facet **********
+
+	/**
+	 * The JPA 2.0 project facet version string.
+	 * <p>
+	 * Value: {@value}
+	 */
+	String FACET_VERSION_STRING = "2.0"; //$NON-NLS-1$
+
+	/**
+	 * The JPA 2.0 project facet version.
+	 */
+	IProjectFacetVersion FACET_VERSION = FACET.getVersion(FACET_VERSION_STRING);
+
 
 	// ********** Canonical Metamodel **********
 

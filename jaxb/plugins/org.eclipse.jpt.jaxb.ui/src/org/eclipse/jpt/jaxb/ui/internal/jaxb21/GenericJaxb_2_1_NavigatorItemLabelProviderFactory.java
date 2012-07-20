@@ -18,9 +18,9 @@ import org.eclipse.jpt.jaxb.core.context.JaxbEnum;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumConstant;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiIcons;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
+import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 
 
 public class GenericJaxb_2_1_NavigatorItemLabelProviderFactory
@@ -67,7 +67,7 @@ public class GenericJaxb_2_1_NavigatorItemLabelProviderFactory
 
 	protected ItemExtendedLabelProvider buildJaxbContextRootProvider(JaxbContextRoot root, @SuppressWarnings("unused") ItemExtendedLabelProvider.Manager manager) {
 		return new StaticItemExtendedLabelProvider(
-					JptJaxbUiPlugin.getImage(JptJaxbUiIcons.JAXB_CONTENT),
+					JptJaxbUiPlugin.instance().getImage(JptJaxbUiIcons.JAXB_CONTENT),
 					JptJaxbUiMessages.JaxbContent_label,
 					this.buildJaxbContextRootDescription(root)
 				);
@@ -83,14 +83,14 @@ public class GenericJaxb_2_1_NavigatorItemLabelProviderFactory
 
 	protected ItemExtendedLabelProvider buildJaxbEnumConstantProvider(JaxbEnumConstant enumConstant, @SuppressWarnings("unused") ItemExtendedLabelProvider.Manager manager) {
 		return new StaticItemExtendedLabelProvider(
-					JptJaxbUiPlugin.getImage(JptJaxbUiIcons.ENUM_CONSTANT),
+					JptJaxbUiPlugin.instance().getImage(JptJaxbUiIcons.ENUM_CONSTANT),
 					enumConstant.getName()
 				);
 	}
 
 	protected ItemExtendedLabelProvider buildJaxbPackageProvider(JaxbPackage pkg, @SuppressWarnings("unused") ItemExtendedLabelProvider.Manager manager) {
 		return new StaticItemExtendedLabelProvider(
-					JptJaxbUiPlugin.getImage(JptJaxbUiIcons.PACKAGE),
+					JptJaxbUiPlugin.instance().getImage(JptJaxbUiIcons.PACKAGE),
 					pkg.getName(),
 					this.buildJaxbPackageDescription(pkg)
 				);

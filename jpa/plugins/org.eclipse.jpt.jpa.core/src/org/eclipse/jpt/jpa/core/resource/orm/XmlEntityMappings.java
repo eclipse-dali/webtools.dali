@@ -13,7 +13,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -25,6 +27,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleRootTranslator;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaRootEObject;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -988,8 +991,6 @@ public class XmlEntityMappings extends AbstractJpaRootEObject implements XmlQuer
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
-	// **************** overrides **********************************************
-	
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1014,45 +1015,62 @@ public class XmlEntityMappings extends AbstractJpaRootEObject implements XmlQuer
 		result.append(')');
 		return result.toString();
 	}
-	
+
+
+	// ********** type mappings **********
+
 	public List<XmlTypeMapping> getTypeMappings() {
-		// convert lists to arrays to avoid ConcurrentModificationException while adding to result list
+		// convert lists to arrays to *reduce* risk of ConcurrentModificationException
 		ArrayList<XmlTypeMapping> typeMappings = new ArrayList<XmlTypeMapping>();
 		CollectionTools.addAll(typeMappings, this.getMappedSuperclasses().toArray(EMPTY_XML_TYPE_MAPPING_ARRAY));
 		CollectionTools.addAll(typeMappings, this.getEntities().toArray(EMPTY_XML_TYPE_MAPPING_ARRAY));
 		CollectionTools.addAll(typeMappings, this.getEmbeddables().toArray(EMPTY_XML_TYPE_MAPPING_ARRAY));
 		return typeMappings;
 	}
-	
+
 	private static final XmlTypeMapping[] EMPTY_XML_TYPE_MAPPING_ARRAY = new XmlTypeMapping[0];
-	
-	
-	// **************** version -> schema location mapping ********************
-	
-	private static String namespace = JPA.SCHEMA_NAMESPACE;
-	
+
+
+	// ********** version -> schema location mapping **********
+
 	@Override
 	protected String getNamespace() {
-		return namespace;
+		return JPA.SCHEMA_NAMESPACE;
 	}
-	
-	private static Map<String, String> versionsToSchemaLocations = buildVersionsToSchemaLocations();
-	
-	private static Map<String, String> buildVersionsToSchemaLocations() {
-		Map<String, String> map = new HashMap<String, String>();
+
+	@Override
+	protected String getSchemaLocationForVersion(String schemaVersion) {
+		return SCHEMA_LOCATIONS.get(schemaVersion);
+	}
+
+	private static final HashMap<String, String> SCHEMA_LOCATIONS = buildSchemaLocations();
+
+	private static HashMap<String, String> buildSchemaLocations() {
+		HashMap<String, String> map = new HashMap<String, String>();
 		map.put(JPA.SCHEMA_VERSION, JPA.SCHEMA_LOCATION);
 		map.put(JPA2_0.SCHEMA_VERSION, JPA2_0.SCHEMA_LOCATION);
 		return map;
 	}
-	
-	@Override
-	protected String getSchemaLocationForVersion(String version) {
-		return versionsToSchemaLocations.get(version);
-	}
-	
-	
-	// **************** translators *******************************************
-	
+
+
+	// ********** content type **********
+
+	/**
+	 * The content type for <code>orm.xml</code> mapping files.
+	 * @see org.eclipse.jpt.jpa.core.resource.ResourceMappingFile.Root#CONTENT_TYPE
+	 */
+	public static final IContentType CONTENT_TYPE = JptJpaCorePlugin.instance().getContentType("orm"); //$NON-NLS-1$
+
+
+	// ********** default runtime path **********
+
+	public static final String DEFAULT_RUNTIME_PATH_NAME = "META-INF/orm.xml"; //$NON-NLS-1$
+
+	public static final IPath DEFAULT_RUNTIME_PATH = new Path(DEFAULT_RUNTIME_PATH_NAME);
+
+
+	// ********** translators **********
+
 	public static Translator getRootTranslator() {
 		return ROOT_TRANSLATOR;
 	}
@@ -1060,19 +1078,15 @@ public class XmlEntityMappings extends AbstractJpaRootEObject implements XmlQuer
 	private static final Translator ROOT_TRANSLATOR = buildRootTranslator();
 	
 	private static Translator buildRootTranslator() {
-		return new SimpleRootTranslator(
-				JPA.ENTITY_MAPPINGS,
-				OrmPackage.eINSTANCE.getXmlEntityMappings(),
-				buildTranslatorChildren()
-			);
+		return new SimpleRootTranslator(JPA.ENTITY_MAPPINGS, OrmPackage.eINSTANCE.getXmlEntityMappings(), buildTranslatorChildren());
 	}
-	
+
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
-			buildVersionTranslator(versionsToSchemaLocations),
-			buildNamespaceTranslator(namespace),
+			buildVersionTranslator(SCHEMA_LOCATIONS),
+			buildNamespaceTranslator(JPA.SCHEMA_NAMESPACE),
 			buildSchemaNamespaceTranslator(),
-			buildSchemaLocationTranslator(namespace, versionsToSchemaLocations),
+			buildSchemaLocationTranslator(JPA.SCHEMA_NAMESPACE, SCHEMA_LOCATIONS),
 			buildDescriptionTranslator(),
 			XmlPersistenceUnitMetadata.buildTranslator(JPA.PERSISTENCE_UNIT_METADATA, OrmPackage.eINSTANCE.getXmlEntityMappings_PersistenceUnitMetadata()),
 			buildPackageTranslator(),
@@ -1089,22 +1103,23 @@ public class XmlEntityMappings extends AbstractJpaRootEObject implements XmlQuer
 			XmlEmbeddable.buildTranslator(JPA.EMBEDDABLE, OrmPackage.eINSTANCE.getXmlEntityMappings_Embeddables()),
 		};
 	}
+
 	protected static Translator buildDescriptionTranslator() {
 		return new Translator(JPA.DESCRIPTION, OrmPackage.eINSTANCE.getXmlEntityMappings_Description());
 	}
-		
+
 	protected static Translator buildPackageTranslator() {
 		return new Translator(JPA.PACKAGE, OrmPackage.eINSTANCE.getXmlEntityMappings_Package());
 	}
-	
+
 	protected static Translator buildSchemaTranslator() {
 		return new Translator(JPA.SCHEMA, OrmPackage.eINSTANCE.getXmlEntityMappings_Schema());
 	}
-	
+
 	protected static Translator buildCatalogTranslator() {
 		return new Translator(JPA.CATALOG, OrmPackage.eINSTANCE.getXmlEntityMappings_Catalog());
 	}
-	
+
 	protected static Translator buildAccessTranslator() {
 		return new Translator(JPA.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access());
 	}
@@ -1117,8 +1132,9 @@ public class XmlEntityMappings extends AbstractJpaRootEObject implements XmlQuer
 		return new ReplaceEdit(offset, this.package_.length(), newName);		
 	}
 
+
 	// *********** content assist *********
-	
+
 	public boolean schemaTouches(int pos) {
 		TextRange textRange = this.getElementCodeAssistTextRange(JPA.SCHEMA);
 		return (textRange != null) && (textRange.touches(pos));
@@ -1133,5 +1149,4 @@ public class XmlEntityMappings extends AbstractJpaRootEObject implements XmlQuer
 		TextRange textRange = this.getElementCodeAssistTextRange(JPA.PACKAGE);
 		return (textRange != null) && (textRange.touches(pos));
 	}
-
 }

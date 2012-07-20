@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.utility.internal.StringConverter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationWritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.TransformationModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -156,7 +156,7 @@ public abstract class IntegerCombo<T extends Model>
 	}
 
 	protected ModifiablePropertyValueModel<String> buildSelectedItemStringHolder() {
-		return new TransformationWritablePropertyValueModel<Integer, String>(buildSelectedItemHolder()) {
+		return new TransformationModifiablePropertyValueModel<Integer, String>(buildSelectedItemHolder()) {
 			@Override
 			protected String transform(Integer v) {
 				return (v == null) ? getDefaultValueString() : v.toString();

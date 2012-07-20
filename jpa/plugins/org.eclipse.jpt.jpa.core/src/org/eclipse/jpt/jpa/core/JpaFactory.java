@@ -174,7 +174,7 @@ public interface JpaFactory
 
 	PersistenceXml buildPersistenceXml(JpaRootContextNode parent, JpaXmlResource resource);
 
-	MappingFile buildMappingFile(MappingFileRef parent, JpaXmlResource resource);
+	MappingFile buildMappingFile(MappingFileRef parent, Object resourceMappingFile);
 
 
 	// ********** Java Context Model **********

@@ -34,8 +34,8 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaNullAttrib
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkPersistentAttribute;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.plugin.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAttributeMapping;
 
 public class VirtualJavaPersistentAttribute
@@ -212,7 +212,7 @@ public class VirtualJavaPersistentAttribute
 					this.interfaceIsValidForVariableOneToOne();
 		}
 		catch (JavaModelException e) {
-			JptJpaEclipseLinkCorePlugin.log(e);
+			JptJpaEclipseLinkCorePlugin.instance().logError(e);
 			return false;
 		}
 	}

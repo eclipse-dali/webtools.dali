@@ -18,7 +18,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
@@ -285,7 +284,7 @@ public class GenericPersistence
 
 	protected String getLatestDocumentVersion() {
 		return this.getJpaPlatform().getMostRecentSupportedResourceType(
-				JptJpaCorePlugin.PERSISTENCE_XML_CONTENT_TYPE).getVersion();
+				XmlPersistence.CONTENT_TYPE).getVersion();
 	}
 
 	/**

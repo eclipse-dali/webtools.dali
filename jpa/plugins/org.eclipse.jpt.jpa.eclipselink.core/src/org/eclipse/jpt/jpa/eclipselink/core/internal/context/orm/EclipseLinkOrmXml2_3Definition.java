@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import java.util.ArrayList;
@@ -27,7 +27,9 @@ import org.eclipse.jpt.jpa.core.internal.context.orm.OrmOneToOneMappingDefinitio
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmTransientMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.orm.OrmVersionMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.OrmElementCollectionMapping2_0Definition;
-import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_3JpaPlatformProvider;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
 
 
 public class EclipseLinkOrmXml2_3Definition
@@ -43,7 +45,7 @@ public class EclipseLinkOrmXml2_3Definition
 	public static OrmXmlDefinition instance() {
 		return INSTANCE;
 	}
-	
+
 	
 	/**
 	 * Enforce singleton usage
@@ -54,7 +56,7 @@ public class EclipseLinkOrmXml2_3Definition
 	
 
 	public JptResourceType getResourceType() {
-		return JptJpaEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_2_3_RESOURCE_TYPE;
+		return this.getResourceType(XmlEntityMappings.CONTENT_TYPE, EclipseLink2_3.SCHEMA_VERSION);
 	}
 
 	@Override

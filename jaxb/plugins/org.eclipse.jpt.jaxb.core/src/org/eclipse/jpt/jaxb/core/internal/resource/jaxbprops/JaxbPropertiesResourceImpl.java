@@ -14,7 +14,6 @@ import java.io.InputStream;
 import java.util.Properties;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.internal.resource.AbstractJaxbFileResourceModel;
 import org.eclipse.jpt.jaxb.core.resource.jaxbprops.JaxbPropertiesResource;
 
@@ -50,6 +49,6 @@ public class JaxbPropertiesResourceImpl
 	}
 
 	public JptResourceType getResourceType() {
-		return JptJaxbCorePlugin.JAXB_PROPERTIES_RESOURCE_TYPE;
+		return RESOURCE_TYPE;
 	}
 }

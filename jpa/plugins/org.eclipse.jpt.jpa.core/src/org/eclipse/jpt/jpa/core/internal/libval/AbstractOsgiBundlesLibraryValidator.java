@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.libval;
 
 import java.util.HashMap;
@@ -14,12 +14,11 @@ import java.util.Map;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.core.libval.LibraryValidator;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
 import org.eclipse.jpt.jpa.core.internal.libprov.JpaOsgiBundlesLibraryProviderInstallOperationConfig;
+import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jst.common.project.facet.core.libprov.osgi.BundleReference;
 import org.eclipse.osgi.service.resolver.VersionRange;
-import org.eclipse.osgi.util.NLS;
 import org.osgi.framework.Bundle;
 
 public abstract class AbstractOsgiBundlesLibraryValidator
@@ -42,9 +41,7 @@ public abstract class AbstractOsgiBundlesLibraryValidator
 		
 		for (String bundleName : bundleVersionRanges.keySet()) {
 			if (bundles.get(bundleName) == null) {
-				String message 
-						= NLS.bind(JptCoreMessages.OSGI_BUNDLES_LIBRARY_VALIDATOR__BUNDLE_NOT_FOUND, bundleName);
-				return new Status(IStatus.ERROR, JptJpaCorePlugin.PLUGIN_ID, message);
+				return JptJpaCorePlugin.instance().buildErrorStatus(JptCoreMessages.OSGI_BUNDLES_LIBRARY_VALIDATOR__BUNDLE_NOT_FOUND, bundleName);
 			}
 		}
 		
@@ -52,9 +49,7 @@ public abstract class AbstractOsgiBundlesLibraryValidator
 			Bundle bundle = bundles.get(bundleName);
 			for (VersionRange versionRange : bundleVersionRanges.get(bundleName)) {
 				if (! versionRange.isIncluded(bundle.getVersion())) {
-					String message 
-							= NLS.bind(JptCoreMessages.OSGI_BUNDLES_LIBRARY_VALIDATOR__IMPROPER_BUNDLE_VERSION, bundleName);
-					return new Status(IStatus.ERROR, JptJpaCorePlugin.PLUGIN_ID, message);
+					return JptJpaCorePlugin.instance().buildErrorStatus(JptCoreMessages.OSGI_BUNDLES_LIBRARY_VALIDATOR__IMPROPER_BUNDLE_VERSION, bundleName);
 				}
 			}
 		}

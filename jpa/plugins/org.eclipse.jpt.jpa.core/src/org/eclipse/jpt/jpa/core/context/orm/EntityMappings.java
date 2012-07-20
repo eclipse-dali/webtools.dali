@@ -15,9 +15,10 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.AccessHolder;
 import org.eclipse.jpt.jpa.core.context.Generator;
-import org.eclipse.jpt.jpa.core.context.MappingFileRoot;
+import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.Query;
+import org.eclipse.jpt.jpa.core.context.XmlFile;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Schema;
@@ -41,16 +42,14 @@ import org.eclipse.text.edits.ReplaceEdit;
  * @since 2.0
 */
 public interface EntityMappings
-	extends MappingFileRoot, PersistentType.Owner, AccessHolder
+	extends MappingFile.Root, XmlFile.Root, PersistentType.Owner, AccessHolder
 {
-	/**
-	 * Covariant override.
-	 */
 	OrmXml getParent();
+
+	OrmXml getOrmXml();
 
 	XmlEntityMappings getXmlEntityMappings();
 
-	// TODO bjv add version constants
 	String getVersion();
 
 	String getDescription();
@@ -159,7 +158,8 @@ public interface EntityMappings
 	/**
 	 * Return the Java resource type for the specified class name
 	 * found in the JPA project. Prepend the default package name
-	 * if the class name is not fully qualified (does not contain a '.').
+	 * if the class name is not fully qualified (i.e. it does not contain a
+	 * <code>'.'</code>).
 	 * 
 	 * @see #getPackage()
 	 */
@@ -168,9 +168,9 @@ public interface EntityMappings
 	/**
 	 * Return the Java resource type for the specified class name and kind
 	 * found in the JPA project. Prepend the default package name
-	 * if the class name is not fully qualified (does not contain a '.').
-	 * 
-	 * Return null if invalid or absent or if the kind does not match.
+	 * if the class name is not fully qualified (i.e. it does not contain a
+	 * <code>'.'</code>).
+	 * Return <code>null</code> if invalid or absent or if the kind does not match.
 	 * 
 	 * @see #getPackage()
 	 */
@@ -179,25 +179,27 @@ public interface EntityMappings
 	/**
 	 * Return the persistent type for the specified class name
 	 * found in the persistence unit. Prepend the default package name
-	 * if the class name is not fully qualified (does not contain a '.').
+	 * if the class name is not fully qualified (i.e. it does not contain a
+	 * <code>'.'</code>).
 	 * 
 	 * @see #getPackage()
 	 */
 	PersistentType resolvePersistentType(String className);
 
 	/**
-	 * Return the JDT IType resource type for the specified class name
+	 * Return the JDT type for the specified class name
 	 * found in the Java project. Prepend the default package name
-	 * if the class name is not fully qualified (does not contain a '.').
+	 * if the class name is not fully qualified (i.e. it does not contain a
+	 * <code>'.'</code>).
 	 * 
 	 * @see #getPackage()
 	 */
 	IType resolveJdtType(String className);
 
 	/**
-	 * If the specified class name is not qualified (does not contain a '.')
-	 * then prepend the default package name. Inner classes must
-	 * be specified with a '$' for this to work.
+	 * If the specified class name is not qualified (i.e. it does not contain a
+	 * <code>'.'</code>), prepend the default package name. Inner classes must
+	 * be qualified with a <code>'$'</code> for this to work correctly.
 	 * 
 	 * @see #getPackage()
 	 */
@@ -207,26 +209,31 @@ public interface EntityMappings
 	// ********** refactoring **********
 
 	/**
-	 * Create DeleteEdits for deleting references (if any) to the type about to be deleted.
-	 * Return an EmptyIterable if there are not any references to the given type.
+	 * Create delete edits for deleting any references
+	 * to the specified (about to be deleted) type.
+	 * Return an empty collection if there are no references to the specified type.
 	 */
 	Iterable<DeleteEdit> createDeleteTypeEdits(IType type);
 
 	/**
-	 * Create ReplaceEdits for renaming any references to the originalType to the newName.
-	 * The originalType has not yet been renamed, the newName is the new short name.
+	 * Create replace edits for renaming any references to
+	 * the specified original type to the specified new name.
+	 * The specified original type has not yet been renamed; and the specified
+	 * new name is a "simple" (unqualified) name.
 	 */
 	Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName);
 
 	/**
-	 * Create ReplaceEdits for moving any references to the originalType to the newPackage.
-	 * The originalType has not yet been moved.
+	 * Create replace edits for moving any references to
+	 * the specified original type to the specified new package.
+	 * The specified original type has not yet been moved.
 	 */
 	Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage);
 
 	/**
-	 * Create ReplaceEdits for renaming any references to the originalPackage to the newName.
-	 * The originalPackage has not yet been renamed.
+	 * Create replace edits for renaming any references to
+	 * the specified original package to the specified new name.
+	 * The specified original package has not yet been renamed.
 	 */
 	Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName);
 }

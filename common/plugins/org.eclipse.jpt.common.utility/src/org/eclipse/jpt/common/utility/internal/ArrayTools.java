@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,6 @@ import java.util.Random;
  * Array-related utility methods.
  */
 public final class ArrayTools {
-	public static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
 	public static final char[] EMPTY_CHAR_ARRAY = new char[0];
 	public static final int[] EMPTY_INT_ARRAY = new int[0];
 
@@ -144,7 +143,7 @@ public final class ArrayTools {
 	public static Object[] array(Iterator<?> iterator) {
 		return iterator.hasNext() ?
 				CollectionTools.list(iterator).toArray() :
-				EMPTY_OBJECT_ARRAY;
+				Tools.EMPTY_OBJECT_ARRAY;
 	}
 
 	/**
@@ -157,7 +156,7 @@ public final class ArrayTools {
 	public static Object[] array(Iterator<?> iterator, int iteratorSize) {
 		return iterator.hasNext() ?
 				CollectionTools.list(iterator, iteratorSize).toArray() :
-				EMPTY_OBJECT_ARRAY;
+				Tools.EMPTY_OBJECT_ARRAY;
 	}
 
 	/**

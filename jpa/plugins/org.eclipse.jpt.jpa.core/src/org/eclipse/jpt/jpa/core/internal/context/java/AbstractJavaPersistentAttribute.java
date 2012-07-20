@@ -12,11 +12,12 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 import java.util.List;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
+import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.ClassName;
@@ -646,8 +647,8 @@ public abstract class AbstractJavaPersistentAttribute
 	 */
 	public boolean isVirtual() {
 		IContentType persistentTypeContentType = this.getOwningPersistentType().getResourceType().getContentType();
-		return ! persistentTypeContentType.isKindOf(JptCommonCorePlugin.JAVA_SOURCE_CONTENT_TYPE)
-				&& ! persistentTypeContentType.isKindOf(JptCommonCorePlugin.JAR_CONTENT_TYPE);
+		return ! persistentTypeContentType.isKindOf(JavaResourceCompilationUnit.CONTENT_TYPE)
+				&& ! persistentTypeContentType.isKindOf(JavaResourcePackageFragmentRoot.JAR_CONTENT_TYPE);
 	}
 
 

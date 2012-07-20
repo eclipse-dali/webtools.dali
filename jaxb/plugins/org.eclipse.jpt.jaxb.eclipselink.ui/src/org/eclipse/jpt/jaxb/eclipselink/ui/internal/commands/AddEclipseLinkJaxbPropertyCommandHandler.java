@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2012  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.ui.internal.commands;
 
 import java.io.ByteArrayInputStream;
@@ -34,8 +34,7 @@ import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.resource.jaxbprops.JaxbPropertiesResource;
-import org.eclipse.jpt.jaxb.eclipselink.ui.JptJaxbEclipseLinkUiPlugin;
-import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
+import org.eclipse.jpt.jaxb.eclipselink.ui.internal.plugin.JptJaxbEclipseLinkUiPlugin;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -80,7 +79,7 @@ public class AddEclipseLinkJaxbPropertyCommandHandler
 			folder = getFolder(jaxbPackage);
 		}
 		catch (JavaModelException jme) {
-			JptJaxbEclipseLinkUiPlugin.log(jme);
+			JptJaxbEclipseLinkUiPlugin.instance().logError(jme);
 			return;
 		}
 		Job job = new Job("Creating jaxb.properties") {
@@ -92,8 +91,8 @@ public class AddEclipseLinkJaxbPropertyCommandHandler
 						file.create(stream, true, null);
 					}
 					catch (CoreException ce) {
-						JptJaxbEclipseLinkUiPlugin.log(ce);
-						return new Status(Status.ERROR, JptJaxbEclipseLinkUiPlugin.PLUGIN_ID, "Could not create jaxb.properties.");
+						JptJaxbEclipseLinkUiPlugin.instance().logError(ce);
+						return JptJaxbEclipseLinkUiPlugin.instance().buildErrorStatus(ce, "Could not create jaxb.properties.");
 					}
 					AddEclipseLinkJaxbPropertyCommandHandler.this.revealAndOpenFile(file, activeWindow);
 					return Status.OK_STATUS;
@@ -110,7 +109,7 @@ public class AddEclipseLinkJaxbPropertyCommandHandler
 			folder = getFolder(jaxbPackage);
 		}
 		catch (JavaModelException jme) {
-			JptJaxbEclipseLinkUiPlugin.log(jme);
+			JptJaxbEclipseLinkUiPlugin.instance().logError(jme);
 			return;
 		}
 		Job job = new Job("Adding property to jaxb.properties.") {
@@ -119,7 +118,7 @@ public class AddEclipseLinkJaxbPropertyCommandHandler
 					IFile file = folder.getFile("jaxb.properties");
 					Properties properties = loadProperties(file);
 					if (properties == null) {
-						return new Status(Status.ERROR, JptJaxbEclipseLinkUiPlugin.PLUGIN_ID, "Could not load jaxb.properties.");
+						return JptJaxbEclipseLinkUiPlugin.instance().buildErrorStatus("Could not load jaxb.properties.");
 					}
 					adjustProperties(properties);
 					InputStream stream = createInputStream(properties);
@@ -127,8 +126,8 @@ public class AddEclipseLinkJaxbPropertyCommandHandler
 						file.setContents(stream, true, true, null);
 					}
 					catch (CoreException ce) {
-						JptJaxbEclipseLinkUiPlugin.log(ce);
-						return new Status(Status.ERROR, JptJaxbEclipseLinkUiPlugin.PLUGIN_ID, "Could not write to jaxb.properties.");
+						JptJaxbEclipseLinkUiPlugin.instance().logError(ce);
+						return JptJaxbEclipseLinkUiPlugin.instance().buildErrorStatus(ce, "Could not load jaxb.properties.");
 					}
 					AddEclipseLinkJaxbPropertyCommandHandler.this.revealAndOpenFile(file, activeWindow);
 					return Status.OK_STATUS;
@@ -159,7 +158,7 @@ public class AddEclipseLinkJaxbPropertyCommandHandler
 			properties.load(file.getContents());
 		}
 		catch (Exception ex) {
-			JptJaxbEclipseLinkUiPlugin.log(ex);
+			JptJaxbEclipseLinkUiPlugin.instance().logError(ex);
 			return null;
 		}
 		finally {
@@ -180,7 +179,7 @@ public class AddEclipseLinkJaxbPropertyCommandHandler
 			properties.store(outStream, null);
 		}
 		catch (Exception e) {
-			JptJaxbCorePlugin.log(e);
+			JptJaxbCorePlugin.instance().logError(e);
 			return new ByteArrayInputStream(new byte[0]);
 		}
 		finally {
@@ -196,7 +195,7 @@ public class AddEclipseLinkJaxbPropertyCommandHandler
 				stream.close();
 			}
 		} catch (IOException ex) {
-			JptJaxbEclipseLinkUiPlugin.log(ex);
+			JptJaxbEclipseLinkUiPlugin.instance().logError(ex);
 		}
 	}
 	
@@ -210,8 +209,8 @@ public class AddEclipseLinkJaxbPropertyCommandHandler
 						IDE.openEditor(activeWindow.getActivePage(), file, true);
 					}
 					catch (PartInitException pie) {
-						JptJaxbUiPlugin.log(pie);
-						return new Status(Status.ERROR, JptJaxbEclipseLinkUiPlugin.PLUGIN_ID, "Could not open jaxb.properties in editor.");
+						JptJaxbEclipseLinkUiPlugin.instance().logError(pie);
+						return JptJaxbEclipseLinkUiPlugin.instance().buildErrorStatus(pie, "Could not open jaxb.properties in editor.");
 					}
 					return Status.OK_STATUS;
 				}

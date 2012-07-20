@@ -1,18 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
  * Contributors:
  *     Oracle - initial API and implementation
- *******************************************************************************/
-
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
-import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.wst.common.internal.emf.resource.Renderer;
 import org.eclipse.wst.common.internal.emf.resource.RendererFactory;
 import org.eclipse.wst.common.internal.emf.resource.TranslatorResource;
@@ -48,6 +46,6 @@ public class EclipseLinkOrmXmlResourceFactory extends TranslatorResourceFactory
 	 */
 	@Override
 	protected TranslatorResource createResource(URI uri, Renderer renderer) {
-		return new JpaXmlResource(uri, renderer, JptJpaEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE, XmlEntityMappings.getRootTranslator());
+		return new JpaXmlResource(uri, renderer, XmlEntityMappings.CONTENT_TYPE, XmlEntityMappings.getRootTranslator());
 	}
 }

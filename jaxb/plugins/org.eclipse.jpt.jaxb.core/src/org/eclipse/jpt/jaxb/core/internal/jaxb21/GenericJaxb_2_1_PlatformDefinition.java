@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,9 +13,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.GenericJaxbPlatform;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
@@ -141,11 +142,11 @@ public class GenericJaxb_2_1_PlatformDefinition
 	}
 	
 	public JptResourceType getMostRecentSupportedResourceType(IContentType contentType) {
-		if (contentType.equals(JptCommonCorePlugin.JAVA_SOURCE_CONTENT_TYPE)) {
-			return JptCommonCorePlugin.JAVA_SOURCE_RESOURCE_TYPE;
+		if (contentType.equals(JavaResourceCompilationUnit.CONTENT_TYPE)) {
+			return PlatformTools.getResourceType(JavaResourceCompilationUnit.CONTENT_TYPE);
 		}
-		else if (contentType.equals(JptCommonCorePlugin.JAVA_SOURCE_PACKAGE_INFO_CONTENT_TYPE)) {
-			return JptCommonCorePlugin.JAVA_SOURCE_PACKAGE_INFO_RESOURCE_TYPE;
+		if (contentType.equals(JavaResourceCompilationUnit.PACKAGE_INFO_CONTENT_TYPE)) {
+			return PlatformTools.getResourceType(JavaResourceCompilationUnit.PACKAGE_INFO_CONTENT_TYPE);
 		}
 		throw new IllegalArgumentException(contentType.toString());
 	}

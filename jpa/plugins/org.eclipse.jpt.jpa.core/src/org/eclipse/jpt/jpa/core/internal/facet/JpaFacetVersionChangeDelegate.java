@@ -13,10 +13,9 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 public class JpaFacetVersionChangeDelegate
@@ -39,7 +38,7 @@ public class JpaFacetVersionChangeDelegate
 			this.rebuildJpaProject_(project);
 		} catch (InterruptedException ex) {
 			Thread.currentThread().interrupt();
-			throw new CoreException(new Status(IStatus.CANCEL, JptJpaCorePlugin.PLUGIN_ID, null, ex));
+			throw new CoreException(JptJpaCorePlugin.instance().buildStatus(IStatus.CANCEL, ex));
 		}
 	}
 

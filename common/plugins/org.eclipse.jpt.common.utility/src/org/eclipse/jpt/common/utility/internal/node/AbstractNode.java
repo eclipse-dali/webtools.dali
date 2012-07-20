@@ -19,6 +19,7 @@ import java.util.ListIterator;
 import java.util.Set;
 import java.util.Vector;
 
+import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.common.utility.internal.iterators.FilteringIterator;
@@ -72,7 +73,6 @@ public abstract class AbstractNode
 	 * allowing for asynchronous modification from another thread.
 	 */
 	private Vector<Problem> problems;		// pseudo-final
-		private static final Object[] EMPTY_PROBLEM_MESSAGE_ARGUMENTS = new Object[0];
 
 	/**
 	 * Cache the node's "branch" problems, as calculated during validation.
@@ -711,7 +711,7 @@ public abstract class AbstractNode
 	}
 
 	protected final Problem buildProblem(String messageKey, int messageType) {
-		return this.buildProblem(messageKey, messageType, EMPTY_PROBLEM_MESSAGE_ARGUMENTS);
+		return this.buildProblem(messageKey, messageType, Tools.EMPTY_OBJECT_ARRAY);
 	}
 
 	/**

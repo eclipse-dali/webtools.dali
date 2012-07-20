@@ -18,7 +18,7 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 
 /**
  * Property tester for {@link JptResourceModel}.
- * See <code>org.eclipse.jpt.jpa.core/plugin.xml</code>
+ * See <code>org.eclipse.jpt.jpa.core/plugin.xml:org.eclipse.core.expressions.propertyTesters</code>
  */
 public class JptResourceModelPropertyTester
 	extends PropertyTester

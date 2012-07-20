@@ -12,18 +12,21 @@ package org.eclipse.jpt.jpa.core.internal;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.JpaWorkspace;
+import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 
 /**
- * Factory to build Dali adapters for an {@link IWorkspace}:<ul>
- * <li>{@link org.eclipse.jpt.jpa.core.JpaProjectManager}
+ * Factory to build Dali JPA adapters for an {@link IWorkspace Eclipse workspace}:<ul>
+ * <li>{@link org.eclipse.jpt.jpa.core.JpaWorkspace}
+ * <li>{@link JpaProjectManager}
  * </ul>
- * See <code>org.eclipse.jpt.jpa.core/plugin.xml</code>.
+ * See <code>org.eclipse.jpt.jpa.core/plugin.xml:org.eclipse.core.runtime.adapters</code>.
  */
 public class WorkspaceAdapterFactory
 	implements IAdapterFactory
 {
 	private static final Class<?>[] ADAPTER_LIST = new Class[] {
+			JpaWorkspace.class,
 			JpaProjectManager.class
 		};
 
@@ -37,15 +40,22 @@ public class WorkspaceAdapterFactory
 		}
 		return null;
 	}
-	
+
 	private Object getAdapter(IWorkspace workspace, Class<?> adapterType) {
+		if (adapterType == JpaWorkspace.class) {
+			return this.getJpaWorkspace(workspace);
+		}
 		if (adapterType == JpaProjectManager.class) {
 			return this.getJpaProjectManager(workspace);
 		}
 		return null;
 	}
-	
+
+	private JpaWorkspace getJpaWorkspace(IWorkspace workspace) {
+		return JptJpaCorePlugin.instance().getJpaWorkspace(workspace);
+	}
+
 	private JpaProjectManager getJpaProjectManager(IWorkspace workspace) {
-		return JptJpaCorePlugin.getJpaProjectManager(workspace);
+		return this.getJpaWorkspace(workspace).getJpaProjectManager();
 	}
 }

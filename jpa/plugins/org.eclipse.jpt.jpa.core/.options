@@ -1,8 +1,7 @@
-# Debugging options for the org.eclipse.jpt.jpa.core plugin.
+# debugging options for the plug-in org.eclipse.jpt.jpa.core
 
-# Turn on debugging for the org.eclipse.jpt.jpa.core plugin.
+# turn on debugging for the plug-in org.eclipse.jpt.jpa.core
 org.eclipse.jpt.jpa.core/debug=true
 
-# Turn on debugging for the JPA project manager.
+# turn on debugging for the JPA project manager
 org.eclipse.jpt.jpa.core/debug/JpaProjectManager=false
-org.eclipse.jpt.jpa.core/debug/JpaProjectManager.stack_trace=false

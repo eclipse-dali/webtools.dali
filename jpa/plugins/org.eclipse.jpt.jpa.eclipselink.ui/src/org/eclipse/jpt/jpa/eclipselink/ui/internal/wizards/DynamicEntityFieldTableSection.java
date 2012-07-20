@@ -31,6 +31,7 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
@@ -372,10 +373,9 @@ public class DynamicEntityFieldTableSection extends Composite {
 			return false;
 		}
 		public Object[] getElements(Object element) {
-			if (element instanceof List) {
-				return ((List) element).toArray();
-			}
-			return new Object[0];
+			return (element instanceof List) ?
+					((List<?>) element).toArray() :
+					Tools.EMPTY_OBJECT_ARRAY;
 		}
 		public void inputChanged(Viewer aViewer, Object oldInput, Object newInput) {
 			//Default nothing

@@ -17,7 +17,7 @@ import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
  * Factory to build Dali adapters for an {@link JpaLibraryProviderInstallOperationConfig}:<ul>
  * <li>{@link JpaPlatformDescription}
  * </ul>
- * See <code>org.eclipse.jpt.jpa.core/plugin.xml</code>.
+ * See <code>org.eclipse.jpt.jpa.core/plugin.xml:org.eclipse.core.runtime.adapters</code>.
  */
 public class JpaLibraryProviderInstallOperationConfigAdapterFactory
 	implements IAdapterFactory

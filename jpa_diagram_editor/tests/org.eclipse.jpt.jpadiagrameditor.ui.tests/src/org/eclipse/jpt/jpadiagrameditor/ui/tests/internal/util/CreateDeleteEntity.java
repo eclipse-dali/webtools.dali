@@ -60,18 +60,18 @@ public class CreateDeleteEntity {
 		Thread.sleep(2000);		
 		PersistenceXml persistenceXml = jpaProjectContent.getPersistenceXml();
 		assertNotNull(persistenceXml);
-		Persistence p = persistenceXml.getPersistence();
+		Persistence p = persistenceXml.getRoot();
 		int cnt = 0;
 		while ((p == null) && (cnt < 25)) {
 			Thread.sleep(250);
-			p = persistenceXml.getPersistence();
+			p = persistenceXml.getRoot();
 			cnt++;
 		}
 		assertTrue("Can't obtain persistence object", p != null);
-		assertTrue(persistenceXml.getPersistence().getPersistenceUnitsSize() == 1);
+		assertTrue(persistenceXml.getRoot().getPersistenceUnitsSize() == 1);
 		//java.lang.UnsupportedOperationException: No PersistenceUnit in this context
 		//PersistenceUnit persistenceUnit = persistenceXml.getPersistence().getPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceXml.getPersistence().getPersistenceUnits().iterator().next();
+		PersistenceUnit persistenceUnit = persistenceXml.getRoot().getPersistenceUnits().iterator().next();
 		assertNotNull(persistenceUnit);
 		assertTrue(persistenceUnit.getClassRefsSize() == 0);
 		IFile entity1 = factory.createEntityInProject(jpaProject.getProject(), new String[]{"com"}, "Entity1");		

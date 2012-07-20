@@ -18,7 +18,6 @@ import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
@@ -54,7 +53,7 @@ public class GenericPersistenceXml
 	/**
 	 * The root element of the <code>persistence.xml</code> file.
 	 */
-	protected Persistence persistence;
+	protected Persistence root;
 
 
 	public GenericPersistenceXml(JpaRootContextNode parent, JpaXmlResource xmlResource) {
@@ -65,7 +64,7 @@ public class GenericPersistenceXml
 
 		XmlPersistence xmlPersistence = (XmlPersistence) xmlResource.getRootObject();
 		if (xmlPersistence != null) {
-			this.persistence = this.buildPersistence(xmlPersistence);
+			this.root = this.buildRoot(xmlPersistence);
 		}
 	}
 
@@ -108,7 +107,7 @@ public class GenericPersistenceXml
 	 *     when resource contents replaced from history EMF unloads the resource.
 	 */
 	protected void syncPersistence(boolean sync) {
-		XmlPersistence oldXmlPersistence = (this.persistence == null) ? null : this.persistence.getXmlPersistence();
+		XmlPersistence oldXmlPersistence = (this.root == null) ? null : this.root.getXmlPersistence();
 		XmlPersistence newXmlPersistence = (XmlPersistence) this.xmlResource.getRootObject();
 		JptResourceType newResourceType = this.xmlResource.getResourceType();
 
@@ -120,25 +119,25 @@ public class GenericPersistenceXml
 				(newXmlPersistence == null) || 
 				this.valuesAreDifferent(this.resourceType, newResourceType)
 		) {
-			if (this.persistence != null) {
+			if (this.root != null) {
 				this.unregisterRootStructureNode();
-				this.persistence.dispose();
-				this.setPersistence(null);
+				this.root.dispose();
+				this.setRoot(null);
 			}
 		}
 
 		this.resourceType = newResourceType;
 
 		if (newXmlPersistence != null) {
-			if (this.persistence == null) {
-				this.setPersistence(this.buildPersistence(newXmlPersistence));
+			if (this.root == null) {
+				this.setRoot(this.buildRoot(newXmlPersistence));
 			} else {
 				// the context persistence already holds the XML persistence
 				if (sync) {
-					this.persistence.synchronizeWithResourceModel();
+					this.root.synchronizeWithResourceModel();
 				}
 				else {
-					this.persistence.update();
+					this.root.update();
 					// this will happen redundantly - need to hold JpaFile?
 					this.registerRootStructureNode();					
 				}
@@ -149,17 +148,17 @@ public class GenericPersistenceXml
 
 	// ********** persistence **********
 
-	public Persistence getPersistence() {
-		return this.persistence;
+	public Persistence getRoot() {
+		return this.root;
 	}
 
-	protected void setPersistence(Persistence persistence) {
-		Persistence old = this.persistence;
-		this.persistence = persistence;
-		this.firePropertyChanged(PERSISTENCE_PROPERTY, old, persistence);
+	protected void setRoot(Persistence persistence) {
+		Persistence old = this.root;
+		this.root = persistence;
+		this.firePropertyChanged(ROOT_PROPERTY, old, persistence);
 	}
 
-	protected Persistence buildPersistence(XmlPersistence xmlPersistence) {
+	protected Persistence buildRoot(XmlPersistence xmlPersistence) {
 		return this.getContextNodeFactory().buildPersistence(this, xmlPersistence);
 	}
 
@@ -170,7 +169,7 @@ public class GenericPersistenceXml
 		if (resource == null) {
 			throw new NullPointerException();
 		}
-		if ( ! resource.getContentType().isKindOf(JptJpaCorePlugin.PERSISTENCE_XML_CONTENT_TYPE)) {
+		if ( ! resource.getContentType().isKindOf(XmlPersistence.CONTENT_TYPE)) {
 			throw new IllegalArgumentException("Content type is not 'persistence': " + resource); //$NON-NLS-1$
 		}
 	}
@@ -201,20 +200,20 @@ public class GenericPersistenceXml
 	// ********** metamodel **********
 
 	public void initializeMetamodel() {
-		if (this.persistence != null) {
-			((Persistence2_0) this.persistence).initializeMetamodel();
+		if (this.root != null) {
+			((Persistence2_0) this.root).initializeMetamodel();
 		}
 	}
 
 	public IStatus synchronizeMetamodel(IProgressMonitor monitor) {
-		return (this.persistence != null) ?
-				((Persistence2_0) this.persistence).synchronizeMetamodel(monitor) :
+		return (this.root != null) ?
+				((Persistence2_0) this.root).synchronizeMetamodel(monitor) :
 				Status.OK_STATUS;
 	}
 
 	public void disposeMetamodel() {
-		if (this.persistence != null) {
-			((Persistence2_0) this.persistence).disposeMetamodel();
+		if (this.root != null) {
+			((Persistence2_0) this.root).disposeMetamodel();
 		}
 	}
 
@@ -230,8 +229,8 @@ public class GenericPersistenceXml
 	}
 
 	public JpaStructureNode getStructureNode(int textOffset) {
-		if (this.persistence.containsOffset(textOffset)) {
-			return this.persistence.getStructureNode(textOffset);
+		if (this.root.containsOffset(textOffset)) {
+			return this.root.getStructureNode(textOffset);
 		}
 		return this;
 	}
@@ -242,22 +241,22 @@ public class GenericPersistenceXml
 	}
 
 	public void dispose() {
-		if (this.persistence != null) {
+		if (this.root != null) {
 			JpaFile jpaFile = this.getJpaFile();
 			if (jpaFile != null) {
 				this.unregisterRootStructureNode();
 			}
-			this.persistence.dispose();
+			this.root.dispose();
 		}
 	}
 
 	// TODO hold the JpaFile?
 	protected void registerRootStructureNode() {
-		this.getJpaFile().addRootStructureNode(this.xmlResource, this.persistence);
+		this.getJpaFile().addRootStructureNode(this.xmlResource, this.root);
 	}
 
 	protected void unregisterRootStructureNode() {
-		this.getJpaFile().removeRootStructureNode(this.xmlResource, this.persistence);
+		this.getJpaFile().removeRootStructureNode(this.xmlResource, this.root);
 	}
 
 
@@ -267,7 +266,7 @@ public class GenericPersistenceXml
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 
-		if (this.persistence == null) {
+		if (this.root == null) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
@@ -278,7 +277,7 @@ public class GenericPersistenceXml
 			return;
 		}
 
-		this.persistence.validate(messages, reporter);
+		this.root.validate(messages, reporter);
 	}
 
 	public TextRange getValidationTextRange() {

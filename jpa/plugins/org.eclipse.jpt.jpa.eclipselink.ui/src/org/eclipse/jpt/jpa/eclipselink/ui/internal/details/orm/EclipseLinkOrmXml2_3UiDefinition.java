@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 import java.util.List;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_3Definition;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.orm.OrmAttributeMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.orm.OrmXmlUiFactory;
@@ -30,8 +30,8 @@ import org.eclipse.jpt.jpa.ui.internal.jpa2.details.orm.OrmElementCollectionMapp
 
 
 public class EclipseLinkOrmXml2_3UiDefinition
-		extends EclipseLinkOrmXml2_1UiDefinition {
-	
+	extends EclipseLinkOrmXml2_1UiDefinition
+{
 	// singleton
 	private static final ResourceUiDefinition INSTANCE = new EclipseLinkOrmXml2_3UiDefinition();
 
@@ -58,7 +58,7 @@ public class EclipseLinkOrmXml2_3UiDefinition
 
 	@Override
 	public boolean providesUi(JptResourceType resourceType) {
-		return resourceType.equals(JptJpaEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_2_3_RESOURCE_TYPE);
+		return resourceType.equals(EclipseLinkOrmXml2_3Definition.instance().getResourceType());
 	}
 
 

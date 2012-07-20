@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal;
 
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
 
 /**
  * Help context ids for the Dali EclipseLink UI.
@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 public interface EclipseLinkHelpContextIds {
 
 	//ContextID prefix
-	public static final String PREFIX = JptJpaUiPlugin.PLUGIN_ID + ".";
+	public static final String PREFIX = JptJpaEclipseLinkUiPlugin.instance().getPluginID() + ".";
 
 	//Persistent Type composites
 	public static final String CACHING_ALWAYS_REFRESH = PREFIX + "caching_alwaysRefresh";

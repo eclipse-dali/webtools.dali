@@ -1,14 +1,14 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors:
- *  	IBM Corporation - initial API and implementation
- *  		(copied mainly from org.eclipse.wst.xsd.contentmodel.internal.XSDImpl)
- *  	Oracle - extensions and modifications
- *******************************************************************************/
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *         (copied mainly from org.eclipse.wst.xsd.contentmodel.internal.XSDImpl)
+ *     Oracle - extensions and modifications
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.xsd;
 
 import java.io.IOException;
@@ -74,11 +74,11 @@ public class XsdUtil {
 				}
 			}
 			catch (MalformedURLException me) {
-				JptJaxbCorePlugin.log(me);
+				JptJaxbCorePlugin.instance().logError(me);
 				resolvedUri = null;
 			}
 			catch (IOException ie) {
-				JptJaxbCorePlugin.log(ie);
+				JptJaxbCorePlugin.instance().logError(ie);
 				resolvedUri = null;
 			}
 		}
@@ -145,7 +145,7 @@ public class XsdUtil {
 						}
 					}
 					catch (Exception e) {
-						JptJaxbCorePlugin.log(e);
+						JptJaxbCorePlugin.instance().logError(e);
 					}
 				}
 			}

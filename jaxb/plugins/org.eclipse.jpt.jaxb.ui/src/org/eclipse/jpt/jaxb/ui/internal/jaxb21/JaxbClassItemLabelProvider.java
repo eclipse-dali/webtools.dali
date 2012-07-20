@@ -20,8 +20,8 @@ import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbType;
 import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
-import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiIcons;
+import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 import org.eclipse.swt.graphics.Image;
 
 
@@ -100,13 +100,13 @@ public class JaxbClassItemLabelProvider
 		protected Image buildValue_() {
 			if (this.mappingModel.getValue() != null) {
 				if (this.isXmlTransientModel.getValue() == Boolean.TRUE) {
-					return JptJaxbUiPlugin.getImage(JptJaxbUiIcons.JAXB_TRANSIENT_CLASS);
+					return JptJaxbUiPlugin.instance().getImage(JptJaxbUiIcons.JAXB_TRANSIENT_CLASS);
 				}
 			}
 			else if (this.isXmlRegistryModel.getValue() == Boolean.TRUE) {
-				return JptJaxbUiPlugin.getImage(JptJaxbUiIcons.JAXB_REGISTRY);
+				return JptJaxbUiPlugin.instance().getImage(JptJaxbUiIcons.JAXB_REGISTRY);
 			}
-			return JptJaxbUiPlugin.getImage(JptJaxbUiIcons.JAXB_CLASS);
+			return JptJaxbUiPlugin.instance().getImage(JptJaxbUiIcons.JAXB_CLASS);
 		}
 		
 		@Override

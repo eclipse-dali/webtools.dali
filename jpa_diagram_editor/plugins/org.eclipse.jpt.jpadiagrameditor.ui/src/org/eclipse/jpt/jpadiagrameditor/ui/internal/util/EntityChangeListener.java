@@ -20,11 +20,10 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
-
 import org.eclipse.graphiti.features.context.impl.RemoveContext;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
@@ -126,7 +125,7 @@ public class EntityChangeListener extends Thread {
 							JpaArtifactFactory.instance().forceSaveEntityClass(jpt, featureProvider);
 							
 							if(jpt.getMapping() == null || (jpt.getMapping() instanceof JavaNullTypeMapping)) {
-								if (!JptJpaCorePlugin.getDiscoverAnnotatedClasses(jpt.getJpaProject().getProject())) {
+								if (! JpaPreferences.getDiscoverAnnotatedClasses(jpt.getJpaProject().getProject())) {
 									JPAEditorUtil.createUnregisterEntityFromXMLJob(jpt.getJpaProject(), jpt.getName());
 								}
 							}

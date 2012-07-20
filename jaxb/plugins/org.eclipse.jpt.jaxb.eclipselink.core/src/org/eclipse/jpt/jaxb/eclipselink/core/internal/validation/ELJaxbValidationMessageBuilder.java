@@ -16,10 +16,10 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jaxb.core.JaxbNode;
-import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
+import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidator;
 
 public class ELJaxbValidationMessageBuilder {
 
@@ -78,7 +78,7 @@ public class ELJaxbValidationMessageBuilder {
 //			}
 			IMessage message = new EclipseLinkMessage(ELJaxbValidationMessages.BUNDLE_NAME, severity, messageId, parms, targetObject);
 			// TODO "EclipseLink JAXB" validation marker?
-			message.setMarkerId(JptJaxbCorePlugin.VALIDATION_MARKER_ID);
+			message.setMarkerId(JaxbValidator.MARKER_ID);
 			return message;
 		}
 		@Override

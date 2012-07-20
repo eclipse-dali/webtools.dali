@@ -24,11 +24,16 @@ import org.eclipse.jpt.common.core.utility.command.JobCommand;
 import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
+import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
+import org.eclipse.wst.common.project.facet.core.IProjectFacet;
+import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
+import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -52,7 +57,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * Reference JPA project reference} to retrieve a JPA project in a blocking
  * fashion that will return a JPA project once it has been constructed.
  * <p>
- * See <code>org.eclipse.jpt.jpa.core/plugin.xml</code>.
+ * See <code>org.eclipse.jpt.jpa.core/plugin.xml:org.eclipse.core.runtime.adapters</code>.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -69,6 +74,32 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public interface JpaProject
 	extends JpaNode
 {
+	// ********** JPA facet **********
+
+	/**
+	 * The JPA project facet ID.
+	 * <p>
+	 * Value: {@value}
+	 */
+	String FACET_ID = "jpt.jpa"; //$NON-NLS-1$
+
+	/**
+	 * The JPA project facet.
+	 */
+	IProjectFacet FACET = ProjectFacetsManager.getProjectFacet(FACET_ID);
+
+	/**
+	 * The JPA project facet version string.
+	 * <p>
+	 * Value: {@value}
+	 */
+	String FACET_VERSION_STRING = "1.0"; //$NON-NLS-1$
+
+	/**
+	 * The JPA project facet version.
+	 */
+	IProjectFacetVersion FACET_VERSION = FACET.getVersion(FACET_VERSION_STRING);
+
 
 	// ********** general **********
 
@@ -171,17 +202,17 @@ public interface JpaProject
 	 * <code>META-INF/persistence.xml</code> if that file has the persistence content type
 	 * (<code>"org.eclipse.jpt.jpa.core.content.persistence"</code>).
 	 * 
-	 * @see JptJpaCorePlugin#DEFAULT_PERSISTENCE_XML_RUNTIME_PATH
-	 * @see JptJpaCorePlugin#PERSISTENCE_XML_CONTENT_TYPE
+	 * @see XmlPersistence#DEFAULT_RUNTIME_PATH
+	 * @see XmlPersistence#CONTENT_TYPE
 	 */
 	JpaXmlResource getPersistenceXmlResource();
 	
 	/**
 	 * Return the XML resource model corresponding to the file with the specified
 	 * runtime path if that file has the mapping file content type
-	 * (<code>"org.eclipse.jpt.jpa.core.content.mappingFile"</code>)
+	 * (<code>org.eclipse.jpt.jpa.core.content.mappingFile</code>)
 	 * 
-	 * @see JptJpaCorePlugin#MAPPING_FILE_CONTENT_TYPE
+	 * @see org.eclipse.jpt.jpa.core.resource.ResourceMappingFile.Root#CONTENT_TYPE
 	 */
 	JpaXmlResource getMappingFileXmlResource(IPath runtimePath);
 
@@ -189,7 +220,7 @@ public interface JpaProject
 	 * Return the XML resource model corresponding to the file
 	 * <code>META-INF/orm.xml</code> if that file has the mapping file content type.
 	 * 
-	 * @see JptJpaCorePlugin#DEFAULT_ORM_XML_RUNTIME_PATH
+	 * @see XmlEntityMappings#DEFAULT_RUNTIME_PATH
 	 */
 	JpaXmlResource getDefaultOrmXmlResource();
 	
@@ -467,6 +498,7 @@ public interface JpaProject
 
 		// ********** logging **********
 
+		// TODO remove (use plug-in API)
 		/**
 		 * Log the specified message.
 		 */
@@ -482,6 +514,7 @@ public interface JpaProject
 		 */
 		void log(String msg, Throwable throwable);
 
+		// TODO remove (use plug-in API)
 		/**
 		 * Return an exception handler that can be used by the JPA model.
 		 */
@@ -551,7 +584,7 @@ public interface JpaProject
 	 * JpaProject.Reference jpaProjectRef = (JpaProject.Reference) project.getAdapter(JpaProject.Reference.class);
 	 * JpaProject jpaProject = jpaProjectRef.getValue();
 	 * </pre>
-	 * See <code>org.eclipse.jpt.jpa.core/plugin.xml</code>.
+	 * See <code>org.eclipse.jpt.jpa.core/plugin.xml:org.eclipse.core.runtime.adapters</code>.
 	 * @see org.eclipse.jpt.jpa.core.internal.ProjectAdapterFactory
 	 */
 	interface Reference {

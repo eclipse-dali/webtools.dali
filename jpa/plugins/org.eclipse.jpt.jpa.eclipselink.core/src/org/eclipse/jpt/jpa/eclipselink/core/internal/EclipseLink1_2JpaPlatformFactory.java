@@ -11,16 +11,15 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal;
 
 import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPlatformFactory;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
+import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatform;
 import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
-import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkVersion;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
 import org.eclipse.persistence.jpa.jpql.parser.EclipseLinkJPQLGrammar1;
 
 /**
@@ -30,6 +29,12 @@ import org.eclipse.persistence.jpa.jpql.parser.EclipseLinkJPQLGrammar1;
 public class EclipseLink1_2JpaPlatformFactory
 	implements JpaPlatformFactory
 {
+	/**
+	 * Version string for EclipseLink platform version 1.2
+	 */
+	public static final String VERSION = "1.2";  //$NON-NLS-1$
+
+
 	/**
 	 * zero-argument constructor
 	 */
@@ -70,8 +75,6 @@ public class EclipseLink1_2JpaPlatformFactory
 	}
 
 	private JpaPlatform.Version buildJpaVersion() {
-		return new EclipseLinkVersion(
-				JptJpaEclipseLinkCorePlugin.ECLIPSELINK_PLATFORM_VERSION_1_2,
-				JpaFacet.VERSION_1_0.getVersionString());
+		return new EclipseLinkJpaPlatformVersion(VERSION, JpaProject.FACET_VERSION_STRING);
 	}
 }

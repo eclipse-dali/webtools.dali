@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,8 +14,8 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaResourceModelProvider;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
-import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.orm.EclipseLinkOrmXmlResourceProvider;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
 
 /**
  * EclipseLink orm.xml
@@ -44,7 +44,7 @@ public class EclipseLinkOrmResourceModelProvider
 	
 	
 	public IContentType getContentType() {
-		return JptJpaEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE;
+		return XmlEntityMappings.CONTENT_TYPE;
 	}
 	
 	public JpaXmlResource buildResourceModel(JpaProject jpaProject, IFile file) {

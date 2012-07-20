@@ -16,8 +16,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.JptCommonCoreMessages;
+import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -80,24 +80,18 @@ public abstract class AbstractJptFileCreationDataModelProvider
 		if (container == null) {
 			// verifies container has been specified, but should be unnecessary in most cases.
 			// there is almost always a default, and the new file wizard does this validation as well.
-			return new Status(
-				IStatus.ERROR, JptCommonCorePlugin.PLUGIN_ID, 
-				JptCommonCoreMessages.VALIDATE_CONTAINER_NOT_SPECIFIED);
+			return JptCommonCorePlugin.instance().buildErrorStatus(JptCommonCoreMessages.VALIDATE_CONTAINER_NOT_SPECIFIED);
 		}
 		String fileName = getStringProperty(FILE_NAME);
 		if (StringTools.stringIsEmpty(fileName)) {
 			// verifies file name has been specified, but should be unnecessary in most cases.
 			// there is almost always a default, and the new file wizard does this validation as well.
-			return new Status(
-				IStatus.ERROR, JptCommonCorePlugin.PLUGIN_ID,
-				JptCommonCoreMessages.VALIDATE_FILE_NAME_NOT_SPECIFIED);
+			return JptCommonCorePlugin.instance().buildErrorStatus(JptCommonCoreMessages.VALIDATE_FILE_NAME_NOT_SPECIFIED);
 		}
 		if (container.getFile(new Path(fileName)).exists()) {
 			// verifies file does not exist, but should be unnecessary in most cases.
 			// the new file wizard does this validation as well.
-			return new Status(
-				IStatus.ERROR, JptCommonCorePlugin.PLUGIN_ID,
-				JptCommonCoreMessages.VALIDATE_FILE_ALREADY_EXISTS);
+			return JptCommonCorePlugin.instance().buildErrorStatus(JptCommonCoreMessages.VALIDATE_FILE_ALREADY_EXISTS);
 		}
 		return Status.OK_STATUS;
 	}
@@ -111,17 +105,11 @@ public abstract class AbstractJptFileCreationDataModelProvider
 
 	protected IContainer getContainer() {
 		IPath containerPath = getContainerPath();
-		if (containerPath == null) {
-			return null; 
-		}
-		return PlatformTools.getContainer(containerPath);
+		return (containerPath == null) ? null : PlatformTools.getContainer(containerPath);
 	}
 
 	protected IProject getProject() {
-		return getProject(getContainer());
-	}
-
-	protected IProject getProject(IContainer container) {
+		IContainer container = this.getContainer();
 		return (container == null) ? null : container.getProject();
 	}
 

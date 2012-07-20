@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.common.eclipselink.core.internal.libval;
 
 import java.util.Set;
@@ -16,8 +16,8 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.ToolFactory;
 import org.eclipse.jdt.core.util.IClassFileReader;
 import org.eclipse.jdt.core.util.IFieldInfo;
-import org.eclipse.jpt.common.eclipselink.core.JptCommonEclipseLinkCorePlugin;
 import org.eclipse.jpt.common.eclipselink.core.internal.JptCommonEclipseLinkCoreMessages;
+import org.eclipse.jpt.common.eclipselink.core.internal.plugin.JptCommonEclipseLinkCorePlugin;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.osgi.service.resolver.VersionRange;
 import org.osgi.framework.Version;
@@ -54,31 +54,27 @@ public class EclipseLinkLibValUtil {
 				}
 				if (versionString != null) {
 					if (version != null) {
-						return new Status(
-								IStatus.ERROR, JptCommonEclipseLinkCorePlugin.PLUGIN_ID,
-								JptCommonEclipseLinkCoreMessages.EclipseLinkLibraryValidator_multipleEclipseLinkVersions);
+						return buildErrorStatus(JptCommonEclipseLinkCoreMessages.EclipseLinkLibraryValidator_multipleEclipseLinkVersions);
 					}
-					else {
-						version = new Version(versionString);
-					}
+					version = new Version(versionString);
 				}
 			}
 		}
 		
 		if (version == null) {
-			return new Status(
-					IStatus.ERROR, JptCommonEclipseLinkCorePlugin.PLUGIN_ID, 
-					JptCommonEclipseLinkCoreMessages.EclipseLinkLibraryValidator_noEclipseLinkVersion);
+			return buildErrorStatus(JptCommonEclipseLinkCoreMessages.EclipseLinkLibraryValidator_noEclipseLinkVersion);
 		}
 		
 		for (VersionRange versionRange : versionRanges) {
 			if (! versionRange.isIncluded(version)) {
-				return new Status(
-						IStatus.ERROR, JptCommonEclipseLinkCorePlugin.PLUGIN_ID, 
-						JptCommonEclipseLinkCoreMessages.EclipseLinkLibraryValidator_improperEclipseLinkVersion);
+				return buildErrorStatus(JptCommonEclipseLinkCoreMessages.EclipseLinkLibraryValidator_improperEclipseLinkVersion);
 			}
 		}
 		
 		return Status.OK_STATUS;
+	}
+
+	private static IStatus buildErrorStatus(String message) {
+		return JptCommonEclipseLinkCorePlugin.instance().buildErrorStatus(message);
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.internal.resource;
 
-import static org.eclipse.jpt.common.core.internal.utility.XPointTools.*;
+import static org.eclipse.jpt.common.core.internal.utility.XPointTools.findRequiredAttribute;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.core.expressions.Expression;
@@ -21,8 +21,10 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.JptCommonCoreMessages;
+import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.resource.ResourceLocatorConfig.Priority;
+import org.eclipse.jpt.common.core.internal.utility.XPointTools;
 import org.eclipse.jpt.common.core.internal.utility.XPointTools.XPointException;
 import org.eclipse.jpt.common.core.resource.ResourceLocator;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
@@ -32,7 +34,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 public class ResourceLocatorManager {
 	
 	public static final String EXTENSION_POINT_ID = "resourceLocators"; //$NON-NLS-1$
-	public static final String QUALIFIED_EXTENSION_POINT_ID = JptCommonCorePlugin.PLUGIN_ID_ + EXTENSION_POINT_ID;
+	public static final String QUALIFIED_EXTENSION_POINT_ID = JptCommonCorePlugin.instance().getPluginID() + '.' + EXTENSION_POINT_ID;
 	public static final String RESOURCE_LOCATOR_ELEMENT = "resourceLocator"; //$NON-NLS-1$
 	public static final String ID_ATTRIBUTE = "id"; //$NON-NLS-1$
 	public static final String CLASS_ATTRIBUTE = "class"; //$NON-NLS-1$
@@ -118,7 +120,7 @@ public class ResourceLocatorManager {
 			rlConfig.setId(findRequiredAttribute(element, ID_ATTRIBUTE));
 			
 			if (this.resourceLocatorConfigs.containsKey(rlConfig.getId())) {
-				logDuplicateExtension(QUALIFIED_EXTENSION_POINT_ID, ID_ATTRIBUTE, rlConfig.getId());
+				JptCommonCorePlugin.instance().logError(JptCommonCoreMessages.REGISTRY_DUPLICATE, QUALIFIED_EXTENSION_POINT_ID, rlConfig.getPluginId(), ID_ATTRIBUTE, rlConfig.getId());
 				throw new XPointException();
 			}
 			
@@ -129,7 +131,7 @@ public class ResourceLocatorManager {
 			String priorityString = element.getAttribute(PRIORITY_ATTRIBUTE).trim();
 			Priority priority = Priority.get(priorityString);
 			if (priority == null) {
-				logInvalidValue(element, PRIORITY_ATTRIBUTE, priorityString);
+				JptCommonCorePlugin.instance().logError(XPointTools.buildInvalidValueMessage(element, PRIORITY_ATTRIBUTE, priorityString));
 				throw new XPointException();
 			}
 			rlConfig.setPriority(priority);
@@ -143,7 +145,7 @@ public class ResourceLocatorManager {
 						expr = ExpressionConverter.getDefault().perform(child);
 					}
 					catch (CoreException e) {
-						log(e);
+						JptCommonCorePlugin.instance().logError(e);
 						throw new XPointException();
 					}
 					rlConfig.setEnablementCondition(expr);

@@ -10,14 +10,14 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2;
 
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPlatformFactory;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatform;
-import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory.SimpleVersion;
+import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory.GenericJpaPlatformVersion;
 import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
+import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar2_0;
 
 /**
@@ -27,6 +27,8 @@ import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar2_0;
 public class Generic2_0JpaPlatformFactory
 	implements JpaPlatformFactory
 {
+	public static final String ID = "generic2_0"; //$NON-NLS-1$
+
 	/**
 	 * zero-argument constructor
 	 */
@@ -46,7 +48,7 @@ public class Generic2_0JpaPlatformFactory
 	}
 
 	private JpaPlatform.Version buildJpaVersion() {
-		return new SimpleVersion(JpaFacet.VERSION_2_0.getVersionString());
+		return new GenericJpaPlatformVersion(JpaProject2_0.FACET_VERSION_STRING);
 	}
 
 	protected JpaPlatformVariation buildJpaPlatformVariation() {

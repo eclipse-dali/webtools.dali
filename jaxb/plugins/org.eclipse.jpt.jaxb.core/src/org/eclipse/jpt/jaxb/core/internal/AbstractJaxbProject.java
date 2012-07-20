@@ -34,7 +34,6 @@ import org.eclipse.jdt.core.IPackageDeclaration;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.JptResourceModelListener;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
@@ -43,6 +42,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
+import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageInfoCompilationUnit;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
@@ -401,7 +401,7 @@ public abstract class AbstractJaxbProject
 		catch (Exception e) {
 			//log any developer exceptions and don't build a JaxbFile rather
 			//than completely failing to build the JaxbProject
-			JptJaxbCorePlugin.log(e);
+			JptJaxbCorePlugin.instance().logError(e);
 		}
 		if (jaxbFile == null) {
 			return null;
@@ -415,8 +415,8 @@ public abstract class AbstractJaxbProject
 	protected boolean isJavaFile(IFile file) {
 		IContentType contentType = PlatformTools.getContentType(file);
 		return contentType != null 
-				&& (contentType.isKindOf(JptCommonCorePlugin.JAVA_SOURCE_CONTENT_TYPE)
-					|| contentType.isKindOf(JptCommonCorePlugin.JAR_CONTENT_TYPE));
+				&& (contentType.isKindOf(JavaResourceCompilationUnit.CONTENT_TYPE)
+					|| contentType.isKindOf(JavaResourcePackageFragmentRoot.JAR_CONTENT_TYPE));
 	}
 	
 	/* (non-java resource) file is in acceptable resource location */
@@ -585,7 +585,7 @@ public abstract class AbstractJaxbProject
 			return EmptyIterable.instance();
 		}
 		
-		if (contentType.isKindOf(JptCommonCorePlugin.JAVA_SOURCE_PACKAGE_INFO_CONTENT_TYPE)) {
+		if (contentType.isKindOf(JavaResourceCompilationUnit.PACKAGE_INFO_CONTENT_TYPE)) {
 			try {
 				return new FilteringIterable<JaxbPackageInfo>(
 						new TransformationIterable<IPackageDeclaration, JaxbPackageInfo>(
@@ -602,7 +602,7 @@ public abstract class AbstractJaxbProject
 				return EmptyIterable.instance();
 			}
 		}
-		else if (contentType.isKindOf(JptCommonCorePlugin.JAVA_SOURCE_CONTENT_TYPE)) {
+		else if (contentType.isKindOf(JavaResourceCompilationUnit.CONTENT_TYPE)) {
 			try {
 				return new FilteringIterable<JaxbType>(
 						new TransformationIterable<IType, JaxbType>(
@@ -628,7 +628,7 @@ public abstract class AbstractJaxbProject
 			return (IFile) cu.getCorrespondingResource();
 		}
 		catch (JavaModelException ex) {
-			JptJaxbCorePlugin.log(ex);
+			JptJaxbCorePlugin.instance().logError(ex);
 			return null;
 		}
 	}
@@ -713,7 +713,7 @@ public abstract class AbstractJaxbProject
 	 * return JAXB files with Java source "content"
 	 */
 	protected Iterable<JaxbFile> getJavaSourceJaxbFiles() {
-		return this.getJaxbFiles(JptCommonCorePlugin.JAVA_SOURCE_CONTENT_TYPE);
+		return this.getJaxbFiles(JavaResourceCompilationUnit.CONTENT_TYPE);
 	}
 
 
@@ -762,7 +762,7 @@ public abstract class AbstractJaxbProject
 	 * return JPA files with package-info source "content"
 	 */
 	protected Iterable<JaxbFile> getPackageInfoSourceJaxbFiles() {
-		return this.getJaxbFiles(JptCommonCorePlugin.JAVA_SOURCE_PACKAGE_INFO_CONTENT_TYPE);
+		return this.getJaxbFiles(JavaResourceCompilationUnit.PACKAGE_INFO_CONTENT_TYPE);
 	}
 
 	
@@ -905,7 +905,7 @@ public abstract class AbstractJaxbProject
 	// **************** jaxb.index resources **********************************
 	
 	public Iterable<JaxbIndexResource> getJaxbIndexResources() {
-		return new TransformationIterable<JaxbFile, JaxbIndexResource>(getJaxbFiles(JptJaxbCorePlugin.JAXB_INDEX_CONTENT_TYPE)) {
+		return new TransformationIterable<JaxbFile, JaxbIndexResource>(getJaxbFiles(JaxbIndexResource.CONTENT_TYPE)) {
 			@Override
 			protected JaxbIndexResource transform(JaxbFile o) {
 				return (JaxbIndexResource) o.getResourceModel();
@@ -926,7 +926,7 @@ public abstract class AbstractJaxbProject
 	// **************** jaxb.properties resources *****************************
 	
 	public Iterable<JaxbPropertiesResource> getJaxbPropertiesResources() {
-		return new TransformationIterable<JaxbFile, JaxbPropertiesResource>(getJaxbFiles(JptJaxbCorePlugin.JAXB_PROPERTIES_CONTENT_TYPE)) {
+		return new TransformationIterable<JaxbFile, JaxbPropertiesResource>(getJaxbFiles(JaxbPropertiesResource.CONTENT_TYPE)) {
 			@Override
 			protected JaxbPropertiesResource transform(JaxbFile o) {
 				return (JaxbPropertiesResource) o.getResourceModel();
@@ -1173,8 +1173,8 @@ public abstract class AbstractJaxbProject
 			facetedProject = ProjectFacetsManager.create(getProject());
 		}
 		catch (CoreException ce) {
-			// fall through
-			JptJaxbCorePlugin.log(ce);
+			JptJaxbCorePlugin.instance().logError(ce);
+			return;
 		}	
 		
 		IProjectFacetVersion facetVersion = facetedProject.getInstalledVersion(JaxbFacet.FACET);

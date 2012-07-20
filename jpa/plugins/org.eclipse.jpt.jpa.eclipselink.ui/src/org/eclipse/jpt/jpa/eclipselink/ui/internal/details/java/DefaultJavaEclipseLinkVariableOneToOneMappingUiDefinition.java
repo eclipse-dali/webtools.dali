@@ -16,13 +16,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVariableOneToOneMapping;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkVariableOneToOneMappingComposite;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.details.java.DefaultJavaAttributeMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.java.JavaUiFactory;
-import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractMappingUiDefinition;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 public class DefaultJavaEclipseLinkVariableOneToOneMappingUiDefinition
@@ -30,9 +27,8 @@ public class DefaultJavaEclipseLinkVariableOneToOneMappingUiDefinition
 	implements DefaultJavaAttributeMappingUiDefinition<EclipseLinkVariableOneToOneMapping>
 {
 	// singleton
-	private static final DefaultJavaEclipseLinkVariableOneToOneMappingUiDefinition INSTANCE = 
-		new DefaultJavaEclipseLinkVariableOneToOneMappingUiDefinition();
-	
+	private static final DefaultJavaEclipseLinkVariableOneToOneMappingUiDefinition INSTANCE = new DefaultJavaEclipseLinkVariableOneToOneMappingUiDefinition();
+
 	/**
 	 * Return the singleton.
 	 */
@@ -56,10 +52,6 @@ public class DefaultJavaEclipseLinkVariableOneToOneMappingUiDefinition
 		return EclipseLinkMappingKeys.VARIABLE_ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY;
 	}	
 	
-	public Image getImage() {
-		return JptJpaUiPlugin.getImage(JptUiIcons.JPA_CONTENT);
-	}
-	
 	public String getLabel() {
 		return EclipseLinkUiDetailsMessages.DefaultEclipseLinkVariableOneToOneMappingUiProvider_label;
 	}
@@ -68,12 +60,7 @@ public class DefaultJavaEclipseLinkVariableOneToOneMappingUiDefinition
 		return EclipseLinkUiDetailsMessages.DefaultEclipseLinkVariableOneToOneMappingUiProvider_linkLabel;
 	}
 	
-	public JpaComposite buildAttributeMappingComposite(
-			JavaUiFactory factory,
-			PropertyValueModel<EclipseLinkVariableOneToOneMapping> subjectHolder,
-			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
+	public JpaComposite buildAttributeMappingComposite(JavaUiFactory factory, PropertyValueModel<EclipseLinkVariableOneToOneMapping> subjectHolder, PropertyValueModel<Boolean> enabledModel, Composite parent, WidgetFactory widgetFactory) {
 		return new EclipseLinkVariableOneToOneMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
 	}	
 }

@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrappe
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.ReadOnlyWritablePropertyValueModelWrapper;
+import org.eclipse.jpt.common.utility.internal.model.value.ReadOnlyModifiablePropertyValueModelWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ValueListAdapter;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
@@ -354,7 +354,7 @@ public class EclipseLinkMultitenancyComposite extends Pane<EclipseLinkMultitenan
 		TenantDiscriminatorColumnPaneEnablerHolder() {
 			super(
 				new ValueListAdapter<EclipseLinkMultitenancy2_3>(
-					new ReadOnlyWritablePropertyValueModelWrapper<EclipseLinkMultitenancy2_3>(getSubjectHolder()), 
+					new ReadOnlyModifiablePropertyValueModelWrapper<EclipseLinkMultitenancy2_3>(getSubjectHolder()), 
 					EclipseLinkMultitenancy2_3.SPECIFIED_TENANT_DISCRIMINATOR_COLUMNS_LIST
 				)
 			);

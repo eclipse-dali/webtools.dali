@@ -17,12 +17,15 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.jpt.common.core.internal.utility.JptPlugin;
+import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestFacetedProject;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestPlatformProject;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.ReflectionTools;
-import org.eclipse.jpt.jpa.core.JpaFacet;
+import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProperties;
@@ -47,15 +50,12 @@ public class JpaProjectManagerTests
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		if (this.debug()) {
-			this.printName();
-		}
+		this.trace("+++++ " + this.getName() + " +++++");
 		this.testProjectHarness = this.buildTestProjectHarness();
 	}
 
-	private boolean debug() {
-		Boolean debug = (Boolean) ReflectionTools.executeStaticMethod(this.getGenericJpaProjectManagerClass(), "debug");
-		return debug.booleanValue();
+	private void trace(String message) {
+		ReflectionTools.executeStaticMethod(this.getGenericJpaProjectManagerClass(), "trace", String.class, message);
 	}
 
 	// InternalJpaProjectManager is package-private
@@ -65,22 +65,6 @@ public class JpaProjectManagerTests
 
 	protected JpaProjectManager getJpaProjectManager() {
 		return (JpaProjectManager) ResourcesPlugin.getWorkspace().getAdapter(JpaProjectManager.class);
-	}
-
-	private void printName() {
-		String name = this.getName();
-		System.out.println();
-		System.out.println();
-		this.printNameBorder(name);
-		System.out.println(name);
-		this.printNameBorder(name);
-	}
-
-	private void printNameBorder(String name) {
-		for (int i = name.length(); i-- > 0; ) {
-			System.out.print('=');
-		}
-		System.out.println();
 	}
 
 	@Override
@@ -140,7 +124,7 @@ public class JpaProjectManagerTests
 	}
 
 	public void testProjectCloseReopen() throws Exception {
-		this.testProjectHarness.installFacet(JpaFacet.ID, "1.0", buildJpaConfigDataModel());
+		this.testProjectHarness.installFacet(JpaProject.FACET_ID, JpaProject.FACET_VERSION_STRING, buildJpaConfigDataModel());
 		JpaProject jpaProject = this.getJpaProject();
 		assertNotNull(jpaProject);
 
@@ -162,10 +146,14 @@ public class JpaProjectManagerTests
 	}
 
 	public void testProjectDeleteReimport() throws Exception {
-		this.testProjectHarness.installFacet(JpaFacet.ID, "1.0", buildJpaConfigDataModel());
+		this.testProjectHarness.installFacet(JpaProject.FACET_ID, JpaProject.FACET_VERSION_STRING, buildJpaConfigDataModel());
 		JpaProject jpaProject = this.getJpaProject();
 		assertNotNull(jpaProject);
 		assertEquals(1, CollectionTools.size(this.getJpaProjectManager().waitToGetJpaProjects()));
+
+		// flush the prefs file so it will still be there after we delete the project
+		// and our settings are discovered when the project is restored
+		this.flushProjectPrefs();
 
 		this.testProjectHarness.getProject().delete(false, true, null);
 		jpaProject = this.getJpaProject();
@@ -179,7 +167,7 @@ public class JpaProjectManagerTests
 		project.open(null);
 
 		assertTrue(project.isOpen());
-		assertTrue(JpaFacet.isInstalled(project));
+		assertTrue(ProjectTools.hasFacet(project, JpaProject.FACET));
 		jpaProject = this.getJpaProject(project);
 		assertNotNull(jpaProject);
 		assertEquals(4, jpaProject.getJpaFilesSize());
@@ -189,10 +177,20 @@ public class JpaProjectManagerTests
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProjectHarness, "src/META-INF/orm.xml")));
 	}
 
+	protected void flushProjectPrefs() throws Exception {
+		JptPlugin plugin = this.getPlugin();
+		IEclipsePreferences prefs = (IEclipsePreferences) ReflectionTools.executeMethod(plugin, "getProjectPreferences", IProject.class, this.testProjectHarness.getProject());
+		prefs.flush();
+	}
+
+	protected JptPlugin getPlugin() throws Exception {
+		return (JptPlugin) ReflectionTools.executeStaticMethod(JpaPreferences.class, "getPlugin");
+	}
+
 	public void testFacetInstallUninstall() throws Exception {
 		assertNull(this.getJpaProject());
 
-		this.testProjectHarness.installFacet(JpaFacet.ID, "1.0", buildJpaConfigDataModel());
+		this.testProjectHarness.installFacet(JpaProject.FACET_ID, JpaProject.FACET_VERSION_STRING, buildJpaConfigDataModel());
 		assertEquals(1, CollectionTools.size(this.getJpaProjectManager().waitToGetJpaProjects()));
 		JpaProject jpaProject = this.getJpaProject();
 		assertNotNull(jpaProject);
@@ -203,7 +201,7 @@ public class JpaProjectManagerTests
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProjectHarness, "src/META-INF/persistence.xml")));
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProjectHarness, "src/META-INF/orm.xml")));
 
-		this.testProjectHarness.uninstallFacet(JpaFacet.ID, "1.0");
+		this.testProjectHarness.uninstallFacet(JpaProject.FACET_ID, "1.0");
 		assertEquals(0, CollectionTools.size(this.getJpaProjectManager().waitToGetJpaProjects()));
 		jpaProject = this.getJpaProject();
 		assertNull(jpaProject);
@@ -246,7 +244,7 @@ public class JpaProjectManagerTests
 	}
 	
 	public void testEditFacetSettingsFileRemoveThenAddJpaFacet() throws Exception {
-		this.testProjectHarness.installFacet(JpaFacet.ID, "1.0", buildJpaConfigDataModel());
+		this.testProjectHarness.installFacet(JpaProject.FACET_ID, JpaProject.FACET_VERSION_STRING, buildJpaConfigDataModel());
 		JpaProject jpaProject = this.getJpaProject();
 		assertNotNull(jpaProject);
 

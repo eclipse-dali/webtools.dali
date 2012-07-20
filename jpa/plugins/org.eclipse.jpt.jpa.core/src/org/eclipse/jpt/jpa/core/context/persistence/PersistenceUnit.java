@@ -740,7 +740,6 @@ public interface PersistenceUnit
 	 * the class refs (both specified and implied) and jar files.
 	 * There can be duplicate types, and any of them may be overridden by a
 	 * mapping file persistence type.
-	 * @see #getMappingFilePersistentTypes()
 	 */
 	Iterable<PersistentType> getJavaPersistentTypes();
 
@@ -784,7 +783,16 @@ public interface PersistenceUnit
 	 * including the ones from jar files
 	 */
 	Iterable<String> getPackageNames();
+
+	/**
+	 * Return a location relative to the beginning of the persistence.xml for
+	 * inserting a new mapping-file element. If there are existing mapping files,
+	 * the location should be after those. If no existing mapping files then make
+	 * sure the location does not violate the persistence.xml schema.
+	 */
+	int findInsertLocationForMappingFileRef();
 	
+
 	// ********** validation **********
 
 	/**
@@ -797,66 +805,68 @@ public interface PersistenceUnit
 	// ********** refactoring **********
 
 	/**
-	 * Create DeleteEdits for deleting any references to the deleted type.
-	 * Return an EmptyIterable if there are not any references.
+	 * Create delete edits for deleting any references
+	 * to the specified (about to be deleted) type.
+	 * Return an empty collection if there are no references to the specified type.
 	 */
 	Iterable<DeleteEdit> createDeleteTypeEdits(IType type);
 
 	/**
-	 * Create DeleteEdits for deleting any references to the deleted file
-	 * Return an EmptyIterable if there are not any references.
-	 */
-	Iterable<DeleteEdit> createDeleteMappingFileEdits(IFile file);
-
-	/**
-	 * Create ReplaceEdits for renaming any references to the originalType to the newName.
-	 * The originalType has not yet been renamed, the newName is the new short name.
+	 * Create replace edits for renaming any references to
+	 * the specified original type to the specified new name.
+	 * The specified original type has not yet been renamed; and the specified
+	 * new name is a "simple" (unqualified) name.
 	 */
 	Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName);
 
 	/**
-	 * Create ReplaceEdits for moving any references to the originalType to the newPackage.
-	 * The originalType has not yet been moved.
+	 * Create replace edits for moving any references to
+	 * the specified original type to the specified new package.
+	 * The specified original type has not yet been moved.
 	 */
 	Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage);
 
 	/**
-	 * Create ReplaceEdits for renaming any references to the originalPackage to the newName.
-	 * The originalPackage has not yet been renamed.
+	 * Create replace edits for renaming any references to
+	 * the specified original package to the specified new name.
+	 * The specified original package has not yet been renamed.
 	 */
 	Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName);
 
 	/**
-	 * Create ReplaceEdits for renaming any references to the originalFolder to the newName.
-	 * The originalFolder has not yet been renamed.
+	 * Create delete edits for deleting any references to the specified file
+	 * Return an empty collection if there are no references to the specified file.
+	 */
+	Iterable<DeleteEdit> createDeleteMappingFileEdits(IFile file);
+
+	/**
+	 * Create replace edits for renaming any references to the specified
+	 * original folder to the specified new name.
+	 * The specified original folder has not yet been renamed.
 	 */
 	Iterable<ReplaceEdit> createRenameFolderEdits(IFolder originalFolder, String newName);
 
 	/**
-	 * Create ReplaceEdits for renaming any references to the originalFile to the newName.
-	 * Return an EmptyIterable if there are not any references.
-	 * The originalFile has not yet been renamed, the newName is the new short name.
+	 * Create replace edits for renaming any references to the specifie original
+	 * file to the specified new name.
+	 * Return an empty collection if there are not any references.
+	 * The specified original file has not yet been renamed; and the specified
+	 * new name is a "simple" (unqualified) name.
 	 */
 	Iterable<ReplaceEdit> createRenameMappingFileEdits(IFile originalFile, String newName);
 
 	/**
-	 * Create ReplaceEdits for moving any references to the originalFile to the destination.
-	 * Return an EmptyIterable if there are not any references.
-	 * The originalFile has not been moved yet.
+	 * Create replace edits for moving any references to the specified
+	 * original file to the specified destination.
+	 * Return an empty collection if there are not any references.
+	 * The specified original file has not yet been moved.
 	 */
-	Iterable<ReplaceEdit> createMoveMappingFileEdits(IFile originalFile, IPath runtineDestination);
+	Iterable<ReplaceEdit> createMoveMappingFileEdits(IFile originalFile, IPath destination);
 
 	/**
-	 * Create ReplaceEdits for moving any references to the originalFolder to the runtimeDestination.
-	 * The runtimeDestination already includes the original folder name.
+	 * Create replace edits for moving any references to the specified
+	 * original folder to the specified destination.
+	 * The specified destination already includes the original folder name.
 	 */
-	Iterable<ReplaceEdit> createMoveFolderEdits(IFolder originalFolder, IPath runtimeDestination);
-
-	/**
-	 * Return a location relative to the beginning of the persistence.xml for
-	 * inserting a new mapping-file element. If there are existing mapping files,
-	 * the location should be after those. If no existing mapping files then make
-	 * sure the location does not violate the persistence.xml schema.
-	 */
-	int findInsertLocationForMappingFileRef();
+	Iterable<ReplaceEdit> createMoveFolderEdits(IFolder originalFolder, IPath destination);
 }

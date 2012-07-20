@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,7 @@ import javax.swing.Icon;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
+import org.eclipse.jpt.common.utility.internal.Tools;
 
 /**
  * This implementation of LongListComponent.Browser uses a
@@ -118,11 +119,11 @@ public class FilteringListBrowser<T>
 	
 	// ********** custom panel **********
 	
-	protected static class LocalFilteringListPanel<S> extends FilteringListPanel<S> {
-		protected static final Object[] EMPTY_ARRAY = new Object[0];
-
+	protected static class LocalFilteringListPanel<S>
+		extends FilteringListPanel<S>
+	{
 		protected LocalFilteringListPanel() {
-			super(EMPTY_ARRAY, null);
+			super(Tools.EMPTY_OBJECT_ARRAY, null);
 		}
 	
 		/**

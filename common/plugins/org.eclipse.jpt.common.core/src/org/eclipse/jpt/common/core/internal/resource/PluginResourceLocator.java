@@ -14,7 +14,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.pde.core.project.IBundleProjectService;
 import org.osgi.framework.BundleContext;
@@ -60,7 +60,7 @@ public class PluginResourceLocator
 			return this.getBundleRoot_(project);
 		} catch (CoreException ex) {
 			// problem creating description on an existing project
-			JptCommonCorePlugin.log(ex);
+			JptCommonCorePlugin.instance().logError(ex);
 			return null;
 		}
 	}

@@ -35,7 +35,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.Generator;
@@ -54,6 +53,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnit;
+import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
@@ -181,7 +181,7 @@ public abstract class AbstractEntityMappings
 		return (OrmXml) super.getParent();
 	}
 
-	// TODO bjv add to interface
+	@Override
 	public OrmXml getOrmXml() {
 		return this.getParent();
 	}
@@ -1109,14 +1109,14 @@ public abstract class AbstractEntityMappings
 	}
 
 	protected IContentType getContentType() {
-		return JptJpaCorePlugin.ORM_XML_CONTENT_TYPE;
+		return XmlEntityMappings.CONTENT_TYPE;
 	}
 
 	protected void validatePersistentType(OrmPersistentType persistentType, List<IMessage> messages, IReporter reporter) {
 		try {
 			persistentType.validate(messages, reporter);
 		} catch (Throwable exception) {
-			JptJpaCorePlugin.log(exception);
+			JptJpaCorePlugin.instance().logError(exception);
 		}
 	}
 
@@ -1217,7 +1217,7 @@ public abstract class AbstractEntityMappings
 				return result;
 			}
 		}
-		return null;
+		return EmptyIterable.instance();
 	}
 
 	@Override

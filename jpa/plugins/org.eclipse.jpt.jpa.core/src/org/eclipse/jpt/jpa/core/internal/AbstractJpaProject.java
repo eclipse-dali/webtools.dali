@@ -43,7 +43,6 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.JptResourceModelListener;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryTypeCache;
@@ -74,18 +73,21 @@ import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
-import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
+import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
+import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.JpaRootContextNode2_0;
 import org.eclipse.jpt.jpa.core.libprov.JpaLibraryProviderInstallOperationConfig;
+import org.eclipse.jpt.jpa.core.resource.ResourceMappingFile;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
+import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
@@ -487,8 +489,9 @@ public abstract class AbstractJpaProject
 	public void setUserOverrideDefaultCatalog(String catalog) {
 		String old = this.userOverrideDefaultCatalog;
 		this.userOverrideDefaultCatalog = catalog;
-		JptJpaCorePlugin.setUserOverrideDefaultCatalog(this.project, catalog);
-		this.firePropertyChanged(USER_OVERRIDE_DEFAULT_CATALOG_PROPERTY, old, catalog);
+		if (this.firePropertyChanged(USER_OVERRIDE_DEFAULT_CATALOG_PROPERTY, old, catalog)) {
+			JpaPreferences.setUserOverrideDefaultCatalog(this.project, catalog);
+		}
 	}
 
 
@@ -501,8 +504,9 @@ public abstract class AbstractJpaProject
 	public void setUserOverrideDefaultSchema(String schema) {
 		String old = this.userOverrideDefaultSchema;
 		this.userOverrideDefaultSchema = schema;
-		JptJpaCorePlugin.setUserOverrideDefaultSchema(this.project, schema);
-		this.firePropertyChanged(USER_OVERRIDE_DEFAULT_SCHEMA_PROPERTY, old, schema);
+		if (this.firePropertyChanged(USER_OVERRIDE_DEFAULT_SCHEMA_PROPERTY, old, schema)) {
+			JpaPreferences.setUserOverrideDefaultSchema(this.project, schema);
+		}
 	}
 
 
@@ -515,7 +519,7 @@ public abstract class AbstractJpaProject
 	public void setDiscoversAnnotatedClasses(boolean discoversAnnotatedClasses) {
 		boolean old = this.discoversAnnotatedClasses;
 		this.discoversAnnotatedClasses = discoversAnnotatedClasses;
-		JptJpaCorePlugin.setDiscoverAnnotatedClasses(this.project, discoversAnnotatedClasses);
+		JpaPreferences.setDiscoverAnnotatedClasses(this.project, discoversAnnotatedClasses);
 		this.firePropertyChanged(DISCOVERS_ANNOTATED_CLASSES_PROPERTY, old, discoversAnnotatedClasses);
 	}
 
@@ -593,8 +597,8 @@ public abstract class AbstractJpaProject
 	 * pre-condition: content type is not <code>null</code>
 	 */
 	protected boolean contentTypeIsJavaRelated(IContentType contentType) {
-		return contentType.isKindOf(JptCommonCorePlugin.JAVA_SOURCE_CONTENT_TYPE) ||
-				contentType.isKindOf(JptCommonCorePlugin.JAR_CONTENT_TYPE);
+		return contentType.isKindOf(JavaResourceCompilationUnit.CONTENT_TYPE) ||
+				contentType.isKindOf(JavaResourcePackageFragmentRoot.JAR_CONTENT_TYPE);
 	}
 
 	protected boolean fileResourceLocationIsValid(IFile file) {
@@ -613,7 +617,7 @@ public abstract class AbstractJpaProject
 		try {
 			return this.getJpaPlatform().buildJpaFile(this, file);
 		} catch (Exception ex) {
-			JptJpaCorePlugin.log("Error building JPA file: " + file.getFullPath(), ex); //$NON-NLS-1$
+			JptJpaCorePlugin.instance().logError(ex, "Error building JPA file: " + file.getFullPath()); //$NON-NLS-1$
 			return null;
 		}
 	}
@@ -767,17 +771,17 @@ public abstract class AbstractJpaProject
 
 	public JpaXmlResource getPersistenceXmlResource() {
 		return (JpaXmlResource) this.getResourceModel(
-				JptJpaCorePlugin.DEFAULT_PERSISTENCE_XML_RUNTIME_PATH,
-				JptJpaCorePlugin.PERSISTENCE_XML_CONTENT_TYPE
+				XmlPersistence.DEFAULT_RUNTIME_PATH,
+				XmlPersistence.CONTENT_TYPE
 			);
 	}
 
 	public JpaXmlResource getDefaultOrmXmlResource() {
-		return this.getMappingFileXmlResource(JptJpaCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH);
+		return this.getMappingFileXmlResource(XmlEntityMappings.DEFAULT_RUNTIME_PATH);
 	}
 
 	public JpaXmlResource getMappingFileXmlResource(IPath runtimePath) {
-		return (JpaXmlResource) this.getResourceModel(runtimePath, JptJpaCorePlugin.MAPPING_FILE_CONTENT_TYPE);
+		return (JpaXmlResource) this.getResourceModel(runtimePath, ResourceMappingFile.Root.CONTENT_TYPE);
 	}
 
 	/**
@@ -906,7 +910,7 @@ public abstract class AbstractJpaProject
 	 * Return the JPA project's JPA files with Java source <em>content</em>.
 	 */
 	protected Iterable<JpaFile> getJavaSourceJpaFiles() {
-		return this.getJpaFiles(JptCommonCorePlugin.JAVA_SOURCE_CONTENT_TYPE);
+		return this.getJpaFiles(JavaResourceCompilationUnit.CONTENT_TYPE);
 	}
 
 
@@ -994,7 +998,7 @@ public abstract class AbstractJpaProject
 	 * return JPA files with package-info source "content"
 	 */
 	protected Iterable<JpaFile> getPackageInfoSourceJpaFiles() {
-		return this.getJpaFiles(JptCommonCorePlugin.JAVA_SOURCE_PACKAGE_INFO_CONTENT_TYPE);
+		return this.getJpaFiles(JavaResourceCompilationUnit.PACKAGE_INFO_CONTENT_TYPE);
 	}
 
 
@@ -1028,7 +1032,7 @@ public abstract class AbstractJpaProject
 	 * return JPA files with JAR "content"
 	 */
 	public Iterable<JpaFile> getJarJpaFiles() {
-		return this.getJpaFiles(JptCommonCorePlugin.JAR_CONTENT_TYPE);
+		return this.getJpaFiles(JavaResourcePackageFragmentRoot.JAR_CONTENT_TYPE);
 	}
 
 
@@ -1060,7 +1064,7 @@ public abstract class AbstractJpaProject
 	}
 
 	protected JavaResourceCompilationUnit getJavaResourceCompilationUnit(IFile file) {
-		return (JavaResourceCompilationUnit) this.getResourceModel(file, JptCommonCorePlugin.JAVA_SOURCE_CONTENT_TYPE);
+		return (JavaResourceCompilationUnit) this.getResourceModel(file, JavaResourceCompilationUnit.CONTENT_TYPE);
 	}
 
 	public String getMetamodelSourceFolderName() {
@@ -1069,7 +1073,7 @@ public abstract class AbstractJpaProject
 
 	public void setMetamodelSourceFolderName(String folderName) {
 		if (this.setMetamodelSourceFolderName_(folderName)) {
-			JptJpaCorePlugin.setMetamodelSourceFolderName(this.project, folderName);
+			JpaPreferences.setMetamodelSourceFolderName(this.project, folderName);
 			if (folderName == null) {
 				this.disposeMetamodel();
 			} else {
@@ -1198,7 +1202,7 @@ public abstract class AbstractJpaProject
 		try {
 			return this.getJavaSourceFolderNames_();
 		} catch (JavaModelException ex) {
-			JptJpaCorePlugin.log(ex);
+			JptJpaCorePlugin.instance().logError(ex);
 			return EmptyIterable.instance();
 		}
 	}
@@ -1495,7 +1499,7 @@ public abstract class AbstractJpaProject
 		try {
 			this.validateLibraryProvider_(messages);
 		} catch (CoreException ex) {
-			JptJpaCorePlugin.log(ex);
+			JptJpaCorePlugin.instance().logError(ex);
 		}
 	}
 
@@ -1504,9 +1508,9 @@ public abstract class AbstractJpaProject
 		enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_ENABLEMENT_EXP, this.getJpaPlatform().getId());
 		enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_DESCRIPTION_ENABLEMENT_EXP, this.getJpaPlatform().getDescription());
 
-		ILibraryProvider libraryProvider = LibraryProviderFramework.getCurrentProvider(this.project, JpaFacet.FACET);
+		ILibraryProvider libraryProvider = LibraryProviderFramework.getCurrentProvider(this.project, JpaProject.FACET);
 		IFacetedProject facetedProject = ProjectFacetsManager.create(this.project);
-		IProjectFacetVersion facetVersion = facetedProject.getInstalledVersion(JpaFacet.FACET);
+		IProjectFacetVersion facetVersion = facetedProject.getInstalledVersion(JpaProject.FACET);
 		if ( ! libraryProvider.isEnabledFor(facetedProject, facetVersion, enablementVariables)) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
@@ -1561,6 +1565,8 @@ public abstract class AbstractJpaProject
 		this.stopCommand(this.synchronizeContextModelCommand);
 		this.stopCommand(this.updateCommand);
 		this.updateCommand.removeListener(this.updateCommandListener);
+		this.setUserOverrideDefaultCatalog(null);
+		this.setUserOverrideDefaultSchema(null);
 		this.dataSource.dispose();
 		// the XML resources are held indefinitely by the WTP translator framework,
 		// so we better remove our listener or the JPA project will not be GCed
@@ -1784,10 +1790,10 @@ public abstract class AbstractJpaProject
 		if (contentType == null) {
 			return false;
 		}
-		if (contentType.equals(JptCommonCorePlugin.JAVA_SOURCE_CONTENT_TYPE)) {
+		if (contentType.equals(JavaResourceCompilationUnit.CONTENT_TYPE)) {
 			return true;
 		}
-		if (contentType.equals(JptCommonCorePlugin.JAR_CONTENT_TYPE)) {
+		if (contentType.equals(JavaResourcePackageFragmentRoot.JAR_CONTENT_TYPE)) {
 			return true;
 		}
 		return false;
@@ -1798,10 +1804,10 @@ public abstract class AbstractJpaProject
 		if (contentType == null) {
 			return false;
 		}
-		if (contentType.equals(JptCommonCorePlugin.JAVA_SOURCE_CONTENT_TYPE)) {
+		if (contentType.equals(JavaResourceCompilationUnit.CONTENT_TYPE)) {
 			return this.removeExternalJavaResourceCompilationUnit(file);
 		}
-		if (contentType.equals(JptCommonCorePlugin.JAR_CONTENT_TYPE)) {
+		if (contentType.equals(JavaResourcePackageFragmentRoot.JAR_CONTENT_TYPE)) {
 			return this.externalJavaResourceTypeCache.removeTypes(file);
 		}
 		return false;

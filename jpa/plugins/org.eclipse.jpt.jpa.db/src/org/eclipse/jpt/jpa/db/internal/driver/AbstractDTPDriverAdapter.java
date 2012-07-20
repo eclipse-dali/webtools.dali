@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,10 +30,10 @@ import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.Database;
 import org.eclipse.jpt.jpa.db.DatabaseObject;
-import org.eclipse.jpt.jpa.db.JptJpaDbPlugin;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.Sequence;
 import org.eclipse.jpt.jpa.db.Table;
+import org.eclipse.jpt.jpa.db.internal.plugin.JptJpaDbPlugin;
 
 /**
  * Consolidate the behavior common to the typical DTP drivers.
@@ -400,7 +400,7 @@ abstract class AbstractDTPDriverAdapter
 		try {
 			return this.execute_(sql);
 		} catch (SQLException ex) {
-			JptJpaDbPlugin.log("SQL: " + sql, ex); //$NON-NLS-1$
+			JptJpaDbPlugin.instance().logError(ex, "SQL: {0}", sql); //$NON-NLS-1$
 			return Collections.emptyList();
 		}
 	}

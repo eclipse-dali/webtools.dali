@@ -27,16 +27,16 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * @version 2.2
  * @since 2.1
  */
+// TODO bjv rename to XmlJpaContextNode
 public interface XmlContextNode
 	extends JpaContextNode
 {
-// TODO bjv rename to XmlJpaContextNode
-
 	/**
 	 * Return the content assist proposals for the specified position
 	 * in the XML file.
 	 */
 	Iterable<String> getXmlCompletionProposals(int pos);
+
 	/**
 	 * Add to the list of current validation messages
 	 */

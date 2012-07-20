@@ -14,8 +14,8 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaNode;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
-import org.eclipse.jpt.jpa.core.prefs.JpaValidationPreferencesManager;
+import org.eclipse.jpt.jpa.core.JpaPreferences;
+import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -61,7 +61,7 @@ public class DefaultJpaValidationMessages {
 		if (textRange == null) {
 			textRange = DEFAULT_TEXT_RANGE;
 			// log the exception but allow the message to still be used
-			JptJpaCorePlugin.log(new NullPointerException("Null text range for message ID: " + messageId)); //$NON-NLS-1$
+			JptJpaCorePlugin.instance().logError(new NullPointerException("Null text range for message ID: " + messageId)); //$NON-NLS-1$
 		}
 		int lineNumber = textRange.getLineNumber();
 		message.setLineNo(lineNumber);
@@ -95,16 +95,31 @@ public class DefaultJpaValidationMessages {
 	/* CU private */ static class GenericMessageFactory
 		implements MessageFactory
 	{
-		public IMessage buildMessage(int severity, String messageId, String[] parms, IResource targetObject) {
+		public IMessage buildMessage(int severity, String messageID, String[] parms, IResource targetObject) {
 			// check for preference override
-			int prefSeverity = JpaValidationPreferencesManager.getProblemSeverityPreference(targetObject, messageId);
-			if (prefSeverity != JpaValidationPreferencesManager.NO_SEVERITY_PREFERENCE){
-				severity = prefSeverity;
-			}
-			IMessage message = new Message(JpaValidationMessages.BUNDLE_NAME, severity, messageId, parms, targetObject);
-			message.setMarkerId(JptJpaCorePlugin.VALIDATION_MARKER_ID);
+			severity = this.getProblemSeverity(targetObject, messageID, severity);
+			IMessage message = new Message(JpaValidationMessages.BUNDLE_NAME, severity, messageID, parms, targetObject);
+			message.setMarkerId(JpaValidator.MARKER_ID);
 			return message;
 		}
+
+		private int getProblemSeverity(IResource targetObject, String messageID, int defaultSeverity) {
+			String pref = JpaPreferences.getProblemSeverity(targetObject.getProject(), messageID);
+			if (pref == null) {
+				return defaultSeverity;
+			}
+			if (pref.equals(JpaPreferences.PROBLEM_ERROR)) {
+				return IMessage.HIGH_SEVERITY;
+			}
+			if (pref.equals(JpaPreferences.PROBLEM_WARNING)) {
+				return IMessage.NORMAL_SEVERITY;
+			}
+			if (pref.equals(JpaPreferences.PROBLEM_INFO)) {
+				return IMessage.LOW_SEVERITY;
+			}
+			return defaultSeverity;
+		}
+
 		@Override
 		public String toString() {
 			return StringTools.buildToStringFor(this);

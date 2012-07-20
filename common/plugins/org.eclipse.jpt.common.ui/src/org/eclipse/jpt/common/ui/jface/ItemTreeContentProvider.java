@@ -11,6 +11,7 @@ package org.eclipse.jpt.common.ui.jface;
 
 import java.io.Serializable;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.Tools;
 
 /**
  * Implementations of this interface can be used to maintain the content of a
@@ -84,13 +85,13 @@ public interface ItemTreeContentProvider
 			super();
 		}
 		public Object[] getElements() {
-			return EMPTY_ARRAY;
+			return Tools.EMPTY_OBJECT_ARRAY;
 		}
 		public Object getParent() {
 			return null;
 		}
 		public Object[] getChildren() {
-			return EMPTY_ARRAY;
+			return Tools.EMPTY_OBJECT_ARRAY;
 		}
 		public boolean hasChildren() {
 			return false;

@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2010, 2012  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.properties;
 
 import java.lang.reflect.InvocationTargetException;
@@ -51,7 +51,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.BufferedWritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.BufferedModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
@@ -101,7 +101,7 @@ public class JaxbSchemasPropertiesPage
 	
 	private final PropertyValueModel<JaxbProject> jaxbProjectModel;
 	
-	protected final BufferedWritablePropertyValueModel.Trigger trigger;
+	protected final BufferedModifiablePropertyValueModel.Trigger trigger;
 	
 	private final SchemasModel schemasModel;
 	
@@ -112,7 +112,7 @@ public class JaxbSchemasPropertiesPage
 		super();
 		this.projectModel = new SimplePropertyValueModel<IProject>();
 		this.jaxbProjectModel = new JaxbProjectModel(this.projectModel);
-		this.trigger = new BufferedWritablePropertyValueModel.Trigger();
+		this.trigger = new BufferedModifiablePropertyValueModel.Trigger();
 		this.schemasModel = new SchemasModel(this.jaxbProjectModel, this.trigger);
 		this.schemasSelectionModel = new SimpleCollectionValueModel<Schema>();
 		setDescription(JptJaxbUiMessages.SchemasPage_description);
@@ -393,7 +393,7 @@ public class JaxbSchemasPropertiesPage
 	void performOk_(IProgressMonitor monitor) throws CoreException {
 		if (this.schemasModel.hasChanges()) {
 			this.trigger.accept();
-			JptJaxbCorePlugin.getProjectManager().rebuildJaxbProject(getProject());
+			JptJaxbCorePlugin.instance().getProjectManager().rebuildJaxbProject(getProject());
 			getProject().build(IncrementalProjectBuilder.FULL_BUILD, monitor);
 		}
 	}

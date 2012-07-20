@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,13 +10,10 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal;
 
 import java.util.ArrayList;
-import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jpa.core.JpaPlatformProvider;
 import org.eclipse.jpt.jpa.core.JpaResourceModelProvider;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.ResourceDefinition;
 import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
@@ -26,11 +23,13 @@ import org.eclipse.jpt.jpa.core.internal.JarResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.JavaResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.OrmResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.PersistenceResourceModelProvider;
+import org.eclipse.jpt.jpa.core.internal.context.java.JarDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaEmbeddedIdMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaEmbeddedMappingDefinition;
+import org.eclipse.jpt.jpa.core.internal.context.java.JavaSourceFileDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaTransientMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
-import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.GenericPersistenceXmlDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicCollectionMappingDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMapMappingDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMappingDefinition;
@@ -49,14 +48,13 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmX
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceXmlDefinition;
 
 /**
- * EclipseLink platform
+ * EclipseLink 1.0 platform
  */
 public class EclipseLinkJpaPlatformProvider
-		extends AbstractJpaPlatformProvider {
-	
+	extends AbstractJpaPlatformProvider
+{
 	// singleton
 	private static final JpaPlatformProvider INSTANCE = new EclipseLinkJpaPlatformProvider();
-
 
 	/**
 	 * Return the singleton.
@@ -64,7 +62,6 @@ public class EclipseLinkJpaPlatformProvider
 	public static JpaPlatformProvider instance() {
 		return INSTANCE;
 	}
-
 
 	/**
 	 * Enforce singleton usage
@@ -76,26 +73,19 @@ public class EclipseLinkJpaPlatformProvider
 
 	// ********* resource models *********
 
-	public JptResourceType getMostRecentSupportedResourceType(IContentType contentType) {
-		if (contentType.equals(JptCommonCorePlugin.JAVA_SOURCE_CONTENT_TYPE)) {
-			return JptCommonCorePlugin.JAVA_SOURCE_RESOURCE_TYPE;
-		}
-		else if (contentType.equals(JptCommonCorePlugin.JAR_CONTENT_TYPE)) {
-			return JptCommonCorePlugin.JAR_RESOURCE_TYPE;
-		}
-		else if (contentType.equals(JptJpaCorePlugin.PERSISTENCE_XML_CONTENT_TYPE)) {
-			return JptJpaCorePlugin.PERSISTENCE_XML_1_0_RESOURCE_TYPE;
-		}
-		else if (contentType.equals(JptJpaCorePlugin.ORM_XML_CONTENT_TYPE)) {
-			return JptJpaCorePlugin.ORM_XML_1_0_RESOURCE_TYPE;
-		}
-		else if (contentType.equals(JptJpaEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE)) {
-			return JptJpaEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_1_0_RESOURCE_TYPE;
-		}
-		else {
-			throw new IllegalArgumentException(contentType.toString());
-		}
+	@Override
+	protected void addMostRecentSupportedResourceTypesTo(ArrayList<JptResourceType> types) {
+		CollectionTools.addAll(types, MOST_RECENT_SUPPORTED_RESOURCE_TYPES);
 	}
+
+	// order should not be important here
+	protected static final JptResourceType[] MOST_RECENT_SUPPORTED_RESOURCE_TYPES = new JptResourceType[] {
+		JavaSourceFileDefinition.instance().getResourceType(),
+		JarDefinition.instance().getResourceType(),
+		GenericPersistenceXmlDefinition.instance().getResourceType(),
+		GenericOrmXmlDefinition.instance().getResourceType(),
+		org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition.instance().getResourceType()
+	};
 
 	@Override
 	protected void addResourceModelProvidersTo(ArrayList<JpaResourceModelProvider> providers) {
@@ -176,6 +166,8 @@ public class EclipseLinkJpaPlatformProvider
 	}
 
 	protected static final ResourceDefinition[] RESOURCE_DEFINITIONS = new ResourceDefinition[] {
+		JavaSourceFileDefinition.instance(),
+		JarDefinition.instance(),
 		EclipseLinkPersistenceXmlDefinition.instance(),
 		EclipseLinkOrmXmlDefinition.instance(),
 		GenericOrmXmlDefinition.instance()

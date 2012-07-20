@@ -18,9 +18,7 @@ import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsM
 import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.details.java.DefaultJavaAttributeMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.java.JavaUiFactory;
-import org.eclipse.jpt.jpa.ui.internal.JpaMappingImageHelper;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractOneToOneMappingUiDefinition;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 public class DefaultJavaEclipseLinkOneToOneMappingUiDefinition
@@ -28,10 +26,8 @@ public class DefaultJavaEclipseLinkOneToOneMappingUiDefinition
 	implements DefaultJavaAttributeMappingUiDefinition<JavaOneToOneMapping>
 {
 	// singleton
-	private static final DefaultJavaEclipseLinkOneToOneMappingUiDefinition INSTANCE = 
-			new DefaultJavaEclipseLinkOneToOneMappingUiDefinition();
-	
-	
+	private static final DefaultJavaEclipseLinkOneToOneMappingUiDefinition INSTANCE = new DefaultJavaEclipseLinkOneToOneMappingUiDefinition();
+
 	/**
 	 * Return the singleton.
 	 */
@@ -67,18 +63,7 @@ public class DefaultJavaEclipseLinkOneToOneMappingUiDefinition
 		return EclipseLinkUiDetailsMessages.DefaultEclipseLinkOneToOneMappingUiProvider_linkLabel;
 	}
 	
-	@Override
-	public Image getImage() {
-		return JpaMappingImageHelper.imageForAttributeMapping(getDefaultKey());
-	}
-	
-	public JpaComposite buildAttributeMappingComposite(
-			JavaUiFactory factory,
-			PropertyValueModel<JavaOneToOneMapping> subjectHolder,
-			PropertyValueModel<Boolean> enabledModel,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		
+	public JpaComposite buildAttributeMappingComposite(JavaUiFactory factory, PropertyValueModel<JavaOneToOneMapping> subjectHolder, PropertyValueModel<Boolean> enabledModel, Composite parent, WidgetFactory widgetFactory) {
 		return factory.createJavaOneToOneMappingComposite(subjectHolder, enabledModel, parent, widgetFactory);
 	}
 }

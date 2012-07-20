@@ -9,9 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.db.internal;
 
+import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.IProfileListener1;
 import org.eclipse.datatools.connectivity.ProfileManager;
+import org.eclipse.datatools.enablement.jdt.classpath.DriverClasspathContainer;
+import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
@@ -26,24 +29,16 @@ import org.eclipse.jpt.jpa.db.DatabaseIdentifierAdapter;
 public final class DTPConnectionProfileFactory
 	implements ConnectionProfileFactory
 {
+	private final IWorkspace workspace;
+
 	private ProfileManager dtpProfileManager;
 
 	private LocalProfileListener profileListener;
 
 
-	// ********** singleton **********
-
-	private static final DTPConnectionProfileFactory INSTANCE = new DTPConnectionProfileFactory();
-
-	public static DTPConnectionProfileFactory instance() {
-		return INSTANCE;
-	}
-
-	/**
-	 * Access is <code>private</code> to ensure singleton
-	 */
-	private DTPConnectionProfileFactory() {
+	public DTPConnectionProfileFactory(IWorkspace workspace) {
 		super();
+		this.workspace = workspace;
 	}
 
 
@@ -112,10 +107,21 @@ public final class DTPConnectionProfileFactory
 	}
 
 
+	// ********** misc **********
+
+	public IWorkspace getWorkspace() {
+		return this.workspace;
+	}
+
+	public IClasspathContainer buildDriverClasspathContainer(String driverName) {
+		return new DriverClasspathContainer(driverName);
+	}
+
 	@Override
 	public String toString() {
 		return this.getClass().getSimpleName();
 	}
+
 
 	// ********** listener **********
 

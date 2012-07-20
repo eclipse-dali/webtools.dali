@@ -41,16 +41,18 @@ import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
-import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
-import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
-import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiPlugin;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_1JpaPlatformFactory;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.jface.XmlMappingFileViewerFilter;
 import org.eclipse.jpt.jpa.ui.internal.wizards.SelectMappingFileDialog;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.model.IEntityDataModelProperties;
@@ -273,7 +275,7 @@ public class DynamicEntityClassWizardPage extends DataModelWizardPage{
 	private void addMappingXMLGroup(Composite parent) {
 		Group group = createGroup(parent, EclipseLinkUiMessages.DynamicEntityClassWizardPage_xmlGroup);
 		createBrowseGroup(group, EclipseLinkUiMessages.DynamicEntityClassWizardPage_xmlNameLabel, IEntityDataModelProperties.XML_NAME);
-		this.ormXmlNameText.setText(JptJpaEclipseLinkCorePlugin.DEFAULT_ECLIPSELINK_ORM_XML_RUNTIME_PATH.toString());
+		this.ormXmlNameText.setText(XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 	}
 
 	/**
@@ -414,7 +416,7 @@ public class DynamicEntityClassWizardPage extends DataModelWizardPage{
 	 * @return new instance of viewer filter for the SelectEcliplseLinkMappingFileDialog
 	 */
 	protected ViewerFilter getDialogViewerFilter(JpaProject jpaProject) {
-		return new XmlMappingFileViewerFilter(jpaProject, JptJpaEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE);
+		return new XmlMappingFileViewerFilter(jpaProject, XmlEntityMappings.CONTENT_TYPE);
 	}
 
 	protected JpaProject getJpaProject(IProject project) {
@@ -434,17 +436,19 @@ public class DynamicEntityClassWizardPage extends DataModelWizardPage{
 	 * JPA project with 2.1 or above version, <code>false</code> - otherwise.
 	 */
 	protected boolean isProjectValid(IProject project) {
-		return (project.isAccessible() && JpaFacet.isInstalled(project) && this.getJpaPlatformGroupId(project).equals("eclipselink")
-				&& this.projectIsJpa2_1Compatible(project));
+		return (project.isAccessible() && ProjectTools.hasFacet(project, JpaProject.FACET) && this.getJpaPlatformGroupId(project).equals("eclipselink")
+				&& this.projectIsEclipseLink2_1Compatible(project));
 	}
 
 	protected String getJpaPlatformGroupId(IProject project) {
 		JpaPlatformDescription desc = (JpaPlatformDescription) project.getAdapter(JpaPlatformDescription.class);
-		return desc.getGroup().getId();
+		return desc.getGroupDescription().getId();
 	}
 	
-	private boolean projectIsJpa2_1Compatible(IProject project) {
-		return JptJpaEclipseLinkCorePlugin.nodeIsEclipseLinkVersionCompatible(this.getJpaProject(project), "2.1");
+	private boolean projectIsEclipseLink2_1Compatible(IProject project) {
+		JpaProject jpaProject = this.getJpaProject(project);
+		EclipseLinkJpaPlatformVersion jpaVersion = (EclipseLinkJpaPlatformVersion) jpaProject.getJpaPlatform().getJpaVersion();
+		return jpaVersion.isCompatibleWithEclipseLinkVersion(EclipseLink2_1JpaPlatformFactory.VERSION);
 	}
 	
 	private void initializeProjectList() {
@@ -666,7 +670,7 @@ public class DynamicEntityClassWizardPage extends DataModelWizardPage{
 					jelem = projects[0];
 				}
 			} catch (JavaModelException e) {
-				JptJpaEclipseLinkUiPlugin.log(e);
+				JptJpaEclipseLinkUiPlugin.instance().logError(e);
 			}
 		}
 		return jelem;

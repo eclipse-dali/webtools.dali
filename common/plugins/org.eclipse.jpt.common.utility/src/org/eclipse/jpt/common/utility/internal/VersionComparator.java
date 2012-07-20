@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,8 +15,9 @@ import java.util.Comparator;
 import java.util.StringTokenizer;
 
 /**
- * This comparator can be used to compare version strings (e.g. "2.2.2" vs.
- * "2.14.3"). Clients can specify the delimiter(s) that separates a version's
+ * This comparator can be used to compare version strings
+ * (e.g. <code>"2.2.2"</code> vs. <code>"2.14.3"</code>).
+ * Clients can specify the delimiter(s) that separates a version's
  * <em>segments</em> as well as a parser to be used for parsing each
  * <em>segment</em>.
  * 
@@ -33,35 +34,12 @@ public class VersionComparator<T extends Comparable<T>>
 	 * Static implementation of the version comparator interface that converts
 	 * each version into a series of integers and compares them.
 	 * <p>
-	 * <strong>NB:</strong> With this comparator <code>"2.14" > "2.2"</code>
+	 * <strong>NB:</strong> With this comparator
+	 * <code>"2.<strong>14</strong>" > "2.<strong>2</strong>"</code>
+	 * is <code>true</code>.
 	 */
 	public static final Comparator<String> INTEGER_VERSION_COMPARATOR = new VersionComparator<Integer>(SegmentParser.IntegerSegmentParser.instance());
 
-
-	/**
-	 * The default delimiter is <code>'.'</code>.
-	 * The default segment parser is disabled.
-	 * <p>
-	 * <strong>NB:</strong> Subclass must override:<ul>
-	 *     <li>{@link #parseSegment(int, String)}
-	 *     <li>{@link #getZero()}
-	 * </ul>
-	 */
-	protected VersionComparator() {
-		this("."); //$NON-NLS-1$
-	}
-
-	/**
-	 * The default segment parser is disabled.
-	 * <p>
-	 * <strong>NB:</strong> Subclass must override:<ul>
-	 *     <li>{@link #parseSegment(int, String)}
-	 *     <li>{@link #getZero()}
-	 * </ul>
-	 */
-	protected VersionComparator(String delimiters) {
-		this(delimiters, SegmentParser.Disabled.<T>instance());
-	}
 
 	/**
 	 * Use the specified segment parser.
@@ -69,6 +47,20 @@ public class VersionComparator<T extends Comparable<T>>
 	 */
 	public VersionComparator(SegmentParser<T> segmentParser) {
 		this(".", segmentParser); //$NON-NLS-1$
+	}
+
+	/**
+	 * Use the specified delimiters and segment parser.
+	 */
+	public VersionComparator(char delimiter, SegmentParser<T> segmentParser) {
+		this(new char[] {delimiter}, segmentParser);
+	}
+
+	/**
+	 * Use the specified delimiters and segment parser.
+	 */
+	public VersionComparator(char[] delimiters, SegmentParser<T> segmentParser) {
+		this(new String(delimiters), segmentParser);
 	}
 
 	/**
@@ -82,7 +74,7 @@ public class VersionComparator<T extends Comparable<T>>
 
 
 	/**
-	 * <strong>NB:</strong> Callers must handle any exceptions thrown by the
+	 * <strong>NB:</strong> Callers must handle any runtime exceptions thrown by the
 	 * segment parser supplied to the comparator. In particular, the pre-built
 	 * integer segment parser {@link #INTEGER_VERSION_COMPARATOR} can throw a
 	 * {@link NumberFormatException} if any segement string contains non-numeric
@@ -133,18 +125,9 @@ public class VersionComparator<T extends Comparable<T>>
 		ArrayList<T> segments = new ArrayList<T>();
 		int i = 0;
 		for (StringTokenizer stream = new StringTokenizer(s, this.delimiters); stream.hasMoreTokens(); ) {
-			segments.add(this.parseSegment(i++, stream.nextToken()));
+			segments.add(this.segmentParser.parse(i++, stream.nextToken()));
 		}
 		return segments;
-	}
-
-	/**
-	 * Parse the specified segment into the appropriate comparable.
-	 * Subclasses must override this method if a segment parser is not passed
-	 * to the version comparator's constructor.
-	 */
-	protected T parseSegment(int index, String s) {
-		return this.segmentParser.parse(index, s);
 	}
 
 	protected T getZero() {

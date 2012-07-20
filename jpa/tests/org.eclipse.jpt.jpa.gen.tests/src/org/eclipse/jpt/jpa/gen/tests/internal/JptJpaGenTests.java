@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,16 +11,15 @@ package org.eclipse.jpt.jpa.gen.tests.internal;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import org.eclipse.jpt.jpa.gen.tests.internal.EntityGenToolsTests;
+import org.eclipse.jpt.common.core.tests.BundleActivatorTest;
+import org.eclipse.jpt.jpa.gen.internal.util.EntityGenTools;
 
-/**
- * 
- */
 public class JptJpaGenTests {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite("JPT Entity Generation Tests"); //$NON-NLS-1$
+		TestSuite suite = new TestSuite("JPA Entity Generation Tests"); //$NON-NLS-1$
 		suite.addTestSuite(EntityGenToolsTests.class);
+		suite.addTest(new BundleActivatorTest(EntityGenTools.class));
 		return suite;
 	}
 
@@ -28,5 +27,4 @@ public class JptJpaGenTests {
 		super();
 		throw new UnsupportedOperationException();
 	}
-
 }

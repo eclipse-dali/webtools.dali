@@ -22,6 +22,7 @@ import org.eclipse.jpt.common.ui.jface.ItemStructuredContentProvider;
 import org.eclipse.jpt.common.ui.jface.StructuredStateProvider;
 import org.eclipse.jpt.common.utility.internal.RunnableAdapter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
 
@@ -77,7 +78,7 @@ public abstract class AbstractItemStructuredStateProviderManager<V extends Struc
 
 	public Object[] getElements(Object inputElement) {
 		CP provider = this.getItemContentProvider(inputElement);
-		return (provider == null) ? EMPTY_ARRAY : provider.getElements();
+		return (provider == null) ? Tools.EMPTY_OBJECT_ARRAY : provider.getElements();
 	}
 
 

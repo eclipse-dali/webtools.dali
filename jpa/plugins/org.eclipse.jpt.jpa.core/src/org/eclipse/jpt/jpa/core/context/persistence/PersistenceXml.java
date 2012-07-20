@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,17 +26,8 @@ import org.eclipse.jpt.jpa.core.context.XmlFile;
 public interface PersistenceXml
 	extends XmlFile
 {
-	// ********** persistence **********
-
 	/**
-	 * String constant associated with changes to the persistence property
+	 * Covariant override.
 	 */
-	public final static String PERSISTENCE_PROPERTY = "persistence"; //$NON-NLS-1$
-
-	/**
-	 * Return the content represented by the root of the <code>persistence.xml</code> file.
-	 * This may be null.
-	 */
-	Persistence getPersistence();
-
+	Persistence getRoot();
 }

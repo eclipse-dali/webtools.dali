@@ -1,17 +1,16 @@
 /*******************************************************************************
-* Copyright (c) 2010, 2012 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen;
 
 import java.util.List;
 import java.util.Vector;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -34,10 +33,10 @@ import org.eclipse.jpt.jaxb.core.SchemaLibrary;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGeneratorExtensionOptions;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGeneratorOptions;
 import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
-import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiIcons;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
 import org.eclipse.jpt.jaxb.ui.internal.gen.GenerateJaxbClassesJob;
+import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -96,7 +95,7 @@ public class ClassesGeneratorWizard
 		this.selection = selection;
 		
 		this.setWindowTitle(JptJaxbUiMessages.ClassesGeneratorWizard_title);
-		this.setDefaultPageImageDescriptor(JptJaxbUiPlugin.getImageDescriptor(JptJaxbUiIcons.CLASSES_GEN_WIZ_BANNER));
+		this.setDefaultPageImageDescriptor(JptJaxbUiPlugin.instance().buildImageDescriptor(JptJaxbUiIcons.CLASSES_GEN_WIZ_BANNER));
 		this.setNeedsProgressMonitor(true);
 	}
 	
@@ -179,7 +178,7 @@ public class ClassesGeneratorWizard
 	
 	/* may be null */
 	private JaxbProject getJaxbProject() {
-		return JptJaxbCorePlugin.getJaxbProject(getJavaProject().getProject());
+		return JptJaxbCorePlugin.instance().getProjectManager().getJaxbProject(getJavaProject().getProject());
 	}
 	
 	/* return the physical location of the schema */
@@ -339,7 +338,7 @@ public class ClassesGeneratorWizard
 			folder.create(true, true, null);
 		}
 		catch (CoreException e) {
-			JptJaxbUiPlugin.log(e);
+			JptJaxbUiPlugin.instance().logError(e);
 			
 			this.logError(NLS.bind(
 				JptJaxbUiMessages.ClassesGeneratorWizard_couldNotCreate, 
@@ -363,7 +362,7 @@ public class ClassesGeneratorWizard
 			generateJaxbClassesJob.schedule();
 		}
 		catch(RuntimeException re) {
-			JptJaxbUiPlugin.log(re);
+			JptJaxbUiPlugin.instance().logError(re);
 			
 			String msg = re.getMessage();
 			String message = (msg == null) ? re.toString() : msg;

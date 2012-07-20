@@ -80,6 +80,7 @@ import org.eclipse.jpt.common.utility.model.listener.TreeChangeListener;
  * @see Model
  * @see AbstractModel
  */
+// TODO add ExceptionHandler
 public class ChangeSupport
 	implements Serializable
 {

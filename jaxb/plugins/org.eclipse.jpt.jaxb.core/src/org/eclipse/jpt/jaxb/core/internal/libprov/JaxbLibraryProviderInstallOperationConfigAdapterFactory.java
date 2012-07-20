@@ -17,7 +17,7 @@ import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
  * Factory to build Dali adapters for an {@link JaxbLibraryProviderInstallOperationConfig}:<ul>
  * <li>{@link JaxbPlatformDescription}
  * </ul>
- * See <code>org.eclipse.jpt.jaxb.core/plugin.xml</code>.
+ * See <code>org.eclipse.jpt.jaxb.core/plugin.xml:org.eclipse.core.runtime.adapters</code>.
  */
 public class JaxbLibraryProviderInstallOperationConfigAdapterFactory
 	implements IAdapterFactory

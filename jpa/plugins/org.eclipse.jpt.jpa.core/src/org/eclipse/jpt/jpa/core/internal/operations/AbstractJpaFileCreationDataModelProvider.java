@@ -12,15 +12,21 @@ package org.eclipse.jpt.jpa.core.internal.operations;
 import java.util.Set;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.internal.operations.AbstractJptFileCreationDataModelProvider;
+import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
-import org.eclipse.jpt.jpa.core.JpaFacet;
+import org.eclipse.jpt.jpa.core.JpaPlatform;
+import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.JpaWorkspace;
 import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
+import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 
@@ -48,7 +54,35 @@ public abstract class AbstractJpaFileCreationDataModelProvider
 		return super.getDefaultProperty(propertyName);
 	}
 	
-	protected abstract String getDefaultVersion();
+	protected final String getDefaultVersion() {
+		IProject project = this.getProject();
+		if (project == null) {
+			return null;
+		}
+		JpaProject jpaProject = this.getJpaProject_(project);
+		JpaPlatform jpaPlatform = (jpaProject != null) ? jpaProject.getJpaPlatform() : this.getJpaPlatform();
+		return jpaPlatform.getMostRecentSupportedResourceType(this.getContentType()).getVersion();
+	}
+
+	protected abstract IContentType getContentType();
+
+	protected JpaPlatform getJpaPlatform() {
+		IProject project = this.getProject();
+		if (project == null) {
+			return null;
+		}
+		String jpaPlatformID = JpaPreferences.getJpaPlatformID(project);
+		return this.getJpaPlatformManager().getJpaPlatform(jpaPlatformID);
+	}
+
+	protected JpaPlatformManager getJpaPlatformManager() {
+		return this.getJpaWorkspace().getJpaPlatformManager();
+	}
+
+	protected JpaWorkspace getJpaWorkspace() {
+		return (JpaWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JpaWorkspace.class);
+	}
+	
 	
 	
 	// **************** validation *********************************************
@@ -77,24 +111,18 @@ public abstract class AbstractJpaFileCreationDataModelProvider
 			return status;
 		}
 		IContainer container = getContainer();
-		IProject project = getProject(container);
-		if (! JpaFacet.isInstalled(project)) {
+		IProject project = (container == null) ? null : container.getProject();
+		if ( ! ProjectTools.hasFacet(project, JpaProject.FACET)) {
 			// verifies project has jpa facet
-			return new Status(
-				IStatus.ERROR, JptJpaCorePlugin.PLUGIN_ID, 
-				JptCoreMessages.VALIDATE_PROJECT_NOT_JPA);
+			return JptJpaCorePlugin.instance().buildErrorStatus(JptCoreMessages.VALIDATE_PROJECT_NOT_JPA);
 		}
 		if (! hasSupportedPlatform(project)) {
 			// verifies project has platform that supports this file type
-			return new Status(
-				IStatus.ERROR, JptJpaCorePlugin.PLUGIN_ID,
-				JptCoreMessages.VALIDATE_PROJECT_IMPROPER_PLATFORM);
+			return JptJpaCorePlugin.instance().buildErrorStatus(JptCoreMessages.VALIDATE_PROJECT_IMPROPER_PLATFORM);
 		}
 		ProjectResourceLocator resourceLocator = (ProjectResourceLocator) project.getAdapter(ProjectResourceLocator.class);
 		if ( ! resourceLocator.resourceLocationIsValid(container)) {
-			return new Status(
-				IStatus.WARNING, JptJpaCorePlugin.PLUGIN_ID,
-				JptCoreMessages.VALIDATE_CONTAINER_QUESTIONABLE);
+			return JptJpaCorePlugin.instance().buildWarningStatus(JptCoreMessages.VALIDATE_CONTAINER_QUESTIONABLE);
 		}
 		return Status.OK_STATUS;
 	}
@@ -105,16 +133,12 @@ public abstract class AbstractJpaFileCreationDataModelProvider
 		}
 		String fileVersion = getStringProperty(VERSION);
 		if (! fileVersionSupported(fileVersion)) {
-			return new Status(
-					IStatus.ERROR, JptJpaCorePlugin.PLUGIN_ID,
-					JptCoreMessages.VALIDATE_FILE_VERSION_NOT_SUPPORTED);
+			return JptJpaCorePlugin.instance().buildErrorStatus(JptCoreMessages.VALIDATE_FILE_VERSION_NOT_SUPPORTED);
 		}
 		try {
 			String jpaFacetVersion = getJpaFacetVersion(getProject());
 			if (! fileVersionSupportedForFacetVersion(fileVersion, jpaFacetVersion)) {
-				return new Status(
-						IStatus.ERROR, JptJpaCorePlugin.PLUGIN_ID,
-						JptCoreMessages.VALIDATE_FILE_VERSION_NOT_SUPPORTED_FOR_FACET_VERSION);
+				return JptJpaCorePlugin.instance().buildErrorStatus(JptCoreMessages.VALIDATE_FILE_VERSION_NOT_SUPPORTED_FOR_FACET_VERSION);
 			}
 		}
 		catch (CoreException ce) {
@@ -132,7 +156,7 @@ public abstract class AbstractJpaFileCreationDataModelProvider
 	// **************** helper methods *****************************************
 	
 	protected JpaProject getJpaProject() {
-		return getJpaProject(getProject());
+		return this.getJpaProject(this.getProject());
 	}
 	
 	protected JpaProject getJpaProject(IProject project) {
@@ -149,20 +173,18 @@ public abstract class AbstractJpaFileCreationDataModelProvider
 	}
 	
 	protected JpaProject.Reference getJpaProjectReference(IProject project) {
-		return ((JpaProject.Reference) project.getAdapter(JpaProject.Reference.class));
+		return (JpaProject.Reference) project.getAdapter(JpaProject.Reference.class);
 	}
 	
 	protected String getJpaFacetVersion(IProject project) throws CoreException {
 		IFacetedProject fproj = ProjectFacetsManager.create(project);
-		return fproj.getProjectFacetVersion(JpaFacet.FACET).getVersionString();
+		return fproj.getProjectFacetVersion(JpaProject.FACET).getVersionString();
 	}
 	
 	protected boolean hasSupportedPlatform(IProject project) {
 		JpaProject jpaProject = this.getJpaProject(project);
-		return (jpaProject != null) && isSupportedPlatformId(jpaProject.getJpaPlatform().getId());
+		return (jpaProject != null) && this.platformIsSupported(jpaProject.getJpaPlatform());
 	}
 	
-	protected boolean isSupportedPlatformId(@SuppressWarnings("unused") String id) {
-		return true;
-	}
+	protected abstract boolean platformIsSupported(JpaPlatform jpaPlatform);
 }

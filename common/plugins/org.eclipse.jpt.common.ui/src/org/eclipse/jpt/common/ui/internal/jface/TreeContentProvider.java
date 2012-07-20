@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.ui.internal.jface;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jpt.common.utility.internal.Tools;
 
 /**
  * Convenience implementation of {@link ITreeContentProvider}.
@@ -39,6 +40,6 @@ public class TreeContentProvider
 	}
 
 	public Object[] getChildren(Object element) {
-		return EMPTY_ARRAY;
+		return Tools.EMPTY_OBJECT_ARRAY;
 	}
 }

@@ -43,7 +43,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrappe
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
@@ -52,6 +51,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
+import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -1030,7 +1030,7 @@ public abstract class AbstractJavaPersistentType
 		try {
 			this.mapping.validate(messages, reporter, astRoot);
 		} catch(Throwable t) {
-			JptJpaCorePlugin.log(t);
+			JptJpaCorePlugin.instance().logError(t);
 		}
 	}
 
@@ -1044,7 +1044,7 @@ public abstract class AbstractJavaPersistentType
 		try {
 			attribute.validate(messages, reporter, astRoot);
 		} catch(Throwable t) {
-			JptJpaCorePlugin.log(t);
+			JptJpaCorePlugin.instance().logError(t);
 		}
 	}
 

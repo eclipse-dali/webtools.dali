@@ -10,17 +10,16 @@
 package org.eclipse.jpt.jpa.core.internal;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.common.core.AnnotationProvider;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.DefaultAnnotationEditFormatter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.EntityGeneratorDatabaseAnnotationNameBuilder;
@@ -31,14 +30,14 @@ import org.eclipse.jpt.jpa.core.JpaPlatformProvider;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaResourceModelProvider;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.JpaWorkspace;
 import org.eclipse.jpt.jpa.core.ResourceDefinition;
 import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
-import org.eclipse.jpt.jpa.db.JptJpaDbPlugin;
 import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar;
 
 /**
@@ -82,7 +81,15 @@ public class GenericJpaPlatform
 	}
 
 	public JpaPlatformDescription getDescription() {
-		return JptJpaCorePlugin.getJpaPlatformManager().getJpaPlatform(this.getId());
+		return this.getJpaPlatformManager().getJpaPlatformDescription(this.getId());
+	}
+
+	private JpaPlatformManager getJpaPlatformManager() {
+		return this.getJpaWorkspace().getJpaPlatformManager();
+	}
+
+	private JpaWorkspace getJpaWorkspace() {
+		return (JpaWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JpaWorkspace.class);
 	}
 
 	public Version getJpaVersion() {
@@ -128,7 +135,7 @@ public class GenericJpaPlatform
 	public static IContentType getContentType(IFile file) {
 		IContentType contentType = Platform.getContentTypeManager().findContentTypeFor(file.getName());
 		if (contentType != null) {
-			if (contentType.equals(JptCommonCorePlugin.JAVA_SOURCE_CONTENT_TYPE)) {
+			if (contentType.equals(JavaResourceCompilationUnit.CONTENT_TYPE)) {
 				return contentType;
 			}
 			if (contentType.equals(JAVA_CLASS_CONTENT_TYPE)) {
@@ -155,7 +162,7 @@ public class GenericJpaPlatform
 	}
 
 	/**
-	 * Return null if we don't have a provider for the specified content type
+	 * Return <code>null</code> if we don't have a provider for the specified content type
 	 * (since we don't have control over the possible content types).
 	 */
 	protected JpaResourceModelProvider getResourceModelProvider(IContentType contentType) {
@@ -200,36 +207,40 @@ public class GenericJpaPlatform
 	// ********** resource types and definitions **********
 
 	public boolean supportsResourceType(JptResourceType resourceType) {
-		if (JptCommonCorePlugin.JAVA_SOURCE_RESOURCE_TYPE.equals(resourceType)) {
-			// every platform supports java
-			return true;
-		}
-		for (ResourceDefinition resourceDefinition : this.platformProvider.getResourceDefinitions()) {
-			if (resourceDefinition.getResourceType().equals(resourceType)) {
-				return true;
-			}
-		}
-		return false;
+		return this.getResourceDefinition_(resourceType) != null;
 	}
 
 	public ResourceDefinition getResourceDefinition(JptResourceType resourceType) {
+		ResourceDefinition definition = this.getResourceDefinition_(resourceType);
+		if (definition == null) {
+			throw new IllegalArgumentException("Illegal resource type: " + resourceType); //$NON-NLS-1$
+		}
+		return definition;
+	}
+
+	protected ResourceDefinition getResourceDefinition_(JptResourceType resourceType) {
 		for (ResourceDefinition resourceDefinition : this.platformProvider.getResourceDefinitions()) {
 			if (resourceDefinition.getResourceType().equals(resourceType)) {
 				return resourceDefinition;
 			}
 		}
-		throw new IllegalArgumentException("Illegal resource type: " + resourceType); //$NON-NLS-1$
+		return null;
 	}
 
 	public JptResourceType getMostRecentSupportedResourceType(IContentType contentType) {
-		return this.platformProvider.getMostRecentSupportedResourceType(contentType);
+		for (JptResourceType resourceType : this.platformProvider.getMostRecentSupportedResourceTypes()) {
+			if (resourceType.getContentType().equals(contentType)) {
+				return resourceType;
+			}
+		}
+		throw new IllegalArgumentException(contentType.toString());
 	}
 
 
 	// ********** database **********
 
 	public ConnectionProfileFactory getConnectionProfileFactory() {
-		return JptJpaDbPlugin.getConnectionProfileFactory();
+		return (ConnectionProfileFactory) ResourcesPlugin.getWorkspace().getAdapter(ConnectionProfileFactory.class);
 	}
 
 	public EntityGeneratorDatabaseAnnotationNameBuilder getEntityGeneratorDatabaseAnnotationNameBuilder() {

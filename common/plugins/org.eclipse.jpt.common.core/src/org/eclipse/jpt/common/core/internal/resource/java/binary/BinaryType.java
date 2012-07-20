@@ -23,7 +23,7 @@ import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.IVariableBinding;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.resource.java.InheritedAttributeKey;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.JavaResourceTypeBinding;
@@ -138,7 +138,7 @@ final class BinaryType
 		try {
 			return type.getSuperclassTypeSignature();
 		} catch (JavaModelException ex) {
-			JptCommonCorePlugin.log(ex);
+			JptCommonCorePlugin.instance().logError(ex);
 			return null;
 		}
 	}
@@ -158,7 +158,7 @@ final class BinaryType
 		try {
 			return Flags.isAbstract(type.getFlags());
 		} catch (JavaModelException ex) {
-			JptCommonCorePlugin.log(ex);
+			JptCommonCorePlugin.instance().logError(ex);
 			return false;
 		}
 	}
@@ -187,7 +187,7 @@ final class BinaryType
 			}
 		}
 		catch (JavaModelException ex) {
-			JptCommonCorePlugin.log(ex);
+			JptCommonCorePlugin.instance().logError(ex);
 		}
 		return null;
 	}
@@ -209,7 +209,7 @@ final class BinaryType
 			return method != null && Flags.isPrivate(method.getFlags());
 		}
 		catch (JavaModelException ex) {
-			JptCommonCorePlugin.log(ex);
+			JptCommonCorePlugin.instance().logError(ex);
 			return false;
 		}
 	}
@@ -337,7 +337,7 @@ final class BinaryType
 		try {
 			return type.getFields();
 		} catch (JavaModelException ex) {
-			JptCommonCorePlugin.log(ex);
+			JptCommonCorePlugin.instance().logError(ex);
 			return EMPTY_FIELD_ARRAY;
 		}
 	}
@@ -368,7 +368,7 @@ final class BinaryType
 		try {
 			return type.getMethods();
 		} catch (JavaModelException ex) {
-			JptCommonCorePlugin.log(ex);
+			JptCommonCorePlugin.instance().logError(ex);
 			return EMPTY_METHOD_ARRAY;
 		}
 	}

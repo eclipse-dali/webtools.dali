@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core;
 
-import java.util.Comparator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.content.IContentType;
@@ -19,10 +18,10 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
+import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
 import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar;
-import org.eclipse.wst.common.project.facet.core.DefaultVersionComparator;
 
 /**
  * This interface is to be implemented by a JPA vendor to provide extensions to
@@ -54,17 +53,18 @@ public interface JpaPlatform
 	// ********** meta stuff **********
 
 	/**
-	 * Get the ID for this platform
+	 * Return the JPA platform's ID.
 	 */
 	String getId();
 
 	/**
-	 * Return the description for this platform
+	 * Return the JPA platform's description (i.e. the description defined by
+	 * the JPA platform's plug-in extension).
 	 */
 	JpaPlatformDescription getDescription();
 
 	/**
-	 * Get the version object for this platform.
+	 * Return the JPA platform's version.
 	 */
 	Version getJpaVersion();
 
@@ -72,9 +72,11 @@ public interface JpaPlatform
 	// ********** factory **********
 
 	/**
-	 * Return a factory responsible for creating core (e.g. JpaProject), resource
-	 * (e.g. PersistenceResource), and context (e.g. PersistenceUnit) model
-	 * objects
+	 * Return the factory responsible for constructing various
+	 * JPA model objects:<ul>
+	 * <li>core (e.g. {@link JpaProject})
+	 * <li>Java context (e.g. {@link org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit})
+	 * </ul>
 	 */
 	JpaFactory getJpaFactory();
 
@@ -83,7 +85,7 @@ public interface JpaPlatform
 
 	/**
 	 * Return a JPA file corresponding to the specified Eclipse file.
-	 * Return null if the file's content is unsupported.
+	 * Return <code>null</code> if the file's content is unsupported.
 	 */
 	JpaFile buildJpaFile(JpaProject jpaProject, IFile file);
 
@@ -92,7 +94,8 @@ public interface JpaPlatform
 
 	/**
 	 * Return an annotation provider responsible for determining what Java
-	 * annotations are supported and constructing java resource model objects.
+	 * annotations are supported and constructing the corresponding Java
+	 * resource model objects.
 	 */
 	AnnotationProvider getAnnotationProvider();
 
@@ -130,16 +133,16 @@ public interface JpaPlatform
 	// ********** resource types and definitions **********
 
 	/**
-	 * Return whether the platform supports the specified resource type.
+	 * Return whether the JPA platform supports the specified resource type.
 	 * This method is consistent with {@link #getResourceDefinition(JptResourceType)}.
 	 */
 	boolean supportsResourceType(JptResourceType resourceType);
 
 	/**
-	 * Return the platform's resource definition for the specified resource type.
-	 * The returned definition describes the platform's corresponding context model.
+	 * Return the JPA platform's resource definition for the specified resource type.
+	 * The returned definition describes the JPA platform's corresponding context model.
 	 * Throw an {@link IllegalArgumentException} if the resource type is not
-	 * supported by the platform.
+	 * supported by the JPA platform.
 	 * This method is consistent with {@link #supportsResourceType(JptResourceType)}.
 	 */
 	ResourceDefinition getResourceDefinition(JptResourceType resourceType);
@@ -147,7 +150,7 @@ public interface JpaPlatform
 	/**
 	 * Return the most recent supported resource type for the specified content
 	 * type. Throw an {@link IllegalArgumentException} if the content type is not
-	 * supported by the platform.
+	 * supported by the JPA platform.
 	 */
 	JptResourceType getMostRecentSupportedResourceType(IContentType contentType);
 
@@ -171,7 +174,8 @@ public interface JpaPlatform
 	// ********** platform variation **********
 
 	/**
-	 * Return a platform variation that is used to determine differences platforms and/or JPA specification versions
+	 * Return a JPA platform variation that is used to determine differences
+	 * among JPA platforms and/or JPA specification versions.
 	 */
 	JpaPlatformVariation getJpaVariation();
 
@@ -186,9 +190,6 @@ public interface JpaPlatform
 
 
 	interface Version {
-
-		Comparator<String> VERSION_COMPARATOR = new DefaultVersionComparator();
-
 		/**
 		 * Return the platform's version.
 		 */
@@ -196,16 +197,16 @@ public interface JpaPlatform
 
 		/**
 		 * Return the highest JPA specification version supported by the platform.
-		 * @see JpaFacet#VERSION_1_0
-		 * @see JpaFacet#VERSION_2_0
+		 * @see JpaProject#FACET_VERSION_STRING
+		 * @see JpaProject2_0#FACET_VERSION_STRING
 		 */
 		String getJpaVersion();
 
 		/**
 		 * Return whether the platform is compatible with the specified JPA
 		 * specification version.
-		 * @see JpaFacet#VERSION_1_0
-		 * @see JpaFacet#VERSION_2_0
+		 * @see JpaProject#FACET_VERSION_STRING
+		 * @see JpaProject2_0#FACET_VERSION_STRING
 		 */
 		boolean isCompatibleWithJpaVersion(String jpaVersion);
 	}

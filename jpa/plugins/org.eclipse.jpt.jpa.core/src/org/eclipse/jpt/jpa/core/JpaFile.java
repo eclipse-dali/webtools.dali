@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.common.core.ContentTypeReference;
 import org.eclipse.jpt.common.core.JptResourceModel;
 
 /**
@@ -28,7 +29,7 @@ import org.eclipse.jpt.common.core.JptResourceModel;
  * fashion that will return a JPA file once it and its JPA project have been
  * constructed.
  * <p>
- * See <code>org.eclipse.jpt.jpa.core/plugin.xml</code>.
+ * See <code>org.eclipse.jpt.jpa.core/plugin.xml:org.eclipse.core.runtime.adapters</code>.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -43,17 +44,12 @@ import org.eclipse.jpt.common.core.JptResourceModel;
  * @see org.eclipse.jpt.jpa.core.internal.FileAdapterFactory
  */
 public interface JpaFile
-	extends JpaNode
+	extends JpaNode, ContentTypeReference
 {
 	/**
 	 * Return the JPA file's Eclipse file.
 	 */
 	IFile getFile();
-	
-	/**
-	 * Return the JPA file's content type.
-	 */
-	IContentType getContentType();
 	
 	/**
 	 * Return the resource model corresponding to the JPA file; typically a JPA
@@ -118,11 +114,11 @@ public interface JpaFile
 	 * Standard adapter for retrieving a {@link JpaFile JPA file}:
 	 * <pre>
 	 * IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject("Foo Project");
-	 * IFile file = project.getFile("plugin.xml");
+	 * IFile file = project.getFile("Foo.java");
 	 * JpaFile.Reference jpaFileRef = (JpaFile.Reference) file.getAdapter(JpaFile.Reference.class);
 	 * JpaFile jpaFile = jpaFileRef.getValue();
 	 * </pre>
-	 * See <code>org.eclipse.jpt.jpa.core/plugin.xml</code>.
+	 * See <code>org.eclipse.jpt.jpa.core/plugin.xml:org.eclipse.core.runtime.adapters</code>.
 	 * @see org.eclipse.jpt.jpa.core.internal.FileAdapterFactory
 	 */
 	interface Reference {

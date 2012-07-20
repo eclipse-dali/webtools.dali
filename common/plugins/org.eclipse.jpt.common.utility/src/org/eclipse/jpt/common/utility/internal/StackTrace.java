@@ -30,33 +30,66 @@ public class StackTrace
 
 
 	public StackTrace() {
-		this(Thread.currentThread());
+		this(StringTools.EMPTY_STRING_ARRAY);
+	}
+
+	public StackTrace(Class<?>... traceClasses) {
+		this(convertToNames(traceClasses));
+	}
+
+	public StackTrace(String... traceClasses) {
+		this(Thread.currentThread(), traceClasses);
 	}
 
 	public StackTrace(Thread thread) {
+		this(thread, StringTools.EMPTY_STRING_ARRAY);
+	}
+
+	public StackTrace(Thread thread, Class<?>... traceClasses) {
+		this(thread, convertToNames(traceClasses));
+	}
+
+	public StackTrace(Thread thread, String... traceClasses) {
 		super();
-		if (thread == null) {
+		if ((thread == null) || (traceClasses == null)) {
 			throw new NullPointerException();
 		}
 		this.thread = thread;
-		this.elements = this.buildElements();
+		this.elements = this.buildElements(traceClasses);
+	}
+
+	private static String[] convertToNames(Class<?>[] classes) {
+		int len = classes.length;
+		if (len == 0) {
+			return StringTools.EMPTY_STRING_ARRAY;
+		}
+		String[] names = new String[len];
+		for (int i = 0; i < len; i++) {
+			names[i] = classes[i].getName();
+		}
+		return names;
 	}
 
 	/**
-	 * Strip off all the elements associated with this class and {@link Thread}.
+	 * Strip off all the elements associated with this class, the specified
+	 * "trace" classes, and the {@link Thread} class.
+	 * The "trace" classes are specified by the client at construction time and
+	 * are those classes that should not appear on the top of the stack trace.
+	 * The "trace" classes can appear elsewhere in the stack trace, just not at
+	 * the top.
 	 */
-	private StackTraceElement[] buildElements() {
+	private StackTraceElement[] buildElements(String[] traceClasses) {
 		StackTraceElement[] result = this.thread.getStackTrace();
 		int len = result.length;
 		if (len == 0) {
 			return result;
 		}
 
-		String className = this.getClass().getName();
+		traceClasses = ArrayTools.add(traceClasses, this.getClass().getName());
 		boolean found = false;
 		int i = 0;
 		while (i < len) {
-			if (result[i].getClassName().equals(className)) {
+			if (ArrayTools.contains(traceClasses, result[i].getClassName())) {
 				found = true;
 			} else {
 				if (found) {

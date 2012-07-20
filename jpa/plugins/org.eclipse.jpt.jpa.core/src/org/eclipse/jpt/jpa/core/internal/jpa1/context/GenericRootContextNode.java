@@ -21,8 +21,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.HashBag;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
-import org.eclipse.jpt.jpa.core.context.MappingFileRoot;
+import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
@@ -32,6 +31,7 @@ import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.MetamodelSynchronizer;
 import org.eclipse.jpt.jpa.core.jpa2.context.JpaRootContextNode2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceXml2_0;
+import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -195,7 +195,7 @@ public class GenericRootContextNode
 	}
 
 	@Override
-	public MappingFileRoot getMappingFileRoot() {
+	public MappingFile.Root getMappingFileRoot() {
 		return null;
 	}
 
@@ -267,11 +267,11 @@ public class GenericRootContextNode
 	}
 
 	protected IFile getPlatformFile() {
-		return this.jpaProject.getPlatformFile(JptJpaCorePlugin.DEFAULT_PERSISTENCE_XML_RUNTIME_PATH);
+		return this.jpaProject.getPlatformFile(XmlPersistence.DEFAULT_RUNTIME_PATH);
 	}
 
 	protected void validateOrphanClasses(List<IMessage> messages) {
-		Persistence persistence = this.persistenceXml.getPersistence();
+		Persistence persistence = this.persistenceXml.getRoot();
 		if (persistence == null) {
 			return;  // handled with other validation
 		}

@@ -1,18 +1,17 @@
 /*******************************************************************************
-* Copyright (c) 2010, 2012 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.wizards.schemagen;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -36,9 +35,9 @@ import org.eclipse.jpt.common.utility.internal.FileTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jaxb.core.internal.gen.SchemaGenerator;
 import org.eclipse.jpt.jaxb.core.internal.operations.SchemaFileCreationDataModelProvider;
-import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiIcons;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
+import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
@@ -67,7 +66,7 @@ public class SchemaGeneratorWizard extends Wizard implements INewWizard
 	public SchemaGeneratorWizard() {
 		super();
 		setWindowTitle(JptJaxbUiMessages.SchemaGeneratorWizard_title);
-		setDefaultPageImageDescriptor(JptJaxbUiPlugin.getImageDescriptor(JptJaxbUiIcons.SCHEMA_GEN_WIZ_BANNER));
+		setDefaultPageImageDescriptor(JptJaxbUiPlugin.instance().buildImageDescriptor(JptJaxbUiIcons.SCHEMA_GEN_WIZ_BANNER));
 	}
 	
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
@@ -285,7 +284,7 @@ public class SchemaGeneratorWizard extends Wizard implements INewWizard
 
 		@Override
 		protected void jptPluginLogException(Exception exception) {
-			JptJaxbUiPlugin.log(exception);
+			JptJaxbUiPlugin.instance().logError(exception);
 		}
 
 		// ********** internal methods **********

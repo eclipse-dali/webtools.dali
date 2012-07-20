@@ -30,10 +30,10 @@ import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
+import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.CompositeChange;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
@@ -230,7 +230,7 @@ public class JpaMoveFolderParticipant
 		if (persistenceXml == null) {
 			return null;
 		}
-		Persistence persistence = persistenceXml.getPersistence();
+		Persistence persistence = persistenceXml.getRoot();
 		if (persistence == null) {
 			return null;
 		}
@@ -247,7 +247,7 @@ public class JpaMoveFolderParticipant
 			}
 			catch (MalformedTreeException e) {
 				//log exception and don't add this persistence.xml type deletion to the conflicting change object
-				JptJpaCorePlugin.log(e);
+				JptJpaCorePlugin.instance().logError(e);
 			}
 		}
 	}

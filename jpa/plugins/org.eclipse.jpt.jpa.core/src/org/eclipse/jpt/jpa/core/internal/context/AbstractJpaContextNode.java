@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.context;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.jpa.core.JpaNode;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
-import org.eclipse.jpt.jpa.core.context.MappingFileRoot;
+import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.AbstractJpaNode;
 import org.eclipse.jpt.jpa.db.Catalog;
@@ -99,7 +99,7 @@ public abstract class AbstractJpaContextNode
 	 * to return <code>null</code>
 	 * </ul>
 	 */
-	public MappingFileRoot getMappingFileRoot() {
+	public MappingFile.Root getMappingFileRoot() {
 		return this.getParent().getMappingFileRoot();
 	}
 
@@ -112,7 +112,7 @@ public abstract class AbstractJpaContextNode
 	}
 
 	protected String getContextDefaultSchema() {
-		MappingFileRoot mfr = this.getMappingFileRoot();
+		MappingFile.Root mfr = this.getMappingFileRoot();
 		return (mfr != null) ? mfr.getSchema() : this.getPersistenceUnit().getDefaultSchema();
 	}
 
@@ -136,7 +136,7 @@ public abstract class AbstractJpaContextNode
 	}
 
 	protected String getContextDefaultCatalog() {
-		MappingFileRoot mfr = this.getMappingFileRoot();
+		MappingFile.Root mfr = this.getMappingFileRoot();
 		return (mfr != null) ? mfr.getCatalog() : this.getPersistenceUnit().getDefaultCatalog();
 	}
 	

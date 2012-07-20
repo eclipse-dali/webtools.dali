@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,9 +15,9 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.text.edits.ReplaceEdit;
 
 //TODO RenameTypeArguments.updateSimilarDeclarations() - http://www.eclipse.org/jdt/ui/r3_2/RenameType.html
@@ -61,7 +61,7 @@ public class JpaRenameTypeParticipant
 			nestedTypes = renamedType.getTypes();
 		}
 		catch (JavaModelException ex) {
-			JptJpaCorePlugin.log(ex);
+			JptJpaCorePlugin.instance().logError(ex);
 			return;
 		}
 
@@ -129,7 +129,7 @@ public class JpaRenameTypeParticipant
 			}
 		}
 		catch (JavaModelException e) {
-			JptJpaCorePlugin.log(e);
+			JptJpaCorePlugin.instance().logError(e);
 		}
 		return newName;
 	}

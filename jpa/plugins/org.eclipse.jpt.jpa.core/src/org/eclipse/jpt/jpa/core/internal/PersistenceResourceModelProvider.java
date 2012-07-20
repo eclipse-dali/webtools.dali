@@ -14,8 +14,8 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaResourceModelProvider;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.internal.resource.persistence.PersistenceXmlResourceProvider;
+import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 
 /**
@@ -42,7 +42,7 @@ public class PersistenceResourceModelProvider
 	}
 
 	public IContentType getContentType() {
-		return JptJpaCorePlugin.PERSISTENCE_XML_CONTENT_TYPE;
+		return XmlPersistence.CONTENT_TYPE;
 	}
 
 	public JpaXmlResource buildResourceModel(JpaProject jpaProject, IFile file) {

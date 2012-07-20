@@ -1,12 +1,12 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2012 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.jpt.common.core.internal.gen;
 
 import java.io.File;
@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
@@ -38,10 +37,10 @@ import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.JavaRuntime;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.gen.JptGenerator;
 import org.eclipse.jpt.common.core.gen.LaunchConfigListener;
 import org.eclipse.jpt.common.core.internal.JptCommonCoreMessages;
+import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
 import org.eclipse.osgi.service.datalocation.Location;
@@ -367,7 +366,7 @@ public abstract class AbstractJptGenerator implements JptGenerator
 	
 	protected IPath findGenJarStartingWith(String genJarName) {
 		try {
-			File jarInstallDir = this.getBundleParentDir(JptCommonCorePlugin.PLUGIN_ID);
+			File jarInstallDir = this.getBundleParentDir(JptCommonCorePlugin.instance().getBundle());
 
 			List<File> result = new ArrayList<File>();
 			this.findFileStartingWith(genJarName, jarInstallDir, result);
@@ -385,7 +384,7 @@ public abstract class AbstractJptGenerator implements JptGenerator
 
 	// ********** private methods **********
 
-	private File getBundleParentDir(String bundleName) throws IOException {
+	private File getBundleParentDir(Bundle bundle) throws IOException {
 	
 		if (Platform.inDevelopmentMode()) {
 			Location eclipseHomeLoc = Platform.getInstallLocation();
@@ -395,7 +394,6 @@ public abstract class AbstractJptGenerator implements JptGenerator
 			}
 			return new File(eclipseHome);
 		}
-		Bundle bundle = Platform.getBundle(bundleName);
 		return FileLocator.getBundleFile(bundle).getParentFile();
 	}
 

@@ -15,6 +15,7 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -22,7 +23,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JarFile;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -232,11 +232,11 @@ public abstract class AbstractJarFileRef
 	}
 
 	protected IPath getJarRuntimeRootPath() {
-		return JptJpaCorePlugin.getJarRuntimeRootPath(this.getProject());
+		return ProjectTools.getJarRuntimeRootPath(this.getProject());
 	}
 
 	protected boolean projectHasWebFacet() {
-		return JptJpaCorePlugin.projectHasWebFacet(this.getProject());
+		return ProjectTools.hasWebFacet(this.getProject());
 	}
 
 	protected IPath[] buildRuntimeJarFilePathWeb(IPath root, IPath jarFilePath) {

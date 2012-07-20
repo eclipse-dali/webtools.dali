@@ -6,6 +6,7 @@ Bundle-SymbolicName: org.eclipse.jpt.jpadiagrameditor.ui.tests;singleton:=true
 Bundle-Version: 1.0.200.qualifier
 Bundle-Activator: org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.JPAEditorTestsActivator
 Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: .
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.easymock;bundle-version="[2.4.0,3.0.0)",

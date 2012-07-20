@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
  *     for the JPA XML resource every time it executes and its results are only
  *     temporary (e.g. UI menus).
  * </ul>
- * See <code>org.eclipse.jpt.jpa.core/plugin.xml</code>.
+ * See <code>org.eclipse.jpt.jpa.core/plugin.xml:org.eclipse.core.runtime.adapters</code>.
  * 
  * @see ProjectAdapterFactory
  */

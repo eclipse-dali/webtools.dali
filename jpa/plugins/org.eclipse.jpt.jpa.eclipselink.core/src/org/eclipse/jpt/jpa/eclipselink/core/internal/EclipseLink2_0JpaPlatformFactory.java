@@ -1,17 +1,16 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2012 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-*
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal;
 
 import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPlatformFactory;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation;
@@ -19,17 +18,18 @@ import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatform;
 import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa2.Generic2_0JpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkVersion;
+import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
 import org.eclipse.persistence.jpa.jpql.parser.EclipseLinkJPQLGrammar2_0;
 
-/**
- * All the state in the JPA platform should be "static" (i.e. unchanging once
- * it is initialized).
- */
 public class EclipseLink2_0JpaPlatformFactory
 	implements JpaPlatformFactory
 {
+	/**
+	 * Version string for EclipseLink platform version 2.0
+	 */
+	public static final String VERSION = "2.0";  //$NON-NLS-1$
+
 	/**
 	 * zero-argument constructor
 	 */
@@ -49,9 +49,7 @@ public class EclipseLink2_0JpaPlatformFactory
 	}
 
 	protected JpaPlatform.Version buildJpaVersion() {
-		return new EclipseLinkVersion(
-				JptJpaEclipseLinkCorePlugin.ECLIPSELINK_PLATFORM_VERSION_2_0,
-				JpaFacet.VERSION_2_0.getVersionString());
+		return new EclipseLinkJpaPlatformVersion(VERSION, JpaProject2_0.FACET_VERSION_STRING);
 	}
 
 	protected AnnotationProvider buildAnnotationProvider() {

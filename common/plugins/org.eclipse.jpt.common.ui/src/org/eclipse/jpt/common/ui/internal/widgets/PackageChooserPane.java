@@ -19,9 +19,9 @@ import org.eclipse.jdt.ui.JavaElementLabelProvider;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.common.ui.JptCommonUiPlugin;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
+import org.eclipse.jpt.common.ui.internal.plugin.JptCommonUiPlugin;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -168,7 +168,7 @@ public abstract class PackageChooserPane<T extends Model> extends ChooserPane<T>
 			);
 		}
 		catch (JavaModelException e) {
-			JptCommonUiPlugin.log(e);
+			JptCommonUiPlugin.instance().logError(e);
 			return null;
 		}
 
@@ -226,7 +226,7 @@ public abstract class PackageChooserPane<T extends Model> extends ChooserPane<T>
 		try {
 			return this.getJavaProject().getPackageFragmentRoots()[0];
 		} catch (JavaModelException ex) {
-			JptCommonUiPlugin.log(ex);
+			JptCommonUiPlugin.instance().logError(ex);
 			return null;
 		}
 	}

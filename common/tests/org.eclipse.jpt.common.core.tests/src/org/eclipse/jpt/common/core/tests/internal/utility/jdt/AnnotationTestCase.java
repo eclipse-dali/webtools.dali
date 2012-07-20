@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -45,6 +45,7 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.JDTFieldAttribute;
 import org.eclipse.jpt.common.core.internal.utility.jdt.JDTMethodAttribute;
 import org.eclipse.jpt.common.core.internal.utility.jdt.JDTType;
+import org.eclipse.jpt.common.core.tests.CoreTestTools;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
@@ -105,28 +106,11 @@ public abstract class AnnotationTestCase
 	@Override
 	protected void tearDown() throws Exception {
 //		this.dumpSource();
-		this.deleteProject();
+		CoreTestTools.delete(this.javaProject.getProject());
 		TestTools.clear(this);
 		super.tearDown();
 	}
 	
-	protected void deleteProject() throws Exception {
-		int i = 1;
-		boolean deleted = false;
-		while ( ! deleted) {
-			try {
-				this.javaProject.getProject().delete(true, true, null);
-				deleted = true;
-			} catch (CoreException ex) {
-				if (i == 4) {
-					throw new RuntimeException(this.getName() + " - unable to delete project", ex);
-				}
-				Thread.sleep(1000);
-				i++;
-			}
-		}
-	}
-
 	protected void dumpSource(ICompilationUnit cu) throws Exception {
 		System.out.println("*** " + this.getName() + " ****");
 		System.out.println(this.getSource(cu));

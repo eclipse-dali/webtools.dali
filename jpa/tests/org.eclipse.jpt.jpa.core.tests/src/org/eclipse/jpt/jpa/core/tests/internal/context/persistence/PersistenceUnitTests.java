@@ -17,7 +17,6 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -29,6 +28,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProvider;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlMappingFileRef;
@@ -1080,7 +1080,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}	
 	
 	public void testGetDefaultAccess() throws Exception {
-		addXmlMappingFileRef(JptJpaCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH.toString());
+		addXmlMappingFileRef(XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 		createOrm2XmlFile();
 		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		ListIterator<MappingFileRef> mappingFileRefs = getPersistenceUnit().getMappingFileRefs().iterator();
@@ -1104,7 +1104,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testGetDefaultSchema() throws Exception {
-		addXmlMappingFileRef(JptJpaCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH.toString());
+		addXmlMappingFileRef(XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 		createOrm2XmlFile();
 		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		ListIterator<MappingFileRef> mappingFileRefs = getPersistenceUnit().getMappingFileRefs().iterator();
@@ -1125,7 +1125,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testGetDefaultCatalog() throws Exception {
-		addXmlMappingFileRef(JptJpaCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH.toString());
+		addXmlMappingFileRef(XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 		createOrm2XmlFile();
 		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		ListIterator<MappingFileRef> mappingFileRefs = getPersistenceUnit().getMappingFileRefs().iterator();
@@ -1226,7 +1226,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 
 		
 		//test persistentType from orm.xml file that is specified in the persistence.xml
-		addXmlMappingFileRef(JptJpaCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH.toString());
+		addXmlMappingFileRef(XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		assertNotNull(persistenceUnit.getPersistentType("model.Foo"));
 		assertEquals(ormPersistentType, persistenceUnit.getPersistentType("model.Foo"));

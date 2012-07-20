@@ -50,8 +50,8 @@ import org.eclipse.jpt.common.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.jpa.core.JpaFile;
+import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -207,7 +207,7 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 				String newJPTName = lsnr.getNewJPTName();
 				
 				JavaPersistentType newJPT = JpaArtifactFactory.instance().getJPT(newJPTName, pu);
-				if (!JptJpaCorePlugin.getDiscoverAnnotatedClasses(newJPT.getJpaProject().getProject())) {
+				if (! JpaPreferences.getDiscoverAnnotatedClasses(newJPT.getJpaProject().getProject())) {
 					JPAEditorUtil.createUnregisterEntityFromXMLJob(newJPT.getJpaProject(), oldName);
 				}									
 				if (rename) {
@@ -228,7 +228,7 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 				Graphiti.getPeService().deletePictogramElement(cs);	
 				
 				JpaArtifactFactory.instance().refreshEntityModel(fp, newJPT);
-				if (!JptJpaCorePlugin.getDiscoverAnnotatedClasses(newJPT.getJpaProject().getProject())) {
+				if (! JpaPreferences.getDiscoverAnnotatedClasses(newJPT.getJpaProject().getProject())) {
 					JPAEditorUtil.createRegisterEntityInXMLJob(newJPT.getJpaProject(), newJPTName);
 				}
 			}

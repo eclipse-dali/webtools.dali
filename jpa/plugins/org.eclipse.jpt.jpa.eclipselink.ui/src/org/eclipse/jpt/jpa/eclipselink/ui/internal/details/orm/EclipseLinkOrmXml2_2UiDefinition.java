@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,10 +10,11 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_2Definition;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
 
-public class EclipseLinkOrmXml2_2UiDefinition extends EclipseLinkOrmXml2_1UiDefinition
+public class EclipseLinkOrmXml2_2UiDefinition
+	extends EclipseLinkOrmXml2_1UiDefinition
 {
 	// singleton
 	private static final ResourceUiDefinition INSTANCE = new EclipseLinkOrmXml2_2UiDefinition();
@@ -37,6 +38,6 @@ public class EclipseLinkOrmXml2_2UiDefinition extends EclipseLinkOrmXml2_1UiDefi
 	
 	@Override
 	public boolean providesUi(JptResourceType resourceType) {
-		return resourceType.equals(JptJpaEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_2_2_RESOURCE_TYPE);
+		return resourceType.equals(EclipseLinkOrmXml2_2Definition.instance().getResourceType());
 	}
 }

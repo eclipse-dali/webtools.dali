@@ -14,20 +14,16 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
-import org.eclipse.jpt.jpa.core.prefs.JpaValidationPreferencesManager;
+import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.wst.common.project.facet.core.IDelegate;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 public class JpaFacetUninstallDelegate 
 	implements IDelegate 
 {
-	public void execute(IProject project, IProjectFacetVersion fv,
-			Object config, IProgressMonitor monitor) throws CoreException {
-		
-		(new JpaValidationPreferencesManager(project)).clearProjectPreferences();
+	public void execute(IProject project, IProjectFacetVersion fv, Object config, IProgressMonitor monitor) throws CoreException {
+		JpaPreferences.removePreferences(project);
 		removeBuilder(project, STATIC_WEAVING_BUILDER_ID);
-		JptJpaCorePlugin.clearProjectPersistentProperties(project);
 	}
 
 	//TODO hack to fix bug 380735 in RC2. We need to move this code into the eclipselink plug-in

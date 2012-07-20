@@ -1,35 +1,34 @@
 /*******************************************************************************
- *  Copyright (c) 2008, 2012  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.operations;
 
 import java.util.Set;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
-import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
+import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.resource.orm.AccessType;
 import org.eclipse.jpt.jpa.core.resource.orm.JPA;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.JPA2_0;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelPropertyDescriptor;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
@@ -87,20 +86,12 @@ public class OrmFileCreationDataModelProvider
 	
 	@Override
 	protected String getDefaultFileName() {
-		return JptJpaCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH.lastSegment();
+		return XmlEntityMappings.DEFAULT_RUNTIME_PATH.lastSegment();
 	}
 	
 	@Override
-	protected String getDefaultVersion() {
-		if (getProject() == null) {
-			return null;
-		}
-		JpaPlatform jpaPlatform;
-		JpaProject jpaProject = getJpaProject();
-		jpaPlatform = (jpaProject == null) 
-				? JptJpaCorePlugin.getJpaPlatformManager().buildJpaPlatformImplementation(getProject()) 
-				: jpaProject.getJpaPlatform();
-		return jpaPlatform.getMostRecentSupportedResourceType(JptJpaCorePlugin.ORM_XML_CONTENT_TYPE).getVersion();
+	protected IContentType getContentType() {
+		return XmlEntityMappings.CONTENT_TYPE;
 	}
 	
 	protected PersistenceUnit getDefaultPersistenceUnit() {
@@ -112,7 +103,7 @@ public class OrmFileCreationDataModelProvider
 		if (persistenceXml == null) {
 			return null;
 		}
-		Persistence persistence = persistenceXml.getPersistence();
+		Persistence persistence = persistenceXml.getRoot();
 		if (persistence == null) {
 			return null;
 		}
@@ -211,7 +202,7 @@ public class OrmFileCreationDataModelProvider
 	
 	@Override
 	protected boolean fileVersionSupportedForFacetVersion(String fileVersion, String jpaFacetVersion) {
-		if (jpaFacetVersion.equals(JpaFacet.VERSION_1_0.getVersionString())
+		if (jpaFacetVersion.equals(JpaProject.FACET_VERSION_STRING)
 				&& fileVersion.equals(JPA2_0.SCHEMA_VERSION)) {
 			return false;
 		}
@@ -224,14 +215,10 @@ public class OrmFileCreationDataModelProvider
 		String pUnitName = getStringProperty(PERSISTENCE_UNIT);
 		if (addToPUnit) {
 			if (StringTools.stringIsEmpty(pUnitName)) {
-				return new Status(
-					IStatus.ERROR, JptJpaCorePlugin.PLUGIN_ID,
-					NLS.bind(JptCoreMessages.VALIDATE_PERSISTENCE_UNIT_DOES_NOT_SPECIFIED, pUnitName));
+				return JptJpaCorePlugin.instance().buildErrorStatus(JptCoreMessages.VALIDATE_PERSISTENCE_UNIT_DOES_NOT_SPECIFIED, pUnitName);
 			}
 			if (getPersistenceUnit() == null) {
-				return new Status(
-					IStatus.ERROR, JptJpaCorePlugin.PLUGIN_ID,
-					NLS.bind(JptCoreMessages.VALIDATE_PERSISTENCE_UNIT_NOT_IN_PROJECT, pUnitName, projectName));
+				return JptJpaCorePlugin.instance().buildErrorStatus(JptCoreMessages.VALIDATE_PERSISTENCE_UNIT_NOT_IN_PROJECT, pUnitName, projectName);
 			}
 		}
 		return Status.OK_STATUS;
@@ -247,7 +234,7 @@ public class OrmFileCreationDataModelProvider
 		PersistenceXml persistenceXml = 
 			(jpaProject == null) ? null : jpaProject.getRootContextNode().getPersistenceXml();
 		Persistence persistence = 
-			(persistenceXml == null) ? null : persistenceXml.getPersistence();
+			(persistenceXml == null) ? null : persistenceXml.getRoot();
 		if (persistence != null) {
 			for (PersistenceUnit next : persistence.getPersistenceUnits()) {
 				if (pUnitName.equals(next.getName())) {
@@ -263,7 +250,7 @@ public class OrmFileCreationDataModelProvider
 		//if no jpa project is selected, then no persistence units will be listed in the combo
 		JpaProject jpaProject = getJpaProject();
 		PersistenceXml persistenceXml = (jpaProject == null) ? null : jpaProject.getRootContextNode().getPersistenceXml();
-		Persistence persistence = (persistenceXml == null) ? null : persistenceXml.getPersistence();
+		Persistence persistence = (persistenceXml == null) ? null : persistenceXml.getRoot();
 		return (persistence == null) ? EmptyIterable.<PersistenceUnit>instance() : persistence.getPersistenceUnits();
 	}
 	
@@ -274,5 +261,10 @@ public class OrmFileCreationDataModelProvider
 				return next.getName();
 			}
 		};
+	}
+
+	@Override
+	protected boolean platformIsSupported(JpaPlatform jpaPlatform) {
+		return true;
 	}
 }

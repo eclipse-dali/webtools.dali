@@ -54,14 +54,16 @@ public class JptCoreMessages {
 	public static String CONTEXT_MODEL_SYNC_JOB_NAME;
 	public static String UPDATE_JOB_NAME;
 	public static String METAMODEL_SYNC_JOB_NAME;
-	public static String PREFERENCES_FLUSH_JOB_NAME;
 	public static String OSGI_BUNDLES_LIBRARY_VALIDATOR__BUNDLE_NOT_FOUND;
 	public static String OSGI_BUNDLES_LIBRARY_VALIDATOR__IMPROPER_BUNDLE_VERSION;
+	public static String INVALID_FACET;
+
 	public static String JAVA_METADATA_CONVERSION_IN_PROGRESS;
 	public static String JAVA_METADATA_CONVERSION_CONVERT_GENERATOR;
 	public static String JAVA_METADATA_CONVERSION_CONVERT_QUERY;
 	public static String JAVA_METADATA_CONVERSION_CANCELED;
 	public static String JAVA_METADATA_CONVERSION_COMPLETE;
+
 	public static String MAKE_PERSISTENT_ADD_TO_XML_RESOURCE_MODEL;
 	public static String MAKE_PERSISTENT_BUILDING_PERSISTENT_TYPE;
 	public static String MAKE_PERSISTENT_PROCESSING_MAPPED_SUPERCLASSES;
@@ -72,6 +74,7 @@ public class JptCoreMessages {
 	public static String MAKE_PERSISTENT_ANNOTATING_CLASS;
 	public static String MAKE_PERSISTENT_ADD_TO_PERSISTENCE_XML_RESOURCE_MODEL;
 	public static String MAKE_PERSISTENT_LISTING_IN_PERSISTENCE_XML;
+
 	private JptCoreMessages() {
 		throw new UnsupportedOperationException();
 	}

@@ -36,7 +36,6 @@ import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
-import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Connection;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.DdlGenerationType;
@@ -44,6 +43,9 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logging;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.LoggingLevel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.OutputMode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.SchemaGeneration;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_1JpaPlatformFactory;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.plugin.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.osgi.util.ManifestElement;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
@@ -142,7 +144,8 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 	}
 
 	protected void appendDynamicArgument(StringBuffer sb) {
-		if (JptJpaEclipseLinkCorePlugin.nodeIsEclipseLinkVersionCompatible(this.jpaProject, JptJpaEclipseLinkCorePlugin.ECLIPSELINK_PLATFORM_VERSION_2_1)) {
+		EclipseLinkJpaPlatformVersion jpaVersion = (EclipseLinkJpaPlatformVersion) this.jpaProject.getJpaPlatform().getJpaVersion();
+		if (jpaVersion.isCompatibleWithEclipseLinkVersion(EclipseLink2_1JpaPlatformFactory.VERSION)) {
 			sb.append(' ').append(DYNAMIC_PROGRAM_ARGUMENT);
 		}
 	}

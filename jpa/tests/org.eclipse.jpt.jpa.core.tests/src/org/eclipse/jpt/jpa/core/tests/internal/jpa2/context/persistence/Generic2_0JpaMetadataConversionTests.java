@@ -16,7 +16,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdMapping;
@@ -33,6 +32,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.LockModeType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmNamedQuery2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.tests.internal.jpa2.context.Generic2_0ContextModelTestCase;
 
 @SuppressWarnings("nls")
@@ -179,7 +179,7 @@ public class Generic2_0JpaMetadataConversionTests extends
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaEntity entity = getJavaEntity();
-		addXmlMappingFileRef(JptJpaCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH.toString());
+		addXmlMappingFileRef(XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 		EntityMappings entityMappings = getEntityMappings();
 		
 		PersistenceUnit persistenceUnit = getPersistenceUnit();
@@ -233,7 +233,7 @@ public class Generic2_0JpaMetadataConversionTests extends
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaEntity entity = getJavaEntity();
-		addXmlMappingFileRef(JptJpaCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH.toString());
+		addXmlMappingFileRef(XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 		EntityMappings entityMappings = getEntityMappings();
 		
 		PersistenceUnit persistenceUnit = getPersistenceUnit();
@@ -299,7 +299,7 @@ public class Generic2_0JpaMetadataConversionTests extends
 		
 		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
-		addXmlMappingFileRef(JptJpaCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH.toString());
+		addXmlMappingFileRef(XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 		EntityMappings entityMappings = getEntityMappings();
 		OrmNamedNativeQuery nnq = entityMappings.getQueryContainer().addNamedNativeQuery();
 		nnq.setName("nq");
@@ -323,7 +323,7 @@ public class Generic2_0JpaMetadataConversionTests extends
 		
 		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
-		addXmlMappingFileRef(JptJpaCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH.toString());
+		addXmlMappingFileRef(XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 		EntityMappings entityMappings = getEntityMappings();
 		persistenceUnit.convertJavaQueries(entityMappings, progressMonitor);
 
@@ -342,7 +342,7 @@ public class Generic2_0JpaMetadataConversionTests extends
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaMappedSuperclass mappedSuperclass = (JavaMappedSuperclass) getJavaPersistentType().getMapping();
-		addXmlMappingFileRef(JptJpaCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH.toString());
+		addXmlMappingFileRef(XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 		EntityMappings entityMappings = getEntityMappings();
 		
 		PersistenceUnit persistenceUnit = getPersistenceUnit();
@@ -396,7 +396,7 @@ public class Generic2_0JpaMetadataConversionTests extends
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaMappedSuperclass mappedSuperclass = (JavaMappedSuperclass) getJavaPersistentType().getMapping();
-		addXmlMappingFileRef(JptJpaCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH.toString());
+		addXmlMappingFileRef(XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 		EntityMappings entityMappings = getEntityMappings();
 		
 		PersistenceUnit persistenceUnit = getPersistenceUnit();
@@ -524,7 +524,7 @@ public class Generic2_0JpaMetadataConversionTests extends
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaEntity entity = getJavaEntity();
-		addXmlMappingFileRef(JptJpaCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH.toString());
+		addXmlMappingFileRef(XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 		EntityMappings entityMappings = getEntityMappings();
 		
 		PersistenceUnit persistenceUnit = getPersistenceUnit();
@@ -563,7 +563,7 @@ public class Generic2_0JpaMetadataConversionTests extends
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaEntity entity = getJavaEntity();
-		addXmlMappingFileRef(JptJpaCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH.toString());
+		addXmlMappingFileRef(XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 		EntityMappings entityMappings = getEntityMappings();
 		
 		PersistenceUnit persistenceUnit = getPersistenceUnit();
@@ -605,7 +605,7 @@ public class Generic2_0JpaMetadataConversionTests extends
 		
 		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
-		addXmlMappingFileRef(JptJpaCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH.toString());
+		addXmlMappingFileRef(XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 		EntityMappings entityMappings = getEntityMappings();
 		OrmSequenceGenerator sequence = entityMappings.addSequenceGenerator();
 		sequence.setName("gen");
@@ -634,7 +634,7 @@ public class Generic2_0JpaMetadataConversionTests extends
 		JavaEntity entity = getJavaEntity();	
 		JavaIdMapping mapping = (JavaIdMapping)entity.getIdAttribute().getMapping();
 		
-		addXmlMappingFileRef(JptJpaCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH.toString());
+		addXmlMappingFileRef(XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 		EntityMappings entityMappings = getEntityMappings();
 		persistenceUnit.convertJavaGenerators(entityMappings, progressMonitor);
 		

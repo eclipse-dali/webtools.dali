@@ -25,10 +25,14 @@
 	<extension
 		point="org.eclipse.core.runtime.adapters">
 
-		<!-- IWorkspace -> JpaProjectManager -->
+		<!-- IWorkspace
+				-> JpaWorkspace
+				-> JpaProjectManager
+		-->
 		<factory
 			adaptableType="org.eclipse.core.resources.IWorkspace"
 			class="org.eclipse.jpt.jpa.core.internal.WorkspaceAdapterFactory">
+			<adapter type="org.eclipse.jpt.jpa.core.JpaWorkspace"/>
 			<adapter type="org.eclipse.jpt.jpa.core.JpaProjectManager"/>
 		</factory>
 
@@ -85,19 +89,19 @@
 	<extension
 		point="org.eclipse.core.contenttype.contentTypes">
 		
-		<!-- "abstract" content type to be extended by all JPA XML file content types -->
+		<!-- JPA XML file ("abstract") -->
 		<content-type
-			id="org.eclipse.jpt.jpa.core.content.baseJpaContent"
-			name="%BASE_JPA_CONTENT"
+			id="org.eclipse.jpt.jpa.core.content.jpaXmlContent"
+			name="%JPA_XML_CONTENT"
 			base-type="org.eclipse.core.runtime.xml"
-			describer="org.eclipse.jpt.jpa.core.internal.resource.contenttypes.IndeterminateContentDescriber">
+			describer="org.eclipse.jpt.common.core.internal.content.IndeterminateContentDescriber">
 		</content-type>
 		
-		<!-- persistence.xml content type -->
+		<!-- persistence.xml -->
   		<content-type
 			id="org.eclipse.jpt.jpa.core.content.persistence"
 			name="%PERSISTENCE_XML_CONTENT"
-			base-type="org.eclipse.jpt.jpa.core.content.baseJpaContent"
+			base-type="org.eclipse.jpt.jpa.core.content.jpaXmlContent"
 			file-names="persistence.xml">
 			<describer
 				class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber2">
@@ -107,14 +111,18 @@
 			</describer>
 		</content-type>
 		
-		<!-- "abstract" mapping file content type -->
+		<!-- mapping file ("abstract") -->
+		<!--
+			NB: because multiple inheritance of content types is unsupported,
+			we support only *XML* mapping files (not that we've encountered otherwise...)
+		-->
 		<content-type
 			id="org.eclipse.jpt.jpa.core.content.mappingFile"
 			name="%MAPPING_FILE_CONTENT"
-			base-type="org.eclipse.jpt.jpa.core.content.baseJpaContent">
+			base-type="org.eclipse.jpt.jpa.core.content.jpaXmlContent">
 		</content-type>
 		
-		<!-- orm.xml content type -->
+		<!-- orm.xml -->
 		<content-type
 			id="org.eclipse.jpt.jpa.core.content.orm"
 			name="%ORM_XML_CONTENT"
@@ -127,20 +135,34 @@
 			</describer>
 		</content-type>
 		
-		<!-- org.eclipse.wst.common.project.facet.core.xml content type -->
-		<content-type
-			id="org.eclipse.wst.common.project.facet.core"
-			name="%FACET_CONFIG_XML_CONTENT"
-			file-names="org.eclipse.wst.common.project.facet.core.xml"
-			base-type="org.eclipse.core.runtime.xml">
-			<describer
-				class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber2">
-				<parameter 
-					name="element" 
-					value="faceted-project"/>
-			</describer>
-		</content-type>
-		
+	</extension>
+
+
+	<!-- ***** resource types ***** -->
+
+	<extension 
+		point="org.eclipse.jpt.common.core.resourceTypes">
+
+		<resource-type
+			id="org.eclipse.jpt.jpa.core.resource.persistence_1_0"
+			content-type="org.eclipse.jpt.jpa.core.content.persistence"
+			version="1.0"/>
+
+		<resource-type
+			id="org.eclipse.jpt.jpa.core.resource.persistence_2_0"
+			content-type="org.eclipse.jpt.jpa.core.content.persistence"
+			version="2.0"/>
+
+		<resource-type
+			id="org.eclipse.jpt.jpa.core.resource.orm_1_0"
+			content-type="org.eclipse.jpt.jpa.core.content.orm"
+			version="1.0"/>
+
+		<resource-type
+			id="org.eclipse.jpt.jpa.core.resource.orm_2_0"
+			content-type="org.eclipse.jpt.jpa.core.content.orm"
+			version="2.0"/>
+
 	</extension>
 
 
@@ -150,39 +172,32 @@
 		point="org.eclipse.core.expressions.propertyTesters">
 
 		<propertyTester
-			id="org.eclipse.jpt.jpa.core.propertyTester.persistentAttribute"
+			id="org.eclipse.jpt.jpa.core.propertyTester.PersistentAttribute"
 			type="org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute"
 			namespace="org.eclipse.jpt.jpa.core"
 			properties="isMapped, isNotMapped, isVirtual, isNotVirtual"
 			class="org.eclipse.jpt.jpa.core.internal.context.PersistentAttributePropertyTester"/>
 
 		<propertyTester
-			id="org.eclipse.jpt.jpa.core.propertyTester.jpaPlatformDescription"
+			id="org.eclipse.jpt.jpa.core.propertyTester.JpaPlatformDescription"
 			type="org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription"
 			namespace="org.eclipse.jpt.jpa.core"
 			properties="jpaPlatform, jpaPlatformGroup"
-			class="org.eclipse.jpt.jpa.core.internal.platform.JpaPlatformTester"/>
+			class="org.eclipse.jpt.jpa.core.internal.platform.JpaPlatformDescriptionPropertyTester"/>
 
 		<propertyTester
-			id="org.eclipse.jpt.jpa.core.propertyTester.xmlFile"
+			id="org.eclipse.jpt.jpa.core.propertyTester.XmlFile"
 			type="org.eclipse.jpt.jpa.core.context.XmlFile"
 			namespace="org.eclipse.jpt.jpa.core"
 			properties="isLatestSupportedVersion, isNotLatestSupportedVersion"
 			class="org.eclipse.jpt.jpa.core.internal.context.XmlFilePropertyTester"/>
 
 		<propertyTester
-			id="org.eclipse.jpt.jpa.ui.propertyTester.jptResourceModel"
+			id="org.eclipse.jpt.jpa.core.propertyTester.JptResourceModel"
 			type="org.eclipse.jpt.common.core.JptResourceModel"
 			namespace="org.eclipse.jpt.jpa.core"
 			properties="isLatestSupportedVersion, isNotLatestSupportedVersion"
 			class="org.eclipse.jpt.jpa.core.internal.JptResourceModelPropertyTester"/>
-
-		<propertyTester
-			id="org.eclipse.jpt.jpa.ui.propertyTester.jpaContextNode"
-			type="org.eclipse.jpt.jpa.core.context.JpaContextNode"
-			namespace="org.eclipse.jpt.jpa.core"
-			properties="isCompatibleVersion"
-			class="org.eclipse.jpt.jpa.core.internal.JpaContextNodePropertyTester"/>
 
 	</extension>
 
@@ -191,10 +206,9 @@
 
 	<extension
 		point="org.eclipse.core.runtime.preferences">
-		
-		<initializer 
-			class="org.eclipse.jpt.jpa.core.internal.prefs.JpaPreferenceInitializer"/>
-		
+
+		<initializer class="org.eclipse.jpt.jpa.core.internal.JpaPreferenceInitializer"/>
+
 	</extension>
 
 
@@ -510,17 +524,10 @@
 			<delegate class="org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDelegate"/>
 		</action>
 		
-		<!-- 
-			The uninstall action is only used to enable facet uninstallation
-			through the facet UI.  The delegate currently has no functionality. 
-		-->
 		<action facet="jpt.jpa" type="uninstall" id="jpt.jpa.uninstall">
 			<delegate class="org.eclipse.jpt.jpa.core.internal.facet.JpaFacetUninstallDelegate"/>
 		</action>
 		
-		<!-- 
-			The version change  
-		-->
 		<action facet="jpt.jpa" type="version-change" id="jpt.jpa.version-change">
 			<config-factory class="org.eclipse.jpt.jpa.core.internal.facet.JpaFacetVersionChangeDataModelProvider"/>
 			<delegate class="org.eclipse.jpt.jpa.core.internal.facet.JpaFacetVersionChangeDelegate"/>
@@ -569,8 +576,8 @@
 				<rules>
 					<contentType id="org.eclipse.jdt.core.javaSource" exactMatch="false"/>
 					<contentType id="org.eclipse.jpt.common.core.content.jar"/>
-					<contentType id="org.eclipse.jpt.jpa.core.content.baseJpaContent" exactMatch="false"/>
-					<contentType id="org.eclipse.wst.common.project.facet.core" exactMatch="true"/>
+					<contentType id="org.eclipse.jpt.jpa.core.content.jpaXmlContent" exactMatch="false"/>
+					<contentType id="org.eclipse.jpt.common.core.content.projectFacet" exactMatch="true"/>
 				</rules>
 			</include>
 		</validator>

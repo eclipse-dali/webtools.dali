@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards;
 
 import java.lang.reflect.InvocationTargetException;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -18,17 +17,16 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
-import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.entity.data.model.DynamicEntityDataModelProvider;
-import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.model.IEntityDataModelProperties;
 import org.eclipse.jst.j2ee.internal.common.operations.INewJavaClassDataModelProperties;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
@@ -48,7 +46,7 @@ public class EclipseLinkDynamicEntityWizard extends DataModelWizard implements I
 	public EclipseLinkDynamicEntityWizard(IDataModel model) {
 		super(model);
         setWindowTitle(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_title);
-        setDefaultPageImageDescriptor(JptJpaUiPlugin.getImageDescriptor(JptUiIcons.ENTITY_WIZ_BANNER));
+        setDefaultPageImageDescriptor(JptJpaEclipseLinkUiPlugin.instance().buildImageDescriptor(JptUiIcons.ENTITY_WIZ_BANNER));
 	}
 
 	/**
@@ -102,7 +100,7 @@ public class EclipseLinkDynamicEntityWizard extends DataModelWizard implements I
         	JpaXmlResource xmlResource = jpaProject.getMappingFileXmlResource(new Path(xmlRuntimePath));
             openEditor(xmlResource);
         } catch (Exception cantOpen) {
-        	JptJpaEclipseLinkUiPlugin.log(cantOpen);
+        	JptJpaEclipseLinkUiPlugin.instance().logError(cantOpen);
         }
     }
 
@@ -110,7 +108,7 @@ public class EclipseLinkDynamicEntityWizard extends DataModelWizard implements I
 	 * Open the EclipseLink mapping file where the dynamic entity is created
 	 */
 	protected void openEditor(final JpaXmlResource xmlResource) {
-		Display.getDefault().asyncExec(new Runnable() {
+		SWTUtil.asyncExec(new Runnable() {
 			public void run() {
 				IFile file = xmlResource.getFile();
 				IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();

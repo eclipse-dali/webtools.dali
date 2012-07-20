@@ -22,7 +22,7 @@ import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
@@ -117,7 +117,7 @@ final class BinaryMethod
 		try {
 			return jdtMethod.getParameters();
 		} catch (JavaModelException ex) {
-			JptCommonCorePlugin.log(ex);
+			JptCommonCorePlugin.instance().logError(ex);
 			return null;
 		}
 	}
@@ -143,7 +143,7 @@ final class BinaryMethod
 		try {
 			return method.isConstructor();
 		} catch (JavaModelException ex) {
-			JptCommonCorePlugin.log(ex);
+			JptCommonCorePlugin.instance().logError(ex);
 			return false;
 		}
 	}
@@ -183,7 +183,7 @@ final class BinaryMethod
 						new ArrayIterable<ITypeParameter>(this.method.getDeclaringType().getTypeParameters()));
 			}
 			catch (JavaModelException jme) {
-				JptCommonCorePlugin.log(jme);
+				JptCommonCorePlugin.instance().logError(jme);
 			}
 			return EmptyIterable.instance();
 		}

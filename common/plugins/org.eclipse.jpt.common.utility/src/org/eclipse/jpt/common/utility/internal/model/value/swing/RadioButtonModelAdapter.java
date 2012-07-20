@@ -11,8 +11,8 @@ package org.eclipse.jpt.common.utility.internal.model.value.swing;
 
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.Transformer;
-import org.eclipse.jpt.common.utility.internal.model.value.FilteringWritablePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationWritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.FilteringModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.TransformationModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 
 /**
@@ -61,8 +61,8 @@ public class RadioButtonModelAdapter
 	 * value to the button value.
 	 */
 	public static ModifiablePropertyValueModel<Boolean> buildBooleanHolder(ModifiablePropertyValueModel<Object> valueHolder, Object buttonValue) {
-		ModifiablePropertyValueModel<Object> filteringPVM = new FilteringWritablePropertyValueModel<Object>(valueHolder, Filter.Transparent.instance(), new SetRadioButtonFilter(buttonValue));
-		return new TransformationWritablePropertyValueModel<Object, Boolean>(filteringPVM, new RadioButtonTransformer(buttonValue), new ReverseRadioButtonTransformer(buttonValue));
+		ModifiablePropertyValueModel<Object> filteringPVM = new FilteringModifiablePropertyValueModel<Object>(valueHolder, Filter.Transparent.instance(), new SetRadioButtonFilter(buttonValue));
+		return new TransformationModifiablePropertyValueModel<Object, Boolean>(filteringPVM, new RadioButtonTransformer(buttonValue), new ReverseRadioButtonTransformer(buttonValue));
 	}
 
 

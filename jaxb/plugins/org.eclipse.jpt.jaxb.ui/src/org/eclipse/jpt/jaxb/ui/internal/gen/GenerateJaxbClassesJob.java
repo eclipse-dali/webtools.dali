@@ -1,12 +1,12 @@
 /*******************************************************************************
-* Copyright (c) 2012 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.gen;
 
 import org.eclipse.jdt.core.IJavaProject;
@@ -16,8 +16,8 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGenerator;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGeneratorExtensionOptions;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGeneratorOptions;
-import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
+import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 
 /**
  *  GenerateJaxbClassesJob
@@ -91,6 +91,6 @@ public class GenerateJaxbClassesJob extends AbstractJptGenerateJob {
 
 	@Override
 	protected void jptPluginLogException(Exception exception) {
-		JptJaxbUiPlugin.log(exception);
+		JptJaxbUiPlugin.instance().logError(exception);
 	}
 }

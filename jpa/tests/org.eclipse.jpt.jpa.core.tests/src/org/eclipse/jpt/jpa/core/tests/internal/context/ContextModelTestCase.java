@@ -18,9 +18,9 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.common.core.tests.internal.utility.jdt.AnnotationTestCase;
-import org.eclipse.jpt.jpa.core.JpaFacet;
+import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.JpaWorkspace;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
@@ -28,12 +28,12 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProperties;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProvider;
-import org.eclipse.jpt.jpa.core.internal.prefs.JpaPreferencesManager;
-import org.eclipse.jpt.jpa.core.platform.GenericPlatform;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJavaClassRef;
@@ -73,14 +73,14 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	protected void tearDown() throws Exception {
 		this.persistenceXmlResource = null;
 		this.ormXmlResource = null;
-		JpaPreferencesManager.clearWorkspacePreferences();
+		JpaPreferences.removePreferences();
 		this.waitForWorkspaceJobsToFinish();
 		super.tearDown();
 	}
 	
 	@Override
 	protected TestJavaProject buildJavaProject(boolean autoBuild) throws Exception {
-		return buildJpaProject(BASE_PROJECT_NAME, autoBuild, buildJpaConfigDataModel());
+		return buildJpaProject(BASE_PROJECT_NAME, autoBuild, this.buildJpaConfigDataModel());
 	}
 	
 	protected TestJpaProject buildJpaProject(String projectName, boolean autoBuild, IDataModel jpaConfig) 
@@ -96,14 +96,26 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 		return dataModel;
 	}
 
-	// default facet version is 2.0 - most tests use 1.0
+	// default facet version is the latest version - but most tests use 1.0
 	protected String getJpaFacetVersionString() {
-		return JpaFacet.VERSION_1_0.getVersionString();
+		return JpaProject.FACET_VERSION_STRING;
 	}
 	
 	// most tests use the basic generic platform
 	protected JpaPlatformDescription getJpaPlatformDescription() {
-		return GenericPlatform.VERSION_1_0;
+		return this.getJpaPlatformManager().getJpaPlatformDescription(this.getJpaPlatformID());
+	}
+
+	protected String getJpaPlatformID() {
+		return GenericJpaPlatformFactory.ID;
+	}
+
+	protected JpaPlatformManager getJpaPlatformManager() {
+		return this.getJpaWorkspace().getJpaPlatformManager();
+	}
+
+	protected JpaWorkspace getJpaWorkspace() {
+		return (JpaWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JpaWorkspace.class);
 	}
 
 	// most tests do use an orm.xml
@@ -175,7 +187,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	}
 	
 	protected PersistenceUnit getPersistenceUnit() {
-		return getRootContextNode().getPersistenceXml().getPersistence().getPersistenceUnits().iterator().next();
+		return getRootContextNode().getPersistenceXml().getRoot().getPersistenceUnits().iterator().next();
 	}
 	
 	protected ClassRef getSpecifiedClassRef() {

@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.core.internal;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceTypeCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -42,7 +41,7 @@ public class JavaResourceModelProvider
 	}
 
 	public IContentType getContentType() {
-		return JptCommonCorePlugin.JAVA_SOURCE_CONTENT_TYPE;
+		return JavaResourceCompilationUnit.CONTENT_TYPE;
 	}
 
 	public JavaResourceCompilationUnit buildResourceModel(JpaProject jpaProject, IFile file) {

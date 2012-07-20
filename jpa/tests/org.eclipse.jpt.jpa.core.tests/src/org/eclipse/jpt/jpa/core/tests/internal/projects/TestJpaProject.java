@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core.tests.internal.projects;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
-import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -55,12 +54,12 @@ public class TestJpaProject
 
 	public TestJpaProject(String projectName, boolean autoBuild, IDataModel jpaConfig) throws CoreException {
 		super(projectName, autoBuild);
-		String jpaFacetVersion = JpaFacet.VERSION_1_0.getVersionString();
+		String jpaFacetVersion = JpaProject.FACET_VERSION_STRING;
 		if (jpaConfig != null) {
 			jpaFacetVersion = jpaConfig.getStringProperty(IFacetDataModelProperties.FACET_VERSION_STR);
 		}
 		this.installFacet("jst.utility", "1.0");
-		this.installFacet(JpaFacet.ID, jpaFacetVersion, jpaConfig);
+		this.installFacet(JpaProject.FACET_ID, jpaFacetVersion, jpaConfig);
 		this.addJar(jpaJarName());
 		if (eclipseLinkJarName() != null) {
 			this.addJar(eclipseLinkJarName());

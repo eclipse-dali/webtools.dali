@@ -30,9 +30,9 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
-import org.eclipse.jpt.common.ui.JptCommonUiPlugin;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
+import org.eclipse.jpt.common.ui.internal.plugin.JptCommonUiPlugin;
 import org.eclipse.jpt.common.utility.internal.ClassName;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.model.Model;
@@ -312,10 +312,10 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 			JavaUI.openInEditor(type, true, true);
 		}
 		catch (JavaModelException e) {
-			JptCommonUiPlugin.log(e);
+			JptCommonUiPlugin.instance().logError(e);
 		}
 		catch (PartInitException e) {
-			JptCommonUiPlugin.log(e);
+			JptCommonUiPlugin.instance().logError(e);
 		}
 	}
 
@@ -371,7 +371,7 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 			);
 		}
 		catch (JavaModelException e) {
-			JptCommonUiPlugin.log(e);
+			JptCommonUiPlugin.instance().logError(e);
 			return null;
 		}
 
@@ -426,7 +426,7 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 		try {
 			return this.getJavaProject().getPackageFragmentRoots()[0];
 		} catch (JavaModelException ex) {
-			JptCommonUiPlugin.log(ex);
+			JptCommonUiPlugin.instance().logError(ex);
 			return null;
 		}
 	}

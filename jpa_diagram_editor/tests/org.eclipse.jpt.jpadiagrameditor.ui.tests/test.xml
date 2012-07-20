@@ -21,7 +21,7 @@
 	</target>
 
 	<!-- This target defines the tests that need to be run. -->
-	<target name="suite1">
+	<target name="suite">
     	<property file="${testRoot}/testServer.properties"/>
 	    <property name="jpae-folder" value="${eclipse-home}/jpae_folder"/>
 	    <delete dir="${jpae-folder}" quiet="true"/>
@@ -43,6 +43,6 @@
 
 	<!-- This target runs the test suite. Any actions that need to happen -->
 	<!-- after all the tests have been run should go here. -->
-	<target name="run" depends="init, suite1, cleanup">
+	<target name="run" depends="init, suite, cleanup">
 	</target>
 </project>

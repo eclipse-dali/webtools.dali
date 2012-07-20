@@ -14,7 +14,7 @@ import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
 
 /**
  * Property tester for {@link ILibraryProvider}.
- * See <code>org.eclipse.jpt.common.core/plugin.xml</code>
+ * See <code>org.eclipse.jpt.common.core/plugin.xml:org.eclipse.core.expressions.propertyTesters</code>
  */
 public class LibraryProviderPropertyTester
 	extends PropertyTester

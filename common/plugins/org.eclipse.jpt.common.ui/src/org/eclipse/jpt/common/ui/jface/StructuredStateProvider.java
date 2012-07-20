@@ -25,8 +25,5 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 public interface StructuredStateProvider
 	extends IStructuredContentProvider, ExtendedLabelProvider
 {
-	/**
-	 * Convenience constant for when no elements are present.
-	 */
-	Object[] EMPTY_ARRAY = new Object[0];
+	// combine interfaces
 }

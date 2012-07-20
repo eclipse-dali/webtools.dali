@@ -12,6 +12,7 @@ package org.eclipse.jpt.common.ui.internal.jface;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.Tools;
 
 /**
  * Tree content with a root with a single child, the message that will be
@@ -69,7 +70,7 @@ public class SimpleMessageTreeContent {
 				String msg = ((SimpleMessageTreeContent) element).getMessage();
 				return new Object[] { msg };
 			}
-			return EMPTY_ARRAY;
+			return Tools.EMPTY_OBJECT_ARRAY;
 		}
 	}
 

@@ -11,14 +11,15 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence;
 
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlDefinition;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.GenericPersistenceXml2_0Definition;
 import org.eclipse.jpt.jpa.core.resource.persistence.v2_0.PersistenceV2_0Factory;
 
-public class EclipseLink2_4PersistenceXmlDefinition extends AbstractPersistenceXmlDefinition {
-	
+public class EclipseLink2_4PersistenceXmlDefinition
+	extends AbstractPersistenceXmlDefinition
+{
 	// singleton
 	private static final PersistenceXmlDefinition INSTANCE = new EclipseLink2_4PersistenceXmlDefinition();
 
@@ -42,7 +43,7 @@ public class EclipseLink2_4PersistenceXmlDefinition extends AbstractPersistenceX
 	}
 
 	public JptResourceType getResourceType() {
-		return JptJpaCorePlugin.PERSISTENCE_XML_2_0_RESOURCE_TYPE;
+		return GenericPersistenceXml2_0Definition.instance().getResourceType();
 	}
 
 	@Override

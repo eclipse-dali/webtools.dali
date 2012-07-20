@@ -217,13 +217,7 @@ public final class TestTools {
 		}
 	}
 
-	/**
-	 * Return the value of the specified class's <code>DEBUG</code> constant.
-	 */
-	public static boolean debug(Class<?> clazz) {
-		Boolean debug = (Boolean) ReflectionTools.getStaticFieldValue(clazz, "DEBUG");
-		return debug.booleanValue();
-	}
+	private static final Class<TestCase> TestCase_class = TestCase.class;
 
 	/**
 	 * Verify the specified class's <code>DEBUG</code> constant is set to
@@ -233,7 +227,13 @@ public final class TestTools {
 		Assert.assertFalse("Recompile with \"DEBUG = false\": " + clazz.getName(), debug(clazz));
 	}
 	
-	private static final Class<TestCase> TestCase_class = TestCase.class;
+	/**
+	 * Return the value of the specified class's <code>DEBUG</code> constant.
+	 */
+	public static boolean debug(Class<?> clazz) {
+		Boolean debug = (Boolean) ReflectionTools.getStaticFieldValue(clazz, "DEBUG");
+		return debug.booleanValue();
+	}
 
 	/**
 	 * Workaround for a JUnit bug: JUnit does not configure the testing {@link Thread}

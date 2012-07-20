@@ -17,9 +17,8 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jpt.common.ui.internal.dialogs.OptionalMessageDialog;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
-import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards.EmbeddedEclipseLinkMappingFileWizard;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards.SelectEclipseLinkMappingFileDialog;
 import org.eclipse.jpt.jpa.ui.internal.jface.XmlMappingFileViewerFilter;
@@ -37,7 +36,7 @@ public abstract class EclipseLinkJavaMetadataConversionWizardPage
 
 	@Override
 	protected ViewerFilter buildSelectMappingFileDialogViewerFilter() {
-		return new XmlMappingFileViewerFilter(this.jpaProject, JptJpaEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE);
+		return new XmlMappingFileViewerFilter(this.jpaProject, XmlEntityMappings.CONTENT_TYPE);
 	}
 
 	@Override
@@ -56,12 +55,12 @@ public abstract class EclipseLinkJavaMetadataConversionWizardPage
 	
 	@Override
 	protected IPath getDefaultMappingFileRuntimPath() {
-		return JptJpaEclipseLinkCorePlugin.DEFAULT_ECLIPSELINK_ORM_XML_RUNTIME_PATH;
+		return XmlEntityMappings.DEFAULT_RUNTIME_PATH;
 	}
 
 	@Override
 	protected IContentType getMappingFileContentType() {
-		return JptJpaEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE;
+		return XmlEntityMappings.CONTENT_TYPE;
 	}
 
 

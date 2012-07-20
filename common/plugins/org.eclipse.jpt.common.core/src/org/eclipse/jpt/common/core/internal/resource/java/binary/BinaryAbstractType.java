@@ -19,7 +19,7 @@ import org.eclipse.jdt.core.ITypeParameter;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.JavaResourceTypeBinding;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
@@ -164,7 +164,7 @@ abstract class BinaryAbstractType
 				return new ArrayIterable<ITypeParameter>(this.type.getTypeParameters());
 			}
 			catch (JavaModelException jme) {
-				JptCommonCorePlugin.log(jme);
+				JptCommonCorePlugin.instance().logError(jme);
 			}
 			return EmptyIterable.instance();
 		}

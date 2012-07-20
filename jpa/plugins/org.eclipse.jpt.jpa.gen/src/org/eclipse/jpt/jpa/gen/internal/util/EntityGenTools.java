@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -38,18 +38,23 @@ public class EntityGenTools {
 
 	/**
 	 * Convert the specified (database) identifier to a unique "Java style"
-	 * identifier:
-	 *     - if the identifier is all-caps, convert underscores to "camel case"
-	 *     - if the identifier is not all-caps, leave it unchanged (except, possibly, for the first letter)
-	 *     - convert to a legal Java identifier
-	 *         - eliminate illegal characters
-	 *         - if the result is a reserved word, modify it slightly
+	 * identifier:<ul>
+	 * <li>if the identifier is all-caps, convert underscores to "camel case"
+	 * <li>if the identifier is not all-caps, leave it unchanged
+	 *     (except, possibly, for the first letter)
+	 * <li>convert to a legal Java identifier
+	 * <li>eliminate illegal characters
+	 * <li>if the result is a reserved word, modify it slightly
+	 * </ul>
 	 * If the result is already one of the specified existing identifiers
 	 * (ignoring case so we don't have filename collisions on Windows),
 	 * modify it slightly again.
-	 *     "FOO" => "Foo" or "foo"
-	 *     "FOO_BAR" => "FooBar" or "fooBar"
-	 *     "PACKAGE" => "Package" or "package_"
+	 * <p>
+	 * For example:<ul><code>
+	 * <li>"FOO" => "Foo" or "foo"
+	 * <li>"FOO_BAR" => "FooBar" or "fooBar"
+	 * <li>"PACKAGE" => "Package" or "package_"
+	 * </code><ul>
 	 */
 	public static String convertToUniqueJavaStyleIdentifier(String identifier, boolean capitalizeFirstLetter, Collection<String> identifiers) {
 		String result = identifier;

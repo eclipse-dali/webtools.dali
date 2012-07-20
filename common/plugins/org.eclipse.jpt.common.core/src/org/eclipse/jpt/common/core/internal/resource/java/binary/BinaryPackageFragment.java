@@ -18,7 +18,7 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceClassFile;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragment;
@@ -138,7 +138,7 @@ final class BinaryPackageFragment
 		try {
 			return this.packageFragment.getChildren();
 		} catch (JavaModelException ex) {
-			JptCommonCorePlugin.log(ex);
+			JptCommonCorePlugin.instance().logError(ex);
 			return EMPTY_JAVA_ELEMENT_ARRAY;
 		}
 	}

@@ -1,25 +1,34 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal;
 
 import java.util.ArrayList;
-import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jpa.core.JpaPlatformProvider;
+import org.eclipse.jpt.jpa.core.JpaResourceModelProvider;
 import org.eclipse.jpt.jpa.core.ResourceDefinition;
 import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
+import org.eclipse.jpt.jpa.core.internal.AbstractJpaPlatformProvider;
+import org.eclipse.jpt.jpa.core.internal.JarResourceModelProvider;
+import org.eclipse.jpt.jpa.core.internal.JavaResourceModelProvider;
+import org.eclipse.jpt.jpa.core.internal.OrmResourceModelProvider;
+import org.eclipse.jpt.jpa.core.internal.PersistenceResourceModelProvider;
+import org.eclipse.jpt.jpa.core.internal.context.java.JarDefinition;
+import org.eclipse.jpt.jpa.core.internal.context.java.JavaSourceFileDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaTransientMappingDefinition;
-import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_0Definition;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.GenericPersistenceXml2_0Definition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaArrayMappingDefinition2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicCollectionMappingDefinition2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMapMappingDefinition2_0;
@@ -39,19 +48,25 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJav
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaTransformationMappingDefinition2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaVariableOneToOneMappingDefinition2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.EclipseLinkJavaVersionMappingDefinition2_2;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml1_1Definition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml1_2Definition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_0Definition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_1Definition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_2Definition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_3Definition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_4Definition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXmlDefinition;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLink2_4PersistenceXmlDefinition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceXmlDefinition;
 
-
+/**
+ * EclipseLink 2.4 platform config
+ */
 public class EclipseLink2_4JpaPlatformProvider
-		extends AbstractEclipseLink2_0JpaPlatformProvider {
-
+	extends AbstractJpaPlatformProvider
+{
 	// singleton
 	private static final JpaPlatformProvider INSTANCE = new EclipseLink2_4JpaPlatformProvider();
-
 
 	/**
 	 * Return the singleton
@@ -59,7 +74,6 @@ public class EclipseLink2_4JpaPlatformProvider
 	public static JpaPlatformProvider instance() {
 		return INSTANCE;
 	}
-
 
 	/**
 	 * Enforce singleton usage
@@ -72,40 +86,69 @@ public class EclipseLink2_4JpaPlatformProvider
 	// ********** resource models **********
 
 	@Override
-	public JptResourceType getMostRecentSupportedResourceType(IContentType contentType) {
-		if (contentType.equals(JptJpaEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE)) {
-			return JptJpaEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_2_4_RESOURCE_TYPE;
-		}
-		return super.getMostRecentSupportedResourceType(contentType);
+	protected void addMostRecentSupportedResourceTypesTo(ArrayList<JptResourceType> types) {
+		CollectionTools.addAll(types, MOST_RECENT_SUPPORTED_RESOURCE_TYPES);
 	}
+
+	// order should not be important here
+	protected static final JptResourceType[] MOST_RECENT_SUPPORTED_RESOURCE_TYPES = new JptResourceType[] {
+		JavaSourceFileDefinition.instance().getResourceType(),
+		JarDefinition.instance().getResourceType(),
+		GenericPersistenceXml2_0Definition.instance().getResourceType(),
+		GenericOrmXml2_0Definition.instance().getResourceType(),
+		org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_4Definition.instance().getResourceType()
+	};
+
+	@Override
+	protected void addResourceModelProvidersTo(ArrayList<JpaResourceModelProvider> providers) {
+		CollectionTools.addAll(providers, RESOURCE_MODEL_PROVIDERS);
+	}
+
+	// order should not be important here
+	protected static final JpaResourceModelProvider[] RESOURCE_MODEL_PROVIDERS = new JpaResourceModelProvider[] {
+		JavaResourceModelProvider.instance(),
+		JarResourceModelProvider.instance(),
+		PersistenceResourceModelProvider.instance(),
+		OrmResourceModelProvider.instance(),
+		EclipseLinkOrmResourceModelProvider.instance()
+	};
 
 
 	// ********** resource definitions **********
 
 	@Override
 	protected void addResourceDefinitionsTo(ArrayList<ResourceDefinition> definitions) {
-		super.addResourceDefinitionsTo(definitions);
 		CollectionTools.addAll(definitions, RESOURCE_DEFINITIONS);
 	}
 
 	protected static final ResourceDefinition[] RESOURCE_DEFINITIONS = new ResourceDefinition[] {
+		JavaSourceFileDefinition.instance(),
+		JarDefinition.instance(),
+		EclipseLinkPersistenceXmlDefinition.instance(),
 		EclipseLink2_4PersistenceXmlDefinition.instance(),
+		GenericOrmXmlDefinition.instance(),
+		GenericOrmXml2_0Definition.instance(),
+		EclipseLinkOrmXmlDefinition.instance(),
+		EclipseLinkOrmXml1_1Definition.instance(),
+		EclipseLinkOrmXml1_2Definition.instance(),
+		EclipseLinkOrmXml2_0Definition.instance(),
 		EclipseLinkOrmXml2_1Definition.instance(),
 		EclipseLinkOrmXml2_2Definition.instance(),
 		EclipseLinkOrmXml2_3Definition.instance(),
 		EclipseLinkOrmXml2_4Definition.instance()
 	};
 
+
 	// ********* Java type mappings *********
 
 	@Override
 	protected void addJavaTypeMappingDefinitionsTo(ArrayList<JavaTypeMappingDefinition> definitions) {
-		CollectionTools.addAll(definitions, JAVA_TYPE_MAPPING_DEFINITIONS);
+		CollectionTools.addAll(definitions, JAVA_TYPE_MAPPING_DEFINITIONS_2_4);
 	}
 
 	// order matches that used by EclipseLink
 	// NB: no EclipseLink-specific mappings
-	protected static final JavaTypeMappingDefinition[] JAVA_TYPE_MAPPING_DEFINITIONS = new JavaTypeMappingDefinition[] {
+	protected static final JavaTypeMappingDefinition[] JAVA_TYPE_MAPPING_DEFINITIONS_2_4 = new JavaTypeMappingDefinition[] {
 		EclipseLinkJavaEntityDefinition2_3.instance(),
 		EclipseLinkJavaEmbeddableDefinition2_2.instance(),
 		EclipseLinkJavaMappedSuperclassDefinition2_3.instance()
@@ -116,12 +159,12 @@ public class EclipseLink2_4JpaPlatformProvider
 
 	@Override
 	protected void addDefaultJavaAttributeMappingDefinitionsTo(ArrayList<DefaultJavaAttributeMappingDefinition> definitions) {
-		CollectionTools.addAll(definitions, DEFAULT_JAVA_ATTRIBUTE_MAPPING_DEFINITIONS);
+		CollectionTools.addAll(definitions, DEFAULT_JAVA_ATTRIBUTE_MAPPING_DEFINITIONS_2_4);
 	}
 
 	// order matches that used by EclipseLink
 	// NB: no change from EclipseLink 1.2 to 2.0
-	protected static final DefaultJavaAttributeMappingDefinition[] DEFAULT_JAVA_ATTRIBUTE_MAPPING_DEFINITIONS = new DefaultJavaAttributeMappingDefinition[] {
+	protected static final DefaultJavaAttributeMappingDefinition[] DEFAULT_JAVA_ATTRIBUTE_MAPPING_DEFINITIONS_2_4 = new DefaultJavaAttributeMappingDefinition[] {
 		EclipseLinkJavaEmbeddedMappingDefinition2_2.instance(),
 		EclipseLinkJavaOneToManyMappingDefinition2_2.instance(),
 		EclipseLinkJavaOneToOneMappingDefinition2_2.instance(),
@@ -131,11 +174,11 @@ public class EclipseLink2_4JpaPlatformProvider
 
 	@Override
 	protected void addSpecifiedJavaAttributeMappingDefinitionsTo(ArrayList<JavaAttributeMappingDefinition> definitions) {
-		CollectionTools.addAll(definitions, SPECIFIED_JAVA_ATTRIBUTE_MAPPING_DEFINITIONS);
+		CollectionTools.addAll(definitions, SPECIFIED_JAVA_ATTRIBUTE_MAPPING_DEFINITIONS_2_4);
 	}
 
 	// order matches that used by EclipseLink
-	protected static final JavaAttributeMappingDefinition[] SPECIFIED_JAVA_ATTRIBUTE_MAPPING_DEFINITIONS = new JavaAttributeMappingDefinition[] {
+	protected static final JavaAttributeMappingDefinition[] SPECIFIED_JAVA_ATTRIBUTE_MAPPING_DEFINITIONS_2_4 = new JavaAttributeMappingDefinition[] {
 		JavaTransientMappingDefinition.instance(),
 		EclipseLinkJavaBasicCollectionMappingDefinition2_0.instance(),
 		EclipseLinkJavaBasicMapMappingDefinition2_0.instance(),

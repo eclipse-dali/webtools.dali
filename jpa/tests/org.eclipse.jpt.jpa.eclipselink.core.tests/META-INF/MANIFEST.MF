@@ -2,8 +2,10 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
-Bundle-SymbolicName: org.eclipse.jpt.jpa.eclipselink.core.tests
+Bundle-SymbolicName: org.eclipse.jpt.jpa.eclipselink.core.tests;singleton:=true
 Bundle-Version: 2.2.0.qualifier
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: .
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.eclipse.core.commands;bundle-version="[3.4.0,4.0.0)",
@@ -13,6 +15,7 @@ Require-Bundle: org.eclipse.core.commands;bundle-version="[3.4.0,4.0.0)",
  org.eclipse.jpt.common.core;bundle-version="[1.0.0,2.0.0)",
  org.eclipse.jpt.common.core.tests;bundle-version="[1.0.0,2.0.0)",
  org.eclipse.jpt.common.utility;bundle-version="[2.0.0,3.0.0)",
+ org.eclipse.jpt.common.eclipselink.core;bundle-version="[1.0.0,2.0.0)",
  org.eclipse.jdt.core;bundle-version="[3.4.0,4.0.0)",
  org.eclipse.jpt.jpa.core;bundle-version="[3.0.0,4.0.0)",
  org.eclipse.jpt.jpa.eclipselink.core;bundle-version="[2.0.0,3.0.0)",
@@ -28,6 +31,5 @@ Export-Package: org.eclipse.jpt.jpa.eclipselink.core.tests.internal;x-internal:=
  org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.java;x-internal:=true,
  org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.orm;x-internal:=true,
  org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.persistence;x-internal:=true,
- org.eclipse.jpt.jpa.eclipselink.core.tests.internal.metadata;x-internal:=true,
  org.eclipse.jpt.jpa.eclipselink.core.tests.internal.resource;x-internal:=true,
  org.eclipse.jpt.jpa.eclipselink.core.tests.internal.resource.java;x-internal:=true

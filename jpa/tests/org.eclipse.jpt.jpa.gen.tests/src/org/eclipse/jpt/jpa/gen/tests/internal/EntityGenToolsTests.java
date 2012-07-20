@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,13 +10,9 @@
 package org.eclipse.jpt.jpa.gen.tests.internal;
 
 import java.util.HashSet;
+import junit.framework.TestCase;
 import org.eclipse.jpt.jpa.gen.internal.util.EntityGenTools;
 
-import junit.framework.TestCase;
-
-/**
- * 
- */
 @SuppressWarnings("nls")
 public class EntityGenToolsTests extends TestCase {
 
@@ -62,7 +58,7 @@ public class EntityGenToolsTests extends TestCase {
 	public void testConvertToUniqueJavaStyleClassName4() {
 		HashSet<String> names = new HashSet<String>();
 		assertEquals("FooBar", EntityGenTools.convertToUniqueJavaStyleClassName("FooBar", names));
-		assertEquals("Foo_bar", EntityGenTools.convertToUniqueJavaStyleClassName("foo_bar", names));
+		assertEquals("FooBar", EntityGenTools.convertToUniqueJavaStyleClassName("foo_bar", names));
 		assertEquals("FooBar", EntityGenTools.convertToUniqueJavaStyleClassName("FOO_BAR", names));
 		assertEquals("FooBar", EntityGenTools.convertToUniqueJavaStyleClassName("_FOO_BAR", names));
 		assertEquals("FooBar", EntityGenTools.convertToUniqueJavaStyleClassName("FOO_BAR_", names));
@@ -74,7 +70,7 @@ public class EntityGenToolsTests extends TestCase {
 		HashSet<String> names = new HashSet<String>();
 		names.add("FooBar");
 		assertEquals("FooBar2", EntityGenTools.convertToUniqueJavaStyleClassName("FooBar", names));
-		assertEquals("Foo_bar", EntityGenTools.convertToUniqueJavaStyleClassName("foo_bar", names));
+		assertEquals("FooBar2", EntityGenTools.convertToUniqueJavaStyleClassName("foo_bar", names));
 		assertEquals("FooBar2", EntityGenTools.convertToUniqueJavaStyleClassName("FOO_BAR", names));
 		assertEquals("FooBar2", EntityGenTools.convertToUniqueJavaStyleClassName("_FOO_BAR", names));
 		assertEquals("FooBar2", EntityGenTools.convertToUniqueJavaStyleClassName("FOO_BAR_", names));
@@ -120,7 +116,7 @@ public class EntityGenToolsTests extends TestCase {
 	public void testConvertToUniqueJavaStyleAttributeName4() {
 		HashSet<String> names = new HashSet<String>();
 		assertEquals("fooBar", EntityGenTools.convertToUniqueJavaStyleAttributeName("FooBar", names));
-		assertEquals("foo_bar", EntityGenTools.convertToUniqueJavaStyleAttributeName("foo_bar", names));
+		assertEquals("fooBar", EntityGenTools.convertToUniqueJavaStyleAttributeName("foo_bar", names));
 		assertEquals("fooBar", EntityGenTools.convertToUniqueJavaStyleAttributeName("FOO_BAR", names));
 		assertEquals("fooBar", EntityGenTools.convertToUniqueJavaStyleAttributeName("_FOO_BAR", names));
 		assertEquals("fooBar", EntityGenTools.convertToUniqueJavaStyleAttributeName("FOO_BAR_", names));
@@ -132,12 +128,11 @@ public class EntityGenToolsTests extends TestCase {
 		HashSet<String> names = new HashSet<String>();
 		names.add("FooBar");
 		assertEquals("fooBar2", EntityGenTools.convertToUniqueJavaStyleAttributeName("FooBar", names));
-		assertEquals("foo_bar", EntityGenTools.convertToUniqueJavaStyleAttributeName("foo_bar", names));
+		assertEquals("fooBar2", EntityGenTools.convertToUniqueJavaStyleAttributeName("foo_bar", names));
 		assertEquals("fooBar2", EntityGenTools.convertToUniqueJavaStyleAttributeName("FOO_BAR", names));
 		assertEquals("fooBar2", EntityGenTools.convertToUniqueJavaStyleAttributeName("_FOO_BAR", names));
 		assertEquals("fooBar2", EntityGenTools.convertToUniqueJavaStyleAttributeName("FOO_BAR_", names));
 		assertEquals("fooBar_", EntityGenTools.convertToUniqueJavaStyleAttributeName("FOO_BAR_*", names));
 		assertEquals("_fooBar", EntityGenTools.convertToUniqueJavaStyleAttributeName("4FOO_BAR", names));
 	}
-
 }

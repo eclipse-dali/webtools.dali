@@ -10,9 +10,10 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1;
 
 import org.eclipse.jpt.jpa.core.JpaDataSource;
+import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.internal.AbstractJpaNode;
+import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.db.ConnectionAdapter;
 import org.eclipse.jpt.jpa.db.ConnectionListener;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
@@ -95,7 +96,7 @@ public class GenericJpaDataSource
 		if (this.firePropertyChanged(CONNECTION_PROFILE_NAME_PROPERTY, old, name)) {
 			 // sync the connection profile when the name changes
 			this.setConnectionProfile(this.buildConnectionProfile(name));
-			JptJpaCorePlugin.setConnectionProfileName(this.getJpaProject().getProject(), name);
+			JpaPreferences.setConnectionProfileName(this.getJpaProject().getProject(), name);
 		}
 	}
 
@@ -121,6 +122,7 @@ public class GenericJpaDataSource
 	}
 
 	public void dispose() {
+		this.setConnectionProfileName(null);
 		if (this.connectionProfile != null) {
 			this.connectionProfile.removeConnectionListener(this.connectionListener);
 		}

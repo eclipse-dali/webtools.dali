@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
 import org.eclipse.jpt.common.ui.jface.TreeStateProvider;
 import org.eclipse.jpt.common.utility.internal.RunnableAdapter;
+import org.eclipse.jpt.common.utility.internal.Tools;
 
 /**
  * @see AbstractItemStructuredStateProviderManager
@@ -53,7 +54,7 @@ public class ItemTreeStateProviderManager
 
 	public Object[] getChildren(Object parentElement) {
 		ItemTreeContentProvider provider = this.getItemContentProvider(parentElement);
-		return (provider == null) ? EMPTY_ARRAY : provider.getChildren();
+		return (provider == null) ? Tools.EMPTY_OBJECT_ARRAY : provider.getChildren();
 	}
 
 	public Object getParent(Object element) {

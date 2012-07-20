@@ -14,11 +14,12 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IMemberValuePair;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.resource.java.AbstractJavaResourceNode;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.Tools;
 
 /**
  * Binary convenience methods
@@ -61,9 +62,8 @@ public abstract class BinaryNode
 	 */
 	public Object[] getJdtMemberValues(IAnnotation jdtContainerAnnotation, String memberName) {
 		Object[] values = (Object[]) this.getJdtMemberValue(jdtContainerAnnotation, memberName);
-		return (values != null) ? values : EMPTY_OBJECT_ARRAY;
+		return (values != null) ? values : Tools.EMPTY_OBJECT_ARRAY;
 	}
-	private static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
 
 	/**
 	 * Return the value of the specified JDT annotation's member with
@@ -91,7 +91,7 @@ public abstract class BinaryNode
 		try {
 			return jdtContainerAnnotation.getMemberValuePairs();
 		} catch (JavaModelException ex) {
-			JptCommonCorePlugin.log(ex);
+			JptCommonCorePlugin.instance().logError(ex);
 			return EMPTY_MEMBER_VALUE_PAIR_ARRAY;
 		}
 	}

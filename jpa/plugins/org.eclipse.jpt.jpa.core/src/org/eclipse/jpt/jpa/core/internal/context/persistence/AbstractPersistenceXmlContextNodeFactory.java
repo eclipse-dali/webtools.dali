@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.context.persistence;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.context.java.JarFile;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.JarFileRef;
@@ -22,11 +21,12 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlContextNodeFac
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJarFile;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.GenericClassRef;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.GenericJarFileRef;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.GenericMappingFileRef;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.GenericOrmXmlRef;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.GenericPersistence;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.GenericPersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.GenericPersistenceUnitProperty;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.ImpliedMappingFileRef;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.VirtualOrmXmlRef;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJarFileRef;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlMappingFileRef;
@@ -34,9 +34,9 @@ import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlProperty;
 
-public abstract class AbstractPersistenceXmlContextNodeFactory implements PersistenceXmlContextNodeFactory
+public abstract class AbstractPersistenceXmlContextNodeFactory
+	implements PersistenceXmlContextNodeFactory
 {
-	
 	public Persistence buildPersistence(PersistenceXml parent, XmlPersistence xmlPersistence) {
 		return new GenericPersistence(parent, xmlPersistence);
 	}
@@ -46,11 +46,11 @@ public abstract class AbstractPersistenceXmlContextNodeFactory implements Persis
 	}
 	
 	public MappingFileRef buildMappingFileRef(PersistenceUnit parent, XmlMappingFileRef xmlMappingFileRef) {
-		return new GenericMappingFileRef(parent, xmlMappingFileRef);
+		return new GenericOrmXmlRef(parent, xmlMappingFileRef);
 	}
 	
-	public MappingFileRef buildImpliedMappingFileRef(PersistenceUnit parent) {
-		return new ImpliedMappingFileRef(parent, JptJpaCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH.toString());
+	public MappingFileRef buildVirtualMappingFileRef(PersistenceUnit parent) {
+		return new VirtualOrmXmlRef(parent, XmlEntityMappings.DEFAULT_RUNTIME_PATH_NAME);
 	}
 	
 	public ClassRef buildClassRef(PersistenceUnit parent, XmlJavaClassRef classRef) {

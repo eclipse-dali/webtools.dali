@@ -12,9 +12,9 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jpt.jpa.eclipselink.ui.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.model.IEntityDataModelProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -85,9 +85,7 @@ public class DynamicEntityFieldsWizardPage extends DataModelWizardPage {
 	protected IStatus validateProjectName() {
 		// check for empty
 		if (model.getStringProperty(IArtifactEditOperationDataModelProperties.PROJECT_NAME) == null || model.getStringProperty(IArtifactEditOperationDataModelProperties.PROJECT_NAME).trim().length() == 0) {
-			return new Status(
-					IStatus.ERROR, JptJpaEclipseLinkUiPlugin.PLUGIN_ID,
-					EclipseLinkUiMessages.DynamicEntityFieldsWizardPage_noJpaProjects);
+			return JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.DynamicEntityFieldsWizardPage_noJpaProjects);
 		}
 		return Status.OK_STATUS;
 	}

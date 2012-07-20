@@ -60,4 +60,9 @@ public interface JpaNode
 	 * Return the node's resource, typically for validation messages.
 	 */
 	IResource getResource();
+
+	/**
+	 * Return the model's JPA platform.
+	 */
+	JpaPlatform getJpaPlatform();
 }

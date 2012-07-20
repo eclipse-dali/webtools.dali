@@ -23,12 +23,14 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
 import org.eclipse.jem.util.plugin.JEMUtilPlugin;
+import org.eclipse.jpt.common.core.ContentTypeReference;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.JptResourceModelListener;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jst.j2ee.internal.xml.J2EEXmlDtDEntityResolver;
 import org.eclipse.wst.common.internal.emf.resource.Renderer;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
@@ -44,7 +46,7 @@ import org.xml.sax.EntityResolver;
  * This is a non-blocking call; and as a result it will return <code>null</code>
  * if the JPA XML resource or its JPA project is currently under construction.
  * <p>
- * See <code>org.eclipse.jpt.jpa.core/plugin.xml</code>.
+ * See <code>org.eclipse.jpt.jpa.core/plugin.xml:org.eclipse.core.runtime.adapters</code>.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -57,7 +59,7 @@ import org.xml.sax.EntityResolver;
  */
 public class JpaXmlResource
 	extends TranslatorResourceImpl
-	implements JptResourceModel
+	implements JptResourceModel, ContentTypeReference
 {
 	/**
 	 * cache the content type - if the content type changes, the JPA project
@@ -87,16 +89,18 @@ public class JpaXmlResource
 	}
 
 	/**
-	 * Build a new resource type every time(?).
+	 * The XML schema version is required.
 	 */
 	public JptResourceType getResourceType() {
 		String version = this.getVersion();
-		return ((this.contentType == null) || (version == null)) ?
-			null :
-			new JptResourceType(this.contentType, version);
+		return (version == null) ? null : this.getResourceType(version);
 	}
-	
-	
+
+	protected JptResourceType getResourceType(String version) {
+		return (this.contentType == null) ? null : PlatformTools.getResourceType(this.contentType, version);
+	}
+
+
 	// ********** BasicNotifierImpl override **********
 	
 	/**
@@ -247,7 +251,7 @@ public class JpaXmlResource
 		try {
 			this.save(Collections.EMPTY_MAP);
 		} catch (IOException ex) {
-			JptJpaCorePlugin.log(ex);
+			JptJpaCorePlugin.instance().logError(ex);
 		}
 	}
 	
@@ -273,19 +277,31 @@ public class JpaXmlResource
 
 	protected void resourceModelChanged() {
 		for (JptResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
-			listener.resourceModelChanged(this);
+			try {
+				listener.resourceModelChanged(this);
+			} catch (Exception ex) {
+				JptJpaCorePlugin.instance().logError(ex);
+			}
 		}
 	}
 
 	protected void resourceModelReverted() {
 		for (JptResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
-			listener.resourceModelReverted(this);
+			try {
+				listener.resourceModelReverted(this);
+			} catch (Exception ex) {
+				JptJpaCorePlugin.instance().logError(ex);
+			}
 		}
 	}
 
 	protected void resourceModelUnloaded() {
 		for (JptResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
-			listener.resourceModelUnloaded(this);
+			try {
+				listener.resourceModelUnloaded(this);
+			} catch (Exception ex) {
+				JptJpaCorePlugin.instance().logError(ex);
+			}
 		}
 	}
 

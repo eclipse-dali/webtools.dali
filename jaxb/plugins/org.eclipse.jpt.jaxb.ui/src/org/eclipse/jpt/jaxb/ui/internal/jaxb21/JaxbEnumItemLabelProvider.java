@@ -19,8 +19,8 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnum;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbType;
-import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiIcons;
+import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 import org.eclipse.swt.graphics.Image;
 
 
@@ -87,10 +87,10 @@ public class JaxbEnumItemLabelProvider
 		protected Image buildValue_() {
 			if (this.mappingModel.getValue() != null) {
 				if (this.isXmlTransientModel.getValue() == Boolean.TRUE) {
-					return JptJaxbUiPlugin.getImage(JptJaxbUiIcons.JAXB_TRANSIENT_ENUM);
+					return JptJaxbUiPlugin.instance().getImage(JptJaxbUiIcons.JAXB_TRANSIENT_ENUM);
 				}
 			}
-			return JptJaxbUiPlugin.getImage(JptJaxbUiIcons.JAXB_ENUM);
+			return JptJaxbUiPlugin.instance().getImage(JptJaxbUiIcons.JAXB_ENUM);
 		}
 		
 		@Override

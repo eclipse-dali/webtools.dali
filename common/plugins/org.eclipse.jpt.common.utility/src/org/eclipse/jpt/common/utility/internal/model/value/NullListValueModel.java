@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.common.utility.internal.model.value;
 import java.util.Iterator;
 import java.util.ListIterator;
 
+import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.common.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
@@ -27,9 +28,6 @@ public final class NullListValueModel<E>
 	extends AbstractModel
 	implements ListValueModel<E>
 {
-	private static final Object[] EMPTY_ARRAY = new Object[0];
-	private static final long serialVersionUID = 1L;
-
 	/**
 	 * Default constructor.
 	 */
@@ -57,7 +55,7 @@ public final class NullListValueModel<E>
 	}
 
 	public Object[] toArray() {
-		return EMPTY_ARRAY;
+		return Tools.EMPTY_OBJECT_ARRAY;
 	}
 
 

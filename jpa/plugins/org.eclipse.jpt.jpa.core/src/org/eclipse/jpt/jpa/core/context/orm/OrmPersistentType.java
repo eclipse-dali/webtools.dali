@@ -137,29 +137,32 @@ public interface OrmPersistentType
 	// ********** refactoring **********
 
 	/**
-	 * If this {@link OrmPersistentType#isFor(String)} the given IType, create a text 
-	 * DeleteEdit for deleting the type mapping element and any text that precedes it.
-	 * Otherwise return an EmptyIterable.
-	 * Though this will contain 1 or 0 DeleteEdits, using an Iterable
-	 * for ease of use with other createDeleteEdit API.
+	 * If this {@link #isFor(String)} the specified type,
+	 * create a text delete edit for deleting the type mapping element and
+	 * any text that precedes it.
+	 * Otherwise return an empty collection.
 	 */
 	Iterable<DeleteEdit> createDeleteTypeEdits(IType type);
 
 	/**
-	 * Create ReplaceEdits for renaming any references to the originalType to the newName.
-	 * The originalType has not yet been renamed, the newName is the new short name.
+	 * Create replace edits for renaming any references to
+	 * the specified original type to the specified new name.
+	 * The specified original type has not yet been renamed; and the specified
+	 * new name is a "simple" (unqualified) name.
 	 */
 	Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName);
 
 	/**
-	 * Create ReplaceEdits for moving any references to the originalType to the newPackage.
-	 * The originalType has not yet been moved.
+	 * Create replace edits for moving any references to
+	 * the specified original type to the specified new package.
+	 * The specified original type has not yet been moved.
 	 */
 	Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage);
 
 	/**
-	 * Create ReplaceEdits for renaming any references to the originalPackage to the newName.
-	 * The originalPackage has not yet been renamed.
+	 * Create replace edits for renaming any references to
+	 * the specified original package to the specified new name.
+	 * The specified original package has not yet been renamed.
 	 */
 	Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName);
 

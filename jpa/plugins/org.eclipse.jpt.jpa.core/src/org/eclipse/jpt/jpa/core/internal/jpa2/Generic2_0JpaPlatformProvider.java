@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,13 +10,10 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2;
 
 import java.util.ArrayList;
-import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jpa.core.JpaPlatformProvider;
 import org.eclipse.jpt.jpa.core.JpaResourceModelProvider;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.ResourceDefinition;
 import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
@@ -26,6 +23,8 @@ import org.eclipse.jpt.jpa.core.internal.JarResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.JavaResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.OrmResourceModelProvider;
 import org.eclipse.jpt.jpa.core.internal.PersistenceResourceModelProvider;
+import org.eclipse.jpt.jpa.core.internal.context.java.JarDefinition;
+import org.eclipse.jpt.jpa.core.internal.context.java.JavaSourceFileDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaTransientMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.GenericPersistenceXmlDefinition;
@@ -43,7 +42,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaOneToManyMappingD
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaOneToOneMappingDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaVersionMappingDefinition2_0;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_0Definition;
-import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.Generic2_0PersistenceXmlDefinition;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.GenericPersistenceXml2_0Definition;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -62,7 +61,6 @@ public class Generic2_0JpaPlatformProvider
 		return INSTANCE;
 	}
 
-
 	/**
 	 * Enforce singleton usage
 	 */
@@ -73,23 +71,18 @@ public class Generic2_0JpaPlatformProvider
 
 	// ********** resource models **********
 
-	public JptResourceType getMostRecentSupportedResourceType(IContentType contentType) {
-		if (contentType.equals(JptCommonCorePlugin.JAVA_SOURCE_CONTENT_TYPE)) {
-			return JptCommonCorePlugin.JAVA_SOURCE_RESOURCE_TYPE;
-		}
-		else if (contentType.equals(JptCommonCorePlugin.JAR_CONTENT_TYPE)) {
-			return JptCommonCorePlugin.JAR_RESOURCE_TYPE;
-		}
-		else if (contentType.equals(JptJpaCorePlugin.PERSISTENCE_XML_CONTENT_TYPE)) {
-			return JptJpaCorePlugin.PERSISTENCE_XML_2_0_RESOURCE_TYPE;
-		}
-		else if (contentType.equals(JptJpaCorePlugin.ORM_XML_CONTENT_TYPE)) {
-			return JptJpaCorePlugin.ORM_XML_2_0_RESOURCE_TYPE;
-		}
-		else {
-			throw new IllegalArgumentException(contentType.toString());
-		}
+	@Override
+	protected void addMostRecentSupportedResourceTypesTo(ArrayList<JptResourceType> types) {
+		CollectionTools.addAll(types, MOST_RECENT_SUPPORTED_RESOURCE_TYPES);
 	}
+
+	// order should not be important here
+	protected static final JptResourceType[] MOST_RECENT_SUPPORTED_RESOURCE_TYPES = new JptResourceType[] {
+		JavaSourceFileDefinition.instance().getResourceType(),
+		JarDefinition.instance().getResourceType(),
+		GenericPersistenceXml2_0Definition.instance().getResourceType(),
+		GenericOrmXml2_0Definition.instance().getResourceType()
+	};
 
 	@Override
 	protected void addResourceModelProvidersTo(ArrayList<JpaResourceModelProvider> providers) {
@@ -162,8 +155,10 @@ public class Generic2_0JpaPlatformProvider
 	}
 
 	protected static final ResourceDefinition[] RESOURCE_DEFINITIONS = new ResourceDefinition[] {
+		JavaSourceFileDefinition.instance(),
+		JarDefinition.instance(),
 		GenericPersistenceXmlDefinition.instance(),
-		Generic2_0PersistenceXmlDefinition.instance(),
+		GenericPersistenceXml2_0Definition.instance(),
 		GenericOrmXmlDefinition.instance(),
 		GenericOrmXml2_0Definition.instance()
 	};

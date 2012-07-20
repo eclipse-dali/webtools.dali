@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,9 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.ArrayList;
-
+import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
@@ -86,7 +88,7 @@ public abstract class AbstractOrmXmlDefinition
 
 	/**
 	 * Order should not matter here; but we'll use the same order as for Java.
-	 * @see GenericJpaPlatformProvider
+	 * @see org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformProvider
 	 */
 	protected static final OrmTypeMappingDefinition[] TYPE_MAPPING_DEFINITIONS = new OrmTypeMappingDefinition[] {
 		OrmEntityDefinition.instance(),
@@ -125,4 +127,16 @@ public abstract class AbstractOrmXmlDefinition
 	}
 
 	protected abstract void addAttributeMappingDefinitionsTo(ArrayList<OrmAttributeMappingDefinition> definitions);
+
+
+	// ********** misc **********
+
+	protected JptResourceType getResourceType(IContentType contentType, String version) {
+		return PlatformTools.getResourceType(contentType, version);
+	}
+
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName();
+	}
 }

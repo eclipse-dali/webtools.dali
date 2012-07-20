@@ -12,7 +12,8 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.eclipselink.core.JptJpaEclipseLinkCorePlugin;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_3Definition;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.EclipseLinkOrmXml2_4Definition;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsPageManager;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.jpa.ui.internal.details.AbstractEntityMappingsDetailsProvider;
@@ -51,8 +52,8 @@ public class EclipseLinkEntityMappings2_3DetailsProvider
 
 	@Override
 	protected boolean providesDetails(JptResourceType resourceType) {
-		return resourceType.equals(JptJpaEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_2_3_RESOURCE_TYPE) ||
-			resourceType.equals(JptJpaEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_2_4_RESOURCE_TYPE);
+		return resourceType.equals(EclipseLinkOrmXml2_3Definition.instance().getResourceType()) ||
+			resourceType.equals(EclipseLinkOrmXml2_4Definition.instance().getResourceType());
 	}
 
 	public JpaDetailsPageManager<? extends JpaStructureNode> buildDetailsPageManager(

@@ -11,6 +11,7 @@ package org.eclipse.jpt.common.ui.jface;
 
 import java.io.Serializable;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.Tools;
 
 /**
  * Implementations of this interface can be used to maintain the elements
@@ -48,12 +49,6 @@ public interface ItemStructuredContentProvider {
 
 
 	/**
-	 * Convenience constant for when no children are present.
-	 */
-	Object[] EMPTY_ARRAY = new Object[0];
-
-
-	/**
 	 * An item structured content provider's manager is notified whenever the
 	 * input element's elements have changed.
 	 */
@@ -87,7 +82,7 @@ public interface ItemStructuredContentProvider {
 			super();
 		}
 		public Object[] getElements() {
-			return EMPTY_ARRAY;
+			return Tools.EMPTY_OBJECT_ARRAY;
 		}
 		public void dispose() {
 			// NOP

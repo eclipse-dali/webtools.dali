@@ -75,7 +75,7 @@ public class AddAllEntitiesFeature extends AbstractCustomFeature implements IAdd
 		Diagram d = getDiagram();
 		JpaProject project = getTargetJPAProject();
 		PersistenceUnit unit = project.getRootContextNode().getPersistenceXml().
-								getPersistence().getPersistenceUnits().iterator().next();
+								getRoot().getPersistenceUnits().iterator().next();
 		
 		
 		Point lowestRightestPointOfExistingDiagram = getLowestRightestPoint(d);

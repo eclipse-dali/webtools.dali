@@ -39,7 +39,7 @@ import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.NodeFinder;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.persistence.jpa.jpql.ExpressionTools;
 import org.eclipse.persistence.jpa.jpql.spi.IConstructor;
 import org.eclipse.persistence.jpa.jpql.spi.ITypeDeclaration;
@@ -160,7 +160,7 @@ public class JpaType implements IJpaType {
 				}
 			}
 			catch (Exception e) {
-				JptJpaCorePlugin.log(e);
+				JptJpaCorePlugin.instance().logError(e);
 			}
 
 			return constructors;

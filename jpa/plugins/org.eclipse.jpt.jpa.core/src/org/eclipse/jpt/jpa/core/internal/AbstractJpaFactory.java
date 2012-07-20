@@ -202,8 +202,8 @@ public abstract class AbstractJpaFactory
 		return new GenericPersistenceXml(parent, resource);
 	}
 	
-	public OrmXml buildMappingFile(MappingFileRef parent, JpaXmlResource resource) {
-		return new GenericOrmXml(parent, resource);
+	public OrmXml buildMappingFile(MappingFileRef parent, Object resourceMappingFile) {
+		return new GenericOrmXml(parent, (JpaXmlResource) resourceMappingFile);
 	}
 
 

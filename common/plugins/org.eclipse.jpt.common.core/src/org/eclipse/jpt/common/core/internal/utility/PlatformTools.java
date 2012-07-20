@@ -21,7 +21,9 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.core.runtime.content.IContentTypeManager;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.JptWorkspace;
+import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 
 /**
  * A collection of utilities for dealing with the Eclipse platform API.
@@ -63,6 +65,20 @@ public class PlatformTools {
 		return project.getFile(projectRelativePath);
 	}
 	
+	public static JptResourceType getResourceType(IContentType contentType) {
+		JptWorkspace jptWorkspace = getJptWorkspace();
+		return (jptWorkspace == null) ? null : jptWorkspace.getResourceTypeManager().getResourceType(contentType);
+	}
+	
+	public static JptResourceType getResourceType(IContentType contentType, String version) {
+		JptWorkspace jptWorkspace = getJptWorkspace();
+		return (jptWorkspace == null) ? null : jptWorkspace.getResourceTypeManager().getResourceType(contentType, version);
+	}
+
+	private static JptWorkspace getJptWorkspace() {
+		return getAdapter(ResourcesPlugin.getWorkspace(), JptWorkspace.class);
+	}
+
 	/**
 	 * Return the specified file's content type,
 	 * using the Eclipse platform's content type manager.
@@ -85,12 +101,12 @@ public class PlatformTools {
 		try {
 			contentType = findContentTypeFor(fileContents, fileName);
 		} catch (IOException ex) {
-			JptCommonCorePlugin.log(ex);
+			JptCommonCorePlugin.instance().logError(ex);
 		} finally {
 			try {
 				fileContents.close();
 			} catch (IOException ex) {
-				JptCommonCorePlugin.log(ex);
+				JptCommonCorePlugin.instance().logError(ex);
 			}
 		}
 		return contentType;

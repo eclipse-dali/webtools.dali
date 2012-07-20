@@ -1,0 +1,7 @@
+# debugging options for the plug-in org.eclipse.jpt.common.ui
+
+# turn on debugging for the plug-in org.eclipse.jpt.common.ui
+org.eclipse.jpt.common.ui/debug=true
+
+# turn on debugging for all panes
+org.eclipse.jpt.common.ui/debug/Pane=false

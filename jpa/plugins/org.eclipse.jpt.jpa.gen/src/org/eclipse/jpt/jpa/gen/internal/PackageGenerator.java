@@ -7,7 +7,6 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-
 package org.eclipse.jpt.jpa.gen.internal;
 
 import java.io.ByteArrayInputStream;
@@ -48,6 +47,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
+import org.eclipse.jpt.jpa.gen.internal.plugin.JptJpaGenPlugin;
 import org.eclipse.jpt.jpa.gen.internal.util.CompilationUnitModifier;
 import org.eclipse.jpt.jpa.gen.internal.util.FileUtil;
 import org.eclipse.jpt.jpa.gen.internal.util.UrlUtil;
@@ -76,7 +76,7 @@ public class PackageGenerator {
 				generator.doGenerate(sm.newChild(19));
 			}
 		} catch (Exception e) {
-			throw new CoreException(new Status(IStatus.ERROR, JptJpaGenPlugin.PLUGIN_ID, JptGenMessages.Error_Generating_Entities, e));
+			throw new CoreException(JptJpaGenPlugin.instance().buildErrorStatus(JptGenMessages.Error_Generating_Entities, e));
 		}
 	}
 	
@@ -153,7 +153,7 @@ public class PackageGenerator {
 			return;
 		}
 
-		Persistence persistence = this.jpaProject.getRootContextNode().getPersistenceXml().getPersistence();
+		Persistence persistence = this.jpaProject.getRootContextNode().getPersistenceXml().getRoot();
 		if (persistence == null) {
 			// invalid content, do not attempt to update
 			return;
@@ -200,11 +200,11 @@ public class PackageGenerator {
 		//If the plug-in is packaged as a JAR, we need extract the template 
 		//folder into the plug-in state location. This is required by Velocity
 		//since we use included templates.
-		Bundle bundle = Platform.getBundle(JptJpaGenPlugin.PLUGIN_ID);
+		Bundle bundle = JptJpaGenPlugin.instance().getBundle();
 		Path path = new Path( templatesPath);
 		URL url = FileLocator.find(bundle, path, null);
 		if (url == null) {
-			throw new CoreException(new Status(IStatus.ERROR, JptJpaGenPlugin.PLUGIN_ID,  JptGenMessages.Templates_notFound + " "+  JptJpaGenPlugin.PLUGIN_ID + "/" + templatesPath) );//$NON-NLS-1$
+			throw new CoreException(JptJpaGenPlugin.instance().buildErrorStatus(JptGenMessages.Templates_notFound, JptJpaGenPlugin.instance().getPluginID() + '/' + templatesPath));
 		}		
 		URL templUrl = FileLocator.resolve(url);
 		
@@ -218,7 +218,7 @@ public class PackageGenerator {
 		
 
 		if (templDir == null || !templDir.exists()) {
-			throw new CoreException(new Status(IStatus.ERROR, JptJpaGenPlugin.PLUGIN_ID,  JptGenMessages.Templates_notFound + " "+  JptJpaGenPlugin.PLUGIN_ID ) );//$NON-NLS-1$
+			throw new CoreException(JptJpaGenPlugin.instance().buildErrorStatus(JptGenMessages.Templates_notFound, JptJpaGenPlugin.instance().getPluginID()));
 		}
 		return templDir;
 	}
@@ -231,7 +231,7 @@ public class PackageGenerator {
 			return;
 		}
 
-		Persistence persistence = this.jpaProject.getRootContextNode().getPersistenceXml().getPersistence();
+		Persistence persistence = this.jpaProject.getRootContextNode().getPersistenceXml().getRoot();
 		if (persistence == null) {
 			// invalid content, do not attempt to update
 			return;
@@ -305,8 +305,7 @@ public class PackageGenerator {
 			javaFile.refreshLocal(1, sm.newChild(1));
 			
 		} catch (Throwable e) {
-			CoreException ce = new CoreException(new Status(IStatus.ERROR, JptJpaGenPlugin.PLUGIN_ID, JptGenMessages.Templates_notFound + "" + JptJpaGenPlugin.PLUGIN_ID , e) );//$NON-NLS-1$
-			JptJpaGenPlugin.logException( ce );
+			JptJpaGenPlugin.instance().logError(e, JptGenMessages.Templates_notFound, JptJpaGenPlugin.instance().getPluginID());
 		}
 	}
 	
@@ -384,7 +383,7 @@ public class PackageGenerator {
 					}
 				}
 			} catch (JavaModelException e) {
-				JptJpaGenPlugin.logException(e);
+				JptJpaGenPlugin.instance().logError(e);
 			}
 		}
 		return defaultSrcPath;
@@ -466,8 +465,7 @@ public class PackageGenerator {
 		    xmlFile.refreshLocal(1, null);
 			
 		} catch (Throwable e) {
-			CoreException ce = new CoreException(new Status(IStatus.ERROR, JptJpaGenPlugin.PLUGIN_ID, JptGenMessages.Templates_notFound + "" + JptJpaGenPlugin.PLUGIN_ID , e) );//$NON-NLS-1$
-			JptJpaGenPlugin.logException( ce );
+			JptJpaGenPlugin.instance().logError(e, JptGenMessages.Templates_notFound, JptJpaGenPlugin.instance().getPluginID());
 		}
 	}
 	
