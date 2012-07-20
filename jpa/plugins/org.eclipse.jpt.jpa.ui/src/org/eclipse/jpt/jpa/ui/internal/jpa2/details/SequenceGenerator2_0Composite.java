@@ -1,17 +1,18 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2012 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 
+import java.util.Arrays;
 import java.util.Collection;
-
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
@@ -22,6 +23,7 @@ import org.eclipse.jpt.jpa.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.SequenceGeneratorComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.db.CatalogCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.SchemaCombo;
+import org.eclipse.jpt.jpa.ui.internal.details.db.SequenceCombo;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -40,7 +42,6 @@ public class SequenceGenerator2_0Composite extends SequenceGeneratorComposite
 
 	@Override
 	protected void initializeLayout(Composite container) {
-
 		// Name widgets
 		this.addLabel(container, JptUiDetailsMessages.SequenceGeneratorComposite_name);
 		this.addText(container, this.buildGeneratorNameHolder(), JpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR_NAME);
@@ -66,6 +67,47 @@ public class SequenceGenerator2_0Composite extends SequenceGeneratorComposite
 		this.addInitialValueCombo(container);
 	}
 
+	private CatalogCombo<SequenceGenerator> addCatalogCombo(Composite container) {
+
+		return new CatalogCombo<SequenceGenerator>(this, getSubjectHolder(), container) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(SequenceGenerator2_0.DEFAULT_CATALOG_PROPERTY);
+				propertyNames.add(SequenceGenerator2_0.SPECIFIED_CATALOG_PROPERTY);
+			}
+
+			@Override
+			protected String getDefaultValue() {
+				return ((SequenceGenerator2_0) getSubject()).getDefaultCatalog();
+			}
+
+			@Override
+			protected boolean nullSubjectIsAllowed() {
+				return true;
+			}
+
+			/**
+			 * subject may be null, so delegate to the composite
+			 */
+			@Override
+			protected JpaProject getJpaProject() {
+				return SequenceGenerator2_0Composite.this.getJpaProject();
+			}
+
+			@Override
+			protected void setValue(String value) {
+				((SequenceGenerator2_0) SequenceGenerator2_0Composite.this.retrieveGenerator()).setSpecifiedCatalog(value);
+			}
+
+			@Override
+			protected String getValue() {
+				return ((SequenceGenerator2_0) getSubject()).getSpecifiedCatalog();
+			}
+		};
+	}
+	
 	private SchemaCombo<SequenceGenerator> addSchemaCombo(Composite container) {
 
 		return new SchemaCombo<SequenceGenerator>(this, getSubjectHolder(), container) {
@@ -75,17 +117,14 @@ public class SequenceGenerator2_0Composite extends SequenceGeneratorComposite
 				super.addPropertyNames(propertyNames);
 				propertyNames.add(SequenceGenerator2_0.DEFAULT_SCHEMA_PROPERTY);
 				propertyNames.add(SequenceGenerator2_0.SPECIFIED_SCHEMA_PROPERTY);
-				propertyNames.add(SequenceGenerator2_0.DEFAULT_CATALOG_PROPERTY);
-				propertyNames.add(SequenceGenerator2_0.SPECIFIED_CATALOG_PROPERTY);
+				propertyNames.addAll(SCHEMA_PICK_LIST_PROPERTIES);
 			}
 
 			@Override
 			protected void propertyChanged(String propertyName) {
-				if (propertyName == SequenceGenerator2_0.DEFAULT_CATALOG_PROPERTY
-					|| propertyName == SequenceGenerator2_0.SPECIFIED_CATALOG_PROPERTY ) {
-					repopulateComboBox();
-				}
-				else {
+				if (SCHEMA_PICK_LIST_PROPERTIES.contains(propertyName)) {
+					this.repopulateComboBox();
+				} else {
 					super.propertyChanged(propertyName);
 				}
 			}
@@ -132,58 +171,44 @@ public class SequenceGenerator2_0Composite extends SequenceGeneratorComposite
 				// we overrode #getDbSchemaContainer() instead
 				throw new UnsupportedOperationException();
 			}
-
-			@Override
-			public String toString() {
-				return "SecquenceGenerator2_0Composite.schemaCombo"; //$NON-NLS-1$
-			}
 		};
 	}
 
-	private CatalogCombo<SequenceGenerator> addCatalogCombo(Composite container) {
-
-		return new CatalogCombo<SequenceGenerator>(this, getSubjectHolder(), container) {
-
-			@Override
-			protected void addPropertyNames(Collection<String> propertyNames) {
-				super.addPropertyNames(propertyNames);
-				propertyNames.add(SequenceGenerator2_0.DEFAULT_CATALOG_PROPERTY);
-				propertyNames.add(SequenceGenerator2_0.SPECIFIED_CATALOG_PROPERTY);
-			}
-
-			@Override
-			protected String getDefaultValue() {
-				return ((SequenceGenerator2_0) getSubject()).getDefaultCatalog();
-			}
-
-			@Override
-			protected boolean nullSubjectIsAllowed() {
-				return true;
-			}
-
-			/**
-			 * subject may be null, so delegate to the composite
-			 */
-			@Override
-			protected JpaProject getJpaProject() {
-				return SequenceGenerator2_0Composite.this.getJpaProject();
-			}
-
-			@Override
-			protected void setValue(String value) {
-				((SequenceGenerator2_0) SequenceGenerator2_0Composite.this.retrieveGenerator()).setSpecifiedCatalog(value);
-			}
-
-			@Override
-			protected String getValue() {
-				return ((SequenceGenerator2_0) getSubject()).getSpecifiedCatalog();
-			}
-
-			@Override
-			public String toString() {
-				return "SecquenceGenerator2_0Composite.catalogCombo"; //$NON-NLS-1$
-			}
-		};
-	}
+	/* CU private */ static final Collection<String> SCHEMA_PICK_LIST_PROPERTIES = Arrays.asList(new String[] {
+		SequenceGenerator2_0.DEFAULT_CATALOG_PROPERTY,
+		SequenceGenerator2_0.SPECIFIED_CATALOG_PROPERTY
+	});
 	
+	@Override
+	protected SequenceCombo<SequenceGenerator> buildSequenceNameCombo(Composite parent) {
+		return new LocalSequenceCombo2_0(this, getSubjectHolder(), parent);
+	}
+
+	protected class LocalSequenceCombo2_0
+		extends LocalSequenceCombo
+	{
+		protected LocalSequenceCombo2_0(Pane<?> parentPane, PropertyValueModel<? extends SequenceGenerator> subjectHolder, Composite parent) {
+			super(parentPane, subjectHolder, parent);
+		}
+
+		@Override
+		protected void addPropertyNames(Collection<String> propertyNames) {
+			super.addPropertyNames(propertyNames);
+			propertyNames.addAll(SEQUENCE_PICK_LIST_PROPERTIES);
+		}
+
+		@Override
+		protected void propertyChanged(String propertyName) {
+			if (SEQUENCE_PICK_LIST_PROPERTIES.contains(propertyName)) {
+				this.repopulateComboBox();
+			} else {
+				super.propertyChanged(propertyName);
+			}
+		}
+	}
+
+	/* CU private */ static final Collection<String> SEQUENCE_PICK_LIST_PROPERTIES = Arrays.asList(ArrayTools.addAll(SCHEMA_PICK_LIST_PROPERTIES.toArray(new String[0]),
+		SequenceGenerator2_0.DEFAULT_SCHEMA_PROPERTY,
+		SequenceGenerator2_0.SPECIFIED_SCHEMA_PROPERTY
+	));
 }

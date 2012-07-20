@@ -9,8 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
+import java.util.Arrays;
 import java.util.Collection;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
@@ -112,7 +114,7 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 
 		// Primary Key Column widgets
 		this.addLabel(container, JptUiDetailsMessages.TableGeneratorComposite_pkColumn);
-		this.addPkColumnNameCombo(container);
+		this.addPkColumnCombo(container);
 
 		// Value Column widgets
 		this.addLabel(container, JptUiDetailsMessages.TableGeneratorComposite_valueColumn);
@@ -172,15 +174,10 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			protected String getHelpId() {
 				return JpaHelpContextIds.MAPPING_TABLE_GENERATOR_CATALOG;
 			}
-
-			@Override
-			public String toString() {
-				return "TableGeneratorComposite.catalogCombo"; //$NON-NLS-1$
-			}
 		};
 	}
 
-	private ColumnCombo<TableGenerator> addPkColumnNameCombo(Composite parent) {
+	private ColumnCombo<TableGenerator> addPkColumnCombo(Composite parent) {
 
 		return new ColumnCombo<TableGenerator>(this, getSubjectHolder(), parent) {
 
@@ -189,14 +186,12 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 				super.addPropertyNames(propertyNames);
 				propertyNames.add(TableGenerator.DEFAULT_PK_COLUMN_NAME_PROPERTY);
 				propertyNames.add(TableGenerator.SPECIFIED_PK_COLUMN_NAME_PROPERTY);
-				propertyNames.add(TableGenerator.DEFAULT_TABLE_PROPERTY);
-				propertyNames.add(TableGenerator.SPECIFIED_TABLE_PROPERTY);
+				propertyNames.addAll(COLUMN_PICK_LIST_PROPERTIES);
 			}
 
 			@Override
 			protected void propertyChanged(String propertyName) {
-				if (propertyName == TableGenerator.DEFAULT_TABLE_PROPERTY ||
-				    propertyName == TableGenerator.SPECIFIED_TABLE_PROPERTY) {
+				if (COLUMN_PICK_LIST_PROPERTIES.contains(propertyName)) {
 					this.repopulateComboBox();
 				} else {
 					super.propertyChanged(propertyName);
@@ -239,11 +234,6 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			@Override
 			protected String getHelpId() {
 				return JpaHelpContextIds.MAPPING_TABLE_GENERATOR_PRIMARY_KEY_COLUMN;
-			}
-
-			@Override
-			public String toString() {
-				return "TableGeneratorComposite.pkColumnNameCombo"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -296,11 +286,6 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			protected String getHelpId() {
 				return JpaHelpContextIds.MAPPING_TABLE_GENERATOR_PRIMARY_KEY_COLUMN_VALUE;
 			}
-
-			@Override
-			public String toString() {
-				return "TableGeneratorComposite.pkColumnValueCombo"; //$NON-NLS-1$
-			}
 		};
 	}
 
@@ -313,17 +298,14 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 				super.addPropertyNames(propertyNames);
 				propertyNames.add(TableGenerator.DEFAULT_SCHEMA_PROPERTY);
 				propertyNames.add(TableGenerator.SPECIFIED_SCHEMA_PROPERTY);
-				propertyNames.add(TableGenerator.DEFAULT_CATALOG_PROPERTY);
-				propertyNames.add(TableGenerator.SPECIFIED_CATALOG_PROPERTY);
+				propertyNames.addAll(SCHEMA_PICK_LIST_PROPERTIES);
 			}
 
 			@Override
 			protected void propertyChanged(String propertyName) {
-				if (propertyName == TableGenerator.DEFAULT_CATALOG_PROPERTY
-					|| propertyName == TableGenerator.SPECIFIED_CATALOG_PROPERTY ) {
-					repopulateComboBox();
-				}
-				else {
+				if (SCHEMA_PICK_LIST_PROPERTIES.contains(propertyName)) {
+					this.repopulateComboBox();
+				} else {
 					super.propertyChanged(propertyName);
 				}
 			}
@@ -375,11 +357,6 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			protected String getHelpId() {
 				return JpaHelpContextIds.MAPPING_TABLE_GENERATOR_SCHEMA;
 			}
-
-			@Override
-			public String toString() {
-				return "TableGeneratorComposite.schemaCombo"; //$NON-NLS-1$
-			}
 		};
 	}
 
@@ -392,21 +369,14 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 				super.addPropertyNames(propertyNames);
 				propertyNames.add(TableGenerator.DEFAULT_TABLE_PROPERTY);
 				propertyNames.add(TableGenerator.SPECIFIED_TABLE_PROPERTY);
-				propertyNames.add(TableGenerator.DEFAULT_SCHEMA_PROPERTY);
-				propertyNames.add(TableGenerator.SPECIFIED_SCHEMA_PROPERTY);
-				propertyNames.add(TableGenerator.DEFAULT_CATALOG_PROPERTY);
-				propertyNames.add(TableGenerator.SPECIFIED_CATALOG_PROPERTY);
+				propertyNames.addAll(TABLE_PICK_LIST_PROPERTIES);
 			}
 
 			@Override
 			protected void propertyChanged(String propertyName) {
-				if (propertyName == TableGenerator.DEFAULT_SCHEMA_PROPERTY 
-					|| propertyName == TableGenerator.SPECIFIED_SCHEMA_PROPERTY
-					|| propertyName == TableGenerator.DEFAULT_CATALOG_PROPERTY
-					|| propertyName == TableGenerator.SPECIFIED_CATALOG_PROPERTY ) {
-					repopulateComboBox();
-				}
-				else {
+				if (TABLE_PICK_LIST_PROPERTIES.contains(propertyName)) {
+					this.repopulateComboBox();
+				} else {
 					super.propertyChanged(propertyName);
 				}
 			}
@@ -458,11 +428,6 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			protected String getHelpId() {
 				return JpaHelpContextIds.MAPPING_TABLE_GENERATOR_TABLE;
 			}
-
-			@Override
-			public String toString() {
-				return "TableGeneratorComposite.tableNameCombo"; //$NON-NLS-1$
-			}
 		};
 	}
 
@@ -475,14 +440,12 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 				super.addPropertyNames(propertyNames);
 				propertyNames.add(TableGenerator.DEFAULT_VALUE_COLUMN_NAME_PROPERTY);
 				propertyNames.add(TableGenerator.SPECIFIED_VALUE_COLUMN_NAME_PROPERTY);
-				propertyNames.add(TableGenerator.DEFAULT_TABLE_PROPERTY);
-				propertyNames.add(TableGenerator.SPECIFIED_TABLE_PROPERTY);
+				propertyNames.addAll(COLUMN_PICK_LIST_PROPERTIES);
 			}
 
 			@Override
 			protected void propertyChanged(String propertyName) {
-				if (propertyName == TableGenerator.DEFAULT_TABLE_PROPERTY ||
-				    propertyName == TableGenerator.SPECIFIED_TABLE_PROPERTY) {
+				if (COLUMN_PICK_LIST_PROPERTIES.contains(propertyName)) {
 					this.repopulateComboBox();
 				} else {
 					super.propertyChanged(propertyName);
@@ -526,11 +489,21 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			protected String getHelpId() {
 				return JpaHelpContextIds.MAPPING_TABLE_GENERATOR_VALUE_COLUMN;
 			}
-
-			@Override
-			public String toString() {
-				return "TableGeneratorComposite.valueColumnCombo"; //$NON-NLS-1$
-			}
 		};
 	}
+
+	/* CU private */ static final Collection<String> SCHEMA_PICK_LIST_PROPERTIES = Arrays.asList(new String[] {
+		TableGenerator.DEFAULT_CATALOG_PROPERTY,
+		TableGenerator.SPECIFIED_CATALOG_PROPERTY
+	});
+
+	/* CU private */ static final Collection<String> TABLE_PICK_LIST_PROPERTIES = Arrays.asList(ArrayTools.addAll(SCHEMA_PICK_LIST_PROPERTIES.toArray(new String[0]),
+		TableGenerator.DEFAULT_SCHEMA_PROPERTY,
+		TableGenerator.SPECIFIED_SCHEMA_PROPERTY
+	));
+
+	/* CU private */ static final Collection<String> COLUMN_PICK_LIST_PROPERTIES = Arrays.asList(ArrayTools.addAll(TABLE_PICK_LIST_PROPERTIES.toArray(new String[0]),
+		TableGenerator.DEFAULT_TABLE_PROPERTY,
+		TableGenerator.SPECIFIED_TABLE_PROPERTY
+	));
 }

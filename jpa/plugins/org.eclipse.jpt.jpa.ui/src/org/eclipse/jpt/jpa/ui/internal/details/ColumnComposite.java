@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
+import java.util.Arrays;
 import java.util.Collection;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
@@ -17,12 +18,13 @@ import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyTableColumn;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.db.ColumnCombo;
@@ -55,15 +57,13 @@ public class ColumnComposite
 				super.addPropertyNames(propertyNames);
 				propertyNames.add(ReadOnlyNamedColumn.DEFAULT_NAME_PROPERTY);
 				propertyNames.add(ReadOnlyNamedColumn.SPECIFIED_NAME_PROPERTY);
-				propertyNames.add(ReadOnlyBaseColumn.DEFAULT_TABLE_PROPERTY);
-				propertyNames.add(ReadOnlyBaseColumn.SPECIFIED_TABLE_PROPERTY);
+				propertyNames.addAll(COLUMN_PICK_LIST_PROPERTIES);
 			}
 			
 			@Override
 			protected void propertyChanged(String propertyName) {
-				if (propertyName == ReadOnlyBaseColumn.DEFAULT_TABLE_PROPERTY ||
-				    propertyName == ReadOnlyBaseColumn.SPECIFIED_TABLE_PROPERTY) {
-					this.doPopulate();
+				if (COLUMN_PICK_LIST_PROPERTIES.contains(propertyName)) {
+					this.repopulateComboBox();
 				} else {
 					super.propertyChanged(propertyName);
 				}
@@ -109,6 +109,11 @@ public class ColumnComposite
 		};
 	}
 	
+	/* CU private */ static final Collection<String> COLUMN_PICK_LIST_PROPERTIES = Arrays.asList(new String[] {
+		ReadOnlyTableColumn.DEFAULT_TABLE_PROPERTY,
+		ReadOnlyTableColumn.SPECIFIED_TABLE_PROPERTY
+	});
+
 	ModifiablePropertyValueModel<String> buildColumnDefinitionHolder() {
 		return new PropertyAspectAdapter<ReadOnlyColumn, String>(getSubjectHolder(), ReadOnlyNamedColumn.COLUMN_DEFINITION_PROPERTY) {
 			@Override

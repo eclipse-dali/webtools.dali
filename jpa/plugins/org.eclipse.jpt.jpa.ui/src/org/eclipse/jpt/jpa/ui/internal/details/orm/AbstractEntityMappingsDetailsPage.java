@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
+import java.util.Arrays;
 import java.util.Collection;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
@@ -199,8 +200,8 @@ public abstract class AbstractEntityMappingsDetailsPage extends AbstractJpaDetai
 	protected PropertyValueModel<OrmPersistenceUnitMetadata> buildPersistentUnitMetadataHolder() {
 		return new TransformationPropertyValueModel<EntityMappings, OrmPersistenceUnitMetadata>(getSubjectHolder()) {
 			@Override
-			protected OrmPersistenceUnitMetadata transform_(EntityMappings value) {
-				return value.getPersistenceUnitMetadata();
+			protected OrmPersistenceUnitMetadata transform_(EntityMappings entityMappings) {
+				return entityMappings.getPersistenceUnitMetadata();
 			}
 		};
 	}
@@ -214,6 +215,16 @@ public abstract class AbstractEntityMappingsDetailsPage extends AbstractJpaDetai
 				super.addPropertyNames(propertyNames);
 				propertyNames.add(EntityMappings.DEFAULT_SCHEMA_PROPERTY);
 				propertyNames.add(EntityMappings.SPECIFIED_SCHEMA_PROPERTY);
+				propertyNames.addAll(SCHEMA_PICK_LIST_PROPERTIES);
+			}
+
+			@Override
+			protected void propertyChanged(String propertyName) {
+				if (SCHEMA_PICK_LIST_PROPERTIES.contains(propertyName)) {
+					this.repopulateComboBox();
+				} else {
+					super.propertyChanged(propertyName);
+				}
 			}
 
 			@Override
@@ -247,6 +258,11 @@ public abstract class AbstractEntityMappingsDetailsPage extends AbstractJpaDetai
 			}
 		};
 	}
+	
+	/* CU private */ static final Collection<String> SCHEMA_PICK_LIST_PROPERTIES = Arrays.asList(new String[] {
+		EntityMappings.DEFAULT_CATALOG_PROPERTY,
+		EntityMappings.SPECIFIED_CATALOG_PROPERTY
+	});
 
 	protected void initializeGeneratorsCollapsibleSection(Composite container) {
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);

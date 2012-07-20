@@ -9,13 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
+import java.util.Arrays;
 import java.util.Collection;
-
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
@@ -45,7 +47,6 @@ import org.eclipse.swt.widgets.Group;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see Table
- * @see EntityComposite - The parent container
  * @see TableCombo
  * @see CatalogCombo
  * @see SchemaCombo
@@ -61,7 +62,6 @@ public class TableComposite extends Pane<Entity>
 	 * Creates a new <code>TableComposite</code>.
 	 *
 	 * @param parentPane The parent container of this one
-	 * @param subjectHolder The holder of the subject
 	 * @param parent The parent container
 	 */
 	public TableComposite(Pane<? extends Entity> parentPane,
@@ -124,8 +124,8 @@ public class TableComposite extends Pane<Entity>
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(Table.DEFAULT_CATALOG_PROPERTY);
-				propertyNames.add(Table.SPECIFIED_CATALOG_PROPERTY);
+				propertyNames.add(ReadOnlyTable.DEFAULT_CATALOG_PROPERTY);
+				propertyNames.add(ReadOnlyTable.SPECIFIED_CATALOG_PROPERTY);
 			}
 
 			@Override
@@ -161,8 +161,18 @@ public class TableComposite extends Pane<Entity>
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(Table.DEFAULT_SCHEMA_PROPERTY);
-				propertyNames.add(Table.SPECIFIED_SCHEMA_PROPERTY);
+				propertyNames.add(ReadOnlyTable.DEFAULT_SCHEMA_PROPERTY);
+				propertyNames.add(ReadOnlyTable.SPECIFIED_SCHEMA_PROPERTY);
+				propertyNames.addAll(SCHEMA_PICK_LIST_PROPERTIES);
+			}
+
+			@Override
+			protected void propertyChanged(String propertyName) {
+				if (SCHEMA_PICK_LIST_PROPERTIES.contains(propertyName)) {
+					this.repopulateComboBox();
+				} else {
+					super.propertyChanged(propertyName);
+				}
 			}
 
 			@Override
@@ -197,28 +207,28 @@ public class TableComposite extends Pane<Entity>
 		};
 	}
 
+	/* CU private */ static final Collection<String> SCHEMA_PICK_LIST_PROPERTIES = Arrays.asList(new String[] {
+		ReadOnlyTable.DEFAULT_CATALOG_PROPERTY,
+		ReadOnlyTable.SPECIFIED_CATALOG_PROPERTY
+	});
+
 	private TableCombo<Table> addTableCombo(PropertyValueModel<Table> subjectHolder, PropertyValueModel<Boolean> enabledModel, Composite container) {
 		return new TableCombo<Table>(this, subjectHolder, enabledModel, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(Table.DEFAULT_NAME_PROPERTY);
-				propertyNames.add(Table.SPECIFIED_NAME_PROPERTY);
-				propertyNames.add(Table.DEFAULT_SCHEMA_PROPERTY);
-				propertyNames.add(Table.SPECIFIED_SCHEMA_PROPERTY);
-				propertyNames.add(Table.DEFAULT_CATALOG_PROPERTY);
-				propertyNames.add(Table.SPECIFIED_CATALOG_PROPERTY);
+				propertyNames.add(ReadOnlyTable.DEFAULT_NAME_PROPERTY);
+				propertyNames.add(ReadOnlyTable.SPECIFIED_NAME_PROPERTY);
+				propertyNames.addAll(TABLE_PICK_LIST_PROPERTIES);
 			}
 
 			@Override
 			protected void propertyChanged(String propertyName) {
-				super.propertyChanged(propertyName);
-				if (propertyName == Table.DEFAULT_SCHEMA_PROPERTY 
-					|| propertyName == Table.SPECIFIED_SCHEMA_PROPERTY
-					|| propertyName == Table.DEFAULT_CATALOG_PROPERTY
-					|| propertyName == Table.SPECIFIED_CATALOG_PROPERTY ) {
-					repopulate();
+				if (TABLE_PICK_LIST_PROPERTIES.contains(propertyName)) {
+					this.repopulateComboBox();
+				} else {
+					super.propertyChanged(propertyName);
 				}
 			}
 			
@@ -254,4 +264,8 @@ public class TableComposite extends Pane<Entity>
 		};
 	}
 
+	/* CU private */ static final Collection<String> TABLE_PICK_LIST_PROPERTIES = Arrays.asList(ArrayTools.addAll(SCHEMA_PICK_LIST_PROPERTIES.toArray(new String[0]),
+		ReadOnlyTable.DEFAULT_SCHEMA_PROPERTY,
+		ReadOnlyTable.SPECIFIED_SCHEMA_PROPERTY
+	));
 }

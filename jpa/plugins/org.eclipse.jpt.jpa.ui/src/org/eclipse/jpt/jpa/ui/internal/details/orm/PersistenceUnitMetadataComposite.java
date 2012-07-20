@@ -9,18 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
+import java.util.Arrays;
 import java.util.Collection;
-
 import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
-import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
+import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmPersistenceUnitDefaults2_0;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.details.AccessTypeComboViewer;
 import org.eclipse.jpt.jpa.ui.internal.details.db.CatalogCombo;
 import org.eclipse.jpt.jpa.ui.internal.details.db.SchemaCombo;
-import org.eclipse.jpt.jpa.ui.internal.jpa2.Jpa2_0XmlFlagModel;
+import org.eclipse.jpt.jpa.ui.internal.jpa2.OrmXml2_0FlagModel;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -163,6 +163,16 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 				super.addPropertyNames(propertyNames);
 				propertyNames.add(OrmPersistenceUnitDefaults.DEFAULT_SCHEMA_PROPERTY);
 				propertyNames.add(OrmPersistenceUnitDefaults.SPECIFIED_SCHEMA_PROPERTY);
+				propertyNames.addAll(SCHEMA_PICK_LIST_PROPERTIES);
+			}
+
+			@Override
+			protected void propertyChanged(String propertyName) {
+				if (SCHEMA_PICK_LIST_PROPERTIES.contains(propertyName)) {
+					this.repopulateComboBox();
+				} else {
+					super.propertyChanged(propertyName);
+				}
 			}
 
 			@Override
@@ -197,6 +207,11 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 		};
 	}
 
+	/* CU private */ static final Collection<String> SCHEMA_PICK_LIST_PROPERTIES = Arrays.asList(new String[] {
+		OrmPersistenceUnitDefaults.DEFAULT_CATALOG_PROPERTY,
+		OrmPersistenceUnitDefaults.SPECIFIED_CATALOG_PROPERTY
+	});
+
 	protected ModifiablePropertyValueModel<Boolean> buildXmlMappingMetadataCompleteHolder() {
 		return new PropertyAspectAdapter<OrmPersistenceUnitMetadata, Boolean>(getSubjectHolder(), OrmPersistenceUnitMetadata.XML_MAPPING_METADATA_COMPLETE_PROPERTY) {
 			@Override
@@ -219,15 +234,19 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 			}
 
 			protected boolean buildBooleanValue_() {
-				return JptJpaCorePlugin.nodeIsJpa2_0Compatible(this.subject) &&
+				return this.subjectIsInJpa2_0Project() &&
 						((OrmPersistenceUnitDefaults2_0) this.subject).isDelimitedIdentifiers();
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
-				if (JptJpaCorePlugin.nodeIsJpa2_0Compatible(this.subject)) {
+				if (this.subjectIsInJpa2_0Project()) {
 					((OrmPersistenceUnitDefaults2_0) this.subject).setDelimitedIdentifiers(value.booleanValue());
 				}
+			}
+
+			private boolean subjectIsInJpa2_0Project() {
+				return this.subject.getJpaProject().getJpaPlatform().getJpaVersion().isCompatibleWithJpaVersion(JpaProject2_0.FACET_VERSION_STRING);
 			}
 		};
 	}
@@ -285,6 +304,6 @@ public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMet
 		gridData.horizontalSpan = 2;
 		diCheckBox.setLayoutData(gridData);
 		
-		SWTTools.controlVisibleState(new Jpa2_0XmlFlagModel<OrmPersistenceUnitMetadata>(this.getSubjectHolder()), diCheckBox);
+		SWTTools.controlVisibleState(new OrmXml2_0FlagModel<OrmPersistenceUnitMetadata>(this.getSubjectHolder()), diCheckBox);
 	}
 }

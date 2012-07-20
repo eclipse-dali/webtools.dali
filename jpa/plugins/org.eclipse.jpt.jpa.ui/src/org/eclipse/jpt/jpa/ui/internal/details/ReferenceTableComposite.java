@@ -9,21 +9,23 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
+import java.util.Arrays;
 import java.util.Collection;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListPropertyValueModelAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.ReadOnlyWritablePropertyValueModelWrapper;
+import org.eclipse.jpt.common.utility.internal.model.value.ReadOnlyModifiablePropertyValueModelWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ValueListAdapter;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyReferenceTable;
@@ -96,10 +98,7 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 
 		dialog.setBlockOnOpen(true);
 		dialog.open();
-		if (dialog.wasConfirmed()) {
-			return addJoinColumnFromDialog(dialog.getSubject());
-		}
-		return null;
+		return (dialog.wasConfirmed()) ? addJoinColumnFromDialog(dialog.getSubject()) : null;
 	}
 
 	JoinColumn addJoinColumnFromDialog(JoinColumnInReferenceTableStateObject stateObject) {
@@ -130,70 +129,39 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 		};
 	}
 
-	protected TableCombo<T> addTableCombo(Composite container, final String helpId) {
+	protected CatalogCombo<T> addCatalogCombo(Composite container, final String helpId) {
 
-		return new TableCombo<T>(this, container) {
+		return new CatalogCombo<T>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(ReadOnlyTable.DEFAULT_NAME_PROPERTY);
-				propertyNames.add(ReadOnlyTable.SPECIFIED_NAME_PROPERTY);
-				propertyNames.add(ReadOnlyTable.DEFAULT_SCHEMA_PROPERTY);
-				propertyNames.add(ReadOnlyTable.SPECIFIED_SCHEMA_PROPERTY);
 				propertyNames.add(ReadOnlyTable.DEFAULT_CATALOG_PROPERTY);
 				propertyNames.add(ReadOnlyTable.SPECIFIED_CATALOG_PROPERTY);
 			}
 
 			@Override
-			protected void propertyChanged(String propertyName) {
-				super.propertyChanged(propertyName);
-				if (propertyName == ReadOnlyTable.DEFAULT_SCHEMA_PROPERTY 
-					|| propertyName == ReadOnlyTable.SPECIFIED_SCHEMA_PROPERTY
-					|| propertyName == ReadOnlyTable.DEFAULT_CATALOG_PROPERTY
-					|| propertyName == ReadOnlyTable.SPECIFIED_CATALOG_PROPERTY ) {
-					repopulate();
-				}
-			}
-
-			@Override
 			protected String getDefaultValue() {
-				return this.getSubject().getDefaultName();
+				return this.getSubject().getDefaultCatalog();
 			}
 
 			@Override
 			protected void setValue(String value) {
-				((ReferenceTable) this.getSubject()).setSpecifiedName(value);
+				((ReferenceTable) this.getSubject()).setSpecifiedCatalog(value);
 			}
 
 			@Override
 			protected String getValue() {
-				return this.getSubject().getSpecifiedName();
-			}
-
-			@Override
-			protected Schema getDbSchema_() {
-				ReferenceTable table = this.getTable();
-				return (table == null) ? null : table.getDbSchema();
-			}
-
-			protected ReferenceTable getTable() {
-				ReadOnlyReferenceTable table = this.getSubject();
-				return (table instanceof ReferenceTable) ? (ReferenceTable) table : null;
+				return this.getSubject().getSpecifiedCatalog();
 			}
 
 			@Override
 			protected String getHelpId() {
 				return helpId;
 			}
-
-			@Override
-			public String toString() {
-				return "ReferenceTableComposite.tableCombo"; //$NON-NLS-1$
-			}
 		};
 	}
-	
+
 	protected SchemaCombo<T> addSchemaCombo(Composite container, final String helpId) {
 
 		return new SchemaCombo<T>(this, container) {
@@ -203,16 +171,15 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 				super.addPropertyNames(propertyNames);
 				propertyNames.add(ReadOnlyTable.DEFAULT_SCHEMA_PROPERTY);
 				propertyNames.add(ReadOnlyTable.SPECIFIED_SCHEMA_PROPERTY);
-				propertyNames.add(ReadOnlyTable.DEFAULT_CATALOG_PROPERTY);
-				propertyNames.add(ReadOnlyTable.SPECIFIED_CATALOG_PROPERTY);
+				propertyNames.addAll(SCHEMA_PICK_LIST_PROPERTIES);
 			}
 
 			@Override
 			protected void propertyChanged(String propertyName) {
-				super.propertyChanged(propertyName);
-				if (propertyName == ReadOnlyTable.DEFAULT_CATALOG_PROPERTY
-					|| propertyName == ReadOnlyTable.SPECIFIED_CATALOG_PROPERTY ) {
-					repopulate();
+				if (SCHEMA_PICK_LIST_PROPERTIES.contains(propertyName)) {
+					this.repopulateComboBox();
+				} else {
+					super.propertyChanged(propertyName);
 				}
 			}
 
@@ -246,51 +213,72 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 			protected String getHelpId() {
 				return helpId;
 			}
-
-			@Override
-			public String toString() {
-				return "ReferenceTableComposite.schemaCombo"; //$NON-NLS-1$
-			}
 		};
 	}
-	
-	protected CatalogCombo<T> addCatalogCombo(Composite container, final String helpId) {
 
-		return new CatalogCombo<T>(this, container) {
+	/* CU private */ static final Collection<String> SCHEMA_PICK_LIST_PROPERTIES = Arrays.asList(new String[] {
+		ReadOnlyTable.DEFAULT_CATALOG_PROPERTY,
+		ReadOnlyTable.SPECIFIED_CATALOG_PROPERTY
+	});
+
+	protected TableCombo<T> addTableCombo(Composite container, final String helpId) {
+
+		return new TableCombo<T>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(ReadOnlyTable.DEFAULT_CATALOG_PROPERTY);
-				propertyNames.add(ReadOnlyTable.SPECIFIED_CATALOG_PROPERTY);
+				propertyNames.add(ReadOnlyTable.DEFAULT_NAME_PROPERTY);
+				propertyNames.add(ReadOnlyTable.SPECIFIED_NAME_PROPERTY);
+				propertyNames.addAll(TABLE_PICK_LIST_PROPERTIES);
+			}
+
+			@Override
+			protected void propertyChanged(String propertyName) {
+				if (TABLE_PICK_LIST_PROPERTIES.contains(propertyName)) {
+					this.repopulateComboBox();
+				} else {
+					super.propertyChanged(propertyName);
+				}
 			}
 
 			@Override
 			protected String getDefaultValue() {
-				return this.getSubject().getDefaultCatalog();
+				return this.getSubject().getDefaultName();
 			}
 
 			@Override
 			protected void setValue(String value) {
-				((ReferenceTable) this.getSubject()).setSpecifiedCatalog(value);
+				((ReferenceTable) this.getSubject()).setSpecifiedName(value);
 			}
 
 			@Override
 			protected String getValue() {
-				return this.getSubject().getSpecifiedCatalog();
+				return this.getSubject().getSpecifiedName();
+			}
+
+			@Override
+			protected Schema getDbSchema_() {
+				ReferenceTable table = this.getTable();
+				return (table == null) ? null : table.getDbSchema();
+			}
+
+			protected ReferenceTable getTable() {
+				ReadOnlyReferenceTable table = this.getSubject();
+				return (table instanceof ReferenceTable) ? (ReferenceTable) table : null;
 			}
 
 			@Override
 			protected String getHelpId() {
 				return helpId;
 			}
-
-			@Override
-			public String toString() {
-				return "ReferenceTableComposite.catalogCombo"; //$NON-NLS-1$
-			}
 		};
 	}
+
+	/* CU private */ static final Collection<String> TABLE_PICK_LIST_PROPERTIES = Arrays.asList(ArrayTools.addAll(SCHEMA_PICK_LIST_PROPERTIES.toArray(new String[0]),
+		ReadOnlyTable.DEFAULT_SCHEMA_PROPERTY,
+		ReadOnlyTable.SPECIFIED_SCHEMA_PROPERTY
+	));
 
 	void editJoinColumn(ReadOnlyJoinColumn joinColumn) {
 
@@ -404,7 +392,7 @@ public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
 		JoinColumnsEnabledModel() {
 			super(
 				new ValueListAdapter<T>(
-					new ReadOnlyWritablePropertyValueModelWrapper<T>(getSubjectHolder()), 
+					new ReadOnlyModifiablePropertyValueModelWrapper<T>(getSubjectHolder()), 
 					ReadOnlyReferenceTable.SPECIFIED_JOIN_COLUMNS_LIST
 				)
 			);

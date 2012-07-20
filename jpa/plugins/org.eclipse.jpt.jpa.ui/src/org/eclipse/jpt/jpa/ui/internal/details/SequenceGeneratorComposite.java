@@ -86,59 +86,59 @@ public class SequenceGeneratorComposite extends GeneratorComposite<SequenceGener
 	}
 
 	protected SequenceCombo<SequenceGenerator> buildSequenceNameCombo(Composite parent) {
-
-		return new SequenceCombo<SequenceGenerator>(this, getSubjectHolder(), parent) {
-
-			@Override
-			protected void addPropertyNames(Collection<String> propertyNames) {
-				super.addPropertyNames(propertyNames);
-				propertyNames.add(SequenceGenerator.DEFAULT_SEQUENCE_NAME_PROPERTY);
-				propertyNames.add(SequenceGenerator.SPECIFIED_SEQUENCE_NAME_PROPERTY);
-			}
-
-			@Override
-			protected String getDefaultValue() {
-				return this.getSubject().getDefaultSequenceName();
-			}
-
-			@Override
-			protected void setValue(String value) {
-				retrieveGenerator().setSpecifiedSequenceName(value);
-			}
-
-			@Override
-			protected String getValue() {
-				return (getSubject() == null) ? null : getSubject().getSpecifiedSequenceName();
-			}
-
-			@Override
-			protected boolean nullSubjectIsAllowed() {
-				return true;
-			}
-
-			/**
-			 * subject may be null, so delegate to the composite
-			 */
-			@Override
-			protected JpaProject getJpaProject() {
-				return SequenceGeneratorComposite.this.getJpaProject();
-			}
-
-			@Override
-			protected Schema getDbSchema_() {
-				return this.getSubject().getDbSchema();
-			}
-
-			@Override
-			protected String getHelpId() {
-				return JpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR_SEQUENCE;
-			}
-
-			@Override
-			public String toString() {
-				return "SequenceGeneratorComposite.sequenceNameCombo"; //$NON-NLS-1$
-			}
-		};
+		return new LocalSequenceCombo(this, getSubjectHolder(), parent);
 	}
 
+	protected class LocalSequenceCombo
+		extends SequenceCombo<SequenceGenerator>
+	{
+		protected LocalSequenceCombo(Pane<?> parentPane, PropertyValueModel<? extends SequenceGenerator> subjectHolder, Composite parent) {
+			super(parentPane, subjectHolder, parent);
+		}
+
+		@Override
+		protected void addPropertyNames(Collection<String> propertyNames) {
+			super.addPropertyNames(propertyNames);
+			propertyNames.add(SequenceGenerator.DEFAULT_SEQUENCE_NAME_PROPERTY);
+			propertyNames.add(SequenceGenerator.SPECIFIED_SEQUENCE_NAME_PROPERTY);
+		}
+
+		@Override
+		protected String getDefaultValue() {
+			return this.getSubject().getDefaultSequenceName();
+		}
+
+		@Override
+		protected void setValue(String value) {
+			retrieveGenerator().setSpecifiedSequenceName(value);
+		}
+
+		@Override
+		protected String getValue() {
+			return (getSubject() == null) ? null : getSubject().getSpecifiedSequenceName();
+		}
+
+		@Override
+		protected boolean nullSubjectIsAllowed() {
+			return true;
+		}
+
+		/**
+		 * subject may be null, so delegate to the composite
+		 */
+		@Override
+		protected JpaProject getJpaProject() {
+			return SequenceGeneratorComposite.this.getJpaProject();
+		}
+
+		@Override
+		protected Schema getDbSchema_() {
+			return this.getSubject().getDbSchema();
+		}
+
+		@Override
+		protected String getHelpId() {
+			return JpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR_SEQUENCE;
+		}
+	}
 }
