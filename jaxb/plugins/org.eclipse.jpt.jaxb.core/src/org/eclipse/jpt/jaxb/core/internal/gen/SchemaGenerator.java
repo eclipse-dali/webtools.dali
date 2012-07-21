@@ -6,7 +6,7 @@
  * 
  * Contributors:
  *     Oracle - initial API and implementation
- ******************************************************************************/
+ *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.gen;
 
 import java.io.BufferedReader;
@@ -18,22 +18,24 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.IStreamListener;
+import org.eclipse.debug.core.model.IStreamMonitor;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
-import org.eclipse.jpt.common.core.gen.JptGenerator;
 import org.eclipse.jpt.common.core.internal.gen.AbstractJptGenerator;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.utility.internal.FileTools;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 
 /**
@@ -59,33 +61,18 @@ public class SchemaGenerator extends AbstractJptGenerator
 	
 	private final String targetSchemaName;
 	private final String[] sourceClassNames;
-	private  String mainType;
-	private  boolean useMoxy;
+	private String mainType;
+	private boolean useMoxy;
+	private ArrayList<String> generatedNames;
 
-	// ********** static methods **********
-	
-	public static JptGenerator generate(
-			IJavaProject javaProject, 
-			String targetSchemaName, 
-			String[] sourceClassNames,
-			boolean useMoxy,
-			IProgressMonitor monitor) {
-		if (javaProject == null) {
-			throw new NullPointerException();
-		}
-		return new SchemaGenerator(javaProject, 
-			targetSchemaName, 
-			sourceClassNames,
-			useMoxy).generate(monitor);
-	}
 
 	// ********** constructors **********
 	
 	public SchemaGenerator(
-			IJavaProject javaProject, 
-			String targetSchemaName, 
-			String[] sourceClassNames,
-			boolean useMoxy) {
+				IJavaProject javaProject, 
+				String targetSchemaName, 
+				String[] sourceClassNames,
+				boolean useMoxy) {
 		super(javaProject);
 		this.targetSchemaName = targetSchemaName;
 		this.sourceClassNames = sourceClassNames;
@@ -95,7 +82,7 @@ public class SchemaGenerator extends AbstractJptGenerator
 				JAXB_SCHEMA_GEN_CLASS;
 		this.initialize();
 	}
-
+	
 	// ********** overrides **********
 
 	@Override
@@ -131,6 +118,21 @@ public class SchemaGenerator extends AbstractJptGenerator
 		}
 	}
 
+	@Override
+	protected void initialize() {
+		super.initialize();
+		this.generatedNames = new ArrayList<String>();
+	}
+
+	// ********** misc **********
+
+	/**
+	 * Returns generated names without extension.
+	 */
+	public Iterable<String> getGeneratedNames() {
+		return this.generatedNames;
+	}
+
 	// ********** Launch Configuration Setup **********
 
 	@Override
@@ -158,6 +160,14 @@ public class SchemaGenerator extends AbstractJptGenerator
 		programArguments.append('"');
 
 		this.getLaunchConfig().setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, programArguments.toString());
+	}
+
+	@Override
+	protected ILaunch saveAndLaunchConfig(IProgressMonitor monitor) {
+		ILaunch launch = super.saveAndLaunchConfig(monitor);
+
+		this.getConsoleOutputStream(launch).addListener(this.buildConsoleOutputStreamListener());
+		return launch;
 	}
 
 	// ********** private methods **********
@@ -303,4 +313,19 @@ public class SchemaGenerator extends AbstractJptGenerator
 		return ! sourceClassName.contains("."); //$NON-NLS-1$
 	}
 
+	private IStreamMonitor getConsoleOutputStream(ILaunch launch) {
+		return (launch.getProcesses()[0]).getStreamsProxy().getOutputStreamMonitor();
+	}
+	
+	private IStreamListener buildConsoleOutputStreamListener() {
+		return new IStreamListener() {
+            public void streamAppended(String text, IStreamMonitor monitor) {
+            	if(text.indexOf(JptJaxbCoreMessages.SCHEMA_GENERATED) > -1) {
+            		String[] texts = text.split(" ");  //$NON-NLS-1$
+            		// stripExtension to remove unwanted ending char
+                	SchemaGenerator.this.generatedNames.add(FileTools.stripExtension(texts[texts.length - 1]));
+                }
+            }
+        };
+	}
 }

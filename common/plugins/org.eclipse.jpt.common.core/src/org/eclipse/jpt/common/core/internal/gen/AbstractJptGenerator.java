@@ -295,12 +295,14 @@ public abstract class AbstractJptGenerator implements JptGenerator
 
 	// ********** LaunchConfig **********
 	
-	private ILaunch saveAndLaunchConfig(IProgressMonitor monitor) {
+	protected ILaunch saveAndLaunchConfig(IProgressMonitor monitor) {
 		SubMonitor sm = SubMonitor.convert(monitor, 10);
 		ILaunchConfiguration configuration = null;
 		ILaunch result = null;
 		try {
 			sm.subTask(JptCommonCoreMessages.GENERATION_SAVING_LAUNCH_CONFIG_TASK);
+
+			this.launchConfig.setAttribute(DebugPlugin.ATTR_CAPTURE_OUTPUT, true);
 			configuration = this.launchConfig.doSave();
 		}
 		catch (CoreException saveException) {
@@ -400,7 +402,7 @@ public abstract class AbstractJptGenerator implements JptGenerator
 	private ILaunchConfigurationWorkingCopy buildLaunchConfiguration() throws CoreException {
 		this.removeLaunchConfiguration();
 
-		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
+		ILaunchManager manager = this.getLaunchManager();
 		ILaunchConfigurationType type = manager.getLaunchConfigurationType(IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION);
 
 		return type.newInstance(null, this.getLaunchConfigName());

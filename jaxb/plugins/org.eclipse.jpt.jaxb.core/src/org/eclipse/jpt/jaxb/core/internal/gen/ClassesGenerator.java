@@ -51,32 +51,6 @@ public class ClassesGenerator extends AbstractJptGenerator
 	private String toolsJarPath;
 
 	// ********** static methods **********
-	
-	public static JptGenerator generate(
-			IJavaProject javaProject, 
-			String schemaPathOrUri, 
-			String outputDir, 
-			String targetPackage, 
-			String catalog, 
-			boolean usesMoxyGenerator,
-			String[] bindingsFileNames,
-			ClassesGeneratorOptions generatorOptions,
-			ClassesGeneratorExtensionOptions generatorExtensionOptions,
-			IProgressMonitor monitor) {
-		
-		if (javaProject == null) {
-			throw new NullPointerException();
-		}
-		return new ClassesGenerator(javaProject, 
-			schemaPathOrUri, 
-			outputDir, 
-			targetPackage, 
-			catalog, 
-			usesMoxyGenerator, 
-			bindingsFileNames,
-			generatorOptions, 
-			generatorExtensionOptions).generate(monitor);
-	}
 
 	/**
 	 * Test if the JDK Jaxb compiler is on the classpath.

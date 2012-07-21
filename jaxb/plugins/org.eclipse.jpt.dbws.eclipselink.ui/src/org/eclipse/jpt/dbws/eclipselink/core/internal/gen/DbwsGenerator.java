@@ -38,23 +38,6 @@ public class DbwsGenerator extends AbstractJptGenerator
 	private final String stageDirName;
 	private final String driverJarList;
 
-	// ********** static methods **********
-	
-	public static JptGenerator generate(
-			IJavaProject javaProject, 
-			String builderFileName, 
-			String stageDirName, 
-			String driverJarList,
-			IProgressMonitor monitor) {
-		if (javaProject == null) {
-			throw new NullPointerException();
-		}
-		return new DbwsGenerator(javaProject, 
-			builderFileName, 
-			stageDirName, 
-			driverJarList).generate(monitor);
-	}
-
 	// ********** constructors **********
 
 	public DbwsGenerator(

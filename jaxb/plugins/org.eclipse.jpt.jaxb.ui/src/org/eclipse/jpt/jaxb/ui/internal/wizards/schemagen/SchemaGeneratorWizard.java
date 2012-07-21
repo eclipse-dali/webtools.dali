@@ -6,7 +6,7 @@
  * 
  * Contributors:
  *     Oracle - initial API and implementation
- ******************************************************************************/
+ *******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.wizards.schemagen;
 
 import java.io.File;
@@ -105,16 +105,12 @@ public class SchemaGeneratorWizard extends Wizard implements INewWizard
 
 	protected void scheduleGenerateSchemaJob(String[] sourceClassNames) {
 
-		IPath schemaPath = this.newSchemaFileWizardPage.getContainerFullPath(); 
-		String schemaName = this.newSchemaFileWizardPage.getFileName();
-
 		WorkspaceJob genSchemaJob = new GenerateSchemaJob( 
 									this.targetProject, 
 									sourceClassNames, 
-									this.getTargetSchema(), 
-									this.usesMoxy(),
-									schemaPath,
-									schemaName);
+									this.getTargetSchema(),
+									this.getTargetLocation(), 
+									this.usesMoxy());
 		genSchemaJob.schedule();
 		
 	}
@@ -155,7 +151,7 @@ public class SchemaGeneratorWizard extends Wizard implements INewWizard
 		}
 		return javaProject;
     }
-	
+
 	private String getTargetSchema() {
 
 		IPath filePath = this.newSchemaFileWizardPage.getFileRelativePath();
@@ -165,6 +161,10 @@ public class SchemaGeneratorWizard extends Wizard implements INewWizard
 			filePath.toOSString() + File.separator + fileName;
 
 		return this.addXsdExtension(targetSchema);
+	}
+
+	private IPath getTargetLocation() {
+		return this.newSchemaFileWizardPage.getContainerFullPath();
 	}
 
 	private String addXsdExtension(String fileName) {
@@ -243,38 +243,39 @@ public class SchemaGeneratorWizard extends Wizard implements INewWizard
 	
 	// ********** generate schema job **********
 
-	static class GenerateSchemaJob extends AbstractJptGenerateJob {
+	private class GenerateSchemaJob extends AbstractJptGenerateJob {
 		private final String[] sourceClassNames;
 		private final String targetSchema;
+		private final IPath targetLocation;
 		private final boolean useMoxy;
-		private final IPath schemaPath;
-		private final String schemaName;
+		private SchemaGenerator generator;
 
 		// ********** constructor **********
 
 		protected GenerateSchemaJob(IJavaProject javaProject, String[] sourceClassNames, String targetSchema, 
-										boolean useMoxy, IPath schemaPath, String schemaName) {
+										IPath targetLocation, boolean useMoxy) {
 			
 			super(JptJaxbUiMessages.SchemaGeneratorWizard_generatingSchema, javaProject);
 			
 			this.sourceClassNames = sourceClassNames;
 			this.targetSchema = targetSchema;
+			this.targetLocation = targetLocation;
 			this.useMoxy = useMoxy;
-			this.schemaPath = schemaPath;
-			this.schemaName = schemaName;
 		}
 
 		// ********** overwrite AbstractJptGenerateJob **********
 
 		@Override
 		protected JptGenerator buildGenerator() {
-			return new SchemaGenerator(this.getJavaProject(), this.targetSchema, this.sourceClassNames, this.useMoxy);
+			this.generator = new SchemaGenerator(this.getJavaProject(), this.targetSchema, this.sourceClassNames, this.useMoxy);
+			return this.generator;
 		}
 
 		@Override
 		protected void postGenerate() {
 			this.refreshProject();
-			this.openGeneratedSchemaFile();
+			Iterable<String> schemaNames = this.generator.getGeneratedNames();
+			this.openGeneratedSchemaFiles(schemaNames);
 		}
 
 		@Override
@@ -289,12 +290,14 @@ public class SchemaGeneratorWizard extends Wizard implements INewWizard
 
 		// ********** internal methods **********
 
-		private void openGeneratedSchemaFile() {
-
-			IContainer container = (IContainer)ResourcesPlugin.getWorkspace().getRoot().findMember(this.schemaPath);
-			IFile schemaFile = container.getFile(new Path(this.schemaName)); 
-
-			this.openEditor(schemaFile);
+		private void openGeneratedSchemaFiles(Iterable<String> names) {
+			for(String name : names) {
+				IContainer container = (IContainer)ResourcesPlugin.getWorkspace().getRoot().findMember(this.targetLocation);
+				IPath schemaPath = new Path(SchemaGeneratorWizard.this.addXsdExtension(name));
+				IFile schemaFile = container.getFile(schemaPath);
+	
+				this.openEditor(schemaFile);
+			}
 		}
 	}
 }

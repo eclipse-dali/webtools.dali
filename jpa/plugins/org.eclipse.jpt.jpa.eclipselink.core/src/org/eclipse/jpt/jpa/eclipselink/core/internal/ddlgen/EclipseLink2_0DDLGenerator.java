@@ -33,13 +33,6 @@ public class EclipseLink2_0DDLGenerator extends AbstractEclipseLinkDDLGenerator
 {
 	static final String VALIDATION_MODE_PROPERTY = "javax.persistence.validation.mode"; 	  //$NON-NLS-1$
 
-	public static JptGenerator generate(String puName, JpaProject project, OutputMode outputMode, IProgressMonitor monitor) {
-		if (puName == null || puName.length() == 0 || project == null) {
-			throw new NullPointerException();
-		}
-		return new EclipseLink2_0DDLGenerator(puName, project, outputMode).generate(monitor);
-	}
-
 	// ********** constructors **********
 
 	public EclipseLink2_0DDLGenerator(String puName, JpaProject jpaProject, OutputMode outputMode) {

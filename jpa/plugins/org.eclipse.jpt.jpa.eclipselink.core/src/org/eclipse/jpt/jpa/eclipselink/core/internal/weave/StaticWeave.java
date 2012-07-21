@@ -40,27 +40,6 @@ public class StaticWeave extends AbstractJptGenerator
 	private String loglevel;
 	private String persistenceinfo;
 	private final String mainType;
-	
-	// ********** static methods **********
-
-	public static JptGenerator weave(
-			IJavaProject javaProject, 
-			String source, 
-			String target, 
-			String loglevel, 
-			String persistenceinfo, 
-			IProgressMonitor monitor) {
-
-		if(javaProject == null) {
-			throw new NullPointerException("javaProject is null");   //$NON-NLS-1$
-		}
-		
-		return new StaticWeave(javaProject,
-			source, 
-			target,
-			loglevel, 
-			persistenceinfo).generate(monitor);
-	}
 
 	// ********** constructors **********
 	

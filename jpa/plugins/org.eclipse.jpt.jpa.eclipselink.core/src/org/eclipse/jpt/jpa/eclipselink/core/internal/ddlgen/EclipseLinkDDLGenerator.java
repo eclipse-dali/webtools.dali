@@ -30,14 +30,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.OutputMode;
  */
 public class EclipseLinkDDLGenerator extends AbstractEclipseLinkDDLGenerator
 {
-
-	
-	public static JptGenerator generate(String puName, JpaProject project, OutputMode outputMode, IProgressMonitor monitor) {
-		if (puName == null || puName.length() == 0 || project == null) {
-			throw new NullPointerException();
-		}
-		return new EclipseLinkDDLGenerator(puName, project, outputMode).generate(monitor);
-	}
 	
 	// ********** constructors **********
 
