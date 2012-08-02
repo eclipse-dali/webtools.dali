@@ -17,6 +17,7 @@ public class JptCommonCoreResourceJavaTests {
 	
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JptCommonCoreResourceJavaTests.class.getPackage().getName());
+		suite.addTestSuite(BinaryTypeTests.class);
 		suite.addTestSuite(SourceAttributeTests.class);
 		return suite;
 	}
