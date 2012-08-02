@@ -9,12 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.internal.resource.java.binary;
 
-import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
-import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.JavaResourceTypeBinding;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
@@ -27,17 +24,18 @@ abstract class BinaryAttribute
 		extends BinaryMember
 		implements JavaResourceAttribute {
 	
+	private String attributeName;
+	
 	private int modifiers;
 	
 	private TypeBinding typeBinding;
 	
 	
-	protected BinaryAttribute(JavaResourceType parent, Adapter adapter) {
+	protected BinaryAttribute(JavaResourceType parent, AttributeAdapter adapter) {
 		super(parent, adapter);
-		
-		IMember member = adapter.getElement();
-		this.modifiers = buildModifiers(member);
-		this.typeBinding = buildTypeBinding(createJdtTypeBinding(member));
+		this.attributeName = adapter.getAttributeName();
+		this.modifiers = buildModifiers();
+		this.typeBinding = buildTypeBinding(adapter.getTypeBinding());
 	}
 	
 	
@@ -46,16 +44,9 @@ abstract class BinaryAttribute
 	@Override
 	public void update() {
 		super.update();
-		
-		// TODO - update type binding ?
-	}
-	
-	@Override
-	protected void update(IMember member) {
-		super.update(member);
-		this.setModifiers(this.buildModifiers(member));
-		
-		// TODO - update type binding ?
+		updateAttributeName();
+		updateModifiers();
+		updateTypeBinding();
 	}
 	
 	@Override
@@ -64,14 +55,7 @@ abstract class BinaryAttribute
 	}
 	
 	
-	// ********** BinaryPersistentMember implementation **********
-	
-	private Adapter getAdapter() {
-		return (Adapter) this.adapter;
-	}
-	
-	
-	// ********** JavaResourceAttribute implementation **********
+	// ***** JavaResourceAttribute implementation *****
 	
 	@Override
 	public JavaResourceType getParent() {
@@ -83,7 +67,18 @@ abstract class BinaryAttribute
 	}
 	
 	public String getName() {
-		return this.getAdapter().getAttributeName();
+		return getAttributeName();
+	}
+	
+	
+	// ***** attribute name *****
+	
+	public String getAttributeName() {
+		return this.attributeName;
+	}
+	
+	protected void updateAttributeName() {
+		throw new UnsupportedOperationException();
 	}
 	
 	
@@ -93,22 +88,22 @@ abstract class BinaryAttribute
 		return this.modifiers;
 	}
 	
-	private void setModifiers(int modifiers) {
-		int old = this.modifiers;
-		this.modifiers = modifiers;
-		this.firePropertyChanged(MODIFIERS_PROPERTY, old, modifiers);
-	}
 	
 	/**
 	 * zero seems like a reasonable default...
 	 */
-	private int buildModifiers(IMember member) {
+	private int buildModifiers() {
 		try {
-			return member.getFlags();
-		} catch (JavaModelException ex) {
+			return getElement().getFlags();
+		}
+		catch (JavaModelException ex) {
 			JptCommonCorePlugin.instance().logError(ex);
 			return 0;
 		}
+	}
+	
+	protected void updateModifiers() {
+		throw new UnsupportedOperationException();
 	}
 	
 	
@@ -118,15 +113,12 @@ abstract class BinaryAttribute
 		return this.typeBinding;
 	}
 	
-	protected ITypeBinding createJdtTypeBinding(IMember member) {
-		IBinding jdtBinding = ASTTools.createBinding(member);
-		return getJdtTypeBinding(jdtBinding);
-	}
-	
-	protected abstract ITypeBinding getJdtTypeBinding(IBinding jdtBinding);
-	
 	protected TypeBinding buildTypeBinding(ITypeBinding jdtTypeBinding) {
 		return new JavaResourceTypeBinding(jdtTypeBinding);
+	}
+	
+	protected void updateTypeBinding() {
+		throw new UnsupportedOperationException();
 	}
 	
 	
@@ -135,8 +127,8 @@ abstract class BinaryAttribute
 	/**
 	 * Adapt an IField or IMethod.
 	 */
-	interface Adapter
-			extends BinaryMember.Adapter {
+	interface AttributeAdapter
+			extends MemberAdapter {
 		
 		/**
 		 * Return the field or getter method's "attribute" name
@@ -145,8 +137,8 @@ abstract class BinaryAttribute
 		String getAttributeName();
 		
 		/**
-		 * Return the attribute's type signature.
+		 * Return the attribute's type binding.
 		 */
-		String getTypeSignature() throws JavaModelException;
+		ITypeBinding getTypeBinding();
 	}
 }

@@ -107,6 +107,7 @@ public interface JavaResourceType
 	Iterable<JavaResourceField> getFields();
 		String FIELDS_COLLECTION = "fields"; //$NON-NLS-1$
 	
+	JavaResourceField getField(String name);
 	
 	// ********** methods **********
 	
@@ -124,7 +125,10 @@ public interface JavaResourceType
 	/**
 	 * Return a {@link TypeBinding} for the given attribute, whether that attribute
 	 * is owned directly by this type or this type has specific inherited type information
-	 * for it.  (This type may constrain the generic type of the attribute from a superclass.)
+	 * for it (i.e. this type has constrained the generic type of the attribute from a superclass.)
+	 * NB: a return value of null does not mean that the attribute does not exist within the scope
+	 * of this type.  It simply means that this type has no more information than the superclass
+	 * has, and the superclass should be checked for this information.
 	 */
-	TypeBinding getInheritedAttributeTypeBinding(JavaResourceAttribute attribute);
+	TypeBinding getAttributeTypeBinding(JavaResourceAttribute attribute);
 }

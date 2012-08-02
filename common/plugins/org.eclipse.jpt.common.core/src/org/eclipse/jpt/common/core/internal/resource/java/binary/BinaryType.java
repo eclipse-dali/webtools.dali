@@ -9,12 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.internal.resource.java.binary;
 
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Vector;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IField;
-import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
@@ -25,7 +25,6 @@ import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.resource.java.InheritedAttributeKey;
-import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.JavaResourceTypeBinding;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
@@ -36,8 +35,10 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 
 /**
  * binary type
@@ -54,29 +55,33 @@ final class BinaryType
 	
 	private boolean hasPrivateNoArgConstructor;
 	
-	private final Vector<JavaResourceField> fields;
+	private final Vector<JavaResourceField> fields = new Vector<JavaResourceField>();
 	
-	private final Vector<JavaResourceMethod> methods;
+	private final Vector<JavaResourceMethod> methods = new Vector<JavaResourceMethod>();
 	
-	private final Map<InheritedAttributeKey, JavaResourceTypeBinding> inheritedFieldTypes;
+	private final Hashtable<InheritedAttributeKey, JavaResourceTypeBinding> inheritedFieldTypes
+			= new Hashtable<InheritedAttributeKey, JavaResourceTypeBinding>();
 	
-	private final Map<InheritedAttributeKey, JavaResourceTypeBinding> inheritedMethodTypes;
+	private final Hashtable<InheritedAttributeKey, JavaResourceTypeBinding> inheritedMethodTypes
+			= new Hashtable<InheritedAttributeKey, JavaResourceTypeBinding>();
 	
 	
 	// ***** construction/initialization *****
 	
 	BinaryType(JavaResourceNode parent, IType type) {
-		super(parent, type);
-		this.superclassQualifiedName = buildSuperclassQualifiedName(type);
-		this.abstract_ = buildAbstract(type);
-		this.hasNoArgConstructor = buildHasNoArgConstructor(type);
-		this.hasPrivateNoArgConstructor = buildHasPrivateNoArgConstructor(type);
-		this.fields = buildFields(type);
-		this.methods = buildMethods(type);
-		
-		ITypeBinding typeBinding = (ITypeBinding) ASTTools.createBinding(type);
-		this.inheritedFieldTypes = buildInheritedFieldTypes(typeBinding);
-		this.inheritedMethodTypes = buildInheritedMethodTypes(typeBinding);
+		this(parent, new TypeAdapter(type));
+	}
+	
+	private BinaryType(JavaResourceNode parent, TypeAdapter adapter) {
+		super(parent, adapter);
+		this.superclassQualifiedName = buildSuperclassQualifiedName();
+		this.abstract_ = buildAbstract();
+		this.hasNoArgConstructor = buildHasNoArgConstructor();
+		this.hasPrivateNoArgConstructor = buildHasPrivateNoArgConstructor();
+		CollectionTools.addAll(this.fields, buildFields());
+		CollectionTools.addAll(this.methods, buildMethods());
+		this.inheritedFieldTypes.putAll(buildInheritedFieldTypes(adapter.getTypeBinding()));
+		this.inheritedMethodTypes.putAll(buildInheritedMethodTypes(adapter.getTypeBinding()));
 	}
 	
 	
@@ -88,94 +93,84 @@ final class BinaryType
 	// ***** overrides *****
 	
 	@Override
-	protected void update(IMember member) {
-		super.update(member);
-		this.setSuperclassQualifiedName(this.buildSuperclassQualifiedName((IType) member));
-		this.setAbstract(this.buildAbstract((IType) member));
-		this.setHasNoArgConstructor(this.buildHasNoArgConstructor((IType) member));
-		this.setHasPrivateNoArgConstructor(this.buildHasPrivateNoArgConstructor((IType) member));
-		this.updateFields((IType) member);
-		this.updateMethods((IType) member);
-	}
-	
-	// TODO
-	private void updateFields(IType type) {
-		throw new UnsupportedOperationException();
-	}
-	
-	// TODO
-	private void updateMethods(IType type) {
-		throw new UnsupportedOperationException();
+	public void update() {
+		super.update();
+		updateSuperclassQualifiedName();
+		updateAbstract();
+		updateHasNoArgConstructor();
+		updateHasPrivateNoArgConstructor();
+		updateFields();
+		updateMethods();
+		updateInheritedFieldTypes();
+		updateInheritedMethodTypes();
 	}
 	
 	
 	// ********** JavaResourceType implementation **********
-
+	
 	public void synchronizeWith(TypeDeclaration typeDeclaration) {
 		throw new UnsupportedOperationException();		
 	}
-
+	
 	public void resolveTypes(TypeDeclaration typeDeclaration) {
 		throw new UnsupportedOperationException();
 	}
-
-	// ***** superclass qualified name
+	
+	
+	// ***** superclass qualified name *****
+	
 	public String getSuperclassQualifiedName() {
 		return this.superclassQualifiedName;
 	}
 	
-	private void setSuperclassQualifiedName(String superclassQualifiedName) {
-		String old = this.superclassQualifiedName;
-		this.superclassQualifiedName = superclassQualifiedName;
-		this.firePropertyChanged(SUPERCLASS_QUALIFIED_NAME_PROPERTY, old, superclassQualifiedName);
-	}
-	
-	private String buildSuperclassQualifiedName(IType type) {
-		return convertTypeSignatureToTypeName(this.getSuperclassTypeSignature(type));
+	private String buildSuperclassQualifiedName() {
+		return convertTypeSignatureToTypeName(getSuperclassTypeSignature(getElement()));
 	}
 	
 	private String getSuperclassTypeSignature(IType type) {
 		try {
 			return type.getSuperclassTypeSignature();
-		} catch (JavaModelException ex) {
+		}
+		catch (JavaModelException ex) {
 			JptCommonCorePlugin.instance().logError(ex);
 			return null;
 		}
 	}
 	
-	// ***** abstract
+	protected void updateSuperclassQualifiedName() {
+		throw new UnsupportedOperationException();
+	}
+	
+	
+	// ***** abstract *****
+	
 	public boolean isAbstract() {
 		return this.abstract_;
 	}
 	
-	private void setAbstract(boolean abstract_) {
-		boolean old = this.abstract_;
-		this.abstract_ = abstract_;
-		this.firePropertyChanged(ABSTRACT_PROPERTY, old, abstract_);
-	}
-	
-	private boolean buildAbstract(IType type) {
+	private boolean buildAbstract() {
 		try {
-			return Flags.isAbstract(type.getFlags());
-		} catch (JavaModelException ex) {
+			return Flags.isAbstract(getElement().getFlags());
+		}
+		catch (JavaModelException ex) {
 			JptCommonCorePlugin.instance().logError(ex);
 			return false;
 		}
 	}
 	
-	// ***** no-arg constructor
+	protected void updateAbstract() {
+		throw new UnsupportedOperationException();
+	}
+	
+	
+	// ***** no-arg constructor *****
+	
 	public boolean hasNoArgConstructor() {
 		return this.hasNoArgConstructor;
 	}
 	
-	private void setHasNoArgConstructor(boolean hasNoArgConstructor) {
-		boolean old = this.hasNoArgConstructor;
-		this.hasNoArgConstructor = hasNoArgConstructor;
-		this.firePropertyChanged(NO_ARG_CONSTRUCTOR_PROPERTY, old, hasNoArgConstructor);
-	}
-	
-	private boolean buildHasNoArgConstructor(IType type) {
-		return this.findNoArgConstructor(type) != null;
+	private boolean buildHasNoArgConstructor() {
+		return this.findNoArgConstructor(getElement()) != null;
 	}
 	
 	private IMethod findNoArgConstructor(IType type) {
@@ -192,19 +187,19 @@ final class BinaryType
 		return null;
 	}
 	
-	// ***** private no-arg constructor
+	protected void updateHasNoArgConstructor() {
+		throw new UnsupportedOperationException();
+	}
+	
+	
+	// ***** private no-arg constructor *****
+	
 	public boolean hasPrivateNoArgConstructor() {
 		return this.hasPrivateNoArgConstructor;
 	}
 	
-	private void setHasPrivateNoArgConstructor(boolean hasPrivateNoArgConstructor) {
-		boolean old = this.hasPrivateNoArgConstructor;
-		this.hasPrivateNoArgConstructor = hasPrivateNoArgConstructor;
-		this.firePropertyChanged(PRIVATE_NO_ARG_CONSTRUCTOR_PROPERTY, old, hasPrivateNoArgConstructor);
-	}
-	
-	private boolean buildHasPrivateNoArgConstructor(IType type) {
-		IMethod method = this.findNoArgConstructor(type);
+	private boolean buildHasPrivateNoArgConstructor() {
+		IMethod method = this.findNoArgConstructor(getElement());
 		try {
 			return method != null && Flags.isPrivate(method.getFlags());
 		}
@@ -212,6 +207,10 @@ final class BinaryType
 			JptCommonCorePlugin.instance().logError(ex);
 			return false;
 		}
+	}
+	
+	protected void updateHasPrivateNoArgConstructor() {
+		throw new UnsupportedOperationException();
 	}
 	
 	
@@ -254,6 +253,165 @@ final class BinaryType
 	}
 	
 	
+	// ***** fields *****
+	
+	public Iterable<JavaResourceField> getFields() {
+		return new LiveCloneIterable<JavaResourceField>(this.fields);
+	}
+	
+	private Iterable<JavaResourceField> buildFields() {
+		return new TransformationIterable<IField, JavaResourceField>(
+				new ArrayIterable<IField>(getFields(getElement()))) {
+			@Override
+			protected JavaResourceField transform(IField field) {
+				return buildField(field);
+			}
+		};
+	}
+	
+	private IField[] getFields(IType type) {
+		try {
+			return type.getFields();
+		}
+		catch (JavaModelException ex) {
+			JptCommonCorePlugin.instance().logError(ex);
+			return EMPTY_FIELD_ARRAY;
+		}
+	}
+	
+	private static final IField[] EMPTY_FIELD_ARRAY = new IField[0];
+	
+	private JavaResourceField buildField(IField jdtField) {
+		return new BinaryField(this, jdtField);
+	}
+	
+	protected void updateFields() {
+		throw new UnsupportedOperationException();
+	}
+	
+	public JavaResourceField getField(String name) {
+		for (JavaResourceField field : getFields()) {
+			if (StringTools.stringsAreEqual(field.getName(), name)) {
+				return field;
+			}
+		}
+		return null;
+	}
+	
+	
+	// ***** methods *****
+	
+	public Iterable<JavaResourceMethod> getMethods() {
+		return new LiveCloneIterable<JavaResourceMethod>(this.methods);
+	}
+	
+	private Iterable<JavaResourceMethod> buildMethods() {
+		return new TransformationIterable<IMethod, JavaResourceMethod>(
+				new ArrayIterable<IMethod>(getMethods(getElement()))) {
+			@Override
+			protected JavaResourceMethod transform(IMethod method) {
+				return buildMethod(method);
+			}
+		};
+	}
+	
+	private IMethod[] getMethods(IType type) {
+		try {
+			return type.getMethods();
+		} catch (JavaModelException ex) {
+			JptCommonCorePlugin.instance().logError(ex);
+			return EMPTY_METHOD_ARRAY;
+		}
+	}
+	
+	private static final IMethod[] EMPTY_METHOD_ARRAY = new IMethod[0];
+	
+	private JavaResourceMethod buildMethod(IMethod jdtMethod) {
+		return new BinaryMethod(this, jdtMethod);
+	}
+	
+	protected void updateMethods() {
+		throw new UnsupportedOperationException();
+	}
+	
+	public JavaResourceMethod getMethod(String propertyName) {
+		for (JavaResourceMethod method : this.getMethods()) {
+			if (StringTools.stringsAreEqual(method.getMethodName(), propertyName)) {
+				return method;
+			}
+		}
+		return null;
+	}
+	
+	
+	// ***** inherited field/method types *****
+	
+	private Map<InheritedAttributeKey, JavaResourceTypeBinding> buildInheritedFieldTypes(ITypeBinding typeBinding) {
+		Map<InheritedAttributeKey, JavaResourceTypeBinding> inheritedFieldTypes = new HashMap<InheritedAttributeKey, JavaResourceTypeBinding>();
+		ITypeBinding scTypeBinding = typeBinding.getSuperclass();
+		while (scTypeBinding != null && scTypeBinding.isParameterizedType()) {
+			// if the superclass is not parameterized, 
+			// then this class will have no increased type information for inherited fields
+			buildInheritedFieldTypes_(inheritedFieldTypes, scTypeBinding);
+			scTypeBinding = scTypeBinding.getSuperclass();
+		}
+		return inheritedFieldTypes;
+	}
+	
+	private void buildInheritedFieldTypes_(
+			Map<InheritedAttributeKey, JavaResourceTypeBinding> inheritedFieldTypes, ITypeBinding typeBinding) {
+		String typeName = typeBinding.getTypeDeclaration().getQualifiedName();
+		IVariableBinding[] fields = typeBinding.getDeclaredFields();
+		for (IVariableBinding field : fields) {
+			String fieldName = field.getName();
+			inheritedFieldTypes.put(new InheritedAttributeKey(typeName, fieldName), new JavaResourceTypeBinding(field.getType()));
+		}
+	}
+	
+	protected void updateInheritedFieldTypes() {
+		throw new UnsupportedOperationException();
+	}
+	
+	private Map<InheritedAttributeKey, JavaResourceTypeBinding> buildInheritedMethodTypes(ITypeBinding typeBinding) {
+		Map<InheritedAttributeKey, JavaResourceTypeBinding> inheritedMethodTypes = new HashMap<InheritedAttributeKey, JavaResourceTypeBinding>();
+		ITypeBinding scTypeBinding = typeBinding.getSuperclass();
+		while (scTypeBinding != null && scTypeBinding.isParameterizedType()) {
+			// if the superclass is not parameterized, 
+			// then this class will have no increased type information for inherited fields
+			buildInheritedMethodTypes_(inheritedMethodTypes, scTypeBinding);
+			scTypeBinding = scTypeBinding.getSuperclass();
+		}
+		return inheritedMethodTypes;
+	}
+	
+	private void buildInheritedMethodTypes_(
+			Map<InheritedAttributeKey, JavaResourceTypeBinding> inheritedFieldTypes, ITypeBinding typeBinding) {
+		String typeName = typeBinding.getTypeDeclaration().getQualifiedName();
+		IMethodBinding[] methods = typeBinding.getDeclaredMethods();
+		for (IMethodBinding method : methods) {
+			String methodName = method.getName();
+			inheritedFieldTypes.put(new InheritedAttributeKey(typeName, methodName), new JavaResourceTypeBinding(method.getReturnType()));
+		}
+	}
+	
+	protected void updateInheritedMethodTypes() {
+		throw new UnsupportedOperationException();
+	}
+	
+	public TypeBinding getAttributeTypeBinding(JavaResourceAttribute attribute) {
+		if (attribute.getParent() == this) {
+			return attribute.getTypeBinding();
+		}
+		InheritedAttributeKey key = new InheritedAttributeKey(attribute.getParent().getTypeBinding().getQualifiedName(), attribute.getName());
+		if (attribute.getKind() == JavaResourceAnnotatedElement.Kind.FIELD) {
+			return this.inheritedFieldTypes.get(key);
+		}
+		else /* attribute.getKind() == JavaResourceAnnotatedElement.Kind.METHOD */ {
+			return this.inheritedMethodTypes.get(key);
+		}
+	}
+	
+	
 	// ***** misc *****
 	
 	public boolean hasAnyAnnotatedFields() {
@@ -272,11 +430,6 @@ final class BinaryType
 			}
 		}
 		return false;
-	}
-	
-	@Override
-	public IType getMember() {
-		return super.getMember();
 	}
 	
 	// Two more requirements for a valid equals() method:
@@ -306,136 +459,5 @@ final class BinaryType
 			}
 		}
 		return false;
-	}
-	
-	public JavaResourceMethod getMethod(String propertyName) {
-		for (JavaResourceMethod method : this.getMethods()) {
-			if (StringTools.stringsAreEqual(method.getMethodName(), propertyName)) {
-				return method;
-			}
-		}
-		return null;
-	}
-	
-	
-	// ***** fields *****
-	
-	public Iterable<JavaResourceField> getFields() {
-		return new LiveCloneIterable<JavaResourceField>(this.fields);
-	}
-	
-	private Vector<JavaResourceField> buildFields(IType type) {
-		IField[] jdtFields = this.getFields(type);
-		Vector<JavaResourceField> result = new Vector<JavaResourceField>(jdtFields.length);
-		for (IField jdtField : jdtFields) {
-			result.add(this.buildField(jdtField));
-		}
-		return result;
-	}
-	
-	private IField[] getFields(IType type) {
-		try {
-			return type.getFields();
-		} catch (JavaModelException ex) {
-			JptCommonCorePlugin.instance().logError(ex);
-			return EMPTY_FIELD_ARRAY;
-		}
-	}
-	
-	private static final IField[] EMPTY_FIELD_ARRAY = new IField[0];
-	
-	private JavaResourceField buildField(IField jdtField) {
-		return new BinaryField(this, jdtField);
-	}
-	
-	
-	// ***** methods *****
-	
-	public Iterable<JavaResourceMethod> getMethods() {
-		return new LiveCloneIterable<JavaResourceMethod>(this.methods);
-	}
-	
-	private Vector<JavaResourceMethod> buildMethods(IType type) {
-		IMethod[] jdtMethods = this.getMethods(type);
-		Vector<JavaResourceMethod> result = new Vector<JavaResourceMethod>(jdtMethods.length);
-		for (IMethod jdtMethod : jdtMethods) {
-			result.add(this.buildMethod(jdtMethod));
-		}
-		return result;
-	}
-	
-	private IMethod[] getMethods(IType type) {
-		try {
-			return type.getMethods();
-		} catch (JavaModelException ex) {
-			JptCommonCorePlugin.instance().logError(ex);
-			return EMPTY_METHOD_ARRAY;
-		}
-	}
-	
-	private static final IMethod[] EMPTY_METHOD_ARRAY = new IMethod[0];
-	
-	private JavaResourceMethod buildMethod(IMethod jdtMethod) {
-		return new BinaryMethod(this, jdtMethod);
-	}
-	
-	
-	// ***** inherited field/method types *****
-	
-	private Map<InheritedAttributeKey, JavaResourceTypeBinding> buildInheritedFieldTypes(ITypeBinding typeBinding) {
-		Map<InheritedAttributeKey, JavaResourceTypeBinding> inheritedFieldTypes = new Hashtable<InheritedAttributeKey, JavaResourceTypeBinding>();
-		ITypeBinding scTypeBinding = typeBinding.getSuperclass();
-		while (scTypeBinding != null && ! scTypeBinding.isParameterizedType()) {
-			// if the superclass is not parameterized, 
-			// then this class will have no increased type information for inherited fields
-			buildInheritedFieldTypes_(inheritedFieldTypes, scTypeBinding);
-			scTypeBinding = scTypeBinding.getSuperclass();
-		}
-		return inheritedFieldTypes;
-	}
-	
-	private void buildInheritedFieldTypes_(
-			Map<InheritedAttributeKey, JavaResourceTypeBinding> inheritedFieldTypes, ITypeBinding typeBinding) {
-		String typeName = typeBinding.getQualifiedName();
-		IVariableBinding[] fields = typeBinding.getDeclaredFields();
-		for (IVariableBinding field : fields) {
-			String fieldName = field.getName();
-			inheritedFieldTypes.put(new InheritedAttributeKey(typeName, fieldName), new JavaResourceTypeBinding(field.getType()));
-		}
-	}
-	
-	private Map<InheritedAttributeKey, JavaResourceTypeBinding> buildInheritedMethodTypes(ITypeBinding typeBinding) {
-		Map<InheritedAttributeKey, JavaResourceTypeBinding> inheritedMethodTypes = new Hashtable<InheritedAttributeKey, JavaResourceTypeBinding>();
-		ITypeBinding scTypeBinding = typeBinding.getSuperclass();
-		while (scTypeBinding != null && ! scTypeBinding.isParameterizedType()) {
-			// if the superclass is not parameterized, 
-			// then this class will have no increased type information for inherited fields
-			buildInheritedMethodTypes_(inheritedMethodTypes, scTypeBinding);
-			scTypeBinding = scTypeBinding.getSuperclass();
-		}
-		return inheritedMethodTypes;
-	}
-	
-	private void buildInheritedMethodTypes_(
-			Map<InheritedAttributeKey, JavaResourceTypeBinding> inheritedFieldTypes, ITypeBinding typeBinding) {
-		String typeName = typeBinding.getQualifiedName();
-		IMethodBinding[] methods = typeBinding.getDeclaredMethods();
-		for (IMethodBinding method : methods) {
-			String methodName = method.getName();
-			inheritedFieldTypes.put(new InheritedAttributeKey(typeName, methodName), new JavaResourceTypeBinding(method.getReturnType()));
-		}
-	}
-	
-	public TypeBinding getInheritedAttributeTypeBinding(JavaResourceAttribute attribute) {
-		if (attribute.getParent() == this) {
-			return attribute.getTypeBinding();
-		}
-		InheritedAttributeKey key = new InheritedAttributeKey(attribute.getParent().getName(), attribute.getName());
-		if (attribute.getKind() == JavaResourceAnnotatedElement.Kind.FIELD) {
-			return this.inheritedFieldTypes.get(key);
-		}
-		else /* attribute.getKind() == JavaResourceAnnotatedElement.Kind.METHOD */ {
-			return this.inheritedMethodTypes.get(key);
-		}
 	}
 }

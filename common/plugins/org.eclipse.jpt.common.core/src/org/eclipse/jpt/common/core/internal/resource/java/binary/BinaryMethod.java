@@ -9,30 +9,27 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.internal.resource.java.binary;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Vector;
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jdt.core.ILocalVariable;
-import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
-import org.eclipse.jdt.core.ITypeParameter;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.MethodSignature;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.NameTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 
 /**
  * binary method
@@ -47,47 +44,65 @@ final class BinaryMethod
 	
 	
 	BinaryMethod(JavaResourceType parent, IMethod method) {
-		super(parent, new MethodAdapter(method));
+		this(parent,new MethodAdapter(method));
 	}
+	
+	private BinaryMethod(JavaResourceType parent, MethodAdapter adapter) {
+		super(parent, adapter);
+		this.constructor = buildConstructor();
+		CollectionTools.addAll(this.parameterTypeNames, buildParameterTypeNames(adapter.getMethodBinding()));
+	}
+	
 	
 	public Kind getKind() {
 		return JavaResourceAnnotatedElement.Kind.METHOD;
-	}
-	
-	
-	// ***** overrides *****
-	
-	@Override
-	protected void update(IMember member) {
-		super.update(member);
-		this.setConstructor(this.buildConstructor((IMethod) member));
-		this.setParameterTypeNames(this.buildParameterTypeNames((IMethod) member));
 	}
 	
 	public void synchronizeWith(MethodDeclaration methodDeclaration) {
 		throw new UnsupportedOperationException();
 	}
 	
+	
+	// ***** overrides *****
+	
 	@Override
-	IMethod getMember() {
-		return (IMethod) super.getMember();
+	public void update() {
+		super.update();
+		updateConstructor();
+		updateParameterTypeNames();
 	}
 	
 	@Override
-	protected ITypeBinding getJdtTypeBinding(IBinding jdtBinding) {
-		// bug 381503 - if the binary method is a constructor,
-		// the jdtBinding will be a JavaResourceTypeBinding already
-		if (jdtBinding.getKind() == IBinding.TYPE) {
-			return (ITypeBinding) jdtBinding;
-		}
-		return ((IMethodBinding) jdtBinding).getReturnType();
+	public IMethod getElement() {
+		return (IMethod) super.getElement();
 	}
 	
 	
 	// ***** method name *****
 	
 	public String getMethodName() {
-		return getMember().getElementName();
+		return getElement().getElementName();
+	}
+	
+	
+	// ***** constructor *****
+	
+	public boolean isConstructor() {
+		return this.constructor;
+	}
+	
+	private boolean buildConstructor() {
+		try {
+			return getElement().isConstructor();
+		}
+		catch (JavaModelException ex) {
+			JptCommonCorePlugin.instance().logError(ex);
+			return false;
+		}
+	}
+	
+	protected void updateConstructor() {
+		throw new UnsupportedOperationException();
 	}
 	
 	
@@ -105,47 +120,21 @@ final class BinaryMethod
 		return this.parameterTypeNames.size();
 	}
 	
-	private List<String> buildParameterTypeNames(IMethod method) {
-		ArrayList<String> names = new ArrayList<String>();
-		for (ILocalVariable parameter : this.getParameters(method)) {
-			names.add(parameter.getElementName());//TODO is this right?
+	private Iterable<String> buildParameterTypeNames(IMethodBinding binding) {
+		if (binding == null) {
+			return EmptyIterable.instance();
 		}
-		return names;
+		return new TransformationIterable<ITypeBinding, String>(
+				new ArrayIterable<ITypeBinding>(binding.getParameterTypes())) {
+			@Override
+			protected String transform(ITypeBinding parameterType) {
+				return parameterType.getTypeDeclaration().getQualifiedName();
+			}
+		};
 	}
 	
-	private ILocalVariable[] getParameters(IMethod jdtMethod) {
-		try {
-			return jdtMethod.getParameters();
-		} catch (JavaModelException ex) {
-			JptCommonCorePlugin.instance().logError(ex);
-			return null;
-		}
-	}
-	
-	private void setParameterTypeNames(List<String> parameterTypeNames) {
-		this.synchronizeList(parameterTypeNames, this.parameterTypeNames, PARAMETER_TYPE_NAMES_LIST);
-	}
-	
-	
-	// ***** constructor *****
-	
-	public boolean isConstructor() {
-		return this.constructor;
-	}
-	
-	private void setConstructor(boolean isConstructor) {
-		boolean old = this.constructor;
-		this.constructor = isConstructor;
-		this.firePropertyChanged(CONSTRUCTOR_PROPERTY, old, isConstructor);
-	}
-	
-	private boolean buildConstructor(IMethod method) {
-		try {
-			return method.isConstructor();
-		} catch (JavaModelException ex) {
-			JptCommonCorePlugin.instance().logError(ex);
-			return false;
-		}
+	private void updateParameterTypeNames() {
+		throw new UnsupportedOperationException();
 	}
 	
 	
@@ -162,30 +151,28 @@ final class BinaryMethod
 	 * IMethod adapter
 	 */
 	static class MethodAdapter
-			implements BinaryAttribute.Adapter {
+			implements AttributeAdapter {
 		
 		final IMethod method;
+		
 		static final IMethod[] EMPTY_METHOD_ARRAY = new IMethod[0];
+		
+		/* cached, but only during initialization */
+		private final IBinding binding;
+		
 		
 		MethodAdapter(IMethod method) {
 			super();
 			this.method = method;
+			this.binding = createBinding(method);
+		}
+		
+		protected IBinding createBinding(IMethod method) {
+			return ASTTools.createBinding(method);
 		}
 		
 		public IMethod getElement() {
 			return this.method;
-		}
-		
-		public Iterable<ITypeParameter> getTypeParameters() {
-			try {
-				return new CompositeIterable<ITypeParameter>(
-						new ArrayIterable<ITypeParameter>(this.method.getTypeParameters()),
-						new ArrayIterable<ITypeParameter>(this.method.getDeclaringType().getTypeParameters()));
-			}
-			catch (JavaModelException jme) {
-				JptCommonCorePlugin.instance().logError(jme);
-			}
-			return EmptyIterable.instance();
 		}
 		
 		public IAnnotation[] getAnnotations() throws JavaModelException {
@@ -196,8 +183,23 @@ final class BinaryMethod
 			return NameTools.convertGetterSetterMethodNameToPropertyName(this.method.getElementName());
 		}
 		
-		public String getTypeSignature() throws JavaModelException {
-			return this.method.getReturnType();
+		/* NB - may return null */
+		public IMethodBinding getMethodBinding() {
+			// bug 381503 - if the binary method is a constructor,
+			// the jdtBinding will be a JavaResourceTypeBinding already
+			if (this.binding.getKind() == IBinding.TYPE) {
+				return null;
+			}
+			return (IMethodBinding) binding;
+		}
+		
+		public ITypeBinding getTypeBinding() {
+			// bug 381503 - if the binary method is a constructor,
+			// the jdtBinding will be a JavaResourceTypeBinding already
+			if (this.binding.getKind() == IBinding.TYPE) {
+				return (ITypeBinding) binding;
+			}
+			return ((IMethodBinding) binding).getReturnType();
 		}
 	}
 }

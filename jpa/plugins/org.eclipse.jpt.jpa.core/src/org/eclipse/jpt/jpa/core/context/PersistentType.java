@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.core.context;
 import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -111,7 +112,7 @@ public interface PersistentType
 	/**
 	 * Return qualified type name of given attribute within the context of this type.
 	 */
-	String getAttributeTypeName(ReadOnlyPersistentAttribute attribute);
+	TypeBinding getAttributeTypeBinding(ReadOnlyPersistentAttribute attribute);
 
 
 	// ********** inheritance **********

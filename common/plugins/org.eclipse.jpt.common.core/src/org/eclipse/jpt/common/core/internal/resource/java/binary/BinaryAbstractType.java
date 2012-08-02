@@ -11,15 +11,11 @@ package org.eclipse.jpt.common.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.ITypeParameter;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
-import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.JavaResourceTypeBinding;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
@@ -27,8 +23,6 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 
 /**
  * binary persistent type
@@ -44,22 +38,26 @@ abstract class BinaryAbstractType
 	
 	// ********** construction/initialization **********
 	
-	protected BinaryAbstractType(JavaResourceNode parent, IType type) {
-		super(parent, new TypeAdapter(type));
-		this.typeBinding = buildTypeBinding(createJdtTypeBinding(type));
-		this.declaringTypeName = this.buildDeclaringTypeName(type);
+	protected BinaryAbstractType(JavaResourceNode parent, TypeAdapter adapter) {
+		super(parent, adapter);
+		this.typeBinding = buildTypeBinding(adapter.getTypeBinding());
+		this.declaringTypeName = buildDeclaringTypeName();
 	}
-
-
+	
+	
 	// ********** overrides **********
-
+	
 	@Override
-	protected void update(IMember member) {
-		super.update(member);
+	protected IType getElement() {
+		return (IType) super.getElement();
+	}
+	
+	@Override
+	public void update() {
+		super.update();
 		
-		// TODO - update type binding?
-		
-		this.setDeclaringTypeName(this.buildDeclaringTypeName((IType) member));
+		updateTypeBinding();
+		updateDeclaringTypeName();
 	}
 	
 	@Override
@@ -80,13 +78,12 @@ abstract class BinaryAbstractType
 		return this.typeBinding;
 	}
 	
-	protected ITypeBinding createJdtTypeBinding(IType jdtType) {
-		IBinding jdtBinding = ASTTools.createBinding(jdtType);
-		return (ITypeBinding) jdtBinding;
-	}
-	
 	protected JavaResourceTypeBinding buildTypeBinding(ITypeBinding jdtTypeBinding) {
 		return new JavaResourceTypeBinding(jdtTypeBinding);
+	}
+	
+	protected void updateTypeBinding() {
+		throw new UnsupportedOperationException();
 	}
 	
 	// ***** package
@@ -100,7 +97,7 @@ abstract class BinaryAbstractType
 	}
 	
 	private IPackageFragmentRoot getSourceFolder() {
-		return (IPackageFragmentRoot) this.getMember().getAncestor(IJavaElement.PACKAGE_FRAGMENT_ROOT);
+		return (IPackageFragmentRoot) getElement().getAncestor(IJavaElement.PACKAGE_FRAGMENT_ROOT);
 	}
 	
 	// ***** declaring type name
@@ -108,25 +105,18 @@ abstract class BinaryAbstractType
 		return this.declaringTypeName;
 	}
 	
-	private void setDeclaringTypeName(String declaringTypeName) {
-		String old = this.declaringTypeName;
-		this.declaringTypeName = declaringTypeName;
-		this.firePropertyChanged(DECLARING_TYPE_NAME_PROPERTY, old, declaringTypeName);
+	private String buildDeclaringTypeName() {
+		IType declaringType = getElement().getDeclaringType();
+		return (declaringType == null) ? null : declaringType.getFullyQualifiedName('.');  // no parameters are included here
 	}
 	
-	private String buildDeclaringTypeName(IType type) {
-		IType declaringType = type.getDeclaringType();
-		return (declaringType == null) ? null : declaringType.getFullyQualifiedName('.');  // no parameters are included here
+	protected void updateDeclaringTypeName() {
+		throw new UnsupportedOperationException();
 	}
 	
 	
 	// ********** misc **********
-
-	@Override
-	public IType getMember() {
-		return (IType) super.getMember();
-	}
-
+	
 	public Iterable<JavaResourceType> getTypes() {
 		throw new UnsupportedOperationException();
 	}
@@ -134,7 +124,7 @@ abstract class BinaryAbstractType
 	public Iterable<JavaResourceEnum> getEnums() {
 		throw new UnsupportedOperationException();
 	}
-
+	
 	public Iterable<JavaResourceType> getAllTypes() {
 		throw new UnsupportedOperationException();
 	}
@@ -142,31 +132,35 @@ abstract class BinaryAbstractType
 	public Iterable<JavaResourceEnum> getAllEnums() {
 		throw new UnsupportedOperationException();
 	}
-
+	
+	
 	// ********** IType adapter **********
-
+	
 	static class TypeAdapter
-			implements Adapter {
+			implements MemberAdapter {
 		
 		private final IType type;
+		
+		/* cached, but only during initialization */
+		private final ITypeBinding typeBinding;
 		
 		TypeAdapter(IType type) {
 			super();
 			this.type = type;
+			this.typeBinding = createTypeBinding(type);
+		}
+		
+		
+		protected ITypeBinding createTypeBinding(IType type) {
+			return (ITypeBinding) ASTTools.createBinding(type);
 		}
 		
 		public IType getElement() {
 			return this.type;
 		}
 		
-		public Iterable<ITypeParameter> getTypeParameters() {
-			try {
-				return new ArrayIterable<ITypeParameter>(this.type.getTypeParameters());
-			}
-			catch (JavaModelException jme) {
-				JptCommonCorePlugin.instance().logError(jme);
-			}
-			return EmptyIterable.instance();
+		public ITypeBinding getTypeBinding() {
+			return this.typeBinding;
 		}
 		
 		public IAnnotation[] getAnnotations() throws JavaModelException {

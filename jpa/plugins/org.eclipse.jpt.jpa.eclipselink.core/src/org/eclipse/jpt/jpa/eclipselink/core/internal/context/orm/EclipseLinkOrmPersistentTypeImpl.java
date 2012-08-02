@@ -11,8 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.JpaPlatform.Version;
+import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -29,7 +28,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistent
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_1JpaPlatformFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.plugin.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAccessMethods;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAccessMethodsHolder;
@@ -174,12 +172,12 @@ public class EclipseLinkOrmPersistentTypeImpl
 	}
 	
 	@Override
-	public String getAttributeTypeName(ReadOnlyPersistentAttribute attribute) {
+	public TypeBinding getAttributeTypeBinding(ReadOnlyPersistentAttribute attribute) {
 		if (isDynamic()) {
 			PersistentType superPersistentType = getSuperPersistentType();
-			return (superPersistentType == null) ? null : superPersistentType.getAttributeTypeName(attribute);
+			return (superPersistentType == null) ? null : superPersistentType.getAttributeTypeBinding(attribute);
 		}
-		return super.getAttributeTypeName(attribute);
+		return super.getAttributeTypeBinding(attribute);
 	}
 	
 	

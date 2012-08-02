@@ -204,7 +204,7 @@ public abstract class AbstractPrimaryKeyValidator
 					}
 					
 					// the matching attribute's type should agree
-					String idClassAttributeTypeName = idClassAttribute.getTypeName();
+					String idClassAttributeTypeName = idClassAttribute.getTypeName(idClass);
 					String attributeMappingTypeName = getTypeNameForIdClass(attributeMapping);
 					if (attributeMappingTypeName != null 	// if it's null, there should be 
 																// another failing validation elsewhere
@@ -448,11 +448,11 @@ public abstract class AbstractPrimaryKeyValidator
 		}
 		EmbeddedIdMapping embeddedId = getEmbeddedIdMapping(typeMapping);
 		if (embeddedId != null) {
-			return embeddedId.getPersistentAttribute().getTypeName();
+			return embeddedId.getPersistentAttribute().getTypeName(typeMapping.getPersistentType());
 		}
 		IdMapping id = getIdMapping(typeMapping);
 		if (id != null) {
-			return id.getPersistentAttribute().getTypeName();
+			return id.getPersistentAttribute().getTypeName(typeMapping.getPersistentType());
 		}
 		return null;
 	}
@@ -757,7 +757,7 @@ public abstract class AbstractPrimaryKeyValidator
 	protected String getTypeNameForIdClass(AttributeMapping attributeMapping) {
 		String mappingKey = attributeMapping.getKey();
 		if (CollectionTools.contains(this.getIdMappingKeys(), mappingKey)) {
-			return attributeMapping.getPersistentAttribute().getTypeName();
+			return attributeMapping.getPersistentAttribute().getTypeName(typeMapping().getPersistentType());
 		}
 		if (CollectionTools.contains(this.getSingleRelationshipMappingKeys(), mappingKey)) {
 			SingleRelationshipMapping2_0 relationshipMapping = (SingleRelationshipMapping2_0) attributeMapping;

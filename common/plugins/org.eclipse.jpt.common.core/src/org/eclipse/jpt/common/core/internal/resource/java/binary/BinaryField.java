@@ -11,18 +11,14 @@ package org.eclipse.jpt.common.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IField;
-import org.eclipse.jdt.core.ITypeParameter;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
-import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.IVariableBinding;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
-import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 
 /**
  * binary field
@@ -32,17 +28,17 @@ final class BinaryField
 		implements JavaResourceField {
 	
 	BinaryField(JavaResourceType parent, IField field) {
-		super(parent, new FieldAdapter(field));
+		this(parent,new FieldAdapter(field));
+	}
+	
+	private BinaryField(JavaResourceType parent, FieldAdapter adapter) {
+		super(parent, adapter);
+		// put initialization here, if any becomes needed
 	}
 	
 	
 	public Kind getKind() {
 		return Kind.FIELD;
-	}
-	
-	@Override
-	protected ITypeBinding getJdtTypeBinding(IBinding jdtBinding) {
-		return ((IVariableBinding) jdtBinding).getType();
 	}
 	
 	public void synchronizeWith(FieldDeclaration fieldDeclaration, VariableDeclarationFragment variableDeclaration) {
@@ -59,27 +55,25 @@ final class BinaryField
 	 * IField adapter
 	 */
 	static class FieldAdapter
-			implements BinaryAttribute.Adapter {
+			implements AttributeAdapter {
 		
 		final IField field;
+		
+		/* cached, but only during initialization */
+		private final ITypeBinding typeBinding;
 		
 		FieldAdapter(IField field) {
 			super();
 			this.field = field;
+			this.typeBinding = createTypeBinding(field);
+		}
+		
+		protected ITypeBinding createTypeBinding(IField field) {
+			return ((IVariableBinding) ASTTools.createBinding(field)).getType();
 		}
 		
 		public IField getElement() {
 			return this.field;
-		}
-		
-		public Iterable<ITypeParameter> getTypeParameters() {
-			try {
-				return new ArrayIterable<ITypeParameter>(this.field.getDeclaringType().getTypeParameters());
-			}
-			catch (JavaModelException jme) {
-				JptCommonCorePlugin.instance().logError(jme);
-			}
-			return EmptyIterable.instance();
 		}
 		
 		public IAnnotation[] getAnnotations() throws JavaModelException {
@@ -90,8 +84,8 @@ final class BinaryField
 			return this.field.getElementName();
 		}
 		
-		public String getTypeSignature() throws JavaModelException {
-			return this.field.getTypeSignature();
+		public ITypeBinding getTypeBinding() {
+			return this.typeBinding;
 		}
 	}
 }

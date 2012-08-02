@@ -22,6 +22,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 
 /**
  * binary enum
@@ -30,29 +31,34 @@ final class BinaryEnum
 		extends BinaryAbstractType
 		implements JavaResourceEnum {
 	
-	private final Vector<JavaResourceEnumConstant> enumConstants;
+	private final Vector<JavaResourceEnumConstant> enumConstants = new Vector<JavaResourceEnumConstant>();
 	
 	
 	// ********** construction/initialization **********
 	
 	BinaryEnum(JavaResourceNode parent, IType type) {
-		super(parent, type);
-		this.enumConstants = this.buildEnumConstants();
+		this(parent, new TypeAdapter(type));
+	}
+	
+	private BinaryEnum(JavaResourceNode parent, TypeAdapter adapter) {
+		super(parent, adapter);
+		CollectionTools.addAll(this.enumConstants, buildEnumConstants());
 	}
 	
 	
 	public Kind getKind() {
 		return JavaResourceAnnotatedElement.Kind.ENUM;
 	}
-
+	
 	public void synchronizeWith(EnumDeclaration enumDeclaration) {
 		throw new UnsupportedOperationException();
 	}
-
+	
 	public void resolveTypes(EnumDeclaration enumDeclaration) {
 		throw new UnsupportedOperationException();
 	}
-
+	
+	
 	// ********** overrides **********
 	
 	@Override
@@ -73,13 +79,13 @@ final class BinaryEnum
 		return new LiveCloneIterable<JavaResourceEnumConstant>(this.enumConstants);
 	}
 	
-	private Vector<JavaResourceEnumConstant> buildEnumConstants() {
-		Iterable<IField> jdtEnumConstants = this.getEnumConstants(this.getMember());
-		Vector<JavaResourceEnumConstant> result = new Vector<JavaResourceEnumConstant>(CollectionTools.size(jdtEnumConstants));
-		for (IField jdtEnumConstant : jdtEnumConstants) {
-			result.add(this.buildEnumConstant(jdtEnumConstant));
-		}
-		return result;
+	private Iterable<JavaResourceEnumConstant> buildEnumConstants() {
+		return new TransformationIterable<IField, JavaResourceEnumConstant>(getEnumConstants(getElement())) {
+			@Override
+			protected JavaResourceEnumConstant transform(IField field) {
+				return BinaryEnum.this.buildEnumConstant(field);
+			}
+		};
 	}
 	
 	private Iterable<IField> getEnumConstants(IType type) {
@@ -94,7 +100,8 @@ final class BinaryEnum
 	private IField[] getFields(IType type) {
 		try {
 			return type.getFields();
-		} catch (JavaModelException ex) {
+		}
+		catch (JavaModelException ex) {
 			JptCommonCorePlugin.instance().logError(ex);
 			return EMPTY_FIELD_ARRAY;
 		}
@@ -105,7 +112,8 @@ final class BinaryEnum
 	private boolean isEnumConstant(IField field) {
 		try {
 			return field.isEnumConstant();
-		} catch (JavaModelException ex) {
+		}
+		catch (JavaModelException ex) {
 			JptCommonCorePlugin.instance().logError(ex);
 			return false;
 		}

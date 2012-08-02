@@ -25,6 +25,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.BodySourceWriter;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.ClassName;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
@@ -420,8 +421,8 @@ public abstract class SpecifiedOrmPersistentType
 		};
 	}
 	
-	public String getAttributeTypeName(ReadOnlyPersistentAttribute attribute) {
-		return (this.javaPersistentType == null) ? null : this.javaPersistentType.getAttributeTypeName(attribute);
+	public TypeBinding getAttributeTypeBinding(ReadOnlyPersistentAttribute attribute) {
+		return (this.javaPersistentType == null) ? null : this.javaPersistentType.getAttributeTypeBinding(attribute);
 	}
 	
 	

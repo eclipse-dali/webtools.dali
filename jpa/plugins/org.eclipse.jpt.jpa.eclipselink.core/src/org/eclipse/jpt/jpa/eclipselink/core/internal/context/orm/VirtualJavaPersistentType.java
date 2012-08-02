@@ -21,6 +21,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.BodySourceWriter;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ChainIterable;
@@ -231,7 +232,7 @@ public class VirtualJavaPersistentType
 		return null;
 	}
 	
-	public String getAttributeTypeName(ReadOnlyPersistentAttribute attribute) {
+	public TypeBinding getAttributeTypeBinding(ReadOnlyPersistentAttribute attribute) {
 		return null;
 	}
 	

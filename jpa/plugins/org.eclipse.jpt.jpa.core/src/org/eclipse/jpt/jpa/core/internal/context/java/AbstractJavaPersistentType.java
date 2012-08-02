@@ -895,9 +895,13 @@ public abstract class AbstractJavaPersistentType
 			@Override
 			protected JavaResourceType nextLink(JavaResourceType currentLink) {
 				visitedResourceTypes.add(currentLink);
+				String superclassName = currentLink.getSuperclassQualifiedName();
+				if (superclassName == null) {
+					return null;
+				}
 				JavaResourceType nextLink = (JavaResourceType)
 						AbstractJavaPersistentType.this.getJpaProject().getJavaResourceType(
-								currentLink.getSuperclassQualifiedName(), 
+								superclassName, 
 								JavaResourceAbstractType.Kind.TYPE);
 				if (nextLink == null || visitedResourceTypes.contains(nextLink)) {
 					return null;
@@ -907,16 +911,16 @@ public abstract class AbstractJavaPersistentType
 		};
 	}
 	
-	public String getAttributeTypeName(ReadOnlyPersistentAttribute attribute) {
+	public TypeBinding getAttributeTypeBinding(ReadOnlyPersistentAttribute attribute) {
 		JavaResourceAttribute resourceAttribute = attribute.getJavaPersistentAttribute().getResourceAttribute();
 		if (resourceAttribute == null) {
 			return null;
 		}
 		
 		for (JavaResourceType resourceType : getResourceInheritanceHierarchy()) {
-			TypeBinding attributeType = resourceType.getInheritedAttributeTypeBinding(resourceAttribute);
+			TypeBinding attributeType = resourceType.getAttributeTypeBinding(resourceAttribute);
 			if (attributeType != null) {
-				return attributeType.getQualifiedName();
+				return attributeType;
 			}
 		}
 		

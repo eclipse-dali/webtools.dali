@@ -185,7 +185,7 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 
 	protected String buildDefaultAttributeType() {
 		return (this.getJavaPersistentAttribute() == null) ? null : 
-			this.getJavaPersistentAttribute().getTypeName();
+			this.getJavaPersistentAttribute().getTypeName(getTypeMapping().getPersistentType());
 	}
 
 	protected PersistentType getResolvedAttributeType() {

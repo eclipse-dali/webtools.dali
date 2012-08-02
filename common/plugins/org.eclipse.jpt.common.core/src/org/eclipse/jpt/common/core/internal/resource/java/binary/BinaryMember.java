@@ -27,157 +27,147 @@ import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
  * binary persistent member
  */
 abstract class BinaryMember
-	extends BinaryAnnotatedElement
-	implements JavaResourceMember
-{
-
+		extends BinaryAnnotatedElement
+		implements JavaResourceMember {
+	
 	private boolean final_;  // 'final' is a reserved word
 	private boolean transient_;  // 'transient' is a reserved word
 	private boolean public_;  // 'public' is a reserved word
 	private boolean static_;  // 'static' is a reserved word
 	private boolean protected_; // 'protected' is a reserved word
-
-
+	
+	
 	// ********** construction/initialization **********
-
-	public BinaryMember(JavaResourceNode parent, Adapter adapter) {
+	
+	public BinaryMember(JavaResourceNode parent, MemberAdapter adapter) {
 		super(parent, adapter);
-		IMember member = adapter.getElement();
-		this.final_ = this.buildFinal(member);
-		this.transient_ = this.buildTransient(member);
-		this.public_ = this.buildPublic(member);
-		this.static_ = this.buildStatic(member);
-		this.protected_ = this.buildProtected(member);
+		this.final_ = this.buildFinal();
+		this.transient_ = this.buildTransient();
+		this.public_ = this.buildPublic();
+		this.static_ = this.buildStatic();
+		this.protected_ = this.buildProtected();
 	}
-
+	
+	
 	// ********** updating **********
-
+	
 	@Override
 	public void update() {
 		super.update();
-		this.update(this.getMember());
+		
+		updateFinal();
+		updateTransient();
+		updatePublic();
+		updateStatic();
+		updateProtected();
 	}
-
-	protected void update(IMember member) {
-		this.setFinal(this.buildFinal(member));
-		this.setTransient(this.buildTransient(member));
-		this.setPublic(this.buildPublic(member));
-		this.setStatic(this.buildStatic(member));
-		this.setProtected(this.buildProtected(member));		
-	}
-
+	
+	
 	// ********** simple state **********
-
+	
 	// ***** final
 	public boolean isFinal() {
 		return this.final_;
 	}
-
-	private void setFinal(boolean final_) {
-		boolean old = this.final_;
-		this.final_ = final_;
-		this.firePropertyChanged(FINAL_PROPERTY, old, final_);
-	}
-
-	private boolean buildFinal(IMember member) {
+	
+	private boolean buildFinal() {
 		try {
-			return Flags.isFinal(member.getFlags());
-		} catch (JavaModelException ex) {
+			return Flags.isFinal(getElement().getFlags());
+		}
+		catch (JavaModelException ex) {
 			JptCommonCorePlugin.instance().logError(ex);
 			return false;
 		}
 	}
-
+	
+	protected void updateFinal() {
+		throw new UnsupportedOperationException();
+	}
+	
 	// ***** transient
 	public boolean isTransient() {
 		return this.transient_;
 	}
-
-	private void setTransient(boolean transient_) {
-		boolean old = this.transient_;
-		this.transient_ = transient_;
-		this.firePropertyChanged(TRANSIENT_PROPERTY, old, transient_);
-	}
-
-	private boolean buildTransient(IMember member) {
+	
+	private boolean buildTransient() {
 		try {
-			return Flags.isTransient(member.getFlags());
-		} catch (JavaModelException ex) {
+			return Flags.isTransient(getElement().getFlags());
+		}
+		catch (JavaModelException ex) {
 			JptCommonCorePlugin.instance().logError(ex);
 			return false;
 		}
 	}
-
+	
+	protected void updateTransient() {
+		throw new UnsupportedOperationException();
+	}
+	
 	// ***** public
 	public boolean isPublic() {
 		return this.public_;
 	}
-
-	private void setPublic(boolean public_) {
-		boolean old = this.public_;
-		this.public_ = public_;
-		this.firePropertyChanged(PUBLIC_PROPERTY, old, public_);
-	}
-
-	private boolean buildPublic(IMember member) {
+	
+	private boolean buildPublic() {
 		try {
-			return Flags.isPublic(member.getFlags());
-		} catch (JavaModelException ex) {
+			return Flags.isPublic(getElement().getFlags());
+		}
+		catch (JavaModelException ex) {
 			JptCommonCorePlugin.instance().logError(ex);
 			return false;
 		}
 	}
-
+	
+	protected void updatePublic() {
+		throw new UnsupportedOperationException();
+	}
+	
 	// ***** static
 	public boolean isStatic() {
 		return this.static_;
 	}
-
-	private void setStatic(boolean static_) {
-		boolean old = this.static_;
-		this.static_ = static_;
-		this.firePropertyChanged(STATIC_PROPERTY, old, static_);
-	}
-
-	private boolean buildStatic(IMember member) {
+	
+	private boolean buildStatic() {
 		try {
-			return Flags.isStatic(member.getFlags());
-		} catch (JavaModelException ex) {
+			return Flags.isStatic(getElement().getFlags());
+		}
+		catch (JavaModelException ex) {
 			JptCommonCorePlugin.instance().logError(ex);
 			return false;
 		}
 	}
-
+	
+	protected void updateStatic() {
+		throw new UnsupportedOperationException();
+	}
+	
 	// ***** protected
 	public boolean isProtected() {
 		return this.protected_;
 	}
-
-	private void setProtected(boolean protected_) {
-		boolean old = this.protected_;
-		this.protected_ = protected_;
-		this.firePropertyChanged(PROTECTED_PROPERTY, old, protected_);
-	}
-
-	private boolean buildProtected(IMember member) {
+	
+	private boolean buildProtected() {
 		try {
-			return Flags.isProtected(member.getFlags());
-		} catch (JavaModelException ex) {
+			return Flags.isProtected(getElement().getFlags());
+		}
+		catch (JavaModelException ex) {
 			JptCommonCorePlugin.instance().logError(ex);
 			return false;
 		}
 	}
-
+	
+	protected void updateProtected() {
+		throw new UnsupportedOperationException();
+	}
+	
+	
 	// ********** miscellaneous **********
-
-	IMember getMember() {
-		return this.getAdapter().getElement();
+	
+	@Override
+	protected IMember getElement() {
+		return (IMember) super.getElement();
 	}
-
-	private Adapter getAdapter() {
-		return (Adapter) this.adapter;
-	}
-
+	
 	/**
 	 * Strip off the type signature's parameters if present.
 	 * Convert to a readable string.
@@ -276,24 +266,24 @@ abstract class BinaryMember
 		return this.isPublic() || this.isProtected();
 	}
 	
+	
 	// ********** IMember adapter **********
-
-	interface Adapter extends BinaryAnnotatedElement.Adapter {
+	
+	interface MemberAdapter extends BinaryAnnotatedElement.Adapter {
+		
 		/**
 		 * Return the adapter's JDT member (IType, IField, IMethod).
 		 */
 		IMember getElement();
-		
-		Iterable<ITypeParameter> getTypeParameters();
 	}
-
-
+	
+	
 	// ********** unsupported JavaResourceMember implementation **********
-
+	
 	public Annotation setPrimaryAnnotation(String primaryAnnotationName, Iterable<String> supportingAnnotationNames) {
 		throw new UnsupportedOperationException();
 	}
-
+	
 	public boolean isFor(String memberName, int occurrence) {
 		throw new UnsupportedOperationException();
 	}

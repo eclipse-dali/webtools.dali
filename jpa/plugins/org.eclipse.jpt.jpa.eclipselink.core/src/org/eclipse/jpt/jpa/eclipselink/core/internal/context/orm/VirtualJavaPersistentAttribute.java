@@ -93,13 +93,13 @@ public class VirtualJavaPersistentAttribute
 	}
 
 	public String getTypeName() {
-		// virtual java attributes have no type
-		return null;
+		String typeName = this.xmlAttributeMapping.getAttributeType();
+		return typeName == null ? null : this.getEntityMappings().getFullyQualifiedName(typeName);
 	}
 	
 	public String getTypeName(PersistentType contextType) {
-		// virtual java attributes have no type
-		return null;
+		// only ever has its specified type name
+		return getTypeName();
 	}
 	
 	public boolean typeIsBasic() {

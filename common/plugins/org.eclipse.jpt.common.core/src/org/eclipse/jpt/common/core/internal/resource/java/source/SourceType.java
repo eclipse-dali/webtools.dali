@@ -524,6 +524,15 @@ final class SourceType
 				this, this.annotatedElement, fieldName, occurrence, 
 				getJavaResourceCompilationUnit(), fieldDeclaration, variableDeclaration);
 	}
+	
+	public JavaResourceField getField(String name) {
+		for (JavaResourceField field : getFields()) {
+			if (StringTools.stringsAreEqual(field.getName(), name)) {
+				return field;
+			}
+		}
+		return null;
+	}
 
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
@@ -587,6 +596,15 @@ final class SourceType
 	private JavaResourceMethod buildMethod(MethodSignature signature, int occurrence, MethodDeclaration methodDeclaration) {
 		return SourceMethod.newInstance(this, this.annotatedElement, signature, occurrence, this.getJavaResourceCompilationUnit(), methodDeclaration);
 	}
+	
+	public JavaResourceMethod getMethod(String propertyName) {
+		for (JavaResourceMethod method : this.getMethods()) {
+			if (StringTools.stringsAreEqual(method.getMethodName(), propertyName)) {
+				return method;
+			}
+		}
+		return null;
+	}
 
 
 	public boolean hasAnyAnnotatedFields() {
@@ -636,21 +654,12 @@ final class SourceType
 		return false;
 	}
 	
-	public JavaResourceMethod getMethod(String propertyName) {
-		for (JavaResourceMethod method : this.getMethods()) {
-			if (StringTools.stringsAreEqual(method.getMethodName(), propertyName)) {
-				return method;
-			}
-		}
-		return null;
-	}
-	
 	
 	// ***** inherited field/method types *****
 	
 	private void initInheritedFieldTypes(ITypeBinding typeBinding) {
 		ITypeBinding scTypeBinding = typeBinding.getSuperclass();
-		while (scTypeBinding != null && ! scTypeBinding.isParameterizedType()) {
+		while (scTypeBinding != null && scTypeBinding.isParameterizedType()) {
 			// if the superclass is not parameterized, 
 			// then this class will have no increased type information for inherited fields
 			initInheritedFieldTypes_(scTypeBinding);
@@ -660,7 +669,7 @@ final class SourceType
 	}
 	
 	private void initInheritedFieldTypes_(ITypeBinding typeBinding) {
-		String typeName = typeBinding.getQualifiedName();
+		String typeName = typeBinding.getTypeDeclaration().getQualifiedName();
 		IVariableBinding[] fields = typeBinding.getDeclaredFields();
 		CounterMap counters = new CounterMap(fields.length);
 		for (IVariableBinding field : fields) {
@@ -676,7 +685,7 @@ final class SourceType
 		ITypeBinding scTypeBinding = typeBinding.getSuperclass();
 		Map<InheritedAttributeKey, JavaResourceTypeBinding> removedTypes = 
 				new HashMap<InheritedAttributeKey, JavaResourceTypeBinding>(this.inheritedFieldTypes);
-		while (scTypeBinding != null && ! scTypeBinding.isParameterizedType()) {
+		while (scTypeBinding != null && scTypeBinding.isParameterizedType()) {
 			// if the superclass is not parameterized, 
 			// then this class will have no increased type information for inherited fields
 			syncInheritedFieldTypes_(scTypeBinding, removedTypes);
@@ -688,7 +697,7 @@ final class SourceType
 	}
 	
 	private void syncInheritedFieldTypes_(ITypeBinding typeBinding, Map<InheritedAttributeKey, JavaResourceTypeBinding> removedTypes) {
-		String typeName = typeBinding.getQualifiedName();
+		String typeName = typeBinding.getTypeDeclaration().getQualifiedName();
 		IVariableBinding[] fields = typeBinding.getDeclaredFields();
 		CounterMap counters = new CounterMap(fields.length);
 		for (IVariableBinding field : fields) {
@@ -704,7 +713,7 @@ final class SourceType
 	
 	private void initInheritedMethodTypes(ITypeBinding typeBinding) {
 		ITypeBinding scTypeBinding = typeBinding.getSuperclass();
-		while (scTypeBinding != null && ! scTypeBinding.isParameterizedType()) {
+		while (scTypeBinding != null && scTypeBinding.isParameterizedType()) {
 			// if the superclass is not parameterized, 
 			// then this class will have no increased type information for inherited fields
 			initInheritedMethodTypes_(scTypeBinding);
@@ -717,7 +726,7 @@ final class SourceType
 		// as determining whether a method overrides another can be a bit tricky with generics,
 		// and in general, we are only really interested in types of "get" methods,
 		// which have no parameters
-		String typeName = typeBinding.getQualifiedName();
+		String typeName = typeBinding.getTypeDeclaration().getQualifiedName();
 		IMethodBinding[] methods = typeBinding.getDeclaredMethods();
 		CounterMap counters = new CounterMap(methods.length);
 		for (IMethodBinding method : methods) {
@@ -735,7 +744,7 @@ final class SourceType
 		ITypeBinding scTypeBinding = typeBinding.getSuperclass();
 		Map<InheritedAttributeKey, JavaResourceTypeBinding> removedTypes = 
 				new HashMap<InheritedAttributeKey, JavaResourceTypeBinding>(this.inheritedMethodTypes);
-		while (scTypeBinding != null && ! scTypeBinding.isParameterizedType()) {
+		while (scTypeBinding != null && scTypeBinding.isParameterizedType()) {
 			// if the superclass is not parameterized, 
 			// then this class will have no increased type information for inherited fields
 			syncInheritedMethodTypes_(scTypeBinding, removedTypes);
@@ -751,7 +760,7 @@ final class SourceType
 		// as determining whether a method overrides another can be a bit tricky with generics,
 		// and in general, we are only really interested in types of "get" methods,
 		// which have no parameters
-		String typeName = typeBinding.getQualifiedName();
+		String typeName = typeBinding.getTypeDeclaration().getQualifiedName();
 		IMethodBinding[] methods = typeBinding.getDeclaredMethods();
 		CounterMap counters = new CounterMap(methods.length);
 		for (IMethodBinding method : methods) {
@@ -765,12 +774,12 @@ final class SourceType
 		}
 	}
 	
-	public TypeBinding getInheritedAttributeTypeBinding(JavaResourceAttribute attribute) {
+	public TypeBinding getAttributeTypeBinding(JavaResourceAttribute attribute) {
 		if (attribute.getParent() == this) {
 			return attribute.getTypeBinding();
 		}
 		InheritedAttributeKey key = 
-				new InheritedAttributeKey(attribute.getParent().getName(), attribute.getName());
+				new InheritedAttributeKey(attribute.getParent().getTypeBinding().getQualifiedName(), attribute.getName());
 		if (attribute.getKind() == JavaResourceAnnotatedElement.Kind.FIELD) {
 			return this.inheritedFieldTypes.get(key);
 		}

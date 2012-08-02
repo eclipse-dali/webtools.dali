@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
@@ -580,9 +581,9 @@ public abstract class SpecifiedOrmPersistentAttribute
 			if (contextType == getParent()) {
 				return getTypeName();
 			}
-			String typeName = contextType.getAttributeTypeName(this);
-			if (typeName != null) {
-				return typeName;
+			TypeBinding typeBinding = contextType.getAttributeTypeBinding(this);
+			if (typeBinding != null) {
+				return typeBinding.getQualifiedName();
 			}
 			contextType = contextType.getSuperPersistentType();
 		}

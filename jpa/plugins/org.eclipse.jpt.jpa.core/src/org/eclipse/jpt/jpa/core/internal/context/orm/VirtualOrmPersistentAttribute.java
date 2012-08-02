@@ -14,6 +14,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
@@ -378,9 +379,9 @@ public class VirtualOrmPersistentAttribute
 			if (contextType == getParent()) {
 				return getTypeName();
 			}
-			String typeName = contextType.getAttributeTypeName(this);
-			if (typeName != null) {
-				return typeName;
+			TypeBinding typeBinding = contextType.getAttributeTypeBinding(this);
+			if (typeBinding != null) {
+				return typeBinding.getQualifiedName();
 			}
 			contextType = contextType.getSuperPersistentType();
 		}
