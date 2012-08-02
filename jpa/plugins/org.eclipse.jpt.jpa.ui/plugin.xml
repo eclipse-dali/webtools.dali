@@ -145,6 +145,7 @@
 		
 		<javaCompletionProposalComputer 
 			class="org.eclipse.jpt.jpa.ui.internal.JpaJavaCompletionProposalComputer"
+			activate="true"
 			categoryId="org.eclipse.jpt.jpa.ui.jpaProposalCategory">
 			<partition type="__dftl_partition_content_type"/>
 			<partition type="__java_string"/>
@@ -181,17 +182,18 @@
 	       categoryId="org.eclipse.jpt.jpa.ui.xml.jpaProposalCategory"
 	       class="org.eclipse.jpt.jpa.ui.internal.jpql.JpaJpqlSseCompletionProposalComputer"
 	       id="org.eclipse.jpt.jpa.ui.internal.jpql.JpaJpqlSseCompletionProposalComputer">
+			<!-- Use  xml instead of more specific mappingFile content type so JPA Proposals appears in the XML content assist preferences  -->
 			<contentType
 				id="org.eclipse.core.runtime.xml">
 			</contentType>
 		</proposalComputer>
 		
-		<!-- Use  xml instead of more specific mappingFile content type so JPA Proposals appears in the XMl preferences  -->
 		<proposalComputer 
 	       activate="true"
 	       categoryId="org.eclipse.jpt.jpa.ui.xml.jpaProposalCategory"
 	       class="org.eclipse.jpt.jpa.ui.internal.JpaXmlCompletionProposalComputer"
 	       id="org.eclipse.jpt.jpa.ui.internal.JpaXmlCompletionProposalComputer">
+			<!-- Use  xml instead of more specific mappingFile content type so JPA Proposals appears in the XML content assist preferences  -->
 			<contentType
 				id="org.eclipse.core.runtime.xml">
 			</contentType>
