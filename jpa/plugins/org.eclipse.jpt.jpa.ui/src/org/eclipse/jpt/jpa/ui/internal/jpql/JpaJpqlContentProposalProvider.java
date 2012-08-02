@@ -16,8 +16,10 @@ package org.eclipse.jpt.jpa.ui.internal.jpql;
 import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -28,6 +30,7 @@ import org.eclipse.core.expressions.EvaluationResult;
 import org.eclipse.core.expressions.Expression;
 import org.eclipse.core.expressions.ExpressionInfo;
 import org.eclipse.core.expressions.IEvaluationContext;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.bindings.Binding;
 import org.eclipse.jface.bindings.Trigger;
 import org.eclipse.jface.bindings.keys.KeyStroke;
@@ -37,14 +40,12 @@ import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.internal.text.html.HTMLTextPresenter;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.DefaultInformationControl;
-import org.eclipse.jface.text.DefaultTextHover;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentListener;
 import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.text.IInformationControlCreator;
-import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
@@ -55,11 +56,8 @@ import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.AnnotationModel;
-import org.eclipse.jface.text.source.DefaultAnnotationHover;
-import org.eclipse.jface.text.source.IAnnotationHover;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewer;
-import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
@@ -77,7 +75,6 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -86,6 +83,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.editors.text.EditorsUI;
+import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
 import org.eclipse.ui.handlers.IHandlerActivation;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.internal.editors.text.EditorsPlugin;
@@ -102,7 +100,7 @@ import org.eclipse.ui.texteditor.SourceViewerDecorationSupport;
  * <p>
  * TODO. Add syntax highlight for the JPQL identifiers.
  *
- * @version 3.2
+ * @version 3.3
  * @since 3.0
  * @author Pascal Filion
  */
@@ -184,6 +182,12 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 	 * The unique identifier used to mark an {@link Annotation} as a JPQL problem.
 	 */
 	private static final String ERROR_TYPE = "org.eclipse.jdt.ui.error";
+
+	/**
+	 * The unique identifier of the ID used to register {@link org.eclipse.jface.text.hyperlink.IHyperlinkDetector
+	 * IHyperlinkDetector} with the JPQL query text editor.
+	 */
+	public static final String HYPERLINK_DETECTOR_ID = "org.eclipse.jpt.jpa.ui.jpql";
 
 	/**
 	 * Creates a new <code>JpaJpqlContentProposalProvider</code>.
@@ -646,12 +650,28 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 		}
 	}
 
-	private class JpqlSourceViewerConfiguration extends SourceViewerConfiguration {
+	private class JpqlSourceViewerConfiguration extends TextSourceViewerConfiguration {
 
 		/**
 		 * Keeps track of the content assist since we need to know when the popup is opened or not.
 		 */
 		ContentAssistant contentAssistant;
+
+		JpqlSourceViewerConfiguration() {
+			super(EditorsPlugin.getDefault().getPreferenceStore());
+		}
+
+		private IAdaptable buildAdaptable() {
+			return new IAdaptable() {
+				@SuppressWarnings("rawtypes")
+				public Object getAdapter(Class adapter) {
+					if (adapter == NamedQuery.class) {
+						return query();
+					}
+					return null;
+				}
+			};
+		}
 
 		private IInformationControlCreator buildInformationControlCreator() {
 			return new IInformationControlCreator() {
@@ -669,14 +689,6 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 		 * {@inheritDoc}
 		 */
 		@Override
-		public IAnnotationHover getAnnotationHover(ISourceViewer sourceViewer) {
-			return new DefaultAnnotationHover();
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
 		public IContentAssistant getContentAssistant(ISourceViewer sourceViewer) {
 			contentAssistant = new ContentAssistant();
 			contentAssistant.setContentAssistProcessor(new ContentAssistProcessor(), IDocument.DEFAULT_CONTENT_TYPE);
@@ -688,16 +700,10 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 		 * {@inheritDoc}
 		 */
 		@Override
-		public ITextHover getTextHover(ISourceViewer sourceViewer, String contentType) {
-			return new DefaultTextHover(sourceViewer);
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public ITextHover getTextHover(ISourceViewer sourceViewer, String contentType, int stateMask) {
-			return new DefaultTextHover(sourceViewer);
+		protected Map<String, IAdaptable> getHyperlinkDetectorTargets(ISourceViewer sourceViewer) {
+			Map<String, IAdaptable> targets = new HashMap<String, IAdaptable>();
+			targets.put(HYPERLINK_DETECTOR_ID, buildAdaptable());
+			return targets;
 		}
 	}
 }

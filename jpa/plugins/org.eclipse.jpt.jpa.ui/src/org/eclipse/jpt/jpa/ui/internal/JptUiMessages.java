@@ -14,7 +14,7 @@ import org.eclipse.osgi.util.NLS;
 /**
  * Localized messages used by Dali UI.
  *
- * @version 3.0
+ * @version 3.3
  * @since 1.0
  */
 // TODO bjv rename...
@@ -99,6 +99,8 @@ public class JptUiMessages {
 	public static String JpaFacetWizardPage_title;
 	public static String JpaFacetWizardPage_userLibsLink;
 	public static String JpaFacetWizardPage_userServerLibLabel;
+	public static String JpaJpqlHyperlinkBuilder_OpenDeclaration;
+	public static String JpaJpqlHyperlinkBuilder_OpenDeclaredType;
 	public static String JpaJpqlJavaCompletionProposalComputer_Error;
 	public static String JpaJpqlSseCompletionProposalComputer_Error;
 	public static String JpaLibraryProviderInstallPanel_includeLibraries;

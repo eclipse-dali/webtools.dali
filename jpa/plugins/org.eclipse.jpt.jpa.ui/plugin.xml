@@ -1232,4 +1232,25 @@
 		
 	</extension>
 
+
+	<!-- ***** JPQL query editor ***** -->
+
+	<extension
+		point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectors">
+		<hyperlinkDetector
+			activate="true"
+			class="org.eclipse.jpt.jpa.ui.internal.jpql.GenericJpaJpqlHyperlinkDetector"
+			id="org.eclipse.jpt.jpa.ui.jpql.generic"
+			name="%jpaJpqlHyperlinkDetector"
+			targetId="org.eclipse.jpt.jpa.ui.jpql">
+		</hyperlinkDetector>
+	</extension>
+	<extension
+		point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectorTargets">
+		<target
+			id="org.eclipse.jpt.jpa.ui.jpql"
+			name="%jpaJpqlHyperlinkTarget">
+		</target>
+	</extension>
+
 </plugin>
