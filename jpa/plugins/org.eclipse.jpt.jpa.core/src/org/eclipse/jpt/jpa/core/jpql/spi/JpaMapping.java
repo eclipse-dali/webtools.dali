@@ -26,6 +26,7 @@ import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.persistence.jpa.jpql.spi.IEntity;
 import org.eclipse.persistence.jpa.jpql.spi.IManagedType;
 import org.eclipse.persistence.jpa.jpql.spi.IMapping;
@@ -123,12 +124,20 @@ public abstract class JpaMapping implements IMapping {
 		// For relationship mapping, make sure to check the target entity first
 		if (isRelationship()) {
 
-			String entityName = ((RelationshipMapping) mapping).getTargetEntity();
+			if (mappingType == ELEMENT_COLLECTION) {
+				String targetClass = ((ElementCollectionMapping2_0) mapping).getTargetClass();
+				if (StringTools.stringIsNotEmpty(targetClass)) {
+					return getTypeRepository().getType(targetClass);
+				}
+			}
+			else {
+				String entityName = ((RelationshipMapping) mapping).getTargetEntity();
 
-			if (StringTools.stringIsNotEmpty(entityName)) {
-				IEntity entity = getParent().getProvider().getEntityNamed(entityName);
-				if (entity != null) {
-					return entity.getType();
+				if (StringTools.stringIsNotEmpty(entityName)) {
+					IEntity entity = getParent().getProvider().getEntityNamed(entityName);
+					if (entity != null) {
+						return entity.getType();
+					}
 				}
 			}
 		}
