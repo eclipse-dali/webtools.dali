@@ -23,10 +23,10 @@ import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class ASTToolsTests
+public class ASTToolsTests2
 		extends AnnotationTestCase {
 	
-	public ASTToolsTests(String name) {
+	public ASTToolsTests2(String name) {
 		super(name);
 	}
 	

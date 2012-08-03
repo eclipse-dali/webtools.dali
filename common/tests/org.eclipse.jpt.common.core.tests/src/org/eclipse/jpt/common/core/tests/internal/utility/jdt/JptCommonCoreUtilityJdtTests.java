@@ -18,7 +18,7 @@ public class JptCommonCoreUtilityJdtTests {
 		TestSuite suite = new TestSuite(JptCommonCoreUtilityJdtTests.class.getPackage().getName());
 		suite.addTestSuite(CombinationIndexedDeclarationAnnotationAdapterTests.class);
 		suite.addTestSuite(DefaultAnnotationEditFormatterTests.class);
-		suite.addTestSuite(ASTToolsTests.class);
+		suite.addTestSuite(ASTToolsTests2.class);
 		suite.addTestSuite(JDTToolsTests.class);
 		suite.addTestSuite(MemberAnnotationElementAdapterTests.class);
 		suite.addTestSuite(NestedDeclarationAnnotationAdapterTests.class);
