@@ -17,9 +17,9 @@ import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.Table;
 
 @SuppressWarnings("nls")
-public class SybaseTests extends DTPPlatformTests {
+public class SybaseTests2 extends DTPPlatformTests {
 
-	public SybaseTests( String name) {
+	public SybaseTests2( String name) {
 		super( name);
 	}
 

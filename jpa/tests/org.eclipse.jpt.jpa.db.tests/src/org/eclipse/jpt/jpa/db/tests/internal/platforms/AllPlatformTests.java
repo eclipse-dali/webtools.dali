@@ -24,7 +24,7 @@ public class AllPlatformTests {
 //		suite.addTestSuite(Oracle9iTests.class);
 		suite.addTestSuite(PostgreSQLTests.class);
 //		suite.addTestSuite(SQLServerTests.class);
-		suite.addTestSuite(SybaseTests.class);
+		suite.addTestSuite(SybaseTests2.class);
 
         return suite;
     }
