@@ -10,12 +10,15 @@
 package org.eclipse.jpt.jpa.core.tests.internal.context.java;
 
 import java.util.Iterator;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
+import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
@@ -25,6 +28,8 @@ import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.resource.java.BasicAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.EmbeddedAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.IdAnnotation;
@@ -309,5 +314,56 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 			}
 		});
 	}
-
+	
+	public void testGetAttributeTypeName() throws Exception {
+		createGenericSuperclass();
+		createGenericSubclass();
+		JavaPersistentType superclassPT = 
+				((ClassRef) CollectionTools.get(getPersistenceUnit().getClassRefs(), 0)).getJavaPersistentType();
+		JavaPersistentType subclassPT = 
+				((ClassRef) CollectionTools.get(getPersistenceUnit().getClassRefs(), 1)).getJavaPersistentType();
+		
+		// generic field
+		JavaPersistentAttribute genericAttribute = superclassPT.getAttributeNamed("genericField");
+		assertEquals("java.lang.Number", genericAttribute.getTypeName());
+		assertEquals("java.lang.Number", genericAttribute.getTypeName(superclassPT));
+		assertEquals("java.lang.Long", genericAttribute.getTypeName(subclassPT));
+		
+		// nongeneric field
+		JavaPersistentAttribute nongenericAttribute = superclassPT.getAttributeNamed("nongenericField");
+		assertEquals("java.lang.Number", nongenericAttribute.getTypeName());
+		assertEquals("java.lang.Number", nongenericAttribute.getTypeName(superclassPT));
+		assertEquals("java.lang.Number", nongenericAttribute.getTypeName(subclassPT));
+	}
+	
+	private static String GENERIC_SUPERCLASS = "GenericSuperclass";
+	
+	private ICompilationUnit createGenericSuperclass() throws CoreException {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("public class ").append(GENERIC_SUPERCLASS).append("<T extends Number> ").append("{").append(CR);
+				sb.append("    protected T genericField;").append(CR);
+				sb.append("    protected Number nongenericField;").append(CR);
+				sb.append("}").append(CR);
+			}
+		};
+		addXmlClassRef(PACKAGE_NAME_ + GENERIC_SUPERCLASS);
+		return this.javaProject.createCompilationUnit(PACKAGE_NAME, GENERIC_SUPERCLASS + ".java", sourceWriter);
+	}
+	
+	private static String GENERIC_SUBCLASS = "GenericSubclass";
+	
+	private ICompilationUnit createGenericSubclass() throws CoreException {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("public class ").append(GENERIC_SUBCLASS).append(CR);
+				sb.append("        extends ").append(GENERIC_SUPERCLASS).append("<Long> {").append(CR);
+				sb.append("}").append(CR);
+			}
+		};
+		addXmlClassRef(PACKAGE_NAME_ + GENERIC_SUBCLASS);
+		return this.javaProject.createCompilationUnit(PACKAGE_NAME, GENERIC_SUBCLASS + ".java", sourceWriter);
+	}
 }
