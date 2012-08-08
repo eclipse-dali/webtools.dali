@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -60,16 +60,29 @@ final class BinaryPackageFragment
 		for (IJavaElement child : children) {
 			IClassFile jdtClassFile = (IClassFile) child;
 			IType jdtType = jdtClassFile.getType();
-			if (BinaryPersistentType.typeIsPersistable(jdtType)) {
+			if (typeIsRelevant(jdtType)) {
 				JavaResourceClassFile classFile = new BinaryClassFile(this, jdtClassFile, jdtType);
-				if (classFile.getPersistentType().isAnnotated()) {  // we only hold annotated types
-					result.add(classFile);
-				}
+				result.add(classFile);
 			}
 		}
 		return result;
 	}
 
+	static boolean typeIsRelevant(IType type) {
+		if (BinaryPersistentType.typeIsPersistable(type)) {
+			return typeHasAnyAnnotations(type); // we only hold annotated types
+		}
+		return false;
+	}
+
+	static boolean typeHasAnyAnnotations(IType type) {
+		try {
+			return (type.getAnnotations().length > 0);
+		}
+		catch (JavaModelException e) {
+			return false;
+		}
+	}
 
 	// ********** JarResourceNode implementation **********
 
