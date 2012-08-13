@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -62,6 +62,19 @@ public class ElementCollection2_0AnnotationTests extends JavaResourceModel2_0Tes
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@ElementCollection(targetClass = AnnotationTestType.class)");
+			}
+		});
+	}
+
+	private ICompilationUnit createTestElementCollectionWithPrimitiveTargetClass() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA2_0.ELEMENT_COLLECTION);
+			}
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("@ElementCollection(targetClass = byte.class)");
 			}
 		});
 	}
@@ -166,5 +179,27 @@ public class ElementCollection2_0AnnotationTests extends JavaResourceModel2_0Tes
 		assertEquals("Foo", elementCollection.getTargetClass());
 		
 		assertEquals("Foo", elementCollection.getFullyQualifiedTargetClassName()); //bug 196200 changed this
+	}
+
+	public void testGetPrimitiveTargetClass() throws Exception {
+		ICompilationUnit cu = this.createTestElementCollectionWithPrimitiveTargetClass();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+
+		ElementCollection2_0Annotation elementCollection = (ElementCollection2_0Annotation) resourceField.getAnnotation(JPA2_0.ELEMENT_COLLECTION);
+		assertEquals("byte", elementCollection.getTargetClass());
+	}
+
+	public void testSetPrimitiveTargetClass() throws Exception {
+		ICompilationUnit cu = this.createTestElementCollection();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+
+		ElementCollection2_0Annotation elementCollection = (ElementCollection2_0Annotation) resourceField.getAnnotation(JPA2_0.ELEMENT_COLLECTION);
+		assertEquals(null, elementCollection.getTargetClass());
+
+		elementCollection.setTargetClass("int");
+
+		assertSourceContains("@ElementCollection(targetClass = int.class)", cu);
 	}
 }

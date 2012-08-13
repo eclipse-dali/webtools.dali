@@ -1699,6 +1699,11 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		return (annotation == null) ? null : annotation.getTargetClassTextRange();
 	}
 
+	protected TextRange getMapKeyClassTextRange(CompilationUnit astRoot) {
+		MapKeyClass2_0Annotation annotation = this.getMapKeyClassAnnotation();
+		return annotation == null ? getMappingAnnotationTextRange(astRoot) : annotation.getTextRange(astRoot);
+	}
+
 	protected void validateMapKeyClass(List<IMessage> messages, CompilationUnit astRoot) {
 		if (this.getPersistentAttribute().getJpaContainerDefinition().isMap()) {
 			this.validateMapKeyClass_(messages, astRoot);
@@ -1724,7 +1729,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 						JpaValidationMessages.MAP_KEY_CLASS_NOT_DEFINED,
 						EMPTY_STRING_ARRAY,
 						this,
-						this.getValidationTextRange(astRoot)
+						this.getMapKeyClassTextRange(astRoot)
 					)
 				);
 			}
@@ -1742,7 +1747,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
 						new String[] {this.getName(), this.getFullyQualifiedMapKeyClass()},
 						this,
-						this.getTargetClassTextRange(astRoot)
+						this.getValidationTextRange(astRoot)
 					)
 				);
 			} else {
@@ -1752,7 +1757,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 						JpaValidationMessages.MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
 						new String[] {this.getFullyQualifiedMapKeyClass()},
 						this,
-						this.getTargetClassTextRange(astRoot)
+						this.getMapKeyClassTextRange(astRoot)
 					)
 				);
 			}
