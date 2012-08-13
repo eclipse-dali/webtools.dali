@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
+import org.eclipse.jpt.common.core.internal.utility.jdt.TypeStringExpressionConverter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
@@ -139,7 +139,7 @@ public final class SourceMapKeyClass2_0Annotation
 	// ********** static methods **********
 
 	protected static DeclarationAnnotationElementAdapter<String> buildValueAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter<String>(DECLARATION_ANNOTATION_ADAPTER, JPA2_0.MAP_KEY_CLASS__VALUE, SimpleTypeStringExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<String>(DECLARATION_ANNOTATION_ADAPTER, JPA2_0.MAP_KEY_CLASS__VALUE, TypeStringExpressionConverter.instance());
 	}
 
 }

@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotati
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
+import org.eclipse.jpt.common.core.internal.utility.jdt.TypeStringExpressionConverter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
@@ -194,7 +194,7 @@ public final class SourceElementCollection2_0Annotation
 	
 	private static DeclarationAnnotationElementAdapter<String> buildTargetClassAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
 		// TODO what about QualifiedType?
-		return buildAnnotationElementAdapter(annotationAdapter, elementName, SimpleTypeStringExpressionConverter.instance());
+		return buildAnnotationElementAdapter(annotationAdapter, elementName, TypeStringExpressionConverter.instance());
 	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, ExpressionConverter<String> converter) {
