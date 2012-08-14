@@ -150,8 +150,10 @@
 		point="org.eclipse.jdt.ui.javaCompletionProposalComputer"
 		id="JpaCompletionProposalComputer">
 		
+		<!-- activate = "true", but our plug-in will only activate if the JpaProposalCategory is enabled (has JPA facet) bug 386358 -->
 		<javaCompletionProposalComputer 
 			class="org.eclipse.jpt.jpa.ui.internal.JpaJavaCompletionProposalComputer"
+			activate="true"
 			categoryId="org.eclipse.jpt.jpa.ui.jpaProposalCategory">
 			<partition type="__dftl_partition_content_type"/>
 			<partition type="__java_string"/>
@@ -163,6 +165,7 @@
 		point="org.eclipse.jdt.ui.javaCompletionProposalComputer"
 		id="JpaJpqlCompletionProposalComputer">
 
+		<!-- activate = "true", but our plug-in will only activate if the JpaProposalCategory is enabled (has JPA facet) bug 386358 -->
 		<javaCompletionProposalComputer
 			class="org.eclipse.jpt.jpa.ui.internal.jpql.JpaJpqlJavaCompletionProposalComputer"
 			activate="true"
