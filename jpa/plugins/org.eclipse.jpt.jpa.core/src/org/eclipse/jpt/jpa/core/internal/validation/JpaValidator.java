@@ -36,11 +36,13 @@ public class JpaValidator
 	implements IValidator
 {
 
-	public static final String RELATIVE_MARKER_ID = "problemMarker";  //$NON-NLS-1$
+	public static final String RELATIVE_MARKER_ID = "jpaProblemMarker";  //$NON-NLS-1$
 
 	/**
 	 * The identifier for the JPA validation marker
-	 * (value <code>"org.eclipse.jpt.jpa.core.problemMarker"</code>).
+	 * (value <code>"org.eclipse.jpt.jpa.core.jpaProblemMarker"</code>).
+	 * <p>
+	 * See <code>org.eclipse.jpt.jpa.core/plugin.xml:org.eclipse.core.resources.markers</code>.
 	 */
 	public static final String MARKER_ID = JptJpaCorePlugin.instance().getPluginID() + '.' + RELATIVE_MARKER_ID;
 
