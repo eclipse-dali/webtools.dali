@@ -34,11 +34,13 @@ public class JaxbValidator
 		extends AbstractValidator
 		implements IValidator {
 
-	public static final String RELATIVE_MARKER_ID = "problemMarker";  //$NON-NLS-1$
+	public static final String RELATIVE_MARKER_ID = "jaxbProblemMarker";  //$NON-NLS-1$
 
 	/**
 	 * The identifier for the JAXB validation marker
-	 * (value <code>"org.eclipse.jpt.jaxb.core.problemMarker"</code>).
+	 * (value <code>"org.eclipse.jpt.jaxb.core.jaxbProblemMarker"</code>).
+	 * <p>
+	 * See <code>org.eclipse.jpt.jaxb.core/plugin.xml:org.eclipse.core.resources.markers</code>.
 	 */
 	public static final String MARKER_ID = JptJaxbCorePlugin.instance().getPluginID() + '.' + RELATIVE_MARKER_ID;
 

@@ -728,6 +728,9 @@ public class JpaProjectPropertiesPage
 	}
 
 	private void updateConnectLinkText(String text) {
+		if (this.connectLink.isDisposed()) {
+			return;
+		}
 		this.connectLink.setText(text);
 		SWTUtil.reflow(this.connectLink.getParent());
 	}
