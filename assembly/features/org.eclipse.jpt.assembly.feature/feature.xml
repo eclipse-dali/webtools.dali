@@ -53,8 +53,4 @@
          id="org.eclipse.jpt.dbws.eclipselink.feature"
          version="0.0.0"/>
 
-   <includes
-         id="org.eclipse.jpt.jpadiagrameditor.feature"
-         version="0.0.0"/>
-
 </feature>
