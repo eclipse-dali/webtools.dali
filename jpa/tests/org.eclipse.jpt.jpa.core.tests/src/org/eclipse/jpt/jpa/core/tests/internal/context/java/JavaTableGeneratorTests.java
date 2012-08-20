@@ -11,13 +11,14 @@ package org.eclipse.jpt.jpa.core.tests.internal.context.java;
 
 import java.util.Iterator;
 import java.util.ListIterator;
+
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.core.context.Generator;
+import org.eclipse.jpt.jpa.core.context.DbGenerator;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.context.TableGenerator;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
@@ -407,7 +408,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
 		
-		assertEquals(Generator.DEFAULT_ALLOCATION_SIZE, idMapping.getGeneratorContainer().getTableGenerator().getAllocationSize());
+		assertEquals(DbGenerator.DEFAULT_ALLOCATION_SIZE, idMapping.getGeneratorContainer().getTableGenerator().getAllocationSize());
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -426,11 +427,11 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
 
-		assertEquals(Generator.DEFAULT_ALLOCATION_SIZE, idMapping.getGeneratorContainer().getTableGenerator().getDefaultAllocationSize());
+		assertEquals(DbGenerator.DEFAULT_ALLOCATION_SIZE, idMapping.getGeneratorContainer().getTableGenerator().getDefaultAllocationSize());
 		
 		idMapping.getGeneratorContainer().getTableGenerator().setSpecifiedAllocationSize(Integer.valueOf(20));
 		
-		assertEquals(Generator.DEFAULT_ALLOCATION_SIZE, idMapping.getGeneratorContainer().getTableGenerator().getDefaultAllocationSize());
+		assertEquals(DbGenerator.DEFAULT_ALLOCATION_SIZE, idMapping.getGeneratorContainer().getTableGenerator().getDefaultAllocationSize());
 		assertEquals(Integer.valueOf(20), idMapping.getGeneratorContainer().getTableGenerator().getSpecifiedAllocationSize());
 	}
 	

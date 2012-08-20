@@ -25,7 +25,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * @since 2.0
  */
 public interface SequenceGeneratorAnnotation
-	extends GeneratorAnnotation
+	extends DbGeneratorAnnotation
 {
 	String ANNOTATION_NAME = JPA.SEQUENCE_GENERATOR;
 

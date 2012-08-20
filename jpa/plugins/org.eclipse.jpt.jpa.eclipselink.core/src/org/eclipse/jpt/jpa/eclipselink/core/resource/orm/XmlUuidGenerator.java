@@ -423,7 +423,8 @@ public class XmlUuidGenerator extends EBaseObjectImpl implements XmlUuidGenerato
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
 		return new SimpleTranslator(
 			elementName, 
-			structuralFeature, 
+			structuralFeature,
+			Translator.END_TAG_NO_INDENT,
 			EclipseLinkOrmPackage.eINSTANCE.getXmlUuidGenerator(), 
 			buildTranslatorChildren());
 	}

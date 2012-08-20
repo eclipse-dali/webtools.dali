@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import java.util.ArrayList;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
@@ -18,14 +19,14 @@ import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.jpa.core.context.Generator;
+import org.eclipse.jpt.jpa.core.context.DbGenerator;
 import org.eclipse.jpt.jpa.core.context.TableGenerator;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaTableGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
-import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaGenerator;
+import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaDbGenerator;
 import org.eclipse.jpt.jpa.core.resource.java.TableGeneratorAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
 import org.eclipse.jpt.jpa.db.Database;
@@ -37,7 +38,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * Java table generator
  */
 public class GenericJavaTableGenerator
-	extends AbstractJavaGenerator<TableGeneratorAnnotation>
+	extends AbstractJavaDbGenerator<TableGeneratorAnnotation>
 	implements JavaTableGenerator, UniqueConstraint.Owner
 {
 	protected String specifiedTable;
@@ -567,7 +568,7 @@ public class GenericJavaTableGenerator
 	// ********** validation **********
 
 	@Override
-	protected boolean isEquivalentTo(Generator generator) {
+	protected boolean isEquivalentTo(DbGenerator generator) {
 		return super.isEquivalentTo(generator)
 				&& this.isEquivalentTo((TableGenerator) generator);
 	}

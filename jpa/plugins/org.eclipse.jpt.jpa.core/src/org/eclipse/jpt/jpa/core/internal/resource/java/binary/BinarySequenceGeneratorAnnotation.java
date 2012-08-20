@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.resource.java.SequenceGeneratorAnnotation;
  * <code>javax.persistence.SequenceGenerator</code>
  */
 public abstract class BinarySequenceGeneratorAnnotation
-	extends BinaryGeneratorAnnotation
+	extends BinaryDbGeneratorAnnotation
 	implements SequenceGeneratorAnnotation
 {
 	private String sequenceName;
@@ -44,7 +44,7 @@ public abstract class BinarySequenceGeneratorAnnotation
 	// ********** BinaryGeneratorAnnotation implementation **********
 
 	@Override
-	String getNameElementName() {
+	protected String getNameElementName() {
 		return JPA.SEQUENCE_GENERATOR__NAME;
 	}
 

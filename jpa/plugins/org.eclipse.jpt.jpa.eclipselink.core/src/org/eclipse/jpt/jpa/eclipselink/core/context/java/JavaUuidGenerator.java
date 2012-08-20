@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context.java;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.context.java.JavaGenerator;
 import org.eclipse.jpt.jpa.eclipselink.core.context.UuidGenerator;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkUuidGeneratorAnnotation2_4;
 
@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkUuidGenerat
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface JavaUuidGenerator
-	extends UuidGenerator, JavaJpaContextNode
+	extends UuidGenerator, JavaGenerator
 {
 	EclipseLinkUuidGeneratorAnnotation2_4 getGeneratorAnnotation();
 }

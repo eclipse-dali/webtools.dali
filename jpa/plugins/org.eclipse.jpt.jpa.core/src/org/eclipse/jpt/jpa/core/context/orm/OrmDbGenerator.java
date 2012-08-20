@@ -7,31 +7,23 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.eclipselink.core.context.orm;
+package org.eclipse.jpt.jpa.core.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.orm.OrmGenerator;
-import org.eclipse.jpt.jpa.eclipselink.core.context.UuidGenerator;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaUuidGenerator;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlUuidGenerator_2_4;
+import org.eclipse.jpt.jpa.core.context.DbGenerator;
 
 /**
- * <code>eclipselink-orm.xml</code> 2.4 uuid generator 
+ * <code>orm.xml</code> sequence and table generators
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @version 3.3
+ * @since 3.3
  */
-public interface OrmUuidGenerator
-	extends UuidGenerator, OrmGenerator
+public interface OrmDbGenerator
+	extends OrmGenerator, DbGenerator
 {
-	XmlUuidGenerator_2_4 getXmlGenerator();
-
-	//********* metadata conversion *********
-
-	/**
-	 * Build up a mapping file generator from the given Java generator.
-	 */
-	void convertFrom(JavaUuidGenerator javaGenerator);
 }

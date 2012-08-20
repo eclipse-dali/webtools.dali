@@ -21,9 +21,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.java.GeneratorAnnotation;
-import org.eclipse.jpt.jpa.db.Catalog;
-import org.eclipse.jpt.jpa.db.Schema;
-import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -38,19 +35,11 @@ public abstract class AbstractJavaGenerator<A extends GeneratorAnnotation>
 
 	protected String name;
 
-	protected Integer specifiedInitialValue;
-	protected int defaultInitialValue;
-
-	protected Integer specifiedAllocationSize;
-	protected int defaultAllocationSize;
-
 
 	protected AbstractJavaGenerator(JavaGeneratorContainer parent, A generatorAnnotation) {
 		super(parent);
 		this.generatorAnnotation = generatorAnnotation;
 		this.name = generatorAnnotation.getName();
-		this.specifiedInitialValue =  generatorAnnotation.getInitialValue();
-		this.specifiedAllocationSize = generatorAnnotation.getAllocationSize();
 	}
 
 
@@ -60,15 +49,6 @@ public abstract class AbstractJavaGenerator<A extends GeneratorAnnotation>
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		this.setName_(this.generatorAnnotation.getName());
-		this.setSpecifiedInitialValue_(this.generatorAnnotation.getInitialValue());
-		this.setSpecifiedAllocationSize_(this.generatorAnnotation.getAllocationSize());
-	}
-
-	@Override
-	public void update() {
-		super.update();
-		this.setDefaultInitialValue(this.buildDefaultInitialValue());
-		this.setDefaultAllocationSize(this.buildDefaultAllocationSize());
 	}
 	
 
@@ -89,75 +69,6 @@ public abstract class AbstractJavaGenerator<A extends GeneratorAnnotation>
 		this.firePropertyChanged(NAME_PROPERTY, old, name);
 	}
 
-
-	// ********** initial value **********
-
-	public int getInitialValue() {
-		return (this.specifiedInitialValue != null) ? this.specifiedInitialValue.intValue() : this.defaultInitialValue;
-	}
-
-	public Integer getSpecifiedInitialValue() {
-		return this.specifiedInitialValue;
-	}
-
-	public void setSpecifiedInitialValue(Integer value) {
-		this.generatorAnnotation.setInitialValue(value);
-		this.setSpecifiedInitialValue_(value);
-	}
-
-	protected void setSpecifiedInitialValue_(Integer value) {
-		Integer old = this.specifiedInitialValue;
-		this.specifiedInitialValue = value;
-		this.firePropertyChanged(SPECIFIED_INITIAL_VALUE_PROPERTY, old, value);
-	}
-
-	public int getDefaultInitialValue() {
-		return this.defaultInitialValue;
-	}
-	
-	protected void setDefaultInitialValue(int value) {
-		int old = this.defaultInitialValue;
-		this.defaultInitialValue = value;
-		this.firePropertyChanged(DEFAULT_INITIAL_VALUE_PROPERTY, old, value);
-	}
-
-	protected abstract int buildDefaultInitialValue();
-	
-
-	// ********** allocation size **********
-
-	public int getAllocationSize() {
-		return (this.specifiedAllocationSize != null) ? this.specifiedAllocationSize.intValue() : this.defaultAllocationSize;
-	}
-
-	public Integer getSpecifiedAllocationSize() {
-		return this.specifiedAllocationSize;
-	}
-
-	public void setSpecifiedAllocationSize(Integer size) {
-		this.generatorAnnotation.setAllocationSize(size);
-		this.setSpecifiedAllocationSize_(size);
-	}
-
-	protected void setSpecifiedAllocationSize_(Integer size) {
-		Integer old = this.specifiedAllocationSize;
-		this.specifiedAllocationSize = size;
-		this.firePropertyChanged(SPECIFIED_ALLOCATION_SIZE_PROPERTY, old, size);
-	}
-
-	public int getDefaultAllocationSize() {
-		return this.defaultAllocationSize;
-	}
-	
-	protected void setDefaultAllocationSize(int size) {
-		int old = this.defaultAllocationSize;
-		this.defaultAllocationSize = size;
-		this.firePropertyChanged(DEFAULT_ALLOCATION_SIZE_PROPERTY, old, size);
-	}
-
-	protected int buildDefaultAllocationSize() {
-		return DEFAULT_ALLOCATION_SIZE;
-	}
 	
 	// ********** validation **********
 
@@ -195,40 +106,8 @@ public abstract class AbstractJavaGenerator<A extends GeneratorAnnotation>
 	}
 	
 	protected boolean isEquivalentTo(Generator generator) {
-		return Tools.valuesAreEqual(this.name, generator.getName()) &&
-				Tools.valuesAreEqual(this.specifiedAllocationSize, generator.getSpecifiedAllocationSize()) &&
-				Tools.valuesAreEqual(this.specifiedInitialValue, generator.getSpecifiedInitialValue());
+		return Tools.valuesAreEqual(this.name, generator.getName());
 	}
-
-	// ********** database stuff **********
-
-	public Schema getDbSchema() {
-		SchemaContainer dbSchemaContainer = this.getDbSchemaContainer();
-		return (dbSchemaContainer == null) ? null : dbSchemaContainer.getSchemaForIdentifier(this.getSchema());
-	}
-
-	/**
-	 * If we don't have a catalog (i.e. we don't even have a <em>default</em> catalog),
-	 * then the database probably does not support catalogs; and we need to
-	 * get the schema directly from the database.
-	 */
-	public SchemaContainer getDbSchemaContainer() {
-		String catalog = this.getCatalog();
-		return (catalog != null) ? this.resolveDbCatalog(catalog) : this.getDatabase();
-	}
-
-	protected abstract String getSchema();
-
-	/**
-	 * If we don't have a catalog (i.e. we don't even have a <em>default</em>
-	 * catalog), then the database probably does not support catalogs.
-	 */
-	public Catalog getDbCatalog() {
-		String catalog = this.getCatalog();
-		return (catalog == null) ? null : this.resolveDbCatalog(catalog);
-	}
-
-	protected abstract String getCatalog();
 
 
 	// ********** misc **********

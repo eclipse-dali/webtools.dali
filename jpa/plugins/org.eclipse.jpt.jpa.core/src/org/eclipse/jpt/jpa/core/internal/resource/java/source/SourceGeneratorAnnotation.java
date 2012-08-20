@@ -13,7 +13,6 @@ import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.common.core.internal.utility.jdt.NumberIntegerExpressionConverter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
@@ -28,7 +27,7 @@ import org.eclipse.jpt.jpa.core.resource.java.GeneratorAnnotation;
  * <li>javax.persistence.TableGenerator
  * </ul>
  */
-abstract class SourceGeneratorAnnotation
+public abstract class SourceGeneratorAnnotation
 	extends SourceAnnotation
 	implements GeneratorAnnotation
 {
@@ -37,46 +36,23 @@ abstract class SourceGeneratorAnnotation
 	String name;
 	TextRange nameTextRange;
 
-	final DeclarationAnnotationElementAdapter<Integer> initialValueDeclarationAdapter;
-	final AnnotationElementAdapter<Integer> initialValueAdapter;
-	Integer initialValue;
-	TextRange initialValueTextRange;
 
-	final DeclarationAnnotationElementAdapter<Integer> allocationSizeDeclarationAdapter;
-	final AnnotationElementAdapter<Integer> allocationSizeAdapter;
-	Integer allocationSize;
-	TextRange allocationSizeTextRange;
-
-
-	SourceGeneratorAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
+	protected SourceGeneratorAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa) {
 		super(parent, element, daa);
 		this.nameDeclarationAdapter = this.getNameAdapter();
 		this.nameAdapter = this.buildAdapter(this.nameDeclarationAdapter);
-		this.initialValueDeclarationAdapter = this.getInitialValueAdapter();
-		this.initialValueAdapter = this.buildIntegerAdapter(this.initialValueDeclarationAdapter);
-		this.allocationSizeDeclarationAdapter = this.getAllocationSizeAdapter();
-		this.allocationSizeAdapter = this.buildIntegerAdapter(this.allocationSizeDeclarationAdapter);
 	}
 
 	protected AnnotationElementAdapter<String> buildAdapter(DeclarationAnnotationElementAdapter<String> daea) {
 		return new AnnotatedElementAnnotationElementAdapter<String>(this.annotatedElement, daea);
 	}
 
-	protected AnnotationElementAdapter<Integer> buildIntegerAdapter(DeclarationAnnotationElementAdapter<Integer> daea) {
-		return new AnnotatedElementAnnotationElementAdapter<Integer>(this.annotatedElement, daea);
-	}
 
 	@Override
 	public void initialize(Annotation astAnnotation) {
 		super.initialize(astAnnotation);
 		this.name = this.buildName(astAnnotation);
 		this.nameTextRange = this.buildNameTextRange(astAnnotation);
-
-		this.initialValue = this.buildInitialValue(astAnnotation);
-		this.initialValueTextRange = this.buildInitialValueTextRange(astAnnotation);
-
-		this.allocationSize = this.buildAllocationSize(astAnnotation);
-		this.allocationSizeTextRange = this.buildAllocationSizeTextRange(astAnnotation);
 	}
 
 	@Override
@@ -84,20 +60,12 @@ abstract class SourceGeneratorAnnotation
 		super.synchronizeWith(astAnnotation);
 		this.syncName(this.buildName(astAnnotation));
 		this.nameTextRange = this.buildNameTextRange(astAnnotation);
-
-		this.syncInitialValue(this.buildInitialValue(astAnnotation));
-		this.initialValueTextRange = this.buildInitialValueTextRange(astAnnotation);
-
-		this.syncAllocationSize(this.buildAllocationSize(astAnnotation));
-		this.allocationSizeTextRange = this.buildAllocationSizeTextRange(astAnnotation);
 	}
 
 	@Override
 	public boolean isUnset() {
 		return super.isUnset() &&
-				(this.name == null) &&
-				(this.initialValue == null) &&
-				(this.allocationSize == null);
+				(this.name == null);
 	}
 
 	@Override
@@ -138,80 +106,12 @@ abstract class SourceGeneratorAnnotation
 		return this.getElementTextRange(this.nameDeclarationAdapter, astAnnotation);
 	}
 
-	abstract DeclarationAnnotationElementAdapter<String> getNameAdapter();
-
-	// ***** initial value
-	public Integer getInitialValue() {
-		return this.initialValue;
-	}
-
-	public void setInitialValue(Integer initialValue) {
-		if (this.attributeValueHasChanged(this.initialValue, initialValue)) {
-			this.initialValue = initialValue;
-			this.initialValueAdapter.setValue(initialValue);
-		}
-	}
-
-	private void syncInitialValue(Integer astIinitialValue) {
-		Integer old = this.initialValue;
-		this.initialValue = astIinitialValue;
-		this.firePropertyChanged(INITIAL_VALUE_PROPERTY, old, astIinitialValue);
-	}
-
-	private Integer buildInitialValue(Annotation astAnnotation) {
-		return this.initialValueAdapter.getValue(astAnnotation);
-	}
-
-	public TextRange getInitialValueTextRange() {
-		return this.initialValueTextRange;
-	}
-
-	private TextRange buildInitialValueTextRange(Annotation astAnnotation) {
-		return this.getElementTextRange(this.initialValueDeclarationAdapter, astAnnotation);
-	}
-
-	abstract DeclarationAnnotationElementAdapter<Integer> getInitialValueAdapter();
-
-	// ***** allocation size
-	public Integer getAllocationSize() {
-		return this.allocationSize;
-	}
-
-	public void setAllocationSize(Integer allocationSize) {
-		if (this.attributeValueHasChanged(this.allocationSize, allocationSize)) {
-			this.allocationSize = allocationSize;
-			this.allocationSizeAdapter.setValue(allocationSize);
-		}
-	}
-
-	private void syncAllocationSize(Integer astAllocationSize) {
-		Integer old = this.allocationSize;
-		this.allocationSize = astAllocationSize;
-		this.firePropertyChanged(ALLOCATION_SIZE_PROPERTY, old, astAllocationSize);
-	}
-
-	private Integer buildAllocationSize(Annotation astAnnotation) {
-		return this.allocationSizeAdapter.getValue(astAnnotation);
-	}
-
-	public TextRange getAllocationSizeTextRange() {
-		return this.allocationSizeTextRange;
-	}
-
-	private TextRange buildAllocationSizeTextRange(Annotation astAnnotation) {
-		return this.getElementTextRange(this.allocationSizeDeclarationAdapter, astAnnotation);
-	}
-
-	abstract DeclarationAnnotationElementAdapter<Integer> getAllocationSizeAdapter();
+	protected abstract DeclarationAnnotationElementAdapter<String> getNameAdapter();
 
 
 	// ********** static methods **********
 
-	static DeclarationAnnotationElementAdapter<String> buildAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
+	protected static DeclarationAnnotationElementAdapter<String> buildAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(annotationAdapter, elementName);
-	}
-
-	static DeclarationAnnotationElementAdapter<Integer> buildIntegerAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
-		return new ConversionDeclarationAnnotationElementAdapter<Integer>(annotationAdapter, elementName, NumberIntegerExpressionConverter.instance());
 	}
 }

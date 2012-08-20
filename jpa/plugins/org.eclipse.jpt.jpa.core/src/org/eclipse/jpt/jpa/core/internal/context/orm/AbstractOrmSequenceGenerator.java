@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.jpa.core.context.Generator;
+import org.eclipse.jpt.jpa.core.context.DbGenerator;
 import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaSequenceGenerator;
@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.db.Schema;
  * <code>orm.xml</code> sequence generator
  */
 public abstract class AbstractOrmSequenceGenerator
-	extends AbstractOrmGenerator<XmlSequenceGenerator>
+	extends AbstractOrmDbGenerator<XmlSequenceGenerator>
 	implements OrmSequenceGenerator
 {
 	protected String specifiedSequenceName;
@@ -103,7 +103,7 @@ public abstract class AbstractOrmSequenceGenerator
 	// ********** validation **********
 	
 	@Override
-	protected boolean isEquivalentTo(Generator generator) {
+	protected boolean isEquivalentTo(DbGenerator generator) {
 		return super.isEquivalentTo(generator)
 				&& this.isEquivalentTo((SequenceGenerator) generator);
 	}

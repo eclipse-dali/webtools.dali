@@ -31,14 +31,6 @@ public class JavaEclipseLinkUuidGenerator
 	}
 
 
-	// ********** initial value **********
-
-	@Override
-	protected int buildDefaultInitialValue() {
-		return 0;
-	}
-
-
 	// ********** misc **********
 	
 	public Class<UuidGenerator> getType() {
@@ -58,15 +50,5 @@ public class JavaEclipseLinkUuidGenerator
 
 	public void delete() {
 		this.getParent().removeUuidGenerator();	
-	}
-
-	@Override
-	protected String getSchema() {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	protected String getCatalog() {
-		throw new UnsupportedOperationException();
 	}
 }

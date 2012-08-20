@@ -32,26 +32,12 @@ public class OrmEclipseLinkUuidGenerator
 	// ********** metadata conversion **********
 
 	public void convertFrom(JavaUuidGenerator javaGenerator) {
-		this.setName(javaGenerator.getName());		
+		super.convertFrom(javaGenerator);		
 	}
 
 	// ********** misc **********
 
 	public Class<UuidGenerator> getType() {
 		return UuidGenerator.class;
-	}
-
-	//TODO remove these methods after refactoring UuidGenerator to extend JpaNamedContextNode
-	@Override
-	protected int buildDefaultInitialValue() {
-		return 0;
-	}
-	@Override
-	protected String getSchema() {
-		return null;
-	}
-	@Override
-	protected String getCatalog() {
-		return null;
 	}
 }

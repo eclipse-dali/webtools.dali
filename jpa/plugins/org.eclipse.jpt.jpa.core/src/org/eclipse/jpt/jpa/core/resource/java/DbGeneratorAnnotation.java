@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.resource.java;
 
-import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 
 /**
@@ -24,28 +23,48 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
  * @version 3.3
- * @since 2.0
+ * @since 3.3
  */
-public interface GeneratorAnnotation
-	extends Annotation
+public interface DbGeneratorAnnotation
+	extends GeneratorAnnotation
 {
+
 	/**
-	 * Corresponds to the 'name' element of the *Generator annotation.
+	 * Corresponds to the 'initialValue' element of the *Generator annotation.
 	 * Return null if the element does not exist in Java.
 	 */
-	String getName();
-		String NAME_PROPERTY = "name"; //$NON-NLS-1$
+	Integer getInitialValue();
+		String INITIAL_VALUE_PROPERTY = "initialValue"; //$NON-NLS-1$
 
 	/**
-	 * Corresponds to the 'name' element of the *Generator annotation.
+	 * Corresponds to the 'initialValue' element of the *Generator annotation.
 	 * Set to null to remove the element.
 	 */
-	void setName(String name);
+	void setInitialValue(Integer initialValue);
 
 	/**
-	 * Return the {@link TextRange} for the 'name' element. If the element 
+	 * Return the {@link TextRange} for the 'initialValue' element. If the element 
 	 * does not exist return the {@link TextRange} for the *Generator annotation.
 	 */
-	TextRange getNameTextRange();
+	TextRange getInitialValueTextRange();
 
+
+	/**
+	 * Corresponds to the 'allocationSize' element of the *Generator annotation.
+	 * Return null if the element does not exist in Java.
+	 */
+	Integer getAllocationSize();
+		String ALLOCATION_SIZE_PROPERTY = "allocationSize"; //$NON-NLS-1$
+
+	/**
+	 * Corresponds to the 'allocationSize' element of the *Generator annotation.
+	 * Set to null to remove the element.
+	 */
+	void setAllocationSize(Integer allocationSize);
+
+	/**
+	 * Return the {@link TextRange} for the 'allocationSize' element. If the element 
+	 * does not exist return the {@link TextRange} for the *Generator annotation.
+	 */
+	TextRange getAllocationSizeTextRange();
 }

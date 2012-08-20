@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.resource.java.SequenceGeneratorAnnotation;
  * <code>javax.persistence.SequenceGenerator</code>
  */
 public abstract class SourceSequenceGeneratorAnnotation
-	extends SourceGeneratorAnnotation
+	extends SourceDbGeneratorAnnotation
 	implements SequenceGeneratorAnnotation
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
@@ -74,7 +74,7 @@ public abstract class SourceSequenceGeneratorAnnotation
 	// ********** AbstractGeneratorAnnotation implementation **********
 
 	@Override
-	DeclarationAnnotationElementAdapter<String> getNameAdapter() {
+	protected DeclarationAnnotationElementAdapter<String> getNameAdapter() {
 		return NAME_ADAPTER;
 	}
 

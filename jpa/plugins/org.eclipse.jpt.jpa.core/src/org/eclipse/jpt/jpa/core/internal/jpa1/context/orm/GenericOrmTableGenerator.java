@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.jpa.core.context.Generator;
+import org.eclipse.jpt.jpa.core.context.DbGenerator;
 import org.eclipse.jpt.jpa.core.context.TableGenerator;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaTableGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmUniqueConstraint;
-import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmGenerator;
+import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmDbGenerator;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlUniqueConstraint;
@@ -34,7 +34,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * <code>orm.xml</code> table generator
  */
 public class GenericOrmTableGenerator
-	extends AbstractOrmGenerator<XmlTableGenerator>
+	extends AbstractOrmDbGenerator<XmlTableGenerator>
 	implements OrmTableGenerator, UniqueConstraint.Owner
 {
 	protected String specifiedTable;
@@ -433,7 +433,7 @@ public class GenericOrmTableGenerator
 	// ********** validation **********
 
 	@Override
-	protected boolean isEquivalentTo(Generator generator) {
+	protected boolean isEquivalentTo(DbGenerator generator) {
 		return super.isEquivalentTo(generator)
 				&& this.isEquivalentTo((TableGenerator) generator);
 	}

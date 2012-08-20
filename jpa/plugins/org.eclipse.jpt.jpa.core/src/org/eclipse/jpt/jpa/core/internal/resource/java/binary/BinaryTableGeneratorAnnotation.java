@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
  * <code>javax.persistence.TableGenerator</code>
  */
 public final class BinaryTableGeneratorAnnotation
-	extends BinaryGeneratorAnnotation
+	extends BinaryDbGeneratorAnnotation
 	implements TableGeneratorAnnotation
 {
 	private String table;
@@ -66,7 +66,7 @@ public final class BinaryTableGeneratorAnnotation
 	// ********** AbstractGeneratorAnnotation implementation **********
 
 	@Override
-	String getNameElementName() {
+	protected String getNameElementName() {
 		return JPA.TABLE_GENERATOR__NAME;
 	}
 

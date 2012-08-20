@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
  * <code>javax.persistence.TableGenerator</code>
  */
 public final class SourceTableGeneratorAnnotation
-	extends SourceGeneratorAnnotation
+	extends SourceDbGeneratorAnnotation
 	implements TableGeneratorAnnotation
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
@@ -151,7 +151,7 @@ public final class SourceTableGeneratorAnnotation
 	// ********** AbstractGeneratorAnnotation implementation **********
 
 	@Override
-	DeclarationAnnotationElementAdapter<String> getNameAdapter() {
+	protected DeclarationAnnotationElementAdapter<String> getNameAdapter() {
 		return NAME_ADAPTER;
 	}
 

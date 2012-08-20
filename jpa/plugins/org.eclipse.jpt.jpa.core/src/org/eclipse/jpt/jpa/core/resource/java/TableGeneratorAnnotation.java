@@ -26,7 +26,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
  * @since 2.0
  */
 public interface TableGeneratorAnnotation
-	extends GeneratorAnnotation
+	extends DbGeneratorAnnotation
 {
 	String ANNOTATION_NAME = JPA.TABLE_GENERATOR;
 
