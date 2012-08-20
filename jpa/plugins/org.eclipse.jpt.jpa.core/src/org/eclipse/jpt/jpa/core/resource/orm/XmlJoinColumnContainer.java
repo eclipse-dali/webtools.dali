@@ -10,8 +10,7 @@
 package org.eclipse.jpt.jpa.core.resource.orm;
 
 import org.eclipse.emf.common.util.EList;
-
-import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -27,10 +26,10 @@ import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
  *
  * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlJoinColumnContainer()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
+ * @extends EBaseObject
  * @generated
  */
-public interface XmlJoinColumnContainer extends JpaEObject
+public interface XmlJoinColumnContainer extends EBaseObject
 {
 	/**
 	 * Returns the value of the '<em><b>Join Columns</b></em>' containment reference list.

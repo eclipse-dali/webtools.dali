@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -103,7 +104,6 @@ import org.eclipse.jpt.jpa.core.resource.java.SecondaryTableAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.TableGeneratorAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 
 /**
  * Use a JPA factory to build any core (e.g. {@link JpaProject})
@@ -172,7 +172,7 @@ public interface JpaFactory
 
 	// ********** XML Context Model **********
 
-	PersistenceXml buildPersistenceXml(JpaRootContextNode parent, JpaXmlResource resource);
+	PersistenceXml buildPersistenceXml(JpaRootContextNode parent, JptXmlResource resource);
 
 	MappingFile buildMappingFile(MappingFileRef parent, Object resourceMappingFile);
 

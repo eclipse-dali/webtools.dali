@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm;
 
-import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -25,10 +25,10 @@ import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
  *
  * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMultitenantHolder()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
+ * @extends EBaseObject
  * @generated
  */
-public interface XmlMultitenantHolder extends JpaEObject
+public interface XmlMultitenantHolder extends EBaseObject
 {
 	/**
 	 * Returns the value of the '<em><b>Multitenant</b></em>' containment reference.

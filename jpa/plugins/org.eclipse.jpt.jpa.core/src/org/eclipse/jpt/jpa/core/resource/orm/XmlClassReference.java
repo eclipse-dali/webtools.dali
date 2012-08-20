@@ -17,9 +17,9 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaEObject;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -37,10 +37,10 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  *
  * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlClassReference()
  * @model kind="class"
- * @extends JpaEObject
+ * @extends EBaseObject
  * @generated
  */
-public class XmlClassReference extends AbstractJpaEObject implements JpaEObject
+public class XmlClassReference extends EBaseObjectImpl implements EBaseObject
 {
 	/**
 	 * The default value of the '{@link #getClassName() <em>Class Name</em>}' attribute.

@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.resource.orm;
 
+import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -34,10 +34,10 @@ import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
  *
  * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlConvertibleMapping()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
+ * @extends EBaseObject
  * @generated
  */
-public interface XmlConvertibleMapping extends JpaEObject
+public interface XmlConvertibleMapping extends EBaseObject
 {
 	/**
 	 * Returns the value of the '<em><b>Lob</b></em>' attribute.

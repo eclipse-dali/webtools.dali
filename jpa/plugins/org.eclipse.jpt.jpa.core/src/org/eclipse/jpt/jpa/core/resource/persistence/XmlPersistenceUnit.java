@@ -22,13 +22,13 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.BooleanTranslator;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jpa.core.resource.persistence.v2_0.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.persistence.v2_0.PersistenceV2_0Package;
 import org.eclipse.jpt.jpa.core.resource.persistence.v2_0.XmlPersistenceUnitCachingType_2_0;
 import org.eclipse.jpt.jpa.core.resource.persistence.v2_0.XmlPersistenceUnitValidationModeType_2_0;
 import org.eclipse.jpt.jpa.core.resource.persistence.v2_0.XmlPersistenceUnit_2_0;
-import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 
@@ -64,7 +64,7 @@ import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
  * @model kind="class"
  * @generated
  */
-public class XmlPersistenceUnit extends AbstractJpaEObject implements XmlPersistenceUnit_2_0
+public class XmlPersistenceUnit extends EBaseObjectImpl implements XmlPersistenceUnit_2_0
 {
 	/**
 	 * changed this to null and removed the generated flag so emf won't generate over it

@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_0;
 
+import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlClassReference;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlQueryRedirectors;
 
 /**
@@ -34,10 +34,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlQueryRedirectors;
  *
  * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlEntity_2_0()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
+ * @extends EBaseObject
  * @generated
  */
-public interface XmlEntity_2_0 extends JpaEObject
+public interface XmlEntity_2_0 extends EBaseObject
 {
 	/**
 	 * Returns the value of the '<em><b>Cache Interceptor</b></em>' containment reference.

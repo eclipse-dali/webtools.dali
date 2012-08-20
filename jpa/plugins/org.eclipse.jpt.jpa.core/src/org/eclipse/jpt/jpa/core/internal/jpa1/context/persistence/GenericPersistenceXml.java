@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
@@ -27,7 +28,6 @@ import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.Persistence2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceXml2_0;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -42,7 +42,7 @@ public class GenericPersistenceXml
 	 * If the XML resource's content type changes, the root context
 	 * node will throw out its current persistence XML.
 	 */
-	protected final JpaXmlResource xmlResource;  // never null
+	protected final JptXmlResource xmlResource;  // never null
 
 	/**
 	 * The resource type will only change if the XML file's version changes
@@ -56,7 +56,7 @@ public class GenericPersistenceXml
 	protected Persistence root;
 
 
-	public GenericPersistenceXml(JpaRootContextNode parent, JpaXmlResource xmlResource) {
+	public GenericPersistenceXml(JpaRootContextNode parent, JptXmlResource xmlResource) {
 		super(parent);
 		this.checkXmlResource(xmlResource);
 		this.xmlResource = xmlResource;
@@ -165,7 +165,7 @@ public class GenericPersistenceXml
 
 	// ********** misc **********
 
-	protected void checkXmlResource(JpaXmlResource resource) {
+	protected void checkXmlResource(JptXmlResource resource) {
 		if (resource == null) {
 			throw new NullPointerException();
 		}
@@ -174,7 +174,7 @@ public class GenericPersistenceXml
 		}
 	}
 
-	public JpaXmlResource getXmlResource() {
+	public JptXmlResource getXmlResource() {
 		return this.xmlResource;
 	}
 

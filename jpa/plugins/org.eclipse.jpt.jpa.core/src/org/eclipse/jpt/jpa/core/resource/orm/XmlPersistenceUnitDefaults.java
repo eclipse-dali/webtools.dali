@@ -17,11 +17,11 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.common.core.internal.utility.translators.EmptyTagBooleanTranslator;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlPersistenceUnitDefaults_2_0;
-import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -49,7 +49,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements XmlAccessHolder, XmlPersistenceUnitDefaults_2_0
+public class XmlPersistenceUnitDefaults extends EBaseObjectImpl implements XmlAccessHolder, XmlPersistenceUnitDefaults_2_0
 {
 
 	/**

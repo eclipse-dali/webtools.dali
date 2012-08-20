@@ -18,9 +18,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaEObject;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -46,10 +46,10 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  *
  * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getAbstractXmlTable()
  * @model kind="class" abstract="true"
- * @extends JpaEObject
+ * @extends EBaseObject
  * @generated
  */
-public abstract class AbstractXmlTable extends AbstractJpaEObject implements JpaEObject
+public abstract class AbstractXmlTable extends EBaseObjectImpl implements EBaseObject
 {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.

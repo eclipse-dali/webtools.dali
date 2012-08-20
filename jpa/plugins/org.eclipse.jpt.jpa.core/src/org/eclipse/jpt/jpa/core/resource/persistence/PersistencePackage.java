@@ -19,10 +19,10 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.emf.ecore.xml.type.XMLTypePackage;
+import org.eclipse.jpt.common.core.resource.xml.CommonPackage;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.jpa.core.resource.persistence.v2_0.PersistenceV2_0Package;
-import org.eclipse.jpt.jpa.core.resource.xml.CommonPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -174,7 +174,7 @@ public class PersistencePackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_PERSISTENCE__VERSION = CommonPackage.ABSTRACT_JPA_ROOT_EOBJECT__VERSION;
+	public static final int XML_PERSISTENCE__VERSION = CommonPackage.EROOT_OBJECT_IMPL__VERSION;
 
 	/**
 	 * The feature id for the '<em><b>Schema Location</b></em>' attribute.
@@ -183,7 +183,7 @@ public class PersistencePackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_PERSISTENCE__SCHEMA_LOCATION = CommonPackage.ABSTRACT_JPA_ROOT_EOBJECT__SCHEMA_LOCATION;
+	public static final int XML_PERSISTENCE__SCHEMA_LOCATION = CommonPackage.EROOT_OBJECT_IMPL__SCHEMA_LOCATION;
 
 	/**
 	 * The feature id for the '<em><b>Persistence Units</b></em>' containment reference list.
@@ -192,7 +192,7 @@ public class PersistencePackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_PERSISTENCE__PERSISTENCE_UNITS = CommonPackage.ABSTRACT_JPA_ROOT_EOBJECT_FEATURE_COUNT + 0;
+	public static final int XML_PERSISTENCE__PERSISTENCE_UNITS = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Xml Persistence</em>' class.
@@ -201,7 +201,7 @@ public class PersistencePackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_PERSISTENCE_FEATURE_COUNT = CommonPackage.ABSTRACT_JPA_ROOT_EOBJECT_FEATURE_COUNT + 1;
+	public static final int XML_PERSISTENCE_FEATURE_COUNT = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit <em>Xml Persistence Unit</em>}' class.
@@ -519,25 +519,23 @@ public class PersistencePackage extends EPackageImpl
 		isInited = true;
 
 		// Initialize simple dependencies
+		CommonPackage.eINSTANCE.eClass();
 		EcorePackage.eINSTANCE.eClass();
 		XMLTypePackage.eINSTANCE.eClass();
 
 		// Obtain or create and register interdependencies
-		CommonPackage theCommonPackage = (CommonPackage)(EPackage.Registry.INSTANCE.getEPackage(CommonPackage.eNS_URI) instanceof CommonPackage ? EPackage.Registry.INSTANCE.getEPackage(CommonPackage.eNS_URI) : CommonPackage.eINSTANCE);
 		OrmPackage theOrmPackage = (OrmPackage)(EPackage.Registry.INSTANCE.getEPackage(OrmPackage.eNS_URI) instanceof OrmPackage ? EPackage.Registry.INSTANCE.getEPackage(OrmPackage.eNS_URI) : OrmPackage.eINSTANCE);
 		OrmV2_0Package theOrmV2_0Package = (OrmV2_0Package)(EPackage.Registry.INSTANCE.getEPackage(OrmV2_0Package.eNS_URI) instanceof OrmV2_0Package ? EPackage.Registry.INSTANCE.getEPackage(OrmV2_0Package.eNS_URI) : OrmV2_0Package.eINSTANCE);
 		PersistenceV2_0Package thePersistenceV2_0Package = (PersistenceV2_0Package)(EPackage.Registry.INSTANCE.getEPackage(PersistenceV2_0Package.eNS_URI) instanceof PersistenceV2_0Package ? EPackage.Registry.INSTANCE.getEPackage(PersistenceV2_0Package.eNS_URI) : PersistenceV2_0Package.eINSTANCE);
 
 		// Create package meta-data objects
 		thePersistencePackage.createPackageContents();
-		theCommonPackage.createPackageContents();
 		theOrmPackage.createPackageContents();
 		theOrmV2_0Package.createPackageContents();
 		thePersistenceV2_0Package.createPackageContents();
 
 		// Initialize created meta-data
 		thePersistencePackage.initializePackageContents();
-		theCommonPackage.initializePackageContents();
 		theOrmPackage.initializePackageContents();
 		theOrmV2_0Package.initializePackageContents();
 		thePersistenceV2_0Package.initializePackageContents();
@@ -1014,7 +1012,7 @@ public class PersistencePackage extends EPackageImpl
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
-		xmlPersistenceEClass.getESuperTypes().add(theCommonPackage.getAbstractJpaRootEObject());
+		xmlPersistenceEClass.getESuperTypes().add(theCommonPackage.getERootObjectImpl());
 		xmlPersistenceUnitEClass.getESuperTypes().add(thePersistenceV2_0Package.getXmlPersistenceUnit_2_0());
 
 		// Initialize classes and features; add operations and parameters

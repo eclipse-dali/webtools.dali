@@ -13,10 +13,10 @@ package org.eclipse.jpt.jpa.eclipselink.core.resource.orm;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.orm.JPA;
-import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaEObject;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -44,10 +44,10 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  *
  * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlNamedConverter()
  * @model kind="class"
- * @extends JpaEObject
+ * @extends EBaseObject
  * @generated
  */
-public class XmlNamedConverter extends AbstractJpaEObject implements JpaEObject
+public class XmlNamedConverter extends EBaseObjectImpl implements EBaseObject
 {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.

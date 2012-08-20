@@ -57,6 +57,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageInfoCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceTypeCache;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
 import org.eclipse.jpt.common.core.utility.command.JobCommandExecutor;
 import org.eclipse.jpt.common.core.utility.command.NotifyingRepeatingJobCommand;
@@ -88,7 +89,6 @@ import org.eclipse.jpt.jpa.core.libprov.JpaLibraryProviderInstallOperationConfig
 import org.eclipse.jpt.jpa.core.resource.ResourceMappingFile;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.Database;
@@ -769,19 +769,19 @@ public abstract class AbstractJpaProject
 
 	// ********** XML files **********
 
-	public JpaXmlResource getPersistenceXmlResource() {
-		return (JpaXmlResource) this.getResourceModel(
+	public JptXmlResource getPersistenceXmlResource() {
+		return (JptXmlResource) this.getResourceModel(
 				XmlPersistence.DEFAULT_RUNTIME_PATH,
 				XmlPersistence.CONTENT_TYPE
 			);
 	}
 
-	public JpaXmlResource getDefaultOrmXmlResource() {
+	public JptXmlResource getDefaultOrmXmlResource() {
 		return this.getMappingFileXmlResource(XmlEntityMappings.DEFAULT_RUNTIME_PATH);
 	}
 
-	public JpaXmlResource getMappingFileXmlResource(IPath runtimePath) {
-		return (JpaXmlResource) this.getResourceModel(runtimePath, ResourceMappingFile.Root.CONTENT_TYPE);
+	public JptXmlResource getMappingFileXmlResource(IPath runtimePath) {
+		return (JptXmlResource) this.getResourceModel(runtimePath, ResourceMappingFile.Root.CONTENT_TYPE);
 	}
 
 	/**
@@ -1606,13 +1606,13 @@ public abstract class AbstractJpaProject
 		}
 
 		public void resourceModelReverted(JptResourceModel jpaResourceModel) {
-			IFile file = WorkbenchResourceHelper.getFile((JpaXmlResource)jpaResourceModel);
+			IFile file = WorkbenchResourceHelper.getFile((JptXmlResource)jpaResourceModel);
 			AbstractJpaProject.this.removeJpaFile(file);
 			AbstractJpaProject.this.addJpaFileMaybe(file);
 		}
 
 		public void resourceModelUnloaded(JptResourceModel jpaResourceModel) {
-			IFile file = WorkbenchResourceHelper.getFile((JpaXmlResource)jpaResourceModel);
+			IFile file = WorkbenchResourceHelper.getFile((JptXmlResource)jpaResourceModel);
 			AbstractJpaProject.this.removeJpaFile(file);
 			if (file.exists()) { //false if file delete caused the unload event
 				//go ahead and re-add the JPA file here, otherwise a resource change event

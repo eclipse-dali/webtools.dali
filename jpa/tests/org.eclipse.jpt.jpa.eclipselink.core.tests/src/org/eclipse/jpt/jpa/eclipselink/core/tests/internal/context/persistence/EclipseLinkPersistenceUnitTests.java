@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
@@ -25,7 +26,6 @@ import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.operations.EclipseLinkOrmFileCreationDataModelProvider;
@@ -74,7 +74,7 @@ public class EclipseLinkPersistenceUnitTests
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test that there is one initially
-		JpaXmlResource eclipseLinkOrmResource = getOrmXmlResource();
+		JptXmlResource eclipseLinkOrmResource = getOrmXmlResource();
 		assertTrue(eclipseLinkOrmResource.fileExists());
 		assertNotNull(persistenceUnit.getImpliedMappingFileRef());
 		assertNotNull(persistenceUnit.getImpliedEclipseLinkMappingFileRef());
@@ -92,7 +92,7 @@ public class EclipseLinkPersistenceUnitTests
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test that there is one initially
-		JpaXmlResource eclipseLinkOrmResource = getOrmXmlResource();
+		JptXmlResource eclipseLinkOrmResource = getOrmXmlResource();
 		assertTrue(eclipseLinkOrmResource.fileExists());
 		assertNotNull(persistenceUnit.getImpliedMappingFileRef());
 		assertNotNull(persistenceUnit.getImpliedEclipseLinkMappingFileRef());
@@ -113,7 +113,7 @@ public class EclipseLinkPersistenceUnitTests
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test that there is one initially
-		JpaXmlResource eclipseLinkOrmResource = getOrmXmlResource();
+		JptXmlResource eclipseLinkOrmResource = getOrmXmlResource();
 		assertTrue(eclipseLinkOrmResource.fileExists());
 		assertNotNull(persistenceUnit.getImpliedMappingFileRef());
 		assertNotNull(persistenceUnit.getImpliedEclipseLinkMappingFileRef());

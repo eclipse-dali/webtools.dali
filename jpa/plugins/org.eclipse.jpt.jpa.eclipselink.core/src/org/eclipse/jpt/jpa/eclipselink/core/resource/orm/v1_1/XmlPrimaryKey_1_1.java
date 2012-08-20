@@ -12,8 +12,8 @@
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v1_1;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlColumn;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -30,10 +30,10 @@ import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
  *
  * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v1_1.EclipseLinkOrmV1_1Package#getXmlPrimaryKey_1_1()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
+ * @extends EBaseObject
  * @generated
  */
-public interface XmlPrimaryKey_1_1 extends JpaEObject
+public interface XmlPrimaryKey_1_1 extends EBaseObject
 {
 	/**
 	 * Returns the value of the '<em><b>Validation</b></em>' attribute.

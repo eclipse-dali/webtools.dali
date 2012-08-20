@@ -22,9 +22,9 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.BooleanTranslator;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlQueryHint;
-import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaEObject;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -57,10 +57,10 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  *
  * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlNamedStoredProcedureQuery()
  * @model kind="class"
- * @extends JpaEObject
+ * @extends EBaseObject
  * @generated
  */
-public class XmlNamedStoredProcedureQuery extends AbstractJpaEObject implements JpaEObject
+public class XmlNamedStoredProcedureQuery extends EBaseObjectImpl implements EBaseObject
 {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.

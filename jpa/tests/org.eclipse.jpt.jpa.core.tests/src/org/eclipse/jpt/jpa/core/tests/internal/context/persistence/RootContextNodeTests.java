@@ -10,9 +10,9 @@
 package org.eclipse.jpt.jpa.core.tests.internal.context.persistence;
 
 import org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.core.internal.operations.PersistenceFileCreationDataModelProvider;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -41,7 +41,7 @@ public class RootContextNodeTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateRemovePersistenceXml() throws Exception {
-		JpaXmlResource pr = getPersistenceXmlResource();
+		JptXmlResource pr = getPersistenceXmlResource();
 		JpaRootContextNode baseJpaContent = getJavaProject().getJpaProject().getRootContextNode();
 		
 		assertNotNull(baseJpaContent.getPersistenceXml());

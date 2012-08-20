@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jpa.core.resource.orm;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaEObject;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -27,10 +27,10 @@ import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
  *
  * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getLob()
  * @model kind="class"
- * @extends JpaEObject
+ * @extends EBaseObject
  * @generated
  */
-public class Lob extends AbstractJpaEObject implements JpaEObject
+public class Lob extends EBaseObjectImpl implements EBaseObject
 {
 	/**
 	 * <!-- begin-user-doc -->

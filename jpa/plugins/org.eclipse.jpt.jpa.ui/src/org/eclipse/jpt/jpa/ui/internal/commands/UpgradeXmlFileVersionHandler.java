@@ -16,10 +16,10 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.resource.xml.ERootObject;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.XmlFile;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaRootEObject;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 /**
@@ -39,7 +39,7 @@ public class UpgradeXmlFileVersionHandler
 	}
 
 	protected void upgradeXmlFileVersion(Object selectedObject) {
-		JpaXmlResource xmlResource = PlatformTools.getAdapter(selectedObject, JpaXmlResource.class);
+		JptXmlResource xmlResource = PlatformTools.getAdapter(selectedObject, JptXmlResource.class);
 		if (xmlResource == null) {
 			XmlFile xmlFile = PlatformTools.getAdapter(selectedObject, XmlFile.class);
 			if (xmlFile != null) {
@@ -50,7 +50,7 @@ public class UpgradeXmlFileVersionHandler
 			return;
 		}
 
-		JpaRootEObject root = xmlResource.getRootObject();
+		ERootObject root = xmlResource.getRootObject();
 		IContentType contentType = xmlResource.getContentType();
 		JpaProject jpaProject = this.getJpaProject(xmlResource.getFile().getProject());
 		String newVersion = jpaProject.getJpaPlatform().getMostRecentSupportedResourceType(contentType).getVersion();

@@ -12,8 +12,8 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.orm;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.jpt.common.core.internal.resource.xml.AbstractJptXmlResourceProvider;
 import org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProperties;
-import org.eclipse.jpt.jpa.core.internal.resource.xml.AbstractJpaXmlResourceProvider;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 public class EclipseLinkOrmXmlResourceProvider
-	extends AbstractJpaXmlResourceProvider
+	extends AbstractJptXmlResourceProvider
 	implements OrmFileCreationDataModelProperties
 {
 	/**

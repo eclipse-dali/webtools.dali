@@ -10,8 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3;
 
 import org.eclipse.emf.common.util.EList;
-
-import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPlsqlTable;
 
 /**
@@ -33,10 +32,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPlsqlTable;
  *
  * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package#getXmlEntityMappings_2_3()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
+ * @extends EBaseObject
  * @generated
  */
-public interface XmlEntityMappings_2_3 extends JpaEObject
+public interface XmlEntityMappings_2_3 extends EBaseObject
 {
 	/**
 	 * Returns the value of the '<em><b>Tenant Discriminator Columns</b></em>' containment reference list.

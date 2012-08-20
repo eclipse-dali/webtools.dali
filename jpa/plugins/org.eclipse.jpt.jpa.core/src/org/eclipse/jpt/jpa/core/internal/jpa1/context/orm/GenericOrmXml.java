@@ -16,6 +16,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
@@ -33,7 +34,6 @@ import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.jpa.core.resource.ResourceMappingFile;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -50,7 +50,7 @@ public class GenericOrmXml
 	 * If the XML resource's content type changes, the mapping file
 	 * ref will throw out its current mapping file.
 	 */
-	protected final JpaXmlResource xmlResource;  // never null
+	protected final JptXmlResource xmlResource;  // never null
 
 	/**
 	 * The resource type will only change if the XML file's version changes
@@ -70,7 +70,7 @@ public class GenericOrmXml
 	protected EntityMappings root;
 
 
-	public GenericOrmXml(MappingFileRef parent, JpaXmlResource xmlResource) {
+	public GenericOrmXml(MappingFileRef parent, JptXmlResource xmlResource) {
 		super(parent);
 		this.checkXmlResource(xmlResource);
 		this.xmlResource = xmlResource;
@@ -211,7 +211,7 @@ public class GenericOrmXml
 
 	// ********** misc **********
 
-	protected void checkXmlResource(JpaXmlResource resource) {
+	protected void checkXmlResource(JptXmlResource resource) {
 		if (resource == null) {
 			throw new NullPointerException();
 		}
@@ -244,7 +244,7 @@ public class GenericOrmXml
 		return this;
 	}
 
-	public JpaXmlResource getXmlResource() {
+	public JptXmlResource getXmlResource() {
 		return this.xmlResource;
 	}
 

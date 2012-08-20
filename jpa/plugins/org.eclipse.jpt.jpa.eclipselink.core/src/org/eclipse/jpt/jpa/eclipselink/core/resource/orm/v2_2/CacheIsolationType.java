@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
 import org.eclipse.emf.common.util.Enumerator;
 
 /**

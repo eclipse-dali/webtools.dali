@@ -10,12 +10,12 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import org.eclipse.emf.ecore.EFactory;
+import org.eclipse.jpt.common.core.resource.xml.EmfTools;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
-import org.eclipse.jpt.jpa.core.resource.xml.EmfTools;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlArray;

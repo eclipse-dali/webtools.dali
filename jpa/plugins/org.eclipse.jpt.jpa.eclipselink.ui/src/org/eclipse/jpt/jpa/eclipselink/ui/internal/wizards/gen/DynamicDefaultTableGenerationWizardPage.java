@@ -15,8 +15,8 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards.SelectEclipseLinkMappingFileDialog;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
@@ -137,7 +137,7 @@ public class DynamicDefaultTableGenerationWizardPage extends
 		dialog.addFilter(filter);
 			
 		String ormFileName = this.xmlMappingFileText.getText();
-		JpaXmlResource resource = jpaProject.getMappingFileXmlResource(new Path(ormFileName));
+		JptXmlResource resource = jpaProject.getMappingFileXmlResource(new Path(ormFileName));
 		IFile initialSelection = (resource != null) ? resource.getFile() : null;
 		dialog.setInput(this.jpaProject.getProject());
 
@@ -166,7 +166,7 @@ public class DynamicDefaultTableGenerationWizardPage extends
 	
 //	private void validate() {
 //		String errorMessage = null;
-//		JpaXmlResource ormXmlResource = getOrmXmlResource();
+//		JptXmlResource ormXmlResource = getOrmXmlResource();
 //		if (ormXmlResource == null) {
 //			errorMessage = JptUiMessages.JpaMakePersistentWizardPage_mappingFileDoesNotExistError;
 //		}
@@ -174,7 +174,7 @@ public class DynamicDefaultTableGenerationWizardPage extends
 //		setPageComplete(errorMessage == null);
 //	}
 	
-	protected JpaXmlResource getOrmXmlResource() {
+	protected JptXmlResource getOrmXmlResource() {
 		return this.jpaProject.getMappingFileXmlResource(new Path(this.xmlMappingFileText.getText()));
 	}
 	

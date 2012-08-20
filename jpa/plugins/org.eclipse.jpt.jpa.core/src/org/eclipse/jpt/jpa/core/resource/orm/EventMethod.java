@@ -12,10 +12,10 @@ package org.eclipse.jpt.jpa.core.resource.orm;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlEventMethod_2_0;
-import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 
@@ -41,7 +41,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class" abstract="true"
  * @generated
  */
-public abstract class EventMethod extends AbstractJpaEObject implements XmlEventMethod_2_0
+public abstract class EventMethod extends EBaseObjectImpl implements XmlEventMethod_2_0
 {
 
 	/**

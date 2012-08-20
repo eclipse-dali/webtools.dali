@@ -10,15 +10,11 @@
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
-
-import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaEObject;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.BatchFetchType_2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
@@ -44,7 +40,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlBatchFetch extends AbstractJpaEObject implements XmlBatchFetch_2_1
+public class XmlBatchFetch extends EBaseObjectImpl implements XmlBatchFetch_2_1
 {
 	/**
 	 * The default value of the '{@link #getSize() <em>Size</em>}' attribute.

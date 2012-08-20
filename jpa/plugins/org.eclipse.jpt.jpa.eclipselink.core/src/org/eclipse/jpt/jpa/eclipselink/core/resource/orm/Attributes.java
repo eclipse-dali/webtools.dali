@@ -20,10 +20,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlArray_2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlAttributes_2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStructure_2_3;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
@@ -31,6 +27,10 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_0.EclipseLink2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlArray_2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlAttributes_2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlStructure_2_3;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**

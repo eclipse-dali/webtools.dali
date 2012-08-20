@@ -11,7 +11,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -27,10 +27,10 @@ import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
  *
  * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPropertyContainer()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
+ * @extends EBaseObject
  * @generated
  */
-public interface XmlPropertyContainer extends JpaEObject
+public interface XmlPropertyContainer extends EBaseObject
 {
 	/**
 	 * Returns the value of the '<em><b>Properties</b></em>' containment reference list.

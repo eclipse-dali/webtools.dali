@@ -41,12 +41,12 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.gen.internal.plugin.JptJpaGenPlugin;
 import org.eclipse.jpt.jpa.gen.internal.util.CompilationUnitModifier;
 import org.eclipse.jpt.jpa.gen.internal.util.FileUtil;
@@ -146,7 +146,7 @@ public class PackageGenerator {
 	}
 	
 	private void updatePersistenceXml(final List<String> genClasses) {
-		JpaXmlResource resource = this.jpaProject.getPersistenceXmlResource();
+		JptXmlResource resource = this.jpaProject.getPersistenceXmlResource();
 		if (resource == null) {
 			//the resource would only be null if the persistence.xml file had an invalid content type,
 			//do not attempt to update
@@ -224,7 +224,7 @@ public class PackageGenerator {
 	}
 	
 	private void updatePersistenceXmlForMappingFile(final String mappingFile) {
-		JpaXmlResource resource = this.jpaProject.getPersistenceXmlResource();
+		JptXmlResource resource = this.jpaProject.getPersistenceXmlResource();
 		if (resource == null) {
 			//the resource would only be null if the persistence.xml file had an invalid content type,
 			//do not attempt to update
@@ -393,7 +393,7 @@ public class PackageGenerator {
 
 		try {		
 			String xmlMappingFileLocation = this.customizer.getXmlMappingFile();
-			JpaXmlResource xmlResource = this.jpaProject.getMappingFileXmlResource(new Path(xmlMappingFileLocation));
+			JptXmlResource xmlResource = this.jpaProject.getMappingFileXmlResource(new Path(xmlMappingFileLocation));
 			IFile xmlFile;
 			if (xmlResource != null) {
 				xmlFile = xmlResource.getFile();

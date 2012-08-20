@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 
 /**
  * Context representation of any JPA XML file.
@@ -42,7 +42,7 @@ public interface XmlFile
 	/**
 	 * Return the resource model object
 	 */
-	JpaXmlResource getXmlResource();
+	JptXmlResource getXmlResource();
 
 	/**
 	 * Return whether the XML file's version is the latest supported by its

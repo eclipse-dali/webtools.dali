@@ -12,7 +12,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlFetchGroup;
 
 /**
@@ -29,10 +29,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlFetchGroup;
  *
  * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getXmlFetchGroupContainer_2_1()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
+ * @extends EBaseObject
  * @generated
  */
-public interface XmlFetchGroupContainer_2_1 extends JpaEObject
+public interface XmlFetchGroupContainer_2_1 extends EBaseObject
 {
 	/**
 	 * Returns the value of the '<em><b>Fetch Groups</b></em>' containment reference list.

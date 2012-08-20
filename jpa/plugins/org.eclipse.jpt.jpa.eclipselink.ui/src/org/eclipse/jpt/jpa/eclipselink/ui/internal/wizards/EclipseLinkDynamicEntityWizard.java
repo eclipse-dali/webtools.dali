@@ -17,10 +17,10 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.entity.data.model.DynamicEntityDataModelProvider;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.plugin.JptJpaEclipseLinkUiPlugin;
@@ -97,7 +97,7 @@ public class EclipseLinkDynamicEntityWizard extends DataModelWizard implements I
         	IProject project = (IProject) this.getDataModel().getProperty(INewJavaClassDataModelProperties.PROJECT);
         	JpaProject jpaProject = (JpaProject)(project).getAdapter(JpaProject.class);
         	String xmlRuntimePath = this.getDataModel().getStringProperty(IEntityDataModelProperties.XML_NAME).trim();
-        	JpaXmlResource xmlResource = jpaProject.getMappingFileXmlResource(new Path(xmlRuntimePath));
+        	JptXmlResource xmlResource = jpaProject.getMappingFileXmlResource(new Path(xmlRuntimePath));
             openEditor(xmlResource);
         } catch (Exception cantOpen) {
         	JptJpaEclipseLinkUiPlugin.instance().logError(cantOpen);
@@ -107,7 +107,7 @@ public class EclipseLinkDynamicEntityWizard extends DataModelWizard implements I
 	/*
 	 * Open the EclipseLink mapping file where the dynamic entity is created
 	 */
-	protected void openEditor(final JpaXmlResource xmlResource) {
+	protected void openEditor(final JptXmlResource xmlResource) {
 		SWTUtil.asyncExec(new Runnable() {
 			public void run() {
 				IFile file = xmlResource.getFile();

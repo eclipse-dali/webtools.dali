@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_0;
 
-import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -37,10 +37,10 @@ import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
  *
  * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlQueryRedirectors_2_0()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
+ * @extends EBaseObject
  * @generated
  */
-public interface XmlQueryRedirectors_2_0 extends JpaEObject
+public interface XmlQueryRedirectors_2_0 extends EBaseObject
 {
 	/**
 	 * Returns the value of the '<em><b>All Queries</b></em>' attribute.

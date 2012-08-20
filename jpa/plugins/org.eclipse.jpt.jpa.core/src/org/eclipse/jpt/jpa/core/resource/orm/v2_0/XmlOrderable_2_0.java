@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jpa.core.resource.orm.v2_0;
 
 
+import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlOrderColumn;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -33,10 +33,10 @@ import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
  *
  * @see org.eclipse.jpt.jpa.core.resource.orm.v2_0.OrmV2_0Package#getXmlOrderable_2_0()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
+ * @extends EBaseObject
  * @generated
  */
-public interface XmlOrderable_2_0 extends JpaEObject
+public interface XmlOrderable_2_0 extends EBaseObject
 {
 	/**
 	 * Returns the value of the '<em><b>Order Column</b></em>' containment reference.

@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.operations;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jpt.common.core.resource.xml.JpaXmlResourceProvider;
 import org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationOperation;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResourceProvider;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.resource.orm.EclipseLinkOrmXmlResourceProvider;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 

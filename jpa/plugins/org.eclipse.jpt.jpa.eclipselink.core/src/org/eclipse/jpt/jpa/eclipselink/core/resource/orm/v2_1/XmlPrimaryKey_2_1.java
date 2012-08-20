@@ -11,7 +11,7 @@
 
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1;
 
-import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -27,10 +27,10 @@ import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
  *
  * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getXmlPrimaryKey_2_1()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
+ * @extends EBaseObject
  * @generated
  */
-public interface XmlPrimaryKey_2_1 extends JpaEObject
+public interface XmlPrimaryKey_2_1 extends EBaseObject
 {
 	/**
 	 * Returns the value of the '<em><b>Cache Key Type</b></em>' attribute.

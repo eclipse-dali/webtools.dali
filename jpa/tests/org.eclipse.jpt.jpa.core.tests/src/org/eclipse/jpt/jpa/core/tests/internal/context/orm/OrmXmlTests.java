@@ -9,12 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.tests.internal.context.orm;
 
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlMappingFileRef;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.core.tests.internal.context.ContextModelTestCase;
 
 @SuppressWarnings("nls")
@@ -40,7 +40,7 @@ public class OrmXmlTests extends ContextModelTestCase
 	
 	public void testUpdateAddEntityMappings() throws Exception {
 		assertEquals(2, getJpaProject().getJpaFilesSize());
-		JpaXmlResource ormResource = getOrmXmlResource();
+		JptXmlResource ormResource = getOrmXmlResource();
 		ormResource.getContents().clear();
 		ormResource.save(null);
 		
@@ -58,7 +58,7 @@ public class OrmXmlTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateRemoveEntityMappings() throws Exception {
-		JpaXmlResource ormResource = getOrmXmlResource();
+		JptXmlResource ormResource = getOrmXmlResource();
 		
 		assertNotNull(getOrmXml().getRoot());
 		

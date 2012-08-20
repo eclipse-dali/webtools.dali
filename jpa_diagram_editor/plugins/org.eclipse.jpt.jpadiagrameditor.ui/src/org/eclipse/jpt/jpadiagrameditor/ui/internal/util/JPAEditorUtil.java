@@ -77,6 +77,7 @@ import org.eclipse.jdt.ui.actions.OrganizeImportsAction;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
@@ -87,7 +88,6 @@ import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.facade.EclipseFacade;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
@@ -390,7 +390,7 @@ public class JPAEditorUtil {
     
     
 	public static void createRegisterEntityInXMLJob(final JpaProject jpaProject, final String classFQN) {
-		final JpaXmlResource resource = jpaProject.getPersistenceXmlResource();
+		final JptXmlResource resource = jpaProject.getPersistenceXmlResource();
 		XmlPersistence xmlPersistence = (XmlPersistence) resource.getRootObject();
 		EList<XmlPersistenceUnit> persistenceUnits = xmlPersistence.getPersistenceUnits();
 		XmlPersistenceUnit persistenceUnit = persistenceUnits.get(0); // Multiply persistence unit support
@@ -411,7 +411,7 @@ public class JPAEditorUtil {
 	}
     
 	public static void createUnregisterEntityFromXMLJob(final JpaProject jpaProject, final String classFQN) {
-		JpaXmlResource resource = jpaProject.getPersistenceXmlResource();
+		JptXmlResource resource = jpaProject.getPersistenceXmlResource();
 		XmlPersistence xmlPersistence = (XmlPersistence) resource.getRootObject();
 		EList<XmlPersistenceUnit> persistenceUnits = xmlPersistence.getPersistenceUnits();
 		XmlPersistenceUnit persistenceUnit = persistenceUnits.get(0);// Multiply persistence unit support

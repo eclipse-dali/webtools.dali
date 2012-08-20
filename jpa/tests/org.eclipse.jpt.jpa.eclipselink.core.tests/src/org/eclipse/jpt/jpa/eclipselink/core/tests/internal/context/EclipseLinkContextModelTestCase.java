@@ -10,10 +10,10 @@
 package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context;
 
 import org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.jpa.core.internal.operations.JpaFileCreationDataModelProperties;
 import org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProperties;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.jpa.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkJpaProject;
@@ -33,7 +33,7 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 public abstract class EclipseLinkContextModelTestCase
 	extends ContextModelTestCase
 {
-	protected JpaXmlResource eclipseLinkOrmXmlResource;
+	protected JptXmlResource eclipseLinkOrmXmlResource;
 
 	protected EclipseLinkContextModelTestCase(String name) {
 		super(name);
@@ -116,7 +116,7 @@ public abstract class EclipseLinkContextModelTestCase
 	}
 
 	@Override
-	protected JpaXmlResource getOrmXmlResource() {
+	protected JptXmlResource getOrmXmlResource() {
 		return this.eclipseLinkOrmXmlResource;
 	}
 

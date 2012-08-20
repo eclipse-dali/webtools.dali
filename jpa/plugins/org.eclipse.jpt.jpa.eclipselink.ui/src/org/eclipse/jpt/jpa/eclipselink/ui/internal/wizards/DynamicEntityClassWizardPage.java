@@ -42,11 +42,11 @@ import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_1JpaPlatformFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
@@ -399,7 +399,7 @@ public class DynamicEntityClassWizardPage extends DataModelWizardPage{
 		dialog.setInput(project);
 			
 		String ormFileName = this.ormXmlNameText.getText();
-		JpaXmlResource resource = jpaProject.getMappingFileXmlResource(new Path(ormFileName));
+		JptXmlResource resource = jpaProject.getMappingFileXmlResource(new Path(ormFileName));
 		IFile initialSelection = (resource != null) ? resource.getFile() : null;
 
 		if (initialSelection != null) {

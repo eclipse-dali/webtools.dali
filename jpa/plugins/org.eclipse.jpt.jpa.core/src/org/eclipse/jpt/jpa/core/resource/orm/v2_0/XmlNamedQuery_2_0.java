@@ -11,7 +11,7 @@
 
 package org.eclipse.jpt.jpa.core.resource.orm.v2_0;
 
-import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -33,10 +33,10 @@ import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
  *
  * @see org.eclipse.jpt.jpa.core.resource.orm.v2_0.OrmV2_0Package#getXmlNamedQuery_2_0()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
+ * @extends EBaseObject
  * @generated
  */
-public interface XmlNamedQuery_2_0 extends JpaEObject
+public interface XmlNamedQuery_2_0 extends EBaseObject
 {
 	/**
 	 * Returns the value of the '<em><b>Lock Mode</b></em>' attribute.

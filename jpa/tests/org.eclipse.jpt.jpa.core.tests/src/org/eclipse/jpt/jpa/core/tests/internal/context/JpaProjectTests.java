@@ -13,6 +13,7 @@ import junit.framework.TestCase;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaWorkspace;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory;
@@ -25,7 +26,6 @@ import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
@@ -82,7 +82,7 @@ public class JpaProjectTests
 	}
 	
 	public void testGetPersistenceXmlResource() throws Exception {
-		JpaXmlResource resource = this.getJpaProject().getPersistenceXmlResource();
+		JptXmlResource resource = this.getJpaProject().getPersistenceXmlResource();
 		assertNotNull(resource);
 		assertEquals(XmlPersistence.CONTENT_TYPE, resource.getContentType());
 		assertEquals("src/META-INF/persistence.xml", resource.getFile().getProjectRelativePath().toString());
@@ -109,7 +109,7 @@ public class JpaProjectTests
 	}
 	
 	public void testGetDefaultOrmXmlResource() throws Exception {
-		JpaXmlResource resource = this.getJpaProject().getDefaultOrmXmlResource();
+		JptXmlResource resource = this.getJpaProject().getDefaultOrmXmlResource();
 		assertNotNull(resource);
 		assertEquals(XmlEntityMappings.CONTENT_TYPE, resource.getContentType());
 		assertEquals("src/META-INF/orm.xml", resource.getFile().getProjectRelativePath().toString());
@@ -145,7 +145,7 @@ public class JpaProjectTests
 	}
 
 	public void testGetMappingFileResource() throws Exception {
-		JpaXmlResource resource = this.getJpaProject().getMappingFileXmlResource(XmlEntityMappings.DEFAULT_RUNTIME_PATH);
+		JptXmlResource resource = this.getJpaProject().getMappingFileXmlResource(XmlEntityMappings.DEFAULT_RUNTIME_PATH);
 		assertNotNull(resource);
 		assertEquals(XmlEntityMappings.CONTENT_TYPE, resource.getContentType());
 		assertEquals("src/META-INF/orm.xml", resource.getFile().getProjectRelativePath().toString());
@@ -164,7 +164,7 @@ public class JpaProjectTests
 	}
 	
 	public void testGetMappingFileResourceDifferentlyName() throws Exception {
-		JpaXmlResource resource = this.getJpaProject().getMappingFileXmlResource(new Path("META-INF/orm2.xml"));
+		JptXmlResource resource = this.getJpaProject().getMappingFileXmlResource(new Path("META-INF/orm2.xml"));
 		assertNull(resource);
 
 		//create the orm2.xml file

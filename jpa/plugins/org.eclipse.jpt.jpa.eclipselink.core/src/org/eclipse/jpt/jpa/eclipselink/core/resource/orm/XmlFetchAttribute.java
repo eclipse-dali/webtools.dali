@@ -16,7 +16,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
-import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaEObject;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.XmlFetchAttribute_2_1;
@@ -32,7 +32,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlFetchAttribute extends AbstractJpaEObject implements XmlFetchAttribute_2_1
+public class XmlFetchAttribute extends EBaseObjectImpl implements XmlFetchAttribute_2_1
 {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.

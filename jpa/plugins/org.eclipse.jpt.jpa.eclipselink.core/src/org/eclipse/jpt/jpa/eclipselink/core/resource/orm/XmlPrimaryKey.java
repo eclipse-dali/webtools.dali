@@ -22,8 +22,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlColumn;
-import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v1_1.EclipseLinkOrmV1_1Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v1_1.IdValidationType_1_1;
@@ -44,7 +44,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlPrimaryKey extends AbstractJpaEObject implements XmlPrimaryKey_1_1, XmlPrimaryKey_2_1
+public class XmlPrimaryKey extends EBaseObjectImpl implements XmlPrimaryKey_1_1, XmlPrimaryKey_2_1
 {
 	/**
 	 * changed this to null and removed the generated flag so emf won't generate over it

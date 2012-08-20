@@ -25,10 +25,10 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
+import org.eclipse.jpt.common.core.internal.resource.xml.AbstractJptXmlResourceProvider;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.resource.xml.JpaXmlResourceProvider;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.internal.resource.xml.AbstractJpaXmlResourceProvider;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResourceProvider;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 

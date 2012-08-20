@@ -10,18 +10,14 @@
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.orm.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
-import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaEObject;
-
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlUuidGenerator_2_4;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -41,7 +37,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlUuidGenerator extends AbstractJpaEObject implements XmlUuidGenerator_2_4
+public class XmlUuidGenerator extends EBaseObjectImpl implements XmlUuidGenerator_2_4
 {
 	/**
 	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.

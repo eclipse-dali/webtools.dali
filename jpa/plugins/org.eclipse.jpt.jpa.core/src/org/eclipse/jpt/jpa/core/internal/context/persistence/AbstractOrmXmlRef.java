@@ -11,9 +11,9 @@ package org.eclipse.jpt.jpa.core.internal.context.persistence;
 
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 
 /**
  * <code>persistence.xml</code> file
@@ -30,7 +30,7 @@ public abstract class AbstractOrmXmlRef
 
 	@Override
 	protected OrmXml buildMappingFile() {
-		JpaXmlResource xmlResource = this.resolveResourceMappingFile();
+		JptXmlResource xmlResource = this.resolveResourceMappingFile();
 		return (xmlResource == null) ? null : this.buildMappingFile(xmlResource);
 	}
 
@@ -40,11 +40,11 @@ public abstract class AbstractOrmXmlRef
 	 * the mapping file itself (<code>orm.xml</code>).
 	 */
 	@Override
-	protected JpaXmlResource resolveResourceMappingFile() {
+	protected JptXmlResource resolveResourceMappingFile() {
 		if (this.fileName == null) {
 			return null;
 		}
-		JpaXmlResource xmlResource = this.getJpaProject().getMappingFileXmlResource(new Path(this.fileName));
+		JptXmlResource xmlResource = this.getJpaProject().getMappingFileXmlResource(new Path(this.fileName));
 		if (xmlResource == null) {
 			return null;
 		}
@@ -65,7 +65,7 @@ public abstract class AbstractOrmXmlRef
 
 	@Override
 	protected boolean mappingFileContentIsUnsupported() {
-		JpaXmlResource xmlResource = this.getJpaProject().getMappingFileXmlResource(new Path(this.fileName));
+		JptXmlResource xmlResource = this.getJpaProject().getMappingFileXmlResource(new Path(this.fileName));
 		return (xmlResource != null) && ! this.getJpaPlatform().supportsResourceType(xmlResource.getResourceType());
 	}
 }

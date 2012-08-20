@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ecore:EPackage xmi:version="2.0"
-    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="orm"
-    nsURI="jpt.orm.xmi" nsPrefix="org.eclipse.jpt.jpa.core.resource.orm">
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="orm" nsURI="jpt.orm.xmi" nsPrefix="org.eclipse.jpt.jpa.core.resource.orm">
   <eClassifiers xsi:type="ecore:EClass" name="AbstractXmlAttributeMapping" abstract="true"
       eSuperTypes="#//XmlAttributeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlBaseColumn" abstract="true" interface="true"
@@ -177,7 +175,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="entityListeners" upperBound="-1"
         eType="#//EntityListener" containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEntityMappings" eSuperTypes="common.ecore#//AbstractJpaRootEObject #//XmlQueryContainer #//XmlAccessHolder">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEntityMappings" eSuperTypes="../../org.eclipse.jpt.common.core/model/common.ecore#//ERootObjectImpl #//XmlQueryContainer #//XmlAccessHolder">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="persistenceUnitMetadata"
         eType="#//XmlPersistenceUnitMetadata" containment="true" resolveProxies="false"/>

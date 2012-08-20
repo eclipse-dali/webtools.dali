@@ -44,6 +44,7 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.ui.internal.utility.SynchronousUiCommandExecutor;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
@@ -63,7 +64,6 @@ import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.AnnotatedEntityTemplate;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.EntityTemplate;
@@ -447,7 +447,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 		}
 
 		public void execute() {
-			JpaXmlResource xmlResource = this.getOrmXmlResource();
+			JptXmlResource xmlResource = this.getOrmXmlResource();
 			EntityMappings entityMappings = (EntityMappings) this.getJpaProject().getJpaFile(xmlResource.getFile()).getRootStructureNodes().iterator().next();
 			OrmPersistentType persistentType = entityMappings.addPersistentType(this.typeMappingKey, this.model.getQualifiedJavaClassName());
 
@@ -476,7 +476,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 			}
 		}
 
-		protected JpaXmlResource getOrmXmlResource() {
+		protected JptXmlResource getOrmXmlResource() {
 			return this.model.isMappingXMLDefault() ?
 					this.getJpaProject().getDefaultOrmXmlResource() :
 					this.getJpaProject().getMappingFileXmlResource(new Path(this.model.getMappingXMLName()));
@@ -540,7 +540,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				JpaProject jpaProject = (JpaProject) project.getAdapter(JpaProject.class);
-				JpaXmlResource resource = jpaProject.getPersistenceXmlResource();
+				JptXmlResource resource = jpaProject.getPersistenceXmlResource();
 				XmlPersistence xmlPersistence = (XmlPersistence) resource.getRootObject();
 				EList<XmlPersistenceUnit> persistenceUnits = xmlPersistence.getPersistenceUnits();
 				XmlPersistenceUnit persistenceUnit = persistenceUnits.get(0);// Multiply persistence unit support

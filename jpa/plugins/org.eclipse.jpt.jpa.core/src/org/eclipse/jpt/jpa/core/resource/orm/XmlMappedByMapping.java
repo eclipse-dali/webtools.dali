@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.core.resource.orm;
 
+import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -33,10 +33,10 @@ import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
  *
  * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlMappedByMapping()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
+ * @extends EBaseObject
  * @generated
  */
-public interface XmlMappedByMapping extends JpaEObject
+public interface XmlMappedByMapping extends EBaseObject
 {
 	/**
 	 * Returns the value of the '<em><b>Mapped By</b></em>' attribute.

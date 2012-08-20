@@ -12,15 +12,15 @@ package org.eclipse.jpt.jpa.core.internal.resource.persistence;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.jpt.common.core.internal.resource.xml.AbstractJptXmlResourceProvider;
 import org.eclipse.jpt.jpa.core.internal.operations.PersistenceFileCreationDataModelProperties;
-import org.eclipse.jpt.jpa.core.internal.resource.xml.AbstractJpaXmlResourceProvider;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 public class PersistenceXmlResourceProvider
-	extends AbstractJpaXmlResourceProvider
+	extends AbstractJptXmlResourceProvider
 	implements PersistenceFileCreationDataModelProperties
 {
 	/**

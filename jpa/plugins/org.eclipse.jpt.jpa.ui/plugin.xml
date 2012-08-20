@@ -367,7 +367,7 @@
 						<adapt type="org.eclipse.jpt.jpa.core.context.XmlFile">
 							<test property="org.eclipse.jpt.jpa.core.isNotLatestSupportedVersion"/>
 						</adapt>
-						<adapt type="org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource">
+						<adapt type="org.eclipse.jpt.common.core.resource.xml.JptXmlResource">
 							<test property="org.eclipse.jpt.jpa.core.isNotLatestSupportedVersion"/>
 						</adapt>
 					</or>
@@ -524,7 +524,7 @@
 						variable="selection">
 						<iterate ifEmpty="false">
 							<or>
-								<adapt type="org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource"/>
+								<adapt type="org.eclipse.jpt.common.core.resource.xml.JptXmlResource"/>
 								<adapt type="org.eclipse.core.resources.IProject">
 									<test
 										property="org.eclipse.wst.common.project.facet.core.projectFacet"
@@ -572,7 +572,7 @@
 					<with
 						variable="selection">
 						<iterate ifEmpty="false">
-							<adapt type="org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource">
+							<adapt type="org.eclipse.jpt.common.core.resource.xml.JptXmlResource">
 								<test property="org.eclipse.jpt.jpa.core.isNotLatestSupportedVersion"/>
 							</adapt>
 						</iterate>

@@ -10,13 +10,10 @@
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
-import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaEObject;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -41,10 +38,10 @@ import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
  *
  * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCustomizer()
  * @model kind="class"
- * @extends JpaEObject
+ * @extends EBaseObject
  * @generated
  */
-public class XmlCustomizer extends AbstractJpaEObject implements JpaEObject
+public class XmlCustomizer extends EBaseObjectImpl implements EBaseObject
 {
 	/**
 	 * The default value of the '{@link #getCustomizerClassName() <em>Customizer Class Name</em>}' attribute.

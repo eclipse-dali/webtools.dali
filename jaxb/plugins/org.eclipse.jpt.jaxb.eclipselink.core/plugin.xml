@@ -12,6 +12,25 @@
 
 <plugin>
 	
+	<extension
+		point="org.eclipse.core.contenttype.contentTypes">
+		
+		<!-- oxm.xml -->
+  		<content-type
+			id="org.eclipse.jpt.jaxb.eclipselink.core.content.oxm"
+			name="%OXM_XML_CONTENT"
+			base-type="org.eclipse.core.runtime.xml">
+			<describer
+				class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber2">
+				<parameter 
+					name="element" 
+					value="{http://www.eclipse.org/eclipselink/xsds/persistence/oxm}xml-bindings"/>
+			</describer>
+		</content-type>
+		
+	</extension>
+	
+	
 	<extension 
 		point="org.eclipse.core.expressions.propertyTesters">
 		
@@ -88,6 +107,22 @@
 				</and>
 			</enablement>
 		</libraryValidator>
+		
+	</extension>
+	
+	
+	<!-- ***** WTP resource factories ***** -->
+
+	<extension
+		point="org.eclipse.wst.common.modulecore.resourceFactories">
+		
+		<resourceFactory
+			class="org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmXmlResourceFactory"
+			isDefault="true">
+			<contentTypeBinding
+				contentTypeId="org.eclipse.jpt.jaxb.eclipselink.core.content.oxm">
+			</contentTypeBinding>
+		</resourceFactory>
 		
 	</extension>
 	

@@ -18,7 +18,6 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.emf.ecore.xml.type.XMLTypePackage;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
-import org.eclipse.jpt.jpa.core.resource.xml.CommonPackage;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v1_1.EclipseLinkOrmV1_1Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
@@ -8302,7 +8301,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 
 		// Initialize simple dependencies
 		OrmPackage.eINSTANCE.eClass();
-		CommonPackage.eINSTANCE.eClass();
 		XMLTypePackage.eINSTANCE.eClass();
 
 		// Obtain or create and register interdependencies

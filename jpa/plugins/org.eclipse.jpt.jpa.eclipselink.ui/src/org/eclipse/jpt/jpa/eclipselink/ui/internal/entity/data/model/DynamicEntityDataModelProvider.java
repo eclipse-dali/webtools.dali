@@ -29,6 +29,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
@@ -40,7 +41,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.entity.data.operation.NewDynamicEntityClassOperation;
@@ -214,7 +214,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 	private IStatus validateXmlName(String xmlName) {
 		IProject project = this.getTargetProject();
 		if (project != null) {
-			JpaXmlResource ormXmlResource = StringTools.stringIsEmpty(xmlName) ? null : getOrmXmlResource(xmlName);
+			JptXmlResource ormXmlResource = StringTools.stringIsEmpty(xmlName) ? null : getOrmXmlResource(xmlName);
 			if (ormXmlResource == null) {
 				return JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.DynamicEntityClassWizardPage_invalidXMLName);
 			}
@@ -225,7 +225,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 		return Status.OK_STATUS;
 	}
 
-	protected JpaXmlResource getOrmXmlResource(String xmlName) {
+	protected JptXmlResource getOrmXmlResource(String xmlName) {
 		return getJpaProject()== null ? null : getJpaProject().getMappingFileXmlResource(new Path(xmlName));
 	}
 

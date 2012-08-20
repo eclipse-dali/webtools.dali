@@ -17,7 +17,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
-import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaEObject;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.CacheIsolationType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLink2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package;
@@ -63,7 +63,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlCache extends AbstractJpaEObject implements XmlCache_2_2, XmlCache_2_4
+public class XmlCache extends EBaseObjectImpl implements XmlCache_2_2, XmlCache_2_4
 {
 	/**
 	 * changed this to null and removed the generated flag so emf won't generate over it

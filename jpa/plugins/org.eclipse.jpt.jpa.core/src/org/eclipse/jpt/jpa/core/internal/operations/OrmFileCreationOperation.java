@@ -20,13 +20,13 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
+import org.eclipse.jpt.common.core.resource.xml.JpaXmlResourceProvider;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.internal.resource.orm.OrmXmlResourceProvider;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResourceProvider;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 public class OrmFileCreationOperation

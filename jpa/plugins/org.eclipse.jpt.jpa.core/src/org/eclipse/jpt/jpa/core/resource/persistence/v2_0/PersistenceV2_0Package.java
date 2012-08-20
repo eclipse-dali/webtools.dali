@@ -17,10 +17,10 @@ import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+import org.eclipse.jpt.common.core.resource.xml.CommonPackage;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistencePackage;
-import org.eclipse.jpt.jpa.core.resource.xml.CommonPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -198,24 +198,22 @@ public class PersistenceV2_0Package extends EPackageImpl
 		isInited = true;
 
 		// Initialize simple dependencies
+		CommonPackage.eINSTANCE.eClass();
 		EcorePackage.eINSTANCE.eClass();
 
 		// Obtain or create and register interdependencies
-		CommonPackage theCommonPackage = (CommonPackage)(EPackage.Registry.INSTANCE.getEPackage(CommonPackage.eNS_URI) instanceof CommonPackage ? EPackage.Registry.INSTANCE.getEPackage(CommonPackage.eNS_URI) : CommonPackage.eINSTANCE);
 		OrmPackage theOrmPackage = (OrmPackage)(EPackage.Registry.INSTANCE.getEPackage(OrmPackage.eNS_URI) instanceof OrmPackage ? EPackage.Registry.INSTANCE.getEPackage(OrmPackage.eNS_URI) : OrmPackage.eINSTANCE);
 		OrmV2_0Package theOrmV2_0Package = (OrmV2_0Package)(EPackage.Registry.INSTANCE.getEPackage(OrmV2_0Package.eNS_URI) instanceof OrmV2_0Package ? EPackage.Registry.INSTANCE.getEPackage(OrmV2_0Package.eNS_URI) : OrmV2_0Package.eINSTANCE);
 		PersistencePackage thePersistencePackage = (PersistencePackage)(EPackage.Registry.INSTANCE.getEPackage(PersistencePackage.eNS_URI) instanceof PersistencePackage ? EPackage.Registry.INSTANCE.getEPackage(PersistencePackage.eNS_URI) : PersistencePackage.eINSTANCE);
 
 		// Create package meta-data objects
 		thePersistenceV2_0Package.createPackageContents();
-		theCommonPackage.createPackageContents();
 		theOrmPackage.createPackageContents();
 		theOrmV2_0Package.createPackageContents();
 		thePersistencePackage.createPackageContents();
 
 		// Initialize created meta-data
 		thePersistenceV2_0Package.initializePackageContents();
-		theCommonPackage.initializePackageContents();
 		theOrmPackage.initializePackageContents();
 		theOrmV2_0Package.initializePackageContents();
 		thePersistencePackage.initializePackageContents();

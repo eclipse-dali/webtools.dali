@@ -15,8 +15,8 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -36,7 +36,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class" abstract="true"
  * @generated
  */
-public abstract class AbstractXmlTypeMapping extends AbstractJpaEObject implements XmlTypeMapping
+public abstract class AbstractXmlTypeMapping extends EBaseObjectImpl implements XmlTypeMapping
 {
 
 	/**

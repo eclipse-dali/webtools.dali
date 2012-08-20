@@ -11,17 +11,12 @@
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm;
 
 import java.util.Collection;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
-
 import org.eclipse.emf.ecore.util.EDataTypeEList;
-
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
-import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaEObject;
-
+import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLink2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlCacheIndex_2_4;
@@ -37,7 +32,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlCacheIndex extends AbstractJpaEObject implements XmlCacheIndex_2_4
+public class XmlCacheIndex extends EBaseObjectImpl implements XmlCacheIndex_2_4
 {
 	/**
 	 * The cached value of the '{@link #getColumnNames() <em>Column Names</em>}' attribute list.

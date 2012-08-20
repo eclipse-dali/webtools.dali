@@ -16,10 +16,10 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlEntityListener_2_0;
-import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -44,7 +44,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class EntityListener extends AbstractJpaEObject implements XmlEventMethodContainer, XmlEntityListener_2_0
+public class EntityListener extends EBaseObjectImpl implements XmlEventMethodContainer, XmlEntityListener_2_0
 {
 	/**
 	 * The cached value of the '{@link #getPrePersist() <em>Pre Persist</em>}' containment reference.

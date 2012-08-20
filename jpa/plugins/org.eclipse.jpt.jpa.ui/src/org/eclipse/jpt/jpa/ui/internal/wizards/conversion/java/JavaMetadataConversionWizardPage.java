@@ -33,6 +33,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.common.core.internal.utility.WorkspaceRunnableAdapter;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.utility.SynchronousUiCommandExecutor;
 import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
@@ -54,7 +55,6 @@ import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.resource.ResourceMappingFile;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.jface.XmlMappingFileViewerFilter;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
@@ -270,7 +270,7 @@ public abstract class JavaMetadataConversionWizardPage
 	}
 
 	protected String buildErrorMessage() {
-		JpaXmlResource ormXmlResource = this.getOrmXmlResource();
+		JptXmlResource ormXmlResource = this.getOrmXmlResource();
 		if (ormXmlResource == null) {
 			return JptUiMessages.JavaMetadataConversion_mappingFileDoesNotExist;
 		}
@@ -292,7 +292,7 @@ public abstract class JavaMetadataConversionWizardPage
 		return this.getEntityMappings(this.getOrmXmlResource());
 	}
 
-	protected EntityMappings getEntityMappings(JpaXmlResource ormXmlResource) {
+	protected EntityMappings getEntityMappings(JptXmlResource ormXmlResource) {
 		return (ormXmlResource == null) ? null : this.getEntityMappings_(ormXmlResource);
 	}
 
@@ -300,12 +300,12 @@ public abstract class JavaMetadataConversionWizardPage
 	 * Pre-condition: the specified <code>orm.xml</code> resource is
 	 * not <code>null</code>.
 	 */
-	protected EntityMappings getEntityMappings_(JpaXmlResource ormXmlResource) {
+	protected EntityMappings getEntityMappings_(JptXmlResource ormXmlResource) {
 		Iterator<JpaStructureNode> nodes = this.jpaProject.getJpaFile(ormXmlResource.getFile()).getRootStructureNodes().iterator();
 		return nodes.hasNext() ? (EntityMappings) nodes.next() : null;
 	}
 
-	protected JpaXmlResource getOrmXmlResource() {
+	protected JptXmlResource getOrmXmlResource() {
 		IPath mappingFilePath = this.getMappingFilePath();
 		return (mappingFilePath == null) ? null : this.jpaProject.getMappingFileXmlResource(mappingFilePath);
 	}
@@ -375,7 +375,7 @@ public abstract class JavaMetadataConversionWizardPage
 		dialog.addFilter(this.buildSelectMappingFileDialogViewerFilter());
 		dialog.setInput(project);
 
-		JpaXmlResource resource = this.getOrmXmlResource();
+		JptXmlResource resource = this.getOrmXmlResource();
 		IFile file = (resource == null) ? null : resource.getFile();
 		if (file != null) {
 			dialog.setInitialSelection(file);
@@ -526,7 +526,7 @@ public abstract class JavaMetadataConversionWizardPage
 			this.openEditorOnMappingFile();
 		}
 
-		protected JpaXmlResource getOrmXmlResource() {
+		protected JptXmlResource getOrmXmlResource() {
 			return this.entityMappings.getParent().getXmlResource();
 		}
 

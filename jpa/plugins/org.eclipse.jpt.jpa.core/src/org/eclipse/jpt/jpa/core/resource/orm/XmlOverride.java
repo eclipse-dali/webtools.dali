@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.resource.orm;
 
+import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -32,10 +32,10 @@ import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
  *
  * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlOverride()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
+ * @extends EBaseObject
  * @generated
  */
-public interface XmlOverride extends JpaEObject
+public interface XmlOverride extends EBaseObject
 {
 	/**
 	 * Returns the value of the '<em><b>Name</b></em>' attribute.

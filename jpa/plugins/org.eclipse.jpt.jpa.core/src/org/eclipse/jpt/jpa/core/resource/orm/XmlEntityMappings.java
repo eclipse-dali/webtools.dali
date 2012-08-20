@@ -25,11 +25,11 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleRootTranslator;
+import org.eclipse.jpt.common.core.resource.xml.ERootObjectImpl;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.JPA2_0;
-import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaRootEObject;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -65,7 +65,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlEntityMappings extends AbstractJpaRootEObject implements XmlQueryContainer, XmlAccessHolder
+public class XmlEntityMappings extends ERootObjectImpl implements XmlQueryContainer, XmlAccessHolder
 {
 	/**
 	 * The cached value of the '{@link #getNamedQueries() <em>Named Queries</em>}' containment reference list.

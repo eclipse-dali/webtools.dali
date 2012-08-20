@@ -28,12 +28,12 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.resource.ResourceMappingFile;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.jface.XmlMappingFileViewerFilter;
 import org.eclipse.jpt.jpa.ui.internal.wizards.SelectMappingFileDialog;
@@ -349,7 +349,7 @@ public class EntityClassWizardPage
 		dialog.addFilter(filter);
 			
 		String ormFileName = this.ormXmlName.getText();
-		JpaXmlResource resource = jpaProject.getMappingFileXmlResource(new Path(ormFileName));
+		JptXmlResource resource = jpaProject.getMappingFileXmlResource(new Path(ormFileName));
 		IFile initialSelection = (resource != null) ? resource.getFile() : null;
 		dialog.setInput(project);
 

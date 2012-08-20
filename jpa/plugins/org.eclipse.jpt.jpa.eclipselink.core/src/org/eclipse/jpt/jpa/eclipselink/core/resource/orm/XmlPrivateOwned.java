@@ -10,8 +10,8 @@
 
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm;
 
+import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -38,10 +38,10 @@ import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
  *
  * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPrivateOwned()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
+ * @extends EBaseObject
  * @generated
  */
-public interface XmlPrivateOwned extends JpaEObject
+public interface XmlPrivateOwned extends EBaseObject
 {
 	/**
 	 * Returns the value of the '<em><b>Private Owned</b></em>' attribute.

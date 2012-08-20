@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.wst.common.internal.emf.resource.Renderer;
 import org.eclipse.wst.common.internal.emf.resource.RendererFactory;
 import org.eclipse.wst.common.internal.emf.resource.TranslatorResource;
@@ -46,6 +46,6 @@ public class EclipseLinkOrmXmlResourceFactory extends TranslatorResourceFactory
 	 */
 	@Override
 	protected TranslatorResource createResource(URI uri, Renderer renderer) {
-		return new JpaXmlResource(uri, renderer, XmlEntityMappings.CONTENT_TYPE, XmlEntityMappings.getRootTranslator());
+		return new JptXmlResource(uri, renderer, XmlEntityMappings.CONTENT_TYPE, XmlEntityMappings.getRootTranslator());
 	}
 }

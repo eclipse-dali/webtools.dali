@@ -15,6 +15,7 @@ import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.JpaFile;
@@ -160,7 +161,6 @@ import org.eclipse.jpt.jpa.core.resource.java.SecondaryTableAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.TableGeneratorAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 
 /**
  * Central class that allows extenders to easily replace implementations of
@@ -198,12 +198,12 @@ public abstract class AbstractJpaFactory
 
 	// ********** XML Context Model **********
 
-	public PersistenceXml buildPersistenceXml(JpaRootContextNode parent, JpaXmlResource resource) {
+	public PersistenceXml buildPersistenceXml(JpaRootContextNode parent, JptXmlResource resource) {
 		return new GenericPersistenceXml(parent, resource);
 	}
 	
 	public OrmXml buildMappingFile(MappingFileRef parent, Object resourceMappingFile) {
-		return new GenericOrmXml(parent, (JpaXmlResource) resourceMappingFile);
+		return new GenericOrmXml(parent, (JptXmlResource) resourceMappingFile);
 	}
 
 

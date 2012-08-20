@@ -12,7 +12,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlFetchAttribute;
 
 /**
@@ -31,10 +31,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlFetchAttribute;
  *
  * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getXmlFetchGroup_2_1()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
+ * @extends EBaseObject
  * @generated
  */
-public interface XmlFetchGroup_2_1 extends JpaEObject
+public interface XmlFetchGroup_2_1 extends EBaseObject
 {
 	/**
 	 * Returns the value of the '<em><b>Name</b></em>' attribute.

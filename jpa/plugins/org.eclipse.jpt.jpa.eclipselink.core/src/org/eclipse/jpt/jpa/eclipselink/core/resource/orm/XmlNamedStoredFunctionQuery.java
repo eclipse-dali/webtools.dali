@@ -11,12 +11,10 @@ package org.eclipse.jpt.jpa.eclipselink.core.resource.orm;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.EStructuralFeature;
-
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
-import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaEObject;
-
+import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLinkOrmV2_3Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlNamedStoredFunctionQuery_2_3;
@@ -32,7 +30,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlNamedStoredFunctionQuery extends AbstractJpaEObject implements XmlNamedStoredFunctionQuery_2_3
+public class XmlNamedStoredFunctionQuery extends EBaseObjectImpl implements XmlNamedStoredFunctionQuery_2_3
 {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.

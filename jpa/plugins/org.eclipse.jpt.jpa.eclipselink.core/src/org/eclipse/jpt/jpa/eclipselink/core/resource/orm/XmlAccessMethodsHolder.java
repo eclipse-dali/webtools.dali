@@ -10,7 +10,7 @@
 
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm;
 
-import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,10 +26,10 @@ import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
  *
  * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlAccessMethodsHolder()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
+ * @extends EBaseObject
  * @generated
  */
-public interface XmlAccessMethodsHolder extends JpaEObject
+public interface XmlAccessMethodsHolder extends EBaseObject
 {
 	/**
 	 * Returns the value of the '<em><b>Access Methods</b></em>' containment reference.

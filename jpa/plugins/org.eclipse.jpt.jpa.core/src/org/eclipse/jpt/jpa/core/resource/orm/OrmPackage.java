@@ -17,10 +17,10 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.emf.ecore.xml.type.XMLTypePackage;
+import org.eclipse.jpt.common.core.resource.xml.CommonPackage;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistencePackage;
 import org.eclipse.jpt.jpa.core.resource.persistence.v2_0.PersistenceV2_0Package;
-import org.eclipse.jpt.jpa.core.resource.xml.CommonPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -3259,7 +3259,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_MAPPINGS__VERSION = CommonPackage.ABSTRACT_JPA_ROOT_EOBJECT__VERSION;
+	public static final int XML_ENTITY_MAPPINGS__VERSION = CommonPackage.EROOT_OBJECT_IMPL__VERSION;
 
 	/**
 	 * The feature id for the '<em><b>Schema Location</b></em>' attribute.
@@ -3268,7 +3268,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_MAPPINGS__SCHEMA_LOCATION = CommonPackage.ABSTRACT_JPA_ROOT_EOBJECT__SCHEMA_LOCATION;
+	public static final int XML_ENTITY_MAPPINGS__SCHEMA_LOCATION = CommonPackage.EROOT_OBJECT_IMPL__SCHEMA_LOCATION;
 
 	/**
 	 * The feature id for the '<em><b>Named Queries</b></em>' containment reference list.
@@ -3277,7 +3277,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_MAPPINGS__NAMED_QUERIES = CommonPackage.ABSTRACT_JPA_ROOT_EOBJECT_FEATURE_COUNT + 0;
+	public static final int XML_ENTITY_MAPPINGS__NAMED_QUERIES = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Named Native Queries</b></em>' containment reference list.
@@ -3286,7 +3286,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES = CommonPackage.ABSTRACT_JPA_ROOT_EOBJECT_FEATURE_COUNT + 1;
+	public static final int XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Access</b></em>' attribute.
@@ -3295,7 +3295,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_MAPPINGS__ACCESS = CommonPackage.ABSTRACT_JPA_ROOT_EOBJECT_FEATURE_COUNT + 2;
+	public static final int XML_ENTITY_MAPPINGS__ACCESS = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -3304,7 +3304,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_MAPPINGS__DESCRIPTION = CommonPackage.ABSTRACT_JPA_ROOT_EOBJECT_FEATURE_COUNT + 3;
+	public static final int XML_ENTITY_MAPPINGS__DESCRIPTION = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Persistence Unit Metadata</b></em>' containment reference.
@@ -3313,7 +3313,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_MAPPINGS__PERSISTENCE_UNIT_METADATA = CommonPackage.ABSTRACT_JPA_ROOT_EOBJECT_FEATURE_COUNT + 4;
+	public static final int XML_ENTITY_MAPPINGS__PERSISTENCE_UNIT_METADATA = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Package</b></em>' attribute.
@@ -3322,7 +3322,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_MAPPINGS__PACKAGE = CommonPackage.ABSTRACT_JPA_ROOT_EOBJECT_FEATURE_COUNT + 5;
+	public static final int XML_ENTITY_MAPPINGS__PACKAGE = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Schema</b></em>' attribute.
@@ -3331,7 +3331,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_MAPPINGS__SCHEMA = CommonPackage.ABSTRACT_JPA_ROOT_EOBJECT_FEATURE_COUNT + 6;
+	public static final int XML_ENTITY_MAPPINGS__SCHEMA = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Catalog</b></em>' attribute.
@@ -3340,7 +3340,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_MAPPINGS__CATALOG = CommonPackage.ABSTRACT_JPA_ROOT_EOBJECT_FEATURE_COUNT + 7;
+	public static final int XML_ENTITY_MAPPINGS__CATALOG = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Sequence Generators</b></em>' containment reference list.
@@ -3349,7 +3349,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_MAPPINGS__SEQUENCE_GENERATORS = CommonPackage.ABSTRACT_JPA_ROOT_EOBJECT_FEATURE_COUNT + 8;
+	public static final int XML_ENTITY_MAPPINGS__SEQUENCE_GENERATORS = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Table Generators</b></em>' containment reference list.
@@ -3358,7 +3358,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_MAPPINGS__TABLE_GENERATORS = CommonPackage.ABSTRACT_JPA_ROOT_EOBJECT_FEATURE_COUNT + 9;
+	public static final int XML_ENTITY_MAPPINGS__TABLE_GENERATORS = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 9;
 
 	/**
 	 * The feature id for the '<em><b>Sql Result Set Mappings</b></em>' containment reference list.
@@ -3367,7 +3367,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_MAPPINGS__SQL_RESULT_SET_MAPPINGS = CommonPackage.ABSTRACT_JPA_ROOT_EOBJECT_FEATURE_COUNT + 10;
+	public static final int XML_ENTITY_MAPPINGS__SQL_RESULT_SET_MAPPINGS = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 10;
 
 	/**
 	 * The feature id for the '<em><b>Mapped Superclasses</b></em>' containment reference list.
@@ -3376,7 +3376,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_MAPPINGS__MAPPED_SUPERCLASSES = CommonPackage.ABSTRACT_JPA_ROOT_EOBJECT_FEATURE_COUNT + 11;
+	public static final int XML_ENTITY_MAPPINGS__MAPPED_SUPERCLASSES = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 11;
 
 	/**
 	 * The feature id for the '<em><b>Entities</b></em>' containment reference list.
@@ -3385,7 +3385,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_MAPPINGS__ENTITIES = CommonPackage.ABSTRACT_JPA_ROOT_EOBJECT_FEATURE_COUNT + 12;
+	public static final int XML_ENTITY_MAPPINGS__ENTITIES = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 12;
 
 	/**
 	 * The feature id for the '<em><b>Embeddables</b></em>' containment reference list.
@@ -3394,7 +3394,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_MAPPINGS__EMBEDDABLES = CommonPackage.ABSTRACT_JPA_ROOT_EOBJECT_FEATURE_COUNT + 13;
+	public static final int XML_ENTITY_MAPPINGS__EMBEDDABLES = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 13;
 
 	/**
 	 * The number of structural features of the '<em>Xml Entity Mappings</em>' class.
@@ -3403,7 +3403,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_MAPPINGS_FEATURE_COUNT = CommonPackage.ABSTRACT_JPA_ROOT_EOBJECT_FEATURE_COUNT + 14;
+	public static final int XML_ENTITY_MAPPINGS_FEATURE_COUNT = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 14;
 
 	/**
 	 * The feature id for the '<em><b>Discriminator Column</b></em>' attribute.
@@ -6665,25 +6665,23 @@ public class OrmPackage extends EPackageImpl
 		isInited = true;
 
 		// Initialize simple dependencies
+		CommonPackage.eINSTANCE.eClass();
 		EcorePackage.eINSTANCE.eClass();
 		XMLTypePackage.eINSTANCE.eClass();
 
 		// Obtain or create and register interdependencies
-		CommonPackage theCommonPackage = (CommonPackage)(EPackage.Registry.INSTANCE.getEPackage(CommonPackage.eNS_URI) instanceof CommonPackage ? EPackage.Registry.INSTANCE.getEPackage(CommonPackage.eNS_URI) : CommonPackage.eINSTANCE);
 		OrmV2_0Package theOrmV2_0Package = (OrmV2_0Package)(EPackage.Registry.INSTANCE.getEPackage(OrmV2_0Package.eNS_URI) instanceof OrmV2_0Package ? EPackage.Registry.INSTANCE.getEPackage(OrmV2_0Package.eNS_URI) : OrmV2_0Package.eINSTANCE);
 		PersistencePackage thePersistencePackage = (PersistencePackage)(EPackage.Registry.INSTANCE.getEPackage(PersistencePackage.eNS_URI) instanceof PersistencePackage ? EPackage.Registry.INSTANCE.getEPackage(PersistencePackage.eNS_URI) : PersistencePackage.eINSTANCE);
 		PersistenceV2_0Package thePersistenceV2_0Package = (PersistenceV2_0Package)(EPackage.Registry.INSTANCE.getEPackage(PersistenceV2_0Package.eNS_URI) instanceof PersistenceV2_0Package ? EPackage.Registry.INSTANCE.getEPackage(PersistenceV2_0Package.eNS_URI) : PersistenceV2_0Package.eINSTANCE);
 
 		// Create package meta-data objects
 		theOrmPackage.createPackageContents();
-		theCommonPackage.createPackageContents();
 		theOrmV2_0Package.createPackageContents();
 		thePersistencePackage.createPackageContents();
 		thePersistenceV2_0Package.createPackageContents();
 
 		// Initialize created meta-data
 		theOrmPackage.initializePackageContents();
-		theCommonPackage.initializePackageContents();
 		theOrmV2_0Package.initializePackageContents();
 		thePersistencePackage.initializePackageContents();
 		thePersistenceV2_0Package.initializePackageContents();
@@ -10422,7 +10420,7 @@ public class OrmPackage extends EPackageImpl
 		xmlEntityEClass.getESuperTypes().add(this.getXmlIdClassContainer());
 		entityListenerEClass.getESuperTypes().add(this.getXmlEventMethodContainer());
 		entityListenerEClass.getESuperTypes().add(theOrmV2_0Package.getXmlEntityListener_2_0());
-		xmlEntityMappingsEClass.getESuperTypes().add(theCommonPackage.getAbstractJpaRootEObject());
+		xmlEntityMappingsEClass.getESuperTypes().add(theCommonPackage.getERootObjectImpl());
 		xmlEntityMappingsEClass.getESuperTypes().add(this.getXmlQueryContainer());
 		xmlEntityMappingsEClass.getESuperTypes().add(this.getXmlAccessHolder());
 		eventMethodEClass.getESuperTypes().add(theOrmV2_0Package.getXmlEventMethod_2_0());

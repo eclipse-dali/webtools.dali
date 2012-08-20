@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.eclipse.jpt.jaxb.eclipselink.core/src" creationCommands="false"
+    creationIcons="false" editDirectory="" editorDirectory="" modelPluginID="org.eclipse.jpt.jaxb.eclipselink.core"
+    modelName="Oxm" editPluginClass="" editorPluginClass="" updateClasspath="false"
+    rootExtendsInterface="org.eclipse.jpt.common.core.resource.xml.EBaseObject" rootExtendsClass="org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl"
+    suppressInterfaces="true" testsDirectory="" testSuiteClass="" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="5.0" copyrightFields="false" editPluginID="org.eclipse.jpt.jaxb.eclipselink.core.edit"
+    editorPluginID="org.eclipse.jpt.jaxb.eclipselink.core.edit" usedGenPackages="../../org.eclipse.jpt.common.core/model/commonResourceModels.genmodel#//xml">
+  <foreignModel>oxm.ecore</foreignModel>
+  <genPackages prefix="Oxm" basePackage="org.eclipse.jpt.jaxb.eclipselink.core.resource"
+      disposableProviderFactory="true" adapterFactory="false" contentTypeIdentifier=""
+      ecorePackage="oxm.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="oxm.ecore#//EXmlAccessOrder">
+      <genEnumLiterals ecoreEnumLiteral="oxm.ecore#//EXmlAccessOrder/ALPHABETICAL"/>
+      <genEnumLiterals ecoreEnumLiteral="oxm.ecore#//EXmlAccessOrder/UNDEFINED"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="oxm.ecore#//EXmlAccessType">
+      <genEnumLiterals ecoreEnumLiteral="oxm.ecore#//EXmlAccessType/FIELD"/>
+      <genEnumLiterals ecoreEnumLiteral="oxm.ecore#//EXmlAccessType/NONE"/>
+      <genEnumLiterals ecoreEnumLiteral="oxm.ecore#//EXmlAccessType/PROPERTY"/>
+      <genEnumLiterals ecoreEnumLiteral="oxm.ecore#//EXmlAccessType/PUBLIC_MEMBER"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="oxm.ecore#//EXmlMarshalNullRepresentation">
+      <genEnumLiterals ecoreEnumLiteral="oxm.ecore#//EXmlMarshalNullRepresentation/XSI_NIL"/>
+      <genEnumLiterals ecoreEnumLiteral="oxm.ecore#//EXmlMarshalNullRepresentation/ABSENT_NODE"/>
+      <genEnumLiterals ecoreEnumLiteral="oxm.ecore#//EXmlMarshalNullRepresentation/EMPTY_NODE"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="oxm.ecore#//EXmlNsForm">
+      <genEnumLiterals ecoreEnumLiteral="oxm.ecore#//EXmlNsForm/UNQUALIFIED"/>
+      <genEnumLiterals ecoreEnumLiteral="oxm.ecore#//EXmlNsForm/QUALIFIED"/>
+      <genEnumLiterals ecoreEnumLiteral="oxm.ecore#//EXmlNsForm/UNSET"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="oxm.ecore#//EXmlVirtualAccessMethodsSchema">
+      <genEnumLiterals ecoreEnumLiteral="oxm.ecore#//EXmlVirtualAccessMethodsSchema/NODES"/>
+      <genEnumLiterals ecoreEnumLiteral="oxm.ecore#//EXmlVirtualAccessMethodsSchema/ANY"/>
+    </genEnums>
+    <genDataTypes ecoreDataType="oxm.ecore#//EPropOrder"/>
+    <genDataTypes ecoreDataType="oxm.ecore#//EXmlSeeAlso"/>
+    <genClasses image="false" ecoreClass="oxm.ecore#//EAbstractXmlNullPolicy">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EAbstractXmlNullPolicy/xsiNilRepresentsNull"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EAbstractXmlNullPolicy/emptyNodeRepresentsNull"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EAbstractXmlNullPolicy/nullRepresentationForXml"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="oxm.ecore#//EAbstractXmlTransformer">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EAbstractXmlTransformer/method"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EAbstractXmlTransformer/transformerClass"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="oxm.ecore#//EAccessibleJavaAttribute">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EAccessibleJavaAttribute/xmlAccessMethods"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="oxm.ecore#//EAdaptableJavaAttribute">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EAdaptableJavaAttribute/xmlJavaTypeAdapter"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="oxm.ecore#//EContainerJavaAttribute">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EContainerJavaAttribute/containerType"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="oxm.ecore#//EJavaAttribute">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EJavaAttribute/javaAttribute"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EJavaAttribute/xmlAccessorType"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EJavaType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EJavaType/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EJavaType/superType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EJavaType/xmlAccessorOrder"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EJavaType/xmlAccessorType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EJavaType/xmlCustomizer"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EJavaType/xmlDiscriminatorNode"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EJavaType/xmlDiscriminatorValue"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EJavaType/xmlInlineBinaryData"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EJavaType/xmlTransient"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EJavaType/xmlNameTransformer"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EJavaType/xmlType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EJavaType/xmlRootElement"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EJavaType/xmlVirtualAccessMethods"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EJavaType/xmlSeeAlso"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EJavaType/xmlJavaTypeAdapter"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EJavaType/xmlClassExtractor"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EJavaType/javaAttributes"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="oxm.ecore#//EPropertyHolder">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EPropertyHolder/xmlProperties"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="oxm.ecore#//EReadWriteJavaAttribute">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EReadWriteJavaAttribute/readOnly"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EReadWriteJavaAttribute/writeOnly"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="oxm.ecore#//ETypedJavaAttribute">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//ETypedJavaAttribute/type"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlAccessMethods">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlAccessMethods/getMethod"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlAccessMethods/setMethod"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlAnyAttribute">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlAnyAttribute/xmlPath"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlAnyElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlAnyElement/xmlMixed"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlAnyElement/lax"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlAnyElement/domHandler"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlAnyElement/xmlPath"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EXmlAnyElement/xmlElementRefs"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlAttribute">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlAttribute/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlAttribute/namespace"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlAttribute/required"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlAttribute/xmlId"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlAttribute/xmlIdRef"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlAttribute/xmlKey"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlAttribute/xmlList"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlAttribute/xmlInlineBinaryData"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlAttribute/xmlAttachmentRef"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlAttribute/xmlMimeType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlAttribute/xmlPath"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EXmlAttribute/xmlAbstractNullPolicy"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EXmlAttribute/xmlSchemaType"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlBindings">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlBindings/xmlAccessorType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlBindings/xmlAccessorOrder"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlBindings/xmlMappingMetadataComplete"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlBindings/packageName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlBindings/xmlNameTransformer"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EXmlBindings/xmlSchema"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EXmlBindings/xmlSchemaType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EXmlBindings/xmlSchemaTypes"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EXmlBindings/xmlJavaTypeAdapters"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EXmlBindings/xmlRegistries"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EXmlBindings/xmlEnums"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EXmlBindings/javaTypes"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlClassExtractor">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlClassExtractor/className"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElement/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElement/namespace"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElement/defaultValue"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElement/nillable"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElement/required"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElement/xmlId"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElement/xmlIdRef"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElement/xmlKey"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElement/xmlList"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElement/xmlInlineBinaryData"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElement/xmlAttachmentRef"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElement/xmlMimeType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElement/cdata"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElement/xmlPath"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElement/xmlLocation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EXmlElement/xmlAbstractNullPolicy"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EXmlElement/xmlElementWrapper"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EXmlElement/xmlMap"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EXmlElement/xmlSchemaType"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlElementDecl">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElementDecl/javaMethod"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElementDecl/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElementDecl/namespace"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElementDecl/defaultValue"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElementDecl/scope"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElementDecl/substitutionHeadName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElementDecl/substitutionHeadNamespace"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElementDecl/type"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlElementRef">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElementRef/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElementRef/namespace"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElementRef/xmlMixed"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EXmlElementRef/xmlElementWrapper"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlElementRefs">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElementRefs/xmlMixed"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EXmlElementRefs/xmlElementRefs"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EXmlElementRefs/xmlElementWrapper"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlElements">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElements/xmlIdRef"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElements/xmlList"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EXmlElements/xmlElements"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EXmlElements/xmlElementWrapper"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EXmlElements/xmlJoinNodes"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlElementWrapper">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElementWrapper/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElementWrapper/namespace"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElementWrapper/nillable"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlElementWrapper/required"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlEnum">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlEnum/javaEnum"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlEnum/value"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EXmlEnum/xmlEnumValues"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlEnumValue">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlEnumValue/javaEnumValue"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlInverseReference">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlInverseReference/mappedBy"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlIsSetNullPolicy">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlIsSetNullPolicy/isSetMethodName"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EXmlIsSetNullPolicy/xmlIsSetParameters"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlIsSetParameter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlIsSetParameter/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlIsSetParameter/type"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlJavaTypeAdapter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlJavaTypeAdapter/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlJavaTypeAdapter/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlJavaTypeAdapter/valueType"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlJoinNode">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlJoinNode/xmlPath"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlJoinNode/referencedXmlPath"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlJoinNodes">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EXmlJoinNodes/xmlJoinNodes"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlMap">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlMap/key"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlMap/value"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlNullPolicy">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlNullPolicy/isSetPerformedForAbsentNode"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlNs">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlNs/namespaceUri"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlNs/prefix"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlProperty">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlProperty/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlProperty/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlProperty/valueType"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlReadTransformer"/>
+    <genClasses ecoreClass="oxm.ecore#//EXmlRegistry">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlRegistry/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EXmlRegistry/xmlElementDecls"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlRootElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlRootElement/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlRootElement/namespace"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlSchema">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlSchema/attributeFormDefault"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlSchema/elementFormDefault"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlSchema/location"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlSchema/namespace"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EXmlSchema/xmlns"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlSchemaType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlSchemaType/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlSchemaType/namespace"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlSchemaType/type"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlTransformation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlTransformation/optional"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EXmlTransformation/xmlReadTransformer"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EXmlTransformation/xmlWriteTransformers"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlTransient">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlTransient/xmlLocation"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlType/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlType/namespace"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlType/factoryClass"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlType/factoryMethod"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlType/propOrder"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlValue">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlValue/cdata"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EXmlValue/xmlAbstractNullPolicy"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlVirtualAccessMethods">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlVirtualAccessMethods/getMethod"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlVirtualAccessMethods/setMethod"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlVirtualAccessMethods/schema"/>
+    </genClasses>
+    <genClasses ecoreClass="oxm.ecore#//EXmlWriteTransformer">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlWriteTransformer/xmlPath"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

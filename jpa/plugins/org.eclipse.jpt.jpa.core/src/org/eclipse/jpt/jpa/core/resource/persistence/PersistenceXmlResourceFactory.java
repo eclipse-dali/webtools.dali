@@ -11,7 +11,7 @@
 package org.eclipse.jpt.jpa.core.resource.persistence;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.wst.common.internal.emf.resource.Renderer;
 import org.eclipse.wst.common.internal.emf.resource.RendererFactory;
 import org.eclipse.wst.common.internal.emf.resource.TranslatorResource;
@@ -46,6 +46,6 @@ public class PersistenceXmlResourceFactory extends TranslatorResourceFactory
 	 */
 	@Override
 	protected TranslatorResource createResource(URI uri, Renderer renderer) {
-		return new JpaXmlResource(uri, renderer, XmlPersistence.CONTENT_TYPE, XmlPersistence.getRootTranslator());
+		return new JptXmlResource(uri, renderer, XmlPersistence.CONTENT_TYPE, XmlPersistence.getRootTranslator());
 	}
 }

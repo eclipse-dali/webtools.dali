@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 
 import org.eclipse.emf.ecore.EFactory;
+import org.eclipse.jpt.common.core.resource.xml.EmfTools;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
@@ -19,7 +20,6 @@ import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlElementCollection;
-import org.eclipse.jpt.jpa.core.resource.xml.EmfTools;
 
 public class OrmElementCollectionMapping2_0Definition
 	implements OrmAttributeMappingDefinition

@@ -22,9 +22,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleRootTranslator;
+import org.eclipse.jpt.common.core.resource.xml.ERootObjectImpl;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.resource.persistence.v2_0.JPA2_0;
-import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaRootEObject;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -49,7 +49,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlPersistence extends AbstractJpaRootEObject
+public class XmlPersistence extends ERootObjectImpl
 {
 	/**
 	 * The cached value of the '{@link #getPersistenceUnits() <em>Persistence Units</em>}' containment reference list.

@@ -18,8 +18,8 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
-import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaEObject;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -42,10 +42,10 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  *
  * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getEntityListeners()
  * @model kind="class"
- * @extends JpaEObject
+ * @extends EBaseObject
  * @generated
  */
-public class EntityListeners extends AbstractJpaEObject implements JpaEObject
+public class EntityListeners extends EBaseObjectImpl implements EBaseObject
 {
 	/**
 	 * The cached value of the '{@link #getEntityListeners() <em>Entity Listeners</em>}' containment reference list.

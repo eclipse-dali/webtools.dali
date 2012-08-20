@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.resource.orm;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -33,10 +33,10 @@ import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
  *
  * @see org.eclipse.jpt.jpa.core.resource.orm.OrmPackage#getXmlAssociationOverrideContainer()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
+ * @extends EBaseObject
  * @generated
  */
-public interface XmlAssociationOverrideContainer extends JpaEObject
+public interface XmlAssociationOverrideContainer extends EBaseObject
 {
 	/**
 	 * Returns the value of the '<em><b>Association Overrides</b></em>' containment reference list.

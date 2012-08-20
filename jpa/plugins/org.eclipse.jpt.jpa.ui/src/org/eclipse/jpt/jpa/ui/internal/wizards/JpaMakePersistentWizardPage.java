@@ -44,6 +44,7 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.ui.internal.utility.SynchronousUiCommandExecutor;
 import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.common.utility.command.Command;
@@ -73,7 +74,6 @@ import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistence
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmXmlDefinition;
 import org.eclipse.jpt.jpa.core.resource.ResourceMappingFile;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
@@ -255,7 +255,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 		SWTTools.bind(this.mappingFileModel, mappingFileText);
 		this.mappingFileModel.addPropertyChangeListener(PropertyValueModel.VALUE, new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent event) {
-				JpaXmlResource ormXmlResource = getOrmXmlResource();
+				JptXmlResource ormXmlResource = getOrmXmlResource();
 				if (ormXmlResource == null) {
 					jptResourceType = GenericOrmXmlDefinition.instance().getResourceType(); //just default to 1.0 orm resource type
 				}
@@ -301,7 +301,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 		dialog.setMessage(EntityWizardMsg.CHOOSE_MAPPING_XML_MESSAGE);
 		dialog.addFilter(filter);
 			
-		JpaXmlResource resource = this.jpaProject.getMappingFileXmlResource(new Path(getMappingFileLocation()));
+		JptXmlResource resource = this.jpaProject.getMappingFileXmlResource(new Path(getMappingFileLocation()));
 		IFile initialSelection = (resource != null) ? resource.getFile() : null;
 		dialog.setInput(this.jpaProject.getProject());
 
@@ -444,7 +444,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 			errorMessage = JptUiMessages.JpaMakePersistentWizardPage_selectedTypesPersistentError;
 		}
 		else if (this.isAddToOrmMappingFile()) {
-			JpaXmlResource ormXmlResource = getOrmXmlResource();
+			JptXmlResource ormXmlResource = getOrmXmlResource();
 			if (ormXmlResource == null) {
 				errorMessage = JptUiMessages.JpaMakePersistentWizardPage_mappingFileDoesNotExistError;
 			}
@@ -515,7 +515,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 		}
 	}
 
-	protected JpaXmlResource getOrmXmlResource() {
+	protected JptXmlResource getOrmXmlResource() {
 		return this.getJpaProject().getMappingFileXmlResource(new Path(this.getMappingFileLocation()));
 	}
 	
@@ -635,10 +635,10 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 		implements IRunnableWithProgress
 	{
 		private final JpaProject jpaProject;
-		private final JpaXmlResource ormXmlResource;
+		private final JptXmlResource ormXmlResource;
 		private final AbstractPersistenceUnit.MappedType[] selectedTypes;
 
-		AddToOrmXmlRunnable(JpaProject jpaProject, JpaXmlResource ormXmlResource, AbstractPersistenceUnit.MappedType[] selectedTypes) {
+		AddToOrmXmlRunnable(JpaProject jpaProject, JptXmlResource ormXmlResource, AbstractPersistenceUnit.MappedType[] selectedTypes) {
 			super();
 			this.jpaProject = jpaProject;
 			this.ormXmlResource = ormXmlResource;
@@ -676,10 +676,10 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 		implements IWorkspaceRunnable
 	{
 		private final JpaProject jpaProject;
-		private final JpaXmlResource ormXmlResource;
+		private final JptXmlResource ormXmlResource;
 		private final AbstractPersistenceUnit.MappedType[] selectedTypes;
 
-		AddToOrmXmlWorkspaceRunnable(JpaProject jpaProject, JpaXmlResource ormXmlResource, AbstractPersistenceUnit.MappedType[] selectedTypes) {
+		AddToOrmXmlWorkspaceRunnable(JpaProject jpaProject, JptXmlResource ormXmlResource, AbstractPersistenceUnit.MappedType[] selectedTypes) {
 			super();
 			this.jpaProject = jpaProject;
 			this.ormXmlResource = ormXmlResource;
@@ -825,7 +825,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 				throw new RuntimeException(ex);
 			}
 			if (this.listInPersistenceXml) {
-				JpaXmlResource persistenceXmlResource = this.jpaProject.getPersistenceXmlResource();
+				JptXmlResource persistenceXmlResource = this.jpaProject.getPersistenceXmlResource();
 				if (persistenceXmlResource != null) {
 					persistenceXmlResource.save();
 				}

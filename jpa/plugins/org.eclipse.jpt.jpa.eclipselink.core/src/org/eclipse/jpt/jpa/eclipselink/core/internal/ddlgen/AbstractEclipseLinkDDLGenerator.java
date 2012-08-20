@@ -31,10 +31,10 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jpt.common.core.internal.gen.AbstractJptGenerator;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Connection;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
@@ -324,13 +324,13 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 	}
 	
 	private IPath getMetaInfPath() {
-		JpaXmlResource persistenceXmlResource = this.jpaProject.getPersistenceXmlResource();
+		JptXmlResource persistenceXmlResource = this.jpaProject.getPersistenceXmlResource();
 		IPath persistenceXmlPath = persistenceXmlResource.getFile().getLocation();
 		return persistenceXmlPath.removeLastSegments(2);
 	}
 	
 	private boolean metaInfIsNotOnClasspath() {
-		JpaXmlResource persistenceXmlResource = this.jpaProject.getPersistenceXmlResource();
+		JptXmlResource persistenceXmlResource = this.jpaProject.getPersistenceXmlResource();
 		return ! this.jpaProject.getJavaProject().isOnClasspath(persistenceXmlResource.getFile());
 	}
 	

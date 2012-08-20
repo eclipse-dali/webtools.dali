@@ -1235,13 +1235,13 @@ public abstract class AbstractJaxbProject
 		}
 		
 		public void resourceModelReverted(JptResourceModel jpaResourceModel) {
-//			IFile file = WorkbenchResourceHelper.getFile((JpaXmlResource)jpaResourceModel);
+//			IFile file = WorkbenchResourceHelper.getFile((JptXmlResource)jpaResourceModel);
 //			AbstractJaxbProject.this.removeJaxbFile(file);
 //			AbstractJaxbProject.this.addJaxbFile(file);
 		}
 		
 		public void resourceModelUnloaded(JptResourceModel jpaResourceModel) {
-//			IFile file = WorkbenchResourceHelper.getFile((JpaXmlResource)jpaResourceModel);
+//			IFile file = WorkbenchResourceHelper.getFile((JptXmlResource)jpaResourceModel);
 //			AbstractJaxbProject.this.removeJaxbFile(file);
 		}
 	}

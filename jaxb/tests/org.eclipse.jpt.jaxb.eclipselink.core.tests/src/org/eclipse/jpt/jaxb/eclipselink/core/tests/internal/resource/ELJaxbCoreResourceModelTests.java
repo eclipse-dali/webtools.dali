@@ -13,6 +13,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.ELJaxbCoreTests;
 import org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.resource.java.ELJaxbJavaResourceModelTests;
+import org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.resource.oxm.OxmResourceTests;
 
 public class ELJaxbCoreResourceModelTests {
 	
@@ -21,6 +22,7 @@ public class ELJaxbCoreResourceModelTests {
 
 		if (ELJaxbCoreTests.requiredJarsExists()) {
 			suite.addTest(ELJaxbJavaResourceModelTests.suite());
+			suite.addTestSuite(OxmResourceTests.class);
 		}
 		else {
 			suite.addTest(TestSuite.warning(ELJaxbCoreTests.buildMissingJarErrorMessage()));

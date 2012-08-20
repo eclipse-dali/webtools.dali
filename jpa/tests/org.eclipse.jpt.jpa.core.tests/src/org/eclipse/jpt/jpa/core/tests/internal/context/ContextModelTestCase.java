@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.common.core.tests.internal.utility.jdt.AnnotationTestCase;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
@@ -40,7 +41,6 @@ import org.eclipse.jpt.jpa.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
@@ -52,9 +52,9 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 {
 	protected static final String BASE_PROJECT_NAME = "ContextModelTestProject";
 	
-	protected JpaXmlResource persistenceXmlResource;
+	protected JptXmlResource persistenceXmlResource;
 	
-	protected JpaXmlResource ormXmlResource;
+	protected JptXmlResource ormXmlResource;
 	
 	
 	protected ContextModelTestCase(String name) {
@@ -140,11 +140,11 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 		waitJob.join();
 	}
 	
-	protected JpaXmlResource getPersistenceXmlResource() {
+	protected JptXmlResource getPersistenceXmlResource() {
 		return this.persistenceXmlResource;
 	}
 	
-	protected JpaXmlResource getOrmXmlResource() {
+	protected JptXmlResource getOrmXmlResource() {
 		return this.ormXmlResource;
 	}
 

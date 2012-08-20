@@ -10,7 +10,7 @@
 
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm;
 
-import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -38,10 +38,10 @@ import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
  *
  * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCacheHolder()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
+ * @extends EBaseObject
  * @generated
  */
-public interface XmlCacheHolder extends JpaEObject
+public interface XmlCacheHolder extends EBaseObject
 {
 	/**
 	 * Returns the value of the '<em><b>Cache</b></em>' containment reference.

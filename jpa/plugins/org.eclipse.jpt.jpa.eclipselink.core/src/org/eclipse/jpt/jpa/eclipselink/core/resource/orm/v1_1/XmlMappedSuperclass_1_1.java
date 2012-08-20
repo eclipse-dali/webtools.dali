@@ -11,7 +11,7 @@
 
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v1_1;
 
-import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPrimaryKey;
 
 /**
@@ -28,10 +28,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlPrimaryKey;
  *
  * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v1_1.EclipseLinkOrmV1_1Package#getXmlMappedSuperclass_1_1()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
+ * @extends EBaseObject
  * @generated
  */
-public interface XmlMappedSuperclass_1_1 extends JpaEObject
+public interface XmlMappedSuperclass_1_1 extends EBaseObject
 {
 	/**
 	 * Returns the value of the '<em><b>Primary Key</b></em>' containment reference.

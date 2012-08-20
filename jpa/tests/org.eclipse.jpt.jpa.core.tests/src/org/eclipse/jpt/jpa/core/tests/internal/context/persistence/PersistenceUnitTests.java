@@ -14,6 +14,7 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
@@ -36,7 +37,6 @@ import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistenceUnitTransactionType;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlProperties;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlProperty;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -395,7 +395,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test that there is one initially
-		JpaXmlResource ormResource = getOrmXmlResource();
+		JptXmlResource ormResource = getOrmXmlResource();
 		assertTrue(ormResource.fileExists());
 		assertNotNull(persistenceUnit.getImpliedMappingFileRef());
 		
@@ -411,7 +411,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test that there is one initially
-		JpaXmlResource ormResource = getOrmXmlResource();
+		JptXmlResource ormResource = getOrmXmlResource();
 		assertTrue(ormResource.fileExists());
 		assertNotNull(persistenceUnit.getImpliedMappingFileRef());
 		

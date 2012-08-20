@@ -12,8 +12,8 @@ package org.eclipse.jpt.jpa.core.resource.orm;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -32,7 +32,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class" abstract="true"
  * @generated
  */
-public abstract class AbstractXmlNamedColumn extends AbstractJpaEObject implements XmlNamedColumn
+public abstract class AbstractXmlNamedColumn extends EBaseObjectImpl implements XmlNamedColumn
 {
 	/**
 	 * The default value of the '{@link #getColumnDefinition() <em>Column Definition</em>}' attribute.

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.emf.ecore.EFactory;
+import org.eclipse.jpt.common.core.resource.xml.EmfTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
@@ -18,7 +19,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
-import org.eclipse.jpt.jpa.core.resource.xml.EmfTools;
 
 /**
  * default ORM MappedSuperclass definition

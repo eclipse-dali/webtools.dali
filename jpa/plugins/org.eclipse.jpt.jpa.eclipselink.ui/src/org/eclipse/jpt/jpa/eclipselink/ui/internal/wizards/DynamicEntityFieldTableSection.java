@@ -31,10 +31,10 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.MappingKeys;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.dialogs.AddVirtualAttributeDialog;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.entity.data.model.DynamicEntityField;
@@ -514,7 +514,7 @@ public class DynamicEntityFieldTableSection extends Composite {
 			return this.getOrmXmlResource(xmlName).getResourceType();
 		}
 
-		protected JpaXmlResource getOrmXmlResource(String xmlName) {
+		protected JptXmlResource getOrmXmlResource(String xmlName) {
 			return this.jpaProject == null ? null : this.jpaProject.getMappingFileXmlResource(new Path(xmlName));
 		}
 	}

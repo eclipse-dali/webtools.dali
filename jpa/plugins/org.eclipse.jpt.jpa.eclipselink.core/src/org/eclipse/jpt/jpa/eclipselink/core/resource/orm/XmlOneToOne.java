@@ -20,6 +20,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.common.core.internal.utility.translators.EmptyTagBooleanTranslator;
+import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.orm.CascadeType;
 import org.eclipse.jpt.jpa.core.resource.orm.JPA;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
@@ -41,9 +44,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLink2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlJoinField_2_4;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.XmlOneToOne_2_4;
-import org.eclipse.jpt.common.core.internal.utility.translators.EmptyTagBooleanTranslator;
-import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
-import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**

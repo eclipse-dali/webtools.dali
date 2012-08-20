@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
-import org.eclipse.jpt.jpa.core.resource.xml.AbstractJpaEObject;
+import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_0.EclipseLink2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_0.XmlQueryRedirectors_2_0;
@@ -36,7 +36,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlQueryRedirectors extends AbstractJpaEObject implements XmlQueryRedirectors_2_0
+public class XmlQueryRedirectors extends EBaseObjectImpl implements XmlQueryRedirectors_2_0
 {
 	/**
 	 * The default value of the '{@link #getAllQueries() <em>All Queries</em>}' attribute.

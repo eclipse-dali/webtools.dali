@@ -15,11 +15,11 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.Entity;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
@@ -70,7 +70,7 @@ public class NewDynamicEntityClassOperation extends NewEntityClassOperation {
 		}
 
 		public void execute() {
-			JpaXmlResource xmlResource = this.getOrmXmlResource();
+			JptXmlResource xmlResource = this.getOrmXmlResource();
 			EclipseLinkEntityMappings entityMappings = (EclipseLinkEntityMappings) this.getJpaProject().
 					getJpaFile(xmlResource.getFile()).getRootStructureNodes().iterator().next();
 			EclipseLinkOrmPersistentType persistentType = (EclipseLinkOrmPersistentType) entityMappings.
@@ -132,7 +132,7 @@ public class NewDynamicEntityClassOperation extends NewEntityClassOperation {
 			// do nothing
 		}
 
-		protected JpaXmlResource getOrmXmlResource() {
+		protected JptXmlResource getOrmXmlResource() {
 			return this.model.isMappingXMLDefault() ?
 					this.getJpaProject().getDefaultOrmXmlResource() :
 						this.getJpaProject().getMappingFileXmlResource(new Path(this.model.getMappingXMLName()));

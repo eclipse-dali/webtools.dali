@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core;
 
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 
 /**
  * EclipseLink JPA project.
@@ -33,6 +33,6 @@ public interface EclipseLinkJpaProject
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings#DEFAULT_RUNTIME_PATH
 	 * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings#CONTENT_TYPE
 	 */
-	JpaXmlResource getDefaultEclipseLinkOrmXmlResource();
+	JptXmlResource getDefaultEclipseLinkOrmXmlResource();
 
 }

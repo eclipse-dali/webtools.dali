@@ -30,9 +30,9 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.EntityWizardMsg;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.operation.NewEntityClassOperation;
@@ -272,7 +272,7 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 			String projectName = this.model.getStringProperty(PROJECT_NAME);
 			IProject project = ProjectUtilities.getProject(projectName);
 			if (project != null) {
-				JpaXmlResource ormXmlResource = StringTools.stringIsEmpty(xmlName) ? null : getOrmXmlResource(xmlName);
+				JptXmlResource ormXmlResource = StringTools.stringIsEmpty(xmlName) ? null : getOrmXmlResource(xmlName);
 				if (ormXmlResource == null) {
 					return JptJpaUiPlugin.instance().buildErrorStatus(EntityWizardMsg.INVALID_XML_NAME);
 				}
@@ -284,7 +284,7 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 		return Status.OK_STATUS;
 	}
 
-	protected JpaXmlResource getOrmXmlResource(String xmlName) {
+	protected JptXmlResource getOrmXmlResource(String xmlName) {
 		return getTargetJpaProject()== null ? null : getTargetJpaProject().getMappingFileXmlResource(new Path(xmlName));
 	}
 	

@@ -23,9 +23,9 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.eclipselink.core.platform.EclipseLinkPlatform;
@@ -96,7 +96,7 @@ public class GenerateDynamicEntitiesFromSchemaWizard extends GenerateEntitiesFro
 		
 		//open file after generation
 		String xmlMappingFileLocation = getCustomizer().getXmlMappingFile();
-		JpaXmlResource jpaXmlResource = this.jpaProject.getMappingFileXmlResource(new Path(xmlMappingFileLocation));
+		JptXmlResource jpaXmlResource = this.jpaProject.getMappingFileXmlResource(new Path(xmlMappingFileLocation));
 		IFile mappingFile;
 		if(jpaXmlResource!=null){
 			mappingFile = jpaXmlResource.getFile();

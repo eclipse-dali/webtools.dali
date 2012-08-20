@@ -9,8 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4;
 
+import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -27,10 +27,10 @@ import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
  *
  * @see org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_4.EclipseLinkOrmV2_4Package#getXmlMultitenant_2_4()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
+ * @extends EBaseObject
  * @generated
  */
-public interface XmlMultitenant_2_4 extends JpaEObject
+public interface XmlMultitenant_2_4 extends EBaseObject
 {
 	/**
 	 * Returns the value of the '<em><b>Include Criteria</b></em>' attribute.

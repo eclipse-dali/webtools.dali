@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.tests.internal.context.persistence;
 
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.core.tests.internal.context.ContextModelTestCase;
 
 @SuppressWarnings("nls")
@@ -28,7 +28,7 @@ public class PersistenceXmlTests extends ContextModelTestCase
 	
 	public void testUpdateAddPersistence() throws Exception {
 		assertEquals(2, getJpaProject().getJpaFilesSize());
-		JpaXmlResource prm = getPersistenceXmlResource();
+		JptXmlResource prm = getPersistenceXmlResource();
 		prm.getContents().clear();
 		prm.save(null);
 		
@@ -46,7 +46,7 @@ public class PersistenceXmlTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateRemovePersistence() throws Exception {
-		JpaXmlResource prm = getPersistenceXmlResource();
+		JptXmlResource prm = getPersistenceXmlResource();
 		
 		assertNotNull(getPersistenceXml().getRoot());
 		

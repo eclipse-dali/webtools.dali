@@ -20,13 +20,13 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceTypeCache;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
 import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.Schema;
@@ -205,7 +205,7 @@ public interface JpaProject
 	 * @see XmlPersistence#DEFAULT_RUNTIME_PATH
 	 * @see XmlPersistence#CONTENT_TYPE
 	 */
-	JpaXmlResource getPersistenceXmlResource();
+	JptXmlResource getPersistenceXmlResource();
 	
 	/**
 	 * Return the XML resource model corresponding to the file with the specified
@@ -214,7 +214,7 @@ public interface JpaProject
 	 * 
 	 * @see org.eclipse.jpt.jpa.core.resource.ResourceMappingFile.Root#CONTENT_TYPE
 	 */
-	JpaXmlResource getMappingFileXmlResource(IPath runtimePath);
+	JptXmlResource getMappingFileXmlResource(IPath runtimePath);
 
 	/**
 	 * Return the XML resource model corresponding to the file
@@ -222,7 +222,7 @@ public interface JpaProject
 	 * 
 	 * @see XmlEntityMappings#DEFAULT_RUNTIME_PATH
 	 */
-	JpaXmlResource getDefaultOrmXmlResource();
+	JptXmlResource getDefaultOrmXmlResource();
 	
 	
 	// ********** Java resources **********

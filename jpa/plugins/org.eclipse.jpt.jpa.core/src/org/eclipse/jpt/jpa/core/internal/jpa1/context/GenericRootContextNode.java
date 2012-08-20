@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.HashBag;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -32,7 +33,6 @@ import org.eclipse.jpt.jpa.core.jpa2.MetamodelSynchronizer;
 import org.eclipse.jpt.jpa.core.jpa2.context.JpaRootContextNode2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceXml2_0;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -90,7 +90,7 @@ public class GenericRootContextNode
 	}
 
 	protected PersistenceXml buildPersistenceXml() {
-		JpaXmlResource xmlResource = this.resolvePersistenceXmlResource();
+		JptXmlResource xmlResource = this.resolvePersistenceXmlResource();
 		return (xmlResource == null) ? null : this.buildPersistenceXml(xmlResource);
 	}
 
@@ -110,7 +110,7 @@ public class GenericRootContextNode
 	 * </ul>
 	 */
 	protected void syncPersistenceXml(boolean sync) {
-		JpaXmlResource xmlResource = this.resolvePersistenceXmlResource();
+		JptXmlResource xmlResource = this.resolvePersistenceXmlResource();
 		if (xmlResource == null) {
 			if (this.persistenceXml != null) {
 				this.persistenceXml.dispose();
@@ -129,8 +129,8 @@ public class GenericRootContextNode
 		}
 	}
 
-	protected JpaXmlResource resolvePersistenceXmlResource() {
-		JpaXmlResource xmlResource = this.jpaProject.getPersistenceXmlResource();
+	protected JptXmlResource resolvePersistenceXmlResource() {
+		JptXmlResource xmlResource = this.jpaProject.getPersistenceXmlResource();
 		if (xmlResource == null) {
 			return null;
 		}
@@ -152,7 +152,7 @@ public class GenericRootContextNode
 	/**
 	 * pre-condition: 'xmlResource' is not <code>null</code>
 	 */
-	protected PersistenceXml buildPersistenceXml(JpaXmlResource xmlResource) {
+	protected PersistenceXml buildPersistenceXml(JptXmlResource xmlResource) {
 		return this.getJpaFactory().buildPersistenceXml(this, xmlResource);
 	}
 
@@ -247,7 +247,7 @@ public class GenericRootContextNode
 		int severity = IMessage.HIGH_SEVERITY;
 		IFile file = getPlatformFile();
 		if (file != null && file.exists()) {
-			JpaXmlResource xmlResource = this.jpaProject.getPersistenceXmlResource();
+			JptXmlResource xmlResource = this.jpaProject.getPersistenceXmlResource();
 			if (xmlResource != null 
 					&& ! getJpaPlatform().supportsResourceType(xmlResource.getResourceType())) {
 				return DefaultJpaValidationMessages.buildMessage(

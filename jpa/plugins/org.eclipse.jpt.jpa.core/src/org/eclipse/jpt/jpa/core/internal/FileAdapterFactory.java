@@ -13,10 +13,10 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.jpt.common.core.JptResourceModel;
+import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
 
 /**
  * Factory to build Dali adapters for an {@link IFile}
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.resource.xml.JpaXmlResource;
  * are applicable here also):<ul>
  * <li>{@link org.eclipse.jpt.jpa.core.JpaFile.Reference JpaFile.Reference}
  * <li>{@link org.eclipse.jpt.jpa.core.JpaFile JpaFile}
- * <li>{@link JpaXmlResource} -
+ * <li>{@link JptXmlResource} -
  *     Like the JPA file adapter, this adapter will only return a JPA XML
  *     resource if it is immediately available.
  *     This adapter should be used by any process that can ignore
@@ -42,7 +42,7 @@ public class FileAdapterFactory
 	private static final Class<?>[] ADAPTER_LIST = new Class[] {
 			JpaFile.Reference.class,
 			JpaFile.class,
-			JpaXmlResource.class
+			JptXmlResource.class
 		};
 
 	public Class<?>[] getAdapterList() {
@@ -63,7 +63,7 @@ public class FileAdapterFactory
 		if (adapterType == JpaFile.class) {
 			return this.getJpaFile(file);
 		}
-		if (adapterType == JpaXmlResource.class) {
+		if (adapterType == JptXmlResource.class) {
 			return this.getJpaXmlResource(file);
 		}
 		return null;
@@ -78,12 +78,12 @@ public class FileAdapterFactory
 		return (jpaProject == null) ? null : jpaProject.getJpaFile(file);
 	}
 
-	private JpaXmlResource getJpaXmlResource(IFile file) {
+	private JptXmlResource getJpaXmlResource(IFile file) {
 		JpaFile jpaFile = this.getJpaFile(file);
 		if (jpaFile != null) {
 			JptResourceModel resourceModel = jpaFile.getResourceModel();
-			if (resourceModel instanceof JpaXmlResource) {
-				return (JpaXmlResource) resourceModel;
+			if (resourceModel instanceof JptXmlResource) {
+				return (JptXmlResource) resourceModel;
 			}
 		}
 		return null;

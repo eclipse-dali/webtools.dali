@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.core.resource.orm.v2_0;
 
+import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -33,10 +33,10 @@ import org.eclipse.jpt.jpa.core.resource.xml.JpaEObject;
  *
  * @see org.eclipse.jpt.jpa.core.resource.orm.v2_0.OrmV2_0Package#getXmlCacheable_2_0()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
+ * @extends EBaseObject
  * @generated
  */
-public interface XmlCacheable_2_0 extends JpaEObject
+public interface XmlCacheable_2_0 extends EBaseObject
 {
 	/**
 	 * Returns the value of the '<em><b>Cacheable</b></em>' attribute.
