@@ -159,15 +159,15 @@ public class TableGenPanel
 		parent.setLayout(new RowLayout());
 		SWTUtil.fillColumns( parent , 3);
 		associationFetchDefault	= new Button( parent, SWT.RADIO );
-		associationFetchDefault.setText( "Default");
+		associationFetchDefault.setText( JptUiEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_fetchDefault);
 		associationFetchDefault.setData( ORMGenTable.DEFAULT_FETCH );	
 		
 		associationFetchEager = new Button( parent, SWT.RADIO );
-		associationFetchEager.setText( "&Eager");
+		associationFetchEager.setText( "&Eager"); //$NON-NLS-1$
 		associationFetchEager.setData( ORMGenTable.EAGER_FETCH );
 
 		associationFetchLazy = new Button( parent, SWT.RADIO );
-		associationFetchLazy.setText( "La&zy");
+		associationFetchLazy.setText( "La&zy"); //$NON-NLS-1$
 		associationFetchLazy.setData( ORMGenTable.LAZY_FETCH );
 		
 		AssociationFetchListener associationFetchListener = new AssociationFetchListener();
