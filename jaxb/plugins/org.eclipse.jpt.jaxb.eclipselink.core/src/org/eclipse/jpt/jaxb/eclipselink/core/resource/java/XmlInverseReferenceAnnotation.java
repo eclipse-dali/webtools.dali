@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 
@@ -55,5 +54,5 @@ public interface XmlInverseReferenceAnnotation
 	/**
 	 * Return whether the specified text position is within the 'mappedBy' element.
 	 */
-	boolean mappedByTouches(int pos, CompilationUnit astRoot);
+	boolean mappedByTouches(int pos);
 }

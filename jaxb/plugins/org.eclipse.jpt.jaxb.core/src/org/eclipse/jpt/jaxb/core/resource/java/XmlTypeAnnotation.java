@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
@@ -23,7 +22,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.?
+ * @version 3.3
  * @since 3.0
  */
 public interface XmlTypeAnnotation
@@ -56,7 +55,7 @@ public interface XmlTypeAnnotation
 	 * Return the {@link TextRange} for the 'factoryClass' element. If the element 
 	 * does not exist return the {@link TextRange} for the XmlType annotation.
 	 */
-	TextRange getFactoryClassTextRange(CompilationUnit astRoot);
+	TextRange getFactoryClassTextRange();
 	
 	String FULLY_QUALIFIED_FACTORY_CLASS_NAME_PROPERTY = "fullyQualifiedFactoryClassName"; //$NON-NLS-1$
 	
@@ -91,7 +90,7 @@ public interface XmlTypeAnnotation
 	 * Return the {@link TextRange} for the 'factoryMethod' element. If the element 
 	 * does not exist return the {@link TextRange} for the XmlType annotation.
 	 */
-	TextRange getFactoryMethodTextRange(CompilationUnit astRoot);
+	TextRange getFactoryMethodTextRange();
 	
 	
 	// ***** prop order *****
@@ -142,23 +141,23 @@ public interface XmlTypeAnnotation
 	/**
 	 * Return the text range of the 'propOrder' element of the XmlType annotation.
 	 */
-	TextRange getPropOrderTextRange(CompilationUnit astRoot);
+	TextRange getPropOrderTextRange();
 	
 	/**
 	 * Return whether the specified position touches the 'propOrder' element.
 	 * Return false if the element does not exist.
 	 */
-	boolean propOrderTouches(int pos, CompilationUnit astRoot);
+	boolean propOrderTouches(int pos);
 	
 	/**
 	 * Return the text range of the prop at the specified index
 	 * @throws ArrayIndexOutOfBoundsException if the index is out of range
 	 */
-	TextRange getPropTextRange(int index, CompilationUnit astRoot);
+	TextRange getPropTextRange(int index);
 	
 	/**
 	 * Return whether the specified position touches the prop at the specified index.
 	 * @throws ArrayIndexOutOfBoundsException if the index is out of range
 	 */
-	boolean propTouches(int index, int pos, CompilationUnit astRoot);
+	boolean propTouches(int index, int pos);
 }

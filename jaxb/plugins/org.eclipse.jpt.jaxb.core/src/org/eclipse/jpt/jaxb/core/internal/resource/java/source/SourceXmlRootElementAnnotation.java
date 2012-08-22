@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.Annotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
@@ -36,10 +35,12 @@ public final class SourceXmlRootElementAnnotation
 	private static final DeclarationAnnotationElementAdapter<String> NAME_ADAPTER = buildNameAdapter();
 	private final AnnotationElementAdapter<String> nameAdapter;
 	private String name;
+	private TextRange nameTextRange;
 
 	private static final DeclarationAnnotationElementAdapter<String> NAMESPACE_ADAPTER = buildNamespaceAdapter();
 	private final AnnotationElementAdapter<String> namespaceAdapter;
 	private String namespace;
+	private TextRange namespaceTextRange;
 
 	public SourceXmlRootElementAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
 		super(parent, annotatedElement, DECLARATION_ANNOTATION_ADAPTER);
@@ -59,14 +60,18 @@ public final class SourceXmlRootElementAnnotation
 	public void initialize(Annotation astAnnotation) {
 		super.initialize(astAnnotation);
 		this.name = this.buildName(astAnnotation);
+		this.nameTextRange = this.buildNameTextRange(astAnnotation);
 		this.namespace = this.buildNamespace(astAnnotation);
+		this.namespaceTextRange = this.buildNamespaceTextRange(astAnnotation);
 	}
 
 	@Override
 	public void synchronizeWith(Annotation astAnnotation) {
 		super.synchronizeWith(astAnnotation);
 		this.syncName(this.buildName(astAnnotation));
+		this.nameTextRange = this.buildNameTextRange(astAnnotation);
 		this.syncNamespace(this.buildNamespace(astAnnotation));
+		this.namespaceTextRange = this.buildNamespaceTextRange(astAnnotation);
 	}
 
 	@Override
@@ -99,12 +104,16 @@ public final class SourceXmlRootElementAnnotation
 		return this.nameAdapter.getValue(astAnnotation);
 	}
 
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(NAME_ADAPTER, astRoot);
+	private TextRange buildNameTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(NAME_ADAPTER, astAnnotation);
+	}
+
+	public TextRange getNameTextRange() {
+		return this.nameTextRange;
 	}
 	
-	public boolean nameTouches(int pos, CompilationUnit astRoot) {
-		return elementTouches(NAME_ADAPTER, pos, astRoot);
+	public boolean nameTouches(int pos) {
+		return this.textRangeTouches(this.nameTextRange, pos);
 	}
 	
 	
@@ -130,14 +139,18 @@ public final class SourceXmlRootElementAnnotation
 		return this.namespaceAdapter.getValue(astAnnotation);
 	}
 
-	public TextRange getNamespaceTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(NAMESPACE_ADAPTER, astRoot);
+	private TextRange buildNamespaceTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(NAMESPACE_ADAPTER, astAnnotation);
+	}
+
+	public TextRange getNamespaceTextRange() {
+		return this.namespaceTextRange;
 	}
 	
-	public boolean namespaceTouches(int pos, CompilationUnit astRoot) {
-		return elementTouches(NAMESPACE_ADAPTER, pos, astRoot);
+	public boolean namespaceTouches(int pos) {
+		return this.textRangeTouches(this.namespaceTextRange, pos);
 	}
-	
+
 	
 	//*********** static methods ****************
 

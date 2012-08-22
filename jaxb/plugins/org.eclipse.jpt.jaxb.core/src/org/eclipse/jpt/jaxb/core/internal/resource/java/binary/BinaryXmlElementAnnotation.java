@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -83,11 +82,11 @@ public final class BinaryXmlElementAnnotation
 		return (String) this.getJdtMemberValue(JAXB.XML_ELEMENT__NAME);
 	}
 
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
+	public TextRange getNameTextRange() {
 		throw new UnsupportedOperationException();
 	}
 	
-	public boolean nameTouches(int pos, CompilationUnit astRoot) {
+	public boolean nameTouches(int pos) {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -111,11 +110,11 @@ public final class BinaryXmlElementAnnotation
 		return (String) this.getJdtMemberValue(JAXB.XML_ELEMENT__NAMESPACE);
 	}
 
-	public TextRange getNamespaceTextRange(CompilationUnit astRoot) {
+	public TextRange getNamespaceTextRange() {
 		throw new UnsupportedOperationException();
 	}
 	
-	public boolean namespaceTouches(int pos, CompilationUnit astRoot) {
+	public boolean namespaceTouches(int pos) {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -139,7 +138,7 @@ public final class BinaryXmlElementAnnotation
 		return (String) this.getJdtMemberValue(JAXB.XML_ELEMENT__DEFAULT_VALUE);
 	}
 
-	public TextRange getDefaultValueTextRange(CompilationUnit astRoot) {
+	public TextRange getDefaultValueTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -162,7 +161,7 @@ public final class BinaryXmlElementAnnotation
 		return (Boolean) this.getJdtMemberValue(JAXB.XML_ELEMENT__NILLABLE);
 	}
 
-	public TextRange getNillableTextRange(CompilationUnit astRoot) {
+	public TextRange getNillableTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -185,7 +184,7 @@ public final class BinaryXmlElementAnnotation
 		return (Boolean) this.getJdtMemberValue(JAXB.XML_ELEMENT__REQUIRED);
 	}
 
-	public TextRange getRequiredTextRange(CompilationUnit astRoot) {
+	public TextRange getRequiredTextRange() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -209,7 +208,7 @@ public final class BinaryXmlElementAnnotation
 		return (String) this.getJdtMemberValue(JAXB.XML_ELEMENT__TYPE);
 	}
 
-	public TextRange getTypeTextRange(CompilationUnit astRoot) {
+	public TextRange getTypeTextRange() {
 		throw new UnsupportedOperationException();
 	}
 

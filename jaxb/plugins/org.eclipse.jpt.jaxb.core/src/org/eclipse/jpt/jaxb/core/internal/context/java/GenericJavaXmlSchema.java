@@ -257,7 +257,7 @@ public class GenericJavaXmlSchema
 			return result;
 		}
 		
-		if (namespaceTouches(pos, astRoot)) {
+		if (namespaceTouches(pos)) {
 			return getNamespaceProposals(filter);
 		}
 		
@@ -271,8 +271,8 @@ public class GenericJavaXmlSchema
 		return EmptyIterable.instance();
 	}
 	
-	protected boolean namespaceTouches(int pos, CompilationUnit astRoot) {
-		return getXmlSchemaAnnotation().namespaceTouches(pos, astRoot);
+	protected boolean namespaceTouches(int pos) {
+		return getXmlSchemaAnnotation().namespaceTouches(pos);
 	}
 	
 	protected Iterable<String> getNamespaceProposals(Filter<String> filter) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.NullAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -22,7 +21,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
  * javax.xml.bind.annotation.XmlType
  */
 public final class NullXmlTypeAnnotation
-	extends NullAnnotation
+	extends NullAnnotation<XmlTypeAnnotation>
 	implements XmlTypeAnnotation
 {
 	protected NullXmlTypeAnnotation(JavaResourceNode parent) {
@@ -31,11 +30,6 @@ public final class NullXmlTypeAnnotation
 
 	public String getAnnotationName() {
 		return JAXB.XML_TYPE;
-	}
-
-	@Override
-	protected XmlTypeAnnotation addAnnotation() {
-		return (XmlTypeAnnotation) super.addAnnotation();
 	}
 
 
@@ -56,7 +50,7 @@ public final class NullXmlTypeAnnotation
 		}
 	}
 
-	public TextRange getFactoryClassTextRange(CompilationUnit astRoot) {
+	public TextRange getFactoryClassTextRange() {
 		return null;
 	}
 
@@ -71,7 +65,7 @@ public final class NullXmlTypeAnnotation
 		}
 	}
 
-	public TextRange getFactoryMethodTextRange(CompilationUnit astRoot) {
+	public TextRange getFactoryMethodTextRange() {
 		return null;
 	}
 
@@ -86,11 +80,11 @@ public final class NullXmlTypeAnnotation
 		}
 	}
 	
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
+	public TextRange getNameTextRange() {
 		return null;
 	}
 	
-	public boolean nameTouches(int pos, CompilationUnit astRoot) {
+	public boolean nameTouches(int pos) {
 		return false;
 	}
 	
@@ -106,11 +100,11 @@ public final class NullXmlTypeAnnotation
 		}
 	}
 
-	public TextRange getNamespaceTextRange(CompilationUnit astRoot) {
+	public TextRange getNamespaceTextRange() {
 		return null;
 	}
 	
-	public boolean namespaceTouches(int pos, CompilationUnit astRoot) {
+	public boolean namespaceTouches(int pos) {
 		return false;
 	}
 	
@@ -143,19 +137,19 @@ public final class NullXmlTypeAnnotation
 		throw new UnsupportedOperationException();
 	}
 	
-	public TextRange getPropOrderTextRange(CompilationUnit astRoot) {
+	public TextRange getPropOrderTextRange() {
 		return null;
 	}
 	
-	public boolean propOrderTouches(int pos, CompilationUnit astRoot) {
+	public boolean propOrderTouches(int pos) {
 		return false;
 	}
 	
-	public TextRange getPropTextRange(int index, CompilationUnit astRoot) {
+	public TextRange getPropTextRange(int index) {
 		return null;
 	}
 	
-	public boolean propTouches(int index, int pos, CompilationUnit astRoot) {
+	public boolean propTouches(int index, int pos) {
 		return false;
 	}
 }

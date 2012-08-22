@@ -453,14 +453,14 @@ public class GenericJavaElementFactoryMethod
 			getAnnotation().setSubstitutionHeadNamespace(newSpecifiedNamespace);
 		}
 		
-		public boolean namespaceTouches(int pos, CompilationUnit astRoot) {
+		public boolean namespaceTouches(int pos) {
 			XmlElementDeclAnnotation annotation = getAnnotation();
-			return (annotation == null) ? false : annotation.substitutionHeadNamespaceTouches(pos, astRoot);
+			return (annotation == null) ? false : annotation.substitutionHeadNamespaceTouches(pos);
 		}
 		
-		public TextRange getNamespaceTextRange(CompilationUnit astRoot) {
+		public TextRange getNamespaceTextRange() {
 			XmlElementDeclAnnotation annotation = getAnnotation();
-			return (annotation == null) ? null : annotation.getSubstitutionHeadNamespaceTextRange(astRoot);
+			return (annotation == null) ? null : annotation.getSubstitutionHeadNamespaceTextRange();
 		}
 		
 		public String getName() {
@@ -472,14 +472,14 @@ public class GenericJavaElementFactoryMethod
 			getAnnotation().setSubstitutionHeadName(newSpecifiedName);
 		}
 		
-		public boolean nameTouches(int pos, CompilationUnit astRoot) {
+		public boolean nameTouches(int pos) {
 			XmlElementDeclAnnotation annotation = getAnnotation();
-			return (annotation == null) ? false : annotation.substitutionHeadNameTouches(pos, astRoot);
+			return (annotation == null) ? false : annotation.substitutionHeadNameTouches(pos);
 		}
 		
-		public TextRange getNameTextRange(CompilationUnit astRoot) {
+		public TextRange getNameTextRange() {
 			XmlElementDeclAnnotation annotation = getAnnotation();
-			return (annotation == null) ? null : annotation.getSubstitutionHeadNameTextRange(astRoot);
+			return (annotation == null) ? null : annotation.getSubstitutionHeadNameTextRange();
 		}
 	}
 }

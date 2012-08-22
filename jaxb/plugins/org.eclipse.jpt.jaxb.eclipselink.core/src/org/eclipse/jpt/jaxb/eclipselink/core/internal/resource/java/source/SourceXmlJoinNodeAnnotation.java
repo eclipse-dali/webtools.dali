@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.Annotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.CombinationIndexedDeclarationAnnotationAdapter;
@@ -43,10 +42,12 @@ public class SourceXmlJoinNodeAnnotation
 	private final DeclarationAnnotationElementAdapter<String> xmlPathDeclarationAdapter;
 	private final AnnotationElementAdapter<String> xmlPathAdapter;
 	private String xmlPath;
+	private TextRange xmlPathTextRange;
 	
 	private final DeclarationAnnotationElementAdapter<String> referencedXmlPathDeclarationAdapter;
 	private final AnnotationElementAdapter<String> referencedXmlPathAdapter;
 	private String referencedXmlPath;
+	private TextRange referencedXmlPathTextRange;
 	
 	
 	public static SourceXmlJoinNodeAnnotation buildSourceXmlJoinNodeAnnotation(
@@ -100,19 +101,23 @@ public class SourceXmlJoinNodeAnnotation
 	public void initialize(Annotation astAnnotation) {
 		super.initialize(astAnnotation);
 		this.xmlPath = buildXmlPath(astAnnotation);
+		this.xmlPathTextRange = this.buildXmlPathTextRange(astAnnotation);
 		this.referencedXmlPath = buildReferencedXmlPath(astAnnotation);
+		this.referencedXmlPathTextRange = this.buildReferencedXmlPathTextRange(astAnnotation);
 	}
 	
 	@Override
 	public void synchronizeWith(Annotation astAnnotation) {
 		super.synchronizeWith(astAnnotation);
 		syncXmlPath(buildXmlPath(astAnnotation));
+		this.xmlPathTextRange = this.buildXmlPathTextRange(astAnnotation);
 		syncReferencedXmlPath(buildReferencedXmlPath(astAnnotation));
+		this.referencedXmlPathTextRange = this.buildReferencedXmlPathTextRange(astAnnotation);
 	}
 	
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(this.xmlPath + " -> " + this.referencedXmlPath);
+		sb.append(this.xmlPath + " -> " + this.referencedXmlPath); //$NON-NLS-1$
 	}
 	
 	
@@ -138,13 +143,17 @@ public class SourceXmlJoinNodeAnnotation
 	private String buildXmlPath(Annotation astAnnotation) {
 		return this.xmlPathAdapter.getValue(astAnnotation);
 	}
-	
-	public TextRange getXmlPathTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.xmlPathDeclarationAdapter, astRoot);
+
+	private TextRange buildXmlPathTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.xmlPathDeclarationAdapter, astAnnotation);
+	}
+
+	public TextRange getXmlPathTextRange() {
+		return this.xmlPathTextRange;
 	}
 	
-	public boolean xmlPathTouches(int pos, CompilationUnit astRoot) {
-		return elementTouches(this.xmlPathDeclarationAdapter, pos, astRoot);
+	public boolean xmlPathTouches(int pos) {
+		return this.textRangeTouches(this.xmlPathTextRange, pos);
 	}
 	
 	
@@ -170,13 +179,17 @@ public class SourceXmlJoinNodeAnnotation
 	private String buildReferencedXmlPath(Annotation astAnnotation) {
 		return this.referencedXmlPathAdapter.getValue(astAnnotation);
 	}
-	
-	public TextRange getReferencedXmlPathTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.referencedXmlPathDeclarationAdapter, astRoot);
+
+	private TextRange buildReferencedXmlPathTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.referencedXmlPathDeclarationAdapter, astAnnotation);
+	}
+
+	public TextRange getReferencedXmlPathTextRange() {
+		return this.referencedXmlPathTextRange;
 	}
 	
-	public boolean referencedXmlPathTouches(int pos, CompilationUnit astRoot) {
-		return elementTouches(this.referencedXmlPathDeclarationAdapter, pos, astRoot);
+	public boolean referencedXmlPathTouches(int pos) {
+		return this.textRangeTouches(this.referencedXmlPathTextRange, pos);
 	}
 	
 	

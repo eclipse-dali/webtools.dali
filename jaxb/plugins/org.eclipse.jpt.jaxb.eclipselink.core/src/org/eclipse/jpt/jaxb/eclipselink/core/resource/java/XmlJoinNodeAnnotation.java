@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 
@@ -23,7 +22,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.2
+ * @version 3.3
  * @since 3.2
  */
 public interface XmlJoinNodeAnnotation
@@ -50,12 +49,12 @@ public interface XmlJoinNodeAnnotation
 	 * Return the text range associated with the 'xmlPath' element.
 	 * Return the text range of this annotation if the element is absent.
 	 */
-	TextRange getXmlPathTextRange(CompilationUnit astRoot);
+	TextRange getXmlPathTextRange();
 	
 	/**
 	 * Return whether the specified text position is within the 'xmlPath' element.
 	 */
-	boolean xmlPathTouches(int pos, CompilationUnit astRoot);
+	boolean xmlPathTouches(int pos);
 	
 	
 	/**
@@ -79,10 +78,10 @@ public interface XmlJoinNodeAnnotation
 	 * Return the text range associated with the 'referencedXmlPath' element.
 	 * Return the text range of this annotation if the element is absent.
 	 */
-	TextRange getReferencedXmlPathTextRange(CompilationUnit astRoot);
+	TextRange getReferencedXmlPathTextRange();
 	
 	/**
 	 * Return whether the specified text position is within the 'referencedXmlPath' element.
 	 */
-	boolean referencedXmlPathTouches(int pos, CompilationUnit astRoot);
+	boolean referencedXmlPathTouches(int pos);
 }

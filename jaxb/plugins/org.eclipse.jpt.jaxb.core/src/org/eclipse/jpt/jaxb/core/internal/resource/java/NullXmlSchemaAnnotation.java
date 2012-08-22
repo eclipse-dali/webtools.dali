@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.NullAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -24,7 +23,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaAnnotation;
  * javax.xml.bind.annotation.XmlSchema
  */
 public final class NullXmlSchemaAnnotation
-	extends NullAnnotation
+	extends NullAnnotation<XmlSchemaAnnotation>
 	implements XmlSchemaAnnotation
 {
 	protected NullXmlSchemaAnnotation(JavaResourceNode parent) {
@@ -33,11 +32,6 @@ public final class NullXmlSchemaAnnotation
 
 	public String getAnnotationName() {
 		return JAXB.XML_SCHEMA;
-	}
-
-	@Override
-	protected XmlSchemaAnnotation addAnnotation() {
-		return (XmlSchemaAnnotation) super.addAnnotation();
 	}
 
 
@@ -55,11 +49,11 @@ public final class NullXmlSchemaAnnotation
 		}
 	}
 
-	public TextRange getNamespaceTextRange(CompilationUnit astRoot) {
+	public TextRange getNamespaceTextRange() {
 		return null;
 	}
 	
-	public boolean namespaceTouches(int pos, CompilationUnit astRoot) {
+	public boolean namespaceTouches(int pos) {
 		return false;
 	}
 	
@@ -76,11 +70,11 @@ public final class NullXmlSchemaAnnotation
 		}
 	}
 
-	public TextRange getLocationTextRange(CompilationUnit astRoot) {
+	public TextRange getLocationTextRange() {
 		return null;
 	}
 
-	public TextRange getValueTextRange(CompilationUnit astRoot) {
+	public TextRange getValueTextRange() {
 		return null;
 	}
 
@@ -94,7 +88,7 @@ public final class NullXmlSchemaAnnotation
 		}
 	}
 
-	public TextRange getAttributeFormDefaultTextRange(CompilationUnit astRoot) {
+	public TextRange getAttributeFormDefaultTextRange() {
 		return null;
 	}
 
@@ -108,7 +102,7 @@ public final class NullXmlSchemaAnnotation
 		}
 	}
 
-	public TextRange getElementFormDefaultTextRange(CompilationUnit astRoot) {
+	public TextRange getElementFormDefaultTextRange() {
 		return null;
 	}
 

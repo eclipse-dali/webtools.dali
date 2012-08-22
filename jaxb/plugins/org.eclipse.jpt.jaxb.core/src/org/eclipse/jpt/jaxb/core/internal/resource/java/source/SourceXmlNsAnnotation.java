@@ -34,10 +34,12 @@ public class SourceXmlNsAnnotation
 	private final DeclarationAnnotationElementAdapter<String> namespaceURIDeclarationAdapter;
 	private final AnnotationElementAdapter<String> namespaceURIAdapter;
 	private String namespaceURI;
+	private TextRange namespaceURITextRange;
 	
 	private final DeclarationAnnotationElementAdapter<String> prefixDeclarationAdapter;
 	private final AnnotationElementAdapter<String> prefixAdapter;
 	private String prefix;
+	private TextRange prefixTextRange;
 	
 	
 	public SourceXmlNsAnnotation(JavaResourceNode parent, AnnotatedElement annotatedElement, IndexedDeclarationAnnotationAdapter idaa) {
@@ -73,14 +75,18 @@ public class SourceXmlNsAnnotation
 	public void initialize(Annotation astAnnotation) {
 		super.initialize(astAnnotation);
 		this.namespaceURI = buildNamespaceURI(astAnnotation);
+		this.namespaceURITextRange = this.buildNamespaceURITextRange(astAnnotation);
 		this.prefix = buildPrefix(astAnnotation);
+		this.prefixTextRange = this.buildPrefixTextRange(astAnnotation);
 	}
 
 	@Override
 	public void synchronizeWith(Annotation astAnnotation) {
 		super.synchronizeWith(astAnnotation);
 		syncNamespaceURI(buildNamespaceURI(astAnnotation));
+		this.namespaceURITextRange = this.buildNamespaceURITextRange(astAnnotation);
 		syncPrefix(buildPrefix(astAnnotation));
+		this.prefixTextRange = this.buildPrefixTextRange(astAnnotation);
 	}
 	
 	@Override
@@ -111,7 +117,19 @@ public class SourceXmlNsAnnotation
 		this.namespaceURI = namespaceURI;
 		firePropertyChanged(NAMESPACE_URI_PROPERTY, old, namespaceURI);
 	}
+
+	public TextRange getNamespaceURITextRange() {
+		return this.namespaceURITextRange;
+	}
+
+	private TextRange buildNamespaceURITextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.namespaceURIDeclarationAdapter, astAnnotation);
+	}
 	
+	public boolean namespaceURITouches(int pos) {
+		return this.textRangeTouches(this.namespaceURITextRange, pos);
+	}
+
 	public TextRange getNamespaceURITextRange(CompilationUnit astRoot) {
 		return getElementTextRange(this.namespaceURIDeclarationAdapter, astRoot);
 	}
@@ -143,13 +161,17 @@ public class SourceXmlNsAnnotation
 		this.prefix = prefix;
 		firePropertyChanged(PREFIX_PROPERTY, old, prefix);
 	}
-	
-	public TextRange getPrefixTextRange(CompilationUnit astRoot) {
-		return getElementTextRange(this.prefixDeclarationAdapter, astRoot);
+
+	public TextRange getPrefixTextRange() {
+		return this.prefixTextRange;
+	}
+
+	private TextRange buildPrefixTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.prefixDeclarationAdapter, astAnnotation);
 	}
 	
-	public boolean prefixTouches(int pos, CompilationUnit astRoot) {
-		return elementTouches(this.prefixDeclarationAdapter, pos, astRoot);
+	public boolean prefixTouches(int pos) {
+		return this.textRangeTouches(this.prefixTextRange, pos);
 	}
 	
 	

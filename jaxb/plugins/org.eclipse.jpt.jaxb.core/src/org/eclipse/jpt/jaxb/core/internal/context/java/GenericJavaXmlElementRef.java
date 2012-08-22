@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -233,18 +233,18 @@ public class GenericJavaXmlElementRef
 		return getAnnotation().getTextRange(astRoot);
 	}
 	
-	public TextRange getTypeTextRange(CompilationUnit astRoot) {
-		return getAnnotation().getTypeTextRange(astRoot);
+	public TextRange getTypeTextRange() {
+		return getAnnotation().getTypeTextRange();
 	}
 	
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		this.qName.validate(messages, reporter, astRoot);
-		validateType(messages, reporter, astRoot);
+		validateType(messages, reporter);
 	}
 	
-	protected void validateType(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateType(List<IMessage> messages, IReporter reporter) {
 		
 		String fqType = getFullyQualifiedType();
 		if (StringTools.stringIsEmpty(fqType)) {
@@ -253,7 +253,7 @@ public class GenericJavaXmlElementRef
 							IMessage.HIGH_SEVERITY,
 							JaxbValidationMessages.XML_ELEMENT_REF__UNSPECIFIED_TYPE,
 							this,
-							getTypeTextRange(astRoot)));
+							getTypeTextRange()));
 		}
 		else if (! StringTools.stringIsEmpty(this.specifiedType)
 				// verify that type actually exists before validating
@@ -266,7 +266,7 @@ public class GenericJavaXmlElementRef
 								JaxbValidationMessages.XML_ELEMENT_REF__ILLEGAL_TYPE,
 								new String[] { attributeValueType },
 								this,
-								getTypeTextRange(astRoot)));
+								getTypeTextRange()));
 								
 			}
 			
@@ -279,7 +279,7 @@ public class GenericJavaXmlElementRef
 								JaxbValidationMessages.XML_ELEMENT_REF__NO_ROOT_ELEMENT,
 								new String[] { attributeValueType },
 								this,
-								getTypeTextRange(astRoot)));
+								getTypeTextRange()));
 			}
 		}
 	}

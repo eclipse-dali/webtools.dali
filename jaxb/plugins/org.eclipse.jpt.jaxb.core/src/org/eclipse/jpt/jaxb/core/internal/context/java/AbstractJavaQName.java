@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -150,11 +150,11 @@ public abstract class AbstractJavaQName
 			return result;
 		}
 		
-		if (this.proxy.namespaceTouches(pos, astRoot)) {
+		if (this.proxy.namespaceTouches(pos)) {
 			return getNamespaceProposals(filter);
 		}
 		
-		if (this.proxy.nameTouches(pos, astRoot)) {
+		if (this.proxy.nameTouches(pos)) {
 			return getNameProposals(filter);
 		}
 		
@@ -178,11 +178,11 @@ public abstract class AbstractJavaQName
 	}
 	
 	public TextRange getNamespaceTextRange(CompilationUnit astRoot) {
-		return getTextRange(this.proxy.getNamespaceTextRange(astRoot), astRoot);
+		return getTextRange(this.proxy.getNamespaceTextRange(), astRoot);
 	}
 	
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return getTextRange(this.proxy.getNameTextRange(astRoot), astRoot);
+		return getTextRange(this.proxy.getNameTextRange(), astRoot);
 	}
 	
 	/**
@@ -234,17 +234,17 @@ public abstract class AbstractJavaQName
 		
 		void setNamespace(String namespace);
 		
-		boolean namespaceTouches(int pos, CompilationUnit astRoot);
+		boolean namespaceTouches(int pos);
 		
-		TextRange getNamespaceTextRange(CompilationUnit astRoot);
+		TextRange getNamespaceTextRange();
 		
 		String getName();
 		
 		void setName(String name);
 		
-		boolean nameTouches(int pos, CompilationUnit astRoot);
+		boolean nameTouches(int pos);
 		
-		TextRange getNameTextRange(CompilationUnit astRoot);
+		TextRange getNameTextRange();
 	}
 	
 	
@@ -265,14 +265,14 @@ public abstract class AbstractJavaQName
 			getAnnotation(true).setNamespace(newSpecifiedNamespace);
 		}
 		
-		public boolean namespaceTouches(int pos, CompilationUnit astRoot) {
+		public boolean namespaceTouches(int pos) {
 			QNameAnnotation annotation = getAnnotation(false);
-			return (annotation == null) ? false : annotation.namespaceTouches(pos, astRoot);
+			return (annotation == null) ? false : annotation.namespaceTouches(pos);
 		}
 		
-		public TextRange getNamespaceTextRange(CompilationUnit astRoot) {
+		public TextRange getNamespaceTextRange() {
 			QNameAnnotation annotation = getAnnotation(false);
-			return (annotation == null) ? null : annotation.getNamespaceTextRange(astRoot);
+			return (annotation == null) ? null : annotation.getNamespaceTextRange();
 		}
 			
 		public String getName() {
@@ -284,14 +284,14 @@ public abstract class AbstractJavaQName
 			getAnnotation(true).setName(newSpecifiedName);
 		}
 		
-		public boolean nameTouches(int pos, CompilationUnit astRoot) {
+		public boolean nameTouches(int pos) {
 			QNameAnnotation annotation = getAnnotation(false);
-			return (annotation == null) ? false : annotation.nameTouches(pos, astRoot);
+			return (annotation == null) ? false : annotation.nameTouches(pos);
 		}
 		
-		public TextRange getNameTextRange(CompilationUnit astRoot) {
+		public TextRange getNameTextRange() {
 			QNameAnnotation annotation = getAnnotation(false);
-			return (annotation == null) ? null : annotation.getNameTextRange(astRoot);
+			return (annotation == null) ? null : annotation.getNameTextRange();
 		}
 	}
 }

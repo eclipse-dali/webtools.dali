@@ -1,3 +1,12 @@
+/*******************************************************************************
+ *  Copyright (c) 2010, 2012  Oracle. All rights reserved.
+ *  This program and the accompanying materials are made available under the
+ *  terms of the Eclipse Public License v1.0, which accompanies this distribution
+ *  and is available at http://www.eclipse.org/legal/epl-v10.html
+ *  
+ *  Contributors: 
+ *  	Oracle - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
 import java.util.List;
@@ -87,10 +96,10 @@ public class ELJavaXmlDiscriminatorNode
 	public Iterable<String> getJavaCompletionProposals(
 			int pos, Filter<String> filter, CompilationUnit astRoot) {
 		
-		if (getAnnotation().valueTouches(pos, astRoot) && this.value != null) {
+		if (getAnnotation().valueTouches(pos) && this.value != null) {
 			XsdTypeDefinition xsdType = getClassMapping().getXsdTypeDefinition();
 			XPath xpath = XPathFactory.instance().getXpath(this.value);
-			return xpath.getCompletionProposals(new XPathContext(astRoot), xsdType, pos, filter);
+			return xpath.getCompletionProposals(new XPathContext(), xsdType, pos, filter);
 		}
 		
 		return EmptyIterable.instance();
@@ -114,7 +123,7 @@ public class ELJavaXmlDiscriminatorNode
 								IMessage.HIGH_SEVERITY,
 								ELJaxbValidationMessages.XML_DISCRIMINATOR_NODE__NOT_SPECIFIED,
 								ELJavaXmlDiscriminatorNode.this,
-								getValueTextRange(astRoot)));
+								getValueTextRange()));
 			return;
 		}
 		
@@ -124,28 +133,25 @@ public class ELJavaXmlDiscriminatorNode
 								IMessage.HIGH_SEVERITY,
 								ELJaxbValidationMessages.XPATH__ROOT_NOT_SUPPORTED,
 								ELJavaXmlDiscriminatorNode.this,
-								getValueTextRange(astRoot)));
+								getValueTextRange()));
 			return;
 		}
 		
 		XsdTypeDefinition xsdType = getClassMapping().getXsdTypeDefinition();
 		XPath xpath = XPathFactory.instance().getXpath(this.value);
-		xpath.validate(new XPathContext(astRoot), xsdType, messages);
+		xpath.validate(new XPathContext(), xsdType, messages);
 	}
 	
-	protected TextRange getValueTextRange(CompilationUnit astRoot) {
+	protected TextRange getValueTextRange() {
 		// should never be null
-		return getAnnotation().getValueTextRange(astRoot);
+		return getAnnotation().getValueTextRange();
 	}
 	
 	
 	protected class XPathContext
 		implements XPath.Context {
-		
-		private CompilationUnit astRoot;
-		
-		protected XPathContext(CompilationUnit astRoot) {
-			this.astRoot = astRoot;
+
+		protected XPathContext() {
 		}
 		
 		
@@ -158,7 +164,7 @@ public class ELJavaXmlDiscriminatorNode
 		}
 		
 		public TextRange getTextRange() {
-			return ELJavaXmlDiscriminatorNode.this.getValueTextRange(this.astRoot);
+			return ELJavaXmlDiscriminatorNode.this.getValueTextRange();
 		}
 	}
 }

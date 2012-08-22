@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 
 /**
@@ -22,7 +21,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 3.3
  * @since 3.0
  */
 public interface XmlElementDeclAnnotation
@@ -56,7 +55,7 @@ public interface XmlElementDeclAnnotation
 	 * Return the {@link TextRange} for the 'scope' element. If the element 
 	 * does not exist return the {@link TextRange} for the XmlElementDecl annotation.
 	 */
-	TextRange getScopeTextRange(CompilationUnit astRoot);
+	TextRange getScopeTextRange();
 	
 	/**
 	 * String associated with "fullyQualifiedScopeClassName" property changes.
@@ -96,13 +95,13 @@ public interface XmlElementDeclAnnotation
 	 * Return the {@link TextRange} for the 'substitutionHeadNamespace' element. If the element 
 	 * does not exist return the {@link TextRange} for the XmlElementDecl annotation.
 	 */
-	TextRange getSubstitutionHeadNamespaceTextRange(CompilationUnit astRoot);
+	TextRange getSubstitutionHeadNamespaceTextRange();
 	
 	/**
 	 * Return whether the specified position touches the 'substitutionHeadNamespace' element.
 	 * Return false if the element does not exist.
 	 */
-	boolean substitutionHeadNamespaceTouches(int pos, CompilationUnit astRoot);
+	boolean substitutionHeadNamespaceTouches(int pos);
 	
 	
 	// ***** substitution head name *****
@@ -128,13 +127,13 @@ public interface XmlElementDeclAnnotation
 	 * Return the {@link TextRange} for the 'substitutionHeadName' element. If the element 
 	 * does not exist return the {@link TextRange} for the XmlElementDecl annotation.
 	 */
-	TextRange getSubstitutionHeadNameTextRange(CompilationUnit astRoot);
+	TextRange getSubstitutionHeadNameTextRange();
 	
 	/**
 	 * Return whether the specified position touches the 'substitutionHeadName' element.
 	 * Return false if the element does not exist.
 	 */
-	boolean substitutionHeadNameTouches(int pos, CompilationUnit astRoot);
+	boolean substitutionHeadNameTouches(int pos);
 	
 	
 	// ***** default value *****
@@ -160,5 +159,5 @@ public interface XmlElementDeclAnnotation
 	 * Return the {@link TextRange} for the 'defaultValue' element. If the element 
 	 * does not exist return the {@link TextRange} for the XmlElementDecl annotation.
 	 */
-	TextRange getDefaultValueTextRange(CompilationUnit astRoot);
+	TextRange getDefaultValueTextRange();
 }

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.Annotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
@@ -38,18 +37,22 @@ public final class SourceXmlElementWrapperAnnotation
 	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
 	private final AnnotationElementAdapter<String> nameAdapter;
 	private String name;
+	private TextRange nameTextRange;
 
 	private final DeclarationAnnotationElementAdapter<String> namespaceDeclarationAdapter;
 	private final AnnotationElementAdapter<String> namespaceAdapter;
 	private String namespace;
+	private TextRange namespaceTextRange;
 
 	private final DeclarationAnnotationElementAdapter<Boolean> nillableDeclarationAdapter;
 	private final AnnotationElementAdapter<Boolean> nillableAdapter;
 	private Boolean nillable;
+	private TextRange nillableTextRange;
 
 	private final DeclarationAnnotationElementAdapter<Boolean> requiredDeclarationAdapter;
 	private final AnnotationElementAdapter<Boolean> requiredAdapter;
 	private Boolean required;
+	private TextRange requiredTextRange;
 
 
 	// ********** constructors **********
@@ -101,18 +104,26 @@ public final class SourceXmlElementWrapperAnnotation
 	public void initialize(Annotation astAnnotation) {
 		super.initialize(astAnnotation);
 		this.name = this.buildName(astAnnotation);
+		this.nameTextRange = this.buildNameTextRange(astAnnotation);
 		this.namespace = this.buildNamespace(astAnnotation);
+		this.namespaceTextRange = this.buildNamespaceTextRange(astAnnotation);
 		this.nillable = this.buildNillable(astAnnotation);
+		this.nillableTextRange = this.buildNillableTextRange(astAnnotation);
 		this.required = this.buildRequired(astAnnotation);
+		this.requiredTextRange = this.buildRequiredTextRange(astAnnotation);
 	}
 
 	@Override
 	public void synchronizeWith(Annotation astAnnotation) {
 		super.synchronizeWith(astAnnotation);
 		this.syncName(this.buildName(astAnnotation));
+		this.nameTextRange = this.buildNameTextRange(astAnnotation);
 		this.syncNamespace(this.buildNamespace(astAnnotation));
+		this.namespaceTextRange = this.buildNamespaceTextRange(astAnnotation);
 		this.syncNillable(this.buildNillable(astAnnotation));
+		this.nillableTextRange = this.buildNillableTextRange(astAnnotation);
 		this.syncRequired(this.buildRequired(astAnnotation));
+		this.requiredTextRange = this.buildRequiredTextRange(astAnnotation);
 	}
 
 	@Override
@@ -145,14 +156,18 @@ public final class SourceXmlElementWrapperAnnotation
 		return this.nameAdapter.getValue(astAnnotation);
 	}
 
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.nameDeclarationAdapter, astRoot);
+	private TextRange buildNameTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.nameDeclarationAdapter, astAnnotation);
+	}
+
+	public TextRange getNameTextRange() {
+		return this.nameTextRange;
 	}
 	
-	public boolean nameTouches(int pos, CompilationUnit astRoot) {
-		return elementTouches(this.nameDeclarationAdapter, pos, astRoot);
+	public boolean nameTouches(int pos) {
+		return this.textRangeTouches(this.nameTextRange, pos);
 	}
-	
+		
 	
 	// ***** namespace
 	public String getNamespace() {
@@ -176,12 +191,16 @@ public final class SourceXmlElementWrapperAnnotation
 		return this.namespaceAdapter.getValue(astAnnotation);
 	}
 
-	public TextRange getNamespaceTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.namespaceDeclarationAdapter, astRoot);
+	private TextRange buildNamespaceTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.namespaceDeclarationAdapter, astAnnotation);
+	}
+
+	public TextRange getNamespaceTextRange() {
+		return this.namespaceTextRange;
 	}
 	
-	public boolean namespaceTouches(int pos, CompilationUnit astRoot) {
-		return elementTouches(this.namespaceDeclarationAdapter, pos, astRoot);
+	public boolean namespaceTouches(int pos) {
+		return this.textRangeTouches(this.namespaceTextRange, pos);
 	}
 	
 	
@@ -207,8 +226,13 @@ public final class SourceXmlElementWrapperAnnotation
 		return this.nillableAdapter.getValue(astAnnotation);
 	}
 
-	public TextRange getNillableTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.nillableDeclarationAdapter, astRoot);
+
+	private TextRange buildNillableTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.nillableDeclarationAdapter, astAnnotation);
+	}
+
+	public TextRange getNillableTextRange() {
+		return this.nillableTextRange;
 	}
 
 	// ***** required
@@ -233,7 +257,11 @@ public final class SourceXmlElementWrapperAnnotation
 		return this.requiredAdapter.getValue(astAnnotation);
 	}
 
-	public TextRange getRequiredTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.requiredDeclarationAdapter, astRoot);
+	private TextRange buildRequiredTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.requiredDeclarationAdapter, astAnnotation);
+	}
+
+	public TextRange getRequiredTextRange() {
+		return this.requiredTextRange;
 	}
 }

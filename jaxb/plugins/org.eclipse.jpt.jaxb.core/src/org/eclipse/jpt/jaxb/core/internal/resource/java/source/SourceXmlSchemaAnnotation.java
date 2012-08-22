@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.Annotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
@@ -42,21 +41,25 @@ public class SourceXmlSchemaAnnotation
 			buildAttributeFormDefaultAdapter();
 	private final AnnotationElementAdapter<String> attributeFormDefaultAdapter;
 	private XmlNsForm attributeFormDefault;
+	private TextRange attributeFormDefaultTextRange;
 	
 	private static final DeclarationAnnotationElementAdapter<String> ELEMENT_FORM_DEFAULT_ADAPTER = 
 			buildElementFormDefaultAdapter();
 	private final AnnotationElementAdapter<String> elementFormDefaultAdapter;
 	private XmlNsForm elementFormDefault;
+	private TextRange elementFormDefaultTextRange;
 	
 	private static final DeclarationAnnotationElementAdapter<String> LOCATION_ADAPTER = 
 			buildLocationAdapter();
 	private final AnnotationElementAdapter<String> locationAdapter;
 	private String location;
+	private TextRange locationTextRange;
 	
 	private static final DeclarationAnnotationElementAdapter<String> NAMESPACE_ADAPTER = 
 			buildNamespaceAdapter();
 	private final AnnotationElementAdapter<String> namespaceAdapter;
 	private String namespace;
+	private TextRange namespaceTextRange;
 	
 	private final XmlnsAnnotationContainer xmlnsContainer = new XmlnsAnnotationContainer();
 	
@@ -109,9 +112,13 @@ public class SourceXmlSchemaAnnotation
 	public void initialize(Annotation astAnnotation) {
 		super.initialize(astAnnotation);
 		this.attributeFormDefault = buildAttributeFormDefault(astAnnotation);
+		this.attributeFormDefaultTextRange = this.buildAttributeFormDefaultTextRange(astAnnotation);
 		this.elementFormDefault = buildElementFormDefault(astAnnotation);
+		this.elementFormDefaultTextRange = this.buildElementFormDefaultTextRange(astAnnotation);
 		this.location = buildLocation(astAnnotation);
+		this.locationTextRange = this.buildLocationTextRange(astAnnotation);
 		this.namespace = buildNamespace(astAnnotation);
+		this.namespaceTextRange = this.buildNamespaceTextRange(astAnnotation);
 		this.xmlnsContainer.initializeFromContainerAnnotation(astAnnotation);
 	}
 	
@@ -119,9 +126,13 @@ public class SourceXmlSchemaAnnotation
 	public void synchronizeWith(Annotation astAnnotation) {
 		super.synchronizeWith(astAnnotation);
 		syncAttributeFormDefault(buildAttributeFormDefault(astAnnotation));
+		this.attributeFormDefaultTextRange = this.buildAttributeFormDefaultTextRange(astAnnotation);
 		syncElementFormDefault(buildElementFormDefault(astAnnotation));
+		this.elementFormDefaultTextRange = this.buildElementFormDefaultTextRange(astAnnotation);
 		syncLocation(buildLocation(astAnnotation));
+		this.locationTextRange = this.buildLocationTextRange(astAnnotation);
 		syncNamespace(buildNamespace(astAnnotation));
+		this.namespaceTextRange = this.buildNamespaceTextRange(astAnnotation);
 		this.xmlnsContainer.synchronize(astAnnotation);
 	}
 	
@@ -153,9 +164,13 @@ public class SourceXmlSchemaAnnotation
 		this.attributeFormDefault = attributeFormDefault;
 		firePropertyChanged(ATTRIBUTE_FORM_DEFAULT_PROPERTY, old, attributeFormDefault);
 	}
-	
-	public TextRange getAttributeFormDefaultTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(ATTRIBUTE_FORM_DEFAULT_ADAPTER, astRoot);
+
+	public TextRange getAttributeFormDefaultTextRange() {
+		return this.attributeFormDefaultTextRange;
+	}
+
+	private TextRange buildAttributeFormDefaultTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(ATTRIBUTE_FORM_DEFAULT_ADAPTER, astAnnotation);
 	}
 	
 	
@@ -181,9 +196,13 @@ public class SourceXmlSchemaAnnotation
 		this.elementFormDefault = elementFormDefault;
 		firePropertyChanged(ELEMENT_FORM_DEFAULT_PROPERTY, old, elementFormDefault);
 	}
-	
-	public TextRange getElementFormDefaultTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(ELEMENT_FORM_DEFAULT_ADAPTER, astRoot);
+
+	public TextRange getElementFormDefaultTextRange() {
+		return this.elementFormDefaultTextRange;
+	}
+
+	private TextRange buildElementFormDefaultTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(ELEMENT_FORM_DEFAULT_ADAPTER, astAnnotation);
 	}
 	
 	
@@ -209,9 +228,13 @@ public class SourceXmlSchemaAnnotation
 		this.location = location;
 		firePropertyChanged(LOCATION_PROPERTY, old, location);
 	}
-	
-	public TextRange getLocationTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(LOCATION_ADAPTER, astRoot);
+
+	public TextRange getLocationTextRange() {
+		return this.locationTextRange;
+	}
+
+	private TextRange buildLocationTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(LOCATION_ADAPTER, astAnnotation);
 	}
 	
 	
@@ -237,13 +260,17 @@ public class SourceXmlSchemaAnnotation
 		this.namespace = namespace;
 		firePropertyChanged(NAMESPACE_PROPERTY, old, namespace);
 	}
-	
-	public TextRange getNamespaceTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(NAMESPACE_ADAPTER, astRoot);
+
+	public TextRange getNamespaceTextRange() {
+		return this.namespaceTextRange;
+	}
+
+	private TextRange buildNamespaceTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(NAMESPACE_ADAPTER, astAnnotation);
 	}
 	
-	public boolean namespaceTouches(int pos, CompilationUnit astRoot) {
-		return elementTouches(NAMESPACE_ADAPTER, pos, astRoot);
+	public boolean namespaceTouches(int pos) {
+		return this.textRangeTouches(this.namespaceTextRange, pos);
 	}
 	
 	

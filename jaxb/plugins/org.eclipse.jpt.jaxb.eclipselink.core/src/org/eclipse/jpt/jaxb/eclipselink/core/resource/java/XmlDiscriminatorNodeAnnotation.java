@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 
@@ -50,10 +49,10 @@ public interface XmlDiscriminatorNodeAnnotation
 	 * Return the text range associated with the 'value' element.
 	 * Return the text range of this annotation if the element is absent.
 	 */
-	TextRange getValueTextRange(CompilationUnit astRoot);
+	TextRange getValueTextRange();
 	
 	/**
 	 * Return whether the specified text position is within the 'value' element.
 	 */
-	boolean valueTouches(int pos, CompilationUnit astRoot);
+	boolean valueTouches(int pos);
 }

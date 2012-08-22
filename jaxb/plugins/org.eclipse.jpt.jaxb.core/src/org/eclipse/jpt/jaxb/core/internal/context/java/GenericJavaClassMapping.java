@@ -743,7 +743,7 @@ public class GenericJavaClassMapping
 			return result;
 		}
 		
-		if (propTouches(pos, astRoot)) {
+		if (propTouches(pos)) {
 			return getPropProposals(filter);
 		}
 		
@@ -884,7 +884,7 @@ public class GenericJavaClassMapping
 							JaxbValidationMessages.XML_TYPE__DUPLICATE_PROP,
 							new String[] { getProp(i) },
 							this,
-							getPropTextRange(i, astRoot)));
+							getPropTextRange(i)));
 		}
 		
 		for (String missingProp : missingProps) {
@@ -904,7 +904,7 @@ public class GenericJavaClassMapping
 							JaxbValidationMessages.XML_TYPE__NONEXISTENT_PROP,
 							new String[] { getProp(i) },
 							this,
-							getPropTextRange(i, astRoot)));
+							getPropTextRange(i)));
 		}
 		
 		for (int i : transientProps) {
@@ -914,7 +914,7 @@ public class GenericJavaClassMapping
 							JaxbValidationMessages.XML_TYPE__TRANSIENT_PROP,
 							new String [] { getProp(i) },
 							this,
-							getPropTextRange(i, astRoot)));
+							getPropTextRange(i)));
 		}
 	}
 	
@@ -1068,28 +1068,28 @@ public class GenericJavaClassMapping
 	}
 	
 	protected TextRange getFactoryClassTextRange(CompilationUnit astRoot) {
-		TextRange result = getXmlTypeAnnotation().getFactoryClassTextRange(astRoot);
+		TextRange result = getXmlTypeAnnotation().getFactoryClassTextRange();
 		return (result != null) ? result : getValidationTextRange(astRoot);
 	}
 	
 	protected TextRange getFactoryMethodTextRange(CompilationUnit astRoot) {
-		TextRange result = getXmlTypeAnnotation().getFactoryMethodTextRange(astRoot);
+		TextRange result = getXmlTypeAnnotation().getFactoryMethodTextRange();
 		return (result != null) ? result : getValidationTextRange(astRoot);
 	}
 	
 	protected TextRange getPropOrderTextRange(CompilationUnit astRoot) {
-		TextRange result = getXmlTypeAnnotation().getPropOrderTextRange(astRoot);
+		TextRange result = getXmlTypeAnnotation().getPropOrderTextRange();
 		return (result != null) ? result : getValidationTextRange(astRoot);
 	}
 	
-	protected TextRange getPropTextRange(int index, CompilationUnit astRoot) {
-		return getXmlTypeAnnotation().getPropTextRange(index, astRoot);
+	protected TextRange getPropTextRange(int index) {
+		return getXmlTypeAnnotation().getPropTextRange(index);
 	}
 	
-	protected boolean propTouches(int pos, CompilationUnit astRoot) {
-		if (getXmlTypeAnnotation().propOrderTouches(pos, astRoot)) {
+	protected boolean propTouches(int pos) {
+		if (getXmlTypeAnnotation().propOrderTouches(pos)) {
 			for (int i = 0; i < getXmlTypeAnnotation().getPropOrderSize(); i ++ ) {
-				if (getXmlTypeAnnotation().propTouches(i, pos, astRoot)) {
+				if (getXmlTypeAnnotation().propTouches(i, pos)) {
 					return true;
 				}
 			}

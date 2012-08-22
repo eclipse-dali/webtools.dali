@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.Annotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
@@ -46,6 +45,7 @@ public final class SourceXmlJavaTypeAdapterAnnotation
 	private final AnnotationElementAdapter<String> valueAdapter;
 	private String value;
 	private String fullyQualifiedValue;
+	private TextRange valueTextRange;
 	
 	/*
 	 * We want this event fired when the fq class changes by itself, not as a result
@@ -57,6 +57,7 @@ public final class SourceXmlJavaTypeAdapterAnnotation
 	private final AnnotationElementAdapter<String> typeAdapter;
 	private String type;
 	private String fullyQualifiedType;
+	private TextRange typeTextRange;
 	
 	/*
 	 * We want this event fired when the fq class changes by itself, not as a result
@@ -112,8 +113,10 @@ public final class SourceXmlJavaTypeAdapterAnnotation
 	public void initialize(Annotation astAnnotation) {
 		super.initialize(astAnnotation);
 		this.value = buildValue(astAnnotation);
+		this.valueTextRange = this.buildValueTextRange(astAnnotation);
 		this.fullyQualifiedValue = buildFullyQualifiedValue(astAnnotation);
 		this.type = buildType(astAnnotation);
+		this.typeTextRange = this.buildTypeTextRange(astAnnotation);
 		this.fullyQualifiedType = buildFullyQualifiedType(astAnnotation);
 	}
 	
@@ -121,7 +124,9 @@ public final class SourceXmlJavaTypeAdapterAnnotation
 	public void synchronizeWith(Annotation astAnnotation) {
 		super.synchronizeWith(astAnnotation);
 		syncValue(buildValue(astAnnotation));
+		this.valueTextRange = this.buildValueTextRange(astAnnotation);
 		syncType(buildType(astAnnotation));
+		this.typeTextRange = this.buildTypeTextRange(astAnnotation);
 		syncFullyQualifiedValue(buildFullyQualifiedValue(astAnnotation));
 		syncFullyQualifiedType(buildFullyQualifiedType(astAnnotation));
 		
@@ -160,9 +165,13 @@ public final class SourceXmlJavaTypeAdapterAnnotation
 	private String buildValue(Annotation astAnnotation) {
 		return this.valueAdapter.getValue(astAnnotation);
 	}
-	
-	public TextRange getValueTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.valueDeclarationAdapter, astRoot);
+
+	private TextRange buildValueTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.valueDeclarationAdapter, astAnnotation);
+	}
+
+	public TextRange getValueTextRange() {
+		return this.valueTextRange;
 	}
 	
 	public String getFullyQualifiedValue() {
@@ -204,9 +213,13 @@ public final class SourceXmlJavaTypeAdapterAnnotation
 	private String buildType(Annotation astAnnotation) {
 		return this.typeAdapter.getValue(astAnnotation);
 	}
-	
-	public TextRange getTypeTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.typeDeclarationAdapter, astRoot);
+
+	private TextRange buildTypeTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.typeDeclarationAdapter, astAnnotation);
+	}
+
+	public TextRange getTypeTextRange() {
+		return this.typeTextRange;
 	}
 	
 	public String getFullyQualifiedType() {

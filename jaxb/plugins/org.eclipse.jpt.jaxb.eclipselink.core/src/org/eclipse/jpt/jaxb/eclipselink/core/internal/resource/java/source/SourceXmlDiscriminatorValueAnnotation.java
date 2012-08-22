@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.Annotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
@@ -124,7 +123,7 @@ public class SourceXmlDiscriminatorValueAnnotation
 		return this.getElementTextRange(this.valueDeclarationAdapter, astAnnotation);
 	}
 	
-	public boolean valueTouches(int pos, CompilationUnit astRoot) {
-		return elementTouches(this.valueDeclarationAdapter, pos, astRoot);
+	public boolean valueTouches(int pos) {
+		return this.textRangeTouches(this.valueTextRange, pos);
 	}
 }

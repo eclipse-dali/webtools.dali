@@ -131,8 +131,8 @@ public class ELJavaXmlInverseReferenceMapping
 			return result;
 		}
 		
-		if (getXmlInverseReferenceAnnotation().mappedByTouches(pos, astRoot)) {
-			result = getMappedByProposals(filter, astRoot);
+		if (getXmlInverseReferenceAnnotation().mappedByTouches(pos)) {
+			result = getMappedByProposals(filter);
 		}
 		if (! CollectionTools.isEmpty(result)) {
 			return result;
@@ -141,7 +141,7 @@ public class ELJavaXmlInverseReferenceMapping
 		return EmptyIterable.instance();
 	}
 	
-	protected Iterable<String> getMappedByProposals(Filter<String> filter, CompilationUnit astRoot) {
+	protected Iterable<String> getMappedByProposals(Filter<String> filter) {
 		JaxbClassMapping referencedClassMapping = getReferencedClassMapping();
 		
 		if (referencedClassMapping == null) {

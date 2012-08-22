@@ -39,6 +39,7 @@ public class SourceXmlDiscriminatorNodeAnnotation
 	private final DeclarationAnnotationElementAdapter<String> valueDeclarationAdapter;
 	private final AnnotationElementAdapter<String> valueAdapter;
 	private String value;
+	private TextRange valueTextRange;
 	
 	
 	public SourceXmlDiscriminatorNodeAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
@@ -76,12 +77,14 @@ public class SourceXmlDiscriminatorNodeAnnotation
 	public void initialize(Annotation astAnnotation) {
 		super.initialize(astAnnotation);
 		this.value = buildValue(astAnnotation);
+		this.valueTextRange = this.buildValueTextRange(astAnnotation);
 	}
 	
 	@Override
 	public void synchronizeWith(Annotation astAnnotation) {
 		super.synchronizeWith(astAnnotation);
 		syncValue(buildValue(astAnnotation));
+		this.valueTextRange = this.buildValueTextRange(astAnnotation);
 	}
 	
 	@Override
@@ -112,12 +115,16 @@ public class SourceXmlDiscriminatorNodeAnnotation
 	private String buildValue(Annotation astAnnotation) {
 		return this.valueAdapter.getValue(astAnnotation);
 	}
-	
-	public TextRange getValueTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.valueDeclarationAdapter, astRoot);
+
+	public TextRange getValueTextRange() {
+		return this.valueTextRange;
+	}
+
+	private TextRange buildValueTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.valueDeclarationAdapter, astAnnotation);
 	}
 	
-	public boolean valueTouches(int pos, CompilationUnit astRoot) {
-		return elementTouches(this.valueDeclarationAdapter, pos, astRoot);
+	public boolean valueTouches(int pos) {
+		return this.textRangeTouches(this.valueTextRange, pos);
 	}
 }

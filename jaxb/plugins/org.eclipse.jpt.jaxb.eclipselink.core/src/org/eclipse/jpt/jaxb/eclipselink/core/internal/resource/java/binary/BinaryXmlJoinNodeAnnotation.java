@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -47,7 +46,7 @@ public class BinaryXmlJoinNodeAnnotation
 	
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(this.xmlPath + " -> " + this.referencedXmlPath);
+		sb.append(this.xmlPath + " -> " + this.referencedXmlPath); //$NON-NLS-1$
 	}
 	
 	
@@ -71,11 +70,11 @@ public class BinaryXmlJoinNodeAnnotation
 		return (String) this.getJdtMemberValue(ELJaxb.XML_JOIN_NODE__XML_PATH);
 	}
 	
-	public TextRange getXmlPathTextRange(CompilationUnit astRoot) {
+	public TextRange getXmlPathTextRange() {
 		throw new UnsupportedOperationException();
 	}
 	
-	public boolean xmlPathTouches(int pos, CompilationUnit astRoot) {
+	public boolean xmlPathTouches(int pos) {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -100,11 +99,11 @@ public class BinaryXmlJoinNodeAnnotation
 		return (String) this.getJdtMemberValue(ELJaxb.XML_JOIN_NODE__REFERENCED_XML_PATH);
 	}
 	
-	public TextRange getReferencedXmlPathTextRange(CompilationUnit astRoot) {
+	public TextRange getReferencedXmlPathTextRange() {
 		throw new UnsupportedOperationException();
 	}
 	
-	public boolean referencedXmlPathTouches(int pos, CompilationUnit astRoot) {
+	public boolean referencedXmlPathTouches(int pos) {
 		throw new UnsupportedOperationException();
 	}
 }

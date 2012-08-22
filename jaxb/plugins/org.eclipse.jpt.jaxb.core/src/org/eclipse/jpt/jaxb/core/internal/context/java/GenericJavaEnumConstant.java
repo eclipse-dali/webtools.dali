@@ -112,7 +112,7 @@ public class GenericJavaEnumConstant
 			return result;
 		}
 		
-		if (valueTouches(pos, astRoot)) {
+		if (valueTouches(pos)) {
 			XsdTypeDefinition<?> xsdType = getEnumMapping().getXsdTypeDefinition();
 			if (xsdType != null && xsdType.getKind() == XsdTypeDefinition.Kind.SIMPLE) {
 				XsdSimpleTypeDefinition xsdSimpleType = (XsdSimpleTypeDefinition) xsdType;
@@ -123,8 +123,8 @@ public class GenericJavaEnumConstant
 		return EmptyIterable.instance();
 	}
 	
-	protected boolean valueTouches(int pos, CompilationUnit astRoot) {
-		return getXmlEnumValueAnnotation().valueTouches(pos, astRoot);
+	protected boolean valueTouches(int pos) {
+		return getXmlEnumValueAnnotation().valueTouches(pos);
 	}
 	
 	

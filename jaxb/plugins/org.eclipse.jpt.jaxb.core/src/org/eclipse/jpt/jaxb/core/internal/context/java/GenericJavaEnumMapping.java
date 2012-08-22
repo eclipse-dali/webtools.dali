@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -220,15 +220,15 @@ public class GenericJavaEnumMapping
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		
-		validateXmlType(messages, reporter, astRoot);
-		validateXmlEnum(messages, reporter, astRoot);
+		validateXmlType(messages, reporter);
+		validateXmlEnum(messages, reporter);
 		
 		for (JaxbEnumConstant constant : getEnumConstants()) {
 			constant.validate(messages, reporter, astRoot);
 		}
 	}
 	
-	protected void validateXmlType(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateXmlType(List<IMessage> messages, IReporter reporter) {
 		XmlTypeAnnotation annotation = getXmlTypeAnnotation();
 		
 		if (annotation.getFactoryClass() != null) {
@@ -237,7 +237,7 @@ public class GenericJavaEnumMapping
 							IMessage.NORMAL_SEVERITY,
 							JaxbValidationMessages.XML_TYPE__FACTORY_CLASS_IGNORED_FOR_ENUM,
 							this,
-							annotation.getFactoryClassTextRange(astRoot)));
+							annotation.getFactoryClassTextRange()));
 		}
 		
 		if (annotation.getFactoryMethod() != null) {
@@ -246,7 +246,7 @@ public class GenericJavaEnumMapping
 							IMessage.NORMAL_SEVERITY,
 							JaxbValidationMessages.XML_TYPE__FACTORY_METHOD_IGNORED_FOR_ENUM,
 							this,
-							annotation.getFactoryMethodTextRange(astRoot)));
+							annotation.getFactoryMethodTextRange()));
 		}
 		
 		if (! CollectionTools.isEmpty(annotation.getPropOrder())) {
@@ -255,11 +255,11 @@ public class GenericJavaEnumMapping
 							IMessage.NORMAL_SEVERITY,
 							JaxbValidationMessages.XML_TYPE__PROP_ORDER_IGNORED_FOR_ENUM,
 							this,
-							annotation.getPropOrderTextRange(astRoot)));
+							annotation.getPropOrderTextRange()));
 		}
 	}
 	
-	protected void validateXmlEnum(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateXmlEnum(List<IMessage> messages, IReporter reporter) {
 		XsdSchema xsdSchema = getJaxbPackage().getXsdSchema();
 		XsdTypeDefinition xsdType = getValueXsdTypeDefinition_();
 		
@@ -271,12 +271,12 @@ public class GenericJavaEnumMapping
 							JaxbValidationMessages.XML_ENUM__NON_SIMPLE_SCHEMA_TYPE,
 							new String[] { getFullyQualifiedXmlEnumValue() },
 							this,
-							getXmlEnumValueTextRange(astRoot)));
+							getXmlEnumValueTextRange()));
 		}
 	}
 	
-	protected TextRange getXmlEnumValueTextRange(CompilationUnit astRoot) {
-		return getXmlEnumAnnotation().getValueTextRange(astRoot);
+	protected TextRange getXmlEnumValueTextRange() {
+		return getXmlEnumAnnotation().getValueTextRange();
 	}
 	
 	

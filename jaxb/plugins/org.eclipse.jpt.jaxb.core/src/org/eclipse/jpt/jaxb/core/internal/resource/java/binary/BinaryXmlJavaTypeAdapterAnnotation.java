@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -74,7 +73,7 @@ public final class BinaryXmlJavaTypeAdapterAnnotation
 		return (String) this.getJdtMemberValue(JAXB.XML_JAVA_TYPE_ADAPTER__VALUE);
 	}
 	
-	public TextRange getValueTextRange(CompilationUnit astRoot) {
+	public TextRange getValueTextRange() {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -102,7 +101,7 @@ public final class BinaryXmlJavaTypeAdapterAnnotation
 		return (String) this.getJdtMemberValue(JAXB.XML_JAVA_TYPE_ADAPTER__TYPE);
 	}
 	
-	public TextRange getTypeTextRange(CompilationUnit astRoot) {
+	public TextRange getTypeTextRange() {
 		throw new UnsupportedOperationException();
 	}
 	

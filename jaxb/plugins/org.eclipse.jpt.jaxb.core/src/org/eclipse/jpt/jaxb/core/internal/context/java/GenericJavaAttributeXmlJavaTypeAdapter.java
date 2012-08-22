@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -56,7 +56,7 @@ public class GenericJavaAttributeXmlJavaTypeAdapter
 					IMessage.HIGH_SEVERITY,
 					JaxbValidationMessages.ATTRIBUTE_MAPPING_XML_JAVA_TYPE_ADAPTER_TYPE_NOT_DEFINED,
 					this,
-					getAnnotation().getTypeTextRange(astRoot)));
+					getAnnotation().getTypeTextRange()));
 		}
 	}
 }

@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.NullAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -20,7 +19,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlEnumValueAnnotation;
  * javax.xml.bind.annotation.XmlEnumValue
  */
 public final class NullXmlEnumValueAnnotation
-	extends NullAnnotation
+	extends NullAnnotation<XmlEnumValueAnnotation>
 	implements XmlEnumValueAnnotation
 {
 	protected NullXmlEnumValueAnnotation(JavaResourceNode parent) {
@@ -29,11 +28,6 @@ public final class NullXmlEnumValueAnnotation
 
 	public String getAnnotationName() {
 		return JAXB.XML_ENUM_VALUE;
-	}
-
-	@Override
-	protected XmlEnumValueAnnotation addAnnotation() {
-		return (XmlEnumValueAnnotation) super.addAnnotation();
 	}
 
 
@@ -54,7 +48,7 @@ public final class NullXmlEnumValueAnnotation
 		return null;
 	}
 	
-	public boolean valueTouches(int pos, CompilationUnit astRoot) {
+	public boolean valueTouches(int pos) {
 		return false;
 	}
 }

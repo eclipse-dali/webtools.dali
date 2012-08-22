@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 
@@ -23,7 +22,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 3.3
  * @since 3.0
  */
 public interface XmlNsAnnotation
@@ -49,13 +48,13 @@ public interface XmlNsAnnotation
 	 * Return the {@link TextRange} for the 'namespaceURI' element. If the element 
 	 * does not exist return the {@link TextRange} for the XmlNs annotation.
 	 */
-	TextRange getNamespaceURITextRange(CompilationUnit astRoot);
+	TextRange getNamespaceURITextRange();
 	
 	/**
 	 * Return whether the specified position touches the 'namespaceURI' element.
 	 * Return false if the element does not exist.
 	 */
-	boolean namespaceURITouches(int pos, CompilationUnit astRoot);
+	boolean namespaceURITouches(int pos);
 	
 	
 	// ***** prefix *****
@@ -78,11 +77,11 @@ public interface XmlNsAnnotation
 	 * Return the {@link TextRange} for the 'prefix' element. If the element 
 	 * does not exist return the {@link TextRange} for the XmlNs annotation.
 	 */
-	TextRange getPrefixTextRange(CompilationUnit astRoot);
+	TextRange getPrefixTextRange();
 	
 	/**
 	 * Return whether the specified position touches the 'prefix' element.
 	 * Return false if the element does not exist.
 	 */
-	boolean prefixTouches(int pos, CompilationUnit astRoot);
+	boolean prefixTouches(int pos);
 }

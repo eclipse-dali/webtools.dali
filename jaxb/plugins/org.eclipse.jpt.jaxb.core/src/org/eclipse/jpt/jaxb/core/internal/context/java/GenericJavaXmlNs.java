@@ -121,7 +121,7 @@ public class GenericJavaXmlNs
 	public Iterable<String> getJavaCompletionProposals(
 			int pos, Filter<String> filter, CompilationUnit astRoot) {
 		
-		if (getResourceXmlNs().namespaceURITouches(pos, astRoot)) {
+		if (getResourceXmlNs().namespaceURITouches(pos)) {
 			return getNamespaceURICompletionProposals(pos, filter, astRoot);
 		}
 		return EmptyIterable.instance();

@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 
@@ -52,5 +51,5 @@ public interface XmlEnumValueAnnotation
 	/**
 	 * Return whether the given position touches the 'value' element value.
 	 */
-	boolean valueTouches(int pos, CompilationUnit astRoot);
+	boolean valueTouches(int pos);
 }

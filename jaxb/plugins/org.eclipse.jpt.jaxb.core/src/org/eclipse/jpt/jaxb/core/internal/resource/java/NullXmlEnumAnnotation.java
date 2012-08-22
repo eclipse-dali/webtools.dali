@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.NullAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -20,7 +19,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlEnumAnnotation;
  * javax.xml.bind.annotation.XmlEnum
  */
 public final class NullXmlEnumAnnotation
-	extends NullAnnotation
+	extends NullAnnotation<XmlEnumAnnotation>
 	implements XmlEnumAnnotation
 {
 	protected NullXmlEnumAnnotation(JavaResourceNode parent) {
@@ -29,11 +28,6 @@ public final class NullXmlEnumAnnotation
 
 	public String getAnnotationName() {
 		return JAXB.XML_ENUM;
-	}
-
-	@Override
-	protected XmlEnumAnnotation addAnnotation() {
-		return (XmlEnumAnnotation) super.addAnnotation();
 	}
 
 
@@ -54,7 +48,7 @@ public final class NullXmlEnumAnnotation
 		}
 	}
 
-	public TextRange getValueTextRange(CompilationUnit astRoot) {
+	public TextRange getValueTextRange() {
 		return null;
 	}
 }

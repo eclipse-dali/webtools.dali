@@ -190,14 +190,14 @@ public class ELJavaXmlJoinNodesMapping
 								getValidationTextRange(astRoot)));
 		}
 		
-		validateDuplicateXmlPaths(messages, reporter, astRoot);
+		validateDuplicateXmlPaths(messages, reporter);
 		
 		for (ELJavaXmlJoinNode xmlJoinNode : this.xmlJoinNodeContainer.getContextElements()) {
 			xmlJoinNode.validate(messages, reporter, astRoot);
 		}
 	}
 	
-	protected void validateDuplicateXmlPaths(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateDuplicateXmlPaths(List<IMessage> messages, IReporter reporter) {
 		Bag<String> xmlPaths = new HashBag<String>();
 		Bag<String> referencedXmlPaths = new HashBag<String>();
 		
@@ -213,13 +213,13 @@ public class ELJavaXmlJoinNodesMapping
 		}
 		
 		for (ELJavaXmlJoinNode joinNode : this.xmlJoinNodeContainer.getContextElements()) {
-			validateDuplicateXmlPath(joinNode, xmlPaths, messages, astRoot);
-			validateDuplicateReferencedXmlPath(joinNode, referencedXmlPaths, messages, astRoot);	
+			validateDuplicateXmlPath(joinNode, xmlPaths, messages);
+			validateDuplicateReferencedXmlPath(joinNode, referencedXmlPaths, messages);	
 		}
 	}
 	
 	protected void validateDuplicateXmlPath(ELJavaXmlJoinNode joinNode, Bag<String> xmlPaths,
-				List<IMessage> messages, CompilationUnit astRoot) {
+				List<IMessage> messages) {
 		String xmlPath = joinNode.getXmlPath();
 		if (xmlPaths.count(xmlPath) > 1) {
 			messages.add(
@@ -228,12 +228,12 @@ public class ELJavaXmlJoinNodesMapping
 							ELJaxbValidationMessages.XML_JOIN_NODES__DUPLICATE_XML_PATH,
 							new String[] { xmlPath },
 							joinNode,
-							joinNode.getXmlPathTextRange(astRoot)));
+							joinNode.getXmlPathTextRange()));
 		}
 	}
 	
 	protected void validateDuplicateReferencedXmlPath(ELJavaXmlJoinNode joinNode, Bag<String> referencedXmlPaths,
-				List<IMessage> messages, CompilationUnit astRoot) {
+				List<IMessage> messages) {
 		String referencedXmlPath = joinNode.getReferencedXmlPath();
 		if (referencedXmlPaths.count(referencedXmlPath) > 1) {
 			messages.add(
@@ -242,7 +242,7 @@ public class ELJavaXmlJoinNodesMapping
 							ELJaxbValidationMessages.XML_JOIN_NODES__DUPLICATE_REFERENCED_XML_PATH,
 							new String[] { referencedXmlPath },
 							joinNode,
-							joinNode.getReferencedXmlPathTextRange(astRoot)));
+							joinNode.getReferencedXmlPathTextRange()));
 		}
 	}
 	

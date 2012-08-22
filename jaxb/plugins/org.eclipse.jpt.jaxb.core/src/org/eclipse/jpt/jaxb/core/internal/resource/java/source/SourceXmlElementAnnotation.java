@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.Annotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
@@ -46,27 +45,33 @@ public final class SourceXmlElementAnnotation
 	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
 	private final AnnotationElementAdapter<String> nameAdapter;
 	private String name;
+	private TextRange nameTextRange;
 	
 	private final DeclarationAnnotationElementAdapter<String> namespaceDeclarationAdapter;
 	private final AnnotationElementAdapter<String> namespaceAdapter;
 	private String namespace;
+	private TextRange namespaceTextRange;
 	
 	private final DeclarationAnnotationElementAdapter<Boolean> nillableDeclarationAdapter;
 	private final AnnotationElementAdapter<Boolean> nillableAdapter;
 	private Boolean nillable;
+	private TextRange nillableTextRange;
 	
 	private final DeclarationAnnotationElementAdapter<Boolean> requiredDeclarationAdapter;
 	private final AnnotationElementAdapter<Boolean> requiredAdapter;
 	private Boolean required;
+	private TextRange requiredTextRange;
 	
 	private final DeclarationAnnotationElementAdapter<String> defaultValueDeclarationAdapter;
 	private final AnnotationElementAdapter<String> defaultValueAdapter;
 	private String defaultValue;
+	private TextRange defaultValueTextRange;
 	
 	private final DeclarationAnnotationElementAdapter<String> typeDeclarationAdapter;
 	private final AnnotationElementAdapter<String> typeAdapter;
 	private String type;
 	private String fullyQualifiedTypeName;
+	private TextRange typeTextRange;
 	
 	
 	public static SourceXmlElementAnnotation buildSourceXmlElementAnnotation(
@@ -159,24 +164,36 @@ public final class SourceXmlElementAnnotation
 	public void initialize(Annotation astAnnotation) {
 		super.initialize(astAnnotation);
 		this.name = this.buildName(astAnnotation);
+		this.nameTextRange = this.buildNameTextRange(astAnnotation);
 		this.namespace = this.buildNamespace(astAnnotation);
+		this.namespaceTextRange = this.buildNamespaceTextRange(astAnnotation);
 		this.nillable = this.buildNillable(astAnnotation);
+		this.nillableTextRange = this.buildNillableTextRange(astAnnotation);
 		this.required = this.buildRequired(astAnnotation);
+		this.requiredTextRange = this.buildRequiredTextRange(astAnnotation);
 		this.defaultValue = this.buildDefaultValue(astAnnotation);
+		this.defaultValueTextRange = this.buildDefaultValueTextRange(astAnnotation);
 		this.type = this.buildType(astAnnotation);
 		this.fullyQualifiedTypeName = this.buildFullyQualifiedTypeName(astAnnotation);
+		this.typeTextRange = this.buildTypeTextRange(astAnnotation);
 	}
 
 	@Override
 	public void synchronizeWith(Annotation astAnnotation) {
 		super.synchronizeWith(astAnnotation);
 		this.syncName(this.buildName(astAnnotation));
+		this.nameTextRange = this.buildNameTextRange(astAnnotation);
 		this.syncNamespace(this.buildNamespace(astAnnotation));
+		this.namespaceTextRange = this.buildNamespaceTextRange(astAnnotation);
 		this.syncNillable(this.buildNillable(astAnnotation));
+		this.nillableTextRange = this.buildNillableTextRange(astAnnotation);
 		this.syncRequired(this.buildRequired(astAnnotation));
+		this.requiredTextRange = this.buildRequiredTextRange(astAnnotation);
 		this.syncDefaultValue(this.buildDefaultValue(astAnnotation));
+		this.defaultValueTextRange = this.buildDefaultValueTextRange(astAnnotation);
 		this.syncType(this.buildType(astAnnotation));
 		this.syncFullyQualifiedTypeName(this.buildFullyQualifiedTypeName(astAnnotation));
+		this.typeTextRange = this.buildTypeTextRange(astAnnotation);
 	}
 
 	@Override
@@ -209,12 +226,16 @@ public final class SourceXmlElementAnnotation
 		return this.nameAdapter.getValue(astAnnotation);
 	}
 
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.nameDeclarationAdapter, astRoot);
+	private TextRange buildNameTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.nameDeclarationAdapter, astAnnotation);
+	}
+
+	public TextRange getNameTextRange() {
+		return this.nameTextRange;
 	}
 	
-	public boolean nameTouches(int pos, CompilationUnit astRoot) {
-		return elementTouches(this.nameDeclarationAdapter, pos, astRoot);
+	public boolean nameTouches(int pos) {
+		return this.textRangeTouches(this.nameTextRange, pos);
 	}
 	
 	
@@ -240,12 +261,16 @@ public final class SourceXmlElementAnnotation
 		return this.namespaceAdapter.getValue(astAnnotation);
 	}
 
-	public TextRange getNamespaceTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.namespaceDeclarationAdapter, astRoot);
+	private TextRange buildNamespaceTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.namespaceDeclarationAdapter, astAnnotation);
+	}
+
+	public TextRange getNamespaceTextRange() {
+		return this.namespaceTextRange;
 	}
 	
-	public boolean namespaceTouches(int pos, CompilationUnit astRoot) {
-		return elementTouches(this.namespaceDeclarationAdapter, pos, astRoot);
+	public boolean namespaceTouches(int pos) {
+		return this.textRangeTouches(this.namespaceTextRange, pos);
 	}
 	
 	
@@ -270,10 +295,15 @@ public final class SourceXmlElementAnnotation
 	private Boolean buildNillable(Annotation astAnnotation) {
 		return this.nillableAdapter.getValue(astAnnotation);
 	}
-	
-	public TextRange getNillableTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.nillableDeclarationAdapter, astRoot);
+
+	private TextRange buildNillableTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.nillableDeclarationAdapter, astAnnotation);
 	}
+
+	public TextRange getNillableTextRange() {
+		return this.nillableTextRange;
+	}
+
 
 	// ***** required
 	public Boolean getRequired() {
@@ -296,9 +326,13 @@ public final class SourceXmlElementAnnotation
 	private Boolean buildRequired(Annotation astAnnotation) {
 		return this.requiredAdapter.getValue(astAnnotation);
 	}
-	
-	public TextRange getRequiredTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.requiredDeclarationAdapter, astRoot);
+
+	private TextRange buildRequiredTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.requiredDeclarationAdapter, astAnnotation);
+	}
+
+	public TextRange getRequiredTextRange() {
+		return this.requiredTextRange;
 	}
 
 	// ***** defaultValue
@@ -323,8 +357,12 @@ public final class SourceXmlElementAnnotation
 		return this.defaultValueAdapter.getValue(astAnnotation);
 	}
 
-	public TextRange getDefaultValueTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.defaultValueDeclarationAdapter, astRoot);
+	private TextRange buildDefaultValueTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.defaultValueDeclarationAdapter, astAnnotation);
+	}
+
+	public TextRange getDefaultValueTextRange() {
+		return this.defaultValueTextRange;
 	}
 
 	// ***** type
@@ -349,8 +387,12 @@ public final class SourceXmlElementAnnotation
 		return this.typeAdapter.getValue(astAnnotation);
 	}
 
-	public TextRange getTypeTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.typeDeclarationAdapter, astRoot);
+	private TextRange buildTypeTextRange(Annotation astAnnotation) {
+		return this.getElementTextRange(this.typeDeclarationAdapter, astAnnotation);
+	}
+
+	public TextRange getTypeTextRange() {
+		return this.typeTextRange;
 	}
 	
 	// ***** fully-qualified type name

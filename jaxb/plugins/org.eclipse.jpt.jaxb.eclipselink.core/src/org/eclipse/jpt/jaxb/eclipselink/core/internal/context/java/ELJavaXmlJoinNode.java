@@ -140,18 +140,18 @@ public class ELJavaXmlJoinNode
 	public Iterable<String> getJavaCompletionProposals(
 			int pos, Filter<String> filter, CompilationUnit astRoot) {
 		
-		if (getAnnotation().xmlPathTouches(pos, astRoot) && this.xmlPath != null) {
+		if (getAnnotation().xmlPathTouches(pos) && this.xmlPath != null) {
 			XsdTypeDefinition xsdType = getClassMapping().getXsdTypeDefinition();
 			XPath xpath = XPathFactory.instance().getXpath(this.xmlPath);
-			return xpath.getCompletionProposals(new XmlPathContext(astRoot), xsdType, pos, filter);
+			return xpath.getCompletionProposals(new XmlPathContext(), xsdType, pos, filter);
 		}
 		
-		if (getAnnotation().referencedXmlPathTouches(pos, astRoot) && this.referencedXmlPath != null) {
+		if (getAnnotation().referencedXmlPathTouches(pos) && this.referencedXmlPath != null) {
 			
 			
 			XsdTypeDefinition xsdType = getAttributeMapping().getReferencedXsdTypeDefinition();
 			XPath xpath = XPathFactory.instance().getXpath(this.referencedXmlPath);
-			Iterable<String> result = xpath.getCompletionProposals(new ReferencedXmlPathContext(astRoot), xsdType, pos, filter);
+			Iterable<String> result = xpath.getCompletionProposals(new ReferencedXmlPathContext(), xsdType, pos, filter);
 			
 			ELClassMapping referencedClassMapping = this.context.getAttributeMapping().getReferencedClassMapping();
 			if (referencedClassMapping != null) {
@@ -178,18 +178,18 @@ public class ELJavaXmlJoinNode
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		
-		validateXmlPath(messages, astRoot);
-		validateReferencedXmlPath(messages, astRoot);
+		validateXmlPath(messages);
+		validateReferencedXmlPath(messages);
 	}
 	
-	protected void validateXmlPath(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateXmlPath(List<IMessage> messages) {
 		if (StringTools.stringIsEmpty(this.xmlPath)) {
 			messages.add(
 					ELJaxbValidationMessageBuilder.buildMessage(
 								IMessage.HIGH_SEVERITY,
 								ELJaxbValidationMessages.XML_JOIN_NODE__XML_PATH_NOT_SPECIFIED,
 								ELJavaXmlJoinNode.this,
-								getXmlPathTextRange(astRoot)));
+								getXmlPathTextRange()));
 			return;
 		}
 		
@@ -199,23 +199,23 @@ public class ELJavaXmlJoinNode
 								IMessage.HIGH_SEVERITY,
 								ELJaxbValidationMessages.XPATH__ROOT_NOT_SUPPORTED,
 								ELJavaXmlJoinNode.this,
-								getXmlPathTextRange(astRoot)));
+								getXmlPathTextRange()));
 			return;
 		}
 		
 		XsdTypeDefinition xsdType = getClassMapping().getXsdTypeDefinition();
 		XPath xpath = XPathFactory.instance().getXpath(this.xmlPath);
-		xpath.validate(new XmlPathContext(astRoot), xsdType, messages);
+		xpath.validate(new XmlPathContext(), xsdType, messages);
 	}
 	
-	protected void validateReferencedXmlPath(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateReferencedXmlPath(List<IMessage> messages) {
 		if (StringTools.stringIsEmpty(this.referencedXmlPath)) {
 			messages.add(
 					ELJaxbValidationMessageBuilder.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							ELJaxbValidationMessages.XML_JOIN_NODE__REFERENCED_XML_PATH_NOT_SPECIFIED,
 							ELJavaXmlJoinNode.this,
-							getReferencedXmlPathTextRange(astRoot)));
+							getReferencedXmlPathTextRange()));
 			return;
 		}
 		
@@ -225,7 +225,7 @@ public class ELJavaXmlJoinNode
 							IMessage.HIGH_SEVERITY,
 							ELJaxbValidationMessages.XPATH__ROOT_NOT_SUPPORTED,
 							ELJavaXmlJoinNode.this,
-							getReferencedXmlPathTextRange(astRoot)));
+							getReferencedXmlPathTextRange()));
 			return;
 		}
 		
@@ -238,22 +238,22 @@ public class ELJavaXmlJoinNode
 							ELJaxbValidationMessages.XML_JOIN_NODE__REFERENCED_XML_PATH_NOT_IN_REFERENCED_CLASS_KEYS,
 							new String[] { referencedClassMapping.getJaxbType().getFullyQualifiedName(), this.referencedXmlPath },
 							ELJavaXmlJoinNode.this,
-							getReferencedXmlPathTextRange(astRoot)));
+							getReferencedXmlPathTextRange()));
 		}
 		
 		XsdTypeDefinition xsdType = getAttributeMapping().getReferencedXsdTypeDefinition();
 		XPath xpath = XPathFactory.instance().getXpath(this.referencedXmlPath);
-		xpath.validate(new ReferencedXmlPathContext(astRoot), xsdType, messages);
+		xpath.validate(new ReferencedXmlPathContext(), xsdType, messages);
 	}
 	
-	protected TextRange getXmlPathTextRange(CompilationUnit astRoot) {
+	protected TextRange getXmlPathTextRange() {
 		// should never be null
-		return getAnnotation().getXmlPathTextRange(astRoot);
+		return getAnnotation().getXmlPathTextRange();
 	}
 	
-	protected TextRange getReferencedXmlPathTextRange(CompilationUnit astRoot) {
+	protected TextRange getReferencedXmlPathTextRange() {
 		// should never be null
-		return getAnnotation().getReferencedXmlPathTextRange(astRoot);
+		return getAnnotation().getReferencedXmlPathTextRange();
 	}
 	
 	
@@ -268,10 +268,7 @@ public class ELJavaXmlJoinNode
 	protected abstract class XPathContext
 			implements XPath.Context {
 		
-		protected CompilationUnit astRoot;
-		
-		protected XPathContext(CompilationUnit astRoot) {
-			this.astRoot = astRoot;
+		protected XPathContext() {
 		}
 		
 		
@@ -288,13 +285,13 @@ public class ELJavaXmlJoinNode
 	protected class XmlPathContext
 			extends XPathContext {
 		
-		protected XmlPathContext(CompilationUnit astRoot) {
-			super(astRoot);
+		protected XmlPathContext() {
+			super();
 		}
 		
 		
 		public TextRange getTextRange() {
-			return ELJavaXmlJoinNode.this.getXmlPathTextRange(this.astRoot);
+			return ELJavaXmlJoinNode.this.getXmlPathTextRange();
 		}
 	}
 	
@@ -302,13 +299,13 @@ public class ELJavaXmlJoinNode
 	protected class ReferencedXmlPathContext
 			extends XPathContext {
 		
-		protected ReferencedXmlPathContext(CompilationUnit astRoot) {
-			super(astRoot);
+		protected ReferencedXmlPathContext() {
+			super();
 		}
 		
 		
 		public TextRange getTextRange() {
-			return ELJavaXmlJoinNode.this.getReferencedXmlPathTextRange(this.astRoot);
+			return ELJavaXmlJoinNode.this.getReferencedXmlPathTextRange();
 		}
 	}
 }

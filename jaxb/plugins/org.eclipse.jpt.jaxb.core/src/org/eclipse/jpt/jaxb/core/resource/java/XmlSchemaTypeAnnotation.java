@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. All rights reserved.
+ *  Copyright (c) 2010, 2012  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 
@@ -23,7 +22,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 3.3
  * @since 3.0
  */
 public interface XmlSchemaTypeAnnotation
@@ -52,7 +51,7 @@ public interface XmlSchemaTypeAnnotation
 	 * Return the {@link TextRange} for the 'type' element. If the element 
 	 * does not exist return the {@link TextRange} for the XmlSchemaType annotation.
 	 */
-	TextRange getTypeTextRange(CompilationUnit astRoot);
+	TextRange getTypeTextRange();
 	
 	String FULLY_QUALIFIED_TYPE_PROPERTY = "fullyQualifiedType"; //$NON-NLS-1$
 	
@@ -70,5 +69,5 @@ public interface XmlSchemaTypeAnnotation
 	/**
 	 * The default type when none is specified
 	 */
-	String DEFAULT_TYPE = "javax.xml.bind.annotation.XmlSchemaType.DEFAULT";
+	String DEFAULT_TYPE = "javax.xml.bind.annotation.XmlSchemaType.DEFAULT"; //$NON-NLS-1$
 }
