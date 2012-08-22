@@ -5,7 +5,7 @@
     modelName="EclipseLinkCore" editPluginClass="" editorPluginClass="" updateClasspath="false"
     rootExtendsInterface="org.eclipse.jpt.common.core.resource.xml.EBaseObject" rootExtendsClass="org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl"
     suppressInterfaces="true" testsDirectory="" testSuiteClass="" importerID="org.eclipse.emf.importer.ecore"
-    complianceLevel="5.0" copyrightFields="false" usedGenPackages="../../org.eclipse.jpt.jpa.core/model/jpaResourceModels.genmodel#//orm ../../org.eclipse.jpt.common.core/model/commonResourceModels.genmodel#//xml">
+    complianceLevel="5.0" copyrightFields="false" usedGenPackages="../../org.eclipse.jpt.jpa.core/model/jpaResourceModels.genmodel#//orm ../../org.eclipse.jpt.common.core/model/common.genmodel#//xml">
   <foreignModel>eclipselink_orm.ecore</foreignModel>
   <genPackages prefix="EclipseLinkOrm" basePackage="org.eclipse.jpt.jpa.eclipselink.core.resource"
       disposableProviderFactory="true" adapterFactory="false" ecorePackage="eclipselink_orm.ecore#/">

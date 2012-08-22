@@ -6,7 +6,7 @@
     rootExtendsInterface="org.eclipse.jpt.common.core.resource.xml.EBaseObject" rootExtendsClass="org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl"
     suppressInterfaces="true" testsDirectory="" testSuiteClass="" importerID="org.eclipse.emf.importer.ecore"
     complianceLevel="5.0" copyrightFields="false" editPluginID="org.eclipse.jpt.jaxb.eclipselink.core.edit"
-    editorPluginID="org.eclipse.jpt.jaxb.eclipselink.core.edit" usedGenPackages="../../org.eclipse.jpt.common.core/model/commonResourceModels.genmodel#//xml">
+    editorPluginID="org.eclipse.jpt.jaxb.eclipselink.core.edit" usedGenPackages="../../org.eclipse.jpt.common.core/model/common.genmodel#//xml">
   <foreignModel>oxm.ecore</foreignModel>
   <genPackages prefix="Oxm" basePackage="org.eclipse.jpt.jaxb.eclipselink.core.resource"
       disposableProviderFactory="true" adapterFactory="false" contentTypeIdentifier=""

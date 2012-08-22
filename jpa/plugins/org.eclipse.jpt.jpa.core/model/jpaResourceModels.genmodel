@@ -5,7 +5,7 @@
     modelName="Core" editPluginClass="" editorPluginClass="" updateClasspath="false"
     rootExtendsInterface="org.eclipse.jpt.common.core.resource.xml.EBaseObject" rootExtendsClass="org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl"
     suppressInterfaces="true" testsDirectory="" testSuiteClass="" importerID="org.eclipse.emf.importer.ecore"
-    complianceLevel="5.0" copyrightFields="false" usedGenPackages="../../org.eclipse.jpt.common.core/model/commonResourceModels.genmodel#//xml platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore">
+    complianceLevel="5.0" copyrightFields="false" usedGenPackages="../../org.eclipse.jpt.common.core/model/common.genmodel#//xml platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore">
   <foreignModel>orm.ecore</foreignModel>
   <foreignModel>persistence.ecore</foreignModel>
   <genPackages prefix="Orm" basePackage="org.eclipse.jpt.jpa.core.resource" disposableProviderFactory="true"
