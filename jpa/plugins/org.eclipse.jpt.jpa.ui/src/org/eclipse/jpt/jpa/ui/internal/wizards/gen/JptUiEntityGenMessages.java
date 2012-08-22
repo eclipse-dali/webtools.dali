@@ -51,6 +51,7 @@ public class JptUiEntityGenMessages {
 	public static String GenerateEntitiesWizard_defaultTablePage_tableMapping;
 	public static String GenerateEntitiesWizard_tablePanel_className;
 	public static String GenerateEntitiesWizard_defaultTablePage_fetch;
+	public static String GenerateEntitiesWizard_defaultTablePage_fetchDefault;
 	public static String GenerateEntitiesWizard_defaultTablePage_collType;
 	public static String GenerateEntitiesWizard_defaultTablePage_sequence;
 	public static String GenerateEntitiesWizard_defaultTablePage_sequenceNote;
