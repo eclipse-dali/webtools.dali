@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import java.util.List;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
@@ -252,14 +251,14 @@ public class GenericJavaQueryContainer
 	 * @see org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnit#validateQueries(List, IReporter)
 	 */
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		// queries are validated in the persistence unit
 	}
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.owner.getResourceAnnotatedElement().getTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		TextRange textRange = this.owner.getResourceAnnotatedElement().getTextRange();
+		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
 	}
 
 

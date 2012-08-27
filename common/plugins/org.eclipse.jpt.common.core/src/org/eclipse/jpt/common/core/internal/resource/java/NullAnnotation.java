@@ -64,7 +64,7 @@ public abstract class NullAnnotation<A extends Annotation>
 		throw new UnsupportedOperationException();
 	}
 
-	public TextRange getTextRange(CompilationUnit astRoot) {
+	public TextRange getTextRange() {
 		return null;
 	}
 

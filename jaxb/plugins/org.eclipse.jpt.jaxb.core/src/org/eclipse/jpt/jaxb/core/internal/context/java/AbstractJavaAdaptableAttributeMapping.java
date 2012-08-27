@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
@@ -181,11 +180,11 @@ public abstract class AbstractJavaAdaptableAttributeMapping<A extends Annotation
 	
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
 		if (this.xmlJavaTypeAdapter != null) {
-			this.xmlJavaTypeAdapter.validate(messages, reporter, astRoot);
+			this.xmlJavaTypeAdapter.validate(messages, reporter);
 		}
 	}
 }

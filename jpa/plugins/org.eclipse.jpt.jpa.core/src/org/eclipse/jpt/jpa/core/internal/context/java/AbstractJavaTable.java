@@ -25,7 +25,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.jpa.core.resource.java.BaseTableAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
 import org.eclipse.jpt.jpa.db.Catalog;
@@ -484,34 +483,30 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.buildTableValidator(astRoot).validate(messages, reporter);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.buildTableValidator().validate(messages, reporter);
 	}
 
-	protected JptValidator buildTableValidator(CompilationUnit astRoot) {
-		return this.owner.buildTableValidator(this, buildTextRangeResolver(astRoot));
+	protected JptValidator buildTableValidator() {
+		return this.owner.buildTableValidator(this);
 	}
 
-	protected TableTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
-		return new JavaTableTextRangeResolver(this, astRoot);
+	public TextRange getValidationTextRange() {
+		TextRange textRange = this.getTableAnnotation().getTextRange();
+		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
 	}
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.getTableAnnotation().getTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
+	public TextRange getNameTextRange() {
+		return this.getValidationTextRange(this.getTableAnnotation().getNameTextRange());
 	}
 
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.getTableAnnotation().getNameTextRange(), astRoot);
+	public TextRange getSchemaTextRange() {
+		return this.getValidationTextRange(this.getTableAnnotation().getSchemaTextRange());
 	}
 
-	public TextRange getSchemaTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.getTableAnnotation().getSchemaTextRange(), astRoot);
-	}
-
-	public TextRange getCatalogTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.getTableAnnotation().getCatalogTextRange(), astRoot);
+	public TextRange getCatalogTextRange() {
+		return this.getValidationTextRange(this.getTableAnnotation().getCatalogTextRange());
 	}
 
 

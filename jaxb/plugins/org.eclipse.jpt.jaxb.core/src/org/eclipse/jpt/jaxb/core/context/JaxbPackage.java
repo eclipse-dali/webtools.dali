@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,10 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
-import java.util.List;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * 
@@ -23,7 +20,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 3.03
  * @since 3.0
  */
 public interface JaxbPackage
@@ -75,12 +72,4 @@ public interface JaxbPackage
 	 * Return the {@link XsdSchema} associated with this package, if there is one, null otherwise
 	 */
 	XsdSchema getXsdSchema();
-	
-	
-	// **************** validation ********************************************
-	
-	/**
-	 * Add validation messages to the specified list.
-	 */
-	public void validate(List<IMessage> messages, IReporter reporter);
 }

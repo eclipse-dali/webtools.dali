@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -116,12 +115,12 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.validateName(messages, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.validateName(messages);
 	}
 
-	protected void validateName(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateName(List<IMessage> messages) {
 		if (StringTools.stringIsEmpty(this.name)) {
 			messages.add(
 				DefaultEclipseLinkJpaValidationMessages.buildMessage(
@@ -129,7 +128,7 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 					EclipseLinkJpaValidationMessages.CONVERTER_NAME_UNDEFINED, 
 					EMPTY_STRING_ARRAY,
 					this,
-					this.getNameTextRange(astRoot)
+					this.getNameTextRange()
 				)
 			);
 			return;
@@ -142,19 +141,19 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 					EclipseLinkJpaValidationMessages.RESERVED_CONVERTER_NAME,
 					EMPTY_STRING_ARRAY,
 					this,
-					this.getNameTextRange(astRoot)
+					this.getNameTextRange()
 				)
 			);
 		}
 	}
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.converterAnnotation.getTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		TextRange textRange = this.converterAnnotation.getTextRange();
+		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
 	}
 	
-	public TextRange getNameTextRange(CompilationUnit astRoot){
-		return this.getValidationTextRange(this.getConverterAnnotation().getNameTextRange(), astRoot);
+	public TextRange getNameTextRange(){
+		return this.getValidationTextRange(this.getConverterAnnotation().getNameTextRange());
 	}
 
 	public boolean isEquivalentTo(JpaNamedContextNode node) {

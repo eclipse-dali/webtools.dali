@@ -18,11 +18,8 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappingJoinColumnRelationship;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyJoinColumn;
-import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.JoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationDescriptionMessages;
@@ -51,7 +48,7 @@ public class GenericOrmMappingJoinColumnRelationshipStrategy
 
 
 	@Override
-	protected OrmReadOnlyJoinColumn.Owner buildJoinColumnOwner() {
+	protected ReadOnlyJoinColumn.Owner buildJoinColumnOwner() {
 		return new JoinColumnOwner();
 	}
 
@@ -101,7 +98,7 @@ public class GenericOrmMappingJoinColumnRelationshipStrategy
 	// ********** join column owner **********
 
 	protected class JoinColumnOwner
-		implements OrmReadOnlyJoinColumn.Owner
+		implements ReadOnlyJoinColumn.Owner
 	{
 		protected JoinColumnOwner() {
 			super();
@@ -154,8 +151,8 @@ public class GenericOrmMappingJoinColumnRelationshipStrategy
 			return GenericOrmMappingJoinColumnRelationshipStrategy.this.getValidationTextRange();
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return new JoinColumnValidator(this.getPersistentAttribute(), (ReadOnlyJoinColumn) column, this, (JoinColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+			return new JoinColumnValidator(this.getPersistentAttribute(), (ReadOnlyJoinColumn) column, this, new EntityTableDescriptionProvider());
 		}
 	}
 }

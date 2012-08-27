@@ -12,12 +12,9 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmVirtualBaseColumn;
-import org.eclipse.jpt.jpa.core.internal.context.orm.OrmJoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.Table;
 
@@ -25,7 +22,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * <code>orm.xml</code> virtual join column
  */
 public class GenericOrmVirtualJoinColumn
-	extends AbstractOrmVirtualBaseColumn<OrmReadOnlyJoinColumn.Owner, ReadOnlyJoinColumn>
+	extends AbstractOrmVirtualBaseColumn<ReadOnlyJoinColumn.Owner, ReadOnlyJoinColumn>
 	implements OrmVirtualJoinColumn
 {
 	protected final ReadOnlyJoinColumn overriddenColumn;
@@ -34,7 +31,7 @@ public class GenericOrmVirtualJoinColumn
 	protected String defaultReferencedColumnName;
 
 
-	public GenericOrmVirtualJoinColumn(XmlContextNode parent, OrmReadOnlyJoinColumn.Owner owner, ReadOnlyJoinColumn overriddenColumn) {
+	public GenericOrmVirtualJoinColumn(XmlContextNode parent, ReadOnlyJoinColumn.Owner owner, ReadOnlyJoinColumn overriddenColumn) {
 		super(parent, owner);
 		this.overriddenColumn = overriddenColumn;
 	}
@@ -114,10 +111,5 @@ public class GenericOrmVirtualJoinColumn
 
 	public TextRange getReferencedColumnNameTextRange() {
 		return this.getValidationTextRange();
-	}
-
-	@Override
-	protected NamedColumnTextRangeResolver buildTextRangeResolver() {
-		return new OrmJoinColumnTextRangeResolver(this);
 	}
 }

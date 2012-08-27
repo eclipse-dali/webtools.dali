@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -102,8 +101,8 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 	// ********** validation **********
 	
 	@Override
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return getAnnotation() == null ? getJavaResourceAttribute().getNameTextRange() : getAnnotation().getTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		return getAnnotation() == null ? getJavaResourceAttribute().getNameTextRange() : getAnnotation().getTextRange();
 	}
 	
 	

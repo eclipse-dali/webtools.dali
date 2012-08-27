@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
@@ -169,8 +168,8 @@ public class NullJavaJoinColumnRelationshipStrategy
 
 	// ********** validation **********
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.getRelationship().getValidationTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		return this.getRelationship().getValidationTextRange();
 	}
 
 	public String getColumnTableNotValidDescription() {

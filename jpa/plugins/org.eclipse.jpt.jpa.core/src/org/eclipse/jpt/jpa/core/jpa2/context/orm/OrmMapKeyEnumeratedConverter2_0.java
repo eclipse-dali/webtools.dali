@@ -17,7 +17,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmBaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.ConverterTextRangeResolver;
 import org.eclipse.jpt.jpa.core.resource.orm.EnumType;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlMapKeyConvertibleMapping_2_0;
@@ -71,7 +70,7 @@ public interface OrmMapKeyEnumeratedConverter2_0
 					return mapping.getMapKeyEnumeratedTextRange();
 				}
 
-				public JptValidator buildValidator(Converter converter, ConverterTextRangeResolver textRangeResolver) {
+				public JptValidator buildValidator(Converter converter) {
 					return JptValidator.Null.instance();
 				}
 			};

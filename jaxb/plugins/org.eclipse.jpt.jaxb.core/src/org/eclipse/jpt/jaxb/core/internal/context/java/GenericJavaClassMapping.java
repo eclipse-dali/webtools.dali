@@ -775,22 +775,22 @@ public class GenericJavaClassMapping
 	// ***** validation *****
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
-		validateConstructor(messages, reporter, astRoot);
-		validatePropOrder(messages, reporter, astRoot);
-		validateXmlAnyAttributeMapping(messages, astRoot);
-		validateXmlAnyElementMapping(messages, astRoot);
-		validateXmlValueMapping(messages, astRoot);
-		validateXmlIDs(messages, astRoot);
+		validateConstructor(messages, reporter);
+		validatePropOrder(messages, reporter);
+		validateXmlAnyAttributeMapping(messages);
+		validateXmlAnyElementMapping(messages);
+		validateXmlValueMapping(messages);
+		validateXmlIDs(messages);
 		
 		for (JaxbPersistentAttribute attribute : getAttributes()) {
-			attribute.validate(messages, reporter, astRoot);
+			attribute.validate(messages, reporter);
 		}
 	}
 	
-	protected void validateConstructor(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateConstructor(List<IMessage> messages, IReporter reporter) {
 		// TODO - factory class/method
 		
 		if (! JAXB.XML_TYPE__DEFAULT_FACTORY_CLASS.equals(getFactoryClass())) {
@@ -800,7 +800,7 @@ public class GenericJavaClassMapping
 								IMessage.HIGH_SEVERITY,
 								JaxbValidationMessages.XML_TYPE__UNSPECIFIED_FACTORY_METHOD,
 								this,
-								getFactoryClassTextRange(astRoot)));
+								getFactoryClassTextRange()));
 			}
 		}
 		else {
@@ -812,13 +812,13 @@ public class GenericJavaClassMapping
 								IMessage.HIGH_SEVERITY,
 								JaxbValidationMessages.XML_TYPE__NO_PUBLIC_OR_PROTECTED_CONSTRUCTOR,
 								this,
-								getValidationTextRange(astRoot)));
+								getValidationTextRange()));
 			}
 		}
 		
 	}
 	
-	protected void validatePropOrder(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validatePropOrder(List<IMessage> messages, IReporter reporter) {
 		if (CollectionTools.isEmpty(getPropOrder())) {
 			return;
 		}
@@ -894,7 +894,7 @@ public class GenericJavaClassMapping
 							JaxbValidationMessages.XML_TYPE__MISSING_PROP,
 							new String[] { missingProp },
 							this,
-							getPropOrderTextRange(astRoot)));
+							getPropOrderTextRange()));
 		}
 		
 		for (int i : nonexistentProps) {
@@ -918,7 +918,7 @@ public class GenericJavaClassMapping
 		}
 	}
 	
-	protected void validateXmlAnyAttributeMapping(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateXmlAnyAttributeMapping(List<IMessage> messages) {
 		Set<JaxbPersistentAttribute> localAttributes = new HashSet<JaxbPersistentAttribute>();
 		Set<JaxbPersistentAttribute> allAttributes = new HashSet<JaxbPersistentAttribute>();
 			
@@ -941,7 +941,7 @@ public class GenericJavaClassMapping
 							IMessage.HIGH_SEVERITY,
 							JaxbValidationMessages.XML_ANY_ATTRIBUTE__MULTIPLE_MAPPINGS_DEFINED,
 							this,
-							getValidationTextRange(astRoot)));
+							getValidationTextRange()));
 				
 			for (JaxbPersistentAttribute anyAttribute : localAttributes) {
 				messages.add(
@@ -949,12 +949,12 @@ public class GenericJavaClassMapping
 						IMessage.HIGH_SEVERITY,
 						JaxbValidationMessages.XML_ANY_ATTRIBUTE__MULTIPLE_MAPPINGS_DEFINED,
 						anyAttribute.getMapping(),
-						anyAttribute.getMapping().getValidationTextRange(astRoot)));
+						anyAttribute.getMapping().getValidationTextRange()));
 			}
 		}
 	}
 	
-	protected void validateXmlAnyElementMapping(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateXmlAnyElementMapping(List<IMessage> messages) {
 		Set<JaxbPersistentAttribute> localAttributes = new HashSet<JaxbPersistentAttribute>();
 		Set<JaxbPersistentAttribute> allAttributes = new HashSet<JaxbPersistentAttribute>();
 			
@@ -977,7 +977,7 @@ public class GenericJavaClassMapping
 							IMessage.HIGH_SEVERITY,
 							JaxbValidationMessages.XML_ANY_ELEMENT__MULTIPLE_MAPPINGS_DEFINED,
 							this,
-							getValidationTextRange(astRoot)));
+							getValidationTextRange()));
 				
 			for (JaxbPersistentAttribute anyAttribute : localAttributes) {
 				messages.add(
@@ -985,12 +985,12 @@ public class GenericJavaClassMapping
 						IMessage.HIGH_SEVERITY,
 						JaxbValidationMessages.XML_ANY_ELEMENT__MULTIPLE_MAPPINGS_DEFINED,
 						anyAttribute.getMapping(),
-						anyAttribute.getMapping().getValidationTextRange(astRoot)));
+						anyAttribute.getMapping().getValidationTextRange()));
 			}
 		}
 	}
 	
-	protected void validateXmlValueMapping(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateXmlValueMapping(List<IMessage> messages) {
 		Set<JaxbPersistentAttribute> localAttributes = new HashSet<JaxbPersistentAttribute>();
 		Set<JaxbPersistentAttribute> allAttributes = new HashSet<JaxbPersistentAttribute>();
 			
@@ -1013,7 +1013,7 @@ public class GenericJavaClassMapping
 							IMessage.HIGH_SEVERITY,
 							JaxbValidationMessages.XML_VALUE__MULTIPLE_MAPPINGS_DEFINED,
 							this,
-							getValidationTextRange(astRoot)));
+							getValidationTextRange()));
 				
 			for (JaxbPersistentAttribute anyAttribute : localAttributes) {
 				messages.add(
@@ -1021,12 +1021,12 @@ public class GenericJavaClassMapping
 						IMessage.HIGH_SEVERITY,
 						JaxbValidationMessages.XML_VALUE__MULTIPLE_MAPPINGS_DEFINED,
 						anyAttribute.getMapping(),
-						anyAttribute.getMapping().getValidationTextRange(astRoot)));
+						anyAttribute.getMapping().getValidationTextRange()));
 			}
 		}
 	}
 	
-	protected void validateXmlIDs(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateXmlIDs(List<IMessage> messages) {
 		
 		Set<JaxbPersistentAttribute> localAttributes = new HashSet<JaxbPersistentAttribute>();
 		Set<JaxbPersistentAttribute> allAttributes = new HashSet<JaxbPersistentAttribute>();
@@ -1054,7 +1054,7 @@ public class GenericJavaClassMapping
 							IMessage.HIGH_SEVERITY,
 							JaxbValidationMessages.XML_ID__MULTIPLE_MAPPINGS_DEFINED,
 							this,
-							getValidationTextRange(astRoot)));
+							getValidationTextRange()));
 				
 			for (JaxbPersistentAttribute anyAttribute : localAttributes) {
 				messages.add(
@@ -1062,24 +1062,24 @@ public class GenericJavaClassMapping
 						IMessage.HIGH_SEVERITY,
 						JaxbValidationMessages.XML_ID__MULTIPLE_MAPPINGS_DEFINED,
 						anyAttribute.getMapping(),
-						anyAttribute.getMapping().getValidationTextRange(astRoot)));
+						anyAttribute.getMapping().getValidationTextRange()));
 			}
 		}
 	}
 	
-	protected TextRange getFactoryClassTextRange(CompilationUnit astRoot) {
+	protected TextRange getFactoryClassTextRange() {
 		TextRange result = getXmlTypeAnnotation().getFactoryClassTextRange();
-		return (result != null) ? result : getValidationTextRange(astRoot);
+		return (result != null) ? result : getValidationTextRange();
 	}
 	
-	protected TextRange getFactoryMethodTextRange(CompilationUnit astRoot) {
+	protected TextRange getFactoryMethodTextRange() {
 		TextRange result = getXmlTypeAnnotation().getFactoryMethodTextRange();
-		return (result != null) ? result : getValidationTextRange(astRoot);
+		return (result != null) ? result : getValidationTextRange();
 	}
 	
-	protected TextRange getPropOrderTextRange(CompilationUnit astRoot) {
+	protected TextRange getPropOrderTextRange() {
 		TextRange result = getXmlTypeAnnotation().getPropOrderTextRange();
-		return (result != null) ? result : getValidationTextRange(astRoot);
+		return (result != null) ? result : getValidationTextRange();
 	}
 	
 	protected TextRange getPropTextRange(int index) {

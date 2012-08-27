@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
@@ -101,9 +100,9 @@ public class JavaEclipseLinkOneToOneMapping
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.joinFetch.validate(messages, reporter, astRoot);
-		this.privateOwned.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.joinFetch.validate(messages, reporter);
+		this.privateOwned.validate(messages, reporter);
 	}
 }

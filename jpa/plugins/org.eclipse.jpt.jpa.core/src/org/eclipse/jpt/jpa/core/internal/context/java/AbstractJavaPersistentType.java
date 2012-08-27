@@ -53,7 +53,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
-import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -569,7 +568,7 @@ public abstract class AbstractJavaPersistentType
 	private void syncFieldAccessAttributes() {
 		HashSet<JavaPersistentAttribute> contextAttributes = CollectionTools.set(this.getAttributes());
 
-		this.syncFieldAttributes(contextAttributes, this.buildNonTransientNonStaticResourceFieldsFilter());
+		this.syncFieldAttributes(contextAttributes, buildNonTransientNonStaticResourceFieldsFilter());
 		this.syncAnnotatedPropertyAttributes(contextAttributes);
 	}
 
@@ -939,13 +938,10 @@ public abstract class AbstractJavaPersistentType
 		return JavaPersistentType.class;
 	}
 
-	// TODO when we start caching text ranges we can stop building the ASTRoot.
 	public JpaStructureNode getStructureNode(int offset) {
-		CompilationUnit astRoot = this.buildASTRoot();
-
-		if (this.contains(offset, astRoot)) {
+		if (this.contains(offset)) {
 			for (JavaPersistentAttribute persistentAttribute : this.getAttributes()) {
-				if (persistentAttribute.contains(offset, astRoot)) {
+				if (persistentAttribute.contains(offset)) {
 					return persistentAttribute;
 				}
 			}
@@ -954,8 +950,8 @@ public abstract class AbstractJavaPersistentType
 		return null;
 	}
 
-	protected boolean contains(int offset, CompilationUnit astRoot) {
-		TextRange fullTextRange = this.resourceType.getTextRange(astRoot);
+	protected boolean contains(int offset) {
+		TextRange fullTextRange = this.resourceType.getTextRange();
 		// 'fullTextRange' will be null if the type no longer exists in the java;
 		// the context model can be out of sync with the resource model
 		// when a selection event occurs before the context model has a
@@ -1013,47 +1009,35 @@ public abstract class AbstractJavaPersistentType
 
 	// ********** validation **********
 
-	public void validate(List<IMessage> messages, IReporter reporter) {
-		if (reporter.isCancelled()) {
-			throw new ValidationCancelledException();
-		}
-		if (MappingTools.nodeIsInternalSource(this, this.resourceType)) {
-			// build the AST root here to pass down
-			this.validate(messages, reporter, this.buildASTRoot());
-		}
-	}
-
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.validateMapping(messages, reporter, astRoot);
-		this.validateAttributes(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		if (MappingTools.nodeIsInternalSource(this, this.resourceType)) {
+			this.validateMapping(messages, reporter);
+			this.validateAttributes(messages, reporter);
+		}
 	}
 
-	protected void validateMapping(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateMapping(List<IMessage> messages, IReporter reporter) {
 		try {
-			this.mapping.validate(messages, reporter, astRoot);
+			this.mapping.validate(messages, reporter);
 		} catch(Throwable t) {
 			JptJpaCorePlugin.instance().logError(t);
 		}
 	}
 
-	protected void validateAttributes(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateAttributes(List<IMessage> messages, IReporter reporter) {
 		for (JavaPersistentAttribute attribute : this.getAttributes()) {
-			this.validateAttribute(attribute, reporter, messages, astRoot);
+			this.validateAttribute(attribute, reporter, messages);
 		}
 	}
 
-	protected void validateAttribute(JavaPersistentAttribute attribute, IReporter reporter, List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateAttribute(JavaPersistentAttribute attribute, IReporter reporter, List<IMessage> messages) {
 		try {
-			attribute.validate(messages, reporter, astRoot);
+			attribute.validate(messages, reporter);
 		} catch(Throwable t) {
 			JptJpaCorePlugin.instance().logError(t);
 		}
-	}
-
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange();
 	}
 
 	public TextRange getValidationTextRange() {
@@ -1083,10 +1067,6 @@ public abstract class AbstractJavaPersistentType
 
 	public AccessType getOwnerDefaultAccess() {
 		return this.getParent().getDefaultPersistentTypeAccess();
-	}
-
-	protected CompilationUnit buildASTRoot() {
-		return this.resourceType.getJavaResourceCompilationUnit().buildASTRoot();
 	}
 
 	protected JpaFile getJpaFile() {

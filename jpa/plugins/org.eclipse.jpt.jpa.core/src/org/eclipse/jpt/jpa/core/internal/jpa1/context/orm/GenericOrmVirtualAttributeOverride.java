@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,9 +17,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualColumn;
-import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -93,8 +91,8 @@ public class GenericOrmVirtualAttributeOverride
 		return this.getContainer().resolveOverriddenColumn(this.name);
 	}
 
-	public JptValidator buildColumnValidator(ReadOnlyNamedColumn col, NamedColumnTextRangeResolver textRangeResolver) {
-		return this.getContainer().buildColumnValidator(this, (ReadOnlyBaseColumn) col, this, (TableColumnTextRangeResolver) textRangeResolver);
+	public JptValidator buildColumnValidator(ReadOnlyNamedColumn col) {
+		return this.getContainer().buildColumnValidator(this, (ReadOnlyBaseColumn) col, this);
 	}
 
 

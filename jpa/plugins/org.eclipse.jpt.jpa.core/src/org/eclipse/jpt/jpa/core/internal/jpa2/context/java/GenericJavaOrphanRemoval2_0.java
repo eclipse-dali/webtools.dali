@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
@@ -114,9 +113,9 @@ public class GenericJavaOrphanRemoval2_0
 
 	// ********** validation **********
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+	public TextRange getValidationTextRange() {
 		TextRange textRange = this.getAnnotationTextRange();
-		return (textRange != null) ? textRange : this.getMapping().getValidationTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getMapping().getValidationTextRange();
 	}
 
 	protected TextRange getAnnotationTextRange() {

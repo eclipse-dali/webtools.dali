@@ -310,31 +310,31 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.validateMapsId(messages, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.validateMapsId(messages);
 	}
 
-	protected void validateMapsId(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateMapsId(List<IMessage> messages) {
 		if (this.getDerivedIdentity().usesMapsIdDerivedIdentityStrategy()) {
-			this.validateMapsId_(messages, astRoot);
+			this.validateMapsId_(messages);
 		}
 	}
 
-	protected void validateMapsId_(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateMapsId_(List<IMessage> messages) {
 		// test whether id attribute name can be resolved
 		AttributeMapping attributeMapping = this.getDerivedIdAttributeMapping();
 		if (attributeMapping == null) {
 			// if id attribute name is not specified, use that message
 			if (this.specifiedIdAttributeName == null) {
-				messages.add(this.buildMessage(JpaValidationMessages.MAPS_ID_VALUE_NOT_SPECIFIED, EMPTY_STRING_ARRAY, astRoot));
+				messages.add(this.buildMessage(JpaValidationMessages.MAPS_ID_VALUE_NOT_SPECIFIED, EMPTY_STRING_ARRAY));
 			} else {
-				messages.add(this.buildMessage(JpaValidationMessages.MAPS_ID_VALUE_NOT_RESOLVED, new String[] {this.getIdAttributeName()}, astRoot));
+				messages.add(this.buildMessage(JpaValidationMessages.MAPS_ID_VALUE_NOT_RESOLVED, new String[] {this.getIdAttributeName()}));
 			}
 		} else {
 			// test whether attribute mapping is allowable
 			if ( ! CollectionTools.contains(this.getValidAttributeMappingChoices(), attributeMapping)) {
-				messages.add(this.buildMessage(JpaValidationMessages.MAPS_ID_VALUE_INVALID, new String[] {this.getIdAttributeName()}, astRoot));
+				messages.add(this.buildMessage(JpaValidationMessages.MAPS_ID_VALUE_INVALID, new String[] {this.getIdAttributeName()}));
 			}
 		}
 	}
@@ -343,7 +343,7 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 		return this.buildAttributeMappingChoices(this.getIdAttributeMappings());
 	}
 
-	protected IMessage buildMessage(String msgID, String[] parms, CompilationUnit astRoot) {
+	protected IMessage buildMessage(String msgID, String[] parms) {
 		PersistentAttribute attribute = this.getPersistentAttribute();
 		String attributeDescription = attribute.isVirtual() ?
 				JpaValidationDescriptionMessages.VIRTUAL_ATTRIBUTE_DESC :
@@ -355,16 +355,16 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 				msgID,
 				parms,
 				this,
-				this.getValidationTextRange(astRoot)
+				this.getValidationTextRange()
 			);
 	}
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.getAnnotationTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getDerivedIdentity().getValidationTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		TextRange textRange = this.getAnnotationTextRange();
+		return (textRange != null) ? textRange : this.getDerivedIdentity().getValidationTextRange();
 	}
 
-	protected TextRange getAnnotationTextRange(CompilationUnit astRoot) {
-		return this.getAnnotation().getTextRange(astRoot);
+	protected TextRange getAnnotationTextRange() {
+		return this.getAnnotation().getTextRange();
 	}
 }

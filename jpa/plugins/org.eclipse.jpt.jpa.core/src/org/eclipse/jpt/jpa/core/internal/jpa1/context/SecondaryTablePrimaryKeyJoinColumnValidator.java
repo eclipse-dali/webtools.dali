@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
-import org.eclipse.jpt.jpa.core.internal.context.BaseJoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -24,9 +23,8 @@ public class SecondaryTablePrimaryKeyJoinColumnValidator
 	public SecondaryTablePrimaryKeyJoinColumnValidator(
 				ReadOnlySecondaryTable secondaryTable,
 				ReadOnlyBaseJoinColumn column,
-				ReadOnlyBaseJoinColumn.Owner owner,
-				BaseJoinColumnTextRangeResolver textRangeResolver) {
-		super(column, owner, textRangeResolver);
+				ReadOnlyBaseJoinColumn.Owner owner) {
+		super(column, owner);
 		this.secondaryTable = secondaryTable;
 	}
 
@@ -55,7 +53,7 @@ public class SecondaryTablePrimaryKeyJoinColumnValidator
 					this.column.getDbTable().getName()
 				},
 				this.column,
-				this.textRangeResolver.getNameTextRange()
+				this.column.getNameTextRange()
 			);
 	}
 
@@ -81,7 +79,7 @@ public class SecondaryTablePrimaryKeyJoinColumnValidator
 					this.column.getReferencedColumnDbTable().getName()
 				},
 				this.column,
-				this.textRangeResolver.getReferencedColumnNameTextRange()
+				this.column.getReferencedColumnNameTextRange()
 			);
 	}
 
@@ -103,7 +101,7 @@ public class SecondaryTablePrimaryKeyJoinColumnValidator
 				JpaValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,
 				new String[] {this.getSecondaryTableName()},
 				this.column,
-				this.textRangeResolver.getNameTextRange()
+				this.column.getNameTextRange()
 			);
 	}
 
@@ -125,7 +123,7 @@ public class SecondaryTablePrimaryKeyJoinColumnValidator
 				JpaValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,
 				new String[] {this.getSecondaryTableName()},
 				this.column,
-				this.textRangeResolver.getReferencedColumnNameTextRange()
+				this.column.getReferencedColumnNameTextRange()
 			);
 	}
 

@@ -38,7 +38,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_3JpaPlatformFa
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkMappedSuperclassPrimaryKeyValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkMappedSuperclassValidator;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.plugin.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -253,23 +252,23 @@ public class JavaEclipseLinkMappedSuperclassImpl
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.caching.validate(messages, reporter, astRoot);
-		this.readOnly.validate(messages, reporter, astRoot);
-		this.converterContainer.validate(messages, reporter, astRoot);
-		this.changeTracking.validate(messages, reporter, astRoot);
-		this.customizer.validate(messages, reporter, astRoot);
-		this.multitenancy.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.caching.validate(messages, reporter);
+		this.readOnly.validate(messages, reporter);
+		this.converterContainer.validate(messages, reporter);
+		this.changeTracking.validate(messages, reporter);
+		this.customizer.validate(messages, reporter);
+		this.multitenancy.validate(messages, reporter);
 	}
 
 	@Override
-	protected JptValidator buildPrimaryKeyValidator(CompilationUnit astRoot) {
-		return new EclipseLinkMappedSuperclassPrimaryKeyValidator(this, this.buildTextRangeResolver(astRoot));
+	protected JptValidator buildPrimaryKeyValidator() {
+		return new EclipseLinkMappedSuperclassPrimaryKeyValidator(this);
 	}
 
 	@Override
-	protected JptValidator buildTypeMappingValidator(CompilationUnit astRoot) {
-		return new EclipseLinkMappedSuperclassValidator(this, this.getJavaResourceType(), this.buildTextRangeResolver(astRoot));
+	protected JptValidator buildTypeMappingValidator() {
+		return new EclipseLinkMappedSuperclassValidator(this, this.getJavaResourceType());
 	}
 }

@@ -17,7 +17,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaBaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.ConverterTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaMapKeyTemporalConverterValidator;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporal2_0Annotation;
 
@@ -63,8 +62,8 @@ public interface JavaMapKeyTemporalConverter2_0
 		@Override
 		protected Owner buildOwner() {
 			return new Owner() {				
-				public JptValidator buildValidator(Converter converter, ConverterTextRangeResolver textRangeResolver) {
-					return new JavaMapKeyTemporalConverterValidator((BaseTemporalConverter) converter, textRangeResolver);
+				public JptValidator buildValidator(Converter converter) {
+					return new JavaMapKeyTemporalConverterValidator((BaseTemporalConverter) converter);
 				}
 			};
 		}

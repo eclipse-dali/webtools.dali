@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
@@ -27,7 +28,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.2
+ * @version 3.3
  * @since 2.0
  */
 public interface Query
@@ -93,4 +94,9 @@ public interface Query
 	void moveHint(int targetIndex, int sourceIndex);
 	
 	QueryHint getHint(int i);
+
+
+	TextRange getNameTextRange();
+
+	TextRange getQueryTextRange();
 }

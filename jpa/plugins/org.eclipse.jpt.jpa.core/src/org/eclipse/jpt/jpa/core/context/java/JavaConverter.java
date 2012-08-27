@@ -16,7 +16,6 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.ConverterTextRangeResolver;
 
 /**
  * Java converter
@@ -141,7 +140,7 @@ public interface JavaConverter
 
 		protected Owner buildOwner() {
 			return new Owner() {
-				public JptValidator buildValidator(Converter converter, ConverterTextRangeResolver textRangeResolver) {
+				public JptValidator buildValidator(Converter converter) {
 					return JptValidator.Null.instance();
 				}
 			};

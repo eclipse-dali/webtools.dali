@@ -235,17 +235,17 @@ public class ELJavaXmlAttributeMapping
 	// ***** validation *****
 	
 	@Override
-	protected void validateQName(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateQName(List<IMessage> messages, IReporter reporter) {
 		if (this.xmlPath == null) {
-			super.validateQName(messages, reporter, astRoot);
+			super.validateQName(messages, reporter);
 		}
 		else {
-			validateXmlPath(messages, reporter, astRoot);
+			validateXmlPath(messages, reporter);
 		}
 	}
 	
-	protected void validateXmlPath(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		this.xmlPath.validate(messages, reporter, astRoot);
+	protected void validateXmlPath(List<IMessage> messages, IReporter reporter) {
+		this.xmlPath.validate(messages, reporter);
 	}
 	
 	

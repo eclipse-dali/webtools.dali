@@ -14,7 +14,6 @@ import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.TypeMappingTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -26,14 +25,11 @@ public abstract class AbstractTypeMappingValidator<T extends TypeMapping>
 
 	protected JavaResourceType jrt;
 
-	protected TypeMappingTextRangeResolver textRangeResolver;
-
 
 	protected AbstractTypeMappingValidator(
-			T typeMapping, JavaResourceType jrt, TypeMappingTextRangeResolver textRangeResolver) {
+			T typeMapping, JavaResourceType jrt) {
 		this.typeMapping = typeMapping;
 		this.jrt = jrt;
-		this.textRangeResolver = textRangeResolver;
 	}
 
 
@@ -85,7 +81,7 @@ public abstract class AbstractTypeMappingValidator<T extends TypeMapping>
 				msgID,
 				new String[] {this.typeMapping.getName()},
 				this.typeMapping,
-				this.textRangeResolver.getTypeMappingTextRange()
+				this.typeMapping.getValidationTextRange()
 			);
 	}
 }

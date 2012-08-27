@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -36,7 +35,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.TypeMappingTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.TypeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.GenericTypeMappingValidator;
 import org.eclipse.jpt.jpa.db.Schema;
@@ -298,29 +296,25 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.validateType(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.validateType(messages, reporter);
 	}
 
-	protected void validateType(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		this.buildTypeMappingValidator(astRoot).validate(messages, reporter);
+	protected void validateType(List<IMessage> messages, IReporter reporter) {
+		this.buildTypeMappingValidator().validate(messages, reporter);
 	}
 
-	protected JptValidator buildTypeMappingValidator(CompilationUnit astRoot) {
-		return new GenericTypeMappingValidator(this, this.getJavaResourceType(), buildTextRangeResolver(astRoot));
-	}
-
-	protected TypeMappingTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
-		return new JavaTypeMappingTextRangeResolver(this, astRoot);
+	protected JptValidator buildTypeMappingValidator() {
+		return new GenericTypeMappingValidator(this, this.getJavaResourceType());
 	}
 
 	public boolean validatesAgainstDatabase() {
 		return this.getPersistenceUnit().validatesAgainstDatabase();
 	}
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.mappingAnnotation.getTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getPersistentType().getValidationTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		TextRange textRange = this.mappingAnnotation.getTextRange();
+		return (textRange != null) ? textRange : this.getPersistentType().getValidationTextRange();
 	}
 }

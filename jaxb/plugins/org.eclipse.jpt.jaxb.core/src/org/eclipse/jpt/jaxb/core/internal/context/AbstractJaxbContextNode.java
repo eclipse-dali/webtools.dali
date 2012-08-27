@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,11 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context;
 
+import java.util.List;
+
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jaxb.core.JaxbNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.internal.AbstractJaxbNode;
+import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractJaxbContextNode
 	extends AbstractJaxbNode
@@ -82,5 +88,20 @@ public abstract class AbstractJaxbContextNode
 	 */
 	public JaxbContextRoot getContextRoot() {
 		return getParent().getContextRoot();
+	}
+
+
+	// **************** validation ********************************************
+
+	public abstract TextRange getValidationTextRange();
+
+	/**
+	 * All subclass implementations {@link #validate(List, IReporter)} 
+	 * should be preceded by a "super" call to this method
+	 */
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		if (reporter.isCancelled()) {
+			throw new ValidationCancelledException();
+		}
 	}
 }

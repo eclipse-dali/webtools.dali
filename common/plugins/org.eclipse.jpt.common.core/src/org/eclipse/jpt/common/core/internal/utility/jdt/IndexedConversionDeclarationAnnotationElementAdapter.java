@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.internal.utility.jdt;
 
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedExpressionConverter;
-import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 
 /**
  * Wrap a declaration annotation element adapter that deals with AST
@@ -38,7 +38,7 @@ public class IndexedConversionDeclarationAnnotationElementAdapter<T>
 		return (IndexedExpressionConverter<T>) this.converter;
 	}
 
-	public Expression selectExpression(ModifiedDeclaration declaration, int index) {
-		return this.getConverter().selectExpression(this.getExpression(declaration), index);
+	public Expression selectExpression(Annotation astAnnotation, int index) {
+		return this.getConverter().selectExpression(this.getExpression(astAnnotation), index);
 	}
 }

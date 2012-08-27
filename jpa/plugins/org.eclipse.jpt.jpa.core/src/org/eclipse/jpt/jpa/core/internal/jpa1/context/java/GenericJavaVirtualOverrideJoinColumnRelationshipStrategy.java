@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
@@ -26,14 +25,11 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualOverrideRelationship;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
-import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -44,7 +40,7 @@ public class GenericJavaVirtualOverrideJoinColumnRelationshipStrategy
 	implements JavaVirtualJoinColumnRelationshipStrategy
 {
 	protected final ContextListContainer<JavaVirtualJoinColumn, ReadOnlyJoinColumn> specifiedJoinColumnContainer;
-	protected final JavaReadOnlyJoinColumn.Owner joinColumnOwner;
+	protected final ReadOnlyJoinColumn.Owner joinColumnOwner;
 
 	protected JavaVirtualJoinColumn defaultJoinColumn;
 
@@ -130,7 +126,7 @@ public class GenericJavaVirtualOverrideJoinColumnRelationshipStrategy
 		}
 	}
 
-	protected JavaReadOnlyJoinColumn.Owner buildJoinColumnOwner() {
+	protected ReadOnlyJoinColumn.Owner buildJoinColumnOwner() {
 		return new JoinColumnOwner();
 	}
 
@@ -290,8 +286,8 @@ public class GenericJavaVirtualOverrideJoinColumnRelationshipStrategy
 		return (typeMapping != null) ? typeMapping.getAllAssociatedTableNames() : EmptyIterable.<String>instance();
 	}
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.getRelationship().getValidationTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		return this.getRelationship().getValidationTextRange();
 	}
 
 	protected String getAttributeName() {
@@ -306,10 +302,10 @@ public class GenericJavaVirtualOverrideJoinColumnRelationshipStrategy
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		for (JavaVirtualJoinColumn joinColumn : this.getJoinColumns()) {
-			joinColumn.validate(messages, reporter, astRoot);
+			joinColumn.validate(messages, reporter);
 		}
 	}
 
@@ -317,7 +313,7 @@ public class GenericJavaVirtualOverrideJoinColumnRelationshipStrategy
 	// ********** join column owner **********
 
 	protected class JoinColumnOwner
-		implements JavaReadOnlyJoinColumn.Owner
+		implements ReadOnlyJoinColumn.Owner
 	{
 		protected JoinColumnOwner() {
 			super();
@@ -359,12 +355,12 @@ public class GenericJavaVirtualOverrideJoinColumnRelationshipStrategy
 			return GenericJavaVirtualOverrideJoinColumnRelationshipStrategy.this.getJoinColumnsSize();
 		}
 
-		public TextRange getValidationTextRange(CompilationUnit astRoot) {
-			return GenericJavaVirtualOverrideJoinColumnRelationshipStrategy.this.getValidationTextRange(astRoot);
+		public TextRange getValidationTextRange() {
+			return GenericJavaVirtualOverrideJoinColumnRelationshipStrategy.this.getValidationTextRange();
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return GenericJavaVirtualOverrideJoinColumnRelationshipStrategy.this.getRelationship().buildColumnValidator((ReadOnlyBaseColumn) column, this, (TableColumnTextRangeResolver) textRangeResolver);
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+			return GenericJavaVirtualOverrideJoinColumnRelationshipStrategy.this.getRelationship().buildColumnValidator((ReadOnlyBaseColumn) column, this);
 		}
 	}
 }

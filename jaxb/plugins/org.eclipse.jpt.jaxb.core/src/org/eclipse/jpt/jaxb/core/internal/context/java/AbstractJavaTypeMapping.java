@@ -338,20 +338,20 @@ public abstract class AbstractJavaTypeMapping
 	// ***** validation *****
 	
 	@Override
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = getXmlTypeAnnotation().getTextRange(astRoot);
-		return (textRange != null) ? textRange : getJaxbType().getValidationTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		TextRange textRange = getXmlTypeAnnotation().getTextRange();
+		return (textRange != null) ? textRange : getJaxbType().getValidationTextRange();
 	}
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
 		if (! this.xmlTransient) {
-			this.qName.validate(messages, reporter, astRoot);
+			this.qName.validate(messages, reporter);
 			
 			if (this.xmlRootElement != null) {
-				this.xmlRootElement.validate(messages, reporter, astRoot);
+				this.xmlRootElement.validate(messages, reporter);
 			}
 		}
 	}
@@ -436,7 +436,7 @@ public abstract class AbstractJavaTypeMapping
 		}
 		
 		@Override
-		protected void validateName(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		protected void validateName(List<IMessage> messages, IReporter reporter) {
 			// do not call super... - it is not an error if the name is ""
 			// if name is absent (""), namespace cannot be different from package namespace
 			if ("".equals(getName()) 
@@ -453,7 +453,7 @@ public abstract class AbstractJavaTypeMapping
 		}
 		
 		@Override
-		protected void validateReference(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		protected void validateReference(List<IMessage> messages, IReporter reporter) {
 			// if name is not absent (""), type must be from schema associated with this package
 			String name = getName();
 			String namespace = getNamespace();
@@ -463,7 +463,7 @@ public abstract class AbstractJavaTypeMapping
 				if (schema != null) {
 					XsdTypeDefinition schemaType = schema.getTypeDefinition(namespace, name);
 					if (schemaType == null) {
-						messages.add(getUnresolveSchemaComponentMessage(astRoot));
+						messages.add(getUnresolveSchemaComponentMessage());
 					}
 				}
 			}

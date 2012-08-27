@@ -18,7 +18,7 @@ public class EclipseLinkDynamicTypeMappingValidator
 	extends AbstractEclipseLinkTypeMappingValidator<TypeMapping>
 {
 	public EclipseLinkDynamicTypeMappingValidator(TypeMapping typeMapping) {
-		super(typeMapping, null, null);
+		super(typeMapping, null);
 	}
 
 	@Override

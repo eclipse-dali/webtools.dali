@@ -24,7 +24,6 @@ import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -35,7 +34,7 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy
 	implements JavaJoinColumnRelationshipStrategy
 {
 	protected final ContextListContainer<JavaJoinColumn, JoinColumnAnnotation> specifiedJoinColumnContainer;
-	protected final JavaReadOnlyJoinColumn.Owner joinColumnOwner;
+	protected final ReadOnlyJoinColumn.Owner joinColumnOwner;
 
 	protected JavaJoinColumn defaultJoinColumn;
 
@@ -170,7 +169,7 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy
 		}
 	}
 
-	protected abstract JavaReadOnlyJoinColumn.Owner buildJoinColumnOwner();
+	protected abstract ReadOnlyJoinColumn.Owner buildJoinColumnOwner();
 
 
 	// ********** default join column **********
@@ -317,10 +316,10 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		for (JavaJoinColumn joinColumn : this.getJoinColumns()) {
-			joinColumn.validate(messages, reporter, astRoot);
+			joinColumn.validate(messages, reporter);
 		}
 	}
 }

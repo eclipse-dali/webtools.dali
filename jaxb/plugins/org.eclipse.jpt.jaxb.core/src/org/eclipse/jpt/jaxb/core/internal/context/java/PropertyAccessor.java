@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
@@ -109,8 +108,7 @@ public class PropertyAccessor
 	//if (getterIsAnnotated() && setterIsAnnotated()) error to user
 	
 	@Override
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		// TODO Auto-generated method stub
+	public TextRange getValidationTextRange() {
 		return null;
 	}
 }

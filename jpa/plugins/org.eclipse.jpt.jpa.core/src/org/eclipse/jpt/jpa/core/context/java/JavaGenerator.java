@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.resource.java.GeneratorAnnotation;
@@ -24,15 +22,13 @@ import org.eclipse.jpt.jpa.core.resource.java.GeneratorAnnotation;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.0
+ * @version 3.3
  * @since 2.0
  */
 public interface JavaGenerator 
 	extends Generator, JavaJpaContextNode
 {
 	GeneratorAnnotation getGeneratorAnnotation();
-
-	TextRange getNameTextRange(CompilationUnit astRoot);
 
 	//********* metadata conversion *********
 	

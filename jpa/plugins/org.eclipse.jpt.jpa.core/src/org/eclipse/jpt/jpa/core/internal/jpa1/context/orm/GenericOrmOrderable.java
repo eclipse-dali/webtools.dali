@@ -15,7 +15,6 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.OrderColumnValidator;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrderColumn2_0;
@@ -440,8 +439,8 @@ public class GenericOrmOrderable
 			return GenericOrmOrderable.this.getValidationTextRange();
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return new OrderColumnValidator(this.getPersistentAttribute(), (OrderColumn2_0) column, textRangeResolver);
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+			return new OrderColumnValidator(this.getPersistentAttribute(), (OrderColumn2_0) column);
 		}
 
 		public XmlOrderColumn getXmlColumn() {

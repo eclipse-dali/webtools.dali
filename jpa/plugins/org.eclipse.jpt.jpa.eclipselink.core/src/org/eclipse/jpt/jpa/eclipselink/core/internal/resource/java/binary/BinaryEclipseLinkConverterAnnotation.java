@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
@@ -75,10 +74,6 @@ public final class BinaryEclipseLinkConverterAnnotation
 	}
 
 	public TextRange getConverterClassTextRange() {
-		throw new UnsupportedOperationException();
-	}
-
-	public boolean converterClassImplementsInterface(String interfaceName, CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	}
 }

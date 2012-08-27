@@ -52,14 +52,9 @@ import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaMultiRelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaOrderable;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
-import org.eclipse.jpt.jpa.core.internal.context.OverrideTextRangeResolver;
-import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EmbeddableOverrideDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.MapKeyAttributeOverrideColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.MapKeyAttributeOverrideValidator;
@@ -111,7 +106,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	protected JavaConverter mapKeyConverter;  // map key converter - never null
 
 	protected final ContextListContainer<JavaJoinColumn, MapKeyJoinColumn2_0Annotation> specifiedMapKeyJoinColumnContainer;
-	protected final JavaReadOnlyJoinColumn.Owner mapKeyJoinColumnOwner;
+	protected final ReadOnlyJoinColumn.Owner mapKeyJoinColumnOwner;
 
 	protected JavaJoinColumn defaultMapKeyJoinColumn;
 
@@ -776,7 +771,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 		}
 	}
 
-	protected JavaReadOnlyJoinColumn.Owner buildMapKeyJoinColumnOwner() {
+	protected ReadOnlyJoinColumn.Owner buildMapKeyJoinColumnOwner() {
 		return new MapKeyJoinColumnOwner();
 	}
 
@@ -969,15 +964,15 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.validateAttributeType(messages, reporter, astRoot);
-		this.validateMapKeyClass(messages, astRoot);
-		this.orderable.validate(messages, reporter, astRoot);
-		this.validateMapKey(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.validateAttributeType(messages, reporter);
+		this.validateMapKeyClass(messages);
+		this.orderable.validate(messages, reporter);
+		this.validateMapKey(messages, reporter);
 	}
 
-	protected void validateAttributeType(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateAttributeType(List<IMessage> messages, IReporter reporter) {
 		JavaPersistentAttribute javaAttribute = this.getJavaPersistentAttribute();
 		if ((javaAttribute != null) && !javaAttribute.getJpaContainerDefinition().isContainer()) {
 			if (this.getPersistentAttribute().isVirtual()) {
@@ -987,7 +982,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE,
 						new String[] {getName()},
 						this,
-						this.getValidationTextRange(astRoot)
+						this.getValidationTextRange()
 					)
 				);
 			}
@@ -998,49 +993,49 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 						JpaValidationMessages.ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE,
 						EMPTY_STRING_ARRAY,
 						this,
-						this.getValidationTextRange(astRoot)
+						this.getValidationTextRange()
 					)
 				);
 			}
 		}
 	}
 
-	protected TextRange getMapKeyClassTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.getMapKeyClassAnnotationTextRange(astRoot), astRoot);
+	protected TextRange getMapKeyClassTextRange() {
+		return this.getValidationTextRange(this.getMapKeyClassAnnotationTextRange());
 	}
 
-	protected TextRange getMapKeyClassAnnotationTextRange(CompilationUnit astRoot) {
+	protected TextRange getMapKeyClassAnnotationTextRange() {
 		MapKeyClass2_0Annotation annotation = this.getMapKeyClassAnnotation();
-		return (annotation == null) ? null : annotation.getTextRange(astRoot);
+		return (annotation == null) ? null : annotation.getTextRange();
 	}
 
-	protected void validateMapKey(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateMapKey(List<IMessage> messages, IReporter reporter) {
 		if (this.getMapKeyAnnotation() != null) {//If MapKey annotation specified, no other MapKey* annotations can be specified, don't validate them
 			//TODO validate that the map key refers to an existing attribute
 			return;
 		}
 		if (this.getKeyType() == Type.BASIC_TYPE) {
-			this.mapKeyColumn.validate(messages, reporter, astRoot);
-			this.mapKeyConverter.validate(messages, reporter, astRoot);
+			this.mapKeyColumn.validate(messages, reporter);
+			this.mapKeyConverter.validate(messages, reporter);
 		}
 		else if (this.getKeyType() == Type.ENTITY_TYPE) {
 			for (JavaJoinColumn joinColumn : this.getMapKeyJoinColumns()) {
-				joinColumn.validate(messages, reporter, astRoot);
+				joinColumn.validate(messages, reporter);
 			}
 		}
 		else if (this.getKeyType() == Type.EMBEDDABLE_TYPE) {
-			this.mapKeyAttributeOverrideContainer.validate(messages, reporter, astRoot);
+			this.mapKeyAttributeOverrideContainer.validate(messages, reporter);
 			//validate map key association overrides - for eclipselink
 		}
 	}
 
-	protected void validateMapKeyClass(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateMapKeyClass(List<IMessage> messages) {
 		if (this.isJpa2_0Compatible() && this.getPersistentAttribute().getJpaContainerDefinition().isMap()) {
-			this.validateMapKeyClass_(messages, astRoot);
+			this.validateMapKeyClass_(messages);
 		}
 	}
 
-	protected void validateMapKeyClass_(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateMapKeyClass_(List<IMessage> messages) {
 		if (this.getMapKeyClass() == null) {
 			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
@@ -1049,7 +1044,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_CLASS_NOT_DEFINED,
 						new String[] {this.getName()},
 						this,
-						this.getValidationTextRange(astRoot)
+						this.getValidationTextRange()
 					)
 				);
 			} else {
@@ -1059,7 +1054,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 						JpaValidationMessages.MAP_KEY_CLASS_NOT_DEFINED,
 						EMPTY_STRING_ARRAY,
 						this,
-						this.getValidationTextRange(astRoot)
+						this.getValidationTextRange()
 					)
 				);
 			}
@@ -1078,7 +1073,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
 						new String[] {this.getName(), this.getFullyQualifiedMapKeyClass()},
 						this,
-						this.getMapKeyClassTextRange(astRoot)
+						this.getMapKeyClassTextRange()
 					)
 				);
 			}
@@ -1089,7 +1084,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 						JpaValidationMessages.MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
 						new String[] {this.getFullyQualifiedMapKeyClass()},
 						this,
-						this.getMapKeyClassTextRange(astRoot)
+						this.getMapKeyClassTextRange()
 					)
 				);
 			}
@@ -1121,8 +1116,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			return EmptyIterable.instance();
 		}
 
-		public TextRange getValidationTextRange(CompilationUnit astRoot) {
-			return AbstractJavaMultiRelationshipMapping.this.getValidationTextRange(astRoot);
+		public TextRange getValidationTextRange() {
+			return AbstractJavaMultiRelationshipMapping.this.getValidationTextRange();
 		}
 
 		protected RelationshipStrategy getRelationshipStrategy() {
@@ -1157,8 +1152,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			return this.getRelationshipStrategy().tableNameIsInvalid(tableName);
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return new MapKeyColumnValidator(this.getPersistentAttribute(), (ReadOnlyBaseColumn) column, (TableColumnTextRangeResolver) textRangeResolver, new RelationshipStrategyTableDescriptionProvider(this.getRelationshipStrategy()));
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+			return new MapKeyColumnValidator(this.getPersistentAttribute(), (ReadOnlyBaseColumn) column, new RelationshipStrategyTableDescriptionProvider(this.getRelationshipStrategy()));
 		}
 	}
 
@@ -1209,12 +1204,12 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			return MappingTools.resolveOverriddenColumn(this.getOverridableTypeMapping(), attributeName);
 		}
 
-		public JptValidator buildOverrideValidator(ReadOnlyOverride override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
-			return new MapKeyAttributeOverrideValidator(this.getPersistentAttribute(), (ReadOnlyAttributeOverride) override, (AttributeOverrideContainer) container, textRangeResolver, new EmbeddableOverrideDescriptionProvider());
+		public JptValidator buildOverrideValidator(ReadOnlyOverride override, OverrideContainer container) {
+			return new MapKeyAttributeOverrideValidator(this.getPersistentAttribute(), (ReadOnlyAttributeOverride) override, (AttributeOverrideContainer) container, new EmbeddableOverrideDescriptionProvider());
 		}
 		
-		public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner, TableColumnTextRangeResolver textRangeResolver) {
-			return new MapKeyAttributeOverrideColumnValidator(this.getPersistentAttribute(), (ReadOnlyAttributeOverride) override, column, textRangeResolver, new RelationshipStrategyTableDescriptionProvider(this.getRelationshipStrategy()));
+		public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner) {
+			return new MapKeyAttributeOverrideColumnValidator(this.getPersistentAttribute(), (ReadOnlyAttributeOverride) override, column, new RelationshipStrategyTableDescriptionProvider(this.getRelationshipStrategy()));
 		}
 	}
 
@@ -1222,7 +1217,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	// ********** map key join column owner **********
 
 	protected class MapKeyJoinColumnOwner
-		implements JavaReadOnlyJoinColumn.Owner
+		implements ReadOnlyJoinColumn.Owner
 	{
 		protected MapKeyJoinColumnOwner() {
 			super();
@@ -1272,16 +1267,15 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			return AbstractJavaMultiRelationshipMapping.this.getMapKeyJoinColumnsSize();
 		}
 
-		public TextRange getValidationTextRange(CompilationUnit astRoot) {
-			return AbstractJavaMultiRelationshipMapping.this.getValidationTextRange(astRoot);
+		public TextRange getValidationTextRange() {
+			return AbstractJavaMultiRelationshipMapping.this.getValidationTextRange();
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
 			return new MapKeyJoinColumnValidator(
 				this.getPersistentAttribute(),
 				(ReadOnlyJoinColumn) column,
-				this, 
-				(JoinColumnTextRangeResolver) textRangeResolver,
+				this,
 				new RelationshipStrategyTableDescriptionProvider(getRelationship().getStrategy()));
 		}
 	}

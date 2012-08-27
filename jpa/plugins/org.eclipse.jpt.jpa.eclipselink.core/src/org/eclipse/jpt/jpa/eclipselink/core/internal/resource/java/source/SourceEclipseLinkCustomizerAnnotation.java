@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.Annotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
@@ -121,11 +120,6 @@ public final class SourceEclipseLinkCustomizerAnnotation
 
 	private TextRange buildValueTextRange(Annotation astAnnotation) {
 		return this.getElementTextRange(VALUE_ADAPTER, astAnnotation);
-	}
-
-	public boolean customizerClassImplementsInterface(String interfaceName, CompilationUnit astRoot) {
-		return (this.value != null)
-				&& ASTTools.typeIsSubTypeOf(this.valueAdapter.getExpression(astRoot), interfaceName);
 	}
 
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -191,9 +191,9 @@ public class GenericJavaManyToManyRelationship
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.mappedByStrategy.validate(messages, reporter, astRoot);
-		this.joinTableStrategy.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.mappedByStrategy.validate(messages, reporter);
+		this.joinTableStrategy.validate(messages, reporter);
 	}
 }

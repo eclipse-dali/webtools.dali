@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,6 @@ import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.ConverterTextRangeResolver;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
@@ -27,13 +26,10 @@ public class EclipseLinkConvertValidator
 {
 	protected final EclipseLinkConvert convert;
 
-	protected final ConverterTextRangeResolver textRangeResolver;
 
-
-	public EclipseLinkConvertValidator(EclipseLinkConvert convert, ConverterTextRangeResolver textRangeResolver) {
+	public EclipseLinkConvertValidator(EclipseLinkConvert convert) {
 		super();
 		this.convert = convert;
-		this.textRangeResolver = textRangeResolver;
 	}
 
 	protected AttributeMapping getAttributeMapping() {
@@ -77,7 +73,7 @@ public class EclipseLinkConvertValidator
 					this.getAttributeMapping().getName()
 				},
 				this.getAttributeMapping(),
-				this.textRangeResolver.getConverterTextRange()
+				this.convert.getValidationTextRange()
 			)
 		);
 		return false;

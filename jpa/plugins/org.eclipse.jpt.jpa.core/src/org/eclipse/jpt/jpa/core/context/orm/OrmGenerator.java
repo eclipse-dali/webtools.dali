@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlGenerator;
@@ -23,7 +22,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlGenerator;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.0
+ * @version 3.3
  * @since 2.0
  */
 public interface OrmGenerator
@@ -31,5 +30,4 @@ public interface OrmGenerator
 {
 	XmlGenerator getXmlGenerator();
 
-	TextRange getNameTextRange();
 }

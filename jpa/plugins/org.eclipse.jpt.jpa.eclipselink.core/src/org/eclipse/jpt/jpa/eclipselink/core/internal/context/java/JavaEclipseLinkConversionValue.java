@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
@@ -103,21 +102,21 @@ public class JavaEclipseLinkConversionValue
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 	}
 
-	public TextRange getDataValueTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.conversionValueAnnotation.getDataValueTextRange(), astRoot);
+	public TextRange getDataValueTextRange() {
+		return this.getValidationTextRange(this.conversionValueAnnotation.getDataValueTextRange());
 	}
 
-	protected TextRange getObjectValueTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.conversionValueAnnotation.getObjectValueTextRange(), astRoot);
+	protected TextRange getObjectValueTextRange() {
+		return this.getValidationTextRange(this.conversionValueAnnotation.getObjectValueTextRange());
 	}
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.conversionValueAnnotation.getTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getObjectTypeConverter().getValidationTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		TextRange textRange = this.conversionValueAnnotation.getTextRange();
+		return (textRange != null) ? textRange : this.getObjectTypeConverter().getValidationTextRange();
 	}
 
 	public boolean isEquivalentTo(EclipseLinkConversionValue conversionValue) {

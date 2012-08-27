@@ -38,7 +38,7 @@ public abstract class GenericJavaReferenceTable<A extends ReferenceTableAnnotati
 	implements JavaReferenceTable
 {
 	protected final ContextListContainer<JavaJoinColumn, JoinColumnAnnotation> specifiedJoinColumnContainer;
-	protected final JavaReadOnlyJoinColumn.Owner joinColumnOwner;
+	protected final ReadOnlyJoinColumn.Owner joinColumnOwner;
 
 	protected JavaJoinColumn defaultJoinColumn;
 
@@ -165,7 +165,7 @@ public abstract class GenericJavaReferenceTable<A extends ReferenceTableAnnotati
 		}
 	}
 
-	protected abstract JavaReadOnlyJoinColumn.Owner buildJoinColumnOwner();
+	protected abstract ReadOnlyJoinColumn.Owner buildJoinColumnOwner();
 
 	protected ContextListContainer<JavaJoinColumn, JoinColumnAnnotation> buildSpecifiedJoinColumnContainer(){
 		SpecifiedJoinColumnContainer container = new SpecifiedJoinColumnContainer();
@@ -232,7 +232,7 @@ public abstract class GenericJavaReferenceTable<A extends ReferenceTableAnnotati
 		return this.buildJoinColumn(this.joinColumnOwner, joinColumnAnnotation);
 	}
 
-	protected JavaJoinColumn buildJoinColumn(JavaReadOnlyJoinColumn.Owner jcOwner, JoinColumnAnnotation joinColumnAnnotation) {
+	protected JavaJoinColumn buildJoinColumn(ReadOnlyJoinColumn.Owner jcOwner, JoinColumnAnnotation joinColumnAnnotation) {
 		return this.getJpaFactory().buildJavaJoinColumn(this, jcOwner, joinColumnAnnotation);
 	}
 
@@ -268,19 +268,19 @@ public abstract class GenericJavaReferenceTable<A extends ReferenceTableAnnotati
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		boolean continueValidating = this.buildTableValidator(astRoot).validate(messages, reporter);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		boolean continueValidating = this.buildTableValidator().validate(messages, reporter);
 
 		//join column validation will handle the check for whether to validate against the database
 		//some validation messages are not database specific. If the database validation for the
 		//table fails we will stop there and not validate the join columns at all
 		if (continueValidating) {
-			this.validateJoinColumns(messages, reporter, astRoot);
+			this.validateJoinColumns(messages, reporter);
 		}
 	}
 
-	protected void validateJoinColumns(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		this.validateNodes(this.getJoinColumns(), messages, reporter, astRoot);
+	protected void validateJoinColumns(List<IMessage> messages, IReporter reporter) {
+		this.validateNodes(this.getJoinColumns(), messages, reporter);
 	}
 }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
@@ -20,7 +19,6 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyReferenceTable;
 import org.eclipse.jpt.jpa.core.context.VirtualReferenceTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualJoinColumn;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -30,7 +28,7 @@ public abstract class AbstractJavaVirtualReferenceTable<T extends ReadOnlyRefere
 	implements VirtualReferenceTable
 {
 	protected final ContextListContainer<JavaVirtualJoinColumn, ReadOnlyJoinColumn> specifiedJoinColumnContainer;
-	protected final JavaReadOnlyJoinColumn.Owner joinColumnOwner;
+	protected final ReadOnlyJoinColumn.Owner joinColumnOwner;
 
 	protected JavaVirtualJoinColumn defaultJoinColumn;
 
@@ -175,11 +173,11 @@ public abstract class AbstractJavaVirtualReferenceTable<T extends ReadOnlyRefere
 		return this.buildJoinColumn(this.joinColumnOwner, joinColumn);
 	}
 
-	protected JavaVirtualJoinColumn buildJoinColumn(JavaReadOnlyJoinColumn.Owner columnOwner, ReadOnlyJoinColumn joinColumn) {
+	protected JavaVirtualJoinColumn buildJoinColumn(ReadOnlyJoinColumn.Owner columnOwner, ReadOnlyJoinColumn joinColumn) {
 		return this.getJpaFactory().buildJavaVirtualJoinColumn(this, columnOwner, joinColumn);
 	}
 
-	protected abstract JavaReadOnlyJoinColumn.Owner buildJoinColumnOwner();
+	protected abstract ReadOnlyJoinColumn.Owner buildJoinColumnOwner();
 
 	@Override
 	protected String buildDefaultSchema() {
@@ -195,18 +193,18 @@ public abstract class AbstractJavaVirtualReferenceTable<T extends ReadOnlyRefere
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		boolean continueValidating = this.buildTableValidator(astRoot).validate(messages, reporter);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		boolean continueValidating = this.buildTableValidator().validate(messages, reporter);
 
 		//join column validation will handle the check for whether to validate against the database
 		//some validation messages are not database specific. If the database validation for the
 		//table fails we will stop there and not validate the join columns at all
 		if (continueValidating) {
-			this.validateJoinColumns(messages, reporter, astRoot);
+			this.validateJoinColumns(messages, reporter);
 		}
 	}
 
-	protected void validateJoinColumns(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		this.validateNodes(this.getJoinColumns(), messages, reporter, astRoot);
+	protected void validateJoinColumns(List<IMessage> messages, IReporter reporter) {
+		this.validateNodes(this.getJoinColumns(), messages, reporter);
 	}
 }

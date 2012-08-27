@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -98,12 +97,12 @@ public abstract class JavaEclipseLinkConverterClassConverter<A extends EclipseLi
 	//************ validation ***************
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.validateConverterClass(messages, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.validateConverterClass(messages);
 	}
 
-	protected void validateConverterClass(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateConverterClass(List<IMessage> messages) {
 		if (this.converterClass == null) {
 			// the annotation will have a compile error if its converter class is missing
 			return;
@@ -115,14 +114,14 @@ public abstract class JavaEclipseLinkConverterClassConverter<A extends EclipseLi
 					IMessage.HIGH_SEVERITY,
 					EclipseLinkJpaValidationMessages.CONVERTER_CLASS_DEFINED,
 					this,
-					this.getConverterClassTextRange(astRoot)
+					this.getConverterClassTextRange()
 				)
 			);
 			return;
 		}
 
 		if ( ! this.converterClassExists()) {
-			this.addConverterClassDoesNotExistMessageTo(messages, astRoot);
+			this.addConverterClassDoesNotExistMessageTo(messages);
 			return;
 		}
 
@@ -133,20 +132,20 @@ public abstract class JavaEclipseLinkConverterClassConverter<A extends EclipseLi
 					this.getEclipseLinkConverterInterfaceErrorMessage(),
 					new String[] {this.getFullyQualifiedConverterClass()},
 					this,
-					this.getConverterClassTextRange(astRoot)
+					this.getConverterClassTextRange()
 				)
 			);
 		}
 	}
 
-	protected void addConverterClassDoesNotExistMessageTo(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void addConverterClassDoesNotExistMessageTo(List<IMessage> messages) {
 		messages.add(
 			DefaultEclipseLinkJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
 				EclipseLinkJpaValidationMessages.CONVERTER_CLASS_EXISTS,
 				new String[] {this.getFullyQualifiedConverterClass()},
 				this,
-				this.getConverterClassTextRange(astRoot)
+				this.getConverterClassTextRange()
 			)
 		);
 	}
@@ -167,8 +166,8 @@ public abstract class JavaEclipseLinkConverterClassConverter<A extends EclipseLi
 		return this.typeImplementsInterface(this.getFullyQualifiedConverterClass(), interfaceName);
 	}
 
-	protected TextRange getConverterClassTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.getAnnotationConverterClassTextRange(), astRoot);
+	protected TextRange getConverterClassTextRange() {
+		return this.getValidationTextRange(this.getAnnotationConverterClassTextRange());
 	}
 
 	protected abstract TextRange getAnnotationConverterClassTextRange();

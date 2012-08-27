@@ -116,9 +116,9 @@ public class GenericJavaUniqueConstraint
 
 	// ********** validation **********
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.uniqueConstraintAnnotation.getTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		TextRange textRange = this.uniqueConstraintAnnotation.getTextRange();
+		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
 	}
 
 	public boolean isEquivalentTo(UniqueConstraint uniqueConstraint) {

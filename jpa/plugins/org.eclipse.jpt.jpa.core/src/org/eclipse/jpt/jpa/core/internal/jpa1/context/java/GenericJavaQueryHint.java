@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.jpa.core.context.QueryHint;
@@ -87,9 +86,9 @@ public class GenericJavaQueryHint
 
 	// ********** validation **********
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.queryHintAnnotation.getTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getQuery().getValidationTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		TextRange textRange = this.queryHintAnnotation.getTextRange();
+		return (textRange != null) ? textRange : this.getQuery().getValidationTextRange();
 	}
 
 	public boolean isEquivalentTo(QueryHint hint) {

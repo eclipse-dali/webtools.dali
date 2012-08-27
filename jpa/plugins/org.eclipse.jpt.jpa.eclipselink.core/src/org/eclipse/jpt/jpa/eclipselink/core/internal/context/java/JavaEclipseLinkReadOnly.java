@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -124,13 +123,13 @@ public class JavaEclipseLinkReadOnly
 
 	// ********** validation **********
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.getAnnotationTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getTypeMapping().getValidationTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		TextRange textRange = this.getAnnotationTextRange();
+		return (textRange != null) ? textRange : this.getTypeMapping().getValidationTextRange();
 	}
 
-	protected TextRange getAnnotationTextRange(CompilationUnit astRoot) {
+	protected TextRange getAnnotationTextRange() {
 		EclipseLinkReadOnlyAnnotation annotation = this.getReadOnlyAnnotation();
-		return (annotation == null) ? null : annotation.getTextRange(astRoot);
+		return (annotation == null) ? null : annotation.getTextRange();
 	}
 }

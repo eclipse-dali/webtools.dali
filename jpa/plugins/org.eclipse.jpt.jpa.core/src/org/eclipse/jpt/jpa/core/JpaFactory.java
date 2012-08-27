@@ -19,8 +19,10 @@ import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.Table;
@@ -64,8 +66,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryHint;
-import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyBaseJoinColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaTable;
@@ -136,7 +136,7 @@ import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
  *
  * @see org.eclipse.jpt.jpa.core.internal.jpa1.GenericJpaFactory
  * 
- * @version 3.1
+ * @version 3.3
  * @since 2.0
  */
 public interface JpaFactory 
@@ -229,11 +229,11 @@ public interface JpaFactory
 	
 	JavaVirtualColumn buildJavaVirtualColumn(JavaJpaContextNode parent, JavaVirtualColumn.Owner owner);
 
-	JavaDiscriminatorColumn buildJavaDiscriminatorColumn(JavaEntity parent, JavaDiscriminatorColumn.Owner owner);
+	JavaDiscriminatorColumn buildJavaDiscriminatorColumn(JavaEntity parent, ReadOnlyNamedDiscriminatorColumn.Owner owner);
 	
-	JavaJoinColumn buildJavaJoinColumn(JavaJpaContextNode parent, JavaReadOnlyJoinColumn.Owner owner, CompleteJoinColumnAnnotation joinColumnAnnotation);
+	JavaJoinColumn buildJavaJoinColumn(JavaJpaContextNode parent, ReadOnlyJoinColumn.Owner owner, CompleteJoinColumnAnnotation joinColumnAnnotation);
 	
-	JavaVirtualJoinColumn buildJavaVirtualJoinColumn(JavaJpaContextNode parent, JavaReadOnlyJoinColumn.Owner owner, ReadOnlyJoinColumn overriddenColumn);
+	JavaVirtualJoinColumn buildJavaVirtualJoinColumn(JavaJpaContextNode parent, ReadOnlyJoinColumn.Owner owner, ReadOnlyJoinColumn overriddenColumn);
 	
 	JavaSecondaryTable buildJavaSecondaryTable(JavaEntity parent, Table.Owner owner, SecondaryTableAnnotation tableAnnotation);
 	
@@ -243,7 +243,7 @@ public interface JpaFactory
 	
 	JavaGeneratedValue buildJavaGeneratedValue(JavaIdMapping parent, GeneratedValueAnnotation generatedValueAnnotation);
 	
-	JavaPrimaryKeyJoinColumn buildJavaPrimaryKeyJoinColumn(JavaJpaContextNode parent, JavaReadOnlyBaseJoinColumn.Owner owner, PrimaryKeyJoinColumnAnnotation pkJoinColumnAnnotation);
+	JavaPrimaryKeyJoinColumn buildJavaPrimaryKeyJoinColumn(JavaJpaContextNode parent, ReadOnlyBaseJoinColumn.Owner owner, PrimaryKeyJoinColumnAnnotation pkJoinColumnAnnotation);
 	
 	JavaAttributeOverrideContainer buildJavaAttributeOverrideContainer(JavaJpaContextNode parent, JavaAttributeOverrideContainer.Owner owner);
 

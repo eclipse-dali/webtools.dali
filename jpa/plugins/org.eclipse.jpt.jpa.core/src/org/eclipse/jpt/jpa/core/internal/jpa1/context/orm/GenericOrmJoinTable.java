@@ -28,12 +28,9 @@ import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmRelationship;
-import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlJoinTable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -47,7 +44,7 @@ public class GenericOrmJoinTable
 	implements OrmJoinTable
 {
 	protected final ContextListContainer<OrmJoinColumn, XmlJoinColumn> specifiedInverseJoinColumnContainer;
-	protected final OrmReadOnlyJoinColumn.Owner inverseJoinColumnOwner;
+	protected final ReadOnlyJoinColumn.Owner inverseJoinColumnOwner;
 
 	protected OrmJoinColumn defaultInverseJoinColumn;
 
@@ -59,7 +56,7 @@ public class GenericOrmJoinTable
 	}
 
 	@Override
-	protected OrmReadOnlyJoinColumn.Owner buildJoinColumnOwner() {
+	protected ReadOnlyJoinColumn.Owner buildJoinColumnOwner() {
 		return new JoinColumnOwner();
 	}
 
@@ -208,7 +205,7 @@ public class GenericOrmJoinTable
 		}
 	}
 
-	protected OrmReadOnlyJoinColumn.Owner buildInverseJoinColumnOwner() {
+	protected ReadOnlyJoinColumn.Owner buildInverseJoinColumnOwner() {
 		return new InverseJoinColumnOwner();
 	}
 
@@ -330,7 +327,7 @@ public class GenericOrmJoinTable
 	 * just a little common behavior
 	 */
 	protected abstract class AbstractJoinColumnOwner
-		implements OrmReadOnlyJoinColumn.Owner
+		implements ReadOnlyJoinColumn.Owner
 	{
 		protected AbstractJoinColumnOwner() {
 			super();
@@ -420,8 +417,8 @@ public class GenericOrmJoinTable
 			return GenericOrmJoinTable.this.getJoinColumnsSize();
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return this.getRelationshipStrategy().buildJoinTableJoinColumnValidator((ReadOnlyJoinColumn) column, this, (JoinColumnTextRangeResolver) textRangeResolver);
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+			return this.getRelationshipStrategy().buildJoinTableJoinColumnValidator((ReadOnlyJoinColumn) column, this);
 		}
 	}
 
@@ -466,8 +463,8 @@ public class GenericOrmJoinTable
 			return GenericOrmJoinTable.this.getInverseJoinColumnsSize();
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return this.getRelationshipStrategy().buildJoinTableInverseJoinColumnValidator((ReadOnlyJoinColumn) column, this, (JoinColumnTextRangeResolver) textRangeResolver);
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+			return this.getRelationshipStrategy().buildJoinTableInverseJoinColumnValidator((ReadOnlyJoinColumn) column, this);
 		}
 	}
 }

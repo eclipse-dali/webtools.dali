@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IAnnotationBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
@@ -74,6 +73,8 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 
 	protected TextRange nameTextRange;
 
+	protected TextRange textRange;
+
 	// ********** construction/initialization **********
 
 	SourceAnnotatedElement(JavaResourceNode parent, E annotatedElement) {
@@ -96,6 +97,7 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 	//  getBinding() : IBinding - SourceMember and its subclasses have an initialize that takes an IBinding
 	//  getTypeBinding() : ITypeBinding  - this is for SourceAttribute
 	protected void initialize(ASTNode node, Name nameNode) {
+		this.textRange =  this.buildTextRange(node);
 		this.nameTextRange = ASTTools.buildTextRange(nameNode);
 		this.initializeAnnotations(node);
 	}
@@ -150,10 +152,11 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 
 	/**
 	 * Subclasses are responsible for calling this synchronizeWith method.
-	 * The ASTNode will be used to sync the annotations and the Name node
-	 * will be used to cache the name text range.
+	 * The ASTNode will be used to sync the annotations and cache the text range
+	 * and the Name node will be used to cache the name text range.
 	 */
 	protected void synchronizeWith(ASTNode node, Name nameNode) {
+		this.textRange =  this.buildTextRange(node);
 		this.nameTextRange = ASTTools.buildTextRange(nameNode);
 		this.syncAnnotations(node);
 	}
@@ -522,18 +525,15 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 
 	// ********** misc **********
 
-	public TextRange getTextRange(CompilationUnit astRoot) {
-		// the AST is null for virtual Java attributes
-		// TODO remove the AST null check once we start storing text ranges
-		// in the resource model
-		return (astRoot == null) ? null : this.buildTextRange(this.annotatedElement.getBodyDeclaration(astRoot));
+	public TextRange getTextRange() {
+		return this.textRange;
 	}
 
 	public TextRange getNameTextRange() {
 		return this.nameTextRange;
 	}
 
-	public TextRange getTextRange(String nestableAnnotationName, CompilationUnit astRoot) {
+	public TextRange getTextRange(String nestableAnnotationName) {
 		CombinationAnnotationContainer container = this.annotationContainers.get(nestableAnnotationName);
 		if (container == null) {
 			return null;
@@ -542,7 +542,7 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 		if (annotation == null) {
 			annotation = container.getNestedAnnotation(0);
 		}
-		return annotation.getTextRange(astRoot);
+		return annotation.getTextRange();
 	}
 
 	private TextRange buildTextRange(ASTNode astNode) {

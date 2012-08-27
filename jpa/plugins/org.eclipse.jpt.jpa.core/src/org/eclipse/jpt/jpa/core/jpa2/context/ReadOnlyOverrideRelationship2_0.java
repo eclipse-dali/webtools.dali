@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,9 +14,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverrideRelationship;
-import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 
 /**
  * JPA 2.0 association override relationship
@@ -33,9 +31,9 @@ public interface ReadOnlyOverrideRelationship2_0
 	extends ReadOnlyOverrideRelationship,
 			ReadOnlyJoinTableRelationship
 {
-	JptValidator buildJoinTableJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver);
+	JptValidator buildJoinTableJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner);
 
-	JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver);
+	JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner);
 
-	JptValidator buildJoinTableValidator(ReadOnlyJoinTable table, TableTextRangeResolver textRangeResolver);
+	JptValidator buildJoinTableValidator(ReadOnlyJoinTable table);
 }

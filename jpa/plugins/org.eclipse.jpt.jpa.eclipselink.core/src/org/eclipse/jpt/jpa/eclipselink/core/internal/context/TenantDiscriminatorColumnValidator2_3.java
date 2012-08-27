@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context;
 
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AbstractNamedColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
@@ -19,12 +18,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMes
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class TenantDiscriminatorColumnValidator2_3
-	extends AbstractNamedColumnValidator<ReadOnlyTenantDiscriminatorColumn2_3, NamedColumnTextRangeResolver>
+	extends AbstractNamedColumnValidator<ReadOnlyTenantDiscriminatorColumn2_3>
 {
 	public TenantDiscriminatorColumnValidator2_3(
-			ReadOnlyTenantDiscriminatorColumn2_3 namedColumn,
-			NamedColumnTextRangeResolver textRangeResolver) {
-		super(namedColumn, textRangeResolver, new EntityTableDescriptionProvider());
+			ReadOnlyTenantDiscriminatorColumn2_3 namedColumn) {
+		super(namedColumn, new EntityTableDescriptionProvider());
 	}
 
 	@Override
@@ -42,7 +40,7 @@ public class TenantDiscriminatorColumnValidator2_3
 					this.column.getDbTable().getName()
 				},
 				this.column,
-				this.textRangeResolver.getNameTextRange()
+				this.column.getNameTextRange()
 			);
 	}
 
@@ -93,7 +91,7 @@ public class TenantDiscriminatorColumnValidator2_3
 						this.getColumnTableDescriptionMessage()
 					},
 					this.getColumn(),
-					this.getTextRangeResolver().getTableTextRange()
+					this.getColumn().getTableTextRange()
 				);
 		}
 

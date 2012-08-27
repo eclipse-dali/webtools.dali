@@ -157,14 +157,14 @@ public class GenericJavaXmlRegistry
 	// ***** validation *****
 	
 	@Override
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = getAnnotation().getTextRange(astRoot);
-		return (textRange != null) ? textRange : getJaxbClass().getValidationTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		TextRange textRange = getAnnotation().getTextRange();
+		return (textRange != null) ? textRange : getJaxbClass().getValidationTextRange();
 	}
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
 		Iterable<XmlRegistry> registries = getContextRoot().getXmlRegistries(getJaxbPackage());
 		if (CollectionTools.size(registries) > 1) {
@@ -173,17 +173,17 @@ public class GenericJavaXmlRegistry
 						IMessage.HIGH_SEVERITY,
 						JaxbValidationMessages.XML_REGISTRY__MULTIPLE_XML_REGISTRIES_FOR_PACKAGE,
 						this,
-						getValidationTextRange(astRoot)));
+						getValidationTextRange()));
 		}
 		
-		validateDuplicateQNames(messages, reporter, astRoot);
+		validateDuplicateQNames(messages, reporter);
 		
 		for (JaxbElementFactoryMethod efm : getElementFactoryMethods()) {
-			efm.validate(messages, reporter, astRoot);
+			efm.validate(messages, reporter);
 		}
 	}
 	
-	protected void validateDuplicateQNames(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateDuplicateQNames(List<IMessage> messages, IReporter reporter) {
 		
 		Map<String, Bag<QName>> xmlElementDeclQnames = new HashMap<String, Bag<QName>>();
 		
@@ -203,7 +203,7 @@ public class GenericJavaXmlRegistry
 			String xmlElementNamespace = xmlElementDecl.getQName().getNamespace();
 			String xmlElementName = xmlElementDecl.getQName().getName();
 			if (xmlElementDeclQnames.get(fqScope).count(new QName(xmlElementNamespace, xmlElementName)) > 1) {
-				String scopeDesc = "";
+				String scopeDesc = ""; //$NON-NLS-1$
 				if (! JaxbElementFactoryMethod.DEFAULT_SCOPE_CLASS_NAME.equals(fqScope)) {
 					scopeDesc = NLS.bind(JptJaxbCoreMessages.XML_ELEMENT_DECL__SCOPE, fqScope);
 				}
@@ -213,7 +213,7 @@ public class GenericJavaXmlRegistry
 								JaxbValidationMessages.XML_REGISTRY__DUPLICATE_XML_ELEMENT_QNAME,
 								new String[] { xmlElementName, scopeDesc },
 								xmlElementDecl,
-								xmlElementDecl.getQName().getNameTextRange(astRoot)));
+								xmlElementDecl.getQName().getNameTextRange()));
 			}
 		}
 	}

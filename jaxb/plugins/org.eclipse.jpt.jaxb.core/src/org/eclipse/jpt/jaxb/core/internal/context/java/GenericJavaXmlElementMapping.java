@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -228,13 +228,13 @@ public class GenericJavaXmlElementMapping
 	// ***** validation *****
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
-		this.xmlElement.validate(messages, reporter, astRoot);
+		this.xmlElement.validate(messages, reporter);
 		
 		if (this.xmlElementWrapper != null) {
-			this.xmlElementWrapper.validate(messages, reporter, astRoot);
+			this.xmlElementWrapper.validate(messages, reporter);
 		}
 	}
 	
@@ -295,20 +295,20 @@ public class GenericJavaXmlElementMapping
 							return GenericJavaXmlElementMapping.this.xmlElement.getType();
 						}
 						
-						public TextRange getTypeTextRange(CompilationUnit astRoot) {
+						public TextRange getTypeTextRange() {
 							// 1) if we're getting here, XmlIDREF will not be null
 							// 2) if there is an @XmlElement annotation, use that, otherwise use the @XmlIDREF
 							return (GenericJavaXmlElementMapping.this.getAnnotation() == null) ?
-									GenericJavaXmlElementMapping.this.getXmlIDREF().getValidationTextRange(astRoot)
-									: GenericJavaXmlElementMapping.this.xmlElement.getTypeTextRange(astRoot);
+									GenericJavaXmlElementMapping.this.getXmlIDREF().getValidationTextRange()
+									: GenericJavaXmlElementMapping.this.xmlElement.getTypeTextRange();
 						}
 						
 						public XsdFeature getXsdFeature() {
 							return GenericJavaXmlElementMapping.this.getXsdFeature();
 						}
 						
-						public TextRange getXsdFeatureTextRange(CompilationUnit astRoot) {
-							return GenericJavaXmlElementMapping.this.xmlElement.getQName().getNameTextRange(astRoot);
+						public TextRange getXsdFeatureTextRange() {
+							return GenericJavaXmlElementMapping.this.xmlElement.getQName().getNameTextRange();
 						}
 					});
 		}

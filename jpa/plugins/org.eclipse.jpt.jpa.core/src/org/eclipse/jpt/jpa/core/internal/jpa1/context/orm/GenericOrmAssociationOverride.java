@@ -17,9 +17,7 @@ import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAssociationOverride;
-import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmAssociationOverride2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmAssociationOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverride;
@@ -105,16 +103,16 @@ public class GenericOrmAssociationOverride
 		this.relationship.validate(messages, reporter);
 	}
 
-	public JptValidator buildJoinTableValidator(ReadOnlyJoinTable table, TableTextRangeResolver textRangeResolver) {
-		return this.getContainer2_0().buildJoinTableValidator(this, table, textRangeResolver);
+	public JptValidator buildJoinTableValidator(ReadOnlyJoinTable table) {
+		return this.getContainer2_0().buildJoinTableValidator(this, table);
 	}
 
-	public JptValidator buildJoinTableJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-		return this.getContainer2_0().buildJoinTableJoinColumnValidator(this, column, owner, textRangeResolver);
+	public JptValidator buildJoinTableJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner) {
+		return this.getContainer2_0().buildJoinTableJoinColumnValidator(this, column, owner);
 	}
 
-	public JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-		return this.getContainer2_0().buildJoinTableInverseJoinColumnValidator(this, column, owner, textRangeResolver);
+	public JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner) {
+		return this.getContainer2_0().buildJoinTableInverseJoinColumnValidator(this, column, owner);
 	}
 
 	// ********** completion proposals **********

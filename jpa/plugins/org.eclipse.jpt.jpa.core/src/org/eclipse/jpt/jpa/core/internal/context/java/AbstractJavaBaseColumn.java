@@ -17,14 +17,12 @@ import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaBaseColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyBaseColumn;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.resource.java.BaseColumnAnnotation;
 
 /**
  * Java column or join column
  */
-public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O extends JavaReadOnlyBaseColumn.Owner>
+public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O extends ReadOnlyBaseColumn.Owner>
 	extends AbstractJavaNamedColumn<A, O>
 	implements JavaBaseColumn
 {
@@ -134,8 +132,8 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 		return this.owner.getDefaultTableName();
 	}
 
-	public TextRange getTableTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.getColumnAnnotation().getTableTextRange(), astRoot);
+	public TextRange getTableTextRange() {
+		return this.getValidationTextRange(this.getColumnAnnotation().getTableTextRange());
 	}
 
 
@@ -364,10 +362,5 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 
 	public boolean tableNameIsInvalid() {
 		return this.owner.tableNameIsInvalid(this.getTable());
-	}
-
-	@Override
-	protected NamedColumnTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
-		return new JavaTableColumnTextRangeResolver(this, astRoot);
 	}
 }

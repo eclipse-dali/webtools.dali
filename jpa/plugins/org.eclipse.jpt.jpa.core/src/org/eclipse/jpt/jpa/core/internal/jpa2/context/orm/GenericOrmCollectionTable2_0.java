@@ -17,11 +17,8 @@ import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyJoinColumn;
-import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.CollectionTableTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.JoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmReferenceTable;
@@ -44,7 +41,7 @@ public class GenericOrmCollectionTable2_0
 	}
 
 	@Override
-	protected OrmReadOnlyJoinColumn.Owner buildJoinColumnOwner() {
+	protected ReadOnlyJoinColumn.Owner buildJoinColumnOwner() {
 		return new JoinColumnOwner();
 	}
 
@@ -112,7 +109,7 @@ public class GenericOrmCollectionTable2_0
 	 * these point at the source/owning entity
 	 */
 	protected class JoinColumnOwner
-		implements OrmReadOnlyJoinColumn.Owner
+		implements ReadOnlyJoinColumn.Owner
 	{
 		protected JoinColumnOwner() {
 			super();
@@ -192,8 +189,8 @@ public class GenericOrmCollectionTable2_0
 			return GenericOrmCollectionTable2_0.this.getElementCollectionMapping();
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return new JoinColumnValidator(this.getPersistentAttribute(), (ReadOnlyJoinColumn) column, this, (JoinColumnTextRangeResolver) textRangeResolver, new CollectionTableTableDescriptionProvider());
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+			return new JoinColumnValidator(this.getPersistentAttribute(), (ReadOnlyJoinColumn) column, this, new CollectionTableTableDescriptionProvider());
 		}
 	}
 }

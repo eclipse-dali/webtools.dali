@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -71,7 +70,7 @@ public class BinaryXmlDiscriminatorValueAnnotation
 		throw new UnsupportedOperationException();
 	}
 	
-	public boolean valueTouches(int pos, CompilationUnit astRoot) {
+	public boolean valueTouches(int pos) {
 		throw new UnsupportedOperationException();
 	}
 }

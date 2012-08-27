@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.HashMap;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceNode;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
@@ -166,9 +165,9 @@ public abstract class AbstractAccessor
 			return this.member.isFor(memberName, occurrence);
 		}
 
-		public TextRange getTextRange(CompilationUnit astRoot) {
+		public TextRange getTextRange() {
 			// should never be null
-			return this.member.getTextRange(astRoot);
+			return this.member.getTextRange();
 		}
 
 		public TextRange getNameTextRange() {
@@ -176,9 +175,9 @@ public abstract class AbstractAccessor
 			return this.member.getNameTextRange();
 		}
 
-		public TextRange getTextRange(String nestableAnnotationName, CompilationUnit astRoot) {
+		public TextRange getTextRange(String nestableAnnotationName) {
 			// should never be null
-			return this.member.getTextRange(nestableAnnotationName, astRoot);
+			return this.member.getTextRange(nestableAnnotationName);
 		}
 	}
 

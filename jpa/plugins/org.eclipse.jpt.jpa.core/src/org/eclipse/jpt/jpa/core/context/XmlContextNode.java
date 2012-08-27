@@ -9,12 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.util.List;
-
-import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.validation.internal.provisional.core.IReporter;
-
 /**
  * XML JPA context node
  * <p>
@@ -24,7 +18,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.2
+ * @version 3.3
  * @since 2.1
  */
 // TODO bjv rename to XmlJpaContextNode
@@ -37,10 +31,4 @@ public interface XmlContextNode
 	 */
 	Iterable<String> getXmlCompletionProposals(int pos);
 
-	/**
-	 * Add to the list of current validation messages
-	 */
-	void validate(List<IMessage> messages, IReporter reporter);
-
-	TextRange getValidationTextRange();
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTableColumn;
 
 /**
@@ -25,21 +23,4 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyTableColumn;
 public interface JavaReadOnlyTableColumn
 	extends ReadOnlyTableColumn, JavaReadOnlyNamedColumn
 {
-	/**
-	 * Return the (best guess) text location of the column's table.
-	 */
-	TextRange getTableTextRange(CompilationUnit astRoot);
-
-
-	// ********** owner **********
-
-	/**
-	 * interface allowing columns to be used in multiple places
-	 * (e.g. basic mappings and attribute overrides)
-	 */
-	interface Owner
-		extends ReadOnlyTableColumn.Owner, JavaReadOnlyNamedColumn.Owner
-	{
-		// combine interfaces
-	}
 }

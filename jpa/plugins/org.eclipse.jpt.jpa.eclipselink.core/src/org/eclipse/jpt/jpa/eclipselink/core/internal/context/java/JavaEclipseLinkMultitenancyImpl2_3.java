@@ -30,7 +30,6 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkEntity;
@@ -70,7 +69,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 	protected Boolean specifiedIncludeCriteria;
 	protected boolean defaultIncludeCriteria = DEFAULT_INCLUDE_CRITERIA;
 
-	protected final JavaReadOnlyTenantDiscriminatorColumn2_3.Owner tenantDiscriminatorColumnOwner;
+	protected final ReadOnlyTenantDiscriminatorColumn2_3.Owner tenantDiscriminatorColumnOwner;
 	protected final ContextListContainer<JavaTenantDiscriminatorColumn2_3, EclipseLinkTenantDiscriminatorColumnAnnotation2_3> specifiedTenantDiscriminatorColumnContainer;
 	protected final ContextListContainer<JavaVirtualTenantDiscriminatorColumn2_3, ReadOnlyTenantDiscriminatorColumn2_3> defaultTenantDiscriminatorColumnContainer;
 
@@ -327,7 +326,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 		return container;
 	}
 
-	protected JavaReadOnlyTenantDiscriminatorColumn2_3.Owner buildTenantDiscriminatorColumnOwner() {
+	protected ReadOnlyTenantDiscriminatorColumn2_3.Owner buildTenantDiscriminatorColumnOwner() {
 		return new TenantDiscriminatorColumnOwner();
 	}
 
@@ -463,7 +462,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 	// ********** JavaReadOnlyTenantDiscriminatorColumn.Owner implementation **********
 
 	protected class TenantDiscriminatorColumnOwner 
-		implements JavaReadOnlyTenantDiscriminatorColumn2_3.Owner
+		implements ReadOnlyTenantDiscriminatorColumn2_3.Owner
 	{
 
 		public String getDefaultContextPropertyName() {
@@ -502,12 +501,12 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 			return getTypeMapping().tableNameIsInvalid(tableName);
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return new TenantDiscriminatorColumnValidator2_3((ReadOnlyTenantDiscriminatorColumn2_3) column, textRangeResolver);
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+			return new TenantDiscriminatorColumnValidator2_3((ReadOnlyTenantDiscriminatorColumn2_3) column);
 		}
 
-		public TextRange getValidationTextRange(CompilationUnit astRoot) {
-			return JavaEclipseLinkMultitenancyImpl2_3.this.getValidationTextRange(astRoot);
+		public TextRange getValidationTextRange() {
+			return JavaEclipseLinkMultitenancyImpl2_3.this.getValidationTextRange();
 		}
 	}
 
@@ -526,8 +525,8 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 		return (EclipseLinkMultitenantAnnotation2_3) this.getJavaResourceType().getNonNullAnnotation(this.getMultitenantAnnotationName());
 	}
 
-	protected TextRange getMultitenantAnnotationTextRange(CompilationUnit astRoot) {
-		return this.getMultitenantAnnotation().getTextRange(astRoot);
+	protected TextRange getMultitenantAnnotationTextRange() {
+		return this.getMultitenantAnnotation().getTextRange();
 	}
 
 	public boolean isMultitenantAnnotationSpecified() {
@@ -673,8 +672,8 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		if (getSpecifiedType() == EclipseLinkMultitenantType2_3.TABLE_PER_TENANT && ! this.getJpaPlatformVersion().isCompatibleWithEclipseLinkVersion(EclipseLink2_4JpaPlatformFactory.VERSION)) {
 			messages.add(
 				DefaultEclipseLinkJpaValidationMessages.buildMessage(
@@ -682,7 +681,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 					EclipseLinkJpaValidationMessages.MULTITENANT_TABLE_PER_TENANT_NOT_SUPPORTED,
 					EMPTY_STRING_ARRAY,
 					this,
-					this.getMultitenantAnnotationTextRange(astRoot)
+					this.getMultitenantAnnotationTextRange()
 				)
 			);			
 		}
@@ -695,7 +694,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 						EclipseLinkJpaValidationMessages.MULTITENANT_VPD_MIGHT_NOT_BE_NOT_SUPPORTED,
 						EMPTY_STRING_ARRAY,
 						this,
-						this.getMultitenantAnnotationTextRange(astRoot)
+						this.getMultitenantAnnotationTextRange()
 					)
 				);
 			}
@@ -706,7 +705,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 						EclipseLinkJpaValidationMessages.MULTITENANT_VPD_NOT_SUPPORTED_ON_NON_ORACLE_DATABASE_PLATFORM,
 						new String[] {targetDatabase},
 						this,
-						this.getMultitenantAnnotationTextRange(astRoot)
+						this.getMultitenantAnnotationTextRange()
 					)
 				);
 			}
@@ -719,13 +718,13 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 						EclipseLinkJpaValidationMessages.MULTITENANT_METADATA_CANNOT_BE_SPECIFIED_ON_NON_ROOT_ENTITY,
 						EMPTY_STRING_ARRAY,
 						this,
-						this.getJavaResourceType().getTextRange(EclipseLinkTenantDiscriminatorColumnAnnotation2_3.ANNOTATION_NAME, astRoot)
+						this.getJavaResourceType().getTextRange(EclipseLinkTenantDiscriminatorColumnAnnotation2_3.ANNOTATION_NAME)
 					)
 				);
 			}
 			else if (this.isMultitenantAnnotationSpecified()) {
 				for (JavaTenantDiscriminatorColumn2_3 column : this.getSpecifiedTenantDiscriminatorColumns()) {
-					column.validate(messages, reporter, astRoot);
+					column.validate(messages, reporter);
 				}
 			}
 			else {
@@ -735,7 +734,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 						EclipseLinkJpaValidationMessages.MULTITENANT_NOT_SPECIFIED_WITH_TENANT_DISCRIMINATOR_COLUMNS,
 						EMPTY_STRING_ARRAY,
 						this,
-						this.getJavaResourceType().getTextRange(EclipseLinkTenantDiscriminatorColumnAnnotation2_3.ANNOTATION_NAME, astRoot)
+						this.getJavaResourceType().getTextRange(EclipseLinkTenantDiscriminatorColumnAnnotation2_3.ANNOTATION_NAME)
 					)
 				);
 			}
@@ -743,7 +742,7 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 		if (this.specifiedTenantDiscriminatorColumnsAllowed()) {
 			//bug 360731 no need to validate, they will be validated where they are specified 
 			for (JavaVirtualTenantDiscriminatorColumn2_3 column : this.getDefaultTenantDiscriminatorColumns()) {
-				column.validate(messages, reporter, astRoot);
+				column.validate(messages, reporter);
 			}
 		}
 		if (this.getSpecifiedIncludeCriteria() == Boolean.TRUE && getType() == EclipseLinkMultitenantType2_3.VPD) {
@@ -764,8 +763,8 @@ public class JavaEclipseLinkMultitenancyImpl2_3
 		return (EclipseLinkJpaPlatformVersion) super.getJpaPlatformVersion();
 	}
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.getMultitenantAnnotation().getTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getTypeMapping().getValidationTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		TextRange textRange = this.getMultitenantAnnotation().getTextRange();
+		return (textRange != null) ? textRange : this.getTypeMapping().getValidationTextRange();
 	}
 }

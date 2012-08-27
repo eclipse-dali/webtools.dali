@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.core.context.orm;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.LobConverter;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.ConverterTextRangeResolver;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlConvertibleMapping;
 
@@ -63,7 +62,7 @@ public interface OrmLobConverter
 			((XmlConvertibleMapping) xmlMapping).setLob(false);
 		}
 
-		public JptValidator buildValidator(Converter converter, ConverterTextRangeResolver textRangeResolver) {
+		public JptValidator buildValidator(Converter converter) {
 			return JptValidator.Null.instance();
 		}
 	}

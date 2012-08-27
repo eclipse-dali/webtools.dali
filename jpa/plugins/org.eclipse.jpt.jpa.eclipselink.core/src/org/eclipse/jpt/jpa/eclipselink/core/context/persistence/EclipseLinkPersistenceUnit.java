@@ -24,7 +24,6 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
-import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.NonEmptyStringFilter;
@@ -1015,7 +1014,7 @@ public class EclipseLinkPersistenceUnit
 							EclipseLinkJpaValidationMessages.CONVERTER_DUPLICATE_NAME,
 							parms,
 							dup,
-							this.extractNameTextRange(dup)
+							dup.getNameTextRange()
 						)
 					);
 				}
@@ -1054,20 +1053,13 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	// TODO bjv isn't it obvious?
-	protected TextRange extractNameTextRange(EclipseLinkConverter converter) {
-		return (converter instanceof OrmEclipseLinkConverter<?>) ?
-				((OrmEclipseLinkConverter<?>) converter).getNameTextRange() :
-				((JavaEclipseLinkConverter<?>) converter).getNameTextRange(null);
-	}
-
-	// TODO bjv isn't it obvious?
 	protected void validate(EclipseLinkConverter converter, List<IMessage> messages, IReporter reporter) {
 		if (converter instanceof OrmEclipseLinkConverter<?>) {
 			((OrmEclipseLinkConverter<?>) converter).validate(messages, reporter);
 		} else {
 			JavaEclipseLinkConverter<?> javaConverter = (JavaEclipseLinkConverter<?>) converter;
 			if (this.converterSupportsValidationMessages(javaConverter)) {
-				javaConverter.validate(messages, reporter, null);
+				javaConverter.validate(messages, reporter);
 			}
 		}
 	}
@@ -1088,7 +1080,7 @@ public class EclipseLinkPersistenceUnit
 							EclipseLinkJpaValidationMessages.GENERATOR_EQUIVALENT,
 							parms,
 							dup,
-							this.extractNameTextRange(dup)
+							dup.getNameTextRange()
 						)
 					);
 				}
@@ -1113,7 +1105,7 @@ public class EclipseLinkPersistenceUnit
 							EclipseLinkJpaValidationMessages.QUERY_EQUIVALENT,
 							parms,
 							dup,
-							this.extractNameTextRange(dup)
+							dup.getNameTextRange()
 						)
 					);
 				}

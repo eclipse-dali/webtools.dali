@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,6 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationship;
-import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMappingJoinTableRelationshipStrategy2_0;
@@ -59,11 +58,11 @@ public class NullOrmJoinTableRelationshipStrategy
 		return this.getRelationship().getValidationTextRange();
 	}
 
-	public JptValidator buildJoinTableJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+	public JptValidator buildJoinTableJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner) {
 		throw new UnsupportedOperationException();
 	}
 
-	public JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+	public JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner) {
 		throw new UnsupportedOperationException();
 	}
 

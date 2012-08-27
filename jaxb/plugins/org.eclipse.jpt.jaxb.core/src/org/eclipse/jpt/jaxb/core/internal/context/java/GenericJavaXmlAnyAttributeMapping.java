@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,6 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
 import java.util.Map;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlAnyAttributeMapping;
@@ -45,8 +44,8 @@ public class GenericJavaXmlAnyAttributeMapping
 	// ***** validation *****
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
 		if (! getPersistentAttribute().isJavaResourceAttributeTypeSubTypeOf(Map.class.getName())) {
 			messages.add(
@@ -54,7 +53,7 @@ public class GenericJavaXmlAnyAttributeMapping
 					IMessage.HIGH_SEVERITY,
 					JaxbValidationMessages.XML_ANY_ATTRIBUTE__NON_MAP_TYPE,
 					this,
-					getValidationTextRange(astRoot)));
+					getValidationTextRange()));
 		}
 	}
 }

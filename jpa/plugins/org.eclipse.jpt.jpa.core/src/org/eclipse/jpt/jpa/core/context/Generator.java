@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 
@@ -34,6 +35,11 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 public interface Generator
 	extends JpaNamedContextNode
 {
+
+	/**
+	 * Return the (best guess) text location of the name.
+	 */
+	TextRange getNameTextRange();
 
 	/**
 	 * Return the generator's type.

@@ -145,15 +145,15 @@ public class ELJavaXmlElementsMapping
 	// ***** validation *****
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
 		if (getXmlPathsSize() > 0 ) {
-			validateXmlPaths(messages, reporter, astRoot);
+			validateXmlPaths(messages, reporter);
 		}
 	}
 	
-	protected void validateXmlPaths(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateXmlPaths(List<IMessage> messages, IReporter reporter) {
 		Iterator<XmlElement> xmlElements = getXmlElements().iterator();
 		Iterator<ELJavaXmlPath> xmlPaths = this.xmlPathContainer.getContextElements().iterator();
 		
@@ -168,7 +168,7 @@ public class ELJavaXmlElementsMapping
 							IMessage.HIGH_SEVERITY,
 							ELJaxbValidationMessages.XML_PATH__INSUFFICIENT_XML_PATHS_FOR_XML_ELEMENTS,
 							this,
-							getXmlPathsTextRange(astRoot)));
+							getXmlPathsTextRange()));
 		}
 		
 		while (xmlPaths.hasNext()) {
@@ -178,29 +178,29 @@ public class ELJavaXmlElementsMapping
 							IMessage.HIGH_SEVERITY,
 							ELJaxbValidationMessages.XML_PATH__INSUFFICIENT_XML_ELEMENTS_FOR_XML_PATHS,
 							this,
-							xmlPath.getValidationTextRange(astRoot)));
+							xmlPath.getValidationTextRange()));
 		}
 		
 		for (ELJavaXmlPath xmlPath : this.xmlPathContainer.getContextElements()) {
-			xmlPath.validate(messages, reporter, astRoot);
+			xmlPath.validate(messages, reporter);
 		}
 	}
 	
 	@Override
 	protected void validateDuplicateQName(XmlElement xmlElement, Bag<QName> xmlElementQNames, 
-				List<IMessage> messages, CompilationUnit astRoot) {
+				List<IMessage> messages) {
 		
 		if (getXmlPathsSize() == 0) { 
-			super.validateDuplicateQName(xmlElement, xmlElementQNames, messages, astRoot);
+			super.validateDuplicateQName(xmlElement, xmlElementQNames, messages);
 		}
 	}
 	
-	protected TextRange getXmlPathsTextRange(CompilationUnit astRoot) {
+	protected TextRange getXmlPathsTextRange() {
 		Annotation annotation = getJavaResourceAttribute().getAnnotation(ELJaxb.XML_PATHS);
 		if (annotation == null) {
 			annotation = getJavaResourceAttribute().getAnnotation(0, ELJaxb.XML_PATH);
 		}
-		return annotation.getTextRange(astRoot);
+		return annotation.getTextRange();
 	}
 	
 	

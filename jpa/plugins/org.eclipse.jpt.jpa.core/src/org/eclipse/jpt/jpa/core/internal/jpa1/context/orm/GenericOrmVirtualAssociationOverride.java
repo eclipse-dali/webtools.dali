@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,9 +17,7 @@ import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualOverrideRelationship;
-import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmAssociationOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmVirtualAssociationOverride2_0;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -87,15 +85,15 @@ public class GenericOrmVirtualAssociationOverride
 		this.relationship.validate(messages, reporter);
 	}
 
-	public JptValidator buildJoinTableValidator(ReadOnlyJoinTable table, TableTextRangeResolver textRangeResolver) {
-		return this.getContainer2_0().buildJoinTableValidator(this, table, textRangeResolver);
+	public JptValidator buildJoinTableValidator(ReadOnlyJoinTable table) {
+		return this.getContainer2_0().buildJoinTableValidator(this, table);
 	}
 
-	public JptValidator buildJoinTableJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-		return this.getContainer2_0().buildJoinTableJoinColumnValidator(this, column, owner, textRangeResolver);
+	public JptValidator buildJoinTableJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner) {
+		return this.getContainer2_0().buildJoinTableJoinColumnValidator(this, column, owner);
 	}
 
-	public JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-		return this.getContainer2_0().buildJoinTableInverseJoinColumnValidator(this, column, owner, textRangeResolver);
+	public JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner) {
+		return this.getContainer2_0().buildJoinTableInverseJoinColumnValidator(this, column, owner);
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
@@ -125,18 +124,18 @@ public class GenericJavaIdDerivedIdentityStrategy2_0
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		// no validation rules
 	}
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.getAnnotationTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getDerivedIdentity().getValidationTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		TextRange textRange = this.getAnnotationTextRange();
+		return (textRange != null) ? textRange : this.getDerivedIdentity().getValidationTextRange();
 	}
 
-	protected TextRange getAnnotationTextRange(CompilationUnit astRoot) {
+	protected TextRange getAnnotationTextRange() {
 		IdAnnotation annotation = this.getAnnotation();
-		return (annotation == null) ? null : annotation.getTextRange(astRoot);
+		return (annotation == null) ? null : annotation.getTextRange();
 	}
 }

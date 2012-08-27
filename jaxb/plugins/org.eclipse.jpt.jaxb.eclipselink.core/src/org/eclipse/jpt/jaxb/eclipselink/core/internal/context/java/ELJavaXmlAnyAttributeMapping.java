@@ -134,16 +134,16 @@ public class ELJavaXmlAnyAttributeMapping
 	// ***** validation *****
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
 		if (this.xmlPath != null) {
-			validateXmlPath(messages, reporter, astRoot);
+			validateXmlPath(messages, reporter);
 		}
 	}
 	
-	protected void validateXmlPath(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		this.xmlPath.validate(messages, reporter, astRoot);
+	protected void validateXmlPath(List<IMessage> messages, IReporter reporter) {
+		this.xmlPath.validate(messages, reporter);
 	}
 	
 	

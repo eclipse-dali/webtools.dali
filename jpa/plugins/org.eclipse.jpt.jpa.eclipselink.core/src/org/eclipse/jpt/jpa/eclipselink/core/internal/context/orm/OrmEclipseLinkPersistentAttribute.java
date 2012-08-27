@@ -138,6 +138,6 @@ public class OrmEclipseLinkPersistentAttribute
 
 	@Override
 	protected JptValidator buildAttibuteValidator() {
-		return new EclipseLinkPersistentAttributeValidator(this, buildTextRangeResolver());
+		return new EclipseLinkPersistentAttributeValidator(this);
 	}
 }

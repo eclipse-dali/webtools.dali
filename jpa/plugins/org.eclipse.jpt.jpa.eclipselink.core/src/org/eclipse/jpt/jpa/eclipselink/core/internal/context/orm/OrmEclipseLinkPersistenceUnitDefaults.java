@@ -19,12 +19,10 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.AbstractOrmPersistenceUnitDefaults;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkPersistenceUnitDefaults;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmReadOnlyTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAccessMethods;
@@ -43,7 +41,7 @@ public class OrmEclipseLinkPersistenceUnitDefaults
 {
 
 	protected final ContextListContainer<OrmTenantDiscriminatorColumn2_3, XmlTenantDiscriminatorColumn_2_3> tenantDiscriminatorColumnContainer;
-	protected final OrmReadOnlyTenantDiscriminatorColumn2_3.Owner tenantDiscriminatorColumnOwner;
+	protected final ReadOnlyTenantDiscriminatorColumn2_3.Owner tenantDiscriminatorColumnOwner;
 
 	protected String specifiedGetMethod;
 	protected String specifiedSetMethod;
@@ -173,7 +171,7 @@ public class OrmEclipseLinkPersistenceUnitDefaults
 		}
 	}
 
-	protected OrmReadOnlyTenantDiscriminatorColumn2_3.Owner buildTenantDiscriminatorColumnOwner() {
+	protected ReadOnlyTenantDiscriminatorColumn2_3.Owner buildTenantDiscriminatorColumnOwner() {
 		return new TenantDiscriminatorColumnOwner();
 	}
 
@@ -191,7 +189,7 @@ public class OrmEclipseLinkPersistenceUnitDefaults
 	// ********** OrmReadOnlyTenantDiscriminatorColumn.Owner implementation **********
 
 	protected class TenantDiscriminatorColumnOwner 
-		implements OrmReadOnlyTenantDiscriminatorColumn2_3.Owner
+		implements ReadOnlyTenantDiscriminatorColumn2_3.Owner
 	{
 
 		public String getDefaultContextPropertyName() {
@@ -239,7 +237,7 @@ public class OrmEclipseLinkPersistenceUnitDefaults
 		/**
 		 * no column validation can be done in the context of the persistence unit defaults
 		 */
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
 			return JptValidator.Null.instance();
 		}
 

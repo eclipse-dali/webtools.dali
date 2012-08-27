@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
@@ -59,8 +60,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryHint;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyBaseJoinColumn;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSequenceGenerator;
@@ -220,11 +219,11 @@ public abstract class AbstractOrmXmlContextNodeFactory
 		return new GenericOrmVirtualSecondaryTable(parent, owner, javaSecondaryTable);
 	}
 	
-	public OrmPrimaryKeyJoinColumn buildOrmPrimaryKeyJoinColumn(XmlContextNode parent, OrmReadOnlyBaseJoinColumn.Owner owner, XmlPrimaryKeyJoinColumn resourcePrimaryKeyJoinColumn) {
+	public OrmPrimaryKeyJoinColumn buildOrmPrimaryKeyJoinColumn(XmlContextNode parent, ReadOnlyBaseJoinColumn.Owner owner, XmlPrimaryKeyJoinColumn resourcePrimaryKeyJoinColumn) {
 		return new GenericOrmPrimaryKeyJoinColumn(parent, owner, resourcePrimaryKeyJoinColumn);
 	}
 
-	public OrmVirtualPrimaryKeyJoinColumn buildOrmVirtualPrimaryKeyJoinColumn(XmlContextNode parent, OrmReadOnlyBaseJoinColumn.Owner owner, JavaPrimaryKeyJoinColumn javaPrimaryKeyJoinColumn) {
+	public OrmVirtualPrimaryKeyJoinColumn buildOrmVirtualPrimaryKeyJoinColumn(XmlContextNode parent, ReadOnlyBaseJoinColumn.Owner owner, JavaPrimaryKeyJoinColumn javaPrimaryKeyJoinColumn) {
 		return new GenericOrmVirtualPrimaryKeyJoinColumn(parent, owner, javaPrimaryKeyJoinColumn);
 	}
 	
@@ -236,11 +235,11 @@ public abstract class AbstractOrmXmlContextNodeFactory
 		return new GenericOrmVirtualJoinTable(parent, owner, overriddenTable);
 	}
 	
-	public OrmJoinColumn buildOrmJoinColumn(XmlContextNode parent, OrmReadOnlyJoinColumn.Owner owner, XmlJoinColumn xmlJoinColumn) {
+	public OrmJoinColumn buildOrmJoinColumn(XmlContextNode parent, ReadOnlyJoinColumn.Owner owner, XmlJoinColumn xmlJoinColumn) {
 		return new GenericOrmJoinColumn(parent, owner, xmlJoinColumn);
 	}
 
-	public OrmVirtualJoinColumn buildOrmVirtualJoinColumn(XmlContextNode parent, OrmReadOnlyJoinColumn.Owner owner, ReadOnlyJoinColumn overriddenColumn) {
+	public OrmVirtualJoinColumn buildOrmVirtualJoinColumn(XmlContextNode parent, ReadOnlyJoinColumn.Owner owner, ReadOnlyJoinColumn overriddenColumn) {
 		return new GenericOrmVirtualJoinColumn(parent, owner, overriddenColumn);
 	}
 	

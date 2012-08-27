@@ -131,8 +131,8 @@ public class GenericJavaEnumConstant
 	// ***** validation *****
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
 		String value = getValue();
 		XsdTypeDefinition<?> xsdType = getEnumMapping().getXsdTypeDefinition();
@@ -148,17 +148,17 @@ public class GenericJavaEnumConstant
 							JaxbValidationMessages.XML_ENUM_VALUE__INVALID_LEXICAL_VALUE,
 							new String[] { value, xsdType.getName() },
 							this,
-							getValueTextRange(astRoot)));
+							getValueTextRange()));
 		}
 	}
 	
 	@Override
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return getResourceEnumConstant().getTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		return getResourceEnumConstant().getTextRange();
 	}
 	
-	protected TextRange getValueTextRange(CompilationUnit astRoot) {
+	protected TextRange getValueTextRange() {
 		TextRange enumValueTextRange = getXmlEnumValueAnnotation().getValueTextRange();
-		return enumValueTextRange != null ? enumValueTextRange : getValidationTextRange(astRoot);
+		return enumValueTextRange != null ? enumValueTextRange : getValidationTextRange();
 	}
 }

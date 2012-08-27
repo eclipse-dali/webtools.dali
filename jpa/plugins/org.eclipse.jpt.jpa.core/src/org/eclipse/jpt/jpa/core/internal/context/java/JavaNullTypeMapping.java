@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
@@ -64,15 +63,15 @@ public class JavaNullTypeMapping
 	 * We could also add a quick fix for this error.
 	 */
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		messages.add(
 			DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
 				JpaValidationMessages.PERSISTENCE_UNIT_INVALID_CLASS,
 				new String[] {this.getPersistentType().getName()},
 				this,
-				this.getValidationTextRange(astRoot)
+				this.getValidationTextRange()
 			)
 		);
 	}
@@ -83,7 +82,7 @@ public class JavaNullTypeMapping
 	}
 
 	@Override
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.getPersistentType().getValidationTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		return this.getPersistentType().getValidationTextRange();
 	}
 }

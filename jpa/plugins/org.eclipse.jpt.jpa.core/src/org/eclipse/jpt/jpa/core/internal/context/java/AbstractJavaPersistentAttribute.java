@@ -38,7 +38,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
-import org.eclipse.jpt.jpa.core.internal.context.PersistentAttributeTextRangeResolver;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
@@ -596,8 +595,8 @@ public abstract class AbstractJavaPersistentAttribute
 		return null;
 	}
 	
-	public boolean contains(int offset, CompilationUnit astRoot) {
-		TextRange fullTextRange = this.getResourceAttribute().getTextRange(astRoot);
+	public boolean contains(int offset) {
+		TextRange fullTextRange = this.getResourceAttribute().getTextRange();
 		// 'fullTextRange' will be null if the attribute no longer exists in the java;
 		// the context model can be out of sync with the resource model
 		// when a selection event occurs before the context model has a
@@ -613,28 +612,24 @@ public abstract class AbstractJavaPersistentAttribute
 
 	// ********** validation **********
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+	public TextRange getValidationTextRange() {
 		return this.isVirtual() ?
 				this.getOwningPersistentType().getValidationTextRange() :
 				this.getSelectionTextRange();
 	}
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.validateAttribute(messages, reporter, astRoot);
-		this.mapping.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.validateAttribute(messages, reporter);
+		this.mapping.validate(messages, reporter);
 	}
 
-	protected void validateAttribute(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		this.buildAttributeValidator(astRoot).validate(messages, reporter);
+	protected void validateAttribute(List<IMessage> messages, IReporter reporter) {
+		this.buildAttributeValidator().validate(messages, reporter);
 	}
 
-	protected abstract JptValidator buildAttributeValidator(CompilationUnit astRoot);
-
-	protected PersistentAttributeTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
-		return new JavaPersistentAttributeTextRangeResolver(this, astRoot);
-	}
+	protected abstract JptValidator buildAttributeValidator();
 
 	/**
 	 * If the attribute's owning type is an <code>orm.xml</code> persistent

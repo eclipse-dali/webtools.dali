@@ -9,17 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
-import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.AbstractJpaContextNode;
-import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractJavaJpaContextNode
 	extends AbstractJpaContextNode
@@ -55,42 +50,5 @@ public abstract class AbstractJavaJpaContextNode
 	protected Iterable<String> getConnectedJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
 		return null;
 	}
-	
-	// ********** validation **********
-	
-	/**
-	 * All subclass implementations
-	 * should be preceded by a "super" call to this method.
-	 */
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		if (reporter.isCancelled()) {
-			throw new ValidationCancelledException();
-		}
-	}
 
-	/**
-	 * Validate the specified node if it is not <code>null</code>.
-	 */
-	protected void validateNode(JavaJpaContextNode node, List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		if (node != null) {
-			node.validate(messages, reporter, astRoot);
-		}
-	}
-
-	/**
-	 * Validate the specified nodes.
-	 */
-	protected void validateNodes(Iterable<? extends JavaJpaContextNode> nodes, List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		for (JavaJpaContextNode node : nodes) {
-			node.validate(messages, reporter, astRoot);
-		}
-	}
-
-	/**
-	 * Return the specified text range if it is not <code>null</code>; if it is
-	 * <code>null</code>, return the node's validation text range.
-	 */
-	protected TextRange getValidationTextRange(TextRange textRange, CompilationUnit astRoot) {
-		return (textRange != null) ? textRange : this.getValidationTextRange(astRoot);
-	}
 }

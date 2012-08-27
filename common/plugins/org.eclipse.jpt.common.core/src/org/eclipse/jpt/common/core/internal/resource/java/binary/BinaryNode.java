@@ -13,7 +13,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IMemberValuePair;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.resource.java.AbstractJavaResourceNode;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
@@ -49,7 +48,7 @@ public abstract class BinaryNode
 		throw new UnsupportedOperationException();
 	}
 
-	public TextRange getTextRange(CompilationUnit astRoot) {
+	public TextRange getTextRange() {
 		throw new UnsupportedOperationException();
 	}
 

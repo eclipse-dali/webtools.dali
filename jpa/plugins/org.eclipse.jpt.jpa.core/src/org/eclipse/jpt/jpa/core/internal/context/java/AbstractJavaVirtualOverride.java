@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTableColumn.Owner;
@@ -18,9 +17,7 @@ import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualOverride;
-import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.OverrideTextRangeResolver;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -74,8 +71,8 @@ public abstract class AbstractJavaVirtualOverride<C extends JavaOverrideContaine
 		return this.getContainer().getDefaultTableName();
 	}
 
-	public JptValidator buildColumnValidator(ReadOnlyBaseColumn column, Owner owner, TableColumnTextRangeResolver textRangeResolver) {
-		return this.getContainer().buildColumnValidator(this, column, owner, textRangeResolver);
+	public JptValidator buildColumnValidator(ReadOnlyBaseColumn column, Owner owner) {
+		return this.getContainer().buildColumnValidator(this, column, owner);
 	}
 
 	@Override
@@ -87,25 +84,21 @@ public abstract class AbstractJavaVirtualOverride<C extends JavaOverrideContaine
 	// ********** validation **********
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.buildValidator(astRoot).validate(messages, reporter);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.buildValidator().validate(messages, reporter);
 	}
 
-	protected JptValidator buildValidator(CompilationUnit astRoot) {
-		return this.getContainer().buildOverrideValidator(this, this.buildTextRangeResolver(astRoot));
+	protected JptValidator buildValidator() {
+		return this.getContainer().buildOverrideValidator(this);
 	}
 
-	protected OverrideTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
-		return new JavaOverrideTextRangeResolver(this, astRoot);
+	public TextRange getValidationTextRange() {
+		return this.getContainer().getValidationTextRange();
 	}
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.getContainer().getValidationTextRange(astRoot);
-	}
-
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(astRoot);
+	public TextRange getNameTextRange() {
+		return this.getValidationTextRange();
 	}
 
 	public boolean tableNameIsInvalid(String tableName) {

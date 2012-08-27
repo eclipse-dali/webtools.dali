@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,7 +21,6 @@ import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
@@ -322,11 +321,7 @@ public abstract class AbstractOrmVirtualTable<T extends ReadOnlyTable>
 	}
 
 	protected JptValidator buildTableValidator() {
-		return this.owner.buildTableValidator(this, this.buildTextRangeResolver());
-	}
-
-	protected TableTextRangeResolver buildTextRangeResolver() {
-		return new OrmTableTextRangeResolver(this);
+		return this.owner.buildTableValidator(this);
 	}
 
 	public TextRange getValidationTextRange() {

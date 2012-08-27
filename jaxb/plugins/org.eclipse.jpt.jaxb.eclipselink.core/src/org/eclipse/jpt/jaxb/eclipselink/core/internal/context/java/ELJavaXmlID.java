@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.jaxb.core.context.XmlNamedNodeMapping;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlID;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlIDAnnotation;
@@ -26,7 +25,7 @@ public class ELJavaXmlID
 	
 	
 	@Override
-	protected void validateAttributeType(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateAttributeType(List<IMessage> messages) {
 		// no op - MOXy does not require String attribute types
 	}
 }

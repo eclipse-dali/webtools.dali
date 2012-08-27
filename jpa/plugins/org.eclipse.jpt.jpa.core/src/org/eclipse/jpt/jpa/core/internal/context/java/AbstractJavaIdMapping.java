@@ -34,9 +34,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaTemporalConverter;
-import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.NamedColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.NullJavaConverter;
@@ -397,8 +395,8 @@ public abstract class AbstractJavaIdMapping
 		return this.getTypeMapping().getAllAssociatedTableNames();
 	}
 
-	public JptValidator buildColumnValidator(ReadOnlyNamedColumn col, NamedColumnTextRangeResolver textRangeResolver) {
-		return new NamedColumnValidator(this.getPersistentAttribute(), (ReadOnlyBaseColumn) col, (TableColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
+	public JptValidator buildColumnValidator(ReadOnlyNamedColumn col) {
+		return new NamedColumnValidator(this.getPersistentAttribute(), (ReadOnlyBaseColumn) col, new EntityTableDescriptionProvider());
 	}
 
 
@@ -439,36 +437,36 @@ public abstract class AbstractJavaIdMapping
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 
 		// JPA 2.0: If the column is specified or if the ID is not mapped by a relationship,
 		// the column is validated.
 		// JPA 1.0: The column is always be validated, since the ID is never mapped by a
 		// relationship.
 		if (this.columnIsSpecified() || ! this.derived) {
-			this.column.validate(messages, reporter, astRoot);
+			this.column.validate(messages, reporter);
 		}
 
 		// JPA 2.0: If the column is specified and the ID is mapped by a relationship,
 		// we have an error.
 		// JPA 1.0: The ID cannot be mapped by a relationship.
 		if (this.columnIsSpecified() && this.derived) {
-			messages.add(this.buildColumnSpecifiedAndDerivedMessage(astRoot));
+			messages.add(this.buildColumnSpecifiedAndDerivedMessage());
 		}
 
-		this.generatorContainer.validate(messages, reporter, astRoot);
+		this.generatorContainer.validate(messages, reporter);
 		if (this.generatedValue != null) {
-			this.generatedValue.validate(messages, reporter, astRoot);
+			this.generatedValue.validate(messages, reporter);
 		}
-		this.converter.validate(messages, reporter, astRoot);
+		this.converter.validate(messages, reporter);
 	}
 
-	protected IMessage buildColumnSpecifiedAndDerivedMessage(CompilationUnit astRoot) {
+	protected IMessage buildColumnSpecifiedAndDerivedMessage() {
 		return this.buildMessage(
 				JpaValidationMessages.ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_COLUMN_SPECIFIED,
 				EMPTY_STRING_ARRAY,
-				this.column.getValidationTextRange(astRoot)
+				this.column.getValidationTextRange()
 			);
 	}
 

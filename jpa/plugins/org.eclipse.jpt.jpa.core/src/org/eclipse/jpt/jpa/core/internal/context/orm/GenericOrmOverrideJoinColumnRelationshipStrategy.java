@@ -18,11 +18,8 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOverrideRelationship;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyJoinColumn;
-import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.db.Table;
 
 public class GenericOrmOverrideJoinColumnRelationshipStrategy
@@ -33,7 +30,7 @@ public class GenericOrmOverrideJoinColumnRelationshipStrategy
 	}
 
 	@Override
-	protected OrmReadOnlyJoinColumn.Owner buildJoinColumnOwner() {
+	protected ReadOnlyJoinColumn.Owner buildJoinColumnOwner() {
 		return new JoinColumnOwner();
 	}
 
@@ -123,7 +120,7 @@ public class GenericOrmOverrideJoinColumnRelationshipStrategy
 	// ********** join column owner **********
 
 	protected class JoinColumnOwner
-		implements OrmReadOnlyJoinColumn.Owner
+		implements ReadOnlyJoinColumn.Owner
 	{
 		protected JoinColumnOwner() {
 			super();
@@ -174,8 +171,8 @@ public class GenericOrmOverrideJoinColumnRelationshipStrategy
 			return GenericOrmOverrideJoinColumnRelationshipStrategy.this.getValidationTextRange();
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return GenericOrmOverrideJoinColumnRelationshipStrategy.this.getRelationship().buildColumnValidator((ReadOnlyBaseColumn) column, this, (TableColumnTextRangeResolver) textRangeResolver);
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+			return GenericOrmOverrideJoinColumnRelationshipStrategy.this.getRelationship().buildColumnValidator((ReadOnlyBaseColumn) column, this);
 		}
 	}
 }

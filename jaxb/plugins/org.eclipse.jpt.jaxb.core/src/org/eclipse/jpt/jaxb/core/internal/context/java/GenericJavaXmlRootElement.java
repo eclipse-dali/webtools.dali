@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -109,15 +109,15 @@ public class GenericJavaXmlRootElement
 	// **************** validation ********************************************
 	
 	@Override
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.annotation.getTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		return this.annotation.getTextRange();
 	}
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
-		this.qName.validate(messages, reporter, astRoot);
+		this.qName.validate(messages, reporter);
 	}
 	
 	
@@ -178,7 +178,7 @@ public class GenericJavaXmlRootElement
 		}
 		
 		@Override
-		protected void validateReference(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		protected void validateReference(List<IMessage> messages, IReporter reporter) {
 			String name = getName();
 			String namespace = getNamespace();
 			XsdSchema schema = this.getXsdSchema();
@@ -187,7 +187,7 @@ public class GenericJavaXmlRootElement
 				// element must resolve
 				XsdElementDeclaration schemaElement = schema.getElementDeclaration(namespace, name);
 				if (schemaElement == null) {
-					messages.add(getUnresolveSchemaComponentMessage(astRoot));
+					messages.add(getUnresolveSchemaComponentMessage());
 				}
 				else {
 					// element type must agree with parent's schema type
@@ -200,7 +200,7 @@ public class GenericJavaXmlRootElement
 										JaxbValidationMessages.XML_ROOT_ELEMENT_TYPE_CONFLICTS_WITH_XML_TYPE,
 										new String[] {name, namespace},
 										this,
-										getValidationTextRange(astRoot)));
+										getValidationTextRange()));
 						}
 					}
 				}

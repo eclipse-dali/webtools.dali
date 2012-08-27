@@ -23,7 +23,6 @@ import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumnRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlJoinColumnContainer;
@@ -36,7 +35,7 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy
 	implements OrmJoinColumnRelationshipStrategy
 {
 	protected final ContextListContainer<OrmJoinColumn, XmlJoinColumn> specifiedJoinColumnContainer;
-	protected final OrmReadOnlyJoinColumn.Owner joinColumnOwner;
+	protected final ReadOnlyJoinColumn.Owner joinColumnOwner;
 
 	protected OrmJoinColumn defaultJoinColumn;
 
@@ -185,7 +184,7 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy
 		}
 	}
 
-	protected abstract OrmReadOnlyJoinColumn.Owner buildJoinColumnOwner();
+	protected abstract ReadOnlyJoinColumn.Owner buildJoinColumnOwner();
 
 
 	// ********** default join column **********

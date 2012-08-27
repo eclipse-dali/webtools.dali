@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
@@ -156,15 +155,15 @@ public class JavaEclipseLinkEmbeddableImpl
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.converterContainer.validate(messages, reporter, astRoot);
-		this.changeTracking.validate(messages, reporter, astRoot);
-		this.customizer.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.converterContainer.validate(messages, reporter);
+		this.changeTracking.validate(messages, reporter);
+		this.customizer.validate(messages, reporter);
 	}
 
 	@Override
-	protected JptValidator buildTypeMappingValidator(CompilationUnit astRoot) {
-		return new EclipseLinkTypeMappingValidator(this, this.getJavaResourceType(), this.buildTextRangeResolver(astRoot));
+	protected JptValidator buildTypeMappingValidator() {
+		return new EclipseLinkTypeMappingValidator(this, this.getJavaResourceType());
 	}
 }

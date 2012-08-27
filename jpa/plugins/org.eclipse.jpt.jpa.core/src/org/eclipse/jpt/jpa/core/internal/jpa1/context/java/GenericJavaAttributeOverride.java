@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,9 +19,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAttributeOverride;
-import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaOverride;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
@@ -99,8 +97,8 @@ public class GenericJavaAttributeOverride
 		return this.name;
 	}
 
-	public JptValidator buildColumnValidator(ReadOnlyNamedColumn col, NamedColumnTextRangeResolver textRangeResolver) {
-		return this.getContainer().buildColumnValidator(this, (ReadOnlyBaseColumn) col, this, (TableColumnTextRangeResolver) textRangeResolver);
+	public JptValidator buildColumnValidator(ReadOnlyNamedColumn col) {
+		return this.getContainer().buildColumnValidator(this, (ReadOnlyBaseColumn) col, this);
 	}
 
 	public CompleteColumnAnnotation getColumnAnnotation() {
@@ -143,8 +141,8 @@ public class GenericJavaAttributeOverride
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 
 		if (this.attributeIsDerivedId()) {
 			messages.add(
@@ -153,16 +151,16 @@ public class GenericJavaAttributeOverride
 						JpaValidationMessages.ATTRIBUTE_OVERRIDE_DERIVED_AND_SPECIFIED,
 						EMPTY_STRING_ARRAY,
 						this,
-						this.getValidationTextRange(astRoot)
+						this.getValidationTextRange()
 					)
 				);
 
 			// validate the column if it is specified
 			if (this.columnAnnotationIsSpecified()) {
-				this.column.validate(messages, reporter, astRoot);
+				this.column.validate(messages, reporter);
 			}
 		} else {
-			this.column.validate(messages, reporter, astRoot);
+			this.column.validate(messages, reporter);
 		}
 	}
 

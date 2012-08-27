@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
@@ -51,13 +50,13 @@ public class GenericJavaXmlIDREF
 	// ***** validation *****
 	
 	@Override
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.context.getAnnotation().getTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		return this.context.getAnnotation().getTextRange();
 	}
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
 		for (ValidatableReference ref : this.context.getReferences()) {
 			String typeName = ref.getFullyQualifiedType();
@@ -73,7 +72,7 @@ public class GenericJavaXmlIDREF
 						JaxbValidationMessages.XML_ID_REF__TYPE_DOES_NOT_CONTAIN_XML_ID,
 						new String[] { typeName },
 						this,
-						ref.getTypeTextRange(astRoot)));				
+						ref.getTypeTextRange()));				
 				}
 			}
 			
@@ -89,7 +88,7 @@ public class GenericJavaXmlIDREF
 							JaxbValidationMessages.XML_ID_REF__SCHEMA_TYPE_NOT_IDREF,
 							new String [] { xsdFeature.getName() },
 							this,
-							ref.getXsdFeatureTextRange(astRoot)));
+							ref.getXsdFeatureTextRange()));
 			}
 		}
 	}
@@ -109,10 +108,10 @@ public class GenericJavaXmlIDREF
 		
 		String getFullyQualifiedType();
 		
-		TextRange getTypeTextRange(CompilationUnit astRoot);
+		TextRange getTypeTextRange();
 		
 		XsdFeature getXsdFeature();
 		
-		TextRange getXsdFeatureTextRange(CompilationUnit astRoot);
+		TextRange getXsdFeatureTextRange();
 	}
 }

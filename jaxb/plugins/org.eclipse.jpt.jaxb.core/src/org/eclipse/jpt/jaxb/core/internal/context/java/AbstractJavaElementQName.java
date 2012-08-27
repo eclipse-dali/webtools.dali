@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
@@ -94,7 +93,7 @@ public abstract class AbstractJavaElementQName
 	}
 
 	@Override
-	protected void validateReference(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateReference(List<IMessage> messages, IReporter reporter) {
 		XsdTypeDefinition xsdType = getJaxbClassMapping().getXsdTypeDefinition();
 		if (xsdType == null) {
 			return;
@@ -118,7 +117,7 @@ public abstract class AbstractJavaElementQName
 		}
 		
 		if (resolvedXsdElement == null) {
-			messages.add(getUnresolveSchemaComponentMessage(astRoot));
+			messages.add(getUnresolveSchemaComponentMessage());
 		}
 	}
 }

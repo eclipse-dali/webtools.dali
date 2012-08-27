@@ -297,11 +297,7 @@ public class GenericJavaPackageInfo
 
 
 	// ***** misc *****
-	
-	protected CompilationUnit buildASTRoot() {
-		return this.resourcePackage.getJavaResourceCompilationUnit().buildASTRoot();
-	}
-	
+
 	public String getNamespaceForPrefix(String prefix) {
 		if (this.xmlSchema != null) {
 			for (XmlNs xmlns : this.xmlSchema.getXmlNsPrefixes()) {
@@ -355,10 +351,11 @@ public class GenericJavaPackageInfo
 	// ***** validation *****
 
 	@Override
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+	public TextRange getValidationTextRange() {
 		return this.resourcePackage.getNameTextRange();
 	}
 	
+	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		if (reporter.isCancelled()) {
 			throw new ValidationCancelledException();
@@ -370,23 +367,16 @@ public class GenericJavaPackageInfo
 		if ((file != null) 
 				&& file.getProject().equals(getJaxbProject().getProject()) 
 				&& (this.resourcePackage instanceof SourceNode)) {
-			// build the AST root here to pass down
-			this.validate(messages, reporter, this.buildASTRoot());
-		}
-	}
 
-	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		
-		this.xmlSchema.validate(messages, reporter, astRoot);
-		
-		for (XmlSchemaType schemaType : getXmlSchemaTypes()) {
-			schemaType.validate(messages, reporter, astRoot);
-		}
-		
-		for (XmlJavaTypeAdapter adapter : getXmlJavaTypeAdapters()) {
-			adapter.validate(messages, reporter, astRoot);
+			this.xmlSchema.validate(messages, reporter);
+			
+			for (XmlSchemaType schemaType : getXmlSchemaTypes()) {
+				schemaType.validate(messages, reporter);
+			}
+			
+			for (XmlJavaTypeAdapter adapter : getXmlJavaTypeAdapters()) {
+				adapter.validate(messages, reporter);
+			}
 		}
 	}
 

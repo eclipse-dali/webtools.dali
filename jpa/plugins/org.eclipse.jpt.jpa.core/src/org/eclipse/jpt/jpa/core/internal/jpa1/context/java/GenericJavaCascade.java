@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
@@ -248,9 +247,9 @@ public class GenericJavaCascade
 		return (RelationshipMapping2_0Annotation) this.getMappingAnnotationForUpdate();
 	}
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+	public TextRange getValidationTextRange() {
 		TextRange textRange = this.getAnnotationCascadeTextRange();
-		return (textRange != null) ? textRange : this.getMapping().getValidationTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getMapping().getValidationTextRange();
 	}
 
 	protected TextRange getAnnotationCascadeTextRange() {

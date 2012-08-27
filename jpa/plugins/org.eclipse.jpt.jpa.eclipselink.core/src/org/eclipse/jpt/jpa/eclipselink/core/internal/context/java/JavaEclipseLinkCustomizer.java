@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -158,12 +157,12 @@ public class JavaEclipseLinkCustomizer
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.validateCustomizerClass(messages, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.validateCustomizerClass(messages);
 	}
 
-	protected void validateCustomizerClass(List<IMessage> messages,CompilationUnit astRoot) {
+	protected void validateCustomizerClass(List<IMessage> messages) {
 		if (this.getFullyQualifiedCustomizerClass() == null) {
 			return;
 		}
@@ -180,30 +179,41 @@ public class JavaEclipseLinkCustomizer
 							EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_NOT_VALID,
 							new String[] {this.getFullyQualifiedCustomizerClass()},
 							this,
-							this.getCustomizerClassTextRange(astRoot)
+							this.getCustomizerClassTextRange()
 					)
 			);
 		} 
-		EclipseLinkCustomizerAnnotation annotation = this.getCustomizerAnnotation();
-		if (!annotation.customizerClassImplementsInterface(ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME, astRoot)) {
+		if (!customizerClassImplementsInterface(ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME)) {
 			messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							EclipseLinkJpaValidationMessages.DESCRIPTOR_CUSTOMIZER_CLASS_IMPLEMENTS_DESCRIPTOR_CUSTOMIZER,
 							new String[] {this.getFullyQualifiedCustomizerClass()},
 							this,
-							this.getCustomizerClassTextRange(astRoot)
+							this.getCustomizerClassTextRange()
 					)
 			);
 		}
 	}
 
-	protected TextRange getCustomizerClassTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.getCustomizerAnnotation().getValueTextRange(), astRoot);
+	protected boolean customizerClassImplementsInterface(String interfaceName) {
+		return this.typeImplementsInterface(this.getFullyQualifiedCustomizerClass(), interfaceName);
 	}
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.getCustomizerAnnotation().getTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getTypeMapping().getValidationTextRange(astRoot);
+	/**
+	 * Add <code>null</code> check.
+	 */
+	protected boolean typeImplementsInterface(String typeName, String interfaceName) {
+		return (typeName != null) && 
+				JDTTools.typeIsSubType(this.getJavaProject(), typeName, interfaceName);
+	}
+
+	protected TextRange getCustomizerClassTextRange() {
+		return this.getValidationTextRange(this.getCustomizerAnnotation().getValueTextRange());
+	}
+
+	public TextRange getValidationTextRange() {
+		TextRange textRange = this.getCustomizerAnnotation().getTextRange();
+		return (textRange != null) ? textRange : this.getTypeMapping().getValidationTextRange();
 	}
 }

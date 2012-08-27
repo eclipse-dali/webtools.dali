@@ -17,16 +17,14 @@ import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPrimaryKeyJoinColumnRelationship;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyJoinColumn;
-import org.eclipse.jpt.jpa.core.internal.context.BaseJoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.OneToOnePrimaryKeyJoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
@@ -43,7 +41,7 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 	implements OrmMappingPrimaryKeyJoinColumnRelationshipStrategy2_0
 {
 	protected final ContextListContainer<OrmPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn> primaryKeyJoinColumnContainer;
-	protected final OrmReadOnlyJoinColumn.Owner primaryKeyJoinColumnOwner;
+	protected final ReadOnlyJoinColumn.Owner primaryKeyJoinColumnOwner;
 
 
 	public GenericOrmPrimaryKeyJoinColumnRelationshipStrategy(OrmPrimaryKeyJoinColumnRelationship parent) {
@@ -149,7 +147,7 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 		}
 	}
 
-	protected OrmReadOnlyJoinColumn.Owner buildPrimaryKeyJoinColumnOwner() {
+	protected ReadOnlyJoinColumn.Owner buildPrimaryKeyJoinColumnOwner() {
 		return new PrimaryKeyJoinColumnOwner();
 	}
 
@@ -258,7 +256,7 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 	// ********** join column owner **********
 
 	protected class PrimaryKeyJoinColumnOwner
-		implements OrmReadOnlyJoinColumn.Owner
+		implements ReadOnlyJoinColumn.Owner
 	{
 		protected PrimaryKeyJoinColumnOwner() {
 			super();
@@ -316,8 +314,8 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 			return GenericOrmPrimaryKeyJoinColumnRelationshipStrategy.this.getValidationTextRange();
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return new OneToOnePrimaryKeyJoinColumnValidator(this.getPersistentAttribute(), (ReadOnlyBaseJoinColumn) column, this, (BaseJoinColumnTextRangeResolver) textRangeResolver);
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+			return new OneToOnePrimaryKeyJoinColumnValidator(this.getPersistentAttribute(), (ReadOnlyBaseJoinColumn) column, this);
 		}
 
 		protected RelationshipMapping getRelationshipMapping() {

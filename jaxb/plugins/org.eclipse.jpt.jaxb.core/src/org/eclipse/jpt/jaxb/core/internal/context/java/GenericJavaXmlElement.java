@@ -342,29 +342,29 @@ public class GenericJavaXmlElement
 	// ***** validation *****
 	
 	@Override
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+	public TextRange getValidationTextRange() {
 		XmlElementAnnotation annotation = getAnnotation(false);
-		return (annotation == null) ? getParent().getValidationTextRange(astRoot) : annotation.getTextRange(astRoot);
+		return (annotation == null) ? getParent().getValidationTextRange() : annotation.getTextRange();
 	}
 	
-	public TextRange getTypeTextRange(CompilationUnit astRoot) {
+	public TextRange getTypeTextRange() {
 		XmlElementAnnotation annotation = getAnnotation(false);
-		return (annotation == null) ? getParent().getValidationTextRange(astRoot) : annotation.getTypeTextRange();
+		return (annotation == null) ? getParent().getValidationTextRange() : annotation.getTypeTextRange();
 	}
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		validateQName(messages, reporter, astRoot);
-		validateType(messages, reporter, astRoot);
-		validateSchemaType(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		validateQName(messages, reporter);
+		validateType(messages, reporter);
+		validateSchemaType(messages, reporter);
 	}
 	
-	protected void validateQName(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		this.qName.validate(messages, reporter, astRoot);
+	protected void validateQName(List<IMessage> messages, IReporter reporter) {
+		this.qName.validate(messages, reporter);
 	}
 	
-	protected void validateType(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateType(List<IMessage> messages, IReporter reporter) {
 		String fqType = getFullyQualifiedType();
 		if (StringTools.stringIsEmpty(fqType)) {
 			messages.add(
@@ -372,7 +372,7 @@ public class GenericJavaXmlElement
 							IMessage.HIGH_SEVERITY,
 							JaxbValidationMessages.XML_ELEMENT__UNSPECIFIED_TYPE,
 							this,
-							getTypeTextRange(astRoot)));
+							getTypeTextRange()));
 		}
 		else if (! StringTools.stringIsEmpty(this.specifiedType)
 				// verify that type actually exists before validating
@@ -385,13 +385,13 @@ public class GenericJavaXmlElement
 								JaxbValidationMessages.XML_ELEMENT__ILLEGAL_TYPE,
 								new String[] { attributeBaseType },
 								this,
-								getTypeTextRange(astRoot)));
+								getTypeTextRange()));
 								
 			}
 		}
 	}
 	
-	protected void validateSchemaType(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateSchemaType(List<IMessage> messages, IReporter reporter) {
 		XsdElementDeclaration xsdElement = getXsdElement();
 		if (xsdElement == null) {
 			return;
@@ -430,7 +430,7 @@ public class GenericJavaXmlElement
 							JaxbValidationMessages.XML_ELEMENT__INVALID_SCHEMA_TYPE,
 							new String[] { typeName, xsdElement.getName() },
 							this,
-							this.qName.getNameTextRange(astRoot)));
+							this.qName.getNameTextRange()));
 		}
 	}
 	

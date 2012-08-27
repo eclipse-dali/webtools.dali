@@ -10,14 +10,12 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -150,25 +148,21 @@ public abstract class AbstractJavaVirtualNamedColumn<O extends ReadOnlyNamedColu
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.buildValidator(astRoot).validate(messages, reporter);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.buildValidator().validate(messages, reporter);
 	}
 
-	protected JptValidator buildValidator(CompilationUnit astRoot) {
-		return this.owner.buildColumnValidator(this, this.buildTextRangeResolver(astRoot));
+	protected JptValidator buildValidator() {
+		return this.owner.buildColumnValidator(this);
 	}
 
-	protected NamedColumnTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
-		return new JavaNamedColumnTextRangeResolver(this, astRoot);
+	public TextRange getValidationTextRange() {
+		return this.getParent().getValidationTextRange();
 	}
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.getParent().getValidationTextRange(astRoot);
-	}
-
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(astRoot);
+	public TextRange getNameTextRange() {
+		return this.getValidationTextRange();
 	}
 
 

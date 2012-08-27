@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -191,13 +190,13 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 
 	// ********** validation **********
 
-	public void validate(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.validateName(messages, astRoot);
-		this.validateQuery(queryHelper, messages, reporter, astRoot);
+	public void validate(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.validateName(messages);
+		this.validateQuery(queryHelper, messages, reporter);
 	}
 
-	protected void validateName(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateName(List<IMessage> messages) {
 		if (StringTools.stringIsEmpty(this.name)) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
@@ -205,13 +204,13 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 					JpaValidationMessages.QUERY_NAME_UNDEFINED,
 					EMPTY_STRING_ARRAY,
 					this,
-					this.getNameTextRange(astRoot)
+					this.getNameTextRange()
 				)
 			);
 		}
 	}
 
-	public void validateQuery(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	public void validateQuery(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
 		if (StringTools.stringIsEmpty(this.query)){
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
@@ -219,7 +218,7 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 					JpaValidationMessages.QUERY_STATEMENT_UNDEFINED,
 					new String[] {this.name},
 					this,
-					this.getNameTextRange(astRoot)
+					this.getNameTextRange()
 				)
 			);
 		} else {
@@ -229,13 +228,17 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 
 	protected abstract void validateQuery_(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter);
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.queryAnnotation.getTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		TextRange textRange = this.queryAnnotation.getTextRange();
+		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
 	}
 
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.queryAnnotation.getNameTextRange(), astRoot);
+	public TextRange getNameTextRange() {
+		return this.getValidationTextRange(this.queryAnnotation.getNameTextRange());
+	}
+
+	public TextRange getQueryTextRange() {
+		return this.getValidationTextRange(this.queryAnnotation.getQueryTextRange());
 	}
 
 	public boolean isEquivalentTo(JpaNamedContextNode node) {

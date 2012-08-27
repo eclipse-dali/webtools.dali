@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
@@ -18,9 +17,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappingJoinTableRelationship;
-import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.InverseJoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.JoinColumnValidator;
@@ -87,23 +84,23 @@ public class GenericJavaMappingJoinTableRelationshipStrategy
 		return this.getRelationshipMapping().validatesAgainstDatabase();
 	}
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.getRelationship().getValidationTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		return this.getRelationship().getValidationTextRange();
 	}
 
 	protected PersistentAttribute getPersistentAttribute() {
 		return this.getRelationshipMapping().getPersistentAttribute();
 	}
 
-	public JptValidator buildTableValidator(ReadOnlyTable table, TableTextRangeResolver textRangeResolver) {
-		return new JoinTableValidator(this.getPersistentAttribute(), (JoinTable) table, textRangeResolver);
+	public JptValidator buildTableValidator(ReadOnlyTable table) {
+		return new JoinTableValidator(this.getPersistentAttribute(), (JoinTable) table);
 	}
 
-	public JptValidator buildJoinTableJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-		return new JoinColumnValidator(this.getPersistentAttribute(), column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
+	public JptValidator buildJoinTableJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner) {
+		return new JoinColumnValidator(this.getPersistentAttribute(), column, owner, new JoinTableTableDescriptionProvider());
 	}
 
-	public JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-		return new InverseJoinColumnValidator(this.getPersistentAttribute(), column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
+	public JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner) {
+		return new InverseJoinColumnValidator(this.getPersistentAttribute(), column, owner, new JoinTableTableDescriptionProvider());
 	}
 }

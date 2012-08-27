@@ -9,10 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.util.List;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * Root of the Dali JPA context model.
@@ -23,7 +20,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.2
+ * @version 3.3
  * @since 2.0
  */
 public interface JpaRootContextNode
@@ -44,11 +41,4 @@ public interface JpaRootContextNode
 	 */
 	PersistenceXml getPersistenceXml();
 
-
-	// ********** validation **********
-
-	/**
-	 * Add validation messages to the specified list.
-	 */
-	public void validate(List<IMessage> messages, IReporter reporter);
 }

@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
@@ -265,15 +264,15 @@ public class JavaEclipseLinkObjectTypeConverter
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.checkForDuplicateDataValues(messages, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.checkForDuplicateDataValues(messages);
 		for (JavaEclipseLinkConversionValue conversionValue : this.getConversionValues()) {
-			conversionValue.validate(messages, reporter, astRoot);
+			conversionValue.validate(messages, reporter);
 		}
 	}
 
-	protected void checkForDuplicateDataValues(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void checkForDuplicateDataValues(List<IMessage> messages) {
 		for (ArrayList<JavaEclipseLinkConversionValue> dups : this.mapConversionValuesByDataValue().values()) {
 			if (dups.size() > 1) {
 				for (JavaEclipseLinkConversionValue dup : dups) {
@@ -283,7 +282,7 @@ public class JavaEclipseLinkObjectTypeConverter
 							EclipseLinkJpaValidationMessages.MULTIPLE_OBJECT_VALUES_FOR_DATA_VALUE,
 							new String[] {dup.getDataValue()},
 							this,
-							dup.getDataValueTextRange(astRoot)
+							dup.getDataValueTextRange()
 						)
 					);
 				}

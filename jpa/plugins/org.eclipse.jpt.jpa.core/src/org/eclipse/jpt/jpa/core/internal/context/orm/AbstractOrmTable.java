@@ -23,7 +23,6 @@ import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlTable;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlUniqueConstraint;
@@ -426,11 +425,7 @@ public abstract class AbstractOrmTable<X extends AbstractXmlTable>
 	}
 
 	protected JptValidator buildTableValidator() {
-		return this.owner.buildTableValidator(this, this.buildTextRangeResolver());
-	}
-
-	protected TableTextRangeResolver buildTextRangeResolver() {
-		return new OrmTableTextRangeResolver(this);
+		return this.owner.buildTableValidator(this);
 	}
 
 	public TextRange getValidationTextRange() {

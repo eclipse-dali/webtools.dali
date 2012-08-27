@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,10 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.OverrideTextRangeResolver;
 import org.eclipse.jpt.jpa.db.Table;
 
 /**
@@ -24,7 +23,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  *
- * @version 3.0
+ * @version 3.3
  * @since 2.3
  */
 public interface OverrideContainer
@@ -82,9 +81,9 @@ public interface OverrideContainer
 	 */
 	String getDefaultTableName();
 
-	JptValidator buildOverrideValidator(ReadOnlyOverride override, OverrideTextRangeResolver textRangeResolver);
+	JptValidator buildOverrideValidator(ReadOnlyOverride override);
 
-	JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner, TableColumnTextRangeResolver textRangeResolver);
+	JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner);
 
 
 	// ********** overrides **********
@@ -210,8 +209,10 @@ public interface OverrideContainer
 		 */
 		Iterable<String> getCandidateTableNames();
 
-		JptValidator buildOverrideValidator(ReadOnlyOverride override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver);
+		TextRange getValidationTextRange();
 
-		JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner columnOwner, TableColumnTextRangeResolver textRangeResolver);
+		JptValidator buildOverrideValidator(ReadOnlyOverride override, OverrideContainer container);
+
+		JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner columnOwner);
 	}
 }

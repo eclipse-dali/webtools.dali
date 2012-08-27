@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.db.Table;
 
 /**
@@ -43,6 +43,10 @@ public interface ReadOnlyNamedColumn
 	String getDefaultName();
 		String DEFAULT_NAME_PROPERTY = "defaultName"; //$NON-NLS-1$
 
+	/**
+	 * Return the (best guess) text location of the column's name.
+	 */
+	TextRange getNameTextRange();
 
 	// ********** table **********
 
@@ -103,7 +107,13 @@ public interface ReadOnlyNamedColumn
 		 * Return the database table for the specified table name.
 		 */
 		Table resolveDbTable(String tableName);
-		
-		JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver);
+
+		JptValidator buildColumnValidator(ReadOnlyNamedColumn column);
+
+		/**
+		 * Return the column owner's text range. This can be returned by the
+		 * column when its annotation is not present.
+		 */
+		TextRange getValidationTextRange();
 	}
 }

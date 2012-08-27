@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,6 @@ import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.OverrideTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -31,16 +30,13 @@ public abstract class OverrideValidator
 
 	protected final OverrideContainer container;
 
-	protected final OverrideTextRangeResolver textRangeResolver;
-
 	protected final OverrideDescriptionProvider overrideDescriptionProvider;
 
 	protected OverrideValidator(
 				ReadOnlyOverride override,
 				OverrideContainer container,
-				OverrideTextRangeResolver textRangeResolver,
 				OverrideDescriptionProvider overrideDescriptionProvider) {
-		this(null, override, container, textRangeResolver, overrideDescriptionProvider);
+		this(null, override, container, overrideDescriptionProvider);
 	}
 
 
@@ -48,12 +44,10 @@ public abstract class OverrideValidator
 				ReadOnlyPersistentAttribute persistentAttribute,
 				ReadOnlyOverride override,
 				OverrideContainer container,
-				OverrideTextRangeResolver textRangeResolver,
 				OverrideDescriptionProvider overrideDescriptionProvider) {
 		this.persistentAttribute = persistentAttribute;
 		this.override = override;
 		this.container = container;
-		this.textRangeResolver = textRangeResolver;
 		this.overrideDescriptionProvider = overrideDescriptionProvider;
 	}
 
@@ -83,7 +77,7 @@ public abstract class OverrideValidator
 				this.getUnresolvedOverrideTypeMessage(),
 				new String[] {this.override.getName()},
 				this.override,
-				this.textRangeResolver.getNameTextRange()
+				this.override.getNameTextRange()
 			); 
 	}
 
@@ -123,7 +117,7 @@ public abstract class OverrideValidator
 					this.container.getOverridableTypeMapping().getName()
 				},
 				this.override,
-				this.textRangeResolver.getNameTextRange()
+				this.override.getNameTextRange()
 			);
 	}
 
@@ -139,7 +133,7 @@ public abstract class OverrideValidator
 					this.container.getOverridableTypeMapping().getName()
 				},
 				this.override,
-				this.textRangeResolver.getNameTextRange()
+				this.override.getNameTextRange()
 			);
 	}
 
@@ -156,7 +150,7 @@ public abstract class OverrideValidator
 					this.container.getOverridableTypeMapping().getName()
 				},
 				this.override,
-				this.textRangeResolver.getNameTextRange()
+				this.override.getNameTextRange()
 			);
 	}
 

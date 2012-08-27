@@ -14,7 +14,6 @@ import java.util.List;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.jpa.core.internal.context.PrimaryKeyTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -23,8 +22,8 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public class GenericEntityPrimaryKeyValidator
 	extends AbstractEntityPrimaryKeyValidator
 {
-	public GenericEntityPrimaryKeyValidator(Entity entity, PrimaryKeyTextRangeResolver textRangeResolver) {
-		super(entity, textRangeResolver);
+	public GenericEntityPrimaryKeyValidator(Entity entity) {
+		super(entity);
 	}
 	
 	@Override
@@ -47,7 +46,7 @@ public class GenericEntityPrimaryKeyValidator
 					JpaValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_PUBLIC_NO_ARG_CONSTRUCTOR,
 					new String[] {idClass.getName()},
 					typeMapping(),
-					textRangeResolver().getIdClassTextRange()));
+					idClassReference().getValidationTextRange()));
 		}
 	}
 

@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 
@@ -23,7 +22,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.3
  * @since 2.1
  */
 public interface EclipseLinkCustomizerAnnotation
@@ -60,10 +59,4 @@ public interface EclipseLinkCustomizerAnnotation
 	 * does not exist return the {@link TextRange} for the Customizer annotation.
 	 */
 	TextRange getValueTextRange();
-
-	/**
-	 * Return whether the customizer class implements the specified interface.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer#ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME
-	 */
-	boolean customizerClassImplementsInterface(String interfaceName, CompilationUnit astRoot);
 }

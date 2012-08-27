@@ -198,8 +198,8 @@ public class GenericJavaMappedByRelationshipStrategy
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 
 		if (this.mappedByAttribute == null) {
 			return;
@@ -216,8 +216,7 @@ public class GenericJavaMappedByRelationshipStrategy
 			messages.add(
 				this.buildMessage(
 					JpaValidationMessages.MAPPING_UNRESOLVED_MAPPED_BY,
-					new String[] {this.mappedByAttribute},
-					astRoot
+					new String[] {this.mappedByAttribute}
 				)
 			);
 			return;
@@ -227,8 +226,7 @@ public class GenericJavaMappedByRelationshipStrategy
 			messages.add(
 				this.buildMessage(
 					JpaValidationMessages.MAPPING_INVALID_MAPPED_BY,
-					new String[] {this.mappedByAttribute},
-					astRoot
+					new String[] {this.mappedByAttribute}
 				)
 			);
 			return;
@@ -240,14 +238,13 @@ public class GenericJavaMappedByRelationshipStrategy
 			messages.add(
 				this.buildMessage(
 					JpaValidationMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES,
-					new String[] {this.mappedByAttribute},
-					astRoot
+					new String[] {this.mappedByAttribute}
 				)
 			);
 		}
 	}
 
-	protected IMessage buildMessage(String msgID, String[] parms, CompilationUnit astRoot) {
+	protected IMessage buildMessage(String msgID, String[] parms) {
 		PersistentAttribute attribute = this.getRelationshipMapping().getPersistentAttribute();
 		String attributeDescription = attribute.isVirtual() ?
 				JpaValidationDescriptionMessages.VIRTUAL_ATTRIBUTE_DESC :
@@ -259,13 +256,13 @@ public class GenericJavaMappedByRelationshipStrategy
 				msgID,
 				parms,
 				this,
-				this.getValidationTextRange(astRoot)
+				this.getValidationTextRange()
 			);
 	}
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+	public TextRange getValidationTextRange() {
 		TextRange textRange = this.getAnnotationMappedByTextRange();
-		return (textRange != null) ? textRange : this.getRelationship().getValidationTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getRelationship().getValidationTextRange();
 	}
 
 	protected TextRange getAnnotationMappedByTextRange() {

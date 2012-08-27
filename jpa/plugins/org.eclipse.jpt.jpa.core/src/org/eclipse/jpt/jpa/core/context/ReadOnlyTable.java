@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
@@ -119,6 +119,12 @@ public interface ReadOnlyTable
 	 */
 	boolean validatesAgainstDatabase();
 
+	TextRange getNameTextRange();
+
+	TextRange getSchemaTextRange();
+
+	TextRange getCatalogTextRange();
+
 
 	// ********** owner **********
 
@@ -127,6 +133,6 @@ public interface ReadOnlyTable
 	 * (e.g. basic mappings and attribute overrides)
 	 */
 	interface Owner {
-		JptValidator buildTableValidator(ReadOnlyTable table, TableTextRangeResolver textRangeResolver);
+		JptValidator buildTableValidator(ReadOnlyTable table);
 	}
 }

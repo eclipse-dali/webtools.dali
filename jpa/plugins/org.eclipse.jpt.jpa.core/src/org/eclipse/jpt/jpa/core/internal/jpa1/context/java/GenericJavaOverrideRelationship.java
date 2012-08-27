@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -31,10 +31,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
-import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.java.GenericJavaOverrideJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaOverrideJoinTableRelationshipStrategy2_0;
@@ -259,8 +256,8 @@ public class GenericJavaOverrideRelationship
 		return this.getAssociationOverride().getDefaultTableName();
 	}
 
-	public JptValidator buildColumnValidator(ReadOnlyBaseColumn column, Owner owner, TableColumnTextRangeResolver textRangeResolver) {
-		return this.getAssociationOverride().buildColumnValidator(column, owner, textRangeResolver);
+	public JptValidator buildColumnValidator(ReadOnlyBaseColumn column, Owner owner) {
+		return this.getAssociationOverride().buildColumnValidator(column, owner);
 	}
 
 	public AssociationOverrideAnnotation getOverrideAnnotation() {
@@ -296,25 +293,25 @@ public class GenericJavaOverrideRelationship
 
 	// ********** validation **********
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.getAssociationOverride().getValidationTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		return this.getAssociationOverride().getValidationTextRange();
 	}
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.strategy.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.strategy.validate(messages, reporter);
 	}
 
-	public JptValidator buildJoinTableValidator(ReadOnlyJoinTable table, TableTextRangeResolver textRangeResolver) {
-		return this.getAssociationOverride2_0().buildJoinTableValidator(table, textRangeResolver);
+	public JptValidator buildJoinTableValidator(ReadOnlyJoinTable table) {
+		return this.getAssociationOverride2_0().buildJoinTableValidator(table);
 	}
 
-	public JptValidator buildJoinTableJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-		return this.getAssociationOverride2_0().buildJoinTableJoinColumnValidator(column, owner, textRangeResolver);
+	public JptValidator buildJoinTableJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner) {
+		return this.getAssociationOverride2_0().buildJoinTableJoinColumnValidator(column, owner);
 	}
 
-	public JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-		return this.getAssociationOverride2_0().buildJoinTableInverseJoinColumnValidator(column, owner, textRangeResolver);
+	public JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner) {
+		return this.getAssociationOverride2_0().buildJoinTableInverseJoinColumnValidator(column, owner);
 	}
 }

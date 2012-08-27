@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.db.Table;
 
 /**
@@ -37,6 +38,12 @@ public interface ReadOnlyBaseJoinColumn
 		String SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY = "specifiedReferencedColumnName"; //$NON-NLS-1$
 	String getDefaultReferencedColumnName();
 		String DEFAULT_REFERENCED_COLUMN_NAME_PROPERTY = "defaultReferencedColumnName"; //$NON-NLS-1$
+
+	/**
+	 * Return the (best guess) text location of the join column's
+	 * referenced column name.
+	 */
+	TextRange getReferencedColumnNameTextRange();
 	
 
 	// ********** misc **********

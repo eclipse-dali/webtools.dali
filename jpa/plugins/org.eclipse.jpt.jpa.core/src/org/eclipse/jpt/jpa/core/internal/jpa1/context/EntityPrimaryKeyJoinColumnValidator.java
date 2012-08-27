@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,16 +10,14 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
-import org.eclipse.jpt.jpa.core.internal.context.BaseJoinColumnTextRangeResolver;
 
 public class EntityPrimaryKeyJoinColumnValidator
 	extends PrimaryKeyJoinColumnValidator
 {
 	public EntityPrimaryKeyJoinColumnValidator(
 				ReadOnlyBaseJoinColumn column,
-				ReadOnlyBaseJoinColumn.Owner owner,
-				BaseJoinColumnTextRangeResolver textRangeResolver) {
-		super(column, owner, textRangeResolver);
+				ReadOnlyBaseJoinColumn.Owner owner) {
+		super(column, owner);
 	}
 
 	@Override

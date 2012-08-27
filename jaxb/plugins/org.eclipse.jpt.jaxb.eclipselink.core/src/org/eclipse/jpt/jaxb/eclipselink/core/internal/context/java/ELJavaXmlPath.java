@@ -119,13 +119,13 @@ public class ELJavaXmlPath
 	// ***** validation *****
 	
 	@Override
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return getAnnotation().getTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		return getAnnotation().getTextRange();
 	}
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
 		if (StringTools.stringIsEmpty(this.value)) {
 			messages.add(

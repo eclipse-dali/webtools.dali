@@ -38,7 +38,6 @@ public final class SourceEclipseLinkWriteTransformerAnnotation
 	private final ElementAnnotationAdapter columnAdapter;
 	private ColumnAnnotation column;
 	private final ColumnAnnotation nullColumn;
-	private TextRange columnTextRange;
 
 
 	public SourceEclipseLinkWriteTransformerAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
@@ -59,14 +58,12 @@ public final class SourceEclipseLinkWriteTransformerAnnotation
 			this.column = createColumn(this, this.annotatedElement, this.daa);
 			this.column.initialize(columnAnnotation);
 		}
-		this.columnTextRange = this.buildColumnTextRange(astRoot);
 	}
 
 	@Override
 	public void synchronizeWith(CompilationUnit astRoot) {
 		super.synchronizeWith(astRoot);
 		this.syncColumn(astRoot);
-		this.columnTextRange = this.buildColumnTextRange(astRoot);
 	}
 
 	@Override
@@ -144,16 +141,11 @@ public final class SourceEclipseLinkWriteTransformerAnnotation
 	}
 
 	public TextRange getColumnTextRange() {
-		return this.columnTextRange;
-	}
-
-	private TextRange buildColumnTextRange(CompilationUnit astRoot) {
 		if (this.column != null) {
-			return this.column.getTextRange(astRoot);
+			return this.column.getTextRange();
 		}
-		return this.getTextRange(astRoot);
+		return this.getTextRange();
 	}
-
 
 	// ********** static methods **********
 

@@ -228,18 +228,18 @@ public class GenericJavaGeneratorContainer
 	 * @see org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnit#validateGenerators(List, IReporter)
 	 */
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		// generators are validated in the persistence unit
 	}
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.getResourceTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		TextRange textRange = this.getResourceTextRange();
+		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
 	}
 
-	protected TextRange getResourceTextRange(CompilationUnit astRoot) {
-		return this.parentAdapter.getResourceAnnotatedElement().getTextRange(astRoot);
+	protected TextRange getResourceTextRange() {
+		return this.parentAdapter.getResourceAnnotatedElement().getTextRange();
 	}
 
 

@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
@@ -88,7 +87,7 @@ public class VirtualJavaPersistentAttribute
 		return false;
 	}
 
-	public boolean contains(int offset, CompilationUnit astRoot) {
+	public boolean contains(int offset) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -178,7 +177,7 @@ public class VirtualJavaPersistentAttribute
 		return null;
 	}
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+	public TextRange getValidationTextRange() {
 		throw new UnsupportedOperationException();
 	}
 

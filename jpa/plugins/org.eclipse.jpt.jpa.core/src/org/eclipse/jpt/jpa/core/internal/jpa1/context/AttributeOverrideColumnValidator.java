@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
-import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
@@ -26,9 +25,8 @@ public class AttributeOverrideColumnValidator
 	public AttributeOverrideColumnValidator(
 				ReadOnlyAttributeOverride override,
 				ReadOnlyBaseColumn column,
-				TableColumnTextRangeResolver textRangeResolver,
 				TableDescriptionProvider message) {
-		super(column, textRangeResolver, message);
+		super(column, message);
 		this.override = override;
 	}
 
@@ -36,9 +34,8 @@ public class AttributeOverrideColumnValidator
 				ReadOnlyPersistentAttribute persistentAttribute,
 				ReadOnlyAttributeOverride override,
 				ReadOnlyBaseColumn column,
-				TableColumnTextRangeResolver textRangeResolver,
 				TableDescriptionProvider message) {
-		super(persistentAttribute, column, textRangeResolver, message);
+		super(persistentAttribute, column, message);
 		this.override = override;
 	}
 
@@ -64,7 +61,7 @@ public class AttributeOverrideColumnValidator
 					this.column.getDbTable().getName()
 				},
 				this.column,
-				this.textRangeResolver.getNameTextRange()
+				this.column.getNameTextRange()
 			);
 	}
 
@@ -84,7 +81,7 @@ public class AttributeOverrideColumnValidator
 					this.column.getDbTable().getName()
 				},
 				this.column,
-				this.textRangeResolver.getNameTextRange()
+				this.column.getNameTextRange()
 			);
 	}
 
@@ -121,7 +118,7 @@ public class AttributeOverrideColumnValidator
 						this.getColumnTableDescriptionMessage()
 					},
 					this.getColumn(),
-					this.getTextRangeResolver().getTableTextRange()
+					this.getColumn().getTableTextRange()
 				);
 		}
 
@@ -142,7 +139,7 @@ public class AttributeOverrideColumnValidator
 						this.getColumnTableDescriptionMessage()
 					},
 					this.getColumn(),
-					this.getTextRangeResolver().getTableTextRange()
+					this.getColumn().getTableTextRange()
 				);
 		}
 

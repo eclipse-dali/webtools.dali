@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,12 +33,8 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
-import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
-import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
-import org.eclipse.jpt.jpa.core.internal.context.OverrideTextRangeResolver;
-import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaBaseEmbeddedMapping;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AssociationOverrideInverseJoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AssociationOverrideJoinColumnValidator;
@@ -203,9 +199,9 @@ public abstract class AbstractJavaEmbeddedMapping
 	// ********** validation **********
 
 	@Override
-	protected void validateOverrides(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validateOverrides(messages, reporter, astRoot);
-		this.associationOverrideContainer.validate(messages, reporter, astRoot);
+	protected void validateOverrides(List<IMessage> messages, IReporter reporter) {
+		super.validateOverrides(messages, reporter);
+		this.associationOverrideContainer.validate(messages, reporter);
 	}
 
 
@@ -273,28 +269,28 @@ public abstract class AbstractJavaEmbeddedMapping
 			return true;
 		}
 
-		public TextRange getValidationTextRange(CompilationUnit astRoot) {
-			return AbstractJavaEmbeddedMapping.this.getValidationTextRange(astRoot);
+		public TextRange getValidationTextRange() {
+			return AbstractJavaEmbeddedMapping.this.getValidationTextRange();
 		}
 
-		public JptValidator buildOverrideValidator(ReadOnlyOverride override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
-			return new AssociationOverrideValidator(this.getPersistentAttribute(), (ReadOnlyAssociationOverride) override, (AssociationOverrideContainer) container, textRangeResolver, new EmbeddableOverrideDescriptionProvider());
+		public JptValidator buildOverrideValidator(ReadOnlyOverride override, OverrideContainer container) {
+			return new AssociationOverrideValidator(this.getPersistentAttribute(), (ReadOnlyAssociationOverride) override, (AssociationOverrideContainer) container, new EmbeddableOverrideDescriptionProvider());
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner, TableColumnTextRangeResolver textRangeResolver) {
-			return new AssociationOverrideJoinColumnValidator(this.getPersistentAttribute(), (ReadOnlyAssociationOverride) override, (ReadOnlyJoinColumn) column, (ReadOnlyJoinColumn.Owner) owner, (JoinColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
+		public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner) {
+			return new AssociationOverrideJoinColumnValidator(this.getPersistentAttribute(), (ReadOnlyAssociationOverride) override, (ReadOnlyJoinColumn) column, (ReadOnlyJoinColumn.Owner) owner, new EntityTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableJoinColumnValidator(ReadOnlyAssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-			return new AssociationOverrideJoinColumnValidator(this.getPersistentAttribute(), override, column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
+		public JptValidator buildJoinTableJoinColumnValidator(ReadOnlyAssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner) {
+			return new AssociationOverrideJoinColumnValidator(this.getPersistentAttribute(), override, column, owner, new JoinTableTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyAssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-			return new AssociationOverrideInverseJoinColumnValidator(this.getPersistentAttribute(), override, column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
+		public JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyAssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner) {
+			return new AssociationOverrideInverseJoinColumnValidator(this.getPersistentAttribute(), override, column, owner, new JoinTableTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableValidator(ReadOnlyAssociationOverride override, ReadOnlyTable table, TableTextRangeResolver textRangeResolver) {
-			return new AssociationOverrideJoinTableValidator(this.getPersistentAttribute(), override, (ReadOnlyJoinTable) table, textRangeResolver);
+		public JptValidator buildJoinTableValidator(ReadOnlyAssociationOverride override, ReadOnlyTable table) {
+			return new AssociationOverrideJoinTableValidator(this.getPersistentAttribute(), override, (ReadOnlyJoinTable) table);
 		}
 
 		protected JavaPersistentAttribute getPersistentAttribute() {

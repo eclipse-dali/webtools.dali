@@ -14,7 +14,6 @@ import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.ConverterTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.JavaElementCollectionTemporalConverterValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.JavaTemporalConverterValidator;
 import org.eclipse.jpt.jpa.core.resource.java.TemporalAnnotation;
@@ -70,8 +69,8 @@ public interface JavaTemporalConverter
 		@Override
 		protected Owner buildOwner() {
 			return new Owner() {
-				public JptValidator buildValidator(Converter converter, ConverterTextRangeResolver textRangeResolver) {
-					return new JavaTemporalConverterValidator((BaseTemporalConverter) converter, textRangeResolver);
+				public JptValidator buildValidator(Converter converter) {
+					return new JavaTemporalConverterValidator((BaseTemporalConverter) converter);
 				}
 			};
 		}
@@ -92,8 +91,8 @@ public interface JavaTemporalConverter
 		@Override
 		protected Owner buildOwner() {
 			return new Owner() {
-				public JptValidator buildValidator(Converter converter, ConverterTextRangeResolver textRangeResolver) {
-					return new JavaElementCollectionTemporalConverterValidator((BaseTemporalConverter) converter, textRangeResolver);
+				public JptValidator buildValidator(Converter converter) {
+					return new JavaElementCollectionTemporalConverterValidator((BaseTemporalConverter) converter);
 				}
 			};
 		}

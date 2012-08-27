@@ -31,8 +31,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaLobConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaTemporalConverter;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
-import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.NamedColumnValidator;
@@ -297,8 +295,8 @@ public class JavaEclipseLinkArrayMapping2_3
 		return this.getTypeMapping().getAllAssociatedTableNames();
 	}
 
-	public JptValidator buildColumnValidator(ReadOnlyNamedColumn col, NamedColumnTextRangeResolver textRangeResolver) {
-		return new NamedColumnValidator(this.getPersistentAttribute(), (ReadOnlyBaseColumn) col, (TableColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
+	public JptValidator buildColumnValidator(ReadOnlyNamedColumn col) {
+		return new NamedColumnValidator(this.getPersistentAttribute(), (ReadOnlyBaseColumn) col, new EntityTableDescriptionProvider());
 	}
 
 	// ********** Java completion proposals **********
@@ -324,9 +322,9 @@ public class JavaEclipseLinkArrayMapping2_3
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.column.validate(messages, reporter, astRoot);
-		this.converter.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.column.validate(messages, reporter);
+		this.converter.validate(messages, reporter);
 	}
 }

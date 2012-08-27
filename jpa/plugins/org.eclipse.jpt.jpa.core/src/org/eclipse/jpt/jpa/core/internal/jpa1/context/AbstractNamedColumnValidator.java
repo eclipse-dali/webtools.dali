@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,16 +14,14 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTableColumn;
-import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public abstract class AbstractNamedColumnValidator<C extends ReadOnlyNamedColumn, R extends NamedColumnTextRangeResolver>
+public abstract class AbstractNamedColumnValidator<C extends ReadOnlyNamedColumn>
 	implements JptValidator
 {
 	/** this is <code>null</code> for columns defined on entities and secondary tables */
@@ -31,41 +29,34 @@ public abstract class AbstractNamedColumnValidator<C extends ReadOnlyNamedColumn
 
 	protected final C column;
 
-	protected final R textRangeResolver;
-
 	protected final TableDescriptionProvider tableDescriptionProvider;
 
 	protected final JptValidator tableValidator;
 
 
 	protected AbstractNamedColumnValidator(
-				C column,
-				R textRangeResolver) {
-		this(null, column, textRangeResolver);
+				C column) {
+		this(null, column);
 	}
 
 	protected AbstractNamedColumnValidator(
 				C column,
-				R textRangeResolver,
 				TableDescriptionProvider provider) {
-		this(null, column, textRangeResolver, provider);
+		this(null, column, provider);
+	}
+
+	protected AbstractNamedColumnValidator(
+				ReadOnlyPersistentAttribute persistentAttribute,
+				C column) {
+		this(persistentAttribute, column, TableDescriptionProvider.Null.instance());
 	}
 
 	protected AbstractNamedColumnValidator(
 				ReadOnlyPersistentAttribute persistentAttribute,
 				C column,
-				R textRangeResolver) {
-		this(persistentAttribute, column, textRangeResolver, TableDescriptionProvider.Null.instance());
-	}
-
-	protected AbstractNamedColumnValidator(
-				ReadOnlyPersistentAttribute persistentAttribute,
-				C column,
-				R textRangeResolver,
 				TableDescriptionProvider tableDescriptionProvider) {
 		this.persistentAttribute = persistentAttribute;
 		this.column = column;
-		this.textRangeResolver = textRangeResolver;
 		this.tableDescriptionProvider = tableDescriptionProvider;
 		this.tableValidator = this.buildTableValidator();
 	}
@@ -104,7 +95,7 @@ public abstract class AbstractNamedColumnValidator<C extends ReadOnlyNamedColumn
 					this.column.getDbTable().getName()
 				},
 				this.column,
-				this.textRangeResolver.getNameTextRange()
+				this.column.getNameTextRange()
 			);
 	}
 
@@ -120,7 +111,7 @@ public abstract class AbstractNamedColumnValidator<C extends ReadOnlyNamedColumn
 					this.column.getDbTable().getName()
 				},
 				this.column,
-				this.textRangeResolver.getNameTextRange()
+				this.column.getNameTextRange()
 			);
 	}
 
@@ -208,7 +199,7 @@ public abstract class AbstractNamedColumnValidator<C extends ReadOnlyNamedColumn
 						this.getColumnTableDescriptionMessage()
 					},
 					this.getColumn(),
-					this.getTextRangeResolver().getTableTextRange()
+					this.getColumn().getTableTextRange()
 				);
 		}
 	
@@ -218,10 +209,6 @@ public abstract class AbstractNamedColumnValidator<C extends ReadOnlyNamedColumn
 	
 		protected String getColumnTableDescriptionMessage()  {
 			return AbstractNamedColumnValidator.this.tableDescriptionProvider.getColumnTableDescriptionMessage();
-		}
-	
-		protected TableColumnTextRangeResolver getTextRangeResolver() {
-			return (TableColumnTextRangeResolver) AbstractNamedColumnValidator.this.textRangeResolver;
 		}
 
 		protected IMessage buildVirtualAttributeTableNotValidMessage() {
@@ -235,7 +222,7 @@ public abstract class AbstractNamedColumnValidator<C extends ReadOnlyNamedColumn
 						this.getColumnTableDescriptionMessage()
 					},
 					this.getColumn(),
-					this.getTextRangeResolver().getTableTextRange()
+					this.getColumn().getTableTextRange()
 				);
 		}
 	

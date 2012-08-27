@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.Annotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
@@ -114,8 +113,8 @@ abstract class SourceEclipseLinkNamedConverterAnnotation
 		return this.getElementTextRange(this.nameDeclarationAdapter, astAnnotation);
 	}
 
-	public boolean nameTouches(int pos, CompilationUnit astRoot) {
-		return this.elementTouches(this.nameDeclarationAdapter, pos, astRoot);
+	public boolean nameTouches(int pos) {
+		return this.textRangeTouches(this.nameTextRange, pos);
 	}
 
 	abstract String getNameElementName();

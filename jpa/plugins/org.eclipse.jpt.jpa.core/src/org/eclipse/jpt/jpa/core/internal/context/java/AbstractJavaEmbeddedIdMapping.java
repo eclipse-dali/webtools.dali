@@ -13,7 +13,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
@@ -104,8 +103,8 @@ public abstract class AbstractJavaEmbeddedIdMapping
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 
 		// [JPA 2.0] if the embedded id is mapped by a relationship, then any specified
 		// attribute overrides are in error
@@ -119,7 +118,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 								JpaValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_ATTRIBUTE_OVERRIDES_SPECIFIED,
 								new String[] {this.getName()},
 								this.attributeOverrideContainer,
-								this.attributeOverrideContainer.getValidationTextRange(astRoot)
+								this.attributeOverrideContainer.getValidationTextRange()
 						)
 				);				
 			} else {
@@ -129,20 +128,20 @@ public abstract class AbstractJavaEmbeddedIdMapping
 								JpaValidationMessages.EMBEDDED_ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_ATTRIBUTE_OVERRIDES_SPECIFIED,
 								EMPTY_STRING_ARRAY,
 								this.attributeOverrideContainer,
-								this.attributeOverrideContainer.getValidationTextRange(astRoot)
+								this.attributeOverrideContainer.getValidationTextRange()
 						)
 				);
 			}
 		}
 		
-		validateTargetEmbeddableImplementsSerializable(messages, reporter, astRoot);
-		validateNoRelationshipMappingsOnTargetEmbeddable(messages, reporter, astRoot);
-		validateTargetEmbeddableImplementsEqualsAndHashcode(messages, reporter, astRoot);
-		validateTargetEmbeddableIsPublic(messages, reporter, astRoot);
-		validateTargetEmbeddableImplementsZeroArgConstructor(messages, reporter, astRoot);
+		validateTargetEmbeddableImplementsSerializable(messages, reporter);
+		validateNoRelationshipMappingsOnTargetEmbeddable(messages, reporter);
+		validateTargetEmbeddableImplementsEqualsAndHashcode(messages, reporter);
+		validateTargetEmbeddableIsPublic(messages, reporter);
+		validateTargetEmbeddableImplementsZeroArgConstructor(messages, reporter);
 	}
 
-	protected void validateTargetEmbeddableImplementsZeroArgConstructor(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateTargetEmbeddableImplementsZeroArgConstructor(List<IMessage> messages, IReporter reporter) {
 		if (this.getTargetEmbeddable() != null) {
 			String targetEmbeddableClassName = this.getTargetEmbeddable().getPersistentType().getName();
 			IJavaProject javaProject = getJpaProject().getJavaProject();
@@ -154,7 +153,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 									JpaValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_NO_ARG_CONSTRUCTOR,
 									new String[] {this.getName()},
 									this,
-									this.getValidationTextRange(astRoot)
+									this.getValidationTextRange()
 							)
 					);						
 				} else {
@@ -164,7 +163,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 									JpaValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_NO_ARG_CONSTRUCTOR,
 									EMPTY_STRING_ARRAY,
 									this,
-									this.getValidationTextRange(astRoot)
+									this.getValidationTextRange()
 							)
 					);
 				}
@@ -172,7 +171,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 		}
 	}
 
-	protected void validateTargetEmbeddableImplementsEqualsAndHashcode(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateTargetEmbeddableImplementsEqualsAndHashcode(List<IMessage> messages, IReporter reporter) {
 		if (this.getTargetEmbeddable() != null) {
 			JavaResourceType resourceType = getTargetEmbeddable().getJavaResourceType();
 			if (resourceType != null
@@ -185,7 +184,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 										JpaValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_EQUALS_HASHCODE,
 										new String[] {this.getName()},
 										this,
-										this.getValidationTextRange(astRoot)
+										this.getValidationTextRange()
 								)
 						);
 					} else {
@@ -195,7 +194,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 										JpaValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_EQUALS_HASHCODE,
 										EMPTY_STRING_ARRAY,
 										this,
-										this.getValidationTextRange(astRoot)
+										this.getValidationTextRange()
 								)
 						);
 					}
@@ -203,7 +202,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 		}
 	}
 
-	protected void validateTargetEmbeddableIsPublic(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateTargetEmbeddableIsPublic(List<IMessage> messages, IReporter reporter) {
 		if (this.getTargetEmbeddable() != null) {
 			if (!getTargetEmbeddable().getJavaResourceType().isPublic()) {
 				if (getPersistentAttribute().isVirtual()) {
@@ -213,7 +212,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 									JpaValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_BE_PUBLIC,
 									new String[] {this.getName()},
 									this,
-									this.getValidationTextRange(astRoot)
+									this.getValidationTextRange()
 							)
 					);					
 				} else {
@@ -223,7 +222,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 									JpaValidationMessages.EMBEDDED_ID_CLASS_SHOULD_BE_PUBLIC,
 									EMPTY_STRING_ARRAY,
 									this,
-									this.getValidationTextRange(astRoot)
+									this.getValidationTextRange()
 							)
 					);
 				}
@@ -231,7 +230,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 		}
 	}
 
-	protected void validateTargetEmbeddableImplementsSerializable(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateTargetEmbeddableImplementsSerializable(List<IMessage> messages, IReporter reporter) {
 		if (this.getTargetEmbeddable() != null) {
 			String targetEmbeddableClassName = this.getTargetEmbeddable().getPersistentType().getName();
 			IJavaProject javaProject = getJpaProject().getJavaProject();
@@ -243,7 +242,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 									JpaValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_SERIALIZABLE,
 									new String[] {this.getName()},
 									this,
-									this.getValidationTextRange(astRoot)
+									this.getValidationTextRange()
 							)
 					);					
 				} else {
@@ -253,7 +252,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 									JpaValidationMessages.EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_SERIALIZABLE,
 									EMPTY_STRING_ARRAY,
 									this,
-									this.getValidationTextRange(astRoot)
+									this.getValidationTextRange()
 							)
 					);
 				}
@@ -261,7 +260,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 		}
 	}
 
-	protected void validateNoRelationshipMappingsOnTargetEmbeddable(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateNoRelationshipMappingsOnTargetEmbeddable(List<IMessage> messages, IReporter reporter) {
 		if (this.getTargetEmbeddable() != null) {
 			TypeMapping targetEmbeddableTypeMapping = this.getTargetEmbeddable().getPersistentType().getMapping();
 			if (targetEmbeddableTypeMapping.getAllAttributeMappings(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY).iterator().hasNext()
@@ -275,7 +274,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 									JpaValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_NOT_CONTAIN_RELATIONSHIP_MAPPINGS,
 									new String[] {this.getName()},
 									this,
-									this.getValidationTextRange(astRoot)
+									this.getValidationTextRange()
 							)
 					);					
 				} else {
@@ -285,7 +284,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 									JpaValidationMessages.EMBEDDED_ID_CLASS_SHOULD_NOT_CONTAIN_RELATIONSHIP_MAPPINGS,
 									EMPTY_STRING_ARRAY,
 									this,
-									this.getValidationTextRange(astRoot)
+									this.getValidationTextRange()
 							)
 					);
 				}

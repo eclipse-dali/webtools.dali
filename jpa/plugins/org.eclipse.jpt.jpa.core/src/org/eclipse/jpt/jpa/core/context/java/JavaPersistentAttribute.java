@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
@@ -67,7 +66,7 @@ public interface JavaPersistentAttribute
 	 * Return whether the attribute contains the given offset into its Java
 	 * source code file.
 	 */
-	boolean contains(int offset, CompilationUnit astRoot);
+	boolean contains(int offset);
 
 
 	// ********** type **********

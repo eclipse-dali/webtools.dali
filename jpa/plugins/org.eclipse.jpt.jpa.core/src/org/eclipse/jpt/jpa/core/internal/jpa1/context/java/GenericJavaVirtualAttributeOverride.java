@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
@@ -18,9 +17,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualColumn;
-import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaVirtualOverride;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -95,16 +92,16 @@ public class GenericJavaVirtualAttributeOverride
 		return this.getContainer().resolveOverriddenColumn(this.name);
 	}
 
-	public JptValidator buildColumnValidator(ReadOnlyNamedColumn col, NamedColumnTextRangeResolver textRangeResolver) {
-		return this.getContainer().buildColumnValidator(this, (ReadOnlyBaseColumn) col, this, (TableColumnTextRangeResolver) textRangeResolver);
+	public JptValidator buildColumnValidator(ReadOnlyNamedColumn col) {
+		return this.getContainer().buildColumnValidator(this, (ReadOnlyBaseColumn) col, this);
 	}
 
 
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.column.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.column.validate(messages, reporter);
 	}
 }

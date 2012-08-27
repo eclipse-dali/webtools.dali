@@ -27,8 +27,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
-import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.NamedColumnValidator;
@@ -344,8 +342,8 @@ public class OrmEclipseLinkArrayMapping2_3
 		this.converter.validate(messages, reporter);
 	}
 
-	public JptValidator buildColumnValidator(ReadOnlyNamedColumn col, NamedColumnTextRangeResolver textRangeResolver) {
-		return new NamedColumnValidator(this.getPersistentAttribute(), (ReadOnlyBaseColumn) col, (TableColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
+	public JptValidator buildColumnValidator(ReadOnlyNamedColumn col) {
+		return new NamedColumnValidator(this.getPersistentAttribute(), (ReadOnlyBaseColumn) col, new EntityTableDescriptionProvider());
 	}
 	
 	// ********** completion proposals **********

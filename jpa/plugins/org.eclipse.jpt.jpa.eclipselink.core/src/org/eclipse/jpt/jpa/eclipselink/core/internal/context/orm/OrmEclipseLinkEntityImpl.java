@@ -425,7 +425,7 @@ public class OrmEclipseLinkEntityImpl
 
 	@Override
 	protected JptValidator buildPrimaryKeyValidator() {
-		return new EclipseLinkEntityPrimaryKeyValidator(this, buildTextRangeResolver());
+		return new EclipseLinkEntityPrimaryKeyValidator(this);
 	}
 
 	@Override
@@ -433,7 +433,7 @@ public class OrmEclipseLinkEntityImpl
 		if (this.isDynamicType()) {
 			return new EclipseLinkDynamicTypeMappingValidator(this);
 		}
-		return new EclipseLinkTypeMappingValidator(this, getJavaResourceType(), buildTextRangeResolver());
+		return new EclipseLinkTypeMappingValidator(this, getJavaResourceType());
 	}
 
 	protected boolean isDynamicType() {

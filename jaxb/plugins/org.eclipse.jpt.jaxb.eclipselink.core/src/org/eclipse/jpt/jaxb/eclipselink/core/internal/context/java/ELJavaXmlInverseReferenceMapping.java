@@ -161,20 +161,20 @@ public class ELJavaXmlInverseReferenceMapping
 	// ***** validation *****
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
-		validateMappedBy(messages, reporter, astRoot);
+		validateMappedBy(messages, reporter);
 	}
 	
-	protected void validateMappedBy(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateMappedBy(List<IMessage> messages, IReporter reporter) {
 		if (StringTools.stringIsEmpty(mappedBy)) {
 			messages.add(
 					ELJaxbValidationMessageBuilder.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							ELJaxbValidationMessages.XML_INVERSE_REFERENCE__MAPPED_BY_NOT_SPECIFIED,
 							this,
-							getMappedByTextRange(astRoot)));
+							getMappedByTextRange()));
 			return;
 		}
 		
@@ -192,7 +192,7 @@ public class ELJavaXmlInverseReferenceMapping
 							ELJaxbValidationMessages.XML_INVERSE_REFERENCE__MAPPED_BY_NOT_RESOLVED,
 							new String[] { mappedBy, referencedClassMapping.getJaxbType().getFullyQualifiedName() },
 							this,
-							getMappedByTextRange(astRoot)));
+							getMappedByTextRange()));
 		}
 		else if (
 				! ArrayTools.contains(
@@ -204,7 +204,7 @@ public class ELJavaXmlInverseReferenceMapping
 							ELJaxbValidationMessages.XML_INVERSE_REFERENCE__MAPPED_BY_ILLEGAL_MAPPING_TYPE,
 							new String[] { mappedBy, referencedClassMapping.getJaxbType().getFullyQualifiedName() },
 							this,
-							getMappedByTextRange(astRoot)));
+							getMappedByTextRange()));
 		}
 	}
 
@@ -219,8 +219,8 @@ public class ELJavaXmlInverseReferenceMapping
 		MappingKeys.XML_VALUE_ATTRIBUTE_MAPPING_KEY
 	};
 	
-	protected TextRange getMappedByTextRange(CompilationUnit astRoot) {
+	protected TextRange getMappedByTextRange() {
 		TextRange textRange = getXmlInverseReferenceAnnotation().getMappedByTextRange();
-		return (textRange != null) ? textRange : getValidationTextRange(astRoot);
+		return (textRange != null) ? textRange : getValidationTextRange();
 	}
 }

@@ -25,14 +25,11 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualOverrideRelationship;
-import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -42,7 +39,7 @@ public class GenericOrmVirtualOverrideJoinColumnRelationshipStrategy
 	implements OrmVirtualJoinColumnRelationshipStrategy
 {
 	protected final ContextListContainer<OrmVirtualJoinColumn, ReadOnlyJoinColumn> specifiedJoinColumnContainer;
-	protected final OrmReadOnlyJoinColumn.Owner joinColumnOwner;
+	protected final ReadOnlyJoinColumn.Owner joinColumnOwner;
 
 	protected OrmVirtualJoinColumn defaultJoinColumn;
 
@@ -132,7 +129,7 @@ public class GenericOrmVirtualOverrideJoinColumnRelationshipStrategy
 		}
 	}
 
-	protected OrmReadOnlyJoinColumn.Owner buildJoinColumnOwner() {
+	protected ReadOnlyJoinColumn.Owner buildJoinColumnOwner() {
 		return new JoinColumnOwner();
 	}
 
@@ -315,7 +312,7 @@ public class GenericOrmVirtualOverrideJoinColumnRelationshipStrategy
 	// ********** join column owner **********
 
 	protected class JoinColumnOwner
-		implements OrmReadOnlyJoinColumn.Owner
+		implements ReadOnlyJoinColumn.Owner
 	{
 		protected JoinColumnOwner() {
 			super();
@@ -361,8 +358,8 @@ public class GenericOrmVirtualOverrideJoinColumnRelationshipStrategy
 			return GenericOrmVirtualOverrideJoinColumnRelationshipStrategy.this.getValidationTextRange();
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return GenericOrmVirtualOverrideJoinColumnRelationshipStrategy.this.getRelationship().buildColumnValidator((ReadOnlyBaseColumn) column, this, (TableColumnTextRangeResolver) textRangeResolver);
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+			return GenericOrmVirtualOverrideJoinColumnRelationshipStrategy.this.getRelationship().buildColumnValidator((ReadOnlyBaseColumn) column, this);
 		}
 	}
 }

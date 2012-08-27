@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 
 /**
@@ -22,7 +21,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.3
  * @since 2.1
  */
 public interface EclipseLinkConverterAnnotation
@@ -59,11 +58,4 @@ public interface EclipseLinkConverterAnnotation
 	 * does not exist return the {@link TextRange} for the Converter annotation.
 	 */
 	TextRange getConverterClassTextRange();
-
-	/**
-	 * Return whether the converter class implements the specified interface.
-	 * @see org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter#ECLIPSELINK_CONVERTER_CLASS_NAME
-	 */
-	boolean converterClassImplementsInterface(String interfaceName, CompilationUnit astRoot);
-
 }

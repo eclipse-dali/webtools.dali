@@ -193,8 +193,8 @@ public class GenericJavaGeneratedValue
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 
 		String generator = this.getGenerator();
 		if (generator == null) {
@@ -213,21 +213,21 @@ public class GenericJavaGeneratedValue
 				JpaValidationMessages.ID_MAPPING_UNRESOLVED_GENERATOR_NAME,
 				new String[] {generator},
 				this.getIdMapping(),
-				this.getGeneratorTextRange(astRoot)
+				this.getGeneratorTextRange()
 			)
 		);
 	}
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.getAnnotationTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getIdMapping().getValidationTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		TextRange textRange = this.getAnnotationTextRange();
+		return (textRange != null) ? textRange : this.getIdMapping().getValidationTextRange();
 	}
 
-	protected TextRange getAnnotationTextRange(CompilationUnit astRoot) {
-		return this.generatedValueAnnotation.getTextRange(astRoot);
+	protected TextRange getAnnotationTextRange() {
+		return this.generatedValueAnnotation.getTextRange();
 	}
 
-	public TextRange getGeneratorTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.generatedValueAnnotation.getGeneratorTextRange(), astRoot);
+	public TextRange getGeneratorTextRange() {
+		return this.getValidationTextRange(this.generatedValueAnnotation.getGeneratorTextRange());
 	}
 }
