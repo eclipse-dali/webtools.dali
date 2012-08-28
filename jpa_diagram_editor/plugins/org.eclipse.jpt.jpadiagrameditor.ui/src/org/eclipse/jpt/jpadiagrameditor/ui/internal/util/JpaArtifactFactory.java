@@ -27,8 +27,10 @@ import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.Set;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.transaction.RecordingCommand;
@@ -59,9 +61,12 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.common.ui.internal.utility.SynchronousUiCommandExecutor;
+import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.internal.iterables.SubListIterableWrapper;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
@@ -1466,19 +1471,23 @@ public class JpaArtifactFactory {
 				inverseJPAName = rel.getInverseAttributeName();
 			}
 		}
-		ICompilationUnit cu = fp.getCompilationUnit(jpt);
-		renameAttribute(cu, oldName, newName, fp, this.isMethodAnnotated(jpt));
-		refreshEntityModel(fp, jpt);
+//		ICompilationUnit cu = fp.getCompilationUnit(jpt);
+//		renameAttribute(cu, oldName, newName, fp, this.isMethodAnnotated(jpt));
+//		refreshEntityModel(fp, jpt);
+//		JavaPersistentAttribute newAt = jpt.getAttributeNamed(newName);
+//		if (newAt == null) {
+//			//TODO this is wrong, should not need to do any of these updates or syncs.
+//			//should be changing the dali model synchronously so that all the syncs/updates are completed
+//			//take a look at the JpaProjectManager.execute(Command, ExtendedCommandExecutor) 
+//			jpt.getJavaResourceType().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
+//			jpt.update();
+//			jpt.synchronizeWithResourceModel();
+//			newAt = jpt.getAttributeNamed(newName);
+//		}
+		Command renameAttr = new RenameAttributeCommand(jpt, oldName, newName, fp);
+		getJpaProjectManager().execute(renameAttr, SynchronousUiCommandExecutor.instance());
+		
 		JavaPersistentAttribute newAt = jpt.getAttributeNamed(newName);
-		if (newAt == null) {
-			//TODO this is wrong, should not need to do any of these updates or syncs.
-			//should be changing the dali model synchronously so that all the syncs/updates are completed
-			//take a look at the JpaProjectManager.execute(Command, ExtendedCommandExecutor) 
-			jpt.getJavaResourceType().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
-			jpt.update();
-			jpt.synchronizeWithResourceModel();
-			newAt = jpt.getAttributeNamed(newName);
-		}
 		if (newAt == null) {
 			JPADiagramEditorPlugin.logError("The attribute " + newName + " could not be resolved", new NullPointerException()); //$NON-NLS-1$  //$NON-NLS-2$
 		}
@@ -1512,6 +1521,40 @@ public class JpaArtifactFactory {
 			updateRelation(jpt, fp, rel);
 		
 		return newAt;
+	}
+	
+	private class RenameAttributeCommand implements Command {
+		
+		private JavaPersistentType jpt;
+		private String oldName;
+		private String newName;
+		private IJPAEditorFeatureProvider fp;
+		
+		
+		public RenameAttributeCommand(JavaPersistentType jpt, String oldName,
+				String newName, IJPAEditorFeatureProvider fp){
+			
+			super();
+			this.jpt = jpt;
+			this.oldName = oldName;
+			this.newName = newName;
+			this.fp = fp;
+			
+		}
+
+		public void execute() {
+			ICompilationUnit cu = this.fp.getCompilationUnit(this.jpt);
+			try {
+				renameAttribute(cu, this.oldName, this.newName, this.fp, isMethodAnnotated(this.jpt));
+			} catch (InterruptedException e) {
+				JPADiagramEditorPlugin.logError("Cannot rename attribute", e); //$NON-NLS-1$
+			}
+		}
+		
+	}
+	
+	private JpaProjectManager getJpaProjectManager() {
+		return (JpaProjectManager) ResourcesPlugin.getWorkspace().getAdapter(JpaProjectManager.class);
 	}
 
 	private void updateRelation(JavaPersistentType jpt,
