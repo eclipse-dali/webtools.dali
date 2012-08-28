@@ -13,7 +13,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.ConverterTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.OrmElementCollectionTemporalConverterValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.OrmTemporalConverterValidator;
 import org.eclipse.jpt.jpa.core.resource.orm.TemporalType;
@@ -90,8 +89,8 @@ public interface OrmTemporalConverter
 				public TextRange getTemporalTextRange() {
 					return mapping.getTemporalTextRange();
 				}
-				public JptValidator buildValidator(Converter converter, ConverterTextRangeResolver textRangeResolver) {
-					return new OrmTemporalConverterValidator((BaseTemporalConverter) converter, textRangeResolver);
+				public JptValidator buildValidator(Converter converter) {
+					return new OrmTemporalConverterValidator((BaseTemporalConverter) converter);
 				}
 			};
 		}
@@ -121,8 +120,8 @@ public interface OrmTemporalConverter
 				public TextRange getTemporalTextRange() {
 					return mapping.getTemporalTextRange();
 				}
-				public JptValidator buildValidator(Converter converter, ConverterTextRangeResolver textRangeResolver) {
-					return new OrmElementCollectionTemporalConverterValidator((BaseTemporalConverter) converter, textRangeResolver);
+				public JptValidator buildValidator(Converter converter) {
+					return new OrmElementCollectionTemporalConverterValidator((BaseTemporalConverter) converter);
 				}
 			};
 		}

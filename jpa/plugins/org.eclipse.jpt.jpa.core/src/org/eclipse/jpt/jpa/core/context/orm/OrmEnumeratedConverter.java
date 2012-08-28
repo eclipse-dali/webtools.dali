@@ -13,7 +13,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.ConverterTextRangeResolver;
 import org.eclipse.jpt.jpa.core.resource.orm.EnumType;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlConvertibleMapping;
@@ -64,7 +63,7 @@ public interface OrmEnumeratedConverter
 				public TextRange getEnumTextRange() {
 					return mapping.getEnumeratedTextRange();
 				}
-				public JptValidator buildValidator(Converter converter, ConverterTextRangeResolver textRangeResolver) {
+				public JptValidator buildValidator(Converter converter) {
 					return JptValidator.Null.instance();
 				}
 			};

@@ -9,12 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
+import java.util.List;
+
 import org.eclipse.jpt.common.core.JptResourceTypeReference;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.JpaNode;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * Common protocol for JPA objects that have a context, as opposed to
@@ -26,7 +31,7 @@ import org.eclipse.jpt.jpa.db.SchemaContainer;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.3
  * @since 2.0
  */
 public interface JpaContextNode
@@ -52,6 +57,16 @@ public interface JpaContextNode
 	Catalog getContextDefaultDbCatalog();
 
 	Schema getContextDefaultDbSchema();
+
+
+	// ********** validation **********
+
+	TextRange getValidationTextRange();
+
+	/**
+	 * Add to the list of current validation messages
+	 */
+	void validate(List<IMessage> messages, IReporter reporter);
 
 
 	// ********** synchronize/update **********

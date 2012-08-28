@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
@@ -288,19 +287,19 @@ public abstract class AbstractJavaXmlNamedNodeMapping<A extends JaxbBasicSchemaC
 	// ***** validation *****
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
 		if (this.xmlID != null) {
-			this.xmlID.validate(messages, reporter, astRoot);
+			this.xmlID.validate(messages, reporter);
 		}
 		
 		if (this.xmlIDREF != null) {
-			this.xmlIDREF.validate(messages, reporter, astRoot);
+			this.xmlIDREF.validate(messages, reporter);
 		}
 		
 		if (this.xmlAttachmentRef != null) {
-			this.xmlAttachmentRef.validate(messages, reporter, astRoot);
+			this.xmlAttachmentRef.validate(messages, reporter);
 		}
 	}
 	

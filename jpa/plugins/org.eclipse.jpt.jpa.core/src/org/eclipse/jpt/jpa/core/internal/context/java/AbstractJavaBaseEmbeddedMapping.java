@@ -33,10 +33,8 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaBaseEmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
-import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
-import org.eclipse.jpt.jpa.core.internal.context.OverrideTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AttributeOverrideColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AttributeOverrideValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EmbeddableOverrideDescriptionProvider;
@@ -207,15 +205,15 @@ public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 
-		if (this.validateTargetEmbeddable(messages, astRoot)) {
-			this.validateOverrides(messages, reporter, astRoot);
+		if (this.validateTargetEmbeddable(messages)) {
+			this.validateOverrides(messages, reporter);
 		}
 	}
 
-	protected boolean validateTargetEmbeddable(List<IMessage> messages, CompilationUnit astRoot) {
+	protected boolean validateTargetEmbeddable(List<IMessage> messages) {
 		if (this.targetEmbeddable != null) {
 			return true;
 		}
@@ -227,7 +225,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
 					JpaValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_NOT_AN_EMBEDDABLE,
 					new String[] {this.getName(), targetEmbeddableTypeName},
 					this,
-					this.getValidationTextRange(astRoot)
+					this.getValidationTextRange()
 				)
 			);
 		}
@@ -238,15 +236,15 @@ public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
 					JpaValidationMessages.TARGET_NOT_AN_EMBEDDABLE,
 					new String[] {targetEmbeddableTypeName},
 					this,
-					this.getValidationTextRange(astRoot)
+					this.getValidationTextRange()
 				)
 			);
 		}
 		return false;
 	}
 
-	protected void validateOverrides(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		this.attributeOverrideContainer.validate(messages, reporter, astRoot);
+	protected void validateOverrides(List<IMessage> messages, IReporter reporter) {
+		this.attributeOverrideContainer.validate(messages, reporter);
 	}
 
 
@@ -314,16 +312,16 @@ public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
 			return true;
 		}
 
-		public TextRange getValidationTextRange(CompilationUnit astRoot) {
-			return AbstractJavaBaseEmbeddedMapping.this.getValidationTextRange(astRoot);
+		public TextRange getValidationTextRange() {
+			return AbstractJavaBaseEmbeddedMapping.this.getValidationTextRange();
 		}
 
-		public JptValidator buildOverrideValidator(ReadOnlyOverride override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
-			return new AttributeOverrideValidator(this.getPersistentAttribute(), (ReadOnlyAttributeOverride) override, (AttributeOverrideContainer) container, textRangeResolver, new EmbeddableOverrideDescriptionProvider());
+		public JptValidator buildOverrideValidator(ReadOnlyOverride override, OverrideContainer container) {
+			return new AttributeOverrideValidator(this.getPersistentAttribute(), (ReadOnlyAttributeOverride) override, (AttributeOverrideContainer) container, new EmbeddableOverrideDescriptionProvider());
 		}
 		
-		public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner, TableColumnTextRangeResolver textRangeResolver) {
-			return new AttributeOverrideColumnValidator(this.getPersistentAttribute(), (ReadOnlyAttributeOverride) override, column, textRangeResolver, new EntityTableDescriptionProvider());
+		public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner) {
+			return new AttributeOverrideColumnValidator(this.getPersistentAttribute(), (ReadOnlyAttributeOverride) override, column, new EntityTableDescriptionProvider());
 		}
 
 		protected JavaPersistentAttribute getPersistentAttribute() {

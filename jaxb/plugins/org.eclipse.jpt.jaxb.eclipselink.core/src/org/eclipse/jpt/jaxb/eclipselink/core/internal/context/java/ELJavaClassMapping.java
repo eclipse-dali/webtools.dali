@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
 import java.util.List;
@@ -250,15 +259,15 @@ public class ELJavaClassMapping
 	// ***** validation *****
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
 		if (this.xmlDiscriminatorNode != null) {
-			this.xmlDiscriminatorNode.validate(messages, reporter, astRoot);
+			this.xmlDiscriminatorNode.validate(messages, reporter);
 		}
 		
 		if (this.xmlDiscriminatorValue != null) {
-			this.xmlDiscriminatorValue.validate(messages, reporter, astRoot);
+			this.xmlDiscriminatorValue.validate(messages, reporter);
 		}
 	}
 }

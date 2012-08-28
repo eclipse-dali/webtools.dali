@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -38,10 +38,8 @@ import org.eclipse.jpt.jpa.core.context.java.JavaOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualOverride;
-import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.OverrideTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.resource.java.OverrideAnnotation;
@@ -515,12 +513,12 @@ public abstract class AbstractJavaOverrideContainer<
 		return this.owner.getDefaultTableName();
 	}
 
-	public JptValidator buildOverrideValidator(ReadOnlyOverride override, OverrideTextRangeResolver textRangeResolver) {
-		return this.owner.buildOverrideValidator(override, this, textRangeResolver);
+	public JptValidator buildOverrideValidator(ReadOnlyOverride override) {
+		return this.owner.buildOverrideValidator(override, this);
 	}
 
-	public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner columnOwner, TableColumnTextRangeResolver textRangeResolver) {
-		return this.owner.buildColumnValidator(override, column, columnOwner, textRangeResolver);
+	public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner columnOwner) {
+		return this.owner.buildColumnValidator(override, column, columnOwner);
 	}
 
 	public String getPossiblePrefix() {
@@ -569,21 +567,21 @@ public abstract class AbstractJavaOverrideContainer<
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		for (R override: this.getOverrides()) {
-			override.validate(messages, reporter, astRoot);
+			override.validate(messages, reporter);
 		}
 	}
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.getValidationAnnotationTextRange(astRoot);
-		return (textRange != null) ? textRange : this.owner.getValidationTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		TextRange textRange = this.getValidationAnnotationTextRange();
+		return (textRange != null) ? textRange : this.owner.getValidationTextRange();
 	}
 
-	protected TextRange getValidationAnnotationTextRange(CompilationUnit astRoot) {
+	protected TextRange getValidationAnnotationTextRange() {
 		Annotation annotation = this.getValidationAnnotation();
-		return (annotation == null) ? null : annotation.getTextRange(astRoot);
+		return (annotation == null) ? null : annotation.getTextRange();
 	}
 
 	protected Annotation getValidationAnnotation() {

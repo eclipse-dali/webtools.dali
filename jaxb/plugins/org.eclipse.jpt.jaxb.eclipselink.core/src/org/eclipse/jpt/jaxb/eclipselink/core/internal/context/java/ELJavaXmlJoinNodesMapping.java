@@ -175,8 +175,8 @@ public class ELJavaXmlJoinNodesMapping
 	// ***** validation *****
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
 		JaxbClassMapping referencedClass = getReferencedClassMapping();
 		
@@ -187,13 +187,13 @@ public class ELJavaXmlJoinNodesMapping
 								ELJaxbValidationMessages.XML_JOIN_NODES__INVALID_REFERENCED_CLASS,
 								new String[] { getValueTypeName() },
 								ELJavaXmlJoinNodesMapping.this,
-								getValidationTextRange(astRoot)));
+								getValidationTextRange()));
 		}
 		
 		validateDuplicateXmlPaths(messages, reporter);
 		
 		for (ELJavaXmlJoinNode xmlJoinNode : this.xmlJoinNodeContainer.getContextElements()) {
-			xmlJoinNode.validate(messages, reporter, astRoot);
+			xmlJoinNode.validate(messages, reporter);
 		}
 	}
 	
@@ -247,12 +247,12 @@ public class ELJavaXmlJoinNodesMapping
 	}
 	
 	@Override
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+	public TextRange getValidationTextRange() {
 		Annotation annotation = getAnnotation();
 		if (annotation == null) {
 			annotation = getJavaResourceAttribute().getAnnotation(0, ELJaxb.XML_JOIN_NODE);
 		}
-		return annotation.getTextRange(astRoot);
+		return annotation.getTextRange();
 	}
 	
 	

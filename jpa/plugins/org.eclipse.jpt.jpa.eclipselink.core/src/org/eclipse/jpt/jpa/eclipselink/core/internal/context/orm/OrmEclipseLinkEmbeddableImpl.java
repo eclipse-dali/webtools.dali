@@ -254,7 +254,7 @@ public class OrmEclipseLinkEmbeddableImpl
 		if (this.isDynamicType()) {
 			return new EclipseLinkDynamicTypeMappingValidator(this);
 		}
-		return new EclipseLinkTypeMappingValidator(this, getJavaResourceType(), buildTextRangeResolver());
+		return new EclipseLinkTypeMappingValidator(this, getJavaResourceType());
 	}
 
 	protected boolean isDynamicType() {

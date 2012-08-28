@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,12 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context.java;
 
-import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.jpa2.context.DerivedIdentity2_0;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * Java derived identity
@@ -25,7 +21,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.3
  * @since 2.3
  */
 public interface JavaDerivedIdentity2_0
@@ -36,6 +32,4 @@ public interface JavaDerivedIdentity2_0
 	JavaIdDerivedIdentityStrategy2_0 getIdDerivedIdentityStrategy();
 
 	JavaMapsIdDerivedIdentityStrategy2_0 getMapsIdDerivedIdentityStrategy();
-
-	void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot);
 }

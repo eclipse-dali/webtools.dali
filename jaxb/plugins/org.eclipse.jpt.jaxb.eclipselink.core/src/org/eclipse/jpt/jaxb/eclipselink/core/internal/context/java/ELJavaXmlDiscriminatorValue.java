@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jaxb.core.internal.context.java.AbstractJavaContextNode;
@@ -82,13 +81,13 @@ public class ELJavaXmlDiscriminatorValue
 	// ***** validation *****
 	
 	@Override
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return getAnnotation().getTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		return getAnnotation().getTextRange();
 	}
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
 		if (StringTools.stringIsEmpty(this.value)) {
 			messages.add(

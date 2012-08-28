@@ -169,20 +169,20 @@ public abstract class AbstractJavaQName
 	// ***** validation *****
 	
 	@Override
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return getParent().getValidationTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		return getParent().getValidationTextRange();
 	}
 	
-	protected TextRange getTextRange(TextRange textRange, CompilationUnit astRoot) {
-		return (textRange != null) ? textRange : getParent().getValidationTextRange(astRoot);
+	protected TextRange getTextRange(TextRange textRange) {
+		return (textRange != null) ? textRange : getParent().getValidationTextRange();
 	}
 	
-	public TextRange getNamespaceTextRange(CompilationUnit astRoot) {
-		return getTextRange(this.proxy.getNamespaceTextRange(), astRoot);
+	public TextRange getNamespaceTextRange() {
+		return getTextRange(this.proxy.getNamespaceTextRange());
 	}
 	
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return getTextRange(this.proxy.getNameTextRange(), astRoot);
+	public TextRange getNameTextRange() {
+		return getTextRange(this.proxy.getNameTextRange());
 	}
 	
 	/**
@@ -194,17 +194,17 @@ public abstract class AbstractJavaQName
 	}
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
-		validateName(messages, reporter, astRoot);
+		validateName(messages, reporter);
 		
 		if (! StringTools.stringIsEmpty(getName())) {
-			validateReference(messages, reporter, astRoot);
+			validateReference(messages, reporter);
 		}
 	}
 	
-	protected void validateName(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateName(List<IMessage> messages, IReporter reporter) {
 		if (StringTools.stringIsEmpty(getName())) {
 			messages.add(
 				DefaultValidationMessages.buildMessage(
@@ -212,19 +212,19 @@ public abstract class AbstractJavaQName
 					JaxbValidationMessages.QNAME__MISSING_NAME,
 					new String[] { getReferencedComponentTypeDescription() },
 					this,
-					getNameTextRange(astRoot)));
+					getNameTextRange()));
 		}
 	}
 	
-	protected abstract void validateReference(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot);
+	protected abstract void validateReference(List<IMessage> messages, IReporter reporter);
 	
-	protected IMessage getUnresolveSchemaComponentMessage(CompilationUnit astRoot) {
+	protected IMessage getUnresolveSchemaComponentMessage() {
 		return DefaultValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
 				JaxbValidationMessages.QNAME__UNRESOLVED_COMPONENT,
 				new String[] { getReferencedComponentTypeDescription(), getNamespace(), getName() },
 				this,
-				getNameTextRange(astRoot));
+				getNameTextRange());
 	}
 	
 	

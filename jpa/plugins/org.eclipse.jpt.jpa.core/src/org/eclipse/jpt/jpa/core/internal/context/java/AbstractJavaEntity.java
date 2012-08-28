@@ -74,19 +74,11 @@ import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
-import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaTable;
-import org.eclipse.jpt.jpa.core.internal.context.BaseJoinColumnTextRangeResolver;
-import org.eclipse.jpt.jpa.core.internal.context.EntityTextRangeResolver;
-import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
-import org.eclipse.jpt.jpa.core.internal.context.OverrideTextRangeResolver;
-import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
-import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.TypeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AssociationOverrideInverseJoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AssociationOverrideJoinColumnValidator;
@@ -879,7 +871,7 @@ public abstract class AbstractJavaEntity
 		return this.getJpaFactory().buildJavaDiscriminatorColumn(this, this.buildDiscriminatorColumnOwner());
 	}
 
-	protected JavaDiscriminatorColumn.Owner buildDiscriminatorColumnOwner() {
+	protected ReadOnlyNamedDiscriminatorColumn.Owner buildDiscriminatorColumnOwner() {
 		return new DiscriminatorColumnOwner();
 	}
 
@@ -1313,24 +1305,24 @@ public abstract class AbstractJavaEntity
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 
-		this.validatePrimaryKey(messages, reporter, astRoot);
-		this.validateTable(messages, reporter, astRoot);
+		this.validatePrimaryKey(messages, reporter);
+		this.validateTable(messages, reporter);
 		for (JavaSecondaryTable secondaryTable : this.getSecondaryTables()) {
-			secondaryTable.validate(messages, reporter, astRoot);
+			secondaryTable.validate(messages, reporter);
 		}
-		this.validateInheritance(messages, reporter, astRoot);
+		this.validateInheritance(messages, reporter);
 		for (JavaPrimaryKeyJoinColumn pkJoinColumn : this.getPrimaryKeyJoinColumns()) {
-			pkJoinColumn.validate(messages, reporter, astRoot);
+			pkJoinColumn.validate(messages, reporter);
 		}
-		this.generatorContainer.validate(messages, reporter, astRoot);
-		this.queryContainer.validate(messages, reporter, astRoot);
-		this.attributeOverrideContainer.validate(messages, reporter, astRoot);
-		this.associationOverrideContainer.validate(messages, reporter, astRoot);
+		this.generatorContainer.validate(messages, reporter);
+		this.queryContainer.validate(messages, reporter);
+		this.attributeOverrideContainer.validate(messages, reporter);
+		this.associationOverrideContainer.validate(messages, reporter);
 		this.validateEntityName(messages);
-		this.idClassReference.validate(messages, reporter, astRoot);
+		this.idClassReference.validate(messages, reporter);
 	}
 
 	@Override
@@ -1352,20 +1344,15 @@ public abstract class AbstractJavaEntity
 		}
 	}
 
-	protected void validatePrimaryKey(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		this.buildPrimaryKeyValidator(astRoot).validate(messages, reporter);
+	protected void validatePrimaryKey(List<IMessage> messages, IReporter reporter) {
+		this.buildPrimaryKeyValidator().validate(messages, reporter);
 	}
 
-	protected JptValidator buildPrimaryKeyValidator(CompilationUnit astRoot) {
-		return new GenericEntityPrimaryKeyValidator(this, this.buildTextRangeResolver(astRoot));
+	protected JptValidator buildPrimaryKeyValidator() {
+		return new GenericEntityPrimaryKeyValidator(this);
 	}
 
-	@Override
-	protected EntityTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
-		return new JavaEntityTextRangeResolver(this, astRoot);
-	}
-
-	protected void validateTable(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateTable(List<IMessage> messages, IReporter reporter) {
 		if (this.isAbstractTablePerClass()) {
 			if (this.table.isSpecifiedInResource()) {
 				messages.add(
@@ -1374,7 +1361,7 @@ public abstract class AbstractJavaEntity
 						JpaValidationMessages.ENTITY_ABSTRACT_TABLE_PER_CLASS_DEFINES_TABLE,
 						new String[] {this.getName()},
 						this,
-						this.table.getValidationTextRange(astRoot)
+						this.table.getValidationTextRange()
 					)
 				);
 			}
@@ -1388,13 +1375,13 @@ public abstract class AbstractJavaEntity
 						JpaValidationMessages.ENTITY_SINGLE_TABLE_DESCENDANT_DEFINES_TABLE,
 						new String[] {this.getName()},
 						this,
-						this.table.getValidationTextRange(astRoot)
+						this.table.getValidationTextRange()
 					)
 				);
 			}
 			return;
 		}
-		this.table.validate(messages, reporter, astRoot);
+		this.table.validate(messages, reporter);
 	}
 
 	/**
@@ -1406,15 +1393,15 @@ public abstract class AbstractJavaEntity
 			(this.table.getDbTable() != this.getRootEntity().getTable().getDbTable());
 	}
 
-	protected void validateInheritance(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		this.validateInheritanceStrategy(messages, astRoot);
-		this.validateDiscriminatorColumn(messages, reporter, astRoot);
-		this.validateDiscriminatorValue(messages, astRoot);
+	protected void validateInheritance(List<IMessage> messages, IReporter reporter) {
+		this.validateInheritanceStrategy(messages);
+		this.validateDiscriminatorColumn(messages, reporter);
+		this.validateDiscriminatorValue(messages);
 	}
 
-	protected void validateDiscriminatorColumn(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateDiscriminatorColumn(List<IMessage> messages, IReporter reporter) {
 		if (this.specifiedDiscriminatorColumnIsAllowed && ! this.discriminatorColumnIsUndefined) {
-			this.discriminatorColumn.validate(messages, reporter, astRoot);
+			this.discriminatorColumn.validate(messages, reporter);
 		}
 		else if (!this.discriminatorColumn.isVirtual()) {
 			if (this.isDescendant()) {
@@ -1424,7 +1411,7 @@ public abstract class AbstractJavaEntity
 						JpaValidationMessages.ENTITY_NON_ROOT_DISCRIMINATOR_COLUMN_DEFINED,
 						new String[] {this.getName()},
 						this,
-						this.getDiscriminatorColumnTextRange(astRoot)
+						this.getDiscriminatorColumnTextRange()
 					)
 				);
 			}
@@ -1435,14 +1422,14 @@ public abstract class AbstractJavaEntity
 						JpaValidationMessages.ENTITY_TABLE_PER_CLASS_DISCRIMINATOR_COLUMN_DEFINED,
 						new String[] {this.getName()},
 						this,
-						this.getDiscriminatorColumnTextRange(astRoot)
+						this.getDiscriminatorColumnTextRange()
 					)
 				);
 			}
 		}
 	}
 
-	protected void validateDiscriminatorValue(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateDiscriminatorValue(List<IMessage> messages) {
 		if (this.discriminatorValueIsUndefined && (this.specifiedDiscriminatorValue != null)) {
 			if (this.isAbstract()) {
 				messages.add(
@@ -1451,7 +1438,7 @@ public abstract class AbstractJavaEntity
 						JpaValidationMessages.ENTITY_ABSTRACT_DISCRIMINATOR_VALUE_DEFINED,
 						new String[] {this.getName()},
 						this,
-						this.getDiscriminatorValueTextRange(astRoot)
+						this.getDiscriminatorValueTextRange()
 					)
 				);
 			}
@@ -1462,14 +1449,14 @@ public abstract class AbstractJavaEntity
 						JpaValidationMessages.ENTITY_TABLE_PER_CLASS_DISCRIMINATOR_VALUE_DEFINED,
 						new String[] {this.getName()},
 						this,
-						this.getDiscriminatorValueTextRange(astRoot)
+						this.getDiscriminatorValueTextRange()
 					)
 				);
 			}
 		}
 	}
 
-	protected void validateInheritanceStrategy(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateInheritanceStrategy(List<IMessage> messages) {
 		Supported tablePerConcreteClassInheritanceIsSupported = this.getJpaPlatformVariation().getTablePerConcreteClassInheritanceIsSupported();
 		if (tablePerConcreteClassInheritanceIsSupported == Supported.YES) {
 			return;
@@ -1482,7 +1469,7 @@ public abstract class AbstractJavaEntity
 						JpaValidationMessages.ENTITY_TABLE_PER_CLASS_NOT_SUPPORTED_ON_PLATFORM,
 						new String[] {this.getName()},
 						this,
-						this.getInheritanceStrategyTextRange(astRoot)
+						this.getInheritanceStrategyTextRange()
 					)
 				);
 			}
@@ -1493,23 +1480,23 @@ public abstract class AbstractJavaEntity
 						JpaValidationMessages.ENTITY_TABLE_PER_CLASS_NOT_PORTABLE_ON_PLATFORM,
 						new String[] {this.getName()},
 						this,
-						this.getInheritanceStrategyTextRange(astRoot)
+						this.getInheritanceStrategyTextRange()
 					)
 				);
 			}
 		}
 	}
 
-	protected TextRange getDiscriminatorValueTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.getDiscriminatorValueAnnotation().getTextRange(astRoot), astRoot);
+	protected TextRange getDiscriminatorValueTextRange() {
+		return this.getValidationTextRange(this.getDiscriminatorValueAnnotation().getTextRange());
 	}
 
-	protected TextRange getDiscriminatorColumnTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.discriminatorColumn.getValidationTextRange(astRoot), astRoot);
+	protected TextRange getDiscriminatorColumnTextRange() {
+		return this.getValidationTextRange(this.discriminatorColumn.getValidationTextRange());
 	}
 
-	protected TextRange getInheritanceStrategyTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.getInheritanceAnnotation().getStrategyTextRange(), astRoot);
+	protected TextRange getInheritanceStrategyTextRange() {
+		return this.getValidationTextRange(this.getInheritanceAnnotation().getStrategyTextRange());
 	}
 
 
@@ -1529,8 +1516,8 @@ public abstract class AbstractJavaEntity
 			return AbstractJavaEntity.this;
 		}
 
-		public TextRange getValidationTextRange(CompilationUnit astRoot) {
-			return AbstractJavaEntity.this.getValidationTextRange(astRoot);
+		public TextRange getValidationTextRange() {
+			return AbstractJavaEntity.this.getValidationTextRange();
 		}
 
 		public TypeMapping getOverridableTypeMapping() {
@@ -1599,12 +1586,12 @@ public abstract class AbstractJavaEntity
 			return MappingTools.resolveOverriddenColumn(this.getOverridableTypeMapping(), attributeName);
 		}
 
-		public JptValidator buildOverrideValidator(ReadOnlyOverride override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
-			return new AttributeOverrideValidator((ReadOnlyAttributeOverride) override, (AttributeOverrideContainer) container, textRangeResolver, new MappedSuperclassOverrideDescriptionProvider());
+		public JptValidator buildOverrideValidator(ReadOnlyOverride override, OverrideContainer container) {
+			return new AttributeOverrideValidator((ReadOnlyAttributeOverride) override, (AttributeOverrideContainer) container, new MappedSuperclassOverrideDescriptionProvider());
 		}
 		
-		public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner, TableColumnTextRangeResolver textRangeResolver) {
-			return new AttributeOverrideColumnValidator((ReadOnlyAttributeOverride) override, column, textRangeResolver, new EntityTableDescriptionProvider());
+		public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner) {
+			return new AttributeOverrideColumnValidator((ReadOnlyAttributeOverride) override, column, new EntityTableDescriptionProvider());
 		}
 	}
 
@@ -1624,24 +1611,24 @@ public abstract class AbstractJavaEntity
 			return MappingTools.resolveOverriddenRelationship(this.getOverridableTypeMapping(), attributeName);
 		}
 
-		public JptValidator buildOverrideValidator(ReadOnlyOverride override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
-			return new AssociationOverrideValidator((ReadOnlyAssociationOverride) override, (AssociationOverrideContainer) container, textRangeResolver, new MappedSuperclassOverrideDescriptionProvider());
+		public JptValidator buildOverrideValidator(ReadOnlyOverride override, OverrideContainer container) {
+			return new AssociationOverrideValidator((ReadOnlyAssociationOverride) override, (AssociationOverrideContainer) container, new MappedSuperclassOverrideDescriptionProvider());
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner, TableColumnTextRangeResolver textRangeResolver) {
-			return new AssociationOverrideJoinColumnValidator((ReadOnlyAssociationOverride) override, (ReadOnlyJoinColumn) column, (ReadOnlyJoinColumn.Owner) owner, (JoinColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
+		public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner owner) {
+			return new AssociationOverrideJoinColumnValidator((ReadOnlyAssociationOverride) override, (ReadOnlyJoinColumn) column, (ReadOnlyJoinColumn.Owner) owner, new EntityTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableJoinColumnValidator(ReadOnlyAssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-			return new AssociationOverrideJoinColumnValidator(override, column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
+		public JptValidator buildJoinTableJoinColumnValidator(ReadOnlyAssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner) {
+			return new AssociationOverrideJoinColumnValidator(override, column, owner, new JoinTableTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyAssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-			return new AssociationOverrideInverseJoinColumnValidator(override, column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
+		public JptValidator buildJoinTableInverseJoinColumnValidator(ReadOnlyAssociationOverride override, ReadOnlyJoinColumn column, ReadOnlyJoinColumn.Owner owner) {
+			return new AssociationOverrideInverseJoinColumnValidator(override, column, owner, new JoinTableTableDescriptionProvider());
 		}
 
-		public JptValidator buildJoinTableValidator(ReadOnlyAssociationOverride override, ReadOnlyTable t, TableTextRangeResolver textRangeResolver) {
-			return new AssociationOverrideJoinTableValidator(override, (ReadOnlyJoinTable) t, textRangeResolver);
+		public JptValidator buildJoinTableValidator(ReadOnlyAssociationOverride override, ReadOnlyTable t) {
+			return new AssociationOverrideJoinTableValidator(override, (ReadOnlyJoinTable) t);
 		}
 	}
 
@@ -1662,8 +1649,8 @@ public abstract class AbstractJavaEntity
 			return AbstractJavaEntity.this.resolveDbTable(tableName);
 		}
 
-		public TextRange getValidationTextRange(CompilationUnit astRoot) {
-			return AbstractJavaEntity.this.getValidationTextRange(astRoot);
+		public TextRange getValidationTextRange() {
+			return AbstractJavaEntity.this.getValidationTextRange();
 		}
 	}
 
@@ -1672,7 +1659,7 @@ public abstract class AbstractJavaEntity
 
 	protected class PrimaryKeyJoinColumnOwner
 		extends NamedColumnOwner
-		implements JavaReadOnlyBaseJoinColumn.Owner
+		implements ReadOnlyBaseJoinColumn.Owner
 	{
 		public org.eclipse.jpt.jpa.db.Table getReferencedColumnDbTable() {
 			Entity parentEntity = AbstractJavaEntity.this.getParentEntity();
@@ -1691,8 +1678,8 @@ public abstract class AbstractJavaEntity
 			return (parentEntity == null) ? AbstractJavaEntity.this.getPrimaryKeyColumnName() : parentEntity.getPrimaryKeyColumnName();
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return new EntityPrimaryKeyJoinColumnValidator((ReadOnlyBaseJoinColumn) column, this, (BaseJoinColumnTextRangeResolver) textRangeResolver);
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+			return new EntityPrimaryKeyJoinColumnValidator((ReadOnlyBaseJoinColumn) column, this);
 		}
 	}
 
@@ -1701,7 +1688,7 @@ public abstract class AbstractJavaEntity
 
 	protected class DiscriminatorColumnOwner
 		extends NamedColumnOwner
-		implements JavaDiscriminatorColumn.Owner
+		implements ReadOnlyNamedDiscriminatorColumn.Owner
 	{
 		public String getDefaultColumnName(ReadOnlyNamedColumn column) {
 			return this.isDescendant() ?
@@ -1733,8 +1720,8 @@ public abstract class AbstractJavaEntity
 			return AbstractJavaEntity.this.discriminatorColumnIsUndefined;
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return new DiscriminatorColumnValidator(column, textRangeResolver);
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+			return new DiscriminatorColumnValidator(column);
 		}
 	}
 
@@ -1744,8 +1731,8 @@ public abstract class AbstractJavaEntity
 	protected class TableOwner
 		implements ReadOnlyTable.Owner
 	{
-		public JptValidator buildTableValidator(ReadOnlyTable t, TableTextRangeResolver textRangeResolver) {
-			return new TableValidator(t, textRangeResolver);
+		public JptValidator buildTableValidator(ReadOnlyTable t) {
+			return new TableValidator(t);
 		}
 	}
 
@@ -1755,8 +1742,8 @@ public abstract class AbstractJavaEntity
 	protected class SecondaryTableOwner
 		implements ReadOnlyTable.Owner
 	{
-		public JptValidator buildTableValidator(ReadOnlyTable t, TableTextRangeResolver textRangeResolver) {
-			return new SecondaryTableValidator((ReadOnlySecondaryTable) t, textRangeResolver);
+		public JptValidator buildTableValidator(ReadOnlyTable t) {
+			return new SecondaryTableValidator((ReadOnlySecondaryTable) t);
 		}
 	}
 }

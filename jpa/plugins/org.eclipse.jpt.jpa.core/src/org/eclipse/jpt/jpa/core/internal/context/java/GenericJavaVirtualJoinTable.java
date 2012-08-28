@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
@@ -25,15 +24,12 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualJoinTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualRelationship;
-import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -46,7 +42,7 @@ public class GenericJavaVirtualJoinTable
 {
 
 	protected final ContextListContainer<JavaVirtualJoinColumn, ReadOnlyJoinColumn> specifiedInverseJoinColumnContainer;
-	protected final JavaReadOnlyJoinColumn.Owner inverseJoinColumnOwner;
+	protected final ReadOnlyJoinColumn.Owner inverseJoinColumnOwner;
 
 	protected JavaVirtualJoinColumn defaultInverseJoinColumn;
 
@@ -197,11 +193,11 @@ public class GenericJavaVirtualJoinTable
 	}
 
 	@Override
-	protected JavaReadOnlyJoinColumn.Owner buildJoinColumnOwner() {
+	protected ReadOnlyJoinColumn.Owner buildJoinColumnOwner() {
 		return new JoinColumnOwner();
 	}
 
-	protected JavaReadOnlyJoinColumn.Owner buildInverseJoinColumnOwner() {
+	protected ReadOnlyJoinColumn.Owner buildInverseJoinColumnOwner() {
 		return new InverseJoinColumnOwner();
 	}
 
@@ -226,9 +222,9 @@ public class GenericJavaVirtualJoinTable
 	// ********** validation **********
 
 	@Override
-	protected void validateJoinColumns(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validateJoinColumns(messages, reporter, astRoot);
-		this.validateNodes(this.getInverseJoinColumns(), messages, reporter, astRoot);
+	protected void validateJoinColumns(List<IMessage> messages, IReporter reporter) {
+		super.validateJoinColumns(messages, reporter);
+		this.validateNodes(this.getInverseJoinColumns(), messages, reporter);
 	}
 
 	public boolean validatesAgainstDatabase() {
@@ -242,7 +238,7 @@ public class GenericJavaVirtualJoinTable
 	 * just a little common behavior
 	 */
 	protected abstract class AbstractJoinColumnOwner
-		implements JavaReadOnlyJoinColumn.Owner
+		implements ReadOnlyJoinColumn.Owner
 	{
 		protected AbstractJoinColumnOwner() {
 			super();
@@ -281,8 +277,8 @@ public class GenericJavaVirtualJoinTable
 			return GenericJavaVirtualJoinTable.this.getName();
 		}
 
-		public TextRange getValidationTextRange(CompilationUnit astRoot) {
-			return GenericJavaVirtualJoinTable.this.getValidationTextRange(astRoot);
+		public TextRange getValidationTextRange() {
+			return GenericJavaVirtualJoinTable.this.getValidationTextRange();
 		}
 
 		protected JavaVirtualRelationship getRelationship() {
@@ -322,8 +318,8 @@ public class GenericJavaVirtualJoinTable
 			return GenericJavaVirtualJoinTable.this.getJoinColumnsSize();
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return GenericJavaVirtualJoinTable.this.getRelationshipStrategy().buildJoinTableJoinColumnValidator((ReadOnlyJoinColumn) column, this, (JoinColumnTextRangeResolver) textRangeResolver);
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+			return GenericJavaVirtualJoinTable.this.getRelationshipStrategy().buildJoinTableJoinColumnValidator((ReadOnlyJoinColumn) column, this);
 		}
 	}
 
@@ -358,8 +354,8 @@ public class GenericJavaVirtualJoinTable
 			return GenericJavaVirtualJoinTable.this.getInverseJoinColumnsSize();
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return GenericJavaVirtualJoinTable.this.getRelationshipStrategy().buildJoinTableInverseJoinColumnValidator((ReadOnlyJoinColumn) column, this, (JoinColumnTextRangeResolver) textRangeResolver);
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+			return GenericJavaVirtualJoinTable.this.getRelationshipStrategy().buildJoinTableInverseJoinColumnValidator((ReadOnlyJoinColumn) column, this);
 		}
 	}
 }

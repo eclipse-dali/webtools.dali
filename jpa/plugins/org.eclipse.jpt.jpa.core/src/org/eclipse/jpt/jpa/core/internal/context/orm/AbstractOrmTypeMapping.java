@@ -39,7 +39,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.TypeMappingTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.TypeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.GenericTypeMappingValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
@@ -583,11 +582,7 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	}
 
 	protected JptValidator buildTypeMappingValidator() {
-		return new GenericTypeMappingValidator(this, this.getJavaResourceType(), this.buildTextRangeResolver());
-	}
-
-	protected TypeMappingTextRangeResolver buildTextRangeResolver() {
-		return new OrmTypeMappingTextRangeResolver(this);
+		return new GenericTypeMappingValidator(this, this.getJavaResourceType());
 	}
 
 	public boolean validatesAgainstDatabase() {

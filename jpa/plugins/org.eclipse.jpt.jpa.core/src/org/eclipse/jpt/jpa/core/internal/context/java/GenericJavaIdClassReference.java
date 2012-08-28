@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
@@ -248,12 +247,12 @@ public class GenericJavaIdClassReference
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.validateIdClass(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.validateIdClass(messages, reporter);
 	}
 	
-	protected void validateIdClass(List<IMessage> messages, IReporter reporter,	CompilationUnit astRoot) {
+	protected void validateIdClass(List<IMessage> messages, IReporter reporter) {
 		if (this.isSpecified()) {
 			JavaResourceType jrt = this.getIdClassJavaResourceType();
 			if (jrt != null) {
@@ -265,7 +264,7 @@ public class GenericJavaIdClassReference
 									JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_PUBLIC,
 									new String[] {jrt.getTypeBinding().getQualifiedName()}, 
 									this,
-									this.getValidationTextRange(astRoot)
+									this.getValidationTextRange()
 									)
 							);
 				}
@@ -277,7 +276,7 @@ public class GenericJavaIdClassReference
 									JpaValidationMessages.TYPE_MAPPING_ID_CLASS_NOT_IMPLEMENT_SERIALIZABLE,
 									new String[] {jrt.getTypeBinding().getQualifiedName()}, 
 									this,
-									this.getValidationTextRange(astRoot)
+									this.getValidationTextRange()
 									)
 							);
 				}
@@ -289,7 +288,7 @@ public class GenericJavaIdClassReference
 									JpaValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_EQUALS_METHOD,
 									new String[] {jrt.getTypeBinding().getQualifiedName()}, 
 									this,
-									this.getValidationTextRange(astRoot)
+									this.getValidationTextRange()
 									)
 							);
 				}
@@ -301,7 +300,7 @@ public class GenericJavaIdClassReference
 									JpaValidationMessages.TYPE_MAPPING_ID_CLASS_MISSING_HASHCODE_METHOD,
 									new String[] {jrt.getTypeBinding().getQualifiedName()}, 
 									this,
-									this.getValidationTextRange(astRoot)
+									this.getValidationTextRange()
 									)
 							);
 				}
@@ -309,13 +308,13 @@ public class GenericJavaIdClassReference
 		}
 	}
 	
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.getAnnotationTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getTypeMapping().getValidationTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		TextRange textRange = this.getAnnotationTextRange();
+		return (textRange != null) ? textRange : this.getTypeMapping().getValidationTextRange();
 	}
 
-	protected TextRange getAnnotationTextRange(CompilationUnit astRoot) {
+	protected TextRange getAnnotationTextRange() {
 		IdClassAnnotation annotation = this.getIdClassAnnotation();
-		return (annotation == null) ? null : annotation.getTextRange(astRoot);
+		return (annotation == null) ? null : annotation.getTextRange();
 	}
 }

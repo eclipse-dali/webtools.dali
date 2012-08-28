@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,15 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualBaseColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyBaseColumn;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 
-public abstract class AbstractJavaVirtualBaseColumn<O extends JavaReadOnlyBaseColumn.Owner, C extends ReadOnlyBaseColumn>
+public abstract class AbstractJavaVirtualBaseColumn<O extends ReadOnlyBaseColumn.Owner, C extends ReadOnlyBaseColumn>
 	extends AbstractJavaVirtualNamedColumn<O, C>
 	implements VirtualBaseColumn, JavaReadOnlyBaseColumn
 {
@@ -254,12 +252,7 @@ public abstract class AbstractJavaVirtualBaseColumn<O extends JavaReadOnlyBaseCo
 
 	// ********** validation **********
 
-	public TextRange getTableTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(astRoot);
-	}
-
-	@Override
-	protected NamedColumnTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
-		return new JavaTableColumnTextRangeResolver(this, astRoot);
+	public TextRange getTableTextRange() {
+		return this.getValidationTextRange();
 	}
 }

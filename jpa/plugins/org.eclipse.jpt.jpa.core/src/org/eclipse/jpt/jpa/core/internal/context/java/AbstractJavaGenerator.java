@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
@@ -73,8 +72,8 @@ public abstract class AbstractJavaGenerator<A extends GeneratorAnnotation>
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 
 		if (StringTools.stringIsEmpty(this.name)){
 			messages.add(
@@ -83,19 +82,19 @@ public abstract class AbstractJavaGenerator<A extends GeneratorAnnotation>
 					JpaValidationMessages.GENERATOR_NAME_UNDEFINED,
 					EMPTY_STRING_ARRAY,
 					this,
-					this.getNameTextRange(astRoot)
+					this.getNameTextRange()
 				)
 			);
 		}
 	}
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.generatorAnnotation.getTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		TextRange textRange = this.generatorAnnotation.getTextRange();
+		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
 	}
 
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.generatorAnnotation.getNameTextRange(), astRoot);
+	public TextRange getNameTextRange() {
+		return this.getValidationTextRange(this.generatorAnnotation.getNameTextRange());
 	}
 
 	

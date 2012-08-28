@@ -10,13 +10,11 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualPrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmVirtualNamedColumn;
-import org.eclipse.jpt.jpa.core.internal.context.orm.OrmPrimaryKeyJoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.Table;
 
@@ -24,7 +22,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * <code>orm.xml</code> virtual primary key join column
  */
 public class GenericOrmVirtualPrimaryKeyJoinColumn
-	extends AbstractOrmVirtualNamedColumn<OrmReadOnlyBaseJoinColumn.Owner, JavaPrimaryKeyJoinColumn>
+	extends AbstractOrmVirtualNamedColumn<ReadOnlyBaseJoinColumn.Owner, JavaPrimaryKeyJoinColumn>
 	implements OrmVirtualPrimaryKeyJoinColumn
 {
 	protected final JavaPrimaryKeyJoinColumn javaColumn;
@@ -33,7 +31,7 @@ public class GenericOrmVirtualPrimaryKeyJoinColumn
 	protected String defaultReferencedColumnName;
 
 
-	public GenericOrmVirtualPrimaryKeyJoinColumn(XmlContextNode parent, OrmReadOnlyBaseJoinColumn.Owner owner, JavaPrimaryKeyJoinColumn javaColumn) {
+	public GenericOrmVirtualPrimaryKeyJoinColumn(XmlContextNode parent, ReadOnlyBaseJoinColumn.Owner owner, JavaPrimaryKeyJoinColumn javaColumn) {
 		super(parent, owner);
 		this.javaColumn = javaColumn;
 	}
@@ -117,11 +115,6 @@ public class GenericOrmVirtualPrimaryKeyJoinColumn
 
 
 	// ********** validation **********
-
-	@Override
-	protected NamedColumnTextRangeResolver buildTextRangeResolver() {
-		return new OrmPrimaryKeyJoinColumnTextRangeResolver(this);
-	}
 
 	public TextRange getReferencedColumnNameTextRange() {
 		return this.getValidationTextRange();

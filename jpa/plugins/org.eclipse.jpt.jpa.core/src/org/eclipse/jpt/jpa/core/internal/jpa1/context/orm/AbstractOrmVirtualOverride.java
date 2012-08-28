@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,11 +17,8 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyTableColumn.Owner;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualOverride;
-import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.OverrideTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
-import org.eclipse.jpt.jpa.core.internal.context.orm.OrmOverrideTextRangeResolver;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -75,8 +72,8 @@ public abstract class AbstractOrmVirtualOverride<C extends OrmOverrideContainer>
 		return this.getContainer().getDefaultTableName();
 	}
 
-	public JptValidator buildColumnValidator(ReadOnlyBaseColumn column, Owner owner, TableColumnTextRangeResolver textRangeResolver) {
-		return this.getContainer().buildColumnValidator(this, column, owner, textRangeResolver);
+	public JptValidator buildColumnValidator(ReadOnlyBaseColumn column, Owner owner) {
+		return this.getContainer().buildColumnValidator(this, column, owner);
 	}
 
 	@Override
@@ -94,11 +91,7 @@ public abstract class AbstractOrmVirtualOverride<C extends OrmOverrideContainer>
 	}
 
 	protected JptValidator buildValidator() {
-		return this.getContainer().buildOverrideValidator(this, this.buildTextRangeResolver());
-	}
-
-	protected OverrideTextRangeResolver buildTextRangeResolver() {
-		return new OrmOverrideTextRangeResolver(this);
+		return this.getContainer().buildOverrideValidator(this);
 	}
 
 	public TextRange getValidationTextRange() {

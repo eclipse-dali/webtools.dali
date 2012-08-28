@@ -9,8 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
+import java.util.List;
+
 import org.eclipse.jpt.common.core.JptResourceTypeReference;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jaxb.core.JaxbNode;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * Common protocol for JAXB objects that have a context, as opposed to
@@ -22,7 +27,7 @@ import org.eclipse.jpt.jaxb.core.JaxbNode;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 3.3
  * @since 3.0
  */
 public interface JaxbContextNode
@@ -42,5 +47,19 @@ public interface JaxbContextNode
 	 * Update the context model with the content of the JAXB resource model.
 	 */
 	void update();
+
+	
+	
+	// ******************** validation ****************************************
+	
+	/**
+	 * Adds to the list of current validation messages
+	 */
+	void validate(List<IMessage> messages, IReporter reporter);
+	
+	/**
+	 * Return the text range for highlighting errors for this object
+	 */
+	TextRange getValidationTextRange();
 
 }

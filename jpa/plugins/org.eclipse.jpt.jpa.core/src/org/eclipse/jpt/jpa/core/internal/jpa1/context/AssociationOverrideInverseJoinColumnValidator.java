@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
-import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
@@ -27,9 +26,8 @@ public class AssociationOverrideInverseJoinColumnValidator
 				ReadOnlyAssociationOverride override,
 				ReadOnlyJoinColumn column,
 				ReadOnlyJoinColumn.Owner joinColumnOwner,
-				JoinColumnTextRangeResolver textRangeResolver,
 				TableDescriptionProvider provider) {
-		super(column, joinColumnOwner, textRangeResolver, provider);
+		super(column, joinColumnOwner, provider);
 		this.override = override;
 	}
 
@@ -38,9 +36,8 @@ public class AssociationOverrideInverseJoinColumnValidator
 				ReadOnlyAssociationOverride override,
 				ReadOnlyJoinColumn column,
 				ReadOnlyJoinColumn.Owner joinColumnOwner,
-				JoinColumnTextRangeResolver textRangeResolver,
 				TableDescriptionProvider provider) {
-		super(persistentAttribute, column, joinColumnOwner, textRangeResolver, provider);
+		super(persistentAttribute, column, joinColumnOwner, provider);
 		this.override = override;
 	}
 
@@ -66,7 +63,7 @@ public class AssociationOverrideInverseJoinColumnValidator
 					this.column.getDbTable().getName()
 				},
 				this.column,
-				this.textRangeResolver.getNameTextRange()
+				this.column.getNameTextRange()
 			);
 	}
 
@@ -82,7 +79,7 @@ public class AssociationOverrideInverseJoinColumnValidator
 					this.column.getDbTable().getName()
 				},
 				this.column,
-				this.textRangeResolver.getNameTextRange()
+				this.column.getNameTextRange()
 			);
 	}
 
@@ -108,7 +105,7 @@ public class AssociationOverrideInverseJoinColumnValidator
 					this.column.getReferencedColumnDbTable().getName()
 				},
 				this.column,
-				this.textRangeResolver.getReferencedColumnNameTextRange()
+				this.column.getReferencedColumnNameTextRange()
 			);
 	}
 
@@ -124,7 +121,7 @@ public class AssociationOverrideInverseJoinColumnValidator
 					this.column.getReferencedColumnDbTable().getName()
 				},
 				this.column,
-				this.textRangeResolver.getReferencedColumnNameTextRange()
+				this.column.getReferencedColumnNameTextRange()
 			);
 	}
 
@@ -146,7 +143,7 @@ public class AssociationOverrideInverseJoinColumnValidator
 				JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_INVERSE_JOIN_COLUMNS,
 				new String[] {this.override.getName()},
 				this.column,
-				this.textRangeResolver.getNameTextRange()
+				this.column.getNameTextRange()
 			);
 	}
 
@@ -160,7 +157,7 @@ public class AssociationOverrideInverseJoinColumnValidator
 					this.override.getName()
 				},
 				this.column,
-				this.textRangeResolver.getNameTextRange()
+				this.column.getNameTextRange()
 			);
 	}
 
@@ -182,7 +179,7 @@ public class AssociationOverrideInverseJoinColumnValidator
 				JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_INVERSE_JOIN_COLUMNS,
 				new String[] {this.override.getName()},
 				this.column,
-				this.textRangeResolver.getReferencedColumnNameTextRange()
+				this.column.getReferencedColumnNameTextRange()
 			);
 	}
 
@@ -196,7 +193,7 @@ public class AssociationOverrideInverseJoinColumnValidator
 					this.override.getName()
 				},
 				this.column,
-				this.textRangeResolver.getReferencedColumnNameTextRange()
+				this.column.getReferencedColumnNameTextRange()
 			);
 	}
 
@@ -233,7 +230,7 @@ public class AssociationOverrideInverseJoinColumnValidator
 						this.getColumnTableDescriptionMessage()
 					},
 					this.getColumn(),
-					this.getTextRangeResolver().getTableTextRange()
+					this.getColumn().getTableTextRange()
 				);
 		}
 
@@ -254,7 +251,7 @@ public class AssociationOverrideInverseJoinColumnValidator
 						this.getColumnTableDescriptionMessage()
 					},
 					this.getColumn(),
-					this.getTextRangeResolver().getTableTextRange()
+					this.getColumn().getTableTextRange()
 				);
 		}
 

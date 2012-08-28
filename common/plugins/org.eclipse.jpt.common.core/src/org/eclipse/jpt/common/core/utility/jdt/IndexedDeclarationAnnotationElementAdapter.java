@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.utility.jdt;
 
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.Expression;
 
 /**
@@ -30,9 +31,9 @@ public interface IndexedDeclarationAnnotationElementAdapter<T>
 	extends DeclarationAnnotationElementAdapter<T[]>
 {
 	/**
-	 * Given the specified declaration, return the expression at the specified
+	 * Given the specified annotation, return the expression at the specified
 	 * index.
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 */
-	Expression selectExpression(ModifiedDeclaration declaration, int index);
+	Expression selectExpression(Annotation astAnnotation, int index);
 }

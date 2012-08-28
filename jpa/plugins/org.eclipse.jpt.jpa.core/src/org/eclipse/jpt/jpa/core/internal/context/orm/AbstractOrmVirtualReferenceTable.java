@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,7 +18,6 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyReferenceTable;
 import org.eclipse.jpt.jpa.core.context.VirtualReferenceTable;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualJoinColumn;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -28,7 +27,7 @@ public abstract class AbstractOrmVirtualReferenceTable<T extends ReadOnlyReferen
 	implements VirtualReferenceTable
 {
 	protected final ContextListContainer<OrmVirtualJoinColumn, ReadOnlyJoinColumn> specifiedJoinColumnContainer;
-	protected final OrmReadOnlyJoinColumn.Owner joinColumnOwner;
+	protected final ReadOnlyJoinColumn.Owner joinColumnOwner;
 
 	protected OrmVirtualJoinColumn defaultJoinColumn;
 
@@ -173,11 +172,11 @@ public abstract class AbstractOrmVirtualReferenceTable<T extends ReadOnlyReferen
 		return this.buildJoinColumn(this.joinColumnOwner, joinColumn);
 	}
 
-	protected OrmVirtualJoinColumn buildJoinColumn(OrmReadOnlyJoinColumn.Owner columnOwner, ReadOnlyJoinColumn joinColumn) {
+	protected OrmVirtualJoinColumn buildJoinColumn(ReadOnlyJoinColumn.Owner columnOwner, ReadOnlyJoinColumn joinColumn) {
 		return this.getContextNodeFactory().buildOrmVirtualJoinColumn(this, columnOwner, joinColumn);
 	}
 
-	protected abstract OrmReadOnlyJoinColumn.Owner buildJoinColumnOwner();
+	protected abstract ReadOnlyJoinColumn.Owner buildJoinColumnOwner();
 
 	@Override
 	protected String buildDefaultSchema() {

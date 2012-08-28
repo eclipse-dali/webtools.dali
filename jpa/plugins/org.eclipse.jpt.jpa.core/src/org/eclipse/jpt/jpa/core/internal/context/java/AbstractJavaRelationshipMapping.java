@@ -319,13 +319,13 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.validateTargetEntity(messages, astRoot);
-		this.relationship.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.validateTargetEntity(messages);
+		this.relationship.validate(messages, reporter);
 	}
 
-	protected void validateTargetEntity(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateTargetEntity(List<IMessage> messages) {
 		if (this.getTargetEntity() == null) {
 			String msg = this.getPersistentAttribute().isVirtual() ?
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_NOT_DEFINED :
@@ -336,7 +336,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 					msg,
 					new String[] {this.getName()},
 					this,
-					this.getValidationTextRange(astRoot)
+					this.getValidationTextRange()
 				)
 			);
 			return;
@@ -355,7 +355,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_IS_NOT_AN_ENTITY,
 						new String[] {this.getName(), this.getFullyQualifiedTargetEntity()},
 						this,
-						this.getValidationTextRange(astRoot)
+						this.getValidationTextRange()
 					)
 				);
 			} else {
@@ -365,15 +365,15 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 						JpaValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY,
 						new String[] {this.getFullyQualifiedTargetEntity()},
 						this,
-						this.getTargetEntityTextRange(astRoot)
+						this.getTargetEntityTextRange()
 					)
 				);
 			}
 		}
 	}
 
-	protected TextRange getTargetEntityTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.getAnnotationTargetEntityTextRange(), astRoot);
+	protected TextRange getTargetEntityTextRange() {
+		return this.getValidationTextRange(this.getAnnotationTargetEntityTextRange());
 	}
 
 	protected TextRange getAnnotationTargetEntityTextRange() {

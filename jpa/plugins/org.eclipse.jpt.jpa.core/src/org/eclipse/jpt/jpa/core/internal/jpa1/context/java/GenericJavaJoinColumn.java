@@ -18,12 +18,9 @@ import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaBaseColumn;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaNamedColumn;
-import org.eclipse.jpt.jpa.core.internal.context.java.JavaJoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.resource.java.CompleteJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.Table;
@@ -32,7 +29,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * Java join column
  */
 public class GenericJavaJoinColumn
-	extends AbstractJavaBaseColumn<CompleteJoinColumnAnnotation, JavaReadOnlyJoinColumn.Owner>
+	extends AbstractJavaBaseColumn<CompleteJoinColumnAnnotation, ReadOnlyJoinColumn.Owner>
 	implements JavaJoinColumn
 {
 	/** @see AbstractJavaNamedColumn#AbstractJavaNamedColumn(JavaJpaContextNode, org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyNamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */
@@ -42,7 +39,7 @@ public class GenericJavaJoinColumn
 	protected String defaultReferencedColumnName;
 
 
-	public GenericJavaJoinColumn(JavaJpaContextNode parent, JavaReadOnlyJoinColumn.Owner owner, CompleteJoinColumnAnnotation columnAnnotation) {
+	public GenericJavaJoinColumn(JavaJpaContextNode parent, ReadOnlyJoinColumn.Owner owner, CompleteJoinColumnAnnotation columnAnnotation) {
 		super(parent, owner, columnAnnotation);
 	}
 
@@ -190,12 +187,7 @@ public class GenericJavaJoinColumn
 
 	// ********** validation **********
 
-	@Override
-	protected NamedColumnTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
-		return new JavaJoinColumnTextRangeResolver(this, astRoot);
-	}
-
-	public TextRange getReferencedColumnNameTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.getColumnAnnotation().getReferencedColumnNameTextRange(), astRoot);
+	public TextRange getReferencedColumnNameTextRange() {
+		return this.getValidationTextRange(this.getColumnAnnotation().getReferencedColumnNameTextRange());
 	}
 }

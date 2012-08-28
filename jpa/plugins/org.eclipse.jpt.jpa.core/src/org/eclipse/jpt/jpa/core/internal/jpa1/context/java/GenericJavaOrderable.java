@@ -19,7 +19,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.OrderColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaOrderColumn2_0;
@@ -416,19 +415,19 @@ public class GenericJavaOrderable
 
 	// ********** validation **********
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.getOrderByAnnotationTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getAttributeMapping().getValidationTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		TextRange textRange = this.getOrderByAnnotationTextRange();
+		return (textRange != null) ? textRange : this.getAttributeMapping().getValidationTextRange();
 	}
 
-	protected TextRange getOrderByAnnotationTextRange(CompilationUnit astRoot) {
+	protected TextRange getOrderByAnnotationTextRange() {
 		OrderByAnnotation orderByAnnotation = this.getOrderByAnnotation();
-		return (orderByAnnotation == null) ? null : orderByAnnotation.getTextRange(astRoot);
+		return (orderByAnnotation == null) ? null : orderByAnnotation.getTextRange();
 	}
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		if (this.orderColumnAnnotationIsPresent() && (this.getOrderByAnnotation() != null)) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
@@ -436,13 +435,13 @@ public class GenericJavaOrderable
 					JpaValidationMessages.ORDER_COLUMN_AND_ORDER_BY_BOTH_SPECIFIED,
 					new String[] {this.getPersistentAttribute().getName()},
 					this.getAttributeMapping(),
-					this.getOrderByAnnotationTextRange(astRoot)
+					this.getOrderByAnnotationTextRange()
 				)
 			);
 		}
 		if (this.orderColumnOrdering) {
 			//TODO validation message if type is not List
-			this.orderColumn.validate(messages, reporter, astRoot);
+			this.orderColumn.validate(messages, reporter);
 		}
 	}
 
@@ -464,12 +463,12 @@ public class GenericJavaOrderable
 			return this.getPersistentAttribute().getName() + "_ORDER"; //$NON-NLS-1$
 		}
 
-		public TextRange getValidationTextRange(CompilationUnit astRoot) {
-			return GenericJavaOrderable.this.getValidationTextRange(astRoot);
+		public TextRange getValidationTextRange() {
+			return GenericJavaOrderable.this.getValidationTextRange();
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return new OrderColumnValidator(this.getPersistentAttribute(), (OrderColumn2_0) column, textRangeResolver);
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+			return new OrderColumnValidator(this.getPersistentAttribute(), (OrderColumn2_0) column);
 		}
 
 		protected JavaPersistentAttribute getPersistentAttribute() {

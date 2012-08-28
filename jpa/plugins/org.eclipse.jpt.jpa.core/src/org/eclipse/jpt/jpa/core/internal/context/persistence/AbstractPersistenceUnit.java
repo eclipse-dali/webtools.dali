@@ -2513,7 +2513,7 @@ public abstract class AbstractPersistenceUnit
 						JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
 						parms,
 						dup,
-						this.extractNameTextRange(dup)
+						dup.getNameTextRange()
 					)
 				);
 			}
@@ -2529,20 +2529,13 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	// TODO bjv isn't it obvious?
-	protected TextRange extractNameTextRange(Generator generator) {
-		return (generator instanceof OrmGenerator) ?
-				((OrmGenerator) generator).getNameTextRange() :
-				((JavaGenerator) generator).getNameTextRange(null);
-	}
-
-	// TODO bjv isn't it obvious?
 	protected void validate(Generator generator, List<IMessage> messages, IReporter reporter) {
 		if (generator instanceof OrmGenerator) {
 			((OrmGenerator) generator).validate(messages, reporter);
 		} else {
 			JavaGenerator javaGenerator = (JavaGenerator) generator;
 			if (this.generatorSupportsValidationMessages(javaGenerator)) {
-				javaGenerator.validate(messages, reporter, null);
+				javaGenerator.validate(messages, reporter);
 			}
 		}
 	}
@@ -2584,7 +2577,7 @@ public abstract class AbstractPersistenceUnit
 						JpaValidationMessages.QUERY_DUPLICATE_NAME,
 						parms,
 						dup,
-						this.extractNameTextRange(dup)
+						dup.getNameTextRange()
 					)
 				);
 			}
@@ -2600,20 +2593,13 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	// TODO bjv isn't it obvious?
-	protected TextRange extractNameTextRange(Query query) {
-		return (query instanceof OrmQuery) ?
-				((OrmQuery) query).getNameTextRange() :
-				((JavaQuery) query).getNameTextRange(null);
-	}
-
-	// TODO bjv isn't it obvious?
 	protected void validate(Query query, JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
 		if (query instanceof OrmQuery) {
 			((OrmQuery) query).validate(queryHelper, messages, reporter);
 		} else {
 			JavaQuery javaQuery = (JavaQuery) query;
 			if (this.querySupportsValidationMessages(javaQuery)) {
-				javaQuery.validate(queryHelper, messages, reporter, null);
+				javaQuery.validate(queryHelper, messages, reporter);
 			}
 		}
 	}

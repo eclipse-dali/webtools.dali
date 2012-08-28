@@ -131,22 +131,22 @@ public class GenericJavaXmlElementRefs
 	// ***** validation *****
 	
 	@Override
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.context.getValidationTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		return this.context.getValidationTextRange();
 	}
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
-		validateDuplicateTypesAndQNames(messages, reporter, astRoot);
+		validateDuplicateTypesAndQNames(messages, reporter);
 		
 		for (XmlElementRef elementRef : getXmlElementRefs()) {
-			elementRef.validate(messages, reporter, astRoot);
+			elementRef.validate(messages, reporter);
 		}
 	}
 	
-	protected void validateDuplicateTypesAndQNames(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateDuplicateTypesAndQNames(List<IMessage> messages, IReporter reporter) {
 		
 		Bag<String> xmlElementRefTypes = new HashBag<String>();
 		Bag<QName> xmlElementRefQnames = new HashBag<QName>();
@@ -185,7 +185,7 @@ public class GenericJavaXmlElementRefs
 								JaxbValidationMessages.XML_ELEMENT_REFS__DUPLICATE_XML_ELEMENT_QNAME,
 								new String[] { xmlElementName },
 								xmlElementRef,
-								xmlElementRef.getQName().getNameTextRange(astRoot)));
+								xmlElementRef.getQName().getNameTextRange()));
 			}
 		}
 	}
@@ -244,6 +244,6 @@ public class GenericJavaXmlElementRefs
 		
 		XmlElementRef buildXmlElementRef(JavaContextNode parent, XmlElementRefAnnotation annotation);
 		
-		TextRange getValidationTextRange(CompilationUnit astRoot);
+		TextRange getValidationTextRange();
 	}
 }

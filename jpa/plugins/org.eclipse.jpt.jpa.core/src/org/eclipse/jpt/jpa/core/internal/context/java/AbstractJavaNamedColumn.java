@@ -21,7 +21,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.Table;
@@ -247,26 +246,22 @@ public abstract class AbstractJavaNamedColumn<A extends NamedColumnAnnotation, O
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.buildValidator(astRoot).validate(messages, reporter);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.buildValidator().validate(messages, reporter);
 	}
 
-	protected JptValidator buildValidator(CompilationUnit astRoot) {
-		return this.owner.buildColumnValidator(this, this.buildTextRangeResolver(astRoot));
+	protected JptValidator buildValidator() {
+		return this.owner.buildColumnValidator(this);
 	}
 
-	protected NamedColumnTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
-		return new JavaNamedColumnTextRangeResolver(this, astRoot);
+	public TextRange getValidationTextRange() {
+		TextRange textRange = this.getColumnAnnotation().getTextRange();
+		return (textRange != null) ? textRange : this.owner.getValidationTextRange();
 	}
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.getColumnAnnotation().getTextRange(astRoot);
-		return (textRange != null) ? textRange : this.owner.getValidationTextRange(astRoot);
-	}
-
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.getColumnAnnotation().getNameTextRange(), astRoot);
+	public TextRange getNameTextRange() {
+		return this.getValidationTextRange(this.getColumnAnnotation().getNameTextRange());
 	}
 
 

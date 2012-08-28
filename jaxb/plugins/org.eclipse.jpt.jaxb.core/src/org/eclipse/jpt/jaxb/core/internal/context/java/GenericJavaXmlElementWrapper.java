@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -200,8 +200,8 @@ public class GenericJavaXmlElementWrapper
 	//************* validation ****************
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
 		if (! getPersistentAttribute().isJavaResourceAttributeCollectionType()) {
 			messages.add(
@@ -209,19 +209,19 @@ public class GenericJavaXmlElementWrapper
 					IMessage.HIGH_SEVERITY,
 					JaxbValidationMessages.XML_ELEMENT_WRAPPER_DEFINED_ON_NON_ARRAY_NON_COLLECTION,
 					this,
-					getValidationTextRange(astRoot)));
+					getValidationTextRange()));
 		}
 		
-		validateQName(messages, reporter, astRoot);
+		validateQName(messages, reporter);
 	}
 	
-	protected void validateQName(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		this.qName.validate(messages, reporter, astRoot);
+	protected void validateQName(List<IMessage> messages, IReporter reporter) {
+		this.qName.validate(messages, reporter);
 	}
 	
 	@Override
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return getAnnotation().getTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		return getAnnotation().getTextRange();
 	}
 	
 	
@@ -292,14 +292,14 @@ public class GenericJavaXmlElementWrapper
 		}
 		
 		@Override
-		protected void validateReference(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		protected void validateReference(List<IMessage> messages, IReporter reporter) {
 			XsdTypeDefinition type = getJaxbClassMapping().getXsdTypeDefinition();
 			if (type == null) {
 				return;
 			}
 			
 			if (type.getElement(getNamespace(), getName()) == null) {
-				messages.add(getUnresolveSchemaComponentMessage(astRoot));
+				messages.add(getUnresolveSchemaComponentMessage());
 			}
 		}
 	}

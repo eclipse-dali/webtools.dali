@@ -20,12 +20,9 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualSecondaryTable;
-import org.eclipse.jpt.jpa.core.internal.context.BaseJoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.SecondaryTablePrimaryKeyJoinColumnValidator;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -40,7 +37,7 @@ public class GenericOrmVirtualSecondaryTable
 {
 
 	protected final ContextListContainer<OrmVirtualPrimaryKeyJoinColumn, JavaPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumnContainer;
-	protected final OrmReadOnlyBaseJoinColumn.Owner primaryKeyJoinColumnOwner;
+	protected final ReadOnlyBaseJoinColumn.Owner primaryKeyJoinColumnOwner;
 
 	protected OrmVirtualPrimaryKeyJoinColumn defaultPrimaryKeyJoinColumn;
 
@@ -191,7 +188,7 @@ public class GenericOrmVirtualSecondaryTable
 		return true;
 	}
 
-	protected OrmReadOnlyBaseJoinColumn.Owner buildPrimaryKeyJoinColumnOwner() {
+	protected ReadOnlyBaseJoinColumn.Owner buildPrimaryKeyJoinColumnOwner() {
 		return new PrimaryKeyJoinColumnOwner();
 	}
 
@@ -243,7 +240,7 @@ public class GenericOrmVirtualSecondaryTable
 	// ********** primary key join column owner **********
 
 	protected class PrimaryKeyJoinColumnOwner
-		implements OrmReadOnlyBaseJoinColumn.Owner
+		implements ReadOnlyBaseJoinColumn.Owner
 	{
 		protected OrmEntity getEntity() {
 			return GenericOrmVirtualSecondaryTable.this.getEntity();
@@ -279,8 +276,8 @@ public class GenericOrmVirtualSecondaryTable
 			return GenericOrmVirtualSecondaryTable.this.getValidationTextRange();
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return new SecondaryTablePrimaryKeyJoinColumnValidator(GenericOrmVirtualSecondaryTable.this, (ReadOnlyBaseJoinColumn) column, this, (BaseJoinColumnTextRangeResolver) textRangeResolver);
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+			return new SecondaryTablePrimaryKeyJoinColumnValidator(GenericOrmVirtualSecondaryTable.this, (ReadOnlyBaseJoinColumn) column, this);
 		}
 	}
 }

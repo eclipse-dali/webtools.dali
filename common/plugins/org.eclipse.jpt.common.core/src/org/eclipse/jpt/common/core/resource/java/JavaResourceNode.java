@@ -10,7 +10,6 @@
 package org.eclipse.jpt.common.core.resource.java;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -25,7 +24,7 @@ import org.eclipse.jpt.common.utility.model.Model;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 3.3
  * @since 3.0
  */
 public interface JavaResourceNode
@@ -57,7 +56,7 @@ public interface JavaResourceNode
 	/**
 	 * Return the [source] node's text range in the compilation unit's file.
 	 */
-	TextRange getTextRange(CompilationUnit astRoot);
+	TextRange getTextRange();
 
 	/**
 	 * Root of Java resource model containment hierarchy.

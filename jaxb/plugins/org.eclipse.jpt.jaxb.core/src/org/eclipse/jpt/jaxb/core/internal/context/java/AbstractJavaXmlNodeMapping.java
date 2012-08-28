@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
@@ -223,26 +232,26 @@ public abstract class AbstractJavaXmlNodeMapping<A extends Annotation>
 	// ***** validation *****
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
 		if (this.xmlSchemaType != null) {
-			this.xmlSchemaType.validate(messages, reporter, astRoot);
+			this.xmlSchemaType.validate(messages, reporter);
 		}
 		
 		if (isXmlList()) {
-			validateXmlList(messages, reporter, astRoot);
+			validateXmlList(messages, reporter);
 		}
 	}
 	
-	protected void validateXmlList(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateXmlList(List<IMessage> messages, IReporter reporter) {
 		if (! getPersistentAttribute().isJavaResourceAttributeCollectionType()) {
 			messages.add(
 				DefaultValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JaxbValidationMessages.XML_LIST__ATTRIBUTE_NOT_COLLECTION_TYPE,
 					this,
-					getXmlListValidationTextRange(astRoot)));
+					getXmlListValidationTextRange()));
 		}
 		else {
 			XsdTypeDefinition xsdType = getDataTypeXsdTypeDefinition();
@@ -256,13 +265,13 @@ public abstract class AbstractJavaXmlNodeMapping<A extends Annotation>
 								JaxbValidationMessages.XML_LIST__ITEM_TYPE_NOT_MAPPED_TO_VALID_SCHEMA_TYPE,
 								new String[] { getValueTypeName() },
 								this,
-								getValidationTextRange(astRoot)));
+								getValidationTextRange()));
 			}
 		}
 	}
 	
-	protected TextRange getXmlListValidationTextRange(CompilationUnit astRoot) {
+	protected TextRange getXmlListValidationTextRange() {
 		XmlListAnnotation annotation = getXmlListAnnotation();
-		return (annotation == null) ? getValidationTextRange(astRoot) : annotation.getTextRange(astRoot);
+		return (annotation == null) ? getValidationTextRange() : annotation.getTextRange();
 	}
 }

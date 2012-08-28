@@ -35,7 +35,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.PersistentAttributeTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
@@ -498,10 +497,6 @@ public abstract class SpecifiedOrmPersistentAttribute
 		} else {
 			this.buildAttibuteValidator().validate(messages, reporter);
 		}
-	}
-
-	protected PersistentAttributeTextRangeResolver buildTextRangeResolver() {
-		return new OrmPersistentAttributeTextRangeResolver(this);
 	}
 
 	protected abstract JptValidator buildAttibuteValidator();

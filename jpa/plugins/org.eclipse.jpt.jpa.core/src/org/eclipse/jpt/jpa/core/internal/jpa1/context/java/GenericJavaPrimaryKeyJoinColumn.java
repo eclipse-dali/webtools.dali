@@ -15,12 +15,10 @@ import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyBaseJoinColumn;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaNamedColumn;
-import org.eclipse.jpt.jpa.core.internal.context.java.JavaPrimaryKeyJoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.resource.java.PrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.Table;
@@ -29,7 +27,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * Java primary key join column
  */
 public class GenericJavaPrimaryKeyJoinColumn
-	extends AbstractJavaNamedColumn<PrimaryKeyJoinColumnAnnotation, JavaReadOnlyBaseJoinColumn.Owner>
+	extends AbstractJavaNamedColumn<PrimaryKeyJoinColumnAnnotation, ReadOnlyBaseJoinColumn.Owner>
 	implements JavaPrimaryKeyJoinColumn
 {
 	/** @see AbstractJavaNamedColumn#AbstractJavaNamedColumn(org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode, org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyNamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */
@@ -39,7 +37,7 @@ public class GenericJavaPrimaryKeyJoinColumn
 	protected String defaultReferencedColumnName;
 
 
-	public GenericJavaPrimaryKeyJoinColumn(JavaJpaContextNode parent, JavaReadOnlyBaseJoinColumn.Owner owner, PrimaryKeyJoinColumnAnnotation columnAnnotation) {
+	public GenericJavaPrimaryKeyJoinColumn(JavaJpaContextNode parent, ReadOnlyBaseJoinColumn.Owner owner, PrimaryKeyJoinColumnAnnotation columnAnnotation) {
 		super(parent, owner, columnAnnotation);
 	}
 
@@ -185,13 +183,8 @@ public class GenericJavaPrimaryKeyJoinColumn
 
 	// ********** validation **********
 
-	@Override
-	protected NamedColumnTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
-		return new JavaPrimaryKeyJoinColumnTextRangeResolver(this, astRoot);
-	}
-
-	public TextRange getReferencedColumnNameTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.columnAnnotation.getReferencedColumnNameTextRange(), astRoot);
+	public TextRange getReferencedColumnNameTextRange() {
+		return this.getValidationTextRange(this.columnAnnotation.getReferencedColumnNameTextRange());
 	}
 
 

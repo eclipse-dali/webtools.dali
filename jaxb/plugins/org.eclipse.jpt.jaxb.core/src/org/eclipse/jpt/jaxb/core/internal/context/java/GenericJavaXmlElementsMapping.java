@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -317,25 +317,25 @@ public class GenericJavaXmlElementsMapping
 	// ***** validation *****
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
-		validateDuplicateTypesAndQNames(messages, reporter, astRoot);
+		validateDuplicateTypesAndQNames(messages, reporter);
 		
 		for (XmlElement xmlElement : getXmlElements()) {
-			xmlElement.validate(messages, reporter, astRoot);
+			xmlElement.validate(messages, reporter);
 		}
 		
 		if (this.xmlElementWrapper != null) {
-			this.xmlElementWrapper.validate(messages, reporter, astRoot);
+			this.xmlElementWrapper.validate(messages, reporter);
 		}
 		
 		if (this.xmlIDREF != null) {
-			this.xmlIDREF.validate(messages, reporter, astRoot);
+			this.xmlIDREF.validate(messages, reporter);
 		}
 	}
 	
-	protected void validateDuplicateTypesAndQNames(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateDuplicateTypesAndQNames(List<IMessage> messages, IReporter reporter) {
 		Bag<String> xmlElementTypes = new HashBag<String>();
 		Bag<QName> xmlElementQNames = new HashBag<QName>();
 		
@@ -351,13 +351,13 @@ public class GenericJavaXmlElementsMapping
 		}
 		
 		for (XmlElement xmlElement : getXmlElements()) {
-			validateDuplicateType(xmlElement, xmlElementTypes, messages, astRoot);
-			validateDuplicateQName(xmlElement, xmlElementQNames, messages, astRoot);	
+			validateDuplicateType(xmlElement, xmlElementTypes, messages);
+			validateDuplicateQName(xmlElement, xmlElementQNames, messages);	
 		}
 	}
 	
 	protected void validateDuplicateType(XmlElement xmlElement, Bag<String> xmlElementTypes,
-				List<IMessage> messages, CompilationUnit astRoot) {
+				List<IMessage> messages) {
 		String xmlElementType = xmlElement.getFullyQualifiedType();
 		if (xmlElementTypes.count(xmlElementType) > 1) {
 			messages.add(
@@ -366,12 +366,12 @@ public class GenericJavaXmlElementsMapping
 							JaxbValidationMessages.XML_ELEMENTS__DUPLICATE_XML_ELEMENT_TYPE,
 							new String[] { xmlElementType },
 							xmlElement,
-							xmlElement.getTypeTextRange(astRoot)));
+							xmlElement.getTypeTextRange()));
 		}
 	}
 	
 	protected void validateDuplicateQName(XmlElement xmlElement, Bag<QName> xmlElementQNames,
-				List<IMessage> messages, CompilationUnit astRoot) {
+				List<IMessage> messages) {
 		String xmlElementNamespace = xmlElement.getQName().getNamespace();
 		String xmlElementName = xmlElement.getQName().getName();
 		if (xmlElementQNames.count(new QName(xmlElementNamespace, xmlElementName)) > 1) {
@@ -381,7 +381,7 @@ public class GenericJavaXmlElementsMapping
 							JaxbValidationMessages.XML_ELEMENTS__DUPLICATE_XML_ELEMENT_QNAME,
 							new String[] { xmlElementName },
 							xmlElement,
-							xmlElement.getQName().getNameTextRange(astRoot)));
+							xmlElement.getQName().getNameTextRange()));
 		}	
 	}
 	
@@ -479,16 +479,16 @@ public class GenericJavaXmlElementsMapping
 							return o.getFullyQualifiedType();
 						}
 						
-						public TextRange getTypeTextRange(CompilationUnit astRoot) {
-							return o.getTypeTextRange(astRoot);
+						public TextRange getTypeTextRange() {
+							return o.getTypeTextRange();
 						}
 						
 						public XsdFeature getXsdFeature() {
 							return o.getXsdElement();
 						}
 						
-						public TextRange getXsdFeatureTextRange(CompilationUnit astRoot) {
-							return o.getQName().getNameTextRange(astRoot);
+						public TextRange getXsdFeatureTextRange() {
+							return o.getQName().getNameTextRange();
 						}
 					};
 				}

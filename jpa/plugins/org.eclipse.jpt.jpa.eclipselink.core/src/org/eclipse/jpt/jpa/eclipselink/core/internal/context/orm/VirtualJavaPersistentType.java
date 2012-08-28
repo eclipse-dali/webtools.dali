@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
@@ -284,10 +283,6 @@ public class VirtualJavaPersistentType
 	}
 
 	public TextRange getValidationTextRange() {
-		throw new UnsupportedOperationException();
-	}
-
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	}
 

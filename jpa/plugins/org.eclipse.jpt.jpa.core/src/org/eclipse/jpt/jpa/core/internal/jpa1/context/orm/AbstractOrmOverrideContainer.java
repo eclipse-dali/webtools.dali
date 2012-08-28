@@ -30,8 +30,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualOverride;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.OverrideTextRangeResolver;
-import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlOverride;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -431,12 +429,12 @@ public abstract class AbstractOrmOverrideContainer<
 		return this.owner.getDefaultTableName();
 	}
 
-	public JptValidator buildOverrideValidator(ReadOnlyOverride override, OverrideTextRangeResolver textRangeResolver) {
-		return this.owner.buildOverrideValidator(override, this, textRangeResolver);
+	public JptValidator buildOverrideValidator(ReadOnlyOverride override) {
+		return this.owner.buildOverrideValidator(override, this);
 	}
 
-	public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner columnOwner, TableColumnTextRangeResolver textRangeResolver) {
-		return this.owner.buildColumnValidator(override, column, columnOwner, textRangeResolver);
+	public JptValidator buildColumnValidator(ReadOnlyOverride override, ReadOnlyBaseColumn column, ReadOnlyBaseColumn.Owner columnOwner) {
+		return this.owner.buildColumnValidator(override, column, columnOwner);
 	}
 
 	protected R selectOverrideNamed(Iterable<R> overrides, String name) {

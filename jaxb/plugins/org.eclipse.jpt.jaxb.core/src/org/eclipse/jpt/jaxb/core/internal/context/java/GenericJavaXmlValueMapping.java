@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlValueMapping;
@@ -52,13 +51,13 @@ public class GenericJavaXmlValueMapping
 	// ***** validation *****
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
-		validateSchemaType(messages, reporter, astRoot);
+		validateSchemaType(messages, reporter);
 	}
 	
-	protected void validateSchemaType(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateSchemaType(List<IMessage> messages, IReporter reporter) {
 		XsdTypeDefinition xsdClassType = getClassMapping().getXsdTypeDefinition();
 		
 		if (xsdClassType == null) {
@@ -71,7 +70,7 @@ public class GenericJavaXmlValueMapping
 							IMessage.HIGH_SEVERITY,
 							JaxbValidationMessages.XML_VALUE__NO_TEXT_CONTENT,
 							this,
-							getValidationTextRange(astRoot)));
+							getValidationTextRange()));
 			return;
 		}
 		
@@ -89,7 +88,7 @@ public class GenericJavaXmlValueMapping
 							JaxbValidationMessages.XML_VALUE__INVALID_SCHEMA_TYPE,
 							new String[] { getValueTypeName() },
 							this,
-							getValidationTextRange(astRoot)));
+							getValidationTextRange()));
 		}
 	}
 }

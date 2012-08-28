@@ -145,15 +145,15 @@ public abstract class GenericJavaXmlSchemaType
 	// ***** validation *****
 	
 	@Override
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.annotation.getTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		return this.annotation.getTextRange();
 	}
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
-		this.qName.validate(messages, reporter, astRoot);
+		this.qName.validate(messages, reporter);
 		
 		XsdTypeDefinition xsdType = getXsdTypeDefinition();
 		if (xsdType != null && xsdType.getKind() != XsdTypeDefinition.Kind.SIMPLE) {
@@ -163,7 +163,7 @@ public abstract class GenericJavaXmlSchemaType
 							JaxbValidationMessages.XML_SCHEMA_TYPE__NON_SIMPLE_TYPE,
 							new String[] { qName.getName() },
 							this,
-							getValidationTextRange(astRoot)));
+							getValidationTextRange()));
 		}
 	}
 	
@@ -219,7 +219,7 @@ public abstract class GenericJavaXmlSchemaType
 		}
 		
 		@Override
-		protected void validateReference(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		protected void validateReference(List<IMessage> messages, IReporter reporter) {
 			String name = getName();
 			String namespace = getNamespace();
 			
@@ -229,7 +229,7 @@ public abstract class GenericJavaXmlSchemaType
 				if (schema != null) {
 					XsdTypeDefinition schemaType = schema.getTypeDefinition(namespace, name);
 					if (schemaType == null) {
-						messages.add(getUnresolveSchemaComponentMessage(astRoot));
+						messages.add(getUnresolveSchemaComponentMessage());
 					}
 				}
 			}

@@ -15,7 +15,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
@@ -643,16 +642,16 @@ public class GenericJavaAttributesContainer
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		for (JaxbPersistentAttribute attribute : getAttributes()) {
-			attribute.validate(messages, reporter, astRoot);
+			attribute.validate(messages, reporter);
 		}
 	}
 
 	@Override
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return getJaxbClassMapping().getValidationTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		return getJaxbClassMapping().getValidationTextRange();
 	}
 	
 	

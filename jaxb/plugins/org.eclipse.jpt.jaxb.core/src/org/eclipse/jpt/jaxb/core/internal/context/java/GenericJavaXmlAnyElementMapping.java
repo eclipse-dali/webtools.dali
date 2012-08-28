@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -334,10 +334,10 @@ public class GenericJavaXmlAnyElementMapping
 	// ***** validation *****
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
-		this.xmlElementRefs.validate(messages, reporter, astRoot);
+		this.xmlElementRefs.validate(messages, reporter);
 		
 		if (getJavaResourceAttribute().getAnnotation(JAXB.XML_ELEMENT_REFS) != null) {
 			XmlElementRefAnnotation xmlElementRefAnnotation = 
@@ -349,16 +349,16 @@ public class GenericJavaXmlAnyElementMapping
 								JaxbValidationMessages.ATTRIBUTE_MAPPING__UNSUPPORTED_ANNOTATION,
 								new String[] { JAXB.XML_ELEMENT_REF, JAXB.XML_ELEMENT_REFS },
 								getPersistentAttribute(),
-								xmlElementRefAnnotation.getTextRange(astRoot)));
+								xmlElementRefAnnotation.getTextRange()));
 			}
 		}
 		
 		if (this.xmlElementWrapper != null) {
-			this.xmlElementWrapper.validate(messages, reporter, astRoot);
+			this.xmlElementWrapper.validate(messages, reporter);
 		}
 		
 		if (this.xmlMixed != null) {
-			this.xmlMixed.validate(messages, reporter, astRoot);
+			this.xmlMixed.validate(messages, reporter);
 		}
 	}
 	
@@ -470,7 +470,7 @@ public class GenericJavaXmlAnyElementMapping
 			
 			XmlElementRefsAnnotation xmlElementRefsAnnotation = getXmlElementRefsAnnotation();
 			if (xmlElementRefsAnnotation == null) {
-				throw new IllegalArgumentException(String.valueOf(targetIndex) + ", " + String.valueOf(sourceIndex));
+				throw new IllegalArgumentException(String.valueOf(targetIndex) + ", " + String.valueOf(sourceIndex)); //$NON-NLS-1$
 			}
 			xmlElementRefsAnnotation.moveXmlElementRef(targetIndex, sourceIndex);
 		}
@@ -479,18 +479,18 @@ public class GenericJavaXmlAnyElementMapping
 			return new GenericJavaXmlElementRef(parent, new XmlElementRefContext(annotation));
 		}
 		
-		public TextRange getValidationTextRange(CompilationUnit astRoot) {
+		public TextRange getValidationTextRange() {
 			XmlElementRefsAnnotation xmlElementRefsAnnotation = getXmlElementRefsAnnotation();
 			if (xmlElementRefsAnnotation != null) {
-				return xmlElementRefsAnnotation.getTextRange(astRoot);
+				return xmlElementRefsAnnotation.getTextRange();
 			}
 			
 			XmlElementRefAnnotation xmlElementRefAnnotation = getXmlElementRefAnnotation();
 			if (xmlElementRefAnnotation != null) {
-				return xmlElementRefAnnotation.getTextRange(astRoot);
+				return xmlElementRefAnnotation.getTextRange();
 			}
 			
-			return GenericJavaXmlAnyElementMapping.this.getValidationTextRange(astRoot);
+			return GenericJavaXmlAnyElementMapping.this.getValidationTextRange();
 		}
 	}
 	

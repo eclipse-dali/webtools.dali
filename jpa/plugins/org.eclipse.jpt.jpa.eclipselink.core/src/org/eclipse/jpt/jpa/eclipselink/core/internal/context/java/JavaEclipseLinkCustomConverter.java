@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
@@ -94,7 +93,7 @@ public class JavaEclipseLinkCustomConverter
 	}
 
 	@Override
-	protected void addConverterClassDoesNotExistMessageTo(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void addConverterClassDoesNotExistMessageTo(List<IMessage> messages) {
 		// no need to add message since there will already be a compiler error
 	}
 

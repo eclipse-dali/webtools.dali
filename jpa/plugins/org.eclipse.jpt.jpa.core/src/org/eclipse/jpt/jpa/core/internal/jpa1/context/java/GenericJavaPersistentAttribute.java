@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -39,7 +38,7 @@ public class GenericJavaPersistentAttribute
 	// ********** validation **********
 
 	@Override
-	protected JptValidator buildAttributeValidator(CompilationUnit astRoot) {
-		return getAccessor().buildAttributeValidator(this, this.buildTextRangeResolver(astRoot));
+	protected JptValidator buildAttributeValidator() {
+		return getAccessor().buildAttributeValidator(this);
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.NameTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
@@ -22,7 +21,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
@@ -317,33 +315,29 @@ public abstract class AbstractJavaVirtualTable<T extends ReadOnlyTable>
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.buildTableValidator(astRoot).validate(messages, reporter);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.buildTableValidator().validate(messages, reporter);
 	}
 
-	protected JptValidator buildTableValidator(CompilationUnit astRoot) {
-		return this.owner.buildTableValidator(this, buildTextRangeResolver(astRoot));
+	protected JptValidator buildTableValidator() {
+		return this.owner.buildTableValidator(this);
 	}
 
-	protected TableTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
-		return new JavaTableTextRangeResolver(this, astRoot);
+	public TextRange getValidationTextRange() {
+		return this.getParent().getValidationTextRange();
 	}
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.getParent().getValidationTextRange(astRoot);
+	public TextRange getNameTextRange() {
+		return this.getValidationTextRange();
 	}
 
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(astRoot);
+	public TextRange getSchemaTextRange() {
+		return this.getValidationTextRange();
 	}
 
-	public TextRange getSchemaTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(astRoot);
-	}
-
-	public TextRange getCatalogTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(astRoot);
+	public TextRange getCatalogTextRange() {
+		return this.getValidationTextRange();
 	}
 
 

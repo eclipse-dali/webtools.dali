@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
-import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -24,18 +23,16 @@ public class AssociationOverrideJoinTableValidator
 
 	public AssociationOverrideJoinTableValidator(
 				ReadOnlyAssociationOverride override,
-				ReadOnlyJoinTable table,
-				TableTextRangeResolver textRangeResolver) {
-		super(table, textRangeResolver);
+				ReadOnlyJoinTable table) {
+		super(table);
 		this.override = override;
 	}
 
 	public AssociationOverrideJoinTableValidator(
 				ReadOnlyPersistentAttribute persistentAttribute,
 				ReadOnlyAssociationOverride override, 
-				ReadOnlyJoinTable table, 
-				TableTextRangeResolver textRangeResolver) {
-		super(persistentAttribute, table, textRangeResolver);
+				ReadOnlyJoinTable table) {
+		super(persistentAttribute, table);
 		this.override = override;
 	}
 
@@ -55,7 +52,7 @@ public class AssociationOverrideJoinTableValidator
 				this.table.getName()
 			},
 			this.table, 
-			this.getTextRangeResolver().getNameTextRange()
+			this.table.getNameTextRange()
 		);
 	}
 
@@ -75,7 +72,7 @@ public class AssociationOverrideJoinTableValidator
 				this.table.getCatalog()
 			},
 			this.table, 
-			this.getTextRangeResolver().getCatalogTextRange()
+			this.table.getCatalogTextRange()
 		);
 	}
 
@@ -95,7 +92,7 @@ public class AssociationOverrideJoinTableValidator
 				this.table.getSchema()
 			},
 			this.table, 
-			this.getTextRangeResolver().getSchemaTextRange()
+			this.table.getSchemaTextRange()
 		);
 	}
 

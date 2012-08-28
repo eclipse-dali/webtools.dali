@@ -217,14 +217,14 @@ public class GenericJavaEnumMapping
 	// ***** validation *****
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
 		validateXmlType(messages, reporter);
 		validateXmlEnum(messages, reporter);
 		
 		for (JaxbEnumConstant constant : getEnumConstants()) {
-			constant.validate(messages, reporter, astRoot);
+			constant.validate(messages, reporter);
 		}
 	}
 	

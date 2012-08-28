@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.ConverterTextRangeResolver;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -55,17 +54,9 @@ public abstract class AbstractOrmConverter
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		this.owner.buildValidator(this, this.buildConverterTextRangeResolver()).validate(messages, reporter);
+		this.owner.buildValidator(this).validate(messages, reporter);
 	}
 
-
-	protected ConverterTextRangeResolver buildConverterTextRangeResolver() {
-		return new ConverterTextRangeResolver() {
-			public TextRange getConverterTextRange() {
-				return getValidationTextRange();
-			}
-		};
-	}
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.getXmlValidationTextRange();
 		return (textRange != null) ? textRange : this.getAttributeMapping().getValidationTextRange();

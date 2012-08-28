@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.Annotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
@@ -128,14 +127,6 @@ public class SourceXmlNsAnnotation
 	
 	public boolean namespaceURITouches(int pos) {
 		return this.textRangeTouches(this.namespaceURITextRange, pos);
-	}
-
-	public TextRange getNamespaceURITextRange(CompilationUnit astRoot) {
-		return getElementTextRange(this.namespaceURIDeclarationAdapter, astRoot);
-	}
-	
-	public boolean namespaceURITouches(int pos, CompilationUnit astRoot) {
-		return elementTouches(this.namespaceURIDeclarationAdapter, pos, astRoot);
 	}
 	
 	

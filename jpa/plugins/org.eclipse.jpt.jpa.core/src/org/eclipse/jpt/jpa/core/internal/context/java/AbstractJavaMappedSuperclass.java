@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.Query;
@@ -19,7 +18,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.PrimaryKeyTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.GenericMappedSuperclassPrimaryKeyValidator;
 import org.eclipse.jpt.jpa.core.resource.java.MappedSuperclassAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -112,11 +110,11 @@ public abstract class AbstractJavaMappedSuperclass
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.validatePrimaryKey(messages, reporter, astRoot);
-		this.idClassReference.validate(messages, reporter, astRoot);
-		this.queryContainer.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.validatePrimaryKey(messages, reporter);
+		this.idClassReference.validate(messages, reporter);
+		this.queryContainer.validate(messages, reporter);
 	}
 
 	@Override
@@ -124,17 +122,12 @@ public abstract class AbstractJavaMappedSuperclass
 		return false;
 	}
 
-	protected void validatePrimaryKey(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		this.buildPrimaryKeyValidator(astRoot).validate(messages, reporter);
+	protected void validatePrimaryKey(List<IMessage> messages, IReporter reporter) {
+		this.buildPrimaryKeyValidator().validate(messages, reporter);
 	}
 
-	protected JptValidator buildPrimaryKeyValidator(CompilationUnit astRoot) {
-		return new GenericMappedSuperclassPrimaryKeyValidator(this, this.buildTextRangeResolver(astRoot));
+	protected JptValidator buildPrimaryKeyValidator() {
+		return new GenericMappedSuperclassPrimaryKeyValidator(this);
 		// TODO - JPA 2.0 validation
-	}
-
-	@Override
-	protected PrimaryKeyTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
-		return new JavaMappedSuperclassTextRangeResolver(this, astRoot);
 	}
 }

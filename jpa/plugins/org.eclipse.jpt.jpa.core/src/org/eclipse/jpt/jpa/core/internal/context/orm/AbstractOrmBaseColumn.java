@@ -13,14 +13,12 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBaseColumn;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyBaseColumn;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlBaseColumn;
 
 /**
  * <code>orm.xml</code> column or join column
  */
-public abstract class AbstractOrmBaseColumn<X extends XmlBaseColumn, O extends OrmReadOnlyBaseColumn.Owner>
+public abstract class AbstractOrmBaseColumn<X extends XmlBaseColumn, O extends ReadOnlyBaseColumn.Owner>
 	extends AbstractOrmNamedColumn<X, O>
 	implements OrmBaseColumn
 {
@@ -293,11 +291,6 @@ public abstract class AbstractOrmBaseColumn<X extends XmlBaseColumn, O extends O
 	protected TextRange getXmlColumnTableTextRange() {
 		X xmlColumn = this.getXmlColumn();
 		return (xmlColumn == null) ? null : xmlColumn.getTableTextRange();
-	}
-
-	@Override
-	protected NamedColumnTextRangeResolver buildTextRangeResolver() {
-		return new OrmTableColumnTextRangeResolver(this);
 	}
 	
 	// ********** completion proposals **********

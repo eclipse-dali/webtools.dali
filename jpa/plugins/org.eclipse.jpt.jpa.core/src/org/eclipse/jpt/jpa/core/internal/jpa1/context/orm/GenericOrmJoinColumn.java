@@ -14,11 +14,8 @@ import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmBaseColumn;
-import org.eclipse.jpt.jpa.core.internal.context.orm.OrmJoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.Table;
@@ -27,7 +24,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * <code>orm.xml</code> join column
  */
 public class GenericOrmJoinColumn
-	extends AbstractOrmBaseColumn<XmlJoinColumn, OrmReadOnlyJoinColumn.Owner>
+	extends AbstractOrmBaseColumn<XmlJoinColumn, ReadOnlyJoinColumn.Owner>
 	implements OrmJoinColumn
 {
 	/** @see org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmNamedColumn#AbstractOrmNamedColumn(XmlContextNode, org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyNamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlNamedColumn) */
@@ -37,11 +34,11 @@ public class GenericOrmJoinColumn
 	protected String defaultReferencedColumnName;
 
 
-	public GenericOrmJoinColumn(XmlContextNode parent, OrmReadOnlyJoinColumn.Owner owner) {
+	public GenericOrmJoinColumn(XmlContextNode parent, ReadOnlyJoinColumn.Owner owner) {
 		this(parent, owner, null);
 	}
 
-	public GenericOrmJoinColumn(XmlContextNode parent, OrmReadOnlyJoinColumn.Owner owner, XmlJoinColumn xmlColumn) {
+	public GenericOrmJoinColumn(XmlContextNode parent, ReadOnlyJoinColumn.Owner owner, XmlJoinColumn xmlColumn) {
 		super(parent, owner, xmlColumn);
 		this.specifiedReferencedColumnName = this.buildSpecifiedReferencedColumnName();
 	}
@@ -168,11 +165,6 @@ public class GenericOrmJoinColumn
 
 	public TextRange getReferencedColumnNameTextRange() {
 		return this.getValidationTextRange(this.xmlColumn.getReferencedColumnNameTextRange());
-	}
-
-	@Override
-	protected NamedColumnTextRangeResolver buildTextRangeResolver() {
-		return new OrmJoinColumnTextRangeResolver(this);
 	}
 
 	// ********** completion proposals **********

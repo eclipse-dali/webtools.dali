@@ -9,21 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaVirtualNamedDiscriminatorColumn;
-import org.eclipse.jpt.jpa.core.internal.context.java.JavaTableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaReadOnlyTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaVirtualTenantDiscriminatorColumn2_3;
 
 /**
  * Java virtual tenant discriminator column
  */
 public class EclipseLinkJavaVirtualTenantDiscriminatorColumn2_3
-	extends AbstractJavaVirtualNamedDiscriminatorColumn<JavaReadOnlyTenantDiscriminatorColumn2_3.Owner, ReadOnlyTenantDiscriminatorColumn2_3>
+	extends AbstractJavaVirtualNamedDiscriminatorColumn<ReadOnlyTenantDiscriminatorColumn2_3.Owner, ReadOnlyTenantDiscriminatorColumn2_3>
 	implements JavaVirtualTenantDiscriminatorColumn2_3
 {
 	protected final ReadOnlyTenantDiscriminatorColumn2_3 overriddenColumn;
@@ -38,7 +34,7 @@ public class EclipseLinkJavaVirtualTenantDiscriminatorColumn2_3
 	protected boolean defaultPrimaryKey;
 
 
-	public EclipseLinkJavaVirtualTenantDiscriminatorColumn2_3(JavaJpaContextNode parent, JavaReadOnlyTenantDiscriminatorColumn2_3.Owner owner, ReadOnlyTenantDiscriminatorColumn2_3 overriddenColumn) {
+	public EclipseLinkJavaVirtualTenantDiscriminatorColumn2_3(JavaJpaContextNode parent, ReadOnlyTenantDiscriminatorColumn2_3.Owner owner, ReadOnlyTenantDiscriminatorColumn2_3 overriddenColumn) {
 		super(parent, owner);
 		this.overriddenColumn = overriddenColumn;
 	}
@@ -186,12 +182,7 @@ public class EclipseLinkJavaVirtualTenantDiscriminatorColumn2_3
 
 	// ********** validation **********
 
-	public TextRange getTableTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(astRoot);
-	}
-
-	@Override
-	protected NamedColumnTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
-		return new JavaTableColumnTextRangeResolver(this, astRoot);
+	public TextRange getTableTextRange() {
+		return this.getValidationTextRange();
 	}
 }

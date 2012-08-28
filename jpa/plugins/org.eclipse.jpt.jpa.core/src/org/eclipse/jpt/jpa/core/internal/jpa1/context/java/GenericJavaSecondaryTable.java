@@ -21,11 +21,8 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
-import org.eclipse.jpt.jpa.core.internal.context.BaseJoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaTable;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.SecondaryTablePrimaryKeyJoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.resource.java.NullPrimaryKeyJoinColumnAnnotation;
@@ -46,7 +43,7 @@ public class GenericJavaSecondaryTable
 	protected /* final */ SecondaryTableAnnotation tableAnnotation;
 
 	protected final ContextListContainer<JavaPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation> specifiedPrimaryKeyJoinColumnContainer;
-	protected final JavaReadOnlyBaseJoinColumn.Owner primaryKeyJoinColumnOwner;
+	protected final ReadOnlyBaseJoinColumn.Owner primaryKeyJoinColumnOwner;
 
 	protected JavaPrimaryKeyJoinColumn defaultPrimaryKeyJoinColumn;
 
@@ -209,7 +206,7 @@ public class GenericJavaSecondaryTable
 		}
 	}
 
-	protected JavaReadOnlyBaseJoinColumn.Owner buildPrimaryKeyJoinColumnOwner() {
+	protected ReadOnlyBaseJoinColumn.Owner buildPrimaryKeyJoinColumnOwner() {
 		return new PrimaryKeyJoinColumnOwner();
 	}
 
@@ -320,15 +317,15 @@ public class GenericJavaSecondaryTable
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		boolean continueValidating = this.buildTableValidator(astRoot).validate(messages, reporter);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		boolean continueValidating = this.buildTableValidator().validate(messages, reporter);
 
 		//join column validation will handle the check for whether to validate against the database
 		//some validation messages are not database specific. If the database validation for the
 		//table fails we will stop there and not validate the join columns at all
 		if (continueValidating) {
 			for (JavaPrimaryKeyJoinColumn pkJoinColumn : this.getPrimaryKeyJoinColumns()) {
-				pkJoinColumn.validate(messages, reporter, astRoot);
+				pkJoinColumn.validate(messages, reporter);
 			}
 		}
 	}
@@ -341,7 +338,7 @@ public class GenericJavaSecondaryTable
 	// ********** primary key join column owner adapter **********
 
 	protected class PrimaryKeyJoinColumnOwner
-		implements JavaReadOnlyBaseJoinColumn.Owner
+		implements ReadOnlyBaseJoinColumn.Owner
 	{
 		protected JavaEntity getEntity() {
 			return GenericJavaSecondaryTable.this.getEntity();
@@ -370,12 +367,12 @@ public class GenericJavaSecondaryTable
 			return this.getEntity().getPrimaryKeyColumnName();
 		}
 
-		public TextRange getValidationTextRange(CompilationUnit astRoot) {
-			return GenericJavaSecondaryTable.this.getValidationTextRange(astRoot);
+		public TextRange getValidationTextRange() {
+			return GenericJavaSecondaryTable.this.getValidationTextRange();
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return new SecondaryTablePrimaryKeyJoinColumnValidator(GenericJavaSecondaryTable.this, (ReadOnlyBaseJoinColumn) column, this, (BaseJoinColumnTextRangeResolver) textRangeResolver);
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+			return new SecondaryTablePrimaryKeyJoinColumnValidator(GenericJavaSecondaryTable.this, (ReadOnlyBaseJoinColumn) column, this);
 		}
 	}
 }

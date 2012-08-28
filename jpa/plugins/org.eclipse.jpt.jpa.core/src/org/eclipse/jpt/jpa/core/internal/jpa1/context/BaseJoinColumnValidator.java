@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,21 +13,19 @@ import java.util.List;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
-import org.eclipse.jpt.jpa.core.internal.context.BaseJoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public abstract class BaseJoinColumnValidator<C extends ReadOnlyBaseJoinColumn, R extends BaseJoinColumnTextRangeResolver>
-	extends AbstractNamedColumnValidator<C, R>
+public abstract class BaseJoinColumnValidator<C extends ReadOnlyBaseJoinColumn>
+	extends AbstractNamedColumnValidator<C>
 {
 	private final ReadOnlyBaseJoinColumn.Owner joinColumnOwner;
 
 	protected BaseJoinColumnValidator(
 				C column,
 				ReadOnlyBaseJoinColumn.Owner joinColumnOwner,
-				R textRangeResolver,
 				TableDescriptionProvider provider) {
-		super(column, textRangeResolver, provider);
+		super(column, provider);
 		this.joinColumnOwner = joinColumnOwner;
 	}
 
@@ -35,9 +33,8 @@ public abstract class BaseJoinColumnValidator<C extends ReadOnlyBaseJoinColumn, 
 				ReadOnlyPersistentAttribute persistentAttribute,
 				C column,
 				ReadOnlyBaseJoinColumn.Owner joinColumnOwner,
-				R textRangeResolver,
 				TableDescriptionProvider provider) {
-		super(persistentAttribute, column, textRangeResolver, provider);
+		super(persistentAttribute, column, provider);
 		this.joinColumnOwner = joinColumnOwner;
 	}
 
@@ -94,7 +91,7 @@ public abstract class BaseJoinColumnValidator<C extends ReadOnlyBaseJoinColumn, 
 					this.column.getReferencedColumnDbTable().getName()
 				},
 				this.column,
-				this.textRangeResolver.getReferencedColumnNameTextRange()
+				this.column.getReferencedColumnNameTextRange()
 			);
 	}
 
@@ -108,7 +105,7 @@ public abstract class BaseJoinColumnValidator<C extends ReadOnlyBaseJoinColumn, 
 					this.column.getReferencedColumnDbTable().getName()
 				},
 				this.column,
-				this.textRangeResolver.getReferencedColumnNameTextRange()
+				this.column.getReferencedColumnNameTextRange()
 			);
 	}
 
@@ -128,7 +125,7 @@ public abstract class BaseJoinColumnValidator<C extends ReadOnlyBaseJoinColumn, 
 				message,
 				StringTools.EMPTY_STRING_ARRAY,
 				this.column,
-				this.textRangeResolver.getNameTextRange()
+				this.column.getNameTextRange()
 			);
 	}
 
@@ -138,7 +135,7 @@ public abstract class BaseJoinColumnValidator<C extends ReadOnlyBaseJoinColumn, 
 				this.getVirtualAttributeUnspecifiedNameMultipleJoinColumnsMessage(),
 				new String[] {this.persistentAttribute.getName()},
 				this.column,
-				this.textRangeResolver.getNameTextRange()
+				this.column.getNameTextRange()
 			);
 	}
 
@@ -158,7 +155,7 @@ public abstract class BaseJoinColumnValidator<C extends ReadOnlyBaseJoinColumn, 
 				message,
 				StringTools.EMPTY_STRING_ARRAY,
 				this.column,
-				this.textRangeResolver.getReferencedColumnNameTextRange()
+				this.column.getReferencedColumnNameTextRange()
 			);
 	}
 
@@ -168,7 +165,7 @@ public abstract class BaseJoinColumnValidator<C extends ReadOnlyBaseJoinColumn, 
 				this.getVirtualAttributeUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(),
 				new String[] {this.persistentAttribute.getName()},
 				this.column,
-				this.textRangeResolver.getReferencedColumnNameTextRange()
+				this.column.getReferencedColumnNameTextRange()
 			);
 	}
 

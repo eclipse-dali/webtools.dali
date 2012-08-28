@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
@@ -105,13 +104,13 @@ public class JavaEclipseLinkVersionMapping
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.mutable.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.mutable.validate(messages, reporter);
 	}
 	
 	@Override
-	protected void validateAttributeType(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateAttributeType(List<IMessage> messages) {
 		if (!ArrayTools.contains(SUPPORTED_TYPE_NAMES, this.getPersistentAttribute().getTypeName())) {
 			messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
@@ -119,7 +118,7 @@ public class JavaEclipseLinkVersionMapping
 							EclipseLinkJpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE,
 							new String[] {this.getName()},
 							this,
-							this.getValidationTextRange(astRoot)
+							this.getValidationTextRange()
 					)
 			);
 		}

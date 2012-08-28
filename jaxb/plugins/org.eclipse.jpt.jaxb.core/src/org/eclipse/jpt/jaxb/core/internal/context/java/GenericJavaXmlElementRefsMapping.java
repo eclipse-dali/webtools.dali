@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -267,17 +267,17 @@ public class GenericJavaXmlElementRefsMapping
 	// ***** validation *****
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
-		this.xmlElementRefs.validate(messages, reporter, astRoot);
+		this.xmlElementRefs.validate(messages, reporter);
 		
 		if (this.xmlElementWrapper != null) {
-			this.xmlElementWrapper.validate(messages, reporter, astRoot);
+			this.xmlElementWrapper.validate(messages, reporter);
 		}
 		
 		if (this.xmlMixed != null) {
-			this.xmlMixed.validate(messages, reporter, astRoot);
+			this.xmlMixed.validate(messages, reporter);
 		}
 	}
 	
@@ -309,8 +309,8 @@ public class GenericJavaXmlElementRefsMapping
 			return new GenericJavaXmlElementRef(parent, new XmlElementRefContext(annotation));
 		}
 		
-		public TextRange getValidationTextRange(CompilationUnit astRoot) {
-			return getXmlElementRefsAnnotation().getTextRange(astRoot);
+		public TextRange getValidationTextRange() {
+			return getXmlElementRefsAnnotation().getTextRange();
 		}
 	}
 	

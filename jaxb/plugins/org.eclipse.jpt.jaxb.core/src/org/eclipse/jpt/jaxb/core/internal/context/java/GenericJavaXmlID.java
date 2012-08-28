@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlID;
@@ -49,10 +48,10 @@ public class GenericJavaXmlID
 	//************* validation ****************
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
-		validateAttributeType(messages, astRoot);
+		validateAttributeType(messages);
 		
 		XsdFeature xsdFeature = getMapping().getXsdFeature();
 		if (xsdFeature == null) {
@@ -67,23 +66,23 @@ public class GenericJavaXmlID
 						JaxbValidationMessages.XML_ID__SCHEMA_TYPE_NOT_ID,
 						new String [] { xsdFeature.getName() },
 						this,
-						getValidationTextRange(astRoot)));
+						getValidationTextRange()));
 		}
 	}
 	
-	protected void validateAttributeType(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateAttributeType(List<IMessage> messages) {
 		if (! getPersistentAttribute().isJavaResourceAttributeTypeSubTypeOf(String.class.getName())) {
 			messages.add(
 				DefaultValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JaxbValidationMessages.XML_ID__ATTRIBUTE_TYPE_NOT_STRING,
 					this,
-					getValidationTextRange(astRoot)));
+					getValidationTextRange()));
 		}
 	}
 
 	@Override
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.resourceXmlID.getTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		return this.resourceXmlID.getTextRange();
 	}
 }

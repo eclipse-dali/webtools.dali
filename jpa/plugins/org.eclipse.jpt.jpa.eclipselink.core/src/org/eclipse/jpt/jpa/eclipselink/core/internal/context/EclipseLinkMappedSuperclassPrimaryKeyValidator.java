@@ -13,7 +13,6 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context;
 import java.util.List;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.jpa.core.internal.context.PrimaryKeyTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AbstractMappedSuperclassPrimaryKeyValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
@@ -26,9 +25,9 @@ public class EclipseLinkMappedSuperclassPrimaryKeyValidator
 	extends AbstractMappedSuperclassPrimaryKeyValidator
 {
 	public EclipseLinkMappedSuperclassPrimaryKeyValidator(
-			EclipseLinkMappedSuperclass mappedSuperclass, PrimaryKeyTextRangeResolver textRangeResolver) {
+			EclipseLinkMappedSuperclass mappedSuperclass) {
 		
-		super(mappedSuperclass, textRangeResolver);
+		super(mappedSuperclass);
 	}
 	
 	
@@ -49,7 +48,7 @@ public class EclipseLinkMappedSuperclassPrimaryKeyValidator
 						JpaValidationMessages.TYPE_MAPPING_ID_CLASS_REDEFINED,
 						new String[0],
 						typeMapping(),
-						textRangeResolver().getIdClassTextRange()));
+						idClassReference().getValidationTextRange()));
 		}
 	}
 	

@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
@@ -260,16 +259,16 @@ public class NullJavaMapKeyColumn2_0
 
 	// ********** validation **********
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.getParent().getValidationTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		return this.getParent().getValidationTextRange();
 	}
 
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(astRoot);
+	public TextRange getNameTextRange() {
+		return this.getValidationTextRange();
 	}
 
-	public TextRange getTableTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(astRoot);
+	public TextRange getTableTextRange() {
+		return this.getValidationTextRange();
 	}
 
 	public boolean tableNameIsInvalid() {

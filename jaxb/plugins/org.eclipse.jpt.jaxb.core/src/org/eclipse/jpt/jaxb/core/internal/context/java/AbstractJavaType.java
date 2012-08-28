@@ -30,7 +30,6 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTransientAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
-import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -268,13 +267,6 @@ public abstract class AbstractJavaType
 	}
 	
 	
-	// ***** misc *****
-	
-	protected CompilationUnit buildASTRoot() {
-		return this.resourceType.getJavaResourceCompilationUnit().buildASTRoot();
-	}
-	
-	
 	// ***** content assist *****
 	
 	@Override
@@ -310,14 +302,13 @@ public abstract class AbstractJavaType
 	 * Override as needed
 	 */
 	@Override
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+	public TextRange getValidationTextRange() {
 		return getJavaResourceType().getNameTextRange();
 	}
 	
+	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
-		if (reporter.isCancelled()) {
-			throw new ValidationCancelledException();
-		}
+		super.validate(messages, reporter);
 		// TODO temporary hack since we don't know yet where to put
 		// any messages for types in another project
 		IFile file = this.resourceType.getFile();
@@ -327,21 +318,14 @@ public abstract class AbstractJavaType
 		if ((file != null) 
 				&& file.getProject().equals(getJaxbProject().getProject()) 
 				&& (this.resourceType instanceof SourceNode)) {
-			// build the AST root here to pass down
-			this.validate(messages, reporter, this.buildASTRoot());
-		}
-	}
-	
-	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		
-		if (this.mapping != null) {
-			this.mapping.validate(messages, reporter, astRoot);
-		}
-		
-		if (this.xmlJavaTypeAdapter != null) {
-			this.xmlJavaTypeAdapter.validate(messages, reporter, astRoot);
+
+			if (this.mapping != null) {
+				this.mapping.validate(messages, reporter);
+			}
+
+			if (this.xmlJavaTypeAdapter != null) {
+				this.xmlJavaTypeAdapter.validate(messages, reporter);
+			}
 		}
 	}
 }

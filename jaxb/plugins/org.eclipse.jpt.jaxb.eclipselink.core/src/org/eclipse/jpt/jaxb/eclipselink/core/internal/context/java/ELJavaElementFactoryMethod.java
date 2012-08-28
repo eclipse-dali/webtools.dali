@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaElementFactoryMethod;
@@ -30,7 +29,7 @@ public class ELJavaElementFactoryMethod
 	
 	@Override
 	protected void validateMethodReturnType(
-			JavaResourceMethod resourceMethod, List<IMessage> messages, CompilationUnit astRoot) {
+			JavaResourceMethod resourceMethod, List<IMessage> messages) {
 		
 		if (! resourceMethod.getTypeBinding().isSubTypeOf(JAXB.JAXB_ELEMENT)) {
 			messages.add(
@@ -38,7 +37,7 @@ public class ELJavaElementFactoryMethod
 							IMessage.HIGH_SEVERITY,
 							ELJaxbValidationMessages.XML_ELEMENT_DECL__INVALID_METHOD_SIGNATURE_RETURN_TYPE,
 							this,
-							getValidationTextRange(astRoot)));
+							getValidationTextRange()));
 		}
 	}
 }

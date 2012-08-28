@@ -15,7 +15,6 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMemberValuePair;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
@@ -322,7 +321,7 @@ abstract class BinaryAnnotatedElement
 		throw new UnsupportedOperationException();
 	}
 	
-	public TextRange getTextRange(String nestableAnnotationName, CompilationUnit astRoot) {
+	public TextRange getTextRange(String nestableAnnotationName) {
 		throw new UnsupportedOperationException();
 	}
 	

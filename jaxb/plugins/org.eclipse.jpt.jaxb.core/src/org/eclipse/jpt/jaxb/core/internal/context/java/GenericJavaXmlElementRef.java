@@ -229,8 +229,8 @@ public class GenericJavaXmlElementRef
 	// ***** validation *****
 	
 	@Override
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return getAnnotation().getTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		return getAnnotation().getTextRange();
 	}
 	
 	public TextRange getTypeTextRange() {
@@ -238,9 +238,9 @@ public class GenericJavaXmlElementRef
 	}
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.qName.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.qName.validate(messages, reporter);
 		validateType(messages, reporter);
 	}
 	
@@ -343,16 +343,16 @@ public class GenericJavaXmlElementRef
 		}
 		
 		@Override
-		protected void validateName(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		protected void validateName(List<IMessage> messages, IReporter reporter) {
 			// only validate if type is JAXBElement
 			if (isTypeJAXBElement()) {
-				super.validateName(messages, reporter, astRoot);
+				super.validateName(messages, reporter);
 			}
 		}
 		
 		@Override
-		protected void validateReference(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-			super.validateReference(messages, reporter, astRoot);
+		protected void validateReference(List<IMessage> messages, IReporter reporter) {
+			super.validateReference(messages, reporter);
 			
 			// if type is JAXBElement, then name/namespace must also point at a valid XmlElementDecl
 			if (! isTypeJAXBElement()) {
@@ -367,7 +367,7 @@ public class GenericJavaXmlElementRef
 								IMessage.HIGH_SEVERITY,
 								JaxbValidationMessages.XML_ELEMENT_REF__NO_REGISTRY,
 								this,
-								getValidationTextRange(astRoot)));
+								getValidationTextRange()));
 				return;
 			}
 			
@@ -383,7 +383,7 @@ public class GenericJavaXmlElementRef
 							JaxbValidationMessages.XML_ELEMENT_REF__NO_MATCHING_ELEMENT_DECL,
 							new String[] { getNamespace(), getName() },
 							this,
-							getValidationTextRange(astRoot)));
+							getValidationTextRange()));
 							
 		}
 	}

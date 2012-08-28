@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.Column;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlColumn;
 
 /**
@@ -37,7 +38,7 @@ public interface OrmColumn
 	 * (e.g. basic mappings and attribute overrides)
 	 */
 	interface Owner
-		extends OrmReadOnlyBaseColumn.Owner
+		extends ReadOnlyBaseColumn.Owner
 	{
 		XmlColumn getXmlColumn();
 		XmlColumn buildXmlColumn();

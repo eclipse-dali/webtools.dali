@@ -12,7 +12,6 @@ package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 import java.util.Arrays;
 import java.util.Vector;
 import org.eclipse.jdt.core.dom.Annotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
@@ -117,7 +116,7 @@ public final class SourceXmlTypeAnnotation
 		this.namespaceTextRange = this.buildNamespaceTextRange(astAnnotation);
 		this.initializePropOrder(astAnnotation);
 		this.propOrderTextRange = this.buildPropOrderTextRange(astAnnotation);
-		this.syncPropTextRanges((CompilationUnit) astAnnotation.getRoot());
+		this.syncPropTextRanges(astAnnotation);
 	}
 
 	@Override
@@ -134,7 +133,7 @@ public final class SourceXmlTypeAnnotation
 		this.namespaceTextRange = this.buildNamespaceTextRange(astAnnotation);
 		this.syncPropOrder(astAnnotation);
 		this.propOrderTextRange = this.buildPropOrderTextRange(astAnnotation);
-		this.syncPropTextRanges((CompilationUnit) astAnnotation.getRoot());
+		this.syncPropTextRanges(astAnnotation);
 	}
 
 	@Override
@@ -354,11 +353,11 @@ public final class SourceXmlTypeAnnotation
 		return this.textRangeTouches(this.propOrderTextRange, pos);
 	}
 	
-	//TODO I think we should be able to do this from the Annotation instead of the CompilationUnit
-	private void syncPropTextRanges(CompilationUnit astRoot) {
+	private void syncPropTextRanges(Annotation astAnnotation) {
 		this.propTextRanges.clear();
 		for (int i = 0; i < this.propOrder.size(); i++) {
-			this.propTextRanges.add(i, getElementTextRange(this.selectAnnotationElementTextRange(this.propOrderDeclarationAdapter, i, astRoot), astRoot));
+			TextRange propTextRange = this.getElementTextRange(this.propOrderDeclarationAdapter, i, astAnnotation);
+			this.propTextRanges.add(i, propTextRange);
 		}
 	}
 	

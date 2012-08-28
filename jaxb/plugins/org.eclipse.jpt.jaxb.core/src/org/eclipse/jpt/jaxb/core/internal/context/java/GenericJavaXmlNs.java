@@ -122,13 +122,13 @@ public class GenericJavaXmlNs
 			int pos, Filter<String> filter, CompilationUnit astRoot) {
 		
 		if (getResourceXmlNs().namespaceURITouches(pos)) {
-			return getNamespaceURICompletionProposals(pos, filter, astRoot);
+			return getNamespaceURICompletionProposals(pos, filter);
 		}
 		return EmptyIterable.instance();
 	}
 	
 	protected Iterable<String> getNamespaceURICompletionProposals(
-			int pos, Filter<String> filter, CompilationUnit astRoot) {
+			int pos, Filter<String> filter) {
 		
 		String packageNamespace = getJaxbPackageInfo().getJaxbPackage().getNamespace();
 		Iterable<String> result = (StringTools.stringIsEmpty(packageNamespace)) ?
@@ -144,8 +144,8 @@ public class GenericJavaXmlNs
 	// ***** validation *****
 	
 	@Override
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return getResourceXmlNs().getTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		return getResourceXmlNs().getTextRange();
 	}
 	
 	

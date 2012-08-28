@@ -292,15 +292,15 @@ public class GenericJavaXmlSchema
 	// **************** validation ********************************************
 	
 	@Override
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return getXmlSchemaAnnotation().getTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		return getXmlSchemaAnnotation().getTextRange();
 	}
 	
 	
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
 		// removing this validation message for now:  see jaxb bug 823 (http://java.net/jira/browse/JAXB-823)
 //		XsdSchema schema = getJaxbPackage().getXsdSchema();

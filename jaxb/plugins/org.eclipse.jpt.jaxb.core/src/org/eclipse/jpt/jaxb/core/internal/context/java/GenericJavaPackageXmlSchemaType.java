@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
@@ -45,8 +44,8 @@ public class GenericJavaPackageXmlSchemaType
 	// ***** validation *****
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
 		String fqType = getFullyQualifiedType();
 		if (fqType == null || XmlSchemaTypeAnnotation.DEFAULT_TYPE.equals(fqType)) {
@@ -55,7 +54,7 @@ public class GenericJavaPackageXmlSchemaType
 							IMessage.HIGH_SEVERITY,
 							JaxbValidationMessages.XML_SCHEMA_TYPE__TYPE_NOT_SPECIFIED_ON_PACKAGE,
 							this,
-							getValidationTextRange(astRoot)));
+							getValidationTextRange()));
 		}
 	}
 }

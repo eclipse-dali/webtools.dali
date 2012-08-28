@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -180,18 +180,18 @@ public class GenericJavaXmlAttributeMapping
 	// ***** validation *****
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
-		validateQName(messages, reporter, astRoot);
-		validateSchemaType(messages, reporter, astRoot);
+		validateQName(messages, reporter);
+		validateSchemaType(messages, reporter);
 	}
 	
-	protected void validateQName(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		this.qName.validate(messages, reporter, astRoot);
+	protected void validateQName(List<IMessage> messages, IReporter reporter) {
+		this.qName.validate(messages, reporter);
 	}
 	
-	protected void validateSchemaType(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateSchemaType(List<IMessage> messages, IReporter reporter) {
 		XsdFeature xsdFeature = getXsdFeature();
 		if (xsdFeature == null) {
 			return;
@@ -220,7 +220,7 @@ public class GenericJavaXmlAttributeMapping
 							JaxbValidationMessages.XML_ATTRIBUTE__INVALID_SCHEMA_TYPE,
 							new String[] { getValueTypeName(), xsdFeature.getName() },
 							this,
-							this.qName.getNameTextRange(astRoot)));
+							this.qName.getNameTextRange()));
 		}
 	}
 	
@@ -268,11 +268,11 @@ public class GenericJavaXmlAttributeMapping
 		}
 		
 		@Override
-		protected void validateReference(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		protected void validateReference(List<IMessage> messages, IReporter reporter) {
 			XsdTypeDefinition type = getJaxbClassMapping().getXsdTypeDefinition();
 			if (type != null) {
 				if (type.getAttribute(getNamespace(), getName()) == null) {
-					messages.add(getUnresolveSchemaComponentMessage(astRoot));
+					messages.add(getUnresolveSchemaComponentMessage());
 				}
 			}
 		}
@@ -307,18 +307,18 @@ public class GenericJavaXmlAttributeMapping
 							return GenericJavaXmlAttributeMapping.this.getPersistentAttribute().getJavaResourceAttributeBaseTypeName();
 						}
 						
-						public TextRange getTypeTextRange(CompilationUnit astRoot) {
+						public TextRange getTypeTextRange() {
 							// 1) if we're getting here, XmlIDREF will not be null
 							// 2) use the @XmlIDREF text range, since there is no specific place where the type is specified
-							return GenericJavaXmlAttributeMapping.this.getXmlIDREF().getValidationTextRange(astRoot);
+							return GenericJavaXmlAttributeMapping.this.getXmlIDREF().getValidationTextRange();
 						}
 						
 						public XsdFeature getXsdFeature() {
 							return GenericJavaXmlAttributeMapping.this.getXsdFeature();
 						}
 						
-						public TextRange getXsdFeatureTextRange(CompilationUnit astRoot) {
-							return GenericJavaXmlAttributeMapping.this.getQName().getNameTextRange(astRoot);
+						public TextRange getXsdFeatureTextRange() {
+							return GenericJavaXmlAttributeMapping.this.getQName().getNameTextRange();
 						}
 					});
 		}

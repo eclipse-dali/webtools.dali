@@ -27,6 +27,7 @@ import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.Set;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -1513,7 +1514,7 @@ public class JpaArtifactFactory {
 		
 		return newAt;
 	}
-
+	
 	private void updateRelation(JavaPersistentType jpt,
 			IJPAEditorFeatureProvider fp, IRelation rel) {
 		UpdateAttributeFeature updateFeature = new UpdateAttributeFeature(fp);

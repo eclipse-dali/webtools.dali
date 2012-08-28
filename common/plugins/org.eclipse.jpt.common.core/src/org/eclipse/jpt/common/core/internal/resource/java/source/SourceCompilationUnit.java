@@ -102,7 +102,7 @@ public abstract class SourceCompilationUnit
 
 	// ********** JavaResourceNode implementation **********
 
-	public TextRange getTextRange(CompilationUnit astRoot) {
+	public TextRange getTextRange() {
 		return null;
 	}
 

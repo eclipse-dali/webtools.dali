@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -629,12 +628,12 @@ public class JavaEclipseLinkCachingImpl
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.validateExpiry(messages, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.validateExpiry(messages);
 	}
 	
-	protected void validateExpiry(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateExpiry(List<IMessage> messages) {
 		if ((this.expiry != null) && (this.expiryTimeOfDay != null)) {
 			messages.add(
 				DefaultEclipseLinkJpaValidationMessages.buildMessage(
@@ -642,14 +641,14 @@ public class JavaEclipseLinkCachingImpl
 					EclipseLinkJpaValidationMessages.CACHE_EXPIRY_AND_EXPIRY_TIME_OF_DAY_BOTH_SPECIFIED,
 					new String[] {this.getPersistentType().getName()},
 					this,
-					this.getValidationTextRange(astRoot)
+					this.getValidationTextRange()
 				)
 			);
 		}
 	}
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.getCacheAnnotation().getTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getTypeMapping().getValidationTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		TextRange textRange = this.getCacheAnnotation().getTextRange();
+		return (textRange != null) ? textRange : this.getTypeMapping().getValidationTextRange();
 	}
 }

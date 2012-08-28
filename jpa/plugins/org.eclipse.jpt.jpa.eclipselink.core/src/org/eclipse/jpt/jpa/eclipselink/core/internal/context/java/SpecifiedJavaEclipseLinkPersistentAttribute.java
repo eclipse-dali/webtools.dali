@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
@@ -102,7 +101,7 @@ public class SpecifiedJavaEclipseLinkPersistentAttribute
 	// ********** validation **********
 
 	@Override
-	protected JptValidator buildAttributeValidator(CompilationUnit astRoot) {
-		return new EclipseLinkPersistentAttributeValidator(this, buildTextRangeResolver(astRoot));
+	protected JptValidator buildAttributeValidator() {
+		return new EclipseLinkPersistentAttributeValidator(this);
 	}
 }

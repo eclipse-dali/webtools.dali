@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,18 +11,15 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmVirtualNamedDiscriminatorColumn;
-import org.eclipse.jpt.jpa.core.internal.context.orm.OrmTableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmReadOnlyTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmVirtualTenantDiscriminatorColumn2_3;
 
 /**
  * <code>orm.xml</code> virtual tenant discriminator column
  */
 public class GenericOrmVirtualTenantDiscriminatorColumn2_3
-	extends AbstractOrmVirtualNamedDiscriminatorColumn<OrmReadOnlyTenantDiscriminatorColumn2_3.Owner, ReadOnlyTenantDiscriminatorColumn2_3>
+	extends AbstractOrmVirtualNamedDiscriminatorColumn<ReadOnlyTenantDiscriminatorColumn2_3.Owner, ReadOnlyTenantDiscriminatorColumn2_3>
 	implements OrmVirtualTenantDiscriminatorColumn2_3
 {
 	protected final ReadOnlyTenantDiscriminatorColumn2_3 overriddenColumn;
@@ -37,7 +34,7 @@ public class GenericOrmVirtualTenantDiscriminatorColumn2_3
 	protected boolean defaultPrimaryKey;
 
 
-	public GenericOrmVirtualTenantDiscriminatorColumn2_3(XmlContextNode parent, OrmReadOnlyTenantDiscriminatorColumn2_3.Owner owner, ReadOnlyTenantDiscriminatorColumn2_3 overridenColumn) {
+	public GenericOrmVirtualTenantDiscriminatorColumn2_3(XmlContextNode parent, ReadOnlyTenantDiscriminatorColumn2_3.Owner owner, ReadOnlyTenantDiscriminatorColumn2_3 overridenColumn) {
 		super(parent, owner);
 		this.overriddenColumn = overridenColumn;
 	}
@@ -187,10 +184,5 @@ public class GenericOrmVirtualTenantDiscriminatorColumn2_3
 
 	public TextRange getTableTextRange() {
 		return this.getValidationTextRange();
-	}
-
-	@Override
-	protected NamedColumnTextRangeResolver buildTextRangeResolver() {
-		return new OrmTableColumnTextRangeResolver(this);
 	}
 }

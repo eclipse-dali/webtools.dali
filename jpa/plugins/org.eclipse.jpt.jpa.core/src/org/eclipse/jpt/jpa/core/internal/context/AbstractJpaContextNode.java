@@ -9,7 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context;
 
+import java.util.List;
+
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.JpaNode;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
@@ -18,6 +21,9 @@ import org.eclipse.jpt.jpa.core.internal.AbstractJpaNode;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
+import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractJpaContextNode
 	extends AbstractJpaNode
@@ -101,6 +107,45 @@ public abstract class AbstractJpaContextNode
 	 */
 	public MappingFile.Root getMappingFileRoot() {
 		return this.getParent().getMappingFileRoot();
+	}
+
+
+	// ********** validation **********
+
+	/**
+	 * All subclass implementations should be 
+	 * preceded by a "super" call to this method.
+	 */
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		if (reporter.isCancelled()) {
+			throw new ValidationCancelledException();
+		}
+	}
+
+	/**
+	 * Return the specified text range if it is not <code>null</code>; if it is
+	 * <code>null</code>, return the node's validation text range.
+	 */
+	protected TextRange getValidationTextRange(TextRange textRange) {
+		return (textRange != null) ? textRange : this.getValidationTextRange();
+	}
+
+	/**
+	 * Validate the specified node if it is not <code>null</code>.
+	 */
+	protected void validateNode(JpaContextNode node, List<IMessage> messages, IReporter reporter) {
+		if (node != null) {
+			node.validate(messages, reporter);
+		}
+	}
+
+	/**
+	 * Validate the specified nodes.
+	 */
+	protected void validateNodes(Iterable<? extends JpaContextNode> nodes, List<IMessage> messages, IReporter reporter) {
+		for (JpaContextNode node : nodes) {
+			node.validate(messages, reporter);
+		}
 	}
 
 

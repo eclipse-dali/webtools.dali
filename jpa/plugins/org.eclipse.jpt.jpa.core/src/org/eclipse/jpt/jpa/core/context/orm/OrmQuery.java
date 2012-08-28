@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import java.util.List;
-import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
@@ -28,7 +27,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  *
- * @version 3.2
+ * @version 3.3
  * @since 2.0
  */
 public interface OrmQuery
@@ -50,7 +49,4 @@ public interface OrmQuery
 
 	void validate(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter);
 
-	TextRange getNameTextRange();
-
-	TextRange getQueryTextRange();
 }

@@ -17,7 +17,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.ConverterTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.AbstractOrmConverter;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
@@ -181,8 +180,8 @@ public class OrmEclipseLinkConvert
 			((XmlConvertibleMapping) xmlMapping).setConvert(null);
 		}
 
-		public JptValidator buildValidator(Converter converter, ConverterTextRangeResolver textRangeResolver) {
-			return new EclipseLinkConvertValidator((EclipseLinkConvert) converter, textRangeResolver);
+		public JptValidator buildValidator(Converter converter) {
+			return new EclipseLinkConvertValidator((EclipseLinkConvert) converter);
 		}
 	}
 }

@@ -19,7 +19,6 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyReferenceTable;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReferenceTable;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmTable;
@@ -37,7 +36,7 @@ public abstract class GenericOrmReferenceTable<X extends AbstractXmlReferenceTab
 	implements OrmReferenceTable
 {
 	protected final ContextListContainer<OrmJoinColumn, XmlJoinColumn> specifiedJoinColumnContainer;
-	protected final OrmReadOnlyJoinColumn.Owner joinColumnOwner;
+	protected final ReadOnlyJoinColumn.Owner joinColumnOwner;
 
 	protected OrmJoinColumn defaultJoinColumn;
 
@@ -176,7 +175,7 @@ public abstract class GenericOrmReferenceTable<X extends AbstractXmlReferenceTab
 		}
 	}
 
-	protected abstract OrmReadOnlyJoinColumn.Owner buildJoinColumnOwner();
+	protected abstract ReadOnlyJoinColumn.Owner buildJoinColumnOwner();
 
 
 	// ********** default join column **********

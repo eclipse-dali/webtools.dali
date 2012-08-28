@@ -10,7 +10,6 @@
 package org.eclipse.jpt.common.core.resource.java;
 
 import org.eclipse.jdt.core.dom.ASTNode;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
@@ -200,10 +199,10 @@ public interface JavaResourceAnnotatedElement
 	 * container annotation.
 	 * This is not used for stand-alone annotations
 	 * 
-	 * @see Annotation#getTextRange(CompilationUnit)
+	 * @see Annotation#getTextRange()
 	 * @see AnnotationProvider#getContainerAnnotationName(String)
 	 */
-	TextRange getTextRange(String nestableAnnotationName, CompilationUnit astRoot);
+	TextRange getTextRange(String nestableAnnotationName);
 	
 	/**
 	 * The kind of java element.

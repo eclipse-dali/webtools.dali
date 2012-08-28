@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.orm;
 
-import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 
@@ -31,25 +30,5 @@ import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 public interface OrmReadOnlyNamedColumn
 	extends ReadOnlyNamedColumn, XmlContextNode
 {
-	/**
-	 * Return the (best guess) text location of the column's name.
-	 */
-	TextRange getNameTextRange();
 
-
-	// ********** owner **********
-
-	/**
-	 * interface allowing columns to be used in multiple places
-	 * (e.g. basic mappings and attribute overrides)
-	 */
-	interface Owner
-		extends ReadOnlyNamedColumn.Owner
-	{
-		/**
-		 * Return the column owner's text range. This can be returned by the
-		 * column when its annotation is not present.
-		 */
-		TextRange getValidationTextRange();
-	}
 }

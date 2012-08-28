@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context;
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.internal.context.TypeMappingTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AbstractTypeMappingValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
@@ -22,8 +21,8 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 public abstract class AbstractEclipseLinkTypeMappingValidator<T extends TypeMapping>
 	extends AbstractTypeMappingValidator<T>
 {
-	protected AbstractEclipseLinkTypeMappingValidator(T typeMapping, JavaResourceType jrt, TypeMappingTextRangeResolver textRangeResolver) {
-		super(typeMapping, jrt, textRangeResolver);
+	protected AbstractEclipseLinkTypeMappingValidator(T typeMapping, JavaResourceType jrt) {
+		super(typeMapping, jrt);
 	}
 
 
@@ -43,7 +42,7 @@ public abstract class AbstractEclipseLinkTypeMappingValidator<T extends TypeMapp
 				msgID,
 				new String[] {this.typeMapping.getName()},
 				this.typeMapping,
-				this.textRangeResolver.getTypeMappingTextRange()
+				this.typeMapping.getValidationTextRange()
 			);
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,29 +11,26 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context;
 
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
-import org.eclipse.jpt.jpa.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.BaseJoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 
 public class MapKeyJoinColumnValidator
-	extends BaseJoinColumnValidator<ReadOnlyJoinColumn, JoinColumnTextRangeResolver>
+	extends BaseJoinColumnValidator<ReadOnlyJoinColumn>
 {
 	protected MapKeyJoinColumnValidator(
 				ReadOnlyJoinColumn column,
 				ReadOnlyJoinColumn.Owner joinColumnOwner,
-				JoinColumnTextRangeResolver textRangeResolver,
 				TableDescriptionProvider provider) {
-		super(column, joinColumnOwner, textRangeResolver, provider);
+		super(column, joinColumnOwner, provider);
 	}
 
 	public MapKeyJoinColumnValidator(
 				ReadOnlyPersistentAttribute persistentAttribute,
 				ReadOnlyJoinColumn column,
 				ReadOnlyJoinColumn.Owner joinColumnOwner,
-				JoinColumnTextRangeResolver textRangeResolver,
 				TableDescriptionProvider provider) {
-		super(persistentAttribute, column, joinColumnOwner, textRangeResolver, provider);
+		super(persistentAttribute, column, joinColumnOwner, provider);
 	}
 
 	@Override

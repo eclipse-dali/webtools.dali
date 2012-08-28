@@ -10,16 +10,16 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaNamedColumn;
 import org.eclipse.jpt.jpa.core.resource.java.DiscriminatorColumnAnnotation;
 
 /**
  * Java named discriminator column
  */
-public abstract class AbstractJavaNamedDiscriminatorColumn<A extends DiscriminatorColumnAnnotation, O extends JavaReadOnlyNamedDiscriminatorColumn.Owner>
+public abstract class AbstractJavaNamedDiscriminatorColumn<A extends DiscriminatorColumnAnnotation, O extends ReadOnlyNamedDiscriminatorColumn.Owner>
 	extends AbstractJavaNamedColumn<A, O>
 	implements JavaNamedDiscriminatorColumn
 {

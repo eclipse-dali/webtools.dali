@@ -11,15 +11,14 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.AbstractTemporalConverterValidator;
-import org.eclipse.jpt.jpa.core.internal.jpa1.context.ConverterTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
 
 public class OrmElementCollectionTemporalConverterValidator extends AbstractTemporalConverterValidator
 {
 
-	public OrmElementCollectionTemporalConverterValidator(BaseTemporalConverter converter, ConverterTextRangeResolver textRangeResolver) {
-		super(converter, textRangeResolver);
+	public OrmElementCollectionTemporalConverterValidator(BaseTemporalConverter converter) {
+		super(converter);
 	}
 
 	@Override

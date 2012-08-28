@@ -23,8 +23,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualOverride;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.OverrideTextRangeResolver;
-import org.eclipse.jpt.jpa.core.internal.context.TableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.resource.java.OverrideAnnotation;
 import org.eclipse.jpt.jpa.db.Table;
@@ -161,8 +159,8 @@ public abstract class AbstractJavaOverride<C extends JavaOverrideContainer, A ex
 		return this.getContainer().getDefaultTableName();
 	}
 
-	public JptValidator buildColumnValidator(ReadOnlyBaseColumn column, Owner owner, TableColumnTextRangeResolver textRangeResolver) {
-		return this.getContainer().buildColumnValidator(this, column, owner, textRangeResolver);
+	public JptValidator buildColumnValidator(ReadOnlyBaseColumn column, Owner owner) {
+		return this.getContainer().buildColumnValidator(this, column, owner);
 	}
 
 	protected String prefix(String oldName) {
@@ -215,26 +213,22 @@ public abstract class AbstractJavaOverride<C extends JavaOverrideContainer, A ex
 	// ********** validation **********
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.buildValidator(astRoot).validate(messages, reporter);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.buildValidator().validate(messages, reporter);
 	}
 
-	protected JptValidator buildValidator(CompilationUnit astRoot) {
-		return this.getContainer().buildOverrideValidator(this, buildTextRangeResolver(astRoot));
+	protected JptValidator buildValidator() {
+		return this.getContainer().buildOverrideValidator(this);
 	}
 
-	protected OverrideTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
-		return new JavaOverrideTextRangeResolver(this, astRoot);
+	public TextRange getValidationTextRange() {
+		TextRange textRange = this.overrideAnnotation.getTextRange();
+		return (textRange != null) ? textRange : this.getContainer().getValidationTextRange();
 	}
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.overrideAnnotation.getTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getContainer().getValidationTextRange(astRoot);
-	}
-
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.overrideAnnotation.getNameTextRange(), astRoot);
+	public TextRange getNameTextRange() {
+		return this.getValidationTextRange(this.overrideAnnotation.getNameTextRange());
 	}
 
 	public boolean tableNameIsInvalid(String tableName) {

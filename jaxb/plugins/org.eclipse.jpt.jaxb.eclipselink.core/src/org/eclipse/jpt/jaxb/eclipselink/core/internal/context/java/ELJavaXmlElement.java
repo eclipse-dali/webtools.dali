@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlElement;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -31,9 +30,9 @@ public class ELJavaXmlElement
 	}
 	
 	@Override
-	protected void validateQName(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateQName(List<IMessage> messages, IReporter reporter) {
 		if (! getContext().hasXmlPath()) {
-			super.validateQName(messages, reporter, astRoot);
+			super.validateQName(messages, reporter);
 		}
 	}
 	

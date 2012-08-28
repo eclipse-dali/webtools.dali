@@ -328,7 +328,7 @@ public class VirtualOrmPersistentAttribute
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		// the Java attribute should not need an AST for validation from here
-		this.getJavaPersistentAttribute().validate(messages, reporter, null);
+		this.getJavaPersistentAttribute().validate(messages, reporter);
 	}
 
 	public TextRange getValidationTextRange() {

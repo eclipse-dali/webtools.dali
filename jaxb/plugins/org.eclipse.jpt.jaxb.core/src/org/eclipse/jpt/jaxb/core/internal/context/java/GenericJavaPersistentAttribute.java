@@ -410,13 +410,13 @@ public class GenericJavaPersistentAttribute
 	// **************** validation ********************************************
 
 	@Override
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.getJavaResourceAttribute().getTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		return this.getJavaResourceAttribute().getTextRange();
 	}
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
 		// validate that unsupported annotations are not present
 		JavaAttributeMappingDefinition currentMappingDefinition = getCurrentMappingDefinition();
@@ -431,11 +431,11 @@ public class GenericJavaPersistentAttribute
 								JaxbValidationMessages.ATTRIBUTE_MAPPING__UNSUPPORTED_ANNOTATION,
 								new String[] { annotation.getAnnotationName(), currentMappingDefinition.getAnnotationName() },
 								this,
-								annotation.getTextRange(astRoot)));
+								annotation.getTextRange()));
 			}
 		}
 		
-		this.getMapping().validate(messages, reporter, astRoot);
+		this.getMapping().validate(messages, reporter);
 	}
 	
 	protected JavaAttributeMappingDefinition getCurrentMappingDefinition() {

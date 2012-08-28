@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
@@ -22,7 +21,6 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.PersistentAttributeTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.PersistentFieldValidator;
 
 public class FieldAccessor 
@@ -63,11 +61,11 @@ public class FieldAccessor
 		return this.resourceField.isFinal();
 	}
 
-	public JptValidator buildAttributeValidator(PersistentAttribute persistentAttribute, PersistentAttributeTextRangeResolver textRangeResolver) {
-		return new PersistentFieldValidator(persistentAttribute, this, textRangeResolver);
+	public JptValidator buildAttributeValidator(PersistentAttribute persistentAttribute) {
+		return new PersistentFieldValidator(persistentAttribute, this);
 	}
 	
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+	public TextRange getValidationTextRange() {
 		return this.getResourceAttribute().getNameTextRange();
 	}
 

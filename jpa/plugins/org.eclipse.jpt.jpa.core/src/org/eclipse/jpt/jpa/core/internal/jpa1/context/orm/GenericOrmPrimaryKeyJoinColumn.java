@@ -11,13 +11,11 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyBaseJoinColumn;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmNamedColumn;
-import org.eclipse.jpt.jpa.core.internal.context.orm.OrmPrimaryKeyJoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.Table;
@@ -26,7 +24,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * <code>orm.xml</code> primary key join column
  */
 public class GenericOrmPrimaryKeyJoinColumn
-	extends AbstractOrmNamedColumn<XmlPrimaryKeyJoinColumn, OrmReadOnlyBaseJoinColumn.Owner>
+	extends AbstractOrmNamedColumn<XmlPrimaryKeyJoinColumn, ReadOnlyBaseJoinColumn.Owner>
 	implements OrmPrimaryKeyJoinColumn
 {
 	/** @see org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmNamedColumn#AbstractOrmNamedColumn(XmlContextNode, org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyNamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlNamedColumn) */
@@ -36,7 +34,7 @@ public class GenericOrmPrimaryKeyJoinColumn
 	protected String defaultReferencedColumnName;
 
 
-	public GenericOrmPrimaryKeyJoinColumn(XmlContextNode parent, OrmReadOnlyBaseJoinColumn.Owner owner, XmlPrimaryKeyJoinColumn xmlColumn) {
+	public GenericOrmPrimaryKeyJoinColumn(XmlContextNode parent, ReadOnlyBaseJoinColumn.Owner owner, XmlPrimaryKeyJoinColumn xmlColumn) {
 		super(parent, owner, xmlColumn);
 		this.specifiedReferencedColumnName = this.buildSpecifiedReferencedColumnName();
 	}
@@ -161,11 +159,6 @@ public class GenericOrmPrimaryKeyJoinColumn
 
 
 	// ********** validation **********
-
-	@Override
-	protected NamedColumnTextRangeResolver buildTextRangeResolver() {
-		return new OrmPrimaryKeyJoinColumnTextRangeResolver(this);
-	}
 
 	public TextRange getReferencedColumnNameTextRange() {
 		return this.getValidationTextRange(this.xmlColumn.getReferencedColumnNameTextRange());

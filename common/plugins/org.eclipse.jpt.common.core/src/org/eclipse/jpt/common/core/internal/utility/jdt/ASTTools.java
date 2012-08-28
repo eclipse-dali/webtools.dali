@@ -178,27 +178,6 @@ public class ASTTools {
 	}
 
 	/**
-	 * Return whether the specified expression is a type literal and the type binding
-	 * corresponding to the specified type name exists in the type
-	 * literal's inheritance hierarchy (superclasses and interfaces).
-	 * Return null otherwise.
-	 */
-	public static boolean typeIsSubTypeOf(Expression expression, String searchTypeName) {
-		return findTypeInHierarchy(expression, searchTypeName) != null;
-	}
-
-	/**
-	 * If the specified expression is a type literal, return the type binding
-	 * corresponding to the specified type name if it exists in the type
-	 * literal's inheritance hierarchy (superclasses and interfaces).
-	 * Return null otherwise.
-	 */
-	public static ITypeBinding findTypeInHierarchy(Expression expression, String searchTypeName) {
-		ITypeBinding typeBinding = resolveTypeBinding(expression);
-		return (typeBinding == null) ? null : findTypeInHierarchy(typeBinding, searchTypeName);
-	}
-
-	/**
 	 * Return whether a type binding with the specified type name exists in
 	 * the specified type binding's inheritance hierarchy (superclasses
 	 * and interfaces).
@@ -254,19 +233,6 @@ public class ASTTools {
 			}
 		}
 		return null;		
-	}
-	/**
-	 * Return whether the specified expression is a type literal and the type binding
-	 * corresponding to the specified interface name exists in the type
-	 * literal's inheritance hierarchy (superclasses and interfaces).
-	 * Return null otherwise.
-	 */
-	public static boolean typeImplementsInterface(Expression expression, String searchInterfaceName) {
-		ITypeBinding typeBinding = resolveTypeBinding(expression);
-		if (typeBinding == null) {
-			return false;
-		}
-		return findInterfaceInHierarchy(typeBinding, searchInterfaceName) != null;
 	}
 
 	/**

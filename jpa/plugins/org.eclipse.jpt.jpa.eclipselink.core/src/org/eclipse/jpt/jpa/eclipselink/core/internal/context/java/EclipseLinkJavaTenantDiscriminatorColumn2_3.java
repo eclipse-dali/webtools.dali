@@ -16,10 +16,9 @@ import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaNamedColumn;
-import org.eclipse.jpt.jpa.core.internal.context.java.JavaTableColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.AbstractJavaNamedDiscriminatorColumn;
+import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaReadOnlyTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTenantDiscriminatorColumnAnnotation2_3;
@@ -28,7 +27,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTenantDiscr
  * Java tenant discriminator column
  */
 public class EclipseLinkJavaTenantDiscriminatorColumn2_3
-	extends AbstractJavaNamedDiscriminatorColumn<EclipseLinkTenantDiscriminatorColumnAnnotation2_3, JavaReadOnlyTenantDiscriminatorColumn2_3.Owner>
+	extends AbstractJavaNamedDiscriminatorColumn<EclipseLinkTenantDiscriminatorColumnAnnotation2_3, ReadOnlyTenantDiscriminatorColumn2_3.Owner>
 	implements JavaTenantDiscriminatorColumn2_3
 {
 	/** @see AbstractJavaNamedColumn#AbstractJavaNamedColumn(JavaJpaContextNode, org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyNamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */
@@ -43,7 +42,7 @@ public class EclipseLinkJavaTenantDiscriminatorColumn2_3
 	protected Boolean specifiedPrimaryKey;
 	protected boolean defaultPrimaryKey = DEFAULT_PRIMARY_KEY;
 
-	public EclipseLinkJavaTenantDiscriminatorColumn2_3(JavaEclipseLinkMultitenancyImpl2_3 parent, JavaReadOnlyTenantDiscriminatorColumn2_3.Owner owner, EclipseLinkTenantDiscriminatorColumnAnnotation2_3 columnAnnotation) {
+	public EclipseLinkJavaTenantDiscriminatorColumn2_3(JavaEclipseLinkMultitenancyImpl2_3 parent, ReadOnlyTenantDiscriminatorColumn2_3.Owner owner, EclipseLinkTenantDiscriminatorColumnAnnotation2_3 columnAnnotation) {
 		super(parent, owner, columnAnnotation);
 		this.specifiedTable = this.buildSpecifiedTable();
 		this.specifiedContextProperty = this.buildSpecifiedContextProperty();
@@ -130,8 +129,8 @@ public class EclipseLinkJavaTenantDiscriminatorColumn2_3
 		return this.owner.getDefaultTableName();
 	}
 
-	public TextRange getTableTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.getColumnAnnotation().getTableTextRange(), astRoot);
+	public TextRange getTableTextRange() {
+		return this.getValidationTextRange(this.getColumnAnnotation().getTableTextRange());
 	}
 
 
@@ -177,8 +176,8 @@ public class EclipseLinkJavaTenantDiscriminatorColumn2_3
 		return this.owner.getDefaultContextPropertyName();
 	}
 
-	public TextRange getContextPropertyTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(this.getColumnAnnotation().getContextPropertyTextRange(), astRoot);
+	public TextRange getContextPropertyTextRange() {
+		return this.getValidationTextRange(this.getColumnAnnotation().getContextPropertyTextRange());
 	}
 
 
@@ -272,10 +271,5 @@ public class EclipseLinkJavaTenantDiscriminatorColumn2_3
 
 	public boolean tableNameIsInvalid() {
 		return this.owner.tableNameIsInvalid(this.getTable());
-	}
-
-	@Override
-	protected NamedColumnTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
-		return new JavaTableColumnTextRangeResolver(this, astRoot);
 	}
 }

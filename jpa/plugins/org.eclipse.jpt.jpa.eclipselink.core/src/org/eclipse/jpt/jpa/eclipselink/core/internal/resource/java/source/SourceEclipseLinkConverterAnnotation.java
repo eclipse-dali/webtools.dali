@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.Annotation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.CombinationIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
@@ -150,11 +149,6 @@ public final class SourceEclipseLinkConverterAnnotation
 
 	private AnnotationElementAdapter<String> buildConverterClassAdapter() {
 		return this.buildStringElementAdapter(this.converterClassDeclarationAdapter);
-	}
-
-	public boolean converterClassImplementsInterface(String interfaceName, CompilationUnit astRoot) {
-		return (this.converterClass != null)
-				&& ASTTools.typeImplementsInterface(this.converterClassAdapter.getExpression(astRoot), interfaceName);
 	}
 
 	// ***** fully-qualified converter class name

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,16 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaVirtualBaseColumn;
-import org.eclipse.jpt.jpa.core.internal.context.java.JavaJoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.Table;
 
@@ -26,7 +22,7 @@ import org.eclipse.jpt.jpa.db.Table;
  * Java virtual join column
  */
 public class GenericJavaVirtualJoinColumn
-	extends AbstractJavaVirtualBaseColumn<JavaReadOnlyJoinColumn.Owner, ReadOnlyJoinColumn>
+	extends AbstractJavaVirtualBaseColumn<ReadOnlyJoinColumn.Owner, ReadOnlyJoinColumn>
 	implements JavaVirtualJoinColumn
 {
 	protected final ReadOnlyJoinColumn overriddenColumn;
@@ -35,7 +31,7 @@ public class GenericJavaVirtualJoinColumn
 	protected String defaultReferencedColumnName;
 
 
-	public GenericJavaVirtualJoinColumn(JavaJpaContextNode parent, JavaReadOnlyJoinColumn.Owner owner, ReadOnlyJoinColumn overriddenColumn) {
+	public GenericJavaVirtualJoinColumn(JavaJpaContextNode parent, ReadOnlyJoinColumn.Owner owner, ReadOnlyJoinColumn overriddenColumn) {
 		super(parent, owner);
 		this.overriddenColumn = overriddenColumn;
 	}
@@ -113,12 +109,7 @@ public class GenericJavaVirtualJoinColumn
 
 	// ********** validation **********
 
-	@Override
-	protected NamedColumnTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
-		return new JavaJoinColumnTextRangeResolver(this, astRoot);
-	}
-
-	public TextRange getReferencedColumnNameTextRange(CompilationUnit astRoot) {
-		return this.getValidationTextRange(astRoot);
+	public TextRange getReferencedColumnNameTextRange() {
+		return this.getValidationTextRange();
 	}
 }

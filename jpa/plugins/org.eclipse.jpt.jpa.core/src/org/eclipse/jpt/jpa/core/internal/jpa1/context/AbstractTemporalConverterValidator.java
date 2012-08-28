@@ -25,16 +25,9 @@ public abstract class AbstractTemporalConverterValidator
 {
 	protected final BaseTemporalConverter converter;
 
-	protected final ConverterTextRangeResolver textRangeResolver;
-
-	protected AbstractTemporalConverterValidator(BaseTemporalConverter converter, ConverterTextRangeResolver textRangeResolver) {
+	protected AbstractTemporalConverterValidator(BaseTemporalConverter converter) {
 		super();
 		this.converter = converter;
-		this.textRangeResolver = textRangeResolver;
-	}
-
-	protected ConverterTextRangeResolver getTextRangeResolver() {
-		return this.textRangeResolver;
 	}
 
 	protected AttributeMapping getAttributeMapping() {
@@ -76,7 +69,7 @@ public abstract class AbstractTemporalConverterValidator
 			this.getInvalidTemporalMappingType(),
 			StringTools.EMPTY_STRING_ARRAY,
 			this.converter,
-			this.getTextRangeResolver().getConverterTextRange()
+			this.converter.getValidationTextRange()
 		);
 	}
 
@@ -88,7 +81,7 @@ public abstract class AbstractTemporalConverterValidator
 			this.getVirtualAttributeInvalidTemporalMappingType(),
 			new String[] {this.getPersistentAttribute().getName()},
 			this.converter,
-			this.getTextRangeResolver().getConverterTextRange()
+			this.converter.getValidationTextRange()
 		);
 	}
 

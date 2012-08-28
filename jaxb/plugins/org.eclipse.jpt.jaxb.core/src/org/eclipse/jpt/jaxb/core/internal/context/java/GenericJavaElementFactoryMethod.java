@@ -199,18 +199,18 @@ public class GenericJavaElementFactoryMethod
 	// ***** validation *****
 	
 	@Override
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return getXmlElementDeclAnnotation().getTextRange(astRoot);
+	public TextRange getValidationTextRange() {
+		return getXmlElementDeclAnnotation().getTextRange();
 	}
 	
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		this.qName.validate(messages, reporter, astRoot);
-		this.substitutionHeadQName.validate(messages, reporter, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.qName.validate(messages, reporter);
+		this.substitutionHeadQName.validate(messages, reporter);
 		
 		JavaResourceMethod resourceMethod = getResourceMethod();
-		validateMethodReturnType(resourceMethod, messages, astRoot);
+		validateMethodReturnType(resourceMethod, messages);
 		
 		if (resourceMethod.getParametersSize() != 1) {
 			messages.add(
@@ -218,12 +218,12 @@ public class GenericJavaElementFactoryMethod
 							IMessage.HIGH_SEVERITY,
 							JaxbValidationMessages.XML_ELEMENT_DECL__INVALID_METHOD_SIGNATURE_PARAM,
 							this,
-							getValidationTextRange(astRoot)));
+							getValidationTextRange()));
 		}
 	}
 	
 	protected void validateMethodReturnType(
-			JavaResourceMethod resourceMethod, List<IMessage> messages, CompilationUnit astRoot) {
+			JavaResourceMethod resourceMethod, List<IMessage> messages) {
 		
 		if (! JAXB.JAXB_ELEMENT.equals(resourceMethod.getTypeBinding().getQualifiedName())) {
 			messages.add(
@@ -231,7 +231,7 @@ public class GenericJavaElementFactoryMethod
 							IMessage.HIGH_SEVERITY,
 							JaxbValidationMessages.XML_ELEMENT_DECL__INVALID_METHOD_SIGNATURE_RETURN_TYPE,
 							this,
-							getValidationTextRange(astRoot)));
+							getValidationTextRange()));
 		}
 	}
 	
@@ -294,7 +294,7 @@ public class GenericJavaElementFactoryMethod
 		}
 		
 		@Override
-		protected void validateReference(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		protected void validateReference(List<IMessage> messages, IReporter reporter) {
 			if (! GenericJavaElementFactoryMethod.this.isGlobalScope()) {
 				String fqScope = GenericJavaElementFactoryMethod.this.getFullyQualifiedScope();
 				JaxbTypeMapping scopeTypeMapping = 
@@ -306,7 +306,7 @@ public class GenericJavaElementFactoryMethod
 					}
 					
 					if (xsdType.getElement(getNamespace(), getName(), true) == null) {
-						messages.add(getUnresolveSchemaComponentMessage(astRoot));
+						messages.add(getUnresolveSchemaComponentMessage());
 					}
 				}
 			}
@@ -314,7 +314,7 @@ public class GenericJavaElementFactoryMethod
 				XsdSchema xsdSchema = this.getXsdSchema();
 				if (xsdSchema != null) {
 					if (xsdSchema.getElementDeclaration(getNamespace(), getName()) == null) {
-						messages.add(getUnresolveSchemaComponentMessage(astRoot));
+						messages.add(getUnresolveSchemaComponentMessage());
 					}
 				}
 			}
@@ -388,7 +388,7 @@ public class GenericJavaElementFactoryMethod
 		}
 		
 		@Override
-		protected void validateName(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		protected void validateName(List<IMessage> messages, IReporter reporter) {
 			// need to ignore the unspecified (null) case
 			if ("".equals(getName())) {
 				messages.add(
@@ -397,7 +397,7 @@ public class GenericJavaElementFactoryMethod
 								JaxbValidationMessages.QNAME__MISSING_NAME,
 								new String[] { getReferencedComponentTypeDescription() },
 								this,
-								getNameTextRange(astRoot)));
+								getNameTextRange()));
 			}
 			else if (! StringTools.stringIsEmpty(getName())) {
 				if (Tools.valuesAreEqual(getName(), GenericJavaElementFactoryMethod.this.getQName().getName())) {
@@ -406,17 +406,17 @@ public class GenericJavaElementFactoryMethod
 									IMessage.HIGH_SEVERITY,
 									JaxbValidationMessages.XML_ELEMENT_DECL__SUBST_HEAD_NAME_EQUALS_NAME,
 									this,
-									getNameTextRange(astRoot)));
+									getNameTextRange()));
 				}
 			}
 		}
 	
 		@Override
-		protected void validateReference(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		protected void validateReference(List<IMessage> messages, IReporter reporter) {
 			XsdSchema xsdSchema = this.getXsdSchema();
 			if (xsdSchema != null) {
 				if (xsdSchema.getElementDeclaration(getNamespace(), getName()) == null) {
-					messages.add(getUnresolveSchemaComponentMessage(astRoot));
+					messages.add(getUnresolveSchemaComponentMessage());
 				}
 			}
 			
@@ -432,7 +432,7 @@ public class GenericJavaElementFactoryMethod
 							JaxbValidationMessages.XML_ELEMENT_DECL__SUBST_HEAD_NO_MATCHING_ELEMENT_DECL,
 							new String[] { getNamespace(), getName() },
 							this,
-							getValidationTextRange(astRoot)));
+							getValidationTextRange()));
 		}
 	}
 	

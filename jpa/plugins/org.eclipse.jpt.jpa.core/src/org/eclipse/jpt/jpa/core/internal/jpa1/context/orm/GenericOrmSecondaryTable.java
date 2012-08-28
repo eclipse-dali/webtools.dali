@@ -23,11 +23,8 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSecondaryTable;
-import org.eclipse.jpt.jpa.core.internal.context.BaseJoinColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmTable;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.SecondaryTablePrimaryKeyJoinColumnValidator;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
@@ -48,7 +45,7 @@ public class GenericOrmSecondaryTable
 	protected /* final */ XmlSecondaryTable xmlSecondaryTable;
 
 	protected final ContextListContainer<OrmPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumnContainer;
-	protected final OrmReadOnlyBaseJoinColumn.Owner primaryKeyJoinColumnOwner;
+	protected final ReadOnlyBaseJoinColumn.Owner primaryKeyJoinColumnOwner;
 
 	protected OrmPrimaryKeyJoinColumn defaultPrimaryKeyJoinColumn;
 
@@ -230,7 +227,7 @@ public class GenericOrmSecondaryTable
 		}
 	}
 
-	protected OrmReadOnlyBaseJoinColumn.Owner buildPrimaryKeyJoinColumnOwner() {
+	protected ReadOnlyBaseJoinColumn.Owner buildPrimaryKeyJoinColumnOwner() {
 		return new PrimaryKeyJoinColumnOwner();
 	}
 
@@ -360,7 +357,7 @@ public class GenericOrmSecondaryTable
 	// ********** primary key join column owner adapter **********
 
 	protected class PrimaryKeyJoinColumnOwner
-		implements OrmReadOnlyBaseJoinColumn.Owner
+		implements ReadOnlyBaseJoinColumn.Owner
 	{
 		protected OrmEntity getEntity() {
 			return GenericOrmSecondaryTable.this.getEntity();
@@ -396,8 +393,8 @@ public class GenericOrmSecondaryTable
 			return GenericOrmSecondaryTable.this.getValidationTextRange();
 		}
 
-		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return new SecondaryTablePrimaryKeyJoinColumnValidator(GenericOrmSecondaryTable.this, (ReadOnlyBaseJoinColumn) column, this, (BaseJoinColumnTextRangeResolver) textRangeResolver);
+		public JptValidator buildColumnValidator(ReadOnlyNamedColumn column) {
+			return new SecondaryTablePrimaryKeyJoinColumnValidator(GenericOrmSecondaryTable.this, (ReadOnlyBaseJoinColumn) column, this);
 		}
 	}
 }

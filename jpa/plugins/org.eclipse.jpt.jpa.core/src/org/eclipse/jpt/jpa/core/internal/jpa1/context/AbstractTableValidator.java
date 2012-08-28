@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,6 @@ import java.util.List;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -26,26 +25,17 @@ public abstract class AbstractTableValidator
 
 	protected final ReadOnlyTable table;
 
-	protected final TableTextRangeResolver textRangeResolver;
-
 	protected AbstractTableValidator(
-				ReadOnlyTable table,
-				TableTextRangeResolver textRangeResolver) {
-		this(null, table, textRangeResolver);
+				ReadOnlyTable table) {
+		this(null, table);
 	}
 
 	protected AbstractTableValidator(
 				ReadOnlyPersistentAttribute persistentAttribute,
-				ReadOnlyTable table,
-				TableTextRangeResolver textRangeResolver) {
+				ReadOnlyTable table) {
 		super();
 		this.persistentAttribute = persistentAttribute;
 		this.table = table;
-		this.textRangeResolver = textRangeResolver;
-	}
-
-	protected TableTextRangeResolver getTextRangeResolver() {
-		return this.textRangeResolver;
 	}
 
 	public boolean validate(List<IMessage> messages, IReporter reporter) {
@@ -94,7 +84,7 @@ public abstract class AbstractTableValidator
 				this.table.getName()
 			},
 			this.table,
-			this.textRangeResolver.getCatalogTextRange()
+			this.table.getCatalogTextRange()
 		);
 	}
 
@@ -108,7 +98,7 @@ public abstract class AbstractTableValidator
 				this.table.getName()
 			},
 			this.table,
-			this.textRangeResolver.getCatalogTextRange()
+			this.table.getCatalogTextRange()
 		);
 	}
 
@@ -131,7 +121,7 @@ public abstract class AbstractTableValidator
 				this.table.getName()
 			},
 			this.table,
-			this.textRangeResolver.getSchemaTextRange()
+			this.table.getSchemaTextRange()
 		);
 	}
 
@@ -145,7 +135,7 @@ public abstract class AbstractTableValidator
 				this.table.getName()
 			},
 			this.table,
-			this.textRangeResolver.getSchemaTextRange()
+			this.table.getSchemaTextRange()
 		);
 	}
 
@@ -165,7 +155,7 @@ public abstract class AbstractTableValidator
 			message,
 			new String[] {this.table.getName()},
 			this.table,
-			this.textRangeResolver.getNameTextRange()
+			this.table.getNameTextRange()
 		);
 	}
 
@@ -178,7 +168,7 @@ public abstract class AbstractTableValidator
 				this.table.getName()
 			},
 			this.table,
-			this.textRangeResolver.getNameTextRange()
+			this.table.getNameTextRange()
 		);
 	}
 

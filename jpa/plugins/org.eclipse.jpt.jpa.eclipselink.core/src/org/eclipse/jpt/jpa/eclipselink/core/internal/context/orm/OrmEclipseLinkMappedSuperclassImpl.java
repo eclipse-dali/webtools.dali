@@ -43,7 +43,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFacto
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkDynamicTypeMappingValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkMappedSuperclassPrimaryKeyValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkMappedSuperclassValidator;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.plugin.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlMappedSuperclass;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -374,7 +373,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 	
 	@Override
 	protected JptValidator buildPrimaryKeyValidator() {
-		return new EclipseLinkMappedSuperclassPrimaryKeyValidator(this, this.buildTextRangeResolver());
+		return new EclipseLinkMappedSuperclassPrimaryKeyValidator(this);
 	}
 
 	@Override
@@ -382,7 +381,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 		if (this.isDynamicType()) {
 			return new EclipseLinkDynamicTypeMappingValidator(this);
 		}
-		return new EclipseLinkMappedSuperclassValidator(this, this.getJavaResourceType(), this.buildTextRangeResolver());
+		return new EclipseLinkMappedSuperclassValidator(this, this.getJavaResourceType());
 	}
 
 	protected boolean isDynamicType() {

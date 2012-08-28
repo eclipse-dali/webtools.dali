@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.Override_;
@@ -27,7 +26,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlOverride;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.3
  * @since 2.3
  */
 public interface OrmOverrideContainer
@@ -72,8 +71,6 @@ public interface OrmOverrideContainer
 		 * @see org.eclipse.jpt.jpa.core.context.java.JavaOverrideContainer#getOverrideNames()
 		 */
 		Iterable<String> getJavaOverrideNames();
-
-		TextRange getValidationTextRange();
 
 		OrmTypeMapping getTypeMapping();
 	}
