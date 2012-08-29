@@ -175,13 +175,15 @@ final class SourceType
 
 		FieldDeclaration[] fieldDeclarations = typeDeclaration.getFields();
 		CounterMap counters = new CounterMap(fieldDeclarations.length);
+		HashSet<JavaResourceField> remainingFields = new HashSet<JavaResourceField>(this.fields);
 		for (FieldDeclaration fieldDeclaration : fieldDeclarations) {
 			for (VariableDeclarationFragment fragment : fragments(fieldDeclaration)) {
 				String fieldName = fragment.getName().getFullyQualifiedName();
 				int occurrence = counters.increment(fieldName);
 
-				JavaResourceField field = this.getField(fieldName, occurrence);
+				JavaResourceField field = getField(remainingFields, fieldName, occurrence);
 				field.resolveTypes(fieldDeclaration, fragment);
+				remainingFields.remove(field);
 			}
 		}
 
@@ -470,8 +472,8 @@ final class SourceType
 		this.addItemToCollection(field, this.fields, FIELDS_COLLECTION);
 	}
 
-	private JavaResourceField getField(String fieldName, int occurrence) {
-		for (JavaResourceField field : this.getFields()) {
+	private static JavaResourceField getField(Collection<JavaResourceField> fields, String fieldName, int occurrence) {
+		for (JavaResourceField field : fields) {
 			if (field.isFor(fieldName, occurrence)) {
 				return field;
 			}
@@ -504,7 +506,7 @@ final class SourceType
 				String fieldName = fragment.getName().getFullyQualifiedName();
 				int occurrence = counters.increment(fieldName);
 
-				JavaResourceField field = this.getField(fieldName, occurrence);
+				JavaResourceField field = getField(fieldsToRemove, fieldName, occurrence);
 				if (field == null) {
 					this.addField(this.buildField(fieldName, occurrence, fieldDeclaration, fragment));
 				} else {
