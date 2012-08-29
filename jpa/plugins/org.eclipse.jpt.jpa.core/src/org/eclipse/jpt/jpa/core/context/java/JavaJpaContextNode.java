@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 
 /**
@@ -28,10 +26,5 @@ import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 public interface JavaJpaContextNode
 	extends JpaContextNode
 {
-	/**
-	 * Return the Java code-completion proposals for the specified position
-	 * in the source code.
-	 */
-	Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot);
 
 }

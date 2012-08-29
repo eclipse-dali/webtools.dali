@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.xsd;
 
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
@@ -180,44 +179,37 @@ public class XsdSchema
 		return new SnapshotCloneIterable(getXSDSchema().getElementDeclarations());
 	}
 
-	public Iterable<String> getNamespaceProposals(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(
-				new FilteringIterable<String>(getNamespaces(), filter));
+	public Iterable<String> getNamespaceProposals() {
+		return StringTools.convertToJavaStringLiterals(getNamespaces());
 	}
 	
-	public Iterable<String> getTypeNameProposals(String namespace, Filter<String> filter) {
+	public Iterable<String> getTypeNameProposals(String namespace) {
 		return StringTools.convertToJavaStringLiterals(
-				new FilteringIterable<String>(
 					new TransformationIterable<XsdTypeDefinition, String>(this.getTypeDefinitions(namespace)) {
 						@Override
 						protected String transform(XsdTypeDefinition o) {
 							return o.getName();
 						}
-					},
-					filter));
+					});
 	}
 	
-	public Iterable<String> getSimpleTypeNameProposals(String namespace, Filter<String> filter) {
+	public Iterable<String> getSimpleTypeNameProposals(String namespace) {
 		return StringTools.convertToJavaStringLiterals(
-				new FilteringIterable<String>(
 						new TransformationIterable<XsdSimpleTypeDefinition, String>(this.getSimpleTypeDefinitions(namespace)) {
 							@Override
 							protected String transform(XsdSimpleTypeDefinition o) {
 								return o.getName();
 							}
-						},
-						filter));
+						});
 	}
 	
-	public Iterable<String> getElementNameProposals(String namespace, Filter<String> filter) {
+	public Iterable<String> getElementNameProposals(String namespace) {
 		return StringTools.convertToJavaStringLiterals(
-				new FilteringIterable<String>(
 						new TransformationIterable<XsdElementDeclaration, String>(this.getElementDeclarations(namespace)) {
 							@Override
 							protected String transform(XsdElementDeclaration o) {
 								return o.getName();
 							}
-						},
-						filter));
+						});
 	}
 }

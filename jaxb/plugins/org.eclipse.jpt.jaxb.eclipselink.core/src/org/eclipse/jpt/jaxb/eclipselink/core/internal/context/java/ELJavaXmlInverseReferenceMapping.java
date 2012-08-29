@@ -10,9 +10,7 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -125,14 +123,14 @@ public class ELJavaXmlInverseReferenceMapping
 	// ***** content assist *****
 	
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (! CollectionTools.isEmpty(result)) {
 			return result;
 		}
 		
 		if (getXmlInverseReferenceAnnotation().mappedByTouches(pos)) {
-			result = getMappedByProposals(filter);
+			result = getMappedByProposals();
 		}
 		if (! CollectionTools.isEmpty(result)) {
 			return result;
@@ -141,7 +139,7 @@ public class ELJavaXmlInverseReferenceMapping
 		return EmptyIterable.instance();
 	}
 	
-	protected Iterable<String> getMappedByProposals(Filter<String> filter) {
+	protected Iterable<String> getMappedByProposals() {
 		JaxbClassMapping referencedClassMapping = getReferencedClassMapping();
 		
 		if (referencedClassMapping == null) {

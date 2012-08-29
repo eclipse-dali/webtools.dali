@@ -10,9 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
@@ -237,12 +235,12 @@ public class JavaEclipseLinkMappedSuperclassImpl
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.multitenancy.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.multitenancy.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}

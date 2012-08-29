@@ -18,18 +18,14 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.CompletionContext;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.ui.text.java.ContentAssistInvocationContext;
 import org.eclipse.jdt.ui.text.java.IJavaCompletionProposalComputer;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
-import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
@@ -48,7 +44,7 @@ public class JaxbJavaCompletionProposalComputer
 		// do nothing
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List computeCompletionProposals(ContentAssistInvocationContext context, IProgressMonitor monitor) {
 		return (context instanceof JavaContentAssistInvocationContext) ?
 				computeCompletionProposals((JavaContentAssistInvocationContext) context)
@@ -117,10 +113,6 @@ public class JaxbJavaCompletionProposalComputer
 
 		CompletionContext cc = context.getCoreContext();
 
-		// the context's "token" is really a sort of "prefix" - it does NOT
-		// correspond to the "start" and "end" we get below... 
-		char[] prefix = cc.getToken();
-		Filter<String> filter = ((prefix == null) ? Filter.Transparent.<String>instance() : new IgnoreCasePrefixFilter(prefix));
 		// the token "start" is the offset of the token's first character
 		int tokenStart = cc.getTokenStart();
 		// the token "end" is the offset of the token's last character (yuk)
@@ -129,7 +121,6 @@ public class JaxbJavaCompletionProposalComputer
 			return Collections.emptyList();
 		}
 		
-//		System.out.println("prefix: " + ((prefix == null) ? "[null]" : new String(prefix)));
 //		System.out.println("token start: " + tokenStart);
 //		System.out.println("token end: " + tokenEnd);
 //		String source = cu.getSource();
@@ -138,11 +129,9 @@ public class JaxbJavaCompletionProposalComputer
 //		String snippet = source.substring(Math.max(0, tokenStart - 20), Math.min(source.length(), tokenEnd + 21));
 //		System.out.println("surrounding snippet: =>" + snippet + "<=");
 
-		// TODO move this parser call into the model...
-		CompilationUnit astRoot = ASTTools.buildASTRoot(cu);
 		List<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
 		for (JavaContextNode javaNode : javaNodes) {
-			for (String proposal : javaNode.getJavaCompletionProposals(context.getInvocationOffset(), filter, astRoot)) {
+			for (String proposal : javaNode.getCompletionProposals(context.getInvocationOffset())) {
 				// using proposal.length() -1 as cursor position puts the cursor just inside end quotes 
 				// useful for further content assist if necessary
 				proposals.add(new CompletionProposal(proposal, tokenStart, tokenEnd - tokenStart + 1, proposal.length() - 1));
@@ -160,7 +149,7 @@ public class JaxbJavaCompletionProposalComputer
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List computeContextInformation(ContentAssistInvocationContext context, IProgressMonitor monitor) {
 		return Collections.emptyList();
 	}
@@ -171,17 +160,6 @@ public class JaxbJavaCompletionProposalComputer
 
 	public void sessionEnded() {
 		// do nothing
-	}
-
-	private static class IgnoreCasePrefixFilter implements Filter<String> {
-		private final char[] prefix;
-		IgnoreCasePrefixFilter(char[] prefix) {
-			super();
-			this.prefix = prefix;
-		}
-		public boolean accept(String s) {
-			return StringTools.stringStartsWithIgnoreCase(s.toCharArray(), this.prefix);
-		}
 	}
 
 }

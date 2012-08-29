@@ -11,12 +11,10 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.Association;
 import org.eclipse.jpt.common.utility.internal.SimpleAssociation;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -24,7 +22,6 @@ import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SubListIterableWrapper;
@@ -881,35 +878,35 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 
-		result = this.orderable.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.orderable.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 
 		if (this.mapKeyNameTouches(pos)) {
-			return this.javaCandidateMapKeyNames(filter);
+			return this.getJavaCandidateMapKeyNames();
 		}
 
-		result = this.mapKeyColumn.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.mapKeyColumn.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.mapKeyConverter.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.mapKeyConverter.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.mapKeyAttributeOverrideContainer.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.mapKeyAttributeOverrideContainer.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		for (JavaJoinColumn joinColumn : this.getMapKeyJoinColumns()) {
-			result = joinColumn.getJavaCompletionProposals(pos, filter, astRoot);
+			result = joinColumn.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}
@@ -923,12 +920,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 		return (mapKeyAnnotation != null) && mapKeyAnnotation.nameTouches(pos);
 	}
 
-	protected Iterable<String> javaCandidateMapKeyNames(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateMapKeyNames(filter));
-	}
-
-	protected Iterable<String> getCandidateMapKeyNames(Filter<String> filter) {
-		return new FilteringIterable<String>(this.getCandidateMapKeyNames(), filter);
+	protected Iterable<String> getJavaCandidateMapKeyNames() {
+		return StringTools.convertToJavaStringLiterals(this.getCandidateMapKeyNames());
 	}
 
 	public Iterable<String> getCandidateMapKeyNames() {

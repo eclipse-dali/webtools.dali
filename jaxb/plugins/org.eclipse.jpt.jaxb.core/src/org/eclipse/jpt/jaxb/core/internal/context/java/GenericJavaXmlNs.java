@@ -9,10 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
@@ -118,24 +116,22 @@ public class GenericJavaXmlNs
 	// ***** content assist *****
 	
 	@Override
-	public Iterable<String> getJavaCompletionProposals(
-			int pos, Filter<String> filter, CompilationUnit astRoot) {
+	public Iterable<String> getCompletionProposals(
+			int pos) {
 		
 		if (getResourceXmlNs().namespaceURITouches(pos)) {
-			return getNamespaceURICompletionProposals(pos, filter);
+			return getNamespaceURICompletionProposals(pos);
 		}
 		return EmptyIterable.instance();
 	}
 	
-	protected Iterable<String> getNamespaceURICompletionProposals(
-			int pos, Filter<String> filter) {
-		
+	protected Iterable<String> getNamespaceURICompletionProposals(int pos) {
 		String packageNamespace = getJaxbPackageInfo().getJaxbPackage().getNamespace();
 		Iterable<String> result = (StringTools.stringIsEmpty(packageNamespace)) ?
 				EmptyIterable.instance() : new SingleElementIterable(StringTools.convertToJavaStringLiteral(packageNamespace));
 		XsdSchema schema = getJaxbPackageInfo().getJaxbPackage().getXsdSchema();
 		if (schema != null) { 
-			result = new CompositeIterable<String>(result, schema.getNamespaceProposals(filter));
+			result = new CompositeIterable<String>(result, schema.getNamespaceProposals());
 		}
 		return CollectionTools.set(result);
 	}

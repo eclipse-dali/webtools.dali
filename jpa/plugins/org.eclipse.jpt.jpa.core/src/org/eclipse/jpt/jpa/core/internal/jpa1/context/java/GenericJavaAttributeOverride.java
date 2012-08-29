@@ -10,8 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
@@ -120,12 +118,12 @@ public class GenericJavaAttributeOverride
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.column.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.column.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}

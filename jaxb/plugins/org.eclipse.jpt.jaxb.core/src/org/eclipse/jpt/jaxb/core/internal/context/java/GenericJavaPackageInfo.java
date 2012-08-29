@@ -12,12 +12,10 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceNode;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
@@ -325,21 +323,21 @@ public class GenericJavaPackageInfo
 	
 	//This doesn't actually work yet because of JDT bug (bugs.eclipse.org/326610)
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+	public Iterable<String> getCompletionProposals(int pos) {
 		
 		getJaxbProject().getSchemaLibrary().refreshSchema(getJaxbPackage().getNamespace());
 		
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (! CollectionTools.isEmpty(result)) {
 			return result;
 		}
 		
-		result = this.xmlSchema.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.xmlSchema.getCompletionProposals(pos);
 		if (! CollectionTools.isEmpty(result)) {
 			return result;
 		}		
 		for (XmlSchemaType xmlSchemaType : this.getXmlSchemaTypes()) {
-			result = xmlSchemaType.getJavaCompletionProposals(pos, filter, astRoot);
+			result = xmlSchemaType.getCompletionProposals(pos);
 			if (!CollectionTools.isEmpty(result)) {
 				return result;
 			}

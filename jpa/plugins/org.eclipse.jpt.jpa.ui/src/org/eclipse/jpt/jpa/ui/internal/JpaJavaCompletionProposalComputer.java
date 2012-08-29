@@ -18,16 +18,12 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.CompletionContext;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.ui.text.java.ContentAssistInvocationContext;
 import org.eclipse.jdt.ui.text.java.IJavaCompletionProposalComputer;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
-import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -117,10 +113,6 @@ public class JpaJavaCompletionProposalComputer
 
 		CompletionContext cc = context.getCoreContext();
 
-		// the context's "token" is really a sort of "prefix" - it does NOT
-		// correspond to the "start" and "end" we get below... 
-		char[] prefix = cc.getToken();
-		Filter<String> filter = this.buildPrefixFilter(prefix);
 		// the token "start" is the offset of the token's first character
 		int tokenStart = cc.getTokenStart();
 		// the token "end" is the offset of the token's last character (yuk)
@@ -129,7 +121,6 @@ public class JpaJavaCompletionProposalComputer
 			return Collections.emptyList();
 		}
 
-//		System.out.println("prefix: " + ((prefix == null) ? "[null]" : new String(prefix)));
 //		System.out.println("token start: " + tokenStart);
 //		System.out.println("token end: " + tokenEnd);
 //		String source = cu.getSource();
@@ -138,11 +129,9 @@ public class JpaJavaCompletionProposalComputer
 //		String snippet = source.substring(Math.max(0, tokenStart - 20), Math.min(source.length(), tokenEnd + 21));
 //		System.out.println("surrounding snippet: =>" + snippet + "<=");
 
-		// TODO move this parser call into the model...
-		CompilationUnit astRoot = ASTTools.buildASTRoot(cu);
 		List<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
 		for (JpaStructureNode structureNode : rootStructureNodes) {
-			for (String s : ((JavaPersistentType) structureNode).getJavaCompletionProposals(context.getInvocationOffset(), filter, astRoot)) {
+			for (String s : ((JavaPersistentType) structureNode).getCompletionProposals(context.getInvocationOffset())) {
 				proposals.add(new CompletionProposal(s, tokenStart, tokenEnd - tokenStart + 1, s.length()));
 			}
 		}
@@ -173,24 +162,5 @@ public class JpaJavaCompletionProposalComputer
 
 	public void sessionEnded() {
 		// do nothing
-	}
-
-	private Filter<String> buildPrefixFilter(char[] prefix) {
-		return (prefix == null) ?
-				Filter.Transparent.<String>instance() :
-				new IgnoreCasePrefixFilter(prefix);
-	}
-
-	private static class IgnoreCasePrefixFilter
-		implements Filter<String>
-	{
-		private final String prefix;
-		IgnoreCasePrefixFilter(char[] prefix) {
-			super();
-			this.prefix = new String(prefix);
-		}
-		public boolean accept(String s) {
-			return StringTools.stringStartsWithIgnoreCase(s, this.prefix);
-		}
 	}
 }

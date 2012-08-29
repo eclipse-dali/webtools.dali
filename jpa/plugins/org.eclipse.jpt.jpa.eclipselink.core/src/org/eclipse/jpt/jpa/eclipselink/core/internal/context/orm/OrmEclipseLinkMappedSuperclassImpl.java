@@ -415,12 +415,12 @@ public class OrmEclipseLinkMappedSuperclassImpl
 	// ********** completion proposals **********
 
 	@Override
-	public Iterable<String> getXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getXmlCompletionProposals(pos);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.multitenancy.getXmlCompletionProposals(pos);
+		result = this.multitenancy.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}

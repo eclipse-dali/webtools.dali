@@ -451,26 +451,26 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 	// ********** completion proposals **********
 
 	@Override
-	public Iterable<String> getXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getXmlCompletionProposals(pos);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.column.getXmlCompletionProposals(pos);
+		result = this.column.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.generatorContainer.getXmlCompletionProposals(pos);
+		result = this.generatorContainer.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		if (this.generatedValue != null) {
-			result = this.generatedValue.getXmlCompletionProposals(pos);
+			result = this.generatedValue.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}
 		}
-		result = this.converter.getXmlCompletionProposals(pos);
+		result = this.converter.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}

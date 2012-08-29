@@ -10,13 +10,10 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationshipStrategy;
@@ -170,14 +167,14 @@ public class GenericJavaMappedByRelationshipStrategy
 	// ********** java completion proposals **********
 
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		OwnableRelationshipMappingAnnotation annotation = this.getMappingAnnotation();
 		if ((annotation != null) && annotation.mappedByTouches(pos)) {
-			result = this.getJavaCandidateMappedByAttributeNames(filter);
+			result = this.getJavaCandidateMappedByAttributeNames();
 		}
 		return result;
 	}
@@ -186,12 +183,8 @@ public class GenericJavaMappedByRelationshipStrategy
 		return this.getRelationshipMapping().getTargetEntityNonTransientAttributeNames();
 	}
 
-	protected Iterable<String> getCandidateMappedByAttributeNames(Filter<String> filter) {
-		return new FilteringIterable<String>(this.getCandidateMappedByAttributeNames(), filter);
-	}
-
-	protected Iterable<String> getJavaCandidateMappedByAttributeNames(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateMappedByAttributeNames(filter));
+	protected Iterable<String> getJavaCandidateMappedByAttributeNames() {
+		return StringTools.convertToJavaStringLiterals(this.getCandidateMappedByAttributeNames());
 	}
 
 

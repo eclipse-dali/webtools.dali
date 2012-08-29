@@ -10,9 +10,7 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
@@ -137,13 +135,13 @@ public class ELJavaXmlJoinNode
 	// ***** content assist *****
 	
 	@Override
-	public Iterable<String> getJavaCompletionProposals(
-			int pos, Filter<String> filter, CompilationUnit astRoot) {
+	public Iterable<String> getCompletionProposals(
+			int pos) {
 		
 		if (getAnnotation().xmlPathTouches(pos) && this.xmlPath != null) {
 			XsdTypeDefinition xsdType = getClassMapping().getXsdTypeDefinition();
 			XPath xpath = XPathFactory.instance().getXpath(this.xmlPath);
-			return xpath.getCompletionProposals(new XmlPathContext(), xsdType, pos, filter);
+			return xpath.getCompletionProposals(new XmlPathContext(), xsdType, pos);
 		}
 		
 		if (getAnnotation().referencedXmlPathTouches(pos) && this.referencedXmlPath != null) {
@@ -151,7 +149,7 @@ public class ELJavaXmlJoinNode
 			
 			XsdTypeDefinition xsdType = getAttributeMapping().getReferencedXsdTypeDefinition();
 			XPath xpath = XPathFactory.instance().getXpath(this.referencedXmlPath);
-			Iterable<String> result = xpath.getCompletionProposals(new ReferencedXmlPathContext(), xsdType, pos, filter);
+			Iterable<String> result = xpath.getCompletionProposals(new ReferencedXmlPathContext(), xsdType, pos);
 			
 			ELClassMapping referencedClassMapping = this.context.getAttributeMapping().getReferencedClassMapping();
 			if (referencedClassMapping != null) {

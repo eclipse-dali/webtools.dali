@@ -11,9 +11,7 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.beans.Introspector;
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
@@ -91,13 +89,13 @@ public class GenericJavaXmlRootElement
 	// **************** content assist ****************************************
 	
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (! CollectionTools.isEmpty(result)) {
 			return result;
 		}
 		
-		result = this.qName.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.qName.getCompletionProposals(pos);
 		if (! CollectionTools.isEmpty(result)) {
 			return result;
 		}
@@ -155,21 +153,21 @@ public class GenericJavaXmlRootElement
 		}
 		
 		@Override
-		protected Iterable<String> getNamespaceProposals(Filter<String> filter) {
+		protected Iterable<String> getNamespaceProposals() {
 			XsdSchema schema = this.getXsdSchema();
 			if (schema == null) {
 				return EmptyIterable.instance();
 			}
-			return schema.getNamespaceProposals(filter);
+			return schema.getNamespaceProposals();
 		}
 		
 		@Override
-		protected Iterable<String> getNameProposals(Filter<String> filter) {
+		protected Iterable<String> getNameProposals() {
 			XsdSchema schema = this.getXsdSchema();
 			if (schema == null) {
 				return EmptyIterable.instance();
 			}
-			return schema.getElementNameProposals(getNamespace(), filter);
+			return schema.getElementNameProposals(getNamespace());
 		}
 		
 		@Override

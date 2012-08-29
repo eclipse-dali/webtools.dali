@@ -310,13 +310,13 @@ public abstract class AbstractOrmJoinColumnRelationshipStrategy
 	// ********** completion proposals **********
 
 	@Override
-	public Iterable<String> getXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getXmlCompletionProposals(pos);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		for (OrmJoinColumn joinColumn : this.getJoinColumns()) {
-			result = joinColumn.getXmlCompletionProposals(pos);
+			result = joinColumn.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}

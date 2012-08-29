@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import java.util.ArrayList;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -428,13 +427,13 @@ public class GenericJavaTableGenerator
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		for (JavaUniqueConstraint constraint : this.getUniqueConstraints()) {
-			result = constraint.getJavaCompletionProposals(pos, filter, astRoot);
+			result = constraint.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}
@@ -447,22 +446,22 @@ public class GenericJavaTableGenerator
 	 * table, schema, catalog, pkColumnName, valueColumnName
 	 */
 	@Override
-	protected Iterable<String> getConnectedJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getConnectedJavaCompletionProposals(pos, filter, astRoot);
+	protected Iterable<String> getConnectedCompletionProposals(int pos) {
+		Iterable<String> result = super.getConnectedCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		if (this.tableTouches(pos)) {
-			return this.getJavaCandidateTables(filter);
+			return this.getJavaCandidateTables();
 		}
 		if (this.schemaTouches(pos)) {
-			return this.getJavaCandidateSchemata(filter);
+			return this.getJavaCandidateSchemata();
 		}
 		if (this.pkColumnNameTouches(pos)) {
-			return this.getJavaCandidateColumnNames(filter);
+			return this.getJavaCandidateColumnNames();
 		}
 		if (this.valueColumnNameTouches(pos)) {
-			return this.getJavaCandidateColumnNames(filter);
+			return this.getJavaCandidateColumnNames();
 		}
 		return null;
 	}
@@ -473,12 +472,8 @@ public class GenericJavaTableGenerator
 		return this.generatorAnnotation.tableTouches(pos);
 	}
 
-	protected Iterable<String> getJavaCandidateTables(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateTables(filter));
-	}
-
-	protected Iterable<String> getCandidateTables(Filter<String> filter) {
-		return new FilteringIterable<String>(this.getCandidateTables(), filter);
+	protected Iterable<String> getJavaCandidateTables() {
+		return StringTools.convertToJavaStringLiterals(this.getCandidateTables());
 	}
 
 	protected Iterable<String> getCandidateTables() {
@@ -492,12 +487,8 @@ public class GenericJavaTableGenerator
 		return this.generatorAnnotation.schemaTouches(pos);
 	}
 
-	protected Iterable<String> getJavaCandidateSchemata(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateSchemata(filter));
-	}
-
-	protected Iterable<String> getCandidateSchemata(Filter<String> filter) {
-		return new FilteringIterable<String>(this.getCandidateSchemata(), filter);
+	protected Iterable<String> getJavaCandidateSchemata() {
+		return StringTools.convertToJavaStringLiterals(this.getCandidateSchemata());
 	}
 
 	protected Iterable<String> getCandidateSchemata() {
@@ -530,12 +521,8 @@ public class GenericJavaTableGenerator
 		return this.generatorAnnotation.pkColumnNameTouches(pos);
 	}
 
-	protected Iterable<String> getJavaCandidateColumnNames(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateColumnNames(filter));
-	}
-
-	protected Iterable<String> getCandidateColumnNames(Filter<String> filter) {
-		return new FilteringIterable<String>(this.getCandidateColumnNames(), filter);
+	protected Iterable<String> getJavaCandidateColumnNames() {
+		return StringTools.convertToJavaStringLiterals(this.getCandidateColumnNames());
 	}
 
 	protected Iterable<String> getCandidateColumnNames() {

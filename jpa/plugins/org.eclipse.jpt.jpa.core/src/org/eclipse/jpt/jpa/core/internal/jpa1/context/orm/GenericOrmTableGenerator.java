@@ -482,13 +482,13 @@ public class GenericOrmTableGenerator
 	// ********** completion proposals **********
 
 	@Override
-	public Iterable<String> getXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getXmlCompletionProposals(pos);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		for (OrmUniqueConstraint constraint : this.getUniqueConstraints()) {
-			result = constraint.getXmlCompletionProposals(pos);
+			result = constraint.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}
@@ -501,8 +501,8 @@ public class GenericOrmTableGenerator
 	 * table, schema, catalog, pkColumnName, valueColumnName
 	 */
 	@Override
-	protected Iterable<String> getConnectedXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getConnectedXmlCompletionProposals(pos);
+	protected Iterable<String> getConnectedCompletionProposals(int pos) {
+		Iterable<String> result = super.getConnectedCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}

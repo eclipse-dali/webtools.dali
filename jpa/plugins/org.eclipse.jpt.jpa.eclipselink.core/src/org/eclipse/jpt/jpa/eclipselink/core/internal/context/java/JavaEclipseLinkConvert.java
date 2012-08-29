@@ -10,12 +10,9 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.Arrays;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
@@ -116,13 +113,13 @@ public class JavaEclipseLinkConvert
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		if (this.convertValueTouches(pos)) {
-			result = this.getJavaCandidateConverterNames(filter);
+			result = this.getJavaCandidateConverterNames();
 			if (result != null) {
 				return result;
 			}
@@ -134,12 +131,8 @@ public class JavaEclipseLinkConvert
 		return this.convertAnnotation.valueTouches(pos);
 	}
 
-	protected Iterable<String> getJavaCandidateConverterNames(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateConverterNames(filter));
-	}
-
-	protected Iterable<String> getCandidateConverterNames(Filter<String> filter) {
-		return new FilteringIterable<String>(this.getConverterNames(), filter);
+	protected Iterable<String> getJavaCandidateConverterNames() {
+		return StringTools.convertToJavaStringLiterals(this.getConverterNames());
 	}
 
 	/**

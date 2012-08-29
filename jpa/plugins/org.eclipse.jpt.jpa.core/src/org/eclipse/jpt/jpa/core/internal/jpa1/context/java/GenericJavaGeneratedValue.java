@@ -10,11 +10,8 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jpa.core.context.GenerationType;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratedValue;
@@ -162,13 +159,13 @@ public class GenericJavaGeneratedValue
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		if (this.generatorTouches(pos)) {
-			return this.getJavaCandidateGeneratorNames(filter);
+			return this.getJavaCandidateGeneratorNames();
 		}
 		return null;
 	}
@@ -177,12 +174,8 @@ public class GenericJavaGeneratedValue
 		return this.generatedValueAnnotation.generatorTouches(pos);
 	}
 
-	protected Iterable<String> getJavaCandidateGeneratorNames(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateGeneratorNames(filter));
-	}
-
-	protected Iterable<String> getCandidateGeneratorNames(Filter<String> filter) {
-		return new FilteringIterable<String>(this.getCandidateGeneratorNames(), filter);
+	protected Iterable<String> getJavaCandidateGeneratorNames() {
+		return StringTools.convertToJavaStringLiterals(this.getCandidateGeneratorNames());
 	}
 
 	protected Iterable<String> getCandidateGeneratorNames() {

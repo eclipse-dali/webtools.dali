@@ -473,13 +473,13 @@ public abstract class AbstractOrmOverrideContainer<
 	// ********** completion proposals **********
 
 	@Override
-	public Iterable<String> getXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getXmlCompletionProposals(pos);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		for (R override : this.getOverrides()) {
-			result = override.getXmlCompletionProposals(pos);
+			result = override.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}

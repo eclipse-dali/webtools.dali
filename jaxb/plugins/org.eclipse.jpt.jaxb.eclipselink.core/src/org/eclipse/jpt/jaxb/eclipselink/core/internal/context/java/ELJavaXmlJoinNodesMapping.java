@@ -10,11 +10,9 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.Bag;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.HashBag;
@@ -153,16 +151,15 @@ public class ELJavaXmlJoinNodesMapping
 	// ***** content assist *****
 	
 	@Override
-	public Iterable<String> getJavaCompletionProposals(
-			int pos, Filter<String> filter, CompilationUnit astRoot) {
+	public Iterable<String> getCompletionProposals(int pos) {
 		
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (! CollectionTools.isEmpty(result)) {
 			return result;
 		}
 		
 		for (ELJavaXmlJoinNode xmlJoinNode : this.xmlJoinNodeContainer.getContextElements()) {
-			result = xmlJoinNode.getJavaCompletionProposals(pos, filter, astRoot);
+			result = xmlJoinNode.getCompletionProposals(pos);
 			if (! CollectionTools.isEmpty(result)) {
 				return result;
 			}

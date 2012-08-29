@@ -10,8 +10,6 @@
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
@@ -234,19 +232,19 @@ public class GenericJavaXmlElementRefMapping
 	// ***** content assist *****
 	
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (! CollectionTools.isEmpty(result)) {
 			return result;
 		}
 		
-		result = this.xmlElementRef.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.xmlElementRef.getCompletionProposals(pos);
 		if (! CollectionTools.isEmpty(result)) {
 			return result;
 		}
 		
 		if (this.xmlElementWrapper != null) {
-			result = this.xmlElementWrapper.getJavaCompletionProposals(pos, filter, astRoot);
+			result = this.xmlElementWrapper.getCompletionProposals(pos);
 			if (! CollectionTools.isEmpty(result)) {
 				return result;
 			}

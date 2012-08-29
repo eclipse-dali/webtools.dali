@@ -13,13 +13,11 @@ import java.util.List;
 import java.util.Vector;
 import org.eclipse.jpt.common.core.internal.utility.SimpleTextRange;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jaxb.core.JaxbNode;
@@ -179,9 +177,9 @@ public class XPath {
 	// ***** content assist *****
 	
 	public Iterable<String> getCompletionProposals(
-			Context context, XsdTypeDefinition xsdType, int pos, Filter<String> filter) {
+			Context context, XsdTypeDefinition xsdType, int pos) {
 		
-		return getFirstStep().getCompletionProposals(context, xsdType, StringTools.EMPTY_STRING, pos, filter);
+		return getFirstStep().getCompletionProposals(context, xsdType, StringTools.EMPTY_STRING, pos);
 	}
 	
 	
@@ -494,11 +492,10 @@ public class XPath {
 		
 		protected Iterable<String> getCompletionProposals(
 				Context context, XsdTypeDefinition previousType, 
-				final String prefix, int pos, Filter<String> filter) {
+				final String prefix, int pos) {
 			
 			if (getTextRange(context).includes(pos) || getNextStep() == null) {
 				return StringTools.convertToJavaStringLiterals(
-						new FilteringIterable<String>(
 								new TransformationIterable<String, String>(
 										new CompositeIterable<String>(
 												getTextProposals(context, previousType),
@@ -508,14 +505,13 @@ public class XPath {
 									protected String transform(String o) {
 										return StringTools.concatenate(prefix, o);
 									}
-								},
-								filter));
+								});
 			}
 			
 			Step nextStep = getNextStep();
 			XsdTypeDefinition nextType = resolveNextType(context, previousType);
 			if (nextStep != null && nextType != null) {
-				return nextStep.getCompletionProposals(context, nextType, prefix + getValue() + DELIM, pos, filter);
+				return nextStep.getCompletionProposals(context, nextType, prefix + getValue() + DELIM, pos);
 			}
 			
 			return new SingleElementIterable(TEXT);

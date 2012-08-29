@@ -10,9 +10,7 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.JaxbNode;
@@ -93,13 +91,12 @@ public class ELJavaXmlDiscriminatorNode
 	// ***** content assist *****
 	
 	@Override
-	public Iterable<String> getJavaCompletionProposals(
-			int pos, Filter<String> filter, CompilationUnit astRoot) {
+	public Iterable<String> getCompletionProposals(int pos) {
 		
 		if (getAnnotation().valueTouches(pos) && this.value != null) {
 			XsdTypeDefinition xsdType = getClassMapping().getXsdTypeDefinition();
 			XPath xpath = XPathFactory.instance().getXpath(this.value);
-			return xpath.getCompletionProposals(new XPathContext(), xsdType, pos, filter);
+			return xpath.getCompletionProposals(new XPathContext(), xsdType, pos);
 		}
 		
 		return EmptyIterable.instance();

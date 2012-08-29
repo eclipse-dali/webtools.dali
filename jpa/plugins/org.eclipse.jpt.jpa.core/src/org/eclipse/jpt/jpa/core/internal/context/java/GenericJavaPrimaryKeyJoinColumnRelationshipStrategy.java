@@ -10,11 +10,9 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SubListIterableWrapper;
 import org.eclipse.jpt.jpa.core.context.Entity;
@@ -238,13 +236,13 @@ public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		for (JavaPrimaryKeyJoinColumn column : this.getPrimaryKeyJoinColumns()) {
-			result = column.getJavaCompletionProposals(pos, filter, astRoot);
+			result = column.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}

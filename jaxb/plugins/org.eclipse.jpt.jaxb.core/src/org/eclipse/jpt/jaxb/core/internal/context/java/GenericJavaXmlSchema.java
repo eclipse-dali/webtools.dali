@@ -10,14 +10,11 @@
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jaxb.core.SchemaEntry;
@@ -250,19 +247,18 @@ public class GenericJavaXmlSchema
 	// **************** content assist ****************************************
 	
 	@Override
-	public Iterable<String> getJavaCompletionProposals(
-			int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (! CollectionTools.isEmpty(result)) {
 			return result;
 		}
 		
 		if (namespaceTouches(pos)) {
-			return getNamespaceProposals(filter);
+			return getNamespaceProposals();
 		}
 		
 		for (XmlNs xmlns : getXmlNsPrefixes()) {
-			result = xmlns.getJavaCompletionProposals(pos, filter, astRoot);
+			result = xmlns.getCompletionProposals(pos);
 			if (! CollectionTools.isEmpty(result)) {
 				return result;
 			}
@@ -275,17 +271,15 @@ public class GenericJavaXmlSchema
 		return getXmlSchemaAnnotation().namespaceTouches(pos);
 	}
 	
-	protected Iterable<String> getNamespaceProposals(Filter<String> filter) {
+	protected Iterable<String> getNamespaceProposals() {
 		return StringTools.convertToJavaStringLiterals(
-				new FilteringIterable<String>(
 						new TransformationIterable<SchemaEntry, String>(
 								getJaxbProject().getSchemaLibrary().getSchemaEntries()) {
 							@Override
 							protected String transform(SchemaEntry o) {
 								return o.getNamespace();
 							}
-						}, 
-						filter));
+						});
 	}
 	
 	

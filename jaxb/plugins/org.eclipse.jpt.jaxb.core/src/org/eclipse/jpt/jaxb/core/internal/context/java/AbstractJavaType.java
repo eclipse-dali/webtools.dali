@@ -12,11 +12,9 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceNode;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
@@ -270,23 +268,22 @@ public abstract class AbstractJavaType
 	// ***** content assist *****
 	
 	@Override
-	public Iterable<String> getJavaCompletionProposals(
-			int pos, Filter<String> filter, CompilationUnit astRoot) {
+	public Iterable<String> getCompletionProposals(int pos) {
 		
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (! CollectionTools.isEmpty(result)) {
 			return result;
 		}
 		
 		if (this.mapping != null) {
-			result = this.mapping.getJavaCompletionProposals(pos, filter, astRoot);
+			result = this.mapping.getCompletionProposals(pos);
 			if (! CollectionTools.isEmpty(result)) {
 				return result;
 			}
 		}
 		
 		if (this.xmlJavaTypeAdapter != null) {
-			result = this.xmlJavaTypeAdapter.getJavaCompletionProposals(pos, filter, astRoot);
+			result = this.xmlJavaTypeAdapter.getCompletionProposals(pos);
 			if (! CollectionTools.isEmpty(result)) {
 				return result;
 			}

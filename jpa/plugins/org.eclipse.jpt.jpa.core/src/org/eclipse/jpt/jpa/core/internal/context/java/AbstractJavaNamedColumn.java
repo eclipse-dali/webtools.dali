@@ -10,12 +10,9 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedColumn;
@@ -214,13 +211,13 @@ public abstract class AbstractJavaNamedColumn<A extends NamedColumnAnnotation, O
 	// ********** Java completion proposals **********
 
 	@Override
-	protected Iterable<String> getConnectedJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getConnectedJavaCompletionProposals(pos, filter, astRoot);
+	protected Iterable<String> getConnectedCompletionProposals(int pos) {
+		Iterable<String> result = super.getConnectedCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		if (this.nameTouches(pos)) {
-			return this.getJavaCandidateNames(filter);
+			return this.getJavaCandidateNames();
 		}
 		return null;
 	}
@@ -229,12 +226,8 @@ public abstract class AbstractJavaNamedColumn<A extends NamedColumnAnnotation, O
 		return this.getColumnAnnotation().nameTouches(pos);
 	}
 
-	protected Iterable<String> getJavaCandidateNames(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateNames(filter));
-	}
-
-	protected Iterable<String> getCandidateNames(Filter<String> filter) {
-		return new FilteringIterable<String>(this.getCandidateNames(), filter);
+	protected Iterable<String> getJavaCandidateNames() {
+		return StringTools.convertToJavaStringLiterals(this.getCandidateNames());
 	}
 
 	protected Iterable<String> getCandidateNames() {

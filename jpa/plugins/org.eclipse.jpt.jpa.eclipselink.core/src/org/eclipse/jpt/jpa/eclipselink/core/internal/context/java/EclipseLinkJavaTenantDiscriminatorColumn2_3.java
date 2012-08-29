@@ -9,17 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.AbstractJavaNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaReadOnlyTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkTenantDiscriminatorColumnAnnotation2_3;
 
@@ -239,13 +235,13 @@ public class EclipseLinkJavaTenantDiscriminatorColumn2_3
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		if (this.tableTouches(pos)) {
-			return this.getJavaCandidateTableNames(filter);
+			return this.getJavaCandidateTableNames();
 		}
 		return null;
 	}
@@ -254,12 +250,8 @@ public class EclipseLinkJavaTenantDiscriminatorColumn2_3
 		return this.getColumnAnnotation().tableTouches(pos);
 	}
 
-	protected Iterable<String> getJavaCandidateTableNames(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateTableNames(filter));
-	}
-
-	protected Iterable<String> getCandidateTableNames(Filter<String> filter) {
-		return new FilteringIterable<String>(this.getCandidateTableNames(), filter);
+	protected Iterable<String> getJavaCandidateTableNames() {
+		return StringTools.convertToJavaStringLiterals(this.getCandidateTableNames());
 	}
 
 	public Iterable<String> getCandidateTableNames() {

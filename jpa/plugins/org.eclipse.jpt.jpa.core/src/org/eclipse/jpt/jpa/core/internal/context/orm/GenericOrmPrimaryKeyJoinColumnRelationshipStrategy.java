@@ -239,13 +239,13 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 	// ********** completion proposals **********
 
 	@Override
-	public Iterable<String> getXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getXmlCompletionProposals(pos);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		for (OrmPrimaryKeyJoinColumn column : this.getPrimaryKeyJoinColumns()) {
-			result = column.getXmlCompletionProposals(pos);
+			result = column.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}

@@ -11,10 +11,8 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
 import java.util.Iterator;
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -264,19 +262,19 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		if (this.getAnnotation().valueTouches(pos)) {
-			result = this.getSortedJavaValueChoices(filter);
+			result = this.getSortedJavaValueChoices();
 		}
 		return result;
 	}
 
-	protected Iterable<String> getSortedJavaValueChoices(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(new FilteringIterable<String>(this.getSortedCandidateIdAttributeNames(), filter));
+	protected Iterable<String> getSortedJavaValueChoices() {
+		return StringTools.convertToJavaStringLiterals(this.getSortedCandidateIdAttributeNames());
 	}
 
 

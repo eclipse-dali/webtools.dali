@@ -306,12 +306,12 @@ public class GenericOrmOverrideRelationship
 	// ********** completion proposals **********
 
 	@Override
-	public Iterable<String> getXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getXmlCompletionProposals(pos);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.strategy.getXmlCompletionProposals(pos);
+		result = this.strategy.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}

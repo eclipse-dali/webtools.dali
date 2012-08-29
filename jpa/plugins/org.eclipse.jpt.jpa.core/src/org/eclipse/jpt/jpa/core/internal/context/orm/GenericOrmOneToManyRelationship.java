@@ -245,20 +245,20 @@ public class GenericOrmOneToManyRelationship
 	// ********** completion proposals **********
 
 	@Override
-	public Iterable<String> getXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getXmlCompletionProposals(pos);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.mappedByStrategy.getXmlCompletionProposals(pos);
+		result = this.mappedByStrategy.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.joinTableStrategy.getXmlCompletionProposals(pos);
+		result = this.joinTableStrategy.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.joinColumnStrategy.getXmlCompletionProposals(pos);
+		result = this.joinColumnStrategy.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}

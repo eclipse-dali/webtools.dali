@@ -215,19 +215,19 @@ public class GenericOrmGeneratorContainer
 	// ********** completion proposals **********
 
 	@Override
-	public Iterable<String> getXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getXmlCompletionProposals(pos);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		if (this.tableGenerator != null) {
-			result = this.tableGenerator.getXmlCompletionProposals(pos);
+			result = this.tableGenerator.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}
 		}
 		if (this.sequenceGenerator != null) {
-			result = this.sequenceGenerator.getXmlCompletionProposals(pos);
+			result = this.sequenceGenerator.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}

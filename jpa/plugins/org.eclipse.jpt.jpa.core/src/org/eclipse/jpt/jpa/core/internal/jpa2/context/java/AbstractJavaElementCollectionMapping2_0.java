@@ -11,13 +11,11 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.Association;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.SimpleAssociation;
@@ -28,7 +26,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SubListIterableWrapper;
@@ -1370,52 +1367,52 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.collectionTable.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.collectionTable.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.valueColumn.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.valueColumn.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.converter.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.converter.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.orderable.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.orderable.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.valueAttributeOverrideContainer.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.valueAttributeOverrideContainer.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.valueAssociationOverrideContainer.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.valueAssociationOverrideContainer.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		if (this.mapKeyNameTouches(pos)) {
-			return this.getJavaCandidateMapKeyNames(filter);
+			return this.getJavaCandidateMapKeyNames();
 		}
-		result = this.mapKeyColumn.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.mapKeyColumn.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.mapKeyConverter.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.mapKeyConverter.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.mapKeyAttributeOverrideContainer.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.mapKeyAttributeOverrideContainer.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		for (JavaJoinColumn joinColumn : this.getMapKeyJoinColumns()) {
-			result = joinColumn.getJavaCompletionProposals(pos, filter, astRoot);
+			result = joinColumn.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}
@@ -1423,12 +1420,8 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		return null;
 	}
 
-	protected Iterable<String> getJavaCandidateMapKeyNames(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateMapKeyNames(filter));
-	}
-
-	protected Iterable<String> getCandidateMapKeyNames(Filter<String> filter) {
-		return new FilteringIterable<String>(this.getCandidateMapKeyNames(), filter);
+	protected Iterable<String> getJavaCandidateMapKeyNames() {
+		return StringTools.convertToJavaStringLiterals(this.getCandidateMapKeyNames());
 	}
 
 

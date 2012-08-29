@@ -10,8 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.Relationship;
@@ -169,18 +167,18 @@ public class GenericJavaManyToOneRelationship
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 
-		result = this.joinColumnStrategy.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.joinColumnStrategy.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 
-		return this.joinTableStrategy.getJavaCompletionProposals(pos, filter, astRoot);
+		return this.joinTableStrategy.getCompletionProposals(pos);
 	}
 
 

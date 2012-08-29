@@ -69,6 +69,15 @@ public interface JpaContextNode
 	void validate(List<IMessage> messages, IReporter reporter);
 
 
+	// *********** completion proposals ***********
+
+	/**
+	 * Return the content assist proposals for the specified position
+	 * in the file.
+	 */
+	Iterable<String> getCompletionProposals(int pos);
+
+
 	// ********** synchronize/update **********
 
 	/**

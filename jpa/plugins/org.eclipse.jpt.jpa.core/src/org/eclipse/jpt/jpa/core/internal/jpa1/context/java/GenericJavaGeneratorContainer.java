@@ -10,9 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
@@ -200,19 +198,19 @@ public class GenericJavaGeneratorContainer
 	// ********** code completion **********
 
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		if (this.tableGenerator != null) {
-			result = this.tableGenerator.getJavaCompletionProposals(pos, filter, astRoot);
+			result = this.tableGenerator.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}
 		}
 		if (this.sequenceGenerator != null) {
-			result = this.sequenceGenerator.getJavaCompletionProposals(pos, filter, astRoot);
+			result = this.sequenceGenerator.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}

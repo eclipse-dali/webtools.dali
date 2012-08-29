@@ -174,13 +174,13 @@ public class GenericOrmDerivedIdentity2_0
 	// ************** completion proposals **********
 
 	@Override
-	public Iterable<String> getXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getXmlCompletionProposals(pos);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		if (this.strategy != null) {
-			result = ((XmlContextNode) this.strategy).getXmlCompletionProposals(pos);
+			result = ((XmlContextNode) this.strategy).getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}

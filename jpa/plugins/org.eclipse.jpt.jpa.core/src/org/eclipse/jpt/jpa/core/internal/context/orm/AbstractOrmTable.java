@@ -468,13 +468,13 @@ public abstract class AbstractOrmTable<X extends AbstractXmlTable>
 	// ********** completion proposals **********
 
 	@Override
-	public Iterable<String> getXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getXmlCompletionProposals(pos);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		for (OrmUniqueConstraint constraint : this.getUniqueConstraints()) {
-			result = constraint.getXmlCompletionProposals(pos);
+			result = constraint.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}
@@ -487,8 +487,8 @@ public abstract class AbstractOrmTable<X extends AbstractXmlTable>
 	 * name, schema, catalog
 	 */
 	@Override
-	protected Iterable<String> getConnectedXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getConnectedXmlCompletionProposals(pos);
+	protected Iterable<String> getConnectedCompletionProposals(int pos) {
+		Iterable<String> result = super.getConnectedCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}

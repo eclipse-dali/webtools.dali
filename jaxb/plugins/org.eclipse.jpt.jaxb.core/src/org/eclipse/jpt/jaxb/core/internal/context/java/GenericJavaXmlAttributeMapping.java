@@ -10,9 +10,7 @@
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
@@ -162,13 +160,13 @@ public class GenericJavaXmlAttributeMapping
 	// ***** content assist *****
 	
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (! CollectionTools.isEmpty(result)) {
 			return result;
 		}
 		
-		result = this.qName.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.qName.getCompletionProposals(pos);
 		if (! CollectionTools.isEmpty(result)) {
 			return result;
 		}
@@ -249,9 +247,9 @@ public class GenericJavaXmlAttributeMapping
 		}
 		
 		@Override
-		public Iterable<String> getNameProposals(Filter<String> filter) {
+		public Iterable<String> getNameProposals() {
 			XsdTypeDefinition xsdType = GenericJavaXmlAttributeMapping.this.getJaxbClassMapping().getXsdTypeDefinition();
-			return (xsdType == null) ? EmptyIterable.instance() : xsdType.getAttributeNameProposals(getNamespace(), filter);
+			return (xsdType == null) ? EmptyIterable.<String>instance() : xsdType.getAttributeNameProposals(getNamespace());
 		}
 		
 		@Override
@@ -262,9 +260,9 @@ public class GenericJavaXmlAttributeMapping
 		}
 		
 		@Override
-		public Iterable<String> getNamespaceProposals(Filter<String> filter) {
+		public Iterable<String> getNamespaceProposals() {
 			XsdSchema schema = this.getXsdSchema();
-			return (schema == null) ? EmptyIterable.<String>instance() : schema.getNamespaceProposals(filter);
+			return (schema == null) ? EmptyIterable.<String>instance() : schema.getNamespaceProposals();
 		}
 		
 		@Override

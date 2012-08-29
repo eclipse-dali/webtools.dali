@@ -9,12 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
@@ -86,13 +83,13 @@ public class GenericJavaUniqueConstraint
 	// ********** Java completion proposals **********
 
 	@Override
-	protected Iterable<String> getConnectedJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getConnectedJavaCompletionProposals(pos, filter, astRoot);
+	protected Iterable<String> getConnectedCompletionProposals(int pos) {
+		Iterable<String> result = super.getConnectedCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		if (this.columnNamesTouches(pos)) {
-			return this.javaCandidateColumnNames(filter);
+			return this.getJavaCandidateColumnNames();
 		}
 		return null;
 	}
@@ -101,12 +98,8 @@ public class GenericJavaUniqueConstraint
 		return this.uniqueConstraintAnnotation.columnNamesTouches(pos);
 	}
 
-	protected Iterable<String> javaCandidateColumnNames(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateColumnNames(filter));
-	}
-
-	protected Iterable<String> getCandidateColumnNames(Filter<String> filter) {
-		return new FilteringIterable<String>(this.getCandidateColumnNames(), filter);
+	protected Iterable<String> getJavaCandidateColumnNames() {
+		return StringTools.convertToJavaStringLiterals(this.getCandidateColumnNames());
 	}
 
 	protected Iterable<String> getCandidateColumnNames() {

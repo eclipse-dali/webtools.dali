@@ -446,12 +446,12 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 	// ********** completion proposals **********
 
 	@Override
-	public Iterable<String> getXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getXmlCompletionProposals(pos);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.relationship.getXmlCompletionProposals(pos);
+		result = this.relationship.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}

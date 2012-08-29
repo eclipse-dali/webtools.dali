@@ -167,8 +167,8 @@ public class GenericOrmPrimaryKeyJoinColumn
 	// ********** completion proposals **********
 
 	@Override
-	protected Iterable<String> getConnectedXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getConnectedXmlCompletionProposals(pos);
+	protected Iterable<String> getConnectedCompletionProposals(int pos) {
+		Iterable<String> result = super.getConnectedCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}

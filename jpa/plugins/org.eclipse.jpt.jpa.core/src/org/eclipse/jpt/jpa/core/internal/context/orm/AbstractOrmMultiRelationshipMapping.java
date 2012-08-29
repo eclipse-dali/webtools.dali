@@ -1068,32 +1068,32 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	// ********** completion proposals **********
 
 	@Override
-	public Iterable<String> getXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getXmlCompletionProposals(pos);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.orderable.getXmlCompletionProposals(pos);
+		result = this.orderable.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		if (this.mapKeyNameTouches(pos)) {
 			return this.getCandidateMapKeyNames();
 		}
-		result = this.mapKeyColumn.getXmlCompletionProposals(pos);
+		result = this.mapKeyColumn.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.mapKeyConverter.getXmlCompletionProposals(pos);
+		result = this.mapKeyConverter.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.mapKeyAttributeOverrideContainer.getXmlCompletionProposals(pos);
+		result = this.mapKeyAttributeOverrideContainer.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		for (OrmJoinColumn joinColumn : this.getMapKeyJoinColumns()) {
-			result = joinColumn.getXmlCompletionProposals(pos);
+			result = joinColumn.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}

@@ -122,13 +122,13 @@ public class OrmEclipseLinkGeneratorContainer
 	// ********** completion proposals **********
 
 	@Override
-	public Iterable<String> getXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getXmlCompletionProposals(pos);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		if (this.uuidGenerator != null) {
-			result = this.uuidGenerator.getXmlCompletionProposals(pos);
+			result = this.uuidGenerator.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}

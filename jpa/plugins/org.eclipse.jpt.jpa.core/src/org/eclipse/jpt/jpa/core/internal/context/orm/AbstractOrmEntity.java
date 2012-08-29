@@ -1944,40 +1944,40 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	// ********** completion proposals **********
 
 	@Override
-	public Iterable<String> getXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getXmlCompletionProposals(pos);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.table.getXmlCompletionProposals(pos);
+		result = this.table.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		for (OrmSecondaryTable secondaryTable : this.getSpecifiedSecondaryTables()) {
-			result = secondaryTable.getXmlCompletionProposals(pos);
+			result = secondaryTable.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}
 		}
 		for (OrmPrimaryKeyJoinColumn pkJoinColumn : this.getSpecifiedPrimaryKeyJoinColumns()) {
-			result = pkJoinColumn.getXmlCompletionProposals(pos);
+			result = pkJoinColumn.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}
 		}
-		result = this.attributeOverrideContainer.getXmlCompletionProposals(pos);
+		result = this.attributeOverrideContainer.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.associationOverrideContainer.getXmlCompletionProposals(pos);
+		result = this.associationOverrideContainer.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.discriminatorColumn.getXmlCompletionProposals(pos);
+		result = this.discriminatorColumn.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.generatorContainer.getXmlCompletionProposals(pos);
+		result = this.generatorContainer.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}

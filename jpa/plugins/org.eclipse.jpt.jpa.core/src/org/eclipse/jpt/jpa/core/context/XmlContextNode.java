@@ -21,14 +21,10 @@ package org.eclipse.jpt.jpa.core.context;
  * @version 3.3
  * @since 2.1
  */
-// TODO bjv rename to XmlJpaContextNode
+// TODO bjv rename to XmlJpaContextNode 
+// TODO kfb or delete it?
 public interface XmlContextNode
 	extends JpaContextNode
 {
-	/**
-	 * Return the content assist proposals for the specified position
-	 * in the XML file.
-	 */
-	Iterable<String> getXmlCompletionProposals(int pos);
 
 }

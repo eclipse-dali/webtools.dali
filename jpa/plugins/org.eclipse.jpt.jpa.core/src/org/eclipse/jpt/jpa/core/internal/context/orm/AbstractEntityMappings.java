@@ -1183,28 +1183,28 @@ public abstract class AbstractEntityMappings
 	// ************ completion proposals**************
 	
 	@Override
-	public Iterable<String> getXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getXmlCompletionProposals(pos);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.queryContainer.getXmlCompletionProposals(pos);
+		result = this.queryContainer.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		for (OrmTableGenerator tableGenerator : this.getTableGenerators()) {
-			result = tableGenerator.getXmlCompletionProposals(pos);
+			result = tableGenerator.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}
 		}
 		for (OrmSequenceGenerator seqGenerator : this.getSequenceGenerators()) {
-			result = seqGenerator.getXmlCompletionProposals(pos);
+			result = seqGenerator.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}
 		}
-		result = this.persistenceUnitMetadata.getXmlCompletionProposals(pos);
+		result = this.persistenceUnitMetadata.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
@@ -1212,7 +1212,7 @@ public abstract class AbstractEntityMappings
 			return this.getCandidatePackages();
 		}
 		for (OrmPersistentType persistentType : this.getPersistentTypes()) {
-			result = persistentType.getXmlCompletionProposals(pos);
+			result = persistentType.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}
@@ -1221,8 +1221,8 @@ public abstract class AbstractEntityMappings
 	}
 
 	@Override
-	protected Iterable<String> getConnectedXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getConnectedXmlCompletionProposals(pos);
+	protected Iterable<String> getConnectedCompletionProposals(int pos) {
+		Iterable<String> result = super.getConnectedCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}

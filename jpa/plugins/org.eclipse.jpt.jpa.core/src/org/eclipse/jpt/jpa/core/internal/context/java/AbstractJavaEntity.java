@@ -12,12 +12,10 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -1261,40 +1259,40 @@ public abstract class AbstractJavaEntity
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.table.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.table.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		for (JavaSecondaryTable secondaryTable : this.getSecondaryTables()) {
-			result = secondaryTable.getJavaCompletionProposals(pos, filter, astRoot);
+			result = secondaryTable.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}
 		}
 		for (JavaPrimaryKeyJoinColumn pkJoinColumn : this.getPrimaryKeyJoinColumns()) {
-			result = pkJoinColumn.getJavaCompletionProposals(pos, filter, astRoot);
+			result = pkJoinColumn.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}
 		}
-		result = this.attributeOverrideContainer.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.attributeOverrideContainer.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.associationOverrideContainer.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.associationOverrideContainer.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.discriminatorColumn.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.discriminatorColumn.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.generatorContainer.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.generatorContainer.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
