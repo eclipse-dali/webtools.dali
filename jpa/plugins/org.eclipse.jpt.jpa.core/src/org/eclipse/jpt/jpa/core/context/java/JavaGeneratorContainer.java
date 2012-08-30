@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 
 /**
  * Java generator container
@@ -21,11 +22,11 @@ import org.eclipse.jpt.jpa.core.context.GeneratorContainer;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.3
  * @since 2.3
  */
 public interface JavaGeneratorContainer
-	extends GeneratorContainer, JavaJpaContextNode
+	extends GeneratorContainer
 {
 	// ********** sequence generator **********
 
@@ -48,7 +49,7 @@ public interface JavaGeneratorContainer
 		/**
 		 * Return the container's parent.
 		 */
-		JavaJpaContextNode getGeneratorContainerParent();
+		JpaContextNode getGeneratorContainerParent();
 
 		/**
 		 * Return the element that is annotated with generators.

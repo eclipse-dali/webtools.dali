@@ -16,7 +16,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaTableGenerator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
@@ -242,11 +241,6 @@ public class GenericJavaGeneratorContainer
 
 
 	// ********** misc **********
-
-	@Override
-	public JavaJpaContextNode getParent() {
-		return (JavaJpaContextNode) super.getParent();
-	}
 
 	public Iterable<Generator> getGenerators() {
 		return new FilteringIterable<Generator>(this.getGenerators_(), NotNullFilter.<Generator>instance());

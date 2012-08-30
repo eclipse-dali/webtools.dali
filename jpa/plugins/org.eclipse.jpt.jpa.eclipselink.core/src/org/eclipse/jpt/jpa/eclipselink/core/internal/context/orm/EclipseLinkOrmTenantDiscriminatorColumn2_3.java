@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.AbstractOrmNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmTenantDiscriminatorColumn2_3;
@@ -35,7 +35,7 @@ public class EclipseLinkOrmTenantDiscriminatorColumn2_3
 	protected Boolean specifiedPrimaryKey;
 	protected boolean defaultPrimaryKey = DEFAULT_PRIMARY_KEY;
 
-	public EclipseLinkOrmTenantDiscriminatorColumn2_3(XmlContextNode parent, ReadOnlyTenantDiscriminatorColumn2_3.Owner owner, XmlTenantDiscriminatorColumn_2_3 column) {
+	public EclipseLinkOrmTenantDiscriminatorColumn2_3(JpaContextNode parent, ReadOnlyTenantDiscriminatorColumn2_3.Owner owner, XmlTenantDiscriminatorColumn_2_3 column) {
 		super(parent, owner, column);
 		this.specifiedTable = this.buildSpecifiedTable();
 		this.specifiedContextProperty = this.buildSpecifiedContextProperty();

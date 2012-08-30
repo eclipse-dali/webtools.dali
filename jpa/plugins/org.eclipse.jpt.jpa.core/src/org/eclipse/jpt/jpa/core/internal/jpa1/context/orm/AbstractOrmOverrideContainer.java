@@ -18,12 +18,12 @@ import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.VirtualOverride;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyOverride;
@@ -58,7 +58,7 @@ public abstract class AbstractOrmOverrideContainer<
 	protected final VirtualOverrideContainerAdapter virtualOverrideContainerAdapter = new VirtualOverrideContainerAdapter();
 
 
-	protected AbstractOrmOverrideContainer(XmlContextNode parent, O owner) {
+	protected AbstractOrmOverrideContainer(JpaContextNode parent, O owner) {
 		super(parent);
 		this.owner = owner;
 		this.initializeSpecifiedOverrides();
@@ -379,11 +379,6 @@ public abstract class AbstractOrmOverrideContainer<
 
 
 	// ********** misc **********
-
-	@Override
-	public XmlContextNode getParent() {
-		return (XmlContextNode) super.getParent();
-	}
 
 	public TypeMapping getOverridableTypeMapping() {
 		return this.owner.getOverridableTypeMapping();

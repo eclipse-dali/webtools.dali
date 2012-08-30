@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.Vector;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyUniqueConstraint;
 
 public abstract class AbstractJavaReadOnlyUniqueConstraint
@@ -21,7 +21,7 @@ public abstract class AbstractJavaReadOnlyUniqueConstraint
 	protected final Vector<String> columnNames = new Vector<String>();
 
 
-	public AbstractJavaReadOnlyUniqueConstraint(JavaJpaContextNode parent) {
+	public AbstractJavaReadOnlyUniqueConstraint(JpaContextNode parent) {
 		super(parent);
 	}
 
@@ -49,13 +49,5 @@ public abstract class AbstractJavaReadOnlyUniqueConstraint
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.columnNames);
-	}
-
-
-	// ********** misc **********
-
-	@Override
-	public JavaJpaContextNode getParent() {
-		return (JavaJpaContextNode) super.getParent();
 	}
 }

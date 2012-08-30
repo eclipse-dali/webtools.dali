@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedDiscriminatorColumn;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmNamedColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlBaseDiscriminatorColumn;
@@ -30,11 +30,11 @@ public abstract class AbstractOrmNamedDiscriminatorColumn<X extends XmlBaseDiscr
 	protected int defaultLength = DEFAULT_LENGTH;
 
 
-	protected AbstractOrmNamedDiscriminatorColumn(XmlContextNode parent, O owner) {
+	protected AbstractOrmNamedDiscriminatorColumn(JpaContextNode parent, O owner) {
 		this(parent, owner, null);
 	}
 
-	protected AbstractOrmNamedDiscriminatorColumn(XmlContextNode parent, O owner, X xmlColumn) {
+	protected AbstractOrmNamedDiscriminatorColumn(JpaContextNode parent, O owner, X xmlColumn) {
 		super(parent, owner, xmlColumn);
 		this.specifiedDiscriminatorType = this.buildSpecifiedDiscriminatorType();
 		this.specifiedLength = this.buildSpecifiedLength();

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 
 /**
  * Read-only <code>orm.xml</code> override
@@ -22,7 +21,7 @@ import org.eclipse.jpt.jpa.core.context.XmlContextNode;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface OrmReadOnlyOverride
-	extends ReadOnlyOverride, XmlContextNode
+	extends ReadOnlyOverride
 {
 
 }

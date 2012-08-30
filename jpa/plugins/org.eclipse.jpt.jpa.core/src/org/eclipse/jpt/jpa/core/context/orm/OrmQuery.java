@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.core.context.orm;
 import java.util.List;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Query;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlQuery;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -31,7 +30,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * @since 2.0
  */
 public interface OrmQuery
-	extends Query, XmlContextNode
+	extends Query
 {
 	XmlQuery getXmlQuery();
 

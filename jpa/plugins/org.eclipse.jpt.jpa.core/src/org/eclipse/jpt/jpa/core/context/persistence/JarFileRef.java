@@ -13,7 +13,6 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.jpt.common.utility.internal.AbstractTransformer;
 import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JarFile;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJarFileRef;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -30,11 +29,11 @@ import org.eclipse.text.edits.ReplaceEdit;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.3
  * @since 2.2
  */
 public interface JarFileRef
-	extends XmlContextNode, JpaStructureNode, PersistentTypeContainer
+	extends JpaStructureNode, PersistentTypeContainer
 {
 	// ********** file name **********
 

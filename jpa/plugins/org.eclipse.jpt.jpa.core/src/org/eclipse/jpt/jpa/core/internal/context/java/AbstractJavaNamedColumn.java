@@ -13,8 +13,8 @@ import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -53,11 +53,11 @@ public abstract class AbstractJavaNamedColumn<A extends NamedColumnAnnotation, O
 	protected String columnDefinition;
 
 
-	protected AbstractJavaNamedColumn(JavaJpaContextNode parent, O owner) {
+	protected AbstractJavaNamedColumn(JpaContextNode parent, O owner) {
 		this(parent, owner, null);
 	}
 
-	protected AbstractJavaNamedColumn(JavaJpaContextNode parent, O owner, A columnAnnotation) {
+	protected AbstractJavaNamedColumn(JpaContextNode parent, O owner, A columnAnnotation) {
 		super(parent);
 		this.owner = owner;
 		this.setColumnAnnotation(columnAnnotation);

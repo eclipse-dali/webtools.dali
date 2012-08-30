@@ -23,11 +23,11 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.3
  * @since 2.0
  */
 public interface JavaPersistentType
-	extends PersistentType, JavaJpaContextNode
+	extends PersistentType
 {
 	// ********** covariant overrides **********
 

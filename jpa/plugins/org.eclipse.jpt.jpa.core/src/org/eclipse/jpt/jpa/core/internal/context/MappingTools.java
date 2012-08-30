@@ -25,6 +25,7 @@ import org.eclipse.jpt.jpa.core.context.ColumnMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
@@ -34,7 +35,6 @@ import org.eclipse.jpt.jpa.core.context.ReferenceTable;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
@@ -476,7 +476,7 @@ public final class MappingTools {
 	 * any messages for types in another project (e.g. referenced by
 	 * persistence.xml)
 	 */
-	public static boolean nodeIsInternalSource(JavaJpaContextNode contextNode, JavaResourceNode resourceNode) {
+	public static boolean nodeIsInternalSource(JpaContextNode contextNode, JavaResourceNode resourceNode) {
 		IResource resource = contextNode.getResource();
 		// 'resource' will be null if the node is "external" and binary;
 		// the resource will be in a different project if the node is "external" and source;

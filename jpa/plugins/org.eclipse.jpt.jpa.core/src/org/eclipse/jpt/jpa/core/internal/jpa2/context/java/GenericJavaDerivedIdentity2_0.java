@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.jpa2.context.DerivedIdentityStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaDerivedIdentity2_0;
@@ -161,7 +160,7 @@ public class GenericJavaDerivedIdentity2_0
 			return result;
 		}
 		if (this.strategy != null) {
-			result = ((JavaJpaContextNode) this.strategy).getCompletionProposals(pos);
+			result = this.strategy.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}
@@ -176,7 +175,7 @@ public class GenericJavaDerivedIdentity2_0
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		if (this.strategy != null) {
-			((JavaJpaContextNode) this.strategy).validate(messages, reporter);
+			this.strategy.validate(messages, reporter);
 		}
 	}
 

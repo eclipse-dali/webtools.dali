@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context.java;
 
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.jpa2.context.DerivedIdentity2_0;
 
 /**
@@ -25,7 +24,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.DerivedIdentity2_0;
  * @since 2.3
  */
 public interface JavaDerivedIdentity2_0
-	extends DerivedIdentity2_0, JavaJpaContextNode
+	extends DerivedIdentity2_0
 {
 	JavaSingleRelationshipMapping2_0 getMapping();
 

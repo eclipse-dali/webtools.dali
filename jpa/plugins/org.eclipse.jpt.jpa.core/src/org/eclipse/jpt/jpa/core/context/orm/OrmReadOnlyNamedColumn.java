@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 
 /**
  * <code>orm.xml</code> read-only
@@ -28,7 +27,7 @@ import org.eclipse.jpt.jpa.core.context.XmlContextNode;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface OrmReadOnlyNamedColumn
-	extends ReadOnlyNamedColumn, XmlContextNode
+	extends ReadOnlyNamedColumn
 {
 
 }

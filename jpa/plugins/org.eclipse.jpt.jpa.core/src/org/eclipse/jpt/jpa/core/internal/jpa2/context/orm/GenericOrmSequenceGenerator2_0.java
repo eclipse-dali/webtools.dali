@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2010 Oracle. All rights reserved.
+* Copyright (c) 2009, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 
 import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmSequenceGenerator;
 import org.eclipse.jpt.jpa.core.jpa2.context.SequenceGenerator2_0;
@@ -34,7 +34,7 @@ public class GenericOrmSequenceGenerator2_0
 	protected String defaultSchema;
 
 
-	public GenericOrmSequenceGenerator2_0(XmlContextNode parent, XmlSequenceGenerator xmlSequenceGenerator) {
+	public GenericOrmSequenceGenerator2_0(JpaContextNode parent, XmlSequenceGenerator xmlSequenceGenerator) {
 		super(parent, xmlSequenceGenerator);
 		this.specifiedCatalog = xmlSequenceGenerator.getCatalog();
 		this.specifiedSchema = xmlSequenceGenerator.getSchema();

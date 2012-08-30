@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface JavaReadOnlyTable
-	extends ReadOnlyTable, JavaJpaContextNode
+	extends ReadOnlyTable
 {
 
 }

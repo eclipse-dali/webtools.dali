@@ -15,9 +15,7 @@ import org.eclipse.jpt.common.utility.internal.AbstractTransformer;
 import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -35,11 +33,11 @@ import org.eclipse.text.edits.ReplaceEdit;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 3.3
  * @since 2.0
  */
 public interface ClassRef
-	extends XmlContextNode, JpaStructureNode, PersistentType.Owner
+	extends JpaStructureNode, PersistentType.Owner
 {
 	/**
 	 * Return whether the class ref is a reference to the specified type.

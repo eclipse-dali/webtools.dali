@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface JavaReadOnlyOverride
-	extends ReadOnlyOverride, JavaJpaContextNode
+	extends ReadOnlyOverride
 {
 
 }

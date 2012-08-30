@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface JavaReadOnlyNamedColumn
-	extends ReadOnlyNamedColumn, JavaJpaContextNode
+	extends ReadOnlyNamedColumn
 {
 
 }

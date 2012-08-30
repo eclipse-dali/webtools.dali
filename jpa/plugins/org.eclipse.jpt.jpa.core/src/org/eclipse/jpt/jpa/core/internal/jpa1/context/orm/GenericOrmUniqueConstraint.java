@@ -11,9 +11,9 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmReadOnlyUniqueConstraint;
@@ -27,7 +27,7 @@ public class GenericOrmUniqueConstraint
 	protected final XmlUniqueConstraint xmlUniqueConstraint;
 
 
-	public GenericOrmUniqueConstraint(XmlContextNode parent, Owner owner, XmlUniqueConstraint xmlUniqueConstraint) {
+	public GenericOrmUniqueConstraint(JpaContextNode parent, Owner owner, XmlUniqueConstraint xmlUniqueConstraint) {
 		super(parent);
 		this.owner = owner;
 		this.xmlUniqueConstraint = xmlUniqueConstraint;
@@ -128,11 +128,6 @@ public class GenericOrmUniqueConstraint
 	}
 
 	// ********** misc **********
-
-	@Override
-	public XmlContextNode getParent() {
-		return (XmlContextNode) super.getParent();
-	}
 
 	public XmlUniqueConstraint getXmlUniqueConstraint() {
 		return this.xmlUniqueConstraint;

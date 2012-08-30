@@ -11,9 +11,9 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualNamedColumn;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.db.Column;
@@ -43,7 +43,7 @@ public abstract class AbstractOrmVirtualNamedColumn<O extends ReadOnlyNamedColum
 	protected String columnDefinition;
 
 
-	protected AbstractOrmVirtualNamedColumn(XmlContextNode parent, O owner) {
+	protected AbstractOrmVirtualNamedColumn(JpaContextNode parent, O owner) {
 		super(parent);
 		this.owner = owner;
 	}
@@ -160,11 +160,6 @@ public abstract class AbstractOrmVirtualNamedColumn<O extends ReadOnlyNamedColum
 
 
 	// ********** misc **********
-
-	@Override
-	public XmlContextNode getParent() {
-		return (XmlContextNode) super.getParent();
-	}
 
 	public boolean isVirtual() {
 		return true;

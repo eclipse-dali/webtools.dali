@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
-import org.eclipse.jpt.jpa.core.internal.context.AbstractXmlContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.GenericOrmXml2_0Definition;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
 
@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
  * implementation.
  */
 public abstract class AbstractOrmXmlContextNode
-	extends AbstractXmlContextNode
+	extends AbstractJpaContextNode
 {
 	protected AbstractOrmXmlContextNode(JpaContextNode parent) {
 		super(parent);

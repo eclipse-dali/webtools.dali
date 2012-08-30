@@ -25,11 +25,11 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.3
  * @since 2.0
  */
 public interface JavaPersistentAttribute
-	extends PersistentAttribute, JavaJpaContextNode
+	extends PersistentAttribute
 {
 	// ********** covariant overrides **********
 

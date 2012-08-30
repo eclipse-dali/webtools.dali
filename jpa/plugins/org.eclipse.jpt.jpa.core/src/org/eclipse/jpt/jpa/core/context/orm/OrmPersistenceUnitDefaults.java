@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.AccessHolder;
 import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitDefaults;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
@@ -28,11 +27,11 @@ import org.eclipse.jpt.jpa.db.SchemaContainer;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.1
+ * @version 3.3
  * @since 2.1
  */
 public interface OrmPersistenceUnitDefaults
-	extends MappingFilePersistenceUnitDefaults, XmlContextNode, AccessHolder
+	extends MappingFilePersistenceUnitDefaults, AccessHolder
 {
 	/**
 	 * Covariant override.

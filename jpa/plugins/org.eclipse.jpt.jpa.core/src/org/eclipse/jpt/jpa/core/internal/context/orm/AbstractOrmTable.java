@@ -16,10 +16,10 @@ import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -64,11 +64,11 @@ public abstract class AbstractOrmTable<X extends AbstractXmlTable>
 
 	// ********** constructor/initialization **********
 
-	protected AbstractOrmTable(XmlContextNode parent, Owner owner) {
+	protected AbstractOrmTable(JpaContextNode parent, Owner owner) {
 		this(parent, owner, null);
 	}
 
-	protected AbstractOrmTable(XmlContextNode parent, Owner owner, X xmlTable) {
+	protected AbstractOrmTable(JpaContextNode parent, Owner owner, X xmlTable) {
 		super(parent);
 		this.owner = owner;
 		this.setXmlTable(xmlTable);
@@ -543,14 +543,6 @@ public abstract class AbstractOrmTable<X extends AbstractXmlTable>
 	}
 
 	// ********** misc **********
-
-	/**
-	 * covariant override
-	 */
-	@Override
-	public XmlContextNode getParent() {
-		return (XmlContextNode) super.getParent();
-	}
 
 	protected void initializeFrom(ReadOnlyTable oldTable) {
 		this.setSpecifiedName(oldTable.getSpecifiedName());

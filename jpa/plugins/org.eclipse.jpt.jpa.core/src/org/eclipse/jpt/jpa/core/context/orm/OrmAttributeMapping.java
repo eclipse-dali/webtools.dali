@@ -13,7 +13,6 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.resource.orm.Attributes;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -27,11 +26,11 @@ import org.eclipse.text.edits.ReplaceEdit;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  *
- * @version 3.0
+ * @version 3.3
  * @since 2.3
  */
 public interface OrmAttributeMapping
-	extends AttributeMapping, XmlContextNode
+	extends AttributeMapping
 {
 	OrmPersistentAttribute getParent();
 

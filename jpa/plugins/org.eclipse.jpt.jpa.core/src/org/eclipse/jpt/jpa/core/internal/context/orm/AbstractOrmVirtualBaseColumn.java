@@ -10,9 +10,9 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualBaseColumn;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyBaseColumn;
 
 public abstract class AbstractOrmVirtualBaseColumn<O extends ReadOnlyBaseColumn.Owner, C extends ReadOnlyBaseColumn>
@@ -35,7 +35,7 @@ public abstract class AbstractOrmVirtualBaseColumn<O extends ReadOnlyBaseColumn.
 	protected boolean defaultUpdatable;
 
 
-	protected AbstractOrmVirtualBaseColumn(XmlContextNode parent, O owner) {
+	protected AbstractOrmVirtualBaseColumn(JpaContextNode parent, O owner) {
 		super(parent, owner);
 	}
 

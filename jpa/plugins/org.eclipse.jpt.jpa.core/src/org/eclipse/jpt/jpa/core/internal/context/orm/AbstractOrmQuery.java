@@ -17,10 +17,10 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.QueryHint;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryHint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQuery;
@@ -51,7 +51,7 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 	protected final ContextListContainer<OrmQueryHint, XmlQueryHint> hintContainer;
 
 
-	protected AbstractOrmQuery(XmlContextNode parent, X xmlQuery) {
+	protected AbstractOrmQuery(JpaContextNode parent, X xmlQuery) {
 		super(parent);
 		this.xmlQuery = xmlQuery;
 		this.name = xmlQuery.getName();
@@ -299,11 +299,6 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 
 
 	// ********** misc **********
-
-	@Override
-	public XmlContextNode getParent() {
-		return (XmlContextNode) super.getParent();
-	}
 
 	public X getXmlQuery() {
 		return this.xmlQuery;

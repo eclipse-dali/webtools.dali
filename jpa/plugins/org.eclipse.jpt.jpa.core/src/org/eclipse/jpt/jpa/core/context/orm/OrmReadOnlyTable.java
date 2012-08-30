@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 
 /**
  * <code>orm.xml</code> read-only table
@@ -22,7 +21,7 @@ import org.eclipse.jpt.jpa.core.context.XmlContextNode;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface OrmReadOnlyTable
-	extends ReadOnlyTable, XmlContextNode
+	extends ReadOnlyTable
 {
 
 }

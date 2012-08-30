@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaManyToOneMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
@@ -73,7 +73,7 @@ public class JavaEclipseLinkManyToOneMapping
 
 	// ********** converter container parent adapter **********
 
-	public JavaJpaContextNode getConverterContainerParent() {
+	public JpaContextNode getConverterContainerParent() {
 		return this;  // no adapter
 	}
 

@@ -23,8 +23,8 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
@@ -54,7 +54,7 @@ public class OrmEclipseLinkObjectTypeConverter
 	private String defaultObjectValue;
 
 
-	public OrmEclipseLinkObjectTypeConverter(XmlContextNode parent, XmlObjectTypeConverter xmlConverter) {
+	public OrmEclipseLinkObjectTypeConverter(JpaContextNode parent, XmlObjectTypeConverter xmlConverter) {
 		super(parent, xmlConverter);
 		this.dataType = xmlConverter.getDataType();
 		this.objectType = xmlConverter.getObjectType();

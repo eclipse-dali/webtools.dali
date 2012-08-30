@@ -11,9 +11,9 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmQuery;
@@ -35,7 +35,7 @@ public class GenericOrmNamedNativeQuery
 	protected String resultSetMapping;
 
 
-	public GenericOrmNamedNativeQuery(XmlContextNode parent, XmlNamedNativeQuery xmlNamedNativeQuery) {
+	public GenericOrmNamedNativeQuery(JpaContextNode parent, XmlNamedNativeQuery xmlNamedNativeQuery) {
 		super(parent, xmlNamedNativeQuery);
 		this.resultClass = xmlNamedNativeQuery.getResultClass();
 		this.resultSetMapping = xmlNamedNativeQuery.getResultSetMapping();

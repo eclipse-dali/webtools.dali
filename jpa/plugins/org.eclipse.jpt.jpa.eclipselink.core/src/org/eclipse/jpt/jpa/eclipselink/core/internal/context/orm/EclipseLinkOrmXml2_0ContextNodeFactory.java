@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.Table;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedQuery;
@@ -53,7 +53,7 @@ public class EclipseLinkOrmXml2_0ContextNodeFactory
 	}
 	
 	@Override
-	public OrmSequenceGenerator buildOrmSequenceGenerator(XmlContextNode parent, org.eclipse.jpt.jpa.core.resource.orm.XmlSequenceGenerator resourceSequenceGenerator) {
+	public OrmSequenceGenerator buildOrmSequenceGenerator(JpaContextNode parent, org.eclipse.jpt.jpa.core.resource.orm.XmlSequenceGenerator resourceSequenceGenerator) {
 		return new GenericOrmSequenceGenerator2_0(parent, resourceSequenceGenerator);
 	}
 	
@@ -74,7 +74,7 @@ public class EclipseLinkOrmXml2_0ContextNodeFactory
 	}
 
 	@Override
-	public OrmNamedQuery buildOrmNamedQuery(XmlContextNode parent, XmlNamedQuery resourceNamedQuery) {
+	public OrmNamedQuery buildOrmNamedQuery(JpaContextNode parent, XmlNamedQuery resourceNamedQuery) {
 		return new GenericOrmNamedQuery2_0(parent, resourceNamedQuery);
 	}
 

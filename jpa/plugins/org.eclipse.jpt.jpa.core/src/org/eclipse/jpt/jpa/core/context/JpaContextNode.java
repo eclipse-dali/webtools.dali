@@ -49,6 +49,8 @@ public interface JpaContextNode
 	 */
 	MappingFile.Root getMappingFileRoot();
 
+	JpaContextNode getParent();
+
 
 	// ********** database stuff **********
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0, which accompanies this distribution and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmBaseColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlColumn;
@@ -30,7 +30,7 @@ public class GenericOrmColumn
 	protected Integer specifiedScale;
 
 
-	public GenericOrmColumn(XmlContextNode parent, OrmColumn.Owner owner) {
+	public GenericOrmColumn(JpaContextNode parent, OrmColumn.Owner owner) {
 		super(parent, owner);
 		this.specifiedLength = this.buildSpecifiedLength();
 		this.specifiedPrecision = this.buildSpecifiedPrecision();

@@ -14,7 +14,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.VirtualOverride;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlOverride;
 
 /**
@@ -30,15 +29,9 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlOverride;
  * @since 2.3
  */
 public interface OrmOverrideContainer
-	extends OverrideContainer, XmlContextNode
+	extends OverrideContainer
 {
 	// covariant overrides
-	/**
-	 * We need this covariant override because there is no override
-	 * <em>container</em> element in the <code>orm.xml</code> file;
-	 * there is simply a list of overrides.
-	 */
-	XmlContextNode getParent();
 	ListIterable<? extends OrmReadOnlyOverride> getOverrides();
 	OrmReadOnlyOverride getOverrideNamed(String name);
 	ListIterable<? extends OrmOverride> getSpecifiedOverrides();

@@ -13,7 +13,6 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -27,11 +26,11 @@ import org.eclipse.text.edits.ReplaceEdit;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  *
- * @version 3.2
+ * @version 3.3
  * @since 2.0
  */
 public interface OrmPersistentType
-	extends PersistentType, PersistentType.Owner, XmlContextNode
+	extends PersistentType, PersistentType.Owner
 {
 	// ********** covariant overrides **********
 

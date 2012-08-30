@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaBaseColumn;
 import org.eclipse.jpt.jpa.core.resource.java.CompleteColumnAnnotation;
 
@@ -36,7 +36,7 @@ public class GenericJavaColumn
 	protected int defaultScale;
 
 
-	public GenericJavaColumn(JavaJpaContextNode parent, JavaColumn.Owner owner) {
+	public GenericJavaColumn(JpaContextNode parent, JavaColumn.Owner owner) {
 		super(parent, owner);
 		//build defaults during construction for performance
 		this.defaultLength = this.buildDefaultLength();

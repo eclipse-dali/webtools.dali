@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jpa.core.context.Generator;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTableGenerator;
@@ -38,7 +38,7 @@ public class GenericOrmGeneratorContainer
 	protected OrmTableGenerator tableGenerator;
 
 
-	public GenericOrmGeneratorContainer(XmlContextNode parent, XmlGeneratorContainer xmlGeneratorContainer) {
+	public GenericOrmGeneratorContainer(JpaContextNode parent, XmlGeneratorContainer xmlGeneratorContainer) {
 		super(parent);
 		this.xmlGeneratorContainer = xmlGeneratorContainer;
 		this.sequenceGenerator = this.buildSequenceGenerator();
@@ -236,11 +236,6 @@ public class GenericOrmGeneratorContainer
 	}
 
 	// ********** misc **********
-
-	@Override
-	public XmlContextNode getParent() {
-		return (XmlContextNode) super.getParent();
-	}
 
 	public Iterable<Generator> getGenerators() {
 		return new FilteringIterable<Generator>(this.getGenerators_(), NotNullFilter.<Generator>instance());

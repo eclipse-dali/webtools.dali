@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,8 +16,8 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
@@ -39,7 +39,7 @@ public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 	protected String name;
 
 
-	protected OrmEclipseLinkConverter(XmlContextNode parent, X xmlConverter) {
+	protected OrmEclipseLinkConverter(JpaContextNode parent, X xmlConverter) {
 		super(parent);
 		this.xmlConverter = xmlConverter;
 		this.name = xmlConverter.getName();
@@ -79,11 +79,6 @@ public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 
 
 	// ********** misc **********
-
-	@Override
-	public XmlContextNode getParent() {
-		return (XmlContextNode) super.getParent();
-	}
 
 	public X getXmlConverter() {
 		return this.xmlConverter;

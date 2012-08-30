@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.context.QueryContainer;
  * @since 2.3
  */
 public interface JavaQueryContainer
-	extends QueryContainer, JavaJpaContextNode
+	extends QueryContainer
 {
 	// ********** named queries **********
 

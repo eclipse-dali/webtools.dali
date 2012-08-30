@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.jpa.core.jpa2.context.DerivedIdentityStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmDerivedIdentity2_0;
@@ -163,7 +162,7 @@ public class GenericOrmDerivedIdentity2_0
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		if (this.strategy != null) {
-			((XmlContextNode) this.strategy).validate(messages, reporter);
+			this.strategy.validate(messages, reporter);
 		}
 	}
 
@@ -180,7 +179,7 @@ public class GenericOrmDerivedIdentity2_0
 			return result;
 		}
 		if (this.strategy != null) {
-			result = ((XmlContextNode) this.strategy).getCompletionProposals(pos);
+			result = this.strategy.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}

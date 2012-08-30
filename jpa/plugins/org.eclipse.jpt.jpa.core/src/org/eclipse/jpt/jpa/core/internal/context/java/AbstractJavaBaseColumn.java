@@ -11,9 +11,9 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaBaseColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.resource.java.BaseColumnAnnotation;
 
 /**
@@ -39,11 +39,11 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 	protected boolean defaultUpdatable;
 
 
-	protected AbstractJavaBaseColumn(JavaJpaContextNode parent, O owner) {
+	protected AbstractJavaBaseColumn(JpaContextNode parent, O owner) {
 		this(parent, owner, null);
 	}
 
-	protected AbstractJavaBaseColumn(JavaJpaContextNode parent, O owner, A columnAnnotation) {
+	protected AbstractJavaBaseColumn(JpaContextNode parent, O owner, A columnAnnotation) {
 		super(parent, owner, columnAnnotation);
 		//build defaults during construction for performance
 		this.defaultTable = this.buildDefaultTable();

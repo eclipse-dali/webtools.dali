@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2010 Oracle. All rights reserved.
+* Copyright (c) 2009, 2012 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
 *******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context;
 
-import org.eclipse.jpt.jpa.core.JpaNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -18,11 +18,11 @@ import org.eclipse.jpt.jpa.core.JpaNode;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.3
  * @since 2.3
  */
 public interface OrphanRemovalHolder2_0
-	extends JpaNode
+	extends JpaContextNode
 {
 	OrphanRemovable2_0 getOrphanRemoval();
 }

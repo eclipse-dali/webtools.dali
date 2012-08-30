@@ -12,9 +12,9 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaBaseColumn;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaNamedColumn;
@@ -36,7 +36,7 @@ public class GenericJavaJoinColumn
 	protected String defaultReferencedColumnName;
 
 
-	public GenericJavaJoinColumn(JavaJpaContextNode parent, ReadOnlyJoinColumn.Owner owner, CompleteJoinColumnAnnotation columnAnnotation) {
+	public GenericJavaJoinColumn(JpaContextNode parent, ReadOnlyJoinColumn.Owner owner, CompleteJoinColumnAnnotation columnAnnotation) {
 		super(parent, owner, columnAnnotation);
 	}
 

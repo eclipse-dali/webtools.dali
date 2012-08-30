@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlDiscriminatorColumn;
 
@@ -21,7 +21,7 @@ public class GenericOrmDiscriminatorColumn
 	implements OrmDiscriminatorColumn
 {
 
-	public GenericOrmDiscriminatorColumn(XmlContextNode parent, OrmDiscriminatorColumn.Owner owner) {
+	public GenericOrmDiscriminatorColumn(JpaContextNode parent, OrmDiscriminatorColumn.Owner owner) {
 		super(parent, owner);
 	}
 

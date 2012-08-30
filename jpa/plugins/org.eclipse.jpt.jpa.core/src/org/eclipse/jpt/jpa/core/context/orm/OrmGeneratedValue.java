@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.GeneratedValue;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlGeneratedValue;
 
 /**
@@ -26,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlGeneratedValue;
  * @since 2.0
  */
 public interface OrmGeneratedValue
-	extends GeneratedValue, XmlContextNode
+	extends GeneratedValue
 {
 	XmlGeneratedValue getXmlGeneratedValue();
 

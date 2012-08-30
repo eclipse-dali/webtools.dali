@@ -12,8 +12,8 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlNamedColumn;
@@ -55,11 +55,11 @@ public abstract class AbstractOrmNamedColumn<X extends XmlNamedColumn, O extends
 
 	// ********** constructor/initialization **********
 
-	protected AbstractOrmNamedColumn(XmlContextNode parent, O owner) {
+	protected AbstractOrmNamedColumn(JpaContextNode parent, O owner) {
 		this(parent, owner, null);
 	}
 
-	protected AbstractOrmNamedColumn(XmlContextNode parent, O owner, X xmlColumn) {
+	protected AbstractOrmNamedColumn(JpaContextNode parent, O owner, X xmlColumn) {
 		super(parent);
 		this.owner = owner;
 		this.setXmlColumn(xmlColumn);
@@ -272,11 +272,6 @@ public abstract class AbstractOrmNamedColumn<X extends XmlNamedColumn, O extends
 	}
 	
 	// ********** misc **********
-
-	@Override
-	public XmlContextNode getParent() {
-		return (XmlContextNode) super.getParent();
-	}
 
 	public boolean isVirtual() {
 		return false;

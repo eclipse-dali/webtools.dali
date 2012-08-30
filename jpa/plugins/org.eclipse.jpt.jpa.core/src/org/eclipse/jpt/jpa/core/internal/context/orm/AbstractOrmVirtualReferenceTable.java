@@ -14,10 +14,10 @@ import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyReferenceTable;
 import org.eclipse.jpt.jpa.core.context.VirtualReferenceTable;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualJoinColumn;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -32,7 +32,7 @@ public abstract class AbstractOrmVirtualReferenceTable<T extends ReadOnlyReferen
 	protected OrmVirtualJoinColumn defaultJoinColumn;
 
 
-	protected AbstractOrmVirtualReferenceTable(XmlContextNode parent, Owner owner, T overridenTable) {
+	protected AbstractOrmVirtualReferenceTable(JpaContextNode parent, Owner owner, T overridenTable) {
 		super(parent, owner, overridenTable);
 		this.joinColumnOwner = this.buildJoinColumnOwner();
 		this.specifiedJoinColumnContainer = this.buildSpecifiedJoinColumnContainer();

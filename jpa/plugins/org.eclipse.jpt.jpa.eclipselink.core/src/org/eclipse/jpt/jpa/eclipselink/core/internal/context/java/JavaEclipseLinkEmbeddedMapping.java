@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaEmbeddedMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.EclipseLinkJavaConvertibleMapping;
@@ -56,7 +56,7 @@ public class JavaEclipseLinkEmbeddedMapping
 
 	// ********** converter container parent adapter **********
 
-	public JavaJpaContextNode getConverterContainerParent() {
+	public JpaContextNode getConverterContainerParent() {
 		return this;  // no adapter
 	}
 

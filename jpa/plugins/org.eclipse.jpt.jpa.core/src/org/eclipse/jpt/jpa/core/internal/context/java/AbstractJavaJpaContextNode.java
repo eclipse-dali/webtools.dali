@@ -11,12 +11,10 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.AbstractJpaContextNode;
 
 public abstract class AbstractJavaJpaContextNode
 	extends AbstractJpaContextNode
-	implements JavaJpaContextNode
 {
 	protected AbstractJavaJpaContextNode(JpaContextNode parent) {
 		super(parent);

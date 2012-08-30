@@ -15,10 +15,10 @@ import org.eclipse.jpt.common.utility.internal.NameTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -61,11 +61,11 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 	protected final ContextListContainer<JavaUniqueConstraint, UniqueConstraintAnnotation> uniqueConstraintContainer;
 
 
-	protected AbstractJavaTable(JavaJpaContextNode parent, Owner owner) {
+	protected AbstractJavaTable(JpaContextNode parent, Owner owner) {
 		this(parent, owner, null);
 	}
 
-	protected AbstractJavaTable(JavaJpaContextNode parent, Owner owner, A tableAnnotation) {
+	protected AbstractJavaTable(JpaContextNode parent, Owner owner, A tableAnnotation) {
 		super(parent);
 		this.owner = owner;
 		this.setTableAnnotation(tableAnnotation);
@@ -496,11 +496,6 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 
 
 	// ********** misc **********
-
-	@Override
-	public JavaJpaContextNode getParent() {
-		return (JavaJpaContextNode) super.getParent();
-	}
 
 	protected void initializeFrom(ReadOnlyTable oldTable) {
 		this.setSpecifiedName(oldTable.getSpecifiedName());

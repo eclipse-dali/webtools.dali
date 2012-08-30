@@ -14,10 +14,10 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.NameTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.VirtualTable;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -47,7 +47,7 @@ public abstract class AbstractJavaVirtualTable<T extends ReadOnlyTable>
 	protected final ContextListContainer<JavaVirtualUniqueConstraint, ReadOnlyUniqueConstraint> uniqueConstraintContainer;
 
 
-	protected AbstractJavaVirtualTable(JavaJpaContextNode parent, Owner owner, T overridenTable) {
+	protected AbstractJavaVirtualTable(JpaContextNode parent, Owner owner, T overridenTable) {
 		super(parent);
 		this.owner = owner;
 		this.overriddenTable = overridenTable;
@@ -342,11 +342,6 @@ public abstract class AbstractJavaVirtualTable<T extends ReadOnlyTable>
 
 
 	// ********** misc **********
-
-	@Override
-	public JavaJpaContextNode getParent() {
-		return (JavaJpaContextNode) super.getParent();
-	}
 
 	@Override
 	public void toString(StringBuilder sb) {
