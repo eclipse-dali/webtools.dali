@@ -80,7 +80,7 @@ final class SourceMethod
 	
 	@Override
 	protected ITypeBinding getJdtTypeBinding(IBinding binding) {
-		return ((IMethodBinding) binding).getReturnType();
+		return binding == null ? null : ((IMethodBinding) binding).getReturnType();
 	}
 	
 	

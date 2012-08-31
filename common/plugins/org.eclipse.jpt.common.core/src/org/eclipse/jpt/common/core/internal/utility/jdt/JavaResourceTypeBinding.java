@@ -54,7 +54,7 @@ public class JavaResourceTypeBinding
 	
 	
 	public JavaResourceTypeBinding(ITypeBinding jdtTypeBinding) {
-		this.key = jdtTypeBinding.getKey();
+		this.key = jdtTypeBinding == null ? null : jdtTypeBinding.getKey();
 		this.qualifiedName = buildQualifiedName(jdtTypeBinding);
 		this.simpleName = buildSimpleName(jdtTypeBinding);
 		this.packageName = buildPackageName(jdtTypeBinding);
@@ -71,6 +71,12 @@ public class JavaResourceTypeBinding
 	
 	
 	public boolean isEquivalentTo(ITypeBinding typeBinding) {
+		if (this.key == null) {
+			return typeBinding == null; 
+		}
+		if (typeBinding == null) {
+			return false;
+		}
 		return this.key.equals(typeBinding.getKey());
 	}
 	
@@ -145,7 +151,7 @@ public class JavaResourceTypeBinding
 	}
 	
 	private boolean buildIsGenericTypeDeclaration(ITypeBinding typeBinding) {
-		return typeBinding.isGenericType();
+		return typeBinding != null && typeBinding.isGenericType();
 	}
 	
 	public boolean isMemberTypeDeclaration() {
