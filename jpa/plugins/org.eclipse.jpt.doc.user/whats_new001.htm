@@ -3,33 +3,72 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
- 
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Improved Internationalization and Localization</title>
-<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1" />
-<meta name="date" content="2010-05-19T8:12:49Z" />
+<title>Tips and tricks</title>
+<meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
+<meta name="date" content="2012-08-31T7:10:28Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Improved Internationalization and Localization" />
-<meta name="relnum" content="Release 2.3" />
-<meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
+<meta name="doctitle" content="Tips and tricks" />
+<meta name="relnum" content="Release 3.2" />
+<meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
-<!-- contents -->
 </head>
 <body>
-<div class="sect1"><!-- infolevel="all" infotype="General" --><a id="sthref292" name="sthref292"></a>
-<h1>Improved Internationalization and Localization</h1>
-<p>This release of the Dali OR Mapping Tool provides improved internationalization (i18n) and localization support. Dali projects can support different locales and processing of international data (such as dates and strings).</p>
-</div>
-<!-- class="sect1" -->
+<p><a id="CHDHGHBF" name="CHDHGHBF"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-08-31</p>
+<h1>Tips and tricks</h1>
+<p>The following tips and tricks give some helpful ideas for increasing your productivity.</p>
+<div class="inftblhruleinformalwide">
+<table class="HRuleInformalWide" summary="Tips and Tricks" dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
+<col width="24%" />
+<col width="*" />
+<tbody>
+<tr align="left" valign="top">
+<td align="left" id="r1c1-t2">
+<p><span class="bold">Database connections</span></p>
+</td>
+<td align="left">
+<p>When starting a new workbench session, be sure to <a href="../org.eclipse.datatools.connectivity.doc.user/doc/html/asc1229700343352.html">reconnect to your database</a> (if you are working online). This allows Dali to provide database-related mapping assistance and validation.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r2c1-t2">
+<p><span class="bold">Schema-based persistence.xml file</span></p>
+</td>
+<td align="left" headers="r2c1-t2">
+<p>If you are behind a firewall, you may need to configure your Eclipse workspace proxy in the <a href="../org.eclipse.platform.doc.user/reference/ref-72.htm">Preferences dialog</a> (<span class="gui-object-action">Preferences &gt; Internet &gt; Proxy Settings</span>) to properly validate a schema-based <code>persistence.xml</code> file.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r3c1-t2">
+<p><span class="bold">@XmlPath content assist and validation</span></p>
+</td>
+<td align="left" headers="r3c1-t2">
+<p>Dali supports <code>@XmlPath</code> content assist and validation. You can now easily traverse deeply nested XML structures specifying <code>XmlPath</code> values.</p>
+<img src="img/xmlpath_validation.png" alt="" title="" /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r4c1-t2">
+<p><span class="bold">Making persistent entities</span></p>
+</td>
+<td align="left" headers="r4c1-t2">
+<p>With the <a href="reference065.htm#CACIBDFB">Make Persistent dialog</a>, you can easily transform Java classes into persistent entities via Java annotation or entry in an XML mapping file. With multi-select, you can quickly create many entities at once.</p>
+<img src="img/MakePersistentMenu.png" alt="" title="" /></td>
+</tr>
+</tbody>
+</table>
+<br /></div>
+<!-- class="inftblhruleinformalwide" -->
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
 <col width="86%" />
 <col width="*" />
 <tr>
-<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2010,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
+<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2011, 2012,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
 <a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Legal Notices</span></a></td>
 </tr>
 </table>
