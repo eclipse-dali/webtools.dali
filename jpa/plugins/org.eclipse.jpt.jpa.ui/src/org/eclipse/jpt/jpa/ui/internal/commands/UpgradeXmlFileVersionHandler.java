@@ -54,7 +54,7 @@ public class UpgradeXmlFileVersionHandler
 		IContentType contentType = xmlResource.getContentType();
 		JpaProject jpaProject = this.getJpaProject(xmlResource.getFile().getProject());
 		String newVersion = jpaProject.getJpaPlatform().getMostRecentSupportedResourceType(contentType).getVersion();
-		root.setVersion(newVersion);
+		root.setDocumentVersion(newVersion);
 		xmlResource.save();
 	}
 

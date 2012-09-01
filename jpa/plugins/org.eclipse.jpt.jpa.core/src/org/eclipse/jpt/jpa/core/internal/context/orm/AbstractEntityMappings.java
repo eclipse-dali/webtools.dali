@@ -259,7 +259,7 @@ public abstract class AbstractEntityMappings
 	}
 
 	public String getVersion() {
-		return this.xmlEntityMappings.getVersion();
+		return this.xmlEntityMappings.getDocumentVersion();
 	}
 
 	public void changeMapping(OrmPersistentType ormPersistentType, OrmTypeMapping oldMapping, OrmTypeMapping newMapping) {
@@ -1089,7 +1089,7 @@ public abstract class AbstractEntityMappings
 	}
 
 	protected void validateVersion(List<IMessage> messages) {
-		if (! this.getLatestDocumentVersion().equals(this.xmlEntityMappings.getVersion())) {
+		if (! this.getLatestDocumentVersion().equals(this.xmlEntityMappings.getDocumentVersion())) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.LOW_SEVERITY,

@@ -19,7 +19,7 @@
   		<content-type
 			id="org.eclipse.jpt.jaxb.eclipselink.core.content.oxm"
 			name="%OXM_XML_CONTENT"
-			base-type="org.eclipse.core.runtime.xml">
+			base-type="org.eclipse.jpt.jaxb.core.content.jaxbXmlContent">
 			<describer
 				class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber2">
 				<parameter 

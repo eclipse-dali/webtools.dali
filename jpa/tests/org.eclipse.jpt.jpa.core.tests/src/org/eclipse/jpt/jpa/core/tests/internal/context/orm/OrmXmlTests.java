@@ -49,7 +49,7 @@ public class OrmXmlTests extends ContextModelTestCase
 		assertEquals(1, getJpaProject().getJpaFilesSize()); //should only be the persistence.xml file
 		
 		XmlEntityMappings xmlEntityMappings = OrmFactory.eINSTANCE.createXmlEntityMappings();
-		xmlEntityMappings.setVersion("1.0");
+		xmlEntityMappings.setDocumentVersion("1.0");
 		ormResource.getContents().add(xmlEntityMappings);
 		ormResource.save(null);
 		

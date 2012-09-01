@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jaxb.core.context.XmlElementsMapping;
 
 /**
- * EclipseLink extensions to XmlElementsMapping
+ * Oxm extensions to XmlElementsMapping
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching

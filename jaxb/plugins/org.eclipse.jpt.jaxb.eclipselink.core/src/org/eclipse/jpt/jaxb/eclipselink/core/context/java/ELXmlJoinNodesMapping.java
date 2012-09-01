@@ -14,7 +14,7 @@ import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 
 /**
- * Represents an EclipseLink XmlJoinNodes attribute mapping in either
+ * Represents an Oxm XmlJoinNodes attribute mapping in either
  * java annotations or oxm file.
  * 
  * Provisional API: This interface is part of an interim API that is still

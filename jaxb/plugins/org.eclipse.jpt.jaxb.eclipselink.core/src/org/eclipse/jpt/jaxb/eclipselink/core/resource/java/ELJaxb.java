@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.resource.java;
 
 /**
- * EclipseLink JAXB Java-related stuff (annotations etc.)
+ * Oxm JAXB Java-related stuff (annotations etc.)
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -24,7 +24,7 @@ package org.eclipse.jpt.jaxb.eclipselink.core.resource.java;
 @SuppressWarnings("nls")
 public interface ELJaxb {
 	
-	// EclipseLink annotations package
+	// Oxm annotations package
 	
 	String PACKAGE = "org.eclipse.persistence.oxm.annotations";
 	String PACKAGE_ = PACKAGE + '.';

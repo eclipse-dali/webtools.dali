@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 
 /**
- * Corresponds to the EclipseLink annotation
+ * Corresponds to the Oxm annotation
  * org.eclipse.persistence.oxm.annotations.XmlPath
  * 
  * Provisional API: This interface is part of an interim API that is still

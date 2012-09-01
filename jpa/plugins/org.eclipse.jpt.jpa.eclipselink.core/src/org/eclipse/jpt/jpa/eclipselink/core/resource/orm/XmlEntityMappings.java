@@ -1342,19 +1342,9 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 
 
 	// ********** version -> schema location mapping **********
-
-	@Override
-	protected String getNamespace() {
-		return EclipseLink.SCHEMA_NAMESPACE;
-	}
-
-	@Override
-	protected String getSchemaLocationForVersion(String schemaVersion) {
-		return SCHEMA_LOCATIONS.get(schemaVersion);
-	}
-
+	
 	private static HashMap<String, String> SCHEMA_LOCATIONS = buildSchemaLocations();
-
+	
 	private static HashMap<String, String> buildSchemaLocations() {
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put(EclipseLink.SCHEMA_VERSION, EclipseLink.SCHEMA_LOCATION);
@@ -1368,7 +1358,17 @@ public class XmlEntityMappings extends org.eclipse.jpt.jpa.core.resource.orm.Xml
 		return map;
 	}
 	
-
+	@Override
+	protected String getNamespace() {
+		return EclipseLink.SCHEMA_NAMESPACE;
+	}
+	
+	@Override
+	protected HashMap<String, String> schemaLocations() {
+		return SCHEMA_LOCATIONS;
+	}
+	
+	
 	// ********** content/resource type **********
 
 	/**

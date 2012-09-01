@@ -3,7 +3,7 @@ package org.eclipse.jpt.jaxb.eclipselink.core.context.java;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 
 /**
- * Represents an EclipseLink XmlInverseReference attribute mapping in either
+ * Represents an Oxm XmlInverseReference attribute mapping in either
  * java annotations or oxm file.
  * 
  * Provisional API: This interface is part of an interim API that is still

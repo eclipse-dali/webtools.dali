@@ -37,7 +37,7 @@ public class PersistenceXmlTests extends ContextModelTestCase
 		assertEquals(1, getJpaProject().getJpaFilesSize()); //should only be the orm.xml file
 		
 		XmlPersistence xmlPersistence = PersistenceFactory.eINSTANCE.createXmlPersistence();
-		xmlPersistence.setVersion("1.0");
+		xmlPersistence.setDocumentVersion("1.0");
 		prm.getContents().add(xmlPersistence);
 		prm.save(null);
 		

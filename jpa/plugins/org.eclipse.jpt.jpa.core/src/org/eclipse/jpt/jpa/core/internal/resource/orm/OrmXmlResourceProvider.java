@@ -65,7 +65,7 @@ public class OrmXmlResourceProvider
 	protected void populateRoot(Object config) {
 		IDataModel dataModel = (IDataModel) config;
 		XmlEntityMappings entityMappings = OrmFactory.eINSTANCE.createXmlEntityMappings();
-		entityMappings.setVersion(dataModel.getStringProperty(VERSION));
+		entityMappings.setDocumentVersion(dataModel.getStringProperty(VERSION));
 		getResourceContents().add(entityMappings);
 		
 		String defaultAccess = (String) dataModel.getProperty(DEFAULT_ACCESS); 

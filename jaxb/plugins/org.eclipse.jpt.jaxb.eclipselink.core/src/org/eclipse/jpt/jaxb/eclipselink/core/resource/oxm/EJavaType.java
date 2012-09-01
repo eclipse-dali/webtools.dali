@@ -1385,7 +1385,7 @@ public class EJavaType extends EBaseObjectImpl implements EPropertyHolder
 	// ***** translators *****
 	
 	public static Translator buildTranslator() {
-		return new SimpleTranslator(EclipseLink.JAVA_TYPES + "/" + EclipseLink.JAVA_TYPE, OxmPackage.eINSTANCE.getEXmlBindings_JavaTypes(), buildTranslatorChildren());
+		return new SimpleTranslator(Oxm.JAVA_TYPES + "/" + Oxm.JAVA_TYPE, OxmPackage.eINSTANCE.getEXmlBindings_JavaTypes(), buildTranslatorChildren());
 	}
 	
 	private static Translator[] buildTranslatorChildren() {

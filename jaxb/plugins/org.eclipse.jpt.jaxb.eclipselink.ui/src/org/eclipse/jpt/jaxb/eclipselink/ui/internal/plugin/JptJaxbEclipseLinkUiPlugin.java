@@ -27,7 +27,7 @@ public class JptJaxbEclipseLinkUiPlugin
 	private static JptJaxbEclipseLinkUiPlugin INSTANCE;
 
 	/**
-	 * Return the singleton Dali JAXB EclipseLink UI plug-in.
+	 * Return the singleton Dali JAXB Oxm UI plug-in.
 	 */
 	public static JptJaxbEclipseLinkUiPlugin instance() {
 		return INSTANCE;

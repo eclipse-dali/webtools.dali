@@ -11,13 +11,15 @@
 
 package org.eclipse.jpt.common.core.resource.xml;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.common.core.internal.utility.translators.EnumeratedValueTranslator;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.wst.common.internal.emf.resource.ConstantAttributeTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -80,6 +82,26 @@ public abstract class ERootObjectImpl extends EBaseObjectImpl implements ERootOb
 	protected String schemaLocation = SCHEMA_LOCATION_EDEFAULT;
 
 	/**
+	 * The default value of the '{@link #getImpliedVersion() <em>Implied Version</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getImpliedVersion()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String IMPLIED_VERSION_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getImpliedVersion() <em>Implied Version</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getImpliedVersion()
+	 * @generated
+	 * @ordered
+	 */
+	protected String impliedVersion = IMPLIED_VERSION_EDEFAULT;
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -111,7 +133,7 @@ public abstract class ERootObjectImpl extends EBaseObjectImpl implements ERootOb
 	 * @return the value of the '<em>Version</em>' attribute.
 	 * @see #setVersion(String)
 	 * @see org.eclipse.jpt.common.core.resource.xml.CommonPackage#getERootObject_Version()
-	 * @model required="true"
+	 * @model
 	 * @generated
 	 */
 	public String getVersion()
@@ -127,7 +149,7 @@ public abstract class ERootObjectImpl extends EBaseObjectImpl implements ERootOb
 	 * @see #getVersion()
 	 * @generated
 	 */
-	protected void setVersionGen(String newVersion)
+	public void setVersion(String newVersion)
 	{
 		String oldVersion = version;
 		version = newVersion;
@@ -135,9 +157,14 @@ public abstract class ERootObjectImpl extends EBaseObjectImpl implements ERootOb
 			eNotify(new ENotificationImpl(this, Notification.SET, CommonPackage.EROOT_OBJECT_IMPL__VERSION, oldVersion, version));
 	}
 	
-	public void setVersion(String newVersion) {
-		setVersionGen(newVersion);
-		setSchemaLocation(buildSchemaLocationString(getNamespace(), getSchemaLocationForVersion(newVersion)));
+	public String getDocumentVersion() {
+		String version = getVersion();
+		return (version == null) ? getImpliedVersion() : version;
+	}
+	
+	public void setDocumentVersion(String newVersion) {
+		setVersion(newVersion);
+		setSchemaLocation(getSchemaLocationForVersion(newVersion));
 	}
 	
 	/**
@@ -167,12 +194,58 @@ public abstract class ERootObjectImpl extends EBaseObjectImpl implements ERootOb
 	 * @see #getSchemaLocation()
 	 * @generated
 	 */
-	public void setSchemaLocation(String newSchemaLocation)
+	public void setSchemaLocationGen(String newSchemaLocation)
 	{
 		String oldSchemaLocation = schemaLocation;
 		schemaLocation = newSchemaLocation;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CommonPackage.EROOT_OBJECT_IMPL__SCHEMA_LOCATION, oldSchemaLocation, schemaLocation));
+	}
+	
+	public void setSchemaLocation(String newSchemaLocation) {
+		setSchemaLocationGen(newSchemaLocation);
+		for (Entry<String, String> entry : schemaLocations().entrySet()) {
+			if (entry.getValue().equals(newSchemaLocation)) {
+				setImpliedVersion(entry.getKey());
+				return;
+			}
+		}
+		setImpliedVersion(null);
+	}
+	
+	/**
+	 * Returns the value of the '<em><b>Implied Version</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Implied Version</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Implied Version</em>' attribute.
+	 * @see #setImpliedVersion(String)
+	 * @see org.eclipse.jpt.common.core.resource.xml.CommonPackage#getERootObject_ImpliedVersion()
+	 * @model
+	 * @generated
+	 */
+	public String getImpliedVersion()
+	{
+		return impliedVersion;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.common.core.resource.xml.ERootObjectImpl#getImpliedVersion <em>Implied Version</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Implied Version</em>' attribute.
+	 * @see #getImpliedVersion()
+	 * @generated
+	 */
+	public void setImpliedVersion(String newImpliedVersion)
+	{
+		String oldImpliedVersion = impliedVersion;
+		impliedVersion = newImpliedVersion;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CommonPackage.EROOT_OBJECT_IMPL__IMPLIED_VERSION, oldImpliedVersion, impliedVersion));
 	}
 
 	/**
@@ -189,6 +262,8 @@ public abstract class ERootObjectImpl extends EBaseObjectImpl implements ERootOb
 				return getVersion();
 			case CommonPackage.EROOT_OBJECT_IMPL__SCHEMA_LOCATION:
 				return getSchemaLocation();
+			case CommonPackage.EROOT_OBJECT_IMPL__IMPLIED_VERSION:
+				return getImpliedVersion();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -208,6 +283,9 @@ public abstract class ERootObjectImpl extends EBaseObjectImpl implements ERootOb
 				return;
 			case CommonPackage.EROOT_OBJECT_IMPL__SCHEMA_LOCATION:
 				setSchemaLocation((String)newValue);
+				return;
+			case CommonPackage.EROOT_OBJECT_IMPL__IMPLIED_VERSION:
+				setImpliedVersion((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -229,6 +307,9 @@ public abstract class ERootObjectImpl extends EBaseObjectImpl implements ERootOb
 			case CommonPackage.EROOT_OBJECT_IMPL__SCHEMA_LOCATION:
 				setSchemaLocation(SCHEMA_LOCATION_EDEFAULT);
 				return;
+			case CommonPackage.EROOT_OBJECT_IMPL__IMPLIED_VERSION:
+				setImpliedVersion(IMPLIED_VERSION_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -247,6 +328,8 @@ public abstract class ERootObjectImpl extends EBaseObjectImpl implements ERootOb
 				return VERSION_EDEFAULT == null ? version != null : !VERSION_EDEFAULT.equals(version);
 			case CommonPackage.EROOT_OBJECT_IMPL__SCHEMA_LOCATION:
 				return SCHEMA_LOCATION_EDEFAULT == null ? schemaLocation != null : !SCHEMA_LOCATION_EDEFAULT.equals(schemaLocation);
+			case CommonPackage.EROOT_OBJECT_IMPL__IMPLIED_VERSION:
+				return IMPLIED_VERSION_EDEFAULT == null ? impliedVersion != null : !IMPLIED_VERSION_EDEFAULT.equals(impliedVersion);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -266,6 +349,8 @@ public abstract class ERootObjectImpl extends EBaseObjectImpl implements ERootOb
 		result.append(version);
 		result.append(", schemaLocation: ");
 		result.append(schemaLocation);
+		result.append(", impliedVersion: ");
+		result.append(impliedVersion);
 		result.append(')');
 		return result.toString();
 	}
@@ -282,7 +367,11 @@ public abstract class ERootObjectImpl extends EBaseObjectImpl implements ERootOb
 	
 	protected abstract String getNamespace();
 	
-	protected abstract String getSchemaLocationForVersion(String version);
+	protected abstract HashMap<String, String> schemaLocations();
+	
+	protected String getSchemaLocationForVersion(String version) {
+		return schemaLocations().get(version);
+	}
 	
 	private static String buildSchemaLocationString(String namespace, String schemaLocation) {
 		return namespace + ' ' + schemaLocation;
@@ -323,12 +412,19 @@ public abstract class ERootObjectImpl extends EBaseObjectImpl implements ERootOb
 			
 			@Override
 			protected Iterable<String> getEnumeratedObjectValues() {
-				return new TransformationIterable<String, String>(versionsToSchemaLocations.values()) {
-					@Override
-					protected String transform(String next) {
-						return buildSchemaLocationString(namespace, next);
-					}
-				};
+				return versionsToSchemaLocations.values();
+			}
+			
+			@Override
+			public Object convertStringToValue(String string, EObject owner) {
+				String[] split = string.split("\\s+");  // splits on any whitespace
+				int length = split.length;
+				return (length == 0) ? null : split[length - 1];
+			}
+			
+			@Override
+			public String convertValueToString(Object value, EObject owner) {
+				return buildSchemaLocationString(namespace, (String) value);
 			}
 		};	
 	}

@@ -267,7 +267,7 @@ public class EXmlIsSetNullPolicy extends EAbstractXmlNullPolicy
 			extends AbstractAbstractXmlNullPolicyTranslator {
 		
 		public XmlIsSetNullPolicyTranslator() {
-			super(EclipseLink.XML_IS_SET_NULL_POLICY, buildTranslatorChildren());
+			super(Oxm.XML_IS_SET_NULL_POLICY, buildTranslatorChildren());
 		}
 		
 		private static Translator[] buildTranslatorChildren() {

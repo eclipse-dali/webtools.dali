@@ -200,7 +200,7 @@ public class EXmlNullPolicy extends EAbstractXmlNullPolicy
 			extends AbstractAbstractXmlNullPolicyTranslator {
 		
 		public XmlNullPolicyTranslator() {
-			super(EclipseLink.XML_NULL_POLICY, buildTranslatorChildren());
+			super(Oxm.XML_NULL_POLICY, buildTranslatorChildren());
 		}
 		
 		private static Translator[] buildTranslatorChildren() {

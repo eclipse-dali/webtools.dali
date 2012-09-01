@@ -13,11 +13,13 @@ import java.util.ArrayList;
 import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jpt.jaxb.core.JaxbResourceModelProvider;
 import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jaxb.core.internal.jaxb22.GenericJaxb_2_2_PlatformDefinition;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
 import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbPlatform;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.OxmResourceModelProvider;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlJoinNodesMappingDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlTransformationMappingDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.XmlCDATAAnnotationDefinition;
@@ -58,6 +60,13 @@ public class ELJaxb_2_2_PlatformDefinition
 	@Override
 	protected JaxbPlatformDefinition getGenericJaxbPlatformDefinition() {
 		return GenericJaxb_2_2_PlatformDefinition.instance();
+	}
+	
+	@Override
+	protected JaxbResourceModelProvider[] buildResourceModelProviders() {
+		return ArrayTools.addAll(
+				super.buildResourceModelProviders(),
+				OxmResourceModelProvider.instance());
 	}
 	
 	@Override

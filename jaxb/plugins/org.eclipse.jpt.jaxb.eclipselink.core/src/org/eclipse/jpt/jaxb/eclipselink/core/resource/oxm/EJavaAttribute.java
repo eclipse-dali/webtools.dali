@@ -278,20 +278,20 @@ public abstract class EJavaAttribute extends EBaseObjectImpl implements EBaseObj
 			extends MultiObjectTranslator {
 		
 		protected static String DOM_PATH = 
-				EclipseLink.JAVA_ATTRIBUTES + "/"
-						+ EclipseLink.XML_ANY_ATTRIBUTE + ","
-						+ EclipseLink.XML_ANY_ELEMENT + ","
-						+ EclipseLink.XML_ATTRIBUTE + ","
-						+ EclipseLink.XML_ELEMENT + ","
-						+ EclipseLink.XML_ELEMENT_REF + ","
-						+ EclipseLink.XML_ELEMENT_REFS + ","
-						+ EclipseLink.XML_ELEMENTS + ","
-						+ EclipseLink.XML_INVERSE_REFERENCE + ","
-						+ EclipseLink.XML_JAVA_TYPE_ADAPTER + ","
-						+ EclipseLink.XML_JOIN_NODES + ","
-						+ EclipseLink.XML_TRANSFORMATION + ","
-						+ EclipseLink.XML_TRANSIENT + ","
-						+ EclipseLink.XML_VALUE;
+				Oxm.JAVA_ATTRIBUTES + "/"
+						+ Oxm.XML_ANY_ATTRIBUTE + ","
+						+ Oxm.XML_ANY_ELEMENT + ","
+						+ Oxm.XML_ATTRIBUTE + ","
+						+ Oxm.XML_ELEMENT + ","
+						+ Oxm.XML_ELEMENT_REF + ","
+						+ Oxm.XML_ELEMENT_REFS + ","
+						+ Oxm.XML_ELEMENTS + ","
+						+ Oxm.XML_INVERSE_REFERENCE + ","
+						+ Oxm.XML_JAVA_TYPE_ADAPTER + ","
+						+ Oxm.XML_JOIN_NODES + ","
+						+ Oxm.XML_TRANSFORMATION + ","
+						+ Oxm.XML_TRANSIENT + ","
+						+ Oxm.XML_VALUE;
 		
 		protected static Map<String, Translator> DELEGATES = new HashMap<String, Translator>();
 		
@@ -304,58 +304,58 @@ public abstract class EJavaAttribute extends EBaseObjectImpl implements EBaseObj
 		protected static Map<String, Translator> delegates() {
 			if (DELEGATES.isEmpty()) {
 				
-				String pathPrefix = EclipseLink.JAVA_ATTRIBUTES + "/";
+				String pathPrefix = Oxm.JAVA_ATTRIBUTES + "/";
 				EStructuralFeature eStructuralFeature = OxmPackage.eINSTANCE.getEJavaType_JavaAttributes();
 				
-				String path = EclipseLink.XML_ANY_ATTRIBUTE;
+				String path = Oxm.XML_ANY_ATTRIBUTE;
 				DELEGATES.put(path, 
 					new EXmlAnyAttribute.XmlAnyAttributeTranslator(pathPrefix + path, eStructuralFeature));
 				
-				path = EclipseLink.XML_ANY_ELEMENT;
+				path = Oxm.XML_ANY_ELEMENT;
 				DELEGATES.put(path, 
 					new EXmlAnyElement.XmlAnyElementTranslator(pathPrefix + path, eStructuralFeature));
 				
-				path = EclipseLink.XML_ATTRIBUTE;
+				path = Oxm.XML_ATTRIBUTE;
 				DELEGATES.put(path, 
 					new EXmlAttribute.XmlAttributeTranslator(pathPrefix + path, eStructuralFeature));
 				
-				path = EclipseLink.XML_ELEMENT;
+				path = Oxm.XML_ELEMENT;
 				DELEGATES.put(path, 
 					new EXmlElement.XmlElementTranslator(pathPrefix + path, eStructuralFeature));
 				
-				path = EclipseLink.XML_ELEMENT_REF;
+				path = Oxm.XML_ELEMENT_REF;
 				DELEGATES.put(path, 
 					new EXmlElementRef.XmlElementRefTranslator(pathPrefix + path, eStructuralFeature));
 				
-				path = EclipseLink.XML_ELEMENT_REFS;
+				path = Oxm.XML_ELEMENT_REFS;
 				DELEGATES.put(path, 
 					new EXmlElementRefs.XmlElementRefsTranslator(pathPrefix + path, eStructuralFeature));
 				
-				path = EclipseLink.XML_ELEMENTS;
+				path = Oxm.XML_ELEMENTS;
 				DELEGATES.put(path, 
 					new EXmlElements.XmlElementsTranslator(pathPrefix + path, eStructuralFeature));
 				
-				path = EclipseLink.XML_INVERSE_REFERENCE;
+				path = Oxm.XML_INVERSE_REFERENCE;
 				DELEGATES.put(path, 
 					new EXmlInverseReference.XmlInverseReferenceTranslator(pathPrefix + path, eStructuralFeature));
 				
-				path = EclipseLink.XML_JAVA_TYPE_ADAPTER;
+				path = Oxm.XML_JAVA_TYPE_ADAPTER;
 				DELEGATES.put(path, 
 					new EXmlJavaTypeAdapter.XmlJavaTypeAdapterTranslator(pathPrefix + path, eStructuralFeature));
 				
-				path = EclipseLink.XML_JOIN_NODES;
+				path = Oxm.XML_JOIN_NODES;
 				DELEGATES.put(path, 
 					new EXmlJoinNodes.XmlJoinNodesTranslator(pathPrefix + path, eStructuralFeature));
 				
-				path = EclipseLink.XML_TRANSFORMATION;
+				path = Oxm.XML_TRANSFORMATION;
 				DELEGATES.put(path, 
 					new EXmlTransformation.XmlTransformationTranslator(pathPrefix + path, eStructuralFeature));
 				
-				path = EclipseLink.XML_TRANSIENT;
+				path = Oxm.XML_TRANSIENT;
 				DELEGATES.put(path, 
 					new EXmlTransient.XmlTransientTranslator(pathPrefix + path, eStructuralFeature));
 				
-				path = EclipseLink.XML_VALUE;
+				path = Oxm.XML_VALUE;
 				DELEGATES.put(path, 
 					new EXmlValue.XmlValueTranslator(pathPrefix + path, eStructuralFeature));
 			}
@@ -363,38 +363,38 @@ public abstract class EJavaAttribute extends EBaseObjectImpl implements EBaseObj
 		}
 		
 		protected static String wrappedPath(String path) {
-			return EclipseLink.JAVA_ATTRIBUTES + "/" + path;
+			return Oxm.JAVA_ATTRIBUTES + "/" + path;
 		}
 		
 		@Override
 		public Translator getDelegateFor(EObject o) {
 			switch (o.eClass().getClassifierID()) {
 				case OxmPackage.EXML_ANY_ATTRIBUTE :
-					return delegates().get(EclipseLink.XML_ANY_ATTRIBUTE);
+					return delegates().get(Oxm.XML_ANY_ATTRIBUTE);
 				case OxmPackage.EXML_ANY_ELEMENT :
-					return delegates().get(EclipseLink.XML_ANY_ELEMENT);
+					return delegates().get(Oxm.XML_ANY_ELEMENT);
 				case OxmPackage.EXML_ATTRIBUTE :
-					return delegates().get(EclipseLink.XML_ATTRIBUTE);
+					return delegates().get(Oxm.XML_ATTRIBUTE);
 				case OxmPackage.EXML_ELEMENT :
-					return delegates().get(EclipseLink.XML_ELEMENT);
+					return delegates().get(Oxm.XML_ELEMENT);
 				case OxmPackage.EXML_ELEMENT_REF :
-					return delegates().get(EclipseLink.XML_ELEMENT_REF);
+					return delegates().get(Oxm.XML_ELEMENT_REF);
 				case OxmPackage.EXML_ELEMENT_REFS:
-					return delegates().get(EclipseLink.XML_ELEMENT_REFS);
+					return delegates().get(Oxm.XML_ELEMENT_REFS);
 				case OxmPackage.EXML_ELEMENTS:
-					return delegates().get(EclipseLink.XML_ELEMENTS);
+					return delegates().get(Oxm.XML_ELEMENTS);
 				case OxmPackage.EXML_INVERSE_REFERENCE :
-					return delegates().get(EclipseLink.XML_INVERSE_REFERENCE);
+					return delegates().get(Oxm.XML_INVERSE_REFERENCE);
 				case OxmPackage.EXML_JAVA_TYPE_ADAPTER :
-					return delegates().get(EclipseLink.XML_JAVA_TYPE_ADAPTER);
+					return delegates().get(Oxm.XML_JAVA_TYPE_ADAPTER);
 				case OxmPackage.EXML_JOIN_NODES :
-					return delegates().get(EclipseLink.XML_JOIN_NODES);
+					return delegates().get(Oxm.XML_JOIN_NODES);
 				case OxmPackage.EXML_TRANSFORMATION :
-					return delegates().get(EclipseLink.XML_TRANSFORMATION);
+					return delegates().get(Oxm.XML_TRANSFORMATION);
 				case OxmPackage.EXML_TRANSIENT :
-					return delegates().get(EclipseLink.XML_TRANSIENT);
+					return delegates().get(Oxm.XML_TRANSIENT);
 				case OxmPackage.EXML_VALUE :
-					return delegates().get(EclipseLink.XML_VALUE);
+					return delegates().get(Oxm.XML_VALUE);
 				
 			}
 			throw new IllegalStateException("Java attribute expected"); //$NON-NLS-1$
@@ -412,7 +412,7 @@ public abstract class EJavaAttribute extends EBaseObjectImpl implements EBaseObj
 		
 		protected AbstractJavaAttributeTranslator(
 				String domPathAndName, EStructuralFeature eStructuralFeature, Translator[] translatorChildren) {
-			super(EclipseLink.JAVA_ATTRIBUTES + "/" + domPathAndName, eStructuralFeature, translatorChildren);
+			super(Oxm.JAVA_ATTRIBUTES + "/" + domPathAndName, eStructuralFeature, translatorChildren);
 		}
 	}
 }

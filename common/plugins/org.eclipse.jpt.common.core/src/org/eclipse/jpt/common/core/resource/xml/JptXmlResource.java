@@ -85,7 +85,7 @@ public class JptXmlResource
 	
 	public String getVersion() {
 		ERootObject root = this.getRootObject();
-		return (root == null) ? null : root.getVersion();
+		return (root == null) ? null : root.getDocumentVersion();
 	}
 
 	/**
