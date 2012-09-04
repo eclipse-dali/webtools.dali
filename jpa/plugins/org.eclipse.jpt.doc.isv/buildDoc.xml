@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2012 Oracle. All rights reserved.
+  This program and the accompanying materials are made available under the
+  terms of the Eclipse Public License v1.0, which accompanies this distribution
+  and is available at http://www.eclipse.org/legal/epl-v10.html.
+
+  Contributors:
+    Oracle - initial API and implementation
+ -->
+
+<project name="JPT Doc ISV Build" default="all"  basedir="." >
+
+	<target name="init">
+		<available file="${basedir}/index" property="index.present"/>
+	</target>
+
+	<target name="all" depends="init" unless="index.present">
+		<!-- <antcall target="convertSchemaToHtml" /> -->
+		<antcall target="generateJavadoc" />
+<!--		<antcall target="build.index" /> /-->
+		<!--antcall target="createDocZip" /-->
+	</target>
+
+	<target name="build.index" description="Builds search index for the plug-in: org.eclipse.jpt.doc.isv." if="eclipse.running">
+		<help.buildHelpIndex manifest="${basedir}/plugin.xml" destination="${basedir}"/>
+	</target>
+
+	<target name="getJavadocPath">
+		<available file="${java.home}/../bin/javadoc.exe" property="javadoc" value="${java.home}/../bin/javadoc.exe"/>
+		<available file="${java.home}/../bin/javadoc" property="javadoc" value="${java.home}/../bin/javadoc" />
+	</target>
+
+
+	<target name="generateJavadoc" depends="getJavadocPath" if="javadoc">
+
+		<property name="optionsFile" value="jptOptions.tmp.txt" />
+		<copy file="jptOptions.txt" tofile="${optionsFile}" overwrite="true" />
+		
+		<condition property="argsListDelimiter" value=":">
+			<os family="unix" />
+		</condition>
+		<condition property="argsListDelimiter" value=";">
+			<os family="windows" />
+		</condition>
+
+		<replaceregexp file="${basedir}/${optionsFile}" flags="g" match="(\r\n?|\n);" replace="${argsListDelimiter}" />
+		<replace file="${basedir}/${optionsFile}" token="@rt@" value="${bootclasspath}" />
+
+
+		<!--scrub isv plugin directories of any preexisting doc content-->
+		<delete dir="index-files"/>
+		<delete dir="org"/>
+		<delete dir="resources"/>
+
+		<exec dir="." executable="${javadoc}" output="doc.bin.log">
+			<arg line="@${basedir}/${optionsFile} -J-Xmx1000M" />
+		</exec>
+	</target>
+
+	<target name="buildJptDoc" unless="jpt.index.present">
+		<ant antfile="buildDoc.xml" dir="../org.eclipse.jpt.doc.isv" />
+	</target>
+
+	<target name="createDocZip">
+		<zip zipfile="${basedir}/doc.zip"
+		basedir="${basedir}"
+		includes="schema.css, book.css, notices.html, about.html, concepts/**, guide/**, tips/**, reference/**, tasks/**, whatsNew/**, images/**"
+	/>
+	</target>
+
+</project>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
