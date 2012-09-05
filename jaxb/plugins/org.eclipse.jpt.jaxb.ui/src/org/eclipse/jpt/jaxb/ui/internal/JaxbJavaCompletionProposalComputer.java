@@ -25,10 +25,7 @@ import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
@@ -116,12 +113,6 @@ public class JaxbJavaCompletionProposalComputer
 
 		CompletionContext cc = context.getCoreContext();
 
-		// the context's "token" is really a sort of "prefix" - it does NOT
-		// correspond to the "start" and "end" we get below... 
-		char[] prefix = cc.getToken();
-		Filter<String> filter = this.buildPrefixFilter(prefix);
-		// the token "kind" tells us if we are in a String literal already - CompletionContext.TOKEN_KIND_STRING_LITERAL
-		int tokenKind = cc.getTokenKind();
 		// the token "start" is the offset of the token's first character
 		int tokenStart = cc.getTokenStart();
 		// the token "end" is the offset of the token's last character (yuk)
@@ -132,7 +123,6 @@ public class JaxbJavaCompletionProposalComputer
 		
 //		System.out.println("token start: " + tokenStart);
 //		System.out.println("token end: " + tokenEnd);
-//		System.out.println("token kind: " + tokenKind);
 //		String source = cu.getSource();
 //		String token = source.substring(Math.max(0, tokenStart), Math.min(source.length(), tokenEnd + 1));
 //		System.out.println("token: =>" + token + "<=");
@@ -141,20 +131,13 @@ public class JaxbJavaCompletionProposalComputer
 
 		List<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
 		for (JavaContextNode javaNode : javaNodes) {
-			for (String proposal : this.getCompletionProposals(javaNode, context.getInvocationOffset(), filter)) {
-				if (tokenKind == CompletionContext.TOKEN_KIND_STRING_LITERAL) {//already quoted
-					proposals.add(new CompletionProposal(proposal, tokenStart, tokenEnd - tokenStart - 1, proposal.length()));					
-				}
-				else {//add the quotes
-					proposals.add(new CompletionProposal("\"" + proposal + "\"", tokenStart, tokenEnd - tokenStart + 1, proposal.length() + 2)); //$NON-NLS-1$ //$NON-NLS-2$
-				}
+			for (String proposal : javaNode.getCompletionProposals(context.getInvocationOffset())) {
+				// using proposal.length() -1 as cursor position puts the cursor just inside end quotes 
+				// useful for further content assist if necessary
+				proposals.add(new CompletionProposal(proposal, tokenStart, tokenEnd - tokenStart + 1, proposal.length() - 1));
 			}
 		}
 		return proposals;
-	}
-
-	private Iterable<String> getCompletionProposals(JavaContextNode javaNode, int pos, Filter<String> filter) {
-		return new FilteringIterable<String>(javaNode.getCompletionProposals(pos), filter);
 	}
 
 	private IFile getCorrespondingResource(ICompilationUnit cu) {
@@ -179,22 +162,4 @@ public class JaxbJavaCompletionProposalComputer
 		// do nothing
 	}
 
-	private Filter<String> buildPrefixFilter(char[] prefix) {
-		return (prefix == null) ?
-				Filter.Transparent.<String>instance() :
-				new IgnoreCasePrefixFilter(prefix);
-	}
-
-	private static class IgnoreCasePrefixFilter
-		implements Filter<String>
-	{
-		private final String prefix;
-		IgnoreCasePrefixFilter(char[] prefix) {
-			super();
-			this.prefix = new String(prefix);
-		}
-		public boolean accept(String s) {
-			return StringTools.stringStartsWithIgnoreCase(s, this.prefix);
-		}
-	}
 }
