@@ -473,7 +473,7 @@ public class GenericJavaTableGenerator
 	}
 
 	protected Iterable<String> getJavaCandidateTables() {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateTables());
+		return StringTools.convertToJavaStringLiteralContents(this.getCandidateTables());
 	}
 
 	protected Iterable<String> getCandidateTables() {
@@ -488,7 +488,7 @@ public class GenericJavaTableGenerator
 	}
 
 	protected Iterable<String> getJavaCandidateSchemata() {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateSchemata());
+		return StringTools.convertToJavaStringLiteralContents(this.getCandidateSchemata());
 	}
 
 	protected Iterable<String> getCandidateSchemata() {
@@ -503,7 +503,7 @@ public class GenericJavaTableGenerator
 	}
 
 	protected Iterable<String> getJavaCandidateCatalogs(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateCatalogs(filter));
+		return StringTools.convertToJavaStringLiteralContents(this.getCandidateCatalogs(filter));
 	}
 
 	protected Iterable<String> getCandidateCatalogs(Filter<String> filter) {
@@ -522,7 +522,7 @@ public class GenericJavaTableGenerator
 	}
 
 	protected Iterable<String> getJavaCandidateColumnNames() {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateColumnNames());
+		return StringTools.convertToJavaStringLiteralContents(this.getCandidateColumnNames());
 	}
 
 	protected Iterable<String> getCandidateColumnNames() {

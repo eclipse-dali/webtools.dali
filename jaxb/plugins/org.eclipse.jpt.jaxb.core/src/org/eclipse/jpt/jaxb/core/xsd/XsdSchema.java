@@ -180,11 +180,11 @@ public class XsdSchema
 	}
 
 	public Iterable<String> getNamespaceProposals() {
-		return StringTools.convertToJavaStringLiterals(getNamespaces());
+		return StringTools.convertToJavaStringLiteralContents(getNamespaces());
 	}
 	
 	public Iterable<String> getTypeNameProposals(String namespace) {
-		return StringTools.convertToJavaStringLiterals(
+		return StringTools.convertToJavaStringLiteralContents(
 					new TransformationIterable<XsdTypeDefinition, String>(this.getTypeDefinitions(namespace)) {
 						@Override
 						protected String transform(XsdTypeDefinition o) {
@@ -194,7 +194,7 @@ public class XsdSchema
 	}
 	
 	public Iterable<String> getSimpleTypeNameProposals(String namespace) {
-		return StringTools.convertToJavaStringLiterals(
+		return StringTools.convertToJavaStringLiteralContents(
 						new TransformationIterable<XsdSimpleTypeDefinition, String>(this.getSimpleTypeDefinitions(namespace)) {
 							@Override
 							protected String transform(XsdSimpleTypeDefinition o) {
@@ -204,7 +204,7 @@ public class XsdSchema
 	}
 	
 	public Iterable<String> getElementNameProposals(String namespace) {
-		return StringTools.convertToJavaStringLiterals(
+		return StringTools.convertToJavaStringLiteralContents(
 						new TransformationIterable<XsdElementDeclaration, String>(this.getElementDeclarations(namespace)) {
 							@Override
 							protected String transform(XsdElementDeclaration o) {

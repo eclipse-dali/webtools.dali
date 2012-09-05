@@ -95,7 +95,7 @@ public class XsdSimpleTypeDefinition
 	}
 	
 	public Iterable<String> getEnumValueProposals() {
-		return StringTools.convertToJavaStringLiterals(
+		return StringTools.convertToJavaStringLiteralContents(
 					new TransformationIterable<XSDEnumerationFacet, String>(getXSDComponent().getEnumerationFacets()) {
 						@Override
 						protected String transform(XSDEnumerationFacet enumFacet) {

@@ -250,7 +250,7 @@ public class EclipseLinkJavaTenantDiscriminatorColumn2_3
 	}
 
 	protected Iterable<String> getJavaCandidateTableNames() {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateTableNames());
+		return StringTools.convertToJavaStringLiteralContents(this.getCandidateTableNames());
 	}
 
 	public Iterable<String> getCandidateTableNames() {

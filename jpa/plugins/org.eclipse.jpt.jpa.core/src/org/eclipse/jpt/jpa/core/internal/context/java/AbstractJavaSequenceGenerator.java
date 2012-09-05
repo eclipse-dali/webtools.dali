@@ -119,7 +119,7 @@ public abstract class AbstractJavaSequenceGenerator<A extends SequenceGeneratorA
 	}
 
 	protected Iterable<String> getJavaCandidateSequences() {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateSequences());
+		return StringTools.convertToJavaStringLiteralContents(this.getCandidateSequences());
 	}
 
 	protected Iterable<String> getCandidateSequences() {

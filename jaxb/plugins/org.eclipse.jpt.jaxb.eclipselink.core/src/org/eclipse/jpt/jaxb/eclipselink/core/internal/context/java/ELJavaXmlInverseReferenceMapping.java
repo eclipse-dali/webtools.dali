@@ -146,7 +146,7 @@ public class ELJavaXmlInverseReferenceMapping
 			return EmptyIterable.instance();
 		}
 		
-		return StringTools.convertToJavaStringLiterals(
+		return StringTools.convertToJavaStringLiteralContents(
 				new TransformationIterable<JaxbPersistentAttribute, String>(referencedClassMapping.getAllLocallyDefinedAttributes()) {
 					@Override
 					protected String transform(JaxbPersistentAttribute o) {

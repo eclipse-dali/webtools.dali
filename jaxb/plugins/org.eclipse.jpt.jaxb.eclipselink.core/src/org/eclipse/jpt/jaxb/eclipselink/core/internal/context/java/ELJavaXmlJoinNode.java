@@ -155,7 +155,7 @@ public class ELJavaXmlJoinNode
 			if (referencedClassMapping != null) {
 				result = new CompositeIterable<String>(
 								result, 
-								StringTools.convertToJavaStringLiterals(referencedClassMapping.getKeyXPaths()));
+								StringTools.convertToJavaStringLiteralContents(referencedClassMapping.getKeyXPaths()));
 			}
 			
 			return CollectionTools.sortedSet(result);

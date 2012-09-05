@@ -226,7 +226,7 @@ public abstract class AbstractJavaNamedColumn<A extends NamedColumnAnnotation, O
 	}
 
 	protected Iterable<String> getJavaCandidateNames() {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateNames());
+		return StringTools.convertToJavaStringLiteralContents(this.getCandidateNames());
 	}
 
 	protected Iterable<String> getCandidateNames() {

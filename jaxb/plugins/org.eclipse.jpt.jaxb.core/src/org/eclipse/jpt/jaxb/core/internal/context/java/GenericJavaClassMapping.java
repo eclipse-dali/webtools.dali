@@ -757,7 +757,7 @@ public class GenericJavaClassMapping
 	}
 	
 	protected Iterable<String> getPropProposals() {
-		return StringTools.convertToJavaStringLiterals(
+		return StringTools.convertToJavaStringLiteralContents(
 				new TransformationIterable<JaxbPersistentAttribute, String>(getAllLocallyDefinedAttributes()) {
 					@Override
 					protected String transform(JaxbPersistentAttribute o) {

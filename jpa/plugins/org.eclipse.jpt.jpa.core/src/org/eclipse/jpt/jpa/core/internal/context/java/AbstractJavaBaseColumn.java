@@ -343,7 +343,7 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 	}
 
 	protected Iterable<String> getJavaCandidateTableNames() {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateTableNames());
+		return StringTools.convertToJavaStringLiteralContents(this.getCandidateTableNames());
 	}
 
 	public Iterable<String> getCandidateTableNames() {

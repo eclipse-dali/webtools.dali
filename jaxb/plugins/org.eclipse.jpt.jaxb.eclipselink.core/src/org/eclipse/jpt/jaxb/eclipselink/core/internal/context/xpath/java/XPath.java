@@ -495,7 +495,7 @@ public class XPath {
 				final String prefix, int pos) {
 			
 			if (getTextRange(context).includes(pos) || getNextStep() == null) {
-				return StringTools.convertToJavaStringLiterals(
+				return StringTools.convertToJavaStringLiteralContents(
 								new TransformationIterable<String, String>(
 										new CompositeIterable<String>(
 												getTextProposals(context, previousType),

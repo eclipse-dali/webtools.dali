@@ -67,7 +67,7 @@ public abstract class XsdTypeDefinition<A extends XSDTypeDefinition>
 	public abstract XsdAttributeUse getAttribute(String namespace, String name);
 	
 	public Iterable<String> getAttributeNameProposals(String namespace) {
-		return StringTools.convertToJavaStringLiterals(getAttributeNames(namespace));
+		return StringTools.convertToJavaStringLiteralContents(getAttributeNames(namespace));
 	}
 	
 	public abstract Iterable<String> getAttributeNames(String namespace);
@@ -83,7 +83,7 @@ public abstract class XsdTypeDefinition<A extends XSDTypeDefinition>
 	}
 	
 	public Iterable<String> getElementNameProposals(String namespace, boolean recurseChildren) {
-		return StringTools.convertToJavaStringLiterals(getElementNames(namespace, recurseChildren));
+		return StringTools.convertToJavaStringLiteralContents(getElementNames(namespace, recurseChildren));
 	}
 	
 	public abstract Iterable<String> getElementNames(String namespace, boolean recurseChildren);

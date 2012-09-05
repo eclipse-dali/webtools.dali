@@ -169,7 +169,7 @@ public class GenericJavaJoinColumn
 	}
 
 	protected Iterable<String> getJavaCandidateReferencedColumnNames() {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateReferencedColumnNames());
+		return StringTools.convertToJavaStringLiteralContents(this.getCandidateReferencedColumnNames());
 	}
 
 	protected Iterable<String> getCandidateReferencedColumnNames() {

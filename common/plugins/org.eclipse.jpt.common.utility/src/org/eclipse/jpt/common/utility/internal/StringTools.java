@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -35,7 +35,7 @@ public final class StringTools {
 	public static final char QUOTE = '"';
 	
 	/** XML double quote */
-	public static final String XML_QUOTE = "&quot;";
+	public static final String XML_QUOTE = "&quot;"; //$NON-NLS-1$
 
 	/** parenthesis */
 	public static final char OPEN_PARENTHESIS = '(';
@@ -4815,6 +4815,16 @@ public final class StringTools {
 		return sb.toString();
 	}
 
+	public static String convertToJavaStringLiteralContent(String string) {
+		int len = string.length();
+		if (len == 0) {
+			return EMPTY_JAVA_STRING_LITERAL;
+		}
+		StringBuilder sb = new StringBuilder(len + 5);
+		convertToJavaStringLiteralContentOn_(string.toCharArray(), sb, len);
+		return sb.toString();
+	}
+
 	public static char[] convertToJavaStringLiteral(char[] string) {
 		int len = string.length;
 		if (len == 0) {
@@ -4828,8 +4838,25 @@ public final class StringTools {
 		return result;
 	}
 
+	public static char[] convertToJavaStringLiteralContent(char[] string) {
+		int len = string.length;
+		if (len == 0) {
+			return EMPTY_JAVA_STRING_LITERAL_CHAR_ARRAY;
+		}
+		StringBuilder sb = new StringBuilder(len + 5);
+		convertToJavaStringLiteralContentOn_(string, sb, len);
+		len = sb.length();
+		char[] result = new char[len];
+		sb.getChars(0, len, result, 0);
+		return result;
+	}
+
 	public static Iterable<String> convertToJavaStringLiterals(Iterable<String> strings) {
 		return new TransformationIterable<String, String>(strings, STRING_TO_JAVA_STRING_LITERAL_TRANSFORMER);
+	}
+
+	public static Iterable<String> convertToJavaStringLiteralContents(Iterable<String> strings) {
+		return new TransformationIterable<String, String>(strings, STRING_TO_JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 
 	public static Iterator<String> convertToJavaStringLiterals(Iterator<String> strings) {
@@ -4839,6 +4866,12 @@ public final class StringTools {
 	private static final Transformer<String, String> STRING_TO_JAVA_STRING_LITERAL_TRANSFORMER = new Transformer<String, String>() {
 		public String transform(String string) {
 			return StringTools.convertToJavaStringLiteral(string);
+		}
+	};
+
+	private static final Transformer<String, String> STRING_TO_JAVA_STRING_LITERAL_CONTENT_TRANSFORMER = new Transformer<String, String>() {
+		public String transform(String string) {
+			return StringTools.convertToJavaStringLiteralContent(string);
 		}
 	};
 
@@ -4867,6 +4900,15 @@ public final class StringTools {
 		}
 	}
 
+	public static void convertToJavaStringLiteralContentOn(String string, StringBuffer sb) {
+		int len = string.length();
+		if (len == 0) {
+			sb.append(EMPTY_JAVA_STRING_LITERAL);
+		} else {
+			convertToJavaStringLiteralContentOn_(string.toCharArray(), sb, len);
+		}
+	}
+
 	public static void convertToJavaStringLiteralOn(char[] string, StringBuffer sb) {
 		int len = string.length;
 		if (len == 0) {
@@ -4876,12 +4918,30 @@ public final class StringTools {
 		}
 	}
 
+	public static void convertToJavaStringLiteralContentOn(char[] string, StringBuffer sb) {
+		int len = string.length;
+		if (len == 0) {
+			sb.append(EMPTY_JAVA_STRING_LITERAL);
+		} else {
+			convertToJavaStringLiteralContentOn_(string, sb, len);
+		}
+	}
+
 	/*
 	 * no length checks
 	 */
 	private static void convertToJavaStringLiteralOn_(char[] string, StringBuffer sb, int len) {
 		sb.ensureCapacity(sb.length() + len + 5);
 		sb.append(QUOTE);
+		convertToJavaStringLiteralContentOn_(string, sb, len);
+		sb.append(QUOTE);
+	}
+
+	/*
+	 * no length checks
+	 */
+	private static void convertToJavaStringLiteralContentOn_(char[] string, StringBuffer sb, int len) {
+		sb.ensureCapacity(sb.length() + len + 5);
 		for (char c : string) {
 			switch (c) {
 				case '\b':  // backspace
@@ -4913,7 +4973,6 @@ public final class StringTools {
 					break;
 			}
 		}
-		sb.append(QUOTE);
 	}
 
 	public static void convertToJavaStringLiteralOn(String string, StringBuilder sb) {
@@ -4934,12 +4993,39 @@ public final class StringTools {
 		}
 	}
 
+	public static void convertToJavaStringLiteralContentOn(String string, StringBuilder sb) {
+		int len = string.length();
+		if (len == 0) {
+			sb.append(EMPTY_JAVA_STRING_LITERAL);
+		} else {
+			convertToJavaStringLiteralContentOn_(string.toCharArray(), sb, len);
+		}
+	}
+
+	public static void convertToJavaStringLiteralContentOn(char[] string, StringBuilder sb) {
+		int len = string.length;
+		if (len == 0) {
+			sb.append(EMPTY_JAVA_STRING_LITERAL);
+		} else {
+			convertToJavaStringLiteralContentOn_(string, sb, len);
+		}
+	}
+
 	/*
 	 * no length checks
 	 */
 	private static void convertToJavaStringLiteralOn_(char[] string, StringBuilder sb, int len) {
 		sb.ensureCapacity(sb.length() + len + 5);
 		sb.append(QUOTE);
+		convertToJavaStringLiteralContentOn_(string, sb, len);
+		sb.append(QUOTE);
+	}
+
+	/*
+	 * no length checks
+	 */
+	private static void convertToJavaStringLiteralContentOn_(char[] string, StringBuilder sb, int len) {
+		sb.ensureCapacity(sb.length() + len + 5);
 		for (char c : string) {
 			switch (c) {
 				case '\b':  // backspace
@@ -4971,7 +5057,6 @@ public final class StringTools {
 					break;
 			}
 		}
-		sb.append(QUOTE);
 	}
 
 	public static void convertToJavaStringLiteralOn(String string, Writer writer) {
@@ -4990,11 +5075,35 @@ public final class StringTools {
 		}
 	}
 
+	public static void convertToJavaStringLiteralContentOn(String string, Writer writer) {
+		if (string.length() == 0) {
+			writeStringOn(EMPTY_JAVA_STRING_LITERAL, writer);
+		} else {
+			convertToJavaStringLiteralContentOn_(string.toCharArray(), writer);
+		}
+	}
+
+	public static void convertToJavaStringLiteralContentOn(char[] string, Writer writer) {
+		if (string.length == 0) {
+			writeStringOn(EMPTY_JAVA_STRING_LITERAL, writer);
+		} else {
+			convertToJavaStringLiteralContentOn_(string, writer);
+		}
+	}
+
 	/*
 	 * no length checks
 	 */
 	private static void convertToJavaStringLiteralOn_(char[] string, Writer writer) {
 		writeCharOn(QUOTE, writer);
+		convertToJavaStringLiteralContentOn_(string, writer);
+		writeCharOn(QUOTE, writer);
+	}
+
+	/*
+	 * no length checks
+	 */
+	private static void convertToJavaStringLiteralContentOn_(char[] string, Writer writer) {
 		for (char c : string) {
 			switch (c) {
 				case '\b':  // backspace
@@ -5026,7 +5135,6 @@ public final class StringTools {
 					break;
 			}
 		}
-		writeCharOn(QUOTE, writer);
 	}
 
 	// ********** convert to XML string literal **********
@@ -5048,7 +5156,7 @@ public final class StringTools {
 		for (char c : string) {
 			switch (c) {
 				case '"':  // double-quote
-					sb.append(XML_QUOTE);  //$NON-NLS-1$
+					sb.append(XML_QUOTE);
 					break;					
 				default:
 					sb.append(c);

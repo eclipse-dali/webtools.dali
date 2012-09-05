@@ -128,7 +128,7 @@ public class GenericJavaXmlNs
 	protected Iterable<String> getNamespaceURICompletionProposals(int pos) {
 		String packageNamespace = getJaxbPackageInfo().getJaxbPackage().getNamespace();
 		Iterable<String> result = (StringTools.stringIsEmpty(packageNamespace)) ?
-				EmptyIterable.instance() : new SingleElementIterable(StringTools.convertToJavaStringLiteral(packageNamespace));
+				EmptyIterable.instance() : new SingleElementIterable(StringTools.convertToJavaStringLiteralContent(packageNamespace));
 		XsdSchema schema = getJaxbPackageInfo().getJaxbPackage().getXsdSchema();
 		if (schema != null) { 
 			result = new CompositeIterable<String>(result, schema.getNamespaceProposals());

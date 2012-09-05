@@ -23,7 +23,10 @@ import org.eclipse.jdt.ui.text.java.IJavaCompletionProposalComputer;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
+import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -113,6 +116,12 @@ public class JpaJavaCompletionProposalComputer
 
 		CompletionContext cc = context.getCoreContext();
 
+		// the context's "token" is really a sort of "prefix" - it does NOT
+		// correspond to the "start" and "end" we get below... 
+		char[] prefix = cc.getToken();
+		Filter<String> filter = this.buildPrefixFilter(prefix);
+		// the token "kind" tells us if we are in a String literal already - CompletionContext.TOKEN_KIND_STRING_LITERAL
+		int tokenKind = cc.getTokenKind();
 		// the token "start" is the offset of the token's first character
 		int tokenStart = cc.getTokenStart();
 		// the token "end" is the offset of the token's last character (yuk)
@@ -123,6 +132,7 @@ public class JpaJavaCompletionProposalComputer
 
 //		System.out.println("token start: " + tokenStart);
 //		System.out.println("token end: " + tokenEnd);
+//		System.out.println("token kind: " + tokenKind);
 //		String source = cu.getSource();
 //		String token = source.substring(Math.max(0, tokenStart), Math.min(source.length(), tokenEnd + 1));
 //		System.out.println("token: =>" + token + "<=");
@@ -131,11 +141,20 @@ public class JpaJavaCompletionProposalComputer
 
 		List<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
 		for (JpaStructureNode structureNode : rootStructureNodes) {
-			for (String s : ((JavaPersistentType) structureNode).getCompletionProposals(context.getInvocationOffset())) {
-				proposals.add(new CompletionProposal(s, tokenStart, tokenEnd - tokenStart + 1, s.length()));
+			for (String s : this.getCompletionProposals((JavaPersistentType) structureNode, context.getInvocationOffset(), filter)) {
+				if (tokenKind == CompletionContext.TOKEN_KIND_STRING_LITERAL) {//already quoted
+					proposals.add(new CompletionProposal(s , tokenStart + 1, tokenEnd - tokenStart - 1, s.length()));					
+				}
+				else {//add the quotes
+					proposals.add(new CompletionProposal("\"" + s + "\"", tokenStart, tokenEnd - tokenStart + 1, s.length() + 2)); //$NON-NLS-1$ //$NON-NLS-2$
+				}
 			}
 		}
 		return proposals;
+	}
+
+	private Iterable<String> getCompletionProposals(JavaPersistentType structureNode, int pos, Filter<String> filter) {
+		return new FilteringIterable<String>(structureNode.getCompletionProposals(pos), filter);
 	}
 
 	private IFile getCorrespondingResource(ICompilationUnit cu) {
@@ -162,5 +181,24 @@ public class JpaJavaCompletionProposalComputer
 
 	public void sessionEnded() {
 		// do nothing
+	}
+
+	private Filter<String> buildPrefixFilter(char[] prefix) {
+		return (prefix == null) ?
+				Filter.Transparent.<String>instance() :
+				new IgnoreCasePrefixFilter(prefix);
+	}
+
+	private static class IgnoreCasePrefixFilter
+		implements Filter<String>
+	{
+		private final String prefix;
+		IgnoreCasePrefixFilter(char[] prefix) {
+			super();
+			this.prefix = new String(prefix);
+		}
+		public boolean accept(String s) {
+			return StringTools.stringStartsWithIgnoreCase(s, this.prefix);
+		}
 	}
 }

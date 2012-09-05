@@ -132,7 +132,7 @@ public class JavaEclipseLinkConvert
 	}
 
 	protected Iterable<String> getJavaCandidateConverterNames() {
-		return StringTools.convertToJavaStringLiterals(this.getConverterNames());
+		return StringTools.convertToJavaStringLiteralContents(this.getConverterNames());
 	}
 
 	/**

@@ -175,7 +175,7 @@ public class GenericJavaGeneratedValue
 	}
 
 	protected Iterable<String> getJavaCandidateGeneratorNames() {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateGeneratorNames());
+		return StringTools.convertToJavaStringLiteralContents(this.getCandidateGeneratorNames());
 	}
 
 	protected Iterable<String> getCandidateGeneratorNames() {

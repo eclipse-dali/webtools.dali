@@ -431,7 +431,7 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 	}
 
 	protected Iterable<String> getJavaCandidateNames() {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateNames());
+		return StringTools.convertToJavaStringLiteralContents(this.getCandidateNames());
 	}
 
 	protected Iterable<String> getCandidateNames() {
@@ -444,7 +444,7 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 	}
 
 	protected Iterable<String> getJavaCandidateSchemata() {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateSchemata());
+		return StringTools.convertToJavaStringLiteralContents(this.getCandidateSchemata());
 	}
 
 	protected Iterable<String> getCandidateSchemata() {
@@ -456,7 +456,7 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 	}
 
 	protected Iterable<String> getJavaCandidateCatalogs() {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateCatalogs());
+		return StringTools.convertToJavaStringLiteralContents(this.getCandidateCatalogs());
 	}
 
 	protected Iterable<String> getCandidateCatalogs() {

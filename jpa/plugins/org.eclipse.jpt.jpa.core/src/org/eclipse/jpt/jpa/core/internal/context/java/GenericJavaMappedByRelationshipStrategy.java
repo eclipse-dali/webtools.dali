@@ -184,7 +184,7 @@ public class GenericJavaMappedByRelationshipStrategy
 	}
 
 	protected Iterable<String> getJavaCandidateMappedByAttributeNames() {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateMappedByAttributeNames());
+		return StringTools.convertToJavaStringLiteralContents(this.getCandidateMappedByAttributeNames());
 	}
 
 

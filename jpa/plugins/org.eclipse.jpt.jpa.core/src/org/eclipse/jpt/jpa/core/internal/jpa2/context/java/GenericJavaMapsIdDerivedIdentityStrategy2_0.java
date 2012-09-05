@@ -274,7 +274,7 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 	}
 
 	protected Iterable<String> getSortedJavaValueChoices() {
-		return StringTools.convertToJavaStringLiterals(this.getSortedCandidateIdAttributeNames());
+		return StringTools.convertToJavaStringLiteralContents(this.getSortedCandidateIdAttributeNames());
 	}
 
 

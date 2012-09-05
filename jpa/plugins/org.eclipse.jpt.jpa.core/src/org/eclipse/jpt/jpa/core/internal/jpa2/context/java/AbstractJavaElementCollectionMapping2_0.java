@@ -1409,7 +1409,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	protected Iterable<String> getJavaCandidateMapKeyNames() {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateMapKeyNames());
+		return StringTools.convertToJavaStringLiteralContents(this.getCandidateMapKeyNames());
 	}
 
 

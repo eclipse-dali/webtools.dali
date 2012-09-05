@@ -197,7 +197,7 @@ public abstract class AbstractJavaOverride<C extends JavaOverrideContainer, A ex
 	}
 
 	protected Iterable<String> getJavaCandidateNames() {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateNames());
+		return StringTools.convertToJavaStringLiteralContents(this.getCandidateNames());
 	}
 
 	protected abstract Iterable<String> getCandidateNames();

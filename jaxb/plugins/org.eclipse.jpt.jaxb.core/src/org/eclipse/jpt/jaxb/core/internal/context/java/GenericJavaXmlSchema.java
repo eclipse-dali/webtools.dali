@@ -272,7 +272,7 @@ public class GenericJavaXmlSchema
 	}
 	
 	protected Iterable<String> getNamespaceProposals() {
-		return StringTools.convertToJavaStringLiterals(
+		return StringTools.convertToJavaStringLiteralContents(
 						new TransformationIterable<SchemaEntry, String>(
 								getJaxbProject().getSchemaLibrary().getSchemaEntries()) {
 							@Override

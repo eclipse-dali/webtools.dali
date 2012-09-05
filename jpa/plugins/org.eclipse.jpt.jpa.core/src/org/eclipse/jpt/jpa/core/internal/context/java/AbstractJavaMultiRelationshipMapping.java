@@ -921,7 +921,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	}
 
 	protected Iterable<String> getJavaCandidateMapKeyNames() {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateMapKeyNames());
+		return StringTools.convertToJavaStringLiteralContents(this.getCandidateMapKeyNames());
 	}
 
 	public Iterable<String> getCandidateMapKeyNames() {

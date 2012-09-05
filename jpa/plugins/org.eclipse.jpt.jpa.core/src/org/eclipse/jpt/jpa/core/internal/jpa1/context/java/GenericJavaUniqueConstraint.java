@@ -99,7 +99,7 @@ public class GenericJavaUniqueConstraint
 	}
 
 	protected Iterable<String> getJavaCandidateColumnNames() {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateColumnNames());
+		return StringTools.convertToJavaStringLiteralContents(this.getCandidateColumnNames());
 	}
 
 	protected Iterable<String> getCandidateColumnNames() {
