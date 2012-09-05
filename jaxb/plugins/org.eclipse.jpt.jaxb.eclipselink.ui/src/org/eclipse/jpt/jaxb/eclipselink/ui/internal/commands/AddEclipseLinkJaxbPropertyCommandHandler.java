@@ -30,7 +30,6 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.resource.jaxbprops.JaxbPropertiesResource;
@@ -138,11 +137,12 @@ public class AddEclipseLinkJaxbPropertyCommandHandler
 	}
 	
 	protected IFolder getFolder(JaxbPackage jaxbPackage) throws JavaModelException {
-		IPackageFragment jdtPackage = 
-			(IPackageFragment) CollectionTools.get(
-					jaxbPackage.getContextRoot().getTypes(jaxbPackage), 0).
-							getJavaResourceType().getJavaResourceCompilationUnit().getCompilationUnit().getParent();
-		return (IFolder) jdtPackage.getUnderlyingResource();
+		for (IPackageFragment pkgFragment : jaxbPackage.getJaxbProject().getJavaProject().getPackageFragments()) {
+			if (pkgFragment.getElementName().equals(jaxbPackage.getName())) {
+				return (IFolder) pkgFragment.getUnderlyingResource();
+			}
+		}
+		return null;
 	}
 	
 	protected Properties createNewProperties() {
