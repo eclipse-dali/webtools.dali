@@ -26,7 +26,6 @@ import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.VirtualOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualOverride;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -40,7 +39,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractOrmOverrideContainer<
 			O extends OrmOverrideContainer.Owner,
-			R extends OrmReadOnlyOverride,
+			R extends ReadOnlyOverride,
 			S extends OrmOverride,
 			V extends OrmVirtualOverride,
 			X extends XmlOverride

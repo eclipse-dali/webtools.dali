@@ -25,9 +25,9 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualJoinColumn;
-import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualJoinColumnRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualOverrideRelationship;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.VirtualOverrideRelationship;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.db.Table;
@@ -36,15 +36,15 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericOrmVirtualOverrideJoinColumnRelationshipStrategy
 	extends AbstractOrmXmlContextNode
-	implements OrmVirtualJoinColumnRelationshipStrategy
+	implements VirtualJoinColumnRelationshipStrategy
 {
-	protected final ContextListContainer<OrmVirtualJoinColumn, ReadOnlyJoinColumn> specifiedJoinColumnContainer;
+	protected final ContextListContainer<VirtualJoinColumn, ReadOnlyJoinColumn> specifiedJoinColumnContainer;
 	protected final ReadOnlyJoinColumn.Owner joinColumnOwner;
 
-	protected OrmVirtualJoinColumn defaultJoinColumn;
+	protected VirtualJoinColumn defaultJoinColumn;
 
 
-	public GenericOrmVirtualOverrideJoinColumnRelationshipStrategy(OrmVirtualOverrideRelationship parent) {
+	public GenericOrmVirtualOverrideJoinColumnRelationshipStrategy(VirtualOverrideRelationship parent) {
 		super(parent);
 		this.joinColumnOwner = this.buildJoinColumnOwner();
 		this.specifiedJoinColumnContainer = this.buildSpecifiedJoinColumnContainer();
@@ -63,7 +63,7 @@ public class GenericOrmVirtualOverrideJoinColumnRelationshipStrategy
 
 	// ********** join columns **********
 
-	public ListIterable<OrmVirtualJoinColumn> getJoinColumns() {
+	public ListIterable<VirtualJoinColumn> getJoinColumns() {
 		return this.hasSpecifiedJoinColumns() ? this.getSpecifiedJoinColumns() : this.getDefaultJoinColumns();
 	}
 
@@ -74,7 +74,7 @@ public class GenericOrmVirtualOverrideJoinColumnRelationshipStrategy
 
 	// ********** specified join columns **********
 
-	public ListIterable<OrmVirtualJoinColumn> getSpecifiedJoinColumns() {
+	public ListIterable<VirtualJoinColumn> getSpecifiedJoinColumns() {
 		return this.specifiedJoinColumnContainer.getContextElements();
 	}
 
@@ -86,7 +86,7 @@ public class GenericOrmVirtualOverrideJoinColumnRelationshipStrategy
 		return this.getSpecifiedJoinColumnsSize() != 0;
 	}
 
-	public OrmVirtualJoinColumn getSpecifiedJoinColumn(int index) {
+	public VirtualJoinColumn getSpecifiedJoinColumn(int index) {
 		return this.specifiedJoinColumnContainer.getContextElement(index);
 	}
 
@@ -101,7 +101,7 @@ public class GenericOrmVirtualOverrideJoinColumnRelationshipStrategy
 				new SuperListIterableWrapper<ReadOnlyJoinColumn>(overriddenStrategy.getSpecifiedJoinColumns());
 	}
 
-	protected ContextListContainer<OrmVirtualJoinColumn, ReadOnlyJoinColumn> buildSpecifiedJoinColumnContainer() {
+	protected ContextListContainer<VirtualJoinColumn, ReadOnlyJoinColumn> buildSpecifiedJoinColumnContainer() {
 		return new SpecifiedJoinColumnContainer();
 	}
 
@@ -109,14 +109,14 @@ public class GenericOrmVirtualOverrideJoinColumnRelationshipStrategy
 	 * specified join column container
 	 */
 	protected class SpecifiedJoinColumnContainer
-		extends ContextListContainer<OrmVirtualJoinColumn, ReadOnlyJoinColumn>
+		extends ContextListContainer<VirtualJoinColumn, ReadOnlyJoinColumn>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return SPECIFIED_JOIN_COLUMNS_LIST;
 		}
 		@Override
-		protected OrmVirtualJoinColumn buildContextElement(ReadOnlyJoinColumn resourceElement) {
+		protected VirtualJoinColumn buildContextElement(ReadOnlyJoinColumn resourceElement) {
 			return GenericOrmVirtualOverrideJoinColumnRelationshipStrategy.this.buildJoinColumn(resourceElement);
 		}
 		@Override
@@ -124,7 +124,7 @@ public class GenericOrmVirtualOverrideJoinColumnRelationshipStrategy
 			return GenericOrmVirtualOverrideJoinColumnRelationshipStrategy.this.getOverriddenSpecifiedJoinColumns();
 		}
 		@Override
-		protected ReadOnlyJoinColumn getResourceElement(OrmVirtualJoinColumn contextElement) {
+		protected ReadOnlyJoinColumn getResourceElement(VirtualJoinColumn contextElement) {
 			return contextElement.getOverriddenColumn();
 		}
 	}
@@ -136,20 +136,20 @@ public class GenericOrmVirtualOverrideJoinColumnRelationshipStrategy
 
 	// ********** default join column **********
 
-	public OrmVirtualJoinColumn getDefaultJoinColumn() {
+	public VirtualJoinColumn getDefaultJoinColumn() {
 		return this.defaultJoinColumn;
 	}
 
-	protected void setDefaultJoinColumn(OrmVirtualJoinColumn joinColumn) {
-		OrmVirtualJoinColumn old = this.defaultJoinColumn;
+	protected void setDefaultJoinColumn(VirtualJoinColumn joinColumn) {
+		VirtualJoinColumn old = this.defaultJoinColumn;
 		this.defaultJoinColumn = joinColumn;
 		this.firePropertyChanged(DEFAULT_JOIN_COLUMN_PROPERTY, old, joinColumn);
 	}
 
-	protected ListIterable<OrmVirtualJoinColumn> getDefaultJoinColumns() {
+	protected ListIterable<VirtualJoinColumn> getDefaultJoinColumns() {
 		return (this.defaultJoinColumn != null) ?
-				new SingleElementListIterable<OrmVirtualJoinColumn>(this.defaultJoinColumn) :
-				EmptyListIterable.<OrmVirtualJoinColumn>instance();
+				new SingleElementListIterable<VirtualJoinColumn>(this.defaultJoinColumn) :
+				EmptyListIterable.<VirtualJoinColumn>instance();
 	}
 
 	protected int getDefaultJoinColumnsSize() {
@@ -180,11 +180,11 @@ public class GenericOrmVirtualOverrideJoinColumnRelationshipStrategy
 	// ********** misc **********
 
 	@Override
-	public OrmVirtualOverrideRelationship getParent() {
-		return (OrmVirtualOverrideRelationship) super.getParent();
+	public VirtualOverrideRelationship getParent() {
+		return (VirtualOverrideRelationship) super.getParent();
 	}
 
-	public OrmVirtualOverrideRelationship getRelationship() {
+	public VirtualOverrideRelationship getRelationship() {
 		return this.getParent();
 	}
 
@@ -293,7 +293,7 @@ public class GenericOrmVirtualOverrideJoinColumnRelationshipStrategy
 		return this.getRelationship().getAttributeName();
 	}
 
-	protected OrmVirtualJoinColumn buildJoinColumn(ReadOnlyJoinColumn overriddenJoinColumn) {
+	protected VirtualJoinColumn buildJoinColumn(ReadOnlyJoinColumn overriddenJoinColumn) {
 		return this.getContextNodeFactory().buildOrmVirtualJoinColumn(this, this.joinColumnOwner, overriddenJoinColumn);
 	}
 
@@ -303,7 +303,7 @@ public class GenericOrmVirtualOverrideJoinColumnRelationshipStrategy
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		for (OrmVirtualJoinColumn joinColumn : this.getJoinColumns()) {
+		for (VirtualJoinColumn joinColumn : this.getJoinColumns()) {
 			joinColumn.validate(messages, reporter);
 		}
 	}

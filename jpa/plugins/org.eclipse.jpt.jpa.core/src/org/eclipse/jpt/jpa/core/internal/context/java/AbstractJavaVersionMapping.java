@@ -21,10 +21,10 @@ import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaBaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
@@ -52,7 +52,7 @@ public abstract class AbstractJavaVersionMapping
 	// the spec does not list Temporal explicitly,
 	// but it is included in the orm.xml schema...
 	protected static final JavaConverter.Adapter[] CONVERTER_ADAPTER_ARRAY = new JavaConverter.Adapter[] {
-		JavaTemporalConverter.BasicAdapter.instance(),
+		JavaBaseTemporalConverter.BasicAdapter.instance(),
 	};
 	protected static final Iterable<JavaConverter.Adapter> CONVERTER_ADAPTERS = new ArrayIterable<JavaConverter.Adapter>(CONVERTER_ADAPTER_ARRAY);
 

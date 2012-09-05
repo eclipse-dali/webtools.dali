@@ -10,10 +10,10 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAttributeOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
 public class GenericJavaAttributeOverrideContainer
 	extends AbstractJavaOverrideContainer<
 			JavaAttributeOverrideContainer.Owner,
-			JavaReadOnlyAttributeOverride,
+			ReadOnlyAttributeOverride,
 			JavaAttributeOverride,
 			JavaVirtualAttributeOverride,
 			AttributeOverrideAnnotation

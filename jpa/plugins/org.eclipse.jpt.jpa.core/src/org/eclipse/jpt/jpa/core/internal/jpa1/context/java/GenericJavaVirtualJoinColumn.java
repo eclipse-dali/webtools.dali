@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaVirtualJoinColumn;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaVirtualBaseColumn;
 import org.eclipse.jpt.jpa.db.Column;
@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.db.Table;
  */
 public class GenericJavaVirtualJoinColumn
 	extends AbstractJavaVirtualBaseColumn<ReadOnlyJoinColumn.Owner, ReadOnlyJoinColumn>
-	implements JavaVirtualJoinColumn
+	implements VirtualJoinColumn
 {
 	protected final ReadOnlyJoinColumn overriddenColumn;
 

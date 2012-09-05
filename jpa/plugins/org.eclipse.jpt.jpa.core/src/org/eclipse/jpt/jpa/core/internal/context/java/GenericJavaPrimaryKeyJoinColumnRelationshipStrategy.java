@@ -25,12 +25,13 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumnRelationship;
+import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.OneToOnePrimaryKeyJoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationDescriptionMessages;
+import org.eclipse.jpt.jpa.core.jpa2.context.MappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMappingPrimaryKeyJoinColumnRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.resource.java.PrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -38,7 +39,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaPrimaryKeyJoinColumnRelationshipStrategy
 	extends AbstractJavaJpaContextNode
-	implements JavaMappingPrimaryKeyJoinColumnRelationshipStrategy2_0
+	implements MappingRelationshipStrategy2_0, JavaPrimaryKeyJoinColumnRelationshipStrategy
 {
 	protected final ContextListContainer<JavaPrimaryKeyJoinColumn, PrimaryKeyJoinColumnAnnotation> primaryKeyJoinColumnContainer;
 	protected final ReadOnlyJoinColumn.Owner primaryKeyJoinColumnOwner;

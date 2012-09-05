@@ -72,7 +72,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
-import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaTable;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -1637,7 +1636,7 @@ public abstract class AbstractJavaEntity
 	 * some common behavior
 	 */
 	protected abstract class NamedColumnOwner
-		implements JavaReadOnlyNamedColumn.Owner
+		implements ReadOnlyNamedColumn.Owner
 	{
 		public String getDefaultTableName() {
 			return AbstractJavaEntity.this.getPrimaryTableName();

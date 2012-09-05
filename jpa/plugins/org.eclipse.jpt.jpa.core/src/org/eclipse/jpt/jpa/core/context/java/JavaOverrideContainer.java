@@ -41,8 +41,6 @@ public interface JavaOverrideContainer
 	Iterable<String> getOverrideNames();
 
 	// covariant overrides
-	ListIterable<? extends JavaReadOnlyOverride> getOverrides();
-	JavaReadOnlyOverride getOverrideNamed(String name);
 	ListIterable<? extends JavaOverride> getSpecifiedOverrides();
 	JavaOverride getSpecifiedOverride(int index);
 	JavaOverride getSpecifiedOverrideNamed(String name);

@@ -53,7 +53,7 @@ import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmPersistentAttribute2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.PersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -448,7 +448,7 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 	}
 
 	public String getMetamodelTypeName() {
-		return ((OrmPersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelTypeName();
+		return ((PersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelTypeName();
 	}
 
 	protected String getMetamodelFieldName() {

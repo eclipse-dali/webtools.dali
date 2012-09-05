@@ -32,8 +32,6 @@ public interface OrmOverrideContainer
 	extends OverrideContainer
 {
 	// covariant overrides
-	ListIterable<? extends OrmReadOnlyOverride> getOverrides();
-	OrmReadOnlyOverride getOverrideNamed(String name);
 	ListIterable<? extends OrmOverride> getSpecifiedOverrides();
 	OrmOverride getSpecifiedOverride(int index);
 	OrmOverride getSpecifiedOverrideNamed(String name);

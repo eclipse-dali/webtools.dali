@@ -12,11 +12,11 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 import java.util.Vector;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
-import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 
 public abstract class AbstractJavaReadOnlyUniqueConstraint
 	extends AbstractJavaJpaContextNode
-	implements JavaReadOnlyUniqueConstraint
+	implements ReadOnlyUniqueConstraint
 {
 	protected final Vector<String> columnNames = new Vector<String>();
 

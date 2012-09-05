@@ -13,10 +13,10 @@ import java.util.List;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.VirtualColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAttributeOverride;
-import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualColumn;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -26,9 +26,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class GenericOrmVirtualAttributeOverride
 	extends AbstractOrmVirtualOverride<OrmAttributeOverrideContainer>
-	implements OrmVirtualAttributeOverride, OrmVirtualColumn.Owner
+	implements OrmVirtualAttributeOverride, VirtualColumn.Owner
 {
-	protected final OrmVirtualColumn column;
+	protected final VirtualColumn column;
 
 
 	public GenericOrmVirtualAttributeOverride(OrmAttributeOverrideContainer parent, String name) {
@@ -50,7 +50,7 @@ public class GenericOrmVirtualAttributeOverride
 
 	// ********** column **********
 
-	public OrmVirtualColumn getColumn() {
+	public VirtualColumn getColumn() {
 		return this.column;
 	}
 
@@ -58,7 +58,7 @@ public class GenericOrmVirtualAttributeOverride
 	 * The original column should be available (since the presence of its
 	 * attribute is what precipitated the creation of the virtual override).
 	 */
-	protected OrmVirtualColumn buildColumn() {
+	protected VirtualColumn buildColumn() {
 		return this.getContextNodeFactory().buildOrmVirtualColumn(this, this);
 	}
 

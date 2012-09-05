@@ -16,11 +16,7 @@ public interface JavaEclipseLinkMultitenancy2_3
 	extends EclipseLinkMultitenancy2_3
 {
 
-	ListIterable<JavaReadOnlyTenantDiscriminatorColumn2_3> getTenantDiscriminatorColumns();
-
 	ListIterable<JavaTenantDiscriminatorColumn2_3> getSpecifiedTenantDiscriminatorColumns();
 	JavaTenantDiscriminatorColumn2_3 addSpecifiedTenantDiscriminatorColumn();
 	JavaTenantDiscriminatorColumn2_3 addSpecifiedTenantDiscriminatorColumn(int index);
-
-	ListIterable<JavaVirtualTenantDiscriminatorColumn2_3> getDefaultTenantDiscriminatorColumns();
 }

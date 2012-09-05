@@ -28,5 +28,4 @@ public interface JavaCacheableHolder2_0
 	extends CacheableHolder2_0
 {
 	JavaResourceType getJavaResourceType();
-	JavaCacheable2_0 getCacheable();
 }

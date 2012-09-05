@@ -12,17 +12,19 @@ package org.eclipse.jpt.jpa.core.jpa2;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.Orderable;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaOrderable;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0.Owner;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheable2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaDerivedIdentity2_0;
@@ -30,8 +32,6 @@ import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaElementCollectionMapping2_
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaEmbeddedMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrphanRemovable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrphanRemovalHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
 import org.eclipse.jpt.jpa.db.DatabaseIdentifierAdapter;
 
@@ -74,11 +74,11 @@ public interface JpaFactory2_0
 	
 	JavaElementCollectionMapping2_0 buildJavaElementCollectionMapping2_0(JavaPersistentAttribute parent);
 	
-	JavaCacheable2_0 buildJavaCacheable(JavaCacheableHolder2_0 parent);
+	Cacheable2_0 buildJavaCacheable(JavaCacheableHolder2_0 parent);
 	
-	JavaOrphanRemovable2_0 buildJavaOrphanRemoval(JavaOrphanRemovalHolder2_0 parent);
+	OrphanRemovable2_0 buildJavaOrphanRemoval(OrphanRemovalHolder2_0 parent);
 	
-	JavaOrderColumn2_0 buildJavaOrderColumn(JavaOrderable2_0 parent, JavaReadOnlyNamedColumn.Owner owner);
+	JavaOrderColumn2_0 buildJavaOrderColumn(JavaOrderable2_0 parent, ReadOnlyNamedColumn.Owner owner);
 	
 	JavaCollectionTable2_0 buildJavaCollectionTable(JavaElementCollectionMapping2_0 parent, Table.Owner owner);
 
@@ -89,5 +89,5 @@ public interface JpaFactory2_0
 	/**
 	 * Use {@link #buildJavaOrderable(JavaAttributeMapping, Owner)}.
 	 */
-	JavaOrderable buildJavaOrderable(JavaAttributeMapping parent);
+	Orderable buildJavaOrderable(JavaAttributeMapping parent);
 }

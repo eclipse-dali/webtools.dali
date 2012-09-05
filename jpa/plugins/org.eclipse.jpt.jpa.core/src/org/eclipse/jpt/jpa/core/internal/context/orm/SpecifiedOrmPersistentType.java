@@ -63,8 +63,7 @@ import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaPersistentType2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmPersistentType2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.Attributes;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
@@ -85,7 +84,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class SpecifiedOrmPersistentType
 		extends AbstractOrmXmlContextNode
-		implements OrmPersistentType2_0 {
+		implements OrmPersistentType, PersistentType2_0 {
 	
 	protected OrmTypeMapping mapping;  // never null
 
@@ -1065,7 +1064,7 @@ public abstract class SpecifiedOrmPersistentType
 
 	protected String buildDeclaringTypeName_() {
 		return (this.javaPersistentType == null) ?
-				null : ((JavaPersistentType2_0) this.javaPersistentType).getDeclaringTypeName();
+				null : ((PersistentType2_0) this.javaPersistentType).getDeclaringTypeName();
 	}
 
 

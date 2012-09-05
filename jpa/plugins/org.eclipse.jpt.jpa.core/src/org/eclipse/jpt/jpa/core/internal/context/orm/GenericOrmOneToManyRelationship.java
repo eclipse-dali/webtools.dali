@@ -13,19 +13,16 @@ import java.util.List;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
+import org.eclipse.jpt.jpa.core.context.MappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
+import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.orm.OrmMappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.NullOrmJoinColumnRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMappingJoinColumnRelationshipStrategy2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMappingJoinTableRelationshipStrategy2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMappingMappedByRelationshipStrategy2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOneToManyRelationship2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlOneToMany;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -35,13 +32,13 @@ public class GenericOrmOneToManyRelationship
 	extends AbstractOrmMappingRelationship<OrmOneToManyMapping>
 	implements OrmOneToManyRelationship2_0
 {
-	protected final OrmMappingMappedByRelationshipStrategy2_0 mappedByStrategy;
+	protected final MappedByRelationshipStrategy mappedByStrategy;
 
-	protected final OrmMappingJoinTableRelationshipStrategy2_0 joinTableStrategy;
+	protected final OrmJoinTableRelationshipStrategy joinTableStrategy;
 
 	// JPA 2.0 or EclipseLink
 	protected final boolean supportsJoinColumnStrategy;
-	protected final OrmMappingJoinColumnRelationshipStrategy2_0 joinColumnStrategy;
+	protected final OrmJoinColumnRelationshipStrategy joinColumnStrategy;
 
 
 	public GenericOrmOneToManyRelationship(OrmOneToManyMapping parent, boolean supportsJoinColumnStrategy) {
@@ -79,7 +76,7 @@ public class GenericOrmOneToManyRelationship
 	// ********** strategy **********
 
 	@Override
-	protected OrmMappingRelationshipStrategy2_0 buildStrategy() {
+	protected RelationshipStrategy buildStrategy() {
 		if (this.mappedByStrategy.getMappedByAttribute() != null) {
 			return this.mappedByStrategy;
 		}
@@ -94,7 +91,7 @@ public class GenericOrmOneToManyRelationship
 
 	// ********** mapped by strategy **********
 
-	public OrmMappedByRelationshipStrategy getMappedByStrategy() {
+	public MappedByRelationshipStrategy getMappedByStrategy() {
 		return this.mappedByStrategy;
 	}
 
@@ -120,7 +117,7 @@ public class GenericOrmOneToManyRelationship
 		return false;
 	}
 
-	protected OrmMappingMappedByRelationshipStrategy2_0 buildMappedByStrategy() {
+	protected MappedByRelationshipStrategy buildMappedByStrategy() {
 		return new GenericOrmMappedByRelationshipStrategy(this);
 	}
 
@@ -147,7 +144,7 @@ public class GenericOrmOneToManyRelationship
 				! this.joinColumnStrategy.hasSpecifiedJoinColumns();
 	}
 
-	protected OrmMappingJoinTableRelationshipStrategy2_0 buildJoinTableStrategy() {
+	protected OrmJoinTableRelationshipStrategy buildJoinTableStrategy() {
 		return new GenericOrmMappingJoinTableRelationshipStrategy(this);
 	}
 
@@ -173,7 +170,7 @@ public class GenericOrmOneToManyRelationship
 		return false;
 	}
 
-	protected OrmMappingJoinColumnRelationshipStrategy2_0 buildJoinColumnStrategy() {
+	protected OrmJoinColumnRelationshipStrategy buildJoinColumnStrategy() {
 		return this.supportsJoinColumnStrategy ?
 				new GenericOrmMappingJoinColumnRelationshipStrategy(this, true) :  // true = target foreign key
 				new NullOrmJoinColumnRelationshipStrategy(this);

@@ -22,6 +22,7 @@ import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
+import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
@@ -31,6 +32,12 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.VirtualColumn;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinTable;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.VirtualOverrideRelationship;
+import org.eclipse.jpt.jpa.core.context.VirtualUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.Accessor;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
@@ -61,7 +68,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaOrderable;
 import org.eclipse.jpt.jpa.core.context.java.JavaOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -79,12 +85,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAttributeOverride;
-import org.eclipse.jpt.jpa.core.context.java.JavaVirtualColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaVirtualJoinColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaVirtualJoinTable;
-import org.eclipse.jpt.jpa.core.context.java.JavaVirtualJoinTableRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.java.JavaVirtualOverrideRelationship;
-import org.eclipse.jpt.jpa.core.context.java.JavaVirtualUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
@@ -249,7 +249,7 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaColumn(parent, owner);
 	}
 	
-	public JavaVirtualColumn buildJavaVirtualColumn(JpaContextNode parent, JavaVirtualColumn.Owner owner) {
+	public VirtualColumn buildJavaVirtualColumn(JpaContextNode parent, VirtualColumn.Owner owner) {
 		return new GenericJavaVirtualColumn(parent, owner);
 	}
 	
@@ -261,7 +261,7 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaJoinColumn(parent, owner, joinColumnAnnotation);
 	}
 
-	public JavaVirtualJoinColumn buildJavaVirtualJoinColumn(JpaContextNode parent, ReadOnlyJoinColumn.Owner owner, ReadOnlyJoinColumn overriddenColumn) {
+	public VirtualJoinColumn buildJavaVirtualJoinColumn(JpaContextNode parent, ReadOnlyJoinColumn.Owner owner, ReadOnlyJoinColumn overriddenColumn) {
 		return new GenericJavaVirtualJoinColumn(parent, owner, overriddenColumn);
 	}
 	
@@ -269,7 +269,7 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaJoinTable(parent, owner);
 	}
 	
-	public JavaVirtualJoinTable buildJavaVirtualJoinTable(JavaVirtualJoinTableRelationshipStrategy parent, ReadOnlyTable.Owner owner, ReadOnlyJoinTable overriddenTable) {
+	public VirtualJoinTable buildJavaVirtualJoinTable(VirtualJoinTableRelationshipStrategy parent, ReadOnlyTable.Owner owner, ReadOnlyJoinTable overriddenTable) {
 		return new GenericJavaVirtualJoinTable(parent, owner, overriddenTable);
 	}
 	
@@ -369,7 +369,7 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaOverrideRelationship(parent);
 	}
 	
-	public JavaVirtualOverrideRelationship buildJavaVirtualOverrideRelationship(JavaVirtualAssociationOverride parent) {
+	public VirtualOverrideRelationship buildJavaVirtualOverrideRelationship(JavaVirtualAssociationOverride parent) {
 		return new GenericJavaVirtualOverrideRelationship(parent);
 	}
 	
@@ -393,7 +393,7 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaUniqueConstraint(parent, owner, constraintAnnotation);
 	}
 	
-	public JavaVirtualUniqueConstraint buildJavaVirtualUniqueConstraint(JpaContextNode parent, ReadOnlyUniqueConstraint overriddenUniqueConstraint) {
+	public VirtualUniqueConstraint buildJavaVirtualUniqueConstraint(JpaContextNode parent, ReadOnlyUniqueConstraint overriddenUniqueConstraint) {
 		return new GenericJavaVirtualUniqueConstraint(parent, overriddenUniqueConstraint);
 	}
 	
@@ -409,7 +409,7 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaLobConverter(parent, annotation, owner);
 	}
 	
-	public JavaOrderable buildJavaOrderable(JavaAttributeMapping parent) {
+	public Orderable buildJavaOrderable(JavaAttributeMapping parent) {
 		return new GenericJavaOrderable(parent);
 	}
 }

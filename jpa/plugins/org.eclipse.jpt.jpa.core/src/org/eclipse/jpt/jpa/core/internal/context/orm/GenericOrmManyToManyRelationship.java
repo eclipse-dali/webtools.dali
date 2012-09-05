@@ -13,16 +13,14 @@ import java.util.List;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
+import org.eclipse.jpt.jpa.core.context.MappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
+import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToManyRelationship;
-import org.eclipse.jpt.jpa.core.context.orm.OrmMappedByRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMappingJoinTableRelationshipStrategy2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMappingMappedByRelationshipStrategy2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlManyToMany;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -31,9 +29,9 @@ public class GenericOrmManyToManyRelationship
 	extends AbstractOrmMappingRelationship<OrmManyToManyMapping>
 	implements OrmManyToManyRelationship
 {
-	protected final OrmMappingMappedByRelationshipStrategy2_0 mappedByStrategy;
+	protected final MappedByRelationshipStrategy mappedByStrategy;
 
-	protected final OrmMappingJoinTableRelationshipStrategy2_0 joinTableStrategy;
+	protected final OrmJoinTableRelationshipStrategy joinTableStrategy;
 
 
 	public GenericOrmManyToManyRelationship(OrmManyToManyMapping parent) {
@@ -65,7 +63,7 @@ public class GenericOrmManyToManyRelationship
 	// ********** strategy **********
 
 	@Override
-	protected OrmMappingRelationshipStrategy2_0 buildStrategy() {
+	protected RelationshipStrategy buildStrategy() {
 		if (this.mappedByStrategy.getMappedByAttribute() != null) {
 			return this.mappedByStrategy;
 		}
@@ -75,7 +73,7 @@ public class GenericOrmManyToManyRelationship
 
 	// ********** mapped by strategy **********
 
-	public OrmMappedByRelationshipStrategy getMappedByStrategy() {
+	public MappedByRelationshipStrategy getMappedByStrategy() {
 		return this.mappedByStrategy;
 	}
 
@@ -93,7 +91,7 @@ public class GenericOrmManyToManyRelationship
 		return mapping.getKey() == MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	protected OrmMappingMappedByRelationshipStrategy2_0 buildMappedByStrategy() {
+	protected MappedByRelationshipStrategy buildMappedByStrategy() {
 		return new GenericOrmMappedByRelationshipStrategy(this);
 	}
 
@@ -118,7 +116,7 @@ public class GenericOrmManyToManyRelationship
 		return this.mappedByStrategy.getMappedByAttribute() == null;
 	}
 
-	protected OrmMappingJoinTableRelationshipStrategy2_0 buildJoinTableStrategy() {
+	protected OrmJoinTableRelationshipStrategy buildJoinTableStrategy() {
 		return new GenericOrmMappingJoinTableRelationshipStrategy(this);
 	}
 

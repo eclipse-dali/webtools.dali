@@ -15,7 +15,7 @@ import org.eclipse.jpt.jpa.core.context.DbGenerator;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaDbGenerator;
-import org.eclipse.jpt.jpa.core.context.orm.OrmDbGenerator;
+import org.eclipse.jpt.jpa.core.context.orm.OrmGenerator;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlGenerator;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Database;
@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.db.SchemaContainer;
  */
 public abstract class AbstractOrmDbGenerator<X extends XmlGenerator>
 	extends AbstractOrmGenerator<X>
-	implements OrmDbGenerator
+	implements DbGenerator
 {
 
 	protected Integer specifiedInitialValue;

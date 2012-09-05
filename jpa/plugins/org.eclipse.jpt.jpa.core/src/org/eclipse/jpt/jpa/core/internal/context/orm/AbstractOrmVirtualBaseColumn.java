@@ -13,11 +13,10 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualBaseColumn;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyBaseColumn;
 
 public abstract class AbstractOrmVirtualBaseColumn<O extends ReadOnlyBaseColumn.Owner, C extends ReadOnlyBaseColumn>
 	extends AbstractOrmVirtualNamedColumn<O, C>
-	implements VirtualBaseColumn, OrmReadOnlyBaseColumn
+	implements VirtualBaseColumn
 {
 	protected String specifiedTable;
 	protected String defaultTable;

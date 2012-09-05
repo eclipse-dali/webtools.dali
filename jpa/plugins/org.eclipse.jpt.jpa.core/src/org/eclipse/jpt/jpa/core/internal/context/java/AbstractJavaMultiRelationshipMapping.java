@@ -33,6 +33,8 @@ import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.MultiRelationshipMapping;
+import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
@@ -43,13 +45,13 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
 import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
+import org.eclipse.jpt.jpa.core.context.java.JavaBaseEnumeratedConverter;
+import org.eclipse.jpt.jpa.core.context.java.JavaBaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaMultiRelationshipMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaOrderable;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EmbeddableOverrideDescriptionProvider;
@@ -64,11 +66,9 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.NullMapKeyJoinColumn
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.PersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAttributeOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMapKeyEnumeratedConverter2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMapKeyTemporalConverter2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
@@ -83,9 +83,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractJavaMultiRelationshipMapping<A extends RelationshipMappingAnnotation>
 	extends AbstractJavaRelationshipMapping<A>
-	implements JavaMultiRelationshipMapping, JavaCollectionMapping2_0
+	implements MultiRelationshipMapping, JavaRelationshipMapping, JavaCollectionMapping2_0
 {
-	protected final JavaOrderable orderable;
+	protected final Orderable orderable;
 
 	protected String specifiedMapKey;
 	protected boolean noMapKey = false;
@@ -110,8 +110,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	protected final JavaAttributeOverrideContainer mapKeyAttributeOverrideContainer;
 
 	protected static final JavaConverter.Adapter[] MAP_KEY_CONVERTER_ADAPTER_ARRAY = new JavaConverter.Adapter[] {
-		JavaMapKeyEnumeratedConverter2_0.Adapter.instance(),
-		JavaMapKeyTemporalConverter2_0.Adapter.instance()
+		JavaBaseEnumeratedConverter.MapKeyAdapter.instance(),
+		JavaBaseTemporalConverter.MapKeyAdapter.instance()
 	};
 	protected static final Iterable<JavaConverter.Adapter> MAP_KEY_CONVERTER_ADAPTERS = new ArrayIterable<JavaConverter.Adapter>(MAP_KEY_CONVERTER_ADAPTER_ARRAY);
 
@@ -179,11 +179,11 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 
 	// ********** orderable **********
 
-	public JavaOrderable getOrderable() {
+	public Orderable getOrderable() {
 		return this.orderable;
 	}
 
-	protected JavaOrderable buildOrderable() {
+	protected Orderable buildOrderable() {
 		return this.isJpa2_0Compatible() ?
 				this.getJpaFactory2_0().buildJavaOrderable(this, this.buildOrderableOwner()) :
 				this.getJpaFactory().buildJavaOrderable(this);
@@ -202,7 +202,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 		public Table resolveDbTable(String tableName) {
 			return this.getRelationshipStrategy().resolveDbTable(tableName);
 		}
-		protected JavaRelationshipStrategy getRelationshipStrategy() {
+		protected RelationshipStrategy getRelationshipStrategy() {
 			return AbstractJavaMultiRelationshipMapping.this.getRelationship().getStrategy();
 		}
 	}
@@ -933,7 +933,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 
 	@Override
 	protected String getMetamodelFieldTypeName() {
-		return ((JavaPersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldTypeName();
+		return ((PersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldTypeName();
 	}
 
 	@Override
@@ -943,7 +943,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	}
 
 	protected void addMetamodelFieldMapKeyTypeArgumentNameTo(ArrayList<String> typeArgumentNames) {
-		String keyTypeName = ((JavaPersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldMapKeyTypeName();
+		String keyTypeName = ((PersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldMapKeyTypeName();
 		if (keyTypeName != null) {
 			typeArgumentNames.add(keyTypeName);
 		}

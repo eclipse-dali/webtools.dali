@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaEntity;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheable2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableHolder2_0;
 import org.eclipse.jpt.jpa.core.resource.java.EntityAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkChangeTracking;
@@ -231,7 +231,7 @@ public class JavaEclipseLinkEntityImpl
 		return getMultitenancy().usesPrimaryKeyTenantDiscriminatorColumns();
 	}
 
-	public JavaCacheable2_0 getCacheable() {
+	public Cacheable2_0 getCacheable() {
 		return ((JavaCacheableHolder2_0) this.getCaching()).getCacheable();
 	}
 

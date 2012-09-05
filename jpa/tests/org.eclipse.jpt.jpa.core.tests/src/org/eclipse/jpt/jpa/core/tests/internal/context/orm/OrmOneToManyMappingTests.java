@@ -25,13 +25,13 @@ import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
+import org.eclipse.jpt.jpa.core.context.MappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.TransientMapping;
 import org.eclipse.jpt.jpa.core.context.VersionMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToManyMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmMappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmOneToManyRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
@@ -370,7 +370,7 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		OrmOneToManyMapping ormOneToManyMapping = (OrmOneToManyMapping) ormPersistentAttribute.getMapping();
-		OrmMappedByRelationshipStrategy strategy = ormOneToManyMapping.getRelationship().getMappedByStrategy();
+		MappedByRelationshipStrategy strategy = ormOneToManyMapping.getRelationship().getMappedByStrategy();
 		XmlOneToMany oneToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getOneToManys().get(0);
 		
 		assertNull(strategy.getMappedByAttribute());
@@ -392,7 +392,7 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("id"), MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		OrmOneToManyMapping ormOneToManyMapping = (OrmOneToManyMapping) ormPersistentAttribute.getMapping();
-		OrmMappedByRelationshipStrategy strategy = ormOneToManyMapping.getRelationship().getMappedByStrategy();
+		MappedByRelationshipStrategy strategy = ormOneToManyMapping.getRelationship().getMappedByStrategy();
 		XmlOneToMany oneToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getOneToManys().get(0);
 		
 		assertNull(strategy.getMappedByAttribute());

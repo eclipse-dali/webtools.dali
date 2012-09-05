@@ -27,12 +27,12 @@ import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.TransientMapping;
 import org.eclipse.jpt.jpa.core.context.VersionMapping;
+import org.eclipse.jpt.jpa.core.context.VirtualColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAttributeOverride;
-import org.eclipse.jpt.jpa.core.context.java.JavaVirtualColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddedIdMapping;
@@ -807,7 +807,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		ListIterator<JavaVirtualAttributeOverride> virtualAttributeOverrides = attributeOverrideContainer.getVirtualOverrides().iterator();
 		JavaVirtualAttributeOverride virtualAttributeOverride = virtualAttributeOverrides.next();
 		assertEquals("id", virtualAttributeOverride.getName());
-		JavaVirtualColumn virtualColumn = virtualAttributeOverride.getColumn();
+		VirtualColumn virtualColumn = virtualAttributeOverride.getColumn();
 		assertEquals("id", virtualColumn.getName());
 		assertNull(virtualColumn.getSpecifiedName());
 

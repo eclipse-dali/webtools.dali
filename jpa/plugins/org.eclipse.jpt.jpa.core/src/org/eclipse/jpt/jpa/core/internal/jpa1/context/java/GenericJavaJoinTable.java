@@ -22,12 +22,12 @@ import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.java.JavaRelationship;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.resource.java.NullJoinColumnAnnotation;
@@ -364,7 +364,7 @@ public class GenericJavaJoinTable
 			return GenericJavaJoinTable.this.getValidationTextRange();
 		}
 
-		protected JavaRelationship getRelationship() {
+		protected Relationship getRelationship() {
 			return this.getRelationshipStrategy().getRelationship();
 		}
 

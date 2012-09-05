@@ -17,14 +17,14 @@ import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
+import org.eclipse.jpt.jpa.core.context.orm.OrmBaseEnumeratedConverter;
+import org.eclipse.jpt.jpa.core.context.orm.OrmBaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmColumnMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
-import org.eclipse.jpt.jpa.core.context.orm.OrmEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmLobConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.orm.OrmTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
@@ -57,8 +57,8 @@ public abstract class AbstractOrmBasicMapping<X extends XmlBasic>
 
 
 	protected static final OrmConverter.Adapter[] CONVERTER_ADAPTER_ARRAY = new OrmConverter.Adapter[] {
-		OrmEnumeratedConverter.Adapter.instance(),
-		OrmTemporalConverter.BasicAdapter.instance(),
+		OrmBaseEnumeratedConverter.BasicAdapter.instance(),
+		OrmBaseTemporalConverter.BasicAdapter.instance(),
 		OrmLobConverter.Adapter.instance()
 	};
 	protected static final Iterable<OrmConverter.Adapter> CONVERTER_ADAPTERS = new ArrayIterable<OrmConverter.Adapter>(CONVERTER_ADAPTER_ARRAY);

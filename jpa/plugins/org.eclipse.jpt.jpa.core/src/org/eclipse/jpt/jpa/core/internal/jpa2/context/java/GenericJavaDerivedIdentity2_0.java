@@ -13,9 +13,9 @@ import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.jpa2.context.DerivedIdentityStrategy2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.IdDerivedIdentityStrategy2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.MapsIdDerivedIdentityStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaDerivedIdentity2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaIdDerivedIdentityStrategy2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMapsIdDerivedIdentityStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -27,9 +27,9 @@ public class GenericJavaDerivedIdentity2_0
 	/** this can be <code>null</code> */
 	protected DerivedIdentityStrategy2_0 strategy;
 
-	protected final JavaIdDerivedIdentityStrategy2_0 idStrategy;
+	protected final IdDerivedIdentityStrategy2_0 idStrategy;
 
-	protected final JavaMapsIdDerivedIdentityStrategy2_0 mapsIdStrategy;
+	protected final MapsIdDerivedIdentityStrategy2_0 mapsIdStrategy;
 
 
 	public GenericJavaDerivedIdentity2_0(JavaSingleRelationshipMapping2_0 parent) {
@@ -99,7 +99,7 @@ public class GenericJavaDerivedIdentity2_0
 
 	// ********** ID strategy **********
 
-	public JavaIdDerivedIdentityStrategy2_0 getIdDerivedIdentityStrategy() {
+	public IdDerivedIdentityStrategy2_0 getIdDerivedIdentityStrategy() {
 		return this.idStrategy;
 	}
 
@@ -113,14 +113,14 @@ public class GenericJavaDerivedIdentity2_0
 		return this.strategy == this.idStrategy;
 	}
 
-	protected JavaIdDerivedIdentityStrategy2_0 buildIdStrategy() {
+	protected IdDerivedIdentityStrategy2_0 buildIdStrategy() {
 		return new GenericJavaIdDerivedIdentityStrategy2_0(this);
 	}
 
 
 	// ********** maps ID strategy **********
 
-	public JavaMapsIdDerivedIdentityStrategy2_0 getMapsIdDerivedIdentityStrategy() {
+	public MapsIdDerivedIdentityStrategy2_0 getMapsIdDerivedIdentityStrategy() {
 		return this.mapsIdStrategy;
 	}
 
@@ -134,7 +134,7 @@ public class GenericJavaDerivedIdentity2_0
 		return this.strategy == this.mapsIdStrategy;
 	}
 
-	protected JavaMapsIdDerivedIdentityStrategy2_0 buildMapsIdStrategy() {
+	protected MapsIdDerivedIdentityStrategy2_0 buildMapsIdStrategy() {
 		return new GenericJavaMapsIdDerivedIdentityStrategy2_0(this);
 	}
 

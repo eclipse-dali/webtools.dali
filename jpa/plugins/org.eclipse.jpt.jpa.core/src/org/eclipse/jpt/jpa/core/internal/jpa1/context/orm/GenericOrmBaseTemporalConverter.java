@@ -15,7 +15,6 @@ import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBaseTemporalConverter;
-import org.eclipse.jpt.jpa.core.context.orm.OrmTemporalConverter;
 
 public class GenericOrmBaseTemporalConverter
 	extends AbstractOrmConverter
@@ -23,14 +22,14 @@ public class GenericOrmBaseTemporalConverter
 {
 	protected TemporalType temporalType;
 
-	public GenericOrmBaseTemporalConverter(OrmAttributeMapping parent, OrmTemporalConverter.Owner owner) {
+	public GenericOrmBaseTemporalConverter(OrmAttributeMapping parent, OrmBaseTemporalConverter.Owner owner) {
 		super(parent, owner);
 		this.temporalType = this.buildTemporalType();
 	}
 
 	@Override
-	protected OrmTemporalConverter.Owner getOwner() {
-		return (OrmTemporalConverter.Owner) super.getOwner();
+	protected OrmBaseTemporalConverter.Owner getOwner() {
+		return (OrmBaseTemporalConverter.Owner) super.getOwner();
 	}
 
 

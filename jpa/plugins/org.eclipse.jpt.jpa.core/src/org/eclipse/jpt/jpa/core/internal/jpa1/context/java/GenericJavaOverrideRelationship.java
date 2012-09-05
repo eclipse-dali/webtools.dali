@@ -24,11 +24,11 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
+import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.java.JavaRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.java.GenericJavaOverrideJoinColumnRelationshipStrategy;
@@ -45,7 +45,7 @@ public class GenericJavaOverrideRelationship
 	extends AbstractJavaJpaContextNode
 	implements JavaOverrideRelationship2_0
 {
-	protected JavaRelationshipStrategy strategy;
+	protected RelationshipStrategy strategy;
 
 	protected final JavaJoinColumnRelationshipStrategy joinColumnStrategy;
 
@@ -80,17 +80,17 @@ public class GenericJavaOverrideRelationship
 
 	// ********** strategy **********
 
-	public JavaRelationshipStrategy getStrategy() {
+	public RelationshipStrategy getStrategy() {
 		return this.strategy;
 	}
 
-	protected void setStrategy(JavaRelationshipStrategy strategy) {
-		JavaRelationshipStrategy old = this.strategy;
+	protected void setStrategy(RelationshipStrategy strategy) {
+		RelationshipStrategy old = this.strategy;
 		this.strategy = strategy;
 		this.firePropertyChanged(STRATEGY_PROPERTY, old, strategy);
 	}
 
-	protected JavaRelationshipStrategy buildStrategy() {
+	protected RelationshipStrategy buildStrategy() {
 		return this.isJpa2_0Compatible() ?
 				this.buildStrategy2_0() :
 				this.joinColumnStrategy;
@@ -99,10 +99,10 @@ public class GenericJavaOverrideRelationship
 	/**
 	 * The overridden mapping determines the override's strategy.
 	 */
-	protected JavaRelationshipStrategy buildStrategy2_0() {
+	protected RelationshipStrategy buildStrategy2_0() {
 		MappingRelationshipStrategy2_0 mappingStrategy = this.getMappingStrategy();
 		return (mappingStrategy != null) ?
-				(JavaRelationshipStrategy) mappingStrategy.selectOverrideStrategy(this) :
+				(RelationshipStrategy) mappingStrategy.selectOverrideStrategy(this) :
 				this.buildMissingMappingStrategy();
 	}
 
@@ -118,7 +118,7 @@ public class GenericJavaOverrideRelationship
 	 * Return the strategy to use when the override's name does not match the
 	 * name of an appropriate relationship mapping.
 	 */
-	protected JavaRelationshipStrategy buildMissingMappingStrategy() {
+	protected RelationshipStrategy buildMissingMappingStrategy() {
 		return this.joinColumnStrategy.hasSpecifiedJoinColumns() ?
 				this.joinColumnStrategy :
 				this.joinTableStrategy;

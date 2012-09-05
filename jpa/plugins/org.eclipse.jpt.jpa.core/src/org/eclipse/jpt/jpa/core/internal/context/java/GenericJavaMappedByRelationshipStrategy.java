@@ -24,8 +24,8 @@ import org.eclipse.jpt.jpa.core.context.java.JavaMappedByRelationship;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.jpa2.context.MappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMappingMappedByRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.resource.java.OwnableRelationshipMappingAnnotation;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.osgi.util.NLS;
@@ -34,7 +34,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaMappedByRelationshipStrategy
 	extends AbstractJavaJpaContextNode
-	implements JavaMappingMappedByRelationshipStrategy2_0
+	implements MappingRelationshipStrategy2_0, MappedByRelationshipStrategy
 {
 	protected String mappedByAttribute;
 

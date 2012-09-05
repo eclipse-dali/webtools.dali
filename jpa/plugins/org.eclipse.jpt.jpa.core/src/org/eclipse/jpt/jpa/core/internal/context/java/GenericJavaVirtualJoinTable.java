@@ -24,10 +24,10 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaVirtualJoinColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaVirtualJoinTable;
-import org.eclipse.jpt.jpa.core.context.java.JavaVirtualJoinTableRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.java.JavaVirtualRelationship;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinTable;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.VirtualRelationship;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -38,16 +38,16 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class GenericJavaVirtualJoinTable
 	extends AbstractJavaVirtualReferenceTable<ReadOnlyJoinTable>
-	implements JavaVirtualJoinTable
+	implements VirtualJoinTable
 {
 
-	protected final ContextListContainer<JavaVirtualJoinColumn, ReadOnlyJoinColumn> specifiedInverseJoinColumnContainer;
+	protected final ContextListContainer<VirtualJoinColumn, ReadOnlyJoinColumn> specifiedInverseJoinColumnContainer;
 	protected final ReadOnlyJoinColumn.Owner inverseJoinColumnOwner;
 
-	protected JavaVirtualJoinColumn defaultInverseJoinColumn;
+	protected VirtualJoinColumn defaultInverseJoinColumn;
 
 
-	public GenericJavaVirtualJoinTable(JavaVirtualJoinTableRelationshipStrategy parent, Owner owner, ReadOnlyJoinTable overriddenTable) {
+	public GenericJavaVirtualJoinTable(VirtualJoinTableRelationshipStrategy parent, Owner owner, ReadOnlyJoinTable overriddenTable) {
 		super(parent, owner, overriddenTable);
 		this.inverseJoinColumnOwner = this.buildInverseJoinColumnOwner();
 		this.specifiedInverseJoinColumnContainer = this.buildSpecifiedInverseJoinColumnContainer();
@@ -66,7 +66,7 @@ public class GenericJavaVirtualJoinTable
 
 	// ********** inverse join columns **********
 
-	public ListIterable<JavaVirtualJoinColumn> getInverseJoinColumns() {
+	public ListIterable<VirtualJoinColumn> getInverseJoinColumns() {
 		return this.hasSpecifiedInverseJoinColumns() ? this.getSpecifiedInverseJoinColumns() : this.getDefaultInverseJoinColumns();
 	}
 
@@ -77,7 +77,7 @@ public class GenericJavaVirtualJoinTable
 
 	// ********** inverse specified join columns **********
 
-	public ListIterable<JavaVirtualJoinColumn> getSpecifiedInverseJoinColumns() {
+	public ListIterable<VirtualJoinColumn> getSpecifiedInverseJoinColumns() {
 		return this.specifiedInverseJoinColumnContainer.getContextElements();
 	}
 
@@ -89,7 +89,7 @@ public class GenericJavaVirtualJoinTable
 		return this.getSpecifiedInverseJoinColumnsSize() != 0;
 	}
 
-	public JavaVirtualJoinColumn getSpecifiedInverseJoinColumn(int index) {
+	public VirtualJoinColumn getSpecifiedInverseJoinColumn(int index) {
 		return this.specifiedInverseJoinColumnContainer.getContextElement(index);
 	}
 
@@ -101,19 +101,19 @@ public class GenericJavaVirtualJoinTable
 		return new SuperListIterableWrapper<ReadOnlyJoinColumn>(this.getOverriddenTable().getSpecifiedInverseJoinColumns());
 	}
 
-	protected void moveSpecifiedInverseJoinColumn(int index, JavaVirtualJoinColumn joinColumn) {
+	protected void moveSpecifiedInverseJoinColumn(int index, VirtualJoinColumn joinColumn) {
 		this.specifiedInverseJoinColumnContainer.moveContextElement(index, joinColumn);
 	}
 
-	protected JavaVirtualJoinColumn addSpecifiedInverseJoinColumn(int index, ReadOnlyJoinColumn joinColumn) {
+	protected VirtualJoinColumn addSpecifiedInverseJoinColumn(int index, ReadOnlyJoinColumn joinColumn) {
 		return this.specifiedInverseJoinColumnContainer.addContextElement(index, joinColumn);
 	}
 
-	protected void removeSpecifiedInverseJoinColumn(JavaVirtualJoinColumn joinColumn) {
+	protected void removeSpecifiedInverseJoinColumn(VirtualJoinColumn joinColumn) {
 		this.specifiedInverseJoinColumnContainer.removeContextElement(joinColumn);
 	}
 
-	protected ContextListContainer<JavaVirtualJoinColumn, ReadOnlyJoinColumn> buildSpecifiedInverseJoinColumnContainer() {
+	protected ContextListContainer<VirtualJoinColumn, ReadOnlyJoinColumn> buildSpecifiedInverseJoinColumnContainer() {
 		return new SpecifiedInverseJoinColumnContainer();
 	}
 
@@ -121,14 +121,14 @@ public class GenericJavaVirtualJoinTable
 	 * specified join column container
 	 */
 	protected class SpecifiedInverseJoinColumnContainer
-		extends ContextListContainer<JavaVirtualJoinColumn, ReadOnlyJoinColumn>
+		extends ContextListContainer<VirtualJoinColumn, ReadOnlyJoinColumn>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return SPECIFIED_INVERSE_JOIN_COLUMNS_LIST;
 		}
 		@Override
-		protected JavaVirtualJoinColumn buildContextElement(ReadOnlyJoinColumn resourceElement) {
+		protected VirtualJoinColumn buildContextElement(ReadOnlyJoinColumn resourceElement) {
 			return GenericJavaVirtualJoinTable.this.buildInverseJoinColumn(resourceElement);
 		}
 		@Override
@@ -136,7 +136,7 @@ public class GenericJavaVirtualJoinTable
 			return GenericJavaVirtualJoinTable.this.getOverriddenInverseJoinColumns();
 		}
 		@Override
-		protected ReadOnlyJoinColumn getResourceElement(JavaVirtualJoinColumn contextElement) {
+		protected ReadOnlyJoinColumn getResourceElement(VirtualJoinColumn contextElement) {
 			return contextElement.getOverriddenColumn();
 		}
 	}
@@ -144,20 +144,20 @@ public class GenericJavaVirtualJoinTable
 
 	// ********** default inverse join column **********
 
-	public JavaVirtualJoinColumn getDefaultInverseJoinColumn() {
+	public VirtualJoinColumn getDefaultInverseJoinColumn() {
 		return this.defaultInverseJoinColumn;
 	}
 
-	protected void setDefaultInverseJoinColumn(JavaVirtualJoinColumn joinColumn) {
-		JavaVirtualJoinColumn old = this.defaultInverseJoinColumn;
+	protected void setDefaultInverseJoinColumn(VirtualJoinColumn joinColumn) {
+		VirtualJoinColumn old = this.defaultInverseJoinColumn;
 		this.defaultInverseJoinColumn = joinColumn;
 		this.firePropertyChanged(DEFAULT_INVERSE_JOIN_COLUMN, old, joinColumn);
 	}
 
-	protected ListIterable<JavaVirtualJoinColumn> getDefaultInverseJoinColumns() {
+	protected ListIterable<VirtualJoinColumn> getDefaultInverseJoinColumns() {
 		return (this.defaultInverseJoinColumn != null) ?
-				new SingleElementListIterable<JavaVirtualJoinColumn>(this.defaultInverseJoinColumn) :
-				EmptyListIterable.<JavaVirtualJoinColumn>instance();
+				new SingleElementListIterable<VirtualJoinColumn>(this.defaultInverseJoinColumn) :
+				EmptyListIterable.<VirtualJoinColumn>instance();
 	}
 
 	protected int getDefaultInverseJoinColumnsSize() {
@@ -184,11 +184,11 @@ public class GenericJavaVirtualJoinTable
 	// ********** misc **********
 
 	@Override
-	public JavaVirtualJoinTableRelationshipStrategy getParent() {
-		return (JavaVirtualJoinTableRelationshipStrategy) super.getParent();
+	public VirtualJoinTableRelationshipStrategy getParent() {
+		return (VirtualJoinTableRelationshipStrategy) super.getParent();
 	}
 
-	protected JavaVirtualJoinTableRelationshipStrategy getRelationshipStrategy() {
+	protected VirtualJoinTableRelationshipStrategy getRelationshipStrategy() {
 		return this.getParent();
 	}
 
@@ -201,7 +201,7 @@ public class GenericJavaVirtualJoinTable
 		return new InverseJoinColumnOwner();
 	}
 
-	protected JavaVirtualJoinColumn buildInverseJoinColumn(ReadOnlyJoinColumn joinColumn) {
+	protected VirtualJoinColumn buildInverseJoinColumn(ReadOnlyJoinColumn joinColumn) {
 		return this.buildJoinColumn(this.inverseJoinColumnOwner, joinColumn);
 	}
 
@@ -281,7 +281,7 @@ public class GenericJavaVirtualJoinTable
 			return GenericJavaVirtualJoinTable.this.getValidationTextRange();
 		}
 
-		protected JavaVirtualRelationship getRelationship() {
+		protected VirtualRelationship getRelationship() {
 			return GenericJavaVirtualJoinTable.this.getRelationshipStrategy().getRelationship();
 		}
 	}

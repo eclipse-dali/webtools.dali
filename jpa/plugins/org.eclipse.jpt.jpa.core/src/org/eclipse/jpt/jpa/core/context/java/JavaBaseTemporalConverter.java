@@ -9,7 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
+import org.eclipse.jpt.common.core.resource.java.Annotation;
+import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
+import org.eclipse.jpt.jpa.core.context.Converter;
+import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.JavaElementCollectionTemporalConverterValidator;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.JavaTemporalConverterValidator;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.JavaMapKeyTemporalConverterValidator;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionMapping2_0;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyTemporal2_0Annotation;
+import org.eclipse.jpt.jpa.core.resource.java.TemporalAnnotation;
 
 /**
  * Java temporal/map key temporal converter
@@ -24,4 +34,110 @@ public interface JavaBaseTemporalConverter
 	extends BaseTemporalConverter, JavaConverter
 {
 	// combine interfaces
+
+
+	// ********** adapter **********
+
+	abstract static class AbstractAdapter
+		extends JavaConverter.AbstractAdapter
+	{
+	
+		AbstractAdapter() {
+			super();
+		}
+
+		public Class<? extends Converter> getConverterType() {
+			return BaseTemporalConverter.class;
+		}
+
+		@Override
+		protected String getAnnotationName() {
+			return TemporalAnnotation.ANNOTATION_NAME;
+		}
+
+		public JavaConverter buildConverter(Annotation converterAnnotation, JavaAttributeMapping parent, JpaFactory factory) {
+			return factory.buildJavaBaseTemporalConverter(parent, (TemporalAnnotation) converterAnnotation, this.buildOwner());
+		}
+	}
+
+	public static class BasicAdapter
+		extends AbstractAdapter
+	{
+		private static final Adapter INSTANCE = new BasicAdapter();
+		public static Adapter instance() {
+			return INSTANCE;
+		}
+	
+		private BasicAdapter() {
+			super();
+		}
+	
+		@Override
+		protected Owner buildOwner() {
+			return new Owner() {
+				public JptValidator buildValidator(Converter converter) {
+					return new JavaTemporalConverterValidator((BaseTemporalConverter) converter);
+				}
+			};
+		}
+	}
+
+	public static class ElementCollectionAdapter
+		extends AbstractAdapter
+	{
+		private static final Adapter INSTANCE = new ElementCollectionAdapter();
+		public static Adapter instance() {
+			return INSTANCE;
+		}
+	
+		private ElementCollectionAdapter() {
+			super();
+		}
+	
+		@Override
+		protected Owner buildOwner() {
+			return new Owner() {
+				public JptValidator buildValidator(Converter converter) {
+					return new JavaElementCollectionTemporalConverterValidator((BaseTemporalConverter) converter);
+				}
+			};
+		}
+	}
+
+	// ********** map key temporal adapter **********
+
+	public static class MapKeyAdapter
+		extends JavaConverter.AbstractAdapter
+	{
+		private static final MapKeyAdapter INSTANCE = new MapKeyAdapter();
+		public static MapKeyAdapter instance() {
+			return INSTANCE;
+		}
+
+		private MapKeyAdapter() {
+			super();
+		}
+
+		public Class<? extends Converter> getConverterType() {
+			return BaseTemporalConverter.class;
+		}
+
+		@Override
+		protected String getAnnotationName() {
+			return MapKeyTemporal2_0Annotation.ANNOTATION_NAME;
+		}
+
+		public JavaConverter buildConverter(Annotation converterAnnotation, JavaAttributeMapping parent, JpaFactory factory) {
+			return factory.buildJavaBaseTemporalConverter((JavaCollectionMapping2_0) parent, (MapKeyTemporal2_0Annotation) converterAnnotation, this.buildOwner());
+		}
+
+		@Override
+		protected Owner buildOwner() {
+			return new Owner() {				
+				public JptValidator buildValidator(Converter converter) {
+					return new JavaMapKeyTemporalConverterValidator((BaseTemporalConverter) converter);
+				}
+			};
+		}
+	}
 }

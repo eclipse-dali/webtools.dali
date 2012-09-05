@@ -27,8 +27,4 @@ public interface JavaDerivedIdentity2_0
 	extends DerivedIdentity2_0
 {
 	JavaSingleRelationshipMapping2_0 getMapping();
-
-	JavaIdDerivedIdentityStrategy2_0 getIdDerivedIdentityStrategy();
-
-	JavaMapsIdDerivedIdentityStrategy2_0 getMapsIdDerivedIdentityStrategy();
 }

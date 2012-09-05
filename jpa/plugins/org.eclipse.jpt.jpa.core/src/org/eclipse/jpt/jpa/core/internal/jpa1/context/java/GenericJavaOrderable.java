@@ -15,7 +15,6 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.OrderColumnValidator;
@@ -313,7 +312,7 @@ public class GenericJavaOrderable
 	}
 
 	protected JavaOrderColumn2_0 buildOrderColumn() {
-		JavaReadOnlyNamedColumn.Owner columnOwner = new OrderColumnOwner();
+		ReadOnlyNamedColumn.Owner columnOwner = new OrderColumnOwner();
 		return this.isJpa2_0Compatible() ?
 				this.getJpaFactory2_0().buildJavaOrderColumn(this, columnOwner) :
 				new GenericJavaOrderColumn2_0(this, columnOwner);
@@ -447,7 +446,7 @@ public class GenericJavaOrderable
 	// ********** order column owner (JPA 2.0) **********
 
 	protected class OrderColumnOwner
-		implements JavaReadOnlyNamedColumn.Owner
+		implements ReadOnlyNamedColumn.Owner
 	{
 		public String getDefaultTableName() {
 			return GenericJavaOrderable.this.getDefaultTableName();

@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.AccessHolder;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappedSuperclass;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkCaching;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkConvertersComposite;
@@ -111,10 +111,10 @@ public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite
 		};
 	}
 	
-	protected PropertyAspectAdapter<OrmMappedSuperclass, OrmEclipseLinkCaching> buildCachingHolder() {
-		return new PropertyAspectAdapter<OrmMappedSuperclass, OrmEclipseLinkCaching>(getSubjectHolder()) {
+	protected PropertyAspectAdapter<OrmMappedSuperclass, EclipseLinkCaching> buildCachingHolder() {
+		return new PropertyAspectAdapter<OrmMappedSuperclass, EclipseLinkCaching>(getSubjectHolder()) {
 			@Override
-			protected OrmEclipseLinkCaching buildValue_() {
+			protected EclipseLinkCaching buildValue_() {
 				return ((OrmEclipseLinkMappedSuperclass) this.subject).getCaching();
 			}
 		};

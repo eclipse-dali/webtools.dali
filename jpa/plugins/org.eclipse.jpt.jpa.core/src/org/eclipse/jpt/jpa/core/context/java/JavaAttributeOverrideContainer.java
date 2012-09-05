@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -39,8 +39,6 @@ public interface JavaAttributeOverrideContainer
 	ReadOnlyColumn getOverrideColumn(String overrideName);
 
 	// covariant overrides
-	ListIterable<JavaReadOnlyAttributeOverride> getOverrides();
-	JavaReadOnlyAttributeOverride getOverrideNamed(String name);
 	ListIterable<JavaAttributeOverride> getSpecifiedOverrides();
 	JavaAttributeOverride getSpecifiedOverride(int index);
 	JavaAttributeOverride getSpecifiedOverrideNamed(String name);

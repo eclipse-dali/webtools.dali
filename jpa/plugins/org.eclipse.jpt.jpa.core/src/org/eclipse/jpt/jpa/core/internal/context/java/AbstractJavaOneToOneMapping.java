@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,20 +10,21 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import org.eclipse.jpt.jpa.core.MappingKeys;
+import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.NullJavaOrphanRemoval2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOneToOneMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrphanRemovable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrphanRemovalHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneMapping2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalHolder2_0;
 import org.eclipse.jpt.jpa.core.resource.java.OneToOneAnnotation;
 
 
 public abstract class AbstractJavaOneToOneMapping
 	extends AbstractJavaSingleRelationshipMapping<OneToOneAnnotation>
-	implements JavaOneToOneMapping2_0, JavaOrphanRemovalHolder2_0
+	implements OneToOneMapping2_0, JavaOneToOneMapping, OrphanRemovalHolder2_0
 {
-	protected final JavaOrphanRemovable2_0 orphanRemoval;
+	protected final OrphanRemovable2_0 orphanRemoval;
 
 
 	protected AbstractJavaOneToOneMapping(JavaPersistentAttribute parent) {
@@ -62,11 +63,11 @@ public abstract class AbstractJavaOneToOneMapping
 
 	// ********** orphan removal **********
 
-	public JavaOrphanRemovable2_0 getOrphanRemoval() {
+	public OrphanRemovable2_0 getOrphanRemoval() {
 		return this.orphanRemoval;
 	}
 
-	protected JavaOrphanRemovable2_0 buildOrphanRemoval() {
+	protected OrphanRemovable2_0 buildOrphanRemoval() {
 		return this.isJpa2_0Compatible() ?
 				this.getJpaFactory2_0().buildJavaOrphanRemoval(this) :
 				new NullJavaOrphanRemoval2_0(this);

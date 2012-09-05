@@ -27,16 +27,16 @@ import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmEntity;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheable2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheableHolder2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlCacheable_2_0;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMultitenancy2_3;
@@ -70,7 +70,7 @@ public class OrmEclipseLinkEntityImpl
 
 	protected final OrmEclipseLinkChangeTracking changeTracking;
 
-	protected final OrmEclipseLinkCaching caching;
+	protected final EclipseLinkCaching caching;
 
 	protected final OrmEclipseLinkConverterContainer converterContainer;
 
@@ -115,11 +115,11 @@ public class OrmEclipseLinkEntityImpl
 
 	// ********** caching **********
 
-	public OrmEclipseLinkCaching getCaching() {
+	public EclipseLinkCaching getCaching() {
 		return this.caching;
 	}
 
-	protected OrmEclipseLinkCaching buildCaching() {
+	protected EclipseLinkCaching buildCaching() {
 		return new OrmEclipseLinkCachingImpl(this);
 	}
 
@@ -290,7 +290,7 @@ public class OrmEclipseLinkEntityImpl
 		return null;
 	}
 
-	public OrmCacheable2_0 getCacheable() {
+	public Cacheable2_0 getCacheable() {
 		return this.getCacheableHolder().getCacheable();
 	}
 

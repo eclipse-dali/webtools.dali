@@ -22,6 +22,8 @@ import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
+import org.eclipse.jpt.jpa.core.context.AttributeOverride;
+import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
@@ -42,18 +44,15 @@ import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.core.context.TransientMapping;
 import org.eclipse.jpt.jpa.core.context.VersionMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverride;
-import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
+import org.eclipse.jpt.jpa.core.context.VirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToManyMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToManyRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOneToManyMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrphanRemovable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrphanRemovalHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
@@ -713,8 +712,8 @@ public class GenericJavaOneToManyMapping2_0Tests
 		assertEquals("foo", stateFooMapping.getName());
 	}
 	
-	private JavaOrphanRemovable2_0 getOrphanRemovalOf(OneToManyMapping2_0 oneToManyMapping) {
-		return ((JavaOrphanRemovalHolder2_0) oneToManyMapping).getOrphanRemoval();
+	private OrphanRemovable2_0 getOrphanRemovalOf(OneToManyMapping2_0 oneToManyMapping) {
+		return ((OrphanRemovalHolder2_0) oneToManyMapping).getOrphanRemoval();
 	}
 
 	public void testDefaultOneToManyGetDefaultOrphanRemoval() throws Exception {
@@ -741,7 +740,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
-		JavaOrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToManyMapping);
+		OrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToManyMapping);
 
 		assertEquals(false, mappingsOrphanRemoval.isOrphanRemoval());
 		
@@ -755,7 +754,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
-		JavaOrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToManyMapping);
+		OrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToManyMapping);
 
 		assertNull(mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 		
@@ -773,7 +772,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
-		JavaOrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToManyMapping);
+		OrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToManyMapping);
 
 		assertEquals(Boolean.FALSE, mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 	}
@@ -784,7 +783,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
-		JavaOrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToManyMapping);
+		OrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToManyMapping);
 		assertNull(mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 		
 		mappingsOrphanRemoval.setSpecifiedOrphanRemoval(Boolean.TRUE);
@@ -804,7 +803,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
-		JavaOrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToManyMapping);
+		OrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToManyMapping);
 		assertNull(mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 		
 		mappingsOrphanRemoval.setSpecifiedOrphanRemoval(Boolean.TRUE);
@@ -829,7 +828,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
-		JavaOrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToManyMapping);
+		OrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToManyMapping);
 
 		assertNull(mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 
@@ -1429,10 +1428,10 @@ public class GenericJavaOneToManyMapping2_0Tests
 		addXmlClassRef(PACKAGE_NAME + ".State");
 		addXmlClassRef(PACKAGE_NAME + ".PropertyInfo");
 		
-		JavaOneToManyMapping2_0 oneToManyMapping = (JavaOneToManyMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
-		JavaAttributeOverrideContainer mapKeyAttributeOverrideContainer = oneToManyMapping.getMapKeyAttributeOverrideContainer();
+		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
+		AttributeOverrideContainer mapKeyAttributeOverrideContainer = oneToManyMapping.getMapKeyAttributeOverrideContainer();
 		
-		ListIterator<JavaAttributeOverride> specifiedMapKeyAttributeOverrides = mapKeyAttributeOverrideContainer.getSpecifiedOverrides().iterator();		
+		ListIterator<? extends AttributeOverride> specifiedMapKeyAttributeOverrides = mapKeyAttributeOverrideContainer.getSpecifiedOverrides().iterator();		
 		assertFalse(specifiedMapKeyAttributeOverrides.hasNext());
 
 		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
@@ -1522,8 +1521,8 @@ public class GenericJavaOneToManyMapping2_0Tests
 		addXmlClassRef(PACKAGE_NAME + ".PropertyInfo");
 		addXmlClassRef(PACKAGE_NAME + ".State");
 		
-		JavaOneToManyMapping2_0 oneToManyMapping = (JavaOneToManyMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
-		JavaAttributeOverrideContainer mapKeyAttributeOverrideContainer = oneToManyMapping.getMapKeyAttributeOverrideContainer();
+		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
+		AttributeOverrideContainer mapKeyAttributeOverrideContainer = oneToManyMapping.getMapKeyAttributeOverrideContainer();
 
 		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
 		assertEquals("parcels", resourceField.getName());
@@ -1617,8 +1616,8 @@ public class GenericJavaOneToManyMapping2_0Tests
 		addXmlClassRef(PACKAGE_NAME + ".PropertyInfo");
 		addXmlClassRef(PACKAGE_NAME + ".State");
 		
-		JavaOneToManyMapping2_0 oneToManyMapping = (JavaOneToManyMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
-		JavaAttributeOverrideContainer mapKeyAttributeOverrideContainer = oneToManyMapping.getMapKeyAttributeOverrideContainer();
+		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
+		AttributeOverrideContainer mapKeyAttributeOverrideContainer = oneToManyMapping.getMapKeyAttributeOverrideContainer();
 		assertEquals(0, mapKeyAttributeOverrideContainer.getSpecifiedOverridesSize());
 
 		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
@@ -1646,8 +1645,8 @@ public class GenericJavaOneToManyMapping2_0Tests
 		addXmlClassRef(PACKAGE_NAME + ".PropertyInfo");
 		addXmlClassRef(PACKAGE_NAME + ".State");
 
-		JavaOneToManyMapping2_0 oneToManyMapping = (JavaOneToManyMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
-		JavaAttributeOverrideContainer mapKeyAttributeOverrideContainer = oneToManyMapping.getMapKeyAttributeOverrideContainer();
+		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
+		AttributeOverrideContainer mapKeyAttributeOverrideContainer = oneToManyMapping.getMapKeyAttributeOverrideContainer();
 		assertEquals(4, mapKeyAttributeOverrideContainer.getOverridesSize());
 
 		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
@@ -1685,8 +1684,8 @@ public class GenericJavaOneToManyMapping2_0Tests
 		addXmlClassRef(PACKAGE_NAME + ".PropertyInfo");
 		addXmlClassRef(PACKAGE_NAME + ".State");
 		
-		JavaOneToManyMapping2_0 oneToManyMapping = (JavaOneToManyMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
-		JavaAttributeOverrideContainer mapKeyAttributeOverrideContainer = oneToManyMapping.getMapKeyAttributeOverrideContainer();
+		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
+		AttributeOverrideContainer mapKeyAttributeOverrideContainer = oneToManyMapping.getMapKeyAttributeOverrideContainer();
 		assertEquals(4, mapKeyAttributeOverrideContainer.getVirtualOverridesSize());
 
 		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
@@ -1725,8 +1724,8 @@ public class GenericJavaOneToManyMapping2_0Tests
 		addXmlClassRef(PACKAGE_NAME + ".PropertyInfo");
 		addXmlClassRef(PACKAGE_NAME + ".State");
 				
-		JavaOneToManyMapping2_0 oneToManyMapping = (JavaOneToManyMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
-		JavaAttributeOverrideContainer mapKeyAttributeOverrideContainer = oneToManyMapping.getMapKeyAttributeOverrideContainer();
+		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
+		AttributeOverrideContainer mapKeyAttributeOverrideContainer = oneToManyMapping.getMapKeyAttributeOverrideContainer();
 		mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
@@ -1746,7 +1745,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		attributeOverrides = resourceField.getAnnotations(JPA.ATTRIBUTE_OVERRIDE).iterator();
 		assertFalse(attributeOverrides.hasNext());
 		
-		Iterator<JavaVirtualAttributeOverride> virtualAttributeOverrides = mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator();
+		Iterator<? extends VirtualAttributeOverride> virtualAttributeOverrides = mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator();
 		assertEquals("city", virtualAttributeOverrides.next().getName());
 		assertEquals("state.foo", virtualAttributeOverrides.next().getName());
 		assertEquals("state.address", virtualAttributeOverrides.next().getName());
@@ -1766,12 +1765,12 @@ public class GenericJavaOneToManyMapping2_0Tests
 		addXmlClassRef(PACKAGE_NAME + ".PropertyInfo");
 		addXmlClassRef(PACKAGE_NAME + ".State");
 		
-		JavaOneToManyMapping2_0 oneToManyMapping = (JavaOneToManyMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
-		JavaAttributeOverrideContainer mapKeyAttributeOverrideContainer = oneToManyMapping.getMapKeyAttributeOverrideContainer();
+		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
+		AttributeOverrideContainer mapKeyAttributeOverrideContainer = oneToManyMapping.getMapKeyAttributeOverrideContainer();
 		mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
-		ListIterator<JavaAttributeOverride> specifiedOverrides = mapKeyAttributeOverrideContainer.getSpecifiedOverrides().iterator();
+		ListIterator<? extends AttributeOverride> specifiedOverrides = mapKeyAttributeOverrideContainer.getSpecifiedOverrides().iterator();
 		assertEquals("city", specifiedOverrides.next().getName());
 		assertEquals("state.foo", specifiedOverrides.next().getName());
 		assertFalse(specifiedOverrides.hasNext());
@@ -1798,7 +1797,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
-		JavaOneToManyMapping2_0 oneToManyMapping = (JavaOneToManyMapping2_0) persistentAttribute.getMapping();
+		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
 		assertNull(oneToManyMapping.getMapKeyConverter().getType());
 		
 		oneToManyMapping.setMapKeyConverter(BaseEnumeratedConverter.class);
@@ -1826,7 +1825,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
-		JavaOneToManyMapping2_0 oneToManyMapping = (JavaOneToManyMapping2_0) persistentAttribute.getMapping();
+		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
 
 		assertNull(oneToManyMapping.getMapKeyConverter().getType());
 		
@@ -1852,7 +1851,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
-		JavaOneToManyMapping2_0 oneToManyMapping = (JavaOneToManyMapping2_0) persistentAttribute.getMapping();
+		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
 		assertNull(oneToManyMapping.getMapKeyConverter().getType());
 		
 		oneToManyMapping.setMapKeyConverter(BaseTemporalConverter.class);
@@ -1876,7 +1875,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
-		JavaOneToManyMapping2_0 oneToManyMapping = (JavaOneToManyMapping2_0) persistentAttribute.getMapping();
+		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getMapping();
 
 		assertNull(oneToManyMapping.getMapKeyConverter().getType());
 		

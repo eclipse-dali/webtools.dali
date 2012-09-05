@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpa2.context.orm;
 
+import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedColumn;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrderColumn2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlOrderColumn;
 
@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlOrderColumn;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.3
  * @since 2.3
  */
 public interface OrmOrderColumn2_0
@@ -38,7 +38,7 @@ public interface OrmOrderColumn2_0
 	 * interface allowing order columns to be used in multiple places
 	 */
 	interface Owner
-		extends OrmReadOnlyNamedColumn.Owner
+		extends ReadOnlyNamedColumn.Owner
 	{
 		XmlOrderColumn getXmlColumn();
 		XmlOrderColumn buildXmlColumn();

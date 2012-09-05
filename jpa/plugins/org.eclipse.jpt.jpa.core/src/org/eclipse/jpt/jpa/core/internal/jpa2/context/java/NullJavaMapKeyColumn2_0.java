@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaMultiRelationshipMapping;
+import org.eclipse.jpt.jpa.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.jpa.db.Table;
@@ -25,7 +25,7 @@ public class NullJavaMapKeyColumn2_0
 	extends AbstractJavaJpaContextNode
 	implements JavaColumn
 {
-	public NullJavaMapKeyColumn2_0(JavaMultiRelationshipMapping parent) {
+	public NullJavaMapKeyColumn2_0(JavaRelationshipMapping parent) {
 		super(parent);
 	}
 
@@ -225,8 +225,8 @@ public class NullJavaMapKeyColumn2_0
 	// ********** misc **********
 
 	@Override
-	public JavaMultiRelationshipMapping getParent() {
-		return (JavaMultiRelationshipMapping) super.getParent();
+	public JavaRelationshipMapping getParent() {
+		return (JavaRelationshipMapping) super.getParent();
 	}
 
 	public void initializeFrom(ReadOnlyColumn oldColumn) {

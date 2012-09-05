@@ -9,7 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
+import org.eclipse.jpt.common.core.resource.java.Annotation;
+import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
+import org.eclipse.jpt.jpa.core.context.Converter;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyEnumerated2_0Annotation;
+import org.eclipse.jpt.jpa.core.resource.java.EnumeratedAnnotation;
 
 /**
  * Java enumerated/map key enumerated converter
@@ -24,4 +29,60 @@ public interface JavaBaseEnumeratedConverter
 	extends BaseEnumeratedConverter, JavaConverter
 {
 	// combine interfaces
+	
+	// ********** enumerated adapter **********
+
+	public static class BasicAdapter
+		extends JavaConverter.AbstractAdapter
+	{
+		private static final BasicAdapter INSTANCE = new BasicAdapter();
+		public static BasicAdapter instance() {
+			return INSTANCE;
+		}
+
+		private BasicAdapter() {
+			super();
+		}
+
+		public Class<? extends Converter> getConverterType() {
+			return BaseEnumeratedConverter.class;
+		}
+
+		@Override
+		protected String getAnnotationName() {
+			return EnumeratedAnnotation.ANNOTATION_NAME;
+		}
+
+		public JavaConverter buildConverter(Annotation converterAnnotation, JavaAttributeMapping parent, JpaFactory factory) {
+			return factory.buildJavaBaseEnumeratedConverter(parent, (EnumeratedAnnotation) converterAnnotation, this.buildOwner());
+		}
+	}
+
+	// ********** map key enumerated adapter **********
+
+	public static class MapKeyAdapter
+		extends JavaConverter.AbstractAdapter
+	{
+		private static final MapKeyAdapter INSTANCE = new MapKeyAdapter();
+		public static MapKeyAdapter instance() {
+			return INSTANCE;
+		}
+
+		private MapKeyAdapter() {
+			super();
+		}
+
+		public Class<? extends Converter> getConverterType() {
+			return BaseEnumeratedConverter.class;
+		}
+
+		@Override
+		protected String getAnnotationName() {
+			return MapKeyEnumerated2_0Annotation.ANNOTATION_NAME;
+		}
+
+		public JavaConverter buildConverter(Annotation converterAnnotation, JavaAttributeMapping parent, JpaFactory factory) {
+			return factory.buildJavaBaseEnumeratedConverter(parent, (MapKeyEnumerated2_0Annotation) converterAnnotation, this.buildOwner());
+		}
+	}
 }

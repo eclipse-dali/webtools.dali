@@ -17,13 +17,13 @@ import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
+import org.eclipse.jpt.jpa.core.context.Cascade;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaCascade;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappingRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaRelationshipMapping;
@@ -49,7 +49,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 
 	protected final JavaMappingRelationship relationship;
 
-	protected final JavaCascade cascade;
+	protected final Cascade cascade;
 
 	protected FetchType specifiedFetch;
 	protected FetchType defaultFetch;
@@ -167,11 +167,11 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 
 	// ********** cascade **********
 
-	public JavaCascade getCascade() {
+	public Cascade getCascade() {
 		return this.cascade;
 	}
 
-	protected JavaCascade buildCascade() {
+	protected Cascade buildCascade() {
 		// NB: we don't use the platform
 		return new GenericJavaCascade(this);
 	}

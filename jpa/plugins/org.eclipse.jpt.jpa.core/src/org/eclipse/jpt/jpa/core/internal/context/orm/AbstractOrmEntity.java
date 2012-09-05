@@ -73,7 +73,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
 import org.eclipse.jpt.jpa.core.context.java.JavaOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
@@ -86,7 +85,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualPrimaryKeyJoinColumn;
@@ -1324,7 +1322,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		return MappingTools.resolveOverriddenColumn(this.getOverridableTypeMapping(), attributeName);
 	}
 
-	protected JavaReadOnlyAttributeOverride getJavaAttributeOverrideNamedForVirtual(String attributeName) {
+	protected ReadOnlyAttributeOverride getJavaAttributeOverrideNamedForVirtual(String attributeName) {
 		JavaEntity javaEntity = this.getJavaTypeMappingForDefaults();
 		return (javaEntity == null) ? null : javaEntity.getAttributeOverrideContainer().getOverrideNamed(attributeName);
 	}
@@ -2149,7 +2147,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	 * some common behavior
 	 */
 	protected abstract class NamedColumnOwner
-		implements OrmReadOnlyNamedColumn.Owner
+		implements ReadOnlyNamedColumn.Owner
 	{
 		public String getDefaultTableName() {
 			return AbstractOrmEntity.this.getPrimaryTableName();

@@ -28,5 +28,4 @@ public interface OrmCacheableHolder2_0
 	extends CacheableHolder2_0
 {
 	XmlCacheable_2_0 getXmlCacheable();
-	OrmCacheable2_0 getCacheable();
 }

@@ -39,7 +39,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.jpa2.context.ManyToManyMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaManyToManyMapping2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
@@ -934,7 +934,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		addXmlClassRef(PACKAGE_NAME + ".State");
 		addXmlClassRef(PACKAGE_NAME + ".PropertyInfo");
 		
-		JavaManyToManyMapping2_0 manyToManyMapping = (JavaManyToManyMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
+		JavaCollectionMapping2_0 manyToManyMapping = (JavaCollectionMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
 		JavaAttributeOverrideContainer mapKeyAttributeOverrideContainer = manyToManyMapping.getMapKeyAttributeOverrideContainer();
 		
 		ListIterator<JavaAttributeOverride> specifiedMapKeyAttributeOverrides = mapKeyAttributeOverrideContainer.getSpecifiedOverrides().iterator();		
@@ -1028,7 +1028,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		addXmlClassRef(PACKAGE_NAME + ".PropertyInfo");
 		addXmlClassRef(PACKAGE_NAME + ".State");
 		
-		JavaManyToManyMapping2_0 manyToManyMapping = (JavaManyToManyMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
+		JavaCollectionMapping2_0 manyToManyMapping = (JavaCollectionMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
 		JavaAttributeOverrideContainer mapKeyAttributeOverrideContainer = manyToManyMapping.getMapKeyAttributeOverrideContainer();
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
@@ -1123,7 +1123,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		addXmlClassRef(PACKAGE_NAME + ".PropertyInfo");
 		addXmlClassRef(PACKAGE_NAME + ".State");
 		
-		JavaManyToManyMapping2_0 manyToManyMapping = (JavaManyToManyMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
+		JavaCollectionMapping2_0 manyToManyMapping = (JavaCollectionMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
 		JavaAttributeOverrideContainer mapKeyAttributeOverrideContainer = manyToManyMapping.getMapKeyAttributeOverrideContainer();
 		assertEquals(0, mapKeyAttributeOverrideContainer.getSpecifiedOverridesSize());
 
@@ -1153,7 +1153,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		addXmlClassRef(PACKAGE_NAME + ".PropertyInfo");
 		addXmlClassRef(PACKAGE_NAME + ".State");
 
-		JavaManyToManyMapping2_0 manyToManyMapping = (JavaManyToManyMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
+		JavaCollectionMapping2_0 manyToManyMapping = (JavaCollectionMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
 		JavaAttributeOverrideContainer mapKeyAttributeOverrideContainer = manyToManyMapping.getMapKeyAttributeOverrideContainer();
 		assertEquals(4, mapKeyAttributeOverrideContainer.getOverridesSize());
 
@@ -1193,7 +1193,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		addXmlClassRef(PACKAGE_NAME + ".PropertyInfo");
 		addXmlClassRef(PACKAGE_NAME + ".State");
 		
-		JavaManyToManyMapping2_0 manyToManyMapping = (JavaManyToManyMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
+		JavaCollectionMapping2_0 manyToManyMapping = (JavaCollectionMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
 		JavaAttributeOverrideContainer mapKeyAttributeOverrideContainer = manyToManyMapping.getMapKeyAttributeOverrideContainer();
 		assertEquals(4, mapKeyAttributeOverrideContainer.getVirtualOverridesSize());
 
@@ -1234,7 +1234,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		addXmlClassRef(PACKAGE_NAME + ".PropertyInfo");
 		addXmlClassRef(PACKAGE_NAME + ".State");
 				
-		JavaManyToManyMapping2_0 manyToManyMapping = (JavaManyToManyMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
+		JavaCollectionMapping2_0 manyToManyMapping = (JavaCollectionMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
 		JavaAttributeOverrideContainer mapKeyAttributeOverrideContainer = manyToManyMapping.getMapKeyAttributeOverrideContainer();
 		mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
@@ -1276,7 +1276,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		addXmlClassRef(PACKAGE_NAME + ".PropertyInfo");
 		addXmlClassRef(PACKAGE_NAME + ".State");
 		
-		JavaManyToManyMapping2_0 manyToManyMapping = (JavaManyToManyMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
+		JavaCollectionMapping2_0 manyToManyMapping = (JavaCollectionMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
 		JavaAttributeOverrideContainer mapKeyAttributeOverrideContainer = manyToManyMapping.getMapKeyAttributeOverrideContainer();
 		mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
@@ -1309,7 +1309,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
-		JavaManyToManyMapping2_0 manyToManyMapping = (JavaManyToManyMapping2_0) persistentAttribute.getMapping();
+		JavaCollectionMapping2_0 manyToManyMapping = (JavaCollectionMapping2_0) persistentAttribute.getMapping();
 		assertNull(manyToManyMapping.getMapKeyConverter().getType());
 		
 		manyToManyMapping.setMapKeyConverter(BaseEnumeratedConverter.class);
@@ -1337,7 +1337,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
-		JavaManyToManyMapping2_0 manyToManyMapping = (JavaManyToManyMapping2_0) persistentAttribute.getMapping();
+		JavaCollectionMapping2_0 manyToManyMapping = (JavaCollectionMapping2_0) persistentAttribute.getMapping();
 
 		assertNull(manyToManyMapping.getMapKeyConverter().getType());
 		
@@ -1363,7 +1363,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
-		JavaManyToManyMapping2_0 manyToManyMapping = (JavaManyToManyMapping2_0) persistentAttribute.getMapping();
+		JavaCollectionMapping2_0 manyToManyMapping = (JavaCollectionMapping2_0) persistentAttribute.getMapping();
 		assertNull(manyToManyMapping.getMapKeyConverter().getType());
 		
 		manyToManyMapping.setMapKeyConverter(BaseTemporalConverter.class);
@@ -1387,7 +1387,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
-		JavaManyToManyMapping2_0 manyToManyMapping = (JavaManyToManyMapping2_0) persistentAttribute.getMapping();
+		JavaCollectionMapping2_0 manyToManyMapping = (JavaCollectionMapping2_0) persistentAttribute.getMapping();
 
 		assertNull(manyToManyMapping.getMapKeyConverter().getType());
 		

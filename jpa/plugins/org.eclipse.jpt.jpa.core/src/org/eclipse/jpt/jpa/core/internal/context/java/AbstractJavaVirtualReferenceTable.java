@@ -18,8 +18,8 @@ import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyReferenceTable;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualReferenceTable;
-import org.eclipse.jpt.jpa.core.context.java.JavaVirtualJoinColumn;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -27,10 +27,10 @@ public abstract class AbstractJavaVirtualReferenceTable<T extends ReadOnlyRefere
 	extends AbstractJavaVirtualTable<T>
 	implements VirtualReferenceTable
 {
-	protected final ContextListContainer<JavaVirtualJoinColumn, ReadOnlyJoinColumn> specifiedJoinColumnContainer;
+	protected final ContextListContainer<VirtualJoinColumn, ReadOnlyJoinColumn> specifiedJoinColumnContainer;
 	protected final ReadOnlyJoinColumn.Owner joinColumnOwner;
 
-	protected JavaVirtualJoinColumn defaultJoinColumn;
+	protected VirtualJoinColumn defaultJoinColumn;
 
 
 	protected AbstractJavaVirtualReferenceTable(JpaContextNode parent, Owner owner, T overridenTable) {
@@ -52,7 +52,7 @@ public abstract class AbstractJavaVirtualReferenceTable<T extends ReadOnlyRefere
 
 	// ********** join columns **********
 
-	public ListIterable<JavaVirtualJoinColumn> getJoinColumns() {
+	public ListIterable<VirtualJoinColumn> getJoinColumns() {
 		return this.hasSpecifiedJoinColumns() ? this.getSpecifiedJoinColumns() : this.getDefaultJoinColumns();
 	}
 
@@ -63,7 +63,7 @@ public abstract class AbstractJavaVirtualReferenceTable<T extends ReadOnlyRefere
 
 	// ********** specified join columns **********
 
-	public ListIterable<JavaVirtualJoinColumn> getSpecifiedJoinColumns() {
+	public ListIterable<VirtualJoinColumn> getSpecifiedJoinColumns() {
 		return this.specifiedJoinColumnContainer.getContextElements();
 	}
 
@@ -75,7 +75,7 @@ public abstract class AbstractJavaVirtualReferenceTable<T extends ReadOnlyRefere
 		return this.getSpecifiedJoinColumnsSize() != 0;
 	}
 
-	public JavaVirtualJoinColumn getSpecifiedJoinColumn(int index) {
+	public VirtualJoinColumn getSpecifiedJoinColumn(int index) {
 		return this.specifiedJoinColumnContainer.getContextElement(index);
 	}
 
@@ -87,19 +87,19 @@ public abstract class AbstractJavaVirtualReferenceTable<T extends ReadOnlyRefere
 		return new SuperListIterableWrapper<ReadOnlyJoinColumn>(this.getOverriddenTable().getSpecifiedJoinColumns());
 	}
 
-	protected void moveSpecifiedJoinColumn(int index, JavaVirtualJoinColumn joinColumn) {
+	protected void moveSpecifiedJoinColumn(int index, VirtualJoinColumn joinColumn) {
 		this.specifiedJoinColumnContainer.moveContextElement(index, joinColumn);
 	}
 
-	protected JavaVirtualJoinColumn addSpecifiedJoinColumn(int index, JoinColumn joinColumn) {
+	protected VirtualJoinColumn addSpecifiedJoinColumn(int index, JoinColumn joinColumn) {
 		return this.specifiedJoinColumnContainer.addContextElement(index, joinColumn);
 	}
 
-	protected void removeSpecifiedJoinColumn(JavaVirtualJoinColumn joinColumn) {
+	protected void removeSpecifiedJoinColumn(VirtualJoinColumn joinColumn) {
 		this.specifiedJoinColumnContainer.removeContextElement(joinColumn);
 	}
 
-	protected ContextListContainer<JavaVirtualJoinColumn, ReadOnlyJoinColumn> buildSpecifiedJoinColumnContainer() {
+	protected ContextListContainer<VirtualJoinColumn, ReadOnlyJoinColumn> buildSpecifiedJoinColumnContainer() {
 		return new SpecifiedJoinColumnContainer();
 	}
 
@@ -107,14 +107,14 @@ public abstract class AbstractJavaVirtualReferenceTable<T extends ReadOnlyRefere
 	 * specified join column container
 	 */
 	protected class SpecifiedJoinColumnContainer
-		extends ContextListContainer<JavaVirtualJoinColumn, ReadOnlyJoinColumn>
+		extends ContextListContainer<VirtualJoinColumn, ReadOnlyJoinColumn>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
 			return SPECIFIED_JOIN_COLUMNS_LIST;
 		}
 		@Override
-		protected JavaVirtualJoinColumn buildContextElement(ReadOnlyJoinColumn resourceElement) {
+		protected VirtualJoinColumn buildContextElement(ReadOnlyJoinColumn resourceElement) {
 			return AbstractJavaVirtualReferenceTable.this.buildJoinColumn(resourceElement);
 		}
 		@Override
@@ -122,7 +122,7 @@ public abstract class AbstractJavaVirtualReferenceTable<T extends ReadOnlyRefere
 			return AbstractJavaVirtualReferenceTable.this.getOverriddenJoinColumns();
 		}
 		@Override
-		protected ReadOnlyJoinColumn getResourceElement(JavaVirtualJoinColumn contextElement) {
+		protected ReadOnlyJoinColumn getResourceElement(VirtualJoinColumn contextElement) {
 			return contextElement.getOverriddenColumn();
 		}
 	}
@@ -130,20 +130,20 @@ public abstract class AbstractJavaVirtualReferenceTable<T extends ReadOnlyRefere
 
 	// ********** default join column **********
 
-	public JavaVirtualJoinColumn getDefaultJoinColumn() {
+	public VirtualJoinColumn getDefaultJoinColumn() {
 		return this.defaultJoinColumn;
 	}
 
-	protected void setDefaultJoinColumn(JavaVirtualJoinColumn joinColumn) {
-		JavaVirtualJoinColumn old = this.defaultJoinColumn;
+	protected void setDefaultJoinColumn(VirtualJoinColumn joinColumn) {
+		VirtualJoinColumn old = this.defaultJoinColumn;
 		this.defaultJoinColumn = joinColumn;
 		this.firePropertyChanged(DEFAULT_JOIN_COLUMN_PROPERTY, old, joinColumn);
 	}
 
-	protected ListIterable<JavaVirtualJoinColumn> getDefaultJoinColumns() {
+	protected ListIterable<VirtualJoinColumn> getDefaultJoinColumns() {
 		return (this.defaultJoinColumn != null) ?
-				new SingleElementListIterable<JavaVirtualJoinColumn>(this.defaultJoinColumn) :
-				EmptyListIterable.<JavaVirtualJoinColumn>instance();
+				new SingleElementListIterable<VirtualJoinColumn>(this.defaultJoinColumn) :
+				EmptyListIterable.<VirtualJoinColumn>instance();
 	}
 
 	protected int getDefaultJoinColumnsSize() {
@@ -169,11 +169,11 @@ public abstract class AbstractJavaVirtualReferenceTable<T extends ReadOnlyRefere
 
 	// ********** misc **********
 
-	protected JavaVirtualJoinColumn buildJoinColumn(ReadOnlyJoinColumn joinColumn) {
+	protected VirtualJoinColumn buildJoinColumn(ReadOnlyJoinColumn joinColumn) {
 		return this.buildJoinColumn(this.joinColumnOwner, joinColumn);
 	}
 
-	protected JavaVirtualJoinColumn buildJoinColumn(ReadOnlyJoinColumn.Owner columnOwner, ReadOnlyJoinColumn joinColumn) {
+	protected VirtualJoinColumn buildJoinColumn(ReadOnlyJoinColumn.Owner columnOwner, ReadOnlyJoinColumn joinColumn) {
 		return this.getJpaFactory().buildJavaVirtualJoinColumn(this, columnOwner, joinColumn);
 	}
 

@@ -14,12 +14,13 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
+import org.eclipse.jpt.jpa.core.context.VirtualOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualOverrideRelationship;
+import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyAssociationOverride2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmAssociationOverrideContainer2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmVirtualAssociationOverride2_0;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -28,9 +29,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class GenericOrmVirtualAssociationOverride
 	extends AbstractOrmVirtualOverride<OrmAssociationOverrideContainer>
-	implements OrmVirtualAssociationOverride2_0
+	implements OrmVirtualAssociationOverride, ReadOnlyAssociationOverride2_0
 {
-	protected final OrmVirtualOverrideRelationship relationship;
+	protected final VirtualOverrideRelationship relationship;
 
 
 	public GenericOrmVirtualAssociationOverride(OrmAssociationOverrideContainer parent, String name) {
@@ -60,7 +61,7 @@ public class GenericOrmVirtualAssociationOverride
 
 	// ********** relationship **********
 
-	public OrmVirtualOverrideRelationship getRelationship() {
+	public VirtualOverrideRelationship getRelationship() {
 		return this.relationship;
 	}
 
@@ -68,7 +69,7 @@ public class GenericOrmVirtualAssociationOverride
 	 * The relationship should be available (since its presence precipitated the
 	 * creation of the virtual override).
 	 */
-	protected OrmVirtualOverrideRelationship buildRelationship() {
+	protected VirtualOverrideRelationship buildRelationship() {
 		return this.getContextNodeFactory().buildOrmVirtualOverrideRelationship(this);
 	}
 

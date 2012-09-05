@@ -19,6 +19,7 @@ import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
+import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
@@ -28,6 +29,12 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.VirtualColumn;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinTable;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.VirtualOverrideRelationship;
+import org.eclipse.jpt.jpa.core.context.VirtualUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.Accessor;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
@@ -58,7 +65,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaOrderable;
 import org.eclipse.jpt.jpa.core.context.java.JavaOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -76,12 +82,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAttributeOverride;
-import org.eclipse.jpt.jpa.core.context.java.JavaVirtualColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaVirtualJoinColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaVirtualJoinTable;
-import org.eclipse.jpt.jpa.core.context.java.JavaVirtualJoinTableRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.java.JavaVirtualOverrideRelationship;
-import org.eclipse.jpt.jpa.core.context.java.JavaVirtualUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
@@ -223,17 +223,17 @@ public interface JpaFactory
 	
 	JavaJoinTable buildJavaJoinTable(JavaJoinTableRelationshipStrategy parent, Table.Owner owner);
 	
-	JavaVirtualJoinTable buildJavaVirtualJoinTable(JavaVirtualJoinTableRelationshipStrategy parent, ReadOnlyTable.Owner owner, ReadOnlyJoinTable overriddenTable);
+	VirtualJoinTable buildJavaVirtualJoinTable(VirtualJoinTableRelationshipStrategy parent, ReadOnlyTable.Owner owner, ReadOnlyJoinTable overriddenTable);
 	
 	JavaColumn buildJavaColumn(JpaContextNode parent, JavaColumn.Owner owner);
 	
-	JavaVirtualColumn buildJavaVirtualColumn(JpaContextNode parent, JavaVirtualColumn.Owner owner);
+	VirtualColumn buildJavaVirtualColumn(JpaContextNode parent, VirtualColumn.Owner owner);
 
 	JavaDiscriminatorColumn buildJavaDiscriminatorColumn(JavaEntity parent, ReadOnlyNamedDiscriminatorColumn.Owner owner);
 	
 	JavaJoinColumn buildJavaJoinColumn(JpaContextNode parent, ReadOnlyJoinColumn.Owner owner, CompleteJoinColumnAnnotation joinColumnAnnotation);
 	
-	JavaVirtualJoinColumn buildJavaVirtualJoinColumn(JpaContextNode parent, ReadOnlyJoinColumn.Owner owner, ReadOnlyJoinColumn overriddenColumn);
+	VirtualJoinColumn buildJavaVirtualJoinColumn(JpaContextNode parent, ReadOnlyJoinColumn.Owner owner, ReadOnlyJoinColumn overriddenColumn);
 	
 	JavaSecondaryTable buildJavaSecondaryTable(JavaEntity parent, Table.Owner owner, SecondaryTableAnnotation tableAnnotation);
 	
@@ -259,7 +259,7 @@ public interface JpaFactory
 	
 	JavaOverrideRelationship buildJavaOverrideRelationship(JavaAssociationOverride parent);
 	
-	JavaVirtualOverrideRelationship buildJavaVirtualOverrideRelationship(JavaVirtualAssociationOverride parent);
+	VirtualOverrideRelationship buildJavaVirtualOverrideRelationship(JavaVirtualAssociationOverride parent);
 	
 	JavaQueryContainer buildJavaQueryContainer(JpaContextNode parent, JavaQueryContainer.Owner owner);
 
@@ -271,7 +271,7 @@ public interface JpaFactory
 	
 	JavaUniqueConstraint buildJavaUniqueConstraint(JpaContextNode parent, UniqueConstraint.Owner owner, UniqueConstraintAnnotation constraintAnnotation);
 	
-	JavaVirtualUniqueConstraint buildJavaVirtualUniqueConstraint(JpaContextNode parent, ReadOnlyUniqueConstraint overriddenUniqueConstraint);
+	VirtualUniqueConstraint buildJavaVirtualUniqueConstraint(JpaContextNode parent, ReadOnlyUniqueConstraint overriddenUniqueConstraint);
 	
 	JavaBaseEnumeratedConverter buildJavaBaseEnumeratedConverter(JavaAttributeMapping parent, BaseEnumeratedAnnotation annotation, JavaConverter.Owner owner);
 	
@@ -279,5 +279,5 @@ public interface JpaFactory
 	
 	JavaLobConverter buildJavaLobConverter(JavaAttributeMapping parent, LobAnnotation annotation, JavaConverter.Owner owner);
 
-	JavaOrderable buildJavaOrderable(JavaAttributeMapping parent);
+	Orderable buildJavaOrderable(JavaAttributeMapping parent);
 }

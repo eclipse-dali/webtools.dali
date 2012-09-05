@@ -21,13 +21,13 @@ import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaBaseEnumeratedConverter;
+import org.eclipse.jpt.jpa.core.context.java.JavaBaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
-import org.eclipse.jpt.jpa.core.context.java.JavaEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaLobConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaTemporalConverter;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.NamedColumnValidator;
@@ -56,8 +56,8 @@ public abstract class AbstractJavaBasicMapping
 
 
 	protected static final JavaConverter.Adapter[] CONVERTER_ADAPTER_ARRAY = new JavaConverter.Adapter[] {
-		JavaEnumeratedConverter.Adapter.instance(),
-		JavaTemporalConverter.BasicAdapter.instance(),
+		JavaBaseEnumeratedConverter.BasicAdapter.instance(),
+		JavaBaseTemporalConverter.BasicAdapter.instance(),
 		JavaLobConverter.Adapter.instance()
 	};
 	protected static final Iterable<JavaConverter.Adapter> CONVERTER_ADAPTERS = new ArrayIterable<JavaConverter.Adapter>(CONVERTER_ADAPTER_ARRAY);

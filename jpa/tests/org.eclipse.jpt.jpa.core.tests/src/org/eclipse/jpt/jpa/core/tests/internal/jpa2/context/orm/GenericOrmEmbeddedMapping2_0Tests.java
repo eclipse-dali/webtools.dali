@@ -31,6 +31,7 @@ import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.OneToOneMapping;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
@@ -50,7 +51,6 @@ import org.eclipse.jpt.jpa.core.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
@@ -1519,7 +1519,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		
 		//add the java association override and make sure the settings are not used in determining the association override defaults in the specified orm embedded mapping
 		JavaEmbeddedMapping2_0 javaEmbeddedMapping = (JavaEmbeddedMapping2_0) ormPersistentType.getJavaPersistentType().getAttributeNamed("myEmbedded").getMapping();
-		ListIterator<JavaReadOnlyAssociationOverride> javaAssociationOverrides = javaEmbeddedMapping.getAssociationOverrideContainer().getOverrides().iterator();
+		ListIterator<? extends ReadOnlyAssociationOverride> javaAssociationOverrides = javaEmbeddedMapping.getAssociationOverrideContainer().getOverrides().iterator();
 		javaAssociationOverrides.next();
 		JavaAssociationOverride javaAssociationOverride = ((JavaVirtualAssociationOverride) javaAssociationOverrides.next()).convertToSpecified();
 		assertEquals("addresses", javaAssociationOverride.getName());

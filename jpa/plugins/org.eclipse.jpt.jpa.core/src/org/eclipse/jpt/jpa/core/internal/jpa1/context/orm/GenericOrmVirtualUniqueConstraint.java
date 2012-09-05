@@ -12,12 +12,12 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
-import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualUniqueConstraint;
+import org.eclipse.jpt.jpa.core.context.VirtualUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmReadOnlyUniqueConstraint;
 
 public class GenericOrmVirtualUniqueConstraint
 	extends AbstractOrmReadOnlyUniqueConstraint
-	implements OrmVirtualUniqueConstraint
+	implements VirtualUniqueConstraint
 {
 	protected final ReadOnlyUniqueConstraint overriddenUniqueConstraint;
 

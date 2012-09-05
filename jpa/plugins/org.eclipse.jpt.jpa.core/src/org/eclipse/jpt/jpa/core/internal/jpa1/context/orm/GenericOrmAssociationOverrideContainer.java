@@ -18,7 +18,6 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -32,7 +31,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverride;
 public class GenericOrmAssociationOverrideContainer
 	extends AbstractOrmOverrideContainer<
 			OrmAssociationOverrideContainer.Owner,
-			OrmReadOnlyAssociationOverride,
+			ReadOnlyAssociationOverride,
 			OrmAssociationOverride,
 			OrmVirtualAssociationOverride,
 			XmlAssociationOverride

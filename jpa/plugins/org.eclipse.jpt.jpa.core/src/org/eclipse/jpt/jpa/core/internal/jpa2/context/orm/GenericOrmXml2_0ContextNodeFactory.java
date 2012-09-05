@@ -10,21 +10,23 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedQuery;
-import org.eclipse.jpt.jpa.core.context.orm.OrmOrderable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmOrderable;
+import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmAssociationOverrideContainer2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheableHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmDerivedIdentity2_0;
@@ -32,8 +34,6 @@ import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmEmbeddedMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOrderColumn2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOrderable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOrphanRemovable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOrphanRemovalHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlElementCollection;
@@ -46,7 +46,7 @@ public class GenericOrmXml2_0ContextNodeFactory
 	implements OrmXml2_0ContextNodeFactory
 {	
 	@Override
-	public OrmOrderable buildOrmOrderable(OrmAttributeMapping parent) {
+	public Orderable buildOrmOrderable(OrmAttributeMapping parent) {
 		throw new UnsupportedOperationException("use #buildOrmOrderable(OrmAttributeMapping parent, Orderable2_0.Owner owner)"); //$NON-NLS-1$
 	}
 
@@ -74,11 +74,11 @@ public class GenericOrmXml2_0ContextNodeFactory
 		return new GenericOrmElementCollectionMapping2_0(parent, resourceMapping);
 	}
 	
-	public OrmCacheable2_0 buildOrmCacheable(OrmCacheableHolder2_0 parent) {
+	public Cacheable2_0 buildOrmCacheable(OrmCacheableHolder2_0 parent) {
 		return new GenericOrmCacheable2_0(parent);
 	}
 	
-	public OrmOrphanRemovable2_0 buildOrmOrphanRemoval(OrmOrphanRemovalHolder2_0 parent) {
+	public OrphanRemovable2_0 buildOrmOrphanRemoval(OrphanRemovalHolder2_0 parent) {
 		return new GenericOrmOrphanRemoval2_0(parent);
 	}
 

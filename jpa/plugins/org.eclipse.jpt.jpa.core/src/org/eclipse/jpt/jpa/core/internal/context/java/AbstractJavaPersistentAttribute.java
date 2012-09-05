@@ -37,7 +37,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaPersistentAttribute2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.PersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -48,7 +48,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractJavaPersistentAttribute
 		extends AbstractJavaJpaContextNode
-		implements JavaPersistentAttribute2_0 {
+		implements JavaPersistentAttribute, PersistentAttribute2_0 {
 	
 	protected final Accessor accessor;
 

@@ -24,11 +24,11 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTableColumn.Owner;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
+import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.orm.OrmRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.orm.GenericOrmOverrideJoinColumnRelationshipStrategy;
@@ -46,7 +46,7 @@ public class GenericOrmOverrideRelationship
 	extends AbstractOrmXmlContextNode
 	implements OrmOverrideRelationship2_0
 {
-	protected OrmRelationshipStrategy strategy;
+	protected RelationshipStrategy strategy;
 
 	protected final OrmJoinColumnRelationshipStrategy joinColumnStrategy;
 
@@ -81,17 +81,17 @@ public class GenericOrmOverrideRelationship
 
 	// ********** strategy **********
 
-	public OrmRelationshipStrategy getStrategy() {
+	public RelationshipStrategy getStrategy() {
 		return this.strategy;
 	}
 
-	protected void setStrategy(OrmRelationshipStrategy strategy) {
-		OrmRelationshipStrategy old = this.strategy;
+	protected void setStrategy(RelationshipStrategy strategy) {
+		RelationshipStrategy old = this.strategy;
 		this.strategy = strategy;
 		this.firePropertyChanged(STRATEGY_PROPERTY, old, strategy);
 	}
 
-	protected OrmRelationshipStrategy buildStrategy() {
+	protected RelationshipStrategy buildStrategy() {
 		return this.isJpa2_0Compatible() ?
 				this.buildStrategy2_0() :
 				this.joinColumnStrategy;
@@ -100,10 +100,10 @@ public class GenericOrmOverrideRelationship
 	/**
 	 * The overridden mapping determines the override's strategy.
 	 */
-	protected OrmRelationshipStrategy buildStrategy2_0() {
+	protected RelationshipStrategy buildStrategy2_0() {
 		MappingRelationshipStrategy2_0 mappingStrategy = this.getMappingStrategy();
 		return (mappingStrategy != null) ?
-				(OrmRelationshipStrategy) mappingStrategy.selectOverrideStrategy(this) :
+				(RelationshipStrategy) mappingStrategy.selectOverrideStrategy(this) :
 				this.buildMissingMappingStrategy();
 	}
 
@@ -119,7 +119,7 @@ public class GenericOrmOverrideRelationship
 	 * Return the strategy to use when the override's name does not match the
 	 * name of an appropriate relationship mapping.
 	 */
-	protected OrmRelationshipStrategy buildMissingMappingStrategy() {
+	protected RelationshipStrategy buildMissingMappingStrategy() {
 		return this.joinColumnStrategy.hasSpecifiedJoinColumns() ?
 				this.joinColumnStrategy :
 				this.joinTableStrategy;

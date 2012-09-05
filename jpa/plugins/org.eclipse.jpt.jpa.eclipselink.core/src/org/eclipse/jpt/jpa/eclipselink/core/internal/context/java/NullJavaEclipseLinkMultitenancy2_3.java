@@ -14,12 +14,12 @@ import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMultitenantType2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.TenantDiscriminatorColumn2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.VirtualTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkNonEmbeddableTypeMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaReadOnlyTenantDiscriminatorColumn2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaTenantDiscriminatorColumn2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaVirtualTenantDiscriminatorColumn2_3;
 
 public class NullJavaEclipseLinkMultitenancy2_3
 	extends AbstractJavaJpaContextNode
@@ -83,7 +83,7 @@ public class NullJavaEclipseLinkMultitenancy2_3
 		return false;
 	}
 
-	public ListIterable<JavaReadOnlyTenantDiscriminatorColumn2_3> getTenantDiscriminatorColumns() {
+	public ListIterable<ReadOnlyTenantDiscriminatorColumn2_3> getTenantDiscriminatorColumns() {
 		return EmptyListIterable.instance();
 	}
 
@@ -123,7 +123,7 @@ public class NullJavaEclipseLinkMultitenancy2_3
 		throw new UnsupportedOperationException("Multitenancy is only supported in EclipseLink version 2.3 and higher"); //$NON-NLS-1$
 	}
 
-	public ListIterable<JavaVirtualTenantDiscriminatorColumn2_3> getDefaultTenantDiscriminatorColumns() {
+	public ListIterable<VirtualTenantDiscriminatorColumn2_3> getDefaultTenantDiscriminatorColumns() {
 		return EmptyListIterable.instance();
 	}
 

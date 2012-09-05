@@ -22,20 +22,20 @@ import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaBaseEnumeratedConverter;
+import org.eclipse.jpt.jpa.core.context.java.JavaBaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumnMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
-import org.eclipse.jpt.jpa.core.context.java.JavaEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaLobConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaTemporalConverter;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.NamedColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.NullJavaConverter;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaPersistentAttribute2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.PersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkArrayMapping2_3;
@@ -59,8 +59,8 @@ public class JavaEclipseLinkArrayMapping2_3
 
 
 	protected static final JavaConverter.Adapter[] CONVERTER_ADAPTER_ARRAY = new JavaConverter.Adapter[] {
-		JavaEnumeratedConverter.Adapter.instance(),
-		JavaTemporalConverter.BasicAdapter.instance(),
+		JavaBaseEnumeratedConverter.BasicAdapter.instance(),
+		JavaBaseTemporalConverter.BasicAdapter.instance(),
 		JavaLobConverter.Adapter.instance(),
 		JavaEclipseLinkConvert.Adapter.instance()
 	};
@@ -240,7 +240,7 @@ public class JavaEclipseLinkArrayMapping2_3
 	// ********** metamodel **********  
 	@Override
 	protected String getMetamodelFieldTypeName() {
-		return ((JavaPersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldTypeName();
+		return ((PersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldTypeName();
 	}
 
 	@Override
