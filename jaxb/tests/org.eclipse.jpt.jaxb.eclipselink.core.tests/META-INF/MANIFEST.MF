@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.jaxb.eclipselink.core.tests;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.1.0.qualifier
 Bundle-Activator: org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.plugin.JptJaxbEclipseLinkCoreTestsPlugin
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
