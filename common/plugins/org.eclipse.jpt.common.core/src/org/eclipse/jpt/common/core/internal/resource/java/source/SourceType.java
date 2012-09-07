@@ -660,6 +660,9 @@ final class SourceType
 	// ***** inherited field/method types *****
 	
 	private void initInheritedFieldTypes(ITypeBinding typeBinding) {
+		if (typeBinding == null) {
+			return;
+		}
 		ITypeBinding scTypeBinding = typeBinding.getSuperclass();
 		while (scTypeBinding != null && scTypeBinding.isParameterizedType()) {
 			// if the superclass is not parameterized, 
@@ -684,7 +687,7 @@ final class SourceType
 	}
 	
 	private void syncInheritedFieldTypes(ITypeBinding typeBinding) {
-		ITypeBinding scTypeBinding = typeBinding.getSuperclass();
+		ITypeBinding scTypeBinding = typeBinding == null ? null : typeBinding.getSuperclass();
 		Map<InheritedAttributeKey, JavaResourceTypeBinding> removedTypes = 
 				new HashMap<InheritedAttributeKey, JavaResourceTypeBinding>(this.inheritedFieldTypes);
 		while (scTypeBinding != null && scTypeBinding.isParameterizedType()) {
@@ -714,6 +717,9 @@ final class SourceType
 	}
 	
 	private void initInheritedMethodTypes(ITypeBinding typeBinding) {
+		if (typeBinding == null) {
+			return;
+		}
 		ITypeBinding scTypeBinding = typeBinding.getSuperclass();
 		while (scTypeBinding != null && scTypeBinding.isParameterizedType()) {
 			// if the superclass is not parameterized, 
@@ -743,7 +749,7 @@ final class SourceType
 	}
 	
 	private void syncInheritedMethodTypes(ITypeBinding typeBinding) {
-		ITypeBinding scTypeBinding = typeBinding.getSuperclass();
+		ITypeBinding scTypeBinding = typeBinding == null ? null : typeBinding.getSuperclass();
 		Map<InheritedAttributeKey, JavaResourceTypeBinding> removedTypes = 
 				new HashMap<InheritedAttributeKey, JavaResourceTypeBinding>(this.inheritedMethodTypes);
 		while (scTypeBinding != null && scTypeBinding.isParameterizedType()) {
