@@ -21,7 +21,7 @@
    </license>
 
    <requires>
-      <import feature="org.eclipse.graphiti.feature" version="0.9.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.graphiti.feature" version="0.10.0" match="greaterOrEqual"/>
       <import feature="org.eclipse.jpt.jpa.feature" version="3.1.0" match="greaterOrEqual"/>
    </requires>
 
