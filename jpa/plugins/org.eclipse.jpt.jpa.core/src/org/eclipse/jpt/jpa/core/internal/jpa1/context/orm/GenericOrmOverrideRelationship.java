@@ -288,7 +288,11 @@ public class GenericOrmOverrideRelationship
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		this.strategy.validate(messages, reporter);
+		// prevent NPE on JPA 2_0 platforms
+		// this.strategy == null when the mapping relationship strategy, e.g. mapped-by, cannot be overridden
+		if (this.strategy != null) {
+			this.strategy.validate(messages, reporter);
+		}
 	}
 
 	public JptValidator buildJoinTableValidator(ReadOnlyJoinTable table) {
@@ -311,10 +315,7 @@ public class GenericOrmOverrideRelationship
 		if (result != null) {
 			return result;
 		}
-		result = this.strategy.getCompletionProposals(pos);
-		if (result != null) {
-			return result;
-		}
-		return null;
+
+		return this.strategy == null ? null : this.strategy.getCompletionProposals(pos);
 	}
 }
