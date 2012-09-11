@@ -10,9 +10,9 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm;
 
 import java.util.Collection;
-import org.eclipse.emf.common.notify.Notification;
 import java.util.HashMap;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -33,6 +33,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * <p>
  * The following features are supported:
  * <ul>
+ *   <li>{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings#getImpliedVersion <em>Implied Version</em>}</li>
  *   <li>{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings#getXmlAccessorType <em>Xml Accessor Type</em>}</li>
  *   <li>{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings#getXmlAccessorOrder <em>Xml Accessor Order</em>}</li>
  *   <li>{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings#isXmlMappingMetadataComplete <em>Xml Mapping Metadata Complete</em>}</li>
@@ -54,6 +55,28 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  */
 public class EXmlBindings extends ERootObjectImpl
 {
+	/**
+	 * The default value of the '{@link #getImpliedVersion() <em>Implied Version</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getImpliedVersion()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String IMPLIED_VERSION_EDEFAULT = null;
+
+
+	/**
+	 * The cached value of the '{@link #getImpliedVersion() <em>Implied Version</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getImpliedVersion()
+	 * @generated
+	 * @ordered
+	 */
+	protected String impliedVersion = IMPLIED_VERSION_EDEFAULT;
+
+
 	/**
 	 * The default value of the '{@link #getXmlAccessorType() <em>Xml Accessor Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -715,6 +738,8 @@ public class EXmlBindings extends ERootObjectImpl
 	{
 		switch (featureID)
 		{
+			case OxmPackage.EXML_BINDINGS__IMPLIED_VERSION:
+				return getImpliedVersion();
 			case OxmPackage.EXML_BINDINGS__XML_ACCESSOR_TYPE:
 				return getXmlAccessorType();
 			case OxmPackage.EXML_BINDINGS__XML_ACCESSOR_ORDER:
@@ -754,6 +779,9 @@ public class EXmlBindings extends ERootObjectImpl
 	{
 		switch (featureID)
 		{
+			case OxmPackage.EXML_BINDINGS__IMPLIED_VERSION:
+				setImpliedVersion((String)newValue);
+				return;
 			case OxmPackage.EXML_BINDINGS__XML_ACCESSOR_TYPE:
 				setXmlAccessorType((EXmlAccessType)newValue);
 				return;
@@ -809,6 +837,9 @@ public class EXmlBindings extends ERootObjectImpl
 	{
 		switch (featureID)
 		{
+			case OxmPackage.EXML_BINDINGS__IMPLIED_VERSION:
+				setImpliedVersion(IMPLIED_VERSION_EDEFAULT);
+				return;
 			case OxmPackage.EXML_BINDINGS__XML_ACCESSOR_TYPE:
 				setXmlAccessorType(XML_ACCESSOR_TYPE_EDEFAULT);
 				return;
@@ -859,6 +890,8 @@ public class EXmlBindings extends ERootObjectImpl
 	{
 		switch (featureID)
 		{
+			case OxmPackage.EXML_BINDINGS__IMPLIED_VERSION:
+				return IMPLIED_VERSION_EDEFAULT == null ? impliedVersion != null : !IMPLIED_VERSION_EDEFAULT.equals(impliedVersion);
 			case OxmPackage.EXML_BINDINGS__XML_ACCESSOR_TYPE:
 				return xmlAccessorType != XML_ACCESSOR_TYPE_EDEFAULT;
 			case OxmPackage.EXML_BINDINGS__XML_ACCESSOR_ORDER:
@@ -899,7 +932,9 @@ public class EXmlBindings extends ERootObjectImpl
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (xmlAccessorType: ");
+		result.append(" (impliedVersion: ");
+		result.append(impliedVersion);
+		result.append(", xmlAccessorType: ");
 		result.append(xmlAccessorType);
 		result.append(", xmlAccessorOrder: ");
 		result.append(xmlAccessorOrder);
@@ -912,28 +947,29 @@ public class EXmlBindings extends ERootObjectImpl
 		result.append(')');
 		return result.toString();
 	}
-
-	// ********** version -> schema location mapping **********
 	
-	@Override
-	protected String getNamespace() {
-		return EclipseLink.SCHEMA_NAMESPACE;
-	}
 	
-	@Override
-	protected String getSchemaLocationForVersion(String schemaVersion) {
-		return SCHEMA_LOCATIONS.get(schemaVersion);
-	}
+	// ***** version -> schema location mapping *****
 	
 	private static HashMap<String, String> SCHEMA_LOCATIONS = buildSchemaLocations();
 	
 	private static HashMap<String, String> buildSchemaLocations() {
 		HashMap<String, String> map = new HashMap<String, String>();
-		map.put(EclipseLink.SCHEMA_VERSION_2_1, EclipseLink.SCHEMA_LOCATION_2_1);
-		map.put(EclipseLink.SCHEMA_VERSION_2_2, EclipseLink.SCHEMA_LOCATION_2_2);
-		map.put(EclipseLink.SCHEMA_VERSION_2_3, EclipseLink.SCHEMA_LOCATION_2_3);
-		map.put(EclipseLink.SCHEMA_VERSION_2_4, EclipseLink.SCHEMA_LOCATION_2_4);
+		map.put(Oxm.SCHEMA_VERSION_2_1, Oxm.SCHEMA_LOCATION_2_1);
+		map.put(Oxm.SCHEMA_VERSION_2_2, Oxm.SCHEMA_LOCATION_2_2);
+		map.put(Oxm.SCHEMA_VERSION_2_3, Oxm.SCHEMA_LOCATION_2_3);
+		map.put(Oxm.SCHEMA_VERSION_2_4, Oxm.SCHEMA_LOCATION_2_4);
 		return map;
+	}
+	
+	@Override
+	protected String getNamespace() {
+		return Oxm.SCHEMA_NAMESPACE;
+	}
+	
+	@Override
+	protected HashMap<String, String> schemaLocations() {
+		return SCHEMA_LOCATIONS;
 	}
 	
 	
@@ -954,15 +990,15 @@ public class EXmlBindings extends ERootObjectImpl
 	}
 	
 	private static Translator buildRootTranslator() {
-		return new SimpleRootTranslator(EclipseLink.XML_BINDINGS, OxmPackage.eINSTANCE.getEXmlBindings(), buildTranslatorChildren());
+		return new SimpleRootTranslator(Oxm.XML_BINDINGS, OxmPackage.eINSTANCE.getEXmlBindings(), buildTranslatorChildren());
 	}
 	
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildVersionTranslator(SCHEMA_LOCATIONS),
-			buildNamespaceTranslator(EclipseLink.SCHEMA_NAMESPACE),
+			buildNamespaceTranslator(Oxm.SCHEMA_NAMESPACE),
 			buildSchemaNamespaceTranslator(),
-			buildSchemaLocationTranslator(EclipseLink.SCHEMA_NAMESPACE, SCHEMA_LOCATIONS),
+			buildSchemaLocationTranslator(Oxm.SCHEMA_NAMESPACE, SCHEMA_LOCATIONS),
 			EJavaType.buildTranslator()
 		};
 	}

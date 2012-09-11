@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
  * @since 2.0
  */
 public interface JavaUniqueConstraint
-	extends UniqueConstraint, JavaReadOnlyUniqueConstraint
+	extends UniqueConstraint
 {
 	UniqueConstraintAnnotation getUniqueConstraintAnnotation();
 }

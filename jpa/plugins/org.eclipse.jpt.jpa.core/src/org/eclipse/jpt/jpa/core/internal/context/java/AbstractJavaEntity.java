@@ -12,12 +12,10 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -44,6 +42,7 @@ import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -70,11 +69,9 @@ import org.eclipse.jpt.jpa.core.context.java.JavaDiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdClassReference;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
-import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaTable;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -961,7 +958,7 @@ public abstract class AbstractJavaEntity
 
 	// ********** generator container parent adapter **********
 
-	public JavaJpaContextNode getGeneratorContainerParent() {
+	public JpaContextNode getGeneratorContainerParent() {
 		return this;  // no adapter
 	}
 
@@ -1261,40 +1258,40 @@ public abstract class AbstractJavaEntity
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.table.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.table.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		for (JavaSecondaryTable secondaryTable : this.getSecondaryTables()) {
-			result = secondaryTable.getJavaCompletionProposals(pos, filter, astRoot);
+			result = secondaryTable.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}
 		}
 		for (JavaPrimaryKeyJoinColumn pkJoinColumn : this.getPrimaryKeyJoinColumns()) {
-			result = pkJoinColumn.getJavaCompletionProposals(pos, filter, astRoot);
+			result = pkJoinColumn.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}
 		}
-		result = this.attributeOverrideContainer.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.attributeOverrideContainer.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.associationOverrideContainer.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.associationOverrideContainer.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.discriminatorColumn.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.discriminatorColumn.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.generatorContainer.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.generatorContainer.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
@@ -1639,7 +1636,7 @@ public abstract class AbstractJavaEntity
 	 * some common behavior
 	 */
 	protected abstract class NamedColumnOwner
-		implements JavaReadOnlyNamedColumn.Owner
+		implements ReadOnlyNamedColumn.Owner
 	{
 		public String getDefaultTableName() {
 			return AbstractJavaEntity.this.getPrimaryTableName();

@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.resource.java.GeneratorAnnotation;
  * @since 2.0
  */
 public interface JavaGenerator 
-	extends Generator, JavaJpaContextNode
+	extends Generator
 {
 	GeneratorAnnotation getGeneratorAnnotation();
 

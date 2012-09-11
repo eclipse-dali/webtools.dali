@@ -179,7 +179,7 @@ public class JpaXmlCompletionProposalComputer extends DefaultJpaXmlCompletionPro
 
 		List<String> list = new ArrayList<String>();
 		for (JpaStructureNode node : rootStructureNodes) {
-			CollectionTools.addAll(list, ((XmlFile.Root) node).getXmlCompletionProposals(documentPosition));
+			CollectionTools.addAll(list, ((XmlFile.Root) node).getCompletionProposals(documentPosition));
 		}
 		return list;
 	}

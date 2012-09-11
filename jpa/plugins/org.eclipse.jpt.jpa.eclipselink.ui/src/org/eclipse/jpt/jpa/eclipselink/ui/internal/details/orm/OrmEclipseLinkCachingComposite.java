@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkCaching;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkCacheSizeCombo;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkCacheTypeComboViewer;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkCachingComposite;
@@ -49,11 +49,11 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class OrmEclipseLinkCachingComposite extends EclipseLinkCachingComposite<OrmEclipseLinkCaching>
+public class OrmEclipseLinkCachingComposite extends EclipseLinkCachingComposite<EclipseLinkCaching>
 {
 
 	public OrmEclipseLinkCachingComposite(Pane<?> parentPane,
-        PropertyValueModel<OrmEclipseLinkCaching> subjectHolder,
+        PropertyValueModel<EclipseLinkCaching> subjectHolder,
         Composite parent) {
 
 		super(parentPane, subjectHolder, parent);

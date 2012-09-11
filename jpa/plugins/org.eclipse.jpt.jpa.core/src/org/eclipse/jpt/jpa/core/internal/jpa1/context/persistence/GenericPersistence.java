@@ -272,7 +272,7 @@ public class GenericPersistence
 	}
 
 	protected void validateVersion(List<IMessage> messages) {
-		if (! this.getLatestDocumentVersion().equals(this.xmlPersistence.getVersion())) {
+		if (! this.getLatestDocumentVersion().equals(this.xmlPersistence.getDocumentVersion())) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.LOW_SEVERITY,

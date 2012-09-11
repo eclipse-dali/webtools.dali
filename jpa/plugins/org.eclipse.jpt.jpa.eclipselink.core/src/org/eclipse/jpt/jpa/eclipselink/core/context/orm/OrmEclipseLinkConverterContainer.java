@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.eclipselink.core.context.orm;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkCustomConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm.OrmEclipseLinkObjectTypeConverter;
@@ -29,11 +28,11 @@ import org.eclipse.text.edits.ReplaceEdit;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.2
+ * @version 3.3
  * @since 2.1
  */
 public interface OrmEclipseLinkConverterContainer
-	extends EclipseLinkConverterContainer, XmlContextNode
+	extends EclipseLinkConverterContainer
 {
 
 	ListIterable<OrmEclipseLinkCustomConverter> getCustomConverters();

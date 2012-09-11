@@ -72,6 +72,19 @@
 			priority="high"
 			file-names="jaxb.properties"/>
 		
+		<!-- 
+			abstract XML file content type for use by extenders
+	 	-->
+		<content-type
+			id="org.eclipse.jpt.jaxb.core.content.jaxbXmlContent"
+			name="%JAXB_XML_CONTENT"
+			base-type="org.eclipse.core.runtime.xml"
+			describer="org.eclipse.jpt.common.core.internal.content.IndeterminateContentDescriber"/>
+		
+		<!-- 
+			we don't use this file type internally, but we register it here to help 
+			those users who do like to configure it for jaxb class generation 
+		-->
 		<file-association
 			content-type="org.eclipse.core.runtime.xml"
 			file-extensions="xjb"/>
@@ -346,7 +359,10 @@
 				<rules>
 					<contentType id="org.eclipse.jdt.core.javaSource" exactMatch="false"/>
 					<contentType id="org.eclipse.jpt.core.content.javaPackageInfo" exactMatch="false"/>
+					<contentType id="org.eclipse.jpt.jaxb.core.content.jaxbIndex" exactMatch="false"/>
 					<contentType id="org.eclipse.jpt.jaxb.core.content.jaxbProperties" exactMatch="false"/>
+					<contentType id="org.eclipse.jpt.jaxb.core.content.jaxbXmlContent" exactMatch="false"/>
+					<contentType id="org.eclipse.jpt.common.core.content.projectFacet" exactMatch="true"/>
 				</rules>
 			</include>
 		</validator>

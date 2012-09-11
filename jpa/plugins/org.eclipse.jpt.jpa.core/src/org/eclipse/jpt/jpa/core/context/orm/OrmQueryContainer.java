@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.QueryContainer;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 
 /**
  * <code>orm.xml</code> query container
@@ -22,11 +21,11 @@ import org.eclipse.jpt.jpa.core.context.XmlContextNode;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.3
  * @since 2.3
  */
 public interface OrmQueryContainer
-	extends QueryContainer, XmlContextNode
+	extends QueryContainer
 {
 	// ********** named queries **********
 

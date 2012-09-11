@@ -10,27 +10,21 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
+import org.eclipse.jpt.jpa.core.context.MappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
+import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.java.JavaMappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaMappingJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.NullJavaJoinTableRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMappingJoinColumnRelationshipStrategy2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMappingJoinTableRelationshipStrategy2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMappingMappedByRelationshipStrategy2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMappingPrimaryKeyJoinColumnRelationshipStrategy2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOneToOneRelationship2_0;
 import org.eclipse.jpt.jpa.core.resource.java.OwnableRelationshipMappingAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -40,14 +34,14 @@ public class GenericJavaOneToOneRelationship
 	extends AbstractJavaMappingRelationship<JavaOneToOneMapping>
 	implements JavaOneToOneRelationship2_0
 {
-	protected final JavaMappingMappedByRelationshipStrategy2_0 mappedByStrategy;
+	protected final MappedByRelationshipStrategy mappedByStrategy;
 
-	protected final JavaMappingPrimaryKeyJoinColumnRelationshipStrategy2_0 primaryKeyJoinColumnStrategy;
+	protected final JavaPrimaryKeyJoinColumnRelationshipStrategy primaryKeyJoinColumnStrategy;
 
 	// JPA 2.0
-	protected final JavaMappingJoinTableRelationshipStrategy2_0 joinTableStrategy;
+	protected final JavaJoinTableRelationshipStrategy joinTableStrategy;
 
-	protected final JavaMappingJoinColumnRelationshipStrategy2_0 joinColumnStrategy;
+	protected final JavaJoinColumnRelationshipStrategy joinColumnStrategy;
 
 
 	public GenericJavaOneToOneRelationship(JavaOneToOneMapping parent) {
@@ -85,7 +79,7 @@ public class GenericJavaOneToOneRelationship
 	// ********** strategy **********
 
 	@Override
-	protected JavaMappingRelationshipStrategy2_0 buildStrategy() {
+	protected RelationshipStrategy buildStrategy() {
 		if (this.mappedByStrategy.getMappedByAttribute() != null) {
 			return this.mappedByStrategy;
 		}
@@ -103,7 +97,7 @@ public class GenericJavaOneToOneRelationship
 
 	// ********** mapped by strategy **********
 
-	public JavaMappedByRelationshipStrategy getMappedByStrategy() {
+	public MappedByRelationshipStrategy getMappedByStrategy() {
 		return this.mappedByStrategy;
 	}
 
@@ -123,7 +117,7 @@ public class GenericJavaOneToOneRelationship
 		return mapping.getKey() == MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	protected JavaMappingMappedByRelationshipStrategy2_0 buildMappedByStrategy() {
+	protected MappedByRelationshipStrategy buildMappedByStrategy() {
 		return new GenericJavaMappedByRelationshipStrategy(this);
 	}
 
@@ -146,7 +140,7 @@ public class GenericJavaOneToOneRelationship
 		this.updateStrategy();
 	}
 
-	protected JavaMappingPrimaryKeyJoinColumnRelationshipStrategy2_0 buildPrimaryKeyJoinColumnStrategy() {
+	protected JavaPrimaryKeyJoinColumnRelationshipStrategy buildPrimaryKeyJoinColumnStrategy() {
 		return new GenericJavaPrimaryKeyJoinColumnRelationshipStrategy(this);
 	}
 
@@ -173,7 +167,7 @@ public class GenericJavaOneToOneRelationship
 		return false;
 	}
 
-	protected JavaMappingJoinTableRelationshipStrategy2_0 buildJoinTableStrategy() {
+	protected JavaJoinTableRelationshipStrategy buildJoinTableStrategy() {
 		return this.isJpa2_0Compatible() ?
 				new GenericJavaMappingJoinTableRelationshipStrategy(this) :
 				new NullJavaJoinTableRelationshipStrategy(this);
@@ -205,7 +199,7 @@ public class GenericJavaOneToOneRelationship
 				(this.joinTableStrategy.getJoinTable() == null);
 	}
 
-	protected JavaMappingJoinColumnRelationshipStrategy2_0 buildJoinColumnStrategy() {
+	protected JavaJoinColumnRelationshipStrategy buildJoinColumnStrategy() {
 		return new GenericJavaMappingJoinColumnRelationshipStrategy(this);
 	}
 
@@ -265,28 +259,28 @@ public class GenericJavaOneToOneRelationship
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 
-		result = this.mappedByStrategy.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.mappedByStrategy.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 
-		result = this.primaryKeyJoinColumnStrategy.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.primaryKeyJoinColumnStrategy.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 
-		result = this.joinTableStrategy.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.joinTableStrategy.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 
-		return this.joinColumnStrategy.getJavaCompletionProposals(pos, filter, astRoot);
+		return this.joinColumnStrategy.getCompletionProposals(pos);
 	}
 
 

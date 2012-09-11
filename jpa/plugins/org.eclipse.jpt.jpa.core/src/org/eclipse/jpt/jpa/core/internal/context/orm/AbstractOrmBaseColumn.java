@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmBaseColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlBaseColumn;
 
@@ -37,11 +37,11 @@ public abstract class AbstractOrmBaseColumn<X extends XmlBaseColumn, O extends R
 
 	// ********** constructor/initialization **********
 
-	protected AbstractOrmBaseColumn(XmlContextNode parent, O owner) {
+	protected AbstractOrmBaseColumn(JpaContextNode parent, O owner) {
 		this(parent, owner, null);
 	}
 
-	protected AbstractOrmBaseColumn(XmlContextNode parent, O owner, X xmlColumn) {
+	protected AbstractOrmBaseColumn(JpaContextNode parent, O owner, X xmlColumn) {
 		super(parent, owner, xmlColumn);
 		this.specifiedTable = this.buildSpecifiedTable();
 		this.specifiedUnique = this.buildSpecifiedUnique();
@@ -296,8 +296,8 @@ public abstract class AbstractOrmBaseColumn<X extends XmlBaseColumn, O extends R
 	// ********** completion proposals **********
 
 	@Override
-	public Iterable<String> getXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getXmlCompletionProposals(pos);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}

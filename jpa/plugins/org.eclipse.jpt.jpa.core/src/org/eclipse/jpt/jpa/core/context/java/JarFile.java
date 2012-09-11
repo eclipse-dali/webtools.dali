@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,14 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.java;
 
-import java.util.List;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistentTypeContainer;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * A JAR file identified by a <code>persistence.xml</code> <code>jar-file</code> element.
@@ -53,12 +50,7 @@ public interface JarFile
 	int getJavaPersistentTypesSize();
 
 
-	// ********** validation **********
-
-	/**
-	 * Add to the list of current validation messages
-	 */
-	void validate(List<IMessage> messages, IReporter reporter);
+	// ********** misc **********
 
 	/**
 	 * Return true if this jar file exists in the given folder

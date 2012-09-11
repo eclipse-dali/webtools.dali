@@ -31,7 +31,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * @since 2.0
  */
 public interface JavaQuery
-	extends Query, JavaJpaContextNode
+	extends Query
 {
 	QueryAnnotation getQueryAnnotation();
 

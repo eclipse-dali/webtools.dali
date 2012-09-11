@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Vector;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
@@ -988,17 +987,17 @@ public abstract class AbstractJavaPersistentType
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		Iterable<String> values = this.mapping.getJavaCompletionProposals(pos, filter, astRoot);
+		Iterable<String> values = this.mapping.getCompletionProposals(pos);
 		if (values != null) {
 			return values;
 		}
 		for (JavaPersistentAttribute attribute : this.getAttributes()) {
-			values = attribute.getJavaCompletionProposals(pos, filter, astRoot);
+			values = attribute.getCompletionProposals(pos);
 			if (values != null) {
 				return values;
 			}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -1868,4 +1868,80 @@ public class StringToolsTests extends TestCase {
 		assertEquals(expected, writer.toString());
 	}
 
+	// ********** converting to Java string literal content **********
+
+	public void testConvertToJavaStringLiteralContent() {
+		this.verifyConvertToJavaStringLiteralContent("", "\"\"");
+		this.verifyConvertToJavaStringLiteralContent("\"\"", "\\\"\\\"");
+		this.verifyConvertToJavaStringLiteralContent("'foo'", "'foo'");
+		this.verifyConvertToJavaStringLiteralContent("foo\bbar", "foo\\bbar");
+		this.verifyConvertToJavaStringLiteralContent("foo\n\tbar", "foo\\n\\tbar");
+		this.verifyConvertToJavaStringLiteralContent("foo\"bar", "foo\\\"bar");
+		this.verifyConvertToJavaStringLiteralContent("foo\\bar", "foo\\\\bar");
+	}
+
+	private void verifyConvertToJavaStringLiteralContent(String s, String expected) {
+		assertEquals(expected, StringTools.convertToJavaStringLiteralContent(s));
+		assertEquals(expected, StringTools.convertToJavaStringLiteralContent(s.toCharArray()));
+	}
+
+	public void testConvertToJavaStringLiteralContentOnStringBuffer() {
+		this.verifyConvertToJavaStringLiteralContentOnStringBuffer("", "\"\"");
+		this.verifyConvertToJavaStringLiteralContentOnStringBuffer("\"\"", "\\\"\\\"");
+		this.verifyConvertToJavaStringLiteralContentOnStringBuffer("'foo'", "'foo'");
+		this.verifyConvertToJavaStringLiteralContentOnStringBuffer("foo\bbar", "foo\\bbar");
+		this.verifyConvertToJavaStringLiteralContentOnStringBuffer("foo\n\tbar", "foo\\n\\tbar");
+		this.verifyConvertToJavaStringLiteralContentOnStringBuffer("foo\"bar", "foo\\\"bar");
+		this.verifyConvertToJavaStringLiteralContentOnStringBuffer("foo\\bar", "foo\\\\bar");
+	}
+
+	private void verifyConvertToJavaStringLiteralContentOnStringBuffer(String s, String expected) {
+		StringBuffer sb = new StringBuffer();
+		StringTools.convertToJavaStringLiteralContentOn(s, sb);
+		assertEquals(expected, sb.toString());
+
+		sb = new StringBuffer();
+		StringTools.convertToJavaStringLiteralContentOn(s.toCharArray(), sb);
+		assertEquals(expected, sb.toString());
+	}
+
+	public void testConvertToJavaStringLiteralContentOnStringBuilder() {
+		this.verifyConvertToJavaStringLiteralContentOnStringBuilder("", "\"\"");
+		this.verifyConvertToJavaStringLiteralContentOnStringBuilder("\"\"", "\\\"\\\"");
+		this.verifyConvertToJavaStringLiteralContentOnStringBuilder("'foo'", "'foo'");
+		this.verifyConvertToJavaStringLiteralContentOnStringBuilder("foo\bbar", "foo\\bbar");
+		this.verifyConvertToJavaStringLiteralContentOnStringBuilder("foo\n\tbar", "foo\\n\\tbar");
+		this.verifyConvertToJavaStringLiteralContentOnStringBuilder("foo\"bar", "foo\\\"bar");
+		this.verifyConvertToJavaStringLiteralContentOnStringBuilder("foo\\bar", "foo\\\\bar");
+	}
+
+	private void verifyConvertToJavaStringLiteralContentOnStringBuilder(String s, String expected) {
+		StringBuilder sb = new StringBuilder();
+		StringTools.convertToJavaStringLiteralContentOn(s, sb);
+		assertEquals(expected, sb.toString());
+
+		sb = new StringBuilder();
+		StringTools.convertToJavaStringLiteralContentOn(s.toCharArray(), sb);
+		assertEquals(expected, sb.toString());
+	}
+
+	public void testConvertToJavaStringLiteralContentOnWriter() {
+		this.verifyConvertToJavaStringLiteralContentOnWriter("", "\"\"");
+		this.verifyConvertToJavaStringLiteralContentOnWriter("\"\"", "\\\"\\\"");
+		this.verifyConvertToJavaStringLiteralContentOnWriter("'foo'", "'foo'");
+		this.verifyConvertToJavaStringLiteralContentOnWriter("foo\bbar", "foo\\bbar");
+		this.verifyConvertToJavaStringLiteralContentOnWriter("foo\n\tbar", "foo\\n\\tbar");
+		this.verifyConvertToJavaStringLiteralContentOnWriter("foo\"bar", "foo\\\"bar");
+		this.verifyConvertToJavaStringLiteralContentOnWriter("foo\\bar", "foo\\\\bar");
+	}
+
+	private void verifyConvertToJavaStringLiteralContentOnWriter(String s, String expected) {
+		Writer writer = new StringWriter();
+		StringTools.convertToJavaStringLiteralContentOn(s, writer);
+		assertEquals(expected, writer.toString());
+
+		writer = new StringWriter();
+		StringTools.convertToJavaStringLiteralContentOn(s.toCharArray(), writer);
+		assertEquals(expected, writer.toString());
+	}
 }

@@ -402,15 +402,15 @@ public class GenericOrmOrderable
 	// ********** completion proposals **********
 
 	@Override
-	public Iterable<String> getXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getXmlCompletionProposals(pos);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		// orderColumn is null for JPA 1.0 mappings so adding a null
 		// check here to prevent NPE - Bug 375670
 		if (this.orderColumn != null) {
-			result = this.orderColumn.getXmlCompletionProposals(pos);
+			result = this.orderColumn.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}

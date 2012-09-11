@@ -21,30 +21,30 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.VirtualRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAssociationOverride;
-import org.eclipse.jpt.jpa.core.context.java.JavaVirtualJoinColumnRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.java.JavaVirtualJoinTableRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.context.java.JavaVirtualRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.GenericJavaVirtualOverrideJoinTableRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyAssociationOverride2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaVirtualOverrideRelationship2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.VirtualOverrideRelationship2_0;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaVirtualOverrideRelationship
 	extends AbstractJavaJpaContextNode
-	implements JavaVirtualOverrideRelationship2_0
+	implements VirtualOverrideRelationship2_0
 {
-	protected JavaVirtualRelationshipStrategy strategy;
+	protected VirtualRelationshipStrategy strategy;
 
-	protected final JavaVirtualJoinColumnRelationshipStrategy joinColumnStrategy;
+	protected final VirtualJoinColumnRelationshipStrategy joinColumnStrategy;
 
 	// JPA 2.0
-	protected final JavaVirtualJoinTableRelationshipStrategy joinTableStrategy;
+	protected final VirtualJoinTableRelationshipStrategy joinTableStrategy;
 
 
 	public GenericJavaVirtualOverrideRelationship(JavaVirtualAssociationOverride parent) {
@@ -67,17 +67,17 @@ public class GenericJavaVirtualOverrideRelationship
 
 	// ********** strategy **********
 
-	public JavaVirtualRelationshipStrategy getStrategy() {
+	public VirtualRelationshipStrategy getStrategy() {
 		return this.strategy;
 	}
 
-	protected void setStrategy(JavaVirtualRelationshipStrategy strategy) {
-		JavaVirtualRelationshipStrategy old = this.strategy;
+	protected void setStrategy(VirtualRelationshipStrategy strategy) {
+		VirtualRelationshipStrategy old = this.strategy;
 		this.strategy = strategy;
 		this.firePropertyChanged(STRATEGY_PROPERTY, old, strategy);
 	}
 
-	protected JavaVirtualRelationshipStrategy buildStrategy() {
+	protected VirtualRelationshipStrategy buildStrategy() {
 		return this.isJpa2_0Compatible() ?
 				this.buildStrategy2_0() :
 				this.joinColumnStrategy;
@@ -86,10 +86,10 @@ public class GenericJavaVirtualOverrideRelationship
 	/**
 	 * The overridden mapping determines the override's strategy.
 	 */
-	protected JavaVirtualRelationshipStrategy buildStrategy2_0() {
+	protected VirtualRelationshipStrategy buildStrategy2_0() {
 		MappingRelationshipStrategy2_0 mappingStrategy = this.getMappingStrategy();
 		return (mappingStrategy != null) ?
-				(JavaVirtualRelationshipStrategy) mappingStrategy.selectOverrideStrategy(this) :
+				(VirtualRelationshipStrategy) mappingStrategy.selectOverrideStrategy(this) :
 				this.buildMissingMappingStrategy();
 	}
 
@@ -105,7 +105,7 @@ public class GenericJavaVirtualOverrideRelationship
 	 * Return the strategy to use when the override's name does not match the
 	 * name of an appropriate relationship mapping.
 	 */
-	protected JavaVirtualRelationshipStrategy buildMissingMappingStrategy() {
+	protected VirtualRelationshipStrategy buildMissingMappingStrategy() {
 		return this.joinColumnStrategy.hasSpecifiedJoinColumns() ?
 				this.joinColumnStrategy :
 				this.joinTableStrategy;
@@ -114,7 +114,7 @@ public class GenericJavaVirtualOverrideRelationship
 
 	// ********** join column strategy **********
 
-	public JavaVirtualJoinColumnRelationshipStrategy getJoinColumnStrategy() {
+	public VirtualJoinColumnRelationshipStrategy getJoinColumnStrategy() {
 		return this.joinColumnStrategy;
 	}
 
@@ -127,14 +127,14 @@ public class GenericJavaVirtualOverrideRelationship
 		return false;
 	}
 
-	protected JavaVirtualJoinColumnRelationshipStrategy buildJoinColumnStrategy() {
+	protected VirtualJoinColumnRelationshipStrategy buildJoinColumnStrategy() {
 		return new GenericJavaVirtualOverrideJoinColumnRelationshipStrategy(this);
 	}
 
 
 	// ********** join table strategy **********
 
-	public JavaVirtualJoinTableRelationshipStrategy getJoinTableStrategy() {
+	public VirtualJoinTableRelationshipStrategy getJoinTableStrategy() {
 		return this.joinTableStrategy;
 	}
 
@@ -147,7 +147,7 @@ public class GenericJavaVirtualOverrideRelationship
 		return false;
 	}
 
-	protected JavaVirtualJoinTableRelationshipStrategy buildJoinTableStrategy() {
+	protected VirtualJoinTableRelationshipStrategy buildJoinTableStrategy() {
 		return new GenericJavaVirtualOverrideJoinTableRelationshipStrategy2_0(this);
 	}
 

@@ -21,7 +21,6 @@ import org.eclipse.jpt.jpa.core.context.Generator;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
  */
-//TODO extend JpaNamedContextNode instead, UuidGenerator does not support initialValue and allocationSize
 public interface UuidGenerator
 	extends Generator
 {

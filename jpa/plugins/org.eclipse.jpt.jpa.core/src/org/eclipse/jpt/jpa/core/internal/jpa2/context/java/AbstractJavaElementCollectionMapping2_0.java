@@ -11,13 +11,11 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.Association;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.SimpleAssociation;
@@ -28,7 +26,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SubListIterableWrapper;
@@ -63,13 +60,13 @@ import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
+import org.eclipse.jpt.jpa.core.context.java.JavaBaseEnumeratedConverter;
+import org.eclipse.jpt.jpa.core.context.java.JavaBaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaConverter;
-import org.eclipse.jpt.jpa.core.context.java.JavaEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaLobConverter;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaTemporalConverter;
 import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -97,14 +94,12 @@ import org.eclipse.jpt.jpa.core.jpa2.context.ManyToOneRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.PersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAssociationOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAttributeOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaElementCollectionMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMapKeyEnumeratedConverter2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMapKeyTemporalConverter2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollection2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
@@ -163,16 +158,16 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	protected JavaJoinColumn defaultMapKeyJoinColumn;
 
 	protected static final JavaConverter.Adapter[] CONVERTER_ADAPTER_ARRAY = new JavaConverter.Adapter[] {
-		JavaEnumeratedConverter.Adapter.instance(),
-		JavaTemporalConverter.ElementCollectionAdapter.instance(),
+		JavaBaseEnumeratedConverter.BasicAdapter.instance(),
+		JavaBaseTemporalConverter.ElementCollectionAdapter.instance(),
 		JavaLobConverter.Adapter.instance()
 	};
 	protected static final Iterable<JavaConverter.Adapter> CONVERTER_ADAPTERS = new ArrayIterable<JavaConverter.Adapter>(CONVERTER_ADAPTER_ARRAY);
 
 
 	protected static final JavaConverter.Adapter[] MAP_KEY_CONVERTER_ADAPTER_ARRAY = new JavaConverter.Adapter[] {
-		JavaMapKeyEnumeratedConverter2_0.Adapter.instance(),
-		JavaMapKeyTemporalConverter2_0.Adapter.instance()
+		JavaBaseEnumeratedConverter.MapKeyAdapter.instance(),
+		JavaBaseTemporalConverter.MapKeyAdapter.instance()
 	};
 	protected static final Iterable<JavaConverter.Adapter> MAP_KEY_CONVERTER_ADAPTERS = new ArrayIterable<JavaConverter.Adapter>(MAP_KEY_CONVERTER_ADAPTER_ARRAY);
 
@@ -1338,16 +1333,6 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	// ********** misc **********
 
 	@Override
-	public JavaPersistentAttribute2_0 getParent() {
-		return (JavaPersistentAttribute2_0) super.getParent();
-	}
-
-	@Override
-	public JavaPersistentAttribute2_0 getPersistentAttribute() {
-		return (JavaPersistentAttribute2_0) super.getPersistentAttribute();
-	}
-
-	@Override
 	protected JpaFactory2_0 getJpaFactory() {
 		return (JpaFactory2_0) super.getJpaFactory();
 	}
@@ -1370,52 +1355,52 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.collectionTable.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.collectionTable.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.valueColumn.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.valueColumn.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.converter.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.converter.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.orderable.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.orderable.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.valueAttributeOverrideContainer.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.valueAttributeOverrideContainer.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.valueAssociationOverrideContainer.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.valueAssociationOverrideContainer.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		if (this.mapKeyNameTouches(pos)) {
-			return this.getJavaCandidateMapKeyNames(filter);
+			return this.getJavaCandidateMapKeyNames();
 		}
-		result = this.mapKeyColumn.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.mapKeyColumn.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.mapKeyConverter.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.mapKeyConverter.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.mapKeyAttributeOverrideContainer.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.mapKeyAttributeOverrideContainer.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		for (JavaJoinColumn joinColumn : this.getMapKeyJoinColumns()) {
-			result = joinColumn.getJavaCompletionProposals(pos, filter, astRoot);
+			result = joinColumn.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}
@@ -1423,12 +1408,8 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		return null;
 	}
 
-	protected Iterable<String> getJavaCandidateMapKeyNames(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateMapKeyNames(filter));
-	}
-
-	protected Iterable<String> getCandidateMapKeyNames(Filter<String> filter) {
-		return new FilteringIterable<String>(this.getCandidateMapKeyNames(), filter);
+	protected Iterable<String> getJavaCandidateMapKeyNames() {
+		return StringTools.convertToJavaStringLiteralContents(this.getCandidateMapKeyNames());
 	}
 
 
@@ -1436,7 +1417,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 
 	@Override
 	protected String getMetamodelFieldTypeName() {
-		return this.getPersistentAttribute().getMetamodelContainerFieldTypeName();
+		return ((PersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldTypeName();
 	}
 
 	@Override
@@ -1451,7 +1432,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	protected void addMetamodelFieldMapKeyTypeArgumentNameTo(ArrayList<String> typeArgumentNames) {
-		String keyTypeName = this.getPersistentAttribute().getMetamodelContainerFieldMapKeyTypeName();
+		String keyTypeName = ((PersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldMapKeyTypeName();
 		if (keyTypeName != null) {
 			typeArgumentNames.add(keyTypeName);
 		}
@@ -1853,7 +1834,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 			return AbstractJavaElementCollectionMapping2_0.this.getCollectionTable();
 		}
 
-		protected JavaPersistentAttribute2_0 getPersistentAttribute() {
+		protected JavaPersistentAttribute getPersistentAttribute() {
 			return AbstractJavaElementCollectionMapping2_0.this.getPersistentAttribute();
 		}
 	}

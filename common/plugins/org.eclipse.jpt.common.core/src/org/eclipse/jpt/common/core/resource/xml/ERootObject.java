@@ -30,6 +30,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
  * <ul>
  *   <li>{@link org.eclipse.jpt.common.core.resource.xml.ERootObject#getVersion <em>Version</em>}</li>
  *   <li>{@link org.eclipse.jpt.common.core.resource.xml.ERootObject#getSchemaLocation <em>Schema Location</em>}</li>
+ *   <li>{@link org.eclipse.jpt.common.core.resource.xml.ERootObject#getImpliedVersion <em>Implied Version</em>}</li>
  * </ul>
  * </p>
  *
@@ -51,7 +52,7 @@ public interface ERootObject extends EBaseObject
 	 * @return the value of the '<em>Version</em>' attribute.
 	 * @see #setVersion(String)
 	 * @see org.eclipse.jpt.common.core.resource.xml.CommonPackage#getERootObject_Version()
-	 * @model required="true"
+	 * @model
 	 * @generated
 	 */
 	String getVersion();
@@ -91,6 +92,43 @@ public interface ERootObject extends EBaseObject
 	 * @generated
 	 */
 	void setSchemaLocation(String value);
+	
+	/**
+	 * Returns the value of the '<em><b>Implied Version</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Implied Version</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Implied Version</em>' attribute.
+	 * @see #setImpliedVersion(String)
+	 * @see org.eclipse.jpt.common.core.resource.xml.CommonPackage#getERootObject_ImpliedVersion()
+	 * @model
+	 * @generated
+	 */
+	String getImpliedVersion();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.common.core.resource.xml.ERootObject#getImpliedVersion <em>Implied Version</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Implied Version</em>' attribute.
+	 * @see #getImpliedVersion()
+	 * @generated
+	 */
+	void setImpliedVersion(String value);
+
+	/**
+	 * Return either the value of {@link #getVersion()} (if set) or failing that, the version 
+	 * implied by the schema location ({@link #getImpliedVersion()})
+	 */
+	String getDocumentVersion();
+	
+	/**
+	 * Sets the version and updates the schema location to correspond to the version
+	 */
+	void setDocumentVersion(String versionString);
 	
 	TextRange getVersionTextRange();
 }

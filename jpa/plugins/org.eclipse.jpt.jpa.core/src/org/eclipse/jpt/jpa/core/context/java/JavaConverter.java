@@ -26,11 +26,11 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.1
+ * @version 3.3
  * @since 2.1
  */
 public interface JavaConverter
-	extends Converter, JavaJpaContextNode
+	extends Converter
 {
 	JavaAttributeMapping getParent();
 

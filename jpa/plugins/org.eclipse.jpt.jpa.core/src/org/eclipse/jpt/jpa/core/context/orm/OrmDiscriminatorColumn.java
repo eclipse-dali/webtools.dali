@@ -26,7 +26,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlDiscriminatorColumn;
  * @since 2.0
  */
 public interface OrmDiscriminatorColumn
-	extends DiscriminatorColumn, OrmNamedDiscriminatorColumn
+	extends DiscriminatorColumn, OrmNamedColumn
 {
 	XmlDiscriminatorColumn getXmlColumn();
 	

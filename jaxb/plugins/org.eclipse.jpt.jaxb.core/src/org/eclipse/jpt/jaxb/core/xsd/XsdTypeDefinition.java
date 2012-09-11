@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -9,9 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.xsd;
 
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.xsd.XSDTypeDefinition;
 
 /**
@@ -23,7 +21,7 @@ import org.eclipse.xsd.XSDTypeDefinition;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.2
+ * @version 3.3
  * @since 3.1
  */
 public abstract class XsdTypeDefinition<A extends XSDTypeDefinition>
@@ -68,9 +66,8 @@ public abstract class XsdTypeDefinition<A extends XSDTypeDefinition>
 	
 	public abstract XsdAttributeUse getAttribute(String namespace, String name);
 	
-	public Iterable<String> getAttributeNameProposals(String namespace, Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(
-				new FilteringIterable<String>(getAttributeNames(namespace), filter));
+	public Iterable<String> getAttributeNameProposals(String namespace) {
+		return StringTools.convertToJavaStringLiteralContents(getAttributeNames(namespace));
 	}
 	
 	public abstract Iterable<String> getAttributeNames(String namespace);
@@ -81,13 +78,12 @@ public abstract class XsdTypeDefinition<A extends XSDTypeDefinition>
 	
 	public abstract XsdElementDeclaration getElement(String namespace, String name, boolean recurseChildren);
 	
-	public Iterable<String> getElementNameProposals(String namespace, Filter<String> filter) {
-		return getElementNameProposals(namespace, filter, false);
+	public Iterable<String> getElementNameProposals(String namespace) {
+		return getElementNameProposals(namespace, false);
 	}
 	
-	public Iterable getElementNameProposals(String namespace, Filter<String> filter, boolean recurseChildren) {
-		return StringTools.convertToJavaStringLiterals(
-				new FilteringIterable<String>(getElementNames(namespace, recurseChildren), filter));
+	public Iterable<String> getElementNameProposals(String namespace, boolean recurseChildren) {
+		return StringTools.convertToJavaStringLiteralContents(getElementNames(namespace, recurseChildren));
 	}
 	
 	public abstract Iterable<String> getElementNames(String namespace, boolean recurseChildren);

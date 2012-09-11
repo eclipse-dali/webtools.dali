@@ -10,11 +10,8 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTableColumn.Owner;
@@ -184,13 +181,13 @@ public abstract class AbstractJavaOverride<C extends JavaOverrideContainer, A ex
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		if (this.nameTouches(pos)) {
-			return this.getJavaCandidateNames(filter);
+			return this.getJavaCandidateNames();
 		}
 		return null;
 	}
@@ -199,12 +196,8 @@ public abstract class AbstractJavaOverride<C extends JavaOverrideContainer, A ex
 		return this.overrideAnnotation.nameTouches(pos);
 	}
 
-	protected Iterable<String> getJavaCandidateNames(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateNames(filter));
-	}
-
-	private Iterable<String> getCandidateNames(Filter<String> filter) {
-		return new FilteringIterable<String>(this.getCandidateNames(), filter);
+	protected Iterable<String> getJavaCandidateNames() {
+		return StringTools.convertToJavaStringLiteralContents(this.getCandidateNames());
 	}
 
 	protected abstract Iterable<String> getCandidateNames();

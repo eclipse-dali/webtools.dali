@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.context.java;
 
 /**
- * EclipseLink mappings that have an XmlPath
+ * Oxm mappings that have an XmlPath
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.core;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.common.core.ContentTypeReference;
 import org.eclipse.jpt.common.core.JptResourceModel;
 
 /**
@@ -25,13 +25,9 @@ import org.eclipse.jpt.common.core.JptResourceModel;
  * @version 3.0
  * @since 3.0
  */
-public interface JaxbResourceModelProvider 
-{
-	/**
-	 * Return the file content type the provider is for.
-	 */
-	IContentType getContentType();
-
+public interface JaxbResourceModelProvider
+		extends ContentTypeReference {
+	
 	/**
 	 * Build a JAXB resource model for the specified JAXB project and file.
 	 * Use the specified factory for creation so extenders can simply override

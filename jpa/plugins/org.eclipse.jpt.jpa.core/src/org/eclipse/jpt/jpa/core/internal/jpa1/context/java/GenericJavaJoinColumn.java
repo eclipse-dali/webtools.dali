@@ -9,15 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaBaseColumn;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaNamedColumn;
@@ -39,7 +36,7 @@ public class GenericJavaJoinColumn
 	protected String defaultReferencedColumnName;
 
 
-	public GenericJavaJoinColumn(JavaJpaContextNode parent, ReadOnlyJoinColumn.Owner owner, CompleteJoinColumnAnnotation columnAnnotation) {
+	public GenericJavaJoinColumn(JpaContextNode parent, ReadOnlyJoinColumn.Owner owner, CompleteJoinColumnAnnotation columnAnnotation) {
 		super(parent, owner, columnAnnotation);
 	}
 
@@ -156,13 +153,13 @@ public class GenericJavaJoinColumn
 	// ********** Java completion proposals **********
 
 	@Override
-	protected Iterable<String> getConnectedJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getConnectedJavaCompletionProposals(pos, filter, astRoot);
+	protected Iterable<String> getConnectedCompletionProposals(int pos) {
+		Iterable<String> result = super.getConnectedCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		if (this.referencedColumnNameTouches(pos)) {
-			return this.getJavaCandidateReferencedColumnNames(filter);
+			return this.getJavaCandidateReferencedColumnNames();
 		}
 		return null;
 	}
@@ -171,12 +168,8 @@ public class GenericJavaJoinColumn
 		return this.getColumnAnnotation().referencedColumnNameTouches(pos);
 	}
 
-	protected Iterable<String> getJavaCandidateReferencedColumnNames(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateReferencedColumnNames(filter));
-	}
-
-	protected Iterable<String> getCandidateReferencedColumnNames(Filter<String> filter) {
-		return new FilteringIterable<String>(this.getCandidateReferencedColumnNames(), filter);
+	protected Iterable<String> getJavaCandidateReferencedColumnNames() {
+		return StringTools.convertToJavaStringLiteralContents(this.getCandidateReferencedColumnNames());
 	}
 
 	protected Iterable<String> getCandidateReferencedColumnNames() {

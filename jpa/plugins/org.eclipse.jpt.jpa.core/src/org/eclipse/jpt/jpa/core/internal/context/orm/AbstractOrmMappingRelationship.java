@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,7 +19,6 @@ import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMappingRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmRelationshipMapping;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlRelationshipMapping;
 
 /**
@@ -31,7 +30,7 @@ public abstract class AbstractOrmMappingRelationship<M extends OrmRelationshipMa
 	extends AbstractOrmXmlContextNode
 	implements OrmMappingRelationship
 {
-	protected OrmMappingRelationshipStrategy2_0 strategy;
+	protected RelationshipStrategy strategy;
 
 
 	protected AbstractOrmMappingRelationship(M parent) {
@@ -50,17 +49,17 @@ public abstract class AbstractOrmMappingRelationship<M extends OrmRelationshipMa
 
 	// ********** strategy **********
 
-	public OrmMappingRelationshipStrategy2_0 getStrategy() {
+	public RelationshipStrategy getStrategy() {
 		return this.strategy;
 	}
 
-	protected void setStrategy(OrmMappingRelationshipStrategy2_0 strategy) {
+	protected void setStrategy(RelationshipStrategy strategy) {
 		RelationshipStrategy old = this.strategy;
 		this.strategy = strategy;
 		this.firePropertyChanged(STRATEGY_PROPERTY, old, strategy);
 	}
 
-	protected abstract OrmMappingRelationshipStrategy2_0 buildStrategy();
+	protected abstract RelationshipStrategy buildStrategy();
 
 	/**
 	 * This is called by subclasses when the various supported strategies are

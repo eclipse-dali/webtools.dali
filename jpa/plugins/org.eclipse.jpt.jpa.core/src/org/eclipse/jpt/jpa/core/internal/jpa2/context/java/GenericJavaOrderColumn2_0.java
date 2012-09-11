@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.jpa2.resource.java.OrderColumn2_0AnnotationDefinition;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrderColumn2_0;
@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumn2_0Annotation;
  * Java order column
  */
 public class GenericJavaOrderColumn2_0
-	extends AbstractJavaNamedColumn<OrderColumn2_0Annotation, JavaReadOnlyNamedColumn.Owner>
+	extends AbstractJavaNamedColumn<OrderColumn2_0Annotation, ReadOnlyNamedColumn.Owner>
 	implements JavaOrderColumn2_0
 {
 	protected Boolean specifiedNullable;
@@ -37,7 +37,7 @@ public class GenericJavaOrderColumn2_0
 	protected OrderColumn2_0Annotation nullColumnAnnotation;
 
 
-	public GenericJavaOrderColumn2_0(JavaOrderable2_0 parent, JavaReadOnlyNamedColumn.Owner owner) {
+	public GenericJavaOrderColumn2_0(JavaOrderable2_0 parent, ReadOnlyNamedColumn.Owner owner) {
 		super(parent, owner);
 		//build defaults during construction for performance
 		this.defaultNullable = this.buildDefaultNullable();

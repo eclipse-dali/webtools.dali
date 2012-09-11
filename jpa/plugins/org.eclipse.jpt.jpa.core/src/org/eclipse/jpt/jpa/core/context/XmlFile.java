@@ -22,11 +22,11 @@ import org.eclipse.jpt.jpa.core.JpaStructureNode;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.3
  * @since 2.3
  */
 public interface XmlFile
-	extends XmlContextNode, JpaStructureNode
+	extends JpaStructureNode
 {
 	/**
 	 * Return the XML file's root element.
@@ -58,7 +58,7 @@ public interface XmlFile
 	 * (e.g. <code>persistence</code>, <code>entity-mappings</code>).
 	 */
 	interface Root
-		extends XmlContextNode, JpaStructureNode
+		extends JpaStructureNode
 	{
 		// combine interfaces
 	}

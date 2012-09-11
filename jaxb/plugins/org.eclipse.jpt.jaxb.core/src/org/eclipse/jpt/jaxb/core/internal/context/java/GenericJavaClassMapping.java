@@ -15,11 +15,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.Bag;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -735,22 +733,21 @@ public class GenericJavaClassMapping
 	// ***** content assist *****
 	
 	@Override
-	public Iterable<String> getJavaCompletionProposals(
-			int pos, Filter<String> filter, CompilationUnit astRoot) {
+	public Iterable<String> getCompletionProposals(int pos) {
 		
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (! CollectionTools.isEmpty(result)) {
 			return result;
 		}
 		
 		if (propTouches(pos)) {
-			return getPropProposals(filter);
+			return getPropProposals();
 		}
 		
 		// TODO - factory methods?
 		
 		for (JaxbPersistentAttribute attribute : this.getAttributes()) {
-			result = attribute.getJavaCompletionProposals(pos, filter, astRoot);
+			result = attribute.getCompletionProposals(pos);
 			if (!CollectionTools.isEmpty(result)) {
 				return result;
 			}
@@ -759,16 +756,14 @@ public class GenericJavaClassMapping
 		return EmptyIterable.instance();
 	}
 	
-	protected Iterable<String> getPropProposals(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(
-				new FilteringIterable<String>(
-					new TransformationIterable<JaxbPersistentAttribute, String>(getAllLocallyDefinedAttributes()) {
-						@Override
-						protected String transform(JaxbPersistentAttribute o) {
-							return o.getName();
-						}
-					},
-					filter));
+	protected Iterable<String> getPropProposals() {
+		return StringTools.convertToJavaStringLiteralContents(
+				new TransformationIterable<JaxbPersistentAttribute, String>(getAllLocallyDefinedAttributes()) {
+					@Override
+					protected String transform(JaxbPersistentAttribute o) {
+						return o.getName();
+					}
+				});
 	}
 	
 	

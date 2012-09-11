@@ -21,12 +21,12 @@ import org.eclipse.jpt.jpa.core.internal.jpa1.context.InverseJoinColumnValidator
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.JoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.JoinTableTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.JoinTableValidator;
+import org.eclipse.jpt.jpa.core.jpa2.context.MappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMappingJoinTableRelationshipStrategy2_0;
 
 public class GenericOrmMappingJoinTableRelationshipStrategy
 	extends AbstractOrmJoinTableRelationshipStrategy
-	implements OrmMappingJoinTableRelationshipStrategy2_0
+	implements MappingRelationshipStrategy2_0
 {
 	public GenericOrmMappingJoinTableRelationshipStrategy(OrmMappingJoinTableRelationship parent) {
 		super(parent);

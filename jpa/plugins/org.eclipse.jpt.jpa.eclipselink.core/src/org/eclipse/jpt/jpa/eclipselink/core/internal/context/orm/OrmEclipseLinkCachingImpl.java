@@ -16,8 +16,8 @@ import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.NullOrmCacheable2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CacheableHolder2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheableHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlTypeMapping;
@@ -25,11 +25,11 @@ import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlCacheable_2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCacheCoordinationType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCacheIsolationType2_2;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCacheType;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkExistenceType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTimeOfDay;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkNonEmbeddableTypeMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkNonEmbeddableTypeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
@@ -39,7 +39,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTimeOfDay;
 
 public class OrmEclipseLinkCachingImpl
 	extends AbstractOrmXmlContextNode
-	implements OrmEclipseLinkCaching, OrmCacheableHolder2_0
+	implements EclipseLinkCaching, OrmCacheableHolder2_0
 {
 	protected EclipseLinkCacheType specifiedType;
 	protected EclipseLinkCacheType defaultType = DEFAULT_TYPE;
@@ -68,7 +68,7 @@ public class OrmEclipseLinkCachingImpl
 	protected EclipseLinkExistenceType specifiedExistenceType;
 	protected EclipseLinkExistenceType defaultExistenceType = DEFAULT_EXISTENCE_TYPE;
 
-	protected final OrmCacheable2_0 cacheable;
+	protected final Cacheable2_0 cacheable;
 
 	protected EclipseLinkCacheIsolationType2_2 specifiedIsolation;
 	protected EclipseLinkCacheIsolationType2_2 defaultIsolation = DEFAULT_ISOLATION;
@@ -302,7 +302,7 @@ public class OrmEclipseLinkCachingImpl
 
 	public boolean isDefaultShared() {
 		String puDefaultSharedCache = ((EclipseLinkPersistenceUnit)getPersistenceUnit()).getDefaultCacheSharedPropertyValue();
-		return !StringTools.stringIsEmpty(puDefaultSharedCache) ? Boolean.valueOf(puDefaultSharedCache) : this.defaultShared;
+		return !StringTools.stringIsEmpty(puDefaultSharedCache) ? Boolean.valueOf(puDefaultSharedCache).booleanValue() : this.defaultShared;
 	}
 
 	protected void setDefaultShared(boolean shared) {
@@ -645,11 +645,11 @@ public class OrmEclipseLinkCachingImpl
 
 	// ********** cacheable **********
 
-	public OrmCacheable2_0 getCacheable() {
+	public Cacheable2_0 getCacheable() {
 		return this.cacheable;
 	}
 
-	protected OrmCacheable2_0 buildCacheable() {
+	protected Cacheable2_0 buildCacheable() {
 		return this.isOrmXml2_0Compatible() ?
 				this.getContextNodeFactory2_0().buildOrmCacheable(this) :
 				new NullOrmCacheable2_0(this);

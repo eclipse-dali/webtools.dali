@@ -13,8 +13,8 @@ import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.jpa2.context.IdDerivedIdentityStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaDerivedIdentity2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaIdDerivedIdentityStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
 import org.eclipse.jpt.jpa.core.resource.java.IdAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -22,7 +22,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaIdDerivedIdentityStrategy2_0
 	extends AbstractJavaJpaContextNode
-	implements JavaIdDerivedIdentityStrategy2_0
+	implements IdDerivedIdentityStrategy2_0
 {
 	protected boolean value;
 

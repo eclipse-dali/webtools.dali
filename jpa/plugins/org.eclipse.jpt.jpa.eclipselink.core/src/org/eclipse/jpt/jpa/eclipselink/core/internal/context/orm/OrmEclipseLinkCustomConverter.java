@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkCustomConverter;
@@ -22,7 +22,7 @@ public class OrmEclipseLinkCustomConverter
 	extends OrmEclipseLinkConverterClassConverter<XmlConverter>
 	implements EclipseLinkCustomConverter
 {
-	public OrmEclipseLinkCustomConverter(XmlContextNode parent, XmlConverter xmlConverter) {
+	public OrmEclipseLinkCustomConverter(JpaContextNode parent, XmlConverter xmlConverter) {
 		super(parent, xmlConverter);
 	}
 

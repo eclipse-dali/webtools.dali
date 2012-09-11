@@ -15,9 +15,9 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyReferenceTable;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReferenceTable;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -41,7 +41,7 @@ public abstract class GenericOrmReferenceTable<X extends AbstractXmlReferenceTab
 	protected OrmJoinColumn defaultJoinColumn;
 
 
-	protected GenericOrmReferenceTable(XmlContextNode parent, Owner owner) {
+	protected GenericOrmReferenceTable(JpaContextNode parent, Owner owner) {
 		super(parent, owner);
 		this.joinColumnOwner = this.buildJoinColumnOwner();
 		this.specifiedJoinColumnContainer = this.buildSpecifiedJoinColumnContainer();
@@ -269,13 +269,13 @@ public abstract class GenericOrmReferenceTable<X extends AbstractXmlReferenceTab
 	// ********** completion proposals **********
 
 	@Override
-	public Iterable<String> getXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getXmlCompletionProposals(pos);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		for (OrmJoinColumn column : this.getJoinColumns()) {
-			result = column.getXmlCompletionProposals(pos);
+			result = column.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}

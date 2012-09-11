@@ -341,8 +341,8 @@ public abstract class EAbstractXmlNullPolicy extends EBaseObjectImpl implements 
 			extends MultiObjectTranslator {
 		
 		protected static String DOM_PATH = 
-				EclipseLink.XML_IS_SET_NULL_POLICY + ","
-						+ EclipseLink.XML_NULL_POLICY;
+				Oxm.XML_IS_SET_NULL_POLICY + ","
+						+ Oxm.XML_NULL_POLICY;
 		
 		protected static Map<String, Translator> DELEGATES = new HashMap<String, Translator>();
 		
@@ -354,10 +354,10 @@ public abstract class EAbstractXmlNullPolicy extends EBaseObjectImpl implements 
 		
 		protected static Map<String, Translator> delegates() {
 			if (DELEGATES.isEmpty()) {
-				String path = EclipseLink.XML_IS_SET_NULL_POLICY;
+				String path = Oxm.XML_IS_SET_NULL_POLICY;
 				DELEGATES.put(path, new EXmlIsSetNullPolicy.XmlIsSetNullPolicyTranslator());
 				
-				path = EclipseLink.XML_NULL_POLICY;
+				path = Oxm.XML_NULL_POLICY;
 				DELEGATES.put(path, new EXmlNullPolicy.XmlNullPolicyTranslator());
 			}
 			return DELEGATES;
@@ -367,9 +367,9 @@ public abstract class EAbstractXmlNullPolicy extends EBaseObjectImpl implements 
 		public Translator getDelegateFor(EObject o) {
 			switch (o.eClass().getClassifierID()) {
 				case OxmPackage.EXML_IS_SET_NULL_POLICY :
-					return delegates().get(EclipseLink.XML_IS_SET_NULL_POLICY);
+					return delegates().get(Oxm.XML_IS_SET_NULL_POLICY);
 				case OxmPackage.EXML_NULL_POLICY :
-					return delegates().get(EclipseLink.XML_NULL_POLICY);
+					return delegates().get(Oxm.XML_NULL_POLICY);
 			}
 			throw new IllegalStateException("Null policy expected"); //$NON-NLS-1$
 		}

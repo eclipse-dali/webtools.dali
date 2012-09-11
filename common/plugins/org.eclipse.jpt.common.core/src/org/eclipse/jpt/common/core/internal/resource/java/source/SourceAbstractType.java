@@ -48,7 +48,7 @@ abstract class SourceAbstractType<A extends AbstractType>
 	protected void initialize(AbstractTypeDeclaration typeDeclaration) {
 		super.initialize(typeDeclaration, typeDeclaration.getName());
 		this.initialize(typeDeclaration.resolveBinding()); 
-}
+	}
 
 
 	// ********** synchronize **********
@@ -61,6 +61,7 @@ abstract class SourceAbstractType<A extends AbstractType>
 
 	public void synchronizeWith(AbstractTypeDeclaration typeDeclaration) {
 		super.synchronizeWith(typeDeclaration, typeDeclaration.getName());
+		this.synchronizeWith(typeDeclaration.resolveBinding()); 
 	}
 	
 	@Override

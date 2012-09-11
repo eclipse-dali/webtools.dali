@@ -42,6 +42,7 @@ import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -60,15 +61,13 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
+import org.eclipse.jpt.jpa.core.context.orm.OrmBaseEnumeratedConverter;
+import org.eclipse.jpt.jpa.core.context.orm.OrmBaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
-import org.eclipse.jpt.jpa.core.context.orm.OrmEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmLobConverter;
-import org.eclipse.jpt.jpa.core.context.orm.OrmOrderable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.orm.OrmTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
@@ -96,13 +95,11 @@ import org.eclipse.jpt.jpa.core.jpa2.context.ManyToOneRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneRelationship2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.PersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmAssociationOverrideContainer2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCollectionTable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMapKeyEnumeratedConverter2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMapKeyTemporalConverter2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOrderable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.Attributes;
 import org.eclipse.jpt.jpa.core.resource.orm.MapKey;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
@@ -164,15 +161,15 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 
 	protected static final OrmConverter.Adapter[] CONVERTER_ADAPTER_ARRAY = new OrmConverter.Adapter[] {
-		OrmEnumeratedConverter.Adapter.instance(),
-		OrmTemporalConverter.ElementCollectionAdapter.instance(),
+		OrmBaseEnumeratedConverter.BasicAdapter.instance(),
+		OrmBaseTemporalConverter.ElementCollectionAdapter.instance(),
 		OrmLobConverter.Adapter.instance()
 	};
 	protected static final Iterable<OrmConverter.Adapter> CONVERTER_ADAPTERS = new ArrayIterable<OrmConverter.Adapter>(CONVERTER_ADAPTER_ARRAY);
 
 	protected static final OrmConverter.Adapter[] MAP_KEY_CONVERTER_ADAPTER_ARRAY = new OrmConverter.Adapter[] {
-		OrmMapKeyEnumeratedConverter2_0.Adapter.instance(),
-		OrmMapKeyTemporalConverter2_0.Adapter.instance()
+		OrmBaseEnumeratedConverter.MapKeyAdapter.instance(),
+		OrmBaseTemporalConverter.MapKeyAdapter.instance()
 	};
 	protected static final Iterable<OrmConverter.Adapter> MAP_KEY_CONVERTER_ADAPTERS = new ArrayIterable<OrmConverter.Adapter>(MAP_KEY_CONVERTER_ADAPTER_ARRAY);
 
@@ -383,7 +380,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 	// ********** orderable **********
 
-	public OrmOrderable getOrderable() {
+	public Orderable getOrderable() {
 		return this.orderable;
 	}
 
@@ -1170,16 +1167,6 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 	// ********** misc **********
 
-	@Override
-	public OrmPersistentAttribute2_0 getParent() {
-		return (OrmPersistentAttribute2_0) super.getParent();
-	}
-
-	@Override
-	public OrmPersistentAttribute2_0 getPersistentAttribute() {
-		return (OrmPersistentAttribute2_0) super.getPersistentAttribute();
-	}
-
 	public String getKey() {
 		return MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY;
 	}
@@ -1210,7 +1197,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 
 	@Override
 	protected String getMetamodelFieldTypeName() {
-		return this.getPersistentAttribute().getMetamodelContainerFieldTypeName();
+		return ((PersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldTypeName();
 	}
 
 	@Override
@@ -1225,7 +1212,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected void addMetamodelFieldMapKeyTypeArgumentNameTo(ArrayList<String> typeArgumentNames) {
-		String keyTypeName = this.getPersistentAttribute().getMetamodelContainerFieldMapKeyTypeName();
+		String keyTypeName = ((PersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldMapKeyTypeName();
 		if (keyTypeName != null) {
 			typeArgumentNames.add(keyTypeName);
 		}
@@ -1741,52 +1728,52 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	// ********** completion proposals **********
 	
 	@Override
-	public Iterable<String> getXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getXmlCompletionProposals(pos);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.collectionTable.getXmlCompletionProposals(pos);
+		result = this.collectionTable.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.valueColumn.getXmlCompletionProposals(pos);
+		result = this.valueColumn.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.converter.getXmlCompletionProposals(pos);
+		result = this.converter.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.orderable.getXmlCompletionProposals(pos);
+		result = this.orderable.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.valueAttributeOverrideContainer.getXmlCompletionProposals(pos);
+		result = this.valueAttributeOverrideContainer.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.valueAssociationOverrideContainer.getXmlCompletionProposals(pos);
+		result = this.valueAssociationOverrideContainer.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		if (this.mapKeyNameTouches(pos)) {
 			return this.getCandidateMapKeyNames();
 		}
-		result = this.mapKeyColumn.getXmlCompletionProposals(pos);
+		result = this.mapKeyColumn.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.mapKeyConverter.getXmlCompletionProposals(pos);
+		result = this.mapKeyConverter.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.mapKeyAttributeOverrideContainer.getXmlCompletionProposals(pos);
+		result = this.mapKeyAttributeOverrideContainer.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		for (OrmJoinColumn joinColumn : this.getMapKeyJoinColumns()) {
-			result = joinColumn.getXmlCompletionProposals(pos);
+			result = joinColumn.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}
@@ -1847,7 +1834,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			return AbstractOrmElementCollectionMapping2_0.this.getCollectionTable();
 		}
 
-		protected OrmPersistentAttribute2_0 getPersistentAttribute() {
+		protected PersistentAttribute getPersistentAttribute() {
 			return AbstractOrmElementCollectionMapping2_0.this.getPersistentAttribute();
 		}
 

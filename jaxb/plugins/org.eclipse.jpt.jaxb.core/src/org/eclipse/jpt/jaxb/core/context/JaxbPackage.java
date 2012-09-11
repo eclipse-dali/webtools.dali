@@ -20,7 +20,7 @@ import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.03
+ * @version 3.0
  * @since 3.0
  */
 public interface JaxbPackage

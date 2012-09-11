@@ -77,7 +77,7 @@ public class ELJaxbValidationMessageBuilder {
 //				severity = prefSeverity;
 //			}
 			IMessage message = new EclipseLinkMessage(ELJaxbValidationMessages.BUNDLE_NAME, severity, messageId, parms, targetObject);
-			// TODO "EclipseLink JAXB" validation marker?
+			// TODO "Oxm JAXB" validation marker?
 			message.setMarkerId(JaxbValidator.MARKER_ID);
 			return message;
 		}

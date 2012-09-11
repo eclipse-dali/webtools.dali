@@ -11,21 +11,19 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
+import org.eclipse.jpt.jpa.core.context.Cascade;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
-import org.eclipse.jpt.jpa.core.context.java.JavaCascade;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappingRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaRelationshipMapping;
@@ -51,7 +49,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 
 	protected final JavaMappingRelationship relationship;
 
-	protected final JavaCascade cascade;
+	protected final Cascade cascade;
 
 	protected FetchType specifiedFetch;
 	protected FetchType defaultFetch;
@@ -169,11 +167,11 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 
 	// ********** cascade **********
 
-	public JavaCascade getCascade() {
+	public Cascade getCascade() {
 		return this.cascade;
 	}
 
-	protected JavaCascade buildCascade() {
+	protected Cascade buildCascade() {
 		// NB: we don't use the platform
 		return new GenericJavaCascade(this);
 	}
@@ -293,13 +291,13 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 
-		result = this.relationship.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.relationship.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}

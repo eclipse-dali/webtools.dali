@@ -18,16 +18,15 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.CompletionContext;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.ui.text.java.ContentAssistInvocationContext;
 import org.eclipse.jdt.ui.text.java.IJavaCompletionProposalComputer;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
-import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -121,6 +120,8 @@ public class JpaJavaCompletionProposalComputer
 		// correspond to the "start" and "end" we get below... 
 		char[] prefix = cc.getToken();
 		Filter<String> filter = this.buildPrefixFilter(prefix);
+		// the token "kind" tells us if we are in a String literal already - CompletionContext.TOKEN_KIND_STRING_LITERAL
+		int tokenKind = cc.getTokenKind();
 		// the token "start" is the offset of the token's first character
 		int tokenStart = cc.getTokenStart();
 		// the token "end" is the offset of the token's last character (yuk)
@@ -129,24 +130,31 @@ public class JpaJavaCompletionProposalComputer
 			return Collections.emptyList();
 		}
 
-//		System.out.println("prefix: " + ((prefix == null) ? "[null]" : new String(prefix)));
 //		System.out.println("token start: " + tokenStart);
 //		System.out.println("token end: " + tokenEnd);
+//		System.out.println("token kind: " + tokenKind);
 //		String source = cu.getSource();
 //		String token = source.substring(Math.max(0, tokenStart), Math.min(source.length(), tokenEnd + 1));
 //		System.out.println("token: =>" + token + "<=");
 //		String snippet = source.substring(Math.max(0, tokenStart - 20), Math.min(source.length(), tokenEnd + 21));
 //		System.out.println("surrounding snippet: =>" + snippet + "<=");
 
-		// TODO move this parser call into the model...
-		CompilationUnit astRoot = ASTTools.buildASTRoot(cu);
 		List<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
 		for (JpaStructureNode structureNode : rootStructureNodes) {
-			for (String s : ((JavaPersistentType) structureNode).getJavaCompletionProposals(context.getInvocationOffset(), filter, astRoot)) {
-				proposals.add(new CompletionProposal(s, tokenStart, tokenEnd - tokenStart + 1, s.length()));
+			for (String s : this.getCompletionProposals((JavaPersistentType) structureNode, context.getInvocationOffset(), filter)) {
+				if (tokenKind == CompletionContext.TOKEN_KIND_STRING_LITERAL) {//already quoted
+					proposals.add(new CompletionProposal(s , tokenStart + 1, tokenEnd - tokenStart - 1, s.length()));					
+				}
+				else {//add the quotes
+					proposals.add(new CompletionProposal("\"" + s + "\"", tokenStart, tokenEnd - tokenStart + 1, s.length() + 2)); //$NON-NLS-1$ //$NON-NLS-2$
+				}
 			}
 		}
 		return proposals;
+	}
+
+	private Iterable<String> getCompletionProposals(JavaPersistentType structureNode, int pos, Filter<String> filter) {
+		return new FilteringIterable<String>(structureNode.getCompletionProposals(pos), filter);
 	}
 
 	private IFile getCorrespondingResource(ICompilationUnit cu) {

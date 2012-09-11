@@ -12,7 +12,7 @@ package org.eclipse.jpt.jaxb.eclipselink.core.resource.java;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 
 /**
- * Corresponds to the EclipseLink annotation
+ * Corresponds to the Oxm annotation
  * org.eclipse.persistence.oxm.annotations.XmlCDATA
  * 
  * Provisional API: This interface is part of an interim API that is still

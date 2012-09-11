@@ -11,6 +11,8 @@ package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
@@ -18,7 +20,12 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.Table;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
+import org.eclipse.jpt.jpa.core.context.VirtualColumn;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinTable;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.VirtualOverrideRelationship;
+import org.eclipse.jpt.jpa.core.context.VirtualUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverride;
@@ -116,21 +123,21 @@ public interface OrmXmlContextNodeFactory
 
 	OrmVirtualSecondaryTable buildOrmVirtualSecondaryTable(OrmEntity parent, ReadOnlyTable.Owner owner, JavaSecondaryTable javaSecondaryTable);
 
-	OrmPrimaryKeyJoinColumn buildOrmPrimaryKeyJoinColumn(XmlContextNode parent, ReadOnlyBaseJoinColumn.Owner owner, XmlPrimaryKeyJoinColumn resourcePrimaryKeyJoinColumn);
+	OrmPrimaryKeyJoinColumn buildOrmPrimaryKeyJoinColumn(JpaContextNode parent, ReadOnlyBaseJoinColumn.Owner owner, XmlPrimaryKeyJoinColumn resourcePrimaryKeyJoinColumn);
 
-	OrmVirtualPrimaryKeyJoinColumn buildOrmVirtualPrimaryKeyJoinColumn(XmlContextNode parent, ReadOnlyBaseJoinColumn.Owner owner, JavaPrimaryKeyJoinColumn javaPrimaryKeyJoinColumn);
+	OrmVirtualPrimaryKeyJoinColumn buildOrmVirtualPrimaryKeyJoinColumn(JpaContextNode parent, ReadOnlyBaseJoinColumn.Owner owner, JavaPrimaryKeyJoinColumn javaPrimaryKeyJoinColumn);
 
 	OrmJoinTable buildOrmJoinTable(OrmJoinTableRelationshipStrategy parent, Table.Owner owner);
 
-	OrmVirtualJoinTable buildOrmVirtualJoinTable(OrmVirtualJoinTableRelationshipStrategy parent, ReadOnlyTable.Owner owner, ReadOnlyJoinTable overriddenTable);
+	VirtualJoinTable buildOrmVirtualJoinTable(VirtualJoinTableRelationshipStrategy parent, ReadOnlyTable.Owner owner, ReadOnlyJoinTable overriddenTable);
 
-	OrmJoinColumn buildOrmJoinColumn(XmlContextNode parent, ReadOnlyJoinColumn.Owner owner, XmlJoinColumn resourceJoinColumn);
+	OrmJoinColumn buildOrmJoinColumn(JpaContextNode parent, ReadOnlyJoinColumn.Owner owner, XmlJoinColumn resourceJoinColumn);
 
-	OrmVirtualJoinColumn buildOrmVirtualJoinColumn(XmlContextNode parent, ReadOnlyJoinColumn.Owner owner, ReadOnlyJoinColumn overriddenColumn);
+	VirtualJoinColumn buildOrmVirtualJoinColumn(JpaContextNode parent, ReadOnlyJoinColumn.Owner owner, ReadOnlyJoinColumn overriddenColumn);
 
-	OrmAttributeOverrideContainer buildOrmAttributeOverrideContainer(XmlContextNode parent, OrmAttributeOverrideContainer.Owner owner);
+	OrmAttributeOverrideContainer buildOrmAttributeOverrideContainer(JpaContextNode parent, OrmAttributeOverrideContainer.Owner owner);
 
-	OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(XmlContextNode parent, OrmAssociationOverrideContainer.Owner owner);
+	OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(JpaContextNode parent, OrmAssociationOverrideContainer.Owner owner);
 
 	OrmAttributeOverride buildOrmAttributeOverride(OrmAttributeOverrideContainer parent, XmlAttributeOverride xmlOverride);
 
@@ -142,27 +149,27 @@ public interface OrmXmlContextNodeFactory
 
 	OrmOverrideRelationship buildOrmOverrideRelationship(OrmAssociationOverride parent);
 
-	OrmVirtualOverrideRelationship buildOrmVirtualOverrideRelationship(OrmVirtualAssociationOverride parent);
+	VirtualOverrideRelationship buildOrmVirtualOverrideRelationship(OrmVirtualAssociationOverride parent);
 
 	OrmDiscriminatorColumn buildOrmDiscriminatorColumn(OrmEntity parent, OrmDiscriminatorColumn.Owner owner);
 
-	OrmColumn buildOrmColumn(XmlContextNode parent, OrmColumn.Owner owner);
+	OrmColumn buildOrmColumn(JpaContextNode parent, OrmColumn.Owner owner);
 
-	OrmVirtualColumn buildOrmVirtualColumn(XmlContextNode parent, OrmVirtualColumn.Owner owner);
+	VirtualColumn buildOrmVirtualColumn(JpaContextNode parent, VirtualColumn.Owner owner);
 
-	OrmGeneratedValue buildOrmGeneratedValue(XmlContextNode parent, XmlGeneratedValue resourceGeneratedValue);
+	OrmGeneratedValue buildOrmGeneratedValue(JpaContextNode parent, XmlGeneratedValue resourceGeneratedValue);
 
-	OrmGeneratorContainer buildOrmGeneratorContainer(XmlContextNode parent, XmlGeneratorContainer resourceGeneratorContainer);
+	OrmGeneratorContainer buildOrmGeneratorContainer(JpaContextNode parent, XmlGeneratorContainer resourceGeneratorContainer);
 
-	OrmSequenceGenerator buildOrmSequenceGenerator(XmlContextNode parent, XmlSequenceGenerator resourceSequenceGenerator);
+	OrmSequenceGenerator buildOrmSequenceGenerator(JpaContextNode parent, XmlSequenceGenerator resourceSequenceGenerator);
 
-	OrmTableGenerator buildOrmTableGenerator(XmlContextNode parent, XmlTableGenerator resourceTableGenerator);
+	OrmTableGenerator buildOrmTableGenerator(JpaContextNode parent, XmlTableGenerator resourceTableGenerator);
 
-	OrmQueryContainer buildOrmQueryContainer(XmlContextNode parent, XmlQueryContainer resourceQueryContainer);
+	OrmQueryContainer buildOrmQueryContainer(JpaContextNode parent, XmlQueryContainer resourceQueryContainer);
 
-	OrmNamedNativeQuery buildOrmNamedNativeQuery(XmlContextNode parent, XmlNamedNativeQuery resourceNamedQuery);
+	OrmNamedNativeQuery buildOrmNamedNativeQuery(JpaContextNode parent, XmlNamedNativeQuery resourceNamedQuery);
 
-	OrmNamedQuery buildOrmNamedQuery(XmlContextNode parent, XmlNamedQuery resourceNamedQuery);
+	OrmNamedQuery buildOrmNamedQuery(JpaContextNode parent, XmlNamedQuery resourceNamedQuery);
 
 	OrmQueryHint buildOrmQueryHint(OrmQuery parent, XmlQueryHint resourceQueryhint);
 
@@ -250,9 +257,9 @@ public interface OrmXmlContextNodeFactory
 	 */
 	OrmAttributeMapping buildUnsupportedOrmAttributeMapping(OrmPersistentAttribute parent, XmlNullAttributeMapping resourceMapping);
 
-	OrmUniqueConstraint buildOrmUniqueConstraint(XmlContextNode parent, UniqueConstraint.Owner owner, XmlUniqueConstraint resourceUniqueConstraint);
+	OrmUniqueConstraint buildOrmUniqueConstraint(JpaContextNode parent, UniqueConstraint.Owner owner, XmlUniqueConstraint resourceUniqueConstraint);
 
-	OrmVirtualUniqueConstraint buildOrmVirtualUniqueConstraint(XmlContextNode parent, ReadOnlyUniqueConstraint overriddenUniqueConstraint);
+	VirtualUniqueConstraint buildOrmVirtualUniqueConstraint(JpaContextNode parent, ReadOnlyUniqueConstraint overriddenUniqueConstraint);
 
 	OrmConverter buildOrmBaseEnumeratedConverter(OrmAttributeMapping parent, OrmBaseEnumeratedConverter.Owner owner);
 
@@ -267,5 +274,5 @@ public interface OrmXmlContextNodeFactory
 	 * must build objects that implement the appropriate behavior.
 	 * @see org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0
 	 */
-	OrmOrderable buildOrmOrderable(OrmAttributeMapping parent);
+	Orderable buildOrmOrderable(OrmAttributeMapping parent);
 }

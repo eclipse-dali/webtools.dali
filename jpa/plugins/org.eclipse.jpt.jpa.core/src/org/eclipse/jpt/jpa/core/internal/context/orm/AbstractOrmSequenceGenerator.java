@@ -12,8 +12,8 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.DbGenerator;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlSequenceGenerator;
@@ -30,7 +30,7 @@ public abstract class AbstractOrmSequenceGenerator
 	protected String defaultSequenceName;
 
 
-	protected AbstractOrmSequenceGenerator(XmlContextNode parent, XmlSequenceGenerator xmlSequenceGenerator) {
+	protected AbstractOrmSequenceGenerator(JpaContextNode parent, XmlSequenceGenerator xmlSequenceGenerator) {
 		super(parent, xmlSequenceGenerator);
 		this.specifiedSequenceName = xmlSequenceGenerator.getSequenceName();
 	}
@@ -126,8 +126,8 @@ public abstract class AbstractOrmSequenceGenerator
 	 * sequenceName
 	 */
 	@Override
-	protected Iterable<String> getConnectedXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getConnectedXmlCompletionProposals(pos);
+	protected Iterable<String> getConnectedCompletionProposals(int pos) {
+		Iterable<String> result = super.getConnectedCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}

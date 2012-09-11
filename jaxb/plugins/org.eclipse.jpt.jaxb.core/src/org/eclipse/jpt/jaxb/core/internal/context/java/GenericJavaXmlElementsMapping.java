@@ -11,9 +11,7 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
 import javax.xml.namespace.QName;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.Bag;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.HashBag;
@@ -290,21 +288,21 @@ public class GenericJavaXmlElementsMapping
 	// ***** content assist *****
 	
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (! CollectionTools.isEmpty(result)) {
 			return result;
 		}
 		
 		for (XmlElement xmlElement : getXmlElements()) {
-			result = xmlElement.getJavaCompletionProposals(pos, filter, astRoot);
+			result = xmlElement.getCompletionProposals(pos);
 			if (! CollectionTools.isEmpty(result)) {
 				return result;
 			}
 		}
 		
 		if (this.xmlElementWrapper != null) {
-			result = this.xmlElementWrapper.getJavaCompletionProposals(pos, filter, astRoot);
+			result = this.xmlElementWrapper.getCompletionProposals(pos);
 			if (! CollectionTools.isEmpty(result)) {
 				return result;
 			}

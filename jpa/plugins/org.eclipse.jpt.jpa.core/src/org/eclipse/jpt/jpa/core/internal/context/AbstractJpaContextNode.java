@@ -149,6 +149,31 @@ public abstract class AbstractJpaContextNode
 	}
 
 
+	// *********** completion proposals ***********
+
+	public Iterable<String> getCompletionProposals(int pos) {
+		if (this.connectionProfileIsActive()) {
+			Iterable<String> result = this.getConnectedCompletionProposals(pos);
+			if (result != null) {
+				return result;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * This method is called if the database is connected, allowing us to
+	 * get candidates from the various database tables etc.
+	 * This method should <em>not</em> be cascaded to "child" objects; it should
+	 * only return candidates for the current object. The cascading is
+	 * handled by {@link #getCompletionProposals(int)}.
+	 */
+	@SuppressWarnings("unused")
+	protected Iterable<String> getConnectedCompletionProposals(int pos) {
+		return null;
+	}
+
+
 	// ********** database stuff **********
 
 	public Schema getContextDefaultDbSchema() {

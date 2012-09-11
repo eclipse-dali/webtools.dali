@@ -39,8 +39,7 @@ import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaPersistentType
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaPersistentAttribute2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmPersistentAttribute2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.PersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAccessHolder;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -52,7 +51,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class SpecifiedOrmPersistentAttribute
 		extends AbstractOrmXmlContextNode
-		implements OrmPersistentAttribute2_0 {
+		implements OrmPersistentAttribute, PersistentAttribute2_0 {
 	
 	protected OrmAttributeMapping mapping;  // never null
 
@@ -517,7 +516,7 @@ public abstract class SpecifiedOrmPersistentAttribute
 	}
 
 	public String getMetamodelTypeName() {
-		JavaPersistentAttribute2_0 javaAttribute = (JavaPersistentAttribute2_0) this.javaPersistentAttribute;
+		PersistentAttribute2_0 javaAttribute = (PersistentAttribute2_0) this.javaPersistentAttribute;
 		return (javaAttribute != null) ?
 				javaAttribute.getMetamodelTypeName() :
 				MetamodelField.DEFAULT_TYPE_NAME;
@@ -532,12 +531,12 @@ public abstract class SpecifiedOrmPersistentAttribute
 	// ********** completion proposals **********
 
 	@Override
-	public Iterable<String> getXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getXmlCompletionProposals(pos);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.mapping.getXmlCompletionProposals(pos);
+		result = this.mapping.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}

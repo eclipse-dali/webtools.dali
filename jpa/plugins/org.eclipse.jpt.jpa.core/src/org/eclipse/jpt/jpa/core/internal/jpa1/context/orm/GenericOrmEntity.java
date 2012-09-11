@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,6 @@ import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmEntity;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.NullOrmCacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CacheableHolder2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlCacheable_2_0;
@@ -23,7 +22,7 @@ public class GenericOrmEntity
 	extends AbstractOrmEntity<XmlEntity>
 {
 	// EclipseLink holds its cacheable in its caching
-	protected final OrmCacheable2_0 cacheable;
+	protected final Cacheable2_0 cacheable;
 
 
 	public GenericOrmEntity(OrmPersistentType parent, XmlEntity xmlEntity) {
@@ -49,11 +48,11 @@ public class GenericOrmEntity
 
 	// ********** cacheable **********
 
-	public OrmCacheable2_0 getCacheable() {
+	public Cacheable2_0 getCacheable() {
 		return this.cacheable;
 	}
 
-	protected OrmCacheable2_0 buildCacheable() {
+	protected Cacheable2_0 buildCacheable() {
 		return this.isOrmXml2_0Compatible() ?
 				this.getContextNodeFactory2_0().buildOrmCacheable(this) :
 				new NullOrmCacheable2_0(this);

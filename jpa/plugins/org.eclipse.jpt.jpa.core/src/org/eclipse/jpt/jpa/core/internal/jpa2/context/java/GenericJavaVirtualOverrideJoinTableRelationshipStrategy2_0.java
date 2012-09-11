@@ -17,23 +17,23 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
-import org.eclipse.jpt.jpa.core.context.java.JavaVirtualJoinTable;
-import org.eclipse.jpt.jpa.core.context.java.JavaVirtualJoinTableRelationshipStrategy;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinTable;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaVirtualOverrideRelationship2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.VirtualOverrideRelationship2_0;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaVirtualOverrideJoinTableRelationshipStrategy2_0
 	extends AbstractJavaJpaContextNode
-	implements JavaVirtualJoinTableRelationshipStrategy, ReadOnlyTable.Owner
+	implements VirtualJoinTableRelationshipStrategy, ReadOnlyTable.Owner
 {
-	protected JavaVirtualJoinTable joinTable;
+	protected VirtualJoinTable joinTable;
 
 
-	public GenericJavaVirtualOverrideJoinTableRelationshipStrategy2_0(JavaVirtualOverrideRelationship2_0 parent) {
+	public GenericJavaVirtualOverrideJoinTableRelationshipStrategy2_0(VirtualOverrideRelationship2_0 parent) {
 		super(parent);
 	}
 
@@ -49,12 +49,12 @@ public class GenericJavaVirtualOverrideJoinTableRelationshipStrategy2_0
 
 	// ********** join table **********
 
-	public JavaVirtualJoinTable getJoinTable() {
+	public VirtualJoinTable getJoinTable() {
 		return this.joinTable;
 	}
 
-	protected void setJoinTable(JavaVirtualJoinTable joinTable) {
-		JavaVirtualJoinTable old = this.joinTable;
+	protected void setJoinTable(VirtualJoinTable joinTable) {
+		VirtualJoinTable old = this.joinTable;
 		this.joinTable = joinTable;
 		this.firePropertyChanged(JOIN_TABLE_PROPERTY, old, joinTable);
 	}
@@ -79,7 +79,7 @@ public class GenericJavaVirtualOverrideJoinTableRelationshipStrategy2_0
 		return (overriddenStrategy == null) ? null : overriddenStrategy.getJoinTable();
 	}
 
-	protected JavaVirtualJoinTable buildJoinTable(ReadOnlyJoinTable overriddenJoinTable) {
+	protected VirtualJoinTable buildJoinTable(ReadOnlyJoinTable overriddenJoinTable) {
 		return this.getJpaFactory().buildJavaVirtualJoinTable(this, this, overriddenJoinTable);
 	}
 
@@ -87,11 +87,11 @@ public class GenericJavaVirtualOverrideJoinTableRelationshipStrategy2_0
 	// ********** misc **********
 
 	@Override
-	public JavaVirtualOverrideRelationship2_0 getParent() {
-		return (JavaVirtualOverrideRelationship2_0) super.getParent();
+	public VirtualOverrideRelationship2_0 getParent() {
+		return (VirtualOverrideRelationship2_0) super.getParent();
 	}
 
-	public JavaVirtualOverrideRelationship2_0 getRelationship() {
+	public VirtualOverrideRelationship2_0 getRelationship() {
 		return this.getParent();
 	}
 

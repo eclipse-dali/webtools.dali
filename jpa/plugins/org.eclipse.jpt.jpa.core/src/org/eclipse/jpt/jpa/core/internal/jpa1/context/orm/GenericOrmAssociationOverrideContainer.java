@@ -10,15 +10,14 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAssociationOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -32,14 +31,14 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlAssociationOverride;
 public class GenericOrmAssociationOverrideContainer
 	extends AbstractOrmOverrideContainer<
 			OrmAssociationOverrideContainer.Owner,
-			OrmReadOnlyAssociationOverride,
+			ReadOnlyAssociationOverride,
 			OrmAssociationOverride,
 			OrmVirtualAssociationOverride,
 			XmlAssociationOverride
 		>
 	implements OrmAssociationOverrideContainer2_0
 {
-	public GenericOrmAssociationOverrideContainer(XmlContextNode parent, OrmAssociationOverrideContainer.Owner owner) {
+	public GenericOrmAssociationOverrideContainer(JpaContextNode parent, OrmAssociationOverrideContainer.Owner owner) {
 		super(parent, owner);
 	}
 

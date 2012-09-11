@@ -12,8 +12,8 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrphanRemovable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrphanRemovalHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OwningRelationshipMapping2_0Annotation;
 
 /**
@@ -21,13 +21,13 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.OwningRelationshipMapping2_0A
  */
 public class GenericJavaOrphanRemoval2_0
 		extends AbstractJavaJpaContextNode
-		implements JavaOrphanRemovable2_0
+		implements OrphanRemovable2_0
 {
 	protected Boolean specifiedOrphanRemoval;
 	protected boolean defaultOrphanRemoval;
 
 
-	public GenericJavaOrphanRemoval2_0(JavaOrphanRemovalHolder2_0 parent) {
+	public GenericJavaOrphanRemoval2_0(OrphanRemovalHolder2_0 parent) {
 		super(parent);
 		this.specifiedOrphanRemoval = this.buildSpecifiedOrphanRemoval();
 	}
@@ -94,8 +94,8 @@ public class GenericJavaOrphanRemoval2_0
 	// ********** misc **********
 
 	@Override
-	public JavaOrphanRemovalHolder2_0 getParent() {
-		return (JavaOrphanRemovalHolder2_0) super.getParent();
+	public OrphanRemovalHolder2_0 getParent() {
+		return (OrphanRemovalHolder2_0) super.getParent();
 	}
 
 	protected JavaAttributeMapping getMapping() {

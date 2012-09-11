@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter;
@@ -49,7 +49,7 @@ public class OrmEclipseLinkConverterContainerImpl
 	protected final ContextListContainer<OrmEclipseLinkTypeConverter, XmlTypeConverter> typeConverterContainer;
 
 
-	public OrmEclipseLinkConverterContainerImpl(XmlContextNode parent, Owner owner,  XmlConverterContainer xmlConverterContainer) {
+	public OrmEclipseLinkConverterContainerImpl(JpaContextNode parent, Owner owner,  XmlConverterContainer xmlConverterContainer) {
 		super(parent);
 		this.owner = owner;
 		this.xmlConverterContainer = xmlConverterContainer;
@@ -615,10 +615,5 @@ public class OrmEclipseLinkConverterContainerImpl
 
 	public int getNumberSupportedConverters() {
 		return this.owner.getNumberSupportedConverters();
-	}
-
-	@Override
-	public XmlContextNode getParent() {
-		return (XmlContextNode) super.getParent();
 	}
 }

@@ -18,8 +18,8 @@ import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.NullJavaCacheable2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CacheableHolder2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCacheCoordinationType;
@@ -58,7 +58,7 @@ public class JavaEclipseLinkCachingImpl
 	protected EclipseLinkExistenceType specifiedExistenceType;
 	protected EclipseLinkExistenceType defaultExistenceType;
 
-	protected final JavaCacheable2_0 cacheable;
+	protected final Cacheable2_0 cacheable;
 
 	protected EclipseLinkCacheIsolationType2_2 specifiedIsolation;
 
@@ -518,7 +518,7 @@ public class JavaEclipseLinkCachingImpl
 
 	// ********** cacheable **********
 
-	public JavaCacheable2_0 getCacheable() {
+	public Cacheable2_0 getCacheable() {
 		return this.cacheable;
 	}
 
@@ -540,7 +540,7 @@ public class JavaEclipseLinkCachingImpl
 				this.getCacheableSuperPersistentType(superPersistentType);  // recurse
 	}
 
-	protected JavaCacheable2_0 buildCacheable() {
+	protected Cacheable2_0 buildCacheable() {
 		return this.isJpa2_0Compatible() ?
 				this.getJpaFactory2_0().buildJavaCacheable(this) :
 				new NullJavaCacheable2_0(this);

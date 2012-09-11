@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core.jpa2.context.java;
 
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.java.JavaCollectionMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionMapping2_0;
 
@@ -24,11 +23,11 @@ import org.eclipse.jpt.jpa.core.jpa2.context.CollectionMapping2_0;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.1
+ * @version 3.3
  * @since 2.3
  */
 public interface JavaCollectionMapping2_0
-	extends CollectionMapping2_0, JavaCollectionMapping, JavaConvertibleKeyMapping2_0
+	extends CollectionMapping2_0, JavaConvertibleKeyMapping2_0
 {
 	JavaAttributeOverrideContainer getMapKeyAttributeOverrideContainer();
 	

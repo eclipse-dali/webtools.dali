@@ -16,10 +16,10 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SubListIterableWrapper;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
@@ -42,7 +42,7 @@ public class GenericJavaQueryContainer
 	protected final ContextListContainer<JavaNamedNativeQuery, NamedNativeQueryAnnotation> namedNativeQueryContainer;
 
 
-	public GenericJavaQueryContainer(JavaJpaContextNode parent, Owner owner) {
+	public GenericJavaQueryContainer(JpaContextNode parent, Owner owner) {
 		super(parent);
 		this.owner = owner;
 		this.namedQueryContainer = this.buildNamedQueryContainer();
@@ -259,13 +259,5 @@ public class GenericJavaQueryContainer
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.owner.getResourceAnnotatedElement().getTextRange();
 		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
-	}
-
-
-	// ********** misc **********
-
-	@Override
-	public JavaJpaContextNode getParent() {
-		return (JavaJpaContextNode) super.getParent();
 	}
 }

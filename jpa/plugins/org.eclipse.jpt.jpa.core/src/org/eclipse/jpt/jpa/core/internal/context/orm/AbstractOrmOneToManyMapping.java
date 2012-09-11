@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,21 +11,22 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
+import org.eclipse.jpt.jpa.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.NullOrmOrphanRemoval2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOneToManyMapping2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OneToManyMapping2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOneToManyRelationship2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOrphanRemovable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmOrphanRemovalHolder2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.Attributes;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlOneToMany;
 
 
 public abstract class AbstractOrmOneToManyMapping<X extends XmlOneToMany>
 	extends AbstractOrmMultiRelationshipMapping<X>
-	implements OrmOneToManyMapping2_0, OrmOrphanRemovalHolder2_0
+	implements OneToManyMapping2_0, OrmOneToManyMapping, OrphanRemovalHolder2_0
 {
-	protected final OrmOrphanRemovable2_0 orphanRemoval;
+	protected final OrphanRemovable2_0 orphanRemoval;
 
 
 	protected AbstractOrmOneToManyMapping(OrmPersistentAttribute parent, X xmlMapping) {
@@ -51,11 +52,11 @@ public abstract class AbstractOrmOneToManyMapping<X extends XmlOneToMany>
 
 	// ********** orphan removal **********
 
-	public OrmOrphanRemovable2_0 getOrphanRemoval() {
+	public OrphanRemovable2_0 getOrphanRemoval() {
 		return this.orphanRemoval;
 	}
 
-	protected OrmOrphanRemovable2_0 buildOrphanRemoval() {
+	protected OrphanRemovable2_0 buildOrphanRemoval() {
 		return this.isOrmXml2_0Compatible() ?
 				this.getContextNodeFactory2_0().buildOrmOrphanRemoval(this) :
 				new NullOrmOrphanRemoval2_0(this);

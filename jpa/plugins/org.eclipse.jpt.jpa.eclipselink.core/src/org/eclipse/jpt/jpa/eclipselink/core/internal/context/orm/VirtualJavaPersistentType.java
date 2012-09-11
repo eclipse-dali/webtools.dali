@@ -32,11 +32,12 @@ import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaNullTypeMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelSourceType;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaPersistentType2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTypeMapping;
@@ -45,7 +46,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class VirtualJavaPersistentType
 		extends AbstractJavaJpaContextNode
-		implements JavaPersistentType2_0 {
+		implements JavaPersistentType, PersistentType2_0 {
 	
 	private final XmlTypeMapping xmlTypeMapping;
 
@@ -278,6 +279,7 @@ public class VirtualJavaPersistentType
 
 	// ********** validation **********
 
+	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		throw new UnsupportedOperationException();
 	}

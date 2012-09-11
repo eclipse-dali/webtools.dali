@@ -9,19 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
-import java.util.List;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.orm.MappingFileDefinition;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistentTypeContainer;
 import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.text.edits.ReplaceEdit;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * JPA mapping file (typically <code>orm.xml</code>).
@@ -68,14 +64,6 @@ public interface MappingFile
 	 * clients.
 	 */
 	Object getResourceMappingFile();
-
-	// TODO remove when XmlContextNode.validate(...)
-	// is moved to JpaContextNode (and JavaJpaContextNode.validate(...) is gone as a result)
-	void validate(List<IMessage> messages, IReporter reporter);
-
-	// TODO remove when XmlContextNode.validate(...)
-	// is moved to JpaContextNode (and JavaJpaContextNode.validate(...) is gone as a result)
-	TextRange getValidationTextRange();
 
 
 	// ********** queries/generators **********

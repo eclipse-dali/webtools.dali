@@ -13,6 +13,7 @@ package org.eclipse.jpt.common.core.resource.xml;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
@@ -99,13 +100,22 @@ public class CommonPackage extends EPackageImpl
 	public static final int EROOT_OBJECT__SCHEMA_LOCATION = 1;
 
 	/**
+	 * The feature id for the '<em><b>Implied Version</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int EROOT_OBJECT__IMPLIED_VERSION = 2;
+
+	/**
 	 * The number of structural features of the '<em>ERoot Object</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int EROOT_OBJECT_FEATURE_COUNT = 2;
+	public static final int EROOT_OBJECT_FEATURE_COUNT = 3;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.common.core.resource.xml.ERootObjectImpl <em>ERoot Object Impl</em>}' class.
@@ -134,6 +144,15 @@ public class CommonPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int EROOT_OBJECT_IMPL__SCHEMA_LOCATION = EROOT_OBJECT__SCHEMA_LOCATION;
+
+	/**
+	 * The feature id for the '<em><b>Implied Version</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int EROOT_OBJECT_IMPL__IMPLIED_VERSION = EROOT_OBJECT__IMPLIED_VERSION;
 
 	/**
 	 * The number of structural features of the '<em>ERoot Object Impl</em>' class.
@@ -281,6 +300,21 @@ public class CommonPackage extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.common.core.resource.xml.ERootObject#getImpliedVersion <em>Implied Version</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Implied Version</em>'.
+	 * @see org.eclipse.jpt.common.core.resource.xml.ERootObject#getImpliedVersion()
+	 * @see #getERootObject()
+	 * @generated
+	 */
+	public EAttribute getERootObject_ImpliedVersion()
+	{
+		return (EAttribute)eRootObjectEClass.getEStructuralFeatures().get(2);
+	}
+
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -317,6 +351,7 @@ public class CommonPackage extends EPackageImpl
 		eRootObjectEClass = createEClass(EROOT_OBJECT);
 		createEAttribute(eRootObjectEClass, EROOT_OBJECT__VERSION);
 		createEAttribute(eRootObjectEClass, EROOT_OBJECT__SCHEMA_LOCATION);
+		createEAttribute(eRootObjectEClass, EROOT_OBJECT__IMPLIED_VERSION);
 	}
 
 	/**
@@ -354,8 +389,9 @@ public class CommonPackage extends EPackageImpl
 		initEClass(eRootObjectImplEClass, ERootObjectImpl.class, "ERootObjectImpl", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(eRootObjectEClass, ERootObject.class, "ERootObject", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getERootObject_Version(), ecorePackage.getEString(), "version", null, 1, 1, ERootObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getERootObject_Version(), ecorePackage.getEString(), "version", null, 0, 1, ERootObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getERootObject_SchemaLocation(), ecorePackage.getEString(), "schemaLocation", null, 1, 1, ERootObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getERootObject_ImpliedVersion(), ecorePackage.getEString(), "impliedVersion", null, 0, 1, ERootObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);
@@ -410,6 +446,14 @@ public class CommonPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EAttribute EROOT_OBJECT__SCHEMA_LOCATION = eINSTANCE.getERootObject_SchemaLocation();
+
+		/**
+		 * The meta object literal for the '<em><b>Implied Version</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute EROOT_OBJECT__IMPLIED_VERSION = eINSTANCE.getERootObject_ImpliedVersion();
 
 	}
 

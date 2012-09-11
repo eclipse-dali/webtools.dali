@@ -231,12 +231,12 @@ public abstract class AbstractOrmBaseEmbeddedMapping<X extends AbstractXmlEmbedd
 	// ********** completion proposals **********
 
 	@Override
-	public Iterable<String> getXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getXmlCompletionProposals(pos);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.attributeOverrideContainer.getXmlCompletionProposals(pos);
+		result = this.attributeOverrideContainer.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}

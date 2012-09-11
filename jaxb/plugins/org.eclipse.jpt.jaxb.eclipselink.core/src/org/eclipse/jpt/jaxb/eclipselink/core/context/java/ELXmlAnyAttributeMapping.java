@@ -12,7 +12,7 @@ package org.eclipse.jpt.jaxb.eclipselink.core.context.java;
 import org.eclipse.jpt.jaxb.core.context.XmlAnyAttributeMapping;
 
 /**
- * EclipseLink extensions to XmlAnyAttributeMapping
+ * Oxm extensions to XmlAnyAttributeMapping
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching

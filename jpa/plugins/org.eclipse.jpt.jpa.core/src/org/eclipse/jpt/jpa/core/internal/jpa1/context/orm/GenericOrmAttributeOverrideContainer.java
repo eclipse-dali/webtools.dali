@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,11 +10,11 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualAttributeOverride;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeOverride;
@@ -25,14 +25,14 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlAttributeOverride;
 public class GenericOrmAttributeOverrideContainer
 	extends AbstractOrmOverrideContainer<
 			OrmAttributeOverrideContainer.Owner,
-			OrmReadOnlyAttributeOverride,
+			ReadOnlyAttributeOverride,
 			OrmAttributeOverride,
 			OrmVirtualAttributeOverride,
 			XmlAttributeOverride
 		>
 	implements OrmAttributeOverrideContainer
 {
-	public GenericOrmAttributeOverrideContainer(XmlContextNode parent, OrmAttributeOverrideContainer.Owner owner) {
+	public GenericOrmAttributeOverrideContainer(JpaContextNode parent, OrmAttributeOverrideContainer.Owner owner) {
 		super(parent, owner);
 	}
 

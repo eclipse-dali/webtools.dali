@@ -10,18 +10,15 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.NameTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaTable;
 import org.eclipse.jpt.jpa.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -64,11 +61,11 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 	protected final ContextListContainer<JavaUniqueConstraint, UniqueConstraintAnnotation> uniqueConstraintContainer;
 
 
-	protected AbstractJavaTable(JavaJpaContextNode parent, Owner owner) {
+	protected AbstractJavaTable(JpaContextNode parent, Owner owner) {
 		this(parent, owner, null);
 	}
 
-	protected AbstractJavaTable(JavaJpaContextNode parent, Owner owner, A tableAnnotation) {
+	protected AbstractJavaTable(JpaContextNode parent, Owner owner, A tableAnnotation) {
 		super(parent);
 		this.owner = owner;
 		this.setTableAnnotation(tableAnnotation);
@@ -393,13 +390,13 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		for (JavaUniqueConstraint constraint : this.getUniqueConstraints()) {
-			result = constraint.getJavaCompletionProposals(pos, filter, astRoot);
+			result = constraint.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}
@@ -412,19 +409,19 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 	 * name, schema, catalog
 	 */
 	@Override
-	protected Iterable<String> getConnectedJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getConnectedJavaCompletionProposals(pos, filter, astRoot);
+	protected Iterable<String> getConnectedCompletionProposals(int pos) {
+		Iterable<String> result = super.getConnectedCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		if (this.nameTouches(pos)) {
-			return this.getJavaCandidateNames(filter);
+			return this.getJavaCandidateNames();
 		}
 		if (this.schemaTouches(pos)) {
-			return this.getJavaCandidateSchemata(filter);
+			return this.getJavaCandidateSchemata();
 		}
 		if (this.catalogTouches(pos)) {
-			return this.getJavaCandidateCatalogs(filter);
+			return this.getJavaCandidateCatalogs();
 		}
 		return null;
 	}
@@ -433,12 +430,8 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 		return this.getTableAnnotation().nameTouches(pos);
 	}
 
-	protected Iterable<String> getJavaCandidateNames(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateNames(filter));
-	}
-
-	protected Iterable<String> getCandidateNames(Filter<String> filter) {
-		return new FilteringIterable<String>(this.getCandidateNames(), filter);
+	protected Iterable<String> getJavaCandidateNames() {
+		return StringTools.convertToJavaStringLiteralContents(this.getCandidateNames());
 	}
 
 	protected Iterable<String> getCandidateNames() {
@@ -450,12 +443,8 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 		return this.getTableAnnotation().schemaTouches(pos);
 	}
 
-	protected Iterable<String> getJavaCandidateSchemata(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateSchemata(filter));
-	}
-
-	protected Iterable<String> getCandidateSchemata(Filter<String> filter) {
-		return new FilteringIterable<String>(this.getCandidateSchemata(), filter);
+	protected Iterable<String> getJavaCandidateSchemata() {
+		return StringTools.convertToJavaStringLiteralContents(this.getCandidateSchemata());
 	}
 
 	protected Iterable<String> getCandidateSchemata() {
@@ -466,12 +455,8 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 		return this.getTableAnnotation().catalogTouches(pos);
 	}
 
-	protected Iterable<String> getJavaCandidateCatalogs(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateCatalogs(filter));
-	}
-
-	protected Iterable<String> getCandidateCatalogs(Filter<String> filter) {
-		return new FilteringIterable<String>(this.getCandidateCatalogs(), filter);
+	protected Iterable<String> getJavaCandidateCatalogs() {
+		return StringTools.convertToJavaStringLiteralContents(this.getCandidateCatalogs());
 	}
 
 	protected Iterable<String> getCandidateCatalogs() {
@@ -511,11 +496,6 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 
 
 	// ********** misc **********
-
-	@Override
-	public JavaJpaContextNode getParent() {
-		return (JavaJpaContextNode) super.getParent();
-	}
 
 	protected void initializeFrom(ReadOnlyTable oldTable) {
 		this.setSpecifiedName(oldTable.getSpecifiedName());

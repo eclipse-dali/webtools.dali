@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core.jpa2.context.orm;
 
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.orm.OrmCollectionMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionMapping2_0;
 
@@ -24,11 +23,11 @@ import org.eclipse.jpt.jpa.core.jpa2.context.CollectionMapping2_0;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.1
+ * @version 3.3
  * @since 2.3
  */
 public interface OrmCollectionMapping2_0
-	extends CollectionMapping2_0, OrmCollectionMapping, OrmConvertibleKeyMapping2_0
+	extends CollectionMapping2_0, OrmConvertibleKeyMapping2_0
 {
 	OrmAttributeOverrideContainer getMapKeyAttributeOverrideContainer();
 

@@ -21,10 +21,10 @@ import org.eclipse.jpt.jpa.core.context.IdClassReference;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.3
  * @since 2.3
  */
 public interface JavaIdClassReference
-	extends IdClassReference, JavaJpaContextNode
+	extends IdClassReference
 {
 }

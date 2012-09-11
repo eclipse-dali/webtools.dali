@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,9 +19,10 @@ import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumnRelationship;
+import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
+import org.eclipse.jpt.jpa.core.jpa2.context.MappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMappingJoinColumnRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.db.Table;
 
 /**
@@ -31,7 +32,7 @@ import org.eclipse.jpt.jpa.db.Table;
  */
 public class NullOrmJoinColumnRelationshipStrategy
 	extends AbstractOrmXmlContextNode
-	implements OrmMappingJoinColumnRelationshipStrategy2_0
+	implements MappingRelationshipStrategy2_0, OrmJoinColumnRelationshipStrategy
 {
 	public NullOrmJoinColumnRelationshipStrategy(OrmJoinColumnRelationship parent) {
 		super(parent);

@@ -16,10 +16,10 @@ import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.QueryHint;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaQuery;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryHint;
@@ -47,7 +47,7 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 	protected final ContextListContainer<JavaQueryHint, QueryHintAnnotation> hintContainer;
 
 
-	protected AbstractJavaQuery(JavaJpaContextNode parent, A queryAnnotation) {
+	protected AbstractJavaQuery(JpaContextNode parent, A queryAnnotation) {
 		super(parent);
 		this.queryAnnotation = queryAnnotation;
 		this.name = queryAnnotation.getName();

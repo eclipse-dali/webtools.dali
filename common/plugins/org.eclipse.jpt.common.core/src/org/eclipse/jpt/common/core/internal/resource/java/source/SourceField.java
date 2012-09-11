@@ -84,7 +84,7 @@ final class SourceField
 
 	@Override
 	protected ITypeBinding getJdtTypeBinding(IBinding binding) {
-		return ((IVariableBinding) binding).getType();
+		return binding == null ? null : ((IVariableBinding) binding).getType();
 	}
 	
 	

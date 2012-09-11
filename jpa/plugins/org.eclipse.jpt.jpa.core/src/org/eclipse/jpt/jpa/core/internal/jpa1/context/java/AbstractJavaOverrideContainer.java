@@ -12,12 +12,11 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-import org.eclipse.jdt.core.dom.CompilationUnit;
+
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeListIterable;
@@ -28,15 +27,14 @@ import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.VirtualOverride;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualOverride;
 import org.eclipse.jpt.jpa.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -65,7 +63,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractJavaOverrideContainer<
 			O extends JavaOverrideContainer.Owner,
-			R extends JavaReadOnlyOverride,
+			R extends ReadOnlyOverride,
 			S extends JavaOverride,
 			V extends JavaVirtualOverride,
 			A extends OverrideAnnotation & NestableAnnotation
@@ -87,7 +85,7 @@ public abstract class AbstractJavaOverrideContainer<
 	protected final VirtualOverrideContainerAdapter virtualOverrideContainerAdapter = new VirtualOverrideContainerAdapter();
 
 
-	protected AbstractJavaOverrideContainer(JavaJpaContextNode parent, O owner) {
+	protected AbstractJavaOverrideContainer(JpaContextNode parent, O owner) {
 		super(parent);
 		this.owner = owner;
 	}
@@ -549,13 +547,13 @@ public abstract class AbstractJavaOverrideContainer<
 	// ********** code completion **********
 
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		for (R override : this.getOverrides()) {
-			result = override.getJavaCompletionProposals(pos, filter, astRoot);
+			result = override.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}

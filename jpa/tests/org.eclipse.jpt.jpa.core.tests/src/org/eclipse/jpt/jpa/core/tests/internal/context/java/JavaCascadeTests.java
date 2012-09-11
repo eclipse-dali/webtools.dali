@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,8 +15,8 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.jpa.core.context.Cascade;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.java.JavaCascade;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.OneToOneAnnotation;
@@ -60,7 +60,7 @@ public class JavaCascadeTests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaOneToOneMapping mapping = (JavaOneToOneMapping) persistentAttribute.getMapping();
-		JavaCascade cascade = mapping.getCascade();
+		Cascade cascade = mapping.getCascade();
 		
 		assertFalse(cascade.isAll());
 		assertFalse(annotation.isCascadeAll());
@@ -88,7 +88,7 @@ public class JavaCascadeTests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaOneToOneMapping mapping = (JavaOneToOneMapping) persistentAttribute.getMapping();
-		JavaCascade cascade = mapping.getCascade();
+		Cascade cascade = mapping.getCascade();
 		
 		assertFalse(cascade.isAll());
 		assertFalse(annotation.isCascadeAll());
@@ -114,7 +114,7 @@ public class JavaCascadeTests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaOneToOneMapping mapping = (JavaOneToOneMapping) persistentAttribute.getMapping();
-		JavaCascade cascade = mapping.getCascade();
+		Cascade cascade = mapping.getCascade();
 		
 		assertFalse(cascade.isPersist());
 		assertFalse(annotation.isCascadePersist());
@@ -142,7 +142,7 @@ public class JavaCascadeTests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaOneToOneMapping mapping = (JavaOneToOneMapping) persistentAttribute.getMapping();
-		JavaCascade cascade = mapping.getCascade();
+		Cascade cascade = mapping.getCascade();
 		
 		assertFalse(cascade.isPersist());
 		assertFalse(annotation.isCascadePersist());
@@ -168,7 +168,7 @@ public class JavaCascadeTests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaOneToOneMapping mapping = (JavaOneToOneMapping) persistentAttribute.getMapping();
-		JavaCascade cascade = mapping.getCascade();
+		Cascade cascade = mapping.getCascade();
 		
 		assertFalse(cascade.isMerge());
 		assertFalse(annotation.isCascadeMerge());
@@ -196,7 +196,7 @@ public class JavaCascadeTests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaOneToOneMapping mapping = (JavaOneToOneMapping) persistentAttribute.getMapping();
-		JavaCascade cascade = mapping.getCascade();
+		Cascade cascade = mapping.getCascade();
 		
 		assertFalse(cascade.isMerge());
 		assertFalse(annotation.isCascadeMerge());
@@ -222,7 +222,7 @@ public class JavaCascadeTests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaOneToOneMapping mapping = (JavaOneToOneMapping) persistentAttribute.getMapping();
-		JavaCascade cascade = mapping.getCascade();
+		Cascade cascade = mapping.getCascade();
 		
 		assertFalse(cascade.isRemove());
 		assertFalse(annotation.isCascadeRemove());
@@ -250,7 +250,7 @@ public class JavaCascadeTests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaOneToOneMapping mapping = (JavaOneToOneMapping) persistentAttribute.getMapping();
-		JavaCascade cascade = mapping.getCascade();
+		Cascade cascade = mapping.getCascade();
 		
 		assertFalse(cascade.isRemove());
 		assertFalse(annotation.isCascadeRemove());
@@ -276,7 +276,7 @@ public class JavaCascadeTests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaOneToOneMapping mapping = (JavaOneToOneMapping) persistentAttribute.getMapping();
-		JavaCascade cascade = mapping.getCascade();
+		Cascade cascade = mapping.getCascade();
 		
 		assertFalse(cascade.isRefresh());
 		assertFalse(annotation.isCascadeRefresh());
@@ -304,7 +304,7 @@ public class JavaCascadeTests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		JavaOneToOneMapping mapping = (JavaOneToOneMapping) persistentAttribute.getMapping();
-		JavaCascade cascade = mapping.getCascade();
+		Cascade cascade = mapping.getCascade();
 		
 		assertFalse(cascade.isRefresh());
 		assertFalse(annotation.isCascadeRefresh());

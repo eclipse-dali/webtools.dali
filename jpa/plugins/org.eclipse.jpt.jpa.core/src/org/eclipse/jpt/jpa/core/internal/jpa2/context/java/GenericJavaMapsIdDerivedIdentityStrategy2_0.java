@@ -11,10 +11,8 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
 import java.util.Iterator;
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -34,8 +32,8 @@ import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.jpa2.context.MapsIdDerivedIdentityStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaDerivedIdentity2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMapsIdDerivedIdentityStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsId2_0Annotation;
 import org.eclipse.osgi.util.NLS;
@@ -44,7 +42,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 	extends AbstractJavaJpaContextNode
-	implements JavaMapsIdDerivedIdentityStrategy2_0
+	implements MapsIdDerivedIdentityStrategy2_0
 {
 	protected String specifiedIdAttributeName;
 	protected String defaultIdAttributeName;
@@ -264,19 +262,19 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		if (this.getAnnotation().valueTouches(pos)) {
-			result = this.getSortedJavaValueChoices(filter);
+			result = this.getSortedJavaValueChoices();
 		}
 		return result;
 	}
 
-	protected Iterable<String> getSortedJavaValueChoices(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(new FilteringIterable<String>(this.getSortedCandidateIdAttributeNames(), filter));
+	protected Iterable<String> getSortedJavaValueChoices() {
+		return StringTools.convertToJavaStringLiteralContents(this.getSortedCandidateIdAttributeNames());
 	}
 
 

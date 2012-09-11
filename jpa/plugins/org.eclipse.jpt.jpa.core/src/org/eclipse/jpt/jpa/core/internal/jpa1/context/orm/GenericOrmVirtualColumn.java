@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,17 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
-import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualColumn;
+import org.eclipse.jpt.jpa.core.context.VirtualColumn;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmVirtualBaseColumn;
 
 /**
  * <code>orm.xml</code> virtual column
  */
 public class GenericOrmVirtualColumn
-	extends AbstractOrmVirtualBaseColumn<OrmVirtualColumn.Owner, ReadOnlyColumn>
-	implements OrmVirtualColumn
+	extends AbstractOrmVirtualBaseColumn<VirtualColumn.Owner, ReadOnlyColumn>
+	implements VirtualColumn
 {
 	protected Integer specifiedLength;
 	protected int defaultLength;
@@ -31,7 +31,7 @@ public class GenericOrmVirtualColumn
 	protected int defaultScale;
 
 
-	public GenericOrmVirtualColumn(XmlContextNode parent, OrmVirtualColumn.Owner owner) {
+	public GenericOrmVirtualColumn(JpaContextNode parent, VirtualColumn.Owner owner) {
 		super(parent, owner);
 	}
 

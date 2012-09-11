@@ -9,14 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaBaseColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.jpa.core.resource.java.BaseColumnAnnotation;
 
 /**
@@ -42,11 +39,11 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 	protected boolean defaultUpdatable;
 
 
-	protected AbstractJavaBaseColumn(JavaJpaContextNode parent, O owner) {
+	protected AbstractJavaBaseColumn(JpaContextNode parent, O owner) {
 		this(parent, owner, null);
 	}
 
-	protected AbstractJavaBaseColumn(JavaJpaContextNode parent, O owner, A columnAnnotation) {
+	protected AbstractJavaBaseColumn(JpaContextNode parent, O owner, A columnAnnotation) {
 		super(parent, owner, columnAnnotation);
 		//build defaults during construction for performance
 		this.defaultTable = this.buildDefaultTable();
@@ -330,13 +327,13 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		if (this.tableTouches(pos)) {
-			return this.getJavaCandidateTableNames(filter);
+			return this.getJavaCandidateTableNames();
 		}
 		return null;
 	}
@@ -345,12 +342,8 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 		return this.getColumnAnnotation().tableTouches(pos);
 	}
 
-	protected Iterable<String> getJavaCandidateTableNames(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.getCandidateTableNames(filter));
-	}
-
-	protected Iterable<String> getCandidateTableNames(Filter<String> filter) {
-		return new FilteringIterable<String>(this.getCandidateTableNames(), filter);
+	protected Iterable<String> getJavaCandidateTableNames() {
+		return StringTools.convertToJavaStringLiteralContents(this.getCandidateTableNames());
 	}
 
 	public Iterable<String> getCandidateTableNames() {

@@ -11,8 +11,8 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmBaseColumn;
@@ -34,11 +34,11 @@ public class GenericOrmJoinColumn
 	protected String defaultReferencedColumnName;
 
 
-	public GenericOrmJoinColumn(XmlContextNode parent, ReadOnlyJoinColumn.Owner owner) {
+	public GenericOrmJoinColumn(JpaContextNode parent, ReadOnlyJoinColumn.Owner owner) {
 		this(parent, owner, null);
 	}
 
-	public GenericOrmJoinColumn(XmlContextNode parent, ReadOnlyJoinColumn.Owner owner, XmlJoinColumn xmlColumn) {
+	public GenericOrmJoinColumn(JpaContextNode parent, ReadOnlyJoinColumn.Owner owner, XmlJoinColumn xmlColumn) {
 		super(parent, owner, xmlColumn);
 		this.specifiedReferencedColumnName = this.buildSpecifiedReferencedColumnName();
 	}
@@ -170,8 +170,8 @@ public class GenericOrmJoinColumn
 	// ********** completion proposals **********
 
 	@Override
-	protected Iterable<String> getConnectedXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getConnectedXmlCompletionProposals(pos);
+	protected Iterable<String> getConnectedCompletionProposals(int pos) {
+		Iterable<String> result = super.getConnectedCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}

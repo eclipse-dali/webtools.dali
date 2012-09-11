@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverrideRelationship;
@@ -17,8 +18,6 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -31,14 +30,14 @@ import org.eclipse.jpt.jpa.core.resource.java.AssociationOverrideAnnotation;
 public class GenericJavaAssociationOverrideContainer
 	extends AbstractJavaOverrideContainer<
 			JavaAssociationOverrideContainer.Owner,
-			JavaReadOnlyAssociationOverride,
+			ReadOnlyAssociationOverride,
 			JavaAssociationOverride,
 			JavaVirtualAssociationOverride,
 			AssociationOverrideAnnotation
 		>
 	implements JavaAssociationOverrideContainer2_0
 {
-	public GenericJavaAssociationOverrideContainer(JavaJpaContextNode parent, JavaAssociationOverrideContainer.Owner owner) {
+	public GenericJavaAssociationOverrideContainer(JpaContextNode parent, JavaAssociationOverrideContainer.Owner owner) {
 		super(parent, owner);
 	}
 

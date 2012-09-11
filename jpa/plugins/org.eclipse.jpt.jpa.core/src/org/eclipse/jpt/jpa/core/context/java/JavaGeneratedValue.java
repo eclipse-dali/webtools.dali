@@ -25,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.java.GeneratedValueAnnotation;
  * @since 2.0
  */
 public interface JavaGeneratedValue
-	extends GeneratedValue, JavaJpaContextNode
+	extends GeneratedValue
 {
 	GeneratedValueAnnotation getGeneratedValueAnnotation();
 }

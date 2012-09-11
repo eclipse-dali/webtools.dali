@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkCustomConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkObjectTypeConverter;
@@ -27,11 +27,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLin
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.2
+ * @version 3.3
  * @since 2.1
  */
 public interface JavaEclipseLinkConverterContainer
-	extends EclipseLinkConverterContainer, JavaJpaContextNode
+	extends EclipseLinkConverterContainer
 {
 	ListIterable<JavaEclipseLinkCustomConverter> getCustomConverters();
 	JavaEclipseLinkCustomConverter addCustomConverter(int index);
@@ -52,7 +52,7 @@ public interface JavaEclipseLinkConverterContainer
 		/**
 		 * Return the container's parent.
 		 */
-		JavaJpaContextNode getConverterContainerParent();
+		JpaContextNode getConverterContainerParent();
 
 		/**
 		 * Return the element that is annotated with converters.

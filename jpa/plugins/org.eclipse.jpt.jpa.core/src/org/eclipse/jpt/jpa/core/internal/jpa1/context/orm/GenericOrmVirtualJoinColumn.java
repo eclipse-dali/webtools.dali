@@ -10,9 +10,9 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
-import org.eclipse.jpt.jpa.core.context.orm.OrmVirtualJoinColumn;
+import org.eclipse.jpt.jpa.core.context.VirtualJoinColumn;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmVirtualBaseColumn;
 import org.eclipse.jpt.jpa.db.Column;
@@ -23,7 +23,7 @@ import org.eclipse.jpt.jpa.db.Table;
  */
 public class GenericOrmVirtualJoinColumn
 	extends AbstractOrmVirtualBaseColumn<ReadOnlyJoinColumn.Owner, ReadOnlyJoinColumn>
-	implements OrmVirtualJoinColumn
+	implements VirtualJoinColumn
 {
 	protected final ReadOnlyJoinColumn overriddenColumn;
 
@@ -31,7 +31,7 @@ public class GenericOrmVirtualJoinColumn
 	protected String defaultReferencedColumnName;
 
 
-	public GenericOrmVirtualJoinColumn(XmlContextNode parent, ReadOnlyJoinColumn.Owner owner, ReadOnlyJoinColumn overriddenColumn) {
+	public GenericOrmVirtualJoinColumn(JpaContextNode parent, ReadOnlyJoinColumn.Owner owner, ReadOnlyJoinColumn overriddenColumn) {
 		super(parent, owner);
 		this.overriddenColumn = overriddenColumn;
 	}

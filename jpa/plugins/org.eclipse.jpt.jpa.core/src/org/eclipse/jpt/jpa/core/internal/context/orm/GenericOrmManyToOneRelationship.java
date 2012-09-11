@@ -14,13 +14,11 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
+import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmManyToOneRelationship2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMappingJoinColumnRelationshipStrategy2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMappingJoinTableRelationshipStrategy2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlManyToOne;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -29,10 +27,10 @@ public class GenericOrmManyToOneRelationship
 	extends AbstractOrmMappingRelationship<OrmManyToOneMapping>
 	implements OrmManyToOneRelationship2_0
 {
-	protected final OrmMappingJoinColumnRelationshipStrategy2_0 joinColumnStrategy;
+	protected final OrmJoinColumnRelationshipStrategy joinColumnStrategy;
 
 	// JPA 2.0
-	protected final OrmMappingJoinTableRelationshipStrategy2_0 joinTableStrategy;
+	protected final OrmJoinTableRelationshipStrategy joinTableStrategy;
 
 	
 	public GenericOrmManyToOneRelationship(OrmManyToOneMapping parent) {
@@ -64,7 +62,7 @@ public class GenericOrmManyToOneRelationship
 	// ********** strategy **********
 
 	@Override
-	protected OrmMappingRelationshipStrategy2_0 buildStrategy() {
+	protected RelationshipStrategy buildStrategy() {
 		if (this.isJpa2_0Compatible()) {
 			if (this.joinTableStrategy.getJoinTable() != null){
 				return this.joinTableStrategy;
@@ -94,7 +92,7 @@ public class GenericOrmManyToOneRelationship
 		return false;
 	}
 
-	protected OrmMappingJoinTableRelationshipStrategy2_0 buildJoinTableStrategy() {
+	protected OrmJoinTableRelationshipStrategy buildJoinTableStrategy() {
 		return this.isJpa2_0Compatible() ?
 				new GenericOrmMappingJoinTableRelationshipStrategy(this) :
 				new NullOrmJoinTableRelationshipStrategy(this);
@@ -123,7 +121,7 @@ public class GenericOrmManyToOneRelationship
 		return this.joinTableStrategy.getJoinTable() == null;
 	}
 
-	protected OrmMappingJoinColumnRelationshipStrategy2_0 buildJoinColumnStrategy() {
+	protected OrmJoinColumnRelationshipStrategy buildJoinColumnStrategy() {
 		return new GenericOrmMappingJoinColumnRelationshipStrategy(this);
 	}
 
@@ -180,16 +178,16 @@ public class GenericOrmManyToOneRelationship
 	// ********** completion proposals **********
 
 	@Override
-	public Iterable<String> getXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getXmlCompletionProposals(pos);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.joinColumnStrategy.getXmlCompletionProposals(pos);
+		result = this.joinColumnStrategy.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.joinTableStrategy.getXmlCompletionProposals(pos);
+		result = this.joinTableStrategy.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}

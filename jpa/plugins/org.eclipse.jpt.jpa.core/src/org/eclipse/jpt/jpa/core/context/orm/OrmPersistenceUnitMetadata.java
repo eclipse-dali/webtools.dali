@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitMetadata;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlPersistenceUnitMetadata;
 
@@ -28,7 +27,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlPersistenceUnitMetadata;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface OrmPersistenceUnitMetadata
-	extends MappingFilePersistenceUnitMetadata, XmlContextNode
+	extends MappingFilePersistenceUnitMetadata
 {
 	/**
 	 * Covariant override.

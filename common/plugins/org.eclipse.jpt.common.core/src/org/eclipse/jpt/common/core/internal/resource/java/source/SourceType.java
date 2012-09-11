@@ -175,13 +175,15 @@ final class SourceType
 
 		FieldDeclaration[] fieldDeclarations = typeDeclaration.getFields();
 		CounterMap counters = new CounterMap(fieldDeclarations.length);
+		HashSet<JavaResourceField> remainingFields = new HashSet<JavaResourceField>(this.fields);
 		for (FieldDeclaration fieldDeclaration : fieldDeclarations) {
 			for (VariableDeclarationFragment fragment : fragments(fieldDeclaration)) {
 				String fieldName = fragment.getName().getFullyQualifiedName();
 				int occurrence = counters.increment(fieldName);
 
-				JavaResourceField field = this.getField(fieldName, occurrence);
+				JavaResourceField field = getField(remainingFields, fieldName, occurrence);
 				field.resolveTypes(fieldDeclaration, fragment);
+				remainingFields.remove(field);
 			}
 		}
 
@@ -470,8 +472,8 @@ final class SourceType
 		this.addItemToCollection(field, this.fields, FIELDS_COLLECTION);
 	}
 
-	private JavaResourceField getField(String fieldName, int occurrence) {
-		for (JavaResourceField field : this.getFields()) {
+	private static JavaResourceField getField(Collection<JavaResourceField> fields, String fieldName, int occurrence) {
+		for (JavaResourceField field : fields) {
 			if (field.isFor(fieldName, occurrence)) {
 				return field;
 			}
@@ -504,7 +506,7 @@ final class SourceType
 				String fieldName = fragment.getName().getFullyQualifiedName();
 				int occurrence = counters.increment(fieldName);
 
-				JavaResourceField field = this.getField(fieldName, occurrence);
+				JavaResourceField field = getField(fieldsToRemove, fieldName, occurrence);
 				if (field == null) {
 					this.addField(this.buildField(fieldName, occurrence, fieldDeclaration, fragment));
 				} else {
@@ -658,6 +660,9 @@ final class SourceType
 	// ***** inherited field/method types *****
 	
 	private void initInheritedFieldTypes(ITypeBinding typeBinding) {
+		if (typeBinding == null) {
+			return;
+		}
 		ITypeBinding scTypeBinding = typeBinding.getSuperclass();
 		while (scTypeBinding != null && scTypeBinding.isParameterizedType()) {
 			// if the superclass is not parameterized, 
@@ -682,7 +687,7 @@ final class SourceType
 	}
 	
 	private void syncInheritedFieldTypes(ITypeBinding typeBinding) {
-		ITypeBinding scTypeBinding = typeBinding.getSuperclass();
+		ITypeBinding scTypeBinding = typeBinding == null ? null : typeBinding.getSuperclass();
 		Map<InheritedAttributeKey, JavaResourceTypeBinding> removedTypes = 
 				new HashMap<InheritedAttributeKey, JavaResourceTypeBinding>(this.inheritedFieldTypes);
 		while (scTypeBinding != null && scTypeBinding.isParameterizedType()) {
@@ -712,6 +717,9 @@ final class SourceType
 	}
 	
 	private void initInheritedMethodTypes(ITypeBinding typeBinding) {
+		if (typeBinding == null) {
+			return;
+		}
 		ITypeBinding scTypeBinding = typeBinding.getSuperclass();
 		while (scTypeBinding != null && scTypeBinding.isParameterizedType()) {
 			// if the superclass is not parameterized, 
@@ -741,7 +749,7 @@ final class SourceType
 	}
 	
 	private void syncInheritedMethodTypes(ITypeBinding typeBinding) {
-		ITypeBinding scTypeBinding = typeBinding.getSuperclass();
+		ITypeBinding scTypeBinding = typeBinding == null ? null : typeBinding.getSuperclass();
 		Map<InheritedAttributeKey, JavaResourceTypeBinding> removedTypes = 
 				new HashMap<InheritedAttributeKey, JavaResourceTypeBinding>(this.inheritedMethodTypes);
 		while (scTypeBinding != null && scTypeBinding.isParameterizedType()) {

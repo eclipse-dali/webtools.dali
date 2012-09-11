@@ -10,14 +10,13 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.VirtualBaseColumn;
-import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyBaseColumn;
 
 public abstract class AbstractJavaVirtualBaseColumn<O extends ReadOnlyBaseColumn.Owner, C extends ReadOnlyBaseColumn>
 	extends AbstractJavaVirtualNamedColumn<O, C>
-	implements VirtualBaseColumn, JavaReadOnlyBaseColumn
+	implements VirtualBaseColumn
 {
 	protected String specifiedTable;
 	protected String defaultTable;
@@ -35,7 +34,7 @@ public abstract class AbstractJavaVirtualBaseColumn<O extends ReadOnlyBaseColumn
 	protected boolean defaultUpdatable;
 
 
-	protected AbstractJavaVirtualBaseColumn(JavaJpaContextNode parent, O owner) {
+	protected AbstractJavaVirtualBaseColumn(JpaContextNode parent, O owner) {
 		super(parent, owner);
 	}
 

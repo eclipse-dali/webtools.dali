@@ -26,11 +26,12 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.java.FieldAccessor;
 import org.eclipse.jpt.jpa.core.internal.context.java.PropertyAccessor;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaPersistentAttribute2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmReadOnlyPersistentAttribute2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.PersistentAttribute2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyPersistentAttribute2_0;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -39,7 +40,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class VirtualOrmPersistentAttribute
 	extends AbstractOrmXmlContextNode
-	implements OrmReadOnlyPersistentAttribute2_0
+	implements OrmReadOnlyPersistentAttribute, ReadOnlyPersistentAttribute2_0
 {
 	protected final Accessor javaAccessor;
 
@@ -168,8 +169,8 @@ public class VirtualOrmPersistentAttribute
 		return (javaType == null) ? null : javaType.getAttributeFor(this.getJavaResourceAttribute());
 	}
 
-	protected JavaPersistentAttribute2_0 getJavaPersistentAttribute2_0() {
-		return (JavaPersistentAttribute2_0) this.getJavaPersistentAttribute();
+	protected PersistentAttribute2_0 getJavaPersistentAttribute2_0() {
+		return (PersistentAttribute2_0) this.getJavaPersistentAttribute();
 	}
 
 	protected JavaPersistentAttribute buildAnnotatedJavaAttribute() {

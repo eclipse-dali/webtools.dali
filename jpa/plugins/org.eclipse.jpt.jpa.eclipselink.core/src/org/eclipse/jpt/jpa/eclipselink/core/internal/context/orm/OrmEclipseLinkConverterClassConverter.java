@@ -19,8 +19,8 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterClassConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
@@ -37,7 +37,7 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 	private String fullyQualifiedConverterClass;
 
 
-	public OrmEclipseLinkConverterClassConverter(XmlContextNode parent, X xmlConverter) {
+	public OrmEclipseLinkConverterClassConverter(JpaContextNode parent, X xmlConverter) {
 		super(parent, xmlConverter);
 		this.converterClass = this.getXmlConverterClass();
 	}

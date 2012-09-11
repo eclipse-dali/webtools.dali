@@ -29,10 +29,10 @@ import org.eclipse.osgi.service.resolver.VersionRange;
 
 
 /**
- * Library validator for EclipseLink JAXB user libraries.
+ * Library validator for Oxm JAXB user libraries.
  * 
  * In order to validate that the correct eclipselink.jar is present in the user library, the version
- * class which appears in standard EclipseLink libraries will be examined and compared against the
+ * class which appears in standard Oxm libraries will be examined and compared against the
  * union of calculated version ranges, depending on the platform specified in the config.
  */
 public class ELJaxbUserLibraryValidator

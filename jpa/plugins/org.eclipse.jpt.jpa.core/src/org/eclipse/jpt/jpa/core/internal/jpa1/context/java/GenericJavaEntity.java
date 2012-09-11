@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,6 @@ import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaEntity;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.java.NullJavaCacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CacheableHolder2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.core.resource.java.EntityAnnotation;
 
@@ -22,7 +21,7 @@ public class GenericJavaEntity
 	extends AbstractJavaEntity
 {
 	// EclipseLink holds its cacheable in its caching
-	protected final JavaCacheable2_0 cacheable;
+	protected final Cacheable2_0 cacheable;
 
 
 	public GenericJavaEntity(JavaPersistentType parent, EntityAnnotation mappingAnnotation) {
@@ -48,11 +47,11 @@ public class GenericJavaEntity
 
 	// ********** cacheable **********
 
-	public JavaCacheable2_0 getCacheable() {
+	public Cacheable2_0 getCacheable() {
 		return this.cacheable;
 	}
 
-	protected JavaCacheable2_0 buildCacheable() {
+	protected Cacheable2_0 buildCacheable() {
 		return this.isJpa2_0Compatible() ?
 				this.getJpaFactory2_0().buildJavaCacheable(this) :
 				new NullJavaCacheable2_0(this);

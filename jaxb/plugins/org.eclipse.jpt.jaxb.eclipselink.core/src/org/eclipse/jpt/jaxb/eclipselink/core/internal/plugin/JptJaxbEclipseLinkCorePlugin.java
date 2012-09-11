@@ -19,7 +19,7 @@ public class JptJaxbEclipseLinkCorePlugin
 	private static JptJaxbEclipseLinkCorePlugin INSTANCE;
 
 	/**
-	 * Return the singleton Dali JAXB EclipseLink core plug-in.
+	 * Return the singleton Dali JAXB Oxm core plug-in.
 	 */
 	public static JptJaxbEclipseLinkCorePlugin instance() {
 		return INSTANCE;

@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheable2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCacheableHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.Cacheable2_0Annotation;
 
@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.jpa2.resource.java.Cacheable2_0Annotation;
  */
 public class GenericJavaCacheable2_0
 	extends AbstractJavaJpaContextNode
-	implements JavaCacheable2_0
+	implements Cacheable2_0
 {
 	protected Boolean specifiedCacheable;
 	protected boolean defaultCacheable;

@@ -34,6 +34,7 @@ import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
+import org.eclipse.jpt.jpa.core.context.Orderable;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -42,17 +43,18 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
+import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeOverrideContainer;
+import org.eclipse.jpt.jpa.core.context.orm.OrmBaseEnumeratedConverter;
+import org.eclipse.jpt.jpa.core.context.orm.OrmBaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmMultiRelationshipMapping;
-import org.eclipse.jpt.jpa.core.context.orm.OrmOrderable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.orm.OrmRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -67,11 +69,9 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.context.MapKeyJoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.Orderable2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.PersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmCollectionMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMapKeyEnumeratedConverter2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMapKeyTemporalConverter2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmPersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlMultiRelationshipMapping;
 import org.eclipse.jpt.jpa.core.resource.orm.MapKey;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
@@ -91,7 +91,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	extends AbstractOrmRelationshipMapping<X>
 	implements OrmMultiRelationshipMapping, OrmCollectionMapping2_0
 {
-	protected final OrmOrderable orderable;
+	protected final Orderable orderable;
 
 	protected String specifiedMapKey;
 	protected boolean noMapKey = false;
@@ -117,8 +117,8 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 
 
 	protected static final OrmConverter.Adapter[] MAP_KEY_CONVERTER_ADAPTER_ARRAY = new OrmConverter.Adapter[] {
-		OrmMapKeyEnumeratedConverter2_0.Adapter.instance(),
-		OrmMapKeyTemporalConverter2_0.Adapter.instance()
+		OrmBaseEnumeratedConverter.MapKeyAdapter.instance(),
+		OrmBaseTemporalConverter.MapKeyAdapter.instance()
 	};
 	protected static final Iterable<OrmConverter.Adapter> MAP_KEY_CONVERTER_ADAPTERS = new ArrayIterable<OrmConverter.Adapter>(MAP_KEY_CONVERTER_ADAPTER_ARRAY);
 
@@ -185,11 +185,11 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 
 	// ********** orderable **********
 
-	public OrmOrderable getOrderable() {
+	public Orderable getOrderable() {
 		return this.orderable;
 	}
 
-	protected OrmOrderable buildOrderable() {
+	protected Orderable buildOrderable() {
 		return this.isOrmXml2_0Compatible() ?
 				this.getContextNodeFactory2_0().buildOrmOrderable(this, this.buildOrderableOwner()) :
 				this.getContextNodeFactory().buildOrmOrderable(this);
@@ -208,7 +208,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		public Table resolveDbTable(String tableName) {
 			return this.getRelationshipStrategy().resolveDbTable(tableName);
 		}
-		protected OrmRelationshipStrategy getRelationshipStrategy() {
+		protected RelationshipStrategy getRelationshipStrategy() {
 			return AbstractOrmMultiRelationshipMapping.this.getRelationship().getStrategy();
 		}
 	}
@@ -867,7 +867,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 
 	@Override
 	protected String getMetamodelFieldTypeName() {
-		return ((OrmPersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldTypeName();
+		return ((PersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldTypeName();
 	}
 
 	@Override
@@ -877,7 +877,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	}
 
 	protected void addMetamodelFieldMapKeyTypeArgumentNameTo(ArrayList<String> typeArgumentNames) {
-		String keyTypeName = ((OrmPersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldMapKeyTypeName();
+		String keyTypeName = ((PersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelContainerFieldMapKeyTypeName();
 		if (keyTypeName != null) {
 			typeArgumentNames.add(keyTypeName);
 		}
@@ -1068,32 +1068,32 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	// ********** completion proposals **********
 
 	@Override
-	public Iterable<String> getXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getXmlCompletionProposals(pos);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.orderable.getXmlCompletionProposals(pos);
+		result = this.orderable.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		if (this.mapKeyNameTouches(pos)) {
 			return this.getCandidateMapKeyNames();
 		}
-		result = this.mapKeyColumn.getXmlCompletionProposals(pos);
+		result = this.mapKeyColumn.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.mapKeyConverter.getXmlCompletionProposals(pos);
+		result = this.mapKeyConverter.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.mapKeyAttributeOverrideContainer.getXmlCompletionProposals(pos);
+		result = this.mapKeyAttributeOverrideContainer.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		for (OrmJoinColumn joinColumn : this.getMapKeyJoinColumns()) {
-			result = joinColumn.getXmlCompletionProposals(pos);
+			result = joinColumn.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}
@@ -1132,7 +1132,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 			return AbstractOrmMultiRelationshipMapping.this.getValidationTextRange();
 		}
 
-		protected OrmRelationshipStrategy getRelationshipStrategy() {
+		protected RelationshipStrategy getRelationshipStrategy() {
 			return AbstractOrmMultiRelationshipMapping.this.getRelationship().getStrategy();
 		}
 

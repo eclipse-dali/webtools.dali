@@ -65,7 +65,7 @@ public class PersistenceXmlResourceProvider
 	protected void populateRoot(Object config) {
 		IDataModel dataModel = (IDataModel) config;
 		XmlPersistence persistence = PersistenceFactory.eINSTANCE.createXmlPersistence();
-		persistence.setVersion(dataModel.getStringProperty(VERSION));
+		persistence.setDocumentVersion(dataModel.getStringProperty(VERSION));
 		XmlPersistenceUnit persistenceUnit = PersistenceFactory.eINSTANCE.createXmlPersistenceUnit();
 		persistenceUnit.setName(getProject().getName());
 		persistence.getPersistenceUnits().add(persistenceUnit);

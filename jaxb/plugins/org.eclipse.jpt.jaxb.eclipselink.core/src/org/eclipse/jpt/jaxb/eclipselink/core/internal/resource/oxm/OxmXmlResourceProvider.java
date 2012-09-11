@@ -14,14 +14,14 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jpt.common.core.internal.resource.xml.AbstractJptXmlResourceProvider;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings;
-import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EclipseLink;
+import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.Oxm;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmFactory;
 
 public class OxmXmlResourceProvider
 		extends AbstractJptXmlResourceProvider {
 	
 	/**
-	 * (Convenience method) Returns an OXM resource model provider for 
+	 * (Convenience method) Returns an Oxm resource model provider for 
 	 * the given file.
 	 */
 	public static OxmXmlResourceProvider getXmlResourceProvider(IFile file) {
@@ -29,7 +29,7 @@ public class OxmXmlResourceProvider
 	}
 	
 	/**
-	 * (Convenience method) Returns an OXM resource model provider for
+	 * (Convenience method) Returns an Oxm resource model provider for
 	 * the given project in the specified runtime location
 	 */
 	public static OxmXmlResourceProvider getXmlResourceProvider(IProject project, IPath runtimePath) {
@@ -49,7 +49,7 @@ public class OxmXmlResourceProvider
 	@Override
 	protected void populateRoot(Object config) {
 		EXmlBindings xmlBindings = OxmFactory.eINSTANCE.createEXmlBindings();
-		xmlBindings.setVersion(EclipseLink.SCHEMA_VERSION_2_4); // TODO - for now
+		xmlBindings.setDocumentVersion(Oxm.SCHEMA_VERSION_2_4); // TODO - for now
 		getResourceContents().add(xmlBindings);
 	}
 }

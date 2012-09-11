@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,8 +11,8 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTimeOfDay;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkCaching;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTimeOfDay;
 
 public class EclipseLinkOrmTimeOfDay
@@ -27,7 +27,7 @@ public class EclipseLinkOrmTimeOfDay
 	protected Integer millisecond;
 
 
-	public EclipseLinkOrmTimeOfDay(OrmEclipseLinkCaching parent, XmlTimeOfDay xmlTimeOfDay) {
+	public EclipseLinkOrmTimeOfDay(EclipseLinkCaching parent, XmlTimeOfDay xmlTimeOfDay) {
 		super(parent);
 		this.xmlTimeOfDay = xmlTimeOfDay;
 		this.hour = xmlTimeOfDay.getHour();
@@ -124,11 +124,11 @@ public class EclipseLinkOrmTimeOfDay
 	// ********** misc **********
 
 	@Override
-	public OrmEclipseLinkCaching getParent() {
-		return (OrmEclipseLinkCaching) super.getParent();
+	public EclipseLinkCaching getParent() {
+		return (EclipseLinkCaching) super.getParent();
 	}
 
-	protected OrmEclipseLinkCaching getCaching() {
+	protected EclipseLinkCaching getCaching() {
 		return this.getParent();
 	}
 

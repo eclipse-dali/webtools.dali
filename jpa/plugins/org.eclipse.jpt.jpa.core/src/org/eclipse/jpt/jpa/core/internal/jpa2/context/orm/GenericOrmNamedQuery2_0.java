@@ -10,9 +10,10 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 
 import java.util.List;
+
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmQuery;
 import org.eclipse.jpt.jpa.core.jpa2.context.LockModeType2_0;
@@ -37,7 +38,7 @@ public class GenericOrmNamedQuery2_0
 	private LockModeType2_0 defaultLockMode;
 
 
-	public GenericOrmNamedQuery2_0(XmlContextNode parent, XmlNamedQuery xmlNamedQuery) {
+	public GenericOrmNamedQuery2_0(JpaContextNode parent, XmlNamedQuery xmlNamedQuery) {
 		super(parent, xmlNamedQuery);
 		this.specifiedLockMode = this.buildSpecifiedLockMode();
 	}

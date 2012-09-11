@@ -18,13 +18,13 @@ import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
+import org.eclipse.jpt.jpa.core.context.orm.OrmBaseEnumeratedConverter;
+import org.eclipse.jpt.jpa.core.context.orm.OrmBaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmColumnMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
-import org.eclipse.jpt.jpa.core.context.orm.OrmEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmLobConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.orm.OrmTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmAttributeMapping;
@@ -59,8 +59,8 @@ public class OrmEclipseLinkArrayMapping2_3
 	protected OrmConverter converter;  // never null
 
 	protected static final OrmConverter.Adapter[] CONVERTER_ADAPTER_ARRAY = new OrmConverter.Adapter[] {
-		OrmEnumeratedConverter.Adapter.instance(),
-		OrmTemporalConverter.BasicAdapter.instance(),
+		OrmBaseEnumeratedConverter.BasicAdapter.instance(),
+		OrmBaseTemporalConverter.BasicAdapter.instance(),
 		OrmLobConverter.Adapter.instance(),
 		OrmEclipseLinkConvert.Adapter.instance()
 	};
@@ -349,16 +349,16 @@ public class OrmEclipseLinkArrayMapping2_3
 	// ********** completion proposals **********
 
 	@Override
-	public Iterable<String> getXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getXmlCompletionProposals(pos);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.column.getXmlCompletionProposals(pos);
+		result = this.column.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.converter.getXmlCompletionProposals(pos);
+		result = this.converter.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}

@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.core.resource.java.RelationshipMappingAnnotation;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.3
  * @since 2.0
  */
 public interface JavaRelationshipMapping
@@ -30,8 +30,6 @@ public interface JavaRelationshipMapping
 	RelationshipMappingAnnotation getMappingAnnotation();
 
 	RelationshipMappingAnnotation getAnnotationForUpdate();
-
-	JavaCascade getCascade();
 
 	JavaMappingRelationship getRelationship();
 }

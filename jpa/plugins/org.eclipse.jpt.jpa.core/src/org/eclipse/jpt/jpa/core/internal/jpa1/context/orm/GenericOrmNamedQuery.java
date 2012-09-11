@@ -10,8 +10,9 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import java.util.List;
+
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmQuery;
@@ -28,7 +29,7 @@ public class GenericOrmNamedQuery
 	extends AbstractOrmQuery<XmlNamedQuery>
 	implements OrmNamedQuery
 {
-	public GenericOrmNamedQuery(XmlContextNode parent, XmlNamedQuery resourceNamedQuery) {
+	public GenericOrmNamedQuery(JpaContextNode parent, XmlNamedQuery resourceNamedQuery) {
 		super(parent, resourceNamedQuery);
 	}
 

@@ -24,11 +24,12 @@ import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPrimaryKeyJoinColumnRelationship;
+import org.eclipse.jpt.jpa.core.context.orm.OrmPrimaryKeyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.OneToOnePrimaryKeyJoinColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationDescriptionMessages;
+import org.eclipse.jpt.jpa.core.jpa2.context.MappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyOverrideRelationship2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmMappingPrimaryKeyJoinColumnRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlPrimaryKeyJoinColumnContainer;
@@ -38,7 +39,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 	extends AbstractOrmXmlContextNode
-	implements OrmMappingPrimaryKeyJoinColumnRelationshipStrategy2_0
+	implements MappingRelationshipStrategy2_0, OrmPrimaryKeyJoinColumnRelationshipStrategy
 {
 	protected final ContextListContainer<OrmPrimaryKeyJoinColumn, XmlPrimaryKeyJoinColumn> primaryKeyJoinColumnContainer;
 	protected final ReadOnlyJoinColumn.Owner primaryKeyJoinColumnOwner;
@@ -239,13 +240,13 @@ public class GenericOrmPrimaryKeyJoinColumnRelationshipStrategy
 	// ********** completion proposals **********
 
 	@Override
-	public Iterable<String> getXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getXmlCompletionProposals(pos);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		for (OrmPrimaryKeyJoinColumn column : this.getPrimaryKeyJoinColumns()) {
-			result = column.getXmlCompletionProposals(pos);
+			result = column.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}

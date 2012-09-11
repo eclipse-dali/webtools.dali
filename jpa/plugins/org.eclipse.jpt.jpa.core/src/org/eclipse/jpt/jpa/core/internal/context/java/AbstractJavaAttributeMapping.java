@@ -32,7 +32,7 @@ import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaPersistentAttribute2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.PersistentAttribute2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -284,7 +284,7 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 	}
 
 	public String getMetamodelTypeName() {
-		return ((JavaPersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelTypeName();
+		return ((PersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelTypeName();
 	}
 
 	protected String getMetamodelFieldName() {

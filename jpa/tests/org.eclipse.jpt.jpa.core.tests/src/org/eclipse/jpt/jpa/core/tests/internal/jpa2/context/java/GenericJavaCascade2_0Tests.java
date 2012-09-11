@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,8 +16,8 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaCascade2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOneToOneMapping2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.Cascade2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OneToOne2_0Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.OneToOneAnnotation;
@@ -60,8 +60,8 @@ public class GenericJavaCascade2_0Tests
 		OneToOne2_0Annotation annotation = (OneToOne2_0Annotation) resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
-		JavaOneToOneMapping2_0 mapping = (JavaOneToOneMapping2_0) persistentAttribute.getMapping();
-		JavaCascade2_0 cascade = (JavaCascade2_0) mapping.getCascade();
+		OneToOneMapping2_0 mapping = (OneToOneMapping2_0) persistentAttribute.getMapping();
+		Cascade2_0 cascade = (Cascade2_0) mapping.getCascade();
 		
 		assertFalse(cascade.isDetach());
 		assertFalse(annotation.isCascadeDetach());
@@ -88,8 +88,8 @@ public class GenericJavaCascade2_0Tests
 		OneToOne2_0Annotation annotation = (OneToOne2_0Annotation) resourceField.getAnnotation(OneToOneAnnotation.ANNOTATION_NAME);
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
-		JavaOneToOneMapping2_0 mapping = (JavaOneToOneMapping2_0) persistentAttribute.getMapping();
-		JavaCascade2_0 cascade = (JavaCascade2_0) mapping.getCascade();
+		OneToOneMapping2_0 mapping = (OneToOneMapping2_0) persistentAttribute.getMapping();
+		Cascade2_0 cascade = (Cascade2_0) mapping.getCascade();
 		
 		assertFalse(cascade.isDetach());
 		assertFalse(annotation.isCascadeDetach());

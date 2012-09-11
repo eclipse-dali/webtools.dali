@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
@@ -58,7 +57,7 @@ public abstract class AbstractJavaElementQName
 	}
 	
 	@Override
-	public Iterable<String> getNameProposals(Filter<String> filter) {
+	public Iterable<String> getNameProposals() {
 		XsdTypeDefinition xsdType = getJaxbClassMapping().getXsdTypeDefinition();
 		if (xsdType == null) {
 			return EmptyIterable.instance();
@@ -67,12 +66,12 @@ public abstract class AbstractJavaElementQName
 		XmlElementWrapper elementWrapper = getElementWrapper();
 		
 		if (elementWrapper == null) {
-			return xsdType.getElementNameProposals(getNamespace(), filter);
+			return xsdType.getElementNameProposals(getNamespace());
 		}
 		else {
 			XsdElementDeclaration xsdWrapperElement = elementWrapper.getXsdElementDeclaration();
 			if (xsdWrapperElement != null) {
-				return xsdWrapperElement.getElementNameProposals(getNamespace(), filter);
+				return xsdWrapperElement.getElementNameProposals(getNamespace());
 			}
 		}
 		
@@ -87,9 +86,9 @@ public abstract class AbstractJavaElementQName
 	}
 	
 	@Override
-	public Iterable<String> getNamespaceProposals(Filter<String> filter) {
+	public Iterable<String> getNamespaceProposals() {
 		XsdSchema schema = this.getXsdSchema();
-		return (schema == null) ? EmptyIterable.<String>instance() : schema.getNamespaceProposals(filter);
+		return (schema == null) ? EmptyIterable.<String>instance() : schema.getNamespaceProposals();
 	}
 
 	@Override

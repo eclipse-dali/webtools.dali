@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2011  Oracle. All rights reserved.
+ *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -9,10 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.xsd;
 
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.xsd.XSDEnumerationFacet;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
@@ -96,15 +94,13 @@ public class XsdSimpleTypeDefinition
 		return EmptyIterable.instance();
 	}
 	
-	public Iterable<String> getEnumValueProposals(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(
-				new FilteringIterable<String>(
+	public Iterable<String> getEnumValueProposals() {
+		return StringTools.convertToJavaStringLiteralContents(
 					new TransformationIterable<XSDEnumerationFacet, String>(getXSDComponent().getEnumerationFacets()) {
 						@Override
 						protected String transform(XSDEnumerationFacet enumFacet) {
 							return enumFacet.getLexicalValue();
 						}
-					},
-					filter));
+					});
 	}
 }

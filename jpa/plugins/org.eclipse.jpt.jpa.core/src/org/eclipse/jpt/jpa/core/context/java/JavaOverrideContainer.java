@@ -28,7 +28,7 @@ import org.eclipse.jpt.jpa.core.context.VirtualOverride;
  * @since 2.3
  */
 public interface JavaOverrideContainer
-	extends OverrideContainer, JavaJpaContextNode
+	extends OverrideContainer
 {
 	/**
 	 * Return the names of all the container's overrides, specified and virtual.
@@ -41,8 +41,6 @@ public interface JavaOverrideContainer
 	Iterable<String> getOverrideNames();
 
 	// covariant overrides
-	ListIterable<? extends JavaReadOnlyOverride> getOverrides();
-	JavaReadOnlyOverride getOverrideNamed(String name);
 	ListIterable<? extends JavaOverride> getSpecifiedOverrides();
 	JavaOverride getSpecifiedOverride(int index);
 	JavaOverride getSpecifiedOverrideNamed(String name);

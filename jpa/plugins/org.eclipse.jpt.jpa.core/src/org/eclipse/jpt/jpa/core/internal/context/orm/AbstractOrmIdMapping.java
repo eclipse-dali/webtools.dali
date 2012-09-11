@@ -19,6 +19,7 @@ import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
+import org.eclipse.jpt.jpa.core.context.orm.OrmBaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmColumnMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
@@ -26,7 +27,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratedValue;
 import org.eclipse.jpt.jpa.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.jpa.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.orm.OrmTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
@@ -66,7 +66,7 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 
 
 	protected static final OrmConverter.Adapter[] CONVERTER_ADAPTER_ARRAY = new OrmConverter.Adapter[] {
-		OrmTemporalConverter.BasicAdapter.instance(),
+		OrmBaseTemporalConverter.BasicAdapter.instance(),
 	};
 	protected static final Iterable<OrmConverter.Adapter> CONVERTER_ADAPTERS = new ArrayIterable<OrmConverter.Adapter>(CONVERTER_ADAPTER_ARRAY);
 
@@ -451,26 +451,26 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 	// ********** completion proposals **********
 
 	@Override
-	public Iterable<String> getXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getXmlCompletionProposals(pos);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.column.getXmlCompletionProposals(pos);
+		result = this.column.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
-		result = this.generatorContainer.getXmlCompletionProposals(pos);
+		result = this.generatorContainer.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		if (this.generatedValue != null) {
-			result = this.generatedValue.getXmlCompletionProposals(pos);
+			result = this.generatedValue.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}
 		}
-		result = this.converter.getXmlCompletionProposals(pos);
+		result = this.converter.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}

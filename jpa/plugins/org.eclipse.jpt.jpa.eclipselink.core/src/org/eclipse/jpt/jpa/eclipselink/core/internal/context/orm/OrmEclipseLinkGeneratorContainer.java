@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.jpa.core.context.Generator;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmGeneratorContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkGeneratorContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmUuidGenerator;
@@ -28,7 +28,7 @@ public class OrmEclipseLinkGeneratorContainer
 	protected OrmUuidGenerator uuidGenerator;
 
 
-	public OrmEclipseLinkGeneratorContainer(XmlContextNode parent, XmlGeneratorContainer2_4 xmlGeneratorContainer) {
+	public OrmEclipseLinkGeneratorContainer(JpaContextNode parent, XmlGeneratorContainer2_4 xmlGeneratorContainer) {
 		super(parent, xmlGeneratorContainer);
 		this.uuidGenerator = this.buildUuidGenerator();
 	}
@@ -122,13 +122,13 @@ public class OrmEclipseLinkGeneratorContainer
 	// ********** completion proposals **********
 
 	@Override
-	public Iterable<String> getXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getXmlCompletionProposals(pos);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 		if (this.uuidGenerator != null) {
-			result = this.uuidGenerator.getXmlCompletionProposals(pos);
+			result = this.uuidGenerator.getCompletionProposals(pos);
 			if (result != null) {
 				return result;
 			}

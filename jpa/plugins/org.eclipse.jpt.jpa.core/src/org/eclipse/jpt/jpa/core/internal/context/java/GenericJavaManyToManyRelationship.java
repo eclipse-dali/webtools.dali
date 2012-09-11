@@ -10,22 +10,18 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
+import org.eclipse.jpt.jpa.core.context.MappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
+import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToManyRelationship;
-import org.eclipse.jpt.jpa.core.context.java.JavaMappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaMappingJoinTableRelationshipStrategy;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMappingJoinTableRelationshipStrategy2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMappingMappedByRelationshipStrategy2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaMappingRelationshipStrategy2_0;
 import org.eclipse.jpt.jpa.core.resource.java.OwnableRelationshipMappingAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -34,9 +30,9 @@ public class GenericJavaManyToManyRelationship
 	extends AbstractJavaMappingRelationship<JavaManyToManyMapping>
 	implements JavaManyToManyRelationship
 {
-	protected final JavaMappingMappedByRelationshipStrategy2_0 mappedByStrategy;
+	protected final MappedByRelationshipStrategy mappedByStrategy;
 
-	protected final JavaMappingJoinTableRelationshipStrategy2_0 joinTableStrategy;
+	protected final JavaJoinTableRelationshipStrategy joinTableStrategy;
 
 
 	public GenericJavaManyToManyRelationship(JavaManyToManyMapping parent) {
@@ -68,7 +64,7 @@ public class GenericJavaManyToManyRelationship
 	// ********** strategy **********
 
 	@Override
-	protected JavaMappingRelationshipStrategy2_0 buildStrategy() {
+	protected RelationshipStrategy buildStrategy() {
 		if (this.mappedByStrategy.getMappedByAttribute() != null) {
 			return this.mappedByStrategy;
 		}
@@ -78,7 +74,7 @@ public class GenericJavaManyToManyRelationship
 
 	// ********** mapped by strategy **********
 
-	public JavaMappedByRelationshipStrategy getMappedByStrategy() {
+	public MappedByRelationshipStrategy getMappedByStrategy() {
 		return this.mappedByStrategy;
 	}
 
@@ -96,7 +92,7 @@ public class GenericJavaManyToManyRelationship
 		return mapping.getKey() == MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	protected JavaMappingMappedByRelationshipStrategy2_0 buildMappedByStrategy() {
+	protected MappedByRelationshipStrategy buildMappedByStrategy() {
 		return new GenericJavaMappedByRelationshipStrategy(this);
 	}
 
@@ -121,7 +117,7 @@ public class GenericJavaManyToManyRelationship
 		return this.getMappedByStrategy().getMappedByAttribute() == null;
 	}
 
-	protected JavaMappingJoinTableRelationshipStrategy2_0 buildJoinTableStrategy() {
+	protected JavaJoinTableRelationshipStrategy buildJoinTableStrategy() {
 		return new GenericJavaMappingJoinTableRelationshipStrategy(this);
 	}
 
@@ -173,18 +169,18 @@ public class GenericJavaManyToManyRelationship
 	// ********** Java completion proposals **********
 
 	@Override
-	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 
-		result = this.mappedByStrategy.getJavaCompletionProposals(pos, filter, astRoot);
+		result = this.mappedByStrategy.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}
 
-		return this.joinTableStrategy.getJavaCompletionProposals(pos, filter, astRoot);
+		return this.joinTableStrategy.getCompletionProposals(pos);
 	}
 
 

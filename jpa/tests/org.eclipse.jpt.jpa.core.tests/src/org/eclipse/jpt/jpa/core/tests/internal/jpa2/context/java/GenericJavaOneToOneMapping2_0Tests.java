@@ -36,14 +36,13 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.DerivedIdentity2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.ManyToOneMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.OneToOneRelationship2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaDerivedIdentity2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaManyToOneMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOneToOneMapping2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrphanRemovable2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaOrphanRemovalHolder2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovable2_0;
+import org.eclipse.jpt.jpa.core.jpa2.context.OrphanRemovalHolder2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollection2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
@@ -546,7 +545,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
 		JavaPersistentType contextType = getJavaPersistentType();
 		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
-		JavaOneToOneMapping2_0 contextMapping = (JavaOneToOneMapping2_0) contextAttribute.getMapping();
+		OneToOneMapping2_0 contextMapping = (OneToOneMapping2_0) contextAttribute.getMapping();
 		
 		assertNotNull(resourceField.getAnnotation(JPA.ID));
 		assertTrue(contextMapping.getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
@@ -568,7 +567,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
 		JavaPersistentType contextType = getJavaPersistentType();
 		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
-		JavaOneToOneMapping2_0 contextMapping = (JavaOneToOneMapping2_0) contextAttribute.getMapping();
+		OneToOneMapping2_0 contextMapping = (OneToOneMapping2_0) contextAttribute.getMapping();
 		
 		assertNotNull(resourceField.getAnnotation(JPA.ID));
 		assertTrue(contextMapping.getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
@@ -588,7 +587,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
 		JavaPersistentType contextType = getJavaPersistentType();
 		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
-		JavaOneToOneMapping2_0 contextMapping = (JavaOneToOneMapping2_0) contextAttribute.getMapping();
+		OneToOneMapping2_0 contextMapping = (OneToOneMapping2_0) contextAttribute.getMapping();
 		
 		assertNotNull(resourceField.getAnnotation(JPA2_0.MAPS_ID));
 		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
@@ -617,7 +616,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
 		JavaPersistentType contextType = getJavaPersistentType();
 		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
-		JavaOneToOneMapping2_0 contextMapping = (JavaOneToOneMapping2_0) contextAttribute.getMapping();
+		OneToOneMapping2_0 contextMapping = (OneToOneMapping2_0) contextAttribute.getMapping();
 		
 		assertNotNull(resourceField.getAnnotation(JPA2_0.MAPS_ID));
 		assertNull(contextMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
@@ -644,8 +643,8 @@ public class GenericJavaOneToOneMapping2_0Tests
 		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
 		JavaPersistentType contextType = getJavaPersistentType();
 		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
-		JavaOneToOneMapping2_0 contextMapping = (JavaOneToOneMapping2_0) contextAttribute.getMapping();
-		JavaDerivedIdentity2_0 derivedIdentity = contextMapping.getDerivedIdentity();
+		OneToOneMapping2_0 contextMapping = (OneToOneMapping2_0) contextAttribute.getMapping();
+		DerivedIdentity2_0 derivedIdentity = contextMapping.getDerivedIdentity();
 		
 		assertNotNull(resourceField.getAnnotation(JPA2_0.MAPS_ID));
 		assertNull(resourceField.getAnnotation(JPA.ID));
@@ -684,8 +683,8 @@ public class GenericJavaOneToOneMapping2_0Tests
 		JavaResourceField resourceField  = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
 		JavaPersistentType contextType = getJavaPersistentType();
 		JavaPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
-		JavaOneToOneMapping2_0 contextMapping = (JavaOneToOneMapping2_0) contextAttribute.getMapping();
-		JavaDerivedIdentity2_0 derivedIdentity = contextMapping.getDerivedIdentity();
+		OneToOneMapping2_0 contextMapping = (OneToOneMapping2_0) contextAttribute.getMapping();
+		DerivedIdentity2_0 derivedIdentity = contextMapping.getDerivedIdentity();
 		
 		assertNotNull(resourceField.getAnnotation(JPA2_0.MAPS_ID));
 		assertNull(resourceField.getAnnotation(JPA.ID));
@@ -726,27 +725,27 @@ public class GenericJavaOneToOneMapping2_0Tests
 		getJpaProject().synchronizeContextModel();
 		
 		assertNull(resourceField.getAnnotation(JPA.ID));
-		assertFalse(((JavaOneToOneMapping2_0) contextAttribute.getMapping()).
+		assertFalse(((OneToOneMapping2_0) contextAttribute.getMapping()).
 				getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
 		assertNotNull(resourceField.getAnnotation(JPA2_0.MAPS_ID));
 		assertEquals("foo", ((MapsId2_0Annotation) resourceField.getAnnotation(JPA2_0.MAPS_ID)).getValue());
-		assertEquals("foo", ((JavaOneToOneMapping2_0) contextAttribute.getMapping()).
+		assertEquals("foo", ((OneToOneMapping2_0) contextAttribute.getMapping()).
 				getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
 		contextAttribute.setMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-		assertFalse(((JavaManyToOneMapping2_0) contextAttribute.getMapping()).
+		assertFalse(((ManyToOneMapping2_0) contextAttribute.getMapping()).
 				getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
 		assertNotNull(resourceField.getAnnotation(JPA2_0.MAPS_ID));
 		assertEquals("foo", ((MapsId2_0Annotation) resourceField.getAnnotation(JPA2_0.MAPS_ID)).getValue());
-		assertEquals("foo", ((JavaManyToOneMapping2_0) contextAttribute.getMapping()).
+		assertEquals("foo", ((ManyToOneMapping2_0) contextAttribute.getMapping()).
 				getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 		
 		contextAttribute.setMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-		assertFalse(((JavaOneToOneMapping2_0) contextAttribute.getMapping()).
+		assertFalse(((OneToOneMapping2_0) contextAttribute.getMapping()).
 				getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
 		assertNotNull(resourceField.getAnnotation(JPA2_0.MAPS_ID));
 		assertEquals("foo", ((MapsId2_0Annotation) resourceField.getAnnotation(JPA2_0.MAPS_ID)).getValue());
-		assertEquals("foo", ((JavaOneToOneMapping2_0) contextAttribute.getMapping()).
+		assertEquals("foo", ((OneToOneMapping2_0) contextAttribute.getMapping()).
 				getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedIdAttributeName());
 	}
 	
@@ -832,8 +831,8 @@ public class GenericJavaOneToOneMapping2_0Tests
 		assertEquals("foo", stateFooMapping.getName());
 	}
 	
-	private JavaOrphanRemovable2_0 getOrphanRemovalOf(OneToOneMapping2_0 oneToOneMapping) {
-		return ((JavaOrphanRemovalHolder2_0) oneToOneMapping).getOrphanRemoval();
+	private OrphanRemovable2_0 getOrphanRemovalOf(OneToOneMapping2_0 oneToOneMapping) {
+		return ((OrphanRemovalHolder2_0) oneToOneMapping).getOrphanRemoval();
 	}
 
 	public void testDefaultOneToOneGetDefaultOrphanRemoval() throws Exception {
@@ -860,7 +859,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToOneMapping2_0 oneToOneMapping = (OneToOneMapping2_0) persistentAttribute.getMapping();
-		JavaOrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToOneMapping);
+		OrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToOneMapping);
 		
 		assertEquals(false, mappingsOrphanRemoval.isOrphanRemoval());
 		
@@ -874,7 +873,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToOneMapping2_0 oneToOneMapping = (OneToOneMapping2_0) persistentAttribute.getMapping();
-		 JavaOrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToOneMapping);
+		OrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToOneMapping);
 
 		assertNull(mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 		
@@ -902,7 +901,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToOneMapping2_0 oneToOneMapping = (OneToOneMapping2_0) persistentAttribute.getMapping();
-		 JavaOrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToOneMapping);
+		OrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToOneMapping);
 		 
 		assertNull(mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 		
@@ -923,7 +922,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToOneMapping2_0 oneToOneMapping = (OneToOneMapping2_0) persistentAttribute.getMapping();
-		 JavaOrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToOneMapping);
+		OrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToOneMapping);
 		 
 		assertNull(mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 		
@@ -948,7 +947,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().getAttributes().iterator().next();
 		OneToOneMapping2_0 oneToOneMapping = (OneToOneMapping2_0) persistentAttribute.getMapping();
-		 JavaOrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToOneMapping);
+		OrphanRemovable2_0 mappingsOrphanRemoval = this.getOrphanRemovalOf(oneToOneMapping);
 
 		assertNull(mappingsOrphanRemoval.getSpecifiedOrphanRemoval());
 

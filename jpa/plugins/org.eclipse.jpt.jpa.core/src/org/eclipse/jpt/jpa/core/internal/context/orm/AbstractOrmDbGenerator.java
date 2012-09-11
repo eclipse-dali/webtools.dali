@@ -13,9 +13,9 @@ import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.DbGenerator;
 import org.eclipse.jpt.jpa.core.context.Generator;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaDbGenerator;
-import org.eclipse.jpt.jpa.core.context.orm.OrmDbGenerator;
+import org.eclipse.jpt.jpa.core.context.orm.OrmGenerator;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlGenerator;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Database;
@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.db.SchemaContainer;
  */
 public abstract class AbstractOrmDbGenerator<X extends XmlGenerator>
 	extends AbstractOrmGenerator<X>
-	implements OrmDbGenerator
+	implements DbGenerator
 {
 
 	protected Integer specifiedInitialValue;
@@ -37,7 +37,7 @@ public abstract class AbstractOrmDbGenerator<X extends XmlGenerator>
 	protected int defaultAllocationSize;
 
 
-	protected AbstractOrmDbGenerator(XmlContextNode parent, X xmlGenerator) {
+	protected AbstractOrmDbGenerator(JpaContextNode parent, X xmlGenerator) {
 		super(parent, xmlGenerator);
 		this.specifiedInitialValue = xmlGenerator.getInitialValue();
 		this.specifiedAllocationSize = xmlGenerator.getAllocationSize();
@@ -148,8 +148,8 @@ public abstract class AbstractOrmDbGenerator<X extends XmlGenerator>
 	 * table, schema, catalog, pkColumnName, valueColumnName
 	 */
 	@Override
-	protected Iterable<String> getConnectedXmlCompletionProposals(int pos) {
-		Iterable<String> result = super.getConnectedXmlCompletionProposals(pos);
+	protected Iterable<String> getConnectedCompletionProposals(int pos) {
+		Iterable<String> result = super.getConnectedCompletionProposals(pos);
 		if (result != null) {
 			return result;
 		}

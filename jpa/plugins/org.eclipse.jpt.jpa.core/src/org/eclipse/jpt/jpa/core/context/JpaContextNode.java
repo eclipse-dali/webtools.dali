@@ -49,6 +49,8 @@ public interface JpaContextNode
 	 */
 	MappingFile.Root getMappingFileRoot();
 
+	JpaContextNode getParent();
+
 
 	// ********** database stuff **********
 
@@ -67,6 +69,15 @@ public interface JpaContextNode
 	 * Add to the list of current validation messages
 	 */
 	void validate(List<IMessage> messages, IReporter reporter);
+
+
+	// *********** completion proposals ***********
+
+	/**
+	 * Return the content assist proposals for the specified position
+	 * in the file.
+	 */
+	Iterable<String> getCompletionProposals(int pos);
 
 
 	// ********** synchronize/update **********

@@ -14,13 +14,14 @@ import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
+import org.eclipse.jpt.jpa.core.context.VirtualOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAssociationOverrideContainer;
-import org.eclipse.jpt.jpa.core.context.java.JavaVirtualOverrideRelationship;
+import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAssociationOverride;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaVirtualOverride;
+import org.eclipse.jpt.jpa.core.jpa2.context.ReadOnlyAssociationOverride2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaAssociationOverrideContainer2_0;
-import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaVirtualAssociationOverride2_0;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -29,9 +30,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class GenericJavaVirtualAssociationOverride
 	extends AbstractJavaVirtualOverride<JavaAssociationOverrideContainer>
-	implements JavaVirtualAssociationOverride2_0
+	implements JavaVirtualAssociationOverride, ReadOnlyAssociationOverride2_0
 {
-	protected final JavaVirtualOverrideRelationship relationship;
+	protected final VirtualOverrideRelationship relationship;
 
 
 	public GenericJavaVirtualAssociationOverride(JavaAssociationOverrideContainer parent, String name) {
@@ -61,7 +62,7 @@ public class GenericJavaVirtualAssociationOverride
 
 	// ********** relationship **********
 
-	public JavaVirtualOverrideRelationship getRelationship() {
+	public VirtualOverrideRelationship getRelationship() {
 		return this.relationship;
 	}
 
@@ -69,7 +70,7 @@ public class GenericJavaVirtualAssociationOverride
 	 * The relationship should be available (since its presence precipitated the
 	 * creation of the virtual override).
 	 */
-	protected JavaVirtualOverrideRelationship buildRelationship() {
+	protected VirtualOverrideRelationship buildRelationship() {
 		return this.getJpaFactory().buildJavaVirtualOverrideRelationship(this);
 	}
 

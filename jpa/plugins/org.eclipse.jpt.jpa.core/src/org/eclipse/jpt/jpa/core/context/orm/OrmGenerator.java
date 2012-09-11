@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.Generator;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlGenerator;
 
 /**
@@ -26,7 +25,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.XmlGenerator;
  * @since 2.0
  */
 public interface OrmGenerator
-	extends Generator, XmlContextNode
+	extends Generator
 {
 	XmlGenerator getXmlGenerator();
 

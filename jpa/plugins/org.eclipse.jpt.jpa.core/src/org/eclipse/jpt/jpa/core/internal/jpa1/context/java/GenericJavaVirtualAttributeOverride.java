@@ -13,10 +13,10 @@ import java.util.List;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.jpa.core.context.VirtualColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.java.JavaVirtualAttributeOverride;
-import org.eclipse.jpt.jpa.core.context.java.JavaVirtualColumn;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaVirtualOverride;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -27,9 +27,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public class GenericJavaVirtualAttributeOverride
 	extends AbstractJavaVirtualOverride<JavaAttributeOverrideContainer>
-	implements JavaVirtualAttributeOverride, JavaVirtualColumn.Owner
+	implements JavaVirtualAttributeOverride, VirtualColumn.Owner
 {
-	protected final JavaVirtualColumn column;
+	protected final VirtualColumn column;
 
 
 	public GenericJavaVirtualAttributeOverride(JavaAttributeOverrideContainer parent, String name) {
@@ -51,7 +51,7 @@ public class GenericJavaVirtualAttributeOverride
 
 	// ********** column **********
 
-	public JavaVirtualColumn getColumn() {
+	public VirtualColumn getColumn() {
 		return this.column;
 	}
 
@@ -59,7 +59,7 @@ public class GenericJavaVirtualAttributeOverride
 	 * The original column should be available (since the presence of its
 	 * attribute is what precipitated the creation of the virtual override).
 	 */
-	protected JavaVirtualColumn buildColumn() {
+	protected VirtualColumn buildColumn() {
 		return this.getJpaFactory().buildJavaVirtualColumn(this, this);
 	}
 

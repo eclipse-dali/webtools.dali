@@ -15,10 +15,10 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
@@ -43,7 +43,7 @@ public class GenericOrmQueryContainer
 	protected final ContextListContainer<OrmNamedNativeQuery, XmlNamedNativeQuery> namedNativeQueryContainer;
 
 
-	public GenericOrmQueryContainer(XmlContextNode parent, XmlQueryContainer xmlQueryContainer) {
+	public GenericOrmQueryContainer(JpaContextNode parent, XmlQueryContainer xmlQueryContainer) {
 		super(parent);
 		this.xmlQueryContainer = xmlQueryContainer;
 		this.namedQueryContainer = this.buildNamedQueryContainer();
@@ -258,11 +258,4 @@ public class GenericOrmQueryContainer
 		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
 	}
 
-
-	// ********** misc **********
-
-	@Override
-	public XmlContextNode getParent() {
-		return (XmlContextNode) super.getParent();
-	}
 }

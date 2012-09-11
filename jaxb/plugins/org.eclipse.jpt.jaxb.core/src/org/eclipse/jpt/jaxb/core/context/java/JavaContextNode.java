@@ -9,8 +9,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 
 
@@ -22,5 +20,5 @@ public interface JavaContextNode
 	/**
 	 * Return the Java code-completion proposals for the specified position in the source code.
 	 */
-	Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot);
+	Iterable<String> getCompletionProposals(int pos);
 }

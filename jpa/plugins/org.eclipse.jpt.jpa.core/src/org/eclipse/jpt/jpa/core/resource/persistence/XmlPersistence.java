@@ -202,27 +202,27 @@ public class XmlPersistence extends ERootObjectImpl
 
 
 	// ********** version -> schema location mapping **********
-
-	@Override
-	protected String getNamespace() {
-		return JPA.SCHEMA_NAMESPACE;
-	}
-
-	@Override
-	protected String getSchemaLocationForVersion(String schemaVersion) {
-		return SCHEMA_LOCATIONS.get(schemaVersion);
-	}
-
+	
 	private static final HashMap<String, String> SCHEMA_LOCATIONS = buildSchemaLocations();
-
+	
 	private static HashMap<String, String> buildSchemaLocations() {
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put(JPA.SCHEMA_VERSION, JPA.SCHEMA_LOCATION);
 		map.put(JPA2_0.SCHEMA_VERSION, JPA2_0.SCHEMA_LOCATION);
 		return map;
 	}
-
-
+	
+	@Override
+	protected String getNamespace() {
+		return JPA.SCHEMA_NAMESPACE;
+	}
+	
+	@Override
+	protected HashMap<String, String> schemaLocations() {
+		return SCHEMA_LOCATIONS;
+	}
+	
+	
 	// ********** content/resource type **********
 
 	/**

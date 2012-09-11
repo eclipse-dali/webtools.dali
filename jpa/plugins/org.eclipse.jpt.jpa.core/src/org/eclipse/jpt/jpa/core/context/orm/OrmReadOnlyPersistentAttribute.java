@@ -14,7 +14,6 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
-import org.eclipse.jpt.jpa.core.context.XmlContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 
 /**
@@ -28,7 +27,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface OrmReadOnlyPersistentAttribute
-	extends ReadOnlyPersistentAttribute, XmlContextNode
+	extends ReadOnlyPersistentAttribute
 {
 	/**
 	 * A <em>specified</em> <code>orm.xml</code> attribute will return an
