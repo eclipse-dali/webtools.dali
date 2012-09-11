@@ -45,27 +45,15 @@
 		</condition>
 
 		<replace file="${basedir}/${optionsFile}" token="@rt@" value="${bootclasspath}" />
-		
-		<replace 
-			file="${basedir}/${optionsFile}" 
-			propertyfile="${basedir}/jptCommon.properties">
 
-            <replacefilter
-                token="@commonSourcepath@"
-                property="common.sourcepath"/>
-            <replacefilter
-                token="@commonClasspath@"
-                property="common.classpath"/>
-		</replace>
-		
-		<echo message="common.sourcepath = ${common.sourcepath}" />
-		<echo message="common.classpath = ${common.classpath}" />
-		
+		<antcall target="replaceJptCommonUtility" />
+		<antcall target="replaceJptCommonCore" />
+					
 		<replaceregexp file="${basedir}/${optionsFile}" flags="g" match="(\r\n?|\n);" replace="${argsListDelimiter}" />
 
 <!--
-		<property name="commonSourcepath" file="commonSourcepath.txt" />
-		<replace file="${basedir}/${optionsFile}" token="@commonSourcepath@" value="${commonSourcepath}" />
+		<property name="commonCoreSourcepath" file="commonCoreSourcepath.txt" />
+		<replace file="${basedir}/${optionsFile}" token="@commonCoreSourcepath@" value="${commonCoreSourcepath}" />
 -->
 
 		<!--scrub isv plugin directories of any preexisting doc content-->
@@ -76,6 +64,44 @@
 		<exec dir="." executable="${javadoc}" output="doc.bin.log">
 			<arg line="@${basedir}/${optionsFile} -J-Xmx1000M" />
 		</exec>
+	</target>
+
+	<target name="replaceJptCommonUtility" if="optionsFile">
+		<replace 
+			file="${basedir}/${optionsFile}" 
+			propertyfile="${basedir}/jptCommonUtility.properties">
+
+            <replacefilter
+                token="@commonUtilitySourcepath@"
+                property="common.Utility.sourcepath"/>
+            <replacefilter
+                token="@commonUtilityPackages@"
+                property="common.Utility.packages"/>
+		</replace>
+		
+		<echo message="common.utility.sourcepath = ${common.utility.sourcepath}" />
+		<echo message="common.utility.packages = ${common.utility.packages}" />
+	</target>
+
+	<target name="replaceJptCommonCore" if="optionsFile">
+		<replace 
+			file="${basedir}/${optionsFile}" 
+			propertyfile="${basedir}/jptCommonCore.properties">
+
+            <replacefilter
+                token="@commonCoreSourcepath@"
+                property="common.core.sourcepath"/>
+            <replacefilter
+                token="@commonCoreClasspath@"
+                property="common.core.classpath"/>
+            <replacefilter
+                token="@commonCorePackages@"
+                property="common.core.packages"/>
+		</replace>
+		
+		<echo message="common.core.sourcepath = ${common.core.sourcepath}" />
+		<echo message="common.core.classpath = ${common.core.classpath}" />
+		<echo message="common.core.packages = ${common.core.packages}" />
 	</target>
 
 	<target name="buildJptDoc" unless="jpt.index.present">

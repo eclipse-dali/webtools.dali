@@ -1,7 +1,7 @@
 -quiet
 -charset "utf-8"
--sourcepath "@commonSourcepath@"
--classpath @rt@;@commonClasspath@
+-sourcepath "@commonUtilitySourcepath@;@commonCoreSourcepath@"
+-classpath @rt@;@commonCoreClasspath@
 -breakiterator
 -use
 -splitIndex
@@ -13,18 +13,5 @@
 -link http://docs.oracle.com/javase/6/docs/api/
 
 #JPT common API packages
-org.eclipse.jpt.common.core
-org.eclipse.jpt.common.core.libprov
-org.eclipse.jpt.common.core.libval
-org.eclipse.jpt.common.core.resource
-org.eclipse.jpt.common.core.utility
-org.eclipse.jpt.common.core.utility.jdt
-org.eclipse.jpt.common.eclipselink.core
-org.eclipse.jpt.common.ui
-org.eclipse.jpt.common.ui.jface
-org.eclipse.jpt.common.utility
-org.eclipse.jpt.common.utility.model
-org.eclipse.jpt.common.utility.model.event
-org.eclipse.jpt.common.utility.model.listener
-org.eclipse.jpt.common.utility.model.value
-org.eclipse.jpt.common.utility.synchronizers
+@commonUtilityPackages@
+@commonCorePackages@
