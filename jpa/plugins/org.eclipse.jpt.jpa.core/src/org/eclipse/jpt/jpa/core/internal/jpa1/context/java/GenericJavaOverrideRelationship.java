@@ -15,13 +15,13 @@ import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
 import org.eclipse.jpt.jpa.core.context.OverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
-import org.eclipse.jpt.jpa.core.context.ReadOnlyTableColumn.Owner;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumnRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverrideRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyTableColumn.Owner;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.RelationshipStrategy;
@@ -285,7 +285,7 @@ public class GenericJavaOverrideRelationship
 			return result;
 		}
 
-		return this.strategy.getCompletionProposals(pos);
+		return (this.strategy == null) ? null : this.strategy.getCompletionProposals(pos);
 	}
 
 
@@ -298,7 +298,11 @@ public class GenericJavaOverrideRelationship
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		this.strategy.validate(messages, reporter);
+		// prevent NPE on JPA 2_0 platforms
+		// this.strategy == null when the mapping relationship strategy, e.g. mappedBy, cannot be overridden
+		if (this.strategy != null) {
+			this.strategy.validate(messages, reporter);
+		}
 	}
 
 	public JptValidator buildJoinTableValidator(ReadOnlyJoinTable table) {
