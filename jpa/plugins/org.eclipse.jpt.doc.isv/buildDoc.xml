@@ -44,9 +44,29 @@
 			<os family="windows" />
 		</condition>
 
-		<replaceregexp file="${basedir}/${optionsFile}" flags="g" match="(\r\n?|\n);" replace="${argsListDelimiter}" />
 		<replace file="${basedir}/${optionsFile}" token="@rt@" value="${bootclasspath}" />
+		
+		<replace 
+			file="${basedir}/${optionsFile}" 
+			propertyfile="${basedir}/jptCommon.properties">
 
+            <replacefilter
+                token="@commonSourcepath@"
+                property="common.sourcepath"/>
+            <replacefilter
+                token="@commonClasspath@"
+                property="common.classpath"/>
+		</replace>
+		
+		<echo message="common.sourcepath = ${common.sourcepath}" />
+		<echo message="common.classpath = ${common.classpath}" />
+		
+		<replaceregexp file="${basedir}/${optionsFile}" flags="g" match="(\r\n?|\n);" replace="${argsListDelimiter}" />
+
+<!--
+		<property name="commonSourcepath" file="commonSourcepath.txt" />
+		<replace file="${basedir}/${optionsFile}" token="@commonSourcepath@" value="${commonSourcepath}" />
+-->
 
 		<!--scrub isv plugin directories of any preexisting doc content-->
 		<delete dir="index-files"/>
