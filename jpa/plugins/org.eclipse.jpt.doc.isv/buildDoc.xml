@@ -73,10 +73,10 @@
 
             <replacefilter
                 token="@commonUtilitySourcepath@"
-                property="common.Utility.sourcepath"/>
+                property="common.utility.sourcepath"/>
             <replacefilter
                 token="@commonUtilityPackages@"
-                property="common.Utility.packages"/>
+                property="common.utility.packages"/>
 		</replace>
 		
 		<echo message="common.utility.sourcepath = ${common.utility.sourcepath}" />
