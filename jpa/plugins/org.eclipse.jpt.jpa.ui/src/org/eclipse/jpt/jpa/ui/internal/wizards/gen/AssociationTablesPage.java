@@ -13,13 +13,9 @@ package org.eclipse.jpt.jpa.ui.internal.wizards.gen;
 import static org.eclipse.jpt.jpa.ui.internal.wizards.gen.SWTUtil.createButton;
 import static org.eclipse.jpt.jpa.ui.internal.wizards.gen.SWTUtil.createLabel;
 import static org.eclipse.jpt.jpa.ui.internal.wizards.gen.SWTUtil.createText;
-
-import java.util.ArrayList;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.jpa.db.Schema;
-import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.gen.internal.Association;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
 import org.eclipse.jpt.jpa.ui.internal.ImageRepository;
@@ -34,7 +30,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 
@@ -152,7 +147,7 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 			public void widgetDefaultSelected(SelectionEvent e) {}
 
 			public void widgetSelected(SelectionEvent e) {
-				SelectTableDialog dlg = new SelectTableDialog( SWTUtil.getShell(), resourceManager, customizer.getSchema() );
+				SelectTableDialog dlg = new SelectTableDialog( SWTUtil.getShell(), resourceManager, customizer.getTableNames() );
 				if( dlg.open() == Dialog.OK){
 					joinTableTextField.setText( dlg.getSelectedTable() );
 					getWizardDataModel().put( NewAssociationWizard.ASSOCIATION_JOIN_TABLE, joinTableTextField.getText() );
@@ -230,17 +225,9 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 	}
 	
 	private String buildJoinTableErrorMessage() {
-		if (!CollectionTools.contains(this.getAllTableNames(this.customizer.getSchema()), this.joinTableTextField.getText())) {
+		if (!CollectionTools.contains(this.customizer.getTableNames(), this.joinTableTextField.getText())) {
 			return NLS.bind(JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_nonexsistent_join_table, this.joinTableTextField.getText());
 		}
 		return null;
-	}
-	
-	protected ArrayList<String> getAllTableNames(Schema schema) {
-		ArrayList<String> list = new ArrayList<String>();
-		for (Table table : schema.getTables()) {
-			list.add(table.getName());
-		}
-		return list;
 	}
 }
