@@ -3,40 +3,204 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
- 
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Converters</title>
-<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1" />
-<meta name="date" content="2010-05-19T8:12:48Z" />
+<title>Queries</title>
+<meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
+<meta name="date" content="2012-09-11T7:44:7Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Converters" />
-<meta name="relnum" content="Release 2.3" />
-<meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
+<meta name="doctitle" content="Queries" />
+<meta name="relnum" content="Release 3.2" />
+<meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
-<!-- contents -->
 </head>
 <body>
-<p><a id="CIADGCID" name="CIADGCID"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-11</p>
+<p><a id="CACBICGJ" name="CACBICGJ"></a></p>
 <div class="sect3"><!-- infolevel="all" infotype="General" -->
-<h1>Converters</h1>
-<p>The Converters information in the JPA Details view applies only when using EclipseLink</p>
-<p>Click <span class="bold">Add</span> to create a new converter, using the <a href="ref_add_converter.htm#CIAGCGIJ">Add Converter dialog</a>.</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<img src="img/ngrelr.png" alt="Related reference" title="Related reference" /><br />
-<br />
-<a href="ref_details_orm.htm#CACGDGHC">JPA Details view (for orm.xml)</a></div>
+<h1>Queries</h1>
+<p>Use the queries area of the JPA Details view to create named queries and named native queries. Refer to <a href="tasks009.htm#BABIGBGG">"Creating queries"</a> for additional information.</p>
+<div class="inftblhruleinformalwide">
+<table class="HRuleInformalWide" title="This table describes the options on the Persistence Properties view, Inheritance tab." summary="This table describes the options on the Persistence Properties view, Inheritance tab." dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
+<col width="16%" />
+<col width="*" />
+<col width="16%" />
+<col width="19%" />
+<thead>
+<tr align="left" valign="top">
+<th align="left" valign="bottom" id="r1c1-t24">Property</th>
+<th align="left" valign="bottom" id="r1c2-t24">Description</th>
+<th align="left" valign="bottom" id="r1c3-t24">Default</th>
+<th align="left" valign="bottom" id="r1c4-t24">Available for Entity&nbsp;Type</th>
+</tr>
+</thead>
+<tbody>
+<tr align="left" valign="top">
+<td align="left" id="r2c1-t24" headers="r1c1-t24">
+<p><span class="bold">Queries</span></p>
+</td>
+<td align="left" headers="r2c1-t24 r1c2-t24">
+<p>Displays the existing Named and Native queries.</p>
+<p>Click <span class="bold">Add</span> to add a named or named native query by using the <a href="reference066.htm#CACJIFEG">Add Query dialog</a>.</p>
+</td>
+<td align="left" headers="r2c1-t24 r1c3-t24"><br /></td>
+<td align="left" headers="r2c1-t24 r1c4-t24">
+<p><a href="tasks002.htm#BABGBIEE">Entity</a> and <a href="tasks004.htm#BABDAGCI">Mapped superclass</a></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r3c1-t24" headers="r1c1-t24">
+<p><span class="bold">Named Queries</span></p>
+</td>
+<td align="left" headers="r3c1-t24 r1c2-t24"><br /></td>
+<td align="left" headers="r3c1-t24 r1c3-t24"><br /></td>
+<td align="left" headers="r3c1-t24 r1c4-t24"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r4c1-t24" headers="r1c1-t24">
+<p>Name</p>
+</td>
+<td align="left" headers="r4c1-t24 r1c2-t24">
+<p>Name of the query.</p>
+</td>
+<td align="left" headers="r4c1-t24 r1c3-t24"><br /></td>
+<td align="left" headers="r4c1-t24 r1c4-t24">
+<p><a href="tasks002.htm#BABGBIEE">Entity</a> and <a href="tasks004.htm#BABDAGCI">Mapped superclass</a></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r5c1-t24" headers="r1c1-t24">
+<p>Query</p>
+</td>
+<td align="left" headers="r5c1-t24 r1c2-t24"><br /></td>
+<td align="left" headers="r5c1-t24 r1c3-t24"><br /></td>
+<td align="left" headers="r5c1-t24 r1c4-t24">
+<p><a href="tasks002.htm#BABGBIEE">Entity</a> and <a href="tasks004.htm#BABDAGCI">Mapped superclass</a></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r6c1-t24" headers="r1c1-t24">
+<p>Lock mode</p>
+</td>
+<td align="left" headers="r6c1-t24 r1c2-t24">
+<ul>
+<li>
+<p>None</p>
+</li>
+<li>
+<p>Optimistic</p>
+</li>
+<li>
+<p>Optimistic Force Increment</p>
+</li>
+<li>
+<p>Pessimistic Force Increment</p>
+</li>
+<li>
+<p>Pessimistic Read</p>
+</li>
+<li>
+<p>Pessimistic Write</p>
+</li>
+<li>
+<p>Read</p>
+</li>
+<li>
+<p>Write</p>
+</li>
+</ul>
+</td>
+<td align="left" headers="r6c1-t24 r1c3-t24">
+<p>None</p>
+</td>
+<td align="left" headers="r6c1-t24 r1c4-t24">
+<p><a href="tasks002.htm#BABGBIEE">Entity</a> and <a href="tasks004.htm#BABDAGCI">Mapped superclass</a></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r7c1-t24" headers="r1c1-t24">
+<p><span class="bold">Native Queries</span></p>
+</td>
+<td align="left" headers="r7c1-t24 r1c2-t24"><br /></td>
+<td align="left" headers="r7c1-t24 r1c3-t24"><br /></td>
+<td align="left" headers="r7c1-t24 r1c4-t24"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r8c1-t24" headers="r1c1-t24">
+<p>Name</p>
+</td>
+<td align="left" headers="r8c1-t24 r1c2-t24">
+<p>Name of the query.</p>
+</td>
+<td align="left" headers="r8c1-t24 r1c3-t24"><br /></td>
+<td align="left" headers="r8c1-t24 r1c4-t24">
+<p><a href="tasks002.htm#BABGBIEE">Entity</a> and <a href="tasks004.htm#BABDAGCI">Mapped superclass</a></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r9c1-t24" headers="r1c1-t24">
+<p>Result class</p>
+</td>
+<td align="left" headers="r9c1-t24 r1c2-t24">
+<p><span class="bold">Note</span>: This field appears for Native Named Queries only.</p>
+</td>
+<td align="left" headers="r9c1-t24 r1c3-t24"><br /></td>
+<td align="left" headers="r9c1-t24 r1c4-t24">
+<p><a href="tasks002.htm#BABGBIEE">Entity</a> and <a href="tasks004.htm#BABDAGCI">Mapped superclass</a></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r10c1-t24" headers="r1c1-t24">
+<p>Query</p>
+</td>
+<td align="left" headers="r10c1-t24 r1c2-t24"><br /></td>
+<td align="left" headers="r10c1-t24 r1c3-t24"><br /></td>
+<td align="left" headers="r10c1-t24 r1c4-t24">
+<p><a href="tasks002.htm#BABGBIEE">Entity</a> and <a href="tasks004.htm#BABDAGCI">Mapped superclass</a></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r11c1-t24" headers="r1c1-t24">
+<p><span class="bold">Query hints</span></p>
+</td>
+<td align="left" headers="r11c1-t24 r1c2-t24">
+<p>Displays the existing query hints (Name and Value).</p>
+<p>Click Add to add a new query hint.</p>
+</td>
+<td align="left" headers="r11c1-t24 r1c3-t24"><br /></td>
+<td align="left" headers="r11c1-t24 r1c4-t24">
+<p><a href="tasks002.htm#BABGBIEE">Entity</a> and <a href="tasks004.htm#BABDAGCI">Mapped superclass</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<br /></div>
+<!-- class="inftblhruleinformalwide" -->
+<a id="sthref363" name="sthref363"></a>
+<p class="subhead2">Related tasks</p>
+<ul>
+<li>
+<p><a href="tasks009.htm#BABIGBGG">Creating queries</a></p>
+</li>
+</ul>
+<a id="sthref364" name="sthref364"></a>
+<p class="subhead2">Related reference</p>
+<ul>
+<li>
+<p><a href="ref_persistence_prop_view.htm#BABFAEBB">JPA Details view (for entities)</a></p>
+</li>
+</ul>
+</div>
 <!-- class="sect3" -->
-<!-- class="sect2" -->
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
 <col width="86%" />
 <col width="*" />
 <tr>
-<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2010,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
+<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2011, 2012,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
 <a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Legal Notices</span></a></td>
 </tr>
 </table>

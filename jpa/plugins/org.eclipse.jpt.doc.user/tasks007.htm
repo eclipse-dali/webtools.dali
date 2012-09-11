@@ -3,55 +3,77 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
- 
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Embeddable</title>
-<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1" />
-<meta name="date" content="2010-05-19T8:12:43Z" />
+<title>Creating an orm.xml file</title>
+<meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
+<meta name="date" content="2012-09-11T7:44:4Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Embeddable" />
-<meta name="relnum" content="Release 2.3" />
-<meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
+<meta name="doctitle" content="Creating an orm.xml file" />
+<meta name="relnum" content="Release 3.2" />
+<meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
-<!-- contents -->
 </head>
 <body>
-<p><a id="BABFEICE" name="BABFEICE"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-11</p>
+<p><a id="CIHDEFCA" name="CIHDEFCA"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
-<h1>Embeddable</h1>
-<p><a id="sthref79" name="sthref79"></a><a id="sthref80" name="sthref80"></a>An <span class="bold">Embedded</span> class is a class whose instances are stored as part of an owning entity; it shares the identity of the owning entity. Each field of the embedded class is mapped to the database table associated with the owning entity.</p>
-<p>To override the mapping information for a specific subclass, use the <code>@AttributeOverride</code> annotation for that specific class.</p>
-<p><a id="sthref81" name="sthref81"></a><a id="sthref82" name="sthref82"></a><a id="sthref83" name="sthref83"></a>An embeddable entity is identified by the <code>@Embeddable</code> annotation.</p>
-<p>Use this procedure to add embeddable persistence to an existing entity:</p>
+<h1>Creating an orm.xml file</h1>
+<p><a id="sthref116" name="sthref116"></a>If you opt not to create an <code>orm.xml</code> file when you create a JPA project, you can create one using the <a href="reference007.htm#CIAIJCCE">Create ORM Mapping File wizard</a>.</p>
+<p>Use this procedure to create an <code>orm.xml</code> file:</p>
 <ol>
 <li>
-<p>Open the Java class in the <span class="gui-object-title">Project Explorer</span>.</p>
-</li>
-<li>
-<p>Select the class in the JPA Structure view.</p>
-</li>
-<li>
-<p>Click the mapping type hyperlink to open the Mapping Type Selection dialog.</p>
-</li>
-<li>
-<p>Select <span class="bold">Embeddable</span> and then click <span class="bold">OK</span>.</p>
-<div class="figure"><a id="sthref84" name="sthref84"></a>
-<p class="titleinfigure">Mapping Type Selection Dialog (Embeddable)</p>
-<img src="img/mapping_type_selection_embed.png" alt="The Mapping Type Selection dialog with Embeddable selected." title="The Mapping Type Selection dialog with Embeddable selected." /><br /></div>
+<p>From the Navigator or Project Explorer, select <span class="bold">File &gt; New &gt; Other</span>. The Select a Wizard dialog appears.</p>
+<div class="figure"><a id="sthref117" name="sthref117"></a>
+<p class="titleinfigure">The Select a Wizard Dialog</p>
+<img src="img/select_a_wizard_mapping.png" alt="The Select a Wizard dialog with Mapping file selected." title="The Select a Wizard dialog with Mapping file selected." /><br /></div>
 <!-- class="figure" --></li>
 <li>
-<p>Complete the remaining <a href="ref_persistence_prop_view.htm#BABFAEBB">JPA Details view (for entities)</a>.</p>
+<p>Select <span class="bold">JPA ORM Mapping File</span> and then click <span class="bold">Next</span>. The Mapping File page of the <a href="reference007.htm#CIAIJCCE">Create ORM Mapping File wizard</a> appears.</p>
+<p>If you are using EclipseLink, you can select <span class="bold">EclipseLink &gt; EclipseLink ORM Mapping File</span>.</p>
+<div class="figure"><a id="sthref118" name="sthref118"></a>
+<p class="titleinfigure">New Mapping File Location Page</p>
+<img src="img/mapping_file_new.png" alt="The Mapping File page." title="The Mapping File page." /><br /></div>
+<!-- class="figure" --></li>
+<li>
+<p>Select the name and location of your mapping file and click <span class="bold">Next</span>. The <a href="reference009.htm#CACDFCDB">Mapping File Options</a> page appears.</p>
+<div class="figure"><a id="sthref119" name="sthref119"></a>
+<p class="titleinfigure">New Mapping File Options Page</p>
+<img src="img/new_mapping_file_options.png" alt="New Mapping File Options Page" title="New Mapping File Options Page" /><br /></div>
+<!-- class="figure" --></li>
+<li>
+<p>Define the properties in the <a href="reference009.htm#CACDFCDB">Mapping File Options</a> page and click <span class="bold">Finish</span>. The <code>orm.xml</code> file appears in the <code>src</code> directory of the selected JPA project. You can manage the <code>orm.xml</code> file using the JPA Details view or through the XML Editor. See also <a href="ref_details_orm.htm#CACGDGHC">JPA Details view (for orm.xml)</a>.</p>
 </li>
 </ol>
-<p>&nbsp;</p>
-<img src="img/ngrelt.png" alt="Related tasks" title="Related tasks" /><br />
-<dl>
-<dd><a href="task_add_persistence.htm#BABHICAI">Adding persistence to a class</a></dd>
-<dd><a href="task_additonal_tables.htm#CIHGBIEI">Specifying additional tables</a></dd>
-<dd><a href="task_inheritance.htm#CIHCCCJD">Specifying entity inheritance</a></dd>
-</dl>
+<a id="sthref120" name="sthref120"></a>
+<p class="subhead2">Related reference</p>
+<ul>
+<li>
+<p><a href="ref_new_jpa_project_wizard.htm#CACBJGBG">Create New JPA Project wizard</a></p>
+</li>
+<li>
+<p><a href="ref_eclipselink_mapping_file.htm#CIAEDEJF">New EclipseLink Mapping File dialog</a></p>
+</li>
+</ul>
+<a id="sthref121" name="sthref121"></a>
+<p class="subhead2">Related tasks</p>
+<ul>
+<li>
+<p><a href="ref_new_jpa_project_wizard.htm#CACBJGBG">Create New JPA Project wizard</a></p>
+</li>
+<li>
+<p><a href="tasks008.htm#CIHBCDCE">Working with orm.xml file</a></p>
+</li>
+</ul>
+<a id="sthref122" name="sthref122"></a>
+<p class="subhead2">Related concepts</p>
+<ul>
+<li>
+<p><a href="concepts003.htm#CHDBIJAC">The orm.xml file</a></p>
+</li>
+</ul>
 </div>
 <!-- class="sect2" -->
 <!-- Start Footer -->
@@ -60,7 +82,7 @@
 <col width="86%" />
 <col width="*" />
 <tr>
-<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2010,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
+<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2011, 2012,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
 <a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Legal Notices</span></a></td>
 </tr>
 </table>

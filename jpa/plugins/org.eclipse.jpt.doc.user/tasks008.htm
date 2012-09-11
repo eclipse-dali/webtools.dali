@@ -3,69 +3,68 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
- 
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Mapped superclass</title>
-<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1" />
-<meta name="date" content="2010-05-19T8:12:43Z" />
+<title>Working with orm.xml file</title>
+<meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
+<meta name="date" content="2012-09-11T7:44:4Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Mapped superclass" />
-<meta name="relnum" content="Release 2.3" />
-<meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
+<meta name="doctitle" content="Working with orm.xml file" />
+<meta name="relnum" content="Release 3.2" />
+<meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
-<!-- contents -->
 </head>
 <body>
-<p><a id="BABDAGCI" name="BABDAGCI"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-11</p>
+<p><a id="CIHBCDCE" name="CIHBCDCE"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
-<h1>Mapped superclass</h1>
-<p><a id="sthref85" name="sthref85"></a><a id="sthref86" name="sthref86"></a>An entity that extends a <span class="bold">Mapped Superclass</span> class inherits the persistent state and mapping information from a superclass. You should use a mapped superclass to define mapping information that is common to multiple entity classes.</p>
-<p>A mapped superclass <span class="italic">can be</span>:</p>
-<ul>
-<li>
-<p>Abstract or concrete classes</p>
-</li>
-</ul>
-<p>A mapped superclass <span class="italic">cannot be</span>:</p>
-<ul>
-<li>
-<p>Be queried or passed as an argument to Entity-Manager or Query operations</p>
-</li>
-<li>
-<p>Be the target of a persistent relationship</p>
-</li>
-</ul>
-<p>A mapped superclass does not have a defined database table. Instead, its mapping information is derived from its superclass. To override the mapping information for a specific subclass, use the <code>@AttributeOverride</code> annotation for that specific class.</p>
-<p><a id="sthref87" name="sthref87"></a><a id="sthref88" name="sthref88"></a><a id="sthref89" name="sthref89"></a><a id="sthref90" name="sthref90"></a>A mapped superclass is identified by the <code>@MappedSuperclass</code> annotation.</p>
-<p>Use this procedure to add Mapped Superclass persistence to an existing entity:</p>
+<h1>Working with orm.xml file</h1>
+<p><a id="sthref123" name="sthref123"></a><a id="sthref124" name="sthref124"></a>You can work with the <code>orm.xml</code> by using the JPA Details view.</p>
+<p>Use this procedure to work with the <code>orm.xml</code> file:</p>
 <ol>
 <li>
-<p>Open the Java class in the <span class="gui-object-title">Project Explorer</span>.</p>
+<p>Right-click the <code>orm.xml</code> file in the <span class="gui-object-title">Project Explorer</span> and select <span class="gui-object-action">Open</span>.</p>
 </li>
 <li>
-<p>Select the class in the JPA Structure view.</p>
+<p>In the JPA Structure view, select <span class="bold">EntityMappings</span>.</p>
 </li>
 <li>
-<p>In the JPA Details view, click the mapping type hyperlink to open the Mapping Type Selection dialog.</p>
-</li>
-<li>
-<p>Select <span class="bold">Mapped Superclass</span> and then <span class="bold">OK</span>.</p>
-<div class="figure"><a id="sthref91" name="sthref91"></a>
-<p class="titleinfigure">Mapping Type Selection Dialog (Mapped Superclass)</p>
-<img src="img/mapping_type_selection_superclass.png" alt="The Mapping Type Selection dialog with Mapped Superclass selected." title="The Mapping Type Selection dialog with Mapped Superclass selected." /><br /></div>
+<p>Use the JPA Details view to configure the entity mapping and persistence unit defaults.</p>
+<div class="figure"><a id="sthref125" name="sthref125"></a>
+<p class="titleinfigure">JPA Details view for EntityMappings (orm.xml)</p>
+<img src="img/details_entitymappings.png" alt="JPA Details view for orm.xml file." title="JPA Details view for orm.xml file." /><br /></div>
 <!-- class="figure" --></li>
 <li>
-<p>Complete the remaining <a href="ref_persistence_prop_view.htm#BABFAEBB">JPA Details view (for entities)</a>.</p>
+<p>Complete the fields on the JPA Details view.</p>
 </li>
 </ol>
-<p>&nbsp;</p>
-<img src="img/ngrelt.png" alt="Related tasks" title="Related tasks" /><br />
-<br />
-<a href="task_add_persistence.htm#BABHICAI">Adding persistence to a class</a><br />
-<a href="task_additonal_tables.htm#CIHGBIEI">Specifying additional tables</a><br />
-<a href="task_inheritance.htm#CIHCCCJD">Specifying entity inheritance</a><br /></div>
+<a id="sthref126" name="sthref126"></a>
+<p class="subhead2">Related reference</p>
+<ul>
+<li>
+<p><a href="ref_details_orm.htm#CACGDGHC">JPA Details view (for orm.xml)</a></p>
+</li>
+</ul>
+<a id="sthref127" name="sthref127"></a>
+<p class="subhead2">Related tasks</p>
+<ul>
+<li>
+<p><a href="#CIHBCDCE">Working with orm.xml file</a></p>
+</li>
+<li>
+<p><a href="../org.eclipse.wst.xmleditor.doc.user/topics/cworkXML.html">Working with XML Files</a></p>
+</li>
+</ul>
+<a id="sthref128" name="sthref128"></a>
+<p class="subhead2">Related concepts</p>
+<ul>
+<li>
+<p><a href="concepts003.htm#CHDBIJAC">The orm.xml file</a></p>
+</li>
+</ul>
+</div>
 <!-- class="sect2" -->
 <!-- class="sect1" -->
 <!-- Start Footer -->
@@ -74,7 +73,7 @@
 <col width="86%" />
 <col width="*" />
 <tr>
-<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2010,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
+<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2011, 2012,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
 <a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Legal Notices</span></a></td>
 </tr>
 </table>

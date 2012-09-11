@@ -3,84 +3,137 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
- 
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Project Properties page &ndash; Java Persistence Options</title>
-<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1" />
-<meta name="date" content="2010-05-19T8:12:48Z" />
+<title>Project Properties page &ndash; JPA Options</title>
+<meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
+<meta name="date" content="2012-09-11T7:44:7Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Project Properties page &ndash; Java Persistence Options" />
-<meta name="relnum" content="Release 2.3" />
-<meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
+<meta name="doctitle" content="Project Properties page &ndash; JPA Options" />
+<meta name="relnum" content="Release 3.2" />
+<meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
-<!-- contents -->
 </head>
 <body>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-11</p>
 <p><a id="BABJHBCI" name="BABJHBCI"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
-<h1>Project Properties page &ndash; Java Persistence Options</h1>
-<p><a id="sthref273" name="sthref273"></a><a id="sthref274" name="sthref274"></a>Use the <span class="gui-object-title">Errors/Warnings</span> options on the <span class="gui-object-title">Properties</span> page to specify the validation options to use with the project.</p>
+<h1>Project Properties page &ndash; JPA Options</h1>
+<p><a id="sthref454" name="sthref454"></a><a id="sthref455" name="sthref455"></a>Use the <span class="gui-object-title">Java Persistence</span> options on the <span class="gui-object-title">Properties</span> page to select the database connection to use with the project.</p>
+<p>This table lists the properties available in the <span class="gui-object-title">JPA Details page</span>.</p>
 <div class="inftblinformal">
-<table class="Informal" title="This table describes the options on the Persistence Properties page." summary="This table describes the options on the Persistence Properties page." dir="ltr" border="1" width="100%" frame="border" rules="all" cellpadding="3" cellspacing="0">
+<table class="Informal" title="Options on the Java Persistence Preferences page &gt; JPA Options" summary="Options on the Java Persistence Preferences page &gt; JPA Options" dir="ltr" border="1" width="100%" frame="hsides" rules="groups" cellpadding="3" cellspacing="0">
 <col width="32%" />
 <col width="*" />
 <thead>
 <tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t36">Property</th>
-<th align="left" valign="bottom" id="r1c2-t36">Description</th>
+<th align="left" valign="bottom" id="r1c1-t63">Property</th>
+<th align="left" valign="bottom" id="r1c2-t63">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t36" headers="r1c1-t36">Enable project specific settings</td>
-<td align="left" headers="r2c1-t36 r1c2-t36">Select the to override the general settings for this project.</td>
+<td align="left" id="r2c1-t63" headers="r1c1-t63">
+<p><a id="sthref456" name="sthref456"></a><a id="sthref457" name="sthref457"></a><a id="sthref458" name="sthref458"></a><a id="sthref459" name="sthref459"></a><span class="bold">Platform</span></p>
+</td>
+<td align="left" headers="r2c1-t63 r1c2-t63">
+<p>Select the vendor-specific platform.</p>
+</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r3c1-t36" headers="r1c1-t36">&nbsp;&nbsp;Project level</td>
-<td align="left" headers="r3c1-t36 r1c2-t36">Select the warning level to report.</td>
+<td align="left" id="r3c1-t63" headers="r1c1-t63">
+<p><span class="bold">JPA Implementation</span></p>
+</td>
+<td align="left" headers="r3c1-t63 r1c2-t63"><br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r4c1-t36" headers="r1c1-t36">&nbsp;&nbsp;Persistent unit level</td>
-<td align="left" headers="r4c1-t36 r1c2-t36">Select the warning level to report.</td>
+<td align="left" id="r4c1-t63" headers="r1c1-t63">
+<p>Type</p>
+</td>
+<td align="left" headers="r4c1-t63 r1c2-t63">
+<p>Select <span class="bold">User Library</span> to select from the available user-defined or downloaded libraries.</p>
+<p>If you select Disable, you must manually include the JPA implementation library on the project classpath.</p>
+</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r5c1-t36" headers="r1c1-t36">&nbsp;&nbsp;Type level</td>
-<td align="left" headers="r5c1-t36 r1c2-t36">Select the warning level to report.</td>
+<td align="left" id="r5c1-t63" headers="r1c1-t63">
+<p>Library</p>
+</td>
+<td align="left" headers="r5c1-t63 r1c2-t63">
+<p>Select a specific JPA library configuration.</p>
+<p>Click <span class="bold">Manage libraries</span> to create or update a user library.</p>
+<p>Click <span class="bold">Download libraries</span> to download a specific library configuration.</p>
+</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r6c1-t36" headers="r1c1-t36">&nbsp;&nbsp;Attribute level</td>
-<td align="left" headers="r6c1-t36 r1c2-t36">Select the warning level to report.</td>
+<td align="left" id="r6c1-t63" headers="r1c1-t63">
+<p>Include&nbsp;libraries&nbsp;with&nbsp;this&nbsp;application</p>
+</td>
+<td align="left" headers="r6c1-t63 r1c2-t63">
+<p>Specify if the selected libraries are included when deploying the application.</p>
+</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r7c1-t36" headers="r1c1-t36">&nbsp;&nbsp;Schema mapping</td>
-<td align="left" headers="r7c1-t36 r1c2-t36">Select the warning level to report.</td>
+<td align="left" id="r7c1-t63" headers="r1c1-t63">
+<p><a id="sthref460" name="sthref460"></a><a id="sthref461" name="sthref461"></a><a id="sthref462" name="sthref462"></a><span class="bold">Connection</span></p>
+</td>
+<td align="left" headers="r7c1-t63 r1c2-t63">
+<p>The database connection used to map the persistent entities.</p>
+<ul>
+<li>
+<p>To create a new connection, click <span class="bold">Add Connections</span>.</p>
+</li>
+<li>
+<p>To reconnect to an existing connection, click <span class="bold">Reconnect</span>.</p>
+</li>
+</ul>
+</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r8c1-t36" headers="r1c1-t36">&nbsp;&nbsp;Implied&nbsp;attributes</td>
-<td align="left" headers="r8c1-t36 r1c2-t36">Select the warning level to report.</td>
+<td align="left" id="r8c1-t63" headers="r1c1-t63">
+<p>Override default catalog from connection</p>
+</td>
+<td align="left" headers="r8c1-t63 r1c2-t63">
+<p>Select a catalog other than the default one derived from the connection information. Use this option if the default catalog is incorrect or cannot be used.</p>
+</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r9c1-t36" headers="r1c1-t36">&nbsp;&nbsp;Implied&nbsp;associations</td>
-<td align="left" headers="r9c1-t36 r1c2-t36">Select the warning level to report.</td>
+<td align="left" id="r9c1-t63" headers="r1c1-t63">
+<p>Override default schema from connection</p>
+</td>
+<td align="left" headers="r9c1-t63 r1c2-t63">
+<p>Select a schema other than the default one derived from the connection information. Use this option if the default schema is incorrect or cannot be used. For example, use this option when the deployment login differs from the design-time login.</p>
+</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r10c1-t36" headers="r1c1-t36">&nbsp;&nbsp;Inheritance</td>
-<td align="left" headers="r10c1-t36 r1c2-t36">Select the warning level to report.</td>
+<td align="left" id="r10c1-t63" headers="r1c1-t63">
+<p><span class="bold">Persistent Class Management</span></p>
+</td>
+<td align="left" headers="r10c1-t63 r1c2-t63">
+<p>Specify if Dali will <span class="bold">discover annotated classes automatically</span>, or if the <span class="bold">annotated classes must be listed in the persistence.xml</span> file.</p>
+<p><span class="bold">Note</span>: To insure application portability, you should explicitly list the managed persistence classes that are included in the persistence unit.</p>
+</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r11c1-t36" headers="r1c1-t36">&nbsp;&nbsp;Queries&nbsp;and&nbsp;generators</td>
-<td align="left" headers="r11c1-t36 r1c2-t36">Select the warning level to report.</td>
+<td align="left" id="r11c1-t63" headers="r1c1-t63">
+<p><a id="sthref463" name="sthref463"></a><a id="sthref464" name="sthref464"></a><span class="bold">Canonical Metamodel</span></p>
+</td>
+<td align="left" headers="r11c1-t63 r1c2-t63"><br /></td>
 </tr>
 </tbody>
 </table>
 <br /></div>
 <!-- class="inftblinformal" -->
-<p>&nbsp;</p>
-<img src="img/ngrelt.png" alt="Related task" title="Related task" /><br />
-<br />
-<a href="tasks026.htm#BABDBCBI">Modifying persistent project properties</a></div>
+<a id="sthref465" name="sthref465"></a>
+<p class="subhead2">Related tasks</p>
+<ul>
+<li>
+<p><a href="tasks027.htm#BABDBCBI">Modifying persistent project properties</a></p>
+</li>
+</ul>
+</div>
 <!-- class="sect2" -->
 <!-- Start Footer -->
 <div class="footer">
@@ -88,7 +141,7 @@
 <col width="86%" />
 <col width="*" />
 <tr>
-<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2010,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
+<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2011, 2012,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
 <a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Legal Notices</span></a></td>
 </tr>
 </table>

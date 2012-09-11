@@ -3,47 +3,168 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
- 
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Dali Developer Documentation</title>
-<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1" />
-<meta name="date" content="2010-05-19T8:12:49Z" />
+<title>One-to-One Mapping</title>
+<meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
+<meta name="date" content="2012-09-11T7:44:7Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Dali Developer Documentation" />
-<meta name="relnum" content="Release 2.3" />
-<meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
+<meta name="doctitle" content="One-to-One Mapping" />
+<meta name="relnum" content="Release 3.2" />
+<meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
-<!-- contents -->
 </head>
 <body>
-<p><a id="CACBBDIB" name="CACBBDIB"></a></p>
-<div class="sect1"><!-- infolevel="all" infotype="General" -->
-<h1>Dali Developer Documentation</h1>
-<p><a id="sthref288" name="sthref288"></a><a id="sthref289" name="sthref289"></a><a id="sthref290" name="sthref290"></a>Additional Dali documentation is available online at:</p>
-<p><code><a href="http://wiki.eclipse.org/index.php/Dali_Developer_Documentation">http://wiki.eclipse.org/index.php/Dali_Developer_Documentation</a></code></p>
-<p>This developer documentation includes information about:</p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-11</p>
+<p><a id="CACGGHDD" name="CACGGHDD"></a></p>
+<div class="sect3"><!-- infolevel="all" infotype="General" -->
+<h1>One-to-One Mapping</h1>
+<div class="inftblhruleinformal">
+<table class="HRuleInformal" summary="JPA Details view, One-to-one page" dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
+<col width="29%" />
+<col width="*" />
+<col width="24%" />
+<thead>
+<tr align="left" valign="top">
+<th align="left" valign="bottom" id="r1c1-t37">Property</th>
+<th align="left" valign="bottom" id="r1c2-t37">Description</th>
+<th align="left" valign="bottom" id="r1c3-t37">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr align="left" valign="top">
+<td align="left" id="r2c1-t37" headers="r1c1-t37">
+<p>Target entity</p>
+</td>
+<td align="left" headers="r2c1-t37 r1c2-t37">
+<p>The persistent entity to which the attribute is mapped.</p>
+</td>
+<td align="left" headers="r2c1-t37 r1c3-t37"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r3c1-t37" headers="r1c1-t37">
+<p>Fetch</p>
+</td>
+<td align="left" headers="r3c1-t37 r1c2-t37">
+<p>Defines how data is loaded from the database:</p>
 <ul>
 <li>
-<p>Dali architecture</p>
+<p>Eager &ndash; Data is loaded in before it is actually needed.</p>
 </li>
 <li>
-<p>Plugins that comprise the Dali JPA Eclipse feature</p>
+<p>Lazy &ndash; Data is loaded only when required by the transaction.</p>
+</li>
+</ul>
+</td>
+<td align="left" headers="r3c1-t37 r1c3-t37">
+<p>Eager</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r4c1-t37" headers="r1c1-t37">
+<p>Join fetch</p>
+</td>
+<td align="left" headers="r4c1-t37 r1c2-t37">
+<p>The type of fetch to use:</p>
+<ul>
+<li>
+<p>Inner &ndash; Provides the inner join fetching of the related object.</p>
+<p><span class="bold">Note</span>: Inner joining does not allow for null or empty values</p>
 </li>
 <li>
-<p>Extension points</p>
+<p>Outer &ndash; Provides the outer join fetching of the related object</p>
+<p><span class="bold">Note</span>: Outer joining allows for null or empty values.</p>
+</li>
+</ul>
+</td>
+<td align="left" headers="r4c1-t37 r1c3-t37"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r5c1-t37" headers="r1c1-t37">
+<p>Optional</p>
+</td>
+<td align="left" headers="r5c1-t37 r1c2-t37">
+<p>Specifies if this field is can be null.</p>
+</td>
+<td align="left" headers="r5c1-t37 r1c3-t37">
+<p>True</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r6c1-t37" headers="r1c1-t37">
+<p>Private owned</p>
+</td>
+<td align="left" headers="r6c1-t37 r1c2-t37">
+<p>Specify that a relationship is privately owned; target object is a dependent part of the source object and is not referenced by any other object and cannot exist on its own.</p>
+</td>
+<td align="left" headers="r6c1-t37 r1c3-t37">
+<p>False</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r7c1-t37" headers="r1c1-t37">
+<p>Orphan removal</p>
+</td>
+<td align="left" headers="r7c1-t37 r1c2-t37"><br /></td>
+<td align="left" headers="r7c1-t37 r1c3-t37">
+<p>False</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r8c1-t37" headers="r1c1-t37">
+<p>Cascade</p>
+</td>
+<td align="left" headers="r8c1-t37 r1c2-t37">
+<p>Specify which operations are propagated throughout the entity.</p>
+<ul>
+<li>
+<p>All &ndash; All operations</p>
+</li>
+<li>
+<p>Persist</p>
+</li>
+<li>
+<p>Merge</p>
+</li>
+<li>
+<p>Move</p>
+</li>
+<li>
+<p>Remove</p>
+</li>
+<li>
+<p>Refresh</p>
+</li>
+</ul>
+</td>
+<td align="left" headers="r8c1-t37 r1c3-t37">
+<p>True</p>
+</td>
+</tr>
+</tbody>
+</table>
+<br /></div>
+<!-- class="inftblhruleinformal" -->
+<p>One-to-one mappings also include the following areas:</p>
+<ul>
+<li>
+<p><a href="reference040.htm#CACGHHGB">Derived Identity</a></p>
+</li>
+<li>
+<p><a href="reference039.htm#CACIJEGI">Joining Strategy</a></p>
 </li>
 </ul>
 </div>
-<!-- class="sect1" -->
+<!-- class="sect3" -->
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
 <col width="86%" />
 <col width="*" />
 <tr>
-<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2010,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
+<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2011, 2012,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
 <a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Legal Notices</span></a></td>
 </tr>
 </table>

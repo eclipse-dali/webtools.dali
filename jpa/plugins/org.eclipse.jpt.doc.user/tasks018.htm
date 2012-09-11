@@ -3,52 +3,86 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
- 
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Transient mapping</title>
-<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1" />
-<meta name="date" content="2010-05-19T8:12:45Z" />
+<title>One-to-one mapping</title>
+<meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
+<meta name="date" content="2012-09-11T7:44:5Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Transient mapping" />
-<meta name="relnum" content="Release 2.3" />
-<meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
+<meta name="doctitle" content="One-to-one mapping" />
+<meta name="relnum" content="Release 3.2" />
+<meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
-<!-- contents -->
 </head>
 <body>
-<p><a id="BABHFHEI" name="BABHFHEI"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-11</p>
+<p><a id="BABFHBCJ" name="BABFHBCJ"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
-<h1>Transient mapping</h1>
-<p><a id="sthref150" name="sthref150"></a><a id="sthref151" name="sthref151"></a><a id="sthref152" name="sthref152"></a><a id="sthref153" name="sthref153"></a>Use the Transient Mapping to specify a field of the entity class that <span class="italic">is not</span> persistent.</p>
-<p>To create a transient mapping:</p>
+<h1>One-to-one mapping</h1>
+<p><a id="sthref216" name="sthref216"></a><a id="sthref217" name="sthref217"></a><a id="sthref218" name="sthref218"></a><a id="sthref219" name="sthref219"></a>Use a <span class="bold">One-to-One Mapping</span> to define a relationship with one-to-many multiplicity.</p>
 <ol>
 <li>
 <p>In the <a href="ref_persistence_outline.htm#BABEGGFE">JPA Structure view</a>, select the field to map.</p>
 </li>
 <li>
-<p>Right-click the field and then select <span class="bold">Map As Transient</span>. The <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a> displays the properties for the selected.</p>
+<p>Right-click the field and then select <span class="bold">Map As &gt; One-to-One</span>. The <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a> displays the properties for the selected.</p>
+<div class="figure"><a id="sthref220" name="sthref220"></a>
+<p class="titleinfigure">JPA Details, One-to-one Mapping</p>
+<img src="img/jpa_details_onetoone.png" alt="JPA Details, One-to-one Mapping" title="JPA Details, One-to-one Mapping" /><br /></div>
+<!-- class="figure" --></li>
+<li>
+<p>Complete each field in the <a href="reference033.htm#CACGGHDD">One-to-One Mapping</a> area.</p>
+</li>
+<li>
+<p>Complete the remaining areas in the <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a>:</p>
+<ul>
+<li>
+<p><a href="reference039.htm#CACIJEGI">Joining Strategy</a></p>
+</li>
+<li>
+<p><a href="reference040.htm#CACGHHGB">Derived Identity</a></p>
+</li>
+</ul>
 </li>
 </ol>
-<p>Eclipse adds the following annotation to the field:</p>
+<p>Eclipse adds the following annotations to the field:</p>
 <pre xml:space="preserve" class="oac_no_warn">
-@Transient
+@OneToOne(targetEntity=<span class="italic">&lt;TARGET_ENTITY&gt;</span>, =Type.<span class="italic">&lt;_TYPE&gt;</span>, 
+    fetch = FetchType.<span class="italic">&lt;FETCH_TYPE&gt;</span>, mappedBy = "<span class="italic">&lt;MAPPED_BY&gt;</span>")
+@JoinColumn(name="<span class="italic">&lt;JOIN_COLUMN_NAME&gt;</span>", referencedColumnName=
+    "<span class="italic">&lt;JOIN_COLUMN_REFERENCED_COLUMN&gt;</span>", insertable = <span class="italic">&lt;INSERTABLE&gt;</span>, 
+    updatable = <span class="italic">&lt;UPDATABLE&gt;</span>)
 </pre>
-<p>&nbsp;</p>
-<img src="img/ngrelt.png" alt="Related task" title="Related task" /><br />
-<br />
-<a href="task_mapping.htm#BABDGBIJ">Mapping an entity</a>
-<p>&nbsp;</p>
-<img src="img/ngrelr.png" alt="Related reference" title="Related reference" /><br />
-<br />
-<a href="ref_persistence_outline.htm#BABEGGFE">JPA Structure view</a><br />
-<a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a>
-<p>&nbsp;</p>
-<img src="img/ngrelc.png" alt="Related concept" title="Related concept" /><br />
-<br />
-<a href="concept_mapping.htm#BABBDJFI">Understanding OR mappings</a><br />
-<a href="concepts001.htm#BABBGFJG">Understanding EJB 3.0 Java Persistence API</a></div>
+<a id="sthref221" name="sthref221"></a>
+<p class="subhead2">Related tasks</p>
+<ul>
+<li>
+<p><a href="task_mapping.htm#BABDGBIJ">Mapping an entity</a></p>
+</li>
+</ul>
+<a id="sthref222" name="sthref222"></a>
+<p class="subhead2">Related references</p>
+<ul>
+<li>
+<p><a href="ref_persistence_outline.htm#BABEGGFE">JPA Structure view</a></p>
+</li>
+<li>
+<p><a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a></p>
+</li>
+</ul>
+<a id="sthref223" name="sthref223"></a>
+<p class="subhead2">Related concepts</p>
+<ul>
+<li>
+<p><a href="concept_mapping.htm#BABBDJFI">Understanding OR mappings</a></p>
+</li>
+<li>
+<p><a href="concepts001.htm#BABBGFJG">Understanding Java Persistence API</a></p>
+</li>
+</ul>
+</div>
 <!-- class="sect2" -->
 <!-- Start Footer -->
 <div class="footer">
@@ -56,7 +90,7 @@
 <col width="86%" />
 <col width="*" />
 <tr>
-<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2010,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
+<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2011, 2012,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
 <a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Legal Notices</span></a></td>
 </tr>
 </table>

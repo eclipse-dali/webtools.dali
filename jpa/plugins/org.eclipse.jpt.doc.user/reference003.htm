@@ -3,128 +3,98 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
- 
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Mapping File</title>
-<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1" />
-<meta name="date" content="2010-05-19T8:12:46Z" />
+<title>Select Tables</title>
+<meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
+<meta name="date" content="2012-09-11T7:44:6Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Mapping File" />
-<meta name="relnum" content="Release 2.3" />
-<meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
+<meta name="doctitle" content="Select Tables" />
+<meta name="relnum" content="Release 3.2" />
+<meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
-<!-- contents -->
 </head>
 <body>
-<p><a id="CIAJEIDJ" name="CIAJEIDJ"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-11</p>
+<p><a id="CACFGHJF" name="CACFGHJF"></a></p>
 <div class="sect3"><!-- infolevel="all" infotype="General" -->
-<h1>Mapping File</h1>
-<p>This table lists the properties of the <a href="reference002.htm#CIAIJCCE">Mapping File Wizard</a>.</p>
-<div class="tblformal"><a id="sthref199" name="sthref199"></a><a id="sthref200" name="sthref200"></a>
-<p class="titleintable">Mapping File Wizard Properties</p>
-<table class="Formal" title="Mapping File Wizard Properties" summary="This table lists the properties of the Mapping File Wizard." dir="ltr" border="1" width="100%" frame="hsides" rules="groups" cellpadding="3" cellspacing="0">
-<col width="24%" />
+<h1>Select Tables</h1>
+<p><a id="sthref304" name="sthref304"></a><a id="sthref305" name="sthref305"></a><a id="sthref306" name="sthref306"></a>Use the <span class="gui-object-title">Select Tables</span> dialog to specify the database connection and tables from which to create entities.</p>
+<div class="inftblhruleinformal">
+<table class="HRuleInformal" title="Options on the Select Tables page of the Generate Entities from Tables wizard" summary="Options on the Select Tables page of the Generate Entities from Tables wizard" dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
+<col width="32%" />
 <col width="*" />
-<col width="24%" />
 <thead>
 <tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t7">Property</th>
-<th align="left" valign="bottom" id="r1c2-t7">Description</th>
-<th align="left" valign="bottom" id="r1c3-t7">Default</th>
+<th align="left" valign="bottom" id="r1c1-t6">Property</th>
+<th align="left" valign="bottom" id="r1c2-t6">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t7" headers="r1c1-t7">
-<p>Project</p>
+<td align="left" id="r2c1-t6" headers="r1c1-t6">
+<p>Connection</p>
 </td>
-<td align="left" headers="r2c1-t7 r1c2-t7">
-<p>The name of the JPA project.</p>
-</td>
-<td align="left" headers="r2c1-t7 r1c3-t7">
-<p>Selected.</p>
+<td align="left" headers="r2c1-t6 r1c2-t6">
+<p>Select a database connection or click <span class="bold">Add Connection</span> to create a new connection.</p>
 </td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r3c1-t7" headers="r1c1-t7">
-<p>Source folder</p>
+<td align="left" id="r3c1-t6" headers="r1c1-t6">
+<p>Schema</p>
 </td>
-<td align="left" headers="r3c1-t7 r1c2-t7">
-<p>The location of the project's src folder. If needed, click <span class="bold">Browse</span> to point the wizard to the src file's location.</p>
-</td>
-<td align="left" headers="r3c1-t7 r1c3-t7">
-<p>Selected.</p>
+<td align="left" headers="r3c1-t6 r1c2-t6">
+<p>Select the database schema from which to select tables.</p>
 </td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r4c1-t7" headers="r1c1-t7">
-<p>File Path</p>
+<td align="left" id="r4c1-t6" headers="r1c1-t6">
+<p>Tables</p>
 </td>
-<td align="left" headers="r4c1-t7 r1c2-t7">
-<p>The location for the new <code>orm.xml</code> file.</p>
-</td>
-<td align="left" headers="r4c1-t7 r1c3-t7">
-<p>Selected.</p>
+<td align="left" headers="r4c1-t6 r1c2-t6">
+<p>Select the tables from which to create Java persistent entities. The tables shown are determined by the database connection and schema selections.</p>
 </td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r5c1-t7" headers="r1c1-t7">
-<p>Default Access</p>
+<td align="left" id="r5c1-t6" headers="r1c1-t6">
+<p>Update class list in persistence.xml</p>
 </td>
-<td align="left" headers="r5c1-t7 r1c2-t7">
-<p>Select whether the access to the entity is field-based or property-based, as defined in JPA specification.</p>
-<ul>
-<li>
-<p>None &ndash; No access type specified.</p>
-</li>
-<li>
-<p><span class="bold">Property-based</span> &ndash; Persistent state accessed through the property accessor methods. The property accessor methods must be <span class="bold">public</span> or <span class="bold">private</span>.</p>
-</li>
-<li>
-<p><span class="bold">Field-based</span> &ndash; Instance variables are accessed directly. All non-transient instance variables are persistent.</p>
-</li>
-</ul>
-</td>
-<td align="left" headers="r5c1-t7 r1c3-t7">
-<p>None</p>
-</td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r6c1-t7" headers="r1c1-t7">
-<p>Add to persistence unit</p>
-</td>
-<td align="left" headers="r6c1-t7 r1c2-t7">
-<p>Designates the persistence unit for this object map file.</p>
-</td>
-<td align="left" headers="r6c1-t7 r1c3-t7">
-<p>Selected.</p>
+<td align="left" headers="r5c1-t6 r1c2-t6">
+<p>Specify if Dali should update the <code>persistence.xml</code> file to include the generated classes.</p>
 </td>
 </tr>
 </tbody>
 </table>
 <br /></div>
-<!-- class="tblformal" -->
-<p>&nbsp;</p>
-<img src="img/ngrelt.png" alt="Related task" title="Related task" /><br />
-<br />
-<a href="task_create_new_project.htm#CIHHEJCJ">Creating a new JPA project</a><br />
-<a href="task_create_jpa_entity.htm#BABFBJBG">Creating a JPA Entity</a><br />
-<a href="task_mapping.htm#BABDGBIJ">Mapping an entity</a>
-<p>&nbsp;</p>
-<img src="img/ngrelr.png" alt="Related task" title="Related task" /><br />
-<br />
-<a href="reference002.htm#CIAIJCCE">Mapping File Wizard</a><br /></div>
+<!-- class="inftblhruleinformal" -->
+<a id="sthref307" name="sthref307"></a>
+<p class="subhead2">Related tasks</p>
+<ul>
+<li>
+<p><a href="task_create_jpa_entity.htm#BABFBJBG">Creating a JPA entity</a></p>
+</li>
+<li>
+<p><a href="tasks023.htm#CIHHFGIG">Generating dynamic entities from tables</a></p>
+</li>
+</ul>
+<a id="sthref308" name="sthref308"></a>
+<p class="subhead2">Related reference</p>
+<ul>
+<li>
+<p><a href="ref_create_custom_entities_wizard.htm#CIAGBFJE">Generate Entities from Tables wizard</a></p>
+</li>
+</ul>
+</div>
 <!-- class="sect3" -->
-<!-- class="sect2" -->
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
 <col width="86%" />
 <col width="*" />
 <tr>
-<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2010,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
+<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2011, 2012,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
 <a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Legal Notices</span></a></td>
 </tr>
 </table>

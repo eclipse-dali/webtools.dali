@@ -3,76 +3,94 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
- 
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Join Table Information</title>
-<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1" />
-<meta name="date" content="2010-05-19T8:12:47Z" />
+<title>Schema Generation</title>
+<meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
+<meta name="date" content="2012-09-11T7:44:7Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Join Table Information" />
-<meta name="relnum" content="Release 2.3" />
-<meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
+<meta name="doctitle" content="Schema Generation" />
+<meta name="relnum" content="Release 3.2" />
+<meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
-<!-- contents -->
 </head>
 <body>
-<p><a id="CACBAEBC" name="CACBAEBC"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-11</p>
+<p><a id="CACHAJEG" name="CACHAJEG"></a></p>
 <div class="sect3"><!-- infolevel="all" infotype="General" -->
-<h1>Join Table Information</h1>
-<p>Use area to specify a mapped column for joining an entity association. By default, the mapping is assumed to have a single join.</p>
-<p>This table lists the fields available on the <span class="gui-object-title">Join Table</span> area in <span class="gui-object-title">the JPA Details</span> view for <a href="tasks016.htm#BABHGEBD">One-to-many mapping</a> and <a href="tasks014.htm#BABEIEGD">Many-to-many mapping</a> mapping types.</p>
-<div class="inftblruleinformal">
-<table class="RuleInformal" title="This table describes the options on the Join Table tab." summary="This table describes the options on the Join Table tab." dir="ltr" border="1" width="100%" frame="border" rules="all" cellpadding="3" cellspacing="0">
-<col width="26%" />
+<h1>Schema Generation</h1>
+<p>This table lists the properties of the <a href="#CACHAJEG">Schema Generation</a> page.</p>
+<div class="inftblhruleinformal">
+<table class="HRuleInformal" summary="This table lists the properties of the Mapping File Wizard." dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
+<col width="23%" />
 <col width="*" />
-<col width="34%" />
+<col width="24%" />
 <thead>
 <tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t17">Property</th>
-<th align="left" valign="bottom" id="r1c2-t17">Description</th>
-<th align="left" valign="bottom" id="r1c3-t17">Default</th>
+<th align="left" valign="bottom" id="r1c1-t18">Property</th>
+<th align="left" valign="bottom" id="r1c2-t18">Description</th>
+<th align="left" valign="bottom" id="r1c3-t18">Default</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t17" headers="r1c1-t17">Name</td>
-<td align="left" headers="r2c1-t17 r1c2-t17">Name of the join table that contains the foreign key column.</td>
-<td align="left" headers="r2c1-t17 r1c3-t17">By default, the name is assumed to be the primary tables associated with the entities concatenated with an underscore.</td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r3c1-t17" headers="r1c1-t17"><a id="CACBBDFG" name="CACBBDFG"></a>Join Columns</td>
-<td align="left" headers="r3c1-t17 r1c2-t17"><a id="sthref246" name="sthref246"></a><a id="sthref247" name="sthref247"></a>Specify a mapped column for joining an entity association. This field corresponds to the <code>@JoinColum</code> attribute.
-<p>Select <span class="bold">Override Default</span>, then Add, Edit, or Remove the join columns.</p>
+<td align="left" id="r2c1-t18" headers="r1c1-t18">
+<p>Generation Output Mode</p>
 </td>
-<td align="left" headers="r3c1-t17 r1c3-t17">By default, the mapping is assumed to have a single join.</td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r4c1-t17" headers="r1c1-t17">Inverse Join Columns</td>
-<td align="left" headers="r4c1-t17 r1c2-t17">Select <span class="bold">Override Default</span>, then Add, Edit, or Remove the join columns.</td>
-<td align="left" headers="r4c1-t17 r1c3-t17"><br /></td>
+<td align="left" headers="r2c1-t18 r1c2-t18">
+<p>Specify how Dali should generate the DDL:</p>
+<ul>
+<li>
+<p>Database</p>
+</li>
+<li>
+<p>SQL-script</p>
+</li>
+<li>
+<p>Both</p>
+</li>
+</ul>
+</td>
+<td align="left" headers="r2c1-t18 r1c3-t18">
+<p>Database</p>
+</td>
 </tr>
 </tbody>
 </table>
 <br /></div>
-<!-- class="inftblruleinformal" -->
-<p>&nbsp;</p>
-<img src="img/ngrelt.png" alt="Related task" title="Related task" /><br />
-<br />
-<a href="task_mapping.htm#BABDGBIJ">Mapping an entity</a>
-<p>&nbsp;</p>
-<img src="img/ngrelr.png" alt="Related task" title="Related task" /><br />
-<br />
-<a href="reference029.htm#CACCGEHC">Edit Join Columns Dialog</a></div>
+<!-- class="inftblhruleinformal" -->
+<a id="sthref339" name="sthref339"></a>
+<p class="subhead2">Related tasks</p>
+<ul>
+<li>
+<p><a href="task_create_new_project.htm#CIHHEJCJ">Creating a new JPA project</a></p>
+</li>
+<li>
+<p><a href="task_create_jpa_entity.htm#BABFBJBG">Creating a JPA entity</a></p>
+</li>
+<li>
+<p><a href="task_mapping.htm#BABDGBIJ">Mapping an entity</a></p>
+</li>
+</ul>
+<a id="sthref340" name="sthref340"></a>
+<p class="subhead2">Related reference</p>
+<ul>
+<li>
+<p><a href="reference007.htm#CIAIJCCE">Create ORM Mapping File wizard</a></p>
+</li>
+</ul>
+</div>
 <!-- class="sect3" -->
+<!-- class="sect2" -->
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
 <col width="86%" />
 <col width="*" />
 <tr>
-<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2010,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
+<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2011, 2012,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
 <a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Legal Notices</span></a></td>
 </tr>
 </table>

@@ -3,169 +3,177 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
- 
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Connection</title>
-<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1" />
-<meta name="date" content="2010-05-19T8:12:48Z" />
+<title>Inheritance</title>
+<meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
+<meta name="date" content="2012-09-11T7:44:7Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Connection" />
-<meta name="relnum" content="Release 2.3" />
-<meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
+<meta name="doctitle" content="Inheritance" />
+<meta name="relnum" content="Release 3.2" />
+<meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
-<!-- contents -->
 </head>
 <body>
-<p><a id="CIAFFJIE" name="CIAFFJIE"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-11</p>
+<p><a id="CACFHGHE" name="CACFHGHE"></a></p>
 <div class="sect3"><!-- infolevel="all" infotype="General" -->
-<h1>Connection</h1>
-<p>The following table lists the properties available in the Connection page of the <a href="ref_persistence_xmll_editor.htm#CIACCHID">persistence.xml Editor</a>.</p>
-<div class="tblformal"><a id="sthref260" name="sthref260"></a><a id="sthref261" name="sthref261"></a>
-<p class="titleintable">Properties of the Connection Page</p>
-<table class="Formal" title="Properties of the Connection Page" summary="This table lists the properties for the persistence.xml editor&rsquo;s connection page." dir="ltr" border="1" width="100%" frame="hsides" rules="groups" cellpadding="3" cellspacing="0">
-<col width="24%" />
+<h1>Inheritance</h1>
+<p><a id="sthref365" name="sthref365"></a><a id="sthref366" name="sthref366"></a>This table lists the fields available on the <span class="gui-object-title">Inheritance</span> area in the <span class="gui-object-title">JPA Details</span> view for each entity type.</p>
+<div class="inftblhruleinformal">
+<table class="HRuleInformal" title="This table describes the options on the Persistence Properties view, Inheritance tab." summary="This table describes the options on the Persistence Properties view, Inheritance tab." dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
+<col width="16%" />
 <col width="*" />
-<col width="24%" />
+<col width="15%" />
+<col width="20%" />
 <thead>
 <tr align="left" valign="top">
 <th align="left" valign="bottom" id="r1c1-t25">Property</th>
 <th align="left" valign="bottom" id="r1c2-t25">Description</th>
 <th align="left" valign="bottom" id="r1c3-t25">Default</th>
+<th align="left" valign="bottom" id="r1c4-t25">Available for Entity Type</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
 <td align="left" id="r2c1-t25" headers="r1c1-t25">
-<p>Transaction Type</p>
+<p>Strategy</p>
 </td>
 <td align="left" headers="r2c1-t25 r1c2-t25">
-<p>Specify if the connection for this persistence unit uses one of the following transaction types:</p>
+<p>Specify the strategy to use when mapping a class or class hierarchy:</p>
 <ul>
 <li>
-<p><span class="bold">Default</span> -- Select to use the container used by the container.</p>
+<p><span class="bold">Single table</span> &ndash; All classes in the hierarchy are mapped to a single table.</p>
 </li>
 <li>
-<p><span class="bold">JTA</span> (Java Transaction API) -- Transactions of the Java EE server.</p>
+<p><span class="bold">Joined</span> &ndash; The root of the hierarchy is mapped to a single table; each child maps to its own table.</p>
 </li>
 <li>
-<p><span class="bold">Resource Local</span> -- Native actions of a JDBC driver that are referenced by a persistence unit.</p>
+<p><span class="bold">Table per class</span> &ndash; Each class is mapped to a separate table.</p>
 </li>
 </ul>
+<p>This field corresponds to the <code>@Inheritance</code> annotation.</p>
 </td>
-<td align="left" headers="r2c1-t25 r1c3-t25"><br /></td>
+<td align="left" headers="r2c1-t25 r1c3-t25">
+<p>Single table</p>
+</td>
+<td align="left" headers="r2c1-t25 r1c4-t25">
+<p><a href="tasks002.htm#BABGBIEE">Entity</a></p>
+<br /></td>
 </tr>
 <tr align="left" valign="top">
 <td align="left" id="r3c1-t25" headers="r1c1-t25">
-<p>Batch Writing</p>
+<p><a id="sthref367" name="sthref367"></a><a id="sthref368" name="sthref368"></a>Discriminator Value</p>
 </td>
 <td align="left" headers="r3c1-t25 r1c2-t25">
-<p>Specify the use of batch writing to optimize transactions with multiple write operations.</p>
-<p>Set the value of this property into the session at deployment time.</p>
-<p>Note: This property applies when used both in a Java SE and Java EE environment.</p>
-<p>The following are the valid values for oracle.toplink.config.BatchWriting:</p>
-<ul>
-<li>
-<p><span class="bold">JDBC</span>&ndash;Use JDBC batch writing.</p>
-</li>
-<li>
-<p><span class="bold">Buffered</span>&ndash;Do not use either JDBC batch writing nor native platform batch writing.</p>
-</li>
-<li>
-<p><span class="bold">OracleJDBC</span>&ndash;Use both JDBC batch writing and Oracle native platform batch writing.</p>
-</li>
-<li>
-<p><span class="bold">None</span>&ndash;Do not use batch writing (turn it off).</p>
-</li>
-</ul>
+<p>Specify the discriminator value used to differentiate an entity in this inheritance hierarchy. The value must conform to the specified <span class="bold">Discriminator Type</span>.</p>
 </td>
-<td align="left" headers="r3c1-t25 r1c3-t25">
-<p>None</p>
-</td>
+<td align="left" headers="r3c1-t25 r1c3-t25"><br /></td>
+<td align="left" headers="r3c1-t25 r1c4-t25">
+<p><a href="tasks002.htm#BABGBIEE">Entity</a></p>
+<br /></td>
 </tr>
 <tr align="left" valign="top">
 <td align="left" id="r4c1-t25" headers="r1c1-t25">
-<p>Statement caching</p>
+<p><a id="sthref369" name="sthref369"></a><a id="sthref370" name="sthref370"></a><span class="bold">Discriminator Column</span></p>
 </td>
-<td align="left" headers="r4c1-t25 r1c2-t25"><br /></td>
+<td align="left" headers="r4c1-t25 r1c2-t25">
+<p>These fields are available when using a <span class="bold">Single</span> or <span class="bold">Joined</span> inheritance strategy.</p>
+<p>This field corresponds to the <code>@DiscriminatorColumn</code> annotation.</p>
+<p>Use the <span class="bold">Details</span> area to define the <span class="bold">Length</span> and <span class="bold">Column definition</span> of this Discriminator Column.</p>
+</td>
 <td align="left" headers="r4c1-t25 r1c3-t25"><br /></td>
+<td align="left" headers="r4c1-t25 r1c4-t25"><br /></td>
 </tr>
 <tr align="left" valign="top">
 <td align="left" id="r5c1-t25" headers="r1c1-t25">
-<p>Native SQL</p>
+<p>Name</p>
 </td>
-<td align="left" headers="r5c1-t25 r1c2-t25"><br /></td>
-<td align="left" headers="r5c1-t25 r1c3-t25">
-<p>False</p>
+<td align="left" headers="r5c1-t25 r1c2-t25">
+<p>Name of the discriminator column</p>
 </td>
+<td align="left" headers="r5c1-t25 r1c3-t25"><br /></td>
+<td align="left" headers="r5c1-t25 r1c4-t25">
+<p><a href="tasks002.htm#BABGBIEE">Entity</a></p>
+<br /></td>
 </tr>
 <tr align="left" valign="top">
 <td align="left" id="r6c1-t25" headers="r1c1-t25">
-<p>JTA Data Source Name</p>
+<p>Type</p>
 </td>
 <td align="left" headers="r6c1-t25 r1c2-t25">
-<p>If you selected <span class="bold">JTA</span> as the transaction type, then enter the name of the default JTA data source for the persistence unit.</p>
+<p>Set this field to set the discriminator type to <code>Char</code> or <code>Integer</code> (instead of its default: <code>String</code>). The <span class="bold">Discriminator Value</span> must conform to this type.</p>
 </td>
-<td align="left" headers="r6c1-t25 r1c3-t25"><br /></td>
+<td align="left" headers="r6c1-t25 r1c3-t25">
+<p>String</p>
+</td>
+<td align="left" headers="r6c1-t25 r1c4-t25">
+<p><a href="tasks002.htm#BABGBIEE">Entity</a></p>
+<br /></td>
 </tr>
 <tr align="left" valign="top">
 <td align="left" id="r7c1-t25" headers="r1c1-t25">
-<p>Non-JTA Data Source Name</p>
+<p>Length</p>
 </td>
-<td align="left" headers="r7c1-t25 r1c2-t25">
-<p>If you selected <span class="bold">Resource Local</span> as the transaction type, then enter the name of the non-JTA data source.</p>
-<p>This property is not available for projects using the Generic platform.</p>
+<td align="left" headers="r7c1-t25 r1c2-t25"><br /></td>
+<td align="left" headers="r7c1-t25 r1c3-t25">
+<p>0</p>
 </td>
-<td align="left" headers="r7c1-t25 r1c3-t25"><br /></td>
+<td align="left" headers="r7c1-t25 r1c4-t25">
+<p><a href="tasks002.htm#BABGBIEE">Entity</a></p>
+<br /></td>
 </tr>
 <tr align="left" valign="top">
 <td align="left" id="r8c1-t25" headers="r1c1-t25">
-<p>&nbsp;&nbsp;Bind&nbsp;Parameters</p>
+<p>Column definition</p>
 </td>
-<td align="left" headers="r8c1-t25 r1c2-t25">
-<p>Control whether or not the query uses parameter binding.</p>
-<p>Note: This property applies when used in a Java SE environment.</p>
-<p>This property is not available for projects using the Generic platform.</p>
-</td>
+<td align="left" headers="r8c1-t25 r1c2-t25"><br /></td>
 <td align="left" headers="r8c1-t25 r1c3-t25"><br /></td>
+<td align="left" headers="r8c1-t25 r1c4-t25">
+<p><a href="tasks002.htm#BABGBIEE">Entity</a></p>
+<br /></td>
 </tr>
 <tr align="left" valign="top">
 <td align="left" id="r9c1-t25" headers="r1c1-t25">
-<p>EclipseLink Connection Pool</p>
+<p><span class="bold">Primary Key Join Columns</span></p>
 </td>
 <td align="left" headers="r9c1-t25 r1c2-t25">
-<p>Define the connection pool driver, URL, user name and password.</p>
-<p>These properties are note available for projects using the Generic platform.</p>
+<p>Use to override the default primary key join columns. Select <span class="bold">Override Default</span>, then click <span class="bold">Add</span> to select new Join Column with the <a href="reference067.htm#CACDGGDB">Add Primary Key Join Column dialog</a>.</p>
+<p>This field corresponds with @<code>PrimaryKeyJoinColum</code>n annotation.</p>
 </td>
 <td align="left" headers="r9c1-t25 r1c3-t25"><br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r10c1-t25" headers="r1c1-t25">
-<p>&nbsp;&nbsp;Read&nbsp;Connection</p>
-</td>
-<td align="left" headers="r10c1-t25 r1c2-t25">
-<p>The maximum and minimum number of connections allowed in the JDBC read connection pool.</p>
-<p>Note: These property apply when used in a Java SE environment.</p>
-<p>These properties are not available for projects using the Generic platform</p>
-</td>
-<td align="left" headers="r10c1-t25 r1c3-t25"><br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r11c1-t25" headers="r1c1-t25">
-<p>&nbsp;&nbsp;Write&nbsp;Connection</p>
-</td>
-<td align="left" headers="r11c1-t25 r1c2-t25">
-<p>The maximum and minimum number of connections allowed in the JDBC read connection pool.</p>
-<p>Note: These property apply when used in a Java SE environment.</p>
-<p>These properties are not available for projects using the Generic platform</p>
-</td>
-<td align="left" headers="r11c1-t25 r1c3-t25"><br /></td>
+<td align="left" headers="r9c1-t25 r1c4-t25">
+<p><a href="tasks002.htm#BABGBIEE">Entity</a></p>
+<br /></td>
 </tr>
 </tbody>
 </table>
 <br /></div>
-<!-- class="tblformal" --></div>
+<!-- class="inftblhruleinformal" -->
+<p>Refer to <a href="task_inheritance.htm#CIHCCCJD">"Specifying entity inheritance"</a> for additional information.</p>
+<a id="sthref371" name="sthref371"></a>
+<p class="subhead2">Related tasks</p>
+<ul>
+<li>
+<p><a href="task_inheritance.htm#CIHCCCJD">Specifying entity inheritance</a></p>
+</li>
+<li>
+<p><a href="task_add_persistence.htm#BABHICAI">Adding persistence to a class</a></p>
+</li>
+</ul>
+<a id="sthref372" name="sthref372"></a>
+<p class="subhead2">Related reference</p>
+<ul>
+<li>
+<p><a href="ref_persistence_prop_view.htm#BABFAEBB">JPA Details view (for entities)</a></p>
+</li>
+<li>
+<p><a href="reference067.htm#CACDGGDB">Add Primary Key Join Column dialog</a></p>
+</li>
+</ul>
+</div>
 <!-- class="sect3" -->
 <!-- Start Footer -->
 <div class="footer">
@@ -173,7 +181,7 @@
 <col width="86%" />
 <col width="*" />
 <tr>
-<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2010,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
+<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2011, 2012,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
 <a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Legal Notices</span></a></td>
 </tr>
 </table>

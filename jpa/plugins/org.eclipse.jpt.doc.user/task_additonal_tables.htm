@@ -3,21 +3,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
- 
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <title>Specifying additional tables</title>
-<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1" />
-<meta name="date" content="2010-05-19T8:12:43Z" />
+<meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
+<meta name="date" content="2012-09-11T7:44:4Z" />
 <meta name="robots" content="noarchive" />
 <meta name="doctitle" content="Specifying additional tables" />
-<meta name="relnum" content="Release 2.3" />
-<meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
+<meta name="relnum" content="Release 3.2" />
+<meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
-<!-- contents -->
 </head>
 <body>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-11</p>
 <p><a id="CIHGBIEI" name="CIHGBIEI"></a></p>
 <div class="sect1"><!-- infolevel="all" infotype="General" -->
 <h1>Specifying additional tables</h1>
@@ -29,7 +29,7 @@
 </li>
 <li>
 <p>In the <span class="gui-object-title">JPA Details</span> view, select the <span class="gui-object-action">Secondary Tables</span> information.</p>
-<div class="figure"><a id="sthref92" name="sthref92"></a>
+<div class="figure"><a id="sthref129" name="sthref129"></a>
 <p class="titleinfigure">Specifying Secondary Tables</p>
 <img src="img/secondary_tables.png" alt="Secondary Tables area on the JPA Details view." title="Secondary Tables area on the JPA Details view." /><br /></div>
 <!-- class="figure" --></li>
@@ -55,18 +55,23 @@
 <p>Eclipse adds the following annotations the entity:</p>
 <pre xml:space="preserve" class="oac_no_warn">
 @SecondaryTable(name="NAME", catalog = "CATALOG", schema = "SCHEMA", pkJoinColumns = {@PrimaryKeyJoinColumn(name="id", referencedColumnName = "id"),@PrimaryKeyJoinColumn(name="NAME", referencedColumnName = "REFERENCED COLUMN NAME", columnDefinition = "COLUMN DEFINITION")})
-
 </pre></li>
 </ol>
-<br />
-<p>&nbsp;</p>
-<img src="img/ngrelt.png" alt="Related task" title="Related task" /><br />
-<br />
-<a href="task_add_persistence.htm#BABHICAI">Adding persistence to a class</a>
-<p>&nbsp;</p>
-<img src="img/ngrelc.png" alt="Related concept" title="Related concept" /><br />
-<br />
-<a href="concept_persistence.htm#BABCAHIC">Understanding Java persistence</a><br /></div>
+<a id="sthref130" name="sthref130"></a>
+<p class="subhead2">Related reference</p>
+<ul>
+<li>
+<p><a href="task_add_persistence.htm#BABHICAI">Adding persistence to a class</a></p>
+</li>
+</ul>
+<a id="sthref131" name="sthref131"></a>
+<p class="subhead2">Related concepts</p>
+<ul>
+<li>
+<p><a href="concept_persistence.htm#BABCAHIC">Understanding Java persistence</a></p>
+</li>
+</ul>
+</div>
 <!-- class="sect1" -->
 <!-- Start Footer -->
 <div class="footer">
@@ -74,7 +79,7 @@
 <col width="86%" />
 <col width="*" />
 <tr>
-<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2010,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
+<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2011, 2012,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
 <a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Legal Notices</span></a></td>
 </tr>
 </table>

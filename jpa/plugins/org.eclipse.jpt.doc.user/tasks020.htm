@@ -3,24 +3,101 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
- 
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Element Collection mapping</title>
-<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1" />
-<meta name="date" content="2010-05-19T8:12:45Z" />
+<title>Version mapping</title>
+<meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
+<meta name="date" content="2012-09-11T7:44:6Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Element Collection mapping" />
-<meta name="relnum" content="Release 2.3" />
-<meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
+<meta name="doctitle" content="Version mapping" />
+<meta name="relnum" content="Release 3.2" />
+<meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
-<!-- contents -->
 </head>
 <body>
-<p><a id="CIHBDEAJ" name="CIHBDEAJ"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-11</p>
+<p><a id="BABHIBII" name="BABHIBII"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
-<h1>Element Collection mapping</h1>
+<h1>Version mapping</h1>
+<p><a id="sthref231" name="sthref231"></a><a id="sthref232" name="sthref232"></a><a id="sthref233" name="sthref233"></a><a id="sthref234" name="sthref234"></a>Use a <span class="bold">Version Mapping</span> to specify the field used for optimistic locking. If the entity is associated with multiple tables, you should use a version mapping only with the primary table. You should have only a single version mapping per persistent entity. Version mappings may be used only with the following attribute types:</p>
+<ul>
+<li>
+<p><code>int</code></p>
+</li>
+<li>
+<p><code>Integer</code></p>
+</li>
+<li>
+<p><code>short, Short</code></p>
+</li>
+<li>
+<p><code>long, Long</code></p>
+</li>
+<li>
+<p><code>Timestamp</code></p>
+</li>
+</ul>
+<p>To create a version mapping:</p>
+<ol>
+<li>
+<p>In the <a href="ref_persistence_outline.htm#BABEGGFE">JPA Structure view</a>, select the field to map.</p>
+</li>
+<li>
+<p>Right-click the field and then select <span class="bold">Map As &gt; Version</span>. The <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a> displays the properties for the selected.</p>
+<div class="figure"><a id="sthref235" name="sthref235"></a>
+<p class="titleinfigure">JPA Details, Version Mapping</p>
+<img src="img/jpa_details_version.png" alt="JPA Details, Version Mapping" title="JPA Details, Version Mapping" /><br /></div>
+<!-- class="figure" --></li>
+<li>
+<p>Complete each field in the <a href="reference034.htm#CACHAEBB">Version Mapping</a> area.</p>
+</li>
+<li>
+<p>Complete the remaining areas in the <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a>:</p>
+<ul>
+<li>
+<p><a href="reference035.htm#CACIHAAF">Type information</a></p>
+</li>
+<li>
+<p><a href="reference037.htm#CACJCHJB">Converters</a></p>
+</li>
+</ul>
+</li>
+</ol>
+<p>Eclipse adds the following annotations to the field:</p>
+<pre xml:space="preserve" class="oac_no_warn">
+@Version
+@Column(table="<span class="italic">&lt;COLUMN_TABLE&gt;</span>", name="&lt;<span class="italic">COLUMN_NAME</span>&gt;")
+
+</pre>
+<a id="sthref236" name="sthref236"></a>
+<p class="subhead2">Related tasks</p>
+<ul>
+<li>
+<p><a href="task_mapping.htm#BABDGBIJ">Mapping an entity</a></p>
+</li>
+</ul>
+<a id="sthref237" name="sthref237"></a>
+<p class="subhead2">Related references</p>
+<ul>
+<li>
+<p><a href="ref_persistence_outline.htm#BABEGGFE">JPA Structure view</a></p>
+</li>
+<li>
+<p><a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a></p>
+</li>
+</ul>
+<a id="sthref238" name="sthref238"></a>
+<p class="subhead2">Related concepts</p>
+<ul>
+<li>
+<p><a href="concept_mapping.htm#BABBDJFI">Understanding OR mappings</a></p>
+</li>
+<li>
+<p><a href="concepts001.htm#BABBGFJG">Understanding Java Persistence API</a></p>
+</li>
+</ul>
 </div>
 <!-- class="sect2" -->
 <!-- class="sect1" -->
@@ -30,7 +107,7 @@
 <col width="86%" />
 <col width="*" />
 <tr>
-<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2010,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
+<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2011, 2012,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
 <a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Legal Notices</span></a></td>
 </tr>
 </table>

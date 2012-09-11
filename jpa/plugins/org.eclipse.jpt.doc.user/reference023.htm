@@ -3,129 +3,149 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
- 
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Schema Generation</title>
-<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1" />
-<meta name="date" content="2010-05-19T8:12:48Z" />
+<title>Converters</title>
+<meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
+<meta name="date" content="2012-09-11T7:44:7Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Schema Generation" />
-<meta name="relnum" content="Release 2.3" />
-<meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
+<meta name="doctitle" content="Converters" />
+<meta name="relnum" content="Release 3.2" />
+<meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
-<!-- contents -->
 </head>
 <body>
-<p><a id="CIACCFCB" name="CIACCFCB"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-11</p>
+<p><a id="CACJGDAJ" name="CACJGDAJ"></a></p>
 <div class="sect3"><!-- infolevel="all" infotype="General" -->
-<h1>Schema Generation</h1>
-<p>This table lists the properties of the Schema Generation page of the <a href="ref_persistence_xmll_editor.htm#CIACCHID">persistence.xml Editor</a>.</p>
-<div align="center">
-<div class="inftblnote"><br />
-<table class="Note oac_no_warn" summary="" cellpadding="3" cellspacing="0">
-<tbody>
-<tr>
-<td align="left">
-<p class="notep1">Note:</p>
-This page is not available for projects using the <span class="bold">Generic</span> platform.</td>
-</tr>
-</tbody>
-</table>
-<br /></div>
-<!-- class="inftblnote" --></div>
-<div class="tblformal"><a id="sthref271" name="sthref271"></a><a id="sthref272" name="sthref272"></a>
-<p class="titleintable">&nbsp;</p>
-<table class="Formal" title="" summary="This table lists the properties of the persistence.xml Editor&rsquo;s Schema Generation page." dir="ltr" border="1" width="100%" frame="hsides" rules="groups" cellpadding="3" cellspacing="0">
-<col width="24%" />
+<h1>Converters</h1>
+<p>Use the Converter area in the <span class="gui-object-title">JPA Details</span> view to specify a way to modify data value(s) during the reading and writing of a mapped attribute.</p>
+<div class="inftblhruleinformalwide">
+<table class="HRuleInformalWide" title="JPA Details view, Advanced page" summary="JPA Details view, Advanced page" dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
+<col width="16%" />
 <col width="*" />
-<col width="24%" />
+<col width="17%" />
+<col width="25%" />
 <thead>
 <tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t35">Property</th>
-<th align="left" valign="bottom" id="r1c2-t35">Description</th>
-<th align="left" valign="bottom" id="r1c3-t35">Default</th>
+<th align="left" valign="bottom" id="r1c1-t29">Property</th>
+<th align="left" valign="bottom" id="r1c2-t29">Description</th>
+<th align="left" valign="bottom" id="r1c3-t29">Default</th>
+<th align="left" valign="bottom" id="r1c4-t29">Available for Entity&nbsp;Type</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t35" headers="r1c1-t35">
-<p>DDL Generation Type</p>
+<td align="left" id="r2c1-t29" headers="r1c1-t29">
+<p>Converters</p>
 </td>
-<td align="left" headers="r2c1-t35 r1c2-t35">
-<p>Select the type of DDL generation:</p>
+<td align="left" headers="r2c1-t29 r1c2-t29">
+<p>Click Add and use the <a href="ref_add_converter.htm#CIAGCGIJ">Add Converter dialog</a> to create a new converter.</p>
 <ul>
 <li>
-<p><span class="bold">None</span> -- Do not generate DDL; no schema is generated.</p>
+<p>Object Type</p>
 </li>
 <li>
-<p><span class="bold">Create Tables</span> -- Create DDL for non-existent tables; leave existing tables unchanged.</p>
+<p>Type</p>
 </li>
 <li>
-<p><span class="bold">Drop and Create Tables</span> -- Create DDL for all tables; drop all existing tables.</p>
+<p>Struct</p>
+</li>
+<li>
+<p>Custom</p>
 </li>
 </ul>
 </td>
-<td align="left" headers="r2c1-t35 r1c3-t35">
-<p>None</p>
+<td align="left" headers="r2c1-t29 r1c3-t29"><br /></td>
+<td align="left" headers="r2c1-t29 r1c4-t29">
+<p><a href="tasks002.htm#BABGBIEE">Entity</a>, <a href="tasks003.htm#BABFEICE">Embeddable</a>, and <a href="tasks004.htm#BABDAGCI">Mapped superclass</a></p>
 </td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r3c1-t35" headers="r1c1-t35">
-<p>Output Mode</p>
+<td align="left" id="r3c1-t29" headers="r1c1-t29">
+<p>Name</p>
 </td>
-<td align="left" headers="r3c1-t35 r1c2-t35">
-<p>Select the DDL generation target:</p>
-<ul>
-<li>
-<p><span class="bold">Both</span> -- Generate SQL files and execute them on the database.</p>
-</li>
-<li>
-<p><span class="bold">Database</span> -- Execute SQL on the database only (do not generate SQL files).</p>
-</li>
-<li>
-<p><span class="bold">SQL Script</span> -- Generate SQL files only (do not execute them on the database).</p>
-</li>
-</ul>
-</td>
-<td align="left" headers="r3c1-t35 r1c3-t35"><br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r4c1-t35" headers="r1c1-t35">
-<p>DDL Generation Location</p>
-</td>
-<td align="left" headers="r4c1-t35 r1c2-t35">
-<p>Specify where EclipseLink writes DDL output. Specify a file specification to a directory in which you have write access. The file specification may be relative to your current working directory or absolute. If it does not end in a file separator, then EclipseLink appends one that is valid for your operating system.</p>
-</td>
-<td align="left" headers="r4c1-t35 r1c3-t35"><br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r5c1-t35" headers="r1c1-t35">
-<p>Create DDL File Name</p>
-</td>
-<td align="left" headers="r5c1-t35 r1c2-t35">
-<p>Specify the file name of the DDL file that EclipseLink generates that contains SQL statements for creating tables for JPA entities. Specify a file name valid for your operating system.</p>
-</td>
-<td align="left" headers="r5c1-t35 r1c3-t35">
-<p>createDDL.jdbc</p>
+<td align="left" headers="r3c1-t29 r1c2-t29"><br /></td>
+<td align="left" headers="r3c1-t29 r1c3-t29"><br /></td>
+<td align="left" headers="r3c1-t29 r1c4-t29">
+<p><a href="tasks002.htm#BABGBIEE">Entity</a>, <a href="tasks003.htm#BABFEICE">Embeddable</a>, and <a href="tasks004.htm#BABDAGCI">Mapped superclass</a></p>
 </td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r6c1-t35" headers="r1c1-t35">
-<p>Drop DDL File Name</p>
+<td align="left" id="r4c1-t29" headers="r1c1-t29">
+<p>Class</p>
 </td>
-<td align="left" headers="r6c1-t35 r1c2-t35">
-<p>Specify the file name of the DDL file that EclipseLink generates that contains SQL statements for dropping tables for JPA entities.</p>
+<td align="left" headers="r4c1-t29 r1c2-t29">
+<p>Appears for <span class="bold">Custom</span> and <span class="bold">Struct</span> converters only.</p>
 </td>
-<td align="left" headers="r6c1-t35 r1c3-t35">
-<p>dropDDL.jdbc</p>
+<td align="left" headers="r4c1-t29 r1c3-t29"><br /></td>
+<td align="left" headers="r4c1-t29 r1c4-t29">
+<p><a href="tasks002.htm#BABGBIEE">Entity</a>, <a href="tasks003.htm#BABFEICE">Embeddable</a>, and <a href="tasks004.htm#BABDAGCI">Mapped superclass</a></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r5c1-t29" headers="r1c1-t29">
+<p>Data type</p>
+</td>
+<td align="left" headers="r5c1-t29 r1c2-t29">
+<p>Appears for <span class="bold">Object Type</span> and <span class="bold">Type</span> converters only.</p>
+</td>
+<td align="left" headers="r5c1-t29 r1c3-t29"><br /></td>
+<td align="left" headers="r5c1-t29 r1c4-t29">
+<p><a href="tasks002.htm#BABGBIEE">Entity</a>, <a href="tasks003.htm#BABFEICE">Embeddable</a>, and <a href="tasks004.htm#BABDAGCI">Mapped superclass</a></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r6c1-t29" headers="r1c1-t29">
+<p>Object type</p>
+</td>
+<td align="left" headers="r6c1-t29 r1c2-t29">
+<p>Appears for <span class="bold">Object Type</span> and <span class="bold">Type</span> converters only.</p>
+</td>
+<td align="left" headers="r6c1-t29 r1c3-t29"><br /></td>
+<td align="left" headers="r6c1-t29 r1c4-t29">
+<p><a href="tasks002.htm#BABGBIEE">Entity</a>, <a href="tasks003.htm#BABFEICE">Embeddable</a>, and <a href="tasks004.htm#BABDAGCI">Mapped superclass</a></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r7c1-t29" headers="r1c1-t29">
+<p>Conversion values</p>
+</td>
+<td align="left" headers="r7c1-t29 r1c2-t29">
+<p>Appears for <span class="bold">Object Type</span> converters only.</p>
+</td>
+<td align="left" headers="r7c1-t29 r1c3-t29"><br /></td>
+<td align="left" headers="r7c1-t29 r1c4-t29">
+<p><a href="tasks002.htm#BABGBIEE">Entity</a>, <a href="tasks003.htm#BABFEICE">Embeddable</a>, and <a href="tasks004.htm#BABDAGCI">Mapped superclass</a></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r8c1-t29" headers="r1c1-t29">
+<p>Default object value</p>
+</td>
+<td align="left" headers="r8c1-t29 r1c2-t29">
+<p>Appears for <span class="bold">Object Type</span> converters only.</p>
+</td>
+<td align="left" headers="r8c1-t29 r1c3-t29"><br /></td>
+<td align="left" headers="r8c1-t29 r1c4-t29">
+<p><a href="tasks002.htm#BABGBIEE">Entity</a>, <a href="tasks003.htm#BABFEICE">Embeddable</a>, and <a href="tasks004.htm#BABDAGCI">Mapped superclass</a></p>
 </td>
 </tr>
 </tbody>
 </table>
 <br /></div>
-<!-- class="tblformal" --></div>
+<!-- class="inftblhruleinformalwide" -->
+<a id="sthref391" name="sthref391"></a>
+<p class="subhead2">Related reference</p>
+<ul>
+<li>
+<p>"Converter" in <span class="italic">Java Persistence API (JPA) Extensions Reference for EclipseLink</span><br />
+<code><a href="http://eclipse.org/eclipselink/documentation/2.4/jpa/extensions/a_converter.htm">http://eclipse.org/eclipselink/documentation/2.4/jpa/extensions/a_converter.htm</a></code></p>
+</li>
+</ul>
+</div>
 <!-- class="sect3" -->
 <!-- Start Footer -->
 <div class="footer">
@@ -133,7 +153,7 @@ This page is not available for projects using the <span class="bold">Generic</sp
 <col width="86%" />
 <col width="*" />
 <tr>
-<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2010,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
+<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2011, 2012,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
 <a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Legal Notices</span></a></td>
 </tr>
 </table>

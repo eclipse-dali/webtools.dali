@@ -3,82 +3,125 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
- 
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <title>Customize Default Entity Generation</title>
-<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1" />
-<meta name="date" content="2010-05-19T8:12:46Z" />
+<meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
+<meta name="date" content="2012-09-11T7:44:6Z" />
 <meta name="robots" content="noarchive" />
 <meta name="doctitle" content="Customize Default Entity Generation" />
-<meta name="relnum" content="Release 2.3" />
-<meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
+<meta name="relnum" content="Release 3.2" />
+<meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
-<!-- contents -->
 </head>
 <body>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-11</p>
 <p><a id="CIAEJDBE" name="CIAEJDBE"></a></p>
 <div class="sect3"><!-- infolevel="all" infotype="General" -->
 <h1>Customize Default Entity Generation</h1>
-<p><a id="sthref205" name="sthref205"></a>Use this page to specify the default information Dali will use when generating the entities from the database tables. You will be able to override this information for specific entities.</p>
-<div class="inftblinformal">
-<table class="Informal" title="This table describes the options on the Generate Entities dialog." summary="This table describes the options on the Custom Default Entity Generation dialog." dir="ltr" border="1" width="100%" frame="border" rules="all" cellpadding="3" cellspacing="0">
+<p><a id="sthref298" name="sthref298"></a>Use this page to specify the default information Dali will use when generating the entities from the database tables. You will be able to override this information for specific entities.</p>
+<div class="inftblhruleinformal">
+<table class="HRuleInformal" title="Options on the Customize Defautl Entity page of the Generate Entities from Tables wizard" summary="Options on the Customize Defautl Entity page of the Generate Entities from Tables wizard" dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
 <col width="32%" />
 <col width="*" />
 <thead>
 <tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t10">Property</th>
-<th align="left" valign="bottom" id="r1c2-t10">Description</th>
+<th align="left" valign="bottom" id="r1c1-t4">Property</th>
+<th align="left" valign="bottom" id="r1c2-t4">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t10" headers="r1c1-t10">Table Mapping</td>
-<td align="left" headers="r2c1-t10 r1c2-t10">Use these options to define the table mapping information for the entity.</td>
+<td align="left" id="r2c1-t4" headers="r1c1-t4">
+<p>Mapping defaults</p>
+</td>
+<td align="left" headers="r2c1-t4 r1c2-t4">
+<p>Use these options to define the table mapping information for the entity.</p>
+</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r3c1-t10" headers="r1c1-t10">&nbsp;&nbsp;Key&nbsp;generator</td>
-<td align="left" headers="r3c1-t10 r1c2-t10">Select the generator used for this mapping.</td>
+<td align="left" id="r3c1-t4" headers="r1c1-t4">
+<p>Key&nbsp;generator</p>
+</td>
+<td align="left" headers="r3c1-t4 r1c2-t4">
+<p>Select the generator used for this mapping.</p>
+</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r4c1-t10" headers="r1c1-t10">&nbsp;&nbsp;Sequence&nbsp;name</td>
-<td align="left" headers="r4c1-t10 r1c2-t10">Enter a name for the sequence.
+<td align="left" id="r4c1-t4" headers="r1c1-t4">
+<p>Sequence&nbsp;name</p>
+</td>
+<td align="left" headers="r4c1-t4 r1c2-t4">
+<p>Enter a name for the sequence.</p>
 <p>You can use <span class="bold">$table</span> and <span class="bold">$pk</span> as variables in the name. These will be replaced by the table name and primary key column name (respectively) when Dali generates a table mapping.</p>
 </td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r5c1-t10" headers="r1c1-t10">&nbsp;&nbsp;Entity&nbsp;access</td>
-<td align="left" headers="r5c1-t10 r1c2-t10">Specify the default entity access method: <span class="bold">Field</span> (default) or <span class="bold">Property</span>.</td>
+<td align="left" id="r5c1-t4" headers="r1c1-t4">
+<p>Entity&nbsp;access</p>
+</td>
+<td align="left" headers="r5c1-t4 r1c2-t4">
+<p>Specify the default entity access method: <span class="bold">Field</span> (default) or <span class="bold">Property</span>.</p>
+</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r6c1-t10" headers="r1c1-t10">&nbsp;&nbsp;Associations&nbsp;fetch</td>
-<td align="left" headers="r6c1-t10 r1c2-t10">Specify the default fetch mode for associations: <span class="bold">Default</span>, as defined by the application (default), or <span class="bold">Lazy</span>.</td>
+<td align="left" id="r6c1-t4" headers="r1c1-t4">
+<p>Associations&nbsp;fetch</p>
+</td>
+<td align="left" headers="r6c1-t4 r1c2-t4">
+<p>Specify the default fetch mode for associations: <span class="bold">Default</span>, as defined by the application (default), or <span class="bold">Lazy</span>.</p>
+</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r7c1-t10" headers="r1c1-t10">&nbsp;&nbsp;Collection&nbsp;type</td>
-<td align="left" headers="r7c1-t10 r1c2-t10">Specify if the collection properties are a <span class="bold">Set</span> or <span class="bold">List</span>.
+<td align="left" id="r7c1-t4" headers="r1c1-t4">
+<p>Collection properties type</p>
+</td>
+<td align="left" headers="r7c1-t4 r1c2-t4">
+<p>Specify if the collection properties are a <span class="bold">Set</span> or <span class="bold">List</span>.</p>
 <p>Enable the <span class="bold">Always generate optional JPA annotations and DDL parameters</span> option to have Dali include this information in the entity.</p>
 </td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r8c1-t10" headers="r1c1-t10">Domain Java Class</td>
-<td align="left" headers="r8c1-t10 r1c2-t10">Use these options to define the class information (<span class="bold">Package</span>, <span class="bold">Superclass</span>, and <span class="bold">Interfaces</span>) for the entity.</td>
+<td align="left" id="r8c1-t4" headers="r1c1-t4">
+<p>Always generate optional JPA annotations and DDL parameters</p>
+</td>
+<td align="left" headers="r8c1-t4 r1c2-t4"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r9c1-t4" headers="r1c1-t4">
+<p><span class="bold">Domain Java class</span></p>
+</td>
+<td align="left" headers="r9c1-t4 r1c2-t4">
+<p>Use these options to define the <span class="bold">Source folder</span> and class information (<span class="bold">Package</span>, <span class="bold">Superclass</span>, and <span class="bold">Interfaces</span>) for the entity.</p>
+</td>
 </tr>
 </tbody>
 </table>
 <br /></div>
-<!-- class="inftblinformal" -->
-<p>&nbsp;</p>
-<img src="img/ngrelt.png" alt="Related task" title="Related task" /><br />
-<br />
-<a href="task_create_jpa_entity.htm#BABFBJBG">Creating a JPA Entity</a><br />
-<a href="tasks021.htm#BABBAGFI">Generating entities from tables</a><br />
-<a href="ref_persistence_prop_view.htm#BABFAEBB">JPA Details view (for entities)</a>
-<p>&nbsp;</p>
-<img src="img/ngrelr.png" alt="Related reference" title="Related reference" /><br />
-<br />
-<a href="ref_create_custom_entities_wizard.htm#CIAGBFJE">Generate Entities from Tables Wizard</a></div>
+<!-- class="inftblhruleinformal" -->
+<a id="sthref299" name="sthref299"></a>
+<p class="subhead2">Related tasks</p>
+<ul>
+<li>
+<p><a href="task_create_jpa_entity.htm#BABFBJBG">Creating a JPA entity</a></p>
+</li>
+<li>
+<p><a href="tasks021.htm#BABBAGFI">Generating entities from tables</a></p>
+</li>
+<li>
+<p><a href="ref_persistence_prop_view.htm#BABFAEBB">JPA Details view (for entities)</a></p>
+</li>
+</ul>
+<a id="sthref300" name="sthref300"></a>
+<p class="subhead2">Related reference</p>
+<ul>
+<li>
+<p><a href="ref_create_custom_entities_wizard.htm#CIAGBFJE">Generate Entities from Tables wizard</a></p>
+</li>
+</ul>
+</div>
 <!-- class="sect3" -->
 <!-- Start Footer -->
 <div class="footer">
@@ -86,7 +129,7 @@
 <col width="86%" />
 <col width="*" />
 <tr>
-<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2010,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
+<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2011, 2012,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
 <a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Legal Notices</span></a></td>
 </tr>
 </table>
