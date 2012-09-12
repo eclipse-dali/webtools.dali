@@ -47,12 +47,16 @@
 		<replace file="${basedir}/${optionsFile}" token="@rt@" value="${bootclasspath}" />
 
 		<antcall target="replaceJptCommonUtility" />
-		<antcall target="replaceJptCommonCore" />
-		<antcall target="replaceJptCommonUi" />
-					
+        <antcall target="replacePackage">
+            <param name="packageName" value="jpt.common.core" />
+        </antcall>
+		
 		<replaceregexp file="${basedir}/${optionsFile}" flags="g" match="(\r\n?|\n);" replace="${argsListDelimiter}" />
 
 <!--
+		<antcall target="replaceJptCommonCore" />
+		<antcall target="replaceJptCommonUi" />
+		
 		<property name="commonCoreSourcepath" file="commonCoreSourcepath.txt" />
 		<replace file="${basedir}/${optionsFile}" token="@commonCoreSourcepath@" value="${commonCoreSourcepath}" />
 -->
@@ -65,6 +69,26 @@
 		<exec dir="." executable="${javadoc}" output="doc.bin.log">
 			<arg line="@${basedir}/${optionsFile} -J-Xmx1000M" />
 		</exec>
+	</target>
+
+	<!-- replacePackage -->
+	<target name="replacePackage" if="optionsFile">
+		<replace 
+			file="${basedir}/${optionsFile}" 
+			propertyfile="${basedir}/${packageName}.properties">
+
+            <replacefilter
+                token="@${packageName}.sourcepath@"
+                property="${packageName}.sourcepath"/>
+            <replacefilter
+                token="@${packageName}.classpath@"
+                property="${packageName}.classpath"/>
+            <replacefilter
+                token="@${packageName}.packages@"
+                property="${packageName}.packages"/>
+		</replace>
+
+		<echo message="packageName = ${packageName}" />
 	</target>
 
 	<!-- common packages -->
@@ -80,7 +104,7 @@
                 token="@commonUtilityPackages@"
                 property="common.utility.packages"/>
 		</replace>
-		
+
 		<echo message="common.utility.sourcepath = ${common.utility.sourcepath}" />
 		<echo message="common.utility.packages = ${common.utility.packages}" />
 	</target>
