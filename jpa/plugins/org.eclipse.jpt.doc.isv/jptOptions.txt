@@ -1,5 +1,3 @@
-#No API: org.eclipse.jpt.common.eclipselink.core
-
 -quiet
 -charset "utf-8"
 -sourcepath "@commonUtilitySourcepath@;@commonCoreSourcepath@;@commonUiSourcepath@"
@@ -15,4 +13,5 @@
 -link http://docs.oracle.com/javase/6/docs/api/
 
 #JPT common API packages
-@commonUtilityPackages@ @commonCorePackages@ @commonUiPackages@
+@commonUtilityPackages@
+@commonCorePackages@
