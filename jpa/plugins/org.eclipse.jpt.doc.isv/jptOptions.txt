@@ -2,7 +2,7 @@
 
 -quiet
 -charset "utf-8"
--sourcepath "@commonUtilitySourcepath@;@commonCoreSourcepath@";@commonUiSourcepath@"
+-sourcepath "@commonUtilitySourcepath@;@commonCoreSourcepath@;@commonUiSourcepath@"
 -classpath @rt@;@commonCoreClasspath@;@commonUiClasspath@
 -breakiterator
 -use
@@ -15,6 +15,4 @@
 -link http://docs.oracle.com/javase/6/docs/api/
 
 #JPT common API packages
-@commonUtilityPackages@
-@commonCorePackages@
-@commonUiPackages@
+@commonUtilityPackages@ @commonCorePackages@ @commonUiPackages@
