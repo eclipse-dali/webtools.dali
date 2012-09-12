@@ -1,7 +1,9 @@
+#No API: org.eclipse.jpt.common.eclipselink.core
+
 -quiet
 -charset "utf-8"
--sourcepath "@commonUtilitySourcepath@;@commonCoreSourcepath@"
--classpath @rt@;@commonCoreClasspath@
+-sourcepath "@commonUtilitySourcepath@;@commonCoreSourcepath@";@commonUiSourcepath@"
+-classpath @rt@;@commonCoreClasspath@;@commonUiClasspath@
 -breakiterator
 -use
 -splitIndex
@@ -15,3 +17,4 @@
 #JPT common API packages
 @commonUtilityPackages@
 @commonCorePackages@
+@commonUiPackages@
