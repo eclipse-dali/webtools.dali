@@ -160,7 +160,9 @@ public abstract class AbstractJavaJoinTableRelationshipStrategy
 
 	public void removeStrategy() {
 		if (this.joinTable != null) {
-			this.removeJoinTableAnnotation();
+			if (this.getJoinTableAnnotation() != null) {
+				this.removeJoinTableAnnotation();
+			}
 			this.setJoinTable(null);
 		}
 	}
