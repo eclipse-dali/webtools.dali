@@ -47,8 +47,11 @@
 		<replace file="${basedir}/${optionsFile}" token="@rt@" value="${bootclasspath}" />
 
 		<antcall target="replaceJptCommonUtility" />
-        <antcall target="replacePackage">
+        <antcall target="replacePackageTokens">
             <param name="packageName" value="jpt.common.core" />
+        </antcall>
+        <antcall target="replacePackageTokens">
+            <param name="packageName" value="jpt.common.ui" />
         </antcall>
 		
 		<replaceregexp file="${basedir}/${optionsFile}" flags="g" match="(\r\n?|\n);" replace="${argsListDelimiter}" />
@@ -71,8 +74,8 @@
 		</exec>
 	</target>
 
-	<!-- replacePackage -->
-	<target name="replacePackage" if="optionsFile">
+	<!-- replacePackageTokens -->
+	<target name="replacePackageTokens" if="optionsFile">
 		<replace 
 			file="${basedir}/${optionsFile}" 
 			propertyfile="${basedir}/${packageName}.properties">
@@ -88,6 +91,7 @@
                 property="${packageName}.packages"/>
 		</replace>
 
+		<echo message="propertyfile = ${packageName}.properties" />
 		<echo message="packageName = ${packageName}" />
 	</target>
 

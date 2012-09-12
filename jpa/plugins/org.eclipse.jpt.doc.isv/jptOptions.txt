@@ -1,7 +1,7 @@
 -quiet
 -charset "utf-8"
--sourcepath "@commonUtilitySourcepath@;@commonCoreSourcepath@;@commonUiSourcepath@"
--classpath @rt@;@commonCoreClasspath@;@commonUiClasspath@
+-sourcepath "@commonUtilitySourcepath@;@jpt.common.core.sourcepath@;@jpt.common.ui.sourcepath@"
+-classpath @rt@;@jpt.common.core.classpath@;@jpt.common.ui.classpath@
 -breakiterator
 -use
 -splitIndex
@@ -14,4 +14,5 @@
 
 #JPT common API packages
 @commonUtilityPackages@
-@commonCorePackages@
+@jpt.common.core.packages@
+@jpt.common.ui.packages@
