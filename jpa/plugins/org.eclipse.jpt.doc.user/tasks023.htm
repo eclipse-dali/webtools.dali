@@ -8,7 +8,7 @@
 <title>Generating dynamic entities from tables</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-11T7:44:6Z" />
+<meta name="date" content="2012-09-13T10:27:40Z" />
 <meta name="robots" content="noarchive" />
 <meta name="doctitle" content="Generating dynamic entities from tables" />
 <meta name="relnum" content="Release 3.2" />
@@ -17,11 +17,11 @@
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-11</p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-13</p>
 <p><a id="CIHHFGIG" name="CIHHFGIG"></a></p>
 <div class="sect1"><!-- infolevel="all" infotype="General" -->
 <h1>Generating dynamic entities from tables</h1>
-<p>When using EclipseLink JPA, you can create dynamic entities from your database tables. This dynamic persistence provides access to a relational database with all the benefits of JPA <span class="italic">without coding</span> or maintaining Java classes.</p>
+<p><a id="sthref275" name="sthref275"></a><a id="sthref276" name="sthref276"></a><a id="sthref277" name="sthref277"></a><a id="sthref278" name="sthref278"></a>When using EclipseLink JPA, you can create dynamic entities from your database tables. This dynamic persistence provides access to a relational database with all the benefits of JPA <span class="italic">without coding</span> or maintaining Java classes.</p>
 <p>Dali dynamically creates the classes at runtime, as needed.</p>
 <p>To generate dynamic entities:</p>
 <ol>
@@ -29,28 +29,28 @@
 <p>Right-click the JPA project in the <span class="gui-object-title">Project Explorer</span> and select <span class="gui-object-action">JPA Tools &gt; Generate Dynamic Entities from Tables</span>.</p>
 <img src="img/generate_dynamic_entities.png" alt="JPA Tools &gt; Generate Dynamic Entities from Tables" title="JPA Tools &gt; Generate Dynamic Entities from Tables" /><br />
 <p>The Select Tables page of the <a href="reference002.htm#CACGDFDJ">Generate Dynamic Entities from Tables wizard</a> appears.</p>
-<div class="figure"><a id="sthref253" name="sthref253"></a>
+<div class="figure"><a id="sthref279" name="sthref279"></a>
 <p class="titleinfigure">Select Tables</p>
 <img src="img/select_tables_dynamic.png" alt="" title="" /><br /></div>
 <!-- class="figure" --></li>
 <li>
 <p>On the <a href="reference003.htm#CACFGHJF">Select Tables</a> page, select the tables from which to generate the entities and click <span class="bold">Next</span>.</p>
 <p>The <a href="reference004.htm#CACBDJAC">Table Associations</a> page appears.</p>
-<div class="figure"><a id="sthref254" name="sthref254"></a>
+<div class="figure"><a id="sthref280" name="sthref280"></a>
 <p class="titleinfigure">Table Associations</p>
 <img src="img/table_associations_dynamic.png" alt="" title="" /><br /></div>
 <!-- class="figure" --></li>
 <li>
 <p>On the <a href="reference004.htm#CACBDJAC">Table Associations</a> page, specify which table associations should be generated. Use the <a href="ref_create_new_association_wizard.htm#CIAFGHIF">Create New Association wizard</a> to create additional relationships.</p>
 <p>Click <span class="bold">Next</span>. The <a href="reference005.htm#CACHHEEH">Customize Default Entity Generation</a> page appears.</p>
-<div class="figure"><a id="sthref255" name="sthref255"></a>
+<div class="figure"><a id="sthref281" name="sthref281"></a>
 <p class="titleinfigure">Customize Defaults</p>
 <img src="img/customize_default_entity_generation_dynamic.png" alt="" title="" /><br /></div>
 <!-- class="figure" --></li>
 <li>
 <p>On the <a href="reference005.htm#CACHHEEH">Customize Default Entity Generation</a> page, specify the default information to use when generating the entities, and click <span class="bold">Next</span>.</p>
 <p>The <a href="reference006.htm#CACDGDIC">Customize Individual Entities</a> page appears.</p>
-<div class="figure"><a id="sthref256" name="sthref256"></a>
+<div class="figure"><a id="sthref282" name="sthref282"></a>
 <p class="titleinfigure">Customize Individual Entities</p>
 <img src="img/customize_individual_entities_dynamic.png" alt="" title="" /><br /></div>
 <!-- class="figure" --></li>
@@ -63,7 +63,7 @@
 </ol>
 <p>Dali generates the dynamic entities, using the <code>VIRTUAL</code> access type, as shown in <a href="#CIHIDHAB">Example: Sample eclipselink-orm.xml File with Dynamic Entities</a>.</p>
 <div class="example"><a id="CIHIDHAB" name="CIHIDHAB"></a>
-<p class="titleinexample">Sample eclipselink-orm.xml File with Dynamic Entities</p>
+<p class="titleinexample"><a id="sthref283" name="sthref283"></a>Sample eclipselink-orm.xml File with Dynamic Entities</p>
 <pre xml:space="preserve" class="oac_no_warn">
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;entity-mappings version="2.4" xmlns="http://www.eclipse.org/eclipselink/xsds/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eclipse.org/eclipselink/xsds/persistence/orm http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_2_4.xsd"&gt;

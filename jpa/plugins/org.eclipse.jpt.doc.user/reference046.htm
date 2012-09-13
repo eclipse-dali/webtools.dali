@@ -8,20 +8,21 @@
 <title>Connection</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-11T7:44:7Z" />
+<meta name="date" content="2012-09-13T10:27:42Z" />
 <meta name="robots" content="noarchive" />
 <meta name="doctitle" content="Connection" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
+<meta name="topic-id" content="ref_persistence_connection" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-11</p>
-<p><a id="CIAFFJIE" name="CIAFFJIE"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-13</p>
+<p><a id="CIAFFJIE" name="CIAFFJIE"></a><a id="ref_persistence_connection" name="ref_persistence_connection"></a></p>
 <div class="sect3"><!-- infolevel="all" infotype="General" -->
 <h1>Connection</h1>
-<p>The following table lists the properties available in the Connection page of the <a href="ref_persistence_xmll_editor.htm#CIACCHID">persistence.xml Editor</a>.</p>
+<p><a id="sthref563" name="sthref563"></a>The following table lists the properties available in the Connection page of the <a href="ref_persistence_xmll_editor.htm#CIACCHID">persistence.xml Editor</a>.</p>
 <div class="inftblhruleinformal">
 <table class="HRuleInformal" summary="The following table lists the properties available in the Connection page of the persistence.xml Editor." dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
 <col width="25%" />
@@ -37,7 +38,7 @@
 <tbody>
 <tr align="left" valign="top">
 <td align="left" id="r2c1-t50" headers="r1c1-t50">
-<p>Transaction type</p>
+<p>Transaction type<a id="sthref564" name="sthref564"></a></p>
 </td>
 <td align="left" headers="r2c1-t50 r1c2-t50">
 <p>Specify if the connection for this persistence unit uses one of the following transaction types:</p>
@@ -54,12 +55,12 @@
 </ul>
 </td>
 <td align="left" headers="r2c1-t50 r1c3-t50">
-<p>Default</p>
+<p>JTA</p>
 </td>
 </tr>
 <tr align="left" valign="top">
 <td align="left" id="r3c1-t50" headers="r1c1-t50">
-<p>Batch writing</p>
+<p>Batch writing<a id="sthref565" name="sthref565"></a></p>
 </td>
 <td align="left" headers="r3c1-t50 r1c2-t50">
 <p>Specify the use of batch writing to optimize transactions with multiple write operations.</p>
@@ -89,7 +90,9 @@
 <td align="left" id="r4c1-t50" headers="r1c1-t50">
 <p>Statement caching</p>
 </td>
-<td align="left" headers="r4c1-t50 r1c2-t50"><br /></td>
+<td align="left" headers="r4c1-t50 r1c2-t50">
+<p>Specify if the query caches its JDBC statement. If enabled, you can also set the number of statements to cache.</p>
+</td>
 <td align="left" headers="r4c1-t50 r1c3-t50">
 <p>50</p>
 </td>
@@ -98,7 +101,9 @@
 <td align="left" id="r5c1-t50" headers="r1c1-t50">
 <p>Native SQL</p>
 </td>
-<td align="left" headers="r5c1-t50 r1c2-t50"><br /></td>
+<td align="left" headers="r5c1-t50 r1c2-t50">
+<p>Specify if Dali includes platform-specific (that is, "native") SQL statements. If false, Dali uses generic SLQ.</p>
+</td>
 <td align="left" headers="r5c1-t50 r1c3-t50">
 <p>False</p>
 </td>
@@ -148,7 +153,9 @@
 <p>Note: This property applies when used in a Java SE environment.</p>
 <p>This property is not available for projects using the Generic platform.</p>
 </td>
-<td align="left" headers="r10c1-t50 r1c3-t50"><br /></td>
+<td align="left" headers="r10c1-t50 r1c3-t50">
+<p>True</p>
+</td>
 </tr>
 <tr align="left" valign="top">
 <td align="left" id="r11c1-t50" headers="r1c1-t50">
@@ -182,7 +189,9 @@
 <td align="left" id="r13c1-t50" headers="r1c1-t50">
 <p><span class="bold">Exclusive connections</span></p>
 </td>
-<td align="left" headers="r13c1-t50 r1c2-t50"><br /></td>
+<td align="left" headers="r13c1-t50 r1c2-t50">
+<p>These fields are available only when <span class="bold">Transaction Type</span> is <span class="bold">Local Resource</span>.</p>
+</td>
 <td align="left" headers="r13c1-t50 r1c3-t50"><br /></td>
 </tr>
 <tr align="left" valign="top">
@@ -190,15 +199,16 @@
 <p>Exclusive connection mode</p>
 </td>
 <td align="left" headers="r14c1-t50 r1c2-t50">
+<p>Specify when Dali performs reads through the write connection.</p>
 <ul>
 <li>
-<p>Always</p>
+<p>Always &ndash; Create an exclusive isolated client session if reading an isolated entity, otherwise create an exclusive client session.</p>
 </li>
 <li>
-<p>Isolated</p>
+<p>Isolated &ndash; Create an exclusive isolated client session if reading an isolated entity, otherwise raise an error.</p>
 </li>
 <li>
-<p>Transactional</p>
+<p>Transactional &ndash; Create an isolated client session if some or all entities require isolated cache, otherwise create a client session.</p>
 </li>
 </ul>
 </td>
@@ -210,7 +220,9 @@
 <td align="left" id="r15c1-t50" headers="r1c1-t50">
 <p>Lazy connection acquisition</p>
 </td>
-<td align="left" headers="r15c1-t50 r1c2-t50"><br /></td>
+<td align="left" headers="r15c1-t50 r1c2-t50">
+<p>Specify if Dali acquires write connections lazily.</p>
+</td>
 <td align="left" headers="r15c1-t50 r1c3-t50">
 <p>True</p>
 </td>
@@ -218,7 +230,16 @@
 </tbody>
 </table>
 <br /></div>
-<!-- class="inftblhruleinformal" --></div>
+<!-- class="inftblhruleinformal" -->
+<a id="sthref566" name="sthref566"></a>
+<p class="subhead2">Related references</p>
+<ul>
+<li>
+<p><span class="italic">Java Persistence API (JPA) Extensions Reference for EclipseLink</span><br />
+<code><a href="http://www.eclipse.org/eclipselink/documentation/2.4/jpa/extensions/toc.htm">http://www.eclipse.org/eclipselink/documentation/2.4/jpa/extensions/toc.htm</a></code></p>
+</li>
+</ul>
+</div>
 <!-- class="sect3" -->
 <!-- Start Footer -->
 <div class="footer">

@@ -8,7 +8,7 @@
 <title>Managing the persistence.xml file</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-11T7:44:4Z" />
+<meta name="date" content="2012-09-13T10:27:38Z" />
 <meta name="robots" content="noarchive" />
 <meta name="doctitle" content="Managing the persistence.xml file" />
 <meta name="relnum" content="Release 3.2" />
@@ -17,12 +17,12 @@
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-11</p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-13</p>
 <p><a id="CIHDAJID" name="CIHDAJID"></a></p>
 <div class="sect1"><!-- infolevel="all" infotype="General" -->
-<h1><a id="sthref93" name="sthref93"></a>Managing the persistence.xml file</h1>
-<p><a id="sthref94" name="sthref94"></a>When you create a project, Eclipse creates the <code>META-INF\persistence.xml</code> file in the project's directory.</p>
-<div class="example"><a id="sthref95" name="sthref95"></a>
+<h1><a id="ABC4949575" name="ABC4949575"></a><a id="ABC4949575SRI1" name="ABC4949575SRI1"></a>Managing the persistence.xml file</h1>
+<p><a id="sthref97" name="sthref97"></a>When you create a project, Eclipse creates the <code>META-INF\persistence.xml</code> file in the project's directory.</p>
+<div class="example"><a id="sthref98" name="sthref98"></a>
 <p class="titleinexample">Sample persistence.xml File</p>
 <pre xml:space="preserve" class="oac_no_warn">
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
@@ -35,7 +35,7 @@
 </pre></div>
 <!-- class="example" -->
 <p>You can manage this file either through the XML editor or through the <a href="ref_persistence_xmll_editor.htm#CIACCHID">persistence.xml Editor</a>.</p>
-<div class="figure"><a id="sthref96" name="sthref96"></a>
+<div class="figure"><a id="sthref99" name="sthref99"></a>
 <p class="titleinfigure">The persistence.xml Editor</p>
 <img src="img/persistence_editor_general.png" alt="General tab of persistence.xml editor" title="General tab of persistence.xml editor" /><br /></div>
 <!-- class="figure" -->
@@ -49,10 +49,10 @@
 <p>Depending on your JPA implementation (for example, EclipseLink), the following pages may be available in the persistence.xml Editor:</p>
 <ul>
 <li>
-<p><a href="ref_persistence_general.htm#CIACIFGJ">General</a> &ndash;</p>
+<p><a href="ref_persistence_general.htm#CIACIFGJ">General</a> &ndash; Use this page to define the classes, mapping files, and JAR files for the persistence unit.</p>
 </li>
 <li>
-<p><a href="reference046.htm#CIAFFJIE">Connection</a> &ndash;</p>
+<p><a href="reference046.htm#CIAFFJIE">Connection</a> &ndash; Use this page to define the datasource (JTA and non-JTA elements) for the project.</p>
 </li>
 <li>
 <p><a href="reference047.htm#CIAJAFEG">Customization</a> &ndash; Use this page to define change-tracking and session customizer-related properties.</p>
@@ -70,10 +70,10 @@
 <p><a href="reference051.htm#CIACCFCB">Schema Generation</a> &ndash; Use this page to define DDL-related properties.</p>
 </li>
 <li>
-<p><a href="reference052.htm#CIAHJDFF">Properties</a> &ndash;</p>
+<p><a href="reference052.htm#CIAHJDFF">Properties</a> &ndash; Use to add or remove vender-specific properties.</p>
 </li>
 <li>
-<p><a href="reference053.htm#CIAHCJAH">Source</a> &ndash;</p>
+<p><a href="reference053.htm#CIAHCJAH">Source</a> &ndash; Use to view or modify the XML source of the <code>persistence.xml</code> file.</p>
 </li>
 </ul>
 <p>For projects using the EclipseLink JPA implementation, the Connections page also includes JDBC connection pool properties.</p>
@@ -105,7 +105,7 @@
 </table>
 <br /></div>
 <!-- class="inftblnotealso" --></div>
-<div class="figure"><a id="sthref97" name="sthref97"></a>
+<div class="figure"><a id="sthref100" name="sthref100"></a>
 <p class="titleinfigure">General tab of persistence.xml Editor</p>
 <img src="img/persistence_editor_general.png" alt="General tab of persistence.xml editor" title="General tab of persistence.xml editor" /><br /></div>
 <!-- class="figure" --></li>
@@ -146,8 +146,8 @@
 <!-- class="inftblnote" --></div>
 </li>
 </ol>
-<p><a id="sthref98" name="sthref98"></a>For projects using the Generic platform, you can also define the EclipseLink connection pool driver, connection pool driver, URL, user name and password.</p>
-<div class="figure"><a id="sthref99" name="sthref99"></a>
+<p><a id="sthref101" name="sthref101"></a>For projects using the Generic platform, you can also define the EclipseLink connection pool driver, connection pool driver, URL, user name and password.</p>
+<div class="figure"><a id="sthref102" name="sthref102"></a>
 <p class="titleinfigure">Connection tab of persistence.xml Editor</p>
 <img src="img/persistence_editor_connection.png" alt="Connection tab of persistence.xml Editor" title="Connection tab of persistence.xml Editor" /><br /></div>
 <!-- class="figure" --></li>
@@ -180,7 +180,7 @@
 </table>
 <br /></div>
 <!-- class="inftblnote" --></div>
-<div class="figure"><a id="sthref100" name="sthref100"></a>
+<div class="figure"><a id="sthref103" name="sthref103"></a>
 <p class="titleinfigure">Customization tab of persistence.xml Editor</p>
 <img src="img/persistence_editor_customization.png" alt="Customization tab of persistence.xml Editor" title="Customization tab of persistence.xml Editor" /><br /></div>
 <!-- class="figure" --></li>
@@ -189,21 +189,59 @@
 </li>
 </ol>
 <p>Additional pages may be available for the persistence.xml editor, depending on your JPA provider. See <a href="ref_persistence_xmll_editor.htm#CIACCHID">"persistence.xml Editor"</a> for more information.</p>
-<a id="sthref101" name="sthref101"></a>
+<ul>
+<li>
+<p><a href="reference048.htm#CIABEDCH">Caching</a> page</p>
+<div class="figure"><a id="sthref104" name="sthref104"></a>
+<p class="titleinfigure">Caching tab of persistence.xml Editor</p>
+<img src="img/persistence_editor_caching.png" alt="persistence.xml Editor - Caching tab" title="persistence.xml Editor - Caching tab" /><br /></div>
+<!-- class="figure" --></li>
+<li>
+<p><a href="reference049.htm#CIABGHHI">Logging</a> page</p>
+<div class="figure"><a id="sthref105" name="sthref105"></a>
+<p class="titleinfigure">Logging tab of persistence.xml Editor</p>
+<img src="img/persistence_editor_logging.png" alt="persistence.xml Editor - Logging tab" title="persistence.xml Editor - Logging tab" /><br /></div>
+<!-- class="figure" --></li>
+<li>
+<p><a href="reference050.htm#CIAFJCHE">Options</a> page</p>
+<div class="figure"><a id="sthref106" name="sthref106"></a>
+<p class="titleinfigure">Options tab of persistence.xml Editor</p>
+<img src="img/persistence_editor_options.png" alt="persistence.xml Editor - Options tab" title="persistence.xml Editor - Options tab" /><br /></div>
+<!-- class="figure" --></li>
+<li>
+<p><a href="reference051.htm#CIACCFCB">Schema Generation</a> page</p>
+<div class="figure"><a id="sthref107" name="sthref107"></a>
+<p class="titleinfigure">Schema Generation tab of persistence.xml Editor</p>
+<img src="img/persistence_editor_schemageneration.png" alt="persistence.xml Editor - Schema Generation tab" title="persistence.xml Editor - Schema Generation tab" /><br /></div>
+<!-- class="figure" --></li>
+<li>
+<p><a href="reference052.htm#CIAHJDFF">Properties</a> page</p>
+<div class="figure"><a id="sthref108" name="sthref108"></a>
+<p class="titleinfigure">Properties tab of persistence.xml Editor</p>
+<img src="img/persistence_editor_properties.png" alt="persistence.xml Editor - Properties tab" title="persistence.xml Editor - Properties tab" /><br /></div>
+<!-- class="figure" --></li>
+<li>
+<p><a id="sthref109" name="sthref109"></a><a id="sthref110" name="sthref110"></a><a href="reference053.htm#CIAHCJAH">Source</a> page</p>
+<div class="figure"><a id="sthref111" name="sthref111"></a>
+<p class="titleinfigure">Source tab of persistence.xml Editor</p>
+<img src="img/persistence_editor_source.png" alt="persistence.xml Editor - Source tab" title="persistence.xml Editor - Source tab" /><br /></div>
+<!-- class="figure" --></li>
+</ul>
+<a id="sthref112" name="sthref112"></a>
 <p class="subhead2">Related reference</p>
 <ul>
 <li>
 <p><a href="ref_persistence_xmll_editor.htm#CIACCHID">persistence.xml Editor</a></p>
 </li>
 </ul>
-<a id="sthref102" name="sthref102"></a>
+<a id="sthref113" name="sthref113"></a>
 <p class="subhead2">Related tasks</p>
 <ul>
 <li>
 <p><a href="tasks006.htm#CIHFEBAI">Synchronizing classes</a></p>
 </li>
 </ul>
-<a id="sthref103" name="sthref103"></a>
+<a id="sthref114" name="sthref114"></a>
 <p class="subhead2">Related concepts</p>
 <ul>
 <li>

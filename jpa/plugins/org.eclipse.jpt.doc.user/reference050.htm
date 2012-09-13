@@ -8,7 +8,7 @@
 <title>Options</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-11T7:44:7Z" />
+<meta name="date" content="2012-09-13T10:27:42Z" />
 <meta name="robots" content="noarchive" />
 <meta name="doctitle" content="Options" />
 <meta name="relnum" content="Release 3.2" />
@@ -17,10 +17,10 @@
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-11</p>
-<p><a id="CIAFJCHE" name="CIAFJCHE"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-13</p>
+<p><a id="CIAFJCHE" name="CIAFJCHE"></a><a id="ref_persistence_options" name="ref_persistence_options"></a></p>
 <div class="sect3"><!-- infolevel="all" infotype="General" -->
-<h1>Options</h1>
+<h1><a id="sthref576" name="sthref576"></a>Options</h1>
 <p>This table lists the properties of the Options page of the <a href="ref_persistence_xmll_editor.htm#CIACCHID">persistence.xml Editor</a>.</p>
 <div align="center">
 <div class="inftblnote"><br />
@@ -51,22 +51,29 @@
 <tbody>
 <tr align="left" valign="top">
 <td align="left" id="r2c1-t58" headers="r1c1-t58">
+<p><span class="bold">Session Options</span></p>
+</td>
+<td align="left" headers="r2c1-t58 r1c2-t58"><br /></td>
+<td align="left" headers="r2c1-t58 r1c3-t58"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r3c1-t58" headers="r1c1-t58">
 <p>Session Name</p>
 </td>
-<td align="left" headers="r2c1-t58 r1c2-t58">
+<td align="left" headers="r3c1-t58 r1c2-t58">
 <p>Specify the name by which the EclipseLink session is stored in the static session manager. Use this option if you need to access the EclipseLink shared session outside of the context of the JPA or to use a pre-existing EclipseLink session configured through a EclipseLink <code>sessions.xml</code> file</p>
 <p>Valid values: a valid EclipseLink session name that is unique in a server deployment.</p>
 <p><span class="bold">Example</span>: <code>persistence.xml</code> file</p>
 <pre xml:space="preserve" class="oac_no_warn">
 &lt;property name="eclipselink.session-name" value="MySession"/&gt;
 </pre></td>
-<td align="left" headers="r2c1-t58 r1c3-t58"><br /></td>
+<td align="left" headers="r3c1-t58 r1c3-t58"><br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r3c1-t58" headers="r1c1-t58">
+<td align="left" id="r4c1-t58" headers="r1c1-t58">
 <p>Sessions XML</p>
 </td>
-<td align="left" headers="r3c1-t58 r1c2-t58">
+<td align="left" headers="r4c1-t58 r1c2-t58">
 <p>Specify persistence information loaded from the EclipseLink session configuration file (<code>sessions.xml</code>).</p>
 <p>You can use this option as an alternative to annotations and deployment XML. If you specify this property, EclipseLink will override all class annotation and the object relational mapping from the <code>persistence.xml</code>, as well as <code>ORM.xml</code> and other mapping files, if present.</p>
 <p>Indicate the session by setting the <code>eclipselink.session-name</code> property.</p>
@@ -76,93 +83,84 @@
 <pre xml:space="preserve" class="oac_no_warn">
 &lt;property name="toplink.session-xml" value="mysession.xml"/&gt;
 </pre></td>
-<td align="left" headers="r3c1-t58 r1c3-t58"><br /></td>
+<td align="left" headers="r4c1-t58 r1c3-t58"><br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r4c1-t58" headers="r1c1-t58">
+<td align="left" id="r5c1-t58" headers="r1c1-t58">
 <p>Target Database</p>
 </td>
-<td align="left" headers="r4c1-t58 r1c2-t58">
+<td align="left" headers="r5c1-t58 r1c2-t58">
 <p>Select the target database. You can also set the value to the fully qualified class name of a subclass of the <code>org.eclipse.persistence.platform.DatabasePlatform class</code>.</p>
 <p><span class="bold">Example</span>: <code>persistence.xml</code> file</p>
 <pre xml:space="preserve" class="oac_no_warn">
 &lt;property name="eclipselink.target-database" value="Oracle"/&gt;
 </pre></td>
-<td align="left" headers="r4c1-t58 r1c3-t58">
+<td align="left" headers="r5c1-t58 r1c3-t58">
 <p>Auto</p>
 </td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r5c1-t58" headers="r1c1-t58">
+<td align="left" id="r6c1-t58" headers="r1c1-t58">
 <p>Target Server</p>
 </td>
-<td align="left" headers="r5c1-t58 r1c2-t58">
+<td align="left" headers="r6c1-t58 r1c2-t58">
 <p>Select the target server for your JPA application.</p>
 <p><span class="bold">Example</span>: <code>persistence.xml</code> file</p>
 <pre xml:space="preserve" class="oac_no_warn">
 &lt;property name="eclipselink.target-server" value="OC4J_10_1_3"/&gt;
 </pre></td>
-<td align="left" headers="r5c1-t58 r1c3-t58">
+<td align="left" headers="r6c1-t58 r1c3-t58">
 <p>None</p>
 </td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r6c1-t58" headers="r1c1-t58">
+<td align="left" id="r7c1-t58" headers="r1c1-t58">
 <p>Event Listener</p>
 </td>
-<td align="left" headers="r6c1-t58 r1c2-t58">
+<td align="left" headers="r7c1-t58 r1c2-t58">
 <p>Specify a descriptor event listener to be added during bootstrapping.</p>
 <p>Valid values: qualified class name for a class that implements the <code>eclipselink.sessions.SessionEventListener</code> interface.</p>
 <p><span class="bold">Example</span>: <code>persistence.xml</code> file</p>
 <pre xml:space="preserve" class="oac_no_warn">
 &lt;property name="eclipselink.session-event-listener" value="mypackage.MyClass.class"/&gt;
 </pre></td>
-<td align="left" headers="r6c1-t58 r1c3-t58"><br /></td>
+<td align="left" headers="r7c1-t58 r1c3-t58"><br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r7c1-t58" headers="r1c1-t58">
+<td align="left" id="r8c1-t58" headers="r1c1-t58">
 <p>Include Descriptor Queries</p>
 </td>
-<td align="left" headers="r7c1-t58 r1c2-t58">
+<td align="left" headers="r8c1-t58 r1c2-t58">
 <p>Enable or disable the default copying of all named queries from the descriptors to the session. These queries include the ones defined using EclipseLink API, descriptor amendment methods, and so on.</p>
 </td>
-<td align="left" headers="r7c1-t58 r1c3-t58">
+<td align="left" headers="r8c1-t58 r1c3-t58">
 <p>True</p>
 </td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r8c1-t58" headers="r1c1-t58">
-<p>Miscellaneous Options</p>
+<td align="left" id="r9c1-t58" headers="r1c1-t58">
+<p><span class="bold">Miscellaneous Options</span></p>
 </td>
-<td align="left" headers="r8c1-t58 r1c2-t58"><br /></td>
-<td align="left" headers="r8c1-t58 r1c3-t58"><br /></td>
+<td align="left" headers="r9c1-t58 r1c2-t58"><br /></td>
+<td align="left" headers="r9c1-t58 r1c3-t58"><br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r9c1-t58" headers="r1c1-t58">
+<td align="left" id="r10c1-t58" headers="r1c1-t58">
 <p>Temporal mutable</p>
 </td>
-<td align="left" headers="r9c1-t58 r1c2-t58">
+<td align="left" headers="r10c1-t58 r1c2-t58">
 <p>Specify if all <code>Date</code> and <code>Calendar</code> persistent fields should be handled as mutable objects.</p>
 <p><span class="bold">Example</span>: <code>persistence.xml</code> file</p>
 <pre xml:space="preserve" class="oac_no_warn">
 &lt;property name="eclipselink.temporal.mutable" value="true"/&gt;
 </pre></td>
-<td align="left" headers="r9c1-t58 r1c3-t58">
+<td align="left" headers="r10c1-t58 r1c3-t58">
 <p>False</p>
 </td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r10c1-t58" headers="r1c1-t58">
-<p>Lock timeout</p>
-</td>
-<td align="left" headers="r10c1-t58 r1c2-t58"><br /></td>
-<td align="left" headers="r10c1-t58 r1c3-t58">
-<p>5</p>
-</td>
-</tr>
-<tr align="left" valign="top">
 <td align="left" id="r11c1-t58" headers="r1c1-t58">
-<p>Query timeout</p>
+<p>Lock timeout</p>
 </td>
 <td align="left" headers="r11c1-t58 r1c2-t58"><br /></td>
 <td align="left" headers="r11c1-t58 r1c3-t58">
@@ -171,38 +169,56 @@
 </tr>
 <tr align="left" valign="top">
 <td align="left" id="r12c1-t58" headers="r1c1-t58">
-<p>Validation mode</p>
+<p>Query timeout</p>
 </td>
 <td align="left" headers="r12c1-t58 r1c2-t58"><br /></td>
 <td align="left" headers="r12c1-t58 r1c3-t58">
-<p>Auto</p>
+<p>5</p>
 </td>
 </tr>
 <tr align="left" valign="top">
 <td align="left" id="r13c1-t58" headers="r1c1-t58">
-<p>Validate pre-persist group</p>
+<p>Validation mode</p>
 </td>
 <td align="left" headers="r13c1-t58 r1c2-t58"><br /></td>
-<td align="left" headers="r13c1-t58 r1c3-t58"><br /></td>
+<td align="left" headers="r13c1-t58 r1c3-t58">
+<p>Auto</p>
+</td>
 </tr>
 <tr align="left" valign="top">
 <td align="left" id="r14c1-t58" headers="r1c1-t58">
-<p>Validate pre-update group</p>
+<p>Validate pre-persist group</p>
 </td>
 <td align="left" headers="r14c1-t58 r1c2-t58"><br /></td>
 <td align="left" headers="r14c1-t58 r1c3-t58"><br /></td>
 </tr>
 <tr align="left" valign="top">
 <td align="left" id="r15c1-t58" headers="r1c1-t58">
-<p>Validate pre-remove group</p>
+<p>Validate pre-update group</p>
 </td>
 <td align="left" headers="r15c1-t58 r1c2-t58"><br /></td>
 <td align="left" headers="r15c1-t58 r1c3-t58"><br /></td>
 </tr>
+<tr align="left" valign="top">
+<td align="left" id="r16c1-t58" headers="r1c1-t58">
+<p>Validate pre-remove group</p>
+</td>
+<td align="left" headers="r16c1-t58 r1c2-t58"><br /></td>
+<td align="left" headers="r16c1-t58 r1c3-t58"><br /></td>
+</tr>
 </tbody>
 </table>
 <br /></div>
-<!-- class="inftblhruleinformal" --></div>
+<!-- class="inftblhruleinformal" -->
+<a id="sthref577" name="sthref577"></a>
+<p class="subhead2">Related references</p>
+<ul>
+<li>
+<p><span class="italic">Java Persistence API (JPA) Extensions Reference for EclipseLink</span><br />
+<code><a href="http://www.eclipse.org/eclipselink/documentation/2.4/jpa/extensions/toc.htm">http://www.eclipse.org/eclipselink/documentation/2.4/jpa/extensions/toc.htm</a></code></p>
+</li>
+</ul>
+</div>
 <!-- class="sect3" -->
 <!-- Start Footer -->
 <div class="footer">

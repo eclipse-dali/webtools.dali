@@ -8,7 +8,7 @@
 <title>Generating tables from entities</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-11T7:44:6Z" />
+<meta name="date" content="2012-09-13T10:27:40Z" />
 <meta name="robots" content="noarchive" />
 <meta name="doctitle" content="Generating tables from entities" />
 <meta name="relnum" content="Release 3.2" />
@@ -17,11 +17,11 @@
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-11</p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-13</p>
 <p><a id="CIHJIGBE" name="CIHJIGBE"></a></p>
 <div class="sect1"><!-- infolevel="all" infotype="General" -->
 <h1>Generating tables from entities</h1>
-<p>When using a vendor-specific platform, you can create a DDL script from your persistent entities.</p>
+<p><a id="sthref269" name="sthref269"></a><a id="sthref270" name="sthref270"></a><a id="sthref271" name="sthref271"></a>When using a vendor-specific platform, you can create a DDL script from your persistent entities.</p>
 <div align="center">
 <div class="inftblnote"><br />
 <table class="Note oac_no_warn" summary="" cellpadding="3" cellspacing="0">
@@ -29,7 +29,7 @@
 <tr>
 <td align="left">
 <p class="notep1">Note:</p>
-<p>The DDL script with <code>DROP</code> existing tables on the database and <code>CREATE</code> new tables, based on the entities in your project.</p>
+<p>The DDL script will <code>DROP</code> existing tables on the database and <code>CREATE</code> new tables, based on the entities in your project.</p>
 </td>
 </tr>
 </tbody>
@@ -42,23 +42,63 @@
 <p>Right-click the JPA project in the <span class="gui-object-title">Project Explorer</span> and select <span class="gui-object-action">JPA Tools &gt; Generate Tables from Entities</span>.</p>
 <img src="img/generate_tables_from_entities.png" alt="JPA Tools &gt; Generate Tables from Entities" title="JPA Tools &gt; Generate Tables from Entities" /><br /></li>
 <li>
-<p>On the Schema Generation page, select the generation output mode.</p>
-<div class="figure"><a id="sthref250" name="sthref250"></a>
+<p>On the <a href="reference011.htm#CACHAJEG">Schema Generation</a> page, select the generation output mode.</p>
+<div class="figure"><a id="sthref272" name="sthref272"></a>
 <p class="titleinfigure">Schema Generation</p>
 <img src="img/generate_tables.png" alt="" title="" /><br /></div>
 <!-- class="figure" --></li>
+<li>
+<p>Click <span class="bold">Finish</span>. Dali generates the selected DDL for the entities, as shown in <a href="#CIHJAHAC">Example: Sample Generated Output</a>.</p>
+</li>
 </ol>
-<p>On the <a href="ref_selectTables.htm#CIAHCGEE">Select Tables</a> page, select your database connection and schema.</p>
-<p>To create a new database connection, click <span class="bold">Add connection</span>.</p>
 <p>If you are not currently connected to the database, the Database Connection page appears. Select your database connection and schema, and click <span class="bold">Reconnect</span>.</p>
-<a id="sthref251" name="sthref251"></a>
+<div class="example"><a id="CIHJAHAC" name="CIHJAHAC"></a>
+<p class="titleinexample">Sample Generated Output</p>
+<pre xml:space="preserve" class="oac_no_warn">
+[EL Config]: metadata: The access type for the persistent class [class quickstart.demo.model.Address] is set to [FIELD].
+[EL Config]: metadata: The alias name for the entity class [class quickstart.demo.model.Address] is being defaulted to: Address.
+[EL Config]: metadata: The table name for entity [class quickstart.demo.model.Address] is being defaulted to: ADDRESS.
+[EL Config]: metadata: The column name for element [street] is being defaulted to: STREET.
+[EL Config]: metadata: The column name for element [city] is being defaulted to: CITY.
+[EL Config]: metadata: The column name for element [country] is being defaulted to: COUNTRY.
+[EL Info]: EclipseLink, version: Eclipse Persistence Services - 2.4.0.vXXXX
+[EL Fine]: connection: Detected database platform: org.eclipse.persistence.platform.database.JavaDBPlatform
+[EL Config]: connection: Connection(7896086)--connecting(DatabaseLogin(
+    platform=&gt;JavaDBPlatform
+    user name=&gt; ""
+    datasource URL=&gt; "jdbc:derby:C:\MyDB;create=true"
+))
+[EL Config]: connection: Connection(28523022)--Connected: jdbc:derby:C:\MyDB
+    User: APP
+    Database: Apache Derby  Version: 10.9.1.0 - (XXXX)
+    Driver: Apache Derby Embedded JDBC Driver  Version: 10.9.1.0 - (XXXX)
+[EL Config]: connection: Connection(27817788)--connecting(DatabaseLogin(
+    platform=&gt;JavaDBPlatform
+    user name=&gt; ""
+    datasource URL=&gt; "jdbc:derby:C:\MyDB;create=true"
+))
+[EL Config]: connection: Connection(11557581)--Connected: jdbc:derby:C:\MyDB
+    User: APP
+    Database: Apache Derby  Version: 10.9.1.0 - (XXXX)
+    Driver: Apache Derby Embedded JDBC Driver  Version: 10.9.1.0 - (XXXX)
+[EL Info]: connection: file:/C:/workspace/runtime-EclipseApplication/QuickStart/build/classes/_QuickStart_url=jdbc:derby:C:\Documents and Settings\rsapir\MyDB;create=true login successful
+[EL Fine]: sql: Connection(28523022)--DROP TABLE ADDRESS
+[EL Fine]: sql: Connection(28523022)--CREATE TABLE ADDRESS (ADDRESS_ID BIGINT NOT NULL, CITY VARCHAR(255), COUNTRY VARCHAR(255), P_CODE VARCHAR(255), PROVINCE VARCHAR(255), STREET VARCHAR(255), PRIMARY KEY (ADDRESS_ID))
+[EL Config]: connection: Connection(28523022)--disconnect
+[EL Info]: connection: file:/C://workspace/runtime-EclipseApplication/QuickStart/build/classes/_QuickStart_url=jdbc:derby:C:\MyDB;create=true logout successful
+[EL Config]: connection: Connection(7896086)--disconnect
+[EL Config]: connection: Connection(11557581)--disconnect
+
+</pre></div>
+<!-- class="example" -->
+<a id="sthref273" name="sthref273"></a>
 <p class="subhead2">Related tasks</p>
 <ul>
 <li>
 <p><a href="task_create_jpa_entity.htm#BABFBJBG">Creating a JPA entity</a></p>
 </li>
 </ul>
-<a id="sthref252" name="sthref252"></a>
+<a id="sthref274" name="sthref274"></a>
 <p class="subhead2">Related reference</p>
 <ul>
 <li>

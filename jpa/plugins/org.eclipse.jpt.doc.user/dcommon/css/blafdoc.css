@@ -1,4 +1,5 @@
-@import "../../../PRODUCT_PLUGIN/book.css";
+@import url("../../../PRODUCT_PLUGIN/book.css");
+
 
 span.control, span.gui-object-action, p.subhead2, span.bold, p.notep1 {
   font-weight: bold;
@@ -8,14 +9,40 @@ span.name, p.titleinfigure, span.italic {
   font-style: italic;
 }
 
+p.titleinfigure {font-size:0.8em; font-weight:bold;}
+
 p.titleinfigure, p.subhead2 {
-  padding-top: 10px;
+  padding-top: 1em;
 }
 
-span.code {
+p.subhead2 {margin-bottom:0}
+
+span.code, code {
   font-family: monospace;
+  background:#EEEEEE;
+  padding-left:1px;
 }
 
-span.copyrightlogo {font-size: 0.8em}
+span.copyrightlogo {font-size: 0.8em;color:#808080}
 
 .footer {margin-top: 2em;border-top:1px solid #cccccc;padding-top:1em;}
+
+.inftblnotealso, .inftblnote {text-align:left;}
+
+table.Note, table.NoteAlso {background:#FFFFC0;border-top:1px solid #000000;border-bottom:1px solid #000000; width:100%;}
+
+table.NoteAlso {background:#b8feb8}
+
+.footer {margin-top:2em;color:#808080;margin-top:1px solid #808080;}
+
+pre.oac_no_warn {background:#eeeeee;border:1px dashed #000000;border-radius:5px;padding:5px;overflow:auto;}
+
+thead th {background:#cccccc;font-weight:bold;border-left:none;border-right:none;}
+
+ul {margin-top:0}
+
+ul li p {margin:5px 0;}
+
+table.HRuleInformal, table.HRuleInformal td {border-left:none;border-right:none;}
+
+.betadraftsubtitle {text-align:center;font-size:0.9em;font-weight:bold;color:#FF0000}

@@ -8,20 +8,21 @@
 <title>Customization</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-11T7:44:7Z" />
+<meta name="date" content="2012-09-13T10:27:42Z" />
 <meta name="robots" content="noarchive" />
 <meta name="doctitle" content="Customization" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
+<meta name="topic-id" content="ref_persistence_customization" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-11</p>
-<p><a id="CIAJAFEG" name="CIAJAFEG"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-13</p>
+<p><a id="CIAJAFEG" name="CIAJAFEG"></a><a id="ref_persistence_customization" name="ref_persistence_customization"></a></p>
 <div class="sect3"><!-- infolevel="all" infotype="General" -->
 <h1>Customization</h1>
-<p>The following table lists the properties available in the Customization page of the <a href="ref_persistence_xmll_editor.htm#CIACCHID">persistence.xml Editor</a>.</p>
+<p><a id="sthref567" name="sthref567"></a>The following table lists the properties available in the Customization page of the <a href="ref_persistence_xmll_editor.htm#CIACCHID">persistence.xml Editor</a>.</p>
 <div class="inftblhruleinformal">
 <table class="HRuleInformal" summary="The following table lists the properties available in the Customization page of the persistence.xml Editor." dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
 <col width="24%" />
@@ -70,7 +71,7 @@
 </tr>
 <tr align="left" valign="top">
 <td align="left" id="r4c1-t51" headers="r1c1-t51">
-<p>Fetch&nbsp;Groups</p>
+<p>Fetch Groups</p>
 </td>
 <td align="left" headers="r4c1-t51 r1c2-t51">
 <p>Select this option to enable fetch groups through weaving. Set this option to false if:</p>
@@ -92,7 +93,10 @@
 <td align="left" id="r5c1-t51" headers="r1c1-t51">
 <p>Internal</p>
 </td>
-<td align="left" headers="r5c1-t51 r1c2-t51"><br /></td>
+<td align="left" headers="r5c1-t51 r1c2-t51">
+<p>Specify if Dali uses internal optimizations through weaving.</p>
+<p>If enabled, enables lazy one-to-one and many-to-one mappings through weaving.</p>
+</td>
 <td align="left" headers="r5c1-t51 r1c3-t51">
 <p>True</p>
 </td>
@@ -101,7 +105,9 @@
 <td align="left" id="r6c1-t51" headers="r1c1-t51">
 <p>Eager</p>
 </td>
-<td align="left" headers="r6c1-t51 r1c2-t51"><br /></td>
+<td align="left" headers="r6c1-t51 r1c2-t51">
+<p>Specify if Dali uses indirection on eager relationships.</p>
+</td>
 <td align="left" headers="r6c1-t51 r1c3-t51">
 <p>False</p>
 </td>
@@ -121,7 +127,9 @@
 <td align="left" id="r8c1-t51" headers="r1c1-t51">
 <p><span class="bold">Validation only</span></p>
 </td>
-<td align="left" headers="r8c1-t51 r1c2-t51"><br /></td>
+<td align="left" headers="r8c1-t51 r1c2-t51">
+<p>Specify if Dali should validate deployments by initializing descriptors but not connecting to the data source.</p>
+</td>
 <td align="left" headers="r8c1-t51 r1c3-t51">
 <p>True</p>
 </td>
@@ -169,15 +177,16 @@
 <p>Profiler</p>
 </td>
 <td align="left" headers="r13c1-t51 r1c2-t51">
+<p>Specify which performance profiler to use in order to capture runtime statistics.</p>
 <ul>
 <li>
-<p>No Profiler</p>
+<p>No Profiler &ndash; Do not use a performance profiler.</p>
 </li>
 <li>
-<p>Performance Profiler</p>
+<p>Performance Profiler &ndash; Use EclipseLink performance profiler (<code>org.eclipse.persistence.tools.profiler.PerformanceProfiler class</code>).</p>
 </li>
 <li>
-<p>Query Monitor</p>
+<p>Query Monitor &ndash; Monitor query executions and cache hits (<code>org.eclipse.persistence.tools.profiler.QueryMonitor class</code>).</p>
 </li>
 </ul>
 </td>
@@ -203,6 +212,14 @@
 </table>
 <br /></div>
 <!-- class="inftblnote" --></div>
+<a id="sthref568" name="sthref568"></a>
+<p class="subhead2">Related references</p>
+<ul>
+<li>
+<p><span class="italic">Java Persistence API (JPA) Extensions Reference for EclipseLink</span><br />
+<code><a href="http://www.eclipse.org/eclipselink/documentation/2.4/jpa/extensions/toc.htm">http://www.eclipse.org/eclipselink/documentation/2.4/jpa/extensions/toc.htm</a></code></p>
+</li>
+</ul>
 </div>
 <!-- class="sect3" -->
 <!-- Start Footer -->
