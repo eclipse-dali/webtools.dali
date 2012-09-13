@@ -43,7 +43,9 @@
 		<condition property="argsListDelimiter" value=";">
 			<os family="windows" />
 		</condition>
-
+<!--
+		<replaceregexp file="${basedir}/${optionsFile}" flags="g" match="(\r\n?|\n);" replace="${argsListDelimiter}" />
+-->
 		<replace file="${basedir}/${optionsFile}" token="@rt@" value="${bootclasspath}" />
 
 		<antcall target="replaceJptCommonUtility" />
@@ -53,9 +55,8 @@
         <antcall target="replacePackageTokens">
             <param name="packageName" value="jpt.common.ui" />
         </antcall>
-		
-		<replaceregexp file="${basedir}/${optionsFile}" flags="g" match="(\r\n?|\n);" replace="${argsListDelimiter}" />
 
+		<replaceregexp file="${basedir}/${optionsFile}" flags="g" match=";" replace="${argsListDelimiter}" />
 <!--
 		<antcall target="replaceJptCommonCore" />
 		<antcall target="replaceJptCommonUi" />
