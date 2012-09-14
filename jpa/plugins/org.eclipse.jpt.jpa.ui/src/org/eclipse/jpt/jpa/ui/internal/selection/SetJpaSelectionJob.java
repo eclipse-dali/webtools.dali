@@ -33,7 +33,7 @@ import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
  * manager). Unless the action is performing its action sychronously
  * (via a call to
  * {@link org.eclipse.jpt.jpa.core.JpaProjectManager#execute(org.eclipse.jpt.common.utility.command.Command)
- * JpaProjectManager#execute(...)}),
+ * JpaProjectManager.execute(...)}),
  * the modification(s) will have triggered a background <em>update</em> that
  * executes in a job that locks the corresponding project. This <em>update</em> will
  * modify other parts of the model, resulting in events that will modify the UI.
@@ -58,7 +58,11 @@ class SetJpaSelectionJob
 	SetJpaSelectionJob(Manager manager, JpaStructureNode selection) {
 		super(JptUiMessages.SetJpaSelection_jobName);
 		this.setJpaSelectionRunnable = new SetJpaSelectionRunnable(manager, selection);
-		this.setRule(selection.getJpaProject().getProject());
+		// if the selection is null we don't need a scheduling rule -
+		// the JPA selection can be set to null at any time
+		if (selection != null) {
+			this.setRule(selection.getJpaProject().getProject());
+		}
 	}
 
 	@Override
