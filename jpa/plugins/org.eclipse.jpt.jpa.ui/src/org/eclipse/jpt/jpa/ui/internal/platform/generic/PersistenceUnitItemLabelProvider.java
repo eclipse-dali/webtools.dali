@@ -90,9 +90,9 @@ public class PersistenceUnitItemLabelProvider
 		return buildComponentDescriptionModel(node, false, nodeTextModels);
 	}
 		
-	protected static PropertyValueModel<String> buildComponentDescriptionModel(JpaContextNode node, boolean quote, PropertyValueModel<String>... nodeTextModel) {
+	protected static PropertyValueModel<String> buildComponentDescriptionModel(JpaContextNode node, boolean quote, PropertyValueModel<String>... nodeTextModels) {
 		return new ComponentDescriptionModel(
-					nodeTextModel,
+					nodeTextModels,
 					new TextModel(node.getPersistenceUnit()),
 					node.getResource().getFullPath().makeRelative().toString(),
 					quote
