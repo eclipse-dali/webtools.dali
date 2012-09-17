@@ -13,16 +13,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.jpql;
 
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.BASIC;
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.ELEMENT_COLLECTION;
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.EMBEDDED;
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.EMBEDDED_ID;
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.ID;
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.MANY_TO_MANY;
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.MANY_TO_ONE;
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.ONE_TO_MANY;
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.ONE_TO_ONE;
-import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.VERSION;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -44,10 +34,12 @@ import org.eclipse.persistence.jpa.jpql.spi.IMapping;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 
+import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.*;
+
 /**
  * The abstract definition of JPQL content assist support.
  *
- * @version 3.2
+ * @version 3.3
  * @since 3.0
  * @author Pascal Filion
  */
@@ -299,6 +291,9 @@ abstract class JpqlCompletionProposalComputer<T> {
 			return proposals;
 		}
 		finally {
+			if (queryHelper != null) {
+				queryHelper.dispose();
+			}
 			clearInformation();
 		}
 	}
