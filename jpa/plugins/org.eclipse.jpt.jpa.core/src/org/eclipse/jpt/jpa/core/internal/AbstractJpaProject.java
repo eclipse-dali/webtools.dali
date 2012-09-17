@@ -71,7 +71,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaFile;
@@ -654,11 +653,19 @@ public abstract class AbstractJpaProject
 		return (jdtType == null) ? null : this.buildExternalJavaResourceType(jdtType);
 	}
 
+	/**
+	 * If the Java project has a class named <code>Foo</code> in the default package,
+	 * {@link IJavaProject#findType(String)} will return the {@link IType}
+	 * corresponding to <code>Foo</code> if the named passed to it is <code>".Foo"</code>.
+	 * This is not what we are expecting! So we had to put in a check for any
+	 * type name beginning with <code>'.'</code>.
+	 * See JDT bug 377710.
+	 */
 	protected IType findType(String typeName) {
 		try {
-			return typeName.startsWith(".") ? null : this.getJavaProject().findType(typeName);
+			return typeName.startsWith(".") ? null : this.getJavaProject().findType(typeName); //$NON-NLS-1$
 		} catch (JavaModelException ex) {
-			return null;  // ignore exception?
+			return null;  // ignore exception? resource exception was probably already logged by JDT
 		}
 	}
 
@@ -1481,11 +1488,13 @@ public abstract class AbstractJpaProject
 	// ********** validation **********
 
 	public Iterable<IMessage> getValidationMessages(IReporter reporter) {
-		List<IMessage> messages = new ArrayList<IMessage>();
+		ArrayList<IMessage> messages = new ArrayList<IMessage>();
 		this.validate(messages, reporter);
-		return new SnapshotCloneIterable<IMessage>(messages);
+		return messages;
 	}
 
+	// TODO about the only use for the reporter is to check for cancellation;
+	// we should check for cancellation...
 	protected void validate(List<IMessage> messages, IReporter reporter) {
 		if (reporter.isCancelled()) {
 			throw new ValidationCancelledException();

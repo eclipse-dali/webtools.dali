@@ -39,7 +39,6 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 
-
 public class RemoveAttributeFeature extends DefaultRemoveFeature {
 
 	private boolean skipRemoveRelations = false;
@@ -138,7 +137,6 @@ public class RemoveAttributeFeature extends DefaultRemoveFeature {
 			return;
 		if (jpt == null)
 			return;
-		JpaArtifactFactory.instance().refreshEntityModel(getFeatureProvider(), jpt);
 
 		Collection<IRelation> rels = JpaArtifactFactory.instance()
 				.produceAllRelations(jpt, getFeatureProvider());

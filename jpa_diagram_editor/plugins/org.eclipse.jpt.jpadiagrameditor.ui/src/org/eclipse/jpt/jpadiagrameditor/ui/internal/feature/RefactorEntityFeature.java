@@ -227,7 +227,6 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 				fp.getDiagramTypeProvider().getDiagramEditor().setPictogramElementForSelection(pe);
 				Graphiti.getPeService().deletePictogramElement(cs);	
 				
-				JpaArtifactFactory.instance().refreshEntityModel(fp, newJPT);
 				if (! JpaPreferences.getDiscoverAnnotatedClasses(newJPT.getJpaProject().getProject())) {
 					JPAEditorUtil.createRegisterEntityInXMLJob(newJPT.getJpaProject(), newJPTName);
 				}
@@ -235,9 +234,7 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 		});
 		
 	}
-	
-	
-	
+
 	@Override
 	protected Diagram getDiagram() {
 		return getFeatureProvider().getDiagramTypeProvider().getDiagram();
@@ -321,14 +318,8 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 					Iterator<JavaPersistentAttribute> itr =  newSelfAts.iterator();
 					while (itr.hasNext()) {
 						JavaPersistentAttribute at = itr.next();
-						JpaArtifactFactory.instance().refreshEntityModel(null, (JavaPersistentType)at.getParent());
 						JavaAttributeMapping m = at.getMapping();
 						Annotation mappingAnnotation = m.getMappingAnnotation();
-											
-						if(mappingAnnotation == null){
-							JpaArtifactFactory.instance().refreshEntityModel(getFeatureProvider(), (JavaPersistentType)at.getParent());
-							mappingAnnotation = m.getMappingAnnotation();
-						}	
 						if (mappingAnnotation == null)
 							return;
 						if (OwnableRelationshipMappingAnnotation.class.isInstance(mappingAnnotation)) {
@@ -359,9 +350,7 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 		public String getNewJPTName() {
 			return newJptName;
 		}
-		
 
 	};
-	
 
 }

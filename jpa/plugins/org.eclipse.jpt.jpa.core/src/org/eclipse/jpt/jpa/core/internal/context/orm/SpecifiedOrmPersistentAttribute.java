@@ -20,6 +20,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 import org.eclipse.jpt.common.utility.Filter;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
@@ -174,19 +175,19 @@ public abstract class SpecifiedOrmPersistentAttribute
 	}
 
 	public JavaPersistentAttribute resolveJavaPersistentAttribute() {
-		return this.getJavaPersistentAttribute();
+		return this.javaPersistentAttribute;
 	}
 
 	public JavaResourceAttribute getJavaResourceAttribute() {
-		return this.javaPersistentAttribute == null ? null : this.javaPersistentAttribute.getResourceAttribute();
+		return (this.javaPersistentAttribute == null) ? null : this.javaPersistentAttribute.getResourceAttribute();
 	}
 
 	public boolean isFor(JavaResourceField javaResourceField) {
-		return getJavaPersistentAttribute() == null ? false : getJavaPersistentAttribute().isFor(javaResourceField);
+		return (this.javaPersistentAttribute != null) && this.javaPersistentAttribute.isFor(javaResourceField);
 	}
 
 	public boolean isFor(JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter) {
-		return getJavaPersistentAttribute() == null ? false : getJavaPersistentAttribute().isFor(javaResourceGetter, javaResourceSetter);
+		return (this.javaPersistentAttribute != null) && this.javaPersistentAttribute.isFor(javaResourceGetter, javaResourceSetter);
 	}
 
 	protected void setJavaPersistentAttribute(JavaPersistentAttribute javaPersistentAttribute) {
@@ -226,28 +227,28 @@ public abstract class SpecifiedOrmPersistentAttribute
 		if (javaResourceType == null) {
 			return null; 
 		}
-		else if (getAccess() == AccessType.FIELD) {
+		if (this.getAccess() == AccessType.FIELD) {
 			JavaResourceField javaResourceField = this.getJavaResourceField(javaResourceType);
 			if (javaResourceField == null) {
 				// nothing in the resource inheritance hierarchy matches our name *and* access type
 				this.cachedJavaPersistentAttribute = null;
 			} else {
 				if ((this.cachedJavaPersistentAttribute == null) ||
-						!(this.cachedJavaPersistentAttribute.isFor(javaResourceField))) {
+						! this.cachedJavaPersistentAttribute.isFor(javaResourceField)) {
 					// cache is stale
 					this.cachedJavaPersistentAttribute = this.buildJavaPersistentField(javaResourceField);
 				}
 			}
 		}
-		else if (getAccess() == AccessType.PROPERTY) {
+		else if (this.getAccess() == AccessType.PROPERTY) {
 			JavaResourceMethod javaResourceGetter = this.getJavaResourceGetter(javaResourceType);
-			JavaResourceMethod javaResourceSetter = javaResourceGetter == null ? null : AbstractJavaPersistentType.getValidSiblingSetMethod(javaResourceGetter, javaResourceType.getMethods());
-			if (javaResourceGetter == null && javaResourceSetter == null) {
+			JavaResourceMethod javaResourceSetter = (javaResourceGetter == null) ? null : AbstractJavaPersistentType.getValidSiblingSetMethod(javaResourceGetter, javaResourceType.getMethods());
+			if ((javaResourceGetter == null) && (javaResourceSetter == null)) {
 				// nothing in the resource inheritance hierarchy matches our name *and* access type
 				this.cachedJavaPersistentAttribute = null;
 			} else {
 				if ((this.cachedJavaPersistentAttribute == null) ||
-						!(this.cachedJavaPersistentAttribute.isFor(javaResourceGetter, javaResourceSetter))) {
+						! this.cachedJavaPersistentAttribute.isFor(javaResourceGetter, javaResourceSetter)) {
 					// cache is stale
 					this.cachedJavaPersistentAttribute = this.buildJavaPersistentProperty(javaResourceGetter, javaResourceSetter);
 				}
@@ -265,7 +266,7 @@ public abstract class SpecifiedOrmPersistentAttribute
 	 */
 	protected JavaResourceField getJavaResourceField(JavaResourceType javaResourceType) {
 		if (javaResourceType == null) {//checking null here, had a VIRTUAL hierarchy, change AbstractModel to FIELD access, is there another way??
-			return null; 
+			return null;
 		}
 		for (JavaResourceField javaResourceField : this.getJavaResourceFields(javaResourceType)) {
 			if (javaResourceField.getName().equals(this.getName())) {
@@ -334,7 +335,7 @@ public abstract class SpecifiedOrmPersistentAttribute
 	 * Return the resource attributes with compatible access types.
 	 */
 	protected Iterable<JavaResourceMethod> getJavaResourceGetters(JavaResourceType javaResourceType) {
-		return getResourceMethods(javaResourceType, buildPersistablePropertyGetterMethodsFilter(javaResourceType));
+		return this.getResourceMethods(javaResourceType, this.buildPersistablePropertyGetterMethodsFilter(javaResourceType));
 	}
 
 	protected JavaPersistentAttribute buildJavaPersistentField(JavaResourceField javaResourceField) {
@@ -481,21 +482,34 @@ public abstract class SpecifiedOrmPersistentAttribute
 
 	protected void validateAttribute(List<IMessage> messages, IReporter reporter) {
 		if (this.javaPersistentAttribute == null) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.PERSISTENT_ATTRIBUTE_UNRESOLVED_NAME,
-					new String[] {
-						this.getName(),
-						this.getOwningTypeMapping().getClass_()
-					},
-					this.mapping,
-					this.mapping.getNameTextRange()
-				)
-			);
+			this.validateUnresolvedAttribute(messages);
 		} else {
 			this.buildAttibuteValidator().validate(messages, reporter);
 		}
+	}
+
+	protected void validateUnresolvedAttribute(List<IMessage> messages) {
+		String name = this.getName();
+		if (StringTools.stringIsEmpty(name)) {
+			// if the name null, there will already be an XSD-driven error;
+			// if the name is empty or whitespace, there will already be an attribute mapping error
+			return;
+		}
+		JavaPersistentType javaType = this.getOwningPersistentTypeJavaType();
+		if (javaType == null) {
+			// it's not very helpful to point out that we cannot resolve an attribute
+			// of an unresolved type (which already has its own error message)
+			return;
+		}
+		messages.add(
+			DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.PERSISTENT_ATTRIBUTE_UNRESOLVED_NAME,
+				new String[] {name, javaType.getName()},
+				this.mapping,
+				this.mapping.getNameTextRange()
+			)
+		);
 	}
 
 	protected abstract JptValidator buildAttibuteValidator();

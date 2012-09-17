@@ -58,7 +58,6 @@ public class AddAttributeFeature extends AbstractAddShapeFeature {
 			return null;
 		}
 		final JavaPersistentAttribute newAttr = (JavaPersistentAttribute) o;
-//		JpaArtifactFactory.instance().refreshEntityModel(getFeatureProvider(), (JavaPersistentType)newAttr.getParent());
 
 		getFeatureProvider().putKeyToBusinessObject(getFeatureProvider().getKeyForBusinessObject(newAttr), newAttr);
 		PictogramElement pe = getFeatureProvider().getPictogramElementForBusinessObject(newAttr); 

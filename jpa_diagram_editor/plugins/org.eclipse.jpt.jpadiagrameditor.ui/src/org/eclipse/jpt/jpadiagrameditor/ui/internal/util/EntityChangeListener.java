@@ -15,14 +15,30 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.util;
 
+import java.io.ObjectInputStream.GetField;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
+
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.graphiti.features.context.impl.RemoveContext;
+import org.eclipse.graphiti.mm.Property;
+import org.eclipse.graphiti.mm.algorithms.GraphicsAlgorithm;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
-import org.eclipse.jpt.common.core.resource.java.Annotation;
+import org.eclipse.graphiti.mm.pictograms.PictogramElement;
+import org.eclipse.graphiti.mm.pictograms.PictogramLink;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -121,7 +137,7 @@ public class EntityChangeListener extends Thread {
 						PersistentType pt = pu.getPersistentType(jpt.getName());
 						
 						if ((pt == null) || !JpaArtifactFactory.instance().hasEntityOrMappedSuperclassAnnotation(jpt)) {
-							
+														
 							JpaArtifactFactory.instance().forceSaveEntityClass(jpt, featureProvider);
 							
 							if(jpt.getMapping() == null || (jpt.getMapping() instanceof JavaNullTypeMapping)) {
@@ -150,17 +166,8 @@ public class EntityChangeListener extends Thread {
 						JavaPersistentType jpt = (JavaPersistentType)pu.getPersistentType(entityName);
 						if (jpt != null) {
 							JavaPersistentAttribute jpa = jpt.getAttributeNamed(attribName);
-							JpaArtifactFactory.instance().refreshEntityModel(null, jpt);
 							if (jpa != null) {
 								JavaAttributeMapping mapping = jpa.getMapping();
-								Annotation a = mapping.getMappingAnnotation();
-								if(a == null){
-									JpaArtifactFactory.instance().refreshEntityModel(featureProvider, jpt);
-									mapping = jpa.getMapping();
-									a = mapping.getMappingAnnotation();
-								}
-								if (a == null)
-									return;
 								if (OwnableRelationshipMappingAnnotation.class.isInstance(mapping.getMappingAnnotation())) {
 									JavaRelationshipMapping relationshipMapping = (JavaRelationshipMapping)mapping; 
 									MappedByRelationship ownableRef = (MappedByRelationship)relationshipMapping.getRelationship();

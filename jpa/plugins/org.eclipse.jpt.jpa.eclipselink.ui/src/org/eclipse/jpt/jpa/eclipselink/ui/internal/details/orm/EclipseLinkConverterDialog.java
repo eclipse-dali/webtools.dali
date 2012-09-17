@@ -121,7 +121,7 @@ public class EclipseLinkConverterDialog
 		@Override
 		protected void initializeLayout(Composite container) {
 			this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkConverterDialog_name);
-			this.addText(container, buildNameHolder());
+			this.nameText = this.addText(container, buildNameHolder());
 			
 			this.addLabel(container, EclipseLinkUiDetailsMessages.EclipseLinkConverterDialog_converterType);
 			this.addCombo(
