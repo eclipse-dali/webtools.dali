@@ -8,12 +8,15 @@
 	<packaging>pom</packaging>
 	
 	<properties>
-		<tycho-version>0.9.0</tycho-version>
+		<tycho-version>0.15.0</tycho-version>
 	</properties>
 	
 	<modules>
 		<module>../../plugins/org.eclipse.jpt.jpadiagrameditor.ui</module>
-		<!-- module>../../tests/org.eclipse.jpt.jpadiagrameditor.tests</module -->
+		<module>../../plugins/org.eclipse.jpt.jpadiagrameditor.doc.user</module>
+		<module>../../plugins/org.eclipse.jpt.jpadiagrameditor.branding</module>
+		<!-- module>../../tests/org.eclipse.jpt.jpadiagrameditor.ui.tests</module>
+		<module>../../tests/org.eclipse.jpt.jpadiagrameditor.swtbot.tests</module-->
 		<module>../../features/org.eclipse.jpt.jpadiagrameditor.feature</module>
 		<module>../org.eclipse.jpt.jpadiagrameditor.repository</module>
 	</modules>
@@ -21,17 +24,24 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.sonatype.tycho</groupId>
+				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-maven-plugin</artifactId>
 				<version>${tycho-version}</version>
 				<extensions>true</extensions>
 			</plugin>
 			<plugin>
-				<groupId>org.sonatype.tycho</groupId>
+				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>target-platform-configuration</artifactId>
 				<version>${tycho-version}</version>
 				<configuration>
 					<resolver>p2</resolver>
+					<!-- dependencies>
+					<dependency>
+						<type>eclipse-feature</type>
+						<artifactId>org.eclipse.jpt.jpa.feature</artifactId>
+						<version>0.0.0</version>
+					</dependency>
+					</dependencies-->
 				</configuration>
 			</plugin>
 		</plugins>
@@ -39,13 +49,14 @@
 	
 	<repositories>
 		<repository>
-			<id>indigo</id>
-			<url>http://download.eclipse.org/releases/staging/</url>
+			<id>Juno</id>
+			<url>http://download.eclipse.org/releases/juno/</url>
 			<layout>p2</layout>			
 		</repository>	
 		<repository>
-			<id>Juno</id>
-			<url>http://build.eclipse.org/webtools/committers/wtp-R3.4.0-I/20110805150738/I-3.4.0-20110805150738/repository/</url>
+			<id>Kepler</id>
+			<!-- url>http://download.eclipse.org/releases/juno/</url-->
+			<url>http://build.eclipse.org/webtools/committers/wtp4x-R3.5.0-I/20120913044711/I-3.5.0-20120913044711/repository/</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
@@ -53,7 +64,26 @@
 			<url>http://download.eclipse.org/graphiti/updates/milestones/</url>
 			<layout>p2</layout>
 		</repository>
-		
+		<repository>
+			<id>swtbot</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site</url>
+		</repository>
 	</repositories>
+	
+	<profiles>
+		<profile>
+			<id>swttests</id>
+			<modules>				
+				<module>../../tests/org.eclipse.jpt.jpadiagrameditor.swtbot.tests</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>jtests</id>
+			<modules>
+				<module>../../tests/org.eclipse.jpt.jpadiagrameditor.ui.tests</module>
+			</modules>
+		</profile>
+	</profiles>
 	
 </project>

@@ -9,21 +9,24 @@
 		<relativePath>../../development/org.eclipse.jpt.jpadiagrameditor.releng/pom.xml</relativePath>
 	</parent>
 	
-	<artifactId>org.eclipse.jpt.ui.diagrameditor.test</artifactId>
+	<artifactId>org.eclipse.jpt.jpadiagrameditor.ui.tests</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 	<name>JPA Diagram Editor Test Plug-in</name>
 	
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.sonatype.tycho</groupId>
-				<artifactId>maven-osgi-test-plugin</artifactId>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
 				<version>${tycho-version}</version>
 				<configuration>
-					<testSuite>org.eclipse.jpt.jpadiagrameditor.tests</testSuite>
-					<testClass>org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.AllJpaEditorTests</testClass>
+					<!-- testSuite>org.eclipse.jpt.jpadiagrameditor.ui.tests</testSuite>
+					<testClass>org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.AllJpaEditorTests</testClass-->
 					<useUIHarness>true</useUIHarness>
-					<useUIThread>true</useUIThread>
+					<useUIThread>false</useUIThread>
+					<systemProperties combine.children="append">
+						<org.eclipse.jpt.jpa.jar>${org.eclipse.jpt.jpa.jar}</org.eclipse.jpt.jpa.jar>
+					</systemProperties>
 					<argLine>-Xms128m -Xmx512m -XX:MaxPermSize=256m</argLine>
 					<product>org.eclipse.sdk.ide</product>
 					<application>org.eclipse.ui.ide.workbench</application>
