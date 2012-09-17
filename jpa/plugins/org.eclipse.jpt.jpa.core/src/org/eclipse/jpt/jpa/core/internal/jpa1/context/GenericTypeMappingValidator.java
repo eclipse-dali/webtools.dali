@@ -1,13 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2010, 2012  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import java.util.List;
@@ -19,24 +18,24 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 public class GenericTypeMappingValidator
 	extends AbstractTypeMappingValidator<TypeMapping>
 {
-	public GenericTypeMappingValidator(TypeMapping typeMapping, JavaResourceType jrt) {
-		super(typeMapping, jrt);
+	public GenericTypeMappingValidator(TypeMapping typeMapping) {
+		super(typeMapping);
 	}
 
 	@Override
 	protected void validateType(List<IMessage> messages) {
-		if (this.isFinalType()) {
+		JavaResourceType jrt = this.getJavaResourceType();
+		if (jrt.isFinal()) {
 			messages.add(this.buildTypeMessage(JpaValidationMessages.TYPE_MAPPING_FINAL_CLASS));
 		}
-		if (this.isMemberType()) {
+		if (jrt.getTypeBinding().isMemberTypeDeclaration()) {
 			messages.add(this.buildTypeMessage(JpaValidationMessages.TYPE_MAPPING_MEMBER_CLASS));
 		}
-		if (this.hasNoArgConstructor()) {
-			if (this.hasPrivateNoArgConstructor()) {
+		if (jrt.hasNoArgConstructor()) {
+			if (jrt.hasPrivateNoArgConstructor()) {
 				messages.add(this.buildTypeMessage(JpaValidationMessages.TYPE_MAPPING_CLASS_PRIVATE_NO_ARG_CONSTRUCTOR));
 			}
-		}
-		else {
+		} else {
 			messages.add(this.buildTypeMessage(JpaValidationMessages.TYPE_MAPPING_CLASS_MISSING_NO_ARG_CONSTRUCTOR));
 		}
 	}

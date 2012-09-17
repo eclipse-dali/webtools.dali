@@ -289,6 +289,6 @@ public class JavaEclipseLinkEntityImpl
 
 	@Override
 	protected JptValidator buildTypeMappingValidator() {
-		return new EclipseLinkTypeMappingValidator(this, this.getJavaResourceType());
+		return new EclipseLinkTypeMappingValidator(this);
 	}
 }

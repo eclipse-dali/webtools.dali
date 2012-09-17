@@ -21,17 +21,18 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 public abstract class AbstractEclipseLinkTypeMappingValidator<T extends TypeMapping>
 	extends AbstractTypeMappingValidator<T>
 {
-	protected AbstractEclipseLinkTypeMappingValidator(T typeMapping, JavaResourceType jrt) {
-		super(typeMapping, jrt);
+	protected AbstractEclipseLinkTypeMappingValidator(T typeMapping) {
+		super(typeMapping);
 	}
 
 
 	@Override
 	protected void validateType(List<IMessage> messages) {
-		if (this.isMemberType() && !this.isStaticType()) {
+		JavaResourceType jrt = this.getJavaResourceType();
+		if (jrt.getTypeBinding().isMemberTypeDeclaration() && ! jrt.isStatic()) {
 			messages.add(this.buildEclipseLinkTypeMessage(EclipseLinkJpaValidationMessages.TYPE_MAPPING_MEMBER_CLASS_NOT_STATIC));
 		}
-		if (!this.hasNoArgConstructor()) {
+		if ( ! jrt.hasNoArgConstructor()) {
 			messages.add(this.buildTypeMessage(JpaValidationMessages.TYPE_MAPPING_CLASS_MISSING_NO_ARG_CONSTRUCTOR));
 		}
 	}

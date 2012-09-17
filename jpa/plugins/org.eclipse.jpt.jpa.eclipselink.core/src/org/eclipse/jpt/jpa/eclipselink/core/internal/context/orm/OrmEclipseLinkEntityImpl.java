@@ -42,12 +42,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMultitenancy2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_3JpaPlatformFactory;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkDynamicTypeMappingValidator;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkEntityPrimaryKeyValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkTypeMappingValidator;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.plugin.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkClassExtractorAnnotation2_1;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntity;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -430,14 +428,7 @@ public class OrmEclipseLinkEntityImpl
 
 	@Override
 	protected JptValidator buildTypeMappingValidator() {
-		if (this.isDynamicType()) {
-			return new EclipseLinkDynamicTypeMappingValidator(this);
-		}
-		return new EclipseLinkTypeMappingValidator(this, getJavaResourceType());
-	}
-
-	protected boolean isDynamicType() {
-		return this.getPersistentType().isDynamic();
+		return new EclipseLinkTypeMappingValidator(this);
 	}
 
 	protected void validateParentClass(List<IMessage> messages, IReporter reporter) {

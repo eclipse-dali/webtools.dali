@@ -302,11 +302,17 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 	}
 
 	protected void validateType(List<IMessage> messages, IReporter reporter) {
-		this.buildTypeMappingValidator().validate(messages, reporter);
+		if (this.getJavaResourceType() != null) {
+			this.buildTypeMappingValidator().validate(messages, reporter);
+		}
 	}
 
+	/**
+	 * Pre-condition: the mapping's {@link #getJavaResourceType() Java resource
+	 * type} is not <code>null</code>.
+	 */
 	protected JptValidator buildTypeMappingValidator() {
-		return new GenericTypeMappingValidator(this, this.getJavaResourceType());
+		return new GenericTypeMappingValidator(this);
 	}
 
 	public boolean validatesAgainstDatabase() {

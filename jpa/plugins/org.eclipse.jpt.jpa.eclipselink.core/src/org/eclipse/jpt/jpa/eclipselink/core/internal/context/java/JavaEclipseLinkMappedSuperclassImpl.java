@@ -267,6 +267,6 @@ public class JavaEclipseLinkMappedSuperclassImpl
 
 	@Override
 	protected JptValidator buildTypeMappingValidator() {
-		return new EclipseLinkMappedSuperclassValidator(this, this.getJavaResourceType());
+		return new EclipseLinkMappedSuperclassValidator(this);
 	}
 }

@@ -26,12 +26,11 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEmbeddable;
+import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkEmbeddable;
-import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkDynamicTypeMappingValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkTypeMappingValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEmbeddable;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -251,16 +250,8 @@ public class OrmEclipseLinkEmbeddableImpl
 
 	@Override
 	protected JptValidator buildTypeMappingValidator() {
-		if (this.isDynamicType()) {
-			return new EclipseLinkDynamicTypeMappingValidator(this);
-		}
-		return new EclipseLinkTypeMappingValidator(this, getJavaResourceType());
+		return new EclipseLinkTypeMappingValidator(this);
 	}
-
-	protected boolean isDynamicType() {
-		return this.getPersistentType().isDynamic();
-	}
-
 
 	protected void validateParentClass(List<IMessage> messages, IReporter reporter) {
 		if (this.specifiedParentClass == null) {
