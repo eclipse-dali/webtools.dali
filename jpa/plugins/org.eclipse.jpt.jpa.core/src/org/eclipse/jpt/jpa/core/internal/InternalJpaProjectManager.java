@@ -266,7 +266,8 @@ public class InternalJpaProjectManager
 	 * As a result, we need not synchronize with the scheduling rule.
 	 */
 	public void start() {
-		JptJpaCorePlugin.instance().trace(TRACE_OPTION, "*** JPA project manager START ***"); //$NON-NLS-1$
+		// dump a stack trace so we can determine what triggers this
+		JptJpaCorePlugin.instance().dumpStackTrace(TRACE_OPTION, "*** JPA project manager START ***"); //$NON-NLS-1$
 		try {
 			this.commandExecutor = this.buildAsynchronousCommandExecutor();
 			this.buildJpaProjects();
@@ -572,7 +573,7 @@ public class InternalJpaProjectManager
 	 */
 	/* CU private */ JpaProject addJpaProject(IProject project) {
 		JpaProject jpaProject = this.buildJpaProject(project);
-		// figure out exactly when JPA projects are added
+		// dump a stack trace so we can determine what triggers this
 		if (jpaProject == null) {
 			JptJpaCorePlugin.instance().dumpStackTrace(TRACE_OPTION, "add JPA project fail: {0}", project); //$NON-NLS-1$
 		} else {
@@ -673,7 +674,7 @@ public class InternalJpaProjectManager
 	 * Pre-condition: The specified JPA project's project is locked.
 	 */
 	private void removeJpaProject(JpaProject jpaProject) {
-		// figure out exactly when JPA projects are removed
+		// dump a stack trace so we can determine what triggers this
 		JptJpaCorePlugin.instance().dumpStackTrace(TRACE_OPTION, "remove JPA project: {0}", jpaProject); //$NON-NLS-1$
 		this.removeItemFromCollection(jpaProject, this.jpaProjects, JPA_PROJECTS_COLLECTION);
 		try {
