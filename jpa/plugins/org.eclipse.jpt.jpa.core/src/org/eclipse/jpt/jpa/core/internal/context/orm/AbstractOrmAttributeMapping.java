@@ -162,8 +162,8 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 	/**
 	 * subclasses must override if they support specifying an attribute type
 	 */
-	protected void setSpecifiedAttributeTypeInXml(String attributeType) {
-		//no-op
+	protected void setSpecifiedAttributeTypeInXml(@SuppressWarnings("unused") String attributeType) {
+		// NOP
 	}
 
 	/**
@@ -184,15 +184,13 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 	}
 
 	protected String buildDefaultAttributeType() {
-		return (this.getJavaPersistentAttribute() == null) ? null : 
-			this.getJavaPersistentAttribute().getTypeName(getTypeMapping().getPersistentType());
+		return (this.getJavaPersistentAttribute() == null) ? null :
+				this.getJavaPersistentAttribute().getTypeName(this.getTypeMapping().getPersistentType());
 	}
 
 	protected PersistentType getResolvedAttributeType() {
-		if (this.fullyQualifiedAttributeType == null) {
-			return null;
-		}
-		return getPersistenceUnit().getPersistentType(this.fullyQualifiedAttributeType);
+		return (this.fullyQualifiedAttributeType == null) ? null :
+				this.getPersistenceUnit().getPersistentType(this.fullyQualifiedAttributeType);
 	}
 
 
@@ -481,7 +479,10 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 	}
 
 	protected void validateAttribute(List<IMessage> messages) {
-		if (StringTools.stringIsEmpty(this.name)) {
+		// we just check for a name that is either empty or whitespace here;
+		// the name will be null if the 'name' attribute is missing
+		// and there will already be an XSD-driven error
+		if ((this.name != null) && StringTools.stringIsEmpty(this.name)) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
@@ -507,7 +508,7 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 			);
 		}
 	}
-	
+
 	// ********** completion proposals **********
 
 	@Override
@@ -521,7 +522,7 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 		}
 		return null;
 	}
-	
+
 	/**
 	 * @return all the attribute of corresponding Java persistent type
 	 */
