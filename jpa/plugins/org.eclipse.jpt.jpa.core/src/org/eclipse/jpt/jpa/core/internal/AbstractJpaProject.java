@@ -654,11 +654,19 @@ public abstract class AbstractJpaProject
 		return (jdtType == null) ? null : this.buildExternalJavaResourceType(jdtType);
 	}
 
+	/**
+	 * If the Java project has a class named <code>Foo</code> in the default package,
+	 * {@link IJavaProject#findType(String)} will return the {@link IType}
+	 * corresponding to <code>Foo</code> if the named passed to it is <code>".Foo"</code>.
+	 * This is not what we are expecting! So we had to put in a check for any
+	 * type name beginning with <code>'.'</code>.
+	 * See JDT bug 377710.
+	 */
 	protected IType findType(String typeName) {
 		try {
-			return typeName.startsWith(".") ? null : this.getJavaProject().findType(typeName);
+			return typeName.startsWith(".") ? null : this.getJavaProject().findType(typeName); //$NON-NLS-1$
 		} catch (JavaModelException ex) {
-			return null;  // ignore exception?
+			return null;  // ignore exception? resource exception was probably already logged by JDT
 		}
 	}
 
