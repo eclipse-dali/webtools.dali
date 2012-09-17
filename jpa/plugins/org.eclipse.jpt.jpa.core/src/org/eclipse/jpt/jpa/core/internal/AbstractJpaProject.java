@@ -71,7 +71,6 @@ import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaFile;
@@ -1489,11 +1488,13 @@ public abstract class AbstractJpaProject
 	// ********** validation **********
 
 	public Iterable<IMessage> getValidationMessages(IReporter reporter) {
-		List<IMessage> messages = new ArrayList<IMessage>();
+		ArrayList<IMessage> messages = new ArrayList<IMessage>();
 		this.validate(messages, reporter);
-		return new SnapshotCloneIterable<IMessage>(messages);
+		return messages;
 	}
 
+	// TODO about the only use for the reporter is to check for cancellation;
+	// we should check for cancellation...
 	protected void validate(List<IMessage> messages, IReporter reporter) {
 		if (reporter.isCancelled()) {
 			throw new ValidationCancelledException();
