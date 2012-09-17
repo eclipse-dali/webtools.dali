@@ -83,7 +83,6 @@ public class GraphicalRemoveAttributeFeature extends AbstractCustomFeature {
 	public void reconnect(JavaPersistentType jpt) {
 		IJPAEditorFeatureProvider fp = getFeatureProvider();
 		Collection<IRelation> rels = JpaArtifactFactory.instance().produceAllRelations(jpt, fp);
-		JpaArtifactFactory.instance().refreshEntityModel(fp, jpt);
 		Iterator<IRelation> it = rels.iterator();
 		while (it.hasNext()) {
 			IRelation rel = it.next();

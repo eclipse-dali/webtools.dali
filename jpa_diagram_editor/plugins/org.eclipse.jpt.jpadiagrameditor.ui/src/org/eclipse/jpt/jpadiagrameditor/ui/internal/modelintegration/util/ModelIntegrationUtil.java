@@ -50,6 +50,7 @@ import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.ui.services.GraphitiUi;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditor;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
@@ -270,7 +271,20 @@ public class ModelIntegrationUtil {
 		
 	public static JpaProject getProjectByDiagram(String diagramName) {
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(diagramName);
+		Iterator<JpaProject> iter = getJpaProjectManager().getJpaProjects().iterator();
+		while (iter.hasNext()) {
+			JpaProject jpaProject = (JpaProject) iter.next();
+			if(jpaProject.getName().equalsIgnoreCase(diagramName)){
+				return jpaProject;
+			}
+			
+		}
+		
 		return JpaArtifactFactory.instance().getJpaProject(project);
+	}
+	
+	private static JpaProjectManager getJpaProjectManager() {
+		return (JpaProjectManager) ResourcesPlugin.getWorkspace().getAdapter(JpaProjectManager.class);
 	}
 	
 	public static boolean isDiagramOpen(String diagramName) {

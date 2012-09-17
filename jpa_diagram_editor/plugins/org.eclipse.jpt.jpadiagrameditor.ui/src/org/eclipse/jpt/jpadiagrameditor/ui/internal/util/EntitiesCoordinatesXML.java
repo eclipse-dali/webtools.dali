@@ -31,6 +31,8 @@ import org.eclipse.graphiti.mm.algorithms.RoundedRectangle;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.services.Graphiti;
+import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.ModelIntegrationUtil;
@@ -49,7 +51,15 @@ public class EntitiesCoordinatesXML {
 	public static final String XML_ELEMENT_POSITION = "\n\t\t"; //$NON-NLS-1$
 		
 	public EntitiesCoordinatesXML(String projectName){
-		this.projectName = projectName;
+		Iterator<JpaProject> iter = getJpaProjectManager().getJpaProjects().iterator();
+		while (iter.hasNext()) {
+			JpaProject jpaProject = (JpaProject) iter.next();
+			if(jpaProject.getName().equalsIgnoreCase(projectName)){
+				this.projectName = jpaProject.getName();
+			}
+			
+		}
+		
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		documentBuilderFactory.setNamespaceAware(true);
 		InputStream is = null;
@@ -74,8 +84,14 @@ public class EntitiesCoordinatesXML {
 		}
 	}
 
+	private JpaProjectManager getJpaProjectManager() {
+		return (JpaProjectManager) ResourcesPlugin.getWorkspace().getAdapter(JpaProjectManager.class);
+	}
 	
     private Closeable findXMLFile(boolean inputStream) throws FileNotFoundException{
+    	
+    	Iterator<JpaProject> iter = getJpaProjectManager().getJpaProjects().iterator();
+    	
     	IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		try {
 			IResource[] resources = project.members();

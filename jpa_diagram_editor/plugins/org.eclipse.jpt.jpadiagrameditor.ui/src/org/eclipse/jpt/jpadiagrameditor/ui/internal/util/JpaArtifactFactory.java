@@ -15,7 +15,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.util;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -25,11 +24,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
-import java.util.Properties;
 import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.transaction.RecordingCommand;
@@ -40,18 +39,17 @@ import org.eclipse.graphiti.features.context.impl.AddConnectionContext;
 import org.eclipse.graphiti.features.context.impl.RemoveContext;
 import org.eclipse.graphiti.mm.pictograms.Connection;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
+import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.util.IColorConstant;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
-import org.eclipse.jdt.core.IImportDeclaration;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageDeclaration;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.ui.refactoring.RenameSupport;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
@@ -60,13 +58,15 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.common.ui.internal.utility.SynchronousUiCommandExecutor;
+import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.internal.iterables.SubListIterableWrapper;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
@@ -87,6 +87,12 @@ import org.eclipse.jpt.jpa.core.resource.java.OwnableRelationshipMappingAnnotati
 import org.eclipse.jpt.jpa.core.resource.java.RelationshipMappingAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.TableAnnotation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.command.AddAttributeCommand;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.command.CreateNewAttributeCommand;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.command.DeleteAttributeCommand;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.command.RenameAttributeCommand;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.command.RenameEntityCommand;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.command.SetMappedByNewValueCommand;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.AddInheritedEntityFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.AddRelationFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.RemoveRelationFeature;
@@ -108,8 +114,6 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.OneToManyUniDirRel
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.OneToOneBiDirRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.OneToOneUniDirRelation;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IWorkbenchWindow;
 
 
 @SuppressWarnings("restriction")
@@ -266,7 +270,6 @@ public class JpaArtifactFactory {
 
 	private JavaPersistentAttribute setMappingKeyToAttribute(IFeatureProvider fp, JavaPersistentType jpt, JavaPersistentAttribute jpa, String mappingKey){
 		JavaPersistentAttribute resolvedManySideAttribute = (JavaPersistentAttribute) jpt.resolveAttribute(jpa.getName());
-		resolvedManySideAttribute.getResourceAttribute().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
 		resolvedManySideAttribute.setMappingKey(mappingKey);
 		return resolvedManySideAttribute;
 	}
@@ -567,116 +570,37 @@ public class JpaArtifactFactory {
 			JavaPersistentType attributeType, String mapKeyType, String attributeName,
 			String actName, boolean isCollection, ICompilationUnit cu1,
 			ICompilationUnit cu2) {
-		IType type = null;
+		
+		fp.getDiagramTypeProvider().getDiagramEditor().selectPictogramElements(new PictogramElement[] {});
+		
 		try {
-			JPAEditorUtil.createImport(cu1, cu2.getType(attributeType.getName()).getElementName());
-			type = cu1.findPrimaryType();	
-			refreshEntityModel(fp, jpt);
 			if (doesAttributeExist(jpt, actName)) {
 				return (JavaPersistentAttribute) jpt
 						.resolveAttribute(attributeName);
 			}
-			if (isCollection) {
-				createAttributeOfCollectiontype(fp, jpt, attributeType,
-						mapKeyType, attributeName, actName, cu1, type);
-			} else {
-				createSimpleAttribute(attributeType, attributeName, actName,
-						isCollection, type);
-			}
+
 		} catch (JavaModelException e) {
 			JPADiagramEditorPlugin.logError("Cannnot create a new attribute with name " + attributeName, e); //$NON-NLS-1$				
 		}
 		
+		Command addAttributeCommand = new AddAttributeCommand(fp, jpt, attributeType, mapKeyType, attributeName, actName, isCollection, cu1, cu2);
+		try {
+			getJpaProjectManager().execute(addAttributeCommand, SynchronousUiCommandExecutor.instance());
+		} catch (InterruptedException e) {
+			JPADiagramEditorPlugin.logError("Cannot add a new attribute with name " + actName, e); //$NON-NLS-1$		
+		}
+		
 		if(jpt.getAttributeNamed(attributeName) == null){
-			   refreshEntityModel(fp, jpt);
+			System.out.println("bahhhhhh go +++++++++++++ " + attributeName);
+			jpt.getJavaResourceType().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
 		}
-		
-		JavaPersistentAttribute res =  getAttributeFromEntity(jpt, actName);
+		JavaPersistentAttribute res = jpt.getAttributeNamed(actName);
+		if(res == null){
+			System.out.println("6ti eba majkata ====================is");
+			jpt.getJavaResourceType().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
+			res = jpt.getAttributeNamed(actName);
+		}
 		return res;
-	}
-
-	private void createSimpleAttribute(JavaPersistentType attributeType,
-			String attributeName, String actName, boolean isCollection,
-			IType type) throws JavaModelException {
-		type.createField("  private " + JPAEditorUtil.returnSimpleName(attributeType.getName()) + " "
-			+ JPAEditorUtil.decapitalizeFirstLetter(actName) + ";", null, false, new NullProgressMonitor()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		type.createMethod(genGetterContents(attributeName,
-				JPAEditorUtil.returnSimpleName(attributeType.getName()), null,
-				actName, null, isCollection), null, false,
-				new NullProgressMonitor());
-		type.createMethod(genSetterContents(attributeName,
-				JPAEditorUtil.returnSimpleName(attributeType.getName()), null,
-				actName, isCollection), null, false,
-				new NullProgressMonitor());
-	}
-
-	private void createAttributeOfCollectiontype(IJPAEditorFeatureProvider fp,
-			JavaPersistentType jpt, JavaPersistentType attributeType,
-			String mapKeyType, String attributeName, String actName,
-			ICompilationUnit cu1, IType type) throws JavaModelException {
-		IProject project = jpt.getJpaProject().getProject();
-		Properties props = fp.loadProperties(project);
-		if (JPADiagramPropertyPage.isCollectionType(project, props)) {
-			createAttributeByCollectionMethodType(attributeType, null,
-					attributeName, actName, cu1, type, JPAEditorConstants.COLLECTION_TYPE);
-		} else if (JPADiagramPropertyPage.isListType(project, props)) {
-			createAttributeByCollectionMethodType(attributeType, null,
-					attributeName, actName, cu1, type, JPAEditorConstants.LIST_TYPE);
-		} else if (JPADiagramPropertyPage.isSetType(project, props)) {
-			createAttributeByCollectionMethodType(attributeType, null,
-					attributeName, actName, cu1, type, JPAEditorConstants.SET_TYPE);
-		} else {
-			createAttributeByCollectionMethodType(attributeType, mapKeyType,
-					attributeName, actName, cu1, type, JPAEditorConstants.MAP_TYPE);
-		}
-	}
-
-	private void createAttributeByCollectionMethodType(
-			JavaPersistentType attributeType,  String mapKeyType, String attributeName,
-			String actName, ICompilationUnit cu1, IType type, String collectionType)
-			throws JavaModelException {
-		mapKeyType = createContentType(mapKeyType, attributeType, actName, cu1, type, collectionType);
-		type.createMethod(genGetterWithAppropriateType(attributeName, mapKeyType,
-				JPAEditorUtil.returnSimpleName(attributeType.getName()), 
-				actName, collectionType), null, false,
-				new NullProgressMonitor());
-		type.createMethod(genSetterWithAppropriateType(attributeName, mapKeyType,
-				JPAEditorUtil.returnSimpleName(attributeType.getName()), 
-				actName, collectionType), null, false,
-				new NullProgressMonitor());
-	}
-	
-	private String createContentType(String mapKeyType, JavaPersistentType attributeType,
-			String actName, ICompilationUnit cu1, IType type, String collectionType)
-			throws JavaModelException {
-		
-		if (mapKeyType != null) {
-			mapKeyType = JPAEditorUtil.createImport(cu1, mapKeyType); 
-		}
-		JPAEditorUtil.createImport(cu1, collectionType);
-		type.createField(
-				"  private " + JPAEditorUtil.returnSimpleName(collectionType) + "<" +//$NON-NLS-1$ //$NON-NLS-2$
-				((mapKeyType != null) ? (mapKeyType + ", ") : "") +			//$NON-NLS-1$ //$NON-NLS-2$
-				JPAEditorUtil.returnSimpleName(attributeType.getName()) + "> " + JPAEditorUtil.decapitalizeFirstLetter(actName) +  //$NON-NLS-1$
-				";", null, false, new NullProgressMonitor()); //$NON-NLS-1$ 
-		return mapKeyType;
-	}
-	
-	public void refreshEntityModel(IFeatureProvider fp, JavaPersistentType jpt) {
-		if(convertJPTToJRT(jpt) == null)
-			return;
-		if (fp == null) {
-			jpt.update();
-			return;
-		}
-		Shape el = (Shape) fp.getPictogramElementForBusinessObject(jpt);
-		if(JPACheckSum.INSTANCE().isEntityModelChanged(el, jpt.getJpaProject())){
-			try {
-				jpt.update();
-			} catch (ArrayIndexOutOfBoundsException e) {
-				
-			}
-		}
 	}
 	
 	public boolean isCollection(ContainerShape entityShape,
@@ -687,16 +611,6 @@ public class JpaArtifactFactory {
 			ICompilationUnit cu = fp.getCompilationUnit(jpt);
 				IType type = cu.getType(JPAEditorUtil.returnSimpleName(jpt.getName()));
 			IField field = type.getField(attrTxt);
-			int cnt = 0;
-			while ((cnt < 20) && !field.exists()) {
-				try {
-					Thread.sleep(250);
-				} catch (InterruptedException e) {
-					JPADiagramEditorPlugin.logError("Sleep interrupted", e); //$NON-NLS-1$				
-				}
-				field = type.getField(attrTxt);
-				cnt++;
-			}
 			if (field.exists()) {
 				try {
 					if(field.getTypeSignature().contains("List") || field.getTypeSignature().contains("Set") //$NON-NLS-1$ //$NON-NLS-2$
@@ -809,191 +723,30 @@ public class JpaArtifactFactory {
 			List<String> annotations, boolean isCollection,
 			boolean isMethodAnnotated) throws JavaModelException {
 		
-		IType type = cu.findPrimaryType();
-		String contents = ""; 														//$NON-NLS-1$
-		isMethodAnnotated = (annotations != null) && (!annotations.isEmpty()) ? isMethodAnnotated
-				: JpaArtifactFactory.INSTANCE.isMethodAnnotated(jpt);
+		fp.getDiagramTypeProvider().getDiagramEditor().selectPictogramElements(new PictogramElement[] {});
 		
-		if (!isMethodAnnotated) {
-			if (annotations != null) {
-				Iterator<String> it = annotations.iterator();
-				while (it.hasNext()) {
-					String an = it.next();
-					contents += "   " + an + "\n"; //$NON-NLS-1$ //$NON-NLS-2$
-				}							
-			}
+		Command createNewAttributeCommand = new CreateNewAttributeCommand(jpt, cu, attrName, attrTypeName, attrTypes, actName, annotations, isCollection, isMethodAnnotated);
+		try {
+			getJpaProjectManager().execute(createNewAttributeCommand, SynchronousUiCommandExecutor.instance());
+		} catch (InterruptedException e) {
+			JPADiagramEditorPlugin.logError("Cannot create a new attribute with name " + attrName, e); //$NON-NLS-1$		
 		}
-		
-		if(annotations!=null && annotations.contains("@Basic")){ //$NON-NLS-1$
-			if(!cu.getImport("javax.persistence.*").exists() && !cu.getImport("javax.persistence.Basic").exists()){ //$NON-NLS-1$ //$NON-NLS-2$
-				JPAEditorUtil.createImports(cu, "javax.persistence.Basic"); //$NON-NLS-1$
-			}
-		}
-		
-		boolean shouldAddImport = true;
-		IImportDeclaration[] importDeclarations = cu.getImports();
-		String attrShortTypeName = JPAEditorUtil.returnSimpleName(attrTypeName);
-		for(IImportDeclaration importDecl : importDeclarations){
-			String importedDeclarationFQN = importDecl.getElementName();
-			String importedDeclarationShortName = JPAEditorUtil.returnSimpleName(importedDeclarationFQN);
-			if(attrShortTypeName.equals(importedDeclarationShortName) && !attrTypeName.equals(importedDeclarationFQN))
-				shouldAddImport = false;
-		}
-		
-		if(shouldAddImport){
-			JPAEditorUtil.createImports(cu, attrTypeName);
-		    attrTypeName = JPAEditorUtil.returnSimpleName(attrTypeName);
-		}
-		if ((attrTypes != null) && (attrTypes.length > 0)) {
-			JPAEditorUtil.createImports(cu, attrTypes);
-		}
-		
-		contents += "    private " + attrTypeName + //$NON-NLS-1$
-				((attrTypes == null) ? "" : ("<" + JPAEditorUtil.createCommaSeparatedListOfSimpleTypeNames(attrTypes) + ">")) + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				" " + attrName + ";"; //$NON-NLS-1$ //$NON-NLS-2$		
 
-		type.createMethod(
-				genSetterContents(attrName, attrTypeName, attrTypes,
-						actName, isCollection), null, false,
-				new NullProgressMonitor());
-		if (isMethodAnnotated) {
-			type.createMethod(
-					genGetterContents(attrName, attrTypeName,
-							attrTypes, actName, annotations,
-							isCollection), null, false,
-					new NullProgressMonitor());
-			type.createField(contents, null, false, new NullProgressMonitor());
-		} else {
-			type.createField(contents, null, false, new NullProgressMonitor());
-			type.createMethod(
-					genGetterContents(attrName, attrTypeName,
-							attrTypes, actName, null, isCollection),
-					null, false, new NullProgressMonitor());
-		}		
-		
-		int cnt = 0;
-		refreshEntityModel(fp, jpt);
-		JavaPersistentAttribute jpa = jpt.getAttributeNamed(attrName);
-		while ((jpa == null) && (cnt < 25)) {
-			try {
-				Thread.sleep(250);
-			} catch (InterruptedException e) {
-				JPADiagramEditorPlugin.logError(e);
-			}
-			jpa = jpt.getAttributeNamed(attrName);
-			cnt++;
-		}
-			
-		/*
-		if(jpt.getAttributeNamed(attrName) == null){
-			   refreshEntityModel(fp, jpt);
-		}
-		*/
-		
-		return getAttributeFromEntity(jpt, attrName);
+		JavaPersistentAttribute jpa = jpt.getAttributeNamed(attrName);		
+		return jpa;
 	}
 		
 	public void deleteAttribute(JavaPersistentType jpt, String attributeName,
 								IJPAEditorFeatureProvider fp) {
 		
-		String attrNameWithCapitalLetter = attributeName.substring(0, 1)
-				.toUpperCase(Locale.ENGLISH)
-				+ attributeName.substring(1);
-		ICompilationUnit compUnit = fp.getCompilationUnit(jpt);		
-		IType javaType = compUnit.findPrimaryType();
-		String typeSignature = null;
-		String getterPrefix = "get"; 			//$NON-NLS-1$
-		String methodName = getterPrefix + attrNameWithCapitalLetter; 
-		IMethod getAttributeMethod = javaType.getMethod(methodName,
-				new String[0]);
-		if (!getAttributeMethod.exists()) {
-			JavaPersistentAttribute jpa = jpt.getAttributeNamed(attributeName);
-			String typeName = jpa.getResourceAttribute().getTypeBinding().getQualifiedName();
-			if ("boolean".equals(typeName)) {										//$NON-NLS-1$
-				getterPrefix = "is";												//$NON-NLS-1$
-				methodName = getterPrefix + attrNameWithCapitalLetter; 				
-				getAttributeMethod = javaType.getMethod(methodName,
-						new String[0]);
-			}		
-			try {
-				if ((getAttributeMethod != null) && getAttributeMethod.exists());
-					typeSignature = getAttributeMethod.getReturnType();
-			} catch (JavaModelException e1) {
-				JPADiagramEditorPlugin.logError("Cannot obtain the type of the getter with name " + methodName + "()", e1); 	//$NON-NLS-1$	//$NON-NLS-2$
-			}			
-		}
-		if (typeSignature == null)
-		 	methodName = null;		
-		
-		boolean isMethodAnnotated = JpaArtifactFactory.instance()
-				.isMethodAnnotated(jpt);
-		if (isMethodAnnotated) {
-			try {
-				IField attributeField = javaType.getField(attributeName);
-				
-				if ((attributeField != null) && !attributeField.exists())
-					attributeField = javaType.getField(JPAEditorUtil.revertFirstLetterCase(attributeName));
-				if ((attributeField != null) && attributeField.exists()) 
-					attributeField.delete(true, new NullProgressMonitor());
-			} catch (JavaModelException e) {
-				JPADiagramEditorPlugin.logError("Cannot remove the attribute field with name " + attributeName, e); 	//$NON-NLS-1$	
-			} 
-			try {
-				methodName = getterPrefix + attrNameWithCapitalLetter; //$NON-NLS-1$
-				if (getAttributeMethod != null) {
-					typeSignature = getAttributeMethod.getReturnType();
-					if (getAttributeMethod.exists())
-						getAttributeMethod.delete(true, new NullProgressMonitor());
-				}
-			} catch (JavaModelException e) {
-				JPADiagramEditorPlugin.logError("Cannot remove the attribute getter with name " + methodName + "()", e); 	//$NON-NLS-1$	 //$NON-NLS-2$
-			} 	
-		} else {
-			try {
-				methodName = getterPrefix + attrNameWithCapitalLetter; //$NON-NLS-1$
-				if (getAttributeMethod.exists()) {
-					typeSignature = getAttributeMethod.getReturnType();
-					getAttributeMethod.delete(true, new NullProgressMonitor());
-				}
-			} catch (JavaModelException e) {
-				JPADiagramEditorPlugin.logError("Cannot remove the attribute getter with name " + methodName + "()", e); 	//$NON-NLS-1$	 //$NON-NLS-2$
-			} 	
-			try {
-				IField attributeField = javaType.getField(attributeName);
-				if (attributeField != null)
-					if (!attributeField.exists())
-						attributeField = javaType.getField(JPAEditorUtil.revertFirstLetterCase(attributeName));			
-				if ((attributeField != null) && attributeField.exists())
-					attributeField.delete(true, new NullProgressMonitor());
-			} catch (JavaModelException e) {
-				JPADiagramEditorPlugin.logError("Cannot remove the attribute field with name " + attributeName, e); 	//$NON-NLS-1$	
-			} 			
-		}
+		Command deleteAttributeCommand = new DeleteAttributeCommand(jpt, attributeName, fp);
 		try {
-			methodName = "set" + attrNameWithCapitalLetter; //$NON-NLS-1$
-			IMethod setAttributeMethod = javaType.getMethod(methodName,
-					new String[] { typeSignature });
-			if ((setAttributeMethod != null) && setAttributeMethod.exists())
-				setAttributeMethod.delete(true, new NullProgressMonitor());
-		} catch (Exception e) {
-			JPADiagramEditorPlugin.logError("Cannot remove the attribute setter with name " + methodName + "(...)", e); //$NON-NLS-1$ //$NON-NLS-2$	
-		} 		
-		
-		refreshEntityModel(fp, jpt);
-		
-		ReadOnlyPersistentAttribute at = jpt.resolveAttribute(attributeName);
-		int c = 0;
-		while ((at != null) && (c < MAX_NUM_OF_ITERATIONS)) { 
-			try {
-				Thread.sleep(PAUSE_DURATION);
-			} catch (InterruptedException e) {
-				JPADiagramEditorPlugin.logError("Thread.sleep() interrupted", e); //$NON-NLS-1$		
-			}	
-			at = jpt.getAttributeNamed(attributeName);			
-			c++;
+			getJpaProjectManager().execute(deleteAttributeCommand, SynchronousUiCommandExecutor.instance());
+		} catch (InterruptedException e) {
+			JPADiagramEditorPlugin.logError("Cannot delete attribute with name " + attributeName, e); //$NON-NLS-1$		
 		}
 	}
-
+	
 	private String genUniqueAttrName(JavaPersistentType jpt, 
 			String attrTypeName, IJPAEditorFeatureProvider fp) {
 		
@@ -1094,10 +847,6 @@ public class JpaArtifactFactory {
 		
 	private boolean isNonOwner(JavaPersistentAttribute at) {
 		JavaAttributeMapping jam = at.getMapping();
-		//if (jam.getMappingAnnotation() == null) {
-			JpaArtifactFactory.instance().refreshEntityModel(null, (JavaPersistentType)at.getParent());
-			jam = at.getMapping();
-		//}
 		if (!(jam.getMappingAnnotation() instanceof OwnableRelationshipMappingAnnotation))
 			return false;
 		OwnableRelationshipMappingAnnotation nom = (OwnableRelationshipMappingAnnotation)jam.getMappingAnnotation();
@@ -1419,29 +1168,14 @@ public class JpaArtifactFactory {
 	
 	
 	public void renameEntityClass(JavaPersistentType jpt, String newEntityName, IJPAEditorFeatureProvider fp) {
-		renameEntityClass(fp.getCompilationUnit(jpt), newEntityName);
-	}
 		
-	private void renameEntityClass(ICompilationUnit cu, String newName) {
-		IType javaType = cu.findPrimaryType();
-		renameType(javaType, newName);
-	}
-	
-	private void renameType(IType type, String newName) {
-		if (!type.exists())
-			return;
-		String oldName = type.getElementName();
+		Command renameEntityCommand = new RenameEntityCommand(jpt, newEntityName, fp);
 		try {
-			RenameSupport s = RenameSupport.create(type, newName, RenameSupport.UPDATE_REFERENCES);
-			IWorkbenchWindow ww = JPADiagramEditorPlugin.getDefault()
-					.getWorkbench().getActiveWorkbenchWindow();
-			Shell sh = ww.getShell();
-			s.perform(sh, ww);
-		} catch (Exception e1) {
-			JPADiagramEditorPlugin.logError("Cannot rename the type " + oldName, e1); //$NON-NLS-1$
+			getJpaProjectManager().execute(renameEntityCommand, SynchronousUiCommandExecutor.instance());
+		} catch (InterruptedException e) {
+			JPADiagramEditorPlugin.logError("Cannot rename entity " + jpt.getName(), e); //$NON-NLS-1$		
 		}
 	}
-
 
 	public JavaPersistentAttribute renameAttribute(JavaPersistentType jpt,
 			String oldName, String newName, String inverseEntityName,
@@ -1458,28 +1192,20 @@ public class JpaArtifactFactory {
 				.getResourceAttribute();
 		fp.addRemoveIgnore((JavaPersistentType)oldAt.getParent(), jra.getName());
 		IRelation rel = fp.getRelationRelatedToAttribute(oldAt);
-		String inverseJPAName = null;
+		String inverseAttributeName = null;
 		JavaPersistentType inverseJPT = null;
 		if (IBidirectionalRelation.class.isInstance(rel)) {
 			inverseJPT = rel.getInverse();
 			if (inverseJPT != oldAt.getParent()) {
 				pu = JpaArtifactFactory.INSTANCE.getPersistenceUnit(jpt);
-				inverseJPAName = rel.getInverseAttributeName();
+				inverseAttributeName = rel.getInverseAttributeName();
 			}
 		}
-		ICompilationUnit cu = fp.getCompilationUnit(jpt);
-		renameAttribute(cu, oldName, newName, fp, this.isMethodAnnotated(jpt));
-		refreshEntityModel(fp, jpt);
+
+		Command renameAttributeCommand = new RenameAttributeCommand(jpt, oldName, newName, fp);
+		getJpaProjectManager().execute(renameAttributeCommand, SynchronousUiCommandExecutor.instance());
+		
 		JavaPersistentAttribute newAt = jpt.getAttributeNamed(newName);
-		if (newAt == null) {
-			//TODO this is wrong, should not need to do any of these updates or syncs.
-			//should be changing the dali model synchronously so that all the syncs/updates are completed
-			//take a look at the JpaProjectManager.execute(Command, ExtendedCommandExecutor) 
-			jpt.getJavaResourceType().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
-			jpt.update();
-			jpt.synchronizeWithResourceModel();
-			newAt = jpt.getAttributeNamed(newName);
-		}
 		if (newAt == null) {
 			JPADiagramEditorPlugin.logError("The attribute " + newName + " could not be resolved", new NullPointerException()); //$NON-NLS-1$  //$NON-NLS-2$
 		}
@@ -1489,25 +1215,9 @@ public class JpaArtifactFactory {
 		} catch (Exception e) {
 			return newAt;
 		}
-		if (inverseJPAName != null) {
-			fp.addAttribForUpdate(pu, inverseEntityName
-					+ EntityChangeListener.SEPARATOR + inverseJPAName
-					+ EntityChangeListener.SEPARATOR + newAt.getName());
-			this.refreshEntityModel(fp, inverseJPT);
-			Annotation a = rel.getInverseAnnotatedAttribute().getMapping().getMappingAnnotation();
-			if (OwnableRelationshipMappingAnnotation.class.isInstance(a)) {
-				boolean exce = true;
-				int cnt = 0;
-					while (exce && (cnt < 25)) {
-					try {
-						Thread.sleep(250);
-						a = rel.getInverseAnnotatedAttribute().getMapping().getMappingAnnotation();
-						((OwnableRelationshipMappingAnnotation)a).setMappedBy(newAt.getName());
-						exce = false;
-					} catch (Exception e) {}
-					cnt++;
-				}
-			}
+		if (inverseAttributeName != null) {
+			Command changeMappedByValueCommand = new SetMappedByNewValueCommand(fp, pu, inverseEntityName, inverseAttributeName, newAt, rel);
+			getJpaProjectManager().execute(changeMappedByValueCommand, SynchronousUiCommandExecutor.instance());
 		}
 		if (rel != null)
 			updateRelation(jpt, fp, rel);
@@ -1515,6 +1225,10 @@ public class JpaArtifactFactory {
 		return newAt;
 	}
 	
+	private JpaProjectManager getJpaProjectManager() {
+		return (JpaProjectManager) ResourcesPlugin.getWorkspace().getAdapter(JpaProjectManager.class);
+	}
+
 	private void updateRelation(JavaPersistentType jpt,
 			IJPAEditorFeatureProvider fp, IRelation rel) {
 		UpdateAttributeFeature updateFeature = new UpdateAttributeFeature(fp);
@@ -1529,147 +1243,6 @@ public class JpaArtifactFactory {
 			String newName, String newEntityName, IJPAEditorFeatureProvider fp) throws InterruptedException {
 		return renameAttribute((JavaPersistentType)jpa.getParent(), jpa.getName(), newName,
 				newEntityName, fp);
-	}
-
-	private void renameAttribute(ICompilationUnit cu, String oldName,
-			String newName, IJPAEditorFeatureProvider fp, boolean isMethodAnnotated) throws InterruptedException {
-		IType javaType = cu.findPrimaryType();
-		if (javaType == null)
-			return;
-		IField attributeField = null;
-		String typeSignature = null;
-		if (isMethodAnnotated) {
-			attributeField = javaType.getField(oldName);
-			if (!attributeField.exists())
-				attributeField =  javaType.getField(JPAEditorUtil.revertFirstLetterCase(oldName));
-		} else {
-			attributeField = javaType.getField(oldName);
-		}
-		String getterPrefix = "get";	//$NON-NLS-1$
-		String methodName = getterPrefix + JPAEditorUtil.capitalizeFirstLetter(oldName); 	//$NON-NLS-1$
-		IMethod getter = javaType.getMethod(methodName, new String[0]);
-		if (!getter.exists()) {
-			getterPrefix = "is";	//$NON-NLS-1$
-		}
-		methodName = getterPrefix + JPAEditorUtil.capitalizeFirstLetter(oldName); 	//$NON-NLS-1$
-		getter = javaType.getMethod(methodName, new String[0]);		
-		
-		if (isMethodAnnotated) {
-			try {
-				typeSignature = getter.getReturnType();
-			} catch (JavaModelException e1) {
-				JPADiagramEditorPlugin.logError("Cannot obtain type signature of the getter of the attribute " + oldName, e1); //$NON-NLS-1$  
-				return;
-			}
-			if ((typeSignature == null) || 
-					(!"Z".equals(typeSignature) && !getterPrefix.equals("get"))) {		//$NON-NLS-1$ 	//$NON-NLS-2$ 
-				JPADiagramEditorPlugin.logError("Cannot obtain type signature of the getter of the attribute " + oldName, new NullPointerException()); //$NON-NLS-1$  
-				return;
-			}
-		} else {
-			try {
-				typeSignature = attributeField.getTypeSignature();
-			} catch (JavaModelException e) {
-				JPADiagramEditorPlugin.logError("Cannot obtain type signature of the field of the attribute " + oldName, e); //$NON-NLS-1$  
-				return;
-			}			
-		}
-
-		methodName = "set" + JPAEditorUtil.capitalizeFirstLetter(oldName); //$NON-NLS-1$
-		IMethod setter = javaType.getMethod(methodName,
-				new String[] { typeSignature });
-
-		if (setter.exists())
-			renameSetter(setter, newName);
-		if (isMethodAnnotated) {
-			if (attributeField.exists())
-				renameField(attributeField, newName, isMethodAnnotated);			
-			if (getter.exists())
-				renameGetter(getter, newName);
-		} else {
-			if (getter.exists())
-				renameGetter(getter, newName);
-			if (attributeField.exists())
-				renameField(attributeField, newName, isMethodAnnotated);
-		}
-
-	}
-
-	private void renameField(IField field, String newName, boolean isMethodAnnotated) throws InterruptedException {
-		if (!field.exists())
-			return;
-		String oldName = field.getElementName();
-		if (oldName.equals(newName))
-			return;
-		try {
-			RenameSupport s = RenameSupport.create(field, 
-												   isMethodAnnotated ? JPAEditorUtil.decapitalizeFirstLetter(newName) : newName,
-												   RenameSupport.UPDATE_REFERENCES);
-			try {
-				IWorkbenchWindow ww = JPADiagramEditorPlugin.getDefault()
-						.getWorkbench().getActiveWorkbenchWindow();
-				Shell sh = ww.getShell();
-				s.perform(sh, ww);
-			} catch (InvocationTargetException e) {
-				JPADiagramEditorPlugin.logError("Cannot rename the field of the attribute " + oldName, e); //$NON-NLS-1$  
-			}
-		} catch (CoreException e1) {
-			JPADiagramEditorPlugin.logError("Cannot rename the field of the attribute " + oldName, e1); //$NON-NLS-1$  
-		}
-	}
-
-	private void renameGetter(IMethod getter, String newName) throws InterruptedException {
-		if (!getter.exists())
-			return;
-		String oldName = getter.getElementName();
-		String getterType = null;
-		try {
-			getterType = getter.getReturnType();
-		} catch (JavaModelException e2) {
-			JPADiagramEditorPlugin.logError("Can't obtain getter type", e2); //$NON-NLS-1$  
-		}
-		String newGetterName = ("Z".equals(getterType) ? "is" : "get") +		//$NON-NLS-1$	//$NON-NLS-2$	//$NON-NLS-3$
-			JPAEditorUtil.capitalizeFirstLetter(newName);
-		if (oldName.equals(newGetterName))
-			return;
-		try {
-			RenameSupport s = RenameSupport.create(getter, newGetterName,
-					RenameSupport.UPDATE_REFERENCES);
-			try {
-				IWorkbenchWindow ww = JPADiagramEditorPlugin.getDefault()
-						.getWorkbench().getActiveWorkbenchWindow();
-				Shell sh = ww.getShell();
-				s.perform(sh, ww);
-			} catch (InvocationTargetException e) {
-				JPADiagramEditorPlugin.logError("Cannot rename the getter of the attribute " + oldName, e); //$NON-NLS-1$
-			}
-		} catch (CoreException e1) {
-			JPADiagramEditorPlugin.logError("Cannot rename the getter of the attribute " + oldName, e1); //$NON-NLS-1$
-		}
-	}
-		
-	private void renameSetter(IMethod setter, String newName) throws InterruptedException {
-		if (!setter.exists())
-			return;
-		String oldName = setter.getElementName();
-		String newSetterName = "set"			//$NON-NLS-1$
-			+ JPAEditorUtil.capitalizeFirstLetter(newName);
-		if (oldName.equals(newSetterName))
-			return;
-		try {
-			RenameSupport s = RenameSupport.create(setter, newSetterName,
-					RenameSupport.UPDATE_REFERENCES);
-			try {
-				IWorkbenchWindow ww = JPADiagramEditorPlugin.getDefault()
-						.getWorkbench().getActiveWorkbenchWindow();
-				Shell sh = ww.getShell();
-				s.perform(sh, ww);
-			} catch (InvocationTargetException e) {
-				JPADiagramEditorPlugin.logError("Cannot rename the setter of the attribute " + oldName, e); //$NON-NLS-1$
-			}
-		} catch (CoreException e1) {
-			JPADiagramEditorPlugin.logError("Cannot rename the setter of the attribute " + oldName, e1); //$NON-NLS-1$
-		}
 	}
 
 	private IRelation produceRelation(JavaPersistentAttribute persistentAttribite, Annotation an,
@@ -1694,7 +1267,6 @@ public class JpaArtifactFactory {
 			JavaPersistentAttribute jpa, JavaPersistentType relJPT) {
 		
 		JavaPersistentType jpt = (JavaPersistentType)jpa.getParent();
-		JpaArtifactFactory.instance().refreshEntityModel(null, jpt);
 		for (JavaPersistentAttribute relEntAt : relJPT.getAttributes())	{
 			IResource r = relEntAt.getParent().getResource();
 			if (!r.exists())
@@ -1708,10 +1280,6 @@ public class JpaArtifactFactory {
 					if (!relTypeName.equals(jpt.getName())) 
 						continue;														
 					JavaAttributeMapping mp = relEntAt.getMapping();
-					if(mp.getMappingAnnotation() == null) {
-						JpaArtifactFactory.instance().refreshEntityModel(null, (JavaPersistentType)relEntAt.getParent());
-						mp = relEntAt.getMapping();
-					}
 					if (!OwnableRelationshipMappingAnnotation.class.isInstance(mp.getMappingAnnotation()))
 						continue;
 					String mappedBy = ((OwnableRelationshipMappingAnnotation)mp.getMappingAnnotation()).getMappedBy();
@@ -1809,7 +1377,6 @@ public class JpaArtifactFactory {
 			JavaPersistentAttribute at, Annotation an,
 			JavaPersistentType relJPT, JavaPersistentAttribute relAt,
 			Annotation relAn, IJPAEditorFeatureProvider fp) {
-		JpaArtifactFactory.instance().refreshEntityModel(null, (JavaPersistentType)relAt.getParent());
 		String annotationName = JPAEditorUtil.returnSimpleName(an.getAnnotationName());
 		String relAnnotationName = JPAEditorUtil.returnSimpleName(relAn.getAnnotationName());
 		if (!annotationNamesMatch(annotationName, relAnnotationName)) 
@@ -1835,10 +1402,6 @@ public class JpaArtifactFactory {
 		JavaAttributeMapping m = relAt.getMapping();
 		
 		if ((m != null)){
-			if (m.getMappingAnnotation()==null) {
-				JpaArtifactFactory.instance().refreshEntityModel(null, (JavaPersistentType)relAt.getParent());
-				m = relAt.getMapping();
-			}
 			if(m.getMappingAnnotation() instanceof OwnableRelationshipMappingAnnotation) {
 		
 			String mappedBy = ((OwnableRelationshipMappingAnnotation)m.getMappingAnnotation()).getMappedBy();
@@ -1895,7 +1458,7 @@ public class JpaArtifactFactory {
 		return false;
 	}
 	
-	private String genGetterContents(String attrName, String attrType,
+	public String genGetterContents(String attrName, String attrType,
 			String[] attrTypeElementNames, String actName,
 			List<String> annotations, boolean isCollection) {
 		
@@ -1925,7 +1488,7 @@ public class JpaArtifactFactory {
 		return contents;
 	}
 	
-	private String genSetterContents(String attrName, String attrType,
+	public String genSetterContents(String attrName, String attrType,
 			String[] attrTypeElementNames, String actName, boolean isCollection) {
 		
 		String attrNameWithCapitalA = actName.substring(0, 1).toUpperCase(Locale.ENGLISH)
@@ -1949,73 +1512,6 @@ public class JpaArtifactFactory {
 			  "    }\n";  			//$NON-NLS-1$			
 		}
 		return contents;
-	}
-	
-	private String genGetterWithAppropriateType(String attrName, String mapKeyType, String attrType,
-			String actName, String type) {
-
-		String attrNameWithCapitalA = actName.substring(0, 1).toUpperCase(
-				Locale.ENGLISH)
-				+ actName.substring(1);
-		String contents = "    public " + JPAEditorUtil.returnSimpleName(type) + 		//$NON-NLS-1$
-				"<" + ((mapKeyType != null) ? (mapKeyType + ", ") : "")  +  attrType + "> " +	//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-				"get" + attrNameWithCapitalA + "() {\n" + 	//$NON-NLS-1$ //$NON-NLS-2$
-				"        return " 	//$NON-NLS-1$
-				+ JPAEditorUtil.decapitalizeFirstLetter(actName) + ";\n" + 		//$NON-NLS-1$
-				"    }\n"; 	//$NON-NLS-1$
-		return contents;
-	}
-	
-	private String genSetterWithAppropriateType(String attrName, String mapKeyType, String attrType,
-			String actName, String type) {
-
-		String attrNameWithCapitalA = actName.substring(0, 1).toUpperCase(
-				Locale.ENGLISH)
-				+ actName.substring(1);
-		String contents = "    public void set" + attrNameWithCapitalA + 			//$NON-NLS-1$
-				"(" + JPAEditorUtil.returnSimpleName(type) + 						//$NON-NLS-1$
-				"<" + ((mapKeyType != null) ? (mapKeyType + ", ") : "") + attrType + "> param) " +	//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-				"{\n" +   	//$NON-NLS-1$
-				"        this." 	//$NON-NLS-1$
-				+ JPAEditorUtil.decapitalizeFirstLetter(actName)
-				+ " = param;\n" + 	//$NON-NLS-1$
-				"    }\n"; 			//$NON-NLS-1$
-		return contents;
-	}
-	
-	/*
-	private String returnSimpleName(String input) {
-		String name = input;
-		if (name.lastIndexOf('.') != -1) {
-			name = name.substring(name.lastIndexOf('.') + 1);
-		}
-		return name;
-	}
-	*/
-	
-	private JavaPersistentAttribute getAttributeFromEntity(
-			JavaPersistentType jpt, String attributeName) {
-		this.refreshEntityModel(null, jpt);
-		PersistentAttribute at = jpt.getAttributeNamed(attributeName);
-		if (at == null) {
-			//TODO this is wrong, should not need to do any of these updates or syncs.
-			//should be changing the dali model synchronously so that all the syncs/updates are completed
-			//take a look at the JpaProjectManager.execute(Command, ExtendedCommandExecutor) 
-			jpt.getJavaResourceType().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
-			jpt.update();
-		}
-		int c = 0;
-		while ((at == null) && (c < MAX_NUM_OF_ITERATIONS)) {		
-			try {
-				Thread.sleep(PAUSE_DURATION);
-			} catch (InterruptedException e) {
-				JPADiagramEditorPlugin.logError("Cannot get the attribute " + //$NON-NLS-1$
-						attributeName + " from " + jpt.getName(), e); //$NON-NLS-1$
-			}
-			at = jpt.getAttributeNamed(attributeName);
-			c++;
-		}
-		return (JavaPersistentAttribute)at;		
 	}
 	
 	private boolean doesAttributeExist(JavaPersistentType jpt, String name)
@@ -2102,27 +1598,6 @@ public class JpaArtifactFactory {
 		if (ta != null) 
 			ta.setName(tableName);		
 	}
-	
-	/*
-	private Object extractAnnotationMemberValue(Annotation an, String memberName) {
-		
-		an.
-		
-		IMemberValuePair[] mvps;
-		try {
-			mvps = an.getMemberValuePairs();
-		} catch (JavaModelException e) {
-			tracer.error("Can't get annotation members", e);	//$NON-NLS-1$
-			return null;
-		}
-		for (IMemberValuePair mvp : mvps) {
-			if (mvp.getMemberName().equals(memberName)) {
-				return mvp.getValue();
-			}
-		}
-		return null;
-	}
-	*/	
 
 	private void removeOldRelations(IJPAEditorFeatureProvider fp,
 			ContainerShape cs) {
@@ -2181,8 +1656,6 @@ public class JpaArtifactFactory {
 				.getInverse(), fp));
 		ctx.setNewObject(rel);
 		ctx.setTargetContainer(fp.getDiagramTypeProvider().getDiagram());
-		refreshEntityModel(fp, rel.getOwner());
-		refreshEntityModel(fp, rel.getInverse());
 		AddRelationFeature ft = new AddRelationFeature(fp);
 		ft.add(ctx);		
 	}
@@ -2192,8 +1665,6 @@ public class JpaArtifactFactory {
 				.getAnchor(rel.getSubclass(), fp), JPAEditorUtil.getAnchor(rel.getSuperclass(), fp));
 		ctx.setNewObject(rel);
 		ctx.setTargetContainer(fp.getDiagramTypeProvider().getDiagram());
-		refreshEntityModel(fp, rel.getSubclass());
-		refreshEntityModel(fp, rel.getSuperclass());
 		AddInheritedEntityFeature ft = new AddInheritedEntityFeature(fp);
 		ft.add(ctx);		
 	}
