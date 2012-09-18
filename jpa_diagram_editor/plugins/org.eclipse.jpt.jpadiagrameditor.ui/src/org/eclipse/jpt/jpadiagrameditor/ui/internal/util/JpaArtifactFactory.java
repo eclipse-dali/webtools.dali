@@ -659,7 +659,7 @@ public class JpaArtifactFactory {
 		String attrTypeName = "java.lang.String"; 																	//$NON-NLS-1$
 		String newAttrName = genUniqueAttrName(jpt, attrTypeName, fp);
 		return addNewAttribute(jpt, ijl, newAttrName, attrTypeName,
-				"@Basic", newAttrName, isCollection, fp); //$NON-NLS-1$
+				"", newAttrName, isCollection, fp); //$NON-NLS-1$
 	}
 	
 	/*
