@@ -17,12 +17,13 @@ import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
+import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
+import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.jpa.core.context.EmbeddedMapping;
 import org.eclipse.jpt.jpa.core.context.EnumType;
-import org.eclipse.jpt.jpa.core.context.BaseEnumeratedConverter;
 import org.eclipse.jpt.jpa.core.context.FetchType;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
@@ -30,7 +31,6 @@ import org.eclipse.jpt.jpa.core.context.ManyToOneMapping;
 import org.eclipse.jpt.jpa.core.context.OneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyColumn;
-import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.core.context.TransientMapping;
 import org.eclipse.jpt.jpa.core.context.VersionMapping;
@@ -1682,7 +1682,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 				
 		//set lob in the context model, verify resource model updated
 		ormElementCollectionMapping.setConverter(EclipseLinkConvert.class);
-		assertEquals("", elementCollectionResource.getConvert());
+		assertEquals("none", elementCollectionResource.getConvert());
 		assertEquals(EclipseLinkConvert.class, ormElementCollectionMapping.getConverter().getType());
 	
 		((EclipseLinkConvert) ormElementCollectionMapping.getConverter()).setSpecifiedConverterName("bar");

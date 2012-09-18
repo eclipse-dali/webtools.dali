@@ -29,7 +29,6 @@ public class OrmEclipseLinkConvert
 	implements EclipseLinkConvert
 {
 	protected String specifiedConverterName;
-	protected String defaultConverterName;                                                                                                                      
 
 	public OrmEclipseLinkConvert(OrmAttributeMapping parent, OrmConverter.Owner owner) {
 		super(parent, owner);
@@ -50,17 +49,10 @@ public class OrmEclipseLinkConvert
 		this.setSpecifiedConverterName_(this.getXmlConvertibleMapping().getConvert());
 	}
 
-	@Override
-	public void update() {
-		super.update();
-		this.setDefaultConverterName(this.buildDefaultConverterName());
-	}
-
-
 	// ********** converter name **********
 
 	public String getConverterName() {
-		return (this.specifiedConverterName != null) ? this.specifiedConverterName : this.defaultConverterName;
+		return (this.specifiedConverterName != null) ? this.specifiedConverterName : this.getDefaultConverterName();
 	}
 
 	public String getSpecifiedConverterName() {
@@ -79,16 +71,6 @@ public class OrmEclipseLinkConvert
 	}
 
 	public String getDefaultConverterName() {
-		return this.defaultConverterName;
-	}
-
-	protected void setDefaultConverterName(String name) {
-		String old = this.defaultConverterName;
-		this.defaultConverterName = name;
-		this.firePropertyChanged(DEFAULT_CONVERTER_NAME_PROPERTY, old, name);
-	}
-
-	protected String buildDefaultConverterName() {
 		return DEFAULT_CONVERTER_NAME;
 	}
 
@@ -105,7 +87,7 @@ public class OrmEclipseLinkConvert
 	}
 
 	public void initialize() {
-		this.specifiedConverterName = ""; //$NON-NLS-1$
+		this.specifiedConverterName = DEFAULT_CONVERTER_NAME; //$NON-NLS-1$
 		this.getXmlConvertibleMapping().setConvert(this.specifiedConverterName);
 	}
 

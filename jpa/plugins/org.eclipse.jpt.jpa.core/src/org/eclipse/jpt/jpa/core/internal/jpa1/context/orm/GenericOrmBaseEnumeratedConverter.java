@@ -21,7 +21,6 @@ public class GenericOrmBaseEnumeratedConverter
 	implements OrmBaseEnumeratedConverter
 {
 	protected EnumType specifiedEnumType;
-	protected EnumType defaultEnumType;
 
 
 	public GenericOrmBaseEnumeratedConverter(OrmAttributeMapping parent,  OrmBaseEnumeratedConverter.Owner owner) {
@@ -41,12 +40,6 @@ public class GenericOrmBaseEnumeratedConverter
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		this.setSpecifiedEnumType_(this.buildSpecifiedEnumType());
-	}
-
-	@Override
-	public void update() {
-		super.update();
-		this.setDefaultEnumType(this.buildDefaultEnumType());
 	}
 
 
@@ -79,23 +72,13 @@ public class GenericOrmBaseEnumeratedConverter
 		return EnumType.fromOrmResourceModel(this.getOwner().getXmlEnumType());
 	}
 
-	public EnumType getDefaultEnumType() {
-		return this.defaultEnumType;
-	}
-
-	protected void setDefaultEnumType(EnumType enumType) {
-		EnumType old = this.defaultEnumType;
-		this.defaultEnumType = enumType;
-		this.firePropertyChanged(DEFAULT_ENUM_TYPE_PROPERTY, old, enumType);
-	}
-
 	/**
 	 * There is no default enum type in XML.
 	 * If you specify the enumerated element, you must
 	 * specify either {@link EnumType#ORDINAL} or
 	 * {@link EnumType#STRING}.
 	 */
-	protected EnumType buildDefaultEnumType() {
+	public EnumType getDefaultEnumType() {
 		return null;
 	}
 

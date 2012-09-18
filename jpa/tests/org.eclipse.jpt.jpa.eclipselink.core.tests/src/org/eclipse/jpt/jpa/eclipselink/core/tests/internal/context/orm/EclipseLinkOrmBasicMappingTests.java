@@ -369,7 +369,7 @@ public class EclipseLinkOrmBasicMappingTests
 				
 		//set lob in the context model, verify resource model updated
 		ormBasicMapping.setConverter(EclipseLinkConvert.class);
-		assertEquals("", basicResource.getConvert());
+		assertEquals("none", basicResource.getConvert());
 		assertEquals(EclipseLinkConvert.class, ormBasicMapping.getConverter().getType());
 	
 		((EclipseLinkConvert) ormBasicMapping.getConverter()).setSpecifiedConverterName("bar");

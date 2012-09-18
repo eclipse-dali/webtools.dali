@@ -371,7 +371,7 @@ public class EclipseLinkOrmVersionMappingTests
 				
 		//set lob in the context model, verify resource model updated
 		ormVersionMapping.setConverter(EclipseLinkConvert.class);
-		assertEquals("", basicResource.getConvert());
+		assertEquals("none", basicResource.getConvert());
 		assertEquals(EclipseLinkConvert.class, ormVersionMapping.getConverter().getType());
 	
 		((EclipseLinkConvert) ormVersionMapping.getConverter()).setSpecifiedConverterName("bar");

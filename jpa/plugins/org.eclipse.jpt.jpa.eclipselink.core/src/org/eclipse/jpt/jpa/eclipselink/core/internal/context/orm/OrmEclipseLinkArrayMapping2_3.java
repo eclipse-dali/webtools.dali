@@ -58,6 +58,8 @@ public class OrmEclipseLinkArrayMapping2_3
 
 	protected OrmConverter converter;  // never null
 
+	protected final OrmConverter nullConverter = new NullOrmConverter(this);
+
 	protected static final OrmConverter.Adapter[] CONVERTER_ADAPTER_ARRAY = new OrmConverter.Adapter[] {
 		OrmBaseEnumeratedConverter.BasicAdapter.instance(),
 		OrmBaseTemporalConverter.BasicAdapter.instance(),
@@ -128,19 +130,26 @@ public class OrmEclipseLinkArrayMapping2_3
 
 	public void setConverter(Class<? extends Converter> converterType) {
 		if (this.converter.getType() != converterType) {
+			// Make the old value is the real old one when firing property changed event below
+			OrmConverter old = this.converter;
+			// Set the new value of the converter to a NullOrmConverter to prevent the following
+			// step from synchronizing through a separate thread when setting converters to null
+			// Through this way timing issue between different thread may be eliminated.
+			this.converter = this.nullConverter;
 			// note: we may also clear the XML value we want;
 			// but if we leave it, the resulting sync will screw things up...
 			this.clearXmlConverterValues();
 			OrmConverter.Adapter converterAdapter = this.getConverterAdapter(converterType);
-			this.setConverter_(this.buildConverter(converterAdapter));
+			this.converter = this.buildConverter(converterAdapter);
 			this.converter.initialize();
+			this.firePropertyChanged(CONVERTER_PROPERTY, old, this.converter);
 		}
 	}
 
 	protected OrmConverter buildConverter(OrmConverter.Adapter converterAdapter) {
 		 return (converterAdapter != null) ?
 				converterAdapter.buildNewConverter(this, this.getContextNodeFactory()) :
-				this.buildNullConverter();
+				this.nullConverter;
 	}
 
 	protected void setConverter_(OrmConverter converter) {
@@ -163,14 +172,14 @@ public class OrmEclipseLinkArrayMapping2_3
 				return ormConverter;
 			}
 		}
-		return this.buildNullConverter();
+		return this.nullConverter;
 	}
 
 	protected void syncConverter() {
 		OrmConverter.Adapter adapter = this.getXmlConverterAdapter();
 		if (adapter == null) {
 			if (this.converter.getType() != null) {
-				this.setConverter_(this.buildNullConverter());
+				this.setConverter_(this.nullConverter);
 			}
 		} else {
 			if (this.converter.getType() == adapter.getConverterType()) {
@@ -192,10 +201,6 @@ public class OrmEclipseLinkArrayMapping2_3
 			}
 		}
 		return null;
-	}
-
-	protected OrmConverter buildNullConverter() {
-		return new NullOrmConverter(this);
 	}
 
 
