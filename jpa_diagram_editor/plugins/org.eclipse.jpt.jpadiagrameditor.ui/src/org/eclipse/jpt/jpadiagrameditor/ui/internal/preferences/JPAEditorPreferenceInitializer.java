@@ -35,7 +35,7 @@ public class JPAEditorPreferenceInitializer extends
 	
 	public static final String PROPERTY_VAL_DIAGRAM_FOLDER		 	= "diagrams";			//$NON-NLS-1$	
 	public static final String PROPERTY_VAL_ENTITY_PACKAGE 			= "org.persistence";	//$NON-NLS-1$
-	public static final String PROPERTY_VAL_PREFIX 					= "T_";					//$NON-NLS-1$
+	public static final String PROPERTY_VAL_PREFIX 					= "";					//$NON-NLS-1$
 	public static final String PROPERTY_VAL_ACCESS_FIELD_BASED 		= "field";				//$NON-NLS-1$
 	public static final String PROPERTY_VAL_ACCESS_PROPERTY_BASED 	= "property";			//$NON-NLS-1$
 	
