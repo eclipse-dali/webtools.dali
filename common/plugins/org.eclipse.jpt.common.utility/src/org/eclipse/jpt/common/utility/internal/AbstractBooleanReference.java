@@ -9,15 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal;
 
+import org.eclipse.jpt.common.utility.BooleanReference;
+
 /**
  * Convenience abstract class for boolean reference implementations.
  * Subclasses need only implement<ul>
  * <li>{@link #getValue()}
- * <li>{@link #setValue(boolean)}
  * </ul>
  */
 public abstract class AbstractBooleanReference
-	implements ModifiableBooleanReference
+	implements BooleanReference
 {
 	protected AbstractBooleanReference() {
 		super();
@@ -37,22 +38,6 @@ public abstract class AbstractBooleanReference
 
 	public boolean isFalse() {
 		return ! this.getValue();
-	}
-
-	public boolean flip() {
-		return this.setValue( ! this.getValue());
-	}
-
-	public boolean setNot(boolean value) {
-		return this.setValue( ! value);
-	}
-
-	public boolean setTrue() {
-		return this.setValue(true);
-	}
-
-	public boolean setFalse() {
-		return this.setValue(false);
 	}
 
 
