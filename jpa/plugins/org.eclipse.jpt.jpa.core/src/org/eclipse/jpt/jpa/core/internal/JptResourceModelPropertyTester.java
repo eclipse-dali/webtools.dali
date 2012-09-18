@@ -11,10 +11,12 @@ package org.eclipse.jpt.jpa.core.internal;
 
 import org.eclipse.core.expressions.PropertyTester;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 
 /**
  * Property tester for {@link JptResourceModel}.
@@ -25,7 +27,7 @@ public class JptResourceModelPropertyTester
 {
 	public static final String IS_LATEST_SUPPORTED_VERSION = "isLatestSupportedVersion"; //$NON-NLS-1$
 	public static final String IS_NOT_LATEST_SUPPORTED_VERSION = "isNotLatestSupportedVersion"; //$NON-NLS-1$
-
+	public static final String IS_GENERIC_MAPPING_FILE = "isGenericMappingFile"; //$NON-NLS-1$
 
 	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
 		if (receiver instanceof JptResourceModel) {
@@ -41,6 +43,11 @@ public class JptResourceModelPropertyTester
 		if (property.equals(IS_LATEST_SUPPORTED_VERSION)) {
 			boolean expected = (expectedValue == null) ? true : ((Boolean) expectedValue).booleanValue();
 			boolean actual = this.isLatestSupportedVersion(resourceModel);
+			return actual == expected;
+		}
+		if (property.equals(IS_GENERIC_MAPPING_FILE)) {
+			boolean expected = (expectedValue == null) ? true : ((Boolean) expectedValue).booleanValue();
+			boolean actual = this.isGenericMappingFile(resourceModel);
 			return actual == expected;
 		}
 		return false;
@@ -59,6 +66,21 @@ public class JptResourceModelPropertyTester
 		}
 		String latestVersion = jpaProject.getJpaPlatform().getMostRecentSupportedResourceType(resourceType.getContentType()).getVersion();
 		return Tools.valuesAreEqual(resourceType.getVersion(), latestVersion);
+	}
+
+	private boolean isGenericMappingFile(JptResourceModel resourceModel) {
+		JpaProject jpaProject = this.getJpaProject(resourceModel.getFile().getProject());
+		if (jpaProject == null) {
+			// if we get to this tester, the JPA project should be there;
+			// so this will probably never happen
+			return true;  // effectively disable "upgrade"
+		}
+		JptResourceType resourceType = resourceModel.getResourceType();
+		if (resourceType == null) {
+			return true; // effectively disable "upgrade"
+		}
+		IContentType contentType =  resourceType.getContentType();
+		return Tools.valuesAreEqual(contentType, XmlEntityMappings.CONTENT_TYPE);
 	}
 
 	private JpaProject getJpaProject(IProject project) {

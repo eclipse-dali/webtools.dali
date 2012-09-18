@@ -196,6 +196,9 @@ public class GenericPersistenceXml
 		return XmlFile_.isLatestSupportedVersion(this);
 	}
 
+	public boolean isGenericMappingFile() {
+		return false;
+	}
 
 	// ********** metamodel **********
 

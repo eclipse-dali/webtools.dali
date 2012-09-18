@@ -238,6 +238,11 @@
 			id="org.eclipse.jpt.jpa.eclipselink.ui.generateDynamicEntities"
 			name="%generateDynamicEntities"/>
 
+		<command
+        	id="org.eclipse.jpt.jpa.eclipselink.ui.upgradeToEclipseLinkMappingFile"
+        	name="%upgradeToEclipseLinkMappingFile">
+  		</command>
+
   	</extension>
 
 	<!-- ***** handlers ***** -->
@@ -273,6 +278,29 @@
 			commandId="org.eclipse.jpt.jpa.eclipselink.ui.generateDynamicEntities"
 			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.commands.GenerateDynamicEntitiesHandler">
 		</handler>
+
+  		<handler
+        	class="org.eclipse.jpt.jpa.eclipselink.ui.internal.commands.UpgradeToEclipseLinkMappingFileHandler"
+        	commandId="org.eclipse.jpt.jpa.eclipselink.ui.upgradeToEclipseLinkMappingFile">
+     		<enabledWhen>
+        		<iterate>
+           			<or>
+             			<adapt
+                    		type="org.eclipse.jpt.jpa.core.context.XmlFile">
+                 			<test
+                       			property="org.eclipse.jpt.jpa.core.isGenericMappingFile">
+                 			</test>
+              			</adapt>
+              			<adapt
+                    		type="org.eclipse.jpt.common.core.resource.xml.JptXmlResource">
+                 			<test
+                       			property="org.eclipse.jpt.jpa.core.isGenericMappingFile">
+                 			</test>
+              			</adapt>
+           			</or>
+        		</iterate>
+        	</enabledWhen>
+  		</handler>
 		
 	</extension>
 	
@@ -311,6 +339,32 @@
 					</with>
 				</visibleWhen>
 			</command>
+
+   			<command
+         		commandId="org.eclipse.jpt.jpa.eclipselink.ui.upgradeToEclipseLinkMappingFile"
+         		style="push">
+      			<visibleWhen>
+         			<with
+               		variable="selection">
+            			<iterate
+                     ifEmpty="false">
+               				<adapt
+                     			type="org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription">
+                  				<test
+                        			property="org.eclipse.jpt.jpa.core.jpaPlatformGroup"
+                        			value="eclipselink">
+                  					</test>
+               				</adapt>
+               				<adapt
+                     			type="org.eclipse.jpt.common.core.resource.xml.JptXmlResource">
+                  				<test
+                        			property="org.eclipse.jpt.jpa.core.isGenericMappingFile">
+                  				</test>
+               				</adapt>
+            			</iterate>
+         			</with>
+      			</visibleWhen>
+   			</command>
 			
 		</menuContribution>
 		
@@ -362,6 +416,36 @@
 			</command>
 			
 		</menuContribution>
+
+		<!-- contributions for any popup -->
+        <menuContribution
+              locationURI="popup:org.eclipse.ui.popup.any">
+           	  <command
+                  commandId="org.eclipse.jpt.jpa.eclipselink.ui.upgradeToEclipseLinkMappingFile">
+              	  <visibleWhen>
+                 	<with
+                       variable="selection">
+                       <iterate
+                             ifEmpty="false">
+                       	   <adapt
+                               type="org.eclipse.jpt.jpa.core.context.XmlFile">
+                          	   <test
+                                   property="org.eclipse.jpt.jpa.core.isGenericMappingFile">
+                          	   </test>
+                       	   </adapt>
+                           <adapt
+                                 type="org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription">
+                              <test
+                                    property="org.eclipse.jpt.jpa.core.jpaPlatformGroup"
+                                    value="eclipselink">
+                              </test>
+                           </adapt>
+                       </iterate>
+                    </with>
+                 </visibleWhen>
+              </command>
+              
+         </menuContribution>
 	
 	
 	 </extension>

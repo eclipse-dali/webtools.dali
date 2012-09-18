@@ -9,9 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
+import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 
 /**
  * Context representation of any JPA XML file.
@@ -50,6 +52,11 @@ public interface XmlFile
 	 */
 	boolean isLatestSupportedVersion();
 
+	/**
+	 * Return whether the XML file is a generic mapping file
+	 */
+	boolean isGenericMappingFile();
+
 
 	// ********** XML file root element **********
 
@@ -75,6 +82,14 @@ public interface XmlFile
 			String xmlFileVersion = xmlFile.getXmlResource().getVersion();
 			String latestVersion = xmlFile.getJpaProject().getJpaPlatform().getMostRecentSupportedResourceType(xmlFile.getXmlResource().getContentType()).getVersion();
 			return Tools.valuesAreEqual(xmlFileVersion, latestVersion);
+		}
+
+		/**
+		 * @see #isGenericMappingFile()
+		 */
+		public static boolean isGenericMappingFile(XmlFile xmlFile) {
+			IContentType contentType = xmlFile.getXmlResource().getContentType();
+			return Tools.valuesAreEqual(contentType, XmlEntityMappings.CONTENT_TYPE);
 		}
 
 		private XmlFile_() {

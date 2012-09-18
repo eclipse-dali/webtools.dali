@@ -81,6 +81,13 @@
 			<adapter type="org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription"/>
 		</factory>
 
+		<!-- XmlFile -> JpaPlatformDescription -->
+		<factory
+			adaptableType="org.eclipse.jpt.jpa.core.context.XmlFile"
+			class="org.eclipse.jpt.jpa.core.internal.XmlFileAdapterFactory">
+			<adapter type="org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription"/>
+		</factory>
+
 	</extension>
 
 
@@ -189,14 +196,14 @@
 			id="org.eclipse.jpt.jpa.core.propertyTester.XmlFile"
 			type="org.eclipse.jpt.jpa.core.context.XmlFile"
 			namespace="org.eclipse.jpt.jpa.core"
-			properties="isLatestSupportedVersion, isNotLatestSupportedVersion"
+			properties="isLatestSupportedVersion, isNotLatestSupportedVersion, isGenericMappingFile"
 			class="org.eclipse.jpt.jpa.core.internal.context.XmlFilePropertyTester"/>
 
 		<propertyTester
 			id="org.eclipse.jpt.jpa.core.propertyTester.JptResourceModel"
 			type="org.eclipse.jpt.common.core.JptResourceModel"
 			namespace="org.eclipse.jpt.jpa.core"
-			properties="isLatestSupportedVersion, isNotLatestSupportedVersion"
+			properties="isLatestSupportedVersion, isNotLatestSupportedVersion, isGenericMappingFile"
 			class="org.eclipse.jpt.jpa.core.internal.JptResourceModelPropertyTester"/>
 
 	</extension>

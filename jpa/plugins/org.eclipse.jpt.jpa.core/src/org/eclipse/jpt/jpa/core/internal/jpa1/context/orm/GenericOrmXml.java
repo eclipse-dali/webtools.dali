@@ -258,6 +258,9 @@ public class GenericOrmXml
 		return Tools.valuesAreEqual(member, file);
 	}
 
+	public boolean isGenericMappingFile() {
+		return XmlFile_.isGenericMappingFile(this);
+	}
 
 	// ********** JpaStructureNode implementation **********
 

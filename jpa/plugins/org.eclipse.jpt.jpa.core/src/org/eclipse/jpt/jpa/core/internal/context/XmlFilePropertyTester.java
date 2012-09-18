@@ -21,6 +21,7 @@ public class XmlFilePropertyTester
 {
 	public static final String IS_LATEST_SUPPORTED_VERSION = "isLatestSupportedVersion"; //$NON-NLS-1$
 	public static final String IS_NOT_LATEST_SUPPORTED_VERSION = "isNotLatestSupportedVersion"; //$NON-NLS-1$
+	public static final String IS_GENERIC_MAPPING_FILE = "isGenericMappingFile"; //$NON-NLS-1$
 
 
 	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
@@ -37,6 +38,11 @@ public class XmlFilePropertyTester
 		if (property.equals(IS_LATEST_SUPPORTED_VERSION)) {
 			boolean expected = (expectedValue == null) ? true : ((Boolean) expectedValue).booleanValue();
 			boolean actual = xmlFile.isLatestSupportedVersion();
+			return actual == expected;
+		}
+		if (property.equals(IS_GENERIC_MAPPING_FILE)) {
+			boolean expected = (expectedValue == null) ? true : ((Boolean) expectedValue).booleanValue();
+			boolean actual = xmlFile.isGenericMappingFile();
 			return actual == expected;
 		}
 		return false;
