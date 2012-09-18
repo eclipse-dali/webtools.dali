@@ -34,6 +34,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.ui.JpaFileModel;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.selection.JpaEditorManager;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -217,7 +218,17 @@ class JpaTextEditorManager
 	{
 		@Override
 		public void selectionChanged(SelectionChangedEvent event) {
-			JpaTextEditorManager.this.setJpaSelection(event.getSelection());
+			//If the focus is in the JPA Details view we do not want to handle
+			//TextEditor selection events. When in the Details View we are not
+			//listening for java change events so our cached text ranges are not updated.
+			//We do not want the selection to change while editing in the details view
+			//or the details view can be changed out from under us.
+			//AbstractJavaPersistentType.getStructureNode(int) will cause a
+			//synchronizeWithJavaSource() to be run, and we don't want that to happen
+			//when we have focus.
+			if (JptJpaUiPlugin.instance().getFocusIsNonDali()) {
+				JpaTextEditorManager.this.setJpaSelection(event.getSelection());
+			}
 		}
 	}
 
