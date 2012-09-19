@@ -24,9 +24,6 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * This "Map As" composite is responsible for showing the mapping name and
  * mapping type for an attribute.
- *
- * @see JavaPersistentAttributeMapAsComposite
- * @see OrmPersistentAttributeMapAsComposite
  */
 public class PersistentAttributeMapAsComposite 
 	extends MapAsComposite<ReadOnlyPersistentAttribute>
@@ -52,8 +49,6 @@ public class PersistentAttributeMapAsComposite
 		super(parentPane, parent, enabledModel);
 	}
 	
-	
-	@Override
 	protected String getMappingKey() {
 		return getSubject().getMappingKey();
 	}
@@ -85,7 +80,7 @@ public class PersistentAttributeMapAsComposite
 
 			return mapping.isDefault() ? 
                           getDefaultDefinition(mappingKey).getLinkLabel() : 
-                          getMappingUiDefinition(mappingKey).getLinkLabel();
+                          getMappingUiDefinition().getLinkLabel();
 		}
 		
 		public void morphMapping(MappingUiDefinition definition) {
@@ -100,8 +95,8 @@ public class PersistentAttributeMapAsComposite
 			return getAttributeMappingUiDefinitions();
 		}
 
-		public MappingUiDefinition getMappingUiDefinition(String mappingKey) {
-			return getAttributeMappingUiDefinition(mappingKey);
+		public MappingUiDefinition getMappingUiDefinition() {
+			return getAttributeMappingUiDefinition();
 		}
 	}
 	
@@ -109,8 +104,8 @@ public class PersistentAttributeMapAsComposite
 		return getJpaPlatformUi().getAttributeMappingUiDefinitions(getSubject().getResourceType());
 	}
 	
-	protected MappingUiDefinition<? extends ReadOnlyPersistentAttribute, ?> getAttributeMappingUiDefinition(String mappingKey) {
-		return getJpaPlatformUi().getAttributeMappingUiDefinition(getSubject().getResourceType(), mappingKey);
+	protected MappingUiDefinition<? extends ReadOnlyPersistentAttribute, ?> getAttributeMappingUiDefinition() {
+		return getJpaPlatformUi().getAttributeMappingUiDefinition(getSubject().getResourceType(), getMappingKey());
 	}
 	
 	@Override
@@ -124,8 +119,8 @@ public class PersistentAttributeMapAsComposite
 	}
 
 	@Override
-	protected MappingUiDefinition getMappingUiDefinition(String mappingKey) {
-		MappingUiDefinition definition = super.getMappingUiDefinition(mappingKey);
+	protected MappingUiDefinition getMappingUiDefinition() {
+		MappingUiDefinition definition = super.getMappingUiDefinition();
 		return (definition != null) ? definition : UnsupportedOrmAttributeMappingUiDefinition.instance();
 	}
 	

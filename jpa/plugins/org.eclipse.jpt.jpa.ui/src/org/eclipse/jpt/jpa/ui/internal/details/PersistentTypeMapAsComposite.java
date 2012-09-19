@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.Collection;
-import java.util.Iterator;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
@@ -20,12 +19,6 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * This "Map As" composite is responsible for showing the mapping name and
  * mapping type for a type.
- *
- * @see JavaPersistentTypeMapAsComposite
- * @see OrmPersistentTypeMapAsComposite
- *
- * @version 2.2
- * @since 2.0
  */
 public class PersistentTypeMapAsComposite
 	extends MapAsComposite<PersistentType>
@@ -43,8 +36,6 @@ public class PersistentTypeMapAsComposite
 		super(parentPane, parent);
 	}
 	
-	
-	@Override
 	protected String getMappingKey() {
 		return getSubject().getMappingKey();
 	}
@@ -65,7 +56,7 @@ public class PersistentTypeMapAsComposite
 		}
 
 		public String getMappingText() {
-			return getMappingUiDefinition(getMappingKey()).getLinkLabel();
+			return getMappingUiDefinition().getLinkLabel();
 		}
 
 		public void morphMapping(MappingUiDefinition definition) {
@@ -80,8 +71,8 @@ public class PersistentTypeMapAsComposite
 			return getTypeMappingUiDefinitions();
 		}
 
-		public MappingUiDefinition getMappingUiDefinition(String mappingKey) {
-			return getTypeMappingUiDefinition(mappingKey);
+		public MappingUiDefinition getMappingUiDefinition() {
+			return getTypeMappingUiDefinition();
 		}
 	}
 
@@ -94,8 +85,8 @@ public class PersistentTypeMapAsComposite
 		return getJpaPlatformUi().getTypeMappingUiDefinitions(getSubject().getResourceType());
 	}
 	
-	protected MappingUiDefinition<? extends PersistentType, ?> getTypeMappingUiDefinition(String mappingKey) {
-		return getJpaPlatformUi().getTypeMappingUiDefinition(getSubject().getResourceType(), mappingKey);
+	protected MappingUiDefinition<? extends PersistentType, ?> getTypeMappingUiDefinition() {
+		return getJpaPlatformUi().getTypeMappingUiDefinition(getSubject().getResourceType(), getMappingKey());
 	}
 	
 	@Override

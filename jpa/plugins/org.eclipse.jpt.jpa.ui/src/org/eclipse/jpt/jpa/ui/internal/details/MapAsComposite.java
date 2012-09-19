@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.Comparator;
-import java.util.Iterator;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -22,7 +21,6 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -122,8 +120,8 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 
 	protected abstract DefaultMappingUiDefinition getDefaultDefinition(String mappingKey);
 	
-	protected MappingUiDefinition getMappingUiDefinition(String mappingKey) {
-		return this.mappingChangeHandler.getMappingUiDefinition(mappingKey);
+	protected MappingUiDefinition getMappingUiDefinition() {
+		return this.mappingChangeHandler.getMappingUiDefinition();
 	}
 	
 	/**
@@ -293,7 +291,7 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 	 * mapping being edited
 	 */
 	protected MappingUiDefinition initialSelection() {
-		return this.mappingChangeHandler.getMappingUiDefinition(getMappingKey());
+		return this.mappingChangeHandler.getMappingUiDefinition();
 	}
 
 	/**
@@ -308,14 +306,6 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 		return (location >= mappingTypeStart &&
 		        location <= mappingTypeStart + mappingTypeLength);
 	}
-
-	/**
-	 * Returns the mapping key representing the current mapping object.
-	 *
-	 * @return A non-<code>null</code> unique identifier representing the type
-	 * of the mapping being edited
-	 */
-	protected abstract String getMappingKey();
 
 	/**
 	 * Aks the <code>MappingChangeHandler</code> to change the mapping type using
@@ -456,19 +446,19 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 		String getName();
 
 		/**
-		 * Returns the list of mapping UI definitions that are registered with the JPT plugin.
+		 * Returns the list of mapping UI definitions that are registered with the JpaPlatformUi.
 		 *
 		 * @return The supported types of mapping
 		 */
 		Iterable<MappingUiDefinition<T, ?>> getMappingUiDefinitions();
 
 		/**
-		 * Returns the mapping UI definition for the specified mapping key
-		 * that is registered with the JPT plugin.
+		 * Returns the mapping UI definition for current mapping
+		 * that is registered with the JpaPlatformUi.
 		 *
 		 * @return The supported types of mapping
 		 */
-		MappingUiDefinition<T, ?> getMappingUiDefinition(String mappingKey);
+		MappingUiDefinition<T, ?> getMappingUiDefinition();
 	}
 
 	/**
