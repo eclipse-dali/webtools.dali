@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,11 +14,20 @@ import java.util.Map;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.utility.internal.RunnableAdapter;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.ui.internal.menus.PersistentTypeMapAsContribution;
+import org.eclipse.jpt.jpa.ui.selection.JpaSelectionManager;
 import org.eclipse.ui.ISources;
 import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.IElementUpdater;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.menus.UIElement;
@@ -71,14 +80,60 @@ public class PersistentTypeMapAsHandler extends AbstractHandler
 		String mappingKey = event.getParameter(COMMAND_PARAMETER_ID);
 
 		// Change the mapping key for all the selected items
-		for (Object item : selection.toArray()) {
+		final Object[] items = selection.toArray();
+		for (Object item : items) {
 			PersistentType type = (PersistentType) item;
 			type.setMappingKey(mappingKey);
 		}
-
+		this.setJpaSelection(items);
 		return null;
 	}
-	
+
+	/**
+	 * @see PersistentAttributeMapAsHandler#setJpaSelection(Object[])
+	 */
+	private void setJpaSelection(Object[] items) {
+		if (items.length == 1) {
+			new PostExecutionJob((PersistentType) items[0]).schedule();
+		}
+	}
+
+	/* CU private */ static class PostExecutionJob
+		extends Job
+	{
+		private final Runnable setSelectionRunnable;
+
+		PostExecutionJob(PersistentType type) {
+			super("select type");
+			this.setSelectionRunnable = new SetSelectionRunnable(type);
+			this.setRule(type.getJpaProject().getProject());
+		}
+
+		@Override
+		protected IStatus run(IProgressMonitor monitor) {
+			SWTUtil.execute(this.setSelectionRunnable);
+			return Status.OK_STATUS;
+		}
+
+		/* class private */ static class SetSelectionRunnable
+			extends RunnableAdapter
+		{
+			private final PersistentType type;
+
+			SetSelectionRunnable(PersistentType type) {
+				super();
+				this.type = type;
+			}
+
+			@Override
+			public void run() {
+				JpaSelectionManager mgr = PlatformTools.getAdapter(PlatformUI.getWorkbench(), JpaSelectionManager.class);
+				mgr.setSelection(null);
+				mgr.setSelection(this.type);
+			}
+		}
+	}
+
 	@SuppressWarnings("unchecked")
 	public void updateElement(UIElement element, Map parameters) {
 		// Retrieve the selection for the UIElement
