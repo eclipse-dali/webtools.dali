@@ -1,7 +1,6 @@
--quiet
 -charset "utf-8"
 -sourcepath "@commonUtilitySourcepath@;@jpt.common.core.sourcepath@;@jpt.common.ui.sourcepath@"
--classpath @rt@;@jpt.common.core.classpath@;@jpt.common.ui.classpath@
+-classpath @jpt.common.core.classpath@;@jpt.common.ui.classpath@
 -breakiterator
 -use
 -splitIndex

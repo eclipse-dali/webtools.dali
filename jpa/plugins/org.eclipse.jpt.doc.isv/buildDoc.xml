@@ -13,6 +13,7 @@
 
 	<target name="init">
 		<available file="${basedir}/index" property="index.present"/>
+		<delete file="jptOptions.tmp.txt"/>
 	</target>
 
 	<target name="all" depends="init" unless="index.present">
@@ -43,9 +44,7 @@
 		<condition property="argsListDelimiter" value=";">
 			<os family="windows" />
 		</condition>
-<!--
-		<replaceregexp file="${basedir}/${optionsFile}" flags="g" match="(\r\n?|\n);" replace="${argsListDelimiter}" />
--->
+
 		<replace file="${basedir}/${optionsFile}" token="@rt@" value="${bootclasspath}" />
 
 		<antcall target="replaceJptCommonUtility" />
@@ -57,6 +56,7 @@
         </antcall>
 
 		<replaceregexp file="${basedir}/${optionsFile}" flags="g" match=";" replace="${argsListDelimiter}" />
+
 <!--
 		<antcall target="replaceJptCommonCore" />
 		<antcall target="replaceJptCommonUi" />
@@ -84,19 +84,16 @@
             <replacefilter
                 token="@${packageName}.sourcepath@"
                 property="${packageName}.sourcepath"/>
-            <replacefilter
+	       <replacefilter
                 token="@${packageName}.classpath@"
                 property="${packageName}.classpath"/>
             <replacefilter
                 token="@${packageName}.packages@"
                 property="${packageName}.packages"/>
 		</replace>
-
-		<echo message="propertyfile = ${packageName}.properties" />
-		<echo message="packageName = ${packageName}" />
 	</target>
-
-	<!-- common packages -->
+	
+	<!-- common utility package -->
 	<target name="replaceJptCommonUtility" if="optionsFile">
 		<replace 
 			file="${basedir}/${optionsFile}" 
@@ -109,51 +106,6 @@
                 token="@commonUtilityPackages@"
                 property="common.utility.packages"/>
 		</replace>
-
-		<echo message="common.utility.sourcepath = ${common.utility.sourcepath}" />
-		<echo message="common.utility.packages = ${common.utility.packages}" />
-	</target>
-
-	<target name="replaceJptCommonCore" if="optionsFile">
-		<replace 
-			file="${basedir}/${optionsFile}" 
-			propertyfile="${basedir}/jptCommonCore.properties">
-
-            <replacefilter
-                token="@commonCoreSourcepath@"
-                property="common.core.sourcepath"/>
-            <replacefilter
-                token="@commonCoreClasspath@"
-                property="common.core.classpath"/>
-            <replacefilter
-                token="@commonCorePackages@"
-                property="common.core.packages"/>
-		</replace>
-		
-		<echo message="common.core.sourcepath = ${common.core.sourcepath}" />
-		<echo message="common.core.classpath = ${common.core.classpath}" />
-		<echo message="common.core.packages = ${common.core.packages}" />
-	</target>
-
-	<target name="replaceJptCommonUi" if="optionsFile">
-		<replace 
-			file="${basedir}/${optionsFile}" 
-			propertyfile="${basedir}/jptCommonUi.properties">
-
-            <replacefilter
-                token="@commonUiSourcepath@"
-                property="common.ui.sourcepath"/>
-            <replacefilter
-                token="@commonUiClasspath@"
-                property="common.ui.classpath"/>
-            <replacefilter
-                token="@commonUiPackages@"
-                property="common.ui.packages"/>
-		</replace>
-		
-		<echo message="common.ui.sourcepath = ${common.ui.sourcepath}" />
-		<echo message="common.ui.classpath = ${common.ui.classpath}" />
-		<echo message="common.ui.packages = ${common.ui.packages}" />
 	</target>
 
 	<target name="buildJptDoc" unless="jpt.index.present">
@@ -168,17 +120,3 @@
 	</target>
 
 </project>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
