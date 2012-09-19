@@ -21,7 +21,7 @@ public class ELJaxbCoreContextModelTests {
 		TestSuite suite = new TestSuite(ELJaxbCoreContextModelTests.class.getName());
 		
 		if (ELJaxbCoreTests.requiredJarsExists()) {
-//			suite.addTestSuite(GenericContextRootTests.class);
+			suite.addTestSuite(ELJaxbContextRootTests.class);			
 			suite.addTest(ELJaxbCoreJavaContextModelTests.suite());
 		}
 		else {

@@ -59,7 +59,7 @@ public class JaxbTestCase
 	}
 	
 	protected IProjectFacetVersion getProjectFacetVersion() {
-		return JaxbFacet.VERSION_2_1;
+		return JaxbFacet.VERSION_2_2;
 	}
 	
 	@Override

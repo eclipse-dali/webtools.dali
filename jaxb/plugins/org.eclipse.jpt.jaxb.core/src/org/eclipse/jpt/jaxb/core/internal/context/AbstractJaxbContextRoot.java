@@ -105,53 +105,6 @@ public abstract class AbstractJaxbContextRoot
 				this.packages.put(pkg, buildPackage(pkg));
 			}
 		}
-		
-//		// keep a master list of all types that we've processed so we don't process them again
-//		final Set<String> totalTypes = CollectionTools.<String>set();
-//		
-//		// keep an running list of types that we need to scan for further referenced types
-//		final Set<String> typesToScan = CollectionTools.<String>set();
-//		
-//		// process packages with annotations first
-//		for (String pkg : calculateInitialPackageNames()) {
-//			this.packages.put(pkg, buildPackage(pkg));
-//		}
-//		
-//		// calculate initial types (annotated or listed in jaxb.index files)
-//		final Set<JavaResourceAbstractType> resourceTypesToProcess = calculateInitialTypes();
-//		
-//		// while there are resource types to process or types to scan, continue to do so
-//		while (! resourceTypesToProcess.isEmpty() || ! typesToScan.isEmpty()) {
-//			for (JavaResourceAbstractType resourceType : new SnapshotCloneIterable<JavaResourceAbstractType>(resourceTypesToProcess)) {
-//				String className = resourceType.getQualifiedName();
-//				totalTypes.add(className);
-//				typesToScan.add(className);
-//				addType_(buildType(resourceType));
-//				resourceTypesToProcess.remove(resourceType);
-//			}
-//			
-//			for (String typeToScan : new SnapshotCloneIterable<String>(typesToScan)) {
-//				JaxbType jaxbType = getType(typeToScan);
-//				if (jaxbType != null) {
-//					for (String referencedTypeName : jaxbType.getReferencedXmlTypeNames()) {
-//						if (! totalTypes.contains(referencedTypeName)) {
-//							JavaResourceAbstractType referencedType = getJaxbProject().getJavaResourceType(referencedTypeName);
-//							if (referencedType != null) {
-//								resourceTypesToProcess.add(referencedType);
-//							}
-//						}
-//					}
-//				}
-//				typesToScan.remove(typeToScan);
-//			}
-//		}
-//		
-//		// once all classes have been processed, add packages
-//		for (String pkg : calculatePackageNames(totalTypes)) {
-//			if (! this.packages.containsKey(pkg)) {
-//				this.packages.put(pkg, buildPackage(pkg));
-//			}
-//		}
 	}
 	
 	@Override

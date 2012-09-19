@@ -12,10 +12,12 @@ package org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_1;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
+import org.eclipse.jpt.jaxb.core.JaxbProject.Config;
 import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
+import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlAnyAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlAnyElementMapping;
@@ -27,7 +29,10 @@ import org.eclipse.jpt.jaxb.core.context.XmlElementsMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
 import org.eclipse.jpt.jaxb.core.context.XmlValueMapping;
 import org.eclipse.jpt.jaxb.core.internal.AbstractJaxbFactory;
-import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.ELJaxbContextRoot;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbContextRoot;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.ELJaxbProjectImpl;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.ELJaxbContextRootImpl;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.ELJaxbPackageImpl;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaClassMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaElementFactoryMethod;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlAnyAttributeMapping;
@@ -63,10 +68,28 @@ public class ELJaxb_2_1_Factory
 	}
 	
 	
+	// ***** core model *****
+	
+	@Override
+	public JaxbProject buildJaxbProject(Config config) {
+		return new ELJaxbProjectImpl(config);
+	}
+	
+	
+	// ***** non-resource context nodes *****
+	
 	@Override
 	public JaxbContextRoot buildContextRoot(JaxbProject parent) {
-		return new ELJaxbContextRoot(parent);
+		return new ELJaxbContextRootImpl(parent);
 	}
+	
+	@Override
+	public JaxbPackage buildPackage(JaxbContextRoot parent, String packageName) {
+		return new ELJaxbPackageImpl((ELJaxbContextRoot) parent, packageName);
+	}
+	
+	
+	// ***** java context nodes *****
 	
 	@Override
 	public JaxbElementFactoryMethod buildJavaElementFactoryMethod(

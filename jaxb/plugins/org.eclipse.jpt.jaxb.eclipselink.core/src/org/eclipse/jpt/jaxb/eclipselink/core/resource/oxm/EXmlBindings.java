@@ -993,13 +993,21 @@ public class EXmlBindings extends ERootObjectImpl
 		return new SimpleRootTranslator(Oxm.XML_BINDINGS, OxmPackage.eINSTANCE.getEXmlBindings(), buildTranslatorChildren());
 	}
 	
-	private static Translator[] buildTranslatorChildren() {
+	protected static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildVersionTranslator(SCHEMA_LOCATIONS),
 			buildNamespaceTranslator(Oxm.SCHEMA_NAMESPACE),
 			buildSchemaNamespaceTranslator(),
 			buildSchemaLocationTranslator(Oxm.SCHEMA_NAMESPACE, SCHEMA_LOCATIONS),
+			buildPackageNameTranslator(),
 			EJavaType.buildTranslator()
 		};
+	}
+	
+	protected static Translator buildPackageNameTranslator() {
+		return new Translator(
+			Oxm.PACKAGE_NAME, 
+			OxmPackage.eINSTANCE.getEXmlBindings_PackageName(), 
+			Translator.DOM_ATTRIBUTE);
 	}
 }
