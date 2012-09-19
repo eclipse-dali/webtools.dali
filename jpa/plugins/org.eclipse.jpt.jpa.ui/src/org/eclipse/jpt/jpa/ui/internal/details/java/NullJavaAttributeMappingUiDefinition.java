@@ -57,8 +57,16 @@ public class NullJavaAttributeMappingUiDefinition
 		return JptUiDetailsMessages.NullAttributeMappingUiProvider_label;
 	}
 
+	/**
+	 * The MapAsComposite in the JPA Details view will display this text for
+	 * an unmapped attribute:
+	 * Attribute 'foo' is not mapped, click here to change the mapping type.
+	 * 
+	 * We are returning the part of the string that will appear to the user as 
+	 * a link that they can click: 'click here'
+	 */
 	public String getLinkLabel() {
-		return null;
+		return JptUiDetailsMessages.MapAsComposite_unmappedAttributeText_linkLabel;
 	}
 
 	@Override

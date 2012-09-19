@@ -57,13 +57,21 @@ public class NullJavaTypeMappingUiDefinition
 		return JptUiDetailsMessages.NullTypeMappingUiProvider_label;
 	}
 
+	/**
+	 * The MapAsComposite in the JPA Details view will display this text for
+	 * an unmapped type:
+	 * Type 'Far' is not mapped, click here to change the mapping type.
+	 * 
+	 * We are returning the part of the string that will appear to the user as 
+	 * a link that they can click: 'click here'
+	 */
 	public String getLinkLabel() {
-		return null;
+		return JptUiDetailsMessages.MapAsComposite_unmappedTypeText_linkLabel;
 	}
 
 	@Override
 	protected String getImageKey() {
-		return JptUiIcons.NULL_TYPE_MAPPING;
+		return JptUiIcons.WARNING;
 	}
 
 	public JpaComposite buildTypeMappingComposite(JavaUiFactory factory, PropertyValueModel<JavaTypeMapping> mappingModel, Composite parent, WidgetFactory widgetFactory) {

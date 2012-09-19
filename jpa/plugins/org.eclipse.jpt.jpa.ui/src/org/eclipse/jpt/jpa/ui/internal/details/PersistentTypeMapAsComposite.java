@@ -65,10 +65,7 @@ public class PersistentTypeMapAsComposite
 		}
 
 		public String getMappingText() {
-			String mappingKey = getMappingKey();
-			return (mappingKey == null) ?
-					JptUiDetailsMessages.MapAsComposite_changeMappingType :
-					getMappingUiDefinition(mappingKey).getLinkLabel();
+			return getMappingUiDefinition(getMappingKey()).getLinkLabel();
 		}
 
 		public void morphMapping(MappingUiDefinition definition) {

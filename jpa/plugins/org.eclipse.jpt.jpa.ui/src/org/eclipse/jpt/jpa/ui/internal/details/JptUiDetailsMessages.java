@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -194,14 +194,15 @@ public class JptUiDetailsMessages {
 	public static String TransientMappingUiProvider_linkLabel;
 	public static String VersionMappingUiProvider_linkLabel;
 
-	public static String MapAsComposite_changeMappingType;
 	public static String MapAsComposite_default;
 	public static String MapAsComposite_dialogTitle;
 	public static String MapAsComposite_labelText;
 	public static String MapAsComposite_mappedAttributeText;
 	public static String MapAsComposite_mappedTypeText;
 	public static String MapAsComposite_unmappedAttributeText;
+	public static String MapAsComposite_unmappedAttributeText_linkLabel;
 	public static String MapAsComposite_unmappedTypeText;
+	public static String MapAsComposite_unmappedTypeText_linkLabel;
 	public static String MapAsComposite_virtualAttributeText;
 	
 	public static String EmbeddableUiProvider_label;

@@ -91,13 +91,13 @@ public abstract class AbstractJavaResourceUiDefinition
 
 	protected JavaTypeMappingUiDefinition<? extends TypeMapping> getJavaTypeMappingUiDefinition_(TypeMapping typeMapping) {
 		String mappingKey = (typeMapping == null) ? null : typeMapping.getKey();
+		return this.getTypeMappingUiDefinition(mappingKey);
+	}
+
+	public JavaTypeMappingUiDefinition<? extends TypeMapping> getTypeMappingUiDefinition(String mappingKey) {
 		return (mappingKey == null) ?
 				this.getDefaultTypeMappingUiDefinition() :
 				this.getSpecifiedJavaTypeMappingUiDefinition(mappingKey);
-	}
-
-	public MappingUiDefinition<PersistentType, ? extends TypeMapping> getTypeMappingUiDefinition(String mappingKey) {
-		return this.getSpecifiedJavaTypeMappingUiDefinition(mappingKey);
 	}
 
 	protected JavaTypeMappingUiDefinition<? extends TypeMapping> getSpecifiedJavaTypeMappingUiDefinition(String mappingKey) {
@@ -147,13 +147,13 @@ public abstract class AbstractJavaResourceUiDefinition
 
 	protected JavaAttributeMappingUiDefinition<? extends AttributeMapping> getAttributeMappingUiDefinition_(AttributeMapping attributeMapping) {
 		String mappingKey = (attributeMapping == null) ? null : attributeMapping.getKey();
-		return ((attributeMapping == null) || attributeMapping.isDefault()) ?
-				this.getDefaultAttributeMappingUiDefinition(mappingKey) :
-				this.getSpecifiedAttributeMappingUiDefinition(mappingKey);
+		return this.getAttributeMappingUiDefinition(mappingKey);
 	}
 
-	public MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping> getAttributeMappingUiDefinition(String mappingKey) {
-		return this.getSpecifiedAttributeMappingUiDefinition(mappingKey);
+	public JavaAttributeMappingUiDefinition<? extends AttributeMapping> getAttributeMappingUiDefinition(String mappingKey) {
+		return (mappingKey == null) ?
+				this.getDefaultAttributeMappingUiDefinition(mappingKey) :
+				this.getSpecifiedAttributeMappingUiDefinition(mappingKey);
 	}
 
 	protected JavaAttributeMappingUiDefinition<? extends AttributeMapping> getSpecifiedAttributeMappingUiDefinition(String mappingKey) {

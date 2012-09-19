@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.Collection;
-import java.util.Iterator;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.MappingKeys;
@@ -19,8 +18,6 @@ import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.details.MapAsComposite.MappingChangeHandler;
-import org.eclipse.jpt.jpa.ui.internal.details.PersistentTypeMapAsComposite.TypeMappingChangeHandler;
 import org.eclipse.jpt.jpa.ui.internal.details.orm.UnsupportedOrmAttributeMappingUiDefinition;
 import org.eclipse.swt.widgets.Composite;
 
@@ -85,10 +82,6 @@ public class PersistentAttributeMapAsComposite
 		public String getMappingText() {
 			AttributeMapping mapping = getSubject().getMapping();
 			String mappingKey = mapping.getKey();
-
-			if (mappingKey == null) {
-				return JptUiDetailsMessages.MapAsComposite_changeMappingType;
-			}
 
 			return mapping.isDefault() ? 
                           getDefaultDefinition(mappingKey).getLinkLabel() : 

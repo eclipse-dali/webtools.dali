@@ -233,20 +233,17 @@ public class PersistenceUnitClassesComposite extends Pane<PersistenceUnit>
 				ClassRef classRef = (ClassRef) element;
 				JavaPersistentType persistentType = classRef.getJavaPersistentType();
 				if (persistentType != null) {
-					String mappingKey = persistentType.getMappingKey();
-					if (mappingKey != null) {
-						return this.getImage(persistentType, mappingKey);
-					}
+					return this.getImage(persistentType);
 				}
 				return JptJpaUiPlugin.instance().getImage(JptUiIcons.WARNING);
 			}
 
-			private Image getImage(JavaPersistentType persistentType, String mappingKey) {
-				return this.getTypeMappingUiDefinition(persistentType, mappingKey).getImage();
+			private Image getImage(JavaPersistentType persistentType) {
+				return this.getTypeMappingUiDefinition(persistentType).getImage();
 			}
 
-			private MappingUiDefinition<PersistentType, ? extends TypeMapping> getTypeMappingUiDefinition(JavaPersistentType persistentType, String mappingKey) {
-				return this.getJpaPlatformUi(persistentType).getTypeMappingUiDefinition(persistentType.getResourceType(), mappingKey);
+			private MappingUiDefinition<PersistentType, ? extends TypeMapping> getTypeMappingUiDefinition(JavaPersistentType persistentType) {
+				return this.getJpaPlatformUi(persistentType).getTypeMappingUiDefinition(persistentType.getResourceType(), persistentType.getMappingKey());
 			}
 
 			private JpaPlatformUi getJpaPlatformUi(JavaPersistentType persistentType) {
