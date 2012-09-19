@@ -38,7 +38,6 @@ import org.eclipse.ui.services.IEvaluationService;
  * @version 2.0
  * @since 2.0
  */
-@SuppressWarnings("nls")
 public class PersistentAttributeMapAsHandler
 	extends AbstractHandler
 	implements IElementUpdater
@@ -49,7 +48,7 @@ public class PersistentAttributeMapAsHandler
 	 * <p>
 	 * See <code>org.eclipse.jpt.jpa.ui/plugin.xml</code>.
 	 */
-	public static final String COMMAND_ID = "org.eclipse.jpt.jpa.ui.persistentAttributeMapAs";
+	public static final String COMMAND_ID = "org.eclipse.jpt.jpa.ui.persistentAttributeMapAs"; //$NON-NLS-1$
 
 	/**
 	 * The unique identifier of the "Map As" command parameter used for
@@ -57,9 +56,9 @@ public class PersistentAttributeMapAsHandler
 	 * <p>
 	 * See <code>org.eclipse.jpt.jpa.ui/plugin.xml</code>.
 	 */
-	public static final String SPECIFIED_MAPPING_COMMAND_PARAMETER_ID = "specifiedPersistentAttributeMappingKey";
+	public static final String SPECIFIED_MAPPING_COMMAND_PARAMETER_ID = "specifiedPersistentAttributeMappingKey"; //$NON-NLS-1$
 
-	public static final String DEFAULT_MAPPING_COMMAND_PARAMETER_ID = "defaultPersistentAttributeMappingKey";
+	public static final String DEFAULT_MAPPING_COMMAND_PARAMETER_ID = "defaultPersistentAttributeMappingKey"; //$NON-NLS-1$
 
 
 	/**
@@ -72,7 +71,7 @@ public class PersistentAttributeMapAsHandler
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getCurrentSelectionChecked(event);
 		String mappingKey = event.getParameter(SPECIFIED_MAPPING_COMMAND_PARAMETER_ID);
-		final Object[] items = selection.toArray();
+		Object[] items = selection.toArray();
 		for (Object item : items) {
 			PersistentAttribute attribute = (PersistentAttribute) item;
 			attribute.setMappingKey(mappingKey);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,109 +9,118 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.commands;
 
-import java.util.Iterator;
 import java.util.Map;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
-import org.eclipse.jpt.jpa.ui.internal.menus.PersistentTypeMapAsContribution;
+import org.eclipse.jpt.jpa.ui.selection.JpaSelectionManager;
 import org.eclipse.ui.ISources;
 import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.IElementUpdater;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.menus.UIElement;
 import org.eclipse.ui.services.IEvaluationService;
 
 /**
- * This handler is responsible to change the mapping type of the selected
- * <code>PersistentType</code>.
+ * This handler changes the mapping type of the selected
+ * {@link PersistentType}(s).
+ * It will be invoked by the mapping action dynamically created by the
+ * {@link org.eclipse.jpt.jpa.ui.internal.menus.PersistentTypeMapAsContribution}.
  * <p>
- * This handler is defined in the JPT plugin.xml. It will be invoked by the
- * mapping action dynamically created by the <code>PersistentTypeMapAsContribution</code>.
- *
+ * See <code>org.eclipse.jpt.jpa.ui/plugin.xml</code>.
+ * 
+ * @see org.eclipse.jpt.jpa.ui.internal.menus.PersistentTypeMapAsContribution
  * @see PersistentType
- * @see PersistentTypeMapAsContribution
- *
  * @version 2.0
  * @since 2.0
  */
-@SuppressWarnings("nls")
-public class PersistentTypeMapAsHandler extends AbstractHandler
+public class PersistentTypeMapAsHandler
+	extends AbstractHandler
 	implements IElementUpdater
 {
 	/**
-	 * The unique identifier of the Map As command used for {@link PersistentType}
-	 * defined in the <code>JptJpaUiPlugin</code> plugin.xml.
+	 * The unique identifier of the "Map As" command used for
+	 * {@link PersistentType}(s).
+	 * <p>
+	 * See <code>org.eclipse.jpt.jpa.ui/plugin.xml</code>.
 	 */
-	public static final String COMMAND_ID = "org.eclipse.jpt.jpa.ui.persistentTypeMapAs";
-	
+	public static final String COMMAND_ID = "org.eclipse.jpt.jpa.ui.persistentTypeMapAs"; //$NON-NLS-1$
+
 	/**
-	 * The unique identifier of the Map As command parameter used for {@link PersistentType}
-	 * defined in the <code>JptJpaUiPlugin</code> plugin.xml.
+	 * The unique identifier of the "Map As" command parameter used for
+	 * {@link PersistentType}(s).
+	 * <p>
+	 * See <code>org.eclipse.jpt.jpa.ui/plugin.xml</code>.
 	 */
-	public static final String COMMAND_PARAMETER_ID = "persistentTypeMappingKey";
-	
-	
+	public static final String COMMAND_PARAMETER_ID = "persistentTypeMappingKey"; //$NON-NLS-1$
+
+
 	/**
-	 * Creates a new <code>PersistentTypeMapAsHandler</code>.
+	 * Default constructor.
 	 */
 	public PersistentTypeMapAsHandler() {
 		super();
 	}
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-
-		// Retrieve the selection from the ExecutionEvent
-		IStructuredSelection selection = (IStructuredSelection)
-			HandlerUtil.getCurrentSelectionChecked(event);
-
-		// Retrieve the value of the unique parameter passed to the command
+		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getCurrentSelectionChecked(event);
 		String mappingKey = event.getParameter(COMMAND_PARAMETER_ID);
-
-		// Change the mapping key for all the selected items
-		for (Object item : selection.toArray()) {
+		Object[] items = selection.toArray();
+		for (Object item : items) {
 			PersistentType type = (PersistentType) item;
 			type.setMappingKey(mappingKey);
 		}
-
+		this.setJpaSelection(items);
 		return null;
 	}
-	
-	@SuppressWarnings("unchecked")
-	public void updateElement(UIElement element, Map parameters) {
+
+	/**
+	 * @see PersistentAttributeMapAsHandler#setJpaSelection(Object[])
+	 */
+	private void setJpaSelection(Object[] items) {
+		if (items.length == 1) {
+			JpaSelectionManager mgr = this.getJpaSelectionManager();
+			mgr.setSelection(null);
+			mgr.setSelection((PersistentType) items[0]);
+		}
+	}
+
+	private JpaSelectionManager getJpaSelectionManager() {
+		return PlatformTools.getAdapter(PlatformUI.getWorkbench(), JpaSelectionManager.class);
+	}
+
+	public void updateElement(UIElement element, @SuppressWarnings("rawtypes") Map parameters) {
 		// Retrieve the selection for the UIElement
-		
-		// Due to Bug 226746, we have to use API workaround to retrieve current 
+
+		// Due to Bug 226746, we have to use API workaround to retrieve current
 		// selection
-		IEvaluationService es 
+		IEvaluationService es
 			= (IEvaluationService) element.getServiceLocator().getService(IEvaluationService.class);
-		IViewPart part = 
+		IViewPart part =
 			(IViewPart) es.getCurrentState().getVariable(ISources.ACTIVE_PART_NAME);
-		IStructuredSelection selection 
+		IStructuredSelection selection
 			= (IStructuredSelection) part.getSite().getSelectionProvider().getSelection();
-		
-		String commonMappingKey = commonMappingKey(selection);
-		
+
+		String commonMappingKey = this.commonMappingKey(selection);
+
 		String handlerMappingKey = (String) parameters.get(COMMAND_PARAMETER_ID);
 		if (handlerMappingKey != null) {
 			element.setChecked(handlerMappingKey.equals(commonMappingKey));
 		}
 	}
-	
-	@SuppressWarnings("unchecked")
+
 	protected String commonMappingKey(IStructuredSelection selection) {
 		String commonKey = null;
-		for (Iterator stream = selection.iterator(); stream.hasNext(); ) {
-			Object obj = stream.next();
-			
-			if (! (obj instanceof PersistentType)) {
+		for (Object obj : selection.toArray()) {
+			if ( ! (obj instanceof PersistentType)) {
 				return null;
 			}
-			
+
 			PersistentType persistentType = (PersistentType) obj;
-			
 			if (commonKey == null) {
 				commonKey = persistentType.getMappingKey();
 			}
