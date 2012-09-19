@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -86,7 +86,7 @@ final class SourceMethod
 	public void initialize(MethodDeclaration methodDeclaration) {
 		super.initialize(methodDeclaration);
 		IMethodBinding binding = methodDeclaration.resolveBinding();
-		this.initialize(binding.getReturnType());
+		this.initialize(binding == null ? null : binding.getReturnType());
 		this.initialize(binding);
 		
 	}
@@ -117,7 +117,7 @@ final class SourceMethod
 	public void synchronizeWith(MethodDeclaration methodDeclaration) {
 		super.synchronizeWith(methodDeclaration);
 		IMethodBinding binding = methodDeclaration.resolveBinding();
-		this.synchronizeWith(binding.getReturnType());
+		this.synchronizeWith(binding == null ? null : binding.getReturnType());
 		this.synchronizeWith(binding);
 	}
 
