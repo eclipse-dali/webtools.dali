@@ -5,32 +5,74 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Element collection mapping</title>
+<title>Basic mapping</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-13T10:27:39Z" />
+<meta name="date" content="2012-09-19T13:27:57Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Element collection mapping" />
+<meta name="doctitle" content="Basic mapping" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-13</p>
-<p><a id="CIHHJEBJ" name="CIHHJEBJ"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
+<p><a id="BABBABCE" name="BABBABCE"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
-<h1>Element collection mapping<a id="sthref178" name="sthref178"></a><a id="sthref179" name="sthref179"></a><a id="sthref180" name="sthref180"></a></h1>
-<p>To create an element collection mapping:</p>
+<h1>Basic mapping</h1>
+<p><a id="sthref183" name="sthref183"></a><a id="sthref184" name="sthref184"></a><a id="sthref185" name="sthref185"></a><a id="sthref186" name="sthref186"></a>Use a <span class="bold">Basic Mapping</span> to map an attribute directly to a database column. Basic mappings may be used only with the following attribute types:</p>
+<ul>
+<li>
+<p>Java primitive types and wrappers of the primitive types</p>
+</li>
+<li>
+<p><code>java.lang.String, java.math.BigInteger</code></p>
+</li>
+<li>
+<p><code>java.math.BigDecimal</code></p>
+</li>
+<li>
+<p><code>java.util.Date</code></p>
+</li>
+<li>
+<p><code>java.util.Calendar, java.sql.Date</code></p>
+</li>
+<li>
+<p><code>java.sql.Time</code></p>
+</li>
+<li>
+<p><code>java.sql.Timestamp</code></p>
+</li>
+<li>
+<p><code>byte[]</code></p>
+</li>
+<li>
+<p><code>Byte[]</code></p>
+</li>
+<li>
+<p><code>char[]</code></p>
+</li>
+<li>
+<p><code>Character[]</code></p>
+</li>
+<li>
+<p>enums</p>
+</li>
+<li>
+<p>any other type that implements <code>Serializable</code></p>
+</li>
+</ul>
+<p>To create a basic mapping:</p>
 <ol>
 <li>
-<p>In the <a href="ref_persistence_outline.htm#BABEGGFE">JPA Structure view</a>, right-click the field to map. Select <span class="bold">Map As &gt; Element Collection</span>. The <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a> displays the properties for the selected field.</p>
-<div class="figure"><a id="sthref181" name="sthref181"></a>
-<p class="titleinfigure">JPA Details, Element collection mapping</p>
-<img src="img/jpa_details_elementcollection.png" alt="PA Details, Element collection mapping" title="PA Details, Element collection mapping" /><br /></div>
+<p>In the <a href="ref_persistence_outline.htm#BABEGGFE">JPA Structure view</a>, right-click the field to map. Select <span class="bold">Map As &gt; Basic</span>. The <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a> displays the properties for the selected field.</p>
+<div class="figure"><a id="sthref187" name="sthref187"></a>
+<p class="titleinfigure">JPA Details, Basic mapping</p>
+<img src="img/jpa_details_basic.png" alt="PA Details, Basic mapping" title="PA Details, Basic mapping" /><br /></div>
 <!-- class="figure" --></li>
 <li>
-<p>Complete each field in the <a href="reference026.htm#CACBCGDI">Element Collection Mapping</a> area.</p>
+<p>Complete each field in the <a href="reference029.htm#CACCGGCG">Basic Mapping</a> area.</p>
 </li>
 <li>
 <p>Complete the remaining areas in the <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a>.</p>
@@ -38,18 +80,19 @@
 </ol>
 <p>Eclipse adds the following annotations to the field:</p>
 <pre xml:space="preserve" class="oac_no_warn">
-
-
-
+@Column(name="<span class="italic">&lt;COLUMN_NAME&gt;</span>", table="<span class="italic">&lt;COLUMN_TABLE&gt;</span>", 
+    insertable=<span class="italic">&lt;INSERTABLE&gt;</span>, updatable=<span class="italic">&lt;UPDATABLE&gt;</span>)
+@Basic(fetch=FetchType.<span class="italic">&lt;FETCH_TYPE&gt;</span>, optional = <span class="italic">&lt;OPTIONAL&gt;</span>)
+@Temporal(TemporalType.<span class="italic">&lt;TEMPORAL&gt;</span>)
 </pre>
-<a id="sthref182" name="sthref182"></a>
+<a id="sthref188" name="sthref188"></a>
 <p class="subhead2">Related tasks</p>
 <ul>
 <li>
 <p><a href="task_mapping.htm#BABDGBIJ">Mapping an entity</a></p>
 </li>
 </ul>
-<a id="sthref183" name="sthref183"></a>
+<a id="sthref189" name="sthref189"></a>
 <p class="subhead2">Related references</p>
 <ul>
 <li>
@@ -59,7 +102,7 @@
 <p><a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a></p>
 </li>
 </ul>
-<a id="sthref184" name="sthref184"></a>
+<a id="sthref190" name="sthref190"></a>
 <p class="subhead2">Related concepts</p>
 <ul>
 <li>

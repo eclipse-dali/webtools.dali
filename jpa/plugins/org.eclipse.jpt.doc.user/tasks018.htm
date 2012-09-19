@@ -5,64 +5,73 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>One-to-one mapping</title>
+<title>One-to-many mapping</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-13T10:27:39Z" />
+<meta name="date" content="2012-09-19T13:27:57Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="One-to-one mapping" />
+<meta name="doctitle" content="One-to-many mapping" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-13</p>
-<p><a id="BABFHBCJ" name="BABFHBCJ"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
+<p><a id="BABHGEBD" name="BABHGEBD"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
-<h1>One-to-one mapping</h1>
-<p><a id="sthref235" name="sthref235"></a><a id="sthref236" name="sthref236"></a><a id="sthref237" name="sthref237"></a><a id="sthref238" name="sthref238"></a>Use a <span class="bold">One-to-One Mapping</span> to define a relationship with one-to-many multiplicity.</p>
+<h1>One-to-many mapping</h1>
+<p><a id="sthref240" name="sthref240"></a><a id="sthref241" name="sthref241"></a><a id="sthref242" name="sthref242"></a><a id="sthref243" name="sthref243"></a>Use a <span class="bold">One-to-Many Mapping</span> to define a relationship with one-to-many multiplicity.</p>
 <ol>
 <li>
 <p>In the <a href="ref_persistence_outline.htm#BABEGGFE">JPA Structure view</a>, select the field to map.</p>
 </li>
 <li>
-<p>Right-click the field and then select <span class="bold">Map As &gt; One-to-One</span>. The <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a> displays the properties for the selected.</p>
-<div class="figure"><a id="sthref239" name="sthref239"></a>
-<p class="titleinfigure">JPA Details, One-to-one Mapping</p>
-<img src="img/jpa_details_onetoone.png" alt="JPA Details, One-to-one Mapping" title="JPA Details, One-to-one Mapping" /><br /></div>
+<p>Right-click the field and then select <span class="bold">Map As &gt; One-to-many</span>. The <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a> displays the properties for the selected.</p>
+<div class="figure"><a id="sthref244" name="sthref244"></a>
+<p class="titleinfigure">JPA Details, One-to-many Mapping</p>
+<img src="img/jpa_details_onetomany.png" alt="JPA Details, One-to-many Mapping" title="JPA Details, One-to-many Mapping" /><br /></div>
 <!-- class="figure" --></li>
 <li>
-<p>Complete each field in the <a href="reference033.htm#CACGGHDD">One-to-One Mapping</a> area.</p>
+<p>Complete each field in the <a href="reference036.htm#CACHGGHH">One-to-Many Mapping</a> area.</p>
 </li>
 <li>
 <p>Complete the remaining areas in the <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a>:</p>
 <ul>
 <li>
-<p><a href="reference039.htm#CACIJEGI">Joining Strategy</a></p>
+<p><a href="reference043.htm#CACIJEGI">Joining Strategy</a></p>
 </li>
 <li>
-<p><a href="reference040.htm#CACGHHGB">Derived Identity</a></p>
+<p><a href="reference041.htm#CACJCHJB">Converters</a></p>
+</li>
+<li>
+<p><a href="reference042.htm#CACBIJFD">Ordering</a></p>
 </li>
 </ul>
 </li>
 </ol>
 <p>Eclipse adds the following annotations to the field:</p>
 <pre xml:space="preserve" class="oac_no_warn">
-@OneToOne(targetEntity=<span class="italic">&lt;TARGET_ENTITY&gt;</span>, =Type.<span class="italic">&lt;_TYPE&gt;</span>, 
-    fetch = FetchType.<span class="italic">&lt;FETCH_TYPE&gt;</span>, mappedBy = "<span class="italic">&lt;MAPPED_BY&gt;</span>")
-@JoinColumn(name="<span class="italic">&lt;JOIN_COLUMN_NAME&gt;</span>", referencedColumnName=
-    "<span class="italic">&lt;JOIN_COLUMN_REFERENCED_COLUMN&gt;</span>", insertable = <span class="italic">&lt;INSERTABLE&gt;</span>, 
-    updatable = <span class="italic">&lt;UPDATABLE&gt;</span>)
+@OneToMany(targetEntity=<span class="italic">&lt;TARGET_ENTITY&gt;</span>)
+@Column(name="<span class="italic">&lt;COLUMN&gt;</span>")
+
+
+@OneToMany(targetEntity=<span class="italic">&lt;TARGET_ENTITY&gt;</span>.class, =Type.<span class="italic">&lt;_TYPE&gt;</span>, 
+    fetch = FetchType.<span class="italic">&lt;FETCH_TYPE&gt;</span>, mappedBy = "<span class="italic">&lt;MAPPED_BY&gt;</span>")@OrderBy("<span class="italic">&lt;ORDER_BY&gt;</span>")
+@JoinTable(name="<span class="italic">&lt;JOIN_TABLE_NAME&gt;</span>", joinColumns=@JoinColumn(name=
+    "<span class="italic">&lt;JOIN_COLUMN_NAME&gt;</span>", referencedColumnName="<span class="italic">&lt;JOIN_COLUMN_REFERENCED_COLUMN&gt;</span>"), 
+    inverseJoinColumns=@JoinColumn(name="<span class="italic">&lt;INVERSE_JOIN_COLUMN_NAME&gt;</span>", 
+    referencedColumnName="<span class="italic">&lt;INVERSE_JOIN_COLUMN_REFERENCED_COLUMN&gt;</span>"))
+
 </pre>
-<a id="sthref240" name="sthref240"></a>
+<a id="sthref245" name="sthref245"></a>
 <p class="subhead2">Related tasks</p>
 <ul>
 <li>
 <p><a href="task_mapping.htm#BABDGBIJ">Mapping an entity</a></p>
 </li>
 </ul>
-<a id="sthref241" name="sthref241"></a>
+<a id="sthref246" name="sthref246"></a>
 <p class="subhead2">Related references</p>
 <ul>
 <li>
@@ -72,7 +81,7 @@
 <p><a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a></p>
 </li>
 </ul>
-<a id="sthref242" name="sthref242"></a>
+<a id="sthref247" name="sthref247"></a>
 <p class="subhead2">Related concepts</p>
 <ul>
 <li>

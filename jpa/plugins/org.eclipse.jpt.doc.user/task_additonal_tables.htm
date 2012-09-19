@@ -8,7 +8,7 @@
 <title>Specifying additional tables</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-13T10:27:39Z" />
+<meta name="date" content="2012-09-19T13:27:56Z" />
 <meta name="robots" content="noarchive" />
 <meta name="doctitle" content="Specifying additional tables" />
 <meta name="relnum" content="Release 3.2" />
@@ -17,11 +17,11 @@
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-13</p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
 <p><a id="CIHGBIEI" name="CIHGBIEI"></a></p>
 <div class="sect1"><!-- infolevel="all" infotype="General" -->
 <h1>Specifying additional tables</h1>
-<p><a id="sthref140" name="sthref140"></a><a id="sthref141" name="sthref141"></a><a id="sthref142" name="sthref142"></a>Add a secondary table annotation to an entity if its data is split across more than one table.</p>
+<p><a id="sthref152" name="sthref152"></a><a id="sthref153" name="sthref153"></a><a id="sthref154" name="sthref154"></a>Add a secondary table annotation to an entity if its data is split across more than one table.</p>
 <p>To add a secondary table to the entity,</p>
 <ol>
 <li>
@@ -29,7 +29,7 @@
 </li>
 <li>
 <p>In the <span class="gui-object-title">JPA Details</span> view, select the <span class="gui-object-action">Secondary Tables</span> information.</p>
-<div class="figure"><a id="sthref143" name="sthref143"></a>
+<div class="figure"><a id="sthref155" name="sthref155"></a>
 <p class="titleinfigure">Specifying Secondary Tables</p>
 <img src="img/secondary_tables.png" alt="Secondary Tables area on the JPA Details view." title="Secondary Tables area on the JPA Details view." /><br /></div>
 <!-- class="figure" --></li>
@@ -57,14 +57,14 @@
 @SecondaryTable(name="NAME", catalog = "CATALOG", schema = "SCHEMA", pkJoinColumns = {@PrimaryKeyJoinColumn(name="id", referencedColumnName = "id"),@PrimaryKeyJoinColumn(name="NAME", referencedColumnName = "REFERENCED COLUMN NAME", columnDefinition = "COLUMN DEFINITION")})
 </pre></li>
 </ol>
-<a id="sthref144" name="sthref144"></a>
+<a id="sthref156" name="sthref156"></a>
 <p class="subhead2">Related reference</p>
 <ul>
 <li>
 <p><a href="task_add_persistence.htm#BABHICAI">Adding persistence to a class</a></p>
 </li>
 </ul>
-<a id="sthref145" name="sthref145"></a>
+<a id="sthref157" name="sthref157"></a>
 <p class="subhead2">Related concepts</p>
 <ul>
 <li>

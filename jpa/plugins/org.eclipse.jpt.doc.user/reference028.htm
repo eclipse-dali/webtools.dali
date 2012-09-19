@@ -5,24 +5,112 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Embedded ID Mapping</title>
+<title>Advanced</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-13T10:27:41Z" />
+<meta name="date" content="2012-09-19T13:27:59Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Embedded ID Mapping" />
+<meta name="doctitle" content="Advanced" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-13</p>
-<p><a id="CACDIDIA" name="CACDIDIA"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
+<p><a id="CACJEEDE" name="CACJEEDE"></a></p>
 <div class="sect3"><!-- infolevel="all" infotype="General" -->
-<h1>Embedded ID Mapping</h1>
+<h1>Advanced</h1>
+<p><a id="sthref482" name="sthref482"></a><a id="sthref483" name="sthref483"></a><a id="sthref484" name="sthref484"></a><a id="sthref485" name="sthref485"></a><a id="sthref486" name="sthref486"></a><a id="sthref487" name="sthref487"></a><a id="sthref488" name="sthref488"></a><a id="sthref489" name="sthref489"></a><a id="sthref490" name="sthref490"></a>Use the <span class="gui-object-title">Advanced</span> area in the <span class="gui-object-title">JPA Details</span> view to configure additional settings for an entity.</p>
+<div class="inftblhruleinformalwide">
+<table class="HRuleInformalWide" title="JPA Details view, Advanced page" summary="JPA Details view, Advanced page" dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
+<col width="16%" />
+<col width="*" />
+<col width="17%" />
+<col width="25%" />
+<thead>
+<tr align="left" valign="top">
+<th align="left" valign="bottom" id="r1c1-t33">Property</th>
+<th align="left" valign="bottom" id="r1c2-t33">Description</th>
+<th align="left" valign="bottom" id="r1c3-t33">Default</th>
+<th align="left" valign="bottom" id="r1c4-t33">Available for Entity&nbsp;Type</th>
+</tr>
+</thead>
+<tbody>
+<tr align="left" valign="top">
+<td align="left" id="r2c1-t33" headers="r1c1-t33">
+<p>Read-only</p>
+</td>
+<td align="left" headers="r2c1-t33 r1c2-t33">
+<p>Specifies if a class is read-only.</p>
+</td>
+<td align="left" headers="r2c1-t33 r1c3-t33">
+<p>False</p>
+</td>
+<td align="left" headers="r2c1-t33 r1c4-t33">
+<p><a href="tasks003.htm#BABGBIEE">Entity</a> and <a href="tasks005.htm#BABDAGCI">Mapped superclass</a></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r3c1-t33" headers="r1c1-t33">
+<p>Customizer class</p>
+</td>
+<td align="left" headers="r3c1-t33 r1c2-t33">
+<p>Specifies a class that implements <code>DescriptorCustomizer</code> and is to run against an entity's class descriptor after all metadata processing has been completed.</p>
+</td>
+<td align="left" headers="r3c1-t33 r1c3-t33">
+<p>True</p>
+</td>
+<td align="left" headers="r3c1-t33 r1c4-t33">
+<p><a href="tasks003.htm#BABGBIEE">Entity</a>, <a href="tasks004.htm#BABFEICE">Embeddable</a>, and <a href="tasks005.htm#BABDAGCI">Mapped superclass</a></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r4c1-t33" headers="r1c1-t33">
+<p>Change tracking</p>
+</td>
+<td align="left" headers="r4c1-t33 r1c2-t33">
+<p>Specifies the <code>ObjectChangePolicy</code> to use:</p>
+<ul>
+<li>
+<p><span class="bold">Attribute</span> &ndash; Objects with changed attributes will be processed in the commit process to include any changes in the results of the commit. Unchanged objects will be ignored.</p>
+</li>
+<li>
+<p><span class="bold">Object</span> &ndash; Changed objects will be processed in the commit process to include any changes in the results of the commit. Unchanged objects will be ignored.</p>
+</li>
+<li>
+<p><span class="bold">Deferred</span> &ndash; Defers all change detection to the UnitOfWork's change detection process.</p>
+</li>
+<li>
+<p><span class="bold">Auto</span> &ndash; Does not set any change tracking policy; change tracking will be determined at runtime.</p>
+</li>
+</ul>
+</td>
+<td align="left" headers="r4c1-t33 r1c3-t33">
+<p>Auto</p>
+</td>
+<td align="left" headers="r4c1-t33 r1c4-t33">
+<p><a href="tasks003.htm#BABGBIEE">Entity</a>, <a href="tasks004.htm#BABFEICE">Embeddable</a>, and <a href="tasks005.htm#BABDAGCI">Mapped superclass</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<br /></div>
+<!-- class="inftblhruleinformalwide" -->
+<a id="sthref491" name="sthref491"></a>
+<p class="subhead2">Related reference</p>
+<ul>
+<li>
+<p><a href="ref_persistence_prop_view.htm#BABFAEBB">JPA Details view (for entities)</a></p>
+</li>
+<li>
+<p>"Read Only" and "ChangeTracking" in <span class="italic">Java Persistence API (JPA) Extensions Reference for EclipseLink</span><br />
+<code><a href="http://eclipse.org/eclipselink/documentation/2.4/jpa/">http://eclipse.org/eclipselink/documentation/2.4/jpa/</a></code></p>
+</li>
+</ul>
 </div>
 <!-- class="sect3" -->
+<!-- class="sect2" -->
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">

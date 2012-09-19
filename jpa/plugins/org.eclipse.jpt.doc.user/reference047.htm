@@ -5,219 +5,174 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Customization</title>
+<title>Generators</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-13T10:27:42Z" />
+<meta name="date" content="2012-09-19T13:28:0Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Customization" />
+<meta name="doctitle" content="Generators" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
-<meta name="topic-id" content="ref_persistence_customization" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-13</p>
-<p><a id="CIAJAFEG" name="CIAJAFEG"></a><a id="ref_persistence_customization" name="ref_persistence_customization"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
+<p><a id="CIAFGAIJ" name="CIAFGAIJ"></a></p>
 <div class="sect3"><!-- infolevel="all" infotype="General" -->
-<h1>Customization</h1>
-<p><a id="sthref567" name="sthref567"></a>The following table lists the properties available in the Customization page of the <a href="ref_persistence_xmll_editor.htm#CIACCHID">persistence.xml Editor</a>.</p>
+<h1><a id="sthref566" name="sthref566"></a><a id="sthref567" name="sthref567"></a>Generators</h1>
+<p>This table lists the Generator fields available in the <span class="gui-object-title">JPA Details</span> view for the <code>orm.xml</code> file.</p>
 <div class="inftblhruleinformal">
-<table class="HRuleInformal" summary="The following table lists the properties available in the Customization page of the persistence.xml Editor." dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
-<col width="24%" />
+<table class="HRuleInformal" title="This table describes the options on the Persistence Properties view, General tab." summary="This table describes the options on the Persistence Properties view, General tab." dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
+<col width="21%" />
 <col width="*" />
 <col width="24%" />
 <thead>
 <tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t51">Property</th>
-<th align="left" valign="bottom" id="r1c2-t51">Description</th>
-<th align="left" valign="bottom" id="r1c3-t51">Default</th>
+<th align="left" valign="bottom" id="r1c1-t50">Property</th>
+<th align="left" valign="bottom" id="r1c2-t50">Description</th>
+<th align="left" valign="bottom" id="r1c3-t50">Default</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t51" headers="r1c1-t51">
-<p><span class="bold">Weaving</span></p>
+<td align="left" id="r2c1-t50" headers="r1c1-t50">
+<p><span class="bold">Generators</span></p>
 </td>
-<td align="left" headers="r2c1-t51 r1c2-t51">
-<p>Specifies if weaving of the entity classes is performed. The EclipseLink JPA persistence provider uses weaving to enhance JPA entities for such properties as lazy loading, change tracking, fetch groups, and internal optimizations. Select from the following options:</p>
-<ul>
-<li>
-<p><span class="bold">No Weaving</span></p>
-</li>
-<li>
-<p><span class="bold">Weave Dynamically</span></p>
-</li>
-<li>
-<p><span class="bold">Weave Statically</span> -- Use this option if you plan to execute your application outside of a Java EE 5 container in an environment that does not permit the use of <code>-javaagent:eclipselink.jar</code> on the JVM command line. This assumes that classes have already been statically woven. Run the static weaver on the classes before deploying them.</p>
-</li>
-</ul>
+<td align="left" headers="r2c1-t50 r1c2-t50">
+<p>Click <span class="bold">Add</span> to create a new table or sequence generator, or select an existing generator and click <span class="bold">Remove</span>, to add or remove a generator.</p>
 </td>
-<td align="left" headers="r2c1-t51 r1c3-t51">
-<p>Weave Dynamically</p>
+<td align="left" headers="r2c1-t50 r1c3-t50"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r3c1-t50" headers="r1c1-t50">
+<p><span class="bold">Sequence Generators</span></p>
+</td>
+<td align="left" headers="r3c1-t50 r1c2-t50"><br /></td>
+<td align="left" headers="r3c1-t50 r1c3-t50"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r4c1-t50" headers="r1c1-t50">
+<p>Name</p>
+</td>
+<td align="left" headers="r4c1-t50 r1c2-t50"><br /></td>
+<td align="left" headers="r4c1-t50 r1c3-t50"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r5c1-t50" headers="r1c1-t50">
+<p>Sequence</p>
+</td>
+<td align="left" headers="r5c1-t50 r1c2-t50"><br /></td>
+<td align="left" headers="r5c1-t50 r1c3-t50"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r6c1-t50" headers="r1c1-t50">
+<p>Schema</p>
+</td>
+<td align="left" headers="r6c1-t50 r1c2-t50"><br /></td>
+<td align="left" headers="r6c1-t50 r1c3-t50"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r7c1-t50" headers="r1c1-t50">
+<p>Catalog</p>
+</td>
+<td align="left" headers="r7c1-t50 r1c2-t50"><br /></td>
+<td align="left" headers="r7c1-t50 r1c3-t50"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r8c1-t50" headers="r1c1-t50">
+<p>Allocation size</p>
+</td>
+<td align="left" headers="r8c1-t50 r1c2-t50"><br /></td>
+<td align="left" headers="r8c1-t50 r1c3-t50">
+<p>50</p>
 </td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r3c1-t51" headers="r1c1-t51">
-<p>Lazy</p>
+<td align="left" id="r9c1-t50" headers="r1c1-t50">
+<p>Initial value</p>
 </td>
-<td align="left" headers="r3c1-t51 r1c2-t51">
-<p>Select this option to enable lazy weaving.</p>
-</td>
-<td align="left" headers="r3c1-t51 r1c3-t51">
-<p>True</p>
+<td align="left" headers="r9c1-t50 r1c2-t50"><br /></td>
+<td align="left" headers="r9c1-t50 r1c3-t50">
+<p>1</p>
 </td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r4c1-t51" headers="r1c1-t51">
-<p>Fetch Groups</p>
+<td align="left" id="r10c1-t50" headers="r1c1-t50">
+<p><span class="bold">Table Generators</span></p>
 </td>
-<td align="left" headers="r4c1-t51 r1c2-t51">
-<p>Select this option to enable fetch groups through weaving. Set this option to false if:</p>
-<ul>
-<li>
-<p>There is no weaving.</p>
-</li>
-<li>
-<p>Classes should not be changed during weaving (for example, when debugging).</p>
-</li>
-</ul>
-<p>Set this property to false for platforms where it is not supported.</p>
+<td align="left" headers="r10c1-t50 r1c2-t50"><br /></td>
+<td align="left" headers="r10c1-t50 r1c3-t50"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r11c1-t50" headers="r1c1-t50">
+<p>Name</p>
 </td>
-<td align="left" headers="r4c1-t51 r1c3-t51">
-<p>True</p>
+<td align="left" headers="r11c1-t50 r1c2-t50"><br /></td>
+<td align="left" headers="r11c1-t50 r1c3-t50"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r12c1-t50" headers="r1c1-t50">
+<p>Table</p>
+</td>
+<td align="left" headers="r12c1-t50 r1c2-t50"><br /></td>
+<td align="left" headers="r12c1-t50 r1c3-t50"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r13c1-t50" headers="r1c1-t50">
+<p>Schema</p>
+</td>
+<td align="left" headers="r13c1-t50 r1c2-t50"><br /></td>
+<td align="left" headers="r13c1-t50 r1c3-t50"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r14c1-t50" headers="r1c1-t50">
+<p>Catalog</p>
+</td>
+<td align="left" headers="r14c1-t50 r1c2-t50"><br /></td>
+<td align="left" headers="r14c1-t50 r1c3-t50"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r15c1-t50" headers="r1c1-t50">
+<p>Primary key column value</p>
+</td>
+<td align="left" headers="r15c1-t50 r1c2-t50"><br /></td>
+<td align="left" headers="r15c1-t50 r1c3-t50"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r16c1-t50" headers="r1c1-t50">
+<p>Allocation size</p>
+</td>
+<td align="left" headers="r16c1-t50 r1c2-t50"><br /></td>
+<td align="left" headers="r16c1-t50 r1c3-t50">
+<p>50</p>
 </td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r5c1-t51" headers="r1c1-t51">
-<p>Internal</p>
+<td align="left" id="r17c1-t50" headers="r1c1-t50">
+<p>Initial value</p>
 </td>
-<td align="left" headers="r5c1-t51 r1c2-t51">
-<p>Specify if Dali uses internal optimizations through weaving.</p>
-<p>If enabled, enables lazy one-to-one and many-to-one mappings through weaving.</p>
-</td>
-<td align="left" headers="r5c1-t51 r1c3-t51">
-<p>True</p>
-</td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r6c1-t51" headers="r1c1-t51">
-<p>Eager</p>
-</td>
-<td align="left" headers="r6c1-t51 r1c2-t51">
-<p>Specify if Dali uses indirection on eager relationships.</p>
-</td>
-<td align="left" headers="r6c1-t51 r1c3-t51">
-<p>False</p>
-</td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r7c1-t51" headers="r1c1-t51">
-<p>Change&nbsp;Tracking</p>
-</td>
-<td align="left" headers="r7c1-t51 r1c2-t51">
-<p>Select this option to use weaving to detect which fields or properties of the object change.</p>
-</td>
-<td align="left" headers="r7c1-t51 r1c3-t51">
-<p>True</p>
-</td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r8c1-t51" headers="r1c1-t51">
-<p><span class="bold">Validation only</span></p>
-</td>
-<td align="left" headers="r8c1-t51 r1c2-t51">
-<p>Specify if Dali should validate deployments by initializing descriptors but not connecting to the data source.</p>
-</td>
-<td align="left" headers="r8c1-t51 r1c3-t51">
-<p>True</p>
-</td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r9c1-t51" headers="r1c1-t51">
-<p><span class="bold">Mapping files schema validation</span></p>
-</td>
-<td align="left" headers="r9c1-t51 r1c2-t51"><br /></td>
-<td align="left" headers="r9c1-t51 r1c3-t51">
-<p>False</p>
-</td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r10c1-t51" headers="r1c1-t51">
-<p><span class="bold">Throw&nbsp;exceptions</span></p>
-</td>
-<td align="left" headers="r10c1-t51 r1c2-t51">
-<p>Select this option to set EclipseLink to throw an exception or log a warning when it encounters a problem with any of the files listed in a <span class="bold">persistence.xml</span> file <code>&lt;mapping-file&gt;</code> element.</p>
-</td>
-<td align="left" headers="r10c1-t51 r1c3-t51">
-<p>True</p>
-</td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r11c1-t51" headers="r1c1-t51">
-<p>Exception handler</p>
-</td>
-<td align="left" headers="r11c1-t51 r1c2-t51">
-<p>Select (or create) a Java class to handle exceptions.</p>
-</td>
-<td align="left" headers="r11c1-t51 r1c3-t51"><br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r12c1-t51" headers="r1c1-t51">
-<p><span class="bold">Session Customizer</span></p>
-</td>
-<td align="left" headers="r12c1-t51 r1c2-t51">
-<p>Select a session customizer class: a Java class that implements the <code>eclipselink.tools.sessionconfiguration.SessionCustomizer</code> interface and provides a default (zero-argument) constructor. Use this class' <code>customize</code> method, which takes an <code>eclipselink.sessions.Session</code>, to programmatically access advanced EclipseLink session API.</p>
-</td>
-<td align="left" headers="r12c1-t51 r1c3-t51"><br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r13c1-t51" headers="r1c1-t51">
-<p>Profiler</p>
-</td>
-<td align="left" headers="r13c1-t51 r1c2-t51">
-<p>Specify which performance profiler to use in order to capture runtime statistics.</p>
-<ul>
-<li>
-<p>No Profiler &ndash; Do not use a performance profiler.</p>
-</li>
-<li>
-<p>Performance Profiler &ndash; Use EclipseLink performance profiler (<code>org.eclipse.persistence.tools.profiler.PerformanceProfiler class</code>).</p>
-</li>
-<li>
-<p>Query Monitor &ndash; Monitor query executions and cache hits (<code>org.eclipse.persistence.tools.profiler.QueryMonitor class</code>).</p>
-</li>
-</ul>
-</td>
-<td align="left" headers="r13c1-t51 r1c3-t51">
-<p>NoProfiler</p>
+<td align="left" headers="r17c1-t50 r1c2-t50"><br /></td>
+<td align="left" headers="r17c1-t50 r1c3-t50">
+<p>1</p>
 </td>
 </tr>
 </tbody>
 </table>
 <br /></div>
 <!-- class="inftblhruleinformal" -->
-<div align="center">
-<div class="inftblnote"><br />
-<table class="Note oac_no_warn" summary="" cellpadding="3" cellspacing="0">
-<tbody>
-<tr>
-<td align="left">
-<p class="notep1">Note:</p>
-<p>This page is not available for projects using the <span class="bold">Generic</span> platform.</p>
-</td>
-</tr>
-</tbody>
-</table>
-<br /></div>
-<!-- class="inftblnote" --></div>
 <a id="sthref568" name="sthref568"></a>
-<p class="subhead2">Related references</p>
+<p class="subhead2">Related tasks</p>
 <ul>
 <li>
-<p><span class="italic">Java Persistence API (JPA) Extensions Reference for EclipseLink</span><br />
-<code><a href="http://www.eclipse.org/eclipselink/documentation/2.4/jpa/extensions/toc.htm">http://www.eclipse.org/eclipselink/documentation/2.4/jpa/extensions/toc.htm</a></code></p>
+<p><a href="task_add_persistence.htm#BABHICAI">Adding persistence to a class</a></p>
+</li>
+</ul>
+<a id="sthref569" name="sthref569"></a>
+<p class="subhead2">Related reference</p>
+<ul>
+<li>
+<p><a href="ref_details_orm.htm#CACGDGHC">JPA Details view (for orm.xml)</a></p>
 </li>
 </ul>
 </div>

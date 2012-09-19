@@ -1,3 +1,7 @@
+/*
+CSS for Dali Java Persistence Tools User Guide
+*/ 
+
 @import url("../../../PRODUCT_PLUGIN/book.css");
 
 
@@ -5,13 +9,13 @@ span.control, span.gui-object-action, p.subhead2, span.bold, p.notep1 {
   font-weight: bold;
 }
 
-span.name, p.titleinfigure, span.italic {
+p.titleinexample, span.name, p.titleinfigure, span.italic {
   font-style: italic;
 }
 
-p.titleinfigure {font-size:0.8em; font-weight:bold;}
+p.titleinexample, p.titleinfigure {font-size:0.8em; font-weight:bold;}
 
-p.titleinfigure, p.subhead2 {
+p.titleinexample, p.titleinfigure, p.subhead2 {
   padding-top: 1em;
 }
 

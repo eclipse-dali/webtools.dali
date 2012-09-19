@@ -5,55 +5,67 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Creating queries</title>
+<title>Working with orm.xml file</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-13T10:27:39Z" />
+<meta name="date" content="2012-09-19T13:27:56Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Creating queries" />
+<meta name="doctitle" content="Working with orm.xml file" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-13</p>
-<p><a id="BABIGBGG" name="BABIGBGG"></a></p>
-<div class="sect1"><!-- infolevel="all" infotype="General" -->
-<h1>Creating queries</h1>
-<p><a id="sthref158" name="sthref158"></a><a id="sthref159" name="sthref159"></a>Named queries improve application performance because they are prepared once and they (and all of their associated supporting objects) can be efficiently reused thereafter, making them well suited for complex and frequently executed operations. Named queries use the JPA query language for portable execution on any underlying database; named native queries use the SQL language native to the underlying database.</p>
-<p>Use this procedure to add <code>@NamedQuery</code> and <code>@NamedNativeQuery</code> annotations to the entity.</p>
-<p>To create a named query:</p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
+<p><a id="CIHBCDCE" name="CIHBCDCE"></a></p>
+<div class="sect2"><!-- infolevel="all" infotype="General" -->
+<h1>Working with orm.xml file</h1>
+<p><a id="sthref146" name="sthref146"></a><a id="sthref147" name="sthref147"></a>You can work with the <code>orm.xml</code> by using the JPA Details view.</p>
+<p>Use this procedure to work with the <code>orm.xml</code> file:</p>
 <ol>
 <li>
-<p>Select the entity in the Project Explorer.</p>
+<p>Right-click the <code>orm.xml</code> file in the <span class="gui-object-title">Project Explorer</span> and select <span class="gui-object-action">Open</span>.</p>
 </li>
 <li>
-<p>In the JPA Details view, expand the <a href="reference017.htm#CACBICGJ">Queries</a> area.</p>
-<div class="figure"><a id="sthref160" name="sthref160"></a>
-<p class="titleinfigure">JPA Details, Queries Tab</p>
-<img src="img/jpa_details_query_1.png" alt="" title="" /><br /></div>
-<!-- class="figure" --></li>
-<li>
-<p>Click <span class="bold">Add</span> to add a new query. The <a href="reference066.htm#CACJIFEG">Add Query dialog</a> appears</p>
-<div class="figure"><a id="sthref161" name="sthref161"></a>
-<p class="titleinfigure">Add Query Dialog</p>
-<img src="img/add_query.png" alt="Add Query dialog" title="Add Query dialog" /><br /></div>
-<!-- class="figure" --></li>
-<li>
-<p>Enter the name of the query, select the query type (<span class="bold">Named Query</span> or <span class="bold">Named Native Query</span>), and click <span class="bold">OK</span>. The <a href="reference017.htm#CACBICGJ">Queries</a> area expands to show additional fields.</p>
-<div class="figure"><a id="sthref162" name="sthref162"></a>
-<p class="titleinfigure">JPA Details, Queries Tab</p>
-<img src="img/jpa_details_query_2.png" alt="" title="" /><br /></div>
-<!-- class="figure" --></li>
-<li>
-<p>Enter the query in the Query field.</p>
+<p>In the JPA Structure view, select <span class="bold">EntityMappings</span>.</p>
 </li>
 <li>
-<p><a id="sthref163" name="sthref163"></a><a id="sthref164" name="sthref164"></a><a id="sthref165" name="sthref165"></a><a id="sthref166" name="sthref166"></a>To add a Query hint, click <span class="bold">Add</span>.</p>
+<p>Use the JPA Details view to configure the entity mapping and persistence unit defaults.</p>
+<div class="figure"><a id="sthref148" name="sthref148"></a>
+<p class="titleinfigure">JPA Details view for EntityMappings (orm.xml)</p>
+<img src="img/details_entitymappings.png" alt="JPA Details view for orm.xml file." title="JPA Details view for orm.xml file." /><br /></div>
+<!-- class="figure" --></li>
+<li>
+<p>Complete the fields on the <a href="ref_details_orm.htm#CACGDGHC">JPA Details view (for orm.xml)</a>.</p>
 </li>
 </ol>
+<a id="sthref149" name="sthref149"></a>
+<p class="subhead2">Related reference</p>
+<ul>
+<li>
+<p><a href="ref_details_orm.htm#CACGDGHC">JPA Details view (for orm.xml)</a></p>
+</li>
+</ul>
+<a id="sthref150" name="sthref150"></a>
+<p class="subhead2">Related tasks</p>
+<ul>
+<li>
+<p><a href="#CIHBCDCE">Working with orm.xml file</a></p>
+</li>
+<li>
+<p><a href="../org.eclipse.wst.xmleditor.doc.user/topics/cworkXML.html">Working with XML Files</a></p>
+</li>
+</ul>
+<a id="sthref151" name="sthref151"></a>
+<p class="subhead2">Related concepts</p>
+<ul>
+<li>
+<p><a href="concepts003.htm#CHDBIJAC">The orm.xml file</a></p>
+</li>
+</ul>
 </div>
+<!-- class="sect2" -->
 <!-- class="sect1" -->
 <!-- Start Footer -->
 <div class="footer">

@@ -5,67 +5,116 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Converting a Java project to a JPA project</title>
+<title>Creating a new JAXB project</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-13T10:27:37Z" />
+<meta name="date" content="2012-09-19T13:27:54Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Converting a Java project to a JPA project" />
+<meta name="doctitle" content="Creating a new JAXB project" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-13</p>
-<p><a id="BEIBADHH" name="BEIBADHH"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
+<p><a id="CIHIBIJJ" name="CIHIBIJJ"></a></p>
 <div class="sect1"><!-- infolevel="all" infotype="General" -->
-<h1>Converting a Java project to a JPA project</h1>
-<p><a id="sthref45" name="sthref45"></a><a id="sthref46" name="sthref46"></a><a id="sthref47" name="sthref47"></a>Use this procedure to convert an existing Java project to a JPA project.</p>
+<h1>Creating a new JAXB project</h1>
+<p><a id="sthref45" name="sthref45"></a><a id="sthref46" name="sthref46"></a>Use this procedure to create a new JPA project.</p>
 <ol>
 <li>
-<p>From the Navigator or Project explorer, right-click the Java project and then select <span class="bold">Configure &gt; Convert to JPA Project.</span> The Project Facets page of the Modify Faceted Project wizard appears.</p>
-<div class="figure"><a id="sthref48" name="sthref48"></a>
-<p class="titleinfigure">Modify Faceted Project Page</p>
-<img src="img/modify_faceted_project.png" alt="" title="" /><br /></div>
+<p>From the Navigator or Project Explorer, select <span class="bold">File &gt; New &gt; Project</span>. The Select a wizard dialog appears.</p>
+<div align="center">
+<div class="inftblnotealso"><br />
+<table class="NoteAlso oac_no_warn" summary="" cellpadding="3" cellspacing="0">
+<tbody>
+<tr>
+<td align="left">
+<p class="notep1">Tip:</p>
+<p>You can also select the JPA perspective and then select <span class="bold">File &gt; New &gt; JAXB Project</span>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<br /></div>
+<!-- class="inftblnotealso" --></div>
+<div class="figure"><a id="sthref47" name="sthref47"></a>
+<p class="titleinfigure"><a id="sthref48" name="sthref48"></a>Selecting the Create a JAXB Project wizard</p>
+<img src="img/select_a_wizard_jaxb_project.png" alt="The Select a Wizard dialog with JPA project selected." title="The Select a Wizard dialog with JPA project selected." /><br /></div>
 <!-- class="figure" --></li>
 <li>
-<p>Change the <span class="bold">Configuration</span> to <span class="bold">Default JPA Configuration</span>.</p>
-</li>
-<li>
-<p>Click <span class="bold">Next</span>. The Java source page appears (see <a href="task_create_new_project.htm#CIHIFEGJ">Figure: The Java Source Page</a>).</p>
-</li>
-<li>
-<p>Click <span class="bold">Add Folder</span> to add existing Java source files to the project and click <span class="bold">Next</span>. The <a href="ref_jpa_facet.htm#CACIFDIF">JPA Facet page</a> appears.</p>
+<p>Select <span class="bold">JAXB Project</span> and then click <span class="bold">Next</span>. The <a href="reference011.htm#CACHFJFI">New JAXB Project page</a> appears.</p>
 <div class="figure"><a id="sthref49" name="sthref49"></a>
-<p class="titleinfigure">JPA Facet Page</p>
-<img src="img/new_jpa_facet_task.png" alt="" title="" /><br /></div>
+<p class="titleinfigure"><a id="sthref50" name="sthref50"></a>The JAXB Project Page</p>
+<img src="img/new_jaxb_project_task.png" alt="The JPA Project page of the Create a JPA Project wizard." title="The JPA Project page of the Create a JPA Project wizard." /><br /></div>
 <!-- class="figure" --></li>
 <li>
-<p>Complete the fields on the <a href="ref_jpa_facet.htm#CACIFDIF">JPA Facet page</a> to specify your vender-specific platform, JPA implementation library, and database connection.</p>
-<p>Click <span class="bold">Manage libraries</span> to create or update your JPA user libraries. Click <span class="bold">Download libraries</span> to obtain additional JPA implementation libraries.</p>
-<p>If Dali derives the incorrect schema, select <span class="bold">Override the Default Schema for Connection</span>. Using this option, you can select a development time schema for defaults and validation.</p>
-<p>If you clear the <span class="bold">Create mapping file (orm.xml)</span> option (which is selected by default), you can later add a mapping file to the project using the <a href="reference007.htm#CIAIJCCE">Create ORM Mapping File wizard</a>.</p>
+<p>Complete the fields on the <a href="reference011.htm#CACHFJFI">New JAXB Project page</a> to specify the project name and location, target runtime, and pre-defined configuration.</p>
+<div align="center">
+<div class="inftblnote"><br />
+<table class="Note oac_no_warn" summary="" cellpadding="3" cellspacing="0">
+<tbody>
+<tr>
+<td align="left">
+<p class="notep1">Note:</p>
+<p>The Target Runtime is not required for Java SE development.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<br /></div>
+<!-- class="inftblnote" --></div>
 </li>
 <li>
-<p>Click <span class="bold">Finish</span>.</p>
+<p>Click <span class="bold">Next</span>. The Java source page appears.</p>
+<div class="figure"><a id="sthref51" name="sthref51"></a>
+<p class="titleinfigure">The Java Source Page</p>
+<img src="img/new_jpa_project_source.png" alt="The JPA Facet page of the Create a JPA Project wizard." title="The JPA Facet page of the Create a JPA Project wizard." /><br /></div>
+<!-- class="figure" --></li>
+<li>
+<p>Click <span class="bold">Add Folder</span> to add existing Java source files to the project.</p>
+</li>
+<li>
+<p>Click <span class="bold">Next</span>. <a href="reference013.htm#CACJGDEF">JAXB Facet page</a> appears.</p>
+<div class="figure"><a id="sthref52" name="sthref52"></a>
+<p class="titleinfigure"><a id="sthref53" name="sthref53"></a>The JAXB Facet Page</p>
+<img src="img/new_jaxb_facet_task.png" alt="The JPA Facet page of the Create a JPA Project wizard." title="The JPA Facet page of the Create a JPA Project wizard." /><br /></div>
+<!-- class="figure" --></li>
+<li>
+<p>Complete the fields on the <a href="reference013.htm#CACJGDEF">JAXB Facet page</a> to specify your vender-specific platform, JPA implementation library, and database connection.</p>
+<p>Click <span class="bold">Manage libraries</span> to create or update your JPA user libraries. Click <span class="bold">Download libraries</span> to obtain additional JPA implementation libraries.</p>
+<div align="center">
+<div class="inftblnote"><br />
+<table class="Note oac_no_warn" summary="" cellpadding="3" cellspacing="0">
+<tbody>
+<tr>
+<td align="left">
+<p class="notep1">Note:</p>
+<p>Depending on your JAXB implementation (for example, Generic or EclipseLink), different options may be available when creating JAXB projects.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<br /></div>
+<!-- class="inftblnote" --></div>
+</li>
+<li>
+<p>Click <span class="bold">Finish</span>. Dali creates the new JAXB project.</p>
+<p>You should now open the <a href="ref_persistence_perspective.htm#BABIFBDB">JPA Development perspective</a>.</p>
 </li>
 </ol>
-<p>The Dali OR Mapping Tool adds the JPA implementation libraries to your project and creates the necessary <code>orm.xml</code> and <code>perisistence.xml</code> files.</p>
-<a id="sthref50" name="sthref50"></a>
+<a id="sthref54" name="sthref54"></a>
 <p class="subhead2">Related reference</p>
 <ul>
 <li>
-<p><a href="ref_new_jpa_project_wizard.htm#CACBJGBG">Create New JPA Project wizard</a></p>
+<p><a href="reference010.htm#CACIEJDJ">Create New JAXB Project wizard</a></p>
 </li>
 <li>
 <p><a href="ref_persistence_perspective.htm#BABIFBDB">JPA Development perspective</a></p>
 </li>
-<li>
-<p><a href="reference007.htm#CIAIJCCE">Create ORM Mapping File wizard</a></p>
-</li>
 </ul>
-<a id="sthref51" name="sthref51"></a>
+<a id="sthref55" name="sthref55"></a>
 <p class="subhead2">Related tasks</p>
 <ul>
 <li>
@@ -75,10 +124,10 @@
 <p><a href="task_add_persistence.htm#BABHICAI">Adding persistence to a class</a></p>
 </li>
 <li>
-<p><a href="task_create_new_project.htm#CIHHEJCJ">Creating a new JPA project</a></p>
+<p><a href="tasks002.htm#BEIBADHH">Converting a Java project to a JPA project</a></p>
 </li>
 </ul>
-<a id="sthref52" name="sthref52"></a>
+<a id="sthref56" name="sthref56"></a>
 <p class="subhead2">Related concepts</p>
 <ul>
 <li>

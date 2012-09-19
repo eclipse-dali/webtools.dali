@@ -5,99 +5,133 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Entity Mappings</title>
+<title>Converters</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-13T10:27:42Z" />
+<meta name="date" content="2012-09-19T13:27:59Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Entity Mappings" />
+<meta name="doctitle" content="Converters" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-13</p>
-<p><a id="CACCACGH" name="CACCACGH"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
+<p><a id="CACJCHJB" name="CACJCHJB"></a></p>
 <div class="sect3"><!-- infolevel="all" infotype="General" -->
-<h1>Entity Mappings</h1>
-<p>This table lists the Entity Mappings fields available in the <span class="gui-object-title">JPA Details</span> view for each entity type.</p>
-<div class="inftblhruleinformal">
-<table class="HRuleInformal" title="This table describes the options on the Persistence Properties view, General tab." summary="This table describes the options on the Persistence Properties view, General tab." dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
-<col width="21%" />
+<h1><a id="sthref539" name="sthref539"></a><a id="sthref540" name="sthref540"></a>Converters</h1>
+<div class="inftblhruleinformalwide">
+<table class="HRuleInformalWide" title="JPA Details view, Advanced page" summary="JPA Details view, Advanced page" dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
+<col width="16%" />
 <col width="*" />
-<col width="22%" />
+<col width="17%" />
+<col width="25%" />
 <thead>
 <tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t45">Property</th>
-<th align="left" valign="bottom" id="r1c2-t45">Description</th>
-<th align="left" valign="bottom" id="r1c3-t45">Default</th>
+<th align="left" valign="bottom" id="r1c1-t43">Property</th>
+<th align="left" valign="bottom" id="r1c2-t43">Description</th>
+<th align="left" valign="bottom" id="r1c3-t43">Default</th>
+<th align="left" valign="bottom" id="r1c4-t43">Available for Entity&nbsp;Type</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t45" headers="r1c1-t45">
-<p>Package</p>
+<td align="left" id="r2c1-t43" headers="r1c1-t43">
+<p>Converters</p>
 </td>
-<td align="left" headers="r2c1-t45 r1c2-t45">
-<p>The Java package that contains the persistent entities. Click <span class="bold">Browse</span> and select the package</p>
-</td>
-<td align="left" headers="r2c1-t45 r1c3-t45"><br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r3c1-t45" headers="r1c1-t45">
-<p>Schema</p>
-</td>
-<td align="left" headers="r3c1-t45 r1c2-t45">
-<p>The database schema that contains the <span class="bold">Table</span>.</p>
-<p>This field corresponds to the <code>&lt;schema&gt;</code> element in the <code>orm.xml</code> file.</p>
-</td>
-<td align="left" headers="r3c1-t45 r1c3-t45"><br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r4c1-t45" headers="r1c1-t45">
-<p>Catalog</p>
-</td>
-<td align="left" headers="r4c1-t45 r1c2-t45">
-<p>The database catalog that contains the <span class="bold">Table</span>.</p>
-<p>This field corresponds to the <code>&lt;catalog&gt;</code> element in the <code>orm.xml</code> file.</p>
-</td>
-<td align="left" headers="r4c1-t45 r1c3-t45"><br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r5c1-t45" headers="r1c1-t45">
-<p>Access</p>
-</td>
-<td align="left" headers="r5c1-t45 r1c2-t45">
-<p>Specify the default access method for the variables in the project:</p>
+<td align="left" headers="r2c1-t43 r1c2-t43">
+<p>Click Add and use the <a href="ref_add_converter.htm#CIAGCGIJ">Add Converter dialog</a> to create a new converter.</p>
 <ul>
 <li>
-<p>Property</p>
+<p>Object Type</p>
 </li>
 <li>
-<p>Field</p>
+<p>Type</p>
+</li>
+<li>
+<p>Struct</p>
+</li>
+<li>
+<p>Custom</p>
 </li>
 </ul>
-<p>This field corresponds to the <code>&lt;access&gt;</code> element in the <code>orm.xml</code> file.</p>
 </td>
-<td align="left" headers="r5c1-t45 r1c3-t45"><br /></td>
+<td align="left" headers="r2c1-t43 r1c3-t43"><br /></td>
+<td align="left" headers="r2c1-t43 r1c4-t43">
+<p><a href="tasks011.htm#BABBABCE">Basic mapping</a>, <a href="tasks012.htm#CIHHJEBJ">Element collection mapping</a>, <a href="tasks015.htm#BABGCBHG">ID mapping</a>, <a href="tasks016.htm#BABEIEGD">Many-to-many mapping</a>, <a href="tasks018.htm#BABHGEBD">One-to-many mapping</a>, and <a href="tasks021.htm#BABHIBII">Version mapping</a></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r3c1-t43" headers="r1c1-t43">
+<p>Name</p>
+</td>
+<td align="left" headers="r3c1-t43 r1c2-t43">
+<p>Name of the converter.</p>
+</td>
+<td align="left" headers="r3c1-t43 r1c3-t43"><br /></td>
+<td align="left" headers="r3c1-t43 r1c4-t43"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r4c1-t43" headers="r1c1-t43">
+<p>Class</p>
+</td>
+<td align="left" headers="r4c1-t43 r1c2-t43">
+<p>Appears for <span class="bold">Custom</span> and <span class="bold">Struct</span> converters only.</p>
+</td>
+<td align="left" headers="r4c1-t43 r1c3-t43"><br /></td>
+<td align="left" headers="r4c1-t43 r1c4-t43"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r5c1-t43" headers="r1c1-t43">
+<p>Data type</p>
+</td>
+<td align="left" headers="r5c1-t43 r1c2-t43">
+<p>Appears for <span class="bold">Object Type</span> and <span class="bold">Type</span> converters only.</p>
+</td>
+<td align="left" headers="r5c1-t43 r1c3-t43"><br /></td>
+<td align="left" headers="r5c1-t43 r1c4-t43"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r6c1-t43" headers="r1c1-t43">
+<p>Object type</p>
+</td>
+<td align="left" headers="r6c1-t43 r1c2-t43">
+<p>Appears for <span class="bold">Object Type</span> and <span class="bold">Type</span> converters only.</p>
+</td>
+<td align="left" headers="r6c1-t43 r1c3-t43"><br /></td>
+<td align="left" headers="r6c1-t43 r1c4-t43"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r7c1-t43" headers="r1c1-t43">
+<p>Conversion values</p>
+</td>
+<td align="left" headers="r7c1-t43 r1c2-t43">
+<p>Appears for <span class="bold">Object Type</span> converters only.</p>
+</td>
+<td align="left" headers="r7c1-t43 r1c3-t43"><br /></td>
+<td align="left" headers="r7c1-t43 r1c4-t43"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r8c1-t43" headers="r1c1-t43">
+<p>Default object value</p>
+</td>
+<td align="left" headers="r8c1-t43 r1c2-t43">
+<p>Appears for <span class="bold">Object Type</span> converters only.</p>
+</td>
+<td align="left" headers="r8c1-t43 r1c3-t43"><br /></td>
+<td align="left" headers="r8c1-t43 r1c4-t43"><br /></td>
 </tr>
 </tbody>
 </table>
 <br /></div>
-<!-- class="inftblhruleinformal" -->
-<a id="sthref533" name="sthref533"></a>
-<p class="subhead2">Related tasks</p>
-<ul>
-<li>
-<p><a href="task_add_persistence.htm#BABHICAI">Adding persistence to a class</a></p>
-</li>
-</ul>
-<a id="sthref534" name="sthref534"></a>
+<!-- class="inftblhruleinformalwide" -->
+<a id="sthref541" name="sthref541"></a>
 <p class="subhead2">Related reference</p>
 <ul>
 <li>
-<p><a href="ref_persistence_prop_view.htm#BABFAEBB">JPA Details view (for entities)</a></p>
+<p>"Converter" in <span class="italic">Java Persistence API (JPA) Extensions Reference for EclipseLink</span><br />
+<code><a href="http://eclipse.org/eclipselink/documentation/2.4/jpa/extensions/a_converter.htm">http://eclipse.org/eclipselink/documentation/2.4/jpa/extensions/a_converter.htm</a></code></p>
 </li>
 </ul>
 </div>

@@ -5,26 +5,26 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Edit Join Columns Dialog</title>
+<title>Project Properties page &ndash; EclipseLink</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-13T10:27:42Z" />
+<meta name="date" content="2012-09-19T13:28:0Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Edit Join Columns Dialog" />
+<meta name="doctitle" content="Project Properties page &ndash; EclipseLink" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-13</p>
-<p><a id="CACCGEHC" name="CACCGEHC"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
+<p><a id="CACFJJGG" name="CACFJJGG"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
-<h1>Edit Join Columns Dialog</h1>
-<p><a id="sthref612" name="sthref612"></a>Use the <span class="gui-object-title">Join Columns</span> dialog to create or modify the join tables and columns in relationship mappings.</p>
-<p>This table lists the properties available in the <span class="gui-object-title">Join Columns</span> dialog.</p>
-<div class="inftblhruleinformal">
-<table class="HRuleInformal" title="This table describes the options on the Join Columns dialog." summary="This table describes the options on the Join Columns dialog." dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
+<h1>Project Properties page &ndash; EclipseLink <a id="sthref631" name="sthref631"></a><a id="sthref632" name="sthref632"></a></h1>
+<p>Use the <span class="gui-object-title">EclipseLink</span> options on the <span class="gui-object-title">Properties</span> page to select the EclipseLink-specific options to use with the project.</p>
+<p>This table lists the properties available in the <span class="gui-object-title">EclipseLink page</span>.</p>
+<div class="inftblinformal">
+<table class="Informal" title="Options on the Project Properties page &gt; EclipseLink" summary="Options on the Project Properties page &gt; EclipseLink" dir="ltr" border="1" width="100%" frame="hsides" rules="groups" cellpadding="3" cellspacing="0">
 <col width="32%" />
 <col width="*" />
 <thead>
@@ -36,29 +36,60 @@
 <tbody>
 <tr align="left" valign="top">
 <td align="left" id="r2c1-t67" headers="r1c1-t67">
-<p>Name</p>
+<p><span class="bold">Static weaving</span></p>
 </td>
-<td align="left" headers="r2c1-t67 r1c2-t67">
-<p>Name of the joint table column that contains the foreign key column.</p>
-</td>
+<td align="left" headers="r2c1-t67 r1c2-t67"><br /></td>
 </tr>
 <tr align="left" valign="top">
 <td align="left" id="r3c1-t67" headers="r1c1-t67">
-<p>Referenced Column Name</p>
+<p>Weave classes on build</p>
 </td>
 <td align="left" headers="r3c1-t67 r1c2-t67">
-<p>Name of the database column that contains the foreign key reference for the entity relationship.</p>
+<p>If enabled, Dali will weave all applicable class files at build time so that you can deliver pre-woven class files.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r4c1-t67" headers="r1c1-t67">
+<p>Source classes</p>
+</td>
+<td align="left" headers="r4c1-t67 r1c2-t67">
+<p>Specifies the location of the Java source files to weave: either a directory or a JAR file.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r5c1-t67" headers="r1c1-t67">
+<p>Target classes</p>
+</td>
+<td align="left" headers="r5c1-t67 r1c2-t67">
+<p>Specifies the output location: either a directory or a JAR file.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r6c1-t67" headers="r1c1-t67">
+<p>Log level</p>
+</td>
+<td align="left" headers="r6c1-t67 r1c2-t67">
+<p>Specifies the amount and detail of log output. See <a href="reference053.htm#CIABGHHI">"Logging"</a> for information on the different logging levels.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r7c1-t67" headers="r1c1-t67">
+<p>Persistence XML root</p>
+</td>
+<td align="left" headers="r7c1-t67 r1c2-t67">
+<p>Specifies the location of the persistence.xml file if it is not in the same location as the source.</p>
 </td>
 </tr>
 </tbody>
 </table>
 <br /></div>
-<!-- class="inftblhruleinformal" -->
-<a id="sthref613" name="sthref613"></a>
-<p class="subhead2">Related reference</p>
+<!-- class="inftblinformal" -->
+<a id="sthref633" name="sthref633"></a>
+<p class="subhead2">Related References</p>
 <ul>
 <li>
-<p><a href="reference039.htm#CACIJEGI">Joining Strategy</a></p>
+<p><span class="italic">Java Persistence API (JPA) Extensions Reference for EclipseLink</span>&nbsp;<br />
+<code><a href="http://www.eclipse.org/eclipselink/documentation/">http://www.eclipse.org/eclipselink/documentation/</a></code></p>
 </li>
 </ul>
 </div>
