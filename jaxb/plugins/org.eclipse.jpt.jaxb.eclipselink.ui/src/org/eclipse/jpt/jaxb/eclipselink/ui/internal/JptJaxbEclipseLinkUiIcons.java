@@ -12,7 +12,8 @@ package org.eclipse.jpt.jaxb.eclipselink.ui.internal;
 
 public class JptJaxbEclipseLinkUiIcons {
 	
-	public static final String XML_INVERSE_REFERENCE = "full/obj16/xml-inverse-reference";
-	public static final String XML_JOIN_NODES = "full/obj16/xml-join-nodes";
-	public static final String XML_TRANSFORMATION = "full/obj16/xml-transformation";
+	public static final String OXM_FILE = "full/obj16/oxm-file"; //$NON-NLS-1$
+	public static final String XML_INVERSE_REFERENCE = "full/obj16/xml-inverse-reference"; //$NON-NLS-1$
+	public static final String XML_JOIN_NODES = "full/obj16/xml-join-nodes"; //$NON-NLS-1$
+	public static final String XML_TRANSFORMATION = "full/obj16/xml-transformation"; //$NON-NLS-1$
 }

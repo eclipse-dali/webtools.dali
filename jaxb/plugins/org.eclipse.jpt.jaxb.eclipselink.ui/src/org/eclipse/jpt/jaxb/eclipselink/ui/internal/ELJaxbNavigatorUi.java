@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jaxb.eclipselink.ui.internal;
 
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
+import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
 import org.eclipse.jpt.jaxb.ui.internal.jaxb21.GenericJaxb_2_1_NavigatorUi;
 
 
@@ -32,5 +33,10 @@ public class ELJaxbNavigatorUi
 	@Override
 	public ItemExtendedLabelProviderFactory getItemLabelProviderFactory() {
 		return ELJaxbNavigatorItemLabelProviderFactory.instance();
+	}
+	
+	@Override
+	public ItemTreeContentProviderFactory getTreeItemContentProviderFactory() {
+		return ELJaxbNavigatorTreeItemContentProviderFactory.instance();
 	}
 }
