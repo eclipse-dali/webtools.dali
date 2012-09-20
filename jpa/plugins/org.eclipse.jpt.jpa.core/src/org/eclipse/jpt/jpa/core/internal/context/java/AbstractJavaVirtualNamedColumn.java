@@ -40,6 +40,7 @@ public abstract class AbstractJavaVirtualNamedColumn<O extends ReadOnlyNamedColu
 
 	protected String columnDefinition;
 
+	protected Table dbTable;
 
 	protected AbstractJavaVirtualNamedColumn(JpaContextNode parent, O owner) {
 		super(parent);
@@ -57,6 +58,8 @@ public abstract class AbstractJavaVirtualNamedColumn<O extends ReadOnlyNamedColu
 		this.setDefaultName(this.buildDefaultName());
 
 		this.setColumnDefinition(this.buildColumnDefinition());
+
+		this.setDbTable(this.buildDbTable());
 	}
 
 
@@ -128,6 +131,16 @@ public abstract class AbstractJavaVirtualNamedColumn<O extends ReadOnlyNamedColu
 	}
 
 	public Table getDbTable() {
+		return this.dbTable;
+	}
+
+	protected void setDbTable(Table dbTable) {
+		Table old = this.dbTable;
+		this.dbTable = dbTable;
+		this.firePropertyChanged(DB_TABLE_PROPERTY, old, dbTable);
+	}
+
+	protected Table buildDbTable() {
 		return this.owner.resolveDbTable(this.getTable());
 	}
 

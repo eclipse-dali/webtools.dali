@@ -10,14 +10,13 @@
 package org.eclipse.jpt.jpa.ui.internal.jpa2.details;
 
 import java.util.Collection;
-
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.BaseColumn;
 import org.eclipse.jpt.jpa.core.context.NamedColumn;
 import org.eclipse.jpt.jpa.core.jpa2.context.OrderColumn2_0;
@@ -84,6 +83,16 @@ public class OrderColumnComposite extends Pane<OrderColumn2_0> {
 				super.addPropertyNames(propertyNames);
 				propertyNames.add(NamedColumn.DEFAULT_NAME_PROPERTY);
 				propertyNames.add(NamedColumn.SPECIFIED_NAME_PROPERTY);
+				propertyNames.add(NamedColumn.DB_TABLE_PROPERTY);
+			}
+
+			@Override
+			protected void propertyChanged(String propertyName) {
+				if (propertyName.equals(NamedColumn.DB_TABLE_PROPERTY)) {
+					this.doPopulate();
+				} else {
+					super.propertyChanged(propertyName);
+				}
 			}
 
 			@Override
