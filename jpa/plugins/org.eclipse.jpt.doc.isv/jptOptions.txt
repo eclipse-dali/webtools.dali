@@ -1,6 +1,6 @@
 -charset "utf-8"
--sourcepath "@commonUtilitySourcepath@;@jpt.common.core.sourcepath@;@jpt.common.ui.sourcepath@"
--classpath @jpt.common.core.classpath@;@jpt.common.ui.classpath@
+-sourcepath "@jpt.common.utility.sourcepath@;@jpt.common.core.sourcepath@;@jpt.common.ui.sourcepath@"
+-classpath @rt@;@jpt.common.core.classpath@;@jpt.common.ui.classpath@;@wtprt@
 -breakiterator
 -use
 -splitIndex
@@ -12,6 +12,6 @@
 -link http://docs.oracle.com/javase/6/docs/api/
 
 #JPT common API packages
-@commonUtilityPackages@
+@jpt.common.utility.packages@
 @jpt.common.core.packages@
 @jpt.common.ui.packages@

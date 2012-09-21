@@ -34,20 +34,36 @@
 
 
 	<target name="generateJavadoc" depends="getJavadocPath" if="javadoc">
-
+		<echo message="java.home = ${java.home}" />
+		<echo message="base.install.dir = ${base.install.dir}" />
+		
 		<property name="optionsFile" value="jptOptions.tmp.txt" />
 		<copy file="jptOptions.txt" tofile="${optionsFile}" overwrite="true" />
 		
-		<condition property="argsListDelimiter" value=":">
+		<condition property="pathSeparator" value=":">
 			<os family="unix" />
 		</condition>
-		<condition property="argsListDelimiter" value=";">
+		<condition property="pathSeparator" value=";">
 			<os family="windows" />
 		</condition>
 
-		<replace file="${basedir}/${optionsFile}" token="@rt@" value="${bootclasspath}" />
+		<fileset id="jreJars" dir="${java.home}/lib">
+		    <include name="*.jar" />
+		</fileset>
+		<pathconvert pathsep="${pathSeparator}" property="jreClasspath" refid="jreJars"/>
 
-		<antcall target="replaceJptCommonUtility" />
+		<replace file="${basedir}/${optionsFile}" token="@rt@" value="${jreClasspath}" /> 
+
+		<fileset id="wtpJars" dir="${base.install.dir}">
+		    <include name="*.jar" />
+		</fileset>
+		<pathconvert pathsep="${pathSeparator}" property="wtpClasspath" refid="wtpJars"/>
+
+		<replace file="${basedir}/${optionsFile}" token="@wtprt@" value="${wtpClasspath}" />
+
+        <antcall target="replacePackageTokens">
+            <param name="packageName" value="jpt.common.utility" />
+        </antcall>
         <antcall target="replacePackageTokens">
             <param name="packageName" value="jpt.common.core" />
         </antcall>
@@ -55,15 +71,7 @@
             <param name="packageName" value="jpt.common.ui" />
         </antcall>
 
-		<replaceregexp file="${basedir}/${optionsFile}" flags="g" match=";" replace="${argsListDelimiter}" />
-
-<!--
-		<antcall target="replaceJptCommonCore" />
-		<antcall target="replaceJptCommonUi" />
-		
-		<property name="commonCoreSourcepath" file="commonCoreSourcepath.txt" />
-		<replace file="${basedir}/${optionsFile}" token="@commonCoreSourcepath@" value="${commonCoreSourcepath}" />
--->
+		<replaceregexp file="${basedir}/${optionsFile}" flags="g" match=";" replace="${pathSeparator}" />
 
 		<!--scrub isv plugin directories of any preexisting doc content-->
 		<delete dir="index-files"/>
@@ -77,6 +85,7 @@
 
 	<!-- replacePackageTokens -->
 	<target name="replacePackageTokens" if="optionsFile">
+		<echo message="${packageName}" />
 		<replace 
 			file="${basedir}/${optionsFile}" 
 			propertyfile="${basedir}/${packageName}.properties">
