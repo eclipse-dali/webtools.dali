@@ -34,8 +34,10 @@
 
 
 	<target name="generateJavadoc" depends="getJavadocPath" if="javadoc">
-		<echo message="java.home = ${java.home}" />
+		<property name="base.install.dir" value="../../../eclipse/plugins" />
+		<echo message="#### jpt.doc.isv #### - java.home = ${java.home}" />
 		<echo message="base.install.dir = ${base.install.dir}" />
+		<echo message="install.destination = ${install.destination}" />
 		
 		<property name="optionsFile" value="jptOptions.tmp.txt" />
 		<copy file="jptOptions.txt" tofile="${optionsFile}" overwrite="true" />
