@@ -117,6 +117,8 @@
                 token="@${packageName}.packages@"
                 property="${packageName}.packages"/>
 		</replace>
+
+		<echo file="jptClasspath.tmp.properties" message="../org.eclipse.${packageName}/@dot;" append="true"/>
 	</target>
 
 	<target name="buildJptDoc" unless="jpt.index.present">
