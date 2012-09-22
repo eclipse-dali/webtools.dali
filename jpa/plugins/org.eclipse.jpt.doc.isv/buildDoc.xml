@@ -14,6 +14,7 @@
 	<target name="init">
 		<available file="${basedir}/index" property="index.present"/>
 		<delete file="jptOptions.tmp.txt"/>
+		<delete file="jptClasspath.tmp.properties"/>
 	</target>
 
 	<target name="all" depends="init" unless="index.present">
@@ -32,16 +33,17 @@
 		<available file="${java.home}/../bin/javadoc" property="javadoc" value="${java.home}/../bin/javadoc" />
 	</target>
 
-
 	<target name="generateJavadoc" depends="getJavadocPath" if="javadoc">
-		<property name="base.install.dir" value="../../../eclipse/plugins" />
 		<echo message="#### jpt.doc.isv #### - java.home = ${java.home}" />
-		<echo message="base.install.dir = ${base.install.dir}" />
-		<echo message="install.destination = ${install.destination}" />
+		<echo message="${base.install.dir} NOT SET" />
+		<echo message="${install.destination} NOT SET" />
+		
+		<property name="base.install.dir" value="../../../eclipse/plugins" />
 		
 		<property name="optionsFile" value="jptOptions.tmp.txt" />
 		<copy file="jptOptions.txt" tofile="${optionsFile}" overwrite="true" />
-		
+		<copy file="jptClasspath.template" tofile="jptClasspath.tmp.properties" overwrite="true" />
+
 		<condition property="pathSeparator" value=":">
 			<os family="unix" />
 		</condition>
@@ -49,20 +51,10 @@
 			<os family="windows" />
 		</condition>
 
-		<fileset id="jreJars" dir="${java.home}/lib">
-		    <include name="*.jar" />
-		</fileset>
-		<pathconvert pathsep="${pathSeparator}" property="jreClasspath" refid="jreJars"/>
-
-		<replace file="${basedir}/${optionsFile}" token="@rt@" value="${jreClasspath}" /> 
-
-		<fileset id="wtpJars" dir="${base.install.dir}">
-		    <include name="*.jar" />
-		</fileset>
-		<pathconvert pathsep="${pathSeparator}" property="wtpClasspath" refid="wtpJars"/>
-
-		<replace file="${basedir}/${optionsFile}" token="@wtprt@" value="${wtpClasspath}" />
-
+        <antcall target="replaceRtTokens" />
+		
+        <antcall target="replaceWtpRtTokens" />
+ 
         <antcall target="replacePackageTokens">
             <param name="packageName" value="jpt.common.utility" />
         </antcall>
@@ -72,6 +64,8 @@
         <antcall target="replacePackageTokens">
             <param name="packageName" value="jpt.common.ui" />
         </antcall>
+
+        <antcall target="replaceJptRtTokens" />
 
 		<replaceregexp file="${basedir}/${optionsFile}" flags="g" match=";" replace="${pathSeparator}" />
 
@@ -85,6 +79,30 @@
 		</exec>
 	</target>
 
+	<!-- replaceRtTokens -->
+	<target name="replaceRtTokens" if="optionsFile" >
+		<fileset id="jreJars" dir="${java.home}/lib">
+		    <include name="*.jar" />
+		</fileset>
+		<pathconvert pathsep="${pathSeparator}" property="jreClasspath" refid="jreJars"/>
+		<replace file="${basedir}/${optionsFile}" token="@rt@" value="${jreClasspath}" />
+	</target>
+
+	<!-- replaceWtpRtTokens -->
+	<target name="replaceWtpRtTokens" if="optionsFile" >
+		<fileset id="wtpJars" dir="${base.install.dir}">
+		    <include name="*.jar" />
+		</fileset>
+		<pathconvert pathsep="${pathSeparator}" property="wtpClasspath" refid="wtpJars"/>
+		<replace file="${basedir}/${optionsFile}" token="@wtprt@" value="${wtpClasspath}" />
+	</target>
+
+	<!-- replaceJptRtTokens -->
+	<target name="replaceJptRtTokens" if="optionsFile" >
+		<property file="jptClasspath.tmp.properties" />
+		<replace file="${basedir}/${optionsFile}" token="@jptrt@" value="${jptClasspath}" />
+	</target>
+
 	<!-- replacePackageTokens -->
 	<target name="replacePackageTokens" if="optionsFile">
 		<echo message="${packageName}" />
@@ -95,27 +113,9 @@
             <replacefilter
                 token="@${packageName}.sourcepath@"
                 property="${packageName}.sourcepath"/>
-	       <replacefilter
-                token="@${packageName}.classpath@"
-                property="${packageName}.classpath"/>
             <replacefilter
                 token="@${packageName}.packages@"
                 property="${packageName}.packages"/>
-		</replace>
-	</target>
-	
-	<!-- common utility package -->
-	<target name="replaceJptCommonUtility" if="optionsFile">
-		<replace 
-			file="${basedir}/${optionsFile}" 
-			propertyfile="${basedir}/jptCommonUtility.properties">
-
-            <replacefilter
-                token="@commonUtilitySourcepath@"
-                property="common.utility.sourcepath"/>
-            <replacefilter
-                token="@commonUtilityPackages@"
-                property="common.utility.packages"/>
 		</replace>
 	</target>
 
