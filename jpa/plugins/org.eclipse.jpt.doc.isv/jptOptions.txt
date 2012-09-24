@@ -1,5 +1,5 @@
 -charset "utf-8"
--sourcepath "@jpt.common.utility.sourcepath@;@jpt.common.core.sourcepath@;@jpt.common.ui.sourcepath@"
+-sourcepath "@jptsourcepath@"
 -classpath @rt@;@jptrt@;@wtprt@
 -breakiterator
 -use
@@ -10,8 +10,14 @@
 -header "<b>Dali Provisional API</b><br>Release 3.2"
 -bottom "Copyright (c) 2012 Oracle. All rights reserved."
 -link http://docs.oracle.com/javase/6/docs/api/
+-link http://download.eclipse.org/modeling/emf/emf/javadoc/2.8.0/
+-link http://help.eclipse.org/juno/topic/org.eclipse.platform.doc.isv/reference/api/
+-link http://help.eclipse.org/juno/topic/org.eclipse.platform.doc.isv/reference/extension-points/
+-link http://help.eclipse.org/juno/topic/org.eclipse.jdt.doc.isv/reference/api/
+-link http://help.eclipse.org/juno/topic/org.eclipse.emf.facet.doc/javadoc/
+-link http://www.osgi.org/javadoc/r4v43/core/
+#-link http://download.eclipse.org/modeling/emf/emf/javadoc/xsd/2.8.0/
+#-link http://www.eclipse.org/eclipselink/api/2.4/
 
-#JPT common API packages
-@jpt.common.utility.packages@
-@jpt.common.core.packages@
-@jpt.common.ui.packages@
+# Dali packages
+@jptPackages@

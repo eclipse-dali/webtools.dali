@@ -13,8 +13,23 @@
 
 	<target name="init">
 		<available file="${basedir}/index" property="index.present"/>
-		<delete file="jptOptions.tmp.txt"/>
-		<delete file="jptClasspath.tmp.properties"/>
+		<path location="${basedir}/../../../eclipse/plugins" id="pluginsInstallDir"/>
+		<pathconvert property="base.plugins.install.dir" refid="pluginsInstallDir"/>
+		<property name="optionsFile" value="jptOptions.tmp.txt" />
+		<property name="sourcepathFile" value="jptSourcepath.tmp.properties" />
+		<property name="classpathFile" value="jptClasspath.tmp.properties" />
+		<property name="packagesFile" value="jptPackages.tmp.properties" />
+		<condition property="pathSeparator" value=":">
+			<os family="unix" />
+		</condition>
+		<condition property="pathSeparator" value=";">
+			<os family="windows" />
+		</condition>
+
+		<delete file="${optionsFile}"/>
+		<delete file="${sourcepathFile}"/>
+		<delete file="${classpathFile}"/>
+		<delete file="${packagesFile}"/>
 	</target>
 
 	<target name="all" depends="init" unless="index.present">
@@ -35,37 +50,37 @@
 
 	<target name="generateJavadoc" depends="getJavadocPath" if="javadoc">
 		<echo message="#### jpt.doc.isv #### - java.home = ${java.home}" />
-		<echo message="${base.install.dir} NOT SET" />
-		<echo message="${install.destination} NOT SET" />
-		
-		<property name="base.install.dir" value="../../../eclipse/plugins" />
-		
-		<property name="optionsFile" value="jptOptions.tmp.txt" />
-		<copy file="jptOptions.txt" tofile="${optionsFile}" overwrite="true" />
-		<copy file="jptClasspath.template" tofile="jptClasspath.tmp.properties" overwrite="true" />
+		<echo message="base.plugins.install.dir = ${base.plugins.install.dir}" />
 
-		<condition property="pathSeparator" value=":">
-			<os family="unix" />
-		</condition>
-		<condition property="pathSeparator" value=";">
-			<os family="windows" />
-		</condition>
+		<copy file="jptOptions.template" tofile="${optionsFile}" overwrite="true" />
+		<copy file="jptSourcepath.template" tofile="${sourcepathFile}" overwrite="true" />
+		<copy file="jptClasspath.template" tofile="${classpathFile}" overwrite="true" />
+		<copy file="jptPackages.template" tofile="${packagesFile}" overwrite="true" />
 
-        <antcall target="replaceRtTokens" />
-		
-        <antcall target="replaceWtpRtTokens" />
- 
-        <antcall target="replacePackageTokens">
-            <param name="packageName" value="jpt.common.utility" />
+        <antcall target="addBundle">
+            <param name="bundleName" value="jpt.common.utility" />
         </antcall>
-        <antcall target="replacePackageTokens">
-            <param name="packageName" value="jpt.common.core" />
+        <antcall target="addBundle">
+            <param name="bundleName" value="jpt.common.core" />
         </antcall>
-        <antcall target="replacePackageTokens">
-            <param name="packageName" value="jpt.common.ui" />
+        <antcall target="addBundle">
+            <param name="bundleName" value="jpt.common.ui" />
+        </antcall>
+        <antcall target="addBundle">
+            <param name="bundleName" value="jpt.jpa.core" />
+        </antcall>
+        <antcall target="addBundle">
+            <param name="bundleName" value="jpt.jpa.db" />
+        </antcall>
+        <antcall target="addBundle">
+            <param name="bundleName" value="jpt.jpa.ui" />
         </antcall>
 
-        <antcall target="replaceJptRtTokens" />
+        <antcall target="replaceRtToken" />
+        <antcall target="replaceJptRtToken" />
+        <antcall target="replaceWtpRtToken" />
+        <antcall target="replaceJptSourcepathToken" />
+        <antcall target="replacePackagesToken" />
 
 		<replaceregexp file="${basedir}/${optionsFile}" flags="g" match=";" replace="${pathSeparator}" />
 
@@ -79,8 +94,8 @@
 		</exec>
 	</target>
 
-	<!-- replaceRtTokens -->
-	<target name="replaceRtTokens" if="optionsFile" >
+	<!-- replaceRtToken -->
+	<target name="replaceRtToken" if="optionsFile" >
 		<fileset id="jreJars" dir="${java.home}/lib">
 		    <include name="*.jar" />
 		</fileset>
@@ -88,37 +103,40 @@
 		<replace file="${basedir}/${optionsFile}" token="@rt@" value="${jreClasspath}" />
 	</target>
 
-	<!-- replaceWtpRtTokens -->
-	<target name="replaceWtpRtTokens" if="optionsFile" >
-		<fileset id="wtpJars" dir="${base.install.dir}">
+	<!-- replaceWtpRtToken -->
+	<target name="replaceWtpRtToken" if="optionsFile" >
+		<fileset id="wtpJars" dir="${base.plugins.install.dir}">
 		    <include name="*.jar" />
 		</fileset>
 		<pathconvert pathsep="${pathSeparator}" property="wtpClasspath" refid="wtpJars"/>
 		<replace file="${basedir}/${optionsFile}" token="@wtprt@" value="${wtpClasspath}" />
 	</target>
 
-	<!-- replaceJptRtTokens -->
-	<target name="replaceJptRtTokens" if="optionsFile" >
-		<property file="jptClasspath.tmp.properties" />
+	<!-- replaceJptRtToken -->
+	<target name="replaceJptRtToken" if="optionsFile" >
+		<property file="${classpathFile}" />
 		<replace file="${basedir}/${optionsFile}" token="@jptrt@" value="${jptClasspath}" />
 	</target>
 
-	<!-- replacePackageTokens -->
-	<target name="replacePackageTokens" if="optionsFile">
-		<echo message="${packageName}" />
-		<replace 
-			file="${basedir}/${optionsFile}" 
-			propertyfile="${basedir}/${packageName}.properties">
+	<!-- replaceJptSourcepathToken -->
+	<target name="replaceJptSourcepathToken" if="optionsFile" >
+		<property file="${sourcepathFile}" />
+		<replace file="${basedir}/${optionsFile}" token="@jptsourcepath@" value="${jptSourcepath}" />
+	</target>
 
-            <replacefilter
-                token="@${packageName}.sourcepath@"
-                property="${packageName}.sourcepath"/>
-            <replacefilter
-                token="@${packageName}.packages@"
-                property="${packageName}.packages"/>
-		</replace>
-
-		<echo file="jptClasspath.tmp.properties" message="../org.eclipse.${packageName}/@dot;" append="true"/>
+	<!-- replacePackagesToken -->
+	<target name="replacePackagesToken" if="optionsFile" >
+		<property file="${packagesFile}" />
+		<replace file="${basedir}/${optionsFile}" token="@jptPackages@" value="${jptPackages}" />
+	</target>
+	
+	<!-- addBundle -->
+	<target name="addBundle" if="optionsFile" >
+		<echo message="${bundleName}" />
+		<property file="${basedir}/${bundleName}.properties" />
+		<echo file="${sourcepathFile}" message="../org.eclipse.${bundleName}/src;" append="true"/>
+		<echo file="${classpathFile}" message="../org.eclipse.${bundleName}/@dot;" append="true"/>
+		<echo file="${packagesFile}" message="${jptPackages} " append="true"/>
 	</target>
 
 	<target name="buildJptDoc" unless="jpt.index.present">
