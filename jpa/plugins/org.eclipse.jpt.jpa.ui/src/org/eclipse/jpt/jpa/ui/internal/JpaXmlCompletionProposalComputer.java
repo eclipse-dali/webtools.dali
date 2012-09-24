@@ -29,13 +29,11 @@ import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.XmlFile;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.wst.sse.ui.contentassist.CompletionProposalInvocationContext;
-import org.eclipse.wst.sse.ui.internal.contentassist.CustomCompletionProposal;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.eclipse.wst.xml.ui.internal.XMLUIMessages;
 import org.eclipse.wst.xml.ui.internal.contentassist.ContentAssistRequest;
-import org.eclipse.wst.xml.ui.internal.contentassist.XMLRelevanceConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -50,21 +48,21 @@ public class JpaXmlCompletionProposalComputer extends DefaultJpaXmlCompletionPro
 	public JpaXmlCompletionProposalComputer() {
 	}
 
-		@Override
-		public List<ICompletionProposal> computeCompletionProposals(
-				CompletionProposalInvocationContext context,
-				IProgressMonitor monitor) {
-			try {
-				return super.computeCompletionProposals(context, monitor);
-			} catch (RuntimeException ex) {
-				// When we run into any unexpected exception, we will log the exception
-				// and then return an empty list to prevent code completion process from 
-				// crashing. We need to determine if runtime exceptions should be 
-				// expected. If so, we could remove the log(ex) in the future.
-				JptJpaUiPlugin.instance().logError(ex);
-				return Collections.emptyList();
-			}
+	@Override
+	public List<ICompletionProposal> computeCompletionProposals(
+			CompletionProposalInvocationContext context,
+			IProgressMonitor monitor) {
+		try {
+			return super.computeCompletionProposals(context, monitor);
+		} catch (RuntimeException ex) {
+			// When we run into any unexpected exception, we will log the exception
+			// and then return an empty list to prevent code completion process from 
+			// crashing. We need to determine if runtime exceptions should be 
+			// expected. If so, we could remove the log(ex) in the future.
+			JptJpaUiPlugin.instance().logError(ex);
+			return Collections.emptyList();
 		}
+	}
 
 	@Override
 	protected void addAttributeValueProposals(ContentAssistRequest contentAssistRequest,
@@ -77,17 +75,53 @@ public class JpaXmlCompletionProposalComputer extends DefaultJpaXmlCompletionPro
 			if (matchString == null) {
 				matchString = ""; //$NON-NLS-1$
 			}
+
+			// initialize newMatchingString to an empty string to handle the case when user invokes code assist without giving delimiter
+			String newMatchString = "";
 			if ((matchString.length() > 0) && (matchString.startsWith("\"") || matchString.startsWith("'"))) { //$NON-NLS-1$ //$NON-NLS-2$
-				matchString = matchString.substring(1);
+				newMatchString = matchString.substring(1);
 			}
-			//create suggestions for this attribute value declaration
+			//create completion proposals for this attribute value declaration
 			int rOffset = contentAssistRequest.getReplacementBeginPosition();
 			int rLength = contentAssistRequest.getReplacementLength();
 			for (String possibleValue : proposedValues) {
-				if ((matchString.length() == 0) || StringTools.stringStartsWithIgnoreCase(possibleValue, matchString)) {
-					String rString = "\"" + possibleValue + "\""; //$NON-NLS-1$ //$NON-NLS-2$
-					CompletionProposal proposal = new CompletionProposal(
-							rString, rOffset, rLength, rString.length());
+				if ((newMatchString.length() == 0) || StringTools.stringStartsWithIgnoreCase(possibleValue, newMatchString)) {
+
+					// handle values that include special characters like double-quote or apostrophe
+					String convertedPossibleValue = null;
+					if (matchString.startsWith("\"")) {
+						convertedPossibleValue = StringTools.convertToXmlStringLiteralQuote(possibleValue);
+					} else if (matchString.startsWith("'")) {
+						convertedPossibleValue = StringTools.convertToXmlStringLiteralApostrophe(possibleValue);
+					} else {
+						// convert to XML string literal with quotes by default
+						convertedPossibleValue = StringTools.convertToXmlStringLiteralQuote(possibleValue);
+					}
+
+					CompletionProposal proposal = null;
+					// give users an additional message if value includes special characters since what is written
+					//  to XML is most likely different from what is shown in the proposal list with this case
+					if (possibleValue.startsWith("\"")) {
+						// handle the case when user does ""<invoke code assist here>" trying to get these special values
+						// User cannot do ""F<invoke code assist here>" or ""F<invoke code assist here>"" trying to
+						// get these values that are special and start with F because XML would regard the F as the 
+						// start of another attribute since there are two double-quotes exist before F.
+						if (matchString.startsWith("\"") && newMatchString.startsWith("\"")) {
+							proposal = new CompletionProposal(
+									convertedPossibleValue, rOffset, rLength + 1, convertedPossibleValue.length(), null, 
+									possibleValue, null, JptUiMessages.JpaXmlCompletionProposalComputer_SpecialNameMsg);
+						} else {
+							proposal = new CompletionProposal(
+									convertedPossibleValue, rOffset, rLength, convertedPossibleValue.length(), null, 
+									possibleValue, null, JptUiMessages.JpaXmlCompletionProposalComputer_SpecialNameMsg);
+						}
+					} else {
+						// do not give the addition message with normal values
+						proposal = new CompletionProposal(
+								convertedPossibleValue, rOffset, rLength, convertedPossibleValue.length(), null, 
+								possibleValue, null, null );
+					}
+					
 					contentAssistRequest.addProposal(proposal);
 				}
 			}
@@ -141,11 +175,27 @@ public class JpaXmlCompletionProposalComputer extends DefaultJpaXmlCompletionPro
 			}
 
 			for (String possibleValue : proposedValues) {
+				
+				String convertedPossibleValue = null;
 				if ((matchString.length() == 0) || StringTools.stringStartsWithIgnoreCase(possibleValue, matchString)) {
-					CustomCompletionProposal proposal = new CustomCompletionProposal(
-							possibleValue, begin, length, possibleValue.length(), 
-							JptJpaUiPlugin.instance().getImage(JptUiIcons.JPA_CONTENT), 
-							possibleValue, null, null, XMLRelevanceConstants.R_TAG_INSERTION);
+					if (possibleValue.startsWith("\"")) {
+						convertedPossibleValue = StringTools.convertToXmlElementStringLiteral(possibleValue);
+					} else {
+						convertedPossibleValue = possibleValue;
+					}
+
+					CompletionProposal proposal = null;
+					if (possibleValue.startsWith("\"")) {
+						proposal = new CompletionProposal(
+								convertedPossibleValue, begin, length, convertedPossibleValue.length(), 
+								JptJpaUiPlugin.instance().getImage(JptUiIcons.JPA_CONTENT), possibleValue, null, 
+								JptUiMessages.JpaXmlCompletionProposalComputer_SpecialNameMsg);
+					} else {
+						proposal = new CompletionProposal(
+								convertedPossibleValue, begin, length, convertedPossibleValue.length(), 
+								JptJpaUiPlugin.instance().getImage(JptUiIcons.JPA_CONTENT), possibleValue, null, null);
+					}
+
 					contentAssistRequest.addProposal(proposal);
 				}
 			}
@@ -154,7 +204,7 @@ public class JpaXmlCompletionProposalComputer extends DefaultJpaXmlCompletionPro
 			setErrorMessage(XMLUIMessages.Content_Assist_not_availab_UI_);
 		}
 	}
-	
+
 	/**
 	 * Retrieves all of the possible valid values for this attribute/element declaration
 	 */

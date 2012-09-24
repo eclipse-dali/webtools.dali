@@ -36,7 +36,13 @@ public final class StringTools {
 	
 	/** XML double quote */
 	public static final String XML_QUOTE = "&quot;"; //$NON-NLS-1$
-
+	
+	/** XML apostrophe */
+	public static final String XML_APOSTROPHE = "&apos;";
+	
+	/** XML ampersand */
+	public static final String XML_AMPERSAND = "&amp;";
+	
 	/** parenthesis */
 	public static final char OPEN_PARENTHESIS = '(';
 	public static final char CLOSE_PARENTHESIS = ')';
@@ -52,6 +58,10 @@ public final class StringTools {
 	/** brackets */
 	public static final char OPEN_CHEVRON = '<';
 	public static final char CLOSE_CHEVRON = '>';
+
+	/** XML angle brackets */
+	public static final String XML_OPEN_CHEVRON= "&lt;";
+	public static final String XML_CLOSE_CHEVRON = "&gt;";
 
 	/** empty string */
 	public static final String EMPTY_STRING = ""; //$NON-NLS-1$
@@ -5140,32 +5150,76 @@ public final class StringTools {
 	// ********** convert to XML string literal **********
 
 	public static String convertToXmlStringLiteral(String string) {
+		return convertToXmlStringLiteralQuote(string);
+	}
+	
+	public static String convertToXmlStringLiteralQuote(String string) {
+		return convertToXmlStringLiteral(string, '"');
+	}
+	
+	public static String convertToXmlStringLiteralApostrophe(String string) {
+		return convertToXmlStringLiteral(string, '\'');
+	}
+	
+	public static String convertToXmlStringLiteral(String string, char delimiter) {
 		int len = string.length();
 		if (len == 0) {
 			return EMPTY_JAVA_STRING_LITERAL;
 		}
 		StringBuilder sb = new StringBuilder(len + 5);
-		convertToXmlStringLiteralOn_(string.toCharArray(), sb, len);
+		convertToXmlStringLiteralOn_(string.toCharArray(), sb, len, delimiter);
 		return sb.toString();
 	}
 
-	//TODO need to add the rest of the predifende entities to this switch (amp, apos, lt, and gt)
-	private static void convertToXmlStringLiteralOn_(char[] string, StringBuilder sb, int len) {
+	//TODO need to add the rest of the predifende entities to this switch (amp, lt, and gt)
+	private static void convertToXmlStringLiteralOn_(char[] string, StringBuilder sb, int len, char delimiter) {
 		sb.ensureCapacity(sb.length() + len + 5);
-		sb.append(QUOTE);
+		sb.append(delimiter);
 		for (char c : string) {
 			switch (c) {
 				case '"':  // double-quote
-					sb.append(XML_QUOTE);
-					break;					
+					sb.append((delimiter == '"') ? XML_QUOTE : '"');
+					break;
+				case '\'':  // apostrophe
+					sb.append((delimiter == '\'') ? XML_APOSTROPHE : '\'');
+					break;
 				default:
 					sb.append(c);
 					break;
 			}
 		}
-		sb.append(QUOTE);
+		sb.append(delimiter);
 	}
 	
+	public static String convertToXmlElementStringLiteral(String string) {
+		int len = string.length();
+		if (len == 0) {
+			return EMPTY_JAVA_STRING_LITERAL;
+		}
+		StringBuilder sb = new StringBuilder(len + 5);
+		convertToXmlElementStringLiteralOn_(string.toCharArray(), sb, len);
+		return sb.toString();
+		}
+		
+		private static void convertToXmlElementStringLiteralOn_(char[] string, StringBuilder sb, int len) {
+		sb.ensureCapacity(sb.length() + len + 5);
+		for (char c : string) {
+		switch (c) {
+					case '&':  // ampersand
+						sb.append(XML_AMPERSAND);
+						break;
+					case '<':  // less-than sign
+						sb.append(XML_OPEN_CHEVRON);
+						break;
+					case '>':  // greater-than sign
+						sb.append(XML_CLOSE_CHEVRON);
+						break;
+					default:
+						sb.append(c);
+						break;
+				}
+			}
+		}
 	
 	// ********** convenience **********
 

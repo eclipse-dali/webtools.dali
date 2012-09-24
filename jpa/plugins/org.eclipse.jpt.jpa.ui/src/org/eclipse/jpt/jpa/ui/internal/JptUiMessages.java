@@ -193,6 +193,8 @@ public class JptUiMessages {
 	public static String JavaQueryConversionWizardPage_description;
 
 	public static String SetJpaSelection_jobName;
+	
+	public static String JpaXmlCompletionProposalComputer_SpecialNameMsg;
 
 	private JptUiMessages() {
 		throw new UnsupportedOperationException();
