@@ -5194,7 +5194,7 @@ public final class StringTools {
 	public static String convertToXmlElementStringLiteral(String string) {
 		int len = string.length();
 		if (len == 0) {
-			return EMPTY_JAVA_STRING_LITERAL;
+			return EMPTY_STRING;
 		}
 		StringBuilder sb = new StringBuilder(len + 5);
 		convertToXmlElementStringLiteralOn_(string.toCharArray(), sb, len);
