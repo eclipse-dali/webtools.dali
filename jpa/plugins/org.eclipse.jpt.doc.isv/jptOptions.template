@@ -16,8 +16,8 @@
 -link http://help.eclipse.org/juno/topic/org.eclipse.jdt.doc.isv/reference/api/
 -link http://help.eclipse.org/juno/topic/org.eclipse.emf.facet.doc/javadoc/
 -link http://www.osgi.org/javadoc/r4v43/core/
+-link http://www.eclipse.org/eclipselink/api/2.4/
 #-link http://download.eclipse.org/modeling/emf/emf/javadoc/xsd/2.8.0/
-#-link http://www.eclipse.org/eclipselink/api/2.4/
 
 # Dali packages
 @jptPackages@

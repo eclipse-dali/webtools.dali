@@ -75,6 +75,21 @@
         <antcall target="addBundle">
             <param name="bundleName" value="jpt.jpa.ui" />
         </antcall>
+        <antcall target="addBundle">
+            <param name="bundleName" value="jpt.jpa.eclipselink.core" />
+        </antcall>
+        <antcall target="addBundle">
+            <param name="bundleName" value="jpt.jpa.eclipselink.core.ddlgen" />
+        </antcall>
+        <antcall target="addBundle">
+            <param name="bundleName" value="jpt.jaxb.core" />
+        </antcall>
+        <antcall target="addBundle">
+            <param name="bundleName" value="jpt.jaxb.core.schemagen" />
+        </antcall>
+        <antcall target="addBundle">
+            <param name="bundleName" value="jpt.jaxb.ui" />
+        </antcall>
 
         <antcall target="replaceRtToken" />
         <antcall target="replaceJptRtToken" />
