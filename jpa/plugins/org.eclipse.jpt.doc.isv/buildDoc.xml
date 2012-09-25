@@ -33,10 +33,10 @@
 	</target>
 
 	<target name="all" depends="init" unless="index.present">
-		<!-- <antcall target="convertSchemaToHtml" /> -->
+		<!-- antcall target="convertSchemaToHtml" /-->
 		<antcall target="generateJavadoc" />
-<!--		<antcall target="build.index" /> /-->
-		<!--antcall target="createDocZip" /-->
+		<!-- antcall target="build.index" /-->
+		<!-- antcall target="createDocZip" /-->
 	</target>
 
 	<target name="build.index" description="Builds search index for the plug-in: org.eclipse.jpt.doc.isv." if="eclipse.running">
@@ -48,6 +48,7 @@
 		<available file="${java.home}/../bin/javadoc" property="javadoc" value="${java.home}/../bin/javadoc" />
 	</target>
 
+	<!-- generateJavadoc -->
 	<target name="generateJavadoc" depends="getJavadocPath" if="javadoc">
 		<echo message="#### jpt.doc.isv #### - java.home = ${java.home}" />
 		<echo message="base.plugins.install.dir = ${base.plugins.install.dir}" />
@@ -89,6 +90,15 @@
         </antcall>
         <antcall target="addBundle">
             <param name="bundleName" value="jpt.jaxb.ui" />
+        </antcall>
+        <antcall target="addBundle">
+            <param name="bundleName" value="jpt.jaxb.eclipselink.core" />
+        </antcall>
+        <antcall target="addBundle">
+            <param name="bundleName" value="jpt.jaxb.eclipselink.core.schemagen" />
+        </antcall>
+        <antcall target="addBundle">
+            <param name="bundleName" value="jpt.dbws.eclipselink.core.gen" />
         </antcall>
 
         <antcall target="replaceRtToken" />
