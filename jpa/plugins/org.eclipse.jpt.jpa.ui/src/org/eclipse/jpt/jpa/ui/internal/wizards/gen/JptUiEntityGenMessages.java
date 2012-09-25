@@ -30,6 +30,7 @@ public class JptUiEntityGenMessages {
 	public static String GenerateEntitiesWizard_tableSelectPage_updatePersistenceXml;
 	public static String GenerateEntitiesWizard_tableSelectPage_tables;
 	public static String GenerateEntitiesWizard_tableSelectPage_tableColumn;
+	public static String GenerateEntitiesWizard_tableSelectPage_tableSearch;
 	
 	public static String GenerateEntitiesWizard_tableSelectPage_getTables_jobName;
 	public static String GenerateEntitiesWizard_tableSelectPage_getTables_taskName;

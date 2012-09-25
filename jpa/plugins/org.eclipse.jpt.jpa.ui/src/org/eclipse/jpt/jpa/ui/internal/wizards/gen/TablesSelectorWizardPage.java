@@ -39,12 +39,14 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.util.TableLayoutComposite;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.StringMatcher;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.Schema;
@@ -58,6 +60,8 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
@@ -67,10 +71,10 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
 
@@ -90,6 +94,8 @@ public class TablesSelectorWizardPage extends WizardPage {
 	private Button refreshTablesButton;
 	private Button selectAllButton;
 	private Button deselectAllButton;
+	private Text searchText;
+	private TableFilter filter;
 
 	private WorkspaceJob fetchTablesJob;
 	protected final ResourceManager resourceManager;
@@ -192,10 +198,18 @@ public class TablesSelectorWizardPage extends WizardPage {
 		tableLabel.setLayoutData(gridData);
 		tableLabel.setText(JptUiEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_tables );
 		
+		this.searchText = this.buildSearchText(parent);
+
+		// build two empty labels to align the components
+		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
+		
 		TableLayoutComposite layout = new TableLayoutComposite(parent, SWT.NONE);
 		this.addColumnLayoutData(layout);
 
+		filter = new TableFilter();
 		this.tableTable = this.buildCheckboxTableViewer(this.buildTable(layout));
+		this.tableTable.addFilter(filter);
 
 		this.createButtonComposite(parent);
 		this.initTablesSelectionControl(this.possibleTables());		
@@ -454,6 +468,16 @@ public class TablesSelectorWizardPage extends WizardPage {
 		return new TableTableContentProvider();
 	}
 
+	private Text buildSearchText(Composite parent) {
+		GridData gridData = new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL);
+		Text text = new Text(parent, SWT.BORDER | SWT.SEARCH | SWT.ICON_SEARCH | SWT.ICON_CANCEL);
+		text.setMessage(JptUiEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_tableSearch);
+		text.setLayoutData(gridData);
+		text.addSelectionListener(this.buildClearSearchTextSelectionListener());
+		text.addKeyListener(this.buildSearchTextKeyListener());
+		return text;
+	}
+
 	// ********** listeners callbacks **********
 
 	private void handleTablesListSelectionChanged(SelectionChangedEvent event) {
@@ -534,6 +558,26 @@ public class TablesSelectorWizardPage extends WizardPage {
 
 			public void widgetSelected(SelectionEvent e) {
 				refreshTables();
+			}
+		};
+	}
+
+	private SelectionListener buildClearSearchTextSelectionListener() {
+		return new SelectionAdapter() {
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				filter.setPattern("");
+				tableTable.refresh();
+			}
+		};
+	}
+
+	private KeyListener buildSearchTextKeyListener() {
+		return new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent event) {
+				filter.setPattern(searchText.getText());
+				tableTable.refresh();
 			}
 		};
 	}
@@ -762,6 +806,51 @@ public class TablesSelectorWizardPage extends WizardPage {
 
 		public Object[] getElements(Object inputElement) {
 			return ((Collection<?>) inputElement).toArray();
+		}
+	}
+
+	private class TableFilter extends ViewerFilter {
+
+		private String pattern;
+		private StringMatcher matcher;
+		private static final String ALL = "*"; //$NON-NLS-1$
+
+		/**
+		 * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
+		 */
+		@Override
+		public boolean select (Viewer viewer, Object parentElement, Object element) {
+			Table table = (Table) element;
+			if (pattern == null || pattern.length() == 0) {
+				return true;
+			}
+			// if a table is previously selected, it will show up 
+			// in the viewer along with the list of tables filtered out
+			if (tableTable.getChecked(table)) {
+				return true;
+			}
+			if (matcher.match(table.getName())) {
+				return true;
+			}
+			return false;
+		}
+
+		/**
+		 * Set the pattern to filter out tables for the table viewer
+		 * <p>
+		 * The following characters have special meaning:
+		 *   ? => any character
+		 *   * => any string
+		 * </p>
+		 * @param newPattern the new search pattern
+		 */
+		protected void setPattern(String newPattern) {
+			if (newPattern == null || newPattern.trim().length() == 0) {
+				matcher = new StringMatcher(ALL, true, false);
+			} else {
+				pattern = newPattern + ALL; 
+				matcher = new StringMatcher(pattern, true, false);
+			}
 		}
 	}
 }
