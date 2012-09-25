@@ -69,6 +69,10 @@ public class OxmFileImpl
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		this.resourceType = oxmResource.getResourceType();
+		
+		if (this.xmlBindings != null) {
+			this.xmlBindings.synchronizeWithResourceModel();
+		}
 	}
 	
 	

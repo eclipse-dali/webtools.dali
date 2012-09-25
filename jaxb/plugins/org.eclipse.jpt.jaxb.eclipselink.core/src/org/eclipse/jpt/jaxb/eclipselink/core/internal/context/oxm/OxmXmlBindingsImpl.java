@@ -23,6 +23,15 @@ public class OxmXmlBindingsImpl
 	}
 	
 	
+	// ***** sync/update *****
+	
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		setPackageName_(buildPackageName());
+	}
+	
+	
 	// ***** package name *****
 	
 	public String getPackageName() {
