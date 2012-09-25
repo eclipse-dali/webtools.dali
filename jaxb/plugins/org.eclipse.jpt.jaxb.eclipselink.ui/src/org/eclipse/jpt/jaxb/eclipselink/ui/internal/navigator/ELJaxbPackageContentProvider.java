@@ -7,7 +7,7 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.jaxb.eclipselink.ui.internal;
+package org.eclipse.jpt.jaxb.eclipselink.ui.internal.navigator;
 
 import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionValueModel;

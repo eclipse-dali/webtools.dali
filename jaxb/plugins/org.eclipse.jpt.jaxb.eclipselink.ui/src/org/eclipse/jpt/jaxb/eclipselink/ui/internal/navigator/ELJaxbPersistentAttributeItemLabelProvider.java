@@ -7,10 +7,11 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jaxb.eclipselink.ui.internal;
+package org.eclipse.jpt.jaxb.eclipselink.ui.internal.navigator;
 
 import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
+import org.eclipse.jpt.jaxb.eclipselink.ui.internal.ELJaxbMappingImageHelper;
 import org.eclipse.jpt.jaxb.ui.internal.jaxb21.JaxbPersistentAttributeItemLabelProvider;
 import org.eclipse.swt.graphics.Image;
 

@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jaxb.eclipselink.ui.internal;
+package org.eclipse.jpt.jaxb.eclipselink.ui.internal.navigator;
 
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;

@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.ui.internal.v2_2;
 
-import org.eclipse.jpt.jaxb.eclipselink.ui.internal.ELJaxbNavigatorUi;
+import org.eclipse.jpt.jaxb.eclipselink.ui.internal.navigator.ELJaxbNavigatorUi;
 import org.eclipse.jpt.jaxb.ui.navigator.JaxbNavigatorUi;
 import org.eclipse.jpt.jaxb.ui.platform.JaxbPlatformUi;
 
