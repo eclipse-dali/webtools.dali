@@ -24,6 +24,7 @@ import org.eclipse.jpt.jaxb.core.resource.jaxbprops.JaxbPropertiesResource;
 import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbProject;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbContextRoot;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmFile;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.oxm.OxmFileImpl;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessageBuilder;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -122,7 +123,7 @@ public class ELJaxbContextRootImpl
 	}
 	
 	protected OxmFile buildOxmFile(JptXmlResource oxmResource) {
-		return new OxmFile(this, oxmResource);
+		return new OxmFileImpl(this, oxmResource);
 	}
 	
 	

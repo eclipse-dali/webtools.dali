@@ -9,53 +9,16 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.context.oxm;
 
-import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
-import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings;
+import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 
-public class OxmXmlBindings
-		extends AbstractJaxbContextNode {
-	
-	protected EXmlBindings eXmlBindings;
-	
-	public final static String PACKAGE_NAME_PROPERTY = "packageName"; //$NON-NLS-1$
-	protected String packageName;
-	
-	
-	public OxmXmlBindings(OxmFile parent, EXmlBindings eXmlBindings) {
-		super(parent);
-		this.eXmlBindings = eXmlBindings;
-		this.packageName = buildPackageName();
-	}
-	
+public interface OxmXmlBindings
+		extends JaxbContextNode {
 	
 	// ***** package name *****
 	
-	public String getPackageName() {
-		return this.packageName;
-	}
+	public final static String PACKAGE_NAME_PROPERTY = "packageName"; //$NON-NLS-1$
 	
-	public void setPackageName(String packageName) {
-		this.eXmlBindings.setPackageName(packageName);
-		setPackageName_(packageName);
-	}
+	public String getPackageName();
 	
-	protected void setPackageName_(String packageName) {
-		String oldPackageName = this.packageName;
-		this.packageName = packageName;
-		firePropertyChanged(PACKAGE_NAME_PROPERTY, oldPackageName, packageName);
-	}
-	
-	protected String buildPackageName() {
-		return this.eXmlBindings.getPackageName();
-	}
-	
-	
-	// ***** validation *****
-	
-	@Override
-	public TextRange getValidationTextRange() {
-		TextRange textRange = this.eXmlBindings.getValidationTextRange();
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
-	}
+	public void setPackageName(String packageName);
 }
