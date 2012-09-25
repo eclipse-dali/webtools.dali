@@ -388,12 +388,12 @@ public class GenericJavaOrderable
 
 	// JPA 2.0 only
 	public String getDefaultTableName() {
-		return this.owner.getTableName();
+		return this.owner == null ? null : this.owner.getTableName();
 	}
 
 	// JPA 2.0 only
 	protected Table resolveDbTable(String tableName) {
-		return this.owner.resolveDbTable(tableName);
+		return this.owner == null ? null : this.owner.resolveDbTable(tableName);
 	}
 
 

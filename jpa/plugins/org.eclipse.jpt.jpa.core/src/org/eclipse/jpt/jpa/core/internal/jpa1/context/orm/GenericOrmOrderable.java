@@ -373,12 +373,12 @@ public class GenericOrmOrderable
 
 	// JPA 2.0
 	public String getDefaultTableName() {
-		return this.owner.getTableName();
+		return this.owner == null ? null : this.owner.getTableName();
 	}
 
 	// JPA 2.0
 	protected Table resolveDbTable(String tableName) {
-		return this.owner.resolveDbTable(tableName);
+		return this.owner == null ? null : this.owner.resolveDbTable(tableName);
 	}
 
 

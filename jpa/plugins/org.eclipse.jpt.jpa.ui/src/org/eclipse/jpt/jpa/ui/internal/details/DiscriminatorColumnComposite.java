@@ -15,8 +15,8 @@ import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.jpa.core.context.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.context.Entity;
@@ -150,6 +150,16 @@ public class DiscriminatorColumnComposite<T extends Entity> extends Pane<T> {
 				super.addPropertyNames(propertyNames);
 				propertyNames.add(ReadOnlyNamedColumn.SPECIFIED_NAME_PROPERTY);
 				propertyNames.add(ReadOnlyNamedColumn.DEFAULT_NAME_PROPERTY);
+				propertyNames.add(ReadOnlyNamedColumn.DB_TABLE_PROPERTY);
+			}
+
+			@Override
+			protected void propertyChanged(String propertyName) {
+				if (propertyName.equals(ReadOnlyNamedColumn.DB_TABLE_PROPERTY)) {
+					this.doPopulate();
+				} else {
+					super.propertyChanged(propertyName);
+				}
 			}
 
 			@Override
