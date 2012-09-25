@@ -1,3 +1,4 @@
+-quiet
 -charset "utf-8"
 -sourcepath "@jptsourcepath@"
 -classpath @rt@;@jptrt@;@wtprt@

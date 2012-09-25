@@ -8,13 +8,12 @@
   Contributors:
     Oracle - initial API and implementation
  -->
-
 <project name="JPT Doc ISV Build" default="all"  basedir="." >
-
 	<target name="init">
 		<available file="${basedir}/index" property="index.present"/>
 		<path location="${basedir}/../../../eclipse/plugins" id="pluginsInstallDir"/>
 		<pathconvert property="base.plugins.install.dir" refid="pluginsInstallDir"/>
+		<property name="java.bin" value="${java.home}/../bin" />
 		<property name="optionsFile" value="jptOptions.tmp.txt" />
 		<property name="sourcepathFile" value="jptSourcepath.tmp.properties" />
 		<property name="classpathFile" value="jptClasspath.tmp.properties" />
@@ -32,6 +31,11 @@
 		<delete file="${packagesFile}"/>
 	</target>
 
+	<target name="getJavadocPath">
+		<available file="${java.bin}/javadoc.exe" property="javadoc" value="${java.bin}/javadoc.exe"/>
+		<available file="${java.bin}/javadoc" property="javadoc" value="${java.bin}/javadoc" />
+	</target>
+
 	<target name="all" depends="init" unless="index.present">
 		<!-- antcall target="convertSchemaToHtml" /-->
 		<antcall target="generateJavadoc" />
@@ -39,20 +43,10 @@
 		<!-- antcall target="createDocZip" /-->
 	</target>
 
-	<target name="build.index" description="Builds search index for the plug-in: org.eclipse.jpt.doc.isv." if="eclipse.running">
-		<help.buildHelpIndex manifest="${basedir}/plugin.xml" destination="${basedir}"/>
-	</target>
-
-	<target name="getJavadocPath">
-		<available file="${java.home}/../bin/javadoc.exe" property="javadoc" value="${java.home}/../bin/javadoc.exe"/>
-		<available file="${java.home}/../bin/javadoc" property="javadoc" value="${java.home}/../bin/javadoc" />
-	</target>
-
 	<!-- generateJavadoc -->
 	<target name="generateJavadoc" depends="getJavadocPath" if="javadoc">
 		<echo message="#### jpt.doc.isv #### - java.home = ${java.home}" />
 		<echo message="base.plugins.install.dir = ${base.plugins.install.dir}" />
-
 		<copy file="jptOptions.template" tofile="${optionsFile}" overwrite="true" />
 		<copy file="jptSourcepath.template" tofile="${sourcepathFile}" overwrite="true" />
 		<copy file="jptClasspath.template" tofile="${classpathFile}" overwrite="true" />
@@ -114,7 +108,7 @@
 		<delete dir="org"/>
 		<delete dir="resources"/>
 
-		<exec dir="." executable="${javadoc}" output="doc.bin.log">
+		<exec dir="." executable="${javadoc}" output="jptJavadoc.log">
 			<arg line="@${basedir}/${optionsFile} -J-Xmx1000M" />
 		</exec>
 	</target>
@@ -168,11 +162,14 @@
 		<ant antfile="buildDoc.xml" dir="../org.eclipse.jpt.doc.isv" />
 	</target>
 
+	<target name="build.index" description="Builds search index for the plug-in: org.eclipse.jpt.doc.isv." if="eclipse.running">
+		<help.buildHelpIndex manifest="${basedir}/plugin.xml" destination="${basedir}"/>
+	</target>
+
 	<target name="createDocZip">
 		<zip zipfile="${basedir}/doc.zip"
 		basedir="${basedir}"
 		includes="schema.css, book.css, notices.html, about.html, concepts/**, guide/**, tips/**, reference/**, tasks/**, whatsNew/**, images/**"
 	/>
 	</target>
-
 </project>
