@@ -69,7 +69,6 @@ public interface ReadOnlyNamedColumn
 	 * Return the column's datasource table.
 	 */
 	Table getDbTable();
-		String DB_TABLE_PROPERTY = "dbTable"; //$NON-NLS-1$
 
 	/**
 	 * Return whether the column is found on the datasource.

@@ -52,7 +52,6 @@ public abstract class AbstractOrmNamedColumn<X extends XmlNamedColumn, O extends
 
 	protected String columnDefinition;
 
-	protected Table dbTable;
 
 	// ********** constructor/initialization **********
 
@@ -82,7 +81,6 @@ public abstract class AbstractOrmNamedColumn<X extends XmlNamedColumn, O extends
 	public void update() {
 		super.update();
 		this.setDefaultName(this.buildDefaultName());
-		this.setDbTable(this.buildDbTable());
 	}
 
 
@@ -201,16 +199,6 @@ public abstract class AbstractOrmNamedColumn<X extends XmlNamedColumn, O extends
 	}
 
 	public Table getDbTable() {
-		return this.dbTable;
-	}
-
-	protected void setDbTable(Table dbTable) {
-		Table old = this.dbTable;
-		this.dbTable = dbTable;
-		this.firePropertyChanged(DB_TABLE_PROPERTY, old, dbTable);
-	}
-
-	protected Table buildDbTable() {
 		return this.owner.resolveDbTable(this.getTable());
 	}
 
