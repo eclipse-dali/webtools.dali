@@ -10,8 +10,11 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Vector;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
@@ -35,7 +38,8 @@ public class ELJaxbContextRootImpl
 		extends AbstractJaxbContextRoot
 		implements ELJaxbContextRoot {
 	
-	protected List<OxmFile> oxmFiles;
+	// store as SortedSet ordered by file path
+	private SortedSet<OxmFile> oxmFiles;
 	
 	
 	public ELJaxbContextRootImpl(JaxbProject jaxbProject) {
@@ -55,10 +59,21 @@ public class ELJaxbContextRootImpl
 	@Override
 	protected void initialize() {
 		
-		// initialize oxm files *first* 
-		this.oxmFiles = new Vector<OxmFile>(); // can't do this statically, since this gets called during constructor
-		for (JptXmlResource oxmResource : getJaxbProject().getOxmResources()) {
-			this.oxmFiles.add(buildOxmFile(oxmResource));
+		// can't do this statically, since this gets called during constructor
+		this.oxmFiles = Collections.synchronizedSortedSet(
+				new TreeSet<OxmFile>(
+						new Comparator<OxmFile>() {
+							public int compare(OxmFile of1, OxmFile of2) {
+								return of1.getResource().getProjectRelativePath().toString().compareTo(
+									of2.getResource().getProjectRelativePath().toString());
+							}
+						})); 
+		
+		// initialize oxm files *first*
+		synchronized (this.oxmFiles) {
+			for (JptXmlResource oxmResource : getJaxbProject().getOxmResources()) {
+				this.oxmFiles.add(buildOxmFile(oxmResource));
+			}
 		}
 		
 		super.initialize();
@@ -98,7 +113,9 @@ public class ELJaxbContextRootImpl
 	// ***** oxm files *****
 	
 	public Iterable<OxmFile> getOxmFiles() {
-		return new SnapshotCloneIterable(this.oxmFiles);
+		synchronized (this.oxmFiles) {
+			return new SnapshotCloneIterable(this.oxmFiles);
+		}
 	}
 	
 	public int getOxmFilesSize() {
