@@ -138,6 +138,10 @@ public class ELJaxbContextRootImpl
 		super.validate(messages, reporter);
 		
 		validateJaxbProperties(messages, reporter);
+		
+		for (OxmFile oxmFile : getOxmFiles()) {
+			oxmFile.validate(messages, reporter);
+		}
 	}
 	
 	protected void validateJaxbProperties(List<IMessage> messages, IReporter reporter) {

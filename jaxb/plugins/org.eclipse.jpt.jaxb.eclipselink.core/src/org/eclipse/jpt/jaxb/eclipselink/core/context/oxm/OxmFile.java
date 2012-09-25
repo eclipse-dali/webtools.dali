@@ -9,14 +9,19 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.context.oxm;
 
+import java.util.List;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.common.core.internal.utility.SimpleTextRange;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbContextRoot;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessageBuilder;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessages;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.Oxm;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class OxmFile 
 		extends AbstractJaxbContextNode {
@@ -50,12 +55,26 @@ public class OxmFile
 		return (ELJaxbContextRoot) super.getContextRoot();
 	}
 	
+	@Override
+	public IResource getResource() {
+		return this.oxmResource.getFile();
+	}
+	
 	public JptXmlResource getOxmResource() {
 		return this.oxmResource;
 	}
 	
 	public String getPackageName() {
 		return (this.xmlBindings == null) ? null : this.xmlBindings.getPackageName();
+	}
+	
+	
+	// ***** sync/update *****
+	
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.resourceType = oxmResource.getResourceType();
 	}
 	
 	
@@ -74,6 +93,26 @@ public class OxmFile
 	
 	@Override
 	public TextRange getValidationTextRange() {
-		return new SimpleTextRange(0, 0, 0); // simple beginning of document
+		// each doc will at least have an xml-bindings node, by definition
+		return ((EXmlBindings) this.oxmResource.getRootObject()).getValidationTextRange();
+	}
+	
+	protected TextRange getVersionTextRange() {
+		// each doc will at least have an xml-bindings node, by definition
+		return ((EXmlBindings) this.oxmResource.getRootObject()).getVersionTextRange();
+	}
+	
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		
+		if (! this.resourceType.isKindOf(Oxm.RESOURCE_TYPE_2_2)) {
+			messages.add(
+					ELJaxbValidationMessageBuilder.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							ELJaxbValidationMessages.OXM_FILE__VERSION_NOT_SUPPORTED,
+							OxmFile.this,
+							getVersionTextRange()));
+		}
 	}
 }
