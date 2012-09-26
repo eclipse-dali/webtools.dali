@@ -13,7 +13,7 @@ package org.eclipse.jpt.common.utility.internal;
 import java.util.Vector;
 
 /**
- * A string pattern matcher, suppporting "*" and "?" wildcards.
+ * A string pattern matcher, supporting "*" and "?" wildcards.
  * <p>
  * Copied from org.eclipse.ui.internal.navigator.StringMatcher
  */
