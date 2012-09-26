@@ -24,18 +24,24 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.Accessor;
 
-public abstract class AbstractAccessor 
-	extends AbstractJavaJpaContextNode 
+public abstract class AbstractAccessor
+	extends AbstractJavaJpaContextNode
 	implements Accessor
 {
-	
+
 	protected AbstractAccessor(ReadOnlyPersistentAttribute parent) {
 		super(parent);
 	}
 
+	@Override
 	public ReadOnlyPersistentAttribute getParent() {
 		return (ReadOnlyPersistentAttribute) super.getParent();
 	}
+
+	public ReadOnlyPersistentAttribute getAttribute() {
+		return this.getParent();
+	}
+
 
 	// ********** unannotated Java resource member **********
 
@@ -127,11 +133,11 @@ public abstract class AbstractAccessor
 
 
 		// ********** misc **********
-		
+
 		public Iterable<Annotation> getTopLevelAnnotations() {
 			return EmptyIterable.instance();
 		}
-		
+
 		public boolean isAnnotated() {
 			return false;
 		}
@@ -161,7 +167,7 @@ public abstract class AbstractAccessor
 		}
 
 		public boolean isPublicOrProtected() {
-			return isPublic() || isProtected();
+			return this.isPublic() || this.isProtected();
 		}
 
 		public boolean isFor(String memberName, int occurrence) {
@@ -190,9 +196,9 @@ public abstract class AbstractAccessor
 	 * Wrap another Java resource attribute and suppress all its annotations.
 	 */
 	protected abstract class UnannotatedJavaResourceAttribute<A extends JavaResourceAttribute>
-			extends UnannotatedJavaResourceMember<A>
-			implements JavaResourceAttribute {
-		
+		extends UnannotatedJavaResourceMember<A>
+		implements JavaResourceAttribute
+	{
 		public UnannotatedJavaResourceAttribute(A attribute){
 			super(attribute);
 		}
@@ -210,28 +216,28 @@ public abstract class AbstractAccessor
 
 
 		// ********** delegated behavior **********
-		
+
 		@Override
 		public JavaResourceType getParent() {
 			return this.member.getParent();
 		}
-		
+
 		public JavaResourceType getResourceType() {
 			return this.member.getResourceType();
 		}
-		
+
 		public String getName() {
 			return this.member.getName();
 		}
-		
+
 		public int getModifiers() {
 			return this.member.getModifiers();
 		}
-		
+
 		public TypeBinding getTypeBinding() {
 			return this.member.getTypeBinding();
 		}
-		
+
 		@Override
 		public void toString(StringBuilder sb) {
 			sb.append(this.getName());

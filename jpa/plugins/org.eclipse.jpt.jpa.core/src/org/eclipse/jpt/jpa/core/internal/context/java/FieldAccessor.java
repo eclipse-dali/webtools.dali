@@ -1,19 +1,18 @@
 /*******************************************************************************
- *  Copyright (c) 2011, 2012  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -26,26 +25,23 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.PersistentFieldValidator;
 
-public class FieldAccessor 
+public class FieldAccessor
 	extends AbstractAccessor
 {
 	private final JavaResourceField resourceField;
-	
+
+
 	public FieldAccessor(ReadOnlyPersistentAttribute parent, JavaResourceField resourceField) {
 		super(parent);
 		this.resourceField = resourceField;
 	}
 
-	public JavaResourceAttribute getResourceAttribute() {
-		return this.getField();
-	}
-
-	public JavaResourceField getField() {
+	public JavaResourceField getResourceAttribute() {
 		return this.resourceField;
 	}
 
-	public boolean isFor(JavaResourceField resourceField) {
-		return this.resourceField == resourceField;
+	public boolean isFor(JavaResourceField field) {
+		return this.resourceField == field;
 	}
 
 	public boolean isFor(JavaResourceMethod getterMethod, JavaResourceMethod setterMethod) {
@@ -67,13 +63,13 @@ public class FieldAccessor
 	public JptValidator buildAttributeValidator(PersistentAttribute persistentAttribute) {
 		return new PersistentFieldValidator(persistentAttribute, this);
 	}
-	
+
 	public TextRange getValidationTextRange() {
 		return this.getResourceAttribute().getNameTextRange();
 	}
 
-	public JavaPersistentAttribute buildUnannotatedJavaAttribute(PersistentType parent) {
-		return this.buildJavaAttribute(parent, this.buildUnannotatedJavaResourceField());
+	public JavaPersistentAttribute buildUnannotatedJavaAttribute(PersistentType type) {
+		return this.buildJavaAttribute(type, this.buildUnannotatedJavaResourceField());
 	}
 
 	/**
@@ -82,11 +78,20 @@ public class FieldAccessor
 	 * all the settings in the Java <em>context</em> attribute to default.
 	 */
 	protected JavaResourceField buildUnannotatedJavaResourceField() {
-		return new UnannotatedJavaResourceField(this.getField());
+		return new UnannotatedJavaResourceField(this.resourceField);
 	}
 
-	protected JavaPersistentAttribute buildJavaAttribute(PersistentType parent, JavaResourceField resourceField) {
-		return this.getJpaFactory().buildJavaPersistentField(parent, resourceField);
+	protected JavaPersistentAttribute buildJavaAttribute(PersistentType type, JavaResourceField javaResourceField) {
+		return this.getJpaFactory().buildJavaPersistentField(type, javaResourceField);
+	}
+
+	public IJavaElement getJavaElement() {
+		PersistentType persistentType = this.getAttribute().getOwningPersistentType();
+		if (persistentType instanceof JavaElementReference) {
+			IType jdtType = (IType) ((JavaElementReference) persistentType).getJavaElement();
+			return (jdtType == null) ? null : jdtType.getField(this.getAttribute().getName());
+		}
+		return null;
 	}
 
 
@@ -106,7 +111,7 @@ public class FieldAccessor
 		public Kind getKind() {
 			return Kind.FIELD;
 		}
-		
+
 		public void synchronizeWith(FieldDeclaration fieldDeclaration, VariableDeclarationFragment variableDeclaration) {
 			// NOP
 		}
@@ -115,16 +120,4 @@ public class FieldAccessor
 			// NOP
 		}
 	}
-
-	// ********** misc **********
-
-	public IJavaElement getJavaElement() {
-		PersistentType persistentType = this.getParent().getOwningPersistentType();
-		if (persistentType instanceof JavaElementReference) {
-			IType type = (IType)((JavaElementReference)persistentType).getJavaElement();
-			return type== null ? null : type.getField(this.getParent().getName());
-		}
-		return null;
-	}
-
 }

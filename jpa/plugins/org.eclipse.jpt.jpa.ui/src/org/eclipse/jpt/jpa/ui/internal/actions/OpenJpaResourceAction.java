@@ -77,9 +77,9 @@ public class OpenJpaResourceAction
 				selectionManager.setSelection((JpaStructureNode) this.selectedNode);
 			}
 		}
-		// handle persistent types and persistent attributes in jar files below
+		// handle persistent types and attributes in jar files
 		else if (this.selectedNode instanceof JavaElementReference) {
-			openEditor(((JavaElementReference) this.selectedNode).getJavaElement());
+			this.openJavaEditor(((JavaElementReference) this.selectedNode).getJavaElement());
 		}
 	}
 
@@ -101,7 +101,7 @@ public class OpenJpaResourceAction
 		}
 	}
 
-	private void openEditor(IJavaElement element) {
+	private void openJavaEditor(IJavaElement element) {
 		if (element != null) {
 			try {
 				JavaUI.openInEditor(element, true, true);

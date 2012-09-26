@@ -42,7 +42,7 @@ public class VirtualOrmPersistentAttribute
 	extends AbstractOrmXmlContextNode
 	implements OrmReadOnlyPersistentAttribute, ReadOnlyPersistentAttribute2_0
 {
-	protected final Accessor javaAccessor;
+	protected final Accessor javaAccessor; // never null
 
 	/**
 	 * This is an "annotated" Java persistent attribute whose state is
@@ -58,7 +58,7 @@ public class VirtualOrmPersistentAttribute
 
 	/**
 	 * This is the "original" Java persistent attribute corresponding to
-	 * {@link #javaResourceAttribute} from the Java context model.
+	 * {@link #javaAccessor} from the Java context model.
 	 * If it is found (it can be <code>null</code> if the <code>orm.xml</code>
 	 * access type differs from the Java access type), we need to listen to it
 	 * for changes so we can refresh our "local" Java attributes (since the
@@ -94,13 +94,6 @@ public class VirtualOrmPersistentAttribute
 	public VirtualOrmPersistentAttribute(OrmPersistentType parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
 		super(parent);
 		this.javaAccessor = new PropertyAccessor(this, resourceGetter, resourceSetter);
-		this.annotatedJavaAttribute = this.buildAnnotatedJavaAttribute();
-		this.mapping = this.buildMapping();
-	}
-
-	public VirtualOrmPersistentAttribute(OrmPersistentType parent, Accessor javaAccessor) {
-		super(parent);
-		this.javaAccessor = javaAccessor;
 		this.annotatedJavaAttribute = this.buildAnnotatedJavaAttribute();
 		this.mapping = this.buildMapping();
 	}

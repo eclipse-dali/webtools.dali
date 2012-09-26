@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.platform.generic;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.common.ui.internal.jface.AbstractItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
@@ -39,7 +40,7 @@ public class PersistenceUnitItemLabelProvider
 	protected Image buildImage() {
 		return JptJpaUiPlugin.instance().getImage(JptUiIcons.PERSISTENCE_UNIT);
 	}
-	
+
 	@Override
 	protected PropertyValueModel<String> buildTextModel() {
 		return new TextModel(this.item);
@@ -56,7 +57,7 @@ public class PersistenceUnitItemLabelProvider
 			return this.subject.getName();
 		}
 	}
-	
+
 	@Override
 	protected PropertyValueModel<String> buildDescriptionModel() {
 		return new DescriptionModel(this.item);
@@ -77,7 +78,7 @@ public class PersistenceUnitItemLabelProvider
 			return sb.toString();
 		}
 	}
-	
+
 
 	// ********** component description model **********
 
@@ -85,20 +86,22 @@ public class PersistenceUnitItemLabelProvider
 	public static PropertyValueModel<String> buildQuotedComponentDescriptionModel(JpaContextNode node, PropertyValueModel<String> nodeTextModel) {
 		return buildComponentDescriptionModel(node, true, nodeTextModel);
 	}
-		
+
 	public static PropertyValueModel<String> buildNonQuotedComponentDescriptionModel(JpaContextNode node, PropertyValueModel<String>... nodeTextModels) {
 		return buildComponentDescriptionModel(node, false, nodeTextModels);
 	}
-		
+
 	protected static PropertyValueModel<String> buildComponentDescriptionModel(JpaContextNode node, boolean quote, PropertyValueModel<String>... nodeTextModels) {
+		IResource nodeResource = node.getResource();
+		String nodePath = (nodeResource == null) ? null : nodeResource.getFullPath().makeRelative().toString();
 		return new ComponentDescriptionModel(
 					nodeTextModels,
 					new TextModel(node.getPersistenceUnit()),
-					node.getResource() == null ? null : node.getResource().getFullPath().makeRelative().toString(),
+					nodePath,
 					quote
 				);
 	}
-		
+
 	public static class ComponentDescriptionModel
 		extends CompositePropertyValueModel<String, Object>
 	{
@@ -158,7 +161,6 @@ public class PersistenceUnitItemLabelProvider
 				sb.append(" - "); //$NON-NLS-1$
 				sb.append(this.path);
 			}
-			sb.append(""); //$NON-NLS-1$
 			return sb.toString();
 		}
 	}

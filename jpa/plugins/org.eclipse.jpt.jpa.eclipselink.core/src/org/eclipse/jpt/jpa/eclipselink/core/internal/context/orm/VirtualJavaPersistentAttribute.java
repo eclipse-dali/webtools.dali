@@ -39,9 +39,9 @@ import org.eclipse.jpt.jpa.eclipselink.core.internal.plugin.JptJpaEclipseLinkCor
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlAttributeMapping;
 
 public class VirtualJavaPersistentAttribute
-		extends AbstractJavaJpaContextNode
-		implements JavaPersistentAttribute, PersistentAttribute2_0, JavaEclipseLinkPersistentAttribute {
-	
+	extends AbstractJavaJpaContextNode
+	implements JavaPersistentAttribute, PersistentAttribute2_0, JavaEclipseLinkPersistentAttribute
+{
 	private final XmlAttributeMapping xmlAttributeMapping;
 	
 	private final JavaAttributeMapping attributeMapping;
@@ -417,12 +417,12 @@ public class VirtualJavaPersistentAttribute
 		throw new UnsupportedOperationException("Owing orm persistent attribute should handle, this should not be called."); //$NON-NLS-1$
 	}
 
+	public IJavaElement getJavaElement() {
+		return null;
+	}
+
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.getName());
-	}
-
-	public IJavaElement getJavaElement() {
-		return null;
 	}
 }

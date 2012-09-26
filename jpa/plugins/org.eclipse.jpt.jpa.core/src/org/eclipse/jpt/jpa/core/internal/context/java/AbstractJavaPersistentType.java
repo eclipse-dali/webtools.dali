@@ -67,9 +67,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * </ul>
  */
 public abstract class AbstractJavaPersistentType
-		extends AbstractJavaJpaContextNode
-		implements JavaPersistentType {
-	
+	extends AbstractJavaJpaContextNode
+	implements JavaPersistentType
+{
 	protected final JavaResourceType resourceType;
 
 	protected String name;
@@ -95,7 +95,7 @@ public abstract class AbstractJavaPersistentType
 
 		this.mapping = this.buildMapping();
 		this.initializeAttributes();
-		
+
 	}
 
 
@@ -178,13 +178,13 @@ public abstract class AbstractJavaPersistentType
 		if (typeName == null) {
 			return null;
 		}
-		JavaResourceType resourceType = (JavaResourceType) this.getJpaProject().getJavaResourceType(typeName, JavaResourceAnnotatedElement.Kind.TYPE);
-		if ((resourceType == null) || visited.contains(resourceType)) {
+		JavaResourceType rType = (JavaResourceType) this.getJpaProject().getJavaResourceType(typeName, JavaResourceAnnotatedElement.Kind.TYPE);
+		if ((rType == null) || visited.contains(rType)) {
 			return null;
 		}
-		visited.add(resourceType);
-		PersistentType spt = this.resolvePersistentType(typeName);
-		return (spt != null) ? spt : this.resolveSuperPersistentType(resourceType.getSuperclassQualifiedName(), visited);  // recurse
+		visited.add(rType);
+		PersistentType superType = this.resolvePersistentType(typeName);
+		return (superType != null) ? superType : this.resolveSuperPersistentType(rType.getSuperclassQualifiedName(), visited);  // recurse
 	}
 
 	protected PersistentType resolvePersistentType(String typeName) {
@@ -200,7 +200,7 @@ public abstract class AbstractJavaPersistentType
 
 	protected void removeAccessAnnotationIfUnset() {
 		Access2_0Annotation accessAnnotation = this.getAccessAnnotation();
-		if (accessAnnotation != null && accessAnnotation.isUnset()) {
+		if ((accessAnnotation != null) && accessAnnotation.isUnset()) {
 			this.removeAccessAnnotation();
 		}
 	}
@@ -452,11 +452,11 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	protected JavaPersistentAttribute buildField(JavaResourceField resourceField) {
-		return getJpaFactory().buildJavaPersistentField(this, resourceField);
+		return this.getJpaFactory().buildJavaPersistentField(this, resourceField);
 	}
 
 	protected JavaPersistentAttribute buildProperty(JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
-		return getJpaFactory().buildJavaPersistentProperty(this, resourceGetter, resourceSetter);
+		return this.getJpaFactory().buildJavaPersistentProperty(this, resourceGetter, resourceSetter);
 	}
 
 	public boolean hasAnyAnnotatedAttributes() {
@@ -476,10 +476,10 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	protected void initializeAttributes() {
-		if (getAccess() == AccessType.FIELD) {
+		if (this.getAccess() == AccessType.FIELD) {
 			this.intializeFieldAccessAttributes();
 		}
-		else if (getAccess() == AccessType.PROPERTY) {
+		else if (this.getAccess() == AccessType.PROPERTY) {
 			this.intializePropertyAccessAttributes();
 		}
 	}
@@ -525,9 +525,9 @@ public abstract class AbstractJavaPersistentType
 	private void initializeAnnotatedPropertyAttributes() {
 		Collection<JavaResourceMethod> resourceMethods = CollectionTools.collection(this.getResourceMethods());
 		//iterate through all resource methods searching for persistable getters
-		for (JavaResourceMethod getterMethod : this.getResourceMethods(buildPersistablePropertyGetterMethodsFilter())) {
+		for (JavaResourceMethod getterMethod : this.getResourceMethods(this.buildPersistablePropertyGetterMethodsFilter())) {
 			JavaResourceMethod setterMethod = getValidSiblingSetMethod(getterMethod, resourceMethods);
-			if (getterMethod.isAnnotated() || (setterMethod != null && setterMethod.isAnnotated())) {
+			if (getterMethod.isAnnotated() || ((setterMethod != null) && setterMethod.isAnnotated())) {
 				this.attributes.add(this.buildProperty(getterMethod, setterMethod));
 			}
 			resourceMethods.remove(getterMethod);
@@ -553,10 +553,10 @@ public abstract class AbstractJavaPersistentType
 	 * which can be controlled in a number of different places....
 	 */
 	protected void updateAttributes() {
-		if (getAccess() == AccessType.FIELD) {
+		if (this.getAccess() == AccessType.FIELD) {
 			this.syncFieldAccessAttributes();
 		}
-		else if (getAccess() == AccessType.PROPERTY) {
+		else if (this.getAccess() == AccessType.PROPERTY) {
 			this.syncPropertyAccessAttributes();
 		}
 	}
@@ -600,7 +600,7 @@ public abstract class AbstractJavaPersistentType
 					}
 				}
 				if (!match) {
-					this.addAttribute(getAttributesSize(), this.buildProperty(getterMethod, setterMethod));
+					this.addAttribute(this.getAttributesSize(), this.buildProperty(getterMethod, setterMethod));
 				}
 			}
 			resourceMethods.remove(getterMethod);
@@ -612,9 +612,9 @@ public abstract class AbstractJavaPersistentType
 	private void syncAnnotatedPropertyAttributes(HashSet<JavaPersistentAttribute> contextAttributes) {
 		Collection<JavaResourceMethod> resourceMethods = CollectionTools.collection(this.getResourceMethods());
 		//iterate through all resource methods searching for persistable getters
-		for (JavaResourceMethod getterMethod : this.getResourceMethods(buildPersistablePropertyGetterMethodsFilter())) {
+		for (JavaResourceMethod getterMethod : this.getResourceMethods(this.buildPersistablePropertyGetterMethodsFilter())) {
 			JavaResourceMethod setterMethod = getValidSiblingSetMethod(getterMethod, resourceMethods);
-			if (getterMethod.isAnnotated() || (setterMethod != null && setterMethod.isAnnotated())) {
+			if (getterMethod.isAnnotated() || ((setterMethod != null) && setterMethod.isAnnotated())) {
 				boolean match = false;
 				for (Iterator<JavaPersistentAttribute> stream = contextAttributes.iterator(); stream.hasNext();) {
 					JavaPersistentAttribute contextAttribute = stream.next();
@@ -626,7 +626,7 @@ public abstract class AbstractJavaPersistentType
 					}
 				}
 				if (!match) {
-					this.addAttribute(getAttributesSize(), this.buildProperty(getterMethod, setterMethod));
+					this.addAttribute(this.getAttributesSize(), this.buildProperty(getterMethod, setterMethod));
 				}
 			}
 			resourceMethods.remove(getterMethod);
@@ -673,7 +673,7 @@ public abstract class AbstractJavaPersistentType
 					}
 				}
 				if (!match) {
-					this.addAttribute(getAttributesSize(), this.buildProperty(null, resourceMethod));
+					this.addAttribute(this.getAttributesSize(), this.buildProperty(null, resourceMethod));
 				}
 			}
 		}
@@ -694,11 +694,11 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	protected Iterable<JavaResourceField> getResourceFields(Filter<JavaResourceField> filter) {
-		return new FilteringIterable<JavaResourceField>(getResourceFields(), filter);
+		return new FilteringIterable<JavaResourceField>(this.getResourceFields(), filter);
 	}
 
 	protected Iterable<JavaResourceMethod> getResourceMethods(Filter<JavaResourceMethod> filter) {
-		return new FilteringIterable<JavaResourceMethod>(getResourceMethods(), filter);
+		return new FilteringIterable<JavaResourceMethod>(this.getResourceMethods(), filter);
 	}
 
 	public static Filter<JavaResourceField> buildNonTransientNonStaticResourceFieldsFilter() {
@@ -713,7 +713,7 @@ public abstract class AbstractJavaPersistentType
 		return !resourceMember.isTransient() && !resourceMember.isStatic();
 	}
 
-	public static Filter<JavaResourceField> ANNOTATED_RESOURCE_FIELDS_FILTER = 
+	public static Filter<JavaResourceField> ANNOTATED_RESOURCE_FIELDS_FILTER =
 		new Filter<JavaResourceField>() {
 			public boolean accept(JavaResourceField resourceField) {
 				return resourceField.isAnnotated();
@@ -723,7 +723,7 @@ public abstract class AbstractJavaPersistentType
 	protected Filter<JavaResourceMethod> buildPersistablePropertyGetterMethodsFilter() {
 		return new Filter<JavaResourceMethod>() {
 			public boolean accept(JavaResourceMethod resourceMethod) {
-				return methodIsPersistablePropertyGetter(resourceMethod, getResourceMethods());
+				return methodIsPersistablePropertyGetter(resourceMethod, AbstractJavaPersistentType.this.getResourceMethods());
 			}
 		};
 	}
@@ -887,7 +887,7 @@ public abstract class AbstractJavaPersistentType
 			}
 		};
 	}
-	
+
 	protected Iterable<JavaResourceType> getResourceInheritanceHierarchy() {
 		// keep track of visited resource types to kill cyclical inheritance
 		final HashSet<JavaResourceType> visitedResourceTypes = new HashSet<JavaResourceType>();
@@ -901,34 +901,34 @@ public abstract class AbstractJavaPersistentType
 				}
 				JavaResourceType nextLink = (JavaResourceType)
 						AbstractJavaPersistentType.this.getJpaProject().getJavaResourceType(
-								superclassName, 
+								superclassName,
 								JavaResourceAbstractType.Kind.TYPE);
-				if (nextLink == null || visitedResourceTypes.contains(nextLink)) {
+				if ((nextLink == null) || visitedResourceTypes.contains(nextLink)) {
 					return null;
 				}
 				return nextLink;
 			}
 		};
 	}
-	
+
 	public TypeBinding getAttributeTypeBinding(ReadOnlyPersistentAttribute attribute) {
 		JavaResourceAttribute resourceAttribute = attribute.getJavaPersistentAttribute().getResourceAttribute();
 		if (resourceAttribute == null) {
 			return null;
 		}
-		
-		for (JavaResourceType resourceType : getResourceInheritanceHierarchy()) {
-			TypeBinding attributeType = resourceType.getAttributeTypeBinding(resourceAttribute);
+
+		for (JavaResourceType jrt : this.getResourceInheritanceHierarchy()) {
+			TypeBinding attributeType = jrt.getAttributeTypeBinding(resourceAttribute);
 			if (attributeType != null) {
 				return attributeType;
 			}
 		}
-		
+
 		// attribute was not found in this context
 		throw new IllegalArgumentException(attribute.toString());
 	}
-	
-	
+
+
 	// ********** JpaStructureNode implementation **********
 
 	public ContextType getContextType() {
@@ -948,7 +948,7 @@ public abstract class AbstractJavaPersistentType
 	 * When the user moves from the JPA Details view back to the Java source we need to call
 	 * synchronizeWithJavaSource() in order for our cached text ranges to be updated appropriately.
 	 * <p>
-	 * Also need the synchronizeWithJavaSource() when editing directly in the java source, 
+	 * Also need the synchronizeWithJavaSource() when editing directly in the java source,
 	 * the textRange gets updated after the java delay which is after we are notified of a selection change.
 	 */
 	public JpaStructureNode getStructureNode(int offset) {
@@ -1088,7 +1088,7 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	public boolean isFor(String typeName) {
-		return Tools.valuesAreEqual(typeName, this.getName());
+		return Tools.valuesAreEqual(typeName, this.name);
 	}
 
 	public boolean isIn(IPackageFragment packageFragment) {
@@ -1103,20 +1103,20 @@ public abstract class AbstractJavaPersistentType
 		return null;  // Java persistent types do not override anything
 	}
 
+	public IJavaElement getJavaElement() {
+		try {
+			return this.getJavaProject().findType(this.name);
+		} catch (JavaModelException ex) {
+			JptJpaCorePlugin.instance().logError(ex);
+			return null;
+		}
+	}
+
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.name);
 	}
 
-	public IJavaElement getJavaElement() {
-		try {
-			return this.getJpaProject().getJavaProject().findType(this.getName().replace('$', '.'));
-		}	
-		catch (JavaModelException e) {
-			JptJpaCorePlugin.instance().logError(e);
-		}
-		return null;
-	}
 
 	// ********** Access type **********
 
@@ -1129,7 +1129,6 @@ public abstract class AbstractJavaPersistentType
 	 *     {@link AccessType#PROPERTY PROPERTY}
 	 * <li>if neither are annotated =>
 	 *     <code>null</code>
-	 *     
 	 * </ul>
 	 */
 	public static AccessType buildAccess(JavaResourceType jrType) {

@@ -46,13 +46,14 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class VirtualJavaPersistentType
-		extends AbstractJavaJpaContextNode
-		implements JavaPersistentType, PersistentType2_0 {
-	
+	extends AbstractJavaJpaContextNode
+	implements JavaPersistentType, PersistentType2_0
+{
 	private final XmlTypeMapping xmlTypeMapping;
 
 	protected final JavaTypeMapping mapping;
 	protected PersistentType superPersistentType;
+
 
 	public VirtualJavaPersistentType(EclipseLinkOrmPersistentType parent, XmlTypeMapping xmlTypeMapping) {
 		super(parent);
@@ -66,7 +67,7 @@ public class VirtualJavaPersistentType
 	}
 
 	protected EclipseLinkEntityMappings getEntityMappings() {
-		return (EclipseLinkEntityMappings) getParent().getMappingFileRoot();
+		return (EclipseLinkEntityMappings) this.getParent().getMappingFileRoot();
 	}
 
 
@@ -86,8 +87,8 @@ public class VirtualJavaPersistentType
 	// ********** name **********
 
 	//The parent OrmPersistentType builds its name from the specified class and package.
-	//In SpecifiedOrmPersistentType.updateJavaPersistentType(), it compares the names and 
-	//rebuilds if the name has changed. We don't need to rebuild the virtual java persistent 
+	//In SpecifiedOrmPersistentType.updateJavaPersistentType(), it compares the names and
+	//rebuilds if the name has changed. We don't need to rebuild the virtual java persistent
 	//type based on a name change, it will get rebuilt if the dynamic state changes.
 	public String getName() {
 		return this.getParent().getName();
@@ -186,7 +187,7 @@ public class VirtualJavaPersistentType
 	}
 
 	protected PersistentType resolvePersistentType(String typeName) {
-		return getEntityMappings().resolvePersistentType(typeName);
+		return this.getEntityMappings().resolvePersistentType(typeName);
 	}
 
 	protected JavaResourceType resolveJavaResourceType(String typeName) {
@@ -196,7 +197,7 @@ public class VirtualJavaPersistentType
 
 	// ********** attributes **********
 	//The VirtualJavaPersistentAttributes are built by the OrmEclipseLinkPersistentAttribute, no attributes here
-	
+
 	public ListIterable<JavaPersistentAttribute> getAttributes() {
 		return EmptyListIterable.instance();
 	}
@@ -232,12 +233,12 @@ public class VirtualJavaPersistentType
 	public ReadOnlyPersistentAttribute resolveAttribute(String attributeName) {
 		return null;
 	}
-	
+
 	public TypeBinding getAttributeTypeBinding(ReadOnlyPersistentAttribute attribute) {
 		return null;
 	}
-	
-	
+
+
 	// ********** inheritance **********
 
 	public Iterable<PersistentType> getInheritanceHierarchy() {
@@ -318,11 +319,11 @@ public class VirtualJavaPersistentType
 
 	public String getDeclaringTypeName() {
 		String className = this.xmlTypeMapping.getClassName();
-		int index = className == null ? -1 : className.lastIndexOf('$');
-		if (index == -1) {
+		if (className == null) {
 			return null;
 		}
-		return className.substring(0, index).replace('$', '.');
+		int index = className.lastIndexOf('$');
+		return (index == -1) ? null : className.substring(0, index).replace('$', '.');
 	}
 
 	public boolean isManaged() {
@@ -341,6 +342,10 @@ public class VirtualJavaPersistentType
 		throw new UnsupportedOperationException();
 	}
 
+	public IJavaElement getJavaElement() {
+		return null;
+	}
+
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.getName());
@@ -348,9 +353,5 @@ public class VirtualJavaPersistentType
 
 	public void dispose() {
 		//nothing to dispose
-	}
-
-	public IJavaElement getJavaElement() {
-		return null;
 	}
 }
