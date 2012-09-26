@@ -94,7 +94,7 @@ public class PersistenceUnitItemLabelProvider
 		return new ComponentDescriptionModel(
 					nodeTextModels,
 					new TextModel(node.getPersistenceUnit()),
-					node.getResource().getFullPath().makeRelative().toString(),
+					node.getResource() == null ? null : node.getResource().getFullPath().makeRelative().toString(),
 					quote
 				);
 	}
@@ -154,8 +154,11 @@ public class PersistenceUnitItemLabelProvider
 			if (this.quote) {
 				sb.append('\"');
 			}
-			sb.append(" - "); //$NON-NLS-1$
-			sb.append(this.path);
+			if (this.path != null) {
+				sb.append(" - "); //$NON-NLS-1$
+				sb.append(this.path);
+			}
+			sb.append(""); //$NON-NLS-1$
 			return sb.toString();
 		}
 	}

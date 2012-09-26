@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
@@ -419,5 +420,9 @@ public class VirtualJavaPersistentAttribute
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.getName());
+	}
+
+	public IJavaElement getJavaElement() {
+		return null;
 	}
 }

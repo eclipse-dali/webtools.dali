@@ -12,16 +12,22 @@ package org.eclipse.jpt.jpa.ui.internal.actions;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.java.JavaElementReference;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
+import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.selection.JpaSelectionManager;
 import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorRegistry;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.BaseSelectionListenerAction;
 import org.eclipse.ui.ide.IDE;
@@ -71,6 +77,10 @@ public class OpenJpaResourceAction
 				selectionManager.setSelection((JpaStructureNode) this.selectedNode);
 			}
 		}
+		// handle persistent types and persistent attributes in jar files below
+		else if (this.selectedNode instanceof JavaElementReference) {
+			openEditor(((JavaElementReference) this.selectedNode).getJavaElement());
+		}
 	}
 
 	protected void openEditor(IFile file) {
@@ -88,6 +98,20 @@ public class OpenJpaResourceAction
 		}
 		catch (Exception e) {
 			MessageDialog.openError(page.getWorkbenchWindow().getShell(), JptUiMessages.OpenJpaResourceAction_error, e.getMessage());
+		}
+	}
+
+	private void openEditor(IJavaElement element) {
+		if (element != null) {
+			try {
+				JavaUI.openInEditor(element, true, true);
+			}
+			catch (PartInitException e) {
+				JptJpaUiPlugin.instance().logError(e);
+			}
+			catch (JavaModelException e) {
+				JptJpaUiPlugin.instance().logError(e);
+			}
 		}
 	}
 }

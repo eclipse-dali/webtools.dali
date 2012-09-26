@@ -16,7 +16,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
@@ -1106,6 +1108,15 @@ public abstract class AbstractJavaPersistentType
 		sb.append(this.name);
 	}
 
+	public IJavaElement getJavaElement() {
+		try {
+			return this.getJpaProject().getJavaProject().findType(this.getName().replace('$', '.'));
+		}	
+		catch (JavaModelException e) {
+			JptJpaCorePlugin.instance().logError(e);
+		}
+		return null;
+	}
 
 	// ********** Access type **********
 

@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
@@ -19,6 +21,7 @@ import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaElementReference;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.PersistentFieldValidator;
@@ -111,6 +114,17 @@ public class FieldAccessor
 		public void resolveTypes(FieldDeclaration fieldDeclaration, VariableDeclarationFragment variableDeclaration) {
 			// NOP
 		}
+	}
+
+	// ********** misc **********
+
+	public IJavaElement getJavaElement() {
+		PersistentType persistentType = this.getParent().getOwningPersistentType();
+		if (persistentType instanceof JavaElementReference) {
+			IType type = (IType)((JavaElementReference)persistentType).getJavaElement();
+			return type== null ? null : type.getField(this.getParent().getName());
+		}
+		return null;
 	}
 
 }

@@ -9,17 +9,22 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
+import java.util.List;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.MethodSignature;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.java.JavaElementReference;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.PersistentPropertyValidator;
@@ -142,6 +147,26 @@ public class PropertyAccessor
 		public void synchronizeWith(MethodDeclaration methodDeclaration) {
 			// NOP
 		}
+	}
+
+	// ********** misc **********
+	
+	public IJavaElement getJavaElement() {
+		PersistentType persistentType = this.getParent().getOwningPersistentType();
+		if (persistentType instanceof JavaElementReference) {
+			IType type = (IType)((JavaElementReference)persistentType).getJavaElement();
+			if (type != null) {
+				JavaResourceMethod jrm = this.resourceGetter;
+				if (jrm == null) {
+					jrm = this.resourceSetter;
+				}
+				if (jrm != null) {
+					List<String> parameters = CollectionTools.list(jrm.getParameterTypeNames());
+					return type.getMethod(jrm.getMethodName(), parameters.toArray(new String[parameters.size()]));
+				}
+			}
+		}
+		return null;
 	}
 
 }

@@ -27,7 +27,7 @@ import org.eclipse.jpt.jpa.core.context.PersistentType;
  * @since 2.0
  */
 public interface JavaPersistentType
-	extends PersistentType
+	extends PersistentType, JavaElementReference
 {
 	// ********** covariant overrides **********
 

@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
@@ -347,5 +348,9 @@ public class VirtualJavaPersistentType
 
 	public void dispose() {
 		//nothing to dispose
+	}
+
+	public IJavaElement getJavaElement() {
+		return null;
 	}
 }

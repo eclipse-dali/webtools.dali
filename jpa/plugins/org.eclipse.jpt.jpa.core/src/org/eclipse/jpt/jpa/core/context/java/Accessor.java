@@ -30,7 +30,7 @@ import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
  * @version 3.3
  * @since 3.1
  */
-public interface Accessor extends JpaContextNode
+public interface Accessor extends JpaContextNode, JavaElementReference
 {
 	/**
 	 * Return the <em>resource</em> attribute(field/method) that is to be annotated. 

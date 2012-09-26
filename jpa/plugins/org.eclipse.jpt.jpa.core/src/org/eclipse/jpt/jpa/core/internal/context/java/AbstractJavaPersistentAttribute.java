@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
@@ -607,6 +608,9 @@ public abstract class AbstractJavaPersistentAttribute
 		sb.append(this.getName());
 	}
 
+	public IJavaElement getJavaElement() {
+		return this.accessor.getJavaElement();
+	}
 
 	// ********** validation **********
 

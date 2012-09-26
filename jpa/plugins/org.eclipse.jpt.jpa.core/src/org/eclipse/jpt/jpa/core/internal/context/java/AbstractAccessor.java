@@ -33,6 +33,9 @@ public abstract class AbstractAccessor
 		super(parent);
 	}
 
+	public ReadOnlyPersistentAttribute getParent() {
+		return (ReadOnlyPersistentAttribute) super.getParent();
+	}
 
 	// ********** unannotated Java resource member **********
 
