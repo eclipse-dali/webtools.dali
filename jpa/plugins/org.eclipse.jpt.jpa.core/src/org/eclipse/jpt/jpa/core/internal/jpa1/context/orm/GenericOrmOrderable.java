@@ -58,7 +58,7 @@ public class GenericOrmOrderable
 	 * JPA 1.0
 	 */
 	public GenericOrmOrderable(OrmAttributeMapping parent) {
-		this(parent, null);
+		this(parent, buildNullOwner());
 	}
 
 	/**
@@ -75,6 +75,21 @@ public class GenericOrmOrderable
 		this.owner = owner;
 		this.orderColumnOrdering = this.buildOrderColumnOrdering();
 		this.orderColumn = this.buildOrderColumn();
+	}
+
+
+	/**
+	 * null Owner implementation for JPA 1.0 where there is no OrderColumn
+	 */
+	static Owner buildNullOwner() {
+		return new Owner() {
+			public Table resolveDbTable(String tableName) {
+				return null;
+			}
+			public String getTableName() {
+				return null;
+			}
+		};
 	}
 
 
@@ -373,12 +388,12 @@ public class GenericOrmOrderable
 
 	// JPA 2.0
 	public String getDefaultTableName() {
-		return this.owner == null ? null : this.owner.getTableName();
+		return this.owner.getTableName();
 	}
 
 	// JPA 2.0
 	protected Table resolveDbTable(String tableName) {
-		return this.owner == null ? null : this.owner.resolveDbTable(tableName);
+		return this.owner.resolveDbTable(tableName);
 	}
 
 

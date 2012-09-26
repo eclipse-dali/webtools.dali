@@ -61,7 +61,7 @@ public class GenericJavaOrderable
 	 * JPA 1.0
 	 */
 	public GenericJavaOrderable(JavaAttributeMapping parent) {
-		this(parent, null);
+		this(parent, buildNullOwner());
 	}
 
 	/**
@@ -77,6 +77,20 @@ public class GenericJavaOrderable
 		this.owner = owner;
 		this.orderColumnOrdering = this.buildOrderColumnOrdering();
 		this.orderColumn = this.buildOrderColumn();
+	}
+
+	/**
+	 * null Owner implementation for JPA 1.0 where there is no OrderColumn
+	 */
+	static Owner buildNullOwner() {
+		return new Owner() {
+			public Table resolveDbTable(String tableName) {
+				return null;
+			}
+			public String getTableName() {
+				return null;
+			}
+		};
 	}
 
 
@@ -388,12 +402,12 @@ public class GenericJavaOrderable
 
 	// JPA 2.0 only
 	public String getDefaultTableName() {
-		return this.owner == null ? null : this.owner.getTableName();
+		return this.owner.getTableName();
 	}
 
 	// JPA 2.0 only
 	protected Table resolveDbTable(String tableName) {
-		return this.owner == null ? null : this.owner.resolveDbTable(tableName);
+		return this.owner.resolveDbTable(tableName);
 	}
 
 
