@@ -15,13 +15,12 @@ package org.eclipse.jpt.jpa.eclipselink.core.jpql.spi;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
 import org.eclipse.jpt.jpa.core.jpql.spi.JpaManagedType;
 import org.eclipse.jpt.jpa.core.jpql.spi.JpaManagedTypeProvider;
 import org.eclipse.persistence.jpa.jpql.spi.IManagedType;
 import org.eclipse.persistence.jpa.jpql.spi.IMapping;
 import org.eclipse.persistence.jpa.jpql.spi.IType;
-import org.eclipse.persistence.jpa.jpql.util.iterator.CloneIterator;
-import org.eclipse.persistence.jpa.jpql.util.iterator.IterableIterator;
 
 /**
  * The abstract implementation of a {@link IManagedType} that supports a dynamic managed type.
@@ -31,7 +30,7 @@ import org.eclipse.persistence.jpa.jpql.util.iterator.IterableIterator;
  * to solicit feedback from pioneering adopters on the understanding that any code that uses this
  * API will almost certainly be broken (repeatedly) as the API evolves.
  *
- * @version 3.2
+ * @version 3.3
  * @since 3.2
  * @author Pascal Filion
  */
@@ -166,8 +165,8 @@ public abstract class EclipseLinkDynamicManagedType implements IManagedType {
 	/**
 	 * {@inheritDoc}
 	 */
-	public IterableIterator<IMapping> mappings() {
+	public Iterable<IMapping> mappings() {
 		initializeMappings();
-		return new CloneIterator<IMapping>(mappings.values());
+		return new SnapshotCloneIterable<IMapping>(mappings.values());
 	}
 }

@@ -17,13 +17,12 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collection;
+import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
 import org.eclipse.persistence.jpa.jpql.ExpressionTools;
 import org.eclipse.persistence.jpa.jpql.TypeHelper;
 import org.eclipse.persistence.jpa.jpql.spi.IConstructor;
 import org.eclipse.persistence.jpa.jpql.spi.IType;
 import org.eclipse.persistence.jpa.jpql.spi.ITypeDeclaration;
-import org.eclipse.persistence.jpa.jpql.util.iterator.CloneIterator;
-import org.eclipse.persistence.jpa.jpql.util.iterator.IterableIterator;
 
 /**
  * The concrete implementation of {@link IType} that is wrapping a Java type.
@@ -33,7 +32,7 @@ import org.eclipse.persistence.jpa.jpql.util.iterator.IterableIterator;
  * to solicit feedback from pioneering adopters on the understanding that any code that uses this
  * API will almost certainly be broken (repeatedly) as the API evolves.
  *
- * @version 3.2
+ * @version 3.3
  * @since 3.0
  * @author Pascal Filion
  */
@@ -117,11 +116,11 @@ public class JavaType implements IJpaType {
 	/**
 	 * {@inheritDoc}
 	 */
-	public IterableIterator<IConstructor> constructors() {
+	public Iterable<IConstructor> constructors() {
 		if (constructors == null) {
 			constructors = buildConstructors();
 		}
-		return new CloneIterator<IConstructor>(constructors);
+		return new SnapshotCloneIterable<IConstructor>(constructors);
 	}
 
 	/**

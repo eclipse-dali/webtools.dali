@@ -15,11 +15,10 @@ package org.eclipse.jpt.jpa.core.jpql.spi;
 
 import java.lang.annotation.Annotation;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.persistence.jpa.jpql.spi.IConstructor;
 import org.eclipse.persistence.jpa.jpql.spi.IType;
 import org.eclipse.persistence.jpa.jpql.spi.ITypeDeclaration;
-import org.eclipse.persistence.jpa.jpql.util.iterator.IterableIterator;
-import org.eclipse.persistence.jpa.jpql.util.iterator.NullIterator;
 
 /**
  * The concrete implementation of {@link IType} that is wrapping the type name only.
@@ -29,7 +28,7 @@ import org.eclipse.persistence.jpa.jpql.util.iterator.NullIterator;
  * to solicit feedback from pioneering adopters on the understanding that any code that uses this
  * API will almost certainly be broken (repeatedly) as the API evolves.
  *
- * @version 3.2
+ * @version 3.3
  * @since 3.0
  * @author Pascal Filion
  */
@@ -65,8 +64,8 @@ public class SimpleType implements IJpaType {
 	/**
 	 * {@inheritDoc}
 	 */
-	public IterableIterator<IConstructor> constructors() {
-		return NullIterator.instance();
+	public Iterable<IConstructor> constructors() {
+		return EmptyIterable.instance();
 	}
 
 	/**

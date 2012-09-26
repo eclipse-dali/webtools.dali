@@ -15,14 +15,13 @@ package org.eclipse.jpt.jpa.core.jpql.spi;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.persistence.jpa.jpql.spi.IManagedType;
 import org.eclipse.persistence.jpa.jpql.spi.IMapping;
 import org.eclipse.persistence.jpa.jpql.spi.IMappingBuilder;
 import org.eclipse.persistence.jpa.jpql.spi.IType;
-import org.eclipse.persistence.jpa.jpql.util.iterator.CloneIterator;
-import org.eclipse.persistence.jpa.jpql.util.iterator.IterableIterator;
 
 /**
  * The abstract definition of {@link IManagedType} defined for wrapping the design-time mapped class
@@ -172,8 +171,8 @@ public abstract class JpaManagedType implements IManagedType {
 	/**
 	 * {@inheritDoc}
 	 */
-	public IterableIterator<IMapping> mappings() {
+	public Iterable<IMapping> mappings() {
 		initializeMappings();
-		return new CloneIterator<IMapping>(mappings.values());
+		return new SnapshotCloneIterable<IMapping>(mappings.values());
 	}
 }

@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
@@ -32,8 +33,6 @@ import org.eclipse.persistence.jpa.jpql.spi.IManagedTypeProvider;
 import org.eclipse.persistence.jpa.jpql.spi.IMappedSuperclass;
 import org.eclipse.persistence.jpa.jpql.spi.IMappingBuilder;
 import org.eclipse.persistence.jpa.jpql.spi.IType;
-import org.eclipse.persistence.jpa.jpql.util.iterator.CloneIterator;
-import org.eclipse.persistence.jpa.jpql.util.iterator.IterableIterator;
 
 /**
  * An implementation of {@link IManagedTypeProvider} that is wrapping the design-time representation
@@ -195,9 +194,9 @@ public class JpaManagedTypeProvider implements IManagedTypeProvider {
 	/**
 	 * {@inheritDoc}
 	 */
-	public IterableIterator<IEntity> entities() {
+	public Iterable<IEntity> entities() {
 		initializeManagedTypes();
-		return new CloneIterator<IEntity>(entities);
+		return new SnapshotCloneIterable<IEntity>(entities);
 	}
 
 	/**
@@ -326,8 +325,8 @@ public class JpaManagedTypeProvider implements IManagedTypeProvider {
 	/**
 	 * {@inheritDoc}
 	 */
-	public IterableIterator<IManagedType> managedTypes() {
+	public Iterable<IManagedType> managedTypes() {
 		initializeManagedTypes();
-		return new CloneIterator<IManagedType>(managedTypes.values());
+		return new SnapshotCloneIterable<IManagedType>(managedTypes.values());
 	}
 }

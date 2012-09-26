@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0 and Eclipse Distribution License v. 1.0
  * which accompanies this distribution.
@@ -13,14 +13,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpql.spi;
 
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.persistence.jpa.jpql.spi.IManagedType;
 import org.eclipse.persistence.jpa.jpql.spi.IManagedTypeProvider;
 import org.eclipse.persistence.jpa.jpql.spi.IManagedTypeVisitor;
 import org.eclipse.persistence.jpa.jpql.spi.IMapping;
 import org.eclipse.persistence.jpa.jpql.spi.IType;
-import org.eclipse.persistence.jpa.jpql.util.iterator.IterableIterator;
-import org.eclipse.persistence.jpa.jpql.util.iterator.NullIterator;
 
 /**
  * The concrete implementation of {@link IManagedType} that is wrapping the design-time
@@ -31,7 +30,7 @@ import org.eclipse.persistence.jpa.jpql.util.iterator.NullIterator;
  * to solicit feedback from pioneering adopters on the understanding that any code that uses this
  * API will almost certainly be broken (repeatedly) as the API evolves.
  *
- * @version 3.1
+ * @version 3.3
  * @since 3.0
  * @author Pascal Filion
  */
@@ -104,8 +103,8 @@ public class JpaNullManagedType implements IManagedType {
 	/**
 	 * {@inheritDoc}
 	 */
-	public IterableIterator<IMapping> mappings() {
-		return NullIterator.instance();
+	public Iterable<IMapping> mappings() {
+		return EmptyIterable.instance();
 	}
 
 	/**

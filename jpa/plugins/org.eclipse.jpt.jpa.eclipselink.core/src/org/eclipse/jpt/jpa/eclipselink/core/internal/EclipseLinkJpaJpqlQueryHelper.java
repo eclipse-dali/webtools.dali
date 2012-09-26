@@ -21,7 +21,9 @@ import org.eclipse.jpt.jpa.eclipselink.core.jpql.spi.EclipseLinkMappingBuilder;
 import org.eclipse.persistence.jpa.jpql.AbstractContentAssistVisitor;
 import org.eclipse.persistence.jpa.jpql.AbstractGrammarValidator;
 import org.eclipse.persistence.jpa.jpql.AbstractSemanticValidator;
+import org.eclipse.persistence.jpa.jpql.BasicRefactoringTool;
 import org.eclipse.persistence.jpa.jpql.DefaultRefactoringTool;
+import org.eclipse.persistence.jpa.jpql.EclipseLinkBasicRefactoringTool;
 import org.eclipse.persistence.jpa.jpql.EclipseLinkContentAssistVisitor;
 import org.eclipse.persistence.jpa.jpql.EclipseLinkGrammarValidator;
 import org.eclipse.persistence.jpa.jpql.EclipseLinkJPQLQueryContext;
@@ -37,7 +39,7 @@ import org.eclipse.persistence.jpa.jpql.spi.IQuery;
 /**
  * The abstract implementation of {@link JpaJpqlQueryHelper} that supports EclipseLink.
  *
- * @version 3.2
+ * @version 3.3
  * @since 3.1
  * @author Pascal Filion
  */
@@ -56,6 +58,18 @@ public class EclipseLinkJpaJpqlQueryHelper extends JpaJpqlQueryHelper {
 	 * {@inheritDoc}
 	 */
 	@Override
+	public BasicRefactoringTool buildBasicRefactoringTool() {
+		return new EclipseLinkBasicRefactoringTool(
+			getQuery().getExpression(),
+			getGrammar(),
+			getProvider()
+		);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	protected AbstractContentAssistVisitor buildContentAssistVisitor(JPQLQueryContext queryContext) {
 		return new EclipseLinkContentAssistVisitor(queryContext);
 	}
@@ -64,8 +78,8 @@ public class EclipseLinkJpaJpqlQueryHelper extends JpaJpqlQueryHelper {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected AbstractGrammarValidator buildGrammarValidator(JPQLQueryContext queryContext) {
-		return new EclipseLinkGrammarValidator(queryContext.getGrammar());
+	protected AbstractGrammarValidator buildGrammarValidator(JPQLGrammar jpqlGrammar) {
+		return new EclipseLinkGrammarValidator(jpqlGrammar);
 	}
 
 	/**

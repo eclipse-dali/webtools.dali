@@ -39,12 +39,11 @@ import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.NodeFinder;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.persistence.jpa.jpql.ExpressionTools;
 import org.eclipse.persistence.jpa.jpql.spi.IConstructor;
 import org.eclipse.persistence.jpa.jpql.spi.ITypeDeclaration;
-import org.eclipse.persistence.jpa.jpql.util.iterator.CloneIterator;
-import org.eclipse.persistence.jpa.jpql.util.iterator.IterableIterator;
 
 /**
  * The concrete implementation of {@link org.eclipse.persistence.jpa.query.spi.IType IType} that is
@@ -55,7 +54,7 @@ import org.eclipse.persistence.jpa.jpql.util.iterator.IterableIterator;
  * to solicit feedback from pioneering adopters on the understanding that any code that uses this
  * API will almost certainly be broken (repeatedly) as the API evolves.
  *
- * @version 3.2
+ * @version 3.3
  * @since 3.0
  * @author Pascal Filion
  */
@@ -257,11 +256,11 @@ public class JpaType implements IJpaType {
 	/**
 	 * {@inheritDoc}
 	 */
-	public IterableIterator<IConstructor> constructors() {
+	public Iterable<IConstructor> constructors() {
 		if (constructors == null) {
 			constructors = buildConstructors();
 		}
-		return new CloneIterator<IConstructor>(constructors);
+		return new SnapshotCloneIterable<IConstructor>(constructors);
 	}
 
 	/**

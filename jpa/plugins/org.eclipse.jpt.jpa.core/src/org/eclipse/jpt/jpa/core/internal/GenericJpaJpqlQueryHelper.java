@@ -21,6 +21,8 @@ import org.eclipse.jpt.jpa.core.jpql.spi.JpaManagedTypeBuilder;
 import org.eclipse.persistence.jpa.jpql.AbstractContentAssistVisitor;
 import org.eclipse.persistence.jpa.jpql.AbstractGrammarValidator;
 import org.eclipse.persistence.jpa.jpql.AbstractSemanticValidator;
+import org.eclipse.persistence.jpa.jpql.BasicRefactoringTool;
+import org.eclipse.persistence.jpa.jpql.DefaultBasicRefactoringTool;
 import org.eclipse.persistence.jpa.jpql.DefaultContentAssistVisitor;
 import org.eclipse.persistence.jpa.jpql.DefaultGrammarValidator;
 import org.eclipse.persistence.jpa.jpql.DefaultJPQLQueryContext;
@@ -40,7 +42,7 @@ import org.eclipse.persistence.jpa.jpql.spi.IQuery;
  * The default implementation of {@link JpaJpqlQueryHelper} that provides support based on the Java
  * Persistence functional specification (version 1.0 and 2.0).
  *
- * @version 3.2
+ * @version 3.3
  * @since 3.1
  * @author Pascal Filion
  */
@@ -59,6 +61,18 @@ public class GenericJpaJpqlQueryHelper extends JpaJpqlQueryHelper {
 	 * {@inheritDoc}
 	 */
 	@Override
+	public BasicRefactoringTool buildBasicRefactoringTool() {
+		return new DefaultBasicRefactoringTool(
+			getQuery().getExpression(),
+			getGrammar(),
+			getProvider()
+		);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	protected AbstractContentAssistVisitor buildContentAssistVisitor(JPQLQueryContext queryContext) {
 		return new DefaultContentAssistVisitor(queryContext);
 	}
@@ -67,8 +81,8 @@ public class GenericJpaJpqlQueryHelper extends JpaJpqlQueryHelper {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected AbstractGrammarValidator buildGrammarValidator(JPQLQueryContext queryContext) {
-		return new DefaultGrammarValidator(queryContext.getGrammar());
+	protected AbstractGrammarValidator buildGrammarValidator(JPQLGrammar jpqlGrammar) {
+		return new DefaultGrammarValidator(jpqlGrammar);
 	}
 
 	/**
