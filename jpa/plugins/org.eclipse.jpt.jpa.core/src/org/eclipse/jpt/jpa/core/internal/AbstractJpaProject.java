@@ -1574,8 +1574,8 @@ public abstract class AbstractJpaProject
 		this.stopCommand(this.synchronizeContextModelCommand);
 		this.stopCommand(this.updateCommand);
 		this.updateCommand.removeListener(this.updateCommandListener);
-		this.setUserOverrideDefaultCatalog(null);
-		this.setUserOverrideDefaultSchema(null);
+//		this.setUserOverrideDefaultCatalog(null);
+//		this.setUserOverrideDefaultSchema(null);
 		this.dataSource.dispose();
 		// the XML resources are held indefinitely by the WTP translator framework,
 		// so we better remove our listener or the JPA project will not be GCed

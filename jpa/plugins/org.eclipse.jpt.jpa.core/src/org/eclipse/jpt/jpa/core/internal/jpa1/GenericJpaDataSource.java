@@ -122,10 +122,10 @@ public class GenericJpaDataSource
 	}
 
 	public void dispose() {
-		this.setConnectionProfileName(null);
 		if (this.connectionProfile != null) {
 			this.connectionProfile.removeConnectionListener(this.connectionListener);
 		}
+//		this.setConnectionProfileName(null);
 		this.getConnectionProfileFactory().removeConnectionProfileListener(this.connectionProfileListener);
 	}
 
