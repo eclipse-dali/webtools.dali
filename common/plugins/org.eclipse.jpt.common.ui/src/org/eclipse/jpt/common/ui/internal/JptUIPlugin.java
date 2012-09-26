@@ -28,6 +28,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.osgi.framework.Bundle;
 
@@ -90,7 +91,7 @@ public abstract class JptUIPlugin
 		if ((this.dialogSettings == null) && this.isActive()) {
 			this.dialogSettings = this.buildDialogSettings();
 		}
-		return dialogSettings;
+		return this.dialogSettings;
 	}
 
 	/**
@@ -323,7 +324,7 @@ public abstract class JptUIPlugin
 		if ((this.imageRegistry == null) && this.isActive()) {
 			this.imageRegistry = this.buildImageRegistry();
 		}
-		return imageRegistry;
+		return this.imageRegistry;
 	}
 
 	// TODO the image registry holds icons for the life of the plug-in
@@ -333,7 +334,8 @@ public abstract class JptUIPlugin
 	// on our views so that closing the JPA perspective would mean the icons are disposed.
 	// But then do we have multiple versions of the same icon?
 	protected ImageRegistry buildImageRegistry() {
-		return new ImageRegistry(SWTUtil.getDisplay());
+		Display display = SWTUtil.getDisplay();
+		return (display == null) ? null : new ImageRegistry(display);
 	}
 
 
@@ -347,7 +349,7 @@ public abstract class JptUIPlugin
 		if ((this.preferenceStore == null) && this.isActive()) {
 			this.preferenceStore = this.buildPreferenceStore();
 		}
-		return preferenceStore;
+		return this.preferenceStore;
 	}
 
 	protected IPreferenceStore buildPreferenceStore() {

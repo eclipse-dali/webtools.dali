@@ -12,6 +12,7 @@ package org.eclipse.jpt.common.ui.internal.util;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.OpenStrategy;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
@@ -26,6 +27,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 
@@ -38,27 +40,46 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 public class SWTUtil {
 
 	/**
+	 * <strong>NB:</strong> The runnable will not be executed if the workbench
+	 * is not running (i.e. the runnable is treated as ephemeral, and not
+	 * executing it, probably during workbench shutdown, is not a problem because
+	 * it is UI-related and the UI is gone).
 	 * @see Display#asyncExec(Runnable)
 	 * @see #syncExec(Runnable)
 	 * @see #timerExec(int, Runnable)
 	 * @see #execute(Runnable)
 	 */
 	public static void asyncExec(Runnable runnable) {
-		getDisplay().asyncExec(runnable);
+		Display display = getDisplay();
+		if (display != null) {
+			display.asyncExec(runnable);
+		}
 	}
 
 	/**
+	 * <strong>NB:</strong> The runnable will not be executed if the workbench
+	 * is not running (i.e. the runnable is treated as ephemeral, and not
+	 * executing it, probably during workbench shutdown, is not a problem because
+	 * it is UI-related and the UI is gone).
 	 * @see Display#syncExec(Runnable)
 	 * @see #asyncExec(Runnable)
 	 * @see #timerExec(int, Runnable)
 	 * @see #execute(Runnable)
 	 */
 	public static void syncExec(Runnable runnable) {
-		getDisplay().syncExec(runnable);
+		Display display = getDisplay();
+		if (display != null) {
+			display.syncExec(runnable);
+		}
 	}
 
 	/**
 	 * Use the standard delay.
+	 * <p>
+	 * <strong>NB:</strong> The runnable will not be executed if the workbench
+	 * is not running (i.e. the runnable is treated as ephemeral, and not
+	 * executing it, probably during workbench shutdown, is not a problem because
+	 * it is UI-related and the UI is gone).
 	 * @see OpenStrategy#getPostSelectionDelay()
 	 * @see #timerExec(int, Runnable)
 	 */
@@ -67,13 +88,20 @@ public class SWTUtil {
 	}
 
 	/**
+	 * <strong>NB:</strong> The runnable will not be executed if the workbench
+	 * is not running (i.e. the runnable is treated as ephemeral, and not
+	 * executing it, probably during workbench shutdown, is not a problem because
+	 * it is UI-related and the UI is gone).
 	 * @see Display#timerExec(int, Runnable)
 	 * @see #asyncExec(Runnable)
 	 * @see #syncExec(Runnable)
 	 * @see #execute(Runnable)
 	 */
 	public static void timerExec(int milliseconds, Runnable runnable) {
-		getDisplay().timerExec(milliseconds, runnable);
+		Display display = getDisplay();
+		if (display != null) {
+			display.timerExec(milliseconds, runnable);
+		}
 	}
 
 	/**
@@ -81,7 +109,11 @@ public class SWTUtil {
 	 * otherwise asynchrounously dispatch the runnable to the UI thread,
 	 * returning immediately. This is useful for event handlers when it is not
 	 * obvious whether the events are fired on the UI thread.
-	 * 
+	 * <p>
+	 * <strong>NB:</strong> The runnable will not be executed if the workbench
+	 * is not running (i.e. the runnable is treated as ephemeral, and not
+	 * executing it, probably during workbench shutdown, is not a problem because
+	 * it is UI-related and the UI is gone).
 	 * @see Display#asyncExec(Runnable)
 	 * @see #asyncExec(Runnable)
 	 * @see #syncExec(Runnable)
@@ -94,7 +126,10 @@ public class SWTUtil {
 			// the current thread is the UI thread
 			runnable.run();
 		} else {
-			getWorkbenchDisplay().asyncExec(runnable);
+			display = getWorkbenchDisplay();
+			if (display != null) {
+				display.asyncExec(runnable);
+			}
 		}
 	}
 
@@ -104,7 +139,6 @@ public class SWTUtil {
 	 * otherwise asynchrounously dispatch the runnable to the viewer's thread,
 	 * returning immediately. This is useful for event handlers when it is not
 	 * obviously whether the events are fired on the viewer's thread.
-	 * 
 	 * @see #execute(Runnable)
 	 * @see Display#asyncExec(Runnable)
 	 * @see #asyncExec(Runnable)
@@ -121,7 +155,6 @@ public class SWTUtil {
 	 * otherwise asynchrounously dispatch the runnable to the control's thread,
 	 * returning immediately. This is useful for event handlers when it is not
 	 * obviously whether the events are fired on the control's thread.
-	 * 
 	 * @see #execute(Runnable)
 	 * @see Display#asyncExec(Runnable)
 	 * @see #asyncExec(Runnable)
@@ -138,7 +171,6 @@ public class SWTUtil {
 	 * otherwise asynchrounously dispatch the runnable to the display's thread,
 	 * returning immediately. This is useful for event handlers when it is not
 	 * obviously whether the events are fired on the display's thread.
-	 * 
 	 * @see #execute(Runnable)
 	 * @see Display#asyncExec(Runnable)
 	 * @see #asyncExec(Runnable)
@@ -147,7 +179,7 @@ public class SWTUtil {
 	 */
 	public static void execute(Display display, Runnable runnable) {
 		if (display.getThread() == Thread.currentThread()) {
-			// the current thread is the display's thread
+			// the current thread is the the UI thread
 			runnable.run();
 		} else {
 			display.asyncExec(runnable);
@@ -155,21 +187,38 @@ public class SWTUtil {
 	}
 
 	/**
-	 * Convenience method for getting the current shell. If the current thread is
-	 * not the UI thread, then an invalid thread access exception will be thrown.
-	 *
-	 * @return The shell, never <code>null</code>
+	 * Return the current shell. Return <code>null</code> if there is none.
+	 * @exception SWTException if not called from the UI thread
 	 */
 	public static Shell getShell() {
-		// Retrieve the active shell, which can be the shell from any window
-		Shell shell = getDisplay().getActiveShell();
-		if (shell != null) {
-			return shell;
-		}
+		Shell shell = getActiveShell();
+		return (shell != null) ? shell : getActiveWorkbenchShell();
+	}
 
-		// No shell could be found, revert back to the active workbench window
-		shell = getWorkbench().getActiveWorkbenchWindow().getShell();
-		return (shell != null) ? shell : new Shell();
+	/**
+	 * Return the current "active" shell, which can be the shell from any
+	 * window. Return <code>null</code> if there is no display.
+	 * @see Display#getActiveShell()
+	 * @exception SWTException if not called from the UI thread
+	 */
+	public static Shell getActiveShell() {
+		// Retrieve the active shell, which can be the shell from any window
+		Display display = getDisplay();
+		return (display == null) ? null : display.getActiveShell();
+	}
+
+	/**
+	 * Return the currently active workbench window's shell.
+	 * Return <code>null</code> if not called from the UI thread.
+	 * @see IWorkbench#getActiveWorkbenchWindow()
+	 */
+	public static Shell getActiveWorkbenchShell() {
+		IWorkbench wb = getWorkbench();
+		if (wb == null) {
+			return null;
+		}
+		IWorkbenchWindow ww = wb.getActiveWorkbenchWindow();
+		return (ww == null) ? null : ww.getShell();
 	}
 
 	/**
@@ -177,24 +226,38 @@ public class SWTUtil {
 	 * {@link Display#getCurrent() display associated with the current thread}
 	 * if it is present; otherwise return the
 	 * {@link IWorkbench#getDisplay() Eclipse workbench
-	 * display} (but, explicitly, not the "default display"
-	 * {@link Display#getDefault()} -
+	 * display} (but, <em>explicitly</em>, not the
+	 * {@link Display#getDefault() "default display"} -
 	 * see the comment at {@link IWorkbench#getDisplay()}).
+	 * Return <code>null</code> if the workbench is not running.
 	 */
 	public static Display getDisplay() {
 		Display display = Display.getCurrent();
 		return (display != null) ? display : getWorkbenchDisplay();
 	}
 
+	/**
+	 * Return the Eclipse UI {@link IWorkbench workbench}
+	 * {@link Display display}.
+	 * Return <code>null</code> if the workbench is not running.
+	 * @see #getWorkbench()
+	 */
 	public static Display getWorkbenchDisplay() {
-		return getWorkbench().getDisplay();
+		IWorkbench wb = getWorkbench();
+		return (wb == null) ? null : wb.getDisplay();
 	}
 
+	/**
+	 * Return the Eclipse UI {@link IWorkbench workbench}.
+	 * Return <code>null</code> if the workbench is not running
+	 * (i.e. either it has not been started or it has been terminated).
+	 * <p>
+	 * <strong>NB:</strong> There is no guarantee the workbench will continue
+	 * running after it is returned.
+	 * @see PlatformUI#isWorkbenchRunning()
+	 */
 	public static IWorkbench getWorkbench() {
-		if ( ! PlatformUI.isWorkbenchRunning()) {
-			throw new IllegalStateException("workbench is not running"); //$NON-NLS-1$
-		}
-		return PlatformUI.getWorkbench();
+		return PlatformUI.isWorkbenchRunning() ? PlatformUI.getWorkbench() : null;
 	}
 
 	/**
