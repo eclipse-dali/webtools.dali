@@ -50,14 +50,14 @@
          id="org.eclipse.persistence.core"
          download-size="0"
          install-size="0"
-         version="2.4.0.qualifier"
+         version="2.5.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.persistence.jpa"
          download-size="0"
          install-size="0"
-         version="2.4.0.qualifier"
+         version="2.5.0.qualifier"
          unpack="false"/>
 
    <plugin
