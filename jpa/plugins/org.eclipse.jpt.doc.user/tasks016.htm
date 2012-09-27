@@ -5,66 +5,80 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Many-to-many mapping</title>
+<title>ID mapping</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-19T13:27:57Z" />
+<meta name="date" content="2012-09-27T9:43:50Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Many-to-many mapping" />
+<meta name="doctitle" content="ID mapping" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
-<p><a id="BABEIEGD" name="BABEIEGD"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-27</p>
+<p><a id="BABGCBHG" name="BABGCBHG"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
-<h1>Many-to-many mapping</h1>
-<p><a id="sthref223" name="sthref223"></a><a id="sthref224" name="sthref224"></a><a id="sthref225" name="sthref225"></a><a id="sthref226" name="sthref226"></a>Use a <span class="bold">Many-to-Many Mapping</span> to define a many-valued association with many-to-many multiplicity. A many-to-many mapping has two sides: the <span class="italic">owning side</span> and <span class="italic">non-owning side</span>. You must specify the join table on the owning side. For bidirectional mappings, either side may be the owning side.</p>
+<h1>ID mapping</h1>
+<p><a id="sthref229" name="sthref229"></a><a id="sthref230" name="sthref230"></a><a id="sthref231" name="sthref231"></a><a id="sthref232" name="sthref232"></a>Use an <span class="bold">ID Mapping</span> to specify the primary key of an entity. ID mappings may be used with a <a href="tasks004.htm#BABGBIEE">Entity</a> or <a href="tasks006.htm#BABDAGCI">Mapped superclass</a>. Each <a href="tasks004.htm#BABGBIEE">Entity</a> must have an ID mapping.</p>
 <ol>
 <li>
 <p>In the <a href="ref_persistence_outline.htm#BABEGGFE">JPA Structure view</a>, select the field to map.</p>
 </li>
 <li>
-<p>Right-click the field and then select <span class="bold">Map As &gt; Many-to-Many</span>. The <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a> displays the properties for the selected field.</p>
-<div class="figure"><a id="sthref227" name="sthref227"></a>
-<p class="titleinfigure">JPA Details, Many to many mapping</p>
-<img src="img/jpa_details.manytomany.png" alt="JPA Details, Primary key generation" title="JPA Details, Primary key generation" /><br /></div>
+<p>Right click the filed and then select <span class="bold">Map as &gt; ID</span>. The <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a> displays the properties for the selected.</p>
+<div class="figure"><a id="sthref233" name="sthref233"></a>
+<p class="titleinfigure">JPA Details, ID mapping</p>
+<img src="img/jpa_details_idmapping.png" alt="" title="" /><br /></div>
 <!-- class="figure" --></li>
 <li>
-<p>Complete each field in the <a href="reference034.htm#CACIHGCE">Many-to-Many Mapping</a> area.</p>
+<p>Complete each field in the <a href="reference037.htm#CACIAEFI">ID Mapping</a> area.</p>
 </li>
 <li>
-<p>Use the Joining Strategy area to specify ...................</p>
-<div class="figure"><a id="sthref228" name="sthref228"></a>
-<p class="titleinfigure">JPA Details, Joining Strategy</p>
-<img src="img/jpa_details_joiningstrategy.png" alt="JPA Details, Joining Strategy" title="JPA Details, Joining Strategy" /><br /></div>
+<p>Use the Primary Key Generation area to specify the strategy to use for generating primary keys.</p>
+<div class="figure"><a id="sthref234" name="sthref234"></a>
+<p class="titleinfigure">JPA Details, Primary key generation</p>
+<img src="img/jpa_details_primarykeygeneration.png" alt="JPA Details, Primary key generation" title="JPA Details, Primary key generation" /><br /></div>
 <!-- class="figure" --></li>
 <li>
-<p>Complete each field in the <a href="reference043.htm#CACIJEGI">Joining Strategy</a> area.</p>
+<p>Complete each field in the <a href="ref_primary_key.htm#CACFCCAB">Primary Key Generation information</a> area.</p>
 </li>
 <li>
 <p>Complete the remaining areas in the <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a>.</p>
 </li>
 </ol>
+<p>Additional fields will appear in the <a href="ref_primary_key.htm#CACFCCAB">Primary Key Generation information</a> area, depending on the selected Strategy. See <a href="ref_persistence_map_view.htm#BABIFBAF">"JPA Details view (for attributes)"</a> for additional information.</p>
 <p>Eclipse adds the following annotations to the field:</p>
 <pre xml:space="preserve" class="oac_no_warn">
-@JoinTable(joinColumns=@JoinColumn(name="<span class="italic">&lt;JOIN_COLUMN&gt;</span>"), 
-    name = "<span class="italic">&lt;JOIN_TABLE_NAME&gt;</span>")
-@ManyToMany(=Type.<span class="italic">&lt;_TYPE&gt;</span>, fetch=FetchType.<span class="italic">&lt;FETCH_TYPE&gt;</span>,
-    targetEntity=<span class="italic">&lt;TARGET_ENTITY&gt;</span>, mappedBy = "<span class="italic">&lt;MAPPED_BY&gt;</span>")
-@OrderBy("<span class="italic">&lt;ORDER_BY&gt;</span>")
-
+@Id
+@Column(
+    name="<span class="italic">&lt;COLUMN_NAME&gt;</span>", 
+    table="<span class="italic">&lt;TABLE_NAME&gt;</span>", 
+    insertable=<span class="italic">&lt;INSERTABLE&gt;</span>,
+    updatable=<span class="italic">&lt;UPDATABLE&gt;</span>
+)
+@Temporal(<span class="italic">&lt;TEMPORAL&gt;</span>)
+@GeneratedValue(
+    strategy=GeneratorType.<span class="italic">&lt;STRATEGY&gt;</span>, 
+    generator="<span class="italic">&lt;GENERATOR_NAME&gt;</span>"
+)@TableGenerator(
+    name="<span class="italic">&lt;TABLE_GENERATOR_NAME&gt;</span>", 
+    table = "<span class="italic">&lt;TABLE_GENERATOR_TABLE&gt;</span>", 
+    pkColumnName = "<span class="italic">&lt;TABLE_GENERATOR_PK&gt;</span>", 
+    valueColumnName = "<span class="italic">&lt;TABLE_GENERATOR_VALUE_COLUMN&gt;</span>", 
+    pkColumnValue = "<span class="italic">&lt;TABLE_GENERATOR_PK_COLUMN_VALUE&gt;</span>"
+)@SequenceGenerator(name="<span class="italic">&lt;SEQUENCE_GENERATOR_NAME&gt;</span>", 
+    sequenceName="<span class="italic">&lt;SEQUENCE_GENERATOR_SEQUENCE&gt;</span>")
 </pre>
-<a id="sthref229" name="sthref229"></a>
+<a id="sthref235" name="sthref235"></a>
 <p class="subhead2">Related tasks</p>
 <ul>
 <li>
 <p><a href="task_mapping.htm#BABDGBIJ">Mapping an entity</a></p>
 </li>
 </ul>
-<a id="sthref230" name="sthref230"></a>
+<a id="sthref236" name="sthref236"></a>
 <p class="subhead2">Related references</p>
 <ul>
 <li>
@@ -74,10 +88,16 @@
 <p><a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a></p>
 </li>
 <li>
-<p><a href="reference043.htm#CACIJEGI">Joining Strategy</a></p>
+<p><a href="ref_primary_key.htm#CACFCCAB">Primary Key Generation information</a></p>
+</li>
+<li>
+<p><a href="reference053.htm#CIADGCID">Converters</a></p>
+</li>
+<li>
+<p><a href="reference043.htm#CACIHAAF">Type information</a></p>
 </li>
 </ul>
-<a id="sthref231" name="sthref231"></a>
+<a id="sthref237" name="sthref237"></a>
 <p class="subhead2">Related concepts</p>
 <ul>
 <li>

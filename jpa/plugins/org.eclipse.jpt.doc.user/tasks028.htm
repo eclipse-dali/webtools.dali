@@ -5,60 +5,39 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Modifying persistent project properties</title>
+<title>Warning messages</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-19T13:27:58Z" />
+<meta name="date" content="2012-09-27T9:43:51Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Modifying persistent project properties" />
+<meta name="doctitle" content="Warning messages" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
-<p><a id="BABDBCBI" name="BABDBCBI"></a></p>
-<div class="sect1"><!-- infolevel="all" infotype="General" -->
-<h1>Modifying persistent project properties</h1>
-<p><a id="sthref323" name="sthref323"></a><a id="sthref324" name="sthref324"></a>Each persistent project must be associated with a database connection. To create a new database connection, click <span class="gui-object-action">Database Connection</span> use the New Connection wizard.</p>
-<p>Use this procedure to modify the vender-specific platform and database connection associated with your JPA project.</p>
-<ol>
-<li>
-<p>Right-click the project in the <span class="gui-object-title">Explorer</span> view and select <span class="gui-object-action">Properties</span>. The Properties page appears.</p>
-</li>
-<li>
-<p>Select <span class="bold">JPA</span>.</p>
-<div class="figure"><a id="sthref325" name="sthref325"></a>
-<p class="titleinfigure">The Properties Page</p>
-<img src="img/project_properties_tasks.png" alt="The Persistence page." title="The Persistence page." /><br /></div>
-<!-- class="figure" --></li>
-<li>
-<p>Complete each field on the <a href="ref_project_properties.htm#BABJHBCI">Project Properties page &ndash; JPA Options</a> click <span class="bold">OK</span>.</p>
-</li>
-</ol>
-<a id="sthref326" name="sthref326"></a>
-<p class="subhead2">Related tasks</p>
-<ul>
-<li>
-<p><a href="task_create_new_project.htm#CIHHEJCJ">Creating a new JPA project</a></p>
-</li>
-</ul>
-<a id="sthref327" name="sthref327"></a>
-<p class="subhead2">Related reference</p>
-<ul>
-<li>
-<p><a href="ref_project_properties.htm#BABJHBCI">Project Properties page &ndash; JPA Options</a></p>
-</li>
-</ul>
-<a id="sthref328" name="sthref328"></a>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-27</p>
+<p><a id="CIHGEAIJ" name="CIHGEAIJ"></a></p>
+<div class="sect2"><!-- infolevel="all" infotype="General" -->
+<h1>Warning messages</h1>
+<p>This section contains information on warning messages (including how to resolve the issue) you may encounter while working with Dali.</p>
+<a id="sthref336" name="sthref336"></a>
+<p class="subhead2">Connection "<span class="italic">&lt;CONNECTION_NAME&gt;</span>" is not active. No validation will be done against the data source.</p>
+<p>The database connection you specified to use with the JPA project is not active. The JPA project requires an active connection.</p>
+<a id="sthref337" name="sthref337"></a>
+<p class="subhead2">No connection specified for the project. No data-specific validation will be performed.</p>
+<p>You created a JPA project without specifying a database connection. The JPA project requires an active connection.</p>
+<p>See <a href="task_create_new_project.htm#CIHHEJCJ">"Creating a new JPA project"</a> or <a href="tasks029.htm#BABDBCBI">"Modifying persistent project properties"</a> for information on specifying a database connection.</p>
+<a id="sthref338" name="sthref338"></a>
 <p class="subhead2">Related concepts</p>
 <ul>
 <li>
-<p><a href="concept_persistence.htm#BABCAHIC">Understanding Java persistence</a></p>
+<p><a href="../org.eclipse.platform.doc.user/concepts/cprbview.htm">Problems view</a></p>
 </li>
 </ul>
 </div>
+<!-- class="sect2" -->
 <!-- class="sect1" -->
 <!-- Start Footer -->
 <div class="footer">

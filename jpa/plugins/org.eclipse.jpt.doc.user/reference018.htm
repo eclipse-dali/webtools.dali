@@ -5,76 +5,38 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Embeddable</title>
+<title>Generate Tables from Entities wizard</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-19T13:27:59Z" />
+<meta name="date" content="2012-09-27T9:43:52Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Embeddable" />
+<meta name="doctitle" content="Generate Tables from Entities wizard" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
-<p><a id="CACHJEJH" name="CACHJEJH"></a></p>
-<div class="sect3"><!-- infolevel="all" infotype="General" -->
-<h1>Embeddable</h1>
-<p><a id="sthref433" name="sthref433"></a>This table lists the Embeddable information fields available in the <span class="gui-object-title">JPA Details</span> view for <a href="tasks004.htm#BABFEICE">Embeddable</a> entity type.</p>
-<div class="inftblhruleinformalwide">
-<table class="HRuleInformalWide" summary="JPA Details view, Embeddable page" dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
-<col width="19%" />
-<col width="*" />
-<col width="19%" />
-<thead>
-<tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t24">Property</th>
-<th align="left" valign="bottom" id="r1c2-t24">Description</th>
-<th align="left" valign="bottom" id="r1c3-t24">Default</th>
-</tr>
-</thead>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-27</p>
+<p><a id="CIAGHCGA" name="CIAGHCGA"></a></p>
+<div class="sect2"><!-- infolevel="all" infotype="General" -->
+<h1>Generate Tables from Entities wizard</h1>
+<p><a id="sthref431" name="sthref431"></a><a id="sthref432" name="sthref432"></a><a id="sthref433" name="sthref433"></a><a id="sthref434" name="sthref434"></a><a id="sthref435" name="sthref435"></a>Use the Generate Tables from Entities Wizard to quickly create DDL scripts from your persistent entities. Dali automatically creates the necessary primary and foreign keys, based on the entity mappings.</p>
+<div align="center">
+<div class="inftblnotewarn"><br />
+<table class="NoteWarn oac_no_warn" summary="" cellpadding="3" cellspacing="0">
 <tbody>
-<tr align="left" valign="top">
-<td align="left" id="r2c1-t24" headers="r1c1-t24">
-<p>Access</p>
-</td>
-<td align="left" headers="r2c1-t24 r1c2-t24">
-<p>Specify how the entity its access instance variables.</p>
-<ul>
-<li>
-<p>Property &ndash; Persistent state accessed through the property accessor methods. The property accessor methods must be <span class="bold">public</span> or <span class="bold">private</span>.</p>
-</li>
-<li>
-<p>Field &ndash; Instance variables are accessed directly. All non-transient instance variables are persistent.</p>
-</li>
-</ul>
-<p><span class="bold">Note</span>: This field is for display only, based on the properties in the <code>orm.xml</code>: If only the methods of the class are annotated, <span class="bold">property</span> access type is used. In all other cases, <span class="bold">field</span> access type is used.</p>
-</td>
-<td align="left" headers="r2c1-t24 r1c3-t24">
-<p>Field</p>
+<tr>
+<td align="left">
+<p class="notep1">WARNING:</p>
+<p class="warnsp">Generating tables will <code>DROP</code> any existing tables and <code>CREATE</code> new tables, based on the entities in your project.</p>
 </td>
 </tr>
 </tbody>
 </table>
 <br /></div>
-<!-- class="inftblhruleinformalwide" -->
-<a id="sthref434" name="sthref434"></a>
-<p class="subhead2">Related tasks</p>
-<ul>
-<li>
-<p><a href="task_add_persistence.htm#BABHICAI">Adding persistence to a class</a></p>
-</li>
-</ul>
-<a id="sthref435" name="sthref435"></a>
-<p class="subhead2">Related reference</p>
-<ul>
-<li>
-<p><a href="ref_persistence_prop_view.htm#BABFAEBB">JPA Details view (for entities)</a></p>
-</li>
-</ul>
-</div>
-<!-- class="sect3" -->
+<!-- class="inftblnotewarn" --></div>
+<p>The <a href="#CIAGHCGA">Generate Tables from Entities wizard</a> consists of the <a href="reference019.htm#CACHAJEG">Schema Generation</a> page.</p>
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
@@ -86,6 +48,6 @@
 </tr>
 </table>
 </div>
-<!-- class="footer" -->
+<!-- class="footer" --></div>
 </body>
 </html>

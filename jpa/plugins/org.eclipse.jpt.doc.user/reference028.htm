@@ -5,112 +5,201 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Advanced</title>
+<title>Multitenancy</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-19T13:27:59Z" />
+<meta name="date" content="2012-09-27T9:43:53Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Advanced" />
+<meta name="doctitle" content="Multitenancy" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
-<p><a id="CACJEEDE" name="CACJEEDE"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-27</p>
+<p><a id="CACDIJEE" name="CACDIJEE"></a></p>
 <div class="sect3"><!-- infolevel="all" infotype="General" -->
-<h1>Advanced</h1>
-<p><a id="sthref482" name="sthref482"></a><a id="sthref483" name="sthref483"></a><a id="sthref484" name="sthref484"></a><a id="sthref485" name="sthref485"></a><a id="sthref486" name="sthref486"></a><a id="sthref487" name="sthref487"></a><a id="sthref488" name="sthref488"></a><a id="sthref489" name="sthref489"></a><a id="sthref490" name="sthref490"></a>Use the <span class="gui-object-title">Advanced</span> area in the <span class="gui-object-title">JPA Details</span> view to configure additional settings for an entity.</p>
+<h1>Multitenancy</h1>
+<p><a id="sthref484" name="sthref484"></a>Use the <span class="gui-object-title">Multitenancy</span> area in the <span class="gui-object-title">JPA Details</span> view to specify that a given entity is shared among multiple tenants of an application.</p>
 <div class="inftblhruleinformalwide">
-<table class="HRuleInformalWide" title="JPA Details view, Advanced page" summary="JPA Details view, Advanced page" dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
+<table class="HRuleInformalWide" title="JPA Details view, Multienancy page" summary="JPA Details view, Multienancy page" dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
 <col width="16%" />
 <col width="*" />
 <col width="17%" />
 <col width="25%" />
 <thead>
 <tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t33">Property</th>
-<th align="left" valign="bottom" id="r1c2-t33">Description</th>
-<th align="left" valign="bottom" id="r1c3-t33">Default</th>
-<th align="left" valign="bottom" id="r1c4-t33">Available for Entity&nbsp;Type</th>
+<th align="left" valign="bottom" id="r1c1-t30">Property</th>
+<th align="left" valign="bottom" id="r1c2-t30">Description</th>
+<th align="left" valign="bottom" id="r1c3-t30">Default</th>
+<th align="left" valign="bottom" id="r1c4-t30">Available for Entity&nbsp;Type</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t33" headers="r1c1-t33">
-<p>Read-only</p>
+<td align="left" id="r2c1-t30" headers="r1c1-t30">
+<p>Multitenancy strategy</p>
 </td>
-<td align="left" headers="r2c1-t33 r1c2-t33">
-<p>Specifies if a class is read-only.</p>
-</td>
-<td align="left" headers="r2c1-t33 r1c3-t33">
-<p>False</p>
-</td>
-<td align="left" headers="r2c1-t33 r1c4-t33">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a> and <a href="tasks005.htm#BABDAGCI">Mapped superclass</a></p>
-</td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r3c1-t33" headers="r1c1-t33">
-<p>Customizer class</p>
-</td>
-<td align="left" headers="r3c1-t33 r1c2-t33">
-<p>Specifies a class that implements <code>DescriptorCustomizer</code> and is to run against an entity's class descriptor after all metadata processing has been completed.</p>
-</td>
-<td align="left" headers="r3c1-t33 r1c3-t33">
-<p>True</p>
-</td>
-<td align="left" headers="r3c1-t33 r1c4-t33">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a>, <a href="tasks004.htm#BABFEICE">Embeddable</a>, and <a href="tasks005.htm#BABDAGCI">Mapped superclass</a></p>
-</td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r4c1-t33" headers="r1c1-t33">
-<p>Change tracking</p>
-</td>
-<td align="left" headers="r4c1-t33 r1c2-t33">
-<p>Specifies the <code>ObjectChangePolicy</code> to use:</p>
+<td align="left" headers="r2c1-t30 r1c2-t30">
+<p>Specify the multitenant strategy to use:</p>
 <ul>
 <li>
-<p><span class="bold">Attribute</span> &ndash; Objects with changed attributes will be processed in the commit process to include any changes in the results of the commit. Unchanged objects will be ignored.</p>
+<p>Single table</p>
 </li>
 <li>
-<p><span class="bold">Object</span> &ndash; Changed objects will be processed in the commit process to include any changes in the results of the commit. Unchanged objects will be ignored.</p>
+<p>Table per tenant</p>
 </li>
 <li>
-<p><span class="bold">Deferred</span> &ndash; Defers all change detection to the UnitOfWork's change detection process.</p>
-</li>
-<li>
-<p><span class="bold">Auto</span> &ndash; Does not set any change tracking policy; change tracking will be determined at runtime.</p>
+<p>VPD</p>
 </li>
 </ul>
 </td>
-<td align="left" headers="r4c1-t33 r1c3-t33">
-<p>Auto</p>
+<td align="left" headers="r2c1-t30 r1c3-t30">
+<p>Single table</p>
 </td>
-<td align="left" headers="r4c1-t33 r1c4-t33">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a>, <a href="tasks004.htm#BABFEICE">Embeddable</a>, and <a href="tasks005.htm#BABDAGCI">Mapped superclass</a></p>
+<td align="left" headers="r2c1-t30 r1c4-t30">
+<p><a href="tasks004.htm#BABGBIEE">Entity</a> and <a href="tasks006.htm#BABDAGCI">Mapped superclass</a></p>
 </td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r3c1-t30" headers="r1c1-t30">
+<p>Include criteria</p>
+</td>
+<td align="left" headers="r3c1-t30 r1c2-t30">
+<p>Specify if the database requires the tenant criteria to be added to the <code>SELECT</code>, <code>UPDATE</code>, and <code>DELETE</code> queries.</p>
+</td>
+<td align="left" headers="r3c1-t30 r1c3-t30">
+<p>True</p>
+</td>
+<td align="left" headers="r3c1-t30 r1c4-t30">
+<p><a href="tasks004.htm#BABGBIEE">Entity</a> and <a href="tasks006.htm#BABDAGCI">Mapped superclass</a></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r4c1-t30" headers="r1c1-t30">
+<p><span class="bold">Tenant descriptor columns</span></p>
+</td>
+<td align="left" headers="r4c1-t30 r1c2-t30">
+<p>Use to limit what a persistence context can access in single-table mulitenancy</p>
+</td>
+<td align="left" headers="r4c1-t30 r1c3-t30"><br /></td>
+<td align="left" headers="r4c1-t30 r1c4-t30">
+<p><a href="tasks004.htm#BABGBIEE">Entity</a> and <a href="tasks006.htm#BABDAGCI">Mapped superclass</a></p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r5c1-t30" headers="r1c1-t30">
+<p>Override default</p>
+</td>
+<td align="left" headers="r5c1-t30 r1c2-t30"><br /></td>
+<td align="left" headers="r5c1-t30 r1c3-t30"><br /></td>
+<td align="left" headers="r5c1-t30 r1c4-t30"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r6c1-t30" headers="r1c1-t30">
+<p>Name</p>
+</td>
+<td align="left" headers="r6c1-t30 r1c2-t30">
+<p>The name of column to be used for the tenant discriminator.</p>
+</td>
+<td align="left" headers="r6c1-t30 r1c3-t30">
+<p>eclipselink.tenant-id</p>
+</td>
+<td align="left" headers="r6c1-t30 r1c4-t30"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r7c1-t30" headers="r1c1-t30">
+<p>Table</p>
+</td>
+<td align="left" headers="r7c1-t30 r1c2-t30">
+<p>The name of the table that contains the column.</p>
+</td>
+<td align="left" headers="r7c1-t30 r1c3-t30"><br /></td>
+<td align="left" headers="r7c1-t30 r1c4-t30"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r8c1-t30" headers="r1c1-t30">
+<p>Context property</p>
+</td>
+<td align="left" headers="r8c1-t30 r1c2-t30">
+<p>The name of the context property to apply to the tenant discriminator column.</p>
+</td>
+<td align="left" headers="r8c1-t30 r1c3-t30"><br /></td>
+<td align="left" headers="r8c1-t30 r1c4-t30"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r9c1-t30" headers="r1c1-t30">
+<p>Discriminator type</p>
+</td>
+<td align="left" headers="r9c1-t30 r1c2-t30">
+<p>The type of object/column to use as a class discriminator:</p>
+<ul>
+<li>
+<p>Character</p>
+</li>
+<li>
+<p>Integer</p>
+</li>
+<li>
+<p>String</p>
+</li>
+</ul>
+</td>
+<td align="left" headers="r9c1-t30 r1c3-t30">
+<p>String</p>
+</td>
+<td align="left" headers="r9c1-t30 r1c4-t30"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r10c1-t30" headers="r1c1-t30">
+<p>Length</p>
+</td>
+<td align="left" headers="r10c1-t30 r1c2-t30">
+<p>The column length for String-based discriminator types.</p>
+</td>
+<td align="left" headers="r10c1-t30 r1c3-t30"><br /></td>
+<td align="left" headers="r10c1-t30 r1c4-t30"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r11c1-t30" headers="r1c1-t30">
+<p>Column definition</p>
+</td>
+<td align="left" headers="r11c1-t30 r1c2-t30">
+<p>The SQL fragment that is used when generating the DDL for the discriminator column.</p>
+</td>
+<td align="left" headers="r11c1-t30 r1c3-t30"><br /></td>
+<td align="left" headers="r11c1-t30 r1c4-t30"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r12c1-t30" headers="r1c1-t30">
+<p>Primary key</p>
+</td>
+<td align="left" headers="r12c1-t30 r1c2-t30">
+<p>Specifies that the tenant discriminator column is part of the primary key of the tables.</p>
+</td>
+<td align="left" headers="r12c1-t30 r1c3-t30">
+<p>False</p>
+</td>
+<td align="left" headers="r12c1-t30 r1c4-t30"><br /></td>
 </tr>
 </tbody>
 </table>
 <br /></div>
 <!-- class="inftblhruleinformalwide" -->
-<a id="sthref491" name="sthref491"></a>
+<a id="sthref485" name="sthref485"></a>
 <p class="subhead2">Related reference</p>
 <ul>
 <li>
 <p><a href="ref_persistence_prop_view.htm#BABFAEBB">JPA Details view (for entities)</a></p>
 </li>
 <li>
-<p>"Read Only" and "ChangeTracking" in <span class="italic">Java Persistence API (JPA) Extensions Reference for EclipseLink</span><br />
-<code><a href="http://eclipse.org/eclipselink/documentation/2.4/jpa/">http://eclipse.org/eclipselink/documentation/2.4/jpa/</a></code></p>
+<p>"Multitenant" in <span class="italic">Java Persistence API (JPA) Extensions Reference for EclipseLink</span>&nbsp;<br />
+<code><a href="http://www.eclipse.org/eclipselink/documentation/2.4/jpa/extensions/a_multitenant.htm">http://www.eclipse.org/eclipselink/documentation/2.4/jpa/extensions/a_multitenant.htm</a></code></p>
 </li>
 </ul>
 </div>
 <!-- class="sect3" -->
-<!-- class="sect2" -->
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">

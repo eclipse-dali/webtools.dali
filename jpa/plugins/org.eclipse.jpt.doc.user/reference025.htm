@@ -5,236 +5,205 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Primary Key Generation</title>
+<title>Queries</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-19T13:27:59Z" />
+<meta name="date" content="2012-09-27T9:43:53Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Primary Key Generation" />
+<meta name="doctitle" content="Queries" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
-<p><a id="CACCJJDC" name="CACCJJDC"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-27</p>
+<p><a id="CACBICGJ" name="CACBICGJ"></a></p>
 <div class="sect3"><!-- infolevel="all" infotype="General" -->
-<h1><a id="sthref461" name="sthref461"></a><a id="sthref462" name="sthref462"></a>Primary Key Generation</h1>
+<h1>Queries</h1>
+<p><a id="sthref465" name="sthref465"></a><a id="sthref466" name="sthref466"></a><a id="sthref467" name="sthref467"></a>Use the queries area of the JPA Details view to create named queries and named native queries. Refer to <a href="tasks011.htm#BABIGBGG">"Creating queries"</a> for additional information.</p>
 <div class="inftblhruleinformalwide">
-<table class="HRuleInformalWide" title="JPA Details view, Primary key page" summary="JPA Details view, Primary key page" dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
+<table class="HRuleInformalWide" title="This table describes the options on the Persistence Properties view, Inheritance tab." summary="This table describes the options on the Persistence Properties view, Inheritance tab." dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
 <col width="16%" />
 <col width="*" />
-<col width="17%" />
-<col width="25%" />
+<col width="16%" />
+<col width="19%" />
 <thead>
 <tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t31">Property</th>
-<th align="left" valign="bottom" id="r1c2-t31">Description</th>
-<th align="left" valign="bottom" id="r1c3-t31">Default</th>
-<th align="left" valign="bottom" id="r1c4-t31">Available for Entity&nbsp;Type</th>
+<th align="left" valign="bottom" id="r1c1-t27">Property</th>
+<th align="left" valign="bottom" id="r1c2-t27">Description</th>
+<th align="left" valign="bottom" id="r1c3-t27">Default</th>
+<th align="left" valign="bottom" id="r1c4-t27">Available for Entity&nbsp;Type</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t31" headers="r1c1-t31">
-<p><span class="bold">Table Generator</span></p>
+<td align="left" id="r2c1-t27" headers="r1c1-t27">
+<p><span class="bold">Queries</span></p>
 </td>
-<td align="left" headers="r2c1-t31 r1c2-t31">
-<p>These fields define the database table used for generating the primary key and correspond to the <code>@TableGenerator</code> annotation.</p>
+<td align="left" headers="r2c1-t27 r1c2-t27">
+<p>Displays the existing Named and Native queries.</p>
+<p>Click <span class="bold">Add</span> to add a named or named native query by using the <a href="reference076.htm#CACJIFEG">Add Query dialog</a>.</p>
 </td>
-<td align="left" headers="r2c1-t31 r1c3-t31"><br /></td>
-<td align="left" headers="r2c1-t31 r1c4-t31">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a></p>
-<br /></td>
+<td align="left" headers="r2c1-t27 r1c3-t27"><br /></td>
+<td align="left" headers="r2c1-t27 r1c4-t27">
+<p><a href="tasks004.htm#BABGBIEE">Entity</a> and <a href="tasks006.htm#BABDAGCI">Mapped superclass</a></p>
+</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r3c1-t31" headers="r1c1-t31">
+<td align="left" id="r3c1-t27" headers="r1c1-t27">
+<p><span class="bold">Named Queries</span></p>
+</td>
+<td align="left" headers="r3c1-t27 r1c2-t27"><br /></td>
+<td align="left" headers="r3c1-t27 r1c3-t27"><br /></td>
+<td align="left" headers="r3c1-t27 r1c4-t27"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r4c1-t27" headers="r1c1-t27">
 <p>Name</p>
 </td>
-<td align="left" headers="r3c1-t31 r1c2-t31">
-<p>Unique name of the generator.</p>
+<td align="left" headers="r4c1-t27 r1c2-t27">
+<p>Name of the query.</p>
 </td>
-<td align="left" headers="r3c1-t31 r1c3-t31"><br /></td>
-<td align="left" headers="r3c1-t31 r1c4-t31">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a></p>
-<br /></td>
+<td align="left" headers="r4c1-t27 r1c3-t27"><br /></td>
+<td align="left" headers="r4c1-t27 r1c4-t27">
+<p><a href="tasks004.htm#BABGBIEE">Entity</a> and <a href="tasks006.htm#BABDAGCI">Mapped superclass</a></p>
+</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r4c1-t31" headers="r1c1-t31">
-<p>Table</p>
+<td align="left" id="r5c1-t27" headers="r1c1-t27">
+<p>Query</p>
 </td>
-<td align="left" headers="r4c1-t31 r1c2-t31">
-<p>Database table that stores the generated ID values.</p>
+<td align="left" headers="r5c1-t27 r1c2-t27">
+<p>The query SQL.</p>
 </td>
-<td align="left" headers="r4c1-t31 r1c3-t31"><br /></td>
-<td align="left" headers="r4c1-t31 r1c4-t31">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a></p>
-<br /></td>
+<td align="left" headers="r5c1-t27 r1c3-t27"><br /></td>
+<td align="left" headers="r5c1-t27 r1c4-t27">
+<p><a href="tasks004.htm#BABGBIEE">Entity</a> and <a href="tasks006.htm#BABDAGCI">Mapped superclass</a></p>
+</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r5c1-t31" headers="r1c1-t31">
-<p>Schema</p>
+<td align="left" id="r6c1-t27" headers="r1c1-t27">
+<p>Lock mode</p>
 </td>
-<td align="left" headers="r5c1-t31 r1c2-t31"><br /></td>
-<td align="left" headers="r5c1-t31 r1c3-t31"><br /></td>
-<td align="left" headers="r5c1-t31 r1c4-t31">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a></p>
-<br /></td>
+<td align="left" headers="r6c1-t27 r1c2-t27">
+<p>Specify the JPA locking policy.</p>
+<ul>
+<li>
+<p>None</p>
+</li>
+<li>
+<p>Optimistic</p>
+</li>
+<li>
+<p>Optimistic Force Increment</p>
+</li>
+<li>
+<p>Pessimistic Force Increment</p>
+</li>
+<li>
+<p>Pessimistic Read</p>
+</li>
+<li>
+<p>Pessimistic Write</p>
+</li>
+<li>
+<p>Read</p>
+</li>
+<li>
+<p>Write</p>
+</li>
+</ul>
+</td>
+<td align="left" headers="r6c1-t27 r1c3-t27">
+<p>None</p>
+</td>
+<td align="left" headers="r6c1-t27 r1c4-t27">
+<p><a href="tasks004.htm#BABGBIEE">Entity</a> and <a href="tasks006.htm#BABDAGCI">Mapped superclass</a></p>
+</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r6c1-t31" headers="r1c1-t31">
-<p>Catalog</p>
+<td align="left" id="r7c1-t27" headers="r1c1-t27">
+<p><span class="bold">Native Queries</span></p>
 </td>
-<td align="left" headers="r6c1-t31 r1c2-t31"><br /></td>
-<td align="left" headers="r6c1-t31 r1c3-t31"><br /></td>
-<td align="left" headers="r6c1-t31 r1c4-t31">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a></p>
-<br /></td>
+<td align="left" headers="r7c1-t27 r1c2-t27"><br /></td>
+<td align="left" headers="r7c1-t27 r1c3-t27"><br /></td>
+<td align="left" headers="r7c1-t27 r1c4-t27"><br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r7c1-t31" headers="r1c1-t31">
-<p>Primary key column</p>
-</td>
-<td align="left" headers="r7c1-t31 r1c2-t31">
-<p>The column in the table generator's <span class="bold">Table</span> that contains the primary key.</p>
-</td>
-<td align="left" headers="r7c1-t31 r1c3-t31"><br /></td>
-<td align="left" headers="r7c1-t31 r1c4-t31">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a></p>
-<br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r8c1-t31" headers="r1c1-t31">
-<p>Value column</p>
-</td>
-<td align="left" headers="r8c1-t31 r1c2-t31">
-<p>The column that stores the generated ID values.</p>
-</td>
-<td align="left" headers="r8c1-t31 r1c3-t31"><br /></td>
-<td align="left" headers="r8c1-t31 r1c4-t31">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a></p>
-<br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r9c1-t31" headers="r1c1-t31">
-<p>Allocation size</p>
-</td>
-<td align="left" headers="r9c1-t31 r1c2-t31">
-<p>The value for the <span class="bold">Primary Key Column</span> in the generator table.</p>
-</td>
-<td align="left" headers="r9c1-t31 r1c3-t31">
-<p>50</p>
-</td>
-<td align="left" headers="r9c1-t31 r1c4-t31">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a></p>
-<br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r10c1-t31" headers="r1c1-t31">
-<p>Initial value</p>
-</td>
-<td align="left" headers="r10c1-t31 r1c2-t31"><br /></td>
-<td align="left" headers="r10c1-t31 r1c3-t31">
-<p>0</p>
-</td>
-<td align="left" headers="r10c1-t31 r1c4-t31">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a></p>
-<br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r11c1-t31" headers="r1c1-t31">
-<p><span class="bold">Sequence Generator</span></p>
-</td>
-<td align="left" headers="r11c1-t31 r1c2-t31">
-<p><a id="sthref463" name="sthref463"></a><a id="sthref464" name="sthref464"></a>These fields define the specific sequence used for generating the primary key and correspond to the <code>@SequenceGenerator</code> annotation.</p>
-<p>These fields apply only when <span class="bold">Strategy</span> = <span class="bold">Sequence</span>.</p>
-</td>
-<td align="left" headers="r11c1-t31 r1c3-t31"><br /></td>
-<td align="left" headers="r11c1-t31 r1c4-t31">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a></p>
-<br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r12c1-t31" headers="r1c1-t31">
+<td align="left" id="r8c1-t27" headers="r1c1-t27">
 <p>Name</p>
 </td>
-<td align="left" headers="r12c1-t31 r1c2-t31">
-<p>Name of the sequence table to use for defining primary key values.</p>
+<td align="left" headers="r8c1-t27 r1c2-t27">
+<p>Name of the query.</p>
 </td>
-<td align="left" headers="r12c1-t31 r1c3-t31"><br /></td>
-<td align="left" headers="r12c1-t31 r1c4-t31">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a></p>
-<br /></td>
+<td align="left" headers="r8c1-t27 r1c3-t27"><br /></td>
+<td align="left" headers="r8c1-t27 r1c4-t27">
+<p><a href="tasks004.htm#BABGBIEE">Entity</a> and <a href="tasks006.htm#BABDAGCI">Mapped superclass</a></p>
+</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r13c1-t31" headers="r1c1-t31">
-<p>Sequence</p>
+<td align="left" id="r9c1-t27" headers="r1c1-t27">
+<p>Result class</p>
 </td>
-<td align="left" headers="r13c1-t31 r1c2-t31">
-<p>Unique name of the sequence.</p>
+<td align="left" headers="r9c1-t27 r1c2-t27">
+<p>The class of the result.</p>
+<p><span class="bold">Note</span>: This field appears for Native Named Queries only.</p>
 </td>
-<td align="left" headers="r13c1-t31 r1c3-t31"><br /></td>
-<td align="left" headers="r13c1-t31 r1c4-t31">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a></p>
-<br /></td>
+<td align="left" headers="r9c1-t27 r1c3-t27"><br /></td>
+<td align="left" headers="r9c1-t27 r1c4-t27">
+<p><a href="tasks004.htm#BABGBIEE">Entity</a> and <a href="tasks006.htm#BABDAGCI">Mapped superclass</a></p>
+</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r14c1-t31" headers="r1c1-t31">
-<p>Schema</p>
+<td align="left" id="r10c1-t27" headers="r1c1-t27">
+<p>Query</p>
 </td>
-<td align="left" headers="r14c1-t31 r1c2-t31"><br /></td>
-<td align="left" headers="r14c1-t31 r1c3-t31"><br /></td>
-<td align="left" headers="r14c1-t31 r1c4-t31">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a></p>
-<br /></td>
+<td align="left" headers="r10c1-t27 r1c2-t27">
+<p>The query SQL.</p>
+</td>
+<td align="left" headers="r10c1-t27 r1c3-t27"><br /></td>
+<td align="left" headers="r10c1-t27 r1c4-t27">
+<p><a href="tasks004.htm#BABGBIEE">Entity</a> and <a href="tasks006.htm#BABDAGCI">Mapped superclass</a></p>
+</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r15c1-t31" headers="r1c1-t31">
-<p>Catalog</p>
+<td align="left" id="r11c1-t27" headers="r1c1-t27">
+<p><span class="bold">Query hints</span></p>
 </td>
-<td align="left" headers="r15c1-t31 r1c2-t31"><br /></td>
-<td align="left" headers="r15c1-t31 r1c3-t31"><br /></td>
-<td align="left" headers="r15c1-t31 r1c4-t31">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a></p>
-<br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r16c1-t31" headers="r1c1-t31">
-<p>Allocation size</p>
+<td align="left" headers="r11c1-t27 r1c2-t27">
+<p>Displays the existing query hints (Name and Value).</p>
+<p>Click Add to add a new query hint.</p>
 </td>
-<td align="left" headers="r16c1-t31 r1c2-t31">
-<p><a id="sthref465" name="sthref465"></a><a id="sthref466" name="sthref466"></a>These fields define the specific sequence used for generating the primary key and correspond to the <code>@SequenceGenerator</code> annotation.</p>
-<p>These fields apply only when <span class="bold">Strategy</span> = <span class="bold">Sequence</span>.</p>
+<td align="left" headers="r11c1-t27 r1c3-t27"><br /></td>
+<td align="left" headers="r11c1-t27 r1c4-t27">
+<p><a href="tasks004.htm#BABGBIEE">Entity</a> and <a href="tasks006.htm#BABDAGCI">Mapped superclass</a></p>
 </td>
-<td align="left" headers="r16c1-t31 r1c3-t31">
-<p>50</p>
-</td>
-<td align="left" headers="r16c1-t31 r1c4-t31">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a></p>
-<br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r17c1-t31" headers="r1c1-t31">
-<p>Initial value</p>
-</td>
-<td align="left" headers="r17c1-t31 r1c2-t31"><br /></td>
-<td align="left" headers="r17c1-t31 r1c3-t31">
-<p>1</p>
-</td>
-<td align="left" headers="r17c1-t31 r1c4-t31">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a></p>
-<br /></td>
 </tr>
 </tbody>
 </table>
 <br /></div>
 <!-- class="inftblhruleinformalwide" -->
-<a id="sthref467" name="sthref467"></a>
+<a id="sthref468" name="sthref468"></a>
+<p class="subhead2">Related tasks</p>
+<ul>
+<li>
+<p><a href="tasks011.htm#BABIGBGG">Creating queries</a></p>
+</li>
+</ul>
+<a id="sthref469" name="sthref469"></a>
 <p class="subhead2">Related reference</p>
 <ul>
 <li>
 <p><a href="ref_persistence_prop_view.htm#BABFAEBB">JPA Details view (for entities)</a></p>
+</li>
+</ul>
+<a id="sthref470" name="sthref470"></a>
+<p class="subhead2">Related concepts</p>
+<ul>
+<li>
+<p>"Query Language" in the JPA Specification<br />
+<code><a href="http://jcp.org/en/jsr/detail?id=317">http://jcp.org/en/jsr/detail?id=317</a></code></p>
 </li>
 </ul>
 </div>

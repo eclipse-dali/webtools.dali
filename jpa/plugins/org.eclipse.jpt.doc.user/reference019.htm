@@ -5,85 +5,82 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Mapped Superclass</title>
+<title>Schema Generation</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-19T13:27:59Z" />
+<meta name="date" content="2012-09-27T9:43:52Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Mapped Superclass" />
+<meta name="doctitle" content="Schema Generation" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
-<p><a id="CACGIEFD" name="CACGIEFD"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-27</p>
+<p><a id="CACHAJEG" name="CACHAJEG"></a></p>
 <div class="sect3"><!-- infolevel="all" infotype="General" -->
-<h1>Mapped Superclass</h1>
-<p><a id="sthref436" name="sthref436"></a>This table lists the Embeddable information fields available in the <span class="gui-object-title">JPA Details</span> view for <a href="tasks005.htm#BABDAGCI">Mapped superclass</a> entity type.</p>
-<div class="inftblhruleinformalwide">
-<table class="HRuleInformalWide" summary="JPA Details view, Mapped Superclass page" dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
-<col width="19%" />
+<h1>Schema Generation</h1>
+<p>This table lists the properties of the Schema Generation page of the <a href="reference018.htm#CIAGHCGA">Generate Tables from Entities wizard</a>.</p>
+<div class="inftblhruleinformal">
+<table class="HRuleInformal" summary="This table lists the properties of the Mapping File Wizard." dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
+<col width="23%" />
 <col width="*" />
-<col width="19%" />
+<col width="24%" />
 <thead>
 <tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t25">Property</th>
-<th align="left" valign="bottom" id="r1c2-t25">Description</th>
-<th align="left" valign="bottom" id="r1c3-t25">Default</th>
+<th align="left" valign="bottom" id="r1c1-t21">Property</th>
+<th align="left" valign="bottom" id="r1c2-t21">Description</th>
+<th align="left" valign="bottom" id="r1c3-t21">Default</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t25" headers="r1c1-t25">
-<p>Access</p>
+<td align="left" id="r2c1-t21" headers="r1c1-t21">
+<p>Generation Output Mode</p>
 </td>
-<td align="left" headers="r2c1-t25 r1c2-t25">
-<p>Specify how the entity its access instance variables.</p>
+<td align="left" headers="r2c1-t21 r1c2-t21">
+<p>Specify how Dali should generate the DDL:</p>
 <ul>
 <li>
-<p>Property &ndash; Persistent state accessed through the property accessor methods. The property accessor methods must be <span class="bold">public</span> or <span class="bold">private</span>.</p>
+<p>Database &ndash; DDL will be generated and written to the database only.</p>
 </li>
 <li>
-<p>Field &ndash; Instance variables are accessed directly. All non-transient instance variables are persistent.</p>
+<p>SQL-script &ndash; DDL will be generated and written to a file only.</p>
+</li>
+<li>
+<p>Both &ndash; DDL will be generated and written to both the database and a file.</p>
 </li>
 </ul>
-<p><span class="bold">Note</span>: This field is for display only, based on the properties in the <code>orm.xml</code>: If only the methods of the class are annotated, <span class="bold">property</span> access type is used. In all other cases, <span class="bold">field</span> access type is used.</p>
 </td>
-<td align="left" headers="r2c1-t25 r1c3-t25">
-<p>Field</p>
+<td align="left" headers="r2c1-t21 r1c3-t21">
+<p>Database</p>
 </td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r3c1-t25" headers="r1c1-t25">
-<p>ID class</p>
-</td>
-<td align="left" headers="r3c1-t25 r1c2-t25">
-<p>Click <span class="bold">Browse</span> and select the primary key for the entity. Clicking the field name, which is represented as a hyperlink, allows you to create a new class.</p>
-</td>
-<td align="left" headers="r3c1-t25 r1c3-t25"><br /></td>
 </tr>
 </tbody>
 </table>
 <br /></div>
-<!-- class="inftblhruleinformalwide" -->
-<a id="sthref437" name="sthref437"></a>
+<!-- class="inftblhruleinformal" -->
+<a id="sthref436" name="sthref436"></a>
 <p class="subhead2">Related tasks</p>
 <ul>
 <li>
-<p><a href="task_add_persistence.htm#BABHICAI">Adding persistence to a class</a></p>
+<p><a href="tasks023.htm#BABBAGFI">Generating entities from tables</a></p>
+</li>
+<li>
+<p><a href="task_mapping.htm#BABDGBIJ">Mapping an entity</a></p>
 </li>
 </ul>
-<a id="sthref438" name="sthref438"></a>
+<a id="sthref437" name="sthref437"></a>
 <p class="subhead2">Related reference</p>
 <ul>
 <li>
-<p><a href="ref_persistence_prop_view.htm#BABFAEBB">JPA Details view (for entities)</a></p>
+<p><a href="reference007.htm#CIAIJCCE">Create ORM Mapping File wizard</a></p>
 </li>
 </ul>
 </div>
 <!-- class="sect3" -->
+<!-- class="sect2" -->
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">

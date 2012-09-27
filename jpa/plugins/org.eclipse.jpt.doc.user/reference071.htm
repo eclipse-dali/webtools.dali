@@ -5,89 +5,60 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Make Persistent dialog</title>
+<title>Edit Join Columns Dialog</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-19T13:28:1Z" />
+<meta name="date" content="2012-09-27T9:43:54Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Make Persistent dialog" />
+<meta name="doctitle" content="Edit Join Columns Dialog" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
-<p><a id="CACIBDFB" name="CACIBDFB"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-27</p>
+<p><a id="CACCGEHC" name="CACCGEHC"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
-<h1>Make Persistent dialog</h1>
-<p><a id="sthref668" name="sthref668"></a>Use this dialog to add persistence to a Java class.</p>
+<h1>Edit Join Columns Dialog</h1>
+<p><a id="sthref678" name="sthref678"></a>Use the <span class="gui-object-title">Join Columns</span> dialog to create or modify the join tables and columns in relationship mappings.</p>
+<p>This table lists the properties available in the <span class="gui-object-title">Join Columns</span> dialog.</p>
 <div class="inftblhruleinformal">
-<table class="HRuleInformal" summary="This table lists the options on the Make Persistent dialog." dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
-<col width="24%" />
+<table class="HRuleInformal" title="This table describes the options on the Join Columns dialog." summary="This table describes the options on the Join Columns dialog." dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
+<col width="32%" />
 <col width="*" />
 <thead>
 <tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t79">Property</th>
-<th align="left" valign="bottom" id="r1c2-t79">Description</th>
+<th align="left" valign="bottom" id="r1c1-t73">Property</th>
+<th align="left" valign="bottom" id="r1c2-t73">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t79" headers="r1c1-t79">
-<p>Annotate in Java</p>
+<td align="left" id="r2c1-t73" headers="r1c1-t73">
+<p>Name</p>
 </td>
-<td align="left" headers="r2c1-t79 r1c2-t79">
-<p>Specify if Dali should use annotations. If disabled, Dali will add persistence information in the XML mapping file.</p>
-</td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r3c1-t79" headers="r1c1-t79">
-<p>Add to XML mapping file</p>
-</td>
-<td align="left" headers="r3c1-t79 r1c2-t79">
-<p>Specify if Dali should add persistence information in the XML mapping file. If disabled, Dali will use annotations.</p>
+<td align="left" headers="r2c1-t73 r1c2-t73">
+<p>Name of the joint table column that contains the foreign key column.</p>
 </td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r4c1-t79" headers="r1c1-t79">
-<p>Java classes</p>
+<td align="left" id="r3c1-t73" headers="r1c1-t73">
+<p>Referenced Column Name</p>
 </td>
-<td align="left" headers="r4c1-t79 r1c2-t79">
-<p>For each Java class, select the Mapping type:</p>
-<ul>
-<li>
-<p><a href="tasks003.htm#BABGBIEE">Entity</a></p>
-</li>
-<li>
-<p><a href="tasks004.htm#BABFEICE">Embeddable</a></p>
-</li>
-<li>
-<p><a href="tasks005.htm#BABDAGCI">Mapped superclass</a></p>
-</li>
-</ul>
-</td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r5c1-t79" headers="r1c1-t79">
-<p>List in persistence.xml</p>
-</td>
-<td align="left" headers="r5c1-t79 r1c2-t79">
-<p>Specify if Dali should add persistence properties to the persistence.xml file.</p>
+<td align="left" headers="r3c1-t73 r1c2-t73">
+<p>Name of the database column that contains the foreign key reference for the entity relationship.</p>
 </td>
 </tr>
 </tbody>
 </table>
 <br /></div>
 <!-- class="inftblhruleinformal" -->
-<a id="sthref669" name="sthref669"></a>
-<p class="subhead2">Related tasks</p>
+<a id="sthref679" name="sthref679"></a>
+<p class="subhead2">Related reference</p>
 <ul>
 <li>
-<p><a href="task_add_persistence.htm#BABHICAI">Adding persistence to a class</a></p>
-</li>
-<li>
-<p><a href="task_create_jpa_entity.htm#BABFBJBG">Creating a JPA entity</a></p>
+<p><a href="reference047.htm#CACIJEGI">Joining Strategy</a></p>
 </li>
 </ul>
 </div>

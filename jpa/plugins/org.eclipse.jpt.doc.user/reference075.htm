@@ -5,68 +5,93 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Select Schema Location dialog</title>
+<title>Make Persistent dialog</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-19T13:28:1Z" />
+<meta name="date" content="2012-09-27T9:43:54Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Select Schema Location dialog" />
+<meta name="doctitle" content="Make Persistent dialog" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
-<p><a id="CACCEGGC" name="CACCEGGC"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-27</p>
+<p><a id="CACIBDFB" name="CACIBDFB"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
-<h1>Select Schema Location dialog<a id="sthref679" name="sthref679"></a><a id="sthref680" name="sthref680"></a><a id="sthref681" name="sthref681"></a></h1>
+<h1>Make Persistent dialog</h1>
+<p><a id="sthref694" name="sthref694"></a>Use this dialog to add persistence to a Java class.</p>
 <div class="inftblhruleinformal">
-<table class="HRuleInformal" summary="Add Primary Key Join Column dialog" dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
-<col width="27%" />
+<table class="HRuleInformal" summary="This table lists the options on the Make Persistent dialog." dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
+<col width="24%" />
 <col width="*" />
 <thead>
 <tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t83">Property</th>
-<th align="left" valign="bottom" id="r1c2-t83">Description</th>
+<th align="left" valign="bottom" id="r1c1-t80">Property</th>
+<th align="left" valign="bottom" id="r1c2-t80">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t83" headers="r1c1-t83">
-<p>Select file from Workspace</p>
+<td align="left" id="r2c1-t80" headers="r1c1-t80">
+<p>Annotate in Java</p>
 </td>
-<td align="left" headers="r2c1-t83 r1c2-t83"><br /></td>
+<td align="left" headers="r2c1-t80 r1c2-t80">
+<p>Specify if Dali should use annotations. If disabled, Dali will add persistence information in the XML mapping file.</p>
+</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r3c1-t83" headers="r1c1-t83">
-<p>Select XML catalog entry</p>
+<td align="left" id="r3c1-t80" headers="r1c1-t80">
+<p>Add to XML mapping file</p>
 </td>
-<td align="left" headers="r3c1-t83 r1c2-t83"><br /></td>
+<td align="left" headers="r3c1-t80 r1c2-t80">
+<p>Specify if Dali should add persistence information in the XML mapping file. If disabled, Dali will use annotations.</p>
+</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r4c1-t83" headers="r1c1-t83">
-<p>Workspace files</p>
+<td align="left" id="r4c1-t80" headers="r1c1-t80">
+<p>Java classes</p>
 </td>
-<td align="left" headers="r4c1-t83 r1c2-t83"><br /></td>
+<td align="left" headers="r4c1-t80 r1c2-t80">
+<p>For each Java class, select the Mapping type:</p>
+<ul>
+<li>
+<p><a href="tasks004.htm#BABGBIEE">Entity</a></p>
+</li>
+<li>
+<p><a href="tasks005.htm#BABFEICE">Embeddable</a></p>
+</li>
+<li>
+<p><a href="tasks006.htm#BABDAGCI">Mapped superclass</a></p>
+</li>
+</ul>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r5c1-t80" headers="r1c1-t80">
+<p>List in persistence.xml</p>
+</td>
+<td align="left" headers="r5c1-t80 r1c2-t80">
+<p>Specify if Dali should add persistence properties to the persistence.xml file.</p>
+</td>
 </tr>
 </tbody>
 </table>
 <br /></div>
 <!-- class="inftblhruleinformal" -->
-<a id="sthref682" name="sthref682"></a>
-<p class="subhead2">Related reference</p>
+<a id="sthref695" name="sthref695"></a>
+<p class="subhead2">Related tasks</p>
 <ul>
 <li>
-<p><a href="reference074.htm#CACBGDHI">Add Schema Location dialog</a></p>
+<p><a href="task_add_persistence.htm#BABHICAI">Adding persistence to a class</a></p>
 </li>
 <li>
-<p><a href="reference065.htm#CACJGBFJ">Project Properties page &ndash; Schemas</a></p>
+<p><a href="task_create_jpa_entity.htm#BABFBJBG">Creating a JPA entity</a></p>
 </li>
 </ul>
 </div>
 <!-- class="sect2" -->
-<!-- class="sect1" -->
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">

@@ -5,176 +5,72 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Inheritance</title>
+<title>Embeddable</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-19T13:27:59Z" />
+<meta name="date" content="2012-09-27T9:43:52Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Inheritance" />
+<meta name="doctitle" content="Embeddable" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
-<p><a id="CACFHGHE" name="CACFHGHE"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-27</p>
+<p><a id="CACHJEJH" name="CACHJEJH"></a></p>
 <div class="sect3"><!-- infolevel="all" infotype="General" -->
-<h1>Inheritance</h1>
-<p><a id="sthref446" name="sthref446"></a><a id="sthref447" name="sthref447"></a>This table lists the fields available on the <span class="gui-object-title">Inheritance</span> area in the <span class="gui-object-title">JPA Details</span> view for each entity type.</p>
-<div class="inftblhruleinformal">
-<table class="HRuleInformal" title="This table describes the options on the Persistence Properties view, Inheritance tab." summary="This table describes the options on the Persistence Properties view, Inheritance tab." dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
-<col width="16%" />
+<h1>Embeddable</h1>
+<p><a id="sthref457" name="sthref457"></a>This table lists the Embeddable information fields available in the <span class="gui-object-title">JPA Details</span> view for <a href="tasks005.htm#BABFEICE">Embeddable</a> entity type.</p>
+<div class="inftblhruleinformalwide">
+<table class="HRuleInformalWide" summary="JPA Details view, Embeddable page" dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
+<col width="19%" />
 <col width="*" />
-<col width="15%" />
-<col width="20%" />
+<col width="19%" />
 <thead>
 <tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t28">Property</th>
-<th align="left" valign="bottom" id="r1c2-t28">Description</th>
-<th align="left" valign="bottom" id="r1c3-t28">Default</th>
-<th align="left" valign="bottom" id="r1c4-t28">Available for Entity Type</th>
+<th align="left" valign="bottom" id="r1c1-t24">Property</th>
+<th align="left" valign="bottom" id="r1c2-t24">Description</th>
+<th align="left" valign="bottom" id="r1c3-t24">Default</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t28" headers="r1c1-t28">
-<p>Strategy</p>
+<td align="left" id="r2c1-t24" headers="r1c1-t24">
+<p>Access</p>
 </td>
-<td align="left" headers="r2c1-t28 r1c2-t28">
-<p>Specify the strategy to use when mapping a class or class hierarchy:</p>
+<td align="left" headers="r2c1-t24 r1c2-t24">
+<p>Specify how the entity its access instance variables.</p>
 <ul>
 <li>
-<p><span class="bold">Single table</span> &ndash; All classes in the hierarchy are mapped to a single table.</p>
+<p>Property &ndash; Persistent state accessed through the property accessor methods. The property accessor methods must be <span class="bold">public</span> or <span class="bold">private</span>.</p>
 </li>
 <li>
-<p><span class="bold">Joined</span> &ndash; The root of the hierarchy is mapped to a single table; each child maps to its own table.</p>
-</li>
-<li>
-<p><span class="bold">Table per class</span> &ndash; Each class is mapped to a separate table.</p>
+<p>Field &ndash; Instance variables are accessed directly. All non-transient instance variables are persistent.</p>
 </li>
 </ul>
-<p>This field corresponds to the <code>@Inheritance</code> annotation.</p>
+<p><span class="bold">Note</span>: This field is for display only, based on the properties in the <code>orm.xml</code>: If only the methods of the class are annotated, <span class="bold">property</span> access type is used. In all other cases, <span class="bold">field</span> access type is used.</p>
 </td>
-<td align="left" headers="r2c1-t28 r1c3-t28">
-<p>Single table</p>
+<td align="left" headers="r2c1-t24 r1c3-t24">
+<p>Field</p>
 </td>
-<td align="left" headers="r2c1-t28 r1c4-t28">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a></p>
-<br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r3c1-t28" headers="r1c1-t28">
-<p><a id="sthref448" name="sthref448"></a><a id="sthref449" name="sthref449"></a>Discriminator Value</p>
-</td>
-<td align="left" headers="r3c1-t28 r1c2-t28">
-<p>Specify the discriminator value used to differentiate an entity in this inheritance hierarchy. The value must conform to the specified <span class="bold">Discriminator Type</span>.</p>
-</td>
-<td align="left" headers="r3c1-t28 r1c3-t28"><br /></td>
-<td align="left" headers="r3c1-t28 r1c4-t28">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a></p>
-<br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r4c1-t28" headers="r1c1-t28">
-<p><a id="sthref450" name="sthref450"></a><a id="sthref451" name="sthref451"></a><span class="bold">Discriminator Column</span></p>
-</td>
-<td align="left" headers="r4c1-t28 r1c2-t28">
-<p>These fields are available when using a <span class="bold">Single</span> or <span class="bold">Joined</span> inheritance strategy.</p>
-<p>This field corresponds to the <code>@DiscriminatorColumn</code> annotation.</p>
-<p>Use the <span class="bold">Details</span> area to define the <span class="bold">Length</span> and <span class="bold">Column definition</span> of this Discriminator Column.</p>
-</td>
-<td align="left" headers="r4c1-t28 r1c3-t28"><br /></td>
-<td align="left" headers="r4c1-t28 r1c4-t28"><br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r5c1-t28" headers="r1c1-t28">
-<p>Name</p>
-</td>
-<td align="left" headers="r5c1-t28 r1c2-t28">
-<p>Name of the discriminator column</p>
-</td>
-<td align="left" headers="r5c1-t28 r1c3-t28"><br /></td>
-<td align="left" headers="r5c1-t28 r1c4-t28">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a></p>
-<br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r6c1-t28" headers="r1c1-t28">
-<p>Type</p>
-</td>
-<td align="left" headers="r6c1-t28 r1c2-t28">
-<p>Set this field to set the discriminator type to <code>Char</code> or <code>Integer</code> (instead of its default: <code>String</code>). The <span class="bold">Discriminator Value</span> must conform to this type.</p>
-</td>
-<td align="left" headers="r6c1-t28 r1c3-t28">
-<p>String</p>
-</td>
-<td align="left" headers="r6c1-t28 r1c4-t28">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a></p>
-<br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r7c1-t28" headers="r1c1-t28">
-<p>Length</p>
-</td>
-<td align="left" headers="r7c1-t28 r1c2-t28">
-<p>The column length for String-based discriminator types.</p>
-</td>
-<td align="left" headers="r7c1-t28 r1c3-t28">
-<p>0</p>
-</td>
-<td align="left" headers="r7c1-t28 r1c4-t28">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a></p>
-<br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r8c1-t28" headers="r1c1-t28">
-<p>Column definition</p>
-</td>
-<td align="left" headers="r8c1-t28 r1c2-t28">
-<p>The SQL fragment that is used when generating the DDL for the discriminator column.</p>
-</td>
-<td align="left" headers="r8c1-t28 r1c3-t28"><br /></td>
-<td align="left" headers="r8c1-t28 r1c4-t28">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a></p>
-<br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r9c1-t28" headers="r1c1-t28">
-<p><span class="bold">Primary Key Join Columns</span></p>
-</td>
-<td align="left" headers="r9c1-t28 r1c2-t28">
-<p>Use to override the default primary key join columns. Select <span class="bold">Override Default</span>, then click <span class="bold">Add</span> to select new Join Column with the <a href="reference073.htm#CACDGGDB">Add Primary Key Join Column dialog</a>.</p>
-<p>This field corresponds with @<code>PrimaryKeyJoinColum</code>n annotation.</p>
-</td>
-<td align="left" headers="r9c1-t28 r1c3-t28"><br /></td>
-<td align="left" headers="r9c1-t28 r1c4-t28">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a></p>
-<br /></td>
 </tr>
 </tbody>
 </table>
 <br /></div>
-<!-- class="inftblhruleinformal" -->
-<p>Refer to <a href="task_inheritance.htm#CIHCCCJD">"Specifying entity inheritance"</a> for additional information.</p>
-<a id="sthref452" name="sthref452"></a>
+<!-- class="inftblhruleinformalwide" -->
+<a id="sthref458" name="sthref458"></a>
 <p class="subhead2">Related tasks</p>
 <ul>
-<li>
-<p><a href="task_inheritance.htm#CIHCCCJD">Specifying entity inheritance</a></p>
-</li>
 <li>
 <p><a href="task_add_persistence.htm#BABHICAI">Adding persistence to a class</a></p>
 </li>
 </ul>
-<a id="sthref453" name="sthref453"></a>
+<a id="sthref459" name="sthref459"></a>
 <p class="subhead2">Related reference</p>
 <ul>
 <li>
 <p><a href="ref_persistence_prop_view.htm#BABFAEBB">JPA Details view (for entities)</a></p>
-</li>
-<li>
-<p><a href="reference073.htm#CACDGGDB">Add Primary Key Join Column dialog</a></p>
 </li>
 </ul>
 </div>

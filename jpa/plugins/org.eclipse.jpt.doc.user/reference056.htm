@@ -5,25 +5,150 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Properties</title>
+<title>Caching</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-19T13:28:0Z" />
+<meta name="date" content="2012-09-27T9:43:54Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Properties" />
+<meta name="doctitle" content="Caching" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
-<p><a id="CIAHJDFF" name="CIAHJDFF"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-27</p>
+<p><a id="CIABEDCH" name="CIABEDCH"></a><a id="ref_persistence_caching" name="ref_persistence_caching"></a></p>
 <div class="sect3"><!-- infolevel="all" infotype="General" -->
-<h1><a id="sthref607" name="sthref607"></a><a id="sthref608" name="sthref608"></a><a id="sthref609" name="sthref609"></a>Properties</h1>
-<p>This page enables you to add or remove the vendor-specific <code>&lt;properties&gt;</code> elements of <code>persistence.xml</code>.</p>
-<p>To add a property, click <span class="bold">Add</span> then enter the property <span class="bold">Name</span> and <span class="bold">Value</span>.</p>
-<a id="sthref610" name="sthref610"></a>
+<h1><a id="sthref620" name="sthref620"></a><a id="sthref621" name="sthref621"></a>Caching</h1>
+<p>This table lists the properties of the Caching page of the <a href="ref_persistence_xmll_editor.htm#CIACCHID">persistence.xml Editor</a>.</p>
+<div class="inftblhruleinformal">
+<table class="HRuleInformal" summary="This table lists the properties of the Caching page of the persistence.xml Editor." dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
+<col width="24%" />
+<col width="*" />
+<col width="24%" />
+<thead>
+<tr align="left" valign="top">
+<th align="left" valign="bottom" id="r1c1-t56">Property</th>
+<th align="left" valign="bottom" id="r1c2-t56">Description</th>
+<th align="left" valign="bottom" id="r1c3-t56">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr align="left" valign="top">
+<td align="left" id="r2c1-t56" headers="r1c1-t56">
+<p>Shared cache mode</p>
+</td>
+<td align="left" headers="r2c1-t56 r1c2-t56">
+<p>Select one of the following as the shared cache mode:</p>
+<ul>
+<li>
+<p><span class="bold">All</span> &ndash; .</p>
+</li>
+<li>
+<p><span class="bold">None</span> &ndash;</p>
+</li>
+<li>
+<p><span class="bold">Enable Selective</span> &ndash;</p>
+</li>
+<li>
+<p><span class="bold">Disable Selective</span> &ndash;</p>
+</li>
+<li>
+<p><span class="bold">Unspecified</span> &ndash;</p>
+</li>
+</ul>
+</td>
+<td align="left" headers="r2c1-t56 r1c3-t56">
+<p>Disable selective</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r3c1-t56" headers="r1c1-t56">
+<p>Default Cache Type</p>
+</td>
+<td align="left" headers="r3c1-t56 r1c2-t56">
+<p>Select one of the following as the Default Cache Type:</p>
+<ul>
+<li>
+<p><span class="bold">Weak with Soft Subcache</span>&ndash;This option is similar to <span class="bold">Weak with Hard Subcache</span> except that it maintains a most frequently used subcache that uses soft references. The size of the subcache is proportional to the size of the identity map. The subcache uses soft references to ensure that these objects are garbage-collected only if the system is low on memory.</p>
+<p>Use this identity map in most circumstances as a means to control memory used by the cache.</p>
+</li>
+<li>
+<p><span class="bold">Weak with Hard Subcache</span>&ndash;This option is similar to <span class="bold">Soft with Weak</span> subcache except that it maintains a most frequently used subcache that uses hard references. Use this identity map if soft references are not suitable for your platform.</p>
+</li>
+<li>
+<p><span class="bold">Weak</span>&ndash;This option is similar to <span class="bold">Full</span>, except that objects are referenced using weak references. This option uses less memory than <span class="bold">Full</span>, allows complete garbage collection and provides full caching and guaranteed identity.</p>
+<p>Use this identity map for transactions that, once started, stay on the server side.</p>
+</li>
+<li>
+<p><span class="bold">Soft</span>&ndash;This option is similar to <span class="bold">Weak</span> except that the map holds the objects using soft references. This identity map enables full garbage collection when memory is low. It provides full caching and guaranteed identity.</p>
+</li>
+<li>
+<p><span class="bold">Full</span>&ndash;This option provides full caching and guaranteed identity: all objects are cached and not removed.</p>
+<p>Note: This process may be memory-intensive when many objects are read.</p>
+</li>
+<li>
+<p><span class="bold">None</span>&ndash;This option does not preserve object identity and does not cache objects.This option is not recommended.</p>
+</li>
+</ul>
+</td>
+<td align="left" headers="r3c1-t56 r1c3-t56">
+<p>Weak with soft subcache</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r4c1-t56" headers="r1c1-t56">
+<p>Default Cache Size</p>
+</td>
+<td align="left" headers="r4c1-t56 r1c2-t56">
+<p>Set the size (maximum number of objects) of the cache.</p>
+</td>
+<td align="left" headers="r4c1-t56 r1c3-t56">
+<p>100</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r5c1-t56" headers="r1c1-t56">
+<p>Flush clear cache</p>
+</td>
+<td align="left" headers="r5c1-t56 r1c2-t56">
+<p>Select one of the following as the Default Cache Type:</p>
+<ul>
+<li>
+<p><span class="bold">Drop</span> &ndash; This mode is the fastest and uses the least memory. However, after commit the shared cache might potentially contain stale data.</p>
+</li>
+<li>
+<p><span class="bold">Drop Invalidate</span> &ndash; Classes that have at least one object updated or deleted are invalidated in the shared cache at commit time. This mode is slower than <span class="bold">Drop</span>, but as efficient memory usage-wise, and prevents stale data.</p>
+</li>
+<li>
+<p><span class="bold">Merge</span> &ndash; Drop classes from the EntityManager's cache of objects that have not been flushed. This mode leaves the shared cache in a perfect state after commit. However, it is the least memory-efficient mode; the memory might even run out in a very large transaction.</p>
+</li>
+</ul>
+</td>
+<td align="left" headers="r5c1-t56 r1c3-t56">
+<p>Drop Invalidate</p>
+</td>
+</tr>
+</tbody>
+</table>
+<br /></div>
+<!-- class="inftblhruleinformal" -->
+<div align="center">
+<div class="inftblnote"><br />
+<table class="Note oac_no_warn" summary="" cellpadding="3" cellspacing="0">
+<tbody>
+<tr>
+<td align="left">
+<p class="notep1">Note:</p>
+<p>This page is not available for projects using the <span class="bold">Generic</span> platform.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<br /></div>
+<!-- class="inftblnote" --></div>
+<a id="sthref622" name="sthref622"></a>
 <p class="subhead2">Related references</p>
 <ul>
 <li>

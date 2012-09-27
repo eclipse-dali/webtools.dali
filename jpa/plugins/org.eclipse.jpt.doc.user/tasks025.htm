@@ -5,67 +5,81 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Validating mappings and reporting problems</title>
+<title>Generating dynamic entities from tables</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-19T13:27:58Z" />
+<meta name="date" content="2012-09-27T9:43:51Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Validating mappings and reporting problems" />
+<meta name="doctitle" content="Generating dynamic entities from tables" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
-<p><a id="BABFAIBA" name="BABFAIBA"></a></p>
-<div class="sect1">
-<h1>Validating mappings and reporting problems</h1>
-<p><a id="sthref297" name="sthref297"></a><a id="sthref298" name="sthref298"></a><a id="sthref299" name="sthref299"></a><a id="sthref300" name="sthref300"></a>Errors and warnings on persistent entities and mappings are indicated with a red error or yellow warning next to the resource with the error, as well as the parent containers up to the project.</p>
-<div align="center">
-<div class="inftblnotealso"><br />
-<table class="NoteAlso oac_no_warn" summary="" cellpadding="3" cellspacing="0">
-<tbody>
-<tr>
-<td align="left">
-<p class="notep1">Tip:</p>
-<p>Use the <a href="reference063.htm#CACEEJJB">Project Properties page &ndash; Errors/Warnings</a> and <a href="reference060.htm#CACFGIDG">Java Persistence Preferences page &ndash; Errors/Warnings</a> to specify which problems Dali will report.</p>
-</td>
-</tr>
-</tbody>
-</table>
-<br /></div>
-<!-- class="inftblnotealso" --></div>
-<div class="figure"><a id="sthref301" name="sthref301"></a>
-<p class="titleinfigure">Sample Errors and Warnings</p>
-<img src="img/error_sample.png" alt="This figure shows sample error and warning icons in the Explorer view." title="This figure shows sample error and warning icons in the Explorer view." /><br /></div>
-<!-- class="figure" -->
-<p>This section contains information on the following:</p>
-<ul>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-27</p>
+<p><a id="CIHHFGIG" name="CIHHFGIG"></a></p>
+<div class="sect1"><!-- infolevel="all" infotype="General" -->
+<h1>Generating dynamic entities from tables</h1>
+<p><a id="sthref304" name="sthref304"></a><a id="sthref305" name="sthref305"></a><a id="sthref306" name="sthref306"></a><a id="sthref307" name="sthref307"></a>When using EclipseLink JPA, you can create dynamic entities from your database tables. This dynamic persistence provides access to a relational database with all the benefits of JPA <span class="italic">without coding</span> or maintaining Java classes.</p>
+<p>Dali dynamically creates the classes at runtime, as needed.</p>
+<p>To generate dynamic entities:</p>
+<ol>
 <li>
-<p><a href="tasks026.htm#CIHFEDEI">Error messages</a></p>
+<p>Right-click the JPA project in the <span class="gui-object-title">Project Explorer</span> and select <span class="gui-object-action">JPA Tools &gt; Generate Dynamic Entities from Tables</span>.</p>
+<img src="img/generate_dynamic_entities.png" alt="JPA Tools &gt; Generate Dynamic Entities from Tables" title="JPA Tools &gt; Generate Dynamic Entities from Tables" /><br />
+<p>The Select Tables page of the <a href="reference002.htm#CACGDFDJ">Generate Dynamic Entities from Tables wizard</a> appears.</p>
+<div class="figure"><a id="sthref308" name="sthref308"></a>
+<p class="titleinfigure">Select Tables</p>
+<img src="img/select_tables_dynamic.png" alt="" title="" /><br /></div>
+<!-- class="figure" --></li>
+<li>
+<p>On the <a href="reference003.htm#CACFGHJF">Select Tables</a> page, select the tables from which to generate the entities and click <span class="bold">Next</span>.</p>
+<p>The <a href="reference004.htm#CACBDJAC">Table Associations</a> page appears.</p>
+<div class="figure"><a id="sthref309" name="sthref309"></a>
+<p class="titleinfigure">Table Associations</p>
+<img src="img/table_associations_dynamic.png" alt="" title="" /><br /></div>
+<!-- class="figure" --></li>
+<li>
+<p>On the <a href="reference004.htm#CACBDJAC">Table Associations</a> page, specify which table associations should be generated. Use the <a href="ref_create_new_association_wizard.htm#CIAFGHIF">Create New Association wizard</a> to create additional relationships.</p>
+<p>Click <span class="bold">Next</span>. The <a href="reference005.htm#CACHHEEH">Customize Default Entity Generation</a> page appears.</p>
+<div class="figure"><a id="sthref310" name="sthref310"></a>
+<p class="titleinfigure">Customize Defaults</p>
+<img src="img/customize_default_entity_generation_dynamic.png" alt="" title="" /><br /></div>
+<!-- class="figure" --></li>
+<li>
+<p>On the <a href="reference005.htm#CACHHEEH">Customize Default Entity Generation</a> page, specify the default information to use when generating the entities, and click <span class="bold">Next</span>.</p>
+<p>The <a href="reference006.htm#CACDGDIC">Customize Individual Entities</a> page appears.</p>
+<div class="figure"><a id="sthref311" name="sthref311"></a>
+<p class="titleinfigure">Customize Individual Entities</p>
+<img src="img/customize_individual_entities_dynamic.png" alt="" title="" /><br /></div>
+<!-- class="figure" --></li>
+<li>
+<p>Use the <a href="reference006.htm#CACDGDIC">Customize Individual Entities</a> page to customize specific generated entities.</p>
 </li>
 <li>
-<p><a href="tasks027.htm#CIHGEAIJ">Warning messages</a></p>
+<p>Click <span class="bold">Finish</span> to complete the wizard and generate the entities.</p>
 </li>
-</ul>
-<a id="sthref302" name="sthref302"></a>
-<p class="subhead2">Related reference</p>
-<ul>
-<li>
-<p><a href="reference063.htm#CACEEJJB">Project Properties page &ndash; Errors/Warnings</a></p>
-</li>
-<li>
-<p><a href="reference060.htm#CACFGIDG">Java Persistence Preferences page &ndash; Errors/Warnings</a></p>
-</li>
-</ul>
-<a id="sthref303" name="sthref303"></a>
-<p class="subhead2">Related concepts</p>
-<ul>
-<li>
-<p><a href="../org.eclipse.platform.doc.user/concepts/cprbview.htm">Problems view</a></p>
-</li>
-</ul>
+</ol>
+<p>Dali generates the dynamic entities, using the <code>VIRTUAL</code> access type, as shown in <a href="#CIHIDHAB">Example: Sample eclipselink-orm.xml File with Dynamic Entities</a>.</p>
+<div class="example"><a id="CIHIDHAB" name="CIHIDHAB"></a>
+<p class="titleinexample"><a id="sthref312" name="sthref312"></a>Sample eclipselink-orm.xml File with Dynamic Entities</p>
+<pre xml:space="preserve" class="oac_no_warn">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;entity-mappings version="2.4" xmlns="http://www.eclipse.org/eclipselink/xsds/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eclipse.org/eclipselink/xsds/persistence/orm http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_2_4.xsd"&gt;
+    &lt;entity class="quickstart.demo.model.Inventory" <span class="bold">access="VIRTUAL"</span>&gt;
+        &lt;attributes&gt;
+            &lt;id name="itemSku" attribute-type="long"&gt;
+
+            &lt;/id&gt;
+        &lt;/attributes&gt;
+    &lt;/entity&gt;
+    &lt;entity ..."&gt;
+    &lt;/entity&gt;
+&lt;/entity-mappings&gt;
+</pre></div>
+<!-- class="example" --></div>
+<!-- class="sect1" -->
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
@@ -77,6 +91,6 @@
 </tr>
 </table>
 </div>
-<!-- class="footer" --></div>
+<!-- class="footer" -->
 </body>
 </html>

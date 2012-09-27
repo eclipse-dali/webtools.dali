@@ -5,35 +5,289 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Source</title>
+<title>Logging</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-19T13:28:0Z" />
+<meta name="date" content="2012-09-27T9:43:54Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Source" />
+<meta name="doctitle" content="Logging" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
-<p><a id="CIAHCJAH" name="CIAHCJAH"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-27</p>
+<p><a id="CIABGHHI" name="CIABGHHI"></a><a id="ref_persistence_logging" name="ref_persistence_logging"></a></p>
 <div class="sect3"><!-- infolevel="all" infotype="General" -->
-<h1><a id="sthref611" name="sthref611"></a>Source</h1>
-<p>Using this page, you can manually edit the <code>persistence.xml</code> file.</p>
-<p>See <a href="task_manage_persistence.htm#CIHDAJID">"Managing the persistence.xml file"</a> for additional information.</p>
-<a id="sthref612" name="sthref612"></a>
-<p class="subhead2">Related tasks</p>
+<h1><a id="sthref623" name="sthref623"></a>Logging</h1>
+<p>This table lists the properties of the Logging page of the <a href="ref_persistence_xmll_editor.htm#CIACCHID">persistence.xml Editor</a>.</p>
+<div align="center">
+<div class="inftblnote"><br />
+<table class="Note oac_no_warn" summary="" cellpadding="3" cellspacing="0">
+<tbody>
+<tr>
+<td align="left">
+<p class="notep1">Note:</p>
+<p>This page is not available for projects using the <span class="bold">Generic</span> platform.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<br /></div>
+<!-- class="inftblnote" --></div>
+<div class="inftblhruleinformal">
+<table class="HRuleInformal" summary="This table lists the properties of the Logging page of the persistence.xml Editor." dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
+<col width="24%" />
+<col width="*" />
+<col width="24%" />
+<thead>
+<tr align="left" valign="top">
+<th align="left" valign="bottom" id="r1c1-t59">Property</th>
+<th align="left" valign="bottom" id="r1c2-t59">Description</th>
+<th align="left" valign="bottom" id="r1c3-t59">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr align="left" valign="top">
+<td align="left" id="r2c1-t59" headers="r1c1-t59">
+<p>Logging Level</p>
+</td>
+<td align="left" headers="r2c1-t59 r1c2-t59">
+<p>Specifies the amount and detail of log output by selecting the log level (in ascending order of information):</p>
+<p>The following are the valid values for the <code>java.util.logging.Level</code>:</p>
 <ul>
 <li>
-<p><a href="task_manage_persistence.htm#CIHDAJID">Managing the persistence.xml file</a></p>
+<p><span class="bold">OFF</span>&ndash;disables logging</p>
+</li>
+<li>
+<p><span class="bold">SEVERE</span>&ndash;logs exceptions indicating TopLink cannot continue, as well as any exceptions generated during login. This includes a stack trace.</p>
+</li>
+<li>
+<p><span class="bold">WARNING</span>&ndash;logs exceptions that do not force TopLink to stop, including all exceptions not logged with severe level. This does not include a stack trace.</p>
+</li>
+<li>
+<p><span class="bold">INFO</span>&ndash;logs the login/logout per sever session, including the user name. After acquiring the session, detailed information is logged.</p>
+</li>
+<li>
+<p><span class="bold">CONFIG</span>&ndash;logs only login, JDBC connection, and database information.</p>
+</li>
+<li>
+<p><span class="bold">FINE</span>&ndash;logs SQL.</p>
+</li>
+<li>
+<p><span class="bold">FINER</span>&ndash;similar to warning. Includes stack trace.</p>
+</li>
+<li>
+<p><span class="bold">FINEST</span>&ndash;includes additional low level information.</p>
+</li>
+</ul>
+<p><span class="bold">Example</span>: <code>persistence.xml</code> file</p>
+<pre xml:space="preserve" class="oac_no_warn">
+&lt;property name="eclipselink.logging.level" value="INFO"/&gt;
+</pre></td>
+<td align="left" headers="r2c1-t59 r1c3-t59">
+<p>Info</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r3c1-t59" headers="r1c1-t59">
+<p>Timestamp<a id="sthref624" name="sthref624"></a></p>
+</td>
+<td align="left" headers="r3c1-t59 r1c2-t59">
+<p>Control whether the timestamp is logged in each log entry.</p>
+<p>The following are the valid values:</p>
+<ul>
+<li>
+<p><span class="bold">True</span>&ndash;log a timestamp.</p>
+</li>
+<li>
+<p><span class="bold">False</span>&ndash;do not log a timestamp.</p>
+</li>
+</ul>
+<p><span class="bold">Example</span>: <code>persistence.xml</code> file</p>
+<pre xml:space="preserve" class="oac_no_warn">
+&lt;property name="eclipselink.logging.timestamp" value="false"/&gt;
+</pre></td>
+<td align="left" headers="r3c1-t59 r1c3-t59">
+<p>True</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r4c1-t59" headers="r1c1-t59">
+<p>Thread<a id="sthref625" name="sthref625"></a></p>
+</td>
+<td align="left" headers="r4c1-t59 r1c2-t59">
+<p>Control whether a thread identifier is logged in each log entry.</p>
+<p>The following are the valid values:</p>
+<ul>
+<li>
+<p><span class="bold">true</span>&ndash;log a thread identifier.</p>
+</li>
+<li>
+<p><span class="bold">false</span>&ndash;do not log a thread identifier.</p>
+</li>
+</ul>
+</td>
+<td align="left" headers="r4c1-t59 r1c3-t59">
+<p>True</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r5c1-t59" headers="r1c1-t59">
+<p>Session</p>
+</td>
+<td align="left" headers="r5c1-t59 r1c2-t59">
+<p>Control whether an EclipseLink session identifier is logged in each log entry.</p>
+<p>The following are the valid values:</p>
+<ul>
+<li>
+<p><span class="bold">true</span>&ndash;log a EclipseLink session identifier.</p>
+</li>
+<li>
+<p><span class="bold">false</span>&ndash;do not log a EclipseLink session identifier.</p>
+</li>
+</ul>
+<p><span class="bold">Example</span>: <code>persistence.xml</code> file</p>
+<pre xml:space="preserve" class="oac_no_warn">
+&lt;property name="eclipselink.logging.session" value="false"/&gt;
+</pre></td>
+<td align="left" headers="r5c1-t59 r1c3-t59">
+<p>true</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r6c1-t59" headers="r1c1-t59">
+<p>Exceptions</p>
+</td>
+<td align="left" headers="r6c1-t59 r1c2-t59">
+<p>Control whether the exceptions thrown from within the EclipseLink code are logged prior to returning the exception to the calling application. Ensures that all exceptions are logged and not masked by the application code.</p>
+<p>The following are the valid values:</p>
+<ul>
+<li>
+<p><span class="bold">true</span>&ndash;log all exceptions.</p>
+</li>
+<li>
+<p><span class="bold">false</span>&ndash;do not log exceptions.</p>
+</li>
+</ul>
+<p><span class="bold">Example</span>: <code>persistence.xml</code> file</p>
+<pre xml:space="preserve" class="oac_no_warn">
+&lt;property name="eclipselink.logging.exceptions" value="true"/&gt;
+</pre></td>
+<td align="left" headers="r6c1-t59 r1c3-t59">
+<p>false</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r7c1-t59" headers="r1c1-t59">
+<p>Log file</p>
+</td>
+<td align="left" headers="r7c1-t59 r1c2-t59">
+<p>Specify a file location for the log output (instead of the standard out).</p>
+<p><span class="bold">Example</span>: <code>persistence.xml</code> file</p>
+<pre xml:space="preserve" class="oac_no_warn">
+&lt;property name="eclipselink.logging.file" value="C:\myout\" /&gt;
+</pre></td>
+<td align="left" headers="r7c1-t59 r1c3-t59">
+<p>stdout</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r8c1-t59" headers="r1c1-t59">
+<p>Logger</p>
+</td>
+<td align="left" headers="r8c1-t59 r1c2-t59">
+<p>Select the type of logger to use:</p>
+<p>The following are the valid values:</p>
+<ul>
+<li>
+<p><span class="bold">DefaultLogger</span>&ndash;the EclipseLink native logger <code>eclipselink.logging.DefaultSessionLog</code>.</p>
+</li>
+<li>
+<p><span class="bold">JavaLogger</span>&ndash;the <code>java.util.logging</code> logger <code>eclipselink.logging.JavaLog</code>.</p>
+</li>
+<li>
+<p><span class="bold">ServerLogger</span>&ndash;the <code>java.util.logging</code> logger <code>eclipselink.platform.server.ServerLog</code>. Integrates with the application server's logging as define in the <code>eclipselink.platform.server.ServerPlatform.</code></p>
+</li>
+<li>
+<p>Fully qualified class name of a custom logger. The custom logger must implement the <code>eclipselink.logging.SessionLog</code> interface.</p>
+</li>
+</ul>
+<p><span class="bold">Example</span>: <code>persistence.xml</code> file</p>
+<pre xml:space="preserve" class="oac_no_warn">
+&lt;property name="eclipselink.logging.logger" value="acme.loggers.MyCustomLogger" /&gt;
+</pre></td>
+<td align="left" headers="r8c1-t59 r1c3-t59">
+<p>DefaultLogger</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r9c1-t59" headers="r1c1-t59">
+<p>Logging Categories</p>
+</td>
+<td align="left" headers="r9c1-t59 r1c2-t59">
+<p>You can also specify the logging level for the following specific categories:</p>
+<ul>
+<li>
+<p>SQL</p>
+</li>
+<li>
+<p>Connection</p>
+</li>
+<li>
+<p>Event</p>
+</li>
+<li>
+<p>Query</p>
+</li>
+<li>
+<p>Cache</p>
+</li>
+<li>
+<p>Propagation</p>
+</li>
+<li>
+<p>EJB</p>
+</li>
+<li>
+<p>DMS</p>
+</li>
+<li>
+<p>EJB or metatdata</p>
+</li>
+<li>
+<p>JPA metadata</p>
+</li>
+<li>
+<p>Weaving</p>
+</li>
+<li>
+<p>Properties</p>
+</li>
+<li>
+<p>Server</p>
+</li>
+</ul>
+</td>
+<td align="left" headers="r9c1-t59 r1c3-t59">
+<p>Info</p>
+</td>
+</tr>
+</tbody>
+</table>
+<br /></div>
+<!-- class="inftblhruleinformal" -->
+<a id="sthref626" name="sthref626"></a>
+<p class="subhead2">Related references</p>
+<ul>
+<li>
+<p><span class="italic">Java Persistence API (JPA) Extensions Reference for EclipseLink</span><br />
+<code><a href="http://www.eclipse.org/eclipselink/documentation/2.4/jpa/extensions/toc.htm">http://www.eclipse.org/eclipselink/documentation/2.4/jpa/extensions/toc.htm</a></code></p>
 </li>
 </ul>
 </div>
 <!-- class="sect3" -->
-<!-- class="sect2" -->
-<!-- class="sect1" -->
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">

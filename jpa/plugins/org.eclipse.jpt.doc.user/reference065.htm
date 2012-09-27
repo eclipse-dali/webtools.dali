@@ -5,72 +5,102 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Project Properties page &ndash; Schemas</title>
+<title>Project Properties page &ndash; EclipseLink</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-19T13:28:0Z" />
+<meta name="date" content="2012-09-27T9:43:54Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Project Properties page &ndash; Schemas" />
+<meta name="doctitle" content="Project Properties page &ndash; EclipseLink" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
-<p><a id="CACJGBFJ" name="CACJGBFJ"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-27</p>
+<p><a id="CACFJJGG" name="CACFJJGG"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
-<h1>Project Properties page &ndash; Schemas</h1>
-<p><a id="sthref647" name="sthref647"></a><a id="sthref648" name="sthref648"></a><a id="sthref649" name="sthref649"></a>Use the <span class="gui-object-title">Schemas</span> options on the <span class="gui-object-title">Properties</span> page to configure the JAXB schemas to use for validation and content assistance.</p>
-<p>Click Add to</p>
-<p>This table lists the properties available in the <span class="gui-object-title">Schemas properties page</span>.</p>
+<h1>Project Properties page &ndash; EclipseLink <a id="sthref656" name="sthref656"></a><a id="sthref657" name="sthref657"></a></h1>
+<p>Use the <span class="gui-object-title">EclipseLink</span> options on the <span class="gui-object-title">Properties</span> page to select the EclipseLink-specific options to use with the project.</p>
+<p>This table lists the properties available in the <span class="gui-object-title">EclipseLink page</span>.</p>
 <div class="inftblinformal">
-<table class="Informal" title="Options on the Java Persistence Preferences page &gt; JPA Options" summary="Options on the Java Persistence Preferences page &gt; JPA Options" dir="ltr" border="1" width="100%" frame="hsides" rules="groups" cellpadding="3" cellspacing="0">
+<table class="Informal" title="Options on the Project Properties page &gt; EclipseLink" summary="Options on the Project Properties page &gt; EclipseLink" dir="ltr" border="1" width="100%" frame="hsides" rules="groups" cellpadding="3" cellspacing="0">
 <col width="32%" />
 <col width="*" />
 <thead>
 <tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t71">Property</th>
-<th align="left" valign="bottom" id="r1c2-t71">Description</th>
+<th align="left" valign="bottom" id="r1c1-t68">Property</th>
+<th align="left" valign="bottom" id="r1c2-t68">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t71" headers="r1c1-t71">
-<p>Namespace</p>
+<td align="left" id="r2c1-t68" headers="r1c1-t68">
+<p><span class="bold">Static weaving</span></p>
 </td>
-<td align="left" headers="r2c1-t71 r1c2-t71"><br /></td>
+<td align="left" headers="r2c1-t68 r1c2-t68"><br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r3c1-t71" headers="r1c1-t71">
-<p>Location</p>
+<td align="left" id="r3c1-t68" headers="r1c1-t68">
+<p>Weave classes on build</p>
 </td>
-<td align="left" headers="r3c1-t71 r1c2-t71"><br /></td>
+<td align="left" headers="r3c1-t68 r1c2-t68">
+<p>If enabled, Dali will weave all applicable class files at build time so that you can deliver pre-woven class files.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r4c1-t68" headers="r1c1-t68">
+<p>Source classes</p>
+</td>
+<td align="left" headers="r4c1-t68 r1c2-t68">
+<p>Specifies the location of the Java source files to weave: either a directory or a JAR file.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r5c1-t68" headers="r1c1-t68">
+<p>Target classes</p>
+</td>
+<td align="left" headers="r5c1-t68 r1c2-t68">
+<p>Specifies the output location: either a directory or a JAR file.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r6c1-t68" headers="r1c1-t68">
+<p>Log level</p>
+</td>
+<td align="left" headers="r6c1-t68 r1c2-t68">
+<p>Specifies the amount and detail of log output. See <a href="reference057.htm#CIABGHHI">"Logging"</a> for information on the different logging levels.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r7c1-t68" headers="r1c1-t68">
+<p>Persistence XML root</p>
+</td>
+<td align="left" headers="r7c1-t68 r1c2-t68">
+<p>Specifies the location of the persistence.xml file if it is not in the same location as the source.</p>
+</td>
 </tr>
 </tbody>
 </table>
 <br /></div>
 <!-- class="inftblinformal" -->
-<a id="sthref650" name="sthref650"></a>
-<p class="subhead2">Related reference</p>
+<a id="sthref658" name="sthref658"></a>
+<p class="subhead2">Related References</p>
 <ul>
 <li>
-<p><a href="reference074.htm#CACBGDHI">Add Schema Location dialog</a></p>
-</li>
-<li>
-<p><a href="reference075.htm#CACCEGGC">Select Schema Location dialog</a></p>
+<p><span class="italic">Java Persistence API (JPA) Extensions Reference for EclipseLink</span>&nbsp;<br />
+<code><a href="http://www.eclipse.org/eclipselink/documentation/">http://www.eclipse.org/eclipselink/documentation/</a></code></p>
 </li>
 </ul>
-<a id="sthref651" name="sthref651"></a>
+<a id="sthref659" name="sthref659"></a>
 <p class="subhead2">Related tasks</p>
 <ul>
 <li>
-<p><a href="tasks001.htm#CIHIBIJJ">Creating a new JAXB project</a></p>
+<p><a href="tasks029.htm#BABDBCBI">Modifying persistent project properties</a></p>
 </li>
 </ul>
 </div>
 <!-- class="sect2" -->
-<!-- class="sect1" -->
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">

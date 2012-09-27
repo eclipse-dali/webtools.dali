@@ -5,34 +5,103 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Converters</title>
+<title>Entity Mappings</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-19T13:28:0Z" />
+<meta name="date" content="2012-09-27T9:43:53Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Converters" />
+<meta name="doctitle" content="Entity Mappings" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
-<p><a id="CIADGCID" name="CIADGCID"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-27</p>
+<p><a id="CACCACGH" name="CACCACGH"></a></p>
 <div class="sect3"><!-- infolevel="all" infotype="General" -->
-<h1>Converters</h1>
-<p><a id="sthref579" name="sthref579"></a>The Converters information in the JPA Details view applies only when using EclipseLink.</p>
-<p>Click <span class="bold">Add</span> to create a new converter, using the <a href="ref_add_converter.htm#CIAGCGIJ">Add Converter dialog</a>.</p>
-<a id="sthref580" name="sthref580"></a>
+<h1>Entity Mappings</h1>
+<p>This table lists the Entity Mappings fields available in the <span class="gui-object-title">JPA Details</span> view for each entity type.</p>
+<div class="inftblhruleinformal">
+<table class="HRuleInformal" title="This table describes the options on the Persistence Properties view, General tab." summary="This table describes the options on the Persistence Properties view, General tab." dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
+<col width="21%" />
+<col width="*" />
+<col width="22%" />
+<thead>
+<tr align="left" valign="top">
+<th align="left" valign="bottom" id="r1c1-t48">Property</th>
+<th align="left" valign="bottom" id="r1c2-t48">Description</th>
+<th align="left" valign="bottom" id="r1c3-t48">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr align="left" valign="top">
+<td align="left" id="r2c1-t48" headers="r1c1-t48">
+<p>Package</p>
+</td>
+<td align="left" headers="r2c1-t48 r1c2-t48">
+<p>The Java package that contains the persistent entities. Click <span class="bold">Browse</span> and select the package</p>
+</td>
+<td align="left" headers="r2c1-t48 r1c3-t48"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r3c1-t48" headers="r1c1-t48">
+<p>Schema</p>
+</td>
+<td align="left" headers="r3c1-t48 r1c2-t48">
+<p>The database schema that contains the <span class="bold">Table</span>.</p>
+<p>This field corresponds to the <code>&lt;schema&gt;</code> element in the <code>orm.xml</code> file.</p>
+</td>
+<td align="left" headers="r3c1-t48 r1c3-t48"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r4c1-t48" headers="r1c1-t48">
+<p>Catalog</p>
+</td>
+<td align="left" headers="r4c1-t48 r1c2-t48">
+<p>The database catalog that contains the <span class="bold">Table</span>.</p>
+<p>This field corresponds to the <code>&lt;catalog&gt;</code> element in the <code>orm.xml</code> file.</p>
+</td>
+<td align="left" headers="r4c1-t48 r1c3-t48"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r5c1-t48" headers="r1c1-t48">
+<p>Access</p>
+</td>
+<td align="left" headers="r5c1-t48 r1c2-t48">
+<p>Specify the default access method for the variables in the project:</p>
+<ul>
+<li>
+<p>Property</p>
+</li>
+<li>
+<p>Field</p>
+</li>
+</ul>
+<p>This field corresponds to the <code>&lt;access&gt;</code> element in the <code>orm.xml</code> file.</p>
+</td>
+<td align="left" headers="r5c1-t48 r1c3-t48"><br /></td>
+</tr>
+</tbody>
+</table>
+<br /></div>
+<!-- class="inftblhruleinformal" -->
+<a id="sthref584" name="sthref584"></a>
+<p class="subhead2">Related tasks</p>
+<ul>
+<li>
+<p><a href="task_add_persistence.htm#BABHICAI">Adding persistence to a class</a></p>
+</li>
+</ul>
+<a id="sthref585" name="sthref585"></a>
 <p class="subhead2">Related reference</p>
 <ul>
 <li>
-<p><a href="ref_details_orm.htm#CACGDGHC">JPA Details view (for orm.xml)</a></p>
+<p><a href="ref_persistence_prop_view.htm#BABFAEBB">JPA Details view (for entities)</a></p>
 </li>
 </ul>
 </div>
 <!-- class="sect3" -->
-<!-- class="sect2" -->
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">

@@ -5,23 +5,199 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Schema Generation</title>
+<title>Customization</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-19T13:28:0Z" />
+<meta name="date" content="2012-09-27T9:43:53Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Schema Generation" />
+<meta name="doctitle" content="Customization" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
+<meta name="topic-id" content="ref_persistence_customization" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
-<p><a id="CIACCFCB" name="CIACCFCB"></a><a id="ref_persistence_schema_generation" name="ref_persistence_schema_generation"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-27</p>
+<p><a id="CIAJAFEG" name="CIAJAFEG"></a><a id="ref_persistence_customization" name="ref_persistence_customization"></a></p>
 <div class="sect3"><!-- infolevel="all" infotype="General" -->
-<h1><a id="sthref605" name="sthref605"></a>Schema Generation</h1>
-<p>This table lists the properties of the Schema Generation page of the <a href="ref_persistence_xmll_editor.htm#CIACCHID">persistence.xml Editor</a>.</p>
+<h1>Customization</h1>
+<p><a id="sthref618" name="sthref618"></a>The following table lists the properties available in the Customization page of the <a href="ref_persistence_xmll_editor.htm#CIACCHID">persistence.xml Editor</a>.</p>
+<div class="inftblhruleinformal">
+<table class="HRuleInformal" summary="The following table lists the properties available in the Customization page of the persistence.xml Editor." dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
+<col width="24%" />
+<col width="*" />
+<col width="24%" />
+<thead>
+<tr align="left" valign="top">
+<th align="left" valign="bottom" id="r1c1-t54">Property</th>
+<th align="left" valign="bottom" id="r1c2-t54">Description</th>
+<th align="left" valign="bottom" id="r1c3-t54">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr align="left" valign="top">
+<td align="left" id="r2c1-t54" headers="r1c1-t54">
+<p><span class="bold">Weaving</span></p>
+</td>
+<td align="left" headers="r2c1-t54 r1c2-t54">
+<p>Specifies if weaving of the entity classes is performed. The EclipseLink JPA persistence provider uses weaving to enhance JPA entities for such properties as lazy loading, change tracking, fetch groups, and internal optimizations. Select from the following options:</p>
+<ul>
+<li>
+<p><span class="bold">No Weaving</span></p>
+</li>
+<li>
+<p><span class="bold">Weave Dynamically</span></p>
+</li>
+<li>
+<p><span class="bold">Weave Statically</span> -- Use this option if you plan to execute your application outside of a Java EE 5 container in an environment that does not permit the use of <code>-javaagent:eclipselink.jar</code> on the JVM command line. This assumes that classes have already been statically woven. Run the static weaver on the classes before deploying them.</p>
+</li>
+</ul>
+</td>
+<td align="left" headers="r2c1-t54 r1c3-t54">
+<p>Weave Dynamically</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r3c1-t54" headers="r1c1-t54">
+<p>Lazy</p>
+</td>
+<td align="left" headers="r3c1-t54 r1c2-t54">
+<p>Select this option to enable lazy weaving.</p>
+</td>
+<td align="left" headers="r3c1-t54 r1c3-t54">
+<p>True</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r4c1-t54" headers="r1c1-t54">
+<p>Fetch Groups</p>
+</td>
+<td align="left" headers="r4c1-t54 r1c2-t54">
+<p>Select this option to enable fetch groups through weaving. Set this option to false if:</p>
+<ul>
+<li>
+<p>There is no weaving.</p>
+</li>
+<li>
+<p>Classes should not be changed during weaving (for example, when debugging).</p>
+</li>
+</ul>
+<p>Set this property to false for platforms where it is not supported.</p>
+</td>
+<td align="left" headers="r4c1-t54 r1c3-t54">
+<p>True</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r5c1-t54" headers="r1c1-t54">
+<p>Internal</p>
+</td>
+<td align="left" headers="r5c1-t54 r1c2-t54">
+<p>Specify if Dali uses internal optimizations through weaving.</p>
+<p>If enabled, enables lazy one-to-one and many-to-one mappings through weaving.</p>
+</td>
+<td align="left" headers="r5c1-t54 r1c3-t54">
+<p>True</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r6c1-t54" headers="r1c1-t54">
+<p>Eager</p>
+</td>
+<td align="left" headers="r6c1-t54 r1c2-t54">
+<p>Specify if Dali uses indirection on eager relationships.</p>
+</td>
+<td align="left" headers="r6c1-t54 r1c3-t54">
+<p>False</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r7c1-t54" headers="r1c1-t54">
+<p>Change&nbsp;Tracking</p>
+</td>
+<td align="left" headers="r7c1-t54 r1c2-t54">
+<p>Select this option to use weaving to detect which fields or properties of the object change.</p>
+</td>
+<td align="left" headers="r7c1-t54 r1c3-t54">
+<p>True</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r8c1-t54" headers="r1c1-t54">
+<p><span class="bold">Validation only</span></p>
+</td>
+<td align="left" headers="r8c1-t54 r1c2-t54">
+<p>Specify if Dali should validate deployments by initializing descriptors but not connecting to the data source.</p>
+</td>
+<td align="left" headers="r8c1-t54 r1c3-t54">
+<p>True</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r9c1-t54" headers="r1c1-t54">
+<p><span class="bold">Mapping files schema validation</span></p>
+</td>
+<td align="left" headers="r9c1-t54 r1c2-t54"><br /></td>
+<td align="left" headers="r9c1-t54 r1c3-t54">
+<p>False</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r10c1-t54" headers="r1c1-t54">
+<p><span class="bold">Throw&nbsp;exceptions</span></p>
+</td>
+<td align="left" headers="r10c1-t54 r1c2-t54">
+<p>Select this option to set EclipseLink to throw an exception or log a warning when it encounters a problem with any of the files listed in a <span class="bold">persistence.xml</span> file <code>&lt;mapping-file&gt;</code> element.</p>
+</td>
+<td align="left" headers="r10c1-t54 r1c3-t54">
+<p>True</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r11c1-t54" headers="r1c1-t54">
+<p>Exception handler</p>
+</td>
+<td align="left" headers="r11c1-t54 r1c2-t54">
+<p>Select (or create) a Java class to handle exceptions.</p>
+</td>
+<td align="left" headers="r11c1-t54 r1c3-t54"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r12c1-t54" headers="r1c1-t54">
+<p><span class="bold">Session Customizer</span></p>
+</td>
+<td align="left" headers="r12c1-t54 r1c2-t54">
+<p>Select a session customizer class: a Java class that implements the <code>eclipselink.tools.sessionconfiguration.SessionCustomizer</code> interface and provides a default (zero-argument) constructor. Use this class' <code>customize</code> method, which takes an <code>eclipselink.sessions.Session</code>, to programmatically access advanced EclipseLink session API.</p>
+</td>
+<td align="left" headers="r12c1-t54 r1c3-t54"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r13c1-t54" headers="r1c1-t54">
+<p>Profiler</p>
+</td>
+<td align="left" headers="r13c1-t54 r1c2-t54">
+<p>Specify which performance profiler to use in order to capture runtime statistics.</p>
+<ul>
+<li>
+<p>No Profiler &ndash; Do not use a performance profiler.</p>
+</li>
+<li>
+<p>Performance Profiler &ndash; Use EclipseLink performance profiler (<code>org.eclipse.persistence.tools.profiler.PerformanceProfiler class</code>).</p>
+</li>
+<li>
+<p>Query Monitor &ndash; Monitor query executions and cache hits (<code>org.eclipse.persistence.tools.profiler.QueryMonitor class</code>).</p>
+</li>
+</ul>
+</td>
+<td align="left" headers="r13c1-t54 r1c3-t54">
+<p>NoProfiler</p>
+</td>
+</tr>
+</tbody>
+</table>
+<br /></div>
+<!-- class="inftblhruleinformal" -->
 <div align="center">
 <div class="inftblnote"><br />
 <table class="Note oac_no_warn" summary="" cellpadding="3" cellspacing="0">
@@ -36,97 +212,7 @@
 </table>
 <br /></div>
 <!-- class="inftblnote" --></div>
-<div class="inftblhruleinformal">
-<table class="HRuleInformal" summary="This table lists the properties of the Schema Generation page of the persistence.xml Editor." dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
-<col width="24%" />
-<col width="*" />
-<col width="24%" />
-<thead>
-<tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t63">Property</th>
-<th align="left" valign="bottom" id="r1c2-t63">Description</th>
-<th align="left" valign="bottom" id="r1c3-t63">Default</th>
-</tr>
-</thead>
-<tbody>
-<tr align="left" valign="top">
-<td align="left" id="r2c1-t63" headers="r1c1-t63">
-<p>DDL Generation Type</p>
-</td>
-<td align="left" headers="r2c1-t63 r1c2-t63">
-<p>Select the type of DDL generation:</p>
-<ul>
-<li>
-<p><span class="bold">None</span> -- Do not generate DDL; no schema is generated.</p>
-</li>
-<li>
-<p><span class="bold">Create Tables</span> -- Create DDL for non-existent tables; leave existing tables unchanged.</p>
-</li>
-<li>
-<p><span class="bold">Drop and Create Tables</span> -- Create DDL for all tables; drop all existing tables.</p>
-</li>
-</ul>
-</td>
-<td align="left" headers="r2c1-t63 r1c3-t63">
-<p>None</p>
-</td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r3c1-t63" headers="r1c1-t63">
-<p>Output Mode</p>
-</td>
-<td align="left" headers="r3c1-t63 r1c2-t63">
-<p>Select the DDL generation target:</p>
-<ul>
-<li>
-<p><span class="bold">Both</span> -- Generate SQL files and execute them on the database.</p>
-</li>
-<li>
-<p><span class="bold">Database</span> -- Execute SQL on the database only (do not generate SQL files).</p>
-</li>
-<li>
-<p><span class="bold">SQL Script</span> -- Generate SQL files only (do not execute them on the database).</p>
-</li>
-</ul>
-</td>
-<td align="left" headers="r3c1-t63 r1c3-t63"><br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r4c1-t63" headers="r1c1-t63">
-<p>DDL Generation Location</p>
-</td>
-<td align="left" headers="r4c1-t63 r1c2-t63">
-<p>Specify where EclipseLink writes DDL output. Specify a file specification to a directory in which you have write access. The file specification may be relative to your current working directory or absolute. If it does not end in a file separator, then EclipseLink appends one that is valid for your operating system.</p>
-</td>
-<td align="left" headers="r4c1-t63 r1c3-t63"><br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r5c1-t63" headers="r1c1-t63">
-<p>Create DDL File Name</p>
-</td>
-<td align="left" headers="r5c1-t63 r1c2-t63">
-<p>Specify the file name of the DDL file that EclipseLink generates that contains SQL statements for creating tables for JPA entities. Specify a file name valid for your operating system.</p>
-</td>
-<td align="left" headers="r5c1-t63 r1c3-t63">
-<p><code>createDDL.jdbc</code></p>
-</td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r6c1-t63" headers="r1c1-t63">
-<p>Drop DDL File Name</p>
-</td>
-<td align="left" headers="r6c1-t63 r1c2-t63">
-<p>Specify the file name of the DDL file that EclipseLink generates that contains SQL statements for dropping tables for JPA entities.</p>
-</td>
-<td align="left" headers="r6c1-t63 r1c3-t63">
-<p><code>dropDDL.jdbc</code></p>
-</td>
-</tr>
-</tbody>
-</table>
-<br /></div>
-<!-- class="inftblhruleinformal" -->
-<a id="sthref606" name="sthref606"></a>
+<a id="sthref619" name="sthref619"></a>
 <p class="subhead2">Related references</p>
 <ul>
 <li>

@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<title>Understanding Java Architecture for XML Binding</title>
+<meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
+<meta name="date" content="2012-09-27T9:43:48Z" />
+<meta name="robots" content="noarchive" />
+<meta name="doctitle" content="Understanding Java Architecture for XML Binding" />
+<meta name="relnum" content="Release 3.2" />
+<meta name="partnum" content="Release 3.2" />
+<link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
+<link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
+</head>
+<body>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-27</p>
+<div class="sect1"><!-- infolevel="all" infotype="General" --><a id="sthref33" name="sthref33"></a>
+<h1>Understanding Java Architecture for XML Binding</h1>
+<p><a id="sthref34" name="sthref34"></a>JAXB (Java Architecture for XML Binding &ndash; JSR 222) is the standard for XML Binding in Java. JAXB covers 100% of XML Schema concepts and EclipseLink provides a JAXB implementation with many extensions. See <code><a href="http://jcp.org/en/jsr/detail?id=222">http://jcp.org/en/jsr/detail?id=222</a></code> for complete information on the JAXB specification.</p>
+<p>Although XML is a common format for the exchange of data, for many applications <span class="italic">objects</span> are the preferred programmatic representation &ndash; not XML. In order to work at the object-level, the XML data needs to be converted to object form. The mismatch between XML and objects is known as <span class="italic">object-xml impedance mismatch</span>.</p>
+<p>JAXB allows you to interact with XML data by using domain-like objects. Unlike DOM objects, the JAXB content model provides insight into the XML document based on the XML schema. For example, if the XML schema defines XML documents that contain customer information, your content model will contain objects such as <span class="bold">Customer</span>, <span class="bold">Address</span>, and <span class="bold">PhoneNumber</span>. Each <span class="italic">type</span> in the XML schema will have a corresponding Java class.</p>
+<a id="sthref35" name="sthref35"></a>
+<p class="subhead2">Related tasks</p>
+<ul>
+<li>
+<p><a href="tasks001.htm#CIHIBIJJ">Creating a new JAXB project</a></p>
+</li>
+</ul>
+<a id="sthref36" name="sthref36"></a>
+<p class="subhead2">Related reference</p>
+<ul>
+<li>
+<p><a href="http://jcp.org/en/jsr/detail?id=222">JSR 222: Java Architecture for XML Binding (JAXB) 2.0</a></p>
+</li>
+</ul>
+</div>
+<!-- class="sect1" -->
+<!-- Start Footer -->
+<div class="footer">
+<table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
+<col width="86%" />
+<col width="*" />
+<tr>
+<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2011, 2012,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
+<a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Legal Notices</span></a></td>
+</tr>
+</table>
+</div>
+<!-- class="footer" -->
+</body>
+</html>

@@ -5,23 +5,22 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Joining Strategy</title>
+<title>Type information</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-19T13:27:59Z" />
+<meta name="date" content="2012-09-27T9:43:53Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Joining Strategy" />
+<meta name="doctitle" content="Type information" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
-<p><a id="CACIJEGI" name="CACIJEGI"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-27</p>
+<p><a id="CACIHAAF" name="CACIHAAF"></a></p>
 <div class="sect3"><!-- infolevel="all" infotype="General" -->
-<h1><a id="sthref545" name="sthref545"></a><a id="sthref546" name="sthref546"></a>Joining Strategy</h1>
-<p>Use this area to specify a mapped column for joining an entity association. By default, the mapping is assumed to have a single join.</p>
+<h1><a id="sthref556" name="sthref556"></a>Type information</h1>
 <div class="inftblhruleinformal">
 <table class="HRuleInformal" summary="JPA Details view, Type page" dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
 <col width="29%" />
@@ -29,101 +28,97 @@
 <col width="24%" />
 <thead>
 <tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t45">Property</th>
-<th align="left" valign="bottom" id="r1c2-t45">Description</th>
-<th align="left" valign="bottom" id="r1c3-t45">Available for Mapping Type</th>
+<th align="left" valign="bottom" id="r1c1-t42">Property</th>
+<th align="left" valign="bottom" id="r1c2-t42">Description</th>
+<th align="left" valign="bottom" id="r1c3-t42">Available for Mapping Type</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t45" headers="r1c1-t45">
-<p><span class="bold">Mapped by</span></p>
+<td align="left" id="r2c1-t42" headers="r1c1-t42">
+<p>Default</p>
 </td>
-<td align="left" headers="r2c1-t45 r1c2-t45">
-<p>The field in the database table that "owns" the relationship. This field is required only on the non-owning side of the relationship.</p>
-</td>
-<td align="left" headers="r2c1-t45 r1c3-t45">
-<p><a href="tasks016.htm#BABEIEGD">Many-to-many mapping</a>, <a href="tasks018.htm#BABHGEBD">One-to-many mapping</a>, and <a href="tasks019.htm#BABFHBCJ">One-to-one mapping</a></p>
+<td align="left" headers="r2c1-t42 r1c2-t42"><br /></td>
+<td align="left" headers="r2c1-t42 r1c3-t42">
+<p><a href="tasks012.htm#BABBABCE">Basic mapping</a>, <a href="tasks016.htm#BABGCBHG">ID mapping</a>, and <a href="tasks022.htm#BABHIBII">Version mapping</a></p>
 </td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r3c1-t45" headers="r1c1-t45">
-<p>Attribute</p>
+<td align="left" id="r3c1-t42" headers="r1c1-t42">
+<p><a id="sthref557" name="sthref557"></a>LOB</p>
 </td>
-<td align="left" headers="r3c1-t45 r1c2-t45"><br /></td>
-<td align="left" headers="r3c1-t45 r1c3-t45"><br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r4c1-t45" headers="r1c1-t45">
-<p><span class="bold">Primary key join columns</span></p>
+<td align="left" headers="r3c1-t42 r1c2-t42">
+<p>Specify if the field is mapped to <code>java.sql.Clob</code> or <code>java.sql.Blob</code>.</p>
+<p>This field corresponds to the <code>@Lob</code> annotation.</p>
 </td>
-<td align="left" headers="r4c1-t45 r1c2-t45"><br /></td>
-<td align="left" headers="r4c1-t45 r1c3-t45">
-<p><a href="tasks019.htm#BABFHBCJ">One-to-one mapping</a></p>
+<td align="left" headers="r3c1-t42 r1c3-t42">
+<p><a href="tasks012.htm#BABBABCE">Basic mapping</a></p>
 <br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r5c1-t45" headers="r1c1-t45">
-<p><span class="bold">Join columns</span></p>
+<td align="left" id="r4c1-t42" headers="r1c1-t42">
+<p><a id="sthref558" name="sthref558"></a><a id="sthref559" name="sthref559"></a><a id="sthref560" name="sthref560"></a>Temporal</p>
 </td>
-<td align="left" headers="r5c1-t45 r1c2-t45">
-<p><a id="sthref547" name="sthref547"></a><a id="sthref548" name="sthref548"></a>By default, the name is assumed to be the primary tables associated with the entities concatenated with an underscore.</p>
-<p>Select <span class="bold">Override Default</span>, then Add, Edit, or Remove the join columns.</p>
+<td align="left" headers="r4c1-t42 r1c2-t42">
+<p>Specifies if this field is one of the following:</p>
+<ul>
+<li>
+<p>Date &ndash; <code>java.sql.Date</code></p>
+</li>
+<li>
+<p>Time &ndash; <code>java.sql.Time</code></p>
+</li>
+<li>
+<p>Timestamp &ndash; <code>java.sql.Timestamp</code></p>
+</li>
+</ul>
+<p>This field corresponds to the <code>@Temporal</code> annotation.</p>
 </td>
-<td align="left" headers="r5c1-t45 r1c3-t45">
-<p><a href="tasks017.htm#BABHFAFJ">Many-to-one mapping</a>, <a href="tasks018.htm#BABHGEBD">One-to-many mapping</a>, and <a href="tasks019.htm#BABFHBCJ">One-to-one mapping</a></p>
+<td align="left" headers="r4c1-t42 r1c3-t42">
+<p><a href="tasks012.htm#BABBABCE">Basic mapping</a>, <a href="tasks016.htm#BABGCBHG">ID mapping</a>, and <a href="tasks022.htm#BABHIBII">Version mapping</a></p>
 </td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r6c1-t45" headers="r1c1-t45">
-<p><span class="bold">Join table</span></p>
+<td align="left" id="r5c1-t42" headers="r1c1-t42">
+<p><a id="sthref561" name="sthref561"></a><a id="sthref562" name="sthref562"></a>Enumerated</p>
 </td>
-<td align="left" headers="r6c1-t45 r1c2-t45">
-<p>Name of the join table that contains the foreign key column.You must specify the join table on the owning side.</p>
-<p>By default, the name is assumed to be the primary tables associated with the entities concatenated with an underscore.</p>
+<td align="left" headers="r5c1-t42 r1c2-t42">
+<p>Specify how to persist enumerated constraints if the <code>String</code> value suits your application requirements or to match an existing database schema.</p>
+<ul>
+<li>
+<p><code>ordinal</code></p>
+</li>
+<li>
+<p><code>String</code></p>
+</li>
+</ul>
+<p>This field corresponds to the <code>@Enumerated</code> annotation.</p>
 </td>
-<td align="left" headers="r6c1-t45 r1c3-t45">
-<p><a href="tasks016.htm#BABEIEGD">Many-to-many mapping</a>, <a href="tasks017.htm#BABHFAFJ">Many-to-one mapping</a>, <a href="tasks018.htm#BABHGEBD">One-to-many mapping</a>, and <a href="tasks019.htm#BABFHBCJ">One-to-one mapping</a></p>
-</td>
+<td align="left" headers="r5c1-t42 r1c3-t42">
+<p><a href="tasks012.htm#BABBABCE">Basic mapping</a></p>
+<br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r7c1-t45" headers="r1c1-t45">
-<p>Name</p>
+<td align="left" id="r6c1-t42" headers="r1c1-t42">
+<p>Converted</p>
 </td>
-<td align="left" headers="r7c1-t45 r1c2-t45"><br /></td>
-<td align="left" headers="r7c1-t45 r1c3-t45"><br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r8c1-t45" headers="r1c1-t45">
-<p>Schema</p>
+<td align="left" headers="r6c1-t42 r1c2-t42">
+<p>Converter name:</p>
+<ul>
+<li>
+<p>None (default) &ndash;</p>
+</li>
+<li>
+<p>class-instance &ndash;</p>
+</li>
+<li>
+<p>serialized &ndash;</p>
+</li>
+</ul>
 </td>
-<td align="left" headers="r8c1-t45 r1c2-t45"><br /></td>
-<td align="left" headers="r8c1-t45 r1c3-t45"><br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r9c1-t45" headers="r1c1-t45">
-<p>Catalog</p>
+<td align="left" headers="r6c1-t42 r1c3-t42">
+<p><a href="tasks012.htm#BABBABCE">Basic mapping</a>, <a href="tasks016.htm#BABGCBHG">ID mapping</a>, and <a href="tasks022.htm#BABHIBII">Version mapping</a></p>
 </td>
-<td align="left" headers="r9c1-t45 r1c2-t45"><br /></td>
-<td align="left" headers="r9c1-t45 r1c3-t45"><br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r10c1-t45" headers="r1c1-t45">
-<p>Join columns</p>
-</td>
-<td align="left" headers="r10c1-t45 r1c2-t45">
-<p>Mapped by</p>
-</td>
-<td align="left" headers="r10c1-t45 r1c3-t45"><br /></td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r11c1-t45" headers="r1c1-t45">
-<p>Inverse join columns</p>
-</td>
-<td align="left" headers="r11c1-t45 r1c2-t45">
-<p>Mapped by</p>
-</td>
-<td align="left" headers="r11c1-t45 r1c3-t45"><br /></td>
 </tr>
 </tbody>
 </table>

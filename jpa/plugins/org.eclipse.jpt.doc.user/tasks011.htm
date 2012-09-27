@@ -5,115 +5,66 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Basic mapping</title>
+<title>Creating queries</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-19T13:27:57Z" />
+<meta name="date" content="2012-09-27T9:43:50Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Basic mapping" />
+<meta name="doctitle" content="Creating queries" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
-<p><a id="BABBABCE" name="BABBABCE"></a></p>
-<div class="sect2"><!-- infolevel="all" infotype="General" -->
-<h1>Basic mapping</h1>
-<p><a id="sthref183" name="sthref183"></a><a id="sthref184" name="sthref184"></a><a id="sthref185" name="sthref185"></a><a id="sthref186" name="sthref186"></a>Use a <span class="bold">Basic Mapping</span> to map an attribute directly to a database column. Basic mappings may be used only with the following attribute types:</p>
-<ul>
-<li>
-<p>Java primitive types and wrappers of the primitive types</p>
-</li>
-<li>
-<p><code>java.lang.String, java.math.BigInteger</code></p>
-</li>
-<li>
-<p><code>java.math.BigDecimal</code></p>
-</li>
-<li>
-<p><code>java.util.Date</code></p>
-</li>
-<li>
-<p><code>java.util.Calendar, java.sql.Date</code></p>
-</li>
-<li>
-<p><code>java.sql.Time</code></p>
-</li>
-<li>
-<p><code>java.sql.Timestamp</code></p>
-</li>
-<li>
-<p><code>byte[]</code></p>
-</li>
-<li>
-<p><code>Byte[]</code></p>
-</li>
-<li>
-<p><code>char[]</code></p>
-</li>
-<li>
-<p><code>Character[]</code></p>
-</li>
-<li>
-<p>enums</p>
-</li>
-<li>
-<p>any other type that implements <code>Serializable</code></p>
-</li>
-</ul>
-<p>To create a basic mapping:</p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-27</p>
+<p><a id="BABIGBGG" name="BABIGBGG"></a></p>
+<div class="sect1"><!-- infolevel="all" infotype="General" -->
+<h1>Creating queries</h1>
+<p><a id="sthref185" name="sthref185"></a><a id="sthref186" name="sthref186"></a>Named queries improve application performance because they are prepared once and they (and all of their associated supporting objects) can be efficiently reused thereafter, making them well suited for complex and frequently executed operations. Named queries use the JPA query language for portable execution on any underlying database; named native queries use the SQL language native to the underlying database.</p>
+<p>Use this procedure to add <code>@NamedQuery</code> and <code>@NamedNativeQuery</code> annotations to the entity.</p>
+<p>To create a named query:</p>
 <ol>
 <li>
-<p>In the <a href="ref_persistence_outline.htm#BABEGGFE">JPA Structure view</a>, right-click the field to map. Select <span class="bold">Map As &gt; Basic</span>. The <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a> displays the properties for the selected field.</p>
+<p>Select the entity in the Project Explorer.</p>
+</li>
+<li>
+<p>In the JPA Details view, expand the <a href="reference025.htm#CACBICGJ">Queries</a> area.</p>
 <div class="figure"><a id="sthref187" name="sthref187"></a>
-<p class="titleinfigure">JPA Details, Basic mapping</p>
-<img src="img/jpa_details_basic.png" alt="PA Details, Basic mapping" title="PA Details, Basic mapping" /><br /></div>
+<p class="titleinfigure">JPA Details, Queries Tab</p>
+<img src="img/jpa_details_query_1.png" alt="" title="" /><br /></div>
 <!-- class="figure" --></li>
 <li>
-<p>Complete each field in the <a href="reference029.htm#CACCGGCG">Basic Mapping</a> area.</p>
+<p>Click <span class="bold">Add</span> to add a new query. The <a href="reference076.htm#CACJIFEG">Add Query dialog</a> appears</p>
+<div class="figure"><a id="sthref188" name="sthref188"></a>
+<p class="titleinfigure">Add Query Dialog</p>
+<img src="img/add_query.png" alt="Add Query dialog" title="Add Query dialog" /><br /></div>
+<!-- class="figure" --></li>
+<li>
+<p>Enter the name of the query, select the query type (<span class="bold">Named Query</span> or <span class="bold">Named Native Query</span>), and click <span class="bold">OK</span>. The <a href="reference025.htm#CACBICGJ">Queries</a> area expands to show additional fields.</p>
+<div class="figure"><a id="sthref189" name="sthref189"></a>
+<p class="titleinfigure">JPA Details, Queries Tab</p>
+<img src="img/jpa_details_query_2.png" alt="" title="" /><br /></div>
+<!-- class="figure" --></li>
+<li>
+<p>Enter the query in the <span class="bold">Query</span> field.</p>
 </li>
 <li>
-<p>Complete the remaining areas in the <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a>.</p>
+<p>Complete the rest of the field on the <a href="reference025.htm#CACBICGJ">Queries</a> page.</p>
+</li>
+<li>
+<p><a id="sthref190" name="sthref190"></a><a id="sthref191" name="sthref191"></a><a id="sthref192" name="sthref192"></a><a id="sthref193" name="sthref193"></a>To add a Query hint, click <span class="bold">Add</span>. Enter the <span class="bold">Name</span> and <span class="bold">Value</span> of the hint.</p>
 </li>
 </ol>
-<p>Eclipse adds the following annotations to the field:</p>
-<pre xml:space="preserve" class="oac_no_warn">
-@Column(name="<span class="italic">&lt;COLUMN_NAME&gt;</span>", table="<span class="italic">&lt;COLUMN_TABLE&gt;</span>", 
-    insertable=<span class="italic">&lt;INSERTABLE&gt;</span>, updatable=<span class="italic">&lt;UPDATABLE&gt;</span>)
-@Basic(fetch=FetchType.<span class="italic">&lt;FETCH_TYPE&gt;</span>, optional = <span class="italic">&lt;OPTIONAL&gt;</span>)
-@Temporal(TemporalType.<span class="italic">&lt;TEMPORAL&gt;</span>)
-</pre>
-<a id="sthref188" name="sthref188"></a>
-<p class="subhead2">Related tasks</p>
+<a id="sthref194" name="sthref194"></a>
+<p class="subhead2">Related reference</p>
 <ul>
 <li>
-<p><a href="task_mapping.htm#BABDGBIJ">Mapping an entity</a></p>
-</li>
-</ul>
-<a id="sthref189" name="sthref189"></a>
-<p class="subhead2">Related references</p>
-<ul>
-<li>
-<p><a href="ref_persistence_outline.htm#BABEGGFE">JPA Structure view</a></p>
-</li>
-<li>
-<p><a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a></p>
-</li>
-</ul>
-<a id="sthref190" name="sthref190"></a>
-<p class="subhead2">Related concepts</p>
-<ul>
-<li>
-<p><a href="concept_mapping.htm#BABBDJFI">Understanding OR mappings</a></p>
-</li>
-<li>
-<p><a href="concepts001.htm#BABBGFJG">Understanding Java Persistence API</a></p>
+<p><a href="reference025.htm#CACBICGJ">Queries</a></p>
 </li>
 </ul>
 </div>
-<!-- class="sect2" -->
+<!-- class="sect1" -->
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">

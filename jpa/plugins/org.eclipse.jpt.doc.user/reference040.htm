@@ -5,22 +5,147 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Value</title>
+<title>One-to-Many Mapping</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-19T13:27:59Z" />
+<meta name="date" content="2012-09-27T9:43:53Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Value" />
+<meta name="doctitle" content="One-to-Many Mapping" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
-<p><a id="CACJBFEA" name="CACJBFEA"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-27</p>
+<p><a id="CACHGGHH" name="CACHGGHH"></a></p>
 <div class="sect3"><!-- infolevel="all" infotype="General" -->
-<h1>Value</h1>
+<h1><a id="sthref545" name="sthref545"></a><a id="sthref546" name="sthref546"></a><a id="sthref547" name="sthref547"></a>One-to-Many Mapping</h1>
+<div class="inftblhruleinformal">
+<table class="HRuleInformal" summary="JPA Details view, One-to-one page" dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
+<col width="29%" />
+<col width="*" />
+<col width="24%" />
+<thead>
+<tr align="left" valign="top">
+<th align="left" valign="bottom" id="r1c1-t39">Property</th>
+<th align="left" valign="bottom" id="r1c2-t39">Description</th>
+<th align="left" valign="bottom" id="r1c3-t39">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr align="left" valign="top">
+<td align="left" id="r2c1-t39" headers="r1c1-t39">
+<p>Target entity</p>
+</td>
+<td align="left" headers="r2c1-t39 r1c2-t39">
+<p>The persistent entity to which the attribute is mapped.</p>
+</td>
+<td align="left" headers="r2c1-t39 r1c3-t39"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r3c1-t39" headers="r1c1-t39">
+<p>Fetch</p>
+</td>
+<td align="left" headers="r3c1-t39 r1c2-t39">
+<p>Defines how data is loaded from the database:</p>
+<ul>
+<li>
+<p>Eager &ndash; Data is loaded in before it is actually needed.</p>
+</li>
+<li>
+<p>Lazy &ndash; Data is loaded only when required by the transaction.</p>
+</li>
+</ul>
+</td>
+<td align="left" headers="r3c1-t39 r1c3-t39">
+<p>Lazy</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r4c1-t39" headers="r1c1-t39">
+<p>Join fetch</p>
+</td>
+<td align="left" headers="r4c1-t39 r1c2-t39">
+<p>The type of fetch to use:</p>
+<ul>
+<li>
+<p>Inner &ndash; Provides the inner join fetching of the related object.</p>
+<p><span class="bold">Note</span>: Inner joining does not allow for null or empty values</p>
+</li>
+<li>
+<p>Outer &ndash; Provides the outer join fetching of the related object</p>
+<p><span class="bold">Note</span>: Outer joining allows for null or empty values.</p>
+</li>
+</ul>
+</td>
+<td align="left" headers="r4c1-t39 r1c3-t39"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r5c1-t39" headers="r1c1-t39">
+<p>Private owned</p>
+</td>
+<td align="left" headers="r5c1-t39 r1c2-t39">
+<p>Specify that a relationship is privately owned; target object is a dependent part of the source object and is not referenced by any other object and cannot exist on its own.</p>
+</td>
+<td align="left" headers="r5c1-t39 r1c3-t39"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r6c1-t39" headers="r1c1-t39">
+<p>Orphan removal</p>
+</td>
+<td align="left" headers="r6c1-t39 r1c2-t39"><br /></td>
+<td align="left" headers="r6c1-t39 r1c3-t39">
+<p>False</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r7c1-t39" headers="r1c1-t39">
+<p>Cascade</p>
+</td>
+<td align="left" headers="r7c1-t39 r1c2-t39">
+<p>Specify which operations are propagated throughout the entity.</p>
+<ul>
+<li>
+<p>All &ndash; All operations</p>
+</li>
+<li>
+<p>Persist</p>
+</li>
+<li>
+<p>Merge</p>
+</li>
+<li>
+<p>Move</p>
+</li>
+<li>
+<p>Remove</p>
+</li>
+<li>
+<p>Refresh</p>
+</li>
+</ul>
+</td>
+<td align="left" headers="r7c1-t39 r1c3-t39">
+<p>True</p>
+</td>
+</tr>
+</tbody>
+</table>
+<br /></div>
+<!-- class="inftblhruleinformal" -->
+<p>One-to-many mappings also include the following areas:</p>
+<ul>
+<li>
+<p><a href="reference047.htm#CACIJEGI">Joining Strategy</a></p>
+</li>
+<li>
+<p><a href="reference045.htm#CACJCHJB">Converters</a></p>
+</li>
+<li>
+<p><a href="reference046.htm#CACBIJFD">Ordering</a></p>
+</li>
+</ul>
 </div>
 <!-- class="sect3" -->
 <!-- Start Footer -->

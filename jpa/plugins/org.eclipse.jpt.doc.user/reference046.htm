@@ -5,119 +5,114 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Persistence Unit</title>
+<title>Ordering</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-19T13:28:0Z" />
+<meta name="date" content="2012-09-27T9:43:53Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Persistence Unit" />
+<meta name="doctitle" content="Ordering" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
-<p><a id="CACEAGBG" name="CACEAGBG"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-27</p>
+<p><a id="CACBIJFD" name="CACBIJFD"></a></p>
 <div class="sect3"><!-- infolevel="all" infotype="General" -->
-<h1><a id="sthref562" name="sthref562"></a><a id="sthref563" name="sthref563"></a>Persistence Unit</h1>
-<p>This table lists the Persistence Unit information fields available in the <span class="gui-object-title">JPA Details</span> view for each entity type. These fields are contained in the <code>&lt;persistence-unit-metadata&gt;</code> element in the <code>orm.xml</code> file.</p>
-<div class="inftblhruleinformal">
-<table class="HRuleInformal" title="This table describes the options on the Persistence Properties view, General tab." summary="This table describes the options on the Persistence Properties view, General tab." dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
-<col width="21%" />
+<h1>Ordering</h1>
+<p><a id="sthref566" name="sthref566"></a><a id="sthref567" name="sthref567"></a><a id="sthref568" name="sthref568"></a>Specify the default order for objects returned from a query. These options correspond to the <code>@OrderBy</code> annotation.</p>
+<div class="inftblhruleinformalwide">
+<table class="HRuleInformalWide" title="JPA Details view, Advanced page" summary="JPA Details view, Advanced page" dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
+<col width="16%" />
 <col width="*" />
-<col width="22%" />
+<col width="17%" />
+<col width="25%" />
 <thead>
 <tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t49">Property</th>
-<th align="left" valign="bottom" id="r1c2-t49">Description</th>
-<th align="left" valign="bottom" id="r1c3-t49">Default</th>
+<th align="left" valign="bottom" id="r1c1-t44">Property</th>
+<th align="left" valign="bottom" id="r1c2-t44">Description</th>
+<th align="left" valign="bottom" id="r1c3-t44">Default</th>
+<th align="left" valign="bottom" id="r1c4-t44">Available for Entity&nbsp;Type</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t49" headers="r1c1-t49">
-<p>XML Mapping Data Complete</p>
+<td align="left" id="r2c1-t44" headers="r1c1-t44">
+<p><span class="bold">None</span></p>
 </td>
-<td align="left" headers="r2c1-t49 r1c2-t49">
-<p>Specifies that the Java classes in this persistence unit are fully specified by their metadata. Any annotations will be ignored.</p>
-<p>This field corresponds to the <code>&lt;xml-mapping-metadata-complete&gt;</code> element in the <code>orm.xml</code> file.</p>
+<td align="left" headers="r2c1-t44 r1c2-t44"><br /></td>
+<td align="left" headers="r2c1-t44 r1c3-t44"><br /></td>
+<td align="left" headers="r2c1-t44 r1c4-t44">
+<p><a href="tasks013.htm#CIHHJEBJ">Element collection mapping</a>, <a href="tasks017.htm#BABEIEGD">Many-to-many mapping</a>, and <a href="tasks019.htm#BABHGEBD">One-to-many mapping</a></p>
 </td>
-<td align="left" headers="r2c1-t49 r1c3-t49"><br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r3c1-t49" headers="r1c1-t49">
-<p>Cascade Persist</p>
+<td align="left" id="r3c1-t44" headers="r1c1-t44">
+<p><span class="bold">Primary key</span></p>
 </td>
-<td align="left" headers="r3c1-t49 r1c2-t49">
-<p>Adds cascade-persist to the set of cascade options in entity relationships of the persistence unit.</p>
-<p>This field corresponds to the <code>&lt;cascade-persist&gt;</code> element in the <code>orm.xml</code> file.</p>
-</td>
-<td align="left" headers="r3c1-t49 r1c3-t49"><br /></td>
+<td align="left" headers="r3c1-t44 r1c2-t44"><br /></td>
+<td align="left" headers="r3c1-t44 r1c3-t44"><br /></td>
+<td align="left" headers="r3c1-t44 r1c4-t44"><br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r4c1-t49" headers="r1c1-t49">
-<p>Schema</p>
+<td align="left" id="r4c1-t44" headers="r1c1-t44">
+<p><span class="bold">Custom</span></p>
 </td>
-<td align="left" headers="r4c1-t49 r1c2-t49">
-<p>The database schema that contains the <span class="bold">Table</span>.</p>
-<p>This field corresponds to the <code>&lt;schema&gt;</code> element in the <code>orm.xml</code> file.</p>
-</td>
-<td align="left" headers="r4c1-t49 r1c3-t49"><br /></td>
+<td align="left" headers="r4c1-t44 r1c2-t44"><br /></td>
+<td align="left" headers="r4c1-t44 r1c3-t44"><br /></td>
+<td align="left" headers="r4c1-t44 r1c4-t44"><br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r5c1-t49" headers="r1c1-t49">
-<p>Catalog</p>
+<td align="left" id="r5c1-t44" headers="r1c1-t44">
+<p><span class="bold">Order column</span></p>
 </td>
-<td align="left" headers="r5c1-t49 r1c2-t49">
-<p>The database catalog that contains the <span class="bold">Table</span>.</p>
-<p>This field corresponds to the <code>&lt;catalog&gt;</code> element in the <code>orm.xml</code> file.</p>
-</td>
-<td align="left" headers="r5c1-t49 r1c3-t49"><br /></td>
+<td align="left" headers="r5c1-t44 r1c2-t44"><br /></td>
+<td align="left" headers="r5c1-t44 r1c3-t44"><br /></td>
+<td align="left" headers="r5c1-t44 r1c4-t44"><br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r6c1-t49" headers="r1c1-t49">
-<p>Access</p>
+<td align="left" id="r6c1-t44" headers="r1c1-t44">
+<p>Insertable</p>
 </td>
-<td align="left" headers="r6c1-t49 r1c2-t49">
-<p>Specify how the entity its access instance variables.</p>
-<ul>
-<li>
-<p>Property &ndash; Persistent state accessed through the property accessor methods. The property accessor methods must be <span class="bold">public</span> or <span class="bold">private</span>.</p>
-</li>
-<li>
-<p>Field &ndash; Instance variables are accessed directly. All non-transient instance variables are persistent.</p>
-</li>
-</ul>
+<td align="left" headers="r6c1-t44 r1c2-t44"><br /></td>
+<td align="left" headers="r6c1-t44 r1c3-t44">
+<p>True</p>
 </td>
-<td align="left" headers="r6c1-t49 r1c3-t49"><br /></td>
+<td align="left" headers="r6c1-t44 r1c4-t44"><br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r7c1-t49" headers="r1c1-t49">
-<p>Deliminated identifiers</p>
+<td align="left" id="r7c1-t44" headers="r1c1-t44">
+<p>Updatable</p>
 </td>
-<td align="left" headers="r7c1-t49 r1c2-t49"><br /></td>
-<td align="left" headers="r7c1-t49 r1c3-t49"><br /></td>
+<td align="left" headers="r7c1-t44 r1c2-t44"><br /></td>
+<td align="left" headers="r7c1-t44 r1c3-t44">
+<p>True</p>
+</td>
+<td align="left" headers="r7c1-t44 r1c4-t44"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r8c1-t44" headers="r1c1-t44">
+<p>Nullable</p>
+</td>
+<td align="left" headers="r8c1-t44 r1c2-t44"><br /></td>
+<td align="left" headers="r8c1-t44 r1c3-t44">
+<p>True</p>
+</td>
+<td align="left" headers="r8c1-t44 r1c4-t44"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r9c1-t44" headers="r1c1-t44">
+<p>Column definition</p>
+</td>
+<td align="left" headers="r9c1-t44 r1c2-t44"><br /></td>
+<td align="left" headers="r9c1-t44 r1c3-t44"><br /></td>
+<td align="left" headers="r9c1-t44 r1c4-t44"><br /></td>
 </tr>
 </tbody>
 </table>
 <br /></div>
-<!-- class="inftblhruleinformal" -->
-<a id="sthref564" name="sthref564"></a>
-<p class="subhead2">Related tasks</p>
-<ul>
-<li>
-<p><a href="task_add_persistence.htm#BABHICAI">Adding persistence to a class</a></p>
-</li>
-</ul>
-<a id="sthref565" name="sthref565"></a>
-<p class="subhead2">Related reference</p>
-<ul>
-<li>
-<p><a href="ref_persistence_prop_view.htm#BABFAEBB">JPA Details view (for entities)</a></p>
-</li>
-</ul>
-</div>
+<!-- class="inftblhruleinformalwide" --></div>
 <!-- class="sect3" -->
 <!-- Start Footer -->
 <div class="footer">

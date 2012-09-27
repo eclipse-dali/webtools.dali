@@ -15,50 +15,52 @@
         <topic href="concepts002.htm" label="The persistence.xml file" />
         <topic href="concepts003.htm" label="The orm.xml file" />
       </topic>
+      <topic href="concepts004.htm" label="Understanding Java Architecture for XML Binding" />
     </topic>
     <topic href="tasks.htm" label="Tasks">
       <topic href="task_create_new_project.htm" label="Creating a new JPA project" />
       <topic href="tasks001.htm" label="Creating a new JAXB project" />
-      <topic href="tasks002.htm" label="Converting a Java project to a JPA project" />
+      <topic href="tasks002.htm" label="Creating Database Web Services from Builder XML" />
+      <topic href="tasks003.htm" label="Converting a Java project to a JPA project" />
       <topic href="task_create_jpa_entity.htm" label="Creating a JPA entity" />
       <topic href="task_add_persistence.htm" label="Adding persistence to a class">
-        <topic href="tasks003.htm" label="Entity" />
-        <topic href="tasks004.htm" label="Embeddable" />
-        <topic href="tasks005.htm" label="Mapped superclass" />
+        <topic href="tasks004.htm" label="Entity" />
+        <topic href="tasks005.htm" label="Embeddable" />
+        <topic href="tasks006.htm" label="Mapped superclass" />
       </topic>
-      <topic href="tasks006.htm" label="Adding virtual attributes" />
+      <topic href="tasks007.htm" label="Adding virtual attributes" />
       <topic href="task_manage_persistence.htm" label="Managing the persistence.xml file">
-        <topic href="tasks007.htm" label="Synchronizing classes" />
+        <topic href="tasks008.htm" label="Synchronizing classes" />
       </topic>
       <topic href="task_manage_orm.htm" label="Managing the orm.xml file">
-        <topic href="tasks008.htm" label="Creating an orm.xml file" />
-        <topic href="tasks009.htm" label="Working with orm.xml file" />
+        <topic href="tasks009.htm" label="Creating an orm.xml file" />
+        <topic href="tasks010.htm" label="Working with orm.xml file" />
       </topic>
       <topic href="task_additonal_tables.htm" label="Specifying additional tables" />
       <topic href="task_inheritance.htm" label="Specifying entity inheritance" />
-      <topic href="tasks010.htm" label="Creating queries" />
+      <topic href="tasks011.htm" label="Creating queries" />
       <topic href="task_mapping.htm" label="Mapping an entity">
-        <topic href="tasks011.htm" label="Basic mapping" />
-        <topic href="tasks012.htm" label="Element collection mapping" />
-        <topic href="tasks013.htm" label="Embedded mapping" />
-        <topic href="tasks014.htm" label="Embedded ID mapping" />
-        <topic href="tasks015.htm" label="ID mapping" />
-        <topic href="tasks016.htm" label="Many-to-many mapping" />
-        <topic href="tasks017.htm" label="Many-to-one mapping" />
-        <topic href="tasks018.htm" label="One-to-many mapping" />
-        <topic href="tasks019.htm" label="One-to-one mapping" />
-        <topic href="tasks020.htm" label="Transient mapping" />
-        <topic href="tasks021.htm" label="Version mapping" />
+        <topic href="tasks012.htm" label="Basic mapping" />
+        <topic href="tasks013.htm" label="Element collection mapping" />
+        <topic href="tasks014.htm" label="Embedded mapping" />
+        <topic href="tasks015.htm" label="Embedded ID mapping" />
+        <topic href="tasks016.htm" label="ID mapping" />
+        <topic href="tasks017.htm" label="Many-to-many mapping" />
+        <topic href="tasks018.htm" label="Many-to-one mapping" />
+        <topic href="tasks019.htm" label="One-to-many mapping" />
+        <topic href="tasks020.htm" label="One-to-one mapping" />
+        <topic href="tasks021.htm" label="Transient mapping" />
+        <topic href="tasks022.htm" label="Version mapping" />
       </topic>
-      <topic href="tasks022.htm" label="Generating entities from tables" />
-      <topic href="tasks023.htm" label="Generating tables from entities" />
-      <topic href="tasks024.htm" label="Generating dynamic entities from tables" />
-      <topic href="tasks025.htm" label="Validating mappings and reporting problems">
-        <topic href="tasks026.htm" label="Error messages" />
-        <topic href="tasks027.htm" label="Warning messages" />
+      <topic href="tasks023.htm" label="Generating entities from tables" />
+      <topic href="tasks024.htm" label="Generating tables from entities" />
+      <topic href="tasks025.htm" label="Generating dynamic entities from tables" />
+      <topic href="tasks026.htm" label="Validating mappings and reporting problems">
+        <topic href="tasks027.htm" label="Error messages" />
+        <topic href="tasks028.htm" label="Warning messages" />
       </topic>
-      <topic href="tasks028.htm" label="Modifying persistent project properties" />
-      <topic href="tasks029.htm" label="Converting JPA metadata to XML" />
+      <topic href="tasks029.htm" label="Modifying persistent project properties" />
+      <topic href="tasks030.htm" label="Converting JPA metadata to XML" />
     </topic>
     <topic label="Reference">
       <topic label="Wizards">
@@ -92,8 +94,13 @@
           <topic href="reference012.htm" label="Java Page" />
           <topic href="reference013.htm" label="JAXB Facet page" />
         </topic>
-        <topic href="reference014.htm" label="Generate Tables from Entities wizard">
-          <topic href="reference015.htm" label="Schema Generation" />
+        <topic href="reference014.htm" label="New Database Web services from Builder XML wizard">
+          <topic href="reference015.htm" label="Web Dynamic page" />
+          <topic href="reference016.htm" label="Select Builder XML File page" />
+          <topic href="reference017.htm" label="Driver Files page" />
+        </topic>
+        <topic href="reference018.htm" label="Generate Tables from Entities wizard">
+          <topic href="reference019.htm" label="Schema Generation" />
         </topic>
         <topic href="ref_create_new_association_wizard.htm" label="Create New Association wizard">
           <topic href="ref_association_table.htm" label="Association Tables" />
@@ -103,88 +110,88 @@
       </topic>
       <topic label="Property pages">
         <topic href="ref_persistence_prop_view.htm" label="JPA Details view (for entities)">
-          <topic href="reference017.htm" label="Entity" />
-          <topic href="reference018.htm" label="Embeddable" />
-          <topic href="reference019.htm" label="Mapped Superclass" />
-          <topic href="reference020.htm" label="Caching" />
-          <topic href="reference021.htm" label="Queries" />
-          <topic href="reference022.htm" label="Inheritance" />
-          <topic href="reference023.htm" label="Attribute Overrides" />
-          <topic href="reference024.htm" label="Multitenancy" />
-          <topic href="reference025.htm" label="Primary Key Generation" />
-          <topic href="reference026.htm" label="Secondary tables" />
-          <topic href="reference027.htm" label="Converters" />
-          <topic href="reference028.htm" label="Advanced" />
+          <topic href="reference021.htm" label="Entity" />
+          <topic href="reference022.htm" label="Embeddable" />
+          <topic href="reference023.htm" label="Mapped Superclass" />
+          <topic href="reference024.htm" label="Caching" />
+          <topic href="reference025.htm" label="Queries" />
+          <topic href="reference026.htm" label="Inheritance" />
+          <topic href="reference027.htm" label="Attribute Overrides" />
+          <topic href="reference028.htm" label="Multitenancy" />
+          <topic href="reference029.htm" label="Primary Key Generation" />
+          <topic href="reference030.htm" label="Secondary tables" />
+          <topic href="reference031.htm" label="Converters" />
+          <topic href="reference032.htm" label="Advanced" />
         </topic>
         <topic href="ref_persistence_map_view.htm" label="JPA Details view (for attributes)">
-          <topic href="reference029.htm" label="Basic Mapping" />
-          <topic href="reference030.htm" label="Element Collection Mapping" />
-          <topic href="reference031.htm" label="Embedded Mapping" />
-          <topic href="reference032.htm" label="Embedded ID Mapping" />
-          <topic href="reference033.htm" label="ID Mapping" />
-          <topic href="reference034.htm" label="Many-to-Many Mapping" />
-          <topic href="reference035.htm" label="Many-to-One Mapping" />
-          <topic href="reference036.htm" label="One-to-Many Mapping" />
-          <topic href="reference037.htm" label="One-to-One Mapping" />
-          <topic href="reference038.htm" label="Version Mapping" />
-          <topic href="reference039.htm" label="Type information" />
-          <topic href="reference040.htm" label="Value" />
-          <topic href="reference041.htm" label="Converters" />
-          <topic href="reference042.htm" label="Ordering" />
-          <topic href="reference043.htm" label="Joining Strategy" />
-          <topic href="reference044.htm" label="Derived Identity" />
+          <topic href="reference033.htm" label="Basic Mapping" />
+          <topic href="reference034.htm" label="Element Collection Mapping" />
+          <topic href="reference035.htm" label="Embedded Mapping" />
+          <topic href="reference036.htm" label="Embedded ID Mapping" />
+          <topic href="reference037.htm" label="ID Mapping" />
+          <topic href="reference038.htm" label="Many-to-Many Mapping" />
+          <topic href="reference039.htm" label="Many-to-One Mapping" />
+          <topic href="reference040.htm" label="One-to-Many Mapping" />
+          <topic href="reference041.htm" label="One-to-One Mapping" />
+          <topic href="reference042.htm" label="Version Mapping" />
+          <topic href="reference043.htm" label="Type information" />
+          <topic href="reference044.htm" label="Value" />
+          <topic href="reference045.htm" label="Converters" />
+          <topic href="reference046.htm" label="Ordering" />
+          <topic href="reference047.htm" label="Joining Strategy" />
+          <topic href="reference048.htm" label="Derived Identity" />
           <topic href="ref_primary_key.htm" label="Primary Key Generation information" />
         </topic>
         <topic href="ref_details_orm.htm" label="JPA Details view (for orm.xml)">
-          <topic href="reference045.htm" label="Entity Mappings" />
-          <topic href="reference046.htm" label="Persistence Unit" />
-          <topic href="reference047.htm" label="Generators" />
-          <topic href="reference048.htm" label="Queries" />
-          <topic href="reference049.htm" label="Converters" />
+          <topic href="reference049.htm" label="Entity Mappings" />
+          <topic href="reference050.htm" label="Persistence Unit" />
+          <topic href="reference051.htm" label="Generators" />
+          <topic href="reference052.htm" label="Queries" />
+          <topic href="reference053.htm" label="Converters" />
         </topic>
         <topic href="ref_persistence_outline.htm" label="JPA Structure view" />
         <topic href="ref_persistence_xmll_editor.htm" label="persistence.xml Editor">
           <topic href="ref_persistence_general.htm" label="General" />
-          <topic href="reference050.htm" label="Connection" />
-          <topic href="reference051.htm" label="Customization" />
-          <topic href="reference052.htm" label="Caching" />
-          <topic href="reference053.htm" label="Logging" />
-          <topic href="reference054.htm" label="Options" />
-          <topic href="reference055.htm" label="Schema Generation" />
-          <topic href="reference056.htm" label="Properties" />
-          <topic href="reference057.htm" label="Source" />
+          <topic href="reference054.htm" label="Connection" />
+          <topic href="reference055.htm" label="Customization" />
+          <topic href="reference056.htm" label="Caching" />
+          <topic href="reference057.htm" label="Logging" />
+          <topic href="reference058.htm" label="Options" />
+          <topic href="reference059.htm" label="Schema Generation" />
+          <topic href="reference060.htm" label="Properties" />
+          <topic href="reference061.htm" label="Source" />
         </topic>
       </topic>
       <topic label="Preferences">
-        <topic href="reference059.htm" label="Java Persistence Preferences page - JPA" />
-        <topic href="reference060.htm" label="Java Persistence Preferences page - Errors/Warnings" />
-        <topic href="ref_project_properties.htm" label="Project Properties page - JPA Options" />
-        <topic href="reference061.htm" label="Project Properties page - EclipseLink" />
-        <topic href="reference062.htm" label="Project Properties page - Entity Generation" />
-        <topic href="reference063.htm" label="Project Properties page - Errors/Warnings" />
-        <topic href="reference064.htm" label="Project Properties page - JAXB Options" />
-        <topic href="reference065.htm" label="Project Properties page - Schemas" />
+        <topic href="reference063.htm" label="Java Persistence Preferences page - JPA" />
+        <topic href="reference064.htm" label="Java Persistence Preferences page - Errors/Warnings" />
+        <topic href="ref_project_properties.htm" label="Project Properties page - JPA" />
+        <topic href="reference065.htm" label="Project Properties page - EclipseLink" />
+        <topic href="reference066.htm" label="Project Properties page - Entity Generation" />
+        <topic href="reference067.htm" label="Project Properties page - Errors/Warnings" />
+        <topic href="reference068.htm" label="Project Properties page - JAXB Options" />
+        <topic href="reference069.htm" label="Project Properties page - Schemas" />
       </topic>
       <topic label="Dialogs">
-        <topic href="reference067.htm" label="Edit Join Columns Dialog" />
-        <topic href="reference068.htm" label="Add Join Column dialog" />
+        <topic href="reference071.htm" label="Edit Join Columns Dialog" />
+        <topic href="reference072.htm" label="Add Join Column dialog" />
         <topic href="ref_select_cascade_dialog.htm" label="Select Cascade dialog" />
         <topic href="ref_eclipselink_mapping_file.htm" label="New EclipseLink Mapping File dialog" />
         <topic href="ref_add_converter.htm" label="Add Converter dialog" />
-        <topic href="reference069.htm" label="Mapping Type Selection dialog" />
-        <topic href="reference070.htm" label="JPA Metadata Conversion dialog" />
-        <topic href="reference071.htm" label="Make Persistent dialog" />
-        <topic href="reference072.htm" label="Add Query dialog" />
-        <topic href="reference073.htm" label="Add Primary Key Join Column dialog" />
-        <topic href="reference074.htm" label="Add Schema Location dialog" />
-        <topic href="reference075.htm" label="Select Schema Location dialog" />
+        <topic href="reference073.htm" label="Mapping Type Selection dialog" />
+        <topic href="reference074.htm" label="JPA Metadata Conversion dialog" />
+        <topic href="reference075.htm" label="Make Persistent dialog" />
+        <topic href="reference076.htm" label="Add Query dialog" />
+        <topic href="reference077.htm" label="Add Primary Key Join Column dialog" />
+        <topic href="reference078.htm" label="Add Schema Location dialog" />
+        <topic href="reference079.htm" label="Select Schema Location dialog" />
       </topic>
       <topic href="ref_persistence_perspective.htm" label="JPA Development perspective" />
       <topic label="Icons and buttons">
-        <topic href="reference077.htm" label="Icons" />
-        <topic href="reference078.htm" label="Buttons" />
+        <topic href="reference081.htm" label="Icons" />
+        <topic href="reference082.htm" label="Buttons" />
       </topic>
-      <topic href="reference079.htm" label="Dali Developer Documentation" />
+      <topic href="reference083.htm" label="Dali developer documentation" />
     </topic>
     <topic href="tips_and_tricks.htm" label="Tips and tricks" />
     <topic href="whats_new.htm" label="What's new">

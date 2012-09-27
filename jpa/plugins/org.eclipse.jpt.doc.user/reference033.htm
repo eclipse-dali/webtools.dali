@@ -5,165 +5,195 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>ID Mapping</title>
+<title>Basic Mapping</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-19T13:27:59Z" />
+<meta name="date" content="2012-09-27T9:43:53Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="ID Mapping" />
+<meta name="doctitle" content="Basic Mapping" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
-<p><a id="CACIAEFI" name="CACIAEFI"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-27</p>
+<p><a id="CACCGGCG" name="CACCGGCG"></a></p>
 <div class="sect3"><!-- infolevel="all" infotype="General" -->
-<h1><a id="sthref510" name="sthref510"></a><a id="sthref511" name="sthref511"></a><a id="sthref512" name="sthref512"></a>ID Mapping</h1>
+<h1><a id="sthref524" name="sthref524"></a><a id="sthref525" name="sthref525"></a><a id="sthref526" name="sthref526"></a>Basic Mapping</h1>
 <div class="inftblhruleinformal">
 <table class="HRuleInformal" summary="JPA Details view, Version page" dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
-<col width="29%" />
+<col width="22%" />
 <col width="*" />
-<col width="24%" />
+<col width="31%" />
 <thead>
 <tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t36">Property</th>
-<th align="left" valign="bottom" id="r1c2-t36">Description</th>
-<th align="left" valign="bottom" id="r1c3-t36">Default</th>
+<th align="left" valign="bottom" id="r1c1-t34">Property</th>
+<th align="left" valign="bottom" id="r1c2-t34">Description</th>
+<th align="left" valign="bottom" id="r1c3-t34">Default</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t36" headers="r1c1-t36">
+<td align="left" id="r2c1-t34" headers="r1c1-t34">
 <p><span class="bold">Column</span></p>
 </td>
-<td align="left" headers="r2c1-t36 r1c2-t36">
-<p><a id="sthref513" name="sthref513"></a><a id="sthref514" name="sthref514"></a>The database column that contains the value for the attribute. This field corresponds to the <code>@Column</code> annotation.</p>
+<td align="left" headers="r2c1-t34 r1c2-t34">
+<p><a id="sthref527" name="sthref527"></a><a id="sthref528" name="sthref528"></a>The database column that contains the value for the attribute. This field corresponds to the <code>@Column</code> annotation.</p>
 </td>
-<td align="left" headers="r2c1-t36 r1c3-t36">
-<p>By default, the Column is assumed to be named identically to the attribute.</p>
+<td align="left" headers="r2c1-t34 r1c3-t34">
+<p>By default, the Column is assumed to be named identically to the attribute and always included in the <code>INSERT</code> and <code>UPDATE</code> statements.</p>
 </td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r3c1-t36" headers="r1c1-t36">
+<td align="left" id="r3c1-t34" headers="r1c1-t34">
 <p>Name</p>
 </td>
-<td align="left" headers="r3c1-t36 r1c2-t36">
+<td align="left" headers="r3c1-t34 r1c2-t34">
 <p>The database column that contains the value for the attribute.</p>
 </td>
-<td align="left" headers="r3c1-t36 r1c3-t36"><br /></td>
+<td align="left" headers="r3c1-t34 r1c3-t34"><br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r4c1-t36" headers="r1c1-t36">
+<td align="left" id="r4c1-t34" headers="r1c1-t34">
 <p>Table</p>
 </td>
-<td align="left" headers="r4c1-t36 r1c2-t36">
+<td align="left" headers="r4c1-t34 r1c2-t34">
 <p>Name of the database table that contains the selected column.</p>
 </td>
-<td align="left" headers="r4c1-t36 r1c3-t36"><br /></td>
+<td align="left" headers="r4c1-t34 r1c3-t34"><br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r5c1-t36" headers="r1c1-t36">
+<td align="left" id="r5c1-t34" headers="r1c1-t34">
 <p><span class="bold">Details</span></p>
 </td>
-<td align="left" headers="r5c1-t36 r1c2-t36"><br /></td>
-<td align="left" headers="r5c1-t36 r1c3-t36"><br /></td>
+<td align="left" headers="r5c1-t34 r1c2-t34"><br /></td>
+<td align="left" headers="r5c1-t34 r1c3-t34"><br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r6c1-t36" headers="r1c1-t36">
+<td align="left" id="r6c1-t34" headers="r1c1-t34">
 <p>Insertable</p>
 </td>
-<td align="left" headers="r6c1-t36 r1c2-t36">
+<td align="left" headers="r6c1-t34 r1c2-t34">
 <p>Specifies if the column is always included in <code>SQL INSERT</code> statements.</p>
 </td>
-<td align="left" headers="r6c1-t36 r1c3-t36">
+<td align="left" headers="r6c1-t34 r1c3-t34">
 <p>True</p>
 </td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r7c1-t36" headers="r1c1-t36">
+<td align="left" id="r7c1-t34" headers="r1c1-t34">
 <p>Updatable</p>
 </td>
-<td align="left" headers="r7c1-t36 r1c2-t36">
+<td align="left" headers="r7c1-t34 r1c2-t34">
 <p>Specifies if this column is always included in <code>SQL UPDATE</code> statements.</p>
 </td>
-<td align="left" headers="r7c1-t36 r1c3-t36">
+<td align="left" headers="r7c1-t34 r1c3-t34">
 <p>True</p>
 </td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r8c1-t36" headers="r1c1-t36">
+<td align="left" id="r8c1-t34" headers="r1c1-t34">
 <p>Unique</p>
 </td>
-<td align="left" headers="r8c1-t36 r1c2-t36">
+<td align="left" headers="r8c1-t34 r1c2-t34">
 <p>Sets the <code>UNIQUE</code> constraint for the column.</p>
 </td>
-<td align="left" headers="r8c1-t36 r1c3-t36">
+<td align="left" headers="r8c1-t34 r1c3-t34">
 <p>False</p>
 </td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r9c1-t36" headers="r1c1-t36">
+<td align="left" id="r9c1-t34" headers="r1c1-t34">
 <p>Nullable</p>
 </td>
-<td align="left" headers="r9c1-t36 r1c2-t36">
+<td align="left" headers="r9c1-t34 r1c2-t34">
 <p>Specifies if the column allows null values.</p>
 </td>
-<td align="left" headers="r9c1-t36 r1c3-t36">
+<td align="left" headers="r9c1-t34 r1c3-t34">
 <p>True</p>
 </td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r10c1-t36" headers="r1c1-t36">
+<td align="left" id="r10c1-t34" headers="r1c1-t34">
 <p>Length</p>
 </td>
-<td align="left" headers="r10c1-t36 r1c2-t36">
+<td align="left" headers="r10c1-t34 r1c2-t34">
 <p>Sets the column length.</p>
 </td>
-<td align="left" headers="r10c1-t36 r1c3-t36">
+<td align="left" headers="r10c1-t34 r1c3-t34">
 <p>255</p>
 </td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r11c1-t36" headers="r1c1-t36">
+<td align="left" id="r11c1-t34" headers="r1c1-t34">
 <p>Precision</p>
 </td>
-<td align="left" headers="r11c1-t36 r1c2-t36">
+<td align="left" headers="r11c1-t34 r1c2-t34">
 <p>Sets the precision for the column values.</p>
 </td>
-<td align="left" headers="r11c1-t36 r1c3-t36">
+<td align="left" headers="r11c1-t34 r1c3-t34">
 <p>0</p>
 </td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r12c1-t36" headers="r1c1-t36">
+<td align="left" id="r12c1-t34" headers="r1c1-t34">
 <p>Scale</p>
 </td>
-<td align="left" headers="r12c1-t36 r1c2-t36">
+<td align="left" headers="r12c1-t34 r1c2-t34">
 <p>Sets the number of digits that appear to the right of the decimal point.</p>
 </td>
-<td align="left" headers="r12c1-t36 r1c3-t36">
+<td align="left" headers="r12c1-t34 r1c3-t34">
 <p>0</p>
 </td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r13c1-t36" headers="r1c1-t36">
+<td align="left" id="r13c1-t34" headers="r1c1-t34">
 <p>Column definition</p>
 </td>
-<td align="left" headers="r13c1-t36 r1c2-t36">
+<td align="left" headers="r13c1-t34 r1c2-t34">
 <p>The SQL fragment that is used when generating the DDL for the column.</p>
 </td>
-<td align="left" headers="r13c1-t36 r1c3-t36"><br /></td>
+<td align="left" headers="r13c1-t34 r1c3-t34"><br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r14c1-t36" headers="r1c1-t36">
+<td align="left" id="r14c1-t34" headers="r1c1-t34">
+<p><a id="sthref529" name="sthref529"></a><a id="sthref530" name="sthref530"></a><a id="sthref531" name="sthref531"></a><span class="bold">Fetch</span></p>
+</td>
+<td align="left" headers="r14c1-t34 r1c2-t34">
+<p>Defines how data is loaded from the database:</p>
+<ul>
+<li>
+<p>Eager &ndash; Data is loaded in before it is actually needed.</p>
+</li>
+<li>
+<p>Lazy &ndash; Data is loaded only when required by the transaction.</p>
+</li>
+</ul>
+</td>
+<td align="left" headers="r14c1-t34 r1c3-t34">
+<p>Eager</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r15c1-t34" headers="r1c1-t34">
+<p><span class="bold">Optional</span></p>
+</td>
+<td align="left" headers="r15c1-t34 r1c2-t34">
+<p>Specifies if this field is can be null.</p>
+</td>
+<td align="left" headers="r15c1-t34 r1c3-t34">
+<p>True</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r16c1-t34" headers="r1c1-t34">
 <p><span class="bold">Mutable</span></p>
 </td>
-<td align="left" headers="r14c1-t36 r1c2-t36">
+<td align="left" headers="r16c1-t34 r1c2-t34">
 <p>Specify if the value of a complex field type can be changed (or not changed) instead of being replaced.</p>
 </td>
-<td align="left" headers="r14c1-t36 r1c3-t36">
+<td align="left" headers="r16c1-t34 r1c3-t34">
 <p>True</p>
 </td>
 </tr>
@@ -171,16 +201,13 @@
 </table>
 <br /></div>
 <!-- class="inftblhruleinformal" -->
-<p>ID mappings also include the following areas:</p>
+<p>Basic mappings also include the following areas:</p>
 <ul>
 <li>
-<p><a href="reference039.htm#CACIHAAF">Type information</a></p>
+<p><a href="reference043.htm#CACIHAAF">Type information</a></p>
 </li>
 <li>
-<p><a href="reference041.htm#CACJCHJB">Converters</a></p>
-</li>
-<li>
-<p><a href="ref_primary_key.htm#CACFCCAB">Primary Key Generation information</a></p>
+<p><a href="reference045.htm#CACJCHJB">Converters</a></p>
 </li>
 </ul>
 </div>

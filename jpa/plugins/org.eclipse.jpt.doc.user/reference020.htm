@@ -5,252 +5,40 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Caching</title>
+<title>Property pages</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-19T13:27:59Z" />
+<meta name="date" content="2012-09-27T9:43:52Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Caching" />
+<meta name="doctitle" content="Property pages" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
-<p><a id="CACJBBCA" name="CACJBBCA"></a></p>
-<div class="sect3"><!-- infolevel="all" infotype="General" -->
-<h1>Caching</h1>
-<p><a id="sthref439" name="sthref439"></a>This table lists the Caching information fields available in the <span class="gui-object-title">JPA Details</span> view for each entity type.</p>
-<div class="inftblhruleinformalwide">
-<table class="HRuleInformalWide" title="This table describes the options on the Persistence Properties view, General tab." summary="This table describes the options on the Persistence Properties view, General tab." dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
-<col width="16%" />
-<col width="*" />
-<col width="16%" />
-<col width="20%" />
-<thead>
-<tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t26">Property</th>
-<th align="left" valign="bottom" id="r1c2-t26">Description</th>
-<th align="left" valign="bottom" id="r1c3-t26">Default</th>
-<th align="left" valign="bottom" id="r1c4-t26">Available for Entity&nbsp;Type</th>
-</tr>
-</thead>
-<tbody>
-<tr align="left" valign="top">
-<td align="left" id="r2c1-t26" headers="r1c1-t26">
-<p><span class="bold">Cachable</span></p>
-</td>
-<td align="left" headers="r2c1-t26 r1c2-t26">
-<p>Specifies if the entity is cachable.</p>
-<p>This field corresponds to the <code>@Cachable</code> annotation.</p>
-</td>
-<td align="left" headers="r2c1-t26 r1c3-t26">
-<p>True</p>
-</td>
-<td align="left" headers="r2c1-t26 r1c4-t26">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a> and <a href="tasks005.htm#BABDAGCI">Mapped superclass</a></p>
-</td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r3c1-t26" headers="r1c1-t26">
-<p>Type</p>
-</td>
-<td align="left" headers="r3c1-t26 r1c2-t26">
-<p>Select one of the following as the Default Cache Type:</p>
-<ul>
-<li>
-<p><span class="bold">Weak with Soft Subcache</span>&ndash;This option is similar to <span class="bold">Weak with Hard Subcache</span> except that it maintains a most frequently used subcache that uses soft references. The size of the subcache is proportional to the size of the identity map. The subcache uses soft references to ensure that these objects are garbage-collected only if the system is low on memory.</p>
-<p>Use this identity map in most circumstances as a means to control memory used by the cache.</p>
-</li>
-<li>
-<p><span class="bold">Weak with Hard Subcache</span>&ndash;This option is similar to <span class="bold">Soft with Weak</span> subcache except that it maintains a most frequently used subcache that uses hard references. Use this identity map if soft references are not suitable for your platform.</p>
-</li>
-<li>
-<p><span class="bold">Weak</span>&ndash;This option is similar to <span class="bold">Full</span>, except that objects are referenced using weak references. This option uses less memory than <span class="bold">Full</span>, allows complete garbage collection and provides full caching and guaranteed identity.</p>
-<p>Use this identity map for transactions that, once started, stay on the server side.</p>
-</li>
-<li>
-<p><span class="bold">Soft</span>&ndash;This option is similar to <span class="bold">Weak</span> except that the map holds the objects using soft references. This identity map enables full garbage collection when memory is low. It provides full caching and guaranteed identity.</p>
-</li>
-<li>
-<p><span class="bold">Full</span>&ndash;This option provides full caching and guaranteed identity: all objects are cached and not removed.</p>
-<p>Note: This process may be memory-intensive when many objects are read.</p>
-</li>
-<li>
-<p><span class="bold">None</span>&ndash;This option does not preserve object identity and does not cache objects.This option is not recommended.</p>
-</li>
-</ul>
-</td>
-<td align="left" headers="r3c1-t26 r1c3-t26">
-<p>Weak with Soft Subcache</p>
-</td>
-<td align="left" headers="r3c1-t26 r1c4-t26">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a> and <a href="tasks005.htm#BABDAGCI">Mapped superclass</a></p>
-</td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r4c1-t26" headers="r1c1-t26">
-<p>Size</p>
-</td>
-<td align="left" headers="r4c1-t26 r1c2-t26">
-<p>Defines the size of cache to use (number of objects).</p>
-</td>
-<td align="left" headers="r4c1-t26 r1c3-t26">
-<p>100</p>
-</td>
-<td align="left" headers="r4c1-t26 r1c4-t26">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a> and <a href="tasks005.htm#BABDAGCI">Mapped superclass</a></p>
-</td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r5c1-t26" headers="r1c1-t26">
-<p><span class="bold">Advanced</span></p>
-</td>
-<td align="left" headers="r5c1-t26 r1c2-t26"><br /></td>
-<td align="left" headers="r5c1-t26 r1c3-t26"><br /></td>
-<td align="left" headers="r5c1-t26 r1c4-t26">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a> and <a href="tasks005.htm#BABDAGCI">Mapped superclass</a></p>
-</td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r6c1-t26" headers="r1c1-t26">
-<p>Expiry</p>
-</td>
-<td align="left" headers="r6c1-t26 r1c2-t26">
-<p>Enables the expiration of the cached instance after a fixed period of time (milliseconds). Queries executed against the cache after this will be forced back to the database for a refreshed copy.</p>
-</td>
-<td align="left" headers="r6c1-t26 r1c3-t26">
-<p>No expiry</p>
-</td>
-<td align="left" headers="r6c1-t26 r1c4-t26">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a> and <a href="tasks005.htm#BABDAGCI">Mapped superclass</a></p>
-</td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r7c1-t26" headers="r1c1-t26">
-<p>Always refresh</p>
-</td>
-<td align="left" headers="r7c1-t26 r1c2-t26">
-<p>Specifies if all queries that go to the database should always refresh the cache.</p>
-</td>
-<td align="left" headers="r7c1-t26 r1c3-t26">
-<p>False</p>
-</td>
-<td align="left" headers="r7c1-t26 r1c4-t26">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a> and <a href="tasks005.htm#BABDAGCI">Mapped superclass</a></p>
-</td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r8c1-t26" headers="r1c1-t26">
-<p>Refresh only if newer</p>
-</td>
-<td align="left" headers="r8c1-t26 r1c2-t26">
-<p>Specifies if all queries that go to the database should refresh the cache only if the data received from the database by a query is newer than the data in the cache (as determined by the optimistic locking field).</p>
-<p><span class="bold">Note</span>s:</p>
-<ul>
-<li>
-<p>This option only applies if one of the other refreshing options, such as alwaysRefresh, is already enabled.</p>
-</li>
-<li>
-<p>A version field is necessary to apply this feature.</p>
-</li>
-</ul>
-</td>
-<td align="left" headers="r8c1-t26 r1c3-t26">
-<p>False</p>
-</td>
-<td align="left" headers="r8c1-t26 r1c4-t26">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a> and <a href="tasks005.htm#BABDAGCI">Mapped superclass</a></p>
-</td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r9c1-t26" headers="r1c1-t26">
-<p>Disable hits</p>
-</td>
-<td align="left" headers="r9c1-t26 r1c2-t26">
-<p>Specifies if all queries should bypass the cache for hits, but still resolve against the cache for identity. This forces all queries to hit the database.</p>
-</td>
-<td align="left" headers="r9c1-t26 r1c3-t26">
-<p>False</p>
-</td>
-<td align="left" headers="r9c1-t26 r1c4-t26">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a> and <a href="tasks005.htm#BABDAGCI">Mapped superclass</a></p>
-</td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r10c1-t26" headers="r1c1-t26">
-<p>Coordination type</p>
-</td>
-<td align="left" headers="r10c1-t26 r1c2-t26">
-<p>Specify the cache coordination mode:</p>
-<ul>
-<li>
-<p>Send Object Changes</p>
-</li>
-<li>
-<p>Invalidate Changed Objects</p>
-</li>
-<li>
-<p>Send New Objects with Changes</p>
-</li>
-<li>
-<p>None</p>
-</li>
-</ul>
-</td>
-<td align="left" headers="r10c1-t26 r1c3-t26">
-<p>Send Object Changes</p>
-</td>
-<td align="left" headers="r10c1-t26 r1c4-t26">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a> and <a href="tasks005.htm#BABDAGCI">Mapped superclass</a></p>
-</td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r11c1-t26" headers="r1c1-t26">
-<p><span class="bold">Existence checking</span></p>
-</td>
-<td align="left" headers="r11c1-t26 r1c2-t26">
-<p>Specify how Dali should check to determine if an entity is new or exists.</p>
-<ul>
-<li>
-<p>Check Cache &ndash; If the object's primary key does not include null and it is in the cache, then it must exist.</p>
-</li>
-<li>
-<p>Check Cache then Database &ndash; Perform a "does exist check" on the database.</p>
-</li>
-<li>
-<p>Assume Existence &ndash; If the object's primary key does not include null then it must exist. You may use this option if the application guarantees or does not care about the existence check.</p>
-</li>
-<li>
-<p>Assume Non-existence &ndash; Assume that the object does not exist. You may use this option if the application guarantees or does not care about the existence check. This will always force an INSERT operation.</p>
-</li>
-</ul>
-</td>
-<td align="left" headers="r11c1-t26 r1c3-t26">
-<p>Check Cache then Database</p>
-</td>
-<td align="left" headers="r11c1-t26 r1c4-t26">
-<p><a href="tasks003.htm#BABGBIEE">Entity</a> and <a href="tasks005.htm#BABDAGCI">Mapped superclass</a></p>
-</td>
-</tr>
-</tbody>
-</table>
-<br /></div>
-<!-- class="inftblhruleinformalwide" -->
-<a id="sthref440" name="sthref440"></a>
-<p class="subhead2">Related reference</p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-27</p>
+<p><a id="CACDJIIG" name="CACDJIIG"></a></p>
+<div class="sect1"><!-- infolevel="all" infotype="General" -->
+<h1>Property pages</h1>
+<p><a id="sthref449" name="sthref449"></a>This section includes information each property page in the following views:</p>
 <ul>
 <li>
 <p><a href="ref_persistence_prop_view.htm#BABFAEBB">JPA Details view (for entities)</a></p>
 </li>
 <li>
-<p>"Cache" in <span class="italic">Java Persistence API (JPA) Extensions Reference for EclipseLink</span>&nbsp;<br />
-<code><a href="http://www.eclipse.org/eclipselink/documentation/2.4/jpa/extensions/a_cache.htm">http://www.eclipse.org/eclipselink/documentation/2.4/jpa/extensions/a_cache.htm</a></code></p>
+<p><a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a></p>
+</li>
+<li>
+<p><a href="ref_details_orm.htm#CACGDGHC">JPA Details view (for orm.xml)</a></p>
+</li>
+<li>
+<p><a href="ref_persistence_outline.htm#BABEGGFE">JPA Structure view</a></p>
+</li>
+<li>
+<p><a href="ref_persistence_xmll_editor.htm#CIACCHID">persistence.xml Editor</a></p>
 </li>
 </ul>
-</div>
-<!-- class="sect3" -->
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
@@ -262,6 +50,6 @@
 </tr>
 </table>
 </div>
-<!-- class="footer" -->
+<!-- class="footer" --></div>
 </body>
 </html>

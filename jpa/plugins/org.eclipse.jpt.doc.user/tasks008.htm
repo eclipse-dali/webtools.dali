@@ -5,77 +5,68 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Creating an orm.xml file</title>
+<title>Synchronizing classes</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-19T13:27:56Z" />
+<meta name="date" content="2012-09-27T9:43:49Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Creating an orm.xml file" />
+<meta name="doctitle" content="Synchronizing classes" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
-<p><a id="CIHDEFCA" name="CIHDEFCA"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-27</p>
+<p><a id="CIHFEBAI" name="CIHFEBAI"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
-<h1>Creating an orm.xml file</h1>
-<p><a id="sthref139" name="sthref139"></a>If you opt not to create an <code>orm.xml</code> file when you create a JPA project, you can create one using the <a href="reference007.htm#CIAIJCCE">Create ORM Mapping File wizard</a>.</p>
-<p>Use this procedure to create an <code>orm.xml</code> file:</p>
+<h1>Synchronizing classes</h1>
+<p>As you work with the classes in your Java project, you will need to update the <code>persistence.xml</code> file to reflect the changes. <a id="sthref142" name="sthref142"></a><a id="sthref143" name="sthref143"></a><a id="sthref144" name="sthref144"></a></p>
+<p>Use this procedure to synchronize the <code>persistence.xml</code> file:</p>
 <ol>
 <li>
-<p>From the Navigator or Project Explorer, select <span class="bold">File &gt; New &gt; Other</span>. The Select a Wizard dialog appears.</p>
-<div class="figure"><a id="sthref140" name="sthref140"></a>
-<p class="titleinfigure">The Select a Wizard Dialog</p>
-<img src="img/select_a_wizard_mapping.png" alt="The Select a Wizard dialog with Mapping file selected." title="The Select a Wizard dialog with Mapping file selected." /><br /></div>
-<!-- class="figure" --></li>
+<p>Right-click the <code>persistence.xml</code> file in the <span class="gui-object-title">Project Explorer</span> and select <span class="gui-object-action">JPA Tools &gt; Synchronize Class List</span>.</p>
+<div align="center">
+<div class="inftblnote"><br />
+<table class="Note oac_no_warn" summary="" cellpadding="3" cellspacing="0">
+<tbody>
+<tr>
+<td align="left">
+<p class="notep1">Note:</p>
+<p>Use this function if you selected <span class="bold">Annotated classes must be listed in the persistence.xml option</span> in the <a href="ref_jpa_facet.htm#CACIFDIF">JPA Facet page</a>. In general, you do not have to use this function within the container.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<br /></div>
+<!-- class="inftblnote" --></div>
+<div class="figure"><a id="sthref145" name="sthref145"></a>
+<p class="titleinfigure">Synchronizing the persistence.xml File</p>
+<img src="img/synchornize_classes.png" alt="This figure shows the JPA Tools &gt; Synchronize Classes option." title="This figure shows the JPA Tools &gt; Synchronize Classes option." /><br /></div>
+<!-- class="figure" -->
+<p>Dali adds the necessary <code>&lt;class&gt;</code> elements to the <code>persistence.xml</code> file.</p>
+</li>
 <li>
-<p>Select <span class="bold">JPA ORM Mapping File</span> and then click <span class="bold">Next</span>. The Mapping File page of the <a href="reference007.htm#CIAIJCCE">Create ORM Mapping File wizard</a> appears.</p>
-<p>If you are using EclipseLink, you can select <span class="bold">EclipseLink &gt; EclipseLink ORM Mapping File</span>.</p>
-<div class="figure"><a id="sthref141" name="sthref141"></a>
-<p class="titleinfigure">New Mapping File Location Page</p>
-<img src="img/mapping_file_new.png" alt="The Mapping File page." title="The Mapping File page." /><br /></div>
-<!-- class="figure" --></li>
-<li>
-<p>Select the name and location of your mapping file and click <span class="bold">Next</span>. The <a href="reference009.htm#CACDFCDB">Mapping File Options</a> page appears.</p>
-<div class="figure"><a id="sthref142" name="sthref142"></a>
-<p class="titleinfigure">New Mapping File Options Page</p>
-<img src="img/new_mapping_file_options.png" alt="New Mapping File Options Page" title="New Mapping File Options Page" /><br /></div>
-<!-- class="figure" --></li>
-<li>
-<p>Define the properties in the <a href="reference009.htm#CACDFCDB">Mapping File Options</a> page and click <span class="bold">Finish</span>. The <code>orm.xml</code> file appears in the <code>src</code> directory of the selected JPA project. You can manage the <code>orm.xml</code> file using the JPA Details view or through the XML Editor. See also <a href="ref_details_orm.htm#CACGDGHC">JPA Details view (for orm.xml)</a>.</p>
+<p>Use the <a href="ref_persistence_xmll_editor.htm#CIACCHID">persistence.xml Editor</a> to continue editing the <code>persistence.xml</code> file.</p>
 </li>
 </ol>
-<a id="sthref143" name="sthref143"></a>
+<a id="sthref146" name="sthref146"></a>
 <p class="subhead2">Related reference</p>
 <ul>
 <li>
-<p><a href="ref_new_jpa_project_wizard.htm#CACBJGBG">Create New JPA Project wizard</a></p>
-</li>
-<li>
-<p><a href="ref_eclipselink_mapping_file.htm#CIAEDEJF">New EclipseLink Mapping File dialog</a></p>
+<p><a href="task_manage_persistence.htm#CIHDAJID">Managing the persistence.xml file</a></p>
 </li>
 </ul>
-<a id="sthref144" name="sthref144"></a>
-<p class="subhead2">Related tasks</p>
-<ul>
-<li>
-<p><a href="ref_new_jpa_project_wizard.htm#CACBJGBG">Create New JPA Project wizard</a></p>
-</li>
-<li>
-<p><a href="tasks009.htm#CIHBCDCE">Working with orm.xml file</a></p>
-</li>
-</ul>
-<a id="sthref145" name="sthref145"></a>
+<a id="sthref147" name="sthref147"></a>
 <p class="subhead2">Related concepts</p>
 <ul>
 <li>
-<p><a href="concepts003.htm#CHDBIJAC">The orm.xml file</a></p>
+<p><a href="concepts002.htm#CHDHAGIH">The persistence.xml file</a></p>
 </li>
 </ul>
 </div>
 <!-- class="sect2" -->
+<!-- class="sect1" -->
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">

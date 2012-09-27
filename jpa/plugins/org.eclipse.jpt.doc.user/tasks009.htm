@@ -5,59 +5,69 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Working with orm.xml file</title>
+<title>Creating an orm.xml file</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-19T13:27:56Z" />
+<meta name="date" content="2012-09-27T9:43:49Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Working with orm.xml file" />
+<meta name="doctitle" content="Creating an orm.xml file" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
-<p><a id="CIHBCDCE" name="CIHBCDCE"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-27</p>
+<p><a id="CIHDEFCA" name="CIHDEFCA"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
-<h1>Working with orm.xml file</h1>
-<p><a id="sthref146" name="sthref146"></a><a id="sthref147" name="sthref147"></a>You can work with the <code>orm.xml</code> by using the JPA Details view.</p>
-<p>Use this procedure to work with the <code>orm.xml</code> file:</p>
+<h1>Creating an orm.xml file</h1>
+<p><a id="sthref154" name="sthref154"></a>If you opt not to create an <code>orm.xml</code> file when you create a JPA project, you can create one using the <a href="reference007.htm#CIAIJCCE">Create ORM Mapping File wizard</a>.</p>
+<p>Use this procedure to create an <code>orm.xml</code> file:</p>
 <ol>
 <li>
-<p>Right-click the <code>orm.xml</code> file in the <span class="gui-object-title">Project Explorer</span> and select <span class="gui-object-action">Open</span>.</p>
-</li>
-<li>
-<p>In the JPA Structure view, select <span class="bold">EntityMappings</span>.</p>
-</li>
-<li>
-<p>Use the JPA Details view to configure the entity mapping and persistence unit defaults.</p>
-<div class="figure"><a id="sthref148" name="sthref148"></a>
-<p class="titleinfigure">JPA Details view for EntityMappings (orm.xml)</p>
-<img src="img/details_entitymappings.png" alt="JPA Details view for orm.xml file." title="JPA Details view for orm.xml file." /><br /></div>
+<p>From the Navigator or Project Explorer, select <span class="bold">File &gt; New &gt; Other</span>. The Select a Wizard dialog appears.</p>
+<div class="figure"><a id="sthref155" name="sthref155"></a>
+<p class="titleinfigure">The Select a Wizard Dialog</p>
+<img src="img/select_a_wizard_mapping.png" alt="The Select a Wizard dialog with Mapping file selected." title="The Select a Wizard dialog with Mapping file selected." /><br /></div>
 <!-- class="figure" --></li>
 <li>
-<p>Complete the fields on the <a href="ref_details_orm.htm#CACGDGHC">JPA Details view (for orm.xml)</a>.</p>
+<p>Select <span class="bold">JPA ORM Mapping File</span> and then click <span class="bold">Next</span>. The Mapping File page of the <a href="reference007.htm#CIAIJCCE">Create ORM Mapping File wizard</a> appears.</p>
+<p>If you are using EclipseLink, you can select <span class="bold">EclipseLink &gt; EclipseLink ORM Mapping File</span>.</p>
+<div class="figure"><a id="sthref156" name="sthref156"></a>
+<p class="titleinfigure">New Mapping File Location Page</p>
+<img src="img/mapping_file_new.png" alt="The Mapping File page." title="The Mapping File page." /><br /></div>
+<!-- class="figure" --></li>
+<li>
+<p>Select the name and location of your mapping file and click <span class="bold">Next</span>. The <a href="reference009.htm#CACDFCDB">Mapping File Options</a> page appears.</p>
+<div class="figure"><a id="sthref157" name="sthref157"></a>
+<p class="titleinfigure">New Mapping File Options Page</p>
+<img src="img/new_mapping_file_options.png" alt="New Mapping File Options Page" title="New Mapping File Options Page" /><br /></div>
+<!-- class="figure" --></li>
+<li>
+<p>Define the properties in the <a href="reference009.htm#CACDFCDB">Mapping File Options</a> page and click <span class="bold">Finish</span>. The <code>orm.xml</code> file appears in the <code>src</code> directory of the selected JPA project. You can manage the <code>orm.xml</code> file using the JPA Details view or through the XML Editor. See also <a href="ref_details_orm.htm#CACGDGHC">JPA Details view (for orm.xml)</a>.</p>
 </li>
 </ol>
-<a id="sthref149" name="sthref149"></a>
+<a id="sthref158" name="sthref158"></a>
 <p class="subhead2">Related reference</p>
 <ul>
 <li>
-<p><a href="ref_details_orm.htm#CACGDGHC">JPA Details view (for orm.xml)</a></p>
+<p><a href="ref_new_jpa_project_wizard.htm#CACBJGBG">Create New JPA Project wizard</a></p>
+</li>
+<li>
+<p><a href="ref_eclipselink_mapping_file.htm#CIAEDEJF">New EclipseLink Mapping File dialog</a></p>
 </li>
 </ul>
-<a id="sthref150" name="sthref150"></a>
+<a id="sthref159" name="sthref159"></a>
 <p class="subhead2">Related tasks</p>
 <ul>
 <li>
-<p><a href="#CIHBCDCE">Working with orm.xml file</a></p>
+<p><a href="ref_new_jpa_project_wizard.htm#CACBJGBG">Create New JPA Project wizard</a></p>
 </li>
 <li>
-<p><a href="../org.eclipse.wst.xmleditor.doc.user/topics/cworkXML.html">Working with XML Files</a></p>
+<p><a href="tasks010.htm#CIHBCDCE">Working with orm.xml file</a></p>
 </li>
 </ul>
-<a id="sthref151" name="sthref151"></a>
+<a id="sthref160" name="sthref160"></a>
 <p class="subhead2">Related concepts</p>
 <ul>
 <li>
@@ -66,7 +76,6 @@
 </ul>
 </div>
 <!-- class="sect2" -->
-<!-- class="sect1" -->
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">

@@ -5,51 +5,55 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Embedded mapping</title>
+<title>Element collection mapping</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-19T13:27:57Z" />
+<meta name="date" content="2012-09-27T9:43:50Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Embedded mapping" />
+<meta name="doctitle" content="Element collection mapping" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
-<p><a id="BABCBHDF" name="BABCBHDF"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-27</p>
+<p><a id="CIHHJEBJ" name="CIHHJEBJ"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
-<h1>Embedded mapping</h1>
-<p><a id="sthref198" name="sthref198"></a><a id="sthref199" name="sthref199"></a><a id="sthref200" name="sthref200"></a><a id="sthref201" name="sthref201"></a>Use an <span class="bold">Embedded Mapping</span> to specify a persistent field or property of an entity whose value is an instance of an embeddable class.</p>
+<h1>Element collection mapping<a id="sthref206" name="sthref206"></a><a id="sthref207" name="sthref207"></a><a id="sthref208" name="sthref208"></a></h1>
+<p>Use an <span class="bold">Element Collection</span> to define a collection of <span class="bold">Basic</span> objects. The Basic values are stored in a separate collection table. Because the target is a Basic value (instead of an Entity), you can easily define collections of simple values without having to define a class for the value.</p>
+<p>To create an element collection mapping:</p>
 <ol>
 <li>
-<p>In the <a href="ref_persistence_outline.htm#BABEGGFE">JPA Structure view</a>, right-click the field to map.</p>
-</li>
-<li>
-<p>Select <span class="bold">Map as &gt; Embedded</span>. The <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a> displays the properties for the selected field.</p>
-<div class="figure"><a id="sthref202" name="sthref202"></a>
-<p class="titleinfigure">JPA Details, Embedded mapping</p>
-<img src="img/jpa_details_embedded.png" alt="PA Details, Element collection mapping" title="PA Details, Element collection mapping" /><br /></div>
+<p>In the <a href="ref_persistence_outline.htm#BABEGGFE">JPA Structure view</a>, right-click the field to map. Select <span class="bold">Map As &gt; Element Collection</span>. The <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a> displays the properties for the selected field.</p>
+<div class="figure"><a id="sthref209" name="sthref209"></a>
+<p class="titleinfigure">JPA Details, Element collection mapping</p>
+<img src="img/jpa_details_elementcollection.png" alt="PA Details, Element collection mapping" title="PA Details, Element collection mapping" /><br /></div>
 <!-- class="figure" --></li>
 <li>
-<p>Complete each field in the <a href="reference031.htm#CACBJBFD">Embedded Mapping</a> area.</p>
+<p>Complete each field in the <a href="reference034.htm#CACBCGDI">Element Collection Mapping</a> area.</p>
+</li>
+<li>
+<p>Complete the remaining areas in the <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a>.</p>
 </li>
 </ol>
 <p>Eclipse adds the following annotations to the field:</p>
 <pre xml:space="preserve" class="oac_no_warn">
-@Embedded
-@AttributeOverride(column=@Column(table="<span class="italic">&lt;COLUMN_TABLE&gt;</span>", name = "<span class="italic">&lt;COLUMN_NAME&gt;</span>"))
-
+@ElementCollection
+@CollectionTable(
+        name="<span class="italic">&lt;TABLE_NAME&gt;</span>",
+        joinColumns=@JoinColumn(name="<span class="italic">&lt;COLUMN_TABLE&gt;</span>")
+)
+@Column(name="<span class="italic">&lt;COLUMN_TABLE&gt;</span>")
 </pre>
-<a id="sthref203" name="sthref203"></a>
+<a id="sthref210" name="sthref210"></a>
 <p class="subhead2">Related tasks</p>
 <ul>
 <li>
 <p><a href="task_mapping.htm#BABDGBIJ">Mapping an entity</a></p>
 </li>
 </ul>
-<a id="sthref204" name="sthref204"></a>
+<a id="sthref211" name="sthref211"></a>
 <p class="subhead2">Related references</p>
 <ul>
 <li>
@@ -58,8 +62,20 @@
 <li>
 <p><a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a></p>
 </li>
+<li>
+<p><a href="tasks012.htm#BABBABCE">Basic mapping</a></p>
+</li>
+<li>
+<p><a href="reference053.htm#CIADGCID">Converters</a></p>
+</li>
+<li>
+<p><a href="reference046.htm#CACBIJFD">Ordering</a></p>
+</li>
+<li>
+<p><a href="reference044.htm#CACJBFEA">Value</a></p>
+</li>
 </ul>
-<a id="sthref205" name="sthref205"></a>
+<a id="sthref212" name="sthref212"></a>
 <p class="subhead2">Related concepts</p>
 <ul>
 <li>

@@ -5,209 +5,249 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Basic Mapping</title>
+<title>Primary Key Generation</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-19T13:27:59Z" />
+<meta name="date" content="2012-09-27T9:43:53Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Basic Mapping" />
+<meta name="doctitle" content="Primary Key Generation" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-19</p>
-<p><a id="CACCGGCG" name="CACCGGCG"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-09-27</p>
+<p><a id="CACCJJDC" name="CACCJJDC"></a></p>
 <div class="sect3"><!-- infolevel="all" infotype="General" -->
-<h1><a id="sthref500" name="sthref500"></a><a id="sthref501" name="sthref501"></a><a id="sthref502" name="sthref502"></a>Basic Mapping</h1>
-<div class="inftblhruleinformal">
-<table class="HRuleInformal" summary="JPA Details view, Version page" dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
-<col width="22%" />
+<h1><a id="sthref486" name="sthref486"></a><a id="sthref487" name="sthref487"></a>Primary Key Generation</h1>
+<p>Use the Primary Key Generation area in the <span class="gui-object-title">JPA Details</span> view to specify how to generate a primary key for a given entity.</p>
+<div class="inftblhruleinformalwide">
+<table class="HRuleInformalWide" title="JPA Details view, Primary key page" summary="JPA Details view, Primary key page" dir="ltr" border="1" width="100%" frame="hsides" rules="rows" cellpadding="3" cellspacing="0">
+<col width="16%" />
 <col width="*" />
-<col width="31%" />
+<col width="17%" />
+<col width="25%" />
 <thead>
 <tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t34">Property</th>
-<th align="left" valign="bottom" id="r1c2-t34">Description</th>
-<th align="left" valign="bottom" id="r1c3-t34">Default</th>
+<th align="left" valign="bottom" id="r1c1-t31">Property</th>
+<th align="left" valign="bottom" id="r1c2-t31">Description</th>
+<th align="left" valign="bottom" id="r1c3-t31">Default</th>
+<th align="left" valign="bottom" id="r1c4-t31">Available for Entity&nbsp;Type</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t34" headers="r1c1-t34">
-<p><span class="bold">Column</span></p>
+<td align="left" id="r2c1-t31" headers="r1c1-t31">
+<p><span class="bold">Table Generator</span></p>
 </td>
-<td align="left" headers="r2c1-t34 r1c2-t34">
-<p><a id="sthref503" name="sthref503"></a><a id="sthref504" name="sthref504"></a>The database column that contains the value for the attribute. This field corresponds to the <code>@Column</code> annotation.</p>
+<td align="left" headers="r2c1-t31 r1c2-t31">
+<p>These fields define the database table used for generating the primary key and correspond to the <code>@TableGenerator</code> annotation.</p>
 </td>
-<td align="left" headers="r2c1-t34 r1c3-t34">
-<p>By default, the Column is assumed to be named identically to the attribute and always included in the <code>INSERT</code> and <code>UPDATE</code> statements.</p>
-</td>
+<td align="left" headers="r2c1-t31 r1c3-t31"><br /></td>
+<td align="left" headers="r2c1-t31 r1c4-t31">
+<p><a href="tasks004.htm#BABGBIEE">Entity</a></p>
+<br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r3c1-t34" headers="r1c1-t34">
+<td align="left" id="r3c1-t31" headers="r1c1-t31">
 <p>Name</p>
 </td>
-<td align="left" headers="r3c1-t34 r1c2-t34">
-<p>The database column that contains the value for the attribute.</p>
+<td align="left" headers="r3c1-t31 r1c2-t31">
+<p>Unique name of the generator.</p>
 </td>
-<td align="left" headers="r3c1-t34 r1c3-t34"><br /></td>
+<td align="left" headers="r3c1-t31 r1c3-t31"><br /></td>
+<td align="left" headers="r3c1-t31 r1c4-t31">
+<p><a href="tasks004.htm#BABGBIEE">Entity</a></p>
+<br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r4c1-t34" headers="r1c1-t34">
+<td align="left" id="r4c1-t31" headers="r1c1-t31">
 <p>Table</p>
 </td>
-<td align="left" headers="r4c1-t34 r1c2-t34">
-<p>Name of the database table that contains the selected column.</p>
+<td align="left" headers="r4c1-t31 r1c2-t31">
+<p>Database table that stores the generated ID values.</p>
 </td>
-<td align="left" headers="r4c1-t34 r1c3-t34"><br /></td>
+<td align="left" headers="r4c1-t31 r1c3-t31"><br /></td>
+<td align="left" headers="r4c1-t31 r1c4-t31">
+<p><a href="tasks004.htm#BABGBIEE">Entity</a></p>
+<br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r5c1-t34" headers="r1c1-t34">
-<p><span class="bold">Details</span></p>
+<td align="left" id="r5c1-t31" headers="r1c1-t31">
+<p>Schema</p>
 </td>
-<td align="left" headers="r5c1-t34 r1c2-t34"><br /></td>
-<td align="left" headers="r5c1-t34 r1c3-t34"><br /></td>
+<td align="left" headers="r5c1-t31 r1c2-t31">
+<p>Database schema of the <span class="bold">Table</span>.</p>
+</td>
+<td align="left" headers="r5c1-t31 r1c3-t31"><br /></td>
+<td align="left" headers="r5c1-t31 r1c4-t31">
+<p><a href="tasks004.htm#BABGBIEE">Entity</a></p>
+<br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r6c1-t34" headers="r1c1-t34">
-<p>Insertable</p>
+<td align="left" id="r6c1-t31" headers="r1c1-t31">
+<p>Catalog</p>
 </td>
-<td align="left" headers="r6c1-t34 r1c2-t34">
-<p>Specifies if the column is always included in <code>SQL INSERT</code> statements.</p>
+<td align="left" headers="r6c1-t31 r1c2-t31">
+<p>Database catalog of the <span class="bold">Table</span>.</p>
 </td>
-<td align="left" headers="r6c1-t34 r1c3-t34">
-<p>True</p>
-</td>
+<td align="left" headers="r6c1-t31 r1c3-t31"><br /></td>
+<td align="left" headers="r6c1-t31 r1c4-t31">
+<p><a href="tasks004.htm#BABGBIEE">Entity</a></p>
+<br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r7c1-t34" headers="r1c1-t34">
-<p>Updatable</p>
+<td align="left" id="r7c1-t31" headers="r1c1-t31">
+<p>Primary key column</p>
 </td>
-<td align="left" headers="r7c1-t34 r1c2-t34">
-<p>Specifies if this column is always included in <code>SQL UPDATE</code> statements.</p>
+<td align="left" headers="r7c1-t31 r1c2-t31">
+<p>The column in the table generator's <span class="bold">Table</span> that contains the primary key.</p>
 </td>
-<td align="left" headers="r7c1-t34 r1c3-t34">
-<p>True</p>
-</td>
+<td align="left" headers="r7c1-t31 r1c3-t31"><br /></td>
+<td align="left" headers="r7c1-t31 r1c4-t31">
+<p><a href="tasks004.htm#BABGBIEE">Entity</a></p>
+<br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r8c1-t34" headers="r1c1-t34">
-<p>Unique</p>
+<td align="left" id="r8c1-t31" headers="r1c1-t31">
+<p>Value column</p>
 </td>
-<td align="left" headers="r8c1-t34 r1c2-t34">
-<p>Sets the <code>UNIQUE</code> constraint for the column.</p>
+<td align="left" headers="r8c1-t31 r1c2-t31">
+<p>The column that stores the generated ID values.</p>
 </td>
-<td align="left" headers="r8c1-t34 r1c3-t34">
-<p>False</p>
-</td>
+<td align="left" headers="r8c1-t31 r1c3-t31"><br /></td>
+<td align="left" headers="r8c1-t31 r1c4-t31">
+<p><a href="tasks004.htm#BABGBIEE">Entity</a></p>
+<br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r9c1-t34" headers="r1c1-t34">
-<p>Nullable</p>
+<td align="left" id="r9c1-t31" headers="r1c1-t31">
+<p>Allocation size</p>
 </td>
-<td align="left" headers="r9c1-t34 r1c2-t34">
-<p>Specifies if the column allows null values.</p>
+<td align="left" headers="r9c1-t31 r1c2-t31">
+<p>The value for the <span class="bold">Primary Key Column</span> in the generator table.</p>
 </td>
-<td align="left" headers="r9c1-t34 r1c3-t34">
-<p>True</p>
+<td align="left" headers="r9c1-t31 r1c3-t31">
+<p>50</p>
 </td>
+<td align="left" headers="r9c1-t31 r1c4-t31">
+<p><a href="tasks004.htm#BABGBIEE">Entity</a></p>
+<br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r10c1-t34" headers="r1c1-t34">
-<p>Length</p>
+<td align="left" id="r10c1-t31" headers="r1c1-t31">
+<p>Initial value</p>
 </td>
-<td align="left" headers="r10c1-t34 r1c2-t34">
-<p>Sets the column length.</p>
+<td align="left" headers="r10c1-t31 r1c2-t31">
+<p>The starting value of the generated primary key.</p>
 </td>
-<td align="left" headers="r10c1-t34 r1c3-t34">
-<p>255</p>
-</td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r11c1-t34" headers="r1c1-t34">
-<p>Precision</p>
-</td>
-<td align="left" headers="r11c1-t34 r1c2-t34">
-<p>Sets the precision for the column values.</p>
-</td>
-<td align="left" headers="r11c1-t34 r1c3-t34">
+<td align="left" headers="r10c1-t31 r1c3-t31">
 <p>0</p>
 </td>
+<td align="left" headers="r10c1-t31 r1c4-t31">
+<p><a href="tasks004.htm#BABGBIEE">Entity</a></p>
+<br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r12c1-t34" headers="r1c1-t34">
-<p>Scale</p>
+<td align="left" id="r11c1-t31" headers="r1c1-t31">
+<p><span class="bold">Sequence Generator</span></p>
 </td>
-<td align="left" headers="r12c1-t34 r1c2-t34">
-<p>Sets the number of digits that appear to the right of the decimal point.</p>
+<td align="left" headers="r11c1-t31 r1c2-t31">
+<p><a id="sthref488" name="sthref488"></a><a id="sthref489" name="sthref489"></a>These fields define the specific sequence used for generating the primary key and correspond to the <code>@SequenceGenerator</code> annotation.</p>
+<p>These fields apply only when <span class="bold">Strategy</span> = <span class="bold">Sequence</span>.</p>
 </td>
-<td align="left" headers="r12c1-t34 r1c3-t34">
-<p>0</p>
-</td>
+<td align="left" headers="r11c1-t31 r1c3-t31"><br /></td>
+<td align="left" headers="r11c1-t31 r1c4-t31">
+<p><a href="tasks004.htm#BABGBIEE">Entity</a></p>
+<br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r13c1-t34" headers="r1c1-t34">
-<p>Column definition</p>
+<td align="left" id="r12c1-t31" headers="r1c1-t31">
+<p>Name</p>
 </td>
-<td align="left" headers="r13c1-t34 r1c2-t34">
-<p>The SQL fragment that is used when generating the DDL for the column.</p>
+<td align="left" headers="r12c1-t31 r1c2-t31">
+<p>Name of the sequence table to use for defining primary key values.</p>
 </td>
-<td align="left" headers="r13c1-t34 r1c3-t34"><br /></td>
+<td align="left" headers="r12c1-t31 r1c3-t31"><br /></td>
+<td align="left" headers="r12c1-t31 r1c4-t31">
+<p><a href="tasks004.htm#BABGBIEE">Entity</a></p>
+<br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r14c1-t34" headers="r1c1-t34">
-<p><a id="sthref505" name="sthref505"></a><a id="sthref506" name="sthref506"></a><a id="sthref507" name="sthref507"></a><span class="bold">Fetch</span></p>
+<td align="left" id="r13c1-t31" headers="r1c1-t31">
+<p>Sequence</p>
 </td>
-<td align="left" headers="r14c1-t34 r1c2-t34">
-<p>Defines how data is loaded from the database:</p>
-<ul>
-<li>
-<p>Eager &ndash; Data is loaded in before it is actually needed.</p>
-</li>
-<li>
-<p>Lazy &ndash; Data is loaded only when required by the transaction.</p>
-</li>
-</ul>
+<td align="left" headers="r13c1-t31 r1c2-t31">
+<p>Unique name of the sequence.</p>
 </td>
-<td align="left" headers="r14c1-t34 r1c3-t34">
-<p>Eager</p>
-</td>
+<td align="left" headers="r13c1-t31 r1c3-t31"><br /></td>
+<td align="left" headers="r13c1-t31 r1c4-t31">
+<p><a href="tasks004.htm#BABGBIEE">Entity</a></p>
+<br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r15c1-t34" headers="r1c1-t34">
-<p><span class="bold">Optional</span></p>
+<td align="left" id="r14c1-t31" headers="r1c1-t31">
+<p>Schema</p>
 </td>
-<td align="left" headers="r15c1-t34 r1c2-t34">
-<p>Specifies if this field is can be null.</p>
+<td align="left" headers="r14c1-t31 r1c2-t31">
+<p>Database schema of the <span class="bold">Sequence</span>.</p>
 </td>
-<td align="left" headers="r15c1-t34 r1c3-t34">
-<p>True</p>
-</td>
+<td align="left" headers="r14c1-t31 r1c3-t31"><br /></td>
+<td align="left" headers="r14c1-t31 r1c4-t31">
+<p><a href="tasks004.htm#BABGBIEE">Entity</a></p>
+<br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r16c1-t34" headers="r1c1-t34">
-<p><span class="bold">Mutable</span></p>
+<td align="left" id="r15c1-t31" headers="r1c1-t31">
+<p>Catalog</p>
 </td>
-<td align="left" headers="r16c1-t34 r1c2-t34">
-<p>Specify if the value of a complex field type can be changed (or not changed) instead of being replaced.</p>
+<td align="left" headers="r15c1-t31 r1c2-t31">
+<p>Database catalog of the <span class="bold">Sequence</span>.</p>
 </td>
-<td align="left" headers="r16c1-t34 r1c3-t34">
-<p>True</p>
+<td align="left" headers="r15c1-t31 r1c3-t31"><br /></td>
+<td align="left" headers="r15c1-t31 r1c4-t31">
+<p><a href="tasks004.htm#BABGBIEE">Entity</a></p>
+<br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r16c1-t31" headers="r1c1-t31">
+<p>Allocation size</p>
 </td>
+<td align="left" headers="r16c1-t31 r1c2-t31">
+<p><a id="sthref490" name="sthref490"></a><a id="sthref491" name="sthref491"></a>These fields define the specific sequence used for generating the primary key and correspond to the <code>@SequenceGenerator</code> annotation.</p>
+<p>These fields apply only when <span class="bold">Strategy</span> = <span class="bold">Sequence</span>.</p>
+</td>
+<td align="left" headers="r16c1-t31 r1c3-t31">
+<p>50</p>
+</td>
+<td align="left" headers="r16c1-t31 r1c4-t31">
+<p><a href="tasks004.htm#BABGBIEE">Entity</a></p>
+<br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r17c1-t31" headers="r1c1-t31">
+<p>Initial value</p>
+</td>
+<td align="left" headers="r17c1-t31 r1c2-t31">
+<p>The starting value of the generated primary key.</p>
+</td>
+<td align="left" headers="r17c1-t31 r1c3-t31">
+<p>1</p>
+</td>
+<td align="left" headers="r17c1-t31 r1c4-t31">
+<p><a href="tasks004.htm#BABGBIEE">Entity</a></p>
+<br /></td>
 </tr>
 </tbody>
 </table>
 <br /></div>
-<!-- class="inftblhruleinformal" -->
-<p>Basic mappings also include the following areas:</p>
+<!-- class="inftblhruleinformalwide" -->
+<a id="sthref492" name="sthref492"></a>
+<p class="subhead2">Related reference</p>
 <ul>
 <li>
-<p><a href="reference039.htm#CACIHAAF">Type information</a></p>
-</li>
-<li>
-<p><a href="reference041.htm#CACJCHJB">Converters</a></p>
+<p><a href="ref_persistence_prop_view.htm#BABFAEBB">JPA Details view (for entities)</a></p>
 </li>
 </ul>
 </div>
