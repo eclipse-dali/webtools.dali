@@ -2043,9 +2043,15 @@ public abstract class AbstractJpaProject
 	// TODO pass the monitor down
 	protected IStatus update(@SuppressWarnings("unused") IProgressMonitor monitor) {
 		this.rootContextNode.update();
+		this.updateRootStructureNodes();
 		return Status.OK_STATUS;
 	}
 
+	protected void updateRootStructureNodes() {
+		for (JpaFile jpaFile : this.getJpaFiles()) {
+			jpaFile.updateRootStructureNodes();
+		}
+	}
 
 	// ********** update command listener **********
 

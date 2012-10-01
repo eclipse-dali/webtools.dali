@@ -130,8 +130,8 @@ public class EclipseLinkPersistenceUnitTests
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		ListIterator<MappingFileRef> mappingFileRefs = persistenceUnit.getMappingFileRefs().iterator();
 		
-		assertEquals(persistenceUnit.getImpliedMappingFileRef(), mappingFileRefs.next().getMappingFile().getParent());
 		assertEquals(persistenceUnit.getImpliedEclipseLinkMappingFileRef(), mappingFileRefs.next().getMappingFile().getParent());
+		assertEquals(persistenceUnit.getImpliedMappingFileRef(), mappingFileRefs.next().getMappingFile().getParent());
 	}
 
 	public void testMappingFileRefsSize() {

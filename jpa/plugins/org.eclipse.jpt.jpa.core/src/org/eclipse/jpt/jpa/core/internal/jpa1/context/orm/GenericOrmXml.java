@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
+import java.util.Collection;
 import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -136,7 +137,6 @@ public class GenericOrmXml
 				this.valuesAreDifferent(this.resourceType, newResourceType)
 		) {
 			if (this.root != null) {
-				this.unregisterRootStructureNode();
 				this.root.dispose();
 				this.setRoot(null);
 			}
@@ -155,8 +155,6 @@ public class GenericOrmXml
 				}
 				else {
 					this.root.update();
-					// this will happen redundantly - need to hold JpaFile?
-					this.registerRootStructureNode();
 				}
 			}
 		}
@@ -284,25 +282,22 @@ public class GenericOrmXml
 		return TextRange.Empty.instance();
 	}
 
+	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
+		if (this.root == null) {
+			return;
+		}
+		if (this.getResource().equals(jpaFile.getFile())) {
+			rootStructureNodes.add(this.root); 
+			return;
+		}
+		this.root.gatherRootStructureNodes(jpaFile, rootStructureNodes);
+	}
+
 	public void dispose() {
 		if (this.root != null) {
-			JpaFile jpaFile = this.getJpaFile();
-			if (jpaFile != null) {
-				this.unregisterRootStructureNode();
-			}
 			this.root.dispose();
 		}
 	}
-
-	// TODO hold the JpaFile?
-	protected void registerRootStructureNode() {
-		this.getJpaFile().addRootStructureNode(this.xmlResource, this.root);
-	}
-
-	protected void unregisterRootStructureNode() {
-		this.getJpaFile().removeRootStructureNode(this.xmlResource, this.root);
-	}
-
 
 	// ********** MappingFile implementation **********
 

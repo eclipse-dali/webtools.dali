@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.persistence;
 
+import java.util.Collection;
 import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -82,6 +83,11 @@ public abstract class AbstractJarFileRef
 		this.updateJarFile();
 	}
 
+	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
+		if (this.jarFile != null) {
+			this.jarFile.gatherRootStructureNodes(jpaFile, rootStructureNodes);
+		}
+	}
 
 	// ********** JpaStructureNode implementation **********
 

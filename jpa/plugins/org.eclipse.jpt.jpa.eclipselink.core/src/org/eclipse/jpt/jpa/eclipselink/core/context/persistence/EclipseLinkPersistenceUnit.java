@@ -276,7 +276,7 @@ public class EclipseLinkPersistenceUnit
 	public ListIterable<MappingFileRef> getMappingFileRefs() {
 		return (this.impliedEclipseLinkMappingFileRef == null) ?
 				super.getMappingFileRefs() :
-				new CompositeListIterable<MappingFileRef>(super.getMappingFileRefs(), this.impliedEclipseLinkMappingFileRef);
+				new CompositeListIterable<MappingFileRef>(this.impliedEclipseLinkMappingFileRef, super.getMappingFileRefs());
 	}
 
 	@Override
@@ -318,7 +318,6 @@ public class EclipseLinkPersistenceUnit
 			this.impliedEclipseLinkMappingFileRef.update();
 		}
 		else if (this.impliedEclipseLinkMappingFileRef != null) {
-			//this is needed to unregister the root structure node
 			this.impliedEclipseLinkMappingFileRef.dispose();
 			this.setImpliedEclipseLinkMappingFileRef(null);
 		}

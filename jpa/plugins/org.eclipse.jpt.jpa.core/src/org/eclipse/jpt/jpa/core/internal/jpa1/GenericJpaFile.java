@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,16 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1;
 
-import java.util.Hashtable;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceModel;
-import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
+import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.internal.AbstractJpaNode;
 
 /**
@@ -51,7 +52,7 @@ public class GenericJpaFile
 	 * the root structure (context model) nodes corresponding to the resource
 	 * model
 	 */
-	protected final Hashtable<Object, JpaStructureNode> rootStructureNodes = new Hashtable<Object, JpaStructureNode>();
+	protected final HashSet<JpaStructureNode> rootStructureNodes = new HashSet<JpaStructureNode>();
 
 
 	// ********** construction **********
@@ -66,14 +67,16 @@ public class GenericJpaFile
 	/**
 	 * Changes to {@link #ROOT_STRUCTURE_NODES_COLLECTION} do not need to trigger a
 	 * project update. Only the UI cares about the root structure nodes.
-	 * If a project update is allowed to happen, an infinite loop will result
-	 * if any Java class is specified in more than one location in the
-	 * persistence unit.
 	 */
 	@Override
 	protected void addNonUpdateAspectNamesTo(Set<String> nonUpdateAspectNames) {
 		super.addNonUpdateAspectNamesTo(nonUpdateAspectNames);
 		nonUpdateAspectNames.add(ROOT_STRUCTURE_NODES_COLLECTION);
+	}
+
+	@Override
+	public JpaProject getParent() {
+		return (JpaProject) super.getParent();
 	}
 
 
@@ -99,27 +102,50 @@ public class GenericJpaFile
 	// ********** root structure nodes **********
 
 	public Iterable<JpaStructureNode> getRootStructureNodes() {
-		return new LiveCloneIterable<JpaStructureNode>(this.rootStructureNodes.values());
+		return new LiveCloneIterable<JpaStructureNode>(this.rootStructureNodes);
 	}
 
 	public int getRootStructureNodesSize() {
 		return this.rootStructureNodes.size();
 	}
 
-	public void addRootStructureNode(Object key, JpaStructureNode rootStructureNode) {
-		JpaStructureNode old = this.rootStructureNodes.put(key, rootStructureNode);
-		if (rootStructureNode != old) {
-			if (old != null) {
-				this.fireItemRemoved(ROOT_STRUCTURE_NODES_COLLECTION, old);
-			}
-			this.fireItemAdded(ROOT_STRUCTURE_NODES_COLLECTION, rootStructureNode);
-		}
+	protected PersistenceXml getPersistenceXml() {
+		return this.getParent().getRootContextNode().getPersistenceXml();
 	}
 
-	public void removeRootStructureNode(Object key, JpaStructureNode rootStructureNode) {
-		if (Tools.valuesAreEqual(rootStructureNode, this.rootStructureNodes.get(key))) {
-			this.fireItemRemoved(ROOT_STRUCTURE_NODES_COLLECTION, this.rootStructureNodes.remove(key));
+	/**
+	 * <li>The JPA file for a persistence.xml will have one root structure node: Persistence
+	 * <li>The JPA file for an orm xml file will have one root structure node: EntityMappings
+	 * <li>The JPA file for a java file can have multiple root structure nodes only if there
+	 * are inner classes. The top-level class and inner classes will be included only 
+	 * if they are either annotated or listed in the persistence.xml. The root structure
+	 * node will be an instanceof JavaPersistentType
+	 * <br><br>
+	 * If a class is listed in both the persistence.xml and also in an orm.xml file
+	 * the root structure node will be the JavaPersistentType that was built by the OrmPersistentType
+	 * listed in the orm.xml file. Mapping files will take precendence over the class-ref
+	 * in the persistence.xml, but you will currently only have 1 root structure node. There
+	 * are validation warnings for these scenarios.
+	 * <br><br>
+	 * TODO we have discussed having a "primary root" node along with a collection of
+	 * root structure nodes that includes all the JavaPersistentTypes as they are
+	 * listed via the persistence.xml class-refs, any of the mapping-file-refs, or the jar-file-refs.
+	 * <br><br>
+	 * bug 390616 is about selection  problems when there are static inner classes. When
+	 * fixing this bug we need to make sure to handle the possibility that there will
+	 * be an unannotated top-level class with an annotated static inner class. Would like
+	 * to change the inner classes to not be root structure nodes, but instead be 
+	 * nested under the top-level class in the structure view. 
+	 */
+	public void updateRootStructureNodes() {
+		PersistenceXml persistenceXml = this.getPersistenceXml();
+		if (persistenceXml == null) {
+			this.clearCollection(this.rootStructureNodes, ROOT_STRUCTURE_NODES_COLLECTION);
+			return;
 		}
+		Collection<JpaStructureNode> newRootStructureNodes = new HashSet<JpaStructureNode>();
+		persistenceXml.gatherRootStructureNodes(this, newRootStructureNodes);
+		this.synchronizeCollection(newRootStructureNodes, this.rootStructureNodes, ROOT_STRUCTURE_NODES_COLLECTION);
 	}
 
 	public JpaStructureNode getStructureNode(int textOffset) {

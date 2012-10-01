@@ -66,7 +66,15 @@ public interface JpaFile
 	 */
 	JptResourceModel getResourceModel(IContentType contentType);
 	
-	
+	/**
+	 * Update the collection of root structure nodes.
+	 * This is called at the end of the project update.
+	 *  
+	 * @see JpaStructureNode#gatherRootStructureNodes(JpaFile, java.util.Collection)
+	 */
+	void updateRootStructureNodes();
+
+
 	// ********** root structure nodes **********
 
 	/**
@@ -79,28 +87,6 @@ public interface JpaFile
 	 * Return the count of the JPA file's root context model objects.
 	 */
 	int getRootStructureNodesSize();
-
-	/**
-	 * Add a root structure node.
-	 * There is the potential for multiple root structure nodes 
-	 * for a particular key. For example, a Java type can be listed
-	 * both as a {@code <class>} in the <code>persistence.xml</code> file
-	 * and as an {@code <entity>} in
-	 * an <code>orm.xml</code> file. In this case, the Jave type in
-	 * the <code>orm.xml</code> file must set
-	 * the root structure node <em>after</em> the Java type in the
-	 * <code>persistence.xml</code> file.
-	 * Last one in during project <em>update</em> wins.
-	 */
-	void addRootStructureNode(Object key, JpaStructureNode rootStructureNode);
-
-	/**
-	 * Remove the root structure node for the specified key if its current value
-	 * is the same as the specified node.
-	 * 
-	 * @see #addRootStructureNode(Object, JpaStructureNode)
-	 */
-	void removeRootStructureNode(Object key, JpaStructureNode rootStructureNode);
 
 	/**
 	 * Return the structure node best corresponding to the location in the file.

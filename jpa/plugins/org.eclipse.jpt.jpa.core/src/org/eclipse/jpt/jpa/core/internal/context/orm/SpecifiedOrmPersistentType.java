@@ -43,6 +43,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -143,6 +144,12 @@ public abstract class SpecifiedOrmPersistentType
 		this.updateDefaultAttributes();
 		this.setSuperPersistentType(this.buildSuperPersistentType());
 		this.setDeclaringTypeName(this.buildDeclaringTypeName());
+	}
+
+	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
+		if (this.javaPersistentType != null) {
+			this.javaPersistentType.gatherRootStructureNodes(jpaFile, rootStructureNodes);
+		}
 	}
 
 

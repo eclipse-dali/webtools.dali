@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
+import java.util.Collection;
 import java.util.List;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.IJavaElement;
@@ -25,6 +26,7 @@ import org.eclipse.jpt.common.utility.internal.ReflectionTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.CollectionMapping;
@@ -105,6 +107,11 @@ public abstract class AbstractJavaPersistentAttribute
 		this.updateJpaContainerDefinition();
 		this.updateMapping();
 	}
+
+	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
+		throw new UnsupportedOperationException();
+	}
+
 
 	// ********** name **********
 

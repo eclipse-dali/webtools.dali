@@ -117,7 +117,6 @@ public abstract class AbstractJavaPersistentType
 		this.setDefaultAccess(this.buildDefaultAccess());
 		this.mapping.update();
 		this.updateAttributes();
-		this.registerRootStructureNode();
 	}
 
 
@@ -977,25 +976,14 @@ public abstract class AbstractJavaPersistentType
 		return this.resourceType.getNameTextRange();
 	}
 
+	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
+		if (this.getResource().equals(jpaFile.getFile())) {
+			rootStructureNodes.add(this);
+		}
+	}
+
 	public void dispose() {
-		this.unregisterRootStructureNode();
-	}
-
-	protected void registerRootStructureNode() {
-		JpaFile jpaFile = this.getJpaFile();
-		// the JPA file can be null if the resource type is "external"
-		if (jpaFile != null) {
-			jpaFile.addRootStructureNode(this.name, this);
-		}
-	}
-
-	protected void unregisterRootStructureNode() {
-		JpaFile jpaFile = this.getJpaFile();
-		// the JPA file can be null if the .java file was deleted
-		// or the resource type is "external"
-		if (jpaFile != null) {
-			jpaFile.removeRootStructureNode(this.name, this);
-		}
+		//nothing
 	}
 
 

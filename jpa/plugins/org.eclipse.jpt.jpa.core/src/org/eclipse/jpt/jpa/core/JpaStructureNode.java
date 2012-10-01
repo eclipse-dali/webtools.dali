@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core;
 
+import java.util.Collection;
+
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -76,6 +78,13 @@ public interface JpaStructureNode
 	 * structure node's JPA Details Page.
 	 */
 	Class<? extends JpaStructureNode> getType();
+
+	/**
+	 * Add the appropriate root structure nodes to the collection that
+	 * correspond to the given JPA file.
+	 * @see JpaFile#getRootStructureNodes()
+	 */
+	void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes);
 
 	/**
 	 * Dispose the structure node and its children.

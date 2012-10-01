@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.persistence;
 
+import java.util.Collection;
 import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -19,13 +20,13 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpa.core.context.MappingFilePersistenceUnitMetadata;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.Query;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
@@ -74,6 +75,12 @@ public abstract class AbstractMappingFileRef<MF extends MappingFile>
 	public void update() {
 		super.update();
 		this.updateMappingFile();
+	}
+
+	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
+		if (this.mappingFile != null) {
+			this.mappingFile.gatherRootStructureNodes(jpaFile, rootStructureNodes);
+		}
 	}
 
 
@@ -239,7 +246,7 @@ public abstract class AbstractMappingFileRef<MF extends MappingFile>
 	}
 
 	public Iterable<? extends PersistentType> getPersistentTypes() {
-		return (this.mappingFile != null) ? this.mappingFile.getPersistentTypes() : EmptyIterable.<JavaPersistentType>instance();
+		return (this.mappingFile != null) ? this.mappingFile.getPersistentTypes() : EmptyIterable.<PersistentType>instance();
 	}
 
 

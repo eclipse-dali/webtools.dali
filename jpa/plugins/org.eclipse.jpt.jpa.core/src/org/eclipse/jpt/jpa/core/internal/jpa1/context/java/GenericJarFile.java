@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
+import java.util.Collection;
 import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -21,6 +22,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
+import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -87,6 +89,15 @@ public class GenericJarFile
 
 	public JpaStructureNode getStructureNode(int textOffset) {
 		return null;
+	}
+
+	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
+		for (JavaPersistentType persistentType : this.getJavaPersistentTypes()) {
+			persistentType.gatherRootStructureNodes(jpaFile, rootStructureNodes);
+			if (!rootStructureNodes.isEmpty()) { //short-circuit
+				return;
+			}
+		}
 	}
 
 	public void dispose() {

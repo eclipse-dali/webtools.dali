@@ -28,6 +28,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.ChainIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -81,6 +82,10 @@ public class VirtualJavaPersistentType
 	public void update() {
 		super.update();
 		this.setSuperPersistentType(this.buildSuperPersistentType());
+	}
+
+	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
+		//none
 	}
 
 

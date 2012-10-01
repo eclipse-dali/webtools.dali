@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +35,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AccessType;
@@ -173,6 +175,14 @@ public abstract class AbstractEntityMappings
 		this.queryContainer.update();
 	}
 
+	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
+		for (PersistentType persistentType : this.getPersistentTypes()) {
+			persistentType.gatherRootStructureNodes(jpaFile, rootStructureNodes);
+			if (!rootStructureNodes.isEmpty()) { //short-circuit, first one wins
+				return;
+			}
+		}
+	}
 
 	// ********** overrides **********
 

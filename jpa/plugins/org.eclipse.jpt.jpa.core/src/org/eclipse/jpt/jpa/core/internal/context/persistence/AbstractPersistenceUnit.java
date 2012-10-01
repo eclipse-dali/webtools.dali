@@ -51,6 +51,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
@@ -296,6 +297,22 @@ public abstract class AbstractPersistenceUnit
 		this.setDefaultValidationMode(this.buildDefaultValidationMode());
 	}
 
+	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
+		for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
+			mappingFileRef.gatherRootStructureNodes(jpaFile, rootStructureNodes);
+			if (!rootStructureNodes.isEmpty()) {//short-circuit so we only get one rootStructureNode
+				return;
+			}
+		}
+		//TODO if we decide to gather all rootStructureNodes then we need to only check specifiedClassRefs
+		//if we have already found a particular javaPersistentType listed in a mapping file.
+		for (ClassRef classRef : this.getClassRefs()) {
+			classRef.gatherRootStructureNodes(jpaFile, rootStructureNodes);
+		}
+		for (JarFileRef jarFileRef : this.getJarFileRefs()) {
+			jarFileRef.gatherRootStructureNodes(jpaFile, rootStructureNodes);
+		}
+	}
 
 	// ********** JpaContextNode implementation **********
 
@@ -487,8 +504,8 @@ public abstract class AbstractPersistenceUnit
 
 	protected ListIterable<MappingFileRef> getCombinedMappingFileRefs() {
 		return new CompositeListIterable<MappingFileRef>(
-				this.getSpecifiedMappingFileRefs(),
-				this.impliedMappingFileRef
+				this.impliedMappingFileRef,
+				this.getSpecifiedMappingFileRefs()
 			);
 	}
 
@@ -565,11 +582,8 @@ public abstract class AbstractPersistenceUnit
 		this.xmlPersistenceUnit.getMappingFiles().remove(index);
 	}
 
-	/**
-	 * dispose the mapping file ref
-	 */
 	protected void removeSpecifiedMappingFileRef_(int index) {
-		this.specifiedMappingFileRefContainer.removeContextElement(index).dispose();
+		this.specifiedMappingFileRefContainer.removeContextElement(index);
 	}
 
 	protected void syncSpecifiedMappingFileRefs() {
@@ -642,7 +656,6 @@ public abstract class AbstractPersistenceUnit
 			this.impliedMappingFileRef.update();
 		}
 		else if (this.impliedMappingFileRef != null) {
-			//this is needed to unregister the root structure node
 			this.impliedMappingFileRef.dispose();
 			this.setImpliedMappingFileRef(null);
 		}
@@ -714,11 +727,8 @@ public abstract class AbstractPersistenceUnit
 		this.xmlPersistenceUnit.getJarFiles().remove(index);
 	}
 
-	/**
-	 * dispose the JAR file ref
-	 */
 	protected void removeJarFileRef_(int index) {
-		this.jarFileRefContainer.removeContextElement(index).dispose();
+		this.jarFileRefContainer.removeContextElement(index);
 	}
 
 	protected void syncJarFileRefs() {
@@ -757,6 +767,10 @@ public abstract class AbstractPersistenceUnit
 		@Override
 		protected XmlJarFileRef getResourceElement(JarFileRef contextElement) {
 			return contextElement.getXmlJarFileRef();
+		}
+		@Override
+		protected void disposeElement(JarFileRef element) {
+			element.dispose();
 		}
 	}
 
@@ -828,11 +842,8 @@ public abstract class AbstractPersistenceUnit
 		this.xmlPersistenceUnit.getClasses().remove(index);
 	}
 
-	/**
-	 * dispose the class ref
-	 */
 	protected void removeSpecifiedClassRef_(int index) {
-		this.specifiedClassRefContainer.removeContextElement(index).dispose();
+		this.specifiedClassRefContainer.removeContextElement(index);
 	}
 
 	public void removeSpecifiedClassRefs(Iterable<ClassRef> classRefs) {
@@ -841,9 +852,6 @@ public abstract class AbstractPersistenceUnit
 			xmlClassRefs.add(classRef.getXmlClassRef());
 		}
 		this.specifiedClassRefContainer.removeAll(classRefs);
-		for (ClassRef classRef : classRefs) {
-			classRef.dispose();
-		}
 		this.xmlPersistenceUnit.getClasses().removeAll(xmlClassRefs);
 	}
 
@@ -1783,25 +1791,29 @@ public abstract class AbstractPersistenceUnit
 	protected void rebuildPersistentTypeMap() {
 		synchronized (this.persistentTypeMap) {
 			this.persistentTypeMap.clear();
-
-			//order is significant - last in wins
-			for (JarFileRef jarFileRef : this.getJarFileRefs()) {
-				for (PersistentType persistentType : jarFileRef.getPersistentTypes()) {
+			for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
+				for (PersistentType persistentType : mappingFileRef.getPersistentTypes()) {
 					if (persistentType.getName() != null) {
-						this.persistentTypeMap.put(persistentType.getName(), persistentType);
+						if (! this.persistentTypeMap.containsKey(persistentType.getName())) {
+							this.persistentTypeMap.put(persistentType.getName(), persistentType);
+						}
 					}
 				}
 			}
 			for (ClassRef classRef : this.getClassRefs()) {
 				PersistentType persistentType = classRef.getJavaPersistentType();
 				if (persistentType != null && persistentType.getName() != null) {
-					this.persistentTypeMap.put(persistentType.getName(), persistentType);
+					if (! this.persistentTypeMap.containsKey(persistentType.getName())) {
+						this.persistentTypeMap.put(persistentType.getName(), persistentType);
+					}
 				}
 			}
-			for (MappingFileRef mappingFileRef : this.getMappingFileRefs()) {
-				for (PersistentType persistentType : mappingFileRef.getPersistentTypes()) {
+			for (JarFileRef jarFileRef : this.getJarFileRefs()) {
+				for (PersistentType persistentType : jarFileRef.getPersistentTypes()) {
 					if (persistentType.getName() != null) {
-						this.persistentTypeMap.put(persistentType.getName(), persistentType);
+						if (! this.persistentTypeMap.containsKey(persistentType.getName())) {
+							this.persistentTypeMap.put(persistentType.getName(), persistentType);
+						}
 					}
 				}
 			}

@@ -127,6 +127,6 @@ public abstract class EclipseLinkContextModelTestCase
 
 	@Override
 	protected EclipseLinkEntityMappings getEntityMappings() {
-		return (EclipseLinkEntityMappings) super.getEntityMappings();
+		return (EclipseLinkEntityMappings) getPersistenceUnit().getSpecifiedMappingFileRefs().iterator().next().getMappingFile().getRoot();
 	}
 }
