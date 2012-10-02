@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,17 +17,17 @@ package org.eclipse.jpt.jaxb.core.context;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 3.3
  * @since 3.0
  */
-public interface XmlAccessOrderHolder
+public interface XmlAccessOrderHolder<A extends XmlAccessOrder>
 		extends JaxbContextNode {
 	
 	/**
 	 * Return the access order, whether specified or defaulted.
 	 * This should never return null since at least the default will be set
 	 */
-	XmlAccessOrder getAccessOrder();
+	A getAccessOrder();
 	
 	/**
 	 * String constant associated with changes to the default access order
@@ -37,7 +37,7 @@ public interface XmlAccessOrderHolder
 	/**
 	 * Return the default access order, never null
 	 */
-	XmlAccessOrder getDefaultAccessOrder();
+	A getDefaultAccessOrder();
 	
 	/**
 	 * String constant associated with changes to the specified access order
@@ -47,10 +47,10 @@ public interface XmlAccessOrderHolder
 	/**
 	 * Return the specified access order;
 	 */
-	XmlAccessOrder getSpecifiedAccessOrder();
+	A getSpecifiedAccessOrder();
 	
 	/**
 	 * Set the specified access order.
 	 */
-	void setSpecifiedAccessOrder(XmlAccessOrder newSpecifiedAccessOrder);
+	void setSpecifiedAccessOrder(A newSpecifiedAccessOrder);
 }

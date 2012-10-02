@@ -120,7 +120,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlAccessorType" eType="#//EXmlAccessType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlAccessorOrder" eType="#//EXmlAccessOrder"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlMappingMetadataComplete"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="packageName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlNameTransformer" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="xmlSchema" eType="#//EXmlSchema"

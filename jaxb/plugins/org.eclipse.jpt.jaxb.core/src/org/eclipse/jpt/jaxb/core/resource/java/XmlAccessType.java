@@ -44,7 +44,7 @@ public enum XmlAccessType {
 	}
 
 
-	// ********** static methods **********
+	// ***** to/from annotation values *****
 
 	public static XmlAccessType fromJavaAnnotationValue(Object javaAnnotationValue) {
 		return (javaAnnotationValue == null) ? null : fromJavaAnnotationValue_(javaAnnotationValue);
@@ -62,5 +62,4 @@ public enum XmlAccessType {
 	public static String toJavaAnnotationValue(XmlAccessType accessType) {
 		return (accessType == null) ? null : accessType.getJavaAnnotationValue();
 	}
-
 }

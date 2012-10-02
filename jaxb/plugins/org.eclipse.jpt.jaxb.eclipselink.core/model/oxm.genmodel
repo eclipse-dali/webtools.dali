@@ -118,7 +118,6 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference oxm.ecore#//EXmlAttribute/xmlSchemaType"/>
     </genClasses>
     <genClasses ecoreClass="oxm.ecore#//EXmlBindings">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlBindings/impliedVersion"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlBindings/xmlAccessorType"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlBindings/xmlAccessorOrder"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute oxm.ecore#//EXmlBindings/xmlMappingMetadataComplete"/>

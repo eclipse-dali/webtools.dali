@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+import org.eclipse.emf.ecore.xml.type.XMLTypePackage;
 import org.eclipse.jpt.common.core.resource.xml.CommonPackage;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.util.OxmValidator;
 
@@ -1064,7 +1065,7 @@ public class OxmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int EXML_BINDINGS__IMPLIED_VERSION = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 0;
+	public static final int EXML_BINDINGS__IMPLIED_VERSION = CommonPackage.EROOT_OBJECT_IMPL__IMPLIED_VERSION;
 
 	/**
 	 * The feature id for the '<em><b>Xml Accessor Type</b></em>' attribute.
@@ -1073,7 +1074,7 @@ public class OxmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int EXML_BINDINGS__XML_ACCESSOR_TYPE = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 1;
+	public static final int EXML_BINDINGS__XML_ACCESSOR_TYPE = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Xml Accessor Order</b></em>' attribute.
@@ -1082,7 +1083,7 @@ public class OxmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int EXML_BINDINGS__XML_ACCESSOR_ORDER = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 2;
+	public static final int EXML_BINDINGS__XML_ACCESSOR_ORDER = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Xml Mapping Metadata Complete</b></em>' attribute.
@@ -1091,7 +1092,7 @@ public class OxmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int EXML_BINDINGS__XML_MAPPING_METADATA_COMPLETE = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 3;
+	public static final int EXML_BINDINGS__XML_MAPPING_METADATA_COMPLETE = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Package Name</b></em>' attribute.
@@ -1100,7 +1101,7 @@ public class OxmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int EXML_BINDINGS__PACKAGE_NAME = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 4;
+	public static final int EXML_BINDINGS__PACKAGE_NAME = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Xml Name Transformer</b></em>' attribute.
@@ -1109,7 +1110,7 @@ public class OxmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int EXML_BINDINGS__XML_NAME_TRANSFORMER = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 5;
+	public static final int EXML_BINDINGS__XML_NAME_TRANSFORMER = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Xml Schema</b></em>' containment reference.
@@ -1118,7 +1119,7 @@ public class OxmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int EXML_BINDINGS__XML_SCHEMA = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 6;
+	public static final int EXML_BINDINGS__XML_SCHEMA = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Xml Schema Type</b></em>' containment reference.
@@ -1127,7 +1128,7 @@ public class OxmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int EXML_BINDINGS__XML_SCHEMA_TYPE = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 7;
+	public static final int EXML_BINDINGS__XML_SCHEMA_TYPE = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Xml Schema Types</b></em>' containment reference list.
@@ -1136,7 +1137,7 @@ public class OxmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int EXML_BINDINGS__XML_SCHEMA_TYPES = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 8;
+	public static final int EXML_BINDINGS__XML_SCHEMA_TYPES = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Xml Java Type Adapters</b></em>' containment reference list.
@@ -1145,7 +1146,7 @@ public class OxmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int EXML_BINDINGS__XML_JAVA_TYPE_ADAPTERS = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 9;
+	public static final int EXML_BINDINGS__XML_JAVA_TYPE_ADAPTERS = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Xml Registries</b></em>' containment reference list.
@@ -1154,7 +1155,7 @@ public class OxmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int EXML_BINDINGS__XML_REGISTRIES = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 10;
+	public static final int EXML_BINDINGS__XML_REGISTRIES = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 9;
 
 	/**
 	 * The feature id for the '<em><b>Xml Enums</b></em>' containment reference list.
@@ -1163,7 +1164,7 @@ public class OxmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int EXML_BINDINGS__XML_ENUMS = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 11;
+	public static final int EXML_BINDINGS__XML_ENUMS = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 10;
 
 	/**
 	 * The feature id for the '<em><b>Java Types</b></em>' containment reference list.
@@ -1172,7 +1173,7 @@ public class OxmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int EXML_BINDINGS__JAVA_TYPES = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 12;
+	public static final int EXML_BINDINGS__JAVA_TYPES = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 11;
 
 	/**
 	 * The number of structural features of the '<em>EXml Bindings</em>' class.
@@ -1181,7 +1182,7 @@ public class OxmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int EXML_BINDINGS_FEATURE_COUNT = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 13;
+	public static final int EXML_BINDINGS_FEATURE_COUNT = CommonPackage.EROOT_OBJECT_IMPL_FEATURE_COUNT + 12;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlClassExtractor <em>EXml Class Extractor</em>}' class.
@@ -3695,6 +3696,7 @@ public class OxmPackage extends EPackageImpl
 
 		// Initialize simple dependencies
 		CommonPackage.eINSTANCE.eClass();
+		XMLTypePackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theOxmPackage.createPackageContents();
@@ -4706,21 +4708,6 @@ public class OxmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings#getImpliedVersion <em>Implied Version</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Implied Version</em>'.
-	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings#getImpliedVersion()
-	 * @see #getEXmlBindings()
-	 * @generated
-	 */
-	public EAttribute getEXmlBindings_ImpliedVersion()
-	{
-		return (EAttribute)eXmlBindingsEClass.getEStructuralFeatures().get(0);
-	}
-
-
-	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings#getXmlAccessorType <em>Xml Accessor Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4731,7 +4718,7 @@ public class OxmPackage extends EPackageImpl
 	 */
 	public EAttribute getEXmlBindings_XmlAccessorType()
 	{
-		return (EAttribute)eXmlBindingsEClass.getEStructuralFeatures().get(1);
+		return (EAttribute)eXmlBindingsEClass.getEStructuralFeatures().get(0);
 	}
 
 
@@ -4746,22 +4733,22 @@ public class OxmPackage extends EPackageImpl
 	 */
 	public EAttribute getEXmlBindings_XmlAccessorOrder()
 	{
-		return (EAttribute)eXmlBindingsEClass.getEStructuralFeatures().get(2);
+		return (EAttribute)eXmlBindingsEClass.getEStructuralFeatures().get(1);
 	}
 
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings#isXmlMappingMetadataComplete <em>Xml Mapping Metadata Complete</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings#getXmlMappingMetadataComplete <em>Xml Mapping Metadata Complete</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Xml Mapping Metadata Complete</em>'.
-	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings#isXmlMappingMetadataComplete()
+	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings#getXmlMappingMetadataComplete()
 	 * @see #getEXmlBindings()
 	 * @generated
 	 */
 	public EAttribute getEXmlBindings_XmlMappingMetadataComplete()
 	{
-		return (EAttribute)eXmlBindingsEClass.getEStructuralFeatures().get(3);
+		return (EAttribute)eXmlBindingsEClass.getEStructuralFeatures().get(2);
 	}
 
 
@@ -4776,7 +4763,7 @@ public class OxmPackage extends EPackageImpl
 	 */
 	public EAttribute getEXmlBindings_PackageName()
 	{
-		return (EAttribute)eXmlBindingsEClass.getEStructuralFeatures().get(4);
+		return (EAttribute)eXmlBindingsEClass.getEStructuralFeatures().get(3);
 	}
 
 
@@ -4791,7 +4778,7 @@ public class OxmPackage extends EPackageImpl
 	 */
 	public EAttribute getEXmlBindings_XmlNameTransformer()
 	{
-		return (EAttribute)eXmlBindingsEClass.getEStructuralFeatures().get(5);
+		return (EAttribute)eXmlBindingsEClass.getEStructuralFeatures().get(4);
 	}
 
 
@@ -4806,7 +4793,7 @@ public class OxmPackage extends EPackageImpl
 	 */
 	public EReference getEXmlBindings_XmlSchema()
 	{
-		return (EReference)eXmlBindingsEClass.getEStructuralFeatures().get(6);
+		return (EReference)eXmlBindingsEClass.getEStructuralFeatures().get(5);
 	}
 
 
@@ -4821,7 +4808,7 @@ public class OxmPackage extends EPackageImpl
 	 */
 	public EReference getEXmlBindings_XmlSchemaType()
 	{
-		return (EReference)eXmlBindingsEClass.getEStructuralFeatures().get(7);
+		return (EReference)eXmlBindingsEClass.getEStructuralFeatures().get(6);
 	}
 
 
@@ -4836,7 +4823,7 @@ public class OxmPackage extends EPackageImpl
 	 */
 	public EReference getEXmlBindings_XmlSchemaTypes()
 	{
-		return (EReference)eXmlBindingsEClass.getEStructuralFeatures().get(8);
+		return (EReference)eXmlBindingsEClass.getEStructuralFeatures().get(7);
 	}
 
 
@@ -4851,7 +4838,7 @@ public class OxmPackage extends EPackageImpl
 	 */
 	public EReference getEXmlBindings_XmlJavaTypeAdapters()
 	{
-		return (EReference)eXmlBindingsEClass.getEStructuralFeatures().get(9);
+		return (EReference)eXmlBindingsEClass.getEStructuralFeatures().get(8);
 	}
 
 
@@ -4866,7 +4853,7 @@ public class OxmPackage extends EPackageImpl
 	 */
 	public EReference getEXmlBindings_XmlRegistries()
 	{
-		return (EReference)eXmlBindingsEClass.getEStructuralFeatures().get(10);
+		return (EReference)eXmlBindingsEClass.getEStructuralFeatures().get(9);
 	}
 
 
@@ -4881,7 +4868,7 @@ public class OxmPackage extends EPackageImpl
 	 */
 	public EReference getEXmlBindings_XmlEnums()
 	{
-		return (EReference)eXmlBindingsEClass.getEStructuralFeatures().get(11);
+		return (EReference)eXmlBindingsEClass.getEStructuralFeatures().get(10);
 	}
 
 
@@ -4896,7 +4883,7 @@ public class OxmPackage extends EPackageImpl
 	 */
 	public EReference getEXmlBindings_JavaTypes()
 	{
-		return (EReference)eXmlBindingsEClass.getEStructuralFeatures().get(12);
+		return (EReference)eXmlBindingsEClass.getEStructuralFeatures().get(11);
 	}
 
 	/**
@@ -6932,7 +6919,6 @@ public class OxmPackage extends EPackageImpl
 		createEReference(eXmlAttributeEClass, EXML_ATTRIBUTE__XML_SCHEMA_TYPE);
 
 		eXmlBindingsEClass = createEClass(EXML_BINDINGS);
-		createEAttribute(eXmlBindingsEClass, EXML_BINDINGS__IMPLIED_VERSION);
 		createEAttribute(eXmlBindingsEClass, EXML_BINDINGS__XML_ACCESSOR_TYPE);
 		createEAttribute(eXmlBindingsEClass, EXML_BINDINGS__XML_ACCESSOR_ORDER);
 		createEAttribute(eXmlBindingsEClass, EXML_BINDINGS__XML_MAPPING_METADATA_COMPLETE);
@@ -7138,6 +7124,7 @@ public class OxmPackage extends EPackageImpl
 
 		// Obtain other dependent packages
 		CommonPackage theCommonPackage = (CommonPackage)EPackage.Registry.INSTANCE.getEPackage(CommonPackage.eNS_URI);
+		XMLTypePackage theXMLTypePackage = (XMLTypePackage)EPackage.Registry.INSTANCE.getEPackage(XMLTypePackage.eNS_URI);
 
 		// Create type parameters
 
@@ -7294,10 +7281,9 @@ public class OxmPackage extends EPackageImpl
 		initEReference(getEXmlAttribute_XmlSchemaType(), this.getEXmlSchemaType(), null, "xmlSchemaType", null, 0, 1, EXmlAttribute.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(eXmlBindingsEClass, EXmlBindings.class, "EXmlBindings", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getEXmlBindings_ImpliedVersion(), ecorePackage.getEString(), "impliedVersion", null, 0, 1, EXmlBindings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getEXmlBindings_XmlAccessorType(), this.getEXmlAccessType(), "xmlAccessorType", null, 0, 1, EXmlBindings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getEXmlBindings_XmlAccessorOrder(), this.getEXmlAccessOrder(), "xmlAccessorOrder", null, 0, 1, EXmlBindings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getEXmlBindings_XmlMappingMetadataComplete(), ecorePackage.getEBoolean(), "xmlMappingMetadataComplete", null, 0, 1, EXmlBindings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEXmlBindings_XmlMappingMetadataComplete(), theXMLTypePackage.getBooleanObject(), "xmlMappingMetadataComplete", null, 0, 1, EXmlBindings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getEXmlBindings_PackageName(), ecorePackage.getEString(), "packageName", null, 0, 1, EXmlBindings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getEXmlBindings_XmlNameTransformer(), ecorePackage.getEString(), "xmlNameTransformer", null, 0, 1, EXmlBindings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getEXmlBindings_XmlSchema(), this.getEXmlSchema(), null, "xmlSchema", null, 0, 1, EXmlBindings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -8103,14 +8089,6 @@ public class OxmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass EXML_BINDINGS = eINSTANCE.getEXmlBindings();
-
-		/**
-		 * The meta object literal for the '<em><b>Implied Version</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute EXML_BINDINGS__IMPLIED_VERSION = eINSTANCE.getEXmlBindings_ImpliedVersion();
 
 		/**
 		 * The meta object literal for the '<em><b>Xml Accessor Type</b></em>' attribute feature.

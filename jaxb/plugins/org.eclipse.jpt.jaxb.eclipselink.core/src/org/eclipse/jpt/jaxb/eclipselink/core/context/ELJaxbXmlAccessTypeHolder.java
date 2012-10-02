@@ -7,11 +7,9 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.jaxb.eclipselink.core.context.oxm;
+package org.eclipse.jpt.jaxb.eclipselink.core.context;
 
-import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbXmlAccessOrderHolder;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbXmlAccessTypeHolder;
+import org.eclipse.jpt.jaxb.core.context.XmlAccessTypeHolder;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -23,23 +21,7 @@ import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbXmlAccessTypeHolder;
  * @version 3.3
  * @since 3.3
  */
-public interface OxmXmlBindings
-		extends JaxbContextNode, ELJaxbXmlAccessTypeHolder, ELJaxbXmlAccessOrderHolder {
+public interface ELJaxbXmlAccessTypeHolder
+		extends XmlAccessTypeHolder<ELJaxbXmlAccessType> {
 	
-	// ***** mapping metadata complete *****
-	
-	final static String XML_MAPPING_METADATA_COMPLETE_PROPERTY = "xmlMappingMetadataComplete"; //$NON-NLS-1$
-	
-	boolean isXmlMappingMetadataComplete();
-	
-	void setXmlMappingMetadataComplete(boolean newValue);
-	
-	
-	// ***** package name *****
-	
-	final static String PACKAGE_NAME_PROPERTY = "packageName"; //$NON-NLS-1$
-	
-	String getPackageName();
-	
-	void setPackageName(String packageName);
 }

@@ -46,6 +46,8 @@ public interface Oxm {
 	String JAVA_TYPE = "java-type"; //$NON-NLS-1$
 	String JAVA_TYPES = "java-types"; //$NON-NLS-1$
 	String PACKAGE_NAME = "package-name"; //$NON-NLS-1$
+	String XML_ACCESSOR_ORDER = "xml-accessor-order"; //$NON-NLS-1$
+	String XML_ACCESSOR_TYPE = "xml-accessor-type"; //$NON-NLS-1$
 	String XML_ANY_ATTRIBUTE = "xml-any-attribute"; //$NON-NLS-1$
 	String XML_ANY_ELEMENT = "xml-any-element"; //$NON-NLS-1$
 	String XML_ATTRIBUTE = "xml-attribute"; //$NON-NLS-1$
@@ -58,6 +60,7 @@ public interface Oxm {
 	String XML_IS_SET_NULL_POLICY = "xml-is-set-null-policy"; //$NON-NLS-1$
 	String XML_JAVA_TYPE_ADAPTER = "xml-java-type-adapter"; //$NON-NLS-1$
 	String XML_JOIN_NODES = "xml-join-nodes"; //$NON-NLS-1$
+	String XML_MAPPING_METADATA_COMPLETE = "xml-mapping-metadata-complete"; //$NON-NLS-1$
 	String XML_NULL_POLICY = "xml-null-policy"; //$NON-NLS-1$
 	String XML_TRANSFORMATION = "xml-transformation"; //$NON-NLS-1$
 	String XML_TRANSIENT = "xml-transient"; //$NON-NLS-1$

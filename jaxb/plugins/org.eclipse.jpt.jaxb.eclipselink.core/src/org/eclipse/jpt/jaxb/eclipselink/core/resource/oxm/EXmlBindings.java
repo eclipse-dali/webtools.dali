@@ -33,10 +33,9 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings#getImpliedVersion <em>Implied Version</em>}</li>
  *   <li>{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings#getXmlAccessorType <em>Xml Accessor Type</em>}</li>
  *   <li>{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings#getXmlAccessorOrder <em>Xml Accessor Order</em>}</li>
- *   <li>{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings#isXmlMappingMetadataComplete <em>Xml Mapping Metadata Complete</em>}</li>
+ *   <li>{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings#getXmlMappingMetadataComplete <em>Xml Mapping Metadata Complete</em>}</li>
  *   <li>{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings#getPackageName <em>Package Name</em>}</li>
  *   <li>{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings#getXmlNameTransformer <em>Xml Name Transformer</em>}</li>
  *   <li>{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings#getXmlSchema <em>Xml Schema</em>}</li>
@@ -56,28 +55,6 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
 public class EXmlBindings extends ERootObjectImpl
 {
 	/**
-	 * The default value of the '{@link #getImpliedVersion() <em>Implied Version</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getImpliedVersion()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String IMPLIED_VERSION_EDEFAULT = null;
-
-
-	/**
-	 * The cached value of the '{@link #getImpliedVersion() <em>Implied Version</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getImpliedVersion()
-	 * @generated
-	 * @ordered
-	 */
-	protected String impliedVersion = IMPLIED_VERSION_EDEFAULT;
-
-
-	/**
 	 * The default value of the '{@link #getXmlAccessorType() <em>Xml Accessor Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -85,7 +62,7 @@ public class EXmlBindings extends ERootObjectImpl
 	 * @generated
 	 * @ordered
 	 */
-	protected static final EXmlAccessType XML_ACCESSOR_TYPE_EDEFAULT = EXmlAccessType.FIELD;
+	protected static final EXmlAccessType XML_ACCESSOR_TYPE_EDEFAULT = null;
 
 
 	/**
@@ -107,7 +84,7 @@ public class EXmlBindings extends ERootObjectImpl
 	 * @generated
 	 * @ordered
 	 */
-	protected static final EXmlAccessOrder XML_ACCESSOR_ORDER_EDEFAULT = EXmlAccessOrder.ALPHABETICAL;
+	protected static final EXmlAccessOrder XML_ACCESSOR_ORDER_EDEFAULT = null;
 
 
 	/**
@@ -122,25 +99,25 @@ public class EXmlBindings extends ERootObjectImpl
 
 
 	/**
-	 * The default value of the '{@link #isXmlMappingMetadataComplete() <em>Xml Mapping Metadata Complete</em>}' attribute.
+	 * The default value of the '{@link #getXmlMappingMetadataComplete() <em>Xml Mapping Metadata Complete</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isXmlMappingMetadataComplete()
+	 * @see #getXmlMappingMetadataComplete()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean XML_MAPPING_METADATA_COMPLETE_EDEFAULT = false;
+	protected static final Boolean XML_MAPPING_METADATA_COMPLETE_EDEFAULT = null;
 
 
 	/**
-	 * The cached value of the '{@link #isXmlMappingMetadataComplete() <em>Xml Mapping Metadata Complete</em>}' attribute.
+	 * The cached value of the '{@link #getXmlMappingMetadataComplete() <em>Xml Mapping Metadata Complete</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isXmlMappingMetadataComplete()
+	 * @see #getXmlMappingMetadataComplete()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean xmlMappingMetadataComplete = XML_MAPPING_METADATA_COMPLETE_EDEFAULT;
+	protected Boolean xmlMappingMetadataComplete = XML_MAPPING_METADATA_COMPLETE_EDEFAULT;
 
 
 	/**
@@ -369,27 +346,27 @@ public class EXmlBindings extends ERootObjectImpl
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Xml Mapping Metadata Complete</em>' attribute.
-	 * @see #setXmlMappingMetadataComplete(boolean)
+	 * @see #setXmlMappingMetadataComplete(Boolean)
 	 * @see org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmPackage#getEXmlBindings_XmlMappingMetadataComplete()
-	 * @model
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
-	public boolean isXmlMappingMetadataComplete()
+	public Boolean getXmlMappingMetadataComplete()
 	{
 		return xmlMappingMetadataComplete;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings#isXmlMappingMetadataComplete <em>Xml Mapping Metadata Complete</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings#getXmlMappingMetadataComplete <em>Xml Mapping Metadata Complete</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Xml Mapping Metadata Complete</em>' attribute.
-	 * @see #isXmlMappingMetadataComplete()
+	 * @see #getXmlMappingMetadataComplete()
 	 * @generated
 	 */
-	public void setXmlMappingMetadataComplete(boolean newXmlMappingMetadataComplete)
+	public void setXmlMappingMetadataComplete(Boolean newXmlMappingMetadataComplete)
 	{
-		boolean oldXmlMappingMetadataComplete = xmlMappingMetadataComplete;
+		Boolean oldXmlMappingMetadataComplete = xmlMappingMetadataComplete;
 		xmlMappingMetadataComplete = newXmlMappingMetadataComplete;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, OxmPackage.EXML_BINDINGS__XML_MAPPING_METADATA_COMPLETE, oldXmlMappingMetadataComplete, xmlMappingMetadataComplete));
@@ -738,14 +715,12 @@ public class EXmlBindings extends ERootObjectImpl
 	{
 		switch (featureID)
 		{
-			case OxmPackage.EXML_BINDINGS__IMPLIED_VERSION:
-				return getImpliedVersion();
 			case OxmPackage.EXML_BINDINGS__XML_ACCESSOR_TYPE:
 				return getXmlAccessorType();
 			case OxmPackage.EXML_BINDINGS__XML_ACCESSOR_ORDER:
 				return getXmlAccessorOrder();
 			case OxmPackage.EXML_BINDINGS__XML_MAPPING_METADATA_COMPLETE:
-				return isXmlMappingMetadataComplete();
+				return getXmlMappingMetadataComplete();
 			case OxmPackage.EXML_BINDINGS__PACKAGE_NAME:
 				return getPackageName();
 			case OxmPackage.EXML_BINDINGS__XML_NAME_TRANSFORMER:
@@ -779,9 +754,6 @@ public class EXmlBindings extends ERootObjectImpl
 	{
 		switch (featureID)
 		{
-			case OxmPackage.EXML_BINDINGS__IMPLIED_VERSION:
-				setImpliedVersion((String)newValue);
-				return;
 			case OxmPackage.EXML_BINDINGS__XML_ACCESSOR_TYPE:
 				setXmlAccessorType((EXmlAccessType)newValue);
 				return;
@@ -837,9 +809,6 @@ public class EXmlBindings extends ERootObjectImpl
 	{
 		switch (featureID)
 		{
-			case OxmPackage.EXML_BINDINGS__IMPLIED_VERSION:
-				setImpliedVersion(IMPLIED_VERSION_EDEFAULT);
-				return;
 			case OxmPackage.EXML_BINDINGS__XML_ACCESSOR_TYPE:
 				setXmlAccessorType(XML_ACCESSOR_TYPE_EDEFAULT);
 				return;
@@ -890,14 +859,12 @@ public class EXmlBindings extends ERootObjectImpl
 	{
 		switch (featureID)
 		{
-			case OxmPackage.EXML_BINDINGS__IMPLIED_VERSION:
-				return IMPLIED_VERSION_EDEFAULT == null ? impliedVersion != null : !IMPLIED_VERSION_EDEFAULT.equals(impliedVersion);
 			case OxmPackage.EXML_BINDINGS__XML_ACCESSOR_TYPE:
 				return xmlAccessorType != XML_ACCESSOR_TYPE_EDEFAULT;
 			case OxmPackage.EXML_BINDINGS__XML_ACCESSOR_ORDER:
 				return xmlAccessorOrder != XML_ACCESSOR_ORDER_EDEFAULT;
 			case OxmPackage.EXML_BINDINGS__XML_MAPPING_METADATA_COMPLETE:
-				return xmlMappingMetadataComplete != XML_MAPPING_METADATA_COMPLETE_EDEFAULT;
+				return XML_MAPPING_METADATA_COMPLETE_EDEFAULT == null ? xmlMappingMetadataComplete != null : !XML_MAPPING_METADATA_COMPLETE_EDEFAULT.equals(xmlMappingMetadataComplete);
 			case OxmPackage.EXML_BINDINGS__PACKAGE_NAME:
 				return PACKAGE_NAME_EDEFAULT == null ? packageName != null : !PACKAGE_NAME_EDEFAULT.equals(packageName);
 			case OxmPackage.EXML_BINDINGS__XML_NAME_TRANSFORMER:
@@ -932,9 +899,7 @@ public class EXmlBindings extends ERootObjectImpl
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (impliedVersion: ");
-		result.append(impliedVersion);
-		result.append(", xmlAccessorType: ");
+		result.append(" (xmlAccessorType: ");
 		result.append(xmlAccessorType);
 		result.append(", xmlAccessorOrder: ");
 		result.append(xmlAccessorOrder);
@@ -999,9 +964,33 @@ public class EXmlBindings extends ERootObjectImpl
 			buildNamespaceTranslator(Oxm.SCHEMA_NAMESPACE),
 			buildSchemaNamespaceTranslator(),
 			buildSchemaLocationTranslator(Oxm.SCHEMA_NAMESPACE, SCHEMA_LOCATIONS),
+			buildXmlAccessorTypeTranslator(),
+			buildXmlAccessorOrderTranslator(),
+			buildXmlMappingMetadataCompleteTranslator(),
 			buildPackageNameTranslator(),
 			EJavaType.buildTranslator()
 		};
+	}
+	
+	protected static Translator buildXmlAccessorTypeTranslator() {
+		return new Translator(
+			Oxm.XML_ACCESSOR_TYPE, 
+			OxmPackage.eINSTANCE.getEXmlBindings_XmlAccessorType(),
+			Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildXmlAccessorOrderTranslator() {
+		return new Translator(
+			Oxm.XML_ACCESSOR_ORDER, 
+			OxmPackage.eINSTANCE.getEXmlBindings_XmlAccessorOrder(),
+			Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildXmlMappingMetadataCompleteTranslator() {
+		return new Translator(
+			Oxm.XML_MAPPING_METADATA_COMPLETE,
+			OxmPackage.eINSTANCE.getEXmlBindings_XmlMappingMetadataComplete(),
+			Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildPackageNameTranslator() {

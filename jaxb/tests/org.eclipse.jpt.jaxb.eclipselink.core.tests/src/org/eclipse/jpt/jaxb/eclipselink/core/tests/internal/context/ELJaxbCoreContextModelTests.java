@@ -13,6 +13,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.ELJaxbCoreTests;
 import org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.context.java.ELJaxbCoreJavaContextModelTests;
+import org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.context.oxm.ELJaxbCoreOxmContextModelTests;
 
 
 public class ELJaxbCoreContextModelTests {
@@ -23,6 +24,7 @@ public class ELJaxbCoreContextModelTests {
 		if (ELJaxbCoreTests.requiredJarsExists()) {
 			suite.addTestSuite(ELJaxbContextRootTests.class);			
 			suite.addTest(ELJaxbCoreJavaContextModelTests.suite());
+			suite.addTest(ELJaxbCoreOxmContextModelTests.suite());
 		}
 		else {
 			suite.addTest(TestSuite.warning(ELJaxbCoreTests.buildMissingJarErrorMessage()));

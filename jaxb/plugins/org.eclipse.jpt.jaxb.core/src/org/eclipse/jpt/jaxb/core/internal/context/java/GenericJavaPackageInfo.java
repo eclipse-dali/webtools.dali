@@ -137,7 +137,7 @@ public class GenericJavaPackageInfo
 	}
 	
 	protected XmlAccessType getResourceAccessType() {
-		return XmlAccessType.fromJavaResourceModel(this.getAccessorTypeAnnotation().getValue());
+		return XmlAccessType.fromJavaResourceModel(getAccessorTypeAnnotation().getValue());
 	}
 
 	protected XmlAccessorTypeAnnotation getAccessorTypeAnnotation() {

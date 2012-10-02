@@ -67,12 +67,12 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
  *
  * @see org.eclipse.jpt.jaxb.core.internal.jaxb21.GenericJaxb_2_1_Factory
  * 
- * @version 3.1
+ * @version 3.3
  * @since 3.0
  */
 public interface JaxbFactory  {
 	
-	// ********** Core Model **********
+	// ***** Core model *****
 	
 	/**
 	 * Construct a JaxbProject for the specified config, to be
@@ -88,7 +88,7 @@ public interface JaxbFactory  {
 	JaxbFile buildJaxbFile(JaxbProject jaxbProject, IFile file, IContentType contentType, JptResourceModel resourceModel);
 	
 	
-	// ********** Non-resource-specific context nodes **********
+	// ***** Non-resource-specific context nodes *****
 	
 	/**
 	 * Build a (/an updated) root context node to be associated with the given 
@@ -101,7 +101,7 @@ public interface JaxbFactory  {
 	JaxbPackage buildPackage(JaxbContextRoot parent, String packageName);
 	
 	
-	// ********** Java context nodes **********
+	// ***** Java context nodes *****
 	
 	JaxbPackageInfo buildJavaPackageInfo(JaxbPackage parent, JavaResourcePackage resourcePackage);
 	
