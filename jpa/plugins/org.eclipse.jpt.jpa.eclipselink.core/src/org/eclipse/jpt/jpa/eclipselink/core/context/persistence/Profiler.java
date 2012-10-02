@@ -68,6 +68,7 @@ public enum Profiler implements PersistenceXmlEnumValue {
 	}
 
 	public static String getProfilerClassName(String profilerValue) {
-		return fromPropertyValue(profilerValue).getClassName();
+		Profiler profiler = fromPropertyValue(profilerValue);
+		return (profiler == null) ? null : profiler.getClassName();
 	}
 }
