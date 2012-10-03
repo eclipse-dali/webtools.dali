@@ -13,8 +13,9 @@ import java.util.Collection;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.jpa2.context.LockModeType2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.NamedQuery2_0;
@@ -53,7 +54,7 @@ import org.eclipse.swt.widgets.Label;
  * @see NamedQueriesComposite - The parent container
  * @see QueryHintsComposite
  *
- * @version 2.0
+ * @version 3.3
  * @since 2.0
  */
 public class NamedQueryProperty2_0Composite extends Pane<NamedQuery2_0> {
@@ -132,7 +133,7 @@ public class NamedQueryProperty2_0Composite extends Pane<NamedQuery2_0> {
 		provider.installControlDecoration();
 
 		adjustMultiLineTextLayout(
-			4,
+			JpaPreferences.getJpqlQueryTextAreaNumberOfLines(),
 			provider.getStyledText(),
 			provider.getStyledText().getLineHeight()
 		);

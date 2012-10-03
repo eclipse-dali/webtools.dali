@@ -155,6 +155,7 @@ public class JptUiMessages {
 	public static String JpaPreferencesPage_jpqlEditor_description;
 	public static String JpaPreferencesPage_jpqlEditor_lowerCaseRadioButton;
 	public static String JpaPreferencesPage_jpqlEditor_matchFirstCharacterCaseRadioButton;
+	public static String JpaPreferencesPage_jpqlEditor_textAreaNumberOfLines;
 	public static String JpaPreferencesPage_jpqlEditor_upperCaseRadioButton;
 	public static String JpaProblemSeveritiesPage_Description;
 	public static String JpaProblemSeveritiesPage_Error;
@@ -193,7 +194,7 @@ public class JptUiMessages {
 	public static String JavaQueryConversionWizardPage_description;
 
 	public static String SetJpaSelection_jobName;
-	
+
 	public static String JpaXmlCompletionProposalComputer_SpecialNameMsg;
 
 	private JptUiMessages() {

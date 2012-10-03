@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.jpa.core.internal.JpaPreferenceInitializer;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 
 /**
@@ -28,8 +27,8 @@ import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
- * 
- * @version 3.2
+ *
+ * @version 3.3
  * @since 3.2
  */
 public final class JpaPreferences {
@@ -209,6 +208,24 @@ public final class JpaPreferences {
 
 	private static final String JPQL_IDENTIFIER_MATCH_FIRST_CHARACTER_CASE = JPQL_IDENTIFIER_ + "MATCH_FIRST_CHARACTER_CASE"; //$NON-NLS-1$
 	private static final boolean JPQL_IDENTIFIER_MATCH_FIRST_CHARACTER_CASE_DEFAULT = true;
+
+
+	// ********** JPQL query text area **********
+
+	private static final int JPQL_QUERY_TEXT_AREA_NUMBER_OF_LINES_DEFAULT = 5;
+	private static final String JPQL_QUERY_TEXT_AREA_NUMBER_OF_LINES = "jpqlQueryEditorNumberOfLines"; //$NON-NLS-1$
+
+	public static int getJpqlQueryTextAreaNumberOfLinesDefault() {
+		return JPQL_QUERY_TEXT_AREA_NUMBER_OF_LINES_DEFAULT;
+	}
+
+	public static int getJpqlQueryTextAreaNumberOfLines() {
+		return getPlugin().getIntPreference(JPQL_QUERY_TEXT_AREA_NUMBER_OF_LINES, JPQL_QUERY_TEXT_AREA_NUMBER_OF_LINES_DEFAULT);
+	}
+
+	public static void setJpqlQueryTextAreaNumberOfLines(int value) {
+		getPlugin().setIntPreference(JPQL_QUERY_TEXT_AREA_NUMBER_OF_LINES, value);
+	}
 
 
 	// ********** project validation messages **********

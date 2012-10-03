@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
@@ -41,15 +42,18 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * JPA<br>
  *  |- Errors/Warnings
  *
- * @version 3.0
+ * @version 3.3
  * @since 3.0
  */
+@SuppressWarnings("nls")
 public class JpaPreferencesPage extends PreferencePage
                                 implements IWorkbenchPreferencePage {
 
 	private boolean lowercase;
 	private Button lowerCaseRadioButton;
 	private boolean matchFirstCharacterCase;
+	private Spinner numberOfLinesInJpqlQuerySpinner;
+	private int numberOfLinesInJpqlQueryTextArea;
 	private Button matchFirstCharacterCaseCheckBox;
 	private Button upperCaseRadioButton;
 	private Text defaultPackageText;
@@ -86,11 +90,15 @@ public class JpaPreferencesPage extends PreferencePage
 		Dialog.applyDialogFont(parent);
 		return parent;
 	}
-	
+
 	@Override
 	protected void performDefaults() {
 		// entitygen prefs
 		this.setDefaultPackage(JpaPreferences.getEntityGenDefaultPackageName());
+
+		// jpql query text area prefs
+		this.numberOfLinesInJpqlQueryTextArea = getJpqlQueryTextAreaNumberOfLinesDefault();
+		this.numberOfLinesInJpqlQuerySpinner.setSelection(this.numberOfLinesInJpqlQueryTextArea);
 
 		// jpql identifier prefs
 		this.lowercase = this.isDefaultJpqlIdentifierLowercase();
@@ -111,6 +119,9 @@ public class JpaPreferencesPage extends PreferencePage
 		// entitygen prefs
 		JpaPreferences.setEntityGenDefaultPackageName(this.getDefaultPackage());
 
+		// jpql query text area prefs
+		JpaPreferences.setJpqlQueryTextAreaNumberOfLines(this.numberOfLinesInJpqlQueryTextArea);
+
 		// jpql identifier prefs
 		JpaPreferences.setJpqlIdentifierLowercase(this.lowercase);
 		JpaPreferences.setJpqlIdentifierMatchFirstCharacterCase(this.matchFirstCharacterCase);
@@ -118,19 +129,18 @@ public class JpaPreferencesPage extends PreferencePage
 		return super.performOk();
 	}
 
-
 	/**
 	 * {@inheritDoc}
 	 */
 	public void init(IWorkbench workbench) {
 		this.migrateLegacyJpqlWorkspacePreferences();
-		
+		this.numberOfLinesInJpqlQueryTextArea = this.getJpqlQueryTextAreaNumberOfLines();
 		this.lowercase = this.shouldUseLowercaseIdentifiers();
 		this.matchFirstCharacterCase = this.shouldMatchFirstCharacterCase();
 	}
 
 	// ********** internal methods **********
-	
+
 	private void addEntityGenGroup(Composite parent) {
 
 		// Entity Gen group box
@@ -144,7 +154,7 @@ public class JpaPreferencesPage extends PreferencePage
 		this.defaultPackageText = this.buildText(group, 1);
 		this.defaultPackageText.setText(JpaPreferences.getEntityGenDefaultPackageName());
 	}
-	
+
 	private void addJpqlEditorGroup(Composite parent) {
 
 		// JPQL Editing group box
@@ -152,6 +162,18 @@ public class JpaPreferencesPage extends PreferencePage
 		group.setText(JptUiMessages.JpaPreferencesPage_jpqlEditor);
 		group.setLayout(new GridLayout());
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+		// JPQL Query Text Area Number of Lines widgets
+		Composite jpqlQueryTextAreaComposite = new Composite(group, SWT.NONE);
+		GridLayout layout = new GridLayout(2, false);
+		layout.marginWidth = 0;
+		layout.marginBottom = 10;
+		jpqlQueryTextAreaComposite.setLayout(layout);
+
+		this.buildLabel(jpqlQueryTextAreaComposite, 1, JptUiMessages.JpaPreferencesPage_jpqlEditor_textAreaNumberOfLines);
+		this.numberOfLinesInJpqlQuerySpinner = new Spinner(jpqlQueryTextAreaComposite, SWT.BORDER);
+		this.numberOfLinesInJpqlQuerySpinner.setValues(this.numberOfLinesInJpqlQueryTextArea, 0, 100, 0, 1, 10);
+		this.numberOfLinesInJpqlQuerySpinner.addSelectionListener(buildNumberOfLinesInJpqlQuerySelectionListener());
 
 		// Top description
 		Label description = new Label(group, SWT.NONE);
@@ -176,6 +198,16 @@ public class JpaPreferencesPage extends PreferencePage
 		this.matchFirstCharacterCaseCheckBox.setText(JptUiMessages.JpaPreferencesPage_jpqlEditor_matchFirstCharacterCaseRadioButton);
 		this.matchFirstCharacterCaseCheckBox.addSelectionListener(buildMatchFirstCharacterCaseSelectionListener());
 		this.matchFirstCharacterCaseCheckBox.setSelection(this.matchFirstCharacterCase);
+	}
+
+	private SelectionListener buildNumberOfLinesInJpqlQuerySelectionListener() {
+		return new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Spinner spinner = (Spinner) e.widget;
+				numberOfLinesInJpqlQueryTextArea = spinner.getSelection();
+			}
+		};
 	}
 
 	private SelectionListener buildLowercaseSelectionListener() {
@@ -224,12 +256,20 @@ public class JpaPreferencesPage extends PreferencePage
 		return JpaPreferences.getJpqlIdentifierLowercase();
 	}
 
+	private int getJpqlQueryTextAreaNumberOfLinesDefault() {
+		return JpaPreferences.getJpqlQueryTextAreaNumberOfLinesDefault();
+	}
+
+	private int getJpqlQueryTextAreaNumberOfLines() {
+		return JpaPreferences.getJpqlQueryTextAreaNumberOfLines();
+	}
+
 	private String getDefaultPackage() {
 		if(this.defaultPackageText == null) {
 			return null;
 		}
-		return (StringTools.stringIsEmpty(this.defaultPackageText.getText())) ? 
-						null : 
+		return (StringTools.stringIsEmpty(this.defaultPackageText.getText())) ?
+						null :
 						this.defaultPackageText.getText();
 	}
 
@@ -243,9 +283,9 @@ public class JpaPreferencesPage extends PreferencePage
 	private void migrateLegacyJpqlWorkspacePreferences() {
 
 		IPreferenceStore preferences = JptJpaUiPlugin.instance().getPreferenceStore();
-		
+
 		String legacyCase = preferences.getString(JPQL_IDENTIFIER_CASE_PREF_KEY);
-		if( ! StringTools.stringIsEmpty(legacyCase)) { // value is not empty when legacy preference exist 
+		if( ! StringTools.stringIsEmpty(legacyCase)) { // value is not empty when legacy preference exist
 			JpaPreferences.setJpqlIdentifierLowercase(legacyCase.equals("lowercase"));
 		}
 
@@ -276,7 +316,7 @@ public class JpaPreferencesPage extends PreferencePage
 		text.setLayoutData(gridData);
 		return text;
 	}
-	
+
 	private Label buildLabel(Composite parent, int span, String text) {
 		Label label = new Label(parent, SWT.NONE);
 		label.setText(text);
@@ -285,5 +325,5 @@ public class JpaPreferencesPage extends PreferencePage
 		label.setLayoutData(gridData);
 		return label;
 	}
-	
+
 }

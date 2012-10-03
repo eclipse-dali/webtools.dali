@@ -11,8 +11,9 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.ui.internal.jpql.JpaJpqlContentProposalProvider;
@@ -44,7 +45,7 @@ import org.eclipse.swt.widgets.Label;
  * @see NamedQueriesComposite - The parent container
  * @see QueryHintsComposite
  *
- * @version 2.3
+ * @version 3.3
  * @since 2.3
  */
 public class NamedQueryPropertyComposite<T extends NamedQuery> extends Pane<T> {
@@ -123,7 +124,7 @@ public class NamedQueryPropertyComposite<T extends NamedQuery> extends Pane<T> {
 		provider.installControlDecoration();
 
 		adjustMultiLineTextLayout(
-			4,
+			JpaPreferences.getJpqlQueryTextAreaNumberOfLines(),
 			provider.getStyledText(),
 			provider.getStyledText().getLineHeight()
 		);
