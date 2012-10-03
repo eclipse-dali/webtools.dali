@@ -90,7 +90,6 @@ public class EditorTest {
 		// test
 		JpaSelectionManager manager = EasyMock
 				.createMock(JpaSelectionManager.class);
-		manager.setSelection(isA(JpaStructureNode.class));
 		replay(manager);
 
 		JPADiagramEditor.ISelectionManagerFactory factory = EasyMock
@@ -100,7 +99,7 @@ public class EditorTest {
 		replay(factory);
 		JPADiagramEditor editor = createEditor(provider, factory);
 		// test
-		editor.selectionChanged(part, new StructuredSelection(editPart));
+		editor.selectionChanged(part, new StructuredSelection(pe));
 		verify(manager);
 	}
 

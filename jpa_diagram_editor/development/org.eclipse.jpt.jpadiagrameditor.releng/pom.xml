@@ -84,6 +84,13 @@
 				<module>../../tests/org.eclipse.jpt.jpadiagrameditor.ui.tests</module>
 			</modules>
 		</profile>
+		<profile>
+			<id>alltests</id>
+			<modules>				
+				<module>../../tests/org.eclipse.jpt.jpadiagrameditor.ui.tests</module>
+				<module>../../tests/org.eclipse.jpt.jpadiagrameditor.swtbot.tests</module>
+			</modules>
+		</profile>
 	</profiles>
 	
 </project>

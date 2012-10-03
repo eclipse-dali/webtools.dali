@@ -20,10 +20,10 @@
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<version>${tycho-version}</version>
 				<configuration>
-					<!-- testSuite>org.eclipse.jpt.jpadiagrameditor.ui.tests</testSuite>
-					<testClass>org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.AllJpaEditorTests</testClass-->
+					<testSuite>org.eclipse.jpt.jpadiagrameditor.ui.tests</testSuite>
+					<testClass>org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.AllJpaEditorTests</testClass>
 					<useUIHarness>true</useUIHarness>
-					<useUIThread>false</useUIThread>
+					<useUIThread>true</useUIThread>
 					<systemProperties combine.children="append">
 						<org.eclipse.jpt.jpa.jar>${org.eclipse.jpt.jpa.jar}</org.eclipse.jpt.jpa.jar>
 					</systemProperties>
