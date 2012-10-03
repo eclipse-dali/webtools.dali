@@ -79,7 +79,7 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>jtests</id>
+			<id>junit-tests</id>
 			<modules>
 				<module>../../tests/org.eclipse.jpt.jpadiagrameditor.ui.tests</module>
 			</modules>
