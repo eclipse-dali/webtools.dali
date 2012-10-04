@@ -14,7 +14,6 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
-import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.MethodSignature;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
@@ -93,10 +92,6 @@ public class PropertyAccessor
 
 	public JptValidator buildAttributeValidator(PersistentAttribute persistentAttribute) {
 		return new PersistentPropertyValidator(persistentAttribute, this);
-	}
-
-	public TextRange getValidationTextRange() {
-		return this.getResourceAttribute().getNameTextRange();
 	}
 
 	public IJavaElement getJavaElement() {

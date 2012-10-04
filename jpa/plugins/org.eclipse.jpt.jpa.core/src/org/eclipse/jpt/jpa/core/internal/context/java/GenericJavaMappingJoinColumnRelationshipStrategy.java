@@ -139,10 +139,6 @@ public class GenericJavaMappingJoinColumnRelationshipStrategy
 		return JpaValidationDescriptionMessages.NOT_VALID_FOR_THIS_ENTITY;
 	}
 
-	public TextRange getValidationTextRange() {
-		return this.getRelationship().getValidationTextRange();
-	}
-
 
 	// ********** join column owner **********
 

@@ -10,6 +10,8 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
+
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
@@ -320,4 +322,11 @@ public abstract class AbstractJavaJoinColumnRelationshipStrategy
 			joinColumn.validate(messages, reporter);
 		}
 	}
+
+	// ********** validation **********
+
+	public TextRange getValidationTextRange() {
+		return this.getRelationship().getValidationTextRange();
+	}
+
 }

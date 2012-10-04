@@ -42,6 +42,10 @@ public abstract class AbstractAccessor
 		return this.getParent();
 	}
 
+	public TextRange getValidationTextRange() {
+		return this.getResourceAttribute().getNameTextRange();
+	}
+
 
 	// ********** unannotated Java resource member **********
 

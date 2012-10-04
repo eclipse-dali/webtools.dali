@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
-import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
@@ -70,10 +69,6 @@ public class GenericJavaOverrideJoinTableRelationshipStrategy2_0
 
 	public boolean validatesAgainstDatabase() {
 		return this.getRelationship().getTypeMapping().validatesAgainstDatabase();
-	}
-
-	public TextRange getValidationTextRange() {
-		return this.getRelationship().getValidationTextRange();
 	}
 
 	public JptValidator buildTableValidator(ReadOnlyTable table) {

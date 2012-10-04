@@ -10,6 +10,8 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
+
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationshipStrategy;
@@ -192,4 +194,9 @@ public abstract class AbstractJavaJoinTableRelationshipStrategy
 			this.joinTable.validate(messages, reporter);
 		}
 	}
+
+	public TextRange getValidationTextRange() {
+		return this.getRelationship().getValidationTextRange();
+	}
+
 }

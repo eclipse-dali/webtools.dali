@@ -152,13 +152,6 @@ public class GenericJavaOverrideJoinColumnRelationshipStrategy
 	}
 
 
-	// ********** validation **********
-
-	public TextRange getValidationTextRange() {
-		return this.getRelationship().getValidationTextRange();
-	}
-
-
 	// ********** join column owner adapter **********
 
 	protected class JoinColumnOwner

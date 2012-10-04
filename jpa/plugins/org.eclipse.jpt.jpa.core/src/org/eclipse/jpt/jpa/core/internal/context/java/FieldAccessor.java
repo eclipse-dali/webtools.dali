@@ -15,7 +15,6 @@ import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
-import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -62,10 +61,6 @@ public class FieldAccessor
 
 	public JptValidator buildAttributeValidator(PersistentAttribute persistentAttribute) {
 		return new PersistentFieldValidator(persistentAttribute, this);
-	}
-
-	public TextRange getValidationTextRange() {
-		return this.getResourceAttribute().getNameTextRange();
 	}
 
 	public JavaPersistentAttribute buildUnannotatedJavaAttribute(PersistentType type) {

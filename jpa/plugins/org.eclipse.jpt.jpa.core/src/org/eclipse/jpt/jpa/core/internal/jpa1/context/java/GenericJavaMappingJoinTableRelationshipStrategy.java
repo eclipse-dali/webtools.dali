@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
-import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
@@ -82,10 +81,6 @@ public class GenericJavaMappingJoinTableRelationshipStrategy
 
 	public boolean validatesAgainstDatabase() {
 		return this.getRelationshipMapping().validatesAgainstDatabase();
-	}
-
-	public TextRange getValidationTextRange() {
-		return this.getRelationship().getValidationTextRange();
 	}
 
 	protected PersistentAttribute getPersistentAttribute() {
