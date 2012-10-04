@@ -246,4 +246,9 @@ public class XmlJarFileRef extends EBaseObjectImpl implements EBaseObject
 		int offset = domNode.getStartOffset();
 		return new ReplaceEdit(offset + nameIndex, originalName.length(), newName);
 	}
+
+	public TextRange getFileNameTextRange(){
+		TextRange textRange = this.buildTextRange(this.getTextNode());
+		return textRange == null ? this.getValidationTextRange() : textRange;
+	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
 import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
@@ -273,5 +274,10 @@ public class XmlMappingFileRef extends EBaseObjectImpl implements EBaseObject
 
 		int offset = getTextNode().getStartOffset();
 		return new ReplaceEdit(offset, originalName.length(), destination.toString());
+	}
+
+	public TextRange getFileNameTextRange(){
+		TextRange textRange = this.buildTextRange(this.getTextNode());
+		return textRange == null ? this.getValidationTextRange() : textRange;
 	}
 }

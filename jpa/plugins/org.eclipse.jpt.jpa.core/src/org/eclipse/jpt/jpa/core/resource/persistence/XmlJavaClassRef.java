@@ -18,6 +18,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
 import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -254,5 +255,10 @@ public class XmlJavaClassRef extends EBaseObjectImpl implements EBaseObject
 		}
 		int offset = getTextNode().getStartOffset();
 		return new ReplaceEdit(offset, packageLength, newPackageName);
+	}
+
+	public TextRange getJavaClassTextRange(){
+		TextRange textRange = this.buildTextRange(this.getTextNode());
+		return textRange == null ? this.getValidationTextRange() : textRange;
 	}
 }

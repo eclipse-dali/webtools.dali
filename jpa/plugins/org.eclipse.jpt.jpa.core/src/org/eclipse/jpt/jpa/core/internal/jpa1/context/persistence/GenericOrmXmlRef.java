@@ -87,7 +87,7 @@ public class GenericOrmXmlRef
 	// ********** JpaStructureNode implementation **********
 
 	public TextRange getSelectionTextRange() {
-		return this.xmlMappingFileRef.getSelectionTextRange();
+		return this.xmlMappingFileRef.getFileNameTextRange();
 	}
 
 
@@ -99,7 +99,7 @@ public class GenericOrmXmlRef
 	}
 
 	protected TextRange getXmlValidationTextRange() {
-		return this.xmlMappingFileRef.getValidationTextRange();
+		return this.xmlMappingFileRef.getFileNameTextRange();
 	}
 
 

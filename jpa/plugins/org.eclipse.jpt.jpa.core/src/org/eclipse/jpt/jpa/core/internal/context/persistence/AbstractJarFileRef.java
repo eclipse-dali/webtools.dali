@@ -104,7 +104,7 @@ public abstract class AbstractJarFileRef
 	}
 
 	public TextRange getSelectionTextRange() {
-		return (this.xmlJarFileRef == null) ? null : this.xmlJarFileRef.getSelectionTextRange();
+		return (this.xmlJarFileRef == null) ? null : this.xmlJarFileRef.getFileNameTextRange();
 	}
 
 	public void dispose() {
@@ -316,7 +316,7 @@ public abstract class AbstractJarFileRef
 	}
 
 	protected TextRange getXmlJarFileRefTextRange() {
-		return (this.xmlJarFileRef == null) ? null : this.xmlJarFileRef.getValidationTextRange();
+		return (this.xmlJarFileRef == null) ? null : this.xmlJarFileRef.getFileNameTextRange();
 	}
 
 

@@ -253,7 +253,7 @@ public class GenericClassRef
 	}
 
 	public TextRange getSelectionTextRange() {
-		return this.isVirtual() ? null : this.xmlJavaClassRef.getSelectionTextRange();
+		return this.isVirtual() ? null : this.xmlJavaClassRef.getJavaClassTextRange();
 	}
 
 	public void dispose() {
@@ -392,7 +392,7 @@ public class GenericClassRef
 		return (textRange != null) ? textRange : this.getPersistenceUnit().getValidationTextRange();
 	}
 
-	public TextRange getXmlValidationTextRange() {
-		return this.isVirtual() ? null : this.xmlJavaClassRef.getValidationTextRange();
+	protected TextRange getXmlValidationTextRange() {
+		return this.isVirtual() ? null : this.xmlJavaClassRef.getJavaClassTextRange();
 	}
 }
