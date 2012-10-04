@@ -9,10 +9,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 
 public interface XmlAdaptable
-		extends JavaContextNode {
+		extends JaxbContextNode {
 	
 	// ***** XmlJavaTypeAdapter *****
 	

@@ -13,11 +13,11 @@ import java.util.List;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
+import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRef;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRefs;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlAnyElementMapping;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlElementRefs;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefAnnotation;
@@ -195,7 +195,7 @@ public class ELJavaXmlAnyElementMapping
 			extends GenericJavaXmlAnyElementMapping.XmlElementRefsContext {
 		
 		@Override
-		public XmlElementRef buildXmlElementRef(JavaContextNode parent, XmlElementRefAnnotation annotation) {
+		public XmlElementRef buildXmlElementRef(JaxbContextNode parent, XmlElementRefAnnotation annotation) {
 			return new ELJavaXmlElementRef(parent, new GenericJavaXmlAnyElementMapping.XmlElementRefContext(annotation));
 		}
 	}

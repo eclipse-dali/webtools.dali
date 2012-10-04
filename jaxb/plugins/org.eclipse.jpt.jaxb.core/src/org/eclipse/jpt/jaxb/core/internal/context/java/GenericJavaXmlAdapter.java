@@ -15,8 +15,8 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.XmlAdapter;
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 
 
 public class GenericJavaXmlAdapter
@@ -30,7 +30,7 @@ public class GenericJavaXmlAdapter
 	protected String valueType;
 	
 	
-	public GenericJavaXmlAdapter(JavaContextNode parent, JavaResourceType resourceType) {
+	public GenericJavaXmlAdapter(JaxbContextNode parent, JavaResourceType resourceType) {
 		super(parent);
 		this.resourceType = resourceType;
 		initBoundAndValueTypes();

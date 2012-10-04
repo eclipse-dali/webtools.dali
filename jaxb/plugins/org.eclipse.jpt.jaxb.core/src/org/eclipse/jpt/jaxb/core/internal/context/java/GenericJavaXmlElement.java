@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
+import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
@@ -26,7 +27,6 @@ import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElement;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.QNameAnnotation;
@@ -59,7 +59,7 @@ public class GenericJavaXmlElement
 	protected String defaultType;
 	
 	
-	public GenericJavaXmlElement(JavaContextNode parent, Context context) {
+	public GenericJavaXmlElement(JaxbContextNode parent, Context context) {
 		super(parent);
 		this.context = context;
 		this.qName = buildQName();
@@ -88,11 +88,6 @@ public class GenericJavaXmlElement
 	public void update() {
 		super.update();
 		this.qName.update();
-	}
-	
-	@Override
-	public JavaContextNode getParent() {
-		return (JavaContextNode) super.getParent();
 	}
 	
 	protected Context getContext() {
@@ -436,7 +431,7 @@ public class GenericJavaXmlElement
 	protected class XmlElementQName
 			extends AbstractJavaElementQName {
 		
-		protected XmlElementQName(JavaContextNode parent) {
+		protected XmlElementQName(JaxbContextNode parent) {
 			super(parent, new QNameAnnotationProxy());
 		}
 		

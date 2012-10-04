@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 
 
 /**
@@ -26,7 +25,7 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
  * @since 3.0
  */
 public interface XmlRegistry
-		extends JavaContextNode {
+		extends JaxbContextNode {
 	
 	// ***** element factory methods ******
 	

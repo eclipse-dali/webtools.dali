@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
+import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlElement;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -19,7 +19,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public class ELJavaXmlElement
 		extends GenericJavaXmlElement {
 	
-	public ELJavaXmlElement(JavaContextNode parent, Context context) {
+	public ELJavaXmlElement(JaxbContextNode parent, Context context) {
 		super(parent, context);
 	}
 	

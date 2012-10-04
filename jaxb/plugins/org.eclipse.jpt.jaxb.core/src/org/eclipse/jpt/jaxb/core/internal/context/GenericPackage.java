@@ -11,7 +11,6 @@ package org.eclipse.jpt.jaxb.core.internal.context;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
-import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
@@ -126,12 +125,7 @@ public class GenericPackage
 	}
 	
 	
-	// **************** validation ********************************************
-
-	@Override
-	public TextRange getValidationTextRange() {
-		return TextRange.Empty.instance(); //?
-	}
+	// ***** validation *****
 	
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {

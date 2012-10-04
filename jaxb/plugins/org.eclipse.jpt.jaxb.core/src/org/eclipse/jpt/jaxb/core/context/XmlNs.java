@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
 
 /**
@@ -25,7 +24,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
  * @since 3.0
  */
 public interface XmlNs
-		extends JavaContextNode {
+		extends JaxbContextNode {
 	
 	
 	XmlNsAnnotation getResourceXmlNs();

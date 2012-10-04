@@ -14,7 +14,6 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 
 /**
  * Represents a JAXB accessor (field/property).
@@ -29,7 +28,7 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
  * @since 3.1
  */
 public interface Accessor
-		extends JavaContextNode {
+		extends JaxbContextNode {
 
 	JavaResourceAttribute getJavaResourceAttribute();
 

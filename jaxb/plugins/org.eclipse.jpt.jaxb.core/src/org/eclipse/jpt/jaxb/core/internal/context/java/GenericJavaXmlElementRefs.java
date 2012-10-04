@@ -20,9 +20,9 @@ import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRef;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRefs;
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
@@ -40,7 +40,7 @@ public class GenericJavaXmlElementRefs
 	protected final ContextListContainer<XmlElementRef, XmlElementRefAnnotation> xmlElementRefContainer;
 	
 	
-	public GenericJavaXmlElementRefs(JavaContextNode parent, Context context) {
+	public GenericJavaXmlElementRefs(JaxbContextNode parent, Context context) {
 		super(parent);
 		this.context = context;
 		this.xmlElementRefContainer = this.buildXmlElementRefContainer();
@@ -240,7 +240,7 @@ public class GenericJavaXmlElementRefs
 		
 		void moveXmlElementRefAnnotation(int targetIndex, int sourceIndex);
 		
-		XmlElementRef buildXmlElementRef(JavaContextNode parent, XmlElementRefAnnotation annotation);
+		XmlElementRef buildXmlElementRef(JaxbContextNode parent, XmlElementRefAnnotation annotation);
 		
 		TextRange getValidationTextRange();
 	}

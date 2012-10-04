@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 
 /**
@@ -25,7 +24,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
  * @since 3.0
  */
 public interface XmlJavaTypeAdapter
-		extends JavaContextNode {
+		extends JaxbContextNode {
 	
 	XmlJavaTypeAdapterAnnotation getAnnotation();
 	

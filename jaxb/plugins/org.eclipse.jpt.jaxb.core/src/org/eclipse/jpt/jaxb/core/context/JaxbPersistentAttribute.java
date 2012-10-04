@@ -13,7 +13,6 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 
 /**
  * Represents a JAXB attribute (field/property).
@@ -28,7 +27,7 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
  * @since 3.0
  */
 public interface JaxbPersistentAttribute
-		extends JavaContextNode {
+		extends JaxbContextNode {
 	
 	JaxbClassMapping getClassMapping();
 	

@@ -24,39 +24,39 @@ import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlAccessType;
  * @version 3.3
  * @since 3.3
  */
-public class ELJaxbXmlAccessType
+public class ELXmlAccessType
 		extends XmlAccessType {
 	
-	public static final ELJaxbXmlAccessType FIELD = 
-			new ELJaxbXmlAccessType(
+	public static final ELXmlAccessType FIELD = 
+			new ELXmlAccessType(
 					org.eclipse.jpt.jaxb.core.resource.java.XmlAccessType.FIELD,
 					EXmlAccessType.FIELD);
 	
-	public static final ELJaxbXmlAccessType NONE = 
-			new ELJaxbXmlAccessType(
+	public static final ELXmlAccessType NONE = 
+			new ELXmlAccessType(
 					org.eclipse.jpt.jaxb.core.resource.java.XmlAccessType.NONE,
 					EXmlAccessType.NONE);
 	
-	public static final ELJaxbXmlAccessType PROPERTY = 
-			new ELJaxbXmlAccessType(
+	public static final ELXmlAccessType PROPERTY = 
+			new ELXmlAccessType(
 					org.eclipse.jpt.jaxb.core.resource.java.XmlAccessType.PROPERTY,
 					EXmlAccessType.PROPERTY);
 	
-	public static final ELJaxbXmlAccessType PUBLIC_MEMBER =
-			new ELJaxbXmlAccessType(
+	public static final ELXmlAccessType PUBLIC_MEMBER =
+			new ELXmlAccessType(
 					org.eclipse.jpt.jaxb.core.resource.java.XmlAccessType.PUBLIC_MEMBER,
 					EXmlAccessType.PUBLIC_MEMBER);
 	
-	public static ELJaxbXmlAccessType[] VALUES = 
-			new ELJaxbXmlAccessType[] {
-					ELJaxbXmlAccessType.FIELD,
-					ELJaxbXmlAccessType.NONE,
-					ELJaxbXmlAccessType.PROPERTY,
-					ELJaxbXmlAccessType.PUBLIC_MEMBER };
+	public static ELXmlAccessType[] VALUES = 
+			new ELXmlAccessType[] {
+					ELXmlAccessType.FIELD,
+					ELXmlAccessType.NONE,
+					ELXmlAccessType.PROPERTY,
+					ELXmlAccessType.PUBLIC_MEMBER };
 	
 	
 	public static org.eclipse.jpt.jaxb.core.resource.java.XmlAccessType toJavaResourceModel(
-			ELJaxbXmlAccessType accessType) {
+			ELXmlAccessType accessType) {
 		return (accessType != null) ? accessType.getJavaAccessType() : null;
 	}
 	
@@ -67,7 +67,7 @@ public class ELJaxbXmlAccessType
 			return null;
 		}
 		
-		for (ELJaxbXmlAccessType accessType : ELJaxbXmlAccessType.VALUES) {
+		for (ELXmlAccessType accessType : ELXmlAccessType.VALUES) {
 			if (accessType.getJavaAccessType() == javaAccessType) {
 				return accessType;
 			}
@@ -76,17 +76,17 @@ public class ELJaxbXmlAccessType
 		return null;
 	}
 	
-	public static EXmlAccessType toOxmResourceModel(ELJaxbXmlAccessType accessType) {
+	public static EXmlAccessType toOxmResourceModel(ELXmlAccessType accessType) {
 		return (accessType != null) ? accessType.getOxmAccessType() : null;
 	}
 	
-	public static ELJaxbXmlAccessType fromOxmResourceModel(EXmlAccessType oxmAccessType) {
+	public static ELXmlAccessType fromOxmResourceModel(EXmlAccessType oxmAccessType) {
 		
 		if (oxmAccessType == null) {
 			return null;
 		}
 		
-		for (ELJaxbXmlAccessType accessType : ELJaxbXmlAccessType.VALUES) {
+		for (ELXmlAccessType accessType : ELXmlAccessType.VALUES) {
 			if (accessType.getOxmAccessType() == oxmAccessType) {
 				return accessType;
 			}
@@ -99,7 +99,7 @@ public class ELJaxbXmlAccessType
 	protected EXmlAccessType oxmAccessType;
 	
 	
-	protected ELJaxbXmlAccessType(
+	protected ELXmlAccessType(
 			org.eclipse.jpt.jaxb.core.resource.java.XmlAccessType javaAccessType,
 			EXmlAccessType oxmAccessType) {
 		super(javaAccessType);

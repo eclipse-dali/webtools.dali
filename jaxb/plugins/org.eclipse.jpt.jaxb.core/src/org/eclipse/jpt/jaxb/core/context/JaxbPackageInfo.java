@@ -12,7 +12,6 @@ package org.eclipse.jpt.jaxb.core.context;
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -29,7 +28,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * @since 3.0
  */
 public interface JaxbPackageInfo
-		extends JavaContextNode, XmlAccessTypeHolder, XmlAccessOrderHolder {
+		extends JaxbContextNode, XmlAccessTypeHolder, XmlAccessOrderHolder {
 	
 	JavaResourcePackage getResourcePackage();
 	

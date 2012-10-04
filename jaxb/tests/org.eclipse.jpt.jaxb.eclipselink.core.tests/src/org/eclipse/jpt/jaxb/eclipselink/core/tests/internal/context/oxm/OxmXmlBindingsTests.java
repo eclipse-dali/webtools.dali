@@ -11,8 +11,8 @@ package org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.context.oxm;
 
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbContextRoot;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbXmlAccessOrder;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbXmlAccessType;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlAccessOrder;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlAccessType;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmFile;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlBindings;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlAccessOrder;
@@ -51,32 +51,32 @@ public class OxmXmlBindingsTests
 		
 		// the value is not exactly specified, but since the attribute has a default value, it's "specified"
 		assertEquals(EXmlAccessType.PUBLIC_MEMBER, eXmlBindings.getXmlAccessorType());
-		assertEquals(ELJaxbXmlAccessType.PUBLIC_MEMBER, xmlBindings.getSpecifiedAccessType());
-		assertEquals(ELJaxbXmlAccessType.PUBLIC_MEMBER, xmlBindings.getAccessType());
+		assertEquals(ELXmlAccessType.PUBLIC_MEMBER, xmlBindings.getSpecifiedAccessType());
+		assertEquals(ELXmlAccessType.PUBLIC_MEMBER, xmlBindings.getAccessType());
 		
 		eXmlBindings.setXmlAccessorType(EXmlAccessType.FIELD);
 		oxmResource.save();
 		
 		assertFileContentsContains("oxm.xml", "xml-accessor-type=\"FIELD\"", true);
 		assertEquals(EXmlAccessType.FIELD, eXmlBindings.getXmlAccessorType());
-		assertEquals(ELJaxbXmlAccessType.FIELD, xmlBindings.getSpecifiedAccessType());
-		assertEquals(ELJaxbXmlAccessType.FIELD, xmlBindings.getAccessType());
+		assertEquals(ELXmlAccessType.FIELD, xmlBindings.getSpecifiedAccessType());
+		assertEquals(ELXmlAccessType.FIELD, xmlBindings.getAccessType());
 		
 		eXmlBindings.setXmlAccessorType(EXmlAccessType.NONE);
 		oxmResource.save();
 		
 		assertFileContentsContains("oxm.xml", "xml-accessor-type=\"NONE\"", true);
 		assertEquals(EXmlAccessType.NONE, eXmlBindings.getXmlAccessorType());
-		assertEquals(ELJaxbXmlAccessType.NONE, xmlBindings.getSpecifiedAccessType());
-		assertEquals(ELJaxbXmlAccessType.NONE, xmlBindings.getAccessType());
+		assertEquals(ELXmlAccessType.NONE, xmlBindings.getSpecifiedAccessType());
+		assertEquals(ELXmlAccessType.NONE, xmlBindings.getAccessType());
 		
 		eXmlBindings.setXmlAccessorType(EXmlAccessType.PROPERTY);
 		oxmResource.save();
 		
 		assertFileContentsContains("oxm.xml", "xml-accessor-type=\"PROPERTY\"", true);
 		assertEquals(EXmlAccessType.PROPERTY, eXmlBindings.getXmlAccessorType());
-		assertEquals(ELJaxbXmlAccessType.PROPERTY, xmlBindings.getSpecifiedAccessType());
-		assertEquals(ELJaxbXmlAccessType.PROPERTY, xmlBindings.getAccessType());
+		assertEquals(ELXmlAccessType.PROPERTY, xmlBindings.getSpecifiedAccessType());
+		assertEquals(ELXmlAccessType.PROPERTY, xmlBindings.getAccessType());
 		
 		eXmlBindings.setXmlAccessorType(null);
 		oxmResource.save();
@@ -84,7 +84,7 @@ public class OxmXmlBindingsTests
 		assertFileContentsContains("oxm.xml", "xml-accessor-type=", false);
 		assertNull(eXmlBindings.getXmlAccessorType());
 		assertNull(xmlBindings.getSpecifiedAccessType());
-		assertEquals(ELJaxbXmlAccessType.PUBLIC_MEMBER, xmlBindings.getAccessType());
+		assertEquals(ELXmlAccessType.PUBLIC_MEMBER, xmlBindings.getAccessType());
 	}
 	
 	public void testModifyAccessType() throws Exception {
@@ -97,32 +97,32 @@ public class OxmXmlBindingsTests
 		
 		// the value is not exactly specified, but since the attribute has a default value, it's "specified"
 		assertEquals(EXmlAccessType.PUBLIC_MEMBER, eXmlBindings.getXmlAccessorType());
-		assertEquals(ELJaxbXmlAccessType.PUBLIC_MEMBER, xmlBindings.getSpecifiedAccessType());
-		assertEquals(ELJaxbXmlAccessType.PUBLIC_MEMBER, xmlBindings.getAccessType());
+		assertEquals(ELXmlAccessType.PUBLIC_MEMBER, xmlBindings.getSpecifiedAccessType());
+		assertEquals(ELXmlAccessType.PUBLIC_MEMBER, xmlBindings.getAccessType());
 		
-		xmlBindings.setSpecifiedAccessType(ELJaxbXmlAccessType.FIELD);
+		xmlBindings.setSpecifiedAccessType(ELXmlAccessType.FIELD);
 		oxmResource.save();
 		
 		assertFileContentsContains("oxm.xml", "xml-accessor-type=\"FIELD\"", true);
 		assertEquals(EXmlAccessType.FIELD, eXmlBindings.getXmlAccessorType());
-		assertEquals(ELJaxbXmlAccessType.FIELD, xmlBindings.getSpecifiedAccessType());
-		assertEquals(ELJaxbXmlAccessType.FIELD, xmlBindings.getAccessType());
+		assertEquals(ELXmlAccessType.FIELD, xmlBindings.getSpecifiedAccessType());
+		assertEquals(ELXmlAccessType.FIELD, xmlBindings.getAccessType());
 		
-		xmlBindings.setSpecifiedAccessType(ELJaxbXmlAccessType.NONE);
+		xmlBindings.setSpecifiedAccessType(ELXmlAccessType.NONE);
 		oxmResource.save();
 		
 		assertFileContentsContains("oxm.xml", "xml-accessor-type=\"NONE\"", true);
 		assertEquals(EXmlAccessType.NONE, eXmlBindings.getXmlAccessorType());
-		assertEquals(ELJaxbXmlAccessType.NONE, xmlBindings.getSpecifiedAccessType());
-		assertEquals(ELJaxbXmlAccessType.NONE, xmlBindings.getAccessType());
+		assertEquals(ELXmlAccessType.NONE, xmlBindings.getSpecifiedAccessType());
+		assertEquals(ELXmlAccessType.NONE, xmlBindings.getAccessType());
 		
-		xmlBindings.setSpecifiedAccessType(ELJaxbXmlAccessType.PROPERTY);
+		xmlBindings.setSpecifiedAccessType(ELXmlAccessType.PROPERTY);
 		oxmResource.save();
 		
 		assertFileContentsContains("oxm.xml", "xml-accessor-type=\"PROPERTY\"", true);
 		assertEquals(EXmlAccessType.PROPERTY, eXmlBindings.getXmlAccessorType());
-		assertEquals(ELJaxbXmlAccessType.PROPERTY, xmlBindings.getSpecifiedAccessType());
-		assertEquals(ELJaxbXmlAccessType.PROPERTY, xmlBindings.getAccessType());
+		assertEquals(ELXmlAccessType.PROPERTY, xmlBindings.getSpecifiedAccessType());
+		assertEquals(ELXmlAccessType.PROPERTY, xmlBindings.getAccessType());
 		
 		xmlBindings.setSpecifiedAccessType(null);
 		oxmResource.save();
@@ -130,7 +130,7 @@ public class OxmXmlBindingsTests
 		assertFileContentsContains("oxm.xml", "xml-accessor-type=", false);
 		assertNull(eXmlBindings.getXmlAccessorType());
 		assertNull(xmlBindings.getSpecifiedAccessType());
-		assertEquals(ELJaxbXmlAccessType.PUBLIC_MEMBER, xmlBindings.getAccessType());
+		assertEquals(ELXmlAccessType.PUBLIC_MEMBER, xmlBindings.getAccessType());
 	}
 	
 	public void testUpdateAccessOrder() throws Exception {
@@ -143,24 +143,24 @@ public class OxmXmlBindingsTests
 		
 		// the value is not exactly specified, but since the attribute has a default value, it's "specified"
 		assertEquals(EXmlAccessOrder.UNDEFINED, eXmlBindings.getXmlAccessorOrder());
-		assertEquals(ELJaxbXmlAccessOrder.UNDEFINED, xmlBindings.getSpecifiedAccessOrder());
-		assertEquals(ELJaxbXmlAccessOrder.UNDEFINED, xmlBindings.getAccessOrder());
+		assertEquals(ELXmlAccessOrder.UNDEFINED, xmlBindings.getSpecifiedAccessOrder());
+		assertEquals(ELXmlAccessOrder.UNDEFINED, xmlBindings.getAccessOrder());
 		
 		eXmlBindings.setXmlAccessorOrder(EXmlAccessOrder.ALPHABETICAL);
 		oxmResource.save();
 		
 		assertFileContentsContains("oxm.xml", "xml-accessor-order=\"ALPHABETICAL\"", true);
 		assertEquals(EXmlAccessOrder.ALPHABETICAL, eXmlBindings.getXmlAccessorOrder());
-		assertEquals(ELJaxbXmlAccessOrder.ALPHABETICAL, xmlBindings.getSpecifiedAccessOrder());
-		assertEquals(ELJaxbXmlAccessOrder.ALPHABETICAL, xmlBindings.getAccessOrder());
+		assertEquals(ELXmlAccessOrder.ALPHABETICAL, xmlBindings.getSpecifiedAccessOrder());
+		assertEquals(ELXmlAccessOrder.ALPHABETICAL, xmlBindings.getAccessOrder());
 		
 		eXmlBindings.setXmlAccessorOrder(EXmlAccessOrder.UNDEFINED);
 		oxmResource.save();
 		
 		assertFileContentsContains("oxm.xml", "xml-accessor-order=\"UNDEFINED\"", true);
 		assertEquals(EXmlAccessOrder.UNDEFINED, eXmlBindings.getXmlAccessorOrder());
-		assertEquals(ELJaxbXmlAccessOrder.UNDEFINED, xmlBindings.getSpecifiedAccessOrder());
-		assertEquals(ELJaxbXmlAccessOrder.UNDEFINED, xmlBindings.getAccessOrder());
+		assertEquals(ELXmlAccessOrder.UNDEFINED, xmlBindings.getSpecifiedAccessOrder());
+		assertEquals(ELXmlAccessOrder.UNDEFINED, xmlBindings.getAccessOrder());
 		
 		eXmlBindings.setXmlAccessorOrder(null);
 		oxmResource.save();
@@ -168,7 +168,7 @@ public class OxmXmlBindingsTests
 		assertFileContentsContains("oxm.xml", "xml-accessor-order=", false);
 		assertNull(eXmlBindings.getXmlAccessorOrder());
 		assertNull(xmlBindings.getSpecifiedAccessOrder());
-		assertEquals(ELJaxbXmlAccessOrder.UNDEFINED, xmlBindings.getAccessOrder());
+		assertEquals(ELXmlAccessOrder.UNDEFINED, xmlBindings.getAccessOrder());
 	}
 	
 	public void testModifyAccessOrder() throws Exception {
@@ -181,24 +181,24 @@ public class OxmXmlBindingsTests
 		
 		// the value is not exactly specified, but since the attribute has a default value, it's "specified"
 		assertEquals(EXmlAccessOrder.UNDEFINED, eXmlBindings.getXmlAccessorOrder());
-		assertEquals(ELJaxbXmlAccessOrder.UNDEFINED, xmlBindings.getSpecifiedAccessOrder());
-		assertEquals(ELJaxbXmlAccessOrder.UNDEFINED, xmlBindings.getAccessOrder());
+		assertEquals(ELXmlAccessOrder.UNDEFINED, xmlBindings.getSpecifiedAccessOrder());
+		assertEquals(ELXmlAccessOrder.UNDEFINED, xmlBindings.getAccessOrder());
 		
-		xmlBindings.setSpecifiedAccessOrder(ELJaxbXmlAccessOrder.ALPHABETICAL);
+		xmlBindings.setSpecifiedAccessOrder(ELXmlAccessOrder.ALPHABETICAL);
 		oxmResource.save();
 		
 		assertFileContentsContains("oxm.xml", "xml-accessor-order=\"ALPHABETICAL\"", true);
 		assertEquals(EXmlAccessOrder.ALPHABETICAL, eXmlBindings.getXmlAccessorOrder());
-		assertEquals(ELJaxbXmlAccessOrder.ALPHABETICAL, xmlBindings.getSpecifiedAccessOrder());
-		assertEquals(ELJaxbXmlAccessOrder.ALPHABETICAL, xmlBindings.getAccessOrder());
+		assertEquals(ELXmlAccessOrder.ALPHABETICAL, xmlBindings.getSpecifiedAccessOrder());
+		assertEquals(ELXmlAccessOrder.ALPHABETICAL, xmlBindings.getAccessOrder());
 		
-		xmlBindings.setSpecifiedAccessOrder(ELJaxbXmlAccessOrder.UNDEFINED);
+		xmlBindings.setSpecifiedAccessOrder(ELXmlAccessOrder.UNDEFINED);
 		oxmResource.save();
 		
 		assertFileContentsContains("oxm.xml", "xml-accessor-order=\"UNDEFINED\"", true);
 		assertEquals(EXmlAccessOrder.UNDEFINED, eXmlBindings.getXmlAccessorOrder());
-		assertEquals(ELJaxbXmlAccessOrder.UNDEFINED, xmlBindings.getSpecifiedAccessOrder());
-		assertEquals(ELJaxbXmlAccessOrder.UNDEFINED, xmlBindings.getAccessOrder());
+		assertEquals(ELXmlAccessOrder.UNDEFINED, xmlBindings.getSpecifiedAccessOrder());
+		assertEquals(ELXmlAccessOrder.UNDEFINED, xmlBindings.getAccessOrder());
 		
 		xmlBindings.setSpecifiedAccessOrder(null);
 		oxmResource.save();
@@ -206,7 +206,7 @@ public class OxmXmlBindingsTests
 		assertFileContentsContains("oxm.xml", "xml-accessor-order=", false);
 		assertNull(eXmlBindings.getXmlAccessorOrder());
 		assertNull(xmlBindings.getSpecifiedAccessOrder());
-		assertEquals(ELJaxbXmlAccessOrder.UNDEFINED, xmlBindings.getAccessOrder());
+		assertEquals(ELXmlAccessOrder.UNDEFINED, xmlBindings.getAccessOrder());
 	}
 	
 	public void testUpdateXmlMappingMetadataComplete() throws Exception {

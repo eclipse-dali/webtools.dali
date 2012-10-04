@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 
 
 /**
@@ -25,7 +24,7 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
  * @since 3.0
  */
 public interface XmlAttachmentRef
-		extends JavaContextNode {
+		extends JaxbContextNode {
 
 
 }

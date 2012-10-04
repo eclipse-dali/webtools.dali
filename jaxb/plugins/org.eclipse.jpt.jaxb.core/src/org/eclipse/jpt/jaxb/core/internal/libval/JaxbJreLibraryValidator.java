@@ -17,7 +17,6 @@ import org.eclipse.jpt.jaxb.core.GenericJaxbPlatform;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.libprov.JaxbLibraryProviderInstallOperationConfig;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 

@@ -16,12 +16,12 @@ import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbQName;
 import org.eclipse.jpt.jaxb.core.context.JaxbTypeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
@@ -237,7 +237,7 @@ public class GenericJavaElementFactoryMethod
 	protected class XmlElementDeclQName
 			extends AbstractJavaQName {
 		
-		protected XmlElementDeclQName(JavaContextNode parent) {
+		protected XmlElementDeclQName(JaxbContextNode parent) {
 			super(parent, new QNameAnnotationProxy());
 		}
 		
@@ -333,7 +333,7 @@ public class GenericJavaElementFactoryMethod
 	protected class XmlElementDeclSubstitutionHeadQName
 			extends AbstractJavaQName {
 		
-		protected XmlElementDeclSubstitutionHeadQName(JavaContextNode parent) {
+		protected XmlElementDeclSubstitutionHeadQName(JaxbContextNode parent) {
 			super(parent, new SubstitutionHeadQNameAnnotationProxy());
 		}
 		

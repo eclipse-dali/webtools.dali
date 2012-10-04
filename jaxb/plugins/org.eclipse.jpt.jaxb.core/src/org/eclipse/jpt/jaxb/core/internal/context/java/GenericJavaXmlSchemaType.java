@@ -18,7 +18,6 @@ import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbQName;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
@@ -173,7 +172,7 @@ public abstract class GenericJavaXmlSchemaType
 	protected class XmlSchemaTypeQName
 			extends AbstractJavaQName {
 		
-		protected XmlSchemaTypeQName(JavaContextNode parent) {
+		protected XmlSchemaTypeQName(JaxbContextNode parent) {
 			super(parent, new QNameAnnotationProxy());
 		}
 		

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.context;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefAnnotation;
 
 /**
@@ -26,7 +25,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefAnnotation;
  * @since 3.1
  */
 public interface XmlElementRef
-		extends JavaContextNode {
+		extends JaxbContextNode {
 	
 	// ***** annotation *****
 	

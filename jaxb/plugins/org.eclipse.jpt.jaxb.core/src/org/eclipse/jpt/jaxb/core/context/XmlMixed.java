@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 
 /**
  * Represents the @XmlMixed JAXB annotation
@@ -24,6 +23,6 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
  * @since 3.0
  */
 public interface XmlMixed
-		extends JavaContextNode {
+		extends JaxbContextNode {
 	
 }

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.context;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 
 /**
  * Holds the attributes represented by a particular JavaResourceType and XmlAccessType.
@@ -25,7 +24,7 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
  * @since 3.0
  */
 public interface JaxbAttributesContainer
-		extends JavaContextNode {
+		extends JaxbContextNode {
 
 	/**
 	 * Return true if this JaxbAtributesContainer contains attributes for the given JavaResourceType.

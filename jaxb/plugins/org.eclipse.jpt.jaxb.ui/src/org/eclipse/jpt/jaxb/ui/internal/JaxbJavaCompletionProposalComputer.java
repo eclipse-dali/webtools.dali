@@ -31,7 +31,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
+import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 
 
@@ -109,7 +109,7 @@ public class JaxbJavaCompletionProposalComputer
 			return Collections.emptyList();
 		}
 		
-		Iterable<? extends JavaContextNode> javaNodes = jaxbProject.getPrimaryJavaNodes(cu);
+		Iterable<? extends JaxbContextNode> javaNodes = jaxbProject.getPrimaryJavaNodes(cu);
 		if (CollectionTools.isEmpty(javaNodes)) {
 			return Collections.emptyList();
 		}
@@ -140,7 +140,7 @@ public class JaxbJavaCompletionProposalComputer
 //		System.out.println("surrounding snippet: =>" + snippet + "<=");
 
 		List<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
-		for (JavaContextNode javaNode : javaNodes) {
+		for (JaxbContextNode javaNode : javaNodes) {
 			for (String proposal : this.getCompletionProposals(javaNode, context.getInvocationOffset(), filter)) {
 				if (tokenKind == CompletionContext.TOKEN_KIND_STRING_LITERAL) {//already quoted
 					proposals.add(new CompletionProposal(proposal, tokenStart, tokenEnd - tokenStart - 1, proposal.length()));					
@@ -153,7 +153,7 @@ public class JaxbJavaCompletionProposalComputer
 		return proposals;
 	}
 
-	private Iterable<String> getCompletionProposals(JavaContextNode javaNode, int pos, Filter<String> filter) {
+	private Iterable<String> getCompletionProposals(JaxbContextNode javaNode, int pos, Filter<String> filter) {
 		return new FilteringIterable<String>(javaNode.getCompletionProposals(pos), filter);
 	}
 

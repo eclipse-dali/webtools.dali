@@ -11,7 +11,6 @@ package org.eclipse.jpt.jaxb.core.context;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -28,7 +27,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * @since 3.1
  */
 public interface JaxbType
-		extends JavaContextNode, XmlAdaptable {
+		extends JaxbContextNode, XmlAdaptable {
 	
 	// ***** kind *****
 	

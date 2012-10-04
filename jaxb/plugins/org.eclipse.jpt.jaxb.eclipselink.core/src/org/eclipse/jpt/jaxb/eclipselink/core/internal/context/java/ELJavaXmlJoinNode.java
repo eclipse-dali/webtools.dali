@@ -17,8 +17,8 @@ import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.JaxbNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
+import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.context.java.AbstractJavaContextNode;
 import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELClassMapping;
@@ -44,7 +44,7 @@ public class ELJavaXmlJoinNode
 	protected Context context;
 	
 	
-	public ELJavaXmlJoinNode(JavaContextNode parent, Context context) {
+	public ELJavaXmlJoinNode(JaxbContextNode parent, Context context) {
 		super(parent);
 		this.context = context;
 		initXmlPath();

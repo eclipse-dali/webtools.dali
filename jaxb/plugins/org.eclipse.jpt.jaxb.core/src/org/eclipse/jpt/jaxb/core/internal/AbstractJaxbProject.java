@@ -65,11 +65,11 @@ import org.eclipse.jpt.jaxb.core.JaxbFile;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.SchemaLibrary;
+import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbType;
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.platform.JaxbPlatformImpl;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
@@ -574,7 +574,7 @@ public abstract class AbstractJaxbProject
 		return this.contextRoot;
 	}
 	
-	public Iterable<? extends JavaContextNode> getPrimaryJavaNodes(ICompilationUnit cu) {
+	public Iterable<? extends JaxbContextNode> getPrimaryJavaNodes(ICompilationUnit cu) {
 		IFile file = getCorrespondingResource(cu);
 		if (file == null) {	
 			return EmptyIterable.instance();

@@ -12,15 +12,12 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.JaxbNode;
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
 
 
 public abstract class AbstractJavaContextNode
-		extends AbstractJaxbContextNode
-		implements JavaContextNode {
+		extends AbstractJaxbContextNode {
 	
 	// **************** constructor *******************************************
 	
@@ -32,11 +29,5 @@ public abstract class AbstractJavaContextNode
 	@Override
 	public JptResourceType getResourceType() {
 		return PlatformTools.getResourceType(JavaResourceCompilationUnit.CONTENT_TYPE);
-	}
-	
-	// **************** content assist ****************************************
-	
-	public Iterable<String> getCompletionProposals(int pos) {
-		return EmptyIterable.instance();
 	}
 }

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.context;
 
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 
 /**
  * Maintains a list of classes (class names here) to be added to the JAXB context.
@@ -26,7 +25,7 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
  */
 
 public interface XmlSeeAlso
-		extends JavaContextNode {
+		extends JaxbContextNode {
 	
 	// **************** value *************************************************
 	

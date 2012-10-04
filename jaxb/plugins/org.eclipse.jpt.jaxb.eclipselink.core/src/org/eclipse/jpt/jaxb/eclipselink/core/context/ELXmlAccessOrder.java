@@ -24,38 +24,38 @@ import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlAccessOrder;
  * @version 3.3
  * @since 3.3
  */
-public class ELJaxbXmlAccessOrder
+public class ELXmlAccessOrder
 		extends XmlAccessOrder {
 	
-	public static ELJaxbXmlAccessOrder ALPHABETICAL = 
-			new ELJaxbXmlAccessOrder(
+	public static ELXmlAccessOrder ALPHABETICAL = 
+			new ELXmlAccessOrder(
 					org.eclipse.jpt.jaxb.core.resource.java.XmlAccessOrder.ALPHABETICAL,
 					EXmlAccessOrder.ALPHABETICAL);
 	
-	public static ELJaxbXmlAccessOrder UNDEFINED = 
-			new ELJaxbXmlAccessOrder(
+	public static ELXmlAccessOrder UNDEFINED = 
+			new ELXmlAccessOrder(
 					org.eclipse.jpt.jaxb.core.resource.java.XmlAccessOrder.UNDEFINED,
 					EXmlAccessOrder.UNDEFINED);
 	
-	public static ELJaxbXmlAccessOrder[] VALUES = 
-			new ELJaxbXmlAccessOrder[] {
+	public static ELXmlAccessOrder[] VALUES = 
+			new ELXmlAccessOrder[] {
 					ALPHABETICAL,
 					UNDEFINED };
 	
 	
 	public static org.eclipse.jpt.jaxb.core.resource.java.XmlAccessOrder toJavaResourceModel(
-			ELJaxbXmlAccessOrder accessOrder) {
+			ELXmlAccessOrder accessOrder) {
 		return (accessOrder == null) ? null : accessOrder.getJavaAccessOrder();
 	}
 	
-	public static ELJaxbXmlAccessOrder fromJavaResourceModel(
+	public static ELXmlAccessOrder fromJavaResourceModel(
 			org.eclipse.jpt.jaxb.core.resource.java.XmlAccessOrder javaAccessOrder) {
 		
 		if (javaAccessOrder == null) {
 			return null;
 		}
 		
-		for (ELJaxbXmlAccessOrder accessOrder : ELJaxbXmlAccessOrder.VALUES) {
+		for (ELXmlAccessOrder accessOrder : ELXmlAccessOrder.VALUES) {
 			if (accessOrder.getJavaAccessOrder() == javaAccessOrder) {
 				return accessOrder;
 			}
@@ -63,17 +63,17 @@ public class ELJaxbXmlAccessOrder
 		return null;
 	}
 	
-	public static EXmlAccessOrder toOxmResourceModel(ELJaxbXmlAccessOrder accessOrder) {
+	public static EXmlAccessOrder toOxmResourceModel(ELXmlAccessOrder accessOrder) {
 		return (accessOrder != null) ? accessOrder.getOxmAccessOrder() : null;
 	}
 	
-	public static ELJaxbXmlAccessOrder fromOxmResourceModel(EXmlAccessOrder oxmAccessOrder) {
+	public static ELXmlAccessOrder fromOxmResourceModel(EXmlAccessOrder oxmAccessOrder) {
 		
 		if (oxmAccessOrder == null) {
 			return null;
 		}
 		
-		for (ELJaxbXmlAccessOrder accessOrder : ELJaxbXmlAccessOrder.VALUES) {
+		for (ELXmlAccessOrder accessOrder : ELXmlAccessOrder.VALUES) {
 			if (accessOrder.getOxmAccessOrder() == oxmAccessOrder) {
 				return accessOrder;
 			}
@@ -86,7 +86,7 @@ public class ELJaxbXmlAccessOrder
 	private EXmlAccessOrder oxmAccessOrder;
 	
 	
-	protected ELJaxbXmlAccessOrder(
+	protected ELXmlAccessOrder(
 			org.eclipse.jpt.jaxb.core.resource.java.XmlAccessOrder javaAccessOrder,
 			EXmlAccessOrder oxmAccessOrder) {
 		super(javaAccessOrder);

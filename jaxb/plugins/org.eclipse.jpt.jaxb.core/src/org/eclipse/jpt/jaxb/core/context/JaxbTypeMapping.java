@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 
 /**
@@ -25,7 +24,7 @@ import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
  * @since 3.1
  */
 public interface JaxbTypeMapping 
-		extends JavaContextNode {
+		extends JaxbContextNode {
 	
 	// ***** JaxbType *****
 	

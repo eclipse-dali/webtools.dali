@@ -12,11 +12,11 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
+import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.xsd.XsdElementDeclaration;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
@@ -28,7 +28,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public abstract class AbstractJavaElementQName
 		extends AbstractJavaQName {
 	
-	public AbstractJavaElementQName(JavaContextNode parent, AbstractJavaQName.AnnotationProxy proxy) {
+	public AbstractJavaElementQName(JaxbContextNode parent, AbstractJavaQName.AnnotationProxy proxy) {
 		super(parent, proxy);
 	}
 	

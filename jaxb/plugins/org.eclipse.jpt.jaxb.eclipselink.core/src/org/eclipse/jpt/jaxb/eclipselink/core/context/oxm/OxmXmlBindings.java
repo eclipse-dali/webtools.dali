@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.context.oxm;
 
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbXmlAccessOrderHolder;
-import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbXmlAccessTypeHolder;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlAccessOrderHolder;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlAccessTypeHolder;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -24,7 +24,7 @@ import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbXmlAccessTypeHolder;
  * @since 3.3
  */
 public interface OxmXmlBindings
-		extends JaxbContextNode, ELJaxbXmlAccessTypeHolder, ELJaxbXmlAccessOrderHolder {
+		extends JaxbContextNode, ELXmlAccessTypeHolder, ELXmlAccessOrderHolder {
 	
 	// ***** mapping metadata complete *****
 	

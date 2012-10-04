@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.context;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 
 
 /**
@@ -26,7 +25,7 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
  * @since 3.? 
  */
 public interface JaxbQName
-		extends JavaContextNode {
+		extends JaxbContextNode {
 	
 	// ***** namespace *****
 	

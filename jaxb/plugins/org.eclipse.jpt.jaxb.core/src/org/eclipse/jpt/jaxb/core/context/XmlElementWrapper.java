@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.xsd.XsdElementDeclaration;
 
 
@@ -26,7 +25,7 @@ import org.eclipse.jpt.jaxb.core.xsd.XsdElementDeclaration;
  * @since 3.0
  */
 public interface XmlElementWrapper
-		extends JavaContextNode {
+		extends JaxbContextNode {
 	
 	// ***** qname *****
 	

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
+import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlElementRef;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 
@@ -18,7 +18,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 public class ELJavaXmlElementRef
 		extends GenericJavaXmlElementRef {
 	
-	public ELJavaXmlElementRef(JavaContextNode parent, GenericJavaXmlElementRef.Context context) {
+	public ELJavaXmlElementRef(JaxbContextNode parent, GenericJavaXmlElementRef.Context context) {
 		super(parent, context);
 	}
 	

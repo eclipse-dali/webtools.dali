@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.context;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 
 
@@ -27,7 +26,7 @@ import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
  * @since 3.0
  */
 public interface JaxbAttributeMapping
-		extends JavaContextNode {
+		extends JaxbContextNode {
 	
 	String getKey();
 	

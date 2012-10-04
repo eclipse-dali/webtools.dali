@@ -1,6 +1,6 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.context.java;
 
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
+import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 
 /**
  * Represents an @XmlJoinNode, whether at top level or nested in @XmlJoinNodes
@@ -15,7 +15,7 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
  * @since 3.2
  */
 public interface ELXmlJoinNode
-		extends JavaContextNode {
+		extends JaxbContextNode {
 	
 	// ***** xmlPath *****
 	

@@ -10,9 +10,9 @@
 package org.eclipse.jpt.jaxb.core.internal.context;
 
 import java.util.List;
-
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.JaxbNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
@@ -22,23 +22,22 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractJaxbContextNode
-	extends AbstractJaxbNode
-	implements JaxbContextNode
-{
+		extends AbstractJaxbNode
+		implements JaxbContextNode {
 	
-	// ********** constructor **********
+	// ***** constructor *****
 	
 	protected AbstractJaxbContextNode(JaxbNode parent) {
 		super(parent);
 	}
 	
-
-	// ********** synchronize/update **********
-
+	
+	// ***** synchronize/update *****
+	
 	public void synchronizeWithResourceModel() {
 		// NOP
 	}
-
+	
 	/**
 	 * convenience method
 	 */
@@ -47,11 +46,11 @@ public abstract class AbstractJaxbContextNode
 			node.synchronizeWithResourceModel();
 		}
 	}
-
+	
 	public void update() {
 		// NOP
 	}
-
+	
 	/**
 	 * convenience method
 	 */
@@ -61,7 +60,8 @@ public abstract class AbstractJaxbContextNode
 		}
 	}
 	
-	// ********** containment hierarchy **********
+	
+	// ***** containment hierarchy *****
 	
 	/**
 	 * covariant override
@@ -89,12 +89,23 @@ public abstract class AbstractJaxbContextNode
 	public JaxbContextRoot getContextRoot() {
 		return getParent().getContextRoot();
 	}
-
-
-	// **************** validation ********************************************
-
-	public abstract TextRange getValidationTextRange();
-
+	
+	
+	// ***** content assist *****
+	
+	/* default impl */
+	public Iterable<String> getCompletionProposals(int pos) {
+		return EmptyIterable.instance();
+	}
+	
+	
+	// ***** validation *****
+	
+	/* default impl */
+	public TextRange getValidationTextRange() {
+		return TextRange.Empty.instance(); //?
+	}
+	
 	/**
 	 * All subclass implementations {@link #validate(List, IReporter)} 
 	 * should be preceded by a "super" call to this method

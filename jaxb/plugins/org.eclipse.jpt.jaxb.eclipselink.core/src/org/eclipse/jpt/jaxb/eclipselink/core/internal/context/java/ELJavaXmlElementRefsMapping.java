@@ -9,10 +9,10 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
+import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRef;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRefs;
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlElementRefs;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlElementRefsMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefAnnotation;
@@ -36,7 +36,7 @@ public class ELJavaXmlElementRefsMapping
 			extends GenericJavaXmlElementRefsMapping.XmlElementRefsContext {
 		
 		@Override
-		public XmlElementRef buildXmlElementRef(JavaContextNode parent, XmlElementRefAnnotation annotation) {
+		public XmlElementRef buildXmlElementRef(JaxbContextNode parent, XmlElementRefAnnotation annotation) {
 			return new ELJavaXmlElementRef(parent, new GenericJavaXmlElementRefsMapping.XmlElementRefContext(annotation));
 		}
 	}

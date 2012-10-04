@@ -11,7 +11,6 @@ package org.eclipse.jpt.jaxb.core.internal.prefs;
 
 import java.util.List;
 import java.util.Vector;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;

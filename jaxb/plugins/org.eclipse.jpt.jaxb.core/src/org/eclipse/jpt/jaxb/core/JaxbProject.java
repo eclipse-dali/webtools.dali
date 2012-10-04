@@ -22,8 +22,8 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
 import org.eclipse.jpt.common.utility.synchronizers.CallbackSynchronizer;
 import org.eclipse.jpt.common.utility.synchronizers.Synchronizer;
+import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.core.resource.jaxbindex.JaxbIndexResource;
@@ -244,7 +244,7 @@ public interface JaxbProject
 	 * Return all types/package infos that are primary context objects for the 
 	 * given compilation unit
 	 */
-	Iterable<? extends JavaContextNode> getPrimaryJavaNodes(ICompilationUnit cu);
+	Iterable<? extends JaxbContextNode> getPrimaryJavaNodes(ICompilationUnit cu);
 	
 	
 	// ********** model synchronization **********

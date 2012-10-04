@@ -20,7 +20,6 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -522,11 +521,6 @@ public abstract class AbstractJaxbContextRoot
 	
 	
 	// **************** validation ********************************************
-
-	@Override
-	public TextRange getValidationTextRange() {
-		return TextRange.Empty.instance(); //?
-	}
 	
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
+import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.internal.context.java.AbstractJavaContextNode;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlCDATA;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.XmlCDATAAnnotation;
@@ -23,7 +23,7 @@ public class ELJavaXmlCDATA
 	protected final Context context;
 	
 	
-	public ELJavaXmlCDATA(JavaContextNode parent, Context context) {
+	public ELJavaXmlCDATA(JaxbContextNode parent, Context context) {
 		super(parent);
 		this.context = context;
 	}

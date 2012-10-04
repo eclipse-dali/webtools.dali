@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 import org.eclipse.xsd.util.XSDUtil;
@@ -27,7 +26,7 @@ import org.eclipse.xsd.util.XSDUtil;
  * @since 3.0
  */
 public interface XmlSchemaType
-		extends JavaContextNode {
+		extends JaxbContextNode {
 	
 	String DEFAULT_NAMESPACE = XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001;
 	

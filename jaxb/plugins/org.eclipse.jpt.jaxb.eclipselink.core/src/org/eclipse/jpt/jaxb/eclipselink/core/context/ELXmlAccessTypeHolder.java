@@ -21,7 +21,7 @@ import org.eclipse.jpt.jaxb.core.context.XmlAccessTypeHolder;
  * @version 3.3
  * @since 3.3
  */
-public interface ELJaxbXmlAccessTypeHolder
-		extends XmlAccessTypeHolder<ELJaxbXmlAccessType> {
+public interface ELXmlAccessTypeHolder
+		extends XmlAccessTypeHolder<ELXmlAccessType> {
 	
 }

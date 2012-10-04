@@ -21,7 +21,7 @@ import org.eclipse.jpt.jaxb.core.context.XmlAccessOrderHolder;
  * @version 3.3
  * @since 3.3
  */
-public interface ELJaxbXmlAccessOrderHolder
-		extends XmlAccessOrderHolder<ELJaxbXmlAccessOrder> {
+public interface ELXmlAccessOrderHolder
+		extends XmlAccessOrderHolder<ELXmlAccessOrder> {
 	
 }

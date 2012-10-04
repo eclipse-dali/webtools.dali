@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.context;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnumConstant;
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 
 /**
  * Represents a JAXB enum constant.  
@@ -26,7 +25,7 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
  * @since 3.0
  */
 public interface JaxbEnumConstant
-		extends JavaContextNode {
+		extends JaxbContextNode {
 
 	JavaResourceEnumConstant getResourceEnumConstant();
 

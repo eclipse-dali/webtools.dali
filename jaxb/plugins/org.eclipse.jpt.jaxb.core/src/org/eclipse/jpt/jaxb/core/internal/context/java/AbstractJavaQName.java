@@ -14,9 +14,9 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbQName;
-import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
@@ -37,18 +37,13 @@ public abstract class AbstractJavaQName
 	protected String specifiedName;
 	
 	
-	public AbstractJavaQName(JavaContextNode parent, AnnotationProxy proxy) {
+	public AbstractJavaQName(JaxbContextNode parent, AnnotationProxy proxy) {
 		super(parent);
 		this.proxy = proxy;
 		this.specifiedNamespace = getAnnotationNamespace();
 		this.specifiedName = getAnnotationName();
 	}
 	
-	
-	@Override
-	public JavaContextNode getParent() {
-		return (JavaContextNode) super.getParent();
-	}
 	
 	@Override
 	public void synchronizeWithResourceModel() {

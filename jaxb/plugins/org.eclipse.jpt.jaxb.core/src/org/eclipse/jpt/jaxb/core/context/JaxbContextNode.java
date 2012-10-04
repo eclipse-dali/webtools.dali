@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.context;
 
 import java.util.List;
-
 import org.eclipse.jpt.common.core.JptResourceTypeReference;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jaxb.core.JaxbNode;
@@ -38,19 +37,26 @@ public interface JaxbContextNode
 	 */
 	JaxbContextRoot getContextRoot();
 	
-
-	// ********** updating **********
-
+	
+	// ***** sync/update *****
+	
 	void synchronizeWithResourceModel();
-
+	
 	/**
 	 * Update the context model with the content of the JAXB resource model.
 	 */
 	void update();
-
 	
 	
-	// ******************** validation ****************************************
+	// ***** content assist *****
+	
+	/**
+	 * Return the Java code-completion proposals for the specified position in the source code.
+	 */
+	Iterable<String> getCompletionProposals(int pos);
+	
+	
+	// ***** validation *****
 	
 	/**
 	 * Adds to the list of current validation messages
@@ -61,5 +67,4 @@ public interface JaxbContextNode
 	 * Return the text range for highlighting errors for this object
 	 */
 	TextRange getValidationTextRange();
-
 }

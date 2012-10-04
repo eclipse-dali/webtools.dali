@@ -12,7 +12,6 @@ package org.eclipse.jpt.jaxb.core.internal.gen;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -26,7 +25,6 @@ import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.JavaRuntime;
-import org.eclipse.jpt.common.core.gen.JptGenerator;
 import org.eclipse.jpt.common.core.internal.gen.AbstractJptGenerator;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 
