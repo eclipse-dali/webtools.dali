@@ -39,6 +39,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.TypeMappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.GenericTypeMappingValidator;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
@@ -620,43 +621,11 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 		return null;
 	}
 
-	private Iterable<String> getCandidateClassNames() {
-		final String packageName = this.getEntityMappings().getPackage();
-		if (!StringTools.stringIsEmpty(packageName)) {
-			return new TransformationIterable<String, String>(this.getFilteredCandidateClassNames(packageName)) {
-				@Override
-				protected String transform(String className) {
-					return className.substring(packageName.length()+1);
-				}
-			};
-		}
-		return this.getCandidateFullyQualifiedClassNames();
-	}
-	
-	private Iterable<String> getFilteredCandidateClassNames(final String packageName) {
-			return new FilteringIterable<String>(this.getCandidateFullyQualifiedClassNames()) {
-				@Override
-				protected boolean accept(String className) {
-					return className.startsWith(packageName);
-				}
-			};
+	protected Iterable<String> getCandidateClassNames() {
+		return MappingTools.getSortedJavaClassNames(this.getJavaProject());
 	}
 
-	/**
-	 * @return names of the classes specified by class refs and jar files
-	 */
-	// should return names of all the classes defined in the project?
-	private Iterable<String> getCandidateFullyQualifiedClassNames() {
-		return new TransformationIterable<PersistentType, String>(
-				this.getPersistenceUnit().getJavaPersistentTypes()) {
-			@Override
-			protected String transform(PersistentType pType) {
-				return pType.getName();
-			}
-		};
-	}
-
-	private boolean classNameTouches(int pos) {
+	protected boolean classNameTouches(int pos) {
 		return this.getXmlTypeMapping().classNameTouches(pos);
 	}
 }

@@ -1695,13 +1695,12 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 
 	// ********** content assist ***************
 	
-	public TextRange getMapKeyNameCodeAssistTextRange() {
-		return getAttributeCodeAssistTextRange(JPA.MAP_KEY);
+	public TextRange getTargetClassCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(JPA2_0.TARGET_CLASS);
 	}
 	
-	public boolean mapKeyNameTouches(int pos) {
-		TextRange textRange = this.getMapKeyNameCodeAssistTextRange();
-		return (textRange != null) && textRange.touches(pos);
+	public boolean targetClassTouches(int pos) {
+		TextRange textRange = this.getTargetClassCodeAssistTextRange();
+		return (textRange != null) && (textRange.touches(pos));
 	}
-
 }

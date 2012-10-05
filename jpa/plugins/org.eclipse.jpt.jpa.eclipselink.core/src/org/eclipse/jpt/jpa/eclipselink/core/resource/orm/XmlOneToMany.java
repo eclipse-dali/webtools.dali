@@ -2278,4 +2278,15 @@ public class XmlOneToMany extends org.eclipse.jpt.jpa.core.resource.orm.XmlOneTo
 		this.setAttributeType(attributeType);
 		this.setTargetEntity(targetEntity);
 	}
+
+	// *********** content assist ************
+	
+	protected TextRange getAttributeTypeCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(EclipseLink2_1.ATTRIBUTE_TYPE);
+	}
+	
+	public boolean attributeTypeTouches(int pos) {
+		TextRange textRange = this.getAttributeTypeCodeAssistTextRange();
+		return (textRange != null) && (textRange.touches(pos));
+	}
 }

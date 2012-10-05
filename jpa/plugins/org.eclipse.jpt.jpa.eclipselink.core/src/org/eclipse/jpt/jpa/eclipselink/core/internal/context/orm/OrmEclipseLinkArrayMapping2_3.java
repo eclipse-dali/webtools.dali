@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.jpa.core.context.Converter;
@@ -27,6 +28,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmLobConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
+import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.NamedColumnValidator;
@@ -39,6 +41,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkArrayMapping2_3;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmConvertibleMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlArray;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.XmlAttributes_2_3;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -367,6 +370,37 @@ public class OrmEclipseLinkArrayMapping2_3
 		if (result != null) {
 			return result;
 		}
+		result = this.converterContainer.getCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		if (this.targetClassTouches(pos)) {
+			return this.getCandidateTargetClassNames();
+		}
+		if (this.attributeTypeTouches(pos)) {
+			return this.getcandidateAttributeTypeNames();
+		}
 		return null;
+	}
+	
+	protected boolean attributeTypeTouches(int pos) {
+		return this.xmlAttributeMapping.attributeTypeTouches(pos);
+	}
+
+	protected boolean targetClassTouches(int pos) {
+		return this.xmlAttributeMapping.targetClassTouches(pos);
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected Iterable<String> getCandidateTargetClassNames() {
+		return new CompositeIterable<String>(
+				MappingTools.getSortedJavaClassNames(getJavaProject()),
+				MappingTools.getPrimaryBasicTypeNames(),
+				CollectionTools.sort(((EclipseLinkPersistenceUnit) this.getPersistenceUnit()).getEclipseLinkDynamicPersistentTypeNames())
+				);
+	}
+	
+	protected Iterable<String> getcandidateAttributeTypeNames() {
+		return MappingTools.getCollectionTypeNames();
 	}
 }

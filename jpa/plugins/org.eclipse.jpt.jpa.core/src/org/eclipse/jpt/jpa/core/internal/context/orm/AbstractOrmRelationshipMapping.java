@@ -32,6 +32,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmMappingRelationship;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.jpa.core.internal.context.AttributeMappingTools;
+import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.GenericOrmCascade;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
@@ -455,6 +456,17 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 		if (result != null) {
 			return result;
 		}
+		if (this.targetEntityTouches(pos)) {
+			return this.getCandidateTargetEntityClassNames();
+		}
 		return null;
+	}
+
+	protected boolean targetEntityTouches(int pos) {
+		return this.xmlAttributeMapping.targetEntityTouches(pos);
+	}
+	
+	protected Iterable<String> getCandidateTargetEntityClassNames() {
+		return MappingTools.getSortedJavaClassNames(getJavaProject());
 	}
 }

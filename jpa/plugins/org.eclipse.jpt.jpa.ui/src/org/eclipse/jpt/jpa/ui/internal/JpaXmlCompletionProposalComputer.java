@@ -77,7 +77,7 @@ public class JpaXmlCompletionProposalComputer extends DefaultJpaXmlCompletionPro
 			}
 
 			// initialize newMatchingString to an empty string to handle the case when user invokes code assist without giving delimiter
-			String newMatchString = "";
+			String newMatchString = ""; //$NON-NLS-1$
 			if ((matchString.length() > 0) && (matchString.startsWith("\"") || matchString.startsWith("'"))) { //$NON-NLS-1$ //$NON-NLS-2$
 				newMatchString = matchString.substring(1);
 			}
@@ -89,9 +89,9 @@ public class JpaXmlCompletionProposalComputer extends DefaultJpaXmlCompletionPro
 
 					// handle values that include special characters like double-quote or apostrophe
 					String convertedPossibleValue = null;
-					if (matchString.startsWith("\"")) {
+					if (matchString.startsWith("\"")) { //$NON-NLS-1$
 						convertedPossibleValue = StringTools.convertToXmlStringLiteralQuote(possibleValue);
-					} else if (matchString.startsWith("'")) {
+					} else if (matchString.startsWith("'")) { //$NON-NLS-1$
 						convertedPossibleValue = StringTools.convertToXmlStringLiteralApostrophe(possibleValue);
 					} else {
 						// convert to XML string literal with quotes by default
@@ -101,12 +101,12 @@ public class JpaXmlCompletionProposalComputer extends DefaultJpaXmlCompletionPro
 					CompletionProposal proposal = null;
 					// give users an additional message if value includes special characters since what is written
 					//  to XML is most likely different from what is shown in the proposal list with this case
-					if (possibleValue.startsWith("\"")) {
+					if (possibleValue.startsWith("\"")) { //$NON-NLS-1$
 						// handle the case when user does ""<invoke code assist here>" trying to get these special values
 						// User cannot do ""F<invoke code assist here>" or ""F<invoke code assist here>"" trying to
 						// get these values that are special and start with F because XML would regard the F as the 
 						// start of another attribute since there are two double-quotes exist before F.
-						if (matchString.startsWith("\"") && newMatchString.startsWith("\"")) {
+						if (matchString.startsWith("\"") && newMatchString.startsWith("\"")) { //$NON-NLS-1$ //$NON-NLS-2$
 							proposal = new CompletionProposal(
 									convertedPossibleValue, rOffset, rLength + 1, convertedPossibleValue.length(), null, 
 									possibleValue, null, JptUiMessages.JpaXmlCompletionProposalComputer_SpecialNameMsg);
@@ -178,14 +178,14 @@ public class JpaXmlCompletionProposalComputer extends DefaultJpaXmlCompletionPro
 				
 				String convertedPossibleValue = null;
 				if ((matchString.length() == 0) || StringTools.stringStartsWithIgnoreCase(possibleValue, matchString)) {
-					if (possibleValue.startsWith("\"")) {
+					if (possibleValue.startsWith("\"")) { //$NON-NLS-1$
 						convertedPossibleValue = StringTools.convertToXmlElementStringLiteral(possibleValue);
 					} else {
 						convertedPossibleValue = possibleValue;
 					}
 
 					CompletionProposal proposal = null;
-					if (possibleValue.startsWith("\"")) {
+					if (possibleValue.startsWith("\"")) { //$NON-NLS-1$
 						proposal = new CompletionProposal(
 								convertedPossibleValue, begin, length, convertedPossibleValue.length(), 
 								JptJpaUiPlugin.instance().getImage(JptUiIcons.JPA_CONTENT), possibleValue, null, 
@@ -229,7 +229,10 @@ public class JpaXmlCompletionProposalComputer extends DefaultJpaXmlCompletionPro
 
 		List<String> list = new ArrayList<String>();
 		for (JpaStructureNode node : rootStructureNodes) {
-			CollectionTools.addAll(list, ((XmlFile.Root) node).getCompletionProposals(documentPosition));
+			Iterable<String> proposals = ((XmlFile.Root) node).getCompletionProposals(documentPosition);
+			if (proposals != null) {
+				CollectionTools.addAll(list, proposals);
+			}
 		}
 		return list;
 	}

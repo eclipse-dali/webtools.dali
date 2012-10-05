@@ -616,4 +616,39 @@ public class OrmEclipseLinkConverterContainerImpl
 	public int getNumberSupportedConverters() {
 		return this.owner.getNumberSupportedConverters();
 	}
+
+	// ********** completion proposals **********
+
+	@Override
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		for (OrmEclipseLinkCustomConverter converter : this.customConverterContainer.getContextElements()) {
+			result = converter.getCompletionProposals(pos);
+			if (result != null) {
+				return result;
+			}
+		}
+		for (OrmEclipseLinkStructConverter converter : this.structConverterContainer.getContextElements()) {
+			result = converter.getCompletionProposals(pos);
+			if (result != null) {
+				return result;
+			}
+		}
+		for (OrmEclipseLinkObjectTypeConverter converter : this.objectTypeConverterContainer.getContextElements()) {
+			result = converter.getCompletionProposals(pos);
+			if (result != null) {
+				return result;
+			}
+		}
+		for (OrmEclipseLinkTypeConverter converter : this.typeConverterContainer.getContextElements()) {
+			result = converter.getCompletionProposals(pos);
+			if (result != null) {
+				return result;
+			}
+		}
+		return null;
+	}
 }

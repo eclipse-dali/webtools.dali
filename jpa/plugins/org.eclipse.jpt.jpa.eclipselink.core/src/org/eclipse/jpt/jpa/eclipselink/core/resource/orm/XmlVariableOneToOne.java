@@ -1379,4 +1379,15 @@ public class XmlVariableOneToOne extends AbstractXmlAttributeMapping implements 
 		this.setTargetInterface(targetInterface);
 	}
 
+	// *********** content assist ************
+	
+	protected TextRange getTargetInterfaceCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(EclipseLink.VARIABLE_ONE_TO_ONE__TARGET_INTERFACE);
+	}
+	
+	public boolean targetInterfaceTouches(int pos) {
+		TextRange textRange = this.getTargetInterfaceCodeAssistTextRange();
+		return (textRange != null) && (textRange.touches(pos));
+	}
+
 }

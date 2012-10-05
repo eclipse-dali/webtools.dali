@@ -14,6 +14,7 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
@@ -29,6 +30,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkEmbeddab
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistentType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkEmbeddable;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.EclipseLinkTypeMappingValidator;
@@ -275,5 +277,35 @@ public class OrmEclipseLinkEmbeddableImpl
 
 	protected TextRange getParentClassTextRange() {
 		return this.getValidationTextRange(this.xmlTypeMapping.getParentClassTextRange());
+	}
+
+	// ********** completion proposals **********
+
+	@Override
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		result = this.customizer.getCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		result = this.converterContainer.getCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		if (this.xmlTypeMapping.parentClassTouches(pos)) {
+			return this.getCandidateParentClassNames();
+		}
+		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected Iterable<String> getCandidateParentClassNames() {
+		return new CompositeIterable<String>(
+				this.getCandidateClassNames(),
+				CollectionTools.sort(((EclipseLinkPersistenceUnit) this.getPersistenceUnit()).getEclipseLinkDynamicPersistentTypeNames())
+				);
 	}
 }

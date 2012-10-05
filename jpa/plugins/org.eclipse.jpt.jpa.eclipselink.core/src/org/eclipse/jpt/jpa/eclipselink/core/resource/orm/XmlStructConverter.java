@@ -257,4 +257,15 @@ public class XmlStructConverter extends XmlNamedConverter
 		int offset = getAttributeNode(EclipseLink.STRUCT_CONVERTER__CONVERTER).getValueRegionStartOffset() + 1; // +1 = opening double quote
 		return new ReplaceEdit(offset, packageLength, newPackageName);
 	}
+
+	// ********** content assist ***************
+	
+	public TextRange getConverterClassCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(EclipseLink.STRUCT_CONVERTER__CONVERTER);
+	}
+	
+	public boolean converterClassTouches(int pos) {
+		TextRange textRange = this.getConverterClassCodeAssistTextRange();
+		return (textRange != null) && textRange.touches(pos);
+	}
 } // XmlStructConverter

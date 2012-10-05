@@ -253,4 +253,14 @@ public class XmlConverter extends XmlNamedConverter
 		return new ReplaceEdit(offset, packageLength, newPackageName);
 	}
 
+	// ********** content assist ***************
+	
+	public TextRange getConverterClassCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(EclipseLink.CONVERTER__CLASS);
+	}
+	
+	public boolean converterClassTouches(int pos) {
+		TextRange textRange = this.getConverterClassCodeAssistTextRange();
+		return (textRange != null) && textRange.touches(pos);
+	}
 } // XmlConverter

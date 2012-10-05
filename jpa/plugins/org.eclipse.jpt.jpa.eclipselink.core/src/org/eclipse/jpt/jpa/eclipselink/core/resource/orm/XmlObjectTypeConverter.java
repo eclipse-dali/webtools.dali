@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -484,4 +485,32 @@ public class XmlObjectTypeConverter extends XmlNamedConverter
 		return new ReplaceEdit(offset, packageLength, newPackageName);
 	}
 
+	// ********** content assist ***************
+	
+	public TextRange getObjectTypeCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(EclipseLink.OBJECT_TYPE_CONVERTER__OBJECT_TYPE);
+	}
+	
+	public boolean objectTypeTouches(int pos) {
+		TextRange textRange = this.getObjectTypeCodeAssistTextRange();
+		return (textRange != null) && textRange.touches(pos);
+	}
+	
+	public TextRange getDataTypeCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(EclipseLink.OBJECT_TYPE_CONVERTER__DATA_TYPE);
+	}
+	
+	public boolean dataTypeTouches(int pos) {
+		TextRange textRange = this.getDataTypeCodeAssistTextRange();
+		return (textRange != null) && textRange.touches(pos);
+	}
+
+	public TextRange getDefaultObjectValueCodeAssistTextRange() {
+		return getElementCodeAssistTextRange(EclipseLink.OBJECT_TYPE_CONVERTER__DEFAULT_OBJECT_VALUE);
+	}
+	
+	public boolean defaultObjectValueTouches(int pos) {
+		TextRange textRange = this.getDefaultObjectValueCodeAssistTextRange();
+		return (textRange != null) && textRange.touches(pos);
+	}
 } // XmlObjectTypeConverter

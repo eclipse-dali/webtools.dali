@@ -9,8 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
@@ -205,5 +206,39 @@ public class OrmEclipseLinkVersionMapping
 
 	protected TextRange getAttributeTypeTextRange() {
 		return this.getValidationTextRange(this.xmlAttributeMapping.getAttributeTypeTextRange());
+	}
+
+	// ********** completion proposals **********
+
+	@Override
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		result = this.converterContainer.getCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		if (this.attributeTypeTouches(pos)) {
+			return this.getCandidateAttributeTypeNames();
+		}
+		return null;
+	}
+
+	protected boolean attributeTypeTouches(int pos) {
+		return this.xmlAttributeMapping.attributeTypeTouches(pos);
+	}
+	
+	protected Iterable<String> getCandidateAttributeTypeNames() {
+		List<String> names = new ArrayList<String>();
+		names.add(int.class.getName());
+		names.add(Integer.class.getSimpleName());
+		names.add(short.class.getName());
+		names.add(Short.class.getSimpleName());
+		names.add(long.class.getName());
+		names.add(Long.class.getSimpleName());
+		names.add(Timestamp.class.getName());
+		return names;
 	}
 }

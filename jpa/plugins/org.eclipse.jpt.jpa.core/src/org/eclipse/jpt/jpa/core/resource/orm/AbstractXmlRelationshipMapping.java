@@ -406,4 +406,14 @@ public abstract class AbstractXmlRelationshipMapping extends AbstractXmlAttribut
 		return new ReplaceEdit(offset, packageLength, newPackageName);
 	}
 
+	// *********** content assist ************
+	
+	public TextRange getTargetEntityCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(JPA.TARGET_ENTITY);
+	}
+
+	public boolean targetEntityTouches(int pos) {
+		TextRange textRange = this.getTargetEntityCodeAssistTextRange();
+		return (textRange != null) && (textRange.touches(pos));
+	}
 } // RelationshipMapping

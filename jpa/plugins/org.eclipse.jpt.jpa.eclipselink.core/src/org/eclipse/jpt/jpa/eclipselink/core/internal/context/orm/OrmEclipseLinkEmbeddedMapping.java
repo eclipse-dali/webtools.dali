@@ -13,10 +13,14 @@ import java.util.List;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.AbstractOrmEmbeddedMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkAccessType;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEmbedded;
@@ -88,5 +92,31 @@ public class OrmEclipseLinkEmbeddedMapping
 	@Override
 	protected TextRange getAttributeTypeTextRange() {
 		return this.getValidationTextRange(this.xmlAttributeMapping.getAttributeTypeTextRange());
+	}
+
+	// ********** completion proposals **********
+
+	@Override
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		if (this.attributeTypeTouches(pos)) {
+			return this.getCandidateAttributeTypeNames();
+		}
+		return null;
+	}
+	
+	protected boolean attributeTypeTouches(int pos) {
+		return this.xmlAttributeMapping.attributeTypeTouches(pos);
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected Iterable<String> getCandidateAttributeTypeNames() {
+		return new CompositeIterable<String>(
+				MappingTools.getSortedJavaClassNames(getJavaProject()),
+				CollectionTools.sort(((EclipseLinkPersistenceUnit) this.getPersistenceUnit()).getEclipseLinkDynamicPersistentTypeNames())
+				);
 	}
 }

@@ -25,8 +25,10 @@ import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkConversionValue;
@@ -283,7 +285,6 @@ public class OrmEclipseLinkObjectTypeConverter
 		return this.getConversionValuesSize();
 	}
 
-
 	// ********** default object value **********
 
 	public String getDefaultObjectValue() {
@@ -481,5 +482,44 @@ public class OrmEclipseLinkObjectTypeConverter
 		for (JavaEclipseLinkConversionValue value : javaConverter.getConversionValues()) {
 			this.addConversionValue().convertFrom(value);
 		}
+	}
+
+	// ********** completion proposals **********
+
+	@Override
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		if (this.objectTypeTouches(pos)) {
+			return this.getCandidateTypeNames();
+		}
+		if (this.dataTypeTouches(pos)) {
+			return this.getCandidateTypeNames();
+		}
+		return null;
+	}
+
+	protected boolean objectTypeTouches(int pos) {
+		return this.xmlConverter.objectTypeTouches(pos);
+	}
+	
+	protected boolean dataTypeTouches(int pos) {
+		return this.xmlConverter.dataTypeTouches(pos);
+	}
+
+	@SuppressWarnings("unchecked")
+	protected Iterable<String> getCandidateTypeNames() {
+		return new CompositeIterable<String>(
+				MappingTools.getPrimaryBasicTypeNamesWithoutPrimitives(),
+				MappingTools.getBasicArrayTypeNames(),
+				//Add java enums to cover the case where object type is a user defined Enum
+				MappingTools.getSortedJavaEnumNames(this.getJavaProject())
+				);
+	}
+	
+	protected boolean defaultObjectValueTouches(int pos) {
+		return this.xmlConverter.defaultObjectValueTouches(pos);
 	}
 }

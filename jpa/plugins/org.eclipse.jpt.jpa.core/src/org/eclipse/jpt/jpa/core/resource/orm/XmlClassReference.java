@@ -252,4 +252,15 @@ public class XmlClassReference extends EBaseObjectImpl implements EBaseObject
 		return new ReplaceEdit(offset, packageLength, newPackageName);
 	}
 
+	// ********** content assist ***************
+	
+	public TextRange getClassNameCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(JPA.CLASS);
+	}
+	
+	public boolean classNameTouches(int pos) {
+		TextRange textRange = this.getClassNameCodeAssistTextRange();
+		return (textRange != null) && textRange.touches(pos);
+	}
+
 }

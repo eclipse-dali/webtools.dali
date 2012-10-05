@@ -12,13 +12,16 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeConverter;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTypeConverter;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -265,5 +268,40 @@ public class OrmEclipseLinkTypeConverter
 		super.convertFrom(javaConverter);
 		this.setDataType(javaConverter.getFullyQualifiedDataType());
 		this.setObjectType(javaConverter.getFullyQualifiedObjectType());
+	}
+
+	// ********** completion proposals **********
+
+	@Override
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		if (this.objectTypeTouches(pos)) {
+			return this.getCandidateTypeNames();
+		}
+		if (this.dataTypeTouches(pos)) {
+			return this.getCandidateTypeNames();
+		}
+		return null;
+	}
+
+	protected boolean objectTypeTouches(int pos) {
+		return this.xmlConverter.objectTypeTouches(pos);
+	}
+	
+	protected boolean dataTypeTouches(int pos) {
+		return this.xmlConverter.dataTypeTouches(pos);
+	}
+
+	@SuppressWarnings("unchecked")
+	protected Iterable<String> getCandidateTypeNames() {
+		return new CompositeIterable<String>(
+				MappingTools.getSortedJavaClassNames(getJavaProject()),
+				MappingTools.getPrimaryBasicTypeNames(),
+				MappingTools.getCollectionTypeNames(),
+				CollectionTools.sort(((EclipseLinkPersistenceUnit) this.getPersistenceUnit()).getEclipseLinkDynamicPersistentTypeNames())
+				);
 	}
 }

@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmAttributeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVariableOneToOneMapping;
@@ -43,5 +44,27 @@ public class OrmEclipseLinkVariableOneToOneMapping
 	
 	public void removeXmlAttributeMappingFrom(org.eclipse.jpt.jpa.core.resource.orm.Attributes xmlAttributes) {
 		((Attributes) xmlAttributes).getVariableOneToOnes().remove(this.xmlAttributeMapping);
+	}
+
+	// ********** completion proposals **********
+
+	@Override
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		if (this.targetInterfaceTouches(pos)) {
+			return this.getCandidateTargetInterfaceNames();
+		}
+		return null;
+	}
+
+	protected boolean targetInterfaceTouches(int pos) {
+		return this.xmlAttributeMapping.targetInterfaceTouches(pos);
+	}
+	
+	protected Iterable<String> getCandidateTargetInterfaceNames() {
+		return MappingTools.getSortedJavaInterfaceNames(getJavaProject());
 	}
 }

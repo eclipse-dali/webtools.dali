@@ -9,11 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmAttributeMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkStructureMapping2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.Attributes;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlStructure;
 
@@ -59,5 +63,31 @@ public class OrmEclipseLinkStructureMapping2_3
 
 	public void removeXmlAttributeMappingFrom(org.eclipse.jpt.jpa.core.resource.orm.Attributes xmlAttributes) {
 		((Attributes) xmlAttributes).getStructures().remove(this.xmlAttributeMapping);
+	}
+
+	// ********** completion proposals **********
+
+	@Override
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		if (this.attributeTypeTouches(pos)) {
+			return this.getCandidateAttributeTypeNames();
+		}
+		return null;
+	}
+
+	protected boolean attributeTypeTouches(int pos) {
+		return this.xmlAttributeMapping.attributeTypeTouches(pos);
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected Iterable<String> getCandidateAttributeTypeNames() {
+		return new CompositeIterable<String>(
+				MappingTools.getSortedJavaClassNames(getJavaProject()),
+				CollectionTools.sort(((EclipseLinkPersistenceUnit) this.getPersistenceUnit()).getEclipseLinkDynamicPersistentTypeNames())
+				);
 	}
 }

@@ -987,6 +987,15 @@ public class XmlVersion extends org.eclipse.jpt.jpa.core.resource.orm.XmlVersion
 		return (textRange != null) && (textRange.touches(pos));
 	}
 	
+	protected TextRange getAttributeTypeCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(EclipseLink2_1.ATTRIBUTE_TYPE);
+	}
+	
+	public boolean attributeTypeTouches(int pos) {
+		TextRange textRange = this.getAttributeTypeCodeAssistTextRange();
+		return (textRange != null) && (textRange.touches(pos));
+	}
+	
 	// ******** virtual attribute ************
 	
 	public void setVirtualAttributeTypes(String attributeType, String targetType) {

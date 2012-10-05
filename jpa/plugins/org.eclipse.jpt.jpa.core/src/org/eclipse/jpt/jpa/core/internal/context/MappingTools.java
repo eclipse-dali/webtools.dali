@@ -9,16 +9,29 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceNode;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ClassName;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.ReflectionTools;
 import org.eclipse.jpt.common.utility.internal.Transformer;
+import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.ColumnMapping;
@@ -35,6 +48,7 @@ import org.eclipse.jpt.jpa.core.context.ReferenceTable;
 import org.eclipse.jpt.jpa.core.context.Relationship;
 import org.eclipse.jpt.jpa.core.context.RelationshipMapping;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
+import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.jpa2.context.AttributeMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.CollectionMapping2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.ElementCollectionMapping2_0;
@@ -108,6 +122,13 @@ public final class MappingTools {
 		java.lang.Character.class.getName()
 	};
 
+	private static final String[] BASIC_ARRAY_TYPE_NAMES = {
+		byte[].class.getSimpleName(),
+		Byte[].class.getSimpleName(),
+		char[].class.getSimpleName(),
+		Character[].class.getSimpleName()
+	};
+	
 	/**
 	 * Return whether the specified type is among the various "other" types
 	 * that can default to a basic mapping.
@@ -115,7 +136,7 @@ public final class MappingTools {
 	public static boolean typeIsOtherValidBasicType(String typeName) {
 		return ArrayTools.contains(OTHER_VALID_BASIC_TYPE_NAMES, typeName);
 	}
-
+	
 	private static final String[] OTHER_VALID_BASIC_TYPE_NAMES = {
 		java.lang.String.class.getName(),
 		java.math.BigInteger.class.getName(),
@@ -125,6 +146,35 @@ public final class MappingTools {
 		java.sql.Date.class.getName(),
 		java.sql.Time.class.getName(),
 		java.sql.Timestamp.class.getName(),
+	};
+	
+	private static final String[] PRIMITIVE_TYPE_NAMES = {
+		boolean.class.getName(),
+		byte.class.getName(),
+		char.class.getName(),
+		double.class.getName(),
+		float.class.getName(),
+		int.class.getName(),
+		long.class.getName(),
+		short.class.getName()
+	};
+	
+	private static final String[] PRIMITIVE_WRAPPER_TYPE_NAMES = {
+		Boolean.class.getName(),
+		Byte.class.getName(),
+		Character.class.getName(),
+		Double.class.getName(),
+		Float.class.getName(),
+		Integer.class.getName(),
+		Long.class.getName(),
+		Short.class.getName()
+	};
+	
+	private static final String[] COLLECTION_TYPE_NAMES = {
+		Collection.class.getName(),
+		List.class.getName(),
+		Map.class.getName(),
+		Set.class.getName()
 	};
 
 	/**
@@ -486,6 +536,192 @@ public final class MappingTools {
 				(resourceNode instanceof SourceNode);
 	}
 
+	/**
+	 * Returns sorted names of interfaces of the given project
+	 */
+	public static Iterable<String> getSortedJavaInterfaceNames(IJavaProject javaProject) {
+		return CollectionTools.sort(getJavaInterfaceNames(javaProject));
+	}
+	
+	/**
+	 * Returns the names of interfaces of the given project
+	 */
+	public static Iterable<String> getJavaInterfaceNames(IJavaProject javaProject) {
+		return new TransformationIterable<IType, String>(getJavaInterfaces(javaProject)) {
+			@Override
+			protected String transform(IType type) {
+				return type.getFullyQualifiedName();
+			}
+		};
+	}	
+	
+	/**
+	 * Returns all the interfaces across the given project
+	 */
+	public static Iterable<IType> getJavaInterfaces(IJavaProject javaProject) {
+		return new FilteringIterable<IType>(getJavaTypes(javaProject)) {
+			@Override
+			protected boolean accept(IType type) {
+				try {
+					return type.isInterface();
+				} catch (JavaModelException e) {
+					JptJpaCorePlugin.instance().logError(e);
+				}
+				return false;
+			}
+		};
+	}
+	
+	/**
+	 * Returns sorted names of classes of the given project
+	 */
+	public static Iterable<String> getSortedJavaClassNames(IJavaProject javaProject) {
+		return CollectionTools.sort(getJavaClassNames(javaProject));
+	}
+	
+	/**
+	 * Returns the names of classes of the given project
+	 */
+	public static Iterable<String> getJavaClassNames(IJavaProject javaProject) {
+		return new TransformationIterable<IType, String>(getJavaClasses(javaProject)) {
+			@Override
+			protected String transform(IType type) {
+				return type.getFullyQualifiedName();
+			}
+		};
+	}
+		
+	
+	/**
+	 * Returns all the classes across the given project
+	 */
+	public static Iterable<IType> getJavaClasses(IJavaProject javaProject) {
+		return new FilteringIterable<IType>(getJavaTypes(javaProject)) {
+			@Override
+			protected boolean accept(IType type) {
+				try {
+					return type.isClass();
+				} catch (JavaModelException e) {
+					JptJpaCorePlugin.instance().logError(e);
+				}
+				return false;
+			}
+		};
+	}
+	
+	/**
+	 * Returns all the enums across the given project
+	 */
+	public static Iterable<IType> getJavaEnums(IJavaProject javaProject) {
+		return new FilteringIterable<IType>(getJavaTypes(javaProject)) {
+			@Override
+			protected boolean accept(IType type) {
+				try {
+					return type.isEnum();
+				} catch (JavaModelException e) {
+					JptJpaCorePlugin.instance().logError(e);
+				}
+				return false;
+			}
+		};
+	}
+	
+	/**
+	 * Returns the names of enums in the given project
+	 */
+	public static Iterable<String> getJavaEnumNames(IJavaProject javaProject) {
+		return new TransformationIterable<IType, String>(getJavaEnums(javaProject)) {
+			@Override
+			protected String transform(IType type) {
+				return type.getFullyQualifiedName();
+			}
+		};
+	}
+	
+	/**
+	 * Returns sorted names of enums in the given project
+	 */
+	public static Iterable<String> getSortedJavaEnumNames(IJavaProject javaProject) {
+		return CollectionTools.sort(getJavaEnumNames(javaProject));
+	}
+	
+	/**
+	 * Returns all the types cross the given project
+	 */
+	public static Iterable<IType> getJavaTypes(IJavaProject javaProject) {
+		List<IType> typesList = new ArrayList<IType>();
+		try {
+			IPackageFragmentRoot[] pkgRoots = javaProject.getAllPackageFragmentRoots();
+			for (IPackageFragmentRoot root : pkgRoots) {
+					IJavaElement[] jElements = root.getChildren();
+					for (IJavaElement jElement : jElements) {
+						if (jElement.getElementType() == IJavaElement.PACKAGE_FRAGMENT) {
+							ICompilationUnit[] units = ((IPackageFragment) jElement).getCompilationUnits();
+							for (ICompilationUnit unit : units) {
+								CollectionTools.addAll(typesList, unit.getTypes());
+							}
+						}
+					}
+			}
+		} catch (JavaModelException e) {
+			JptJpaCorePlugin.instance().logError(e);
+		}
+		return typesList;
+	}
+	
+	/**
+	 * Returns the names of basic array types.
+	 */
+	public static Iterable<String> getBasicArrayTypeNames() {
+		return CollectionTools.list(BASIC_ARRAY_TYPE_NAMES);
+	}
+	
+	
+	/**
+	 * Returns the names of primary basic types with including primitives
+	 */
+	public static Iterable<String> getPrimaryBasicTypeNamesWithoutPrimitives() {
+		List<String> names = new ArrayList<String>();
+		names.addAll(CollectionTools.list(PRIMITIVE_WRAPPER_TYPE_NAMES));
+		names.addAll(CollectionTools.list(OTHER_VALID_BASIC_TYPE_NAMES));
+		return names;
+	}
+	
+	/**
+	 * Returns the names of primary basic types
+	 */
+	public static Iterable<String> getPrimaryBasicTypeNames() {
+		List<String> names = new ArrayList<String>();
+		names.addAll(CollectionTools.list(PRIMITIVE_TYPE_NAMES));
+		names.addAll(CollectionTools.list(PRIMITIVE_WRAPPER_TYPE_NAMES));
+		names.addAll(CollectionTools.list(OTHER_VALID_BASIC_TYPE_NAMES));
+		return names;
+	}
+	
+	/**
+	 * Returns the names of all possible valid basic types
+	 * 
+	 * @return a String iterable that includes extra basic types besides 
+	 * these ones returned by getPrimaryBasicTypeNames method
+	 * 
+	 * @see #getPrimaryBasicTypeNames()
+	 */
+	public static Iterable<String> getAllBasicTypeNames() {
+		List<String> names = new ArrayList<String>();
+		names.addAll(CollectionTools.list(getPrimaryBasicTypeNames()));
+		names.addAll(CollectionTools.list(BASIC_ARRAY_TYPE_NAMES));
+		names.add(Enum.class.getSimpleName());
+		return names;
+	}
+	
+	/**
+	 * Returns the names of collection types
+	 */
+	public static Iterable<String> getCollectionTypeNames() {
+		List<String> names = new ArrayList<String>();
+		names.addAll(CollectionTools.list(COLLECTION_TYPE_NAMES));
+		return names;
+	}
 
 	// ********** constructor **********
 

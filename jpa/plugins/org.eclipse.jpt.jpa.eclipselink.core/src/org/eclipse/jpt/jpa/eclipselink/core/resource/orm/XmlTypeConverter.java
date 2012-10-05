@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -346,4 +347,23 @@ public class XmlTypeConverter extends XmlNamedConverter
 		return new ReplaceEdit(offset, packageLength, newPackageName);
 	}
 
+	// ********** content assist ***************
+	
+	public TextRange getObjectTypeCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(EclipseLink.TYPE_CONVERTER__OBJECT_TYPE);
+	}
+	
+	public boolean objectTypeTouches(int pos) {
+		TextRange textRange = this.getObjectTypeCodeAssistTextRange();
+		return (textRange != null) && textRange.touches(pos);
+	}
+	
+	public TextRange getDataTypeCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(EclipseLink.TYPE_CONVERTER__DATA_TYPE);
+	}
+	
+	public boolean dataTypeTouches(int pos) {
+		TextRange textRange = this.getDataTypeCodeAssistTextRange();
+		return (textRange != null) && textRange.touches(pos);
+	}
 } // XmlTypeConverter

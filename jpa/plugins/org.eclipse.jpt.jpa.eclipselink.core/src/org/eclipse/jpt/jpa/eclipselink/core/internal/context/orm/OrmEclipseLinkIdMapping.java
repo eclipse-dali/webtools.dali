@@ -195,4 +195,30 @@ public class OrmEclipseLinkIdMapping
 	protected TextRange getAttributeTypeTextRange() {
 		return this.getValidationTextRange(this.xmlAttributeMapping.getAttributeTypeTextRange());
 	}
+	
+	// ********** completion proposals **********
+
+	@Override
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		result = this.converterContainer.getCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		if (this.attributeTypeTouches(pos)) {
+			return this.getCandidateAttributeTypeNames();
+		}
+		return null;
+	}
+	
+	protected boolean attributeTypeTouches(int pos) {
+		return this.xmlAttributeMapping.attributeTypeTouches(pos);
+	}
+	
+	protected Iterable<String> getCandidateAttributeTypeNames() {
+		return MappingTools.getPrimaryBasicTypeNames();
+	}
 }

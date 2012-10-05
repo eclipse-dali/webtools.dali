@@ -471,4 +471,15 @@ public class XmlStructure extends AbstractXmlAttributeMapping implements XmlAttr
 	public void setVirtualAttributeTypes(String attributeType, String targetType) {
 		this.setAttributeType(attributeType);
 	}
+
+	// *********** content assist ************
+	
+	protected TextRange getAttributeTypeCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(EclipseLink2_3.STRUCTURE__ATTRIBUTE_TYPE);
+	}
+	
+	public boolean attributeTypeTouches(int pos) {
+		TextRange textRange = this.getAttributeTypeCodeAssistTextRange();
+		return (textRange != null) && (textRange.touches(pos));
+	}
 } // XmlStructure

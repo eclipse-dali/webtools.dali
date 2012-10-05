@@ -569,4 +569,15 @@ public class XmlEmbedded extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbedd
 		this.setAttributeType(attributeType);
 	}
 
+	// *********** content assist ************
+	
+	protected TextRange getAttributeTypeCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(EclipseLink2_1.ATTRIBUTE_TYPE);
+	}
+	
+	public boolean attributeTypeTouches(int pos) {
+		TextRange textRange = this.getAttributeTypeCodeAssistTextRange();
+		return (textRange != null) && (textRange.touches(pos));
+	}
+
 }

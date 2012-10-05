@@ -19,6 +19,7 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
+import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlClassReference;
@@ -315,5 +316,27 @@ public class OrmEclipseLinkCustomizer
 	protected TextRange getXmlValidationTextRange() {
 		XmlClassReference xmlClassRef = this.getXmlCustomizerClassRef();
 		return (xmlClassRef == null) ? null : xmlClassRef.getClassNameTextRange();
+	}
+
+	// ********** completion proposals **********
+
+	@Override
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		if (this.customizerClassTouches(pos)) {
+			return this.getCandidateClassNames();
+		}
+		return null;
+	}
+
+	protected Iterable<String> getCandidateClassNames() {
+		return MappingTools.getSortedJavaClassNames(this.getJavaProject());
+	}
+
+	protected boolean customizerClassTouches(int pos) {
+		return this.getXmlCustomizerClassRef()== null? false : this.getXmlCustomizerClassRef().classNameTouches(pos);
 	}
 }

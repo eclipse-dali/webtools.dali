@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkStructConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkStructConverter;
@@ -82,5 +83,27 @@ public class OrmEclipseLinkStructConverter
 	public void convertFrom(JavaEclipseLinkStructConverter javaConverter) {
 		super.convertFrom(javaConverter);
 		this.setConverterClass(javaConverter.getConverterClass());
+	}
+
+	// ********** completion proposals **********
+
+	@Override
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		if (this.converterClassNameTouches(pos)) {
+			return this.getCandidateClassNames();
+		}
+		return null;
+	}
+
+	protected Iterable<String> getCandidateClassNames() {
+		return MappingTools.getSortedJavaClassNames(this.getJavaProject());
+	}
+
+	protected boolean converterClassNameTouches(int pos) {
+		return this.xmlConverter.converterClassTouches(pos);
 	}
 }

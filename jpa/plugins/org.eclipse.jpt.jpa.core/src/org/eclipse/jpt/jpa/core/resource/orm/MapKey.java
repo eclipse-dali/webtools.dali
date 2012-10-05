@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.resource.xml.EBaseObject;
 import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
@@ -218,4 +219,14 @@ public class MapKey extends EBaseObjectImpl implements EBaseObject
 		return new Translator(JPA.NAME, OrmPackage.eINSTANCE.getMapKey_Name(), Translator.DOM_ATTRIBUTE);
 	}
 
+	// ********** content assist ***************
+	
+	public TextRange getMapKeyNameCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(JPA.NAME);
+	}
+	
+	public boolean mapKeyNameTouches(int pos) {
+		TextRange textRange = this.getMapKeyNameCodeAssistTextRange();
+		return (textRange != null) && textRange.touches(pos);
+	}
 } // MapKey

@@ -1227,7 +1227,7 @@ public abstract class AbstractEntityMappings
 				return result;
 			}
 		}
-		return EmptyIterable.instance();
+		return null;
 	}
 
 	@Override

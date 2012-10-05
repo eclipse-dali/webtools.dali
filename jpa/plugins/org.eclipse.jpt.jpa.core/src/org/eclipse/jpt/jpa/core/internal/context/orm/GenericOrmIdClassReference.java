@@ -27,6 +27,7 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmIdClassReference;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.AbstractJpaContextNode;
+import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
@@ -443,5 +444,27 @@ public class GenericOrmIdClassReference
 	protected TextRange getXmlValidationTextRange() {
 		XmlClassReference xmlIdClassRef = this.getXmlIdClassRef();
 		return (xmlIdClassRef == null) ? null : xmlIdClassRef.getClassNameTextRange();
+	}
+
+	// ********** completion proposals **********
+
+	@Override
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		if (this.idCLassNameTouches(pos)) {
+			return this.getCandidateIdClassNames();
+		}
+		return null;
+	}
+	
+	protected Iterable<String> getCandidateIdClassNames() {
+		return MappingTools.getSortedJavaClassNames(this.getJavaProject());
+	}
+
+	protected boolean idCLassNameTouches(int pos) {
+		return this.getXmlIdClassRef() == null ? false : this.getXmlIdClassRef().classNameTouches(pos);
 	}
 }

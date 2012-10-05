@@ -1768,6 +1768,12 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		if (result != null) {
 			return result;
 		}
+		if (this.targetClassTouches(pos)) {
+			return this.getCandidateClassNames();
+		}
+		if (this.mapKeyClassTouches(pos)) {
+			return this.getCandidateClassNames();
+		}
 		if (this.mapKeyNameTouches(pos)) {
 			return this.getCandidateMapKeyNames();
 		}
@@ -1791,9 +1797,26 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		}
 		return null;
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	protected Iterable<String> getCandidateClassNames() {
+		return new CompositeIterable<String>(
+				MappingTools.getSortedJavaClassNames(getJavaProject()),
+				MappingTools.getPrimaryBasicTypeNames()
+				);
+	}
+
+	protected boolean targetClassTouches(int pos) {
+		return this.xmlAttributeMapping.targetClassTouches(pos);
+	}
+
+	protected boolean mapKeyClassTouches(int pos) {
+		return this.xmlAttributeMapping.getMapKeyClass() == null ? false :
+			this.xmlAttributeMapping.getMapKeyClass().classNameTouches(pos);
+	}
+
 	protected boolean mapKeyNameTouches(int pos) {
-		return this.xmlAttributeMapping.mapKeyNameTouches(pos);
+		return  this.getXmlMapKey() == null ? false : this.getXmlMapKey().mapKeyNameTouches(pos);
 	}
 
 	// ********** abstract owner **********

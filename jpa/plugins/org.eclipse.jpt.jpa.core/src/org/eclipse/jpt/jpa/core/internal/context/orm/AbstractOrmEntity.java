@@ -1979,6 +1979,10 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		if (result != null) {
 			return result;
 		}
+		result = this.idClassReference.getCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
 		return null;
 	}
 

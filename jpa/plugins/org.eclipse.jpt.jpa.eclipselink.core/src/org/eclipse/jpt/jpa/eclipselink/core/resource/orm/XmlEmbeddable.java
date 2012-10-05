@@ -1715,4 +1715,14 @@ public class XmlEmbeddable extends org.eclipse.jpt.jpa.core.resource.orm.XmlEmbe
 		return XmlNoSql.buildTranslator(EclipseLink2_4.NO_SQL, EclipseLinkOrmV2_4Package.eINSTANCE.getXmlEmbeddable_2_4_NoSql());
 	}
 
+	// *********** content assist ************
+	
+	public TextRange getParentClassCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(EclipseLink2_1.PARENT_CLASS);
+	}
+	
+	public boolean parentClassTouches(int pos) {
+		TextRange textRange = this.getParentClassCodeAssistTextRange();
+		return (textRange != null) && (textRange.touches(pos));
+	}
 }

@@ -4122,4 +4122,15 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.jpa.core.resource.orm.X
 	protected static Translator buildUuidGeneratorTranslator() {
 		return XmlUuidGenerator.buildTranslator(EclipseLink2_4.UUID_GENERATOR, EclipseLinkOrmV2_4Package.eINSTANCE.getXmlGeneratorContainer2_4_UuidGenerator());
 	}
+	
+	// *********** content assist ************
+	
+	public TextRange getParentClassCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(EclipseLink2_1.PARENT_CLASS);
+	}
+	
+	public boolean parentClassTouches(int pos) {
+		TextRange textRange = this.getParentClassCodeAssistTextRange();
+		return (textRange != null) && (textRange.touches(pos));
+	}
 }

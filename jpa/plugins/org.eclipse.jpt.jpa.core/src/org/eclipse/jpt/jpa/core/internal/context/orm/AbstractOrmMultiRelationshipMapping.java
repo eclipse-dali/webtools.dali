@@ -866,6 +866,13 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		return this.getTargetEntityNonTransientAttributeNames();
 	}
 
+	@SuppressWarnings("unchecked")
+	protected Iterable<String> getCandidateMapKeyClassNames() {
+		return new CompositeIterable<String>(
+				MappingTools.getSortedJavaClassNames(getJavaProject()),
+				MappingTools.getPrimaryBasicTypeNames()
+				);
+	}
 
 	// ********** metamodel **********
 
@@ -1084,6 +1091,9 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		if (this.mapKeyNameTouches(pos)) {
 			return this.getCandidateMapKeyNames();
 		}
+		if (this.mapKeyClassTouches(pos)) {
+			return this.getCandidateMapKeyClassNames();
+		}
 		result = this.mapKeyColumn.getCompletionProposals(pos);
 		if (result != null) {
 			return result;
@@ -1106,7 +1116,12 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	}
 
 	protected boolean mapKeyNameTouches(int pos) {
-		return this.xmlAttributeMapping.mapKeyNameTouches(pos);
+		return this.getXmlMapKey() == null? false : this.getXmlMapKey().mapKeyNameTouches(pos);
+	}
+
+	protected boolean mapKeyClassTouches(int pos) {
+		return this.xmlAttributeMapping.getMapKeyClass() == null ? false : 
+					this.xmlAttributeMapping.getMapKeyClass().classNameTouches(pos);
 	}
 
 	// ********** abstract owner **********

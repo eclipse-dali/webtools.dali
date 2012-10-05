@@ -16,6 +16,7 @@ import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
@@ -40,6 +41,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.orm.EclipseLinkOrmPersistent
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkEntity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.orm.OrmEclipseLinkMultitenancy2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_3JpaPlatformFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
@@ -458,6 +460,7 @@ public class OrmEclipseLinkEntityImpl
 
 	// ********** completion proposals **********
 
+
 	@Override
 	public Iterable<String> getCompletionProposals(int pos) {
 		Iterable<String> result = super.getCompletionProposals(pos);
@@ -468,7 +471,32 @@ public class OrmEclipseLinkEntityImpl
 		if (result != null) {
 			return result;
 		}
+		result = this.customizer.getCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		result = this.converterContainer.getCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		if (this.xmlTypeMapping.parentClassTouches(pos)) {
+			return this.getCandidateParentClassNames();
+		}
+		if (this.classExtractorTouches(pos)) {
+			return this.getCandidateClassNames();
+		}
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
+	protected Iterable<String> getCandidateParentClassNames() {
+		return new CompositeIterable<String>(
+				super.getCandidateClassNames(),
+				CollectionTools.sort(((EclipseLinkPersistenceUnit) this.getPersistenceUnit()).getEclipseLinkDynamicPersistentTypeNames())
+				);
+	}
+	
+	protected boolean classExtractorTouches(int pos) {
+		return this.getXmlClassExtractor() == null? false : this.getXmlClassExtractor().classNameTouches(pos);
+	}
 }

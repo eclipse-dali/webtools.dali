@@ -1130,17 +1130,8 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 		return getAttributeCodeAssistTextRange(JPA.MAPPED_BY);
 	}
 	
-	public TextRange getMapKeyNameCodeAssistTextRange() {
-		return getAttributeCodeAssistTextRange(JPA.MAP_KEY);
-	}
-	
 	public boolean mappedByTouches(int pos) {
 		TextRange textRange = this.getMappedByCodeAssistTextRange();
 		return (textRange!= null) && textRange.touches(pos);
-	}
-	
-	public boolean mapKeyNameTouches(int pos) {
-		TextRange textRange = this.getMapKeyNameCodeAssistTextRange();
-		return (textRange != null) && textRange.touches(pos);
 	}
 }

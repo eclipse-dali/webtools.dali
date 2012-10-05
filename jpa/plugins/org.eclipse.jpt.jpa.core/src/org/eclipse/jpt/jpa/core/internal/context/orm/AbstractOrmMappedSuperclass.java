@@ -213,4 +213,19 @@ public abstract class AbstractOrmMappedSuperclass<X extends XmlMappedSuperclass>
 		return new GenericMappedSuperclassPrimaryKeyValidator(this);
 		// TODO - JPA 2.0 validation
 	}
+
+	// ********** completion proposals **********
+
+	@Override
+	public Iterable<String> getCompletionProposals(int pos) {
+		Iterable<String> result = super.getCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		result = this.idClassReference.getCompletionProposals(pos);
+		if (result != null) {
+			return result;
+		}
+		return null;
+	}
 }

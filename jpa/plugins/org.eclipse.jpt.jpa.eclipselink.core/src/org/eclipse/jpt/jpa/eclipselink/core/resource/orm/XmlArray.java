@@ -1301,6 +1301,24 @@ public class XmlArray extends AbstractXmlAttributeMapping implements XmlAttribut
 		return (textRange != null) && (textRange.touches(pos));
 	}
 	
+	protected TextRange getAttributeTypeCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(EclipseLink2_3.ARRAY__ATTRIBUTE_TYPE);
+	}
+
+	public boolean attributeTypeTouches(int pos) {
+		TextRange textRange = this.getAttributeTypeCodeAssistTextRange();
+		return (textRange != null) && (textRange.touches(pos));
+	}
+
+	public TextRange getTargetClassCodeAssistTextRange() {
+		return getAttributeCodeAssistTextRange(EclipseLink2_3.ARRAY__TARGET_CLASS);
+	}
+	
+	public boolean targetClassTouches(int pos) {
+		TextRange textRange = this.getTargetClassCodeAssistTextRange();
+		return (textRange != null) && (textRange.touches(pos));
+	}
+
 	// ******** virtual attribute ************
 	
 	public void setVirtualAttributeTypes(String attributeType, String targetClass) {
