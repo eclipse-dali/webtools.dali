@@ -894,6 +894,7 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 	 * 5.) Change the attribute mapping type to "On-To-Many" and assert that the attribute is moved to "Relation Attributes" compartment
 	 * 7.) Revert the attribute mapping to "ID" and assert that the attributes is moved back to the "Primary Key" compartment
 	 */
+	@Ignore
 	@Test
 	public void testChangeAttributeMappingTypeViaJPADetailsView(){
 		Utils.sayTestStarted("testChangeAttributeMappingTypeViaJPADetailsView");
