@@ -55,8 +55,7 @@
 		</repository>	
 		<repository>
 			<id>Kepler</id>
-			<!-- url>http://download.eclipse.org/releases/juno/</url-->
-			<url>http://build.eclipse.org/webtools/committers/wtp4x-R3.5.0-I/20121003040013/I-3.5.0-20121003040013/repository/</url>
+			<url>http://build.eclipse.org/webtools/committers/wtp4x-R3.5.0-I/20121004233730/I-3.5.0-20121004233730/repository/</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
