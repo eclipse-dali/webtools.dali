@@ -30,6 +30,7 @@ import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotStyledText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
+import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -72,6 +73,11 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 		Thread.sleep(2000);
 	}
 	
+//	@After
+//	public void tearDown() throws Exception {
+//		editorProxy.deleteDiagramElements(jpaDiagramEditor);
+//	}
+	
 	/**
 	 * Add entity to diagram and check that it contains a "Primary Key" section
 	 * with one attribute "id" and no "Relation Attributes" and "Other Attributes"
@@ -80,7 +86,7 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 	@Test
 	public void testAddEntity() {
 		Utils.sayTestStarted("testAddEntity");
-		
+				
 		editorProxy.addEntityToDiagram(jpaDiagramEditor, 50, 50, "Entity1");
 		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
 
@@ -321,7 +327,7 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 	@SuppressWarnings("restriction")
 	public void testChangeAttributeType(){
 		Utils.sayTestStarted("testChangeAttributeType");
-		
+				
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(jpaDiagramEditor, 50, 50, "Entity1");
 		
 		assertFalse("\"Other Attributes\" section must not be visible!", editorProxy.isSectionVisible(jpaDiagramEditor, JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes));
@@ -397,7 +403,7 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 		assertTrue(editorProxy.getCancelButton(renameEntityDialog).isEnabled());
 		
 		editorProxy.getFinishButton(renameEntityDialog).click();
-		bot.waitUntil(new ElementIsShown(jpaDiagramEditor, "NewEntityName"), 10000);
+		bot.waitUntil(new ElementIsShown(jpaDiagramEditor, "NewEntityName"), 30000);
 		
 		entity = jpaDiagramEditor.getEditPart("NewEntityName");
 		assertNotNull("Entity name must be changed!", entity);
@@ -2302,7 +2308,7 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 		jpaDiagramEditor.click(entity1);
 		jpaDiagramEditor.click(50, 200);
 
-		bot.waitUntil(new ElementIsShown(jpaDiagramEditor, "Entity2"));
+		bot.waitUntil(new ElementIsShown(jpaDiagramEditor, "Entity2"), 30000);
 		
 		SWTBotGefEditPart inheritedEntity = jpaDiagramEditor.getEditPart("Entity2");
 		assertNotNull(inheritedEntity);
@@ -2347,7 +2353,7 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 		jpaDiagramEditor.click(mappedSuperclass);
 		jpaDiagramEditor.click(50, 200);
 
-		bot.waitUntil(new ElementIsShown(jpaDiagramEditor, "Entity1"));
+		bot.waitUntil(new ElementIsShown(jpaDiagramEditor, "Entity1"), 30000);
 		
 		SWTBotGefEditPart inheritedEntity = jpaDiagramEditor.getEditPart("Entity1");
 		assertNotNull(inheritedEntity);

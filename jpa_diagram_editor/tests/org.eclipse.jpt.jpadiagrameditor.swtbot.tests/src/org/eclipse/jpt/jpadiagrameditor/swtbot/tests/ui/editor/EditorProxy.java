@@ -171,7 +171,7 @@ public class EditorProxy {
 	public SWTBotGefEditPart addAttributeToEntity(final SWTBotGefEditor jpaDiagramEditor, SWTBotGefEditPart entity, String attributeName) {
 		pressEntityContextButton(jpaDiagramEditor, entity, JPAEditorMessages.JPAEditorToolBehaviorProvider_createAttributeButtonlabel);
 		
-		bot.waitUntil(new ElementIsShown(jpaDiagramEditor, attributeName), 10000);		
+		bot.waitUntil(new ElementIsShown(jpaDiagramEditor, attributeName), 30000);		
 		SWTBotGefEditPart attribute = jpaDiagramEditor.getEditPart(attributeName);
 		assertNotNull("Atrribute is not added.", attribute);
 		
@@ -206,7 +206,7 @@ public class EditorProxy {
 	public SWTBotGefEditPart addEntityToDiagram(final SWTBotGefEditor jpaDiagramEditor, int x, int y, String entityName) {
 		jpaDiagramEditor.activateTool(JPAEditorMessages.CreateJPAEntityFeature_jpaEntityFeatureName);
 		jpaDiagramEditor.doubleClick(x, y);
-		bot.waitUntil(new ElementIsShown(jpaDiagramEditor, entityName), 10000);
+		bot.waitUntil(new ElementIsShown(jpaDiagramEditor, entityName), 30000);
 		
 		List<SWTBotGefEditPart> entities = jpaDiagramEditor.mainEditPart().children();
 		assertFalse("Editor must contains at least one entity!", entities.isEmpty());
@@ -233,7 +233,7 @@ public class EditorProxy {
 	public SWTBotGefEditPart addMappedSuperclassToDiagram(final SWTBotGefEditor jpaDiagramEditor, int x, int y, String entityName) {
 		jpaDiagramEditor.activateTool(JPAEditorMessages.CreateMappedSuperclassFeature_createMappedSuperclassFeatureName);
 		jpaDiagramEditor.doubleClick(x, y);		
-		bot.waitUntil(new ElementIsShown(jpaDiagramEditor, entityName), 10000);
+		bot.waitUntil(new ElementIsShown(jpaDiagramEditor, entityName), 30000);
 		
 		List<SWTBotGefEditPart> entities = jpaDiagramEditor.mainEditPart().children();
 		assertFalse("Editor must contains at least one mapped superclass!", entities.isEmpty());
