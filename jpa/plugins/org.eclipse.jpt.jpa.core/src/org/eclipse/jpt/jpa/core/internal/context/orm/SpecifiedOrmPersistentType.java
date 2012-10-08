@@ -113,8 +113,7 @@ public abstract class SpecifiedOrmPersistentType
 	protected SpecifiedOrmPersistentType(EntityMappings parent, XmlTypeMapping xmlTypeMapping) {
 		super(parent);
 		this.mapping = this.buildMapping(xmlTypeMapping);
-		//initialize 'name' (if qualified, this will be the name), it will be resolved in the update
-		this.name = this.getMappingClassName(); 
+		this.name = this.buildName(); 
 		// 'javaPersistentType' is resolved in the update
 		this.specifiedAccess = this.buildSpecifiedAccess();
 		this.defaultAccess = AccessType.FIELD;  // keep this non-null
@@ -129,6 +128,7 @@ public abstract class SpecifiedOrmPersistentType
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		this.mapping.synchronizeWithResourceModel();
+		this.setName(this.buildName());
 		this.syncJavaPersistentType();
 		this.setSpecifiedAccess_(this.buildSpecifiedAccess());
 		this.syncSpecifiedAttributes();
@@ -139,7 +139,6 @@ public abstract class SpecifiedOrmPersistentType
 	public void update() {
 		super.update();
 		this.mapping.update();
-		this.setName(this.buildName());
 		this.updateJavaPersistentType();
 		this.setDefaultAccess(this.buildDefaultAccess());
 		this.updateNodes(this.getSpecifiedAttributes());
