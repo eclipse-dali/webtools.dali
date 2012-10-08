@@ -263,7 +263,6 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 	/**
 	 * Adds a new entity and rename it
 	 */
-	@Ignore
 	@Test
 	public void testDirectEditingEntity(){
 		Utils.sayTestStarted("testDirectEditingEntity");
@@ -293,7 +292,6 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 	/**
 	 * Test that the source of the entity is opened, when is double clicked on it
 	 */
-	@Ignore
 	@Test
 	public void testDoubleClickOnEntity(){
 		Utils.sayTestStarted("testDoubleClickOnEntity");
@@ -374,7 +372,6 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 	/**
 	 * Rename the entity using its context menu "Refactor Entity Class -> Rename..."
 	 */
-	@Ignore
 	@Test
 	public void testRenameEntityViaMenu(){
 		Utils.sayTestStarted("testRenameEntityViaMenu");
@@ -413,7 +410,6 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 	/**
 	 * Move the entity class using the entity's context menu "Refactor Entity Class -> Move..."
 	 */
-	@Ignore
 	@Test
 	public void testMoveEntityViaMenu() throws JavaModelException{
 		Utils.sayTestStarted("testMoveEntityViaMenu");
@@ -723,7 +719,6 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 	/**
 	 * Collapse/expand "Primary Key" section by double click on it
 	 */
-	@Ignore
 	@Test
 	public void testCollapseExpandCompartmentByDoubleClick(){
 		Utils.sayTestStarted("testCollapseExpandCompartmentByDoubleClick");
@@ -759,7 +754,6 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 	/**
 	 * Collapse/expand compartment by its context menu
 	 */
-	@Ignore
 	@Test
 	public void testCollapseExpandCompartmentByContextMenu(){
 		Utils.sayTestStarted("testCollapseExpandCompartmentByContextMenu");
@@ -803,6 +797,7 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 	 * 6.) Revert the mapping type to be "Entity" and call the "Show All Entities" context menu
 	 * to visualize the entity in the diagram editor.
 	 */
+	@Ignore
 	@Test
 	public void testChangeEntityMappingTypeViaJPADetailsView(){
 		Utils.sayTestStarted("testChangeEntityMappingTypeViaJPADetailsView");
