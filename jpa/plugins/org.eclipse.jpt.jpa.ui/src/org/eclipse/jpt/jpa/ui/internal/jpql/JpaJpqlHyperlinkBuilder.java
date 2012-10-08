@@ -16,11 +16,13 @@ package org.eclipse.jpt.jpa.ui.internal.jpql;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.ISourceReference;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
+import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.persistence.jpa.jpql.ExpressionTools;
@@ -113,7 +115,7 @@ public abstract class JpaJpqlHyperlinkBuilder extends AbstractExpressionVisitor 
 		// 'Open Declaration' opens the declaration of the persistent type
 		addOpenMemberDeclarationHyperlink(
 			parentType,
-			memberName,
+			getJavaElement(parentType, memberName),
 			region,
 			JptUiMessages.JpaJpqlHyperlinkBuilder_OpenDeclaration
 		);
@@ -160,17 +162,17 @@ public abstract class JpaJpqlHyperlinkBuilder extends AbstractExpressionVisitor 
 	/**
 	 * Adds the given {@link IHyperlink}.
 	 *
-	 * @param type
-	 * @param memberName
-	 * @param region
-	 * @param hyperlinkText
+	 * @param type The {@link IType} to open if the hyperlink is chosen
+	 * @param member The member, a child element of the type, to select
+	 * @param region The {@link IRegion} represents the region to display the hyperlink within the JPQL query
+	 * @param hyperlinkText The text of the {@link IHyperlink}
 	 */
 	protected final void addOpenMemberDeclarationHyperlink(IType type,
-	                                                       String memberName,
+	                                                       ISourceReference member,
 	                                                       IRegion region,
 	                                                       String hyperlinkText) {
 
-		addHyperlink(buildOpenMemberDeclarationHyperlink(type, memberName, region, hyperlinkText));
+		addHyperlink(buildOpenMemberDeclarationHyperlink(type, member, region, hyperlinkText));
 	}
 
 	/**
@@ -196,7 +198,7 @@ public abstract class JpaJpqlHyperlinkBuilder extends AbstractExpressionVisitor 
 	protected final int adjustedPosition(Expression expression, int offset) {
 
 		int position = ExpressionTools.repositionCursor(
-			expression.getRoot().toParsedText(),
+			expression.getRoot().toActualText(),
 			expression.getOffset(),
 			namedQuery.getQuery()
 		);
@@ -238,20 +240,20 @@ public abstract class JpaJpqlHyperlinkBuilder extends AbstractExpressionVisitor 
 	 * Creates a new {@link IHyperlink} that can open the editor on a member of the given {@link IType}.
 	 *
 	 * @param type The {@link IType} to open if the hyperlink is chosen
-	 * @param memberName The name of the member, a child element of the type, to select
+	 * @param member The member, a child element of the type, to select
 	 * @param region The {@link IRegion} represents the region to display the hyperlink within the JPQL query
 	 * @param hyperlinkText The text of the {@link IHyperlink}
 	 * @return A new {@link IHyperlink}
 	 */
 	protected final IHyperlink buildOpenMemberDeclarationHyperlink(IType type,
-	                                                               String memberName,
+	                                                               ISourceReference member,
 	                                                               IRegion region,
 	                                                               String hyperlinkText) {
 
 		return new OpenMemberDeclarationHyperlink(
 			javaProject(),
 			type.getName(),
-			memberName,
+			member,
 			region,
 			hyperlinkText
 		);
@@ -319,6 +321,13 @@ public abstract class JpaJpqlHyperlinkBuilder extends AbstractExpressionVisitor 
 		}
 
 		return null;
+	}
+
+	protected final ISourceReference getJavaElement(IType parentType, String memberName) {
+
+		Entity entity = getEntity(parentType.getName());
+		JavaPersistentAttribute attribute = entity.getPersistentType().getAttributeNamed(memberName).getJavaPersistentAttribute();
+		return (ISourceReference) attribute.getJavaElement();
 	}
 
 	/**

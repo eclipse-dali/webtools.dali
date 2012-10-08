@@ -18,6 +18,7 @@ import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.persistence.jpa.jpql.Resolver;
+import org.eclipse.persistence.jpa.jpql.StateFieldResolver;
 import org.eclipse.persistence.jpa.jpql.parser.AbstractPathExpression;
 import org.eclipse.persistence.jpa.jpql.parser.AbstractSchemaName;
 import org.eclipse.persistence.jpa.jpql.parser.AbstractTraverseParentVisitor;
@@ -28,6 +29,7 @@ import org.eclipse.persistence.jpa.jpql.parser.Expression;
 import org.eclipse.persistence.jpa.jpql.parser.QueryPosition;
 import org.eclipse.persistence.jpa.jpql.parser.RangeVariableDeclaration;
 import org.eclipse.persistence.jpa.jpql.parser.StateFieldPathExpression;
+import org.eclipse.persistence.jpa.jpql.spi.IMapping;
 import org.eclipse.persistence.jpa.jpql.spi.IType;
 
 /**
@@ -270,33 +272,33 @@ public class GenericJpaJpqlHyperlinkBuilder extends JpaJpqlHyperlinkBuilder {
 			length++;
 
 			// Now traverse the path expression after the identification variable
-//			for (int index = expression.hasVirtualIdentificationVariable() ? 0 : 1, count = expression.pathSize(); index < count; index++) {
+			for (int index = expression.hasVirtualIdentificationVariable() ? 0 : 1, count = expression.pathSize(); index < count; index++) {
 
 				// Retrieve the mapping for the path at the current position
-//				String path = expression.getPath(index);
-//				Resolver childResolver = resolver.getChild(path);
+				String path = expression.getPath(index);
+				Resolver childResolver = resolver.getChild(path);
 
-//				if (childResolver == null) {
-//					childResolver = new StateFieldResolver(resolver, path);
-//					resolver.addChild(path, childResolver);
-//				}
+				if (childResolver == null) {
+					childResolver = new StateFieldResolver(resolver, path);
+					resolver.addChild(path, childResolver);
+				}
 
-//				IMapping mapping = childResolver.getMapping();
+				IMapping mapping = childResolver.getMapping();
 
 				// Invalid path expression
-//				if (mapping == null) {
-//					break;
-//				}
+				if (mapping == null) {
+					break;
+				}
 
 				// The position is within the current path
-//				if (position <= offset + length + path.length()) {
-//					addFieldHyperlinks(expression, mapping, length);
-//					break;
-//				}
+				if (position <= offset + length + path.length()) {
+					addFieldHyperlinks(expression, mapping, length);
+					break;
+				}
 
-//				length += path.length() + 1 /* DOT */;
-//				resolver = childResolver;
-//			}
+				length += path.length() + 1 /* DOT */;
+				resolver = childResolver;
+			}
 		}
 	}
 

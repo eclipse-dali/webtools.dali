@@ -16,6 +16,7 @@ package org.eclipse.jpt.jpa.ui.internal.jpql;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.ISourceRange;
+import org.eclipse.jdt.core.ISourceReference;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.text.IRegion;
@@ -31,25 +32,25 @@ import org.eclipse.ui.texteditor.ITextEditor;
  */
 public class OpenMemberDeclarationHyperlink implements IHyperlink {
 
-	private String typeName;
-	private IJavaProject javaProject;
-	private IRegion region;
 	private String hyperlinkText;
-	private String memberName;
+	private IJavaProject javaProject;
+	private ISourceReference member;
+	private IRegion region;
+	private String typeName;
 
 	/**
 	 * Creates a new <code>OpenMemberDeclarationHyperlink</code>.
 	 */
 	public OpenMemberDeclarationHyperlink(IJavaProject javaProject,
 	                                      String typeName,
-	                                      String memberName,
+	                                      ISourceReference member,
 	                                      IRegion region,
 	                                      String hyperlinkText) {
 
 		super();
 		this.region = region;
 		this.typeName = typeName;
-		this.memberName = memberName;
+		this.member = member;
 		this.javaProject = javaProject;
 		this.hyperlinkText = hyperlinkText;
 	}
@@ -89,18 +90,9 @@ public class OpenMemberDeclarationHyperlink implements IHyperlink {
 			// Open the editor
 			IEditorPart editorPart = JavaUI.openInEditor(javaElement, true, false);
 
-			// Now select the class name
+			// Now select the member
 			if (editorPart instanceof ITextEditor) {
-
-				for (IJavaElement child : type.getChildren()) {
-					if (memberName.equals(child.getElementName())) {
-						javaElement = child;
-						break;
-					}
-				}
-
-				// TODO
-				ISourceRange range = type.getNameRange();
+				ISourceRange range = member.getNameRange();
 				((ITextEditor) editorPart).selectAndReveal(range.getOffset(), range.getLength());
 			}
 		}
