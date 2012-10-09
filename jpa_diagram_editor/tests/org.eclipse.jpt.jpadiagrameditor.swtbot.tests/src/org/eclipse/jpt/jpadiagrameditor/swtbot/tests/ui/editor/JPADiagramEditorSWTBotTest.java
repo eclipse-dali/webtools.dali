@@ -327,6 +327,7 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 	/**
 	 * Change the attribute type.
 	 */
+	@Ignore
 	@Test
 	@SuppressWarnings("restriction")
 	public void testChangeAttributeType(){
