@@ -189,6 +189,8 @@ public class EditorProxy {
 	 */
 	public boolean isSectionVisible(SWTBotGefEditor diagramEditor, String sectionTitle){
 		SWTBotGefEditPart section = diagramEditor.getEditPart(sectionTitle);
+		if(section == null)
+			return false;
 		((PictogramElement)section.part().getModel()).isVisible();
 		IFigure figure = ((GraphicalEditPart) section.part()).getFigure();
 		return figure.isVisible();
