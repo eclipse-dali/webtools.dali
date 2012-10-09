@@ -1,6 +1,8 @@
 package org.eclipse.jpt.jpadiagrameditor.swtbot.tests.ui.editor;
 
 
+import static org.junit.Assert.assertFalse;
+
 import java.util.List;
 
 import org.eclipse.graphiti.features.IFeatureProvider;
@@ -329,6 +331,9 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 	@SuppressWarnings("restriction")
 	public void testChangeAttributeType(){
 		Utils.sayTestStarted("testChangeAttributeType");
+		
+		List<SWTBotGefEditPart> entities = jpaDiagramEditor.mainEditPart().children();
+		assertTrue("Editor must not contain any entities!", entities.isEmpty());
 				
 		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(jpaDiagramEditor, 50, 50, "Entity1");
 		
