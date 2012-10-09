@@ -244,33 +244,6 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 	}
 	
 	/**
-	 * Adds a new attribute and rename it
-	 */
-	@Test
-	public void testDirectEditingAttribute(){
-		Utils.sayTestStarted("testDirectEditingAttribute");
-		
-		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(jpaDiagramEditor, 50, 50, "Entity1");
-		assertFalse("\"Other Attributes\" section must not be visible!", editorProxy.isSectionVisible(jpaDiagramEditor, JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes));
-				
-		SWTBotGefEditPart attribute = editorProxy.addAttributeToEntity(jpaDiagramEditor, entity, "attribute1");
-		assertNotNull("The attribute must not be renamed!", attribute);
-		
-		jpaDiagramEditor.directEditType("newAttrName");
-		SWTBotGefEditPart oldAttribute = jpaDiagramEditor.getEditPart("attribute1");
-		SWTBotGefEditPart newAttribute = jpaDiagramEditor.getEditPart("newAttrName");
-		assertNotNull("The attribute must be renamed!", newAttribute);
-		assertNull("The attribute must be renamed!", oldAttribute);
-		
-		assertTrue("Editor must be dirty", jpaDiagramEditor.isDirty());
-		
-		editorProxy.deleteDiagramElements(jpaDiagramEditor);
-		jpaDiagramEditor.save();
-		
-		Utils.sayTestFinished("testDirectEditingAttribute");
-	}
-	
-	/**
 	 * Adds a new entity and rename it
 	 */
 	@Ignore
@@ -327,7 +300,6 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 	/**
 	 * Change the attribute type.
 	 */
-	@Ignore
 	@Test
 	@SuppressWarnings("restriction")
 	public void testChangeAttributeType(){
@@ -2444,15 +2416,34 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 
 	/**
 	 * Test that the JPA Diagram editor is opened when the context menu
-	 * "JPA Tools -> Open Diagram" of the project is called.
+	 * "JPA Tools -> Open Diagram" of the project is called. Test that the attribute is
+	 * renamed with direct editing action.
 	 */
 	@Test
-	public void testOpenDiagramOnProjectLevel(){
+	public void testOpenDiagramOnProjectLevelAndDirectEditAttribute(){
 		Utils.sayTestStarted("testOpenDiagramOnProjectLevel");
 		
 		workbenchBot.closeAllEditors();
 		//open JPA diagram editor on project level: JPA Tools -> Open Diagram
 		SWTBotGefEditor diagramEditor = editorProxy.openDiagramOnJPAProjectNode(TEST_PROJECT);
+		
+		SWTBotGefEditPart entity = editorProxy.addEntityToDiagram(diagramEditor, 50, 50, "Entity1");
+		assertFalse("\"Other Attributes\" section must not be visible!", editorProxy.isSectionVisible(jpaDiagramEditor, JPAEditorMessages.AddJPAEntityFeature_basicAttributesShapes));
+				
+		SWTBotGefEditPart attribute = editorProxy.addAttributeToEntity(diagramEditor, entity, "attribute1");
+		assertNotNull("The attribute must not be renamed!", attribute);
+		
+		diagramEditor.directEditType("newAttrName");
+		SWTBotGefEditPart oldAttribute = diagramEditor.getEditPart("attribute1");
+		SWTBotGefEditPart newAttribute = diagramEditor.getEditPart("newAttrName");
+		assertNotNull("The attribute must be renamed!", newAttribute);
+		assertNull("The attribute must be renamed!", oldAttribute);
+		
+		assertTrue("Editor must be dirty", diagramEditor.isDirty());
+		
+		editorProxy.deleteDiagramElements(diagramEditor);
+		diagramEditor.save();
+		
 		diagramEditor.close();
 		
 		Utils.sayTestFinished("testOpenDiagramOnProjectLevel");
