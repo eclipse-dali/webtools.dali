@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
@@ -34,15 +33,9 @@ public final class SourceTransientAnnotation
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
 	}
-
-	@Override
-	public void initialize(Annotation astAnnotation) {
-		// nothing to initialize
-	}
 	
 	@Override
-	public void synchronizeWith(Annotation astAnnotation) {
-		// nothing to update
+	public void toString(StringBuilder sb) {
+		sb.append(this.getAnnotationName());
 	}
-
 }

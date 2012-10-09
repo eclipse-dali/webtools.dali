@@ -32,16 +32,6 @@ public final class SourceNamedAnnotation
 	}
 
 	@Override
-	public void initialize(org.eclipse.jdt.core.dom.Annotation astAnnotation) {
-		//do nothing
-	}
-
-	@Override
-	public void synchronizeWith(org.eclipse.jdt.core.dom.Annotation astAnnotation) {
-		//do nothing
-	}
-
-	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.annotationName);
 	}

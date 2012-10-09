@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
@@ -42,15 +41,7 @@ public class SourceXmlKeyAnnotation
 	}
 	
 	@Override
-	public void initialize(Annotation astAnnotation) {
-		// no-op
+	public void toString(StringBuilder sb) {
+		sb.append(this.getAnnotationName());
 	}
-	
-	@Override
-	public void synchronizeWith(Annotation astAnnotation) {
-		// no-op
-	}
-	
-	@Override
-	public void toString(StringBuilder sb) {}
 }

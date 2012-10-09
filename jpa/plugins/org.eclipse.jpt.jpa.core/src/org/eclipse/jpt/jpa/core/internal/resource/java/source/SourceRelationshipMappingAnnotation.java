@@ -85,6 +85,7 @@ abstract class SourceRelationshipMappingAnnotation
 
 	@Override
 	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
 		this.targetEntity = this.buildTargetEntity(astAnnotation);
 		this.targetEntityTextRange = this.buildTargetEntityTextRange(astAnnotation);
 
@@ -97,6 +98,7 @@ abstract class SourceRelationshipMappingAnnotation
 
 	@Override
 	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
 		this.syncFetch(this.buildFetch(astAnnotation));
 		this.targetEntityTextRange = this.buildTargetEntityTextRange(astAnnotation);
 

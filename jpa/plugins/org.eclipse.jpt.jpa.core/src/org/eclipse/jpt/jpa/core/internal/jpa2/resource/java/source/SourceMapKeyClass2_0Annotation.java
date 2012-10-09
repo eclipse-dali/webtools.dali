@@ -58,12 +58,14 @@ public final class SourceMapKeyClass2_0Annotation
 
 	@Override
 	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
 		this.value = this.buildValue(astAnnotation);
 		this.valueTextRange = this.buildValueTextRange(astAnnotation);
 	}
 
 	@Override
 	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
 		this.syncValue(this.buildValue(astAnnotation));
 		this.valueTextRange = this.buildValueTextRange(astAnnotation);
 	}

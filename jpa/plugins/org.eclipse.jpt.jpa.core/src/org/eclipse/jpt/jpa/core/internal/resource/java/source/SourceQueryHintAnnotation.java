@@ -72,6 +72,7 @@ public final class SourceQueryHintAnnotation
 
 	@Override
 	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
 		this.name = this.buildName(astAnnotation);
 		this.nameTextRange = this.buildNameTextRange(astAnnotation);
 
@@ -81,6 +82,7 @@ public final class SourceQueryHintAnnotation
 
 	@Override
 	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
 		this.syncName(this.buildName(astAnnotation));
 		this.nameTextRange = this.buildNameTextRange(astAnnotation);
 

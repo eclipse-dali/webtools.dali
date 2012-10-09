@@ -1,6 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2012 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.common.core.tests.internal.resource.java;
 
-import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
@@ -21,15 +29,5 @@ public class SourceDeprecatedAnnotation
 
 	public String getAnnotationName() {
 		return Deprecated.class.getName();
-	}
-	
-	@Override
-	public void initialize(Annotation astAnnotation) {
-		// nothing to initialize
-	}
-	
-	@Override
-	public void synchronizeWith(Annotation astAnnotation) {
-		// nothing to sync
 	}
 }

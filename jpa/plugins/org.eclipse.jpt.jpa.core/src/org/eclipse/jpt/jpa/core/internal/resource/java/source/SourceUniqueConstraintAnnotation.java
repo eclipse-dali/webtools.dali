@@ -56,12 +56,14 @@ public final class SourceUniqueConstraintAnnotation
 
 	@Override
 	public void initialize(Annotation astAnnotation) {
+		super.initialize(astAnnotation);
 		this.initializeColumnNames(astAnnotation);
 		this.columnNamesTextRange = this.buildColumnNamesTextRange(astAnnotation);
 	}
 
 	@Override
 	public void synchronizeWith(Annotation astAnnotation) {
+		super.synchronizeWith(astAnnotation);
 		this.syncColumnNames(astAnnotation);
 		this.columnNamesTextRange = this.buildColumnNamesTextRange(astAnnotation);
 	}

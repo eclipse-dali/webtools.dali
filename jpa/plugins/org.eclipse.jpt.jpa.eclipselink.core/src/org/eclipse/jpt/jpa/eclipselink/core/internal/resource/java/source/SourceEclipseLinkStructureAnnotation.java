@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
@@ -36,12 +35,7 @@ public final class SourceEclipseLinkStructureAnnotation
 	}
 
 	@Override
-	public void initialize(Annotation astAnnotation) {
-		// do nothing
-	}
-
-	@Override
-	public void synchronizeWith(Annotation astAnnotation) {
-		// do nothing
+	public void toString(StringBuilder sb) {
+		sb.append(this.getAnnotationName());
 	}
 }

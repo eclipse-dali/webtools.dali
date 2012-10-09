@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
-import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
@@ -36,12 +35,7 @@ public final class SourceXmlTransientAnnotation
 	}
 
 	@Override
-	public void initialize(Annotation astAnnotation) {
-		//no-op
-	}
-
-	@Override
-	public void synchronizeWith(Annotation astAnnotation) {
-		//no-op
+	public void toString(StringBuilder sb) {
+		sb.append(this.getAnnotationName());
 	}
 }
