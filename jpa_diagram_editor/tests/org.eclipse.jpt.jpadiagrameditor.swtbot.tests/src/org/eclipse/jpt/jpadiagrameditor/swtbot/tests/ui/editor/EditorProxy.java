@@ -20,16 +20,13 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.graphiti.features.IFeatureProvider;
-import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.FreeFormConnection;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
-import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.ui.internal.contextbuttons.ContextButton;
 import org.eclipse.graphiti.ui.internal.contextbuttons.ContextButtonPad;
 import org.eclipse.graphiti.ui.internal.parts.DiagramEditPart;
@@ -562,6 +559,33 @@ public class EditorProxy {
 	}
 	
 	/**
+	 * Select the bidirectional self relation and call its "Delete" context menu.
+	 * On the confirmation dialog press "No" and assert that
+	 * the connection and the relative relation attributes still exist
+	 * and the "Relation Attributes" sections of the entities' are visible.
+	 * @param jpaDiagramEditor
+	 * @param entity1
+	 * @param connection
+	 * @param ownerAttributeName
+	 * @param inverseAttributeName
+	 */
+	public void assertSelfBiDirRelationIsNotDeleted(
+			SWTBotGefEditor jpaDiagramEditor, SWTBotGefEditPart entity1,
+			SWTBotGefConnectionEditPart connection,
+			String ownerAttributeName, String inverseAttributeName) {
+		connection.select();
+		jpaDiagramEditor.clickContextMenu("Delete");
+		denyDelete();
+		assertFalse(entity1.sourceConnections().isEmpty());
+		assertFalse(entity1.targetConnections().isEmpty());
+		connection = entity1.sourceConnections().get(0);
+		assertNotNull("Attribute must not be deleted!", connection);
+		assertNotNull(jpaDiagramEditor.getEditPart(ownerAttributeName));
+		assertNotNull(jpaDiagramEditor.getEditPart(inverseAttributeName));
+		assertTrue("\"Relation Attributes\" section of the owner entity must be visible!", isSectionVisible(jpaDiagramEditor, entity1, JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes));
+	}
+	
+	/**
 	 * Select the bidirectional relation and call its "Delete" context menu.
 	 * On the confirmation dialog press "No" and assert that
 	 * the connection and the relative relation attributes still exist
@@ -590,34 +614,7 @@ public class EditorProxy {
 		assertTrue("\"Relation Attributes\" section of the owner entity must be visible!", isSectionVisible(jpaDiagramEditor, entity1, JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes));
 		assertTrue("\"Relation Attributes\" section of the inverse entity must be visible!", isSectionVisible(jpaDiagramEditor, entity2, JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes));
 	}
-	
-	/**
-	 * Select the bidirectional self relation and call its "Delete" context menu.
-	 * On the confirmation dialog press "No" and assert that
-	 * the connection and the relative relation attributes still exist
-	 * and the "Relation Attributes" sections of the entities' are visible.
-	 * @param jpaDiagramEditor
-	 * @param entity1
-	 * @param connection
-	 * @param ownerAttributeName
-	 * @param inverseAttributeName
-	 */
-	public void assertSelfBiDirRelationIsNotDeleted(
-			SWTBotGefEditor jpaDiagramEditor, SWTBotGefEditPart entity1,
-			SWTBotGefConnectionEditPart connection,
-			String ownerAttributeName, String inverseAttributeName) {
-		connection.select();
-		jpaDiagramEditor.clickContextMenu("Delete");
-		denyDelete();
-		assertFalse(entity1.sourceConnections().isEmpty());
-		assertFalse(entity1.targetConnections().isEmpty());
-		connection = entity1.sourceConnections().get(0);
-		assertNotNull("Attribute must not be deleted!", connection);
-		assertNotNull(jpaDiagramEditor.getEditPart(ownerAttributeName));
-		assertNotNull(jpaDiagramEditor.getEditPart(inverseAttributeName));
-		assertTrue("\"Relation Attributes\" section of the owner entity must be visible!", isSectionVisible(jpaDiagramEditor, entity1, JPAEditorMessages.AddJPAEntityFeature_relationAttributesShapes));
-	}
-	
+
 	/**
 	 * Select the unidirectional relation and call its "Delete" context menu.
 	 * On the confirmation dialog press "No" and assert that
@@ -924,7 +921,24 @@ public class EditorProxy {
 	 * @param attributeName
 	 * @param relationAttributeMapping - the expected attribute mapping
 	 */
-	public void assertAttributeIsCorretlyMapped(
+	public void assertAttributeIsCorretlyMapped(IFeatureProvider fp,
+			SWTBotGefEditor jpaDiagramEditor, String attributeName,  String relationAttributeMapping) {		
+		
+		SWTBotGefEditPart attribute = jpaDiagramEditor.getEditPart(attributeName);
+		PictogramElement el = (PictogramElement) attribute.part().getModel();
+		Object bo = fp.getBusinessObjectForPictogramElement(el);
+		assertTrue("The selected element is not an attribute!", (bo instanceof JavaPersistentAttribute));
+		
+		assertEquals(((JavaPersistentAttribute)bo).getMappingKey(), relationAttributeMapping);
+	}
+	
+	/**
+	 * Assert that the relation attribute is correctly mapped in the JPA Details view
+	 * @param jpaDiagramEditor
+	 * @param attributeName
+	 * @param relationAttributeMapping - the expected attribute mapping
+	 */
+	public void assertAttributeIsCorretlyMappedInJPADetailsView(
 			SWTBotGefEditor jpaDiagramEditor, String attributeName,  String relationAttributeMapping) {
 
 		//assert that the JPA Details view is opened
@@ -948,7 +962,23 @@ public class EditorProxy {
 	 * @param typeName
 	 * @param typeMapping - the expected type mapping
 	 */
-	public void assertTypeIsCorretlyMapped(
+	public void assertTypeIsCorretlyMapped(IFeatureProvider fp,
+			SWTBotGefEditor jpaDiagramEditor, String typeName,  String typeMapping) {
+
+		SWTBotGefEditPart attribute = jpaDiagramEditor.getEditPart(typeName);
+		PictogramElement el = (PictogramElement) attribute.part().getModel();
+		Object bo = fp.getBusinessObjectForPictogramElement(el);
+		assertTrue("The selected element is not an persistent type!", (bo instanceof JavaPersistentType));
+		assertEquals(((JavaPersistentType)bo).getMappingKey(), typeMapping);
+	}
+	
+	/**
+	 * Assert that the type is correctly mapped in the JPA Details view
+	 * @param jpaDiagramEditor
+	 * @param typeName
+	 * @param typeMapping - the expected type mapping
+	 */
+	public void assertTypeIsCorretlyMappedInJPADetailsView(
 			SWTBotGefEditor jpaDiagramEditor, String typeName,  String typeMapping) {
 		workbenchBot.viewByTitle("JPA Details").close();
 		jpaDiagramEditor.clickContextMenu(JPAEditorMessages.JPAEditorToolBehaviorProvider_openJPADetailsView);

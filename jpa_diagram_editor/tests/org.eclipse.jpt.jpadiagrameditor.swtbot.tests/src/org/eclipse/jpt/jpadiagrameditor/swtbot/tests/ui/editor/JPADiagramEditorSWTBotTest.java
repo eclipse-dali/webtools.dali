@@ -9,6 +9,8 @@ import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.ui.internal.parts.DiagramEditPart;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.MappingKeys;
+import org.eclipse.jpt.jpa.core.context.MappingFile;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal.JPACreateFactory;
 import org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal.Utils;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
@@ -1012,7 +1014,9 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 				jpaDiagramEditor, rel);
 		assertNull(rel.getInverseAnnotatedAttribute());
 		
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, attributeName, "one to one");
+		final IFeatureProvider fp = ((DiagramEditPart)jpaDiagramEditor.mainEditPart().part()).getFeatureProvider();
+		
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, attributeName, MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		
 		editorProxy.assertUniDirRelationIsNotDeleted(jpaDiagramEditor,
 				entity1, entity2, connection, attributeName);
@@ -1060,7 +1064,9 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 				jpaDiagramEditor, rel);
 		assertNull(rel.getInverseAnnotatedAttribute());
 		
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, attributeName, "one to one");
+		final IFeatureProvider fp = ((DiagramEditPart)jpaDiagramEditor.mainEditPart().part()).getFeatureProvider();
+		
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, attributeName, MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		
 		//delete the owner attribute
 		SWTBotGefEditPart ownerAttrPart = jpaDiagramEditor.getEditPart(attributeName);
@@ -1112,7 +1118,9 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 				jpaDiagramEditor, rel);
 		assertNull(rel.getInverseAnnotatedAttribute());
 		
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, attributeName, "one to one");
+		final IFeatureProvider fp = ((DiagramEditPart)jpaDiagramEditor.mainEditPart().part()).getFeatureProvider();
+		
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, attributeName, MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		
 		editorProxy.assertSelfUniDirRelationIsNotDeleted(jpaDiagramEditor,
 				entity1, connection, attributeName);
@@ -1162,8 +1170,10 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 		String inverseAttributeName = editorProxy.testInverseRelationAttributeProperties(
 				jpaDiagramEditor, rel);
 		
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, ownerAttributeName, "one to one");
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, inverseAttributeName, "one to one");
+		final IFeatureProvider fp = ((DiagramEditPart)jpaDiagramEditor.mainEditPart().part()).getFeatureProvider();
+
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, ownerAttributeName, MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, inverseAttributeName, MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		
 		editorProxy.assertBiDirRelationIsNotDeleted(jpaDiagramEditor,
 				entity1, entity2, connection, ownerAttributeName,
@@ -1215,8 +1225,10 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 		String inverseAttributeName = editorProxy.testInverseRelationAttributeProperties(
 				jpaDiagramEditor, rel);
 		
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, ownerAttributeName, "one to one");
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, inverseAttributeName, "one to one");
+		final IFeatureProvider fp = ((DiagramEditPart)jpaDiagramEditor.mainEditPart().part()).getFeatureProvider();
+		
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, ownerAttributeName, MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, inverseAttributeName, MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		
 		//delete the inverse attribute
 		SWTBotGefEditPart inverseAttr = jpaDiagramEditor.getEditPart(inverseAttributeName);
@@ -1234,7 +1246,8 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 		assertEquals(ownerAttributeName, editorProxy.testOwnerRelationAttributeProperties(
 				jpaDiagramEditor, rel));
 		assertNull(rel.getInverseAnnotatedAttribute());
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, ownerAttributeName, "one to one");
+		
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, ownerAttributeName, MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		
 		//delete the owner attribute
 		SWTBotGefEditPart ownerAttr = jpaDiagramEditor.getEditPart(ownerAttributeName);
@@ -1291,8 +1304,10 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 		String inverseAttributeName = editorProxy.testInverseRelationAttributeProperties(
 				jpaDiagramEditor, rel);
 		
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, ownerAttributeName, "one to one");
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, inverseAttributeName, "one to one");
+		final IFeatureProvider fp = ((DiagramEditPart)jpaDiagramEditor.mainEditPart().part()).getFeatureProvider();
+		
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, ownerAttributeName, MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, inverseAttributeName, MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		
 		//delete the owner attribute
 		SWTBotGefEditPart ownerAttrPart = jpaDiagramEditor.getEditPart(ownerAttributeName);
@@ -1349,9 +1364,11 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 		
 		String inverseAttributeName = editorProxy.testInverseRelationAttributeProperties(
 				jpaDiagramEditor, rel);
-		
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, ownerAttributeName, "one to one");
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, inverseAttributeName, "one to one");
+
+		final IFeatureProvider fp = ((DiagramEditPart)jpaDiagramEditor.mainEditPart().part()).getFeatureProvider();
+
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, ownerAttributeName, MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, inverseAttributeName, MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		
 		editorProxy.assertSelfBiDirRelationIsNotDeleted(jpaDiagramEditor,
 				entity1, connection, ownerAttributeName,
@@ -1400,8 +1417,9 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 				jpaDiagramEditor, rel);
 		assertNull(rel.getInverseAnnotatedAttribute());
 		
-		
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, attributeName, "one to many");
+		final IFeatureProvider fp = ((DiagramEditPart)jpaDiagramEditor.mainEditPart().part()).getFeatureProvider();
+
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, attributeName, MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		
 		editorProxy.assertUniDirRelationIsNotDeleted(jpaDiagramEditor,
 				entity1, entity2, connection, attributeName);
@@ -1448,8 +1466,9 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 		String attributeName = editorProxy.testOwnerRelationAttributeProperties(
 				jpaDiagramEditor, rel);
 		assertNull(rel.getInverseAnnotatedAttribute());
+		final IFeatureProvider fp = ((DiagramEditPart)jpaDiagramEditor.mainEditPart().part()).getFeatureProvider();
 		
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, attributeName, "one to many");
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, attributeName, MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		
 		//delete the owner attribute
 		SWTBotGefEditPart ownerAttrPart = jpaDiagramEditor.getEditPart(attributeName);
@@ -1501,7 +1520,9 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 				jpaDiagramEditor, rel);
 		assertNull(rel.getInverseAnnotatedAttribute());
 		
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, attributeName, "one to many");
+		final IFeatureProvider fp = ((DiagramEditPart)jpaDiagramEditor.mainEditPart().part()).getFeatureProvider();
+
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, attributeName, MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		
 		editorProxy.assertSelfUniDirRelationIsNotDeleted(jpaDiagramEditor,
 				entity1, connection, attributeName);
@@ -1548,8 +1569,9 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 		String attributeName = editorProxy.testOwnerRelationAttributeProperties(
 				jpaDiagramEditor, rel);
 		assertNull(rel.getInverseAnnotatedAttribute());
-		
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, attributeName, "many to one");
+		final IFeatureProvider fp = ((DiagramEditPart)jpaDiagramEditor.mainEditPart().part()).getFeatureProvider();
+
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, attributeName, MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		
 		editorProxy.assertUniDirRelationIsNotDeleted(jpaDiagramEditor,
 				entity1, entity2, connection, attributeName);
@@ -1597,7 +1619,9 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 				jpaDiagramEditor, rel);
 		assertNull(rel.getInverseAnnotatedAttribute());
 		
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, attributeName, "many to one");
+		final IFeatureProvider fp = ((DiagramEditPart)jpaDiagramEditor.mainEditPart().part()).getFeatureProvider();
+
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, attributeName, MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		
 		//delete the owner attribute
 		SWTBotGefEditPart ownerAttrPart = jpaDiagramEditor.getEditPart(attributeName);
@@ -1649,7 +1673,9 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 				jpaDiagramEditor, rel);
 		assertNull(rel.getInverseAnnotatedAttribute());
 		
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, attributeName, "many to one");
+		final IFeatureProvider fp = ((DiagramEditPart)jpaDiagramEditor.mainEditPart().part()).getFeatureProvider();
+
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, attributeName, MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		
 		editorProxy.assertSelfUniDirRelationIsNotDeleted(jpaDiagramEditor,
 				entity1, connection, attributeName);
@@ -1699,8 +1725,10 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 		String inverseAttributeName = editorProxy.testInverseRelationAttributeProperties(
 				jpaDiagramEditor, rel);
 		
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, ownerAttributeName, "many to one");
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, inverseAttributeName, "one to many");
+		final IFeatureProvider fp = ((DiagramEditPart)jpaDiagramEditor.mainEditPart().part()).getFeatureProvider();
+
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, ownerAttributeName, MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, inverseAttributeName, MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 
 		editorProxy.assertBiDirRelationIsNotDeleted(jpaDiagramEditor,
 				entity1, entity2, connection, ownerAttributeName,
@@ -1752,8 +1780,10 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 		String inverseAttributeName = editorProxy.testInverseRelationAttributeProperties(
 				jpaDiagramEditor, rel);
 		
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, ownerAttributeName, "many to one");
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, inverseAttributeName, "one to many");
+		final IFeatureProvider fp = ((DiagramEditPart)jpaDiagramEditor.mainEditPart().part()).getFeatureProvider();
+
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, ownerAttributeName, MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, inverseAttributeName, MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		
 		//delete the inverse attribute
 		SWTBotGefEditPart inverseAttr = jpaDiagramEditor.getEditPart(inverseAttributeName);
@@ -1771,7 +1801,7 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 		assertEquals(ownerAttributeName, editorProxy.testOwnerRelationAttributeProperties(
 				jpaDiagramEditor, rel));
 		assertNull(rel.getInverseAnnotatedAttribute());
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, ownerAttributeName, "many to one");
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, ownerAttributeName, MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		
 		//delete the owner attribute
 		SWTBotGefEditPart ownerAttr = jpaDiagramEditor.getEditPart(ownerAttributeName);
@@ -1828,8 +1858,10 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 		String inverseAttributeName = editorProxy.testInverseRelationAttributeProperties(
 				jpaDiagramEditor, rel);
 		
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, ownerAttributeName, "many to one");
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, inverseAttributeName, "one to many");
+		final IFeatureProvider fp = ((DiagramEditPart)jpaDiagramEditor.mainEditPart().part()).getFeatureProvider();
+		
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, ownerAttributeName, MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, inverseAttributeName, MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		
 		//delete the owner attribute
 		SWTBotGefEditPart ownerAttrPart = jpaDiagramEditor.getEditPart(ownerAttributeName);
@@ -1887,8 +1919,10 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 		String inverseAttributeName = editorProxy.testInverseRelationAttributeProperties(
 				jpaDiagramEditor, rel);
 		
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, ownerAttributeName, "many to one");
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, inverseAttributeName, "one to many");
+		final IFeatureProvider fp = ((DiagramEditPart)jpaDiagramEditor.mainEditPart().part()).getFeatureProvider();
+
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, ownerAttributeName, MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, inverseAttributeName, MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 
 		editorProxy.assertSelfBiDirRelationIsNotDeleted(jpaDiagramEditor,
 				entity1, connection, ownerAttributeName,
@@ -1937,7 +1971,9 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 				jpaDiagramEditor, rel);
 		assertNull(rel.getInverseAnnotatedAttribute());
 		
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, attributeName, "many to many");
+		final IFeatureProvider fp = ((DiagramEditPart)jpaDiagramEditor.mainEditPart().part()).getFeatureProvider();
+
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, attributeName, MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		
 		editorProxy.assertUniDirRelationIsNotDeleted(jpaDiagramEditor,
 				entity1, entity2, connection, attributeName);
@@ -1985,7 +2021,9 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 				jpaDiagramEditor, rel);
 		assertNull(rel.getInverseAnnotatedAttribute());
 		
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, attributeName, "many to many");
+		final IFeatureProvider fp = ((DiagramEditPart)jpaDiagramEditor.mainEditPart().part()).getFeatureProvider();
+
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, attributeName, MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		
 		//delete the owner attribute
 		SWTBotGefEditPart ownerAttrPart = jpaDiagramEditor.getEditPart(attributeName);
@@ -2038,7 +2076,9 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 				jpaDiagramEditor, rel);
 		assertNull(rel.getInverseAnnotatedAttribute());
 		
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, attributeName, "many to many");
+		final IFeatureProvider fp = ((DiagramEditPart)jpaDiagramEditor.mainEditPart().part()).getFeatureProvider();
+
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, attributeName, MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		
 		editorProxy.assertSelfUniDirRelationIsNotDeleted(jpaDiagramEditor,
 				entity1, connection, attributeName);
@@ -2088,8 +2128,10 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 		String inverseAttributeName = editorProxy.testInverseRelationAttributeProperties(
 				jpaDiagramEditor, rel);
 		
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, ownerAttributeName, "many to many");
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, inverseAttributeName, "many to many");
+		final IFeatureProvider fp = ((DiagramEditPart)jpaDiagramEditor.mainEditPart().part()).getFeatureProvider();
+
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, ownerAttributeName, MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, inverseAttributeName, MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 
 		editorProxy.assertBiDirRelationIsNotDeleted(jpaDiagramEditor,
 				entity1, entity2, connection, ownerAttributeName,
@@ -2141,8 +2183,10 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 		String inverseAttributeName = editorProxy.testInverseRelationAttributeProperties(
 				jpaDiagramEditor, rel);
 		
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, ownerAttributeName, "many to many");
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, inverseAttributeName, "many to many");
+		final IFeatureProvider fp = ((DiagramEditPart)jpaDiagramEditor.mainEditPart().part()).getFeatureProvider();
+
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, ownerAttributeName, MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, inverseAttributeName, MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		
 		//delete the inverse attribute
 		SWTBotGefEditPart inverseAttr = jpaDiagramEditor.getEditPart(inverseAttributeName);
@@ -2161,7 +2205,7 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 		assertEquals(ownerAttributeName, editorProxy.testOwnerRelationAttributeProperties(
 				jpaDiagramEditor, rel));		
 		assertNull(rel.getInverseAnnotatedAttribute());		
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, ownerAttributeName, "many to many");
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, ownerAttributeName, MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		
 		//delete the owner attribute
 		SWTBotGefEditPart ownerAttr = jpaDiagramEditor.getEditPart(ownerAttributeName);
@@ -2218,8 +2262,10 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 		String inverseAttributeName = editorProxy.testInverseRelationAttributeProperties(
 				jpaDiagramEditor, rel);
 		
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, ownerAttributeName, "many to many");
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, inverseAttributeName, "many to many");
+		final IFeatureProvider fp = ((DiagramEditPart)jpaDiagramEditor.mainEditPart().part()).getFeatureProvider();
+
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, ownerAttributeName, MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, inverseAttributeName, MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		
 		//delete the owner attribute
 		SWTBotGefEditPart ownerAttrPart = jpaDiagramEditor.getEditPart(ownerAttributeName);
@@ -2277,8 +2323,10 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 		String inverseAttributeName = editorProxy.testInverseRelationAttributeProperties(
 				jpaDiagramEditor, rel);
 		
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, ownerAttributeName, "many to many");
-		editorProxy.assertAttributeIsCorretlyMapped(jpaDiagramEditor, inverseAttributeName, "many to many");
+		final IFeatureProvider fp = ((DiagramEditPart)jpaDiagramEditor.mainEditPart().part()).getFeatureProvider();
+
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, ownerAttributeName, MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		editorProxy.assertAttributeIsCorretlyMapped(fp, jpaDiagramEditor, inverseAttributeName, MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 
 		editorProxy.assertSelfBiDirRelationIsNotDeleted(jpaDiagramEditor,
 				entity1, connection, ownerAttributeName,
@@ -2329,8 +2377,10 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 		assertEquals(editorProxy.getEntityForElement(jpaDiagramEditor, inheritedEntity), rel.getSubclass());
 		assertEquals(editorProxy.getEntityForElement(jpaDiagramEditor, entity1), rel.getSuperclass());
 		
-		editorProxy.assertTypeIsCorretlyMapped(jpaDiagramEditor, "Entity1", "entity");
-		editorProxy.assertTypeIsCorretlyMapped(jpaDiagramEditor, "Entity2", "entity");
+		final IFeatureProvider fp = ((DiagramEditPart)jpaDiagramEditor.mainEditPart().part()).getFeatureProvider();
+		
+		editorProxy.assertTypeIsCorretlyMapped(fp, jpaDiagramEditor, "Entity1", MappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		editorProxy.assertTypeIsCorretlyMapped(fp, jpaDiagramEditor, "Entity2", MappingKeys.ENTITY_TYPE_MAPPING_KEY);
 		
 		editorProxy.deleteDiagramElements(jpaDiagramEditor);
 		
@@ -2374,8 +2424,10 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 		assertEquals(editorProxy.getEntityForElement(jpaDiagramEditor, inheritedEntity), rel.getSubclass());
 		assertEquals(editorProxy.getEntityForElement(jpaDiagramEditor, mappedSuperclass), rel.getSuperclass());
 		
-		editorProxy.assertTypeIsCorretlyMapped(jpaDiagramEditor, "MpdSuprcls1", "mapped superclass");
-		editorProxy.assertTypeIsCorretlyMapped(jpaDiagramEditor, "Entity1", "entity");
+		final IFeatureProvider fp = ((DiagramEditPart)jpaDiagramEditor.mainEditPart().part()).getFeatureProvider();
+		
+		editorProxy.assertTypeIsCorretlyMapped(fp, jpaDiagramEditor, "MpdSuprcls1", MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
+		editorProxy.assertTypeIsCorretlyMapped(fp, jpaDiagramEditor, "Entity1", MappingKeys.ENTITY_TYPE_MAPPING_KEY);
 		
 		editorProxy.deleteDiagramElements(jpaDiagramEditor);
 		
