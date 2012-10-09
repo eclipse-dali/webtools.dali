@@ -934,6 +934,7 @@ public class EditorProxy {
 		
 		SWTBotGefEditPart oneToManyAttr = jpaDiagramEditor.getEditPart(attributeName);
 		oneToManyAttr.click();
+		oneToManyAttr.select();
 
 		//assert that the default entity's attribute is mapped as primary key
 		SWTBot jpaDetailsBot = jpaDetailsView.bot();
