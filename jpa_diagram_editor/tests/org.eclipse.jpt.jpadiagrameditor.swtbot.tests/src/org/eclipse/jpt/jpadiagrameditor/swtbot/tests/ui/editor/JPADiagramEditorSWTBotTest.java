@@ -745,7 +745,6 @@ public class JPADiagramEditorSWTBotTest extends SWTBotGefTestCase {
 	/**
 	 * Collapse/expand compartment by its context menu
 	 */
-	@Ignore
 	@Test
 	public void testCollapseExpandCompartmentByContextMenu(){
 		Utils.sayTestStarted("testCollapseExpandCompartmentByContextMenu");
