@@ -101,14 +101,6 @@ public class JavaEclipseLinkConvert
 		return EclipseLinkConvert.class;
 	}
 
-	/**
-	 * Return whether the convert is <em>virtual</em> and, as a result, does
-	 * not have a converter.
-	 */
-	protected boolean isVirtual() {
-		return this.getAttributeMapping().getPersistentAttribute().isVirtual();
-	}
-
 
 	// ********** Java completion proposals **********
 
