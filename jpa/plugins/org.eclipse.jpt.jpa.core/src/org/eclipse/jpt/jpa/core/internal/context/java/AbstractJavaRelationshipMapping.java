@@ -325,18 +325,28 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 
 	protected void validateTargetEntity(List<IMessage> messages) {
 		if (this.getTargetEntity() == null) {
-			String msg = this.getPersistentAttribute().isVirtual() ?
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_NOT_DEFINED :
-						JpaValidationMessages.TARGET_ENTITY_NOT_DEFINED;
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					msg,
-					new String[] {this.getName()},
-					this,
-					this.getValidationTextRange()
-				)
-			);
+			if (this.getPersistentAttribute().isVirtual()) {
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_NOT_DEFINED,
+							new String[] {this.getName()},
+							this,
+							this.getVirtualPersistentAttributeTextRange()
+						)
+					);
+			}
+			else {
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.TARGET_ENTITY_NOT_DEFINED,
+							new String[] {this.getName()},
+							this,
+							this.getValidationTextRange()
+						)
+					);
+			}
 			return;
 		}
 
@@ -353,7 +363,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_IS_NOT_AN_ENTITY,
 						new String[] {this.getName(), this.getFullyQualifiedTargetEntity()},
 						this,
-						this.getValidationTextRange()
+						this.getVirtualPersistentAttributeTextRange()
 					)
 				);
 			} else {

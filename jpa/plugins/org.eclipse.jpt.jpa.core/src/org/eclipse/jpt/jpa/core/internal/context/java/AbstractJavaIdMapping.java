@@ -463,18 +463,17 @@ public abstract class AbstractJavaIdMapping
 	protected IMessage buildColumnSpecifiedAndDerivedMessage() {
 		return this.buildMessage(
 				JpaValidationMessages.ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_COLUMN_SPECIFIED,
-				EMPTY_STRING_ARRAY,
-				this.column.getValidationTextRange()
+				EMPTY_STRING_ARRAY
 			);
 	}
 
-	protected IMessage buildMessage(String msgID, String[] parms, TextRange textRange) {
+	protected IMessage buildMessage(String msgID, String[] parms) {
 		return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
 				msgID,
 				ArrayTools.add(parms, 0, this.buildAttributeDescription()),
 				this,
-				textRange
+				getTextRange()
 			);
 	}
 
@@ -486,5 +485,11 @@ public abstract class AbstractJavaIdMapping
 		return this.getPersistentAttribute().isVirtual() ?
 				JpaValidationDescriptionMessages.VIRTUAL_ATTRIBUTE_DESC :
 				JpaValidationDescriptionMessages.ATTRIBUTE_DESC;
+	}
+
+	protected TextRange getTextRange() {
+		return this.getPersistentAttribute().isVirtual() ?
+				this.getVirtualPersistentAttributeTextRange() :
+				this.column.getValidationTextRange() ;		
 	}
 }

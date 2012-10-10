@@ -302,21 +302,38 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 
 	protected void validateMappingType(List<IMessage> messages) {
 		if ( ! this.getTypeMapping().attributeMappingKeyAllowed(this.getKey())) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_MAPPING,
-					new String[] {this.getName()},
-					this,
-					this.getValidationTextRange()
-				)
-			);
+			if (this.getPersistentAttribute().isVirtual()) {
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_MAPPING, //TODO KFB - different message for virtual attribute
+							new String[] {this.getName()},
+							this,
+							this.getVirtualPersistentAttributeTextRange()
+						)
+					);
+			}
+			else {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_MAPPING,
+						new String[] {this.getName()},
+						this,
+						this.getValidationTextRange()
+					)
+				);
+			}
 		}
 	}
 
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.getMappingAnnotationTextRange();
 		return (textRange != null) ? textRange : this.getPersistentAttribute().getValidationTextRange();
+	}
+
+	protected TextRange getVirtualPersistentAttributeTextRange() {
+		return this.getPersistentAttribute().getValidationTextRange();
 	}
 
 	protected TextRange getMappingAnnotationTextRange() {

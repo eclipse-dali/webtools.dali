@@ -440,15 +440,28 @@ public class GenericJavaOrderable
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		if (this.orderColumnAnnotationIsPresent() && (this.getOrderByAnnotation() != null)) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.ORDER_COLUMN_AND_ORDER_BY_BOTH_SPECIFIED,
-					new String[] {this.getPersistentAttribute().getName()},
-					this.getAttributeMapping(),
-					this.getOrderByAnnotationTextRange()
-				)
-			);
+			if (this.getPersistentAttribute().isVirtual()) {
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.ORDER_COLUMN_AND_ORDER_BY_BOTH_SPECIFIED,
+							new String[] {this.getPersistentAttribute().getName()},
+							this.getAttributeMapping(),
+							this.getPersistentAttribute().getValidationTextRange()
+						)
+					);
+			}
+			else {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.ORDER_COLUMN_AND_ORDER_BY_BOTH_SPECIFIED,
+						new String[] {this.getPersistentAttribute().getName()},
+						this.getAttributeMapping(),
+						this.getOrderByAnnotationTextRange()
+					)
+				);
+			}
 		}
 		if (this.orderColumnOrdering) {
 			//TODO validation message if type is not List

@@ -112,15 +112,28 @@ public class JavaEclipseLinkVersionMapping
 	@Override
 	protected void validateAttributeType(List<IMessage> messages) {
 		if (!ArrayTools.contains(SUPPORTED_TYPE_NAMES, this.getPersistentAttribute().getTypeName())) {
-			messages.add(
-					DefaultEclipseLinkJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							EclipseLinkJpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE,
-							new String[] {this.getName()},
-							this,
-							this.getValidationTextRange()
-					)
-			);
+			if (this.getPersistentAttribute().isVirtual()) {
+				messages.add(
+						DefaultEclipseLinkJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								EclipseLinkJpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE,
+								new String[] {this.getName()},
+								this,
+								this.getVirtualPersistentAttributeTextRange()
+						)
+				);
+			}
+			else {
+				messages.add(
+						DefaultEclipseLinkJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								EclipseLinkJpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE,
+								new String[] {this.getName()},
+								this,
+								this.getValidationTextRange()
+						)
+				);
+			}
 		}
 	}
 }

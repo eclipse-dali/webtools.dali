@@ -79,7 +79,7 @@ public class AssociationOverrideInverseJoinColumnValidator
 					this.column.getDbTable().getName()
 				},
 				this.column,
-				this.column.getNameTextRange()
+				this.persistentAttribute.getValidationTextRange()
 			);
 	}
 
@@ -121,7 +121,7 @@ public class AssociationOverrideInverseJoinColumnValidator
 					this.column.getReferencedColumnDbTable().getName()
 				},
 				this.column,
-				this.column.getReferencedColumnNameTextRange()
+				this.persistentAttribute.getValidationTextRange()
 			);
 	}
 
@@ -157,7 +157,7 @@ public class AssociationOverrideInverseJoinColumnValidator
 					this.override.getName()
 				},
 				this.column,
-				this.column.getNameTextRange()
+				this.persistentAttribute.getValidationTextRange()
 			);
 	}
 
@@ -193,7 +193,7 @@ public class AssociationOverrideInverseJoinColumnValidator
 					this.override.getName()
 				},
 				this.column,
-				this.column.getReferencedColumnNameTextRange()
+				this.persistentAttribute.getValidationTextRange()
 			);
 	}
 
@@ -251,7 +251,7 @@ public class AssociationOverrideInverseJoinColumnValidator
 						this.getColumnTableDescriptionMessage()
 					},
 					this.getColumn(),
-					this.getColumn().getTableTextRange()
+					AssociationOverrideInverseJoinColumnValidator.this.persistentAttribute.getValidationTextRange()
 				);
 		}
 

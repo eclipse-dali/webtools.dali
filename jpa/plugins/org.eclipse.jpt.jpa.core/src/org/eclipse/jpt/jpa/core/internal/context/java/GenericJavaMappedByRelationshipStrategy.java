@@ -242,6 +242,9 @@ public class GenericJavaMappedByRelationshipStrategy
 		String attributeDescription = attribute.isVirtual() ?
 				JpaValidationDescriptionMessages.VIRTUAL_ATTRIBUTE_DESC :
 				JpaValidationDescriptionMessages.ATTRIBUTE_DESC;
+		TextRange textRange = attribute.isVirtual() ?
+				attribute.getValidationTextRange() :
+				this.getValidationTextRange();
 		attributeDescription = NLS.bind(attributeDescription, attribute.getName());
 		parms = ArrayTools.add(parms, 0, attributeDescription);
 		return DefaultJpaValidationMessages.buildMessage(
@@ -249,7 +252,7 @@ public class GenericJavaMappedByRelationshipStrategy
 				msgID,
 				parms,
 				this,
-				this.getValidationTextRange()
+				textRange
 			);
 	}
 

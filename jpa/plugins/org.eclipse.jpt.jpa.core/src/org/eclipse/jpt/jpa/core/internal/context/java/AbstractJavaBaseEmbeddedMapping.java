@@ -223,7 +223,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
 					JpaValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_NOT_AN_EMBEDDABLE,
 					new String[] {this.getName(), targetEmbeddableTypeName},
 					this,
-					this.getValidationTextRange()
+					this.getVirtualPersistentAttributeTextRange()
 				)
 			);
 		}

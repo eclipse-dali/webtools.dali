@@ -81,7 +81,7 @@ public abstract class AbstractTemporalConverterValidator
 			this.getVirtualAttributeInvalidTemporalMappingType(),
 			new String[] {this.getPersistentAttribute().getName()},
 			this.converter,
-			this.converter.getValidationTextRange()
+			this.getPersistentAttribute().getValidationTextRange()
 		);
 	}
 

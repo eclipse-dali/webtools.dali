@@ -10,6 +10,8 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context;
 
 import java.util.List;
+
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
@@ -73,11 +75,20 @@ public class EclipseLinkConvertValidator
 					this.getAttributeMapping().getName()
 				},
 				this.getAttributeMapping(),
-				this.convert.getValidationTextRange()
+				this.getValidationTextRange()
 			)
 		);
 		return false;
 	}
 
+	protected TextRange getValidationTextRange() {
+		return this.getAttributeMapping().getPersistentAttribute().isVirtual() ?
+				this.getVirtualValidationTextRange() :
+				this.convert.getValidationTextRange();		
+	}
+
+	protected TextRange getVirtualValidationTextRange() {
+		return getAttributeMapping().getPersistentAttribute().getValidationTextRange();
+	}
 
 }

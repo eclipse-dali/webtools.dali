@@ -65,9 +65,12 @@ public abstract class AbstractPrimaryKeyValidator
 
 	}
 
-	protected TextRange getAttributeMappingTextRange(String attributeName) {
-		return this.typeMapping().getPersistentType().
-				getAttributeNamed(attributeName).getMapping().getValidationTextRange();
+	protected TextRange getAttributeMappingTextRange(AttributeMapping attributeMapping) {
+		ReadOnlyPersistentAttribute attribute = attributeMapping.getPersistentAttribute();
+		if (attribute.isVirtual()) {
+			return attribute.getValidationTextRange();
+		}
+		return attributeMapping.getValidationTextRange();
 	}
 
 	// for JPA portability, a hierarchy must define its primary key on one class 
@@ -90,7 +93,7 @@ public abstract class AbstractPrimaryKeyValidator
 							JpaValidationMessages.TYPE_MAPPING_PK_REDEFINED_ID_ATTRIBUTE,
 							EMPTY_STRING_ARRAY,
 							each,
-							getAttributeMappingTextRange(each.getName())));
+							getAttributeMappingTextRange(each)));
 			}
 			return;
 		}
@@ -158,7 +161,7 @@ public abstract class AbstractPrimaryKeyValidator
 						JpaValidationMessages.TYPE_MAPPING_ID_CLASS_WITH_MAPS_ID,
 						new String[] {mapsIdRelationshipMapping.getName()},
 						mapsIdRelationshipMapping,
-						getAttributeMappingTextRange(mapsIdRelationshipMapping.getName())));
+						getAttributeMappingTextRange(mapsIdRelationshipMapping)));
 			}
 			
 			AttributeMapping resolvedAttributeMapping = 
@@ -172,7 +175,7 @@ public abstract class AbstractPrimaryKeyValidator
 						JpaValidationMessages.TYPE_MAPPING_MAPS_ID_ATTRIBUTE_TYPE_DOES_NOT_AGREE,
 						new String[] {mapsIdRelationshipMapping.getName()},
 						mapsIdRelationshipMapping,
-						getAttributeMappingTextRange(mapsIdRelationshipMapping.getName())));
+						getAttributeMappingTextRange(mapsIdRelationshipMapping)));
 			}
 		}
 	}

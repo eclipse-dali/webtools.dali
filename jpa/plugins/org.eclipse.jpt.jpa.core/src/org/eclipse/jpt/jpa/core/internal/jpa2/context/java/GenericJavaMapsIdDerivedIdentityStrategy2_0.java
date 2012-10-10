@@ -348,12 +348,15 @@ public class GenericJavaMapsIdDerivedIdentityStrategy2_0
 				JpaValidationDescriptionMessages.ATTRIBUTE_DESC;
 		attributeDescription = NLS.bind(attributeDescription, attribute.getName());
 		parms = ArrayTools.add(parms, 0, attributeDescription);
+		TextRange textRange = attribute.isVirtual() ? 
+				attribute.getValidationTextRange() :
+				this.getValidationTextRange();
 		return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
 				msgID,
 				parms,
 				this,
-				this.getValidationTextRange()
+				textRange
 			);
 	}
 

@@ -1530,7 +1530,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 			}
 		}
 		if (prohibitedMappingFound) {
-			if (getPersistentAttribute().isVirtual()) {
+			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
@@ -1538,19 +1538,19 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 								new String[] {this.getName(), 
 										embeddable.getName(), relationshipMapping.getName()},
 								this,
-								this.getValidationTextRange()
+								this.getVirtualPersistentAttributeTextRange()
 						)
 				);				
 			} else {
-			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_PROHIBITED_RELATIONSHIP_MAPPING,
-							new String[] {embeddable.getName(), relationshipMapping.getName()},
-							this,
-							this.getValidationTextRange()
-					)
-			);
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_PROHIBITED_RELATIONSHIP_MAPPING,
+								new String[] {embeddable.getName(), relationshipMapping.getName()},
+								this,
+								this.getValidationTextRange()
+						)
+				);
 			}
 		}
 	}
@@ -1558,14 +1558,14 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	private void embeddableContainsElementCollection(List<IMessage> messages, Embeddable embeddable) {
 		Iterable<AttributeMapping> elementCollectionMappings = embeddable.getAllAttributeMappings(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		if (elementCollectionMappings.iterator().hasNext()) {
-			if (getPersistentAttribute().isVirtual()) {
+			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
 								JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_CONTAINS_EMBEDDABLE_WITH_ELEMENT_COLLECTION_MAPPING,
 								new String[] {this.getName(), embeddable.getName(), elementCollectionMappings.iterator().next().getName()},
 								this,
-								this.getValidationTextRange()
+								this.getVirtualPersistentAttributeTextRange()
 						)
 				);				
 			} else {
@@ -1592,7 +1592,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE,
 						new String[] {this.getName()},
 						this,
-						this.getValidationTextRange()
+						this.getVirtualPersistentAttributeTextRange()
 					)
 				);
 			}
@@ -1620,7 +1620,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_NOT_DEFINED,
 						new String[] {this.getName()},
 						this,
-						this.getValidationTextRange()
+						this.getVirtualPersistentAttributeTextRange()
 					)
 				);
 			} else {
@@ -1648,7 +1648,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,
 						new String[] {this.getName(), targetClass},
 						this,
-						this.getTargetClassTextRange()
+						this.getVirtualPersistentAttributeTextRange()
 					)
 				);
 			} else {
@@ -1694,7 +1694,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_CLASS_NOT_DEFINED,
 						new String[] {this.getName()},
 						this,
-						this.getValidationTextRange()
+						this.getVirtualPersistentAttributeTextRange()
 					)
 				);
 			} else {
@@ -1722,7 +1722,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
 						new String[] {this.getName(), this.getFullyQualifiedMapKeyClass()},
 						this,
-						this.getValidationTextRange()
+						this.getVirtualPersistentAttributeTextRange()
 					)
 				);
 			} else {

@@ -150,7 +150,7 @@ public abstract class OverrideValidator
 					this.container.getOverridableTypeMapping().getName()
 				},
 				this.override,
-				this.override.getNameTextRange()
+				this.persistentAttribute.getValidationTextRange()
 			);
 	}
 

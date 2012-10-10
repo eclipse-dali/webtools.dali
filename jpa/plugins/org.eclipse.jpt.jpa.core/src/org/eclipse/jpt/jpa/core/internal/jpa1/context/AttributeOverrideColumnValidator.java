@@ -81,7 +81,7 @@ public class AttributeOverrideColumnValidator
 					this.column.getDbTable().getName()
 				},
 				this.column,
-				this.column.getNameTextRange()
+				this.getVirtualAttributeTextRange()
 			);
 	}
 
@@ -139,7 +139,7 @@ public class AttributeOverrideColumnValidator
 						this.getColumnTableDescriptionMessage()
 					},
 					this.getColumn(),
-					this.getColumn().getTableTextRange()
+					AttributeOverrideColumnValidator.this.persistentAttribute.getValidationTextRange()
 				);
 		}
 

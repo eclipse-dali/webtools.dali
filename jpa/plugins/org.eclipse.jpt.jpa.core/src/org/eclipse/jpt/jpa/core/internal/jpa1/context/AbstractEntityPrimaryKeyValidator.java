@@ -94,7 +94,7 @@ public abstract class AbstractEntityPrimaryKeyValidator extends
 						JpaValidationMessages.ENTITY_NON_ROOT_ID_ATTRIBUTE_SPECIFIED,
 						EMPTY_STRING_ARRAY,
 						each,
-						getAttributeMappingTextRange(each.getName())));
+						getAttributeMappingTextRange(each)));
 		}
 	}
 }

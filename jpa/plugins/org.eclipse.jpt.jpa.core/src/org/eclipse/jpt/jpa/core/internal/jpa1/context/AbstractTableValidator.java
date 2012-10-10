@@ -10,6 +10,8 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import java.util.List;
+
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -98,8 +100,12 @@ public abstract class AbstractTableValidator
 				this.table.getName()
 			},
 			this.table,
-			this.table.getCatalogTextRange()
+			this.getVirtualAttributeValidationTextRange()
 		);
+	}
+
+	protected TextRange getVirtualAttributeValidationTextRange() {
+		return this.persistentAttribute.getValidationTextRange();
 	}
 
 	protected abstract String getVirtualAttributeUnresolvedCatalogMessage();
@@ -135,7 +141,7 @@ public abstract class AbstractTableValidator
 				this.table.getName()
 			},
 			this.table,
-			this.table.getSchemaTextRange()
+			this.getVirtualAttributeValidationTextRange()
 		);
 	}
 
@@ -168,7 +174,7 @@ public abstract class AbstractTableValidator
 				this.table.getName()
 			},
 			this.table,
-			this.table.getNameTextRange()
+			this.getVirtualAttributeValidationTextRange()
 		);
 	}
 

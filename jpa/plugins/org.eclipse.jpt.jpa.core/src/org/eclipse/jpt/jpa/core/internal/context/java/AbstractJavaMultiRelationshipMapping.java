@@ -975,7 +975,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_TYPE_IS_NOT_SUPPORTED_COLLECTION_TYPE,
 						new String[] {getName()},
 						this,
-						this.getValidationTextRange()
+						this.getVirtualPersistentAttributeTextRange()
 					)
 				);
 			}
@@ -1037,7 +1037,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_CLASS_NOT_DEFINED,
 						new String[] {this.getName()},
 						this,
-						this.getValidationTextRange()
+						this.getVirtualPersistentAttributeTextRange()
 					)
 				);
 			} else {
@@ -1066,7 +1066,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_CLASS_MUST_BE_ENTITY_EMBEDDABLE_OR_BASIC_TYPE,
 						new String[] {this.getName(), this.getFullyQualifiedMapKeyClass()},
 						this,
-						this.getMapKeyClassTextRange()
+						this.getVirtualPersistentAttributeTextRange()
 					)
 				);
 			}

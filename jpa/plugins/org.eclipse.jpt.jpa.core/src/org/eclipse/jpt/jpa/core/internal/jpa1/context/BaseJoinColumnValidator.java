@@ -105,7 +105,7 @@ public abstract class BaseJoinColumnValidator<C extends ReadOnlyBaseJoinColumn>
 					this.column.getReferencedColumnDbTable().getName()
 				},
 				this.column,
-				this.column.getReferencedColumnNameTextRange()
+				this.getVirtualAttributeTextRange()
 			);
 	}
 
@@ -135,7 +135,7 @@ public abstract class BaseJoinColumnValidator<C extends ReadOnlyBaseJoinColumn>
 				this.getVirtualAttributeUnspecifiedNameMultipleJoinColumnsMessage(),
 				new String[] {this.persistentAttribute.getName()},
 				this.column,
-				this.column.getNameTextRange()
+				this.getVirtualAttributeTextRange()
 			);
 	}
 
@@ -165,7 +165,7 @@ public abstract class BaseJoinColumnValidator<C extends ReadOnlyBaseJoinColumn>
 				this.getVirtualAttributeUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(),
 				new String[] {this.persistentAttribute.getName()},
 				this.column,
-				this.column.getReferencedColumnNameTextRange()
+				this.getVirtualAttributeTextRange()
 			);
 	}
 

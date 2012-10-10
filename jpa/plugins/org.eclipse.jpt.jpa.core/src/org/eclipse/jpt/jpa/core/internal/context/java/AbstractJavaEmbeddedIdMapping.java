@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 import java.io.Serializable;
 import java.util.List;
 
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
@@ -118,7 +117,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 								JpaValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_ATTRIBUTE_OVERRIDES_SPECIFIED,
 								new String[] {this.getName()},
 								this.attributeOverrideContainer,
-								this.attributeOverrideContainer.getValidationTextRange()
+								this.getVirtualPersistentAttributeTextRange()
 						)
 				);				
 			} else {
@@ -144,8 +143,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 	protected void validateTargetEmbeddableImplementsZeroArgConstructor(List<IMessage> messages, IReporter reporter) {
 		if (this.getTargetEmbeddable() != null) {
 			String targetEmbeddableClassName = this.getTargetEmbeddable().getPersistentType().getName();
-			IJavaProject javaProject = getJpaProject().getJavaProject();
-			if (!JDTTools.classHasPublicZeroArgConstructor(javaProject, targetEmbeddableClassName)){
+			if (!JDTTools.classHasPublicZeroArgConstructor(this.getJavaProject(), targetEmbeddableClassName)){
 				if (this.getPersistentAttribute().isVirtual()) {
 					messages.add(
 							DefaultJpaValidationMessages.buildMessage(
@@ -153,7 +151,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 									JpaValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_NO_ARG_CONSTRUCTOR,
 									new String[] {this.getName()},
 									this,
-									this.getValidationTextRange()
+									this.getVirtualPersistentAttributeTextRange()
 							)
 					);						
 				} else {
@@ -184,7 +182,7 @@ public abstract class AbstractJavaEmbeddedIdMapping
 										JpaValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_EQUALS_HASHCODE,
 										new String[] {this.getName()},
 										this,
-										this.getValidationTextRange()
+										this.getVirtualPersistentAttributeTextRange()
 								)
 						);
 					} else {
@@ -204,15 +202,15 @@ public abstract class AbstractJavaEmbeddedIdMapping
 
 	protected void validateTargetEmbeddableIsPublic(List<IMessage> messages, IReporter reporter) {
 		if (this.getTargetEmbeddable() != null) {
-			if (!getTargetEmbeddable().getJavaResourceType().isPublic()) {
-				if (getPersistentAttribute().isVirtual()) {
+			if (!this.getTargetEmbeddable().getJavaResourceType().isPublic()) {
+				if (this.getPersistentAttribute().isVirtual()) {
 					messages.add(
 							DefaultJpaValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
 									JpaValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_BE_PUBLIC,
 									new String[] {this.getName()},
 									this,
-									this.getValidationTextRange()
+									this.getVirtualPersistentAttributeTextRange()
 							)
 					);					
 				} else {
@@ -233,16 +231,15 @@ public abstract class AbstractJavaEmbeddedIdMapping
 	protected void validateTargetEmbeddableImplementsSerializable(List<IMessage> messages, IReporter reporter) {
 		if (this.getTargetEmbeddable() != null) {
 			String targetEmbeddableClassName = this.getTargetEmbeddable().getPersistentType().getName();
-			IJavaProject javaProject = getJpaProject().getJavaProject();
-			if (!JDTTools.typeIsSubType(javaProject, targetEmbeddableClassName, Serializable.class.getName())) {
-				if (getPersistentAttribute().isVirtual()) {
+			if (!JDTTools.typeIsSubType(this.getJavaProject(), targetEmbeddableClassName, Serializable.class.getName())) {
+				if (this.getPersistentAttribute().isVirtual()) {
 					messages.add(
 							DefaultJpaValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
 									JpaValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_IMPLEMENT_SERIALIZABLE,
 									new String[] {this.getName()},
 									this,
-									this.getValidationTextRange()
+									this.getVirtualPersistentAttributeTextRange()
 							)
 					);					
 				} else {
@@ -267,16 +264,16 @@ public abstract class AbstractJavaEmbeddedIdMapping
 					|| targetEmbeddableTypeMapping.getAllAttributeMappings(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY).iterator().hasNext()
 					|| targetEmbeddableTypeMapping.getAllAttributeMappings(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY).iterator().hasNext()
 					|| targetEmbeddableTypeMapping.getAllAttributeMappings(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY).iterator().hasNext()) {
-				if (getPersistentAttribute().isVirtual()) {
+				if (this.getPersistentAttribute().isVirtual()) {
 					messages.add(
 							DefaultJpaValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
 									JpaValidationMessages.VIRTUAL_ATTRIBUTE_EMBEDDED_ID_CLASS_SHOULD_NOT_CONTAIN_RELATIONSHIP_MAPPINGS,
 									new String[] {this.getName()},
 									this,
-									this.getValidationTextRange()
+									this.getVirtualPersistentAttributeTextRange()
 							)
-					);					
+					);
 				} else {
 					messages.add(
 							DefaultJpaValidationMessages.buildMessage(

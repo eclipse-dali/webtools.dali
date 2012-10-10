@@ -200,15 +200,28 @@ public class GenericJavaGeneratedValue
 			}
 		}
 
-		messages.add(
-			DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.ID_MAPPING_UNRESOLVED_GENERATOR_NAME,
-				new String[] {generator},
-				this.getIdMapping(),
-				this.getGeneratorTextRange()
-			)
-		);
+		if (getIdMapping().getPersistentAttribute().isVirtual()) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.ID_MAPPING_UNRESOLVED_GENERATOR_NAME, //TODO KFB need a different message for virtual
+					new String[] {generator},
+					this.getIdMapping(),
+					this.getIdMapping().getPersistentAttribute().getValidationTextRange()
+				)
+			);
+		}
+		else {
+			messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.ID_MAPPING_UNRESOLVED_GENERATOR_NAME,
+						new String[] {generator},
+						this.getIdMapping(),
+						this.getGeneratorTextRange()
+					)
+				);
+		}
 	}
 
 	public TextRange getValidationTextRange() {
