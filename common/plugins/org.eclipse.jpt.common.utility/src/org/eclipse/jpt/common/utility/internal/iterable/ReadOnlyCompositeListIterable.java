@@ -75,7 +75,6 @@ public class ReadOnlyCompositeListIterable<E>
 	 */
 	public ListIterator<E> iterator() {
 		return IteratorTools.readOnlyCompositeListIterator(this.iterators());
-//		return new ReadOnlyCompositeListIterator<E>(this.iterators());
 	}
 
 	/**
