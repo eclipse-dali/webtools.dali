@@ -39,6 +39,9 @@ public class IteratorEnumeration<E>
 	 */
 	public IteratorEnumeration(Iterator<? extends E> iterator) {
 		super();
+		if (iterator == null) {
+			throw new NullPointerException();
+		}
 		this.iterator = iterator;
 	}
 

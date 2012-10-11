@@ -106,6 +106,9 @@ public class GraphIterable<E>
 	 */
 	public GraphIterable(Iterable<? extends E> roots) {
 		super();
+		if (roots == null) {
+			throw new NullPointerException();
+		}
 		this.roots = roots;
 		this.misterRogers = this.buildDefaultMisterRogers();
 	}
@@ -116,6 +119,9 @@ public class GraphIterable<E>
 	 */
 	public GraphIterable(Iterable<? extends E> roots, GraphIterator.MisterRogers<E> misterRogers) {
 		super();
+		if ((roots == null) || (misterRogers == null)) {
+			throw new NullPointerException();
+		}
 		this.roots = roots;
 		this.misterRogers = misterRogers;
 	}

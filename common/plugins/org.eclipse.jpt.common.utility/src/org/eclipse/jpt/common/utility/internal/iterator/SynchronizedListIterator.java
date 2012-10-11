@@ -48,12 +48,18 @@ public class SynchronizedListIterator<E>
 
 	public SynchronizedListIterator(ListIterator<E> listIterator) {
 		super();
+		if (listIterator == null) {
+			throw new NullPointerException();
+		}
 		this.listIterator = listIterator;
 		this.mutex = this;
 	}
 
 	public SynchronizedListIterator(ListIterator<E> listIterator, Object mutex) {
 		super();
+		if ((listIterator == null) || (mutex == null)) {
+			throw new NullPointerException();
+		}
 		this.listIterator = listIterator;
 		this.mutex = mutex;
 	}

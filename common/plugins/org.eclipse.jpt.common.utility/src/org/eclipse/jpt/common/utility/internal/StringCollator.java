@@ -48,6 +48,9 @@ public class StringCollator
 	 */
 	public StringCollator(Collator collator) {
 		super();
+		if (collator == null) {
+			throw new NullPointerException();
+		}
 		this.collator = collator;
 	}
 

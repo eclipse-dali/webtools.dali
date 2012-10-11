@@ -40,6 +40,9 @@ public class PeekableIterable<E>
 	 */
 	public PeekableIterable(Iterable<? extends E> iterable) {
 		super();
+		if (iterable == null) {
+			throw new NullPointerException();
+		}
 		this.iterable = iterable;
 	}
 

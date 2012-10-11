@@ -60,6 +60,9 @@ public class PreferencesCollectionValueModel<P>
 	 */
 	public PreferencesCollectionValueModel(PropertyValueModel<? extends Preferences> preferencesModel, Adapter<P> adapter) {
 		super(preferencesModel);
+		if (adapter == null) {
+			throw new NullPointerException();
+		}
 		this.preferenceChangeListener = this.buildPreferenceChangeListener();
 		this.adapter = adapter;
 	}

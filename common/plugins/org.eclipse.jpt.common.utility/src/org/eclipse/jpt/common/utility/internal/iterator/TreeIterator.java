@@ -47,6 +47,9 @@ public class TreeIterator<E>
 	 */
 	public TreeIterator(Iterator<? extends E> roots, Transformer<E, Iterator<? extends E>> transformer) {
 		super();
+		if ((roots == null) || (transformer == null)) {
+			throw new NullPointerException();
+		}
 		this.currentIterator = roots;
 		// use a LinkedList since we will be pulling off the front and adding to the end
 		this.iterators = new LinkedList<Iterator<? extends E>>();

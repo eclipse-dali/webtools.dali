@@ -29,6 +29,9 @@ public class DefaultProblem
 
 	DefaultProblem(Node source, String messageKey, int messageType, Object[] messageArguments) {
 		super();
+		if ((source == null) || (messageKey == null) || (messageArguments == null)) {
+			throw new NullPointerException();
+		}
 		this.source = source;
 		this.messageKey = messageKey;
 		this.messageType = messageType;

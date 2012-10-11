@@ -40,6 +40,9 @@ public class ReadOnlyIterator<E>
 	 */
 	public ReadOnlyIterator(Iterator<? extends E> iterator) {
 		super();
+		if (iterator == null) {
+			throw new NullPointerException();
+		}
 		this.iterator = iterator;
 	}
 

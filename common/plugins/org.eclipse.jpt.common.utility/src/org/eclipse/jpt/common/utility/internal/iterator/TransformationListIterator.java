@@ -90,6 +90,9 @@ public class TransformationListIterator<E1, E2>
 	 */
 	public TransformationListIterator(ListIterator<? extends E1> listIterator, Transformer<E1, ? extends E2> transformer) {
 		super();
+		if ((listIterator == null) || (transformer == null)) {
+			throw new NullPointerException();
+		}
 		this.listIterator = listIterator;
 		this.transformer = transformer;
 	}

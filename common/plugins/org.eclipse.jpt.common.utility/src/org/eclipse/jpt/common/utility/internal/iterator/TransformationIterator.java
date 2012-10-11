@@ -69,6 +69,9 @@ public class TransformationIterator<E1, E2>
 	 */
 	public TransformationIterator(Iterator<? extends E1> iterator, Transformer<E1, ? extends E2> transformer) {
 		super();
+		if ((iterator == null) || (transformer == null)) {
+			throw new NullPointerException();
+		}
 		this.iterator = iterator;
 		this.transformer = transformer;
 	}

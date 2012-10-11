@@ -86,6 +86,9 @@ public class CloneIterator<E>
 	 */
 	protected CloneIterator(Remover<E> remover, Object... array) {
 		super();
+		if (remover == null) {
+			throw new NullPointerException();
+		}
 		this.iterator = new ArrayIterator<Object>(array);
 		this.current = null;
 		this.remover = remover;

@@ -36,6 +36,9 @@ public class SuperIteratorWrapper<E>
 
 	public SuperIteratorWrapper(Iterator<? extends E> iterator) {
 		super();
+		if (iterator == null) {
+			throw new NullPointerException();
+		}
 		this.iterator = iterator;
 	}
 

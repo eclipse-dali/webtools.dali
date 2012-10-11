@@ -53,6 +53,9 @@ public class FilteringIterable<E>
 	 */
 	public FilteringIterable(Iterable<? extends E> iterable, Filter<E> filter) {
 		super();
+		if ((iterable == null) || (filter == null)) {
+			throw new NullPointerException();
+		}
 		this.iterable = iterable;
 		this.filter = filter;
 	}

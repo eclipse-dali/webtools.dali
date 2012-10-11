@@ -30,6 +30,10 @@ public class EnumerationIterator<E>
 	 * Construct an iterator that wraps the specified enumeration.
 	 */
 	public EnumerationIterator(Enumeration<? extends E> enumeration) {
+		super();
+		if (enumeration == null) {
+			throw new NullPointerException();
+		}
 		this.enumeration = enumeration;
 	}
 

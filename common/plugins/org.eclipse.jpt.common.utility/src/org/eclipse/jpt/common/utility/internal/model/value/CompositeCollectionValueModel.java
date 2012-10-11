@@ -151,6 +151,9 @@ public class CompositeCollectionValueModel<E1, E2>
 	 */
 	public CompositeCollectionValueModel(CollectionValueModel<? extends E1> collectionModel, Transformer<E1, ? extends CollectionValueModel<? extends E2>> transformer) {
 		super(collectionModel);
+		if (transformer == null) {
+			throw new NullPointerException();
+		}
 		this.transformer = transformer;
 		this.componentCVMListener = this.buildComponentListener();
 		this.size = 0;

@@ -51,6 +51,9 @@ public class IndentingPrintWriter
 	 */
 	public IndentingPrintWriter(Writer out, String indent, int initialIndentLevel) {
 		super(out);
+		if (indent == null) {
+			throw new NullPointerException();
+		}
 		this.indent = indent;
 		this.indentLevel = initialIndentLevel;
 		this.needsIndent = true;

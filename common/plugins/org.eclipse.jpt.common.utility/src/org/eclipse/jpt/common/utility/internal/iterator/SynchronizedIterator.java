@@ -38,12 +38,18 @@ public class SynchronizedIterator<E>
 
 	public SynchronizedIterator(Iterator<? extends E> iterator) {
 		super();
+		if (iterator == null) {
+			throw new NullPointerException();
+		}
 		this.iterator = iterator;
 		this.mutex = this;
 	}
 
 	public SynchronizedIterator(Iterator<? extends E> iterator, Object mutex) {
 		super();
+		if ((iterator == null) || (mutex == null)) {
+			throw new NullPointerException();
+		}
 		this.iterator = iterator;
 		this.mutex = mutex;
 	}

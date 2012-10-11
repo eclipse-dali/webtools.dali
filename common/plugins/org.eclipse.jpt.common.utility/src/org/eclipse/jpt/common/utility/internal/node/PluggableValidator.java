@@ -47,6 +47,9 @@ public class PluggableValidator
 	 */
 	public PluggableValidator(Delegate delegate) {
 		super();
+		if (delegate == null) {
+			throw new NullPointerException();
+		}
 		this.pause = false;
 		this.validateOnResume = false;
 		this.delegate = delegate;

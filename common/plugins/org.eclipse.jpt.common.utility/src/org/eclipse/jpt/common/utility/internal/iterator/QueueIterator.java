@@ -36,6 +36,9 @@ public class QueueIterator<E>
 	 */
 	public QueueIterator(Queue<E> queue) {
 		super();
+		if (queue == null) {
+			throw new NullPointerException();
+		}
 		this.queue = queue;
 	}
 

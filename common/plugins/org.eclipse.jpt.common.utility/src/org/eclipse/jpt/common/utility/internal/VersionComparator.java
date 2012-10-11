@@ -68,6 +68,9 @@ public class VersionComparator<T extends Comparable<T>>
 	 */
 	public VersionComparator(String delimiters, SegmentParser<T> segmentParser) {
 		super();
+		if ((delimiters == null) || (segmentParser == null)) {
+			throw new NullPointerException();
+		}
 		this.delimiters = delimiters;
 		this.segmentParser = segmentParser;
 	}

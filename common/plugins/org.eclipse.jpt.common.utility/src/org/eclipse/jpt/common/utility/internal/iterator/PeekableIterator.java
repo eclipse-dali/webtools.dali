@@ -53,6 +53,9 @@ public class PeekableIterator<E>
 	 */
 	public PeekableIterator(Iterator<? extends E> iterator) {
 		super();
+		if (iterator == null) {
+			throw new NullPointerException();
+		}
 		this.iterator = iterator;
 		this.done = false;
 		this.loadNext();

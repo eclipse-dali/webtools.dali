@@ -159,6 +159,9 @@ public class CompositeListValueModel<E1, E2>
 	 */
 	public CompositeListValueModel(ListValueModel<? extends E1> listModel, Transformer<E1, ? extends ListValueModel<? extends E2>> transformer) {
 		super(listModel);
+		if (transformer == null) {
+			throw new NullPointerException();
+		}
 		this.transformer = transformer;
 		this.componentLVMListener = this.buildComponentLVMListener();
 		this.size = 0;

@@ -94,6 +94,9 @@ public class CloneListIterator<E>
 	 */
 	protected CloneListIterator(Mutator<E> mutator, Object... array) {
 		super();
+		if (mutator == null) {
+			throw new NullPointerException();
+		}
 		// build a copy of the list and keep it in sync with original (if the mutator allows changes)
 		// that way the nested list iterator will maintain some of our state
 		this.listIterator = ListTools.list(array).listIterator();

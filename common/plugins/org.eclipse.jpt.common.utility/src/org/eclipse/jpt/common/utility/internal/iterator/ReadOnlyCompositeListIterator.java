@@ -71,6 +71,9 @@ public class ReadOnlyCompositeListIterator<E>
 	 */
 	public ReadOnlyCompositeListIterator(ListIterator<? extends ListIterator<? extends E>> iterators) {
 		super();
+		if (iterators == null) {
+			throw new NullPointerException();
+		}
 		this.iterators = iterators;
 		this.nextIndex = 0;
 	}

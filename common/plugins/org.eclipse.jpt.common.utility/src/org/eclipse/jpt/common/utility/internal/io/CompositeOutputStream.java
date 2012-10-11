@@ -30,6 +30,9 @@ public class CompositeOutputStream
 	 */
 	public CompositeOutputStream(OutputStream... streams) {
 		super();
+		if (streams == null) {
+			throw new NullPointerException();
+		}
 		this.streams = streams;
 	}
 

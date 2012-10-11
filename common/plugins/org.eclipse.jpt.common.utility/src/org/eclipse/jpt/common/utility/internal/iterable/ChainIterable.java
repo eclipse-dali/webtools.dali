@@ -57,6 +57,9 @@ public class ChainIterable<E>
 	 */
 	public ChainIterable(E startLink, ChainIterator.Linker<E> linker) {
 		super();
+		if (linker == null) {
+			throw new NullPointerException();
+		}
 		this.startLink = startLink;
 		this.linker = linker;
 	}

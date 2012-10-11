@@ -68,13 +68,13 @@ public class PreferencePropertyValueModel<P>
 	protected final P defaultValue;
 
 	/**
-	 * This converter is used to convert the preference's
+	 * This transformer is used to convert the preference's
 	 * string value to an object.
 	 */
 	protected final Transformer<String, P> stringTransformer;
 
 	/**
-	 * This converter is used to convert an object
+	 * This transformer is used to convert an object
 	 * to the preference's string value.
 	 */
 	protected final Transformer<P, String> objectTransformer;
@@ -194,6 +194,9 @@ public class PreferencePropertyValueModel<P>
 			Transformer<String, P> stringTransformer,
 			Transformer<P, String> objectTransformer) {
 		super(preferencesModel);
+		if ((key == null) || (stringTransformer == null) || (objectTransformer == null)) {
+			throw new NullPointerException();
+		}
 		this.key = key;
 		this.defaultValue = defaultValue;
 		this.stringTransformer = stringTransformer;

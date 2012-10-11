@@ -45,6 +45,9 @@ public class ItemPropertyListValueModelAdapter<E>
 	 */
 	public ItemPropertyListValueModelAdapter(ListValueModel<E> listHolder, String... propertyNames) {
 		super(listHolder);
+		if (propertyNames == null) {
+			throw new NullPointerException();
+		}
 		this.propertyNames = propertyNames;
 		this.itemPropertyListener = this.buildItemPropertyListener();
 	}

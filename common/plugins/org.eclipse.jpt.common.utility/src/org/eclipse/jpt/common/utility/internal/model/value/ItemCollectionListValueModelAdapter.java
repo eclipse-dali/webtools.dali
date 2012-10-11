@@ -42,6 +42,9 @@ public class ItemCollectionListValueModelAdapter<E>
 	 */
 	public ItemCollectionListValueModelAdapter(ListValueModel<E> listHolder, String... collectionNames) {
 		super(listHolder);
+		if (collectionNames == null) {
+			throw new NullPointerException();
+		}
 		this.collectionNames = collectionNames;
 		this.itemCollectionListener = this.buildItemCollectionListener();
 	}

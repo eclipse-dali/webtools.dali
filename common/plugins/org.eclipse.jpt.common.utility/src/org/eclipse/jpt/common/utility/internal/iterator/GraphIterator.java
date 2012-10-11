@@ -145,6 +145,9 @@ public class GraphIterator<E>
 	 */
 	public GraphIterator(Iterator<? extends E> roots, MisterRogers<E> misterRogers) {
 		super();
+		if ((roots == null) || (misterRogers == null)) {
+			throw new NullPointerException();
+		}
 		this.currentIterator = roots;
 		this.misterRogers = misterRogers;
 		this.loadNextNeighbor();

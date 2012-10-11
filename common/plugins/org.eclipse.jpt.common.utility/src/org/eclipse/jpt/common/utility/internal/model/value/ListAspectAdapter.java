@@ -78,6 +78,9 @@ public abstract class ListAspectAdapter<S extends Model, E>
 	 */
 	protected ListAspectAdapter(PropertyValueModel<? extends S> subjectModel, String... aspectNames) {
 		super(subjectModel);
+		if (aspectNames == null) {
+			throw new NullPointerException();
+		}
 		this.aspectNames = aspectNames;
 		this.aspectChangeListener = this.buildAspectChangeListener();
 	}

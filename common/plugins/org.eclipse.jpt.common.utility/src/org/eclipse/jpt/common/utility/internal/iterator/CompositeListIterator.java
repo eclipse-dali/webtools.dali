@@ -75,6 +75,9 @@ public class CompositeListIterator<E>
 	 */
 	public CompositeListIterator(ListIterator<? extends ListIterator<E>> iterators) {
 		super();
+		if (iterators == null) {
+			throw new NullPointerException();
+		}
 		this.iterators = iterators;
 		this.nextIndex = 0;
 		this.nextReturned = false;

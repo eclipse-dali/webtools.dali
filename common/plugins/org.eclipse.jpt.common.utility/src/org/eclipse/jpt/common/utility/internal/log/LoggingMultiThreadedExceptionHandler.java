@@ -58,6 +58,9 @@ public class LoggingMultiThreadedExceptionHandler
 	 */
 	public LoggingMultiThreadedExceptionHandler(Logger logger, Level level, String message) {
 		super();
+		if ((logger == null) || (level == null) || (message == null)) {
+			throw new NullPointerException();
+		}
 		this.logger = logger;
 		this.level = level;
 		this.message = message;

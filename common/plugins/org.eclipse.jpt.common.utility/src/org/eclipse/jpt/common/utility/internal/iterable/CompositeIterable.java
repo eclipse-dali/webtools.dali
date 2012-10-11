@@ -35,6 +35,9 @@ public class CompositeIterable<E>
 	 */
 	public CompositeIterable(Iterable<? extends Iterable<? extends E>> iterables) {
 		super();
+		if (iterables == null) {
+			throw new NullPointerException();
+		}
 		this.iterables = iterables;
 	}
 

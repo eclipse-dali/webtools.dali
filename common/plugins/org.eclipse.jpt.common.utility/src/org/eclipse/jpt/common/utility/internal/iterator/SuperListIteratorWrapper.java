@@ -42,6 +42,9 @@ public class SuperListIteratorWrapper<E>
 
 	public SuperListIteratorWrapper(ListIterator<? extends E> listIterator) {
 		super();
+		if (listIterator == null) {
+			throw new NullPointerException();
+		}
 		this.listIterator = listIterator;
 	}
 

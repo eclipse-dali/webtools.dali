@@ -36,6 +36,9 @@ public class ValuePropertyAdapter<V extends Model>
 	 */
 	public ValuePropertyAdapter(ModifiablePropertyValueModel<V> valueHolder, String... propertyNames) {
 		super(valueHolder);
+		if (propertyNames == null) {
+			throw new NullPointerException();
+		}
 		this.propertyNames = propertyNames;
 		this.valuePropertyListener = this.buildValuePropertyListener();
 	}

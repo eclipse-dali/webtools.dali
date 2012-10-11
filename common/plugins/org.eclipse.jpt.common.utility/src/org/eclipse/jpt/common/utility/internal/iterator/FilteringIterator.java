@@ -82,6 +82,9 @@ public class FilteringIterator<E>
 	 */
 	public FilteringIterator(Iterator<? extends E> iterator, Filter<E> filter) {
 		super();
+		if ((iterator == null) || (filter == null)) {
+			throw new NullPointerException();
+		}
 		this.iterator = iterator;
 		this.filter = filter;
 		this.loadNext();

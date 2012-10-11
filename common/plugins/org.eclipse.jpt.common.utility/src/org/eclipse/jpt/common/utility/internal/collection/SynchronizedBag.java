@@ -38,7 +38,7 @@ public class SynchronizedBag<E>
 	 */
 	public SynchronizedBag(Bag<E> bag, Object mutex) {
 		super();
-		if (bag == null) {
+		if ((bag == null) || (mutex == null)) {
 			throw new NullPointerException();
 		}
 		this.bag = bag;

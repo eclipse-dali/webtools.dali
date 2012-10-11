@@ -54,6 +54,9 @@ public class CompositeIterator<E>
 	 */
 	public CompositeIterator(Iterator<? extends Iterator<? extends E>> iterators) {
 		super();
+		if (iterators == null) {
+			throw new NullPointerException();
+		}
 		this.iterators = iterators;
 	}
 

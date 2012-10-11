@@ -50,6 +50,9 @@ public class CompositeListIterable<E>
 	 */
 	public CompositeListIterable(ListIterable<? extends ListIterable<E>> iterables) {
 		super();
+		if (iterables == null) {
+			throw new NullPointerException();
+		}
 		this.iterables = iterables;
 	}
 

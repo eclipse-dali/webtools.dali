@@ -27,6 +27,9 @@ public class StringBuilderWriter
 	 */
 	public StringBuilderWriter(StringBuilder sb) {
 		super();
+		if (sb == null) {
+			throw new NullPointerException();
+		}
 		this.sb = sb;
 		this.lock = sb;
 	}

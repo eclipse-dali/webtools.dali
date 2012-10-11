@@ -27,6 +27,9 @@ public class StringBufferWriter
 	 */
 	public StringBufferWriter(StringBuffer sb) {
 		super();
+		if (sb == null) {
+			throw new NullPointerException();
+		}
 		this.sb = sb;
 		this.lock = sb;
 	}

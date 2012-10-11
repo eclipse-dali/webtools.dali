@@ -70,6 +70,9 @@ public class FilteringCollectionValueModel<E>
 	 */
 	public FilteringCollectionValueModel(CollectionValueModel<? extends E> collectionModel, Filter<E> filter) {
 		super(collectionModel);
+		if (filter == null) {
+			throw new NullPointerException();
+		}
 		this.filter = filter;
 	}
 

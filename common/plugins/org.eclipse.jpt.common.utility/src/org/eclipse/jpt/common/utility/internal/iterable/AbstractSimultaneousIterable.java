@@ -40,6 +40,9 @@ public abstract class AbstractSimultaneousIterable<E, I extends Iterable<E>> {
 	 */
 	protected <T extends I> AbstractSimultaneousIterable(Iterable<T> iterables, int iterablesSize) {
 		super();
+		if (iterables == null) {
+			throw new NullPointerException();
+		}
 		this.iterables = iterables;
 		this.iterablesSize = iterablesSize;
 	}

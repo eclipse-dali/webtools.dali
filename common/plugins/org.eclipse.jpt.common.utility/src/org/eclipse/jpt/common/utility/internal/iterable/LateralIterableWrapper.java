@@ -32,6 +32,9 @@ public class LateralIterableWrapper<E1, E2>
 
 	public LateralIterableWrapper(Iterable<E1> iterable) {
 		super();
+		if (iterable == null) {
+			throw new NullPointerException();
+		}
 		this.iterable = iterable;
 	}
 

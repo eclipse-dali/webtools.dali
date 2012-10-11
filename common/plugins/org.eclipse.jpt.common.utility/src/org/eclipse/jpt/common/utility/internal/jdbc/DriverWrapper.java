@@ -58,6 +58,9 @@ public class DriverWrapper
 	 */
 	public DriverWrapper(Driver driver) {
 		super();
+		if (driver == null) {
+			throw new NullPointerException();
+		}
 		this.driver = driver;
 	}
 

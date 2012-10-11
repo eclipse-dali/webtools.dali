@@ -50,6 +50,9 @@ public class ResultSetIterator<E>
 	 */
 	public ResultSetIterator(ResultSet resultSet, Adapter<E> adapter) {
 		super();
+		if ((resultSet == null) || (adapter == null)) {
+			throw new NullPointerException();
+		}
 		this.resultSet = resultSet;
 		this.adapter = adapter;
 		this.done = false;

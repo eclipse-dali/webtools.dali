@@ -31,11 +31,21 @@ public abstract class AbstractCompositeExceptionHandler<H extends ExceptionHandl
 	protected AbstractCompositeExceptionHandler(H... exceptionHandlers) {
 		super();
 		CollectionTools.addAll(this.exceptionHandlers, exceptionHandlers);
+		this.checkExceptionHandlers();
 	}
 
 	protected AbstractCompositeExceptionHandler(Iterable<? extends H> exceptionHandlers) {
 		super();
 		CollectionTools.addAll(this.exceptionHandlers, exceptionHandlers);
+		this.checkExceptionHandlers();
+	}
+
+	private void checkExceptionHandlers() {
+		for (H exceptionHandler : this.exceptionHandlers) {
+			if (exceptionHandler == null) {
+				throw new NullPointerException();
+			}
+		}
 	}
 
 

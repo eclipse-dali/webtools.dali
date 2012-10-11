@@ -71,6 +71,9 @@ public class TransformationListValueModel<E1, E2>
 	 */
 	public TransformationListValueModel(ListValueModel<? extends E1> listHolder, Transformer<E1, E2> transformer) {
 		super(listHolder);
+		if (transformer == null) {
+			throw new NullPointerException();
+		}
 		this.transformer = transformer;
 		this.transformedList = new ArrayList<E2>();
 	}
@@ -215,6 +218,9 @@ public class TransformationListValueModel<E1, E2>
 	 * Change the transformer and rebuild the collection.
 	 */
 	public void setTransformer(Transformer<E1, E2> transformer) {
+		if (transformer == null) {
+			throw new NullPointerException();
+		}
 		this.transformer = transformer;
 		this.rebuildTransformedList();
 	}

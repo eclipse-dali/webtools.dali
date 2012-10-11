@@ -40,6 +40,9 @@ public class ValueCollectionAdapter<V extends Model>
 	 */
 	public ValueCollectionAdapter(ModifiablePropertyValueModel<V> valueHolder, String... collectionNames) {
 		super(valueHolder);
+		if (collectionNames == null) {
+			throw new NullPointerException();
+		}
 		this.collectionNames = collectionNames;
 		this.valueCollectionListener = this.buildValueCollectionListener();
 	}

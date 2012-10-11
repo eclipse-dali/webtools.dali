@@ -56,6 +56,9 @@ public class JarManifestInterrogator {
 	 */
 	public JarManifestInterrogator(Class<?> javaClass, Defaults defaults) {
 		super();
+		if (defaults == null) {
+			throw new NullPointerException();
+		}
 		this.defaults = defaults;
 		this.jarFileName = this.buildJarFileName(javaClass);
 		this.manifest = this.buildManifest();

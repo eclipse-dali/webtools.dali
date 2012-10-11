@@ -42,6 +42,9 @@ public class ValueListAdapter<V extends Model>
 	 */
 	public ValueListAdapter(ModifiablePropertyValueModel<V> valueHolder, String... listNames) {
 		super(valueHolder);
+		if (listNames == null) {
+			throw new NullPointerException();
+		}
 		this.listNames = listNames;
 		this.valueListListener = this.buildValueListListener();
 	}

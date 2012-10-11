@@ -30,6 +30,9 @@ public class SynchronousValidator
 	 */
 	public SynchronousValidator(Node node) {
 		super();
+		if (node == null) {
+			throw new NullPointerException();
+		}
 		this.node = node;
 	}
 

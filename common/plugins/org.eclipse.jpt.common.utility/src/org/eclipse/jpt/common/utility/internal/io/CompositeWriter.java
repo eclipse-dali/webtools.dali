@@ -29,6 +29,9 @@ public class CompositeWriter
 	 */
 	public CompositeWriter(Writer... writers) {
 		super();
+		if (writers == null) {
+			throw new NullPointerException();
+		}
 		this.writers = writers;
 	}
 
@@ -38,6 +41,9 @@ public class CompositeWriter
 	 */
 	public CompositeWriter(Object lock, Writer... writers) {
 		super(lock);
+		if (writers == null) {
+			throw new NullPointerException();
+		}
 		this.writers = writers;
 	}
 

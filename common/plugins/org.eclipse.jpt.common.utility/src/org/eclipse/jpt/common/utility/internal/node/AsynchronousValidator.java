@@ -30,6 +30,9 @@ public class AsynchronousValidator
 	 */
 	public AsynchronousValidator(SynchronizedBoolean validateFlag) {
 		super();
+		if (validateFlag == null) {
+			throw new NullPointerException();
+		}
 		this.validateFlag = validateFlag;
 	}
 

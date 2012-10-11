@@ -55,6 +55,9 @@ public class ReadOnlyListIterator<E>
 	 */
 	public ReadOnlyListIterator(ListIterator<? extends E> listIterator) {
 		super();
+		if (listIterator == null) {
+			throw new NullPointerException();
+		}
 		this.listIterator = listIterator;
 	}
 
