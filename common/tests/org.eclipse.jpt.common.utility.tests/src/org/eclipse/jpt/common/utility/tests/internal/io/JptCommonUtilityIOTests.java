@@ -29,6 +29,7 @@ public class JptCommonUtilityIOTests {
 		suite.addTestSuite(NullWriterTests.class);
 		suite.addTestSuite(PipeTests.class);
 		suite.addTestSuite(StringBufferWriterTests.class);
+		suite.addTestSuite(StringBuilderWriterTests.class);
 		suite.addTestSuite(CompositeOutputStreamTests.class);
 		suite.addTestSuite(CompositeWriterTests.class);
 		suite.addTestSuite(WriterToolsTests.class);

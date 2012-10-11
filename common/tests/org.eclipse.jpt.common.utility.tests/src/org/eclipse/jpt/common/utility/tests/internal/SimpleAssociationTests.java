@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,20 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.tests.internal;
 
-import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import org.eclipse.jpt.common.utility.Association;
 import org.eclipse.jpt.common.utility.internal.SimpleAssociation;
 
 @SuppressWarnings("nls")
-public class SimpleAssociationTests extends TestCase {
+public class SimpleAssociationTests
+	extends TestCase
+{
 	private SimpleAssociation<String, String> assoc;
 
-	public static Test suite() {
-		return new TestSuite(SimpleAssociationTests.class);
-	}
-	
 	public SimpleAssociationTests(String name) {
 		super(name);
 	}
