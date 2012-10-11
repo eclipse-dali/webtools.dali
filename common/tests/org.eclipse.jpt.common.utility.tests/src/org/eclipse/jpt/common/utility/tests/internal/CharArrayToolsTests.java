@@ -19,26 +19,22 @@ import junit.framework.TestCase;
 public class CharArrayToolsTests
 	extends TestCase
 {
-	private static void assertEquals(String expected, char[] actual) {
-		assertEquals(expected, new String(actual));
-	}
-
 	// ********** padding/truncating/centering **********
 
 	public void testCenter() {
-		assertEquals("fred", CharArrayTools.center("fred".toCharArray(), 4));
-		assertEquals(" fred ", CharArrayTools.center("fred".toCharArray(), 6));
-		assertEquals(" fred  ", CharArrayTools.center("fred".toCharArray(), 7));
-		assertEquals("re", CharArrayTools.center("fred".toCharArray(), 2));
-		assertEquals("fre", CharArrayTools.center("fred".toCharArray(), 3));
+		TestTools.assertEquals("fred", CharArrayTools.center("fred".toCharArray(), 4));
+		TestTools.assertEquals(" fred ", CharArrayTools.center("fred".toCharArray(), 6));
+		TestTools.assertEquals(" fred  ", CharArrayTools.center("fred".toCharArray(), 7));
+		TestTools.assertEquals("re", CharArrayTools.center("fred".toCharArray(), 2));
+		TestTools.assertEquals("fre", CharArrayTools.center("fred".toCharArray(), 3));
 	}
 
 	public void testPad() {
-		assertEquals("fred", CharArrayTools.pad(new char[] { 'f', 'r', 'e', 'd' }, 4));
-		assertEquals("fred  ", CharArrayTools.pad(new char[] { 'f', 'r', 'e', 'd' }, 6));
+		TestTools.assertEquals("fred", CharArrayTools.pad(new char[] { 'f', 'r', 'e', 'd' }, 4));
+		TestTools.assertEquals("fred  ", CharArrayTools.pad(new char[] { 'f', 'r', 'e', 'd' }, 6));
 		boolean exThrown = false;
 		try {
-			assertEquals("fr", CharArrayTools.pad(new char[] { 'f', 'r', 'e', 'd' }, 2));
+			TestTools.assertEquals("fr", CharArrayTools.pad(new char[] { 'f', 'r', 'e', 'd' }, 2));
 		} catch (IllegalArgumentException ex) {
 			exThrown = true;
 		}
@@ -46,17 +42,17 @@ public class CharArrayToolsTests
 	}
 
 	public void testFit() {
-		assertEquals("fred", CharArrayTools.fit(new char[] { 'f', 'r', 'e', 'd' }, 4));
-		assertEquals("fred  ", CharArrayTools.fit(new char[] { 'f', 'r', 'e', 'd' }, 6));
-		assertEquals("fr", CharArrayTools.fit(new char[] { 'f', 'r', 'e', 'd' }, 2));
+		TestTools.assertEquals("fred", CharArrayTools.fit(new char[] { 'f', 'r', 'e', 'd' }, 4));
+		TestTools.assertEquals("fred  ", CharArrayTools.fit(new char[] { 'f', 'r', 'e', 'd' }, 6));
+		TestTools.assertEquals("fr", CharArrayTools.fit(new char[] { 'f', 'r', 'e', 'd' }, 2));
 	}
 
 	public void testZeroPad() {
-		assertEquals("1234", CharArrayTools.zeroPad(new char[] { '1', '2', '3', '4' }, 4));
-		assertEquals("001234", CharArrayTools.zeroPad(new char[] { '1', '2', '3', '4' }, 6));
+		TestTools.assertEquals("1234", CharArrayTools.zeroPad(new char[] { '1', '2', '3', '4' }, 4));
+		TestTools.assertEquals("001234", CharArrayTools.zeroPad(new char[] { '1', '2', '3', '4' }, 6));
 		boolean exThrown = false;
 		try {
-			assertEquals("12", CharArrayTools.zeroPad(new char[] { '1', '2', '3', '4' }, 2));
+			TestTools.assertEquals("12", CharArrayTools.zeroPad(new char[] { '1', '2', '3', '4' }, 2));
 		} catch (IllegalArgumentException ex) {
 			exThrown = true;
 		}
@@ -64,9 +60,9 @@ public class CharArrayToolsTests
 	}
 
 	public void testZeroFit() {
-		assertEquals("1234", CharArrayTools.zeroFit(new char[] { '1', '2', '3', '4' }, 4));
-		assertEquals("001234", CharArrayTools.zeroFit(new char[] { '1', '2', '3', '4' }, 6));
-		assertEquals("34", CharArrayTools.zeroFit(new char[] { '1', '2', '3', '4' }, 2));
+		TestTools.assertEquals("1234", CharArrayTools.zeroFit(new char[] { '1', '2', '3', '4' }, 4));
+		TestTools.assertEquals("001234", CharArrayTools.zeroFit(new char[] { '1', '2', '3', '4' }, 6));
+		TestTools.assertEquals("34", CharArrayTools.zeroFit(new char[] { '1', '2', '3', '4' }, 2));
 	}
 
 	// ********** separating **********
@@ -82,7 +78,7 @@ public class CharArrayToolsTests
 	}
 
 	private void verifySeparate(String string, char separator, int segmentLength, String expected) {
-		assertEquals(expected, CharArrayTools.separate(string.toCharArray(), separator, segmentLength));
+		TestTools.assertEquals(expected, CharArrayTools.separate(string.toCharArray(), separator, segmentLength));
 	}
 
 	// ********** removing characters **********
@@ -96,7 +92,7 @@ public class CharArrayToolsTests
 	}
 
 	private void verifyRemoveFirstOccurrence(String string, char charToRemove, String expectedString) {
-		assertEquals(expectedString, CharArrayTools.removeFirstOccurrence(string.toCharArray(), charToRemove));
+		TestTools.assertEquals(expectedString, CharArrayTools.removeFirstOccurrence(string.toCharArray(), charToRemove));
 	}
 
 	public void testRemoveAllOccurrences() {
@@ -107,7 +103,7 @@ public class CharArrayToolsTests
 	}
 
 	private void verifyRemoveAllOccurrences(String string, char charToRemove, String expectedString) {
-		assertEquals(expectedString, CharArrayTools.removeAllOccurrences(string.toCharArray(), charToRemove));
+		TestTools.assertEquals(expectedString, CharArrayTools.removeAllOccurrences(string.toCharArray(), charToRemove));
 	}
 
 	public void testRemoveAllWhitespace() {
@@ -118,7 +114,7 @@ public class CharArrayToolsTests
 	}
 
 	private void verifyRemoveAllWhitespace(String string, String expectedString) {
-		assertEquals(expectedString, CharArrayTools.removeAllWhitespace(string.toCharArray()));
+		TestTools.assertEquals(expectedString, CharArrayTools.removeAllWhitespace(string.toCharArray()));
 	}
 
 	public void testCompressWhitespace() {
@@ -129,7 +125,7 @@ public class CharArrayToolsTests
 	}
 
 	private void verifyCompressWhitespace(String string, String expectedString) {
-		assertEquals(expectedString, CharArrayTools.compressWhitespace(string.toCharArray()));
+		TestTools.assertEquals(expectedString, CharArrayTools.compressWhitespace(string.toCharArray()));
 	}
 
 	// ********** common prefix **********
@@ -147,7 +143,7 @@ public class CharArrayToolsTests
 	}
 
 	private void verifyCapitalize(String expected, char[] string) {
-		assertEquals(expected, CharArrayTools.capitalize(string));
+		TestTools.assertEquals(expected, CharArrayTools.capitalize(string));
 	}
 
 	public void testUnapitalize() {
@@ -161,7 +157,7 @@ public class CharArrayToolsTests
 	}
 
 	private void verifyUncapitalize(String expected, char[] string) {
-		assertEquals(expected, CharArrayTools.uncapitalize(string));
+		TestTools.assertEquals(expected, CharArrayTools.uncapitalize(string));
 	}
 
 	// ********** queries **********
@@ -461,7 +457,7 @@ public class CharArrayToolsTests
 	}
 
 	private void verifyUndelimit(String s, String expected) {
-		assertEquals(expected, CharArrayTools.undelimit(s.toCharArray()));
+		TestTools.assertEquals(expected, CharArrayTools.undelimit(s.toCharArray()));
 	}
 
 	public void testUndelimitInt() {
@@ -471,7 +467,7 @@ public class CharArrayToolsTests
 	}
 
 	private void verifyUndelimitInt(String s, int count, String expected) {
-		assertEquals(expected, CharArrayTools.undelimit(s.toCharArray(), count));
+		TestTools.assertEquals(expected, CharArrayTools.undelimit(s.toCharArray(), count));
 	}
 
 	public void testUndelimitIntException() {
@@ -503,7 +499,7 @@ public class CharArrayToolsTests
 	}
 
 	private void verifyConvertToJavaStringLiteral(String s, String expected) {
-		assertEquals(expected, CharArrayTools.convertToJavaStringLiteral(s.toCharArray()));
+		TestTools.assertEquals(expected, CharArrayTools.convertToJavaStringLiteral(s.toCharArray()));
 	}
 
 	// ********** converting to XML **********
@@ -526,7 +522,7 @@ public class CharArrayToolsTests
 	}
 
 	private void verifyConvertToXmlAttributeValue(String s, String expected) {
-		assertEquals(expected, CharArrayTools.convertToXmlAttributeValue(s.toCharArray()));
+		TestTools.assertEquals(expected, CharArrayTools.convertToXmlAttributeValue(s.toCharArray()));
 	}
 
 	public void testConvertToXmlElementText() {
@@ -547,7 +543,7 @@ public class CharArrayToolsTests
 	}
 
 	private void verifyConvertToXmlElementText(String s, String expected) {
-		assertEquals(expected, CharArrayTools.convertToXmlElementText(s.toCharArray()));
+		TestTools.assertEquals(expected, CharArrayTools.convertToXmlElementText(s.toCharArray()));
 	}
 
 	public void testConvertToXmlElementCDATA() {
@@ -580,6 +576,6 @@ public class CharArrayToolsTests
 	}
 
 	private void verifyConvertToXmlElementCDATA(String s, String expected) {
-		assertEquals(expected, CharArrayTools.convertToXmlElementCDATA(s.toCharArray()));
+		TestTools.assertEquals(expected, CharArrayTools.convertToXmlElementCDATA(s.toCharArray()));
 	}
 }

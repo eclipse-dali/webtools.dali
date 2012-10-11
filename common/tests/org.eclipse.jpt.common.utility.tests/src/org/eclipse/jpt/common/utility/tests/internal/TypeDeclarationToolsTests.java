@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.tests.internal;
 
-import java.util.Arrays;
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.TypeDeclarationTools;
 
@@ -92,17 +91,17 @@ public class TypeDeclarationToolsTests
 	}
 
 	public void testElementTypeNameCharArray() throws Exception {
-		assertEquals("java.lang.Object".toCharArray(), TypeDeclarationTools.elementTypeName("java.lang.Object".toCharArray()));
-		assertEquals("java.lang.Object".toCharArray(), TypeDeclarationTools.elementTypeName("java.lang.Object[]".toCharArray()));
-		assertEquals("java.lang.Object".toCharArray(), TypeDeclarationTools.elementTypeName("java.lang.Object[][][]".toCharArray()));
+		TestTools.assertEquals("java.lang.Object", TypeDeclarationTools.elementTypeName("java.lang.Object".toCharArray()));
+		TestTools.assertEquals("java.lang.Object", TypeDeclarationTools.elementTypeName("java.lang.Object[]".toCharArray()));
+		TestTools.assertEquals("java.lang.Object", TypeDeclarationTools.elementTypeName("java.lang.Object[][][]".toCharArray()));
 
-		assertEquals("int".toCharArray(), TypeDeclarationTools.elementTypeName("int".toCharArray()));
-		assertEquals("int".toCharArray(), TypeDeclarationTools.elementTypeName("int[]".toCharArray()));
-		assertEquals("int".toCharArray(), TypeDeclarationTools.elementTypeName("int[][][]".toCharArray()));
+		TestTools.assertEquals("int", TypeDeclarationTools.elementTypeName("int".toCharArray()));
+		TestTools.assertEquals("int", TypeDeclarationTools.elementTypeName("int[]".toCharArray()));
+		TestTools.assertEquals("int", TypeDeclarationTools.elementTypeName("int[][][]".toCharArray()));
 
-		assertEquals("float".toCharArray(), TypeDeclarationTools.elementTypeName("float".toCharArray()));
-		assertEquals("float".toCharArray(), TypeDeclarationTools.elementTypeName("float [ ]".toCharArray()));
-		assertEquals("float".toCharArray(), TypeDeclarationTools.elementTypeName("float[] [] []".toCharArray()));
+		TestTools.assertEquals("float", TypeDeclarationTools.elementTypeName("float".toCharArray()));
+		TestTools.assertEquals("float", TypeDeclarationTools.elementTypeName("float [ ]".toCharArray()));
+		TestTools.assertEquals("float", TypeDeclarationTools.elementTypeName("float[] [] []".toCharArray()));
 	}
 
 	public void testComponentTypeDeclarationString() throws Exception {
@@ -120,17 +119,17 @@ public class TypeDeclarationToolsTests
 	}
 
 	public void testComponentTypeDeclarationCharArray() throws Exception {
-		assertEquals(null, TypeDeclarationTools.componentTypeDeclaration("java.lang.Object".toCharArray()));
-		assertEquals("java.lang.Object".toCharArray(), TypeDeclarationTools.componentTypeDeclaration("java.lang.Object[]".toCharArray()));
-		assertEquals("java.lang.Object[][]".toCharArray(), TypeDeclarationTools.componentTypeDeclaration("java.lang.Object[][][]".toCharArray()));
+		TestTools.assertEquals(null, TypeDeclarationTools.componentTypeDeclaration("java.lang.Object".toCharArray()));
+		TestTools.assertEquals("java.lang.Object", TypeDeclarationTools.componentTypeDeclaration("java.lang.Object[]".toCharArray()));
+		TestTools.assertEquals("java.lang.Object[][]", TypeDeclarationTools.componentTypeDeclaration("java.lang.Object[][][]".toCharArray()));
 
-		assertEquals(null, TypeDeclarationTools.componentTypeDeclaration("int".toCharArray()));
-		assertEquals("int".toCharArray(), TypeDeclarationTools.componentTypeDeclaration("int[]".toCharArray()));
-		assertEquals("int[][]".toCharArray(), TypeDeclarationTools.componentTypeDeclaration("int[][][]".toCharArray()));
+		TestTools.assertEquals(null, TypeDeclarationTools.componentTypeDeclaration("int".toCharArray()));
+		TestTools.assertEquals("int", TypeDeclarationTools.componentTypeDeclaration("int[]".toCharArray()));
+		TestTools.assertEquals("int[][]", TypeDeclarationTools.componentTypeDeclaration("int[][][]".toCharArray()));
 
-		assertEquals(null, TypeDeclarationTools.componentTypeDeclaration("float".toCharArray()));
-		assertEquals("float".toCharArray(), TypeDeclarationTools.componentTypeDeclaration("float [ ]".toCharArray()));
-		assertEquals("float[][]".toCharArray(), TypeDeclarationTools.componentTypeDeclaration("float[] [] []".toCharArray()));
+		TestTools.assertEquals(null, TypeDeclarationTools.componentTypeDeclaration("float".toCharArray()));
+		TestTools.assertEquals("float", TypeDeclarationTools.componentTypeDeclaration("float [ ]".toCharArray()));
+		TestTools.assertEquals("float[][]", TypeDeclarationTools.componentTypeDeclaration("float[] [] []".toCharArray()));
 	}
 
 	public void testClassNameString() throws Exception {
@@ -144,13 +143,13 @@ public class TypeDeclarationToolsTests
 	}
 
 	public void testClassNameCharArray() throws Exception {
-		assertEquals("int".toCharArray(), TypeDeclarationTools.className("int".toCharArray()));
-		assertEquals("[I".toCharArray(), TypeDeclarationTools.className("int[]".toCharArray()));
-		assertEquals("[[I".toCharArray(), TypeDeclarationTools.className("int [ ] [ ]".toCharArray()));
+		TestTools.assertEquals("int", TypeDeclarationTools.className("int".toCharArray()));
+		TestTools.assertEquals("[I", TypeDeclarationTools.className("int[]".toCharArray()));
+		TestTools.assertEquals("[[I", TypeDeclarationTools.className("int [ ] [ ]".toCharArray()));
 
-		assertEquals("java.lang.Object".toCharArray(), TypeDeclarationTools.className("java.lang.Object".toCharArray()));
-		assertEquals("[Ljava.lang.Object;".toCharArray(), TypeDeclarationTools.className("java.lang.Object\t[]".toCharArray()));
-		assertEquals("[[Ljava.lang.Object;".toCharArray(), TypeDeclarationTools.className("java.lang.Object\t[]\t[]".toCharArray()));
+		TestTools.assertEquals("java.lang.Object", TypeDeclarationTools.className("java.lang.Object".toCharArray()));
+		TestTools.assertEquals("[Ljava.lang.Object;", TypeDeclarationTools.className("java.lang.Object\t[]".toCharArray()));
+		TestTools.assertEquals("[[Ljava.lang.Object;", TypeDeclarationTools.className("java.lang.Object\t[]\t[]".toCharArray()));
 	}
 
 	public void testClassNameStringInt() throws Exception {
@@ -171,14 +170,14 @@ public class TypeDeclarationToolsTests
 	}
 
 	public void testClassNameCharArrayInt() throws Exception {
-		assertEquals(int.class.getName().toCharArray(), TypeDeclarationTools.className("int".toCharArray(), 0));
-		assertEquals(int[].class.getName().toCharArray(), TypeDeclarationTools.className("int".toCharArray(), 1));
-		assertEquals(int[][][].class.getName().toCharArray(), TypeDeclarationTools.className("int".toCharArray(), 3));
+		TestTools.assertEquals(int.class.getName(), TypeDeclarationTools.className("int".toCharArray(), 0));
+		TestTools.assertEquals(int[].class.getName(), TypeDeclarationTools.className("int".toCharArray(), 1));
+		TestTools.assertEquals(int[][][].class.getName(), TypeDeclarationTools.className("int".toCharArray(), 3));
 
-		assertEquals(Object.class.getName().toCharArray(), TypeDeclarationTools.className("java.lang.Object".toCharArray(), 0));
-		assertEquals(Object[][][].class.getName().toCharArray(), TypeDeclarationTools.className("java.lang.Object".toCharArray(), 3));
+		TestTools.assertEquals(Object.class.getName(), TypeDeclarationTools.className("java.lang.Object".toCharArray(), 0));
+		TestTools.assertEquals(Object[][][].class.getName(), TypeDeclarationTools.className("java.lang.Object".toCharArray(), 3));
 
-		assertEquals(void.class.getName().toCharArray(), TypeDeclarationTools.className("void".toCharArray(), 0));
+		TestTools.assertEquals(void.class.getName(), TypeDeclarationTools.className("void".toCharArray(), 0));
 		try {
 			TypeDeclarationTools.className(void.class.getName().toCharArray(), 1);
 			fail("should not get here...");
@@ -202,17 +201,17 @@ public class TypeDeclarationToolsTests
 	}
 
 	public void testSimpleNameCharArray() throws Exception {
-		assertEquals("int".toCharArray(), TypeDeclarationTools.simpleName("int".toCharArray()));
-		assertEquals("int[]".toCharArray(), TypeDeclarationTools.simpleName("int[]".toCharArray()));
-		assertEquals("int[][]".toCharArray(), TypeDeclarationTools.simpleName("int [ ] [ ]".toCharArray()));
+		TestTools.assertEquals("int", TypeDeclarationTools.simpleName("int".toCharArray()));
+		TestTools.assertEquals("int[]", TypeDeclarationTools.simpleName("int[]".toCharArray()));
+		TestTools.assertEquals("int[][]", TypeDeclarationTools.simpleName("int [ ] [ ]".toCharArray()));
 
-		assertEquals("Object".toCharArray(), TypeDeclarationTools.simpleName("java.lang.Object".toCharArray()));
-		assertEquals("Object[]".toCharArray(), TypeDeclarationTools.simpleName("java.lang.Object\t[]".toCharArray()));
-		assertEquals("Object[][]".toCharArray(), TypeDeclarationTools.simpleName("java.lang.Object\t[]\t[]".toCharArray()));
+		TestTools.assertEquals("Object", TypeDeclarationTools.simpleName("java.lang.Object".toCharArray()));
+		TestTools.assertEquals("Object[]", TypeDeclarationTools.simpleName("java.lang.Object\t[]".toCharArray()));
+		TestTools.assertEquals("Object[][]", TypeDeclarationTools.simpleName("java.lang.Object\t[]\t[]".toCharArray()));
 
-		assertEquals("Default".toCharArray(), TypeDeclarationTools.simpleName("Default".toCharArray()));
-		assertEquals("Default[]".toCharArray(), TypeDeclarationTools.simpleName("Default\t[]".toCharArray()));
-		assertEquals("Default[][]".toCharArray(), TypeDeclarationTools.simpleName("Default\t[]\t[]".toCharArray()));
+		TestTools.assertEquals("Default", TypeDeclarationTools.simpleName("Default".toCharArray()));
+		TestTools.assertEquals("Default[]", TypeDeclarationTools.simpleName("Default\t[]".toCharArray()));
+		TestTools.assertEquals("Default[][]", TypeDeclarationTools.simpleName("Default\t[]\t[]".toCharArray()));
 	}
 
 	public void testPackageNameString() throws Exception {
@@ -230,17 +229,17 @@ public class TypeDeclarationToolsTests
 	}
 
 	public void testPackageNameCharArray() throws Exception {
-		assertEquals("".toCharArray(), TypeDeclarationTools.packageName("int".toCharArray()));
-		assertEquals("".toCharArray(), TypeDeclarationTools.packageName("int[]".toCharArray()));
-		assertEquals("".toCharArray(), TypeDeclarationTools.packageName("int [ ] [ ]".toCharArray()));
+		TestTools.assertEquals("", TypeDeclarationTools.packageName("int".toCharArray()));
+		TestTools.assertEquals("", TypeDeclarationTools.packageName("int[]".toCharArray()));
+		TestTools.assertEquals("", TypeDeclarationTools.packageName("int [ ] [ ]".toCharArray()));
 
-		assertEquals("java.lang".toCharArray(), TypeDeclarationTools.packageName("java.lang.Object".toCharArray()));
-		assertEquals("".toCharArray(), TypeDeclarationTools.packageName("java.lang.Object\t[]".toCharArray()));
-		assertEquals("".toCharArray(), TypeDeclarationTools.packageName("java.lang.Object\t[]\t[]".toCharArray()));
+		TestTools.assertEquals("java.lang", TypeDeclarationTools.packageName("java.lang.Object".toCharArray()));
+		TestTools.assertEquals("", TypeDeclarationTools.packageName("java.lang.Object\t[]".toCharArray()));
+		TestTools.assertEquals("", TypeDeclarationTools.packageName("java.lang.Object\t[]\t[]".toCharArray()));
 
-		assertEquals("".toCharArray(), TypeDeclarationTools.packageName("Default".toCharArray()));
-		assertEquals("".toCharArray(), TypeDeclarationTools.packageName("Default\t[]".toCharArray()));
-		assertEquals("".toCharArray(), TypeDeclarationTools.packageName("Default\t[]\t[]".toCharArray()));
+		TestTools.assertEquals("", TypeDeclarationTools.packageName("Default".toCharArray()));
+		TestTools.assertEquals("", TypeDeclarationTools.packageName("Default\t[]".toCharArray()));
+		TestTools.assertEquals("", TypeDeclarationTools.packageName("Default\t[]\t[]".toCharArray()));
 	}
 
 	public void testLoadClassString() throws Exception {
@@ -325,9 +324,5 @@ public class TypeDeclarationToolsTests
 		assertTrue(TypeDeclarationTools.isJavaLangClass7("AutoCloseable".toCharArray()));
 		assertFalse(TypeDeclarationTools.isJavaLangClass7("".toCharArray()));
 		assertFalse(TypeDeclarationTools.isJavaLangClass7("Collection".toCharArray()));
-	}
-
-	public static void assertEquals(char[] a1, char[] a2) {
-		assertTrue(Arrays.equals(a1, a2));
 	}
 }

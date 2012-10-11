@@ -11,7 +11,6 @@ package org.eclipse.jpt.common.utility.tests.internal;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.ClassNameTools;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
@@ -22,10 +21,6 @@ public class ClassNameToolsTests
 {
 	public ClassNameToolsTests(String name) {
 		super(name);
-	}
-
-	public static void assertEquals(String expected, char[] actual) {
-		assertEquals(expected, (actual == null) ? null : new String(actual));
 	}
 
 	public void testIsArray() {
@@ -79,13 +74,13 @@ public class ClassNameToolsTests
 	}
 
 	public void testElementTypeNameCharArray() {
-		assertEquals(java.util.Vector.class.getName(), ClassNameTools.elementTypeName(java.util.Vector.class.getName().toCharArray()));
-		assertEquals(int.class.getName(), ClassNameTools.elementTypeName(int.class.getName().toCharArray()));
-		assertEquals(void.class.getName(), ClassNameTools.elementTypeName(void.class.getName().toCharArray()));
-		assertEquals(java.util.Vector.class.getName(), ClassNameTools.elementTypeName(java.util.Vector[].class.getName().toCharArray()));
-		assertEquals(int.class.getName(), ClassNameTools.elementTypeName(int[].class.getName().toCharArray()));
-		assertEquals(java.util.Vector.class.getName(), ClassNameTools.elementTypeName(java.util.Vector[][][].class.getName().toCharArray()));
-		assertEquals(int.class.getName(), ClassNameTools.elementTypeName(int[][][].class.getName().toCharArray()));
+		TestTools.assertEquals(java.util.Vector.class.getName(), ClassNameTools.elementTypeName(java.util.Vector.class.getName().toCharArray()));
+		TestTools.assertEquals(int.class.getName(), ClassNameTools.elementTypeName(int.class.getName().toCharArray()));
+		TestTools.assertEquals(void.class.getName(), ClassNameTools.elementTypeName(void.class.getName().toCharArray()));
+		TestTools.assertEquals(java.util.Vector.class.getName(), ClassNameTools.elementTypeName(java.util.Vector[].class.getName().toCharArray()));
+		TestTools.assertEquals(int.class.getName(), ClassNameTools.elementTypeName(int[].class.getName().toCharArray()));
+		TestTools.assertEquals(java.util.Vector.class.getName(), ClassNameTools.elementTypeName(java.util.Vector[][][].class.getName().toCharArray()));
+		TestTools.assertEquals(int.class.getName(), ClassNameTools.elementTypeName(int[][][].class.getName().toCharArray()));
 	}
 
 	public void testComponentTypeName() {
@@ -100,22 +95,22 @@ public class ClassNameToolsTests
 
 	public void testComponentTypeNameCharArray() {
 		assertNull(ClassNameTools.componentTypeName(java.lang.Object.class.getName().toCharArray()));
-		assertEquals(java.lang.Object.class.getName(), ClassNameTools.componentTypeName(java.lang.Object[].class.getName().toCharArray()));
-		assertEquals(java.lang.Object[].class.getName(), ClassNameTools.componentTypeName(java.lang.Object[][].class.getName().toCharArray()));
+		TestTools.assertEquals(java.lang.Object.class.getName(), ClassNameTools.componentTypeName(java.lang.Object[].class.getName().toCharArray()));
+		TestTools.assertEquals(java.lang.Object[].class.getName(), ClassNameTools.componentTypeName(java.lang.Object[][].class.getName().toCharArray()));
 
 		assertNull(ClassNameTools.componentTypeName(int.class.getName().toCharArray()));
-		assertEquals(int.class.getName(), ClassNameTools.componentTypeName(int[].class.getName().toCharArray()));
-		assertEquals(int[].class.getName(), ClassNameTools.componentTypeName(int[][].class.getName().toCharArray()));
+		TestTools.assertEquals(int.class.getName(), ClassNameTools.componentTypeName(int[].class.getName().toCharArray()));
+		TestTools.assertEquals(int[].class.getName(), ClassNameTools.componentTypeName(int[][].class.getName().toCharArray()));
 	}
 
 	public void testTypeDeclaration() throws Exception {
-		assertEquals("int".toCharArray(), ClassNameTools.typeDeclaration("int".toCharArray()));
-		assertEquals("int[]".toCharArray(), ClassNameTools.typeDeclaration("[I".toCharArray()));
-		assertEquals("int[][]".toCharArray(), ClassNameTools.typeDeclaration("[[I".toCharArray()));
+		TestTools.assertEquals("int", ClassNameTools.typeDeclaration("int".toCharArray()));
+		TestTools.assertEquals("int[]", ClassNameTools.typeDeclaration("[I".toCharArray()));
+		TestTools.assertEquals("int[][]", ClassNameTools.typeDeclaration("[[I".toCharArray()));
 
-		assertEquals("java.lang.Object".toCharArray(), ClassNameTools.typeDeclaration("java.lang.Object".toCharArray()));
-		assertEquals("java.lang.Object[]".toCharArray(), ClassNameTools.typeDeclaration("[Ljava.lang.Object;".toCharArray()));
-		assertEquals("java.lang.Object[][]".toCharArray(), ClassNameTools.typeDeclaration("[[Ljava.lang.Object;".toCharArray()));
+		TestTools.assertEquals("java.lang.Object", ClassNameTools.typeDeclaration("java.lang.Object".toCharArray()));
+		TestTools.assertEquals("java.lang.Object[]", ClassNameTools.typeDeclaration("[Ljava.lang.Object;".toCharArray()));
+		TestTools.assertEquals("java.lang.Object[][]", ClassNameTools.typeDeclaration("[[Ljava.lang.Object;".toCharArray()));
 	}
 
 	public void testTypeDeclarationCharArray() throws Exception {
@@ -153,27 +148,27 @@ public class ClassNameToolsTests
 	}
 
 	public void testSimpleNameCharArray() throws Exception {
-		assertEquals("Object", ClassNameTools.simpleName(java.lang.Object.class.getName().toCharArray()));
-		assertEquals("Object[]", ClassNameTools.simpleName(java.lang.Object[].class.getName().toCharArray()));
-		assertEquals("Object[][]", ClassNameTools.simpleName(java.lang.Object[][].class.getName().toCharArray()));
+		TestTools.assertEquals("Object", ClassNameTools.simpleName(java.lang.Object.class.getName().toCharArray()));
+		TestTools.assertEquals("Object[]", ClassNameTools.simpleName(java.lang.Object[].class.getName().toCharArray()));
+		TestTools.assertEquals("Object[][]", ClassNameTools.simpleName(java.lang.Object[][].class.getName().toCharArray()));
 
-		assertEquals(java.util.Map.class.getSimpleName(), ClassNameTools.simpleName(java.util.Map.class.getName().toCharArray()));
-		assertEquals(java.util.Map.Entry.class.getSimpleName(), ClassNameTools.simpleName(java.util.Map.Entry.class.getName().toCharArray()));
+		TestTools.assertEquals(java.util.Map.class.getSimpleName(), ClassNameTools.simpleName(java.util.Map.class.getName().toCharArray()));
+		TestTools.assertEquals(java.util.Map.Entry.class.getSimpleName(), ClassNameTools.simpleName(java.util.Map.Entry.class.getName().toCharArray()));
 
-		assertEquals("int", ClassNameTools.simpleName(int.class.getName().toCharArray()));
-		assertEquals("int[]", ClassNameTools.simpleName(int[].class.getName().toCharArray()));
-		assertEquals("int[][]", ClassNameTools.simpleName(int[][].class.getName().toCharArray()));
+		TestTools.assertEquals("int", ClassNameTools.simpleName(int.class.getName().toCharArray()));
+		TestTools.assertEquals("int[]", ClassNameTools.simpleName(int[].class.getName().toCharArray()));
+		TestTools.assertEquals("int[][]", ClassNameTools.simpleName(int[][].class.getName().toCharArray()));
 
 		Object anonObject = new Object() {
 			// anonymous class
 		};
-		assertEquals("", ClassNameTools.simpleName(anonObject.getClass().getName().toCharArray()));
+		TestTools.assertEquals("", ClassNameTools.simpleName(anonObject.getClass().getName().toCharArray()));
 
 		class Local {
 			// anonymous class
 		}
 		Local localObject = new Local();
-		assertEquals("Local", ClassNameTools.simpleName(localObject.getClass().getName().toCharArray()));
+		TestTools.assertEquals("Local", ClassNameTools.simpleName(localObject.getClass().getName().toCharArray()));
 	}
 
 	public void testPackageName() throws Exception {
@@ -197,23 +192,23 @@ public class ClassNameToolsTests
 	}
 
 	public void testPackageNameCharArray() throws Exception {
-		assertEquals(java.lang.Object.class.getPackage().getName(), ClassNameTools.packageName(java.lang.Object.class.getName().toCharArray()));
-		assertEquals("", ClassNameTools.packageName(java.lang.Object[].class.getName().toCharArray()));
-		assertEquals("", ClassNameTools.packageName(java.lang.Object[][].class.getName().toCharArray()));
+		TestTools.assertEquals(java.lang.Object.class.getPackage().getName(), ClassNameTools.packageName(java.lang.Object.class.getName().toCharArray()));
+		TestTools.assertEquals("", ClassNameTools.packageName(java.lang.Object[].class.getName().toCharArray()));
+		TestTools.assertEquals("", ClassNameTools.packageName(java.lang.Object[][].class.getName().toCharArray()));
 
-		assertEquals(java.util.Map.class.getPackage().getName(), ClassNameTools.packageName(java.util.Map.class.getName().toCharArray()));
-		assertEquals(java.util.Map.Entry.class.getPackage().getName(), ClassNameTools.packageName(java.util.Map.Entry.class.getName().toCharArray()));
+		TestTools.assertEquals(java.util.Map.class.getPackage().getName(), ClassNameTools.packageName(java.util.Map.class.getName().toCharArray()));
+		TestTools.assertEquals(java.util.Map.Entry.class.getPackage().getName(), ClassNameTools.packageName(java.util.Map.Entry.class.getName().toCharArray()));
 
-		assertEquals("", ClassNameTools.packageName(int.class.getName().toCharArray()));
-		assertEquals("", ClassNameTools.packageName(int[].class.getName().toCharArray()));
-		assertEquals("", ClassNameTools.packageName(int[][].class.getName().toCharArray()));
+		TestTools.assertEquals("", ClassNameTools.packageName(int.class.getName().toCharArray()));
+		TestTools.assertEquals("", ClassNameTools.packageName(int[].class.getName().toCharArray()));
+		TestTools.assertEquals("", ClassNameTools.packageName(int[][].class.getName().toCharArray()));
 
-		assertEquals("", ClassNameTools.packageName(void.class.getName().toCharArray()));
+		TestTools.assertEquals("", ClassNameTools.packageName(void.class.getName().toCharArray()));
 
 		Object anonObject = new Object() {
 			// anonymous class
 		};
-		assertEquals(anonObject.getClass().getPackage().getName(), ClassNameTools.packageName(anonObject.getClass().getName().toCharArray()));
+		TestTools.assertEquals(anonObject.getClass().getPackage().getName(), ClassNameTools.packageName(anonObject.getClass().getName().toCharArray()));
 	}
 
 	public void testIsTopLevel() throws Exception {
@@ -592,10 +587,10 @@ public class ClassNameToolsTests
 	}
 
 	public void testWrapperClassNameCharArray() {
-		assertEquals(java.lang.Void.class.getName(), ClassNameTools.primitiveWrapperClassName(void.class.getName().toCharArray()));
-		assertEquals(java.lang.Integer.class.getName(), ClassNameTools.primitiveWrapperClassName(int.class.getName().toCharArray()));
-		assertEquals(java.lang.Float.class.getName(), ClassNameTools.primitiveWrapperClassName(float.class.getName().toCharArray()));
-		assertEquals(java.lang.Boolean.class.getName(), ClassNameTools.primitiveWrapperClassName(boolean.class.getName().toCharArray()));
+		TestTools.assertEquals(java.lang.Void.class.getName(), ClassNameTools.primitiveWrapperClassName(void.class.getName().toCharArray()));
+		TestTools.assertEquals(java.lang.Integer.class.getName(), ClassNameTools.primitiveWrapperClassName(int.class.getName().toCharArray()));
+		TestTools.assertEquals(java.lang.Float.class.getName(), ClassNameTools.primitiveWrapperClassName(float.class.getName().toCharArray()));
+		TestTools.assertEquals(java.lang.Boolean.class.getName(), ClassNameTools.primitiveWrapperClassName(boolean.class.getName().toCharArray()));
 
 		assertNull(ClassNameTools.primitiveWrapperClassName(java.lang.String.class.getName().toCharArray()));
 	}
@@ -610,10 +605,10 @@ public class ClassNameToolsTests
 	}
 	
 	public void testPrimitiveClassNameCharArray() {
-		assertEquals(void.class.getName(), ClassNameTools.primitiveClassName(java.lang.Void.class.getName().toCharArray()));
-		assertEquals(int.class.getName(), ClassNameTools.primitiveClassName(java.lang.Integer.class.getName().toCharArray()));
-		assertEquals(float.class.getName(), ClassNameTools.primitiveClassName(java.lang.Float.class.getName().toCharArray()));
-		assertEquals(boolean.class.getName(), ClassNameTools.primitiveClassName(java.lang.Boolean.class.getName().toCharArray()));
+		TestTools.assertEquals(void.class.getName(), ClassNameTools.primitiveClassName(java.lang.Void.class.getName().toCharArray()));
+		TestTools.assertEquals(int.class.getName(), ClassNameTools.primitiveClassName(java.lang.Integer.class.getName().toCharArray()));
+		TestTools.assertEquals(float.class.getName(), ClassNameTools.primitiveClassName(java.lang.Float.class.getName().toCharArray()));
+		TestTools.assertEquals(boolean.class.getName(), ClassNameTools.primitiveClassName(java.lang.Boolean.class.getName().toCharArray()));
 
 		assertNull(ClassNameTools.primitiveClassName(java.lang.String.class.getName().toCharArray()));
 	}
@@ -661,27 +656,27 @@ public class ClassNameToolsTests
 	}
 
 	public void testForCodeCharArray() {
-		assertEquals("byte", ClassNameTools.forCodeCharArray('B'));
-		assertEquals("char", ClassNameTools.forCodeCharArray('C'));
-		assertEquals("double", ClassNameTools.forCodeCharArray('D'));
-		assertEquals("float", ClassNameTools.forCodeCharArray('F'));
-		assertEquals("int", ClassNameTools.forCodeCharArray('I'));
-		assertEquals("long", ClassNameTools.forCodeCharArray('J'));
-		assertEquals("short", ClassNameTools.forCodeCharArray('S'));
-		assertEquals("boolean", ClassNameTools.forCodeCharArray('Z'));
-		assertEquals("void", ClassNameTools.forCodeCharArray('V'));
+		TestTools.assertEquals("byte", ClassNameTools.forCodeCharArray('B'));
+		TestTools.assertEquals("char", ClassNameTools.forCodeCharArray('C'));
+		TestTools.assertEquals("double", ClassNameTools.forCodeCharArray('D'));
+		TestTools.assertEquals("float", ClassNameTools.forCodeCharArray('F'));
+		TestTools.assertEquals("int", ClassNameTools.forCodeCharArray('I'));
+		TestTools.assertEquals("long", ClassNameTools.forCodeCharArray('J'));
+		TestTools.assertEquals("short", ClassNameTools.forCodeCharArray('S'));
+		TestTools.assertEquals("boolean", ClassNameTools.forCodeCharArray('Z'));
+		TestTools.assertEquals("void", ClassNameTools.forCodeCharArray('V'));
 
 		assertNull(ClassNameTools.forCodeCharArray('X'));
 
-		assertEquals("byte", ClassNameTools.forCodeCharArray((int) 'B'));
-		assertEquals("char", ClassNameTools.forCodeCharArray((int) 'C'));
-		assertEquals("double", ClassNameTools.forCodeCharArray((int) 'D'));
-		assertEquals("float", ClassNameTools.forCodeCharArray((int) 'F'));
-		assertEquals("int", ClassNameTools.forCodeCharArray((int) 'I'));
-		assertEquals("long", ClassNameTools.forCodeCharArray((int) 'J'));
-		assertEquals("short", ClassNameTools.forCodeCharArray((int) 'S'));
-		assertEquals("boolean", ClassNameTools.forCodeCharArray((int) 'Z'));
-		assertEquals("void", ClassNameTools.forCodeCharArray((int) 'V'));
+		TestTools.assertEquals("byte", ClassNameTools.forCodeCharArray((int) 'B'));
+		TestTools.assertEquals("char", ClassNameTools.forCodeCharArray((int) 'C'));
+		TestTools.assertEquals("double", ClassNameTools.forCodeCharArray((int) 'D'));
+		TestTools.assertEquals("float", ClassNameTools.forCodeCharArray((int) 'F'));
+		TestTools.assertEquals("int", ClassNameTools.forCodeCharArray((int) 'I'));
+		TestTools.assertEquals("long", ClassNameTools.forCodeCharArray((int) 'J'));
+		TestTools.assertEquals("short", ClassNameTools.forCodeCharArray((int) 'S'));
+		TestTools.assertEquals("boolean", ClassNameTools.forCodeCharArray((int) 'Z'));
+		TestTools.assertEquals("void", ClassNameTools.forCodeCharArray((int) 'V'));
 
 		assertNull(ClassNameTools.forCodeCharArray((int) 'X'));
 	}
@@ -717,9 +712,5 @@ public class ClassNameToolsTests
 			}
 		}
 		assertTrue(exCaught);
-	}
-
-	public static void assertEquals(char[] a1, char[] a2) {
-		assertTrue(Arrays.equals(a1, a2));
 	}
 }

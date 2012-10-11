@@ -98,6 +98,14 @@ public final class TestTools {
 	}
 
 	/**
+	 * Check whether the specified char array contains the same characters as
+	 * the expected string. Throw an exception if they do not.
+	 */
+	public static void assertEquals(String expected, char[] actual) {
+		Assert.assertEquals(expected, (actual == null) ? null : new String(actual));
+	}
+
+	/**
 	 * Test an object's implementation of {@link Serializable} by serializing the
 	 * specified object to a byte array; then de-serializing the byte array and
 	 * returning the resultant object.
