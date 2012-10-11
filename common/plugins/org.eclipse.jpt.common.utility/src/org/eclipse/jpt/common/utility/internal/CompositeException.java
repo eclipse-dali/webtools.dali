@@ -12,6 +12,7 @@ package org.eclipse.jpt.common.utility.internal;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.Collection;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 
 /**
  * Provide a way for multiple exceptions to be packaged and reported.
@@ -33,15 +34,15 @@ public class CompositeException
 	/**
 	 * The specified exceptions list must not be empty.
 	 */
-	public CompositeException(Throwable[] exceptions) {
+	public CompositeException(Throwable... exceptions) {
 		// provide a list of the nested exceptions and
 		// grab the first exception and make it the "cause"
 		super(buildMessage(exceptions));
 		this.exceptions = exceptions;
 	}
 
-	public Throwable[] getExceptions() {
-		return this.exceptions;
+	public Iterable<Throwable> getExceptions() {
+		return IterableTools.iterable(this.exceptions);
 	}
 
 	private static String buildMessage(Throwable[] exceptions) {

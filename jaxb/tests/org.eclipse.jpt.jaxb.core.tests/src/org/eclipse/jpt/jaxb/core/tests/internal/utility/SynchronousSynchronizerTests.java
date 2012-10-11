@@ -11,6 +11,7 @@ package org.eclipse.jpt.jaxb.core.tests.internal.utility;
 
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.internal.CompositeException;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.reference.SynchronizedBoolean;
 import org.eclipse.jpt.common.utility.tests.internal.MultiThreadedTestCase;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
@@ -469,7 +470,7 @@ public class SynchronousSynchronizerTests
 			synchronizer.stop();
 			fail();
 		} catch (CompositeException ex) {
-			assertEquals(1, ex.getExceptions().length);
+			assertEquals(1, IterableTools.size(ex.getExceptions()));
 			exCaught = true;
 		}
 		assertTrue(exCaught);
