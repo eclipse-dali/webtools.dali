@@ -10,10 +10,12 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.oxm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ClassNameTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.TypeDeclarationTools;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlAccessOrder;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlAccessType;
@@ -182,9 +184,22 @@ public class OxmXmlBindingsImpl
 		if (className == null) {
 			return null;
 		}
+		
 		if (className.indexOf('.') >= 0) {
 			return className;
 		}
+		
+		// account for arrays
+		String componentClassName = TypeDeclarationTools.elementTypeName(className);
+		
+		if (ClassNameTools.isPrimitive(componentClassName)) {
+			return className;
+		}
+		
+		if (TypeDeclarationTools.isJavaLangClass(className)) {
+			return StringTools.concatenate("java.lang.", className);
+		}
+		
 		return StringTools.concatenate(this.packageName, ".", className);
 	}
 	
@@ -205,7 +220,7 @@ public class OxmXmlBindingsImpl
 	
 	public OxmJavaType getJavaType(String qualifiedName) {
 		for (OxmJavaType javaType : getJavaTypes()) {
-			if (Tools.valuesAreEqual(javaType.getQualifiedName(), qualifiedName)) {
+			if (ObjectTools.equals(javaType.getQualifiedName(), qualifiedName)) {
 				return javaType;
 			}
 		}

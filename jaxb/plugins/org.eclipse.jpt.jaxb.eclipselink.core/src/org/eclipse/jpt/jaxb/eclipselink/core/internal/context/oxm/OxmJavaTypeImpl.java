@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.oxm;
 
-import org.eclipse.jpt.common.utility.internal.ClassName;
+import org.eclipse.jpt.common.utility.internal.TypeDeclarationTools;
 import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaType;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlBindings;
@@ -82,6 +82,6 @@ public class OxmJavaTypeImpl
 	}
 	
 	public String getSimpleName() {
-		return ClassName.getSimpleName(this.qualifiedName);
+		return TypeDeclarationTools.simpleName(this.qualifiedName);
 	}
 }

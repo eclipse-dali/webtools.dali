@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.context.oxm;
 
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlAccessOrderHolder;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlAccessTypeHolder;

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.context.oxm;
 
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbContextRoot;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlAccessOrder;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlAccessType;
@@ -327,7 +327,7 @@ public class OxmXmlBindingsTests
 		JptXmlResource oxmResource = oxmFile.getOxmResource();
 		EXmlBindings eXmlBindings = (EXmlBindings) oxmResource.getRootObject();
 		
-		assertEquals(0, CollectionTools.size(eXmlBindings.getJavaTypes()));
+		assertEquals(0, IterableTools.size(eXmlBindings.getJavaTypes()));
 		assertEquals(0, xmlBindings.getJavaTypesSize());
 		
 		EJavaType eJavaType = OxmFactory.eINSTANCE.createEJavaType();
@@ -337,7 +337,7 @@ public class OxmXmlBindingsTests
 		
 		assertFileContentsContains("oxm.xml", "java-types", true);
 		assertFileContentsContains("oxm.xml", "test.oxm.Foo", true);
-		assertEquals(1, CollectionTools.size(eXmlBindings.getJavaTypes()));
+		assertEquals(1, IterableTools.size(eXmlBindings.getJavaTypes()));
 		assertEquals(1, xmlBindings.getJavaTypesSize());
 		assertNotNull(xmlBindings.getJavaType("test.oxm.Foo"));
 		
@@ -347,7 +347,7 @@ public class OxmXmlBindingsTests
 		oxmResource.save();
 		
 		assertFileContentsContains("oxm.xml", "test.oxm.Bar", true);
-		assertEquals(2, CollectionTools.size(eXmlBindings.getJavaTypes()));
+		assertEquals(2, IterableTools.size(eXmlBindings.getJavaTypes()));
 		assertEquals(2, xmlBindings.getJavaTypesSize());
 		assertNotNull(xmlBindings.getJavaType("test.oxm.Bar"));
 		
@@ -356,7 +356,7 @@ public class OxmXmlBindingsTests
 		
 		assertFileContentsContains("oxm.xml", "test.oxm.Foo", false);
 		assertFileContentsContains("oxm.xml", "test.oxm.Bar", true);
-		assertEquals(1, CollectionTools.size(eXmlBindings.getJavaTypes()));
+		assertEquals(1, IterableTools.size(eXmlBindings.getJavaTypes()));
 		assertEquals(1, xmlBindings.getJavaTypesSize());
 		assertNull(xmlBindings.getJavaType("test.oxm.Foo"));
 		assertNotNull(xmlBindings.getJavaType("test.oxm.Bar"));
@@ -365,7 +365,7 @@ public class OxmXmlBindingsTests
 		oxmResource.save();
 		
 		assertFileContentsContains("oxm.xml", "java-types", false);
-		assertEquals(0, CollectionTools.size(eXmlBindings.getJavaTypes()));
+		assertEquals(0, IterableTools.size(eXmlBindings.getJavaTypes()));
 		assertEquals(0, xmlBindings.getJavaTypesSize());
 	}
 	
@@ -377,7 +377,7 @@ public class OxmXmlBindingsTests
 		JptXmlResource oxmResource = oxmFile.getOxmResource();
 		EXmlBindings eXmlBindings = (EXmlBindings) oxmResource.getRootObject();
 		
-		assertEquals(0, CollectionTools.size(eXmlBindings.getJavaTypes()));
+		assertEquals(0, IterableTools.size(eXmlBindings.getJavaTypes()));
 		assertEquals(0, xmlBindings.getJavaTypesSize());
 		
 		OxmJavaType javaType = xmlBindings.addJavaType(0);
@@ -386,7 +386,7 @@ public class OxmXmlBindingsTests
 		
 		assertFileContentsContains("oxm.xml", "java-types", true);
 		assertFileContentsContains("oxm.xml", "test.oxm.Foo", true);
-		assertEquals(1, CollectionTools.size(eXmlBindings.getJavaTypes()));
+		assertEquals(1, IterableTools.size(eXmlBindings.getJavaTypes()));
 		assertEquals(1, xmlBindings.getJavaTypesSize());
 		assertNotNull(xmlBindings.getJavaType("test.oxm.Foo"));
 		
@@ -395,7 +395,7 @@ public class OxmXmlBindingsTests
 		oxmResource.save();
 		
 		assertFileContentsContains("oxm.xml", "test.oxm.Bar", true);
-		assertEquals(2, CollectionTools.size(eXmlBindings.getJavaTypes()));
+		assertEquals(2, IterableTools.size(eXmlBindings.getJavaTypes()));
 		assertEquals(2, xmlBindings.getJavaTypesSize());
 		assertNotNull(xmlBindings.getJavaType("test.oxm.Bar"));
 		
@@ -404,7 +404,7 @@ public class OxmXmlBindingsTests
 		
 		assertFileContentsContains("oxm.xml", "test.oxm.Foo", false);
 		assertFileContentsContains("oxm.xml", "test.oxm.Bar", true);
-		assertEquals(1, CollectionTools.size(eXmlBindings.getJavaTypes()));
+		assertEquals(1, IterableTools.size(eXmlBindings.getJavaTypes()));
 		assertEquals(1, xmlBindings.getJavaTypesSize());
 		assertNull(xmlBindings.getJavaType("test.oxm.Foo"));
 		assertNotNull(xmlBindings.getJavaType("test.oxm.Bar"));
@@ -413,7 +413,7 @@ public class OxmXmlBindingsTests
 		oxmResource.save();
 		
 		assertFileContentsContains("oxm.xml", "java-types", false);
-		assertEquals(0, CollectionTools.size(eXmlBindings.getJavaTypes()));
+		assertEquals(0, IterableTools.size(eXmlBindings.getJavaTypes()));
 		assertEquals(0, xmlBindings.getJavaTypesSize());
 	}
 }

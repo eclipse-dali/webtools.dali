@@ -68,11 +68,20 @@ public class OxmJavaTypeTests
 		eJavaType.setName("int");
 		oxmResource.save();
 		
-//		assertFileContentsContains("oxm.xml", "name=\"int\"", true);
-//		assertEquals("int", eJavaType.getName());
-//		assertEquals("int", javaType.getSpecifiedName());
-//		assertEquals("int", javaType.getQualifiedName());
-//		assertEquals("int", javaType.getSimpleName());
+		assertFileContentsContains("oxm.xml", "name=\"int\"", true);
+		assertEquals("int", eJavaType.getName());
+		assertEquals("int", javaType.getSpecifiedName());
+		assertEquals("int", javaType.getQualifiedName());
+		assertEquals("int", javaType.getSimpleName());
+		
+		eJavaType.setName("String");
+		oxmResource.save();
+		
+		assertFileContentsContains("oxm.xml", "name=\"String\"", true);
+		assertEquals("String", eJavaType.getName());
+		assertEquals("String", javaType.getSpecifiedName());
+		assertEquals("java.lang.String", javaType.getQualifiedName());
+		assertEquals("String", javaType.getSimpleName());
 		
 		eXmlBindings.setPackageName("test.oxm2");
 		eJavaType.setName("Foo");
@@ -112,11 +121,20 @@ public class OxmJavaTypeTests
 		javaType.setSpecifiedName("int");
 		oxmResource.save();
 		
-//		assertFileContentsContains("oxm.xml", "name=\"int\"", true);
-//		assertEquals("int", eJavaType.getName());
-//		assertEquals("int", javaType.getSpecifiedName());
-//		assertEquals("int", javaType.getQualifiedName());
-//		assertEquals("int", javaType.getSimpleName());
+		assertFileContentsContains("oxm.xml", "name=\"int\"", true);
+		assertEquals("int", eJavaType.getName());
+		assertEquals("int", javaType.getSpecifiedName());
+		assertEquals("int", javaType.getQualifiedName());
+		assertEquals("int", javaType.getSimpleName());
+		
+		eJavaType.setName("String");
+		oxmResource.save();
+		
+		assertFileContentsContains("oxm.xml", "name=\"String\"", true);
+		assertEquals("String", eJavaType.getName());
+		assertEquals("String", javaType.getSpecifiedName());
+		assertEquals("java.lang.String", javaType.getQualifiedName());
+		assertEquals("String", javaType.getSimpleName());
 		
 		xmlBindings.setPackageName("test.oxm2");
 		javaType.setSpecifiedName("Foo");
