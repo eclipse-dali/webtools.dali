@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 
 import java.util.List;
-
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
@@ -21,8 +20,8 @@ import org.eclipse.jpt.jpa.core.jpa2.context.NamedQuery2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.java.JavaNamedQuery2_0;
 import org.eclipse.jpt.jpa.core.jpa2.context.orm.OrmNamedQuery2_0;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
+import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper.EscapeType;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedQuery;
-import org.eclipse.persistence.jpa.jpql.ExpressionTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -99,7 +98,7 @@ public class GenericOrmNamedQuery2_0
 	}
 
 	// ********** metadata conversion **********
- 
+
 	public void convertFrom(JavaNamedQuery javaQuery) {
 		super.convertFrom(javaQuery);
 		this.setSpecifiedLockMode(((JavaNamedQuery2_0)javaQuery).getSpecifiedLockMode());
@@ -110,10 +109,18 @@ public class GenericOrmNamedQuery2_0
 	@Override
 	protected void validateQuery_(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
 
-		// Convert the literal escape characters into actual escape characters
-		String jpqlQuery = ExpressionTools.unescape(this.query, new int[1]);
+		XmlNamedQuery xmlQuery = this.getXmlQuery();
+		EscapeType escapeType = xmlQuery.isQueryInsideCDATASection() ? EscapeType.NONE : EscapeType.XML;
 
-		queryHelper.validate(this, jpqlQuery, this.getQueryTextRange(), 0, messages);
+		queryHelper.validate(
+			this,
+			this.query,
+			xmlQuery.getActualQuery(),
+			this.getQueryTextRanges(),
+			xmlQuery.getQueryOffset(),
+			escapeType,
+			messages
+		);
 	}
 
 	@Override
@@ -121,11 +128,11 @@ public class GenericOrmNamedQuery2_0
 		return super.isEquivalentTo(other)
 				&& this.isEquivalentTo((NamedQuery) other);
 	}
-	
+
 	protected boolean isEquivalentTo(NamedQuery namedQuery) {
 		return this.specifiedLockMode == ((NamedQuery2_0) namedQuery).getSpecifiedLockMode();
 	}
-	
+
 	// ********** misc **********
 
 	public Class<NamedQuery> getType() {

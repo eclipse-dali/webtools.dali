@@ -13,6 +13,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.jpql;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.eclipse.core.resources.IFile;
@@ -27,6 +28,7 @@ import org.eclipse.jdt.core.dom.ArrayInitializer;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.IExtendedModifier;
+import org.eclipse.jdt.core.dom.InfixExpression;
 import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
@@ -55,7 +57,7 @@ import org.eclipse.swt.graphics.Image;
  * This computer adds content assist support when it is invoked inside the query element of {@link
  * javax.persistence.NamedQuery &#64;NamedQuery}.
  *
- * @version 3.2
+ * @version 3.3
  * @since 3.0
  * @author Pascal Filion
  */
@@ -80,20 +82,28 @@ public final class JpaJpqlJavaCompletionProposalComputer extends JpqlCompletionP
 	                                  Image image,
 	                                  int cursorOffset) {
 
-		return new JpqlCompletionProposal(
+		return new JpqlJavaCompletionProposal(
 			contentAssistProposals,
 			proposal,
 			displayString,
 			additionalInfo,
 			image,
 			namedQuery,
-			actualQuery,
 			jpqlQuery,
-			offset + 1, // +1 is to skip the opening "
+			tokenStart + 1, // +1 is to skip the opening "
+			tokenEnd - 1, // -1 is to skip the closing "
 			position,
-			cursorOffset,
-			true
+			cursorOffset
 		);
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Expression> children(InfixExpression expression) {
+		List<Expression> children = new ArrayList<Expression>();
+		children.add(expression.getLeftOperand());
+		children.add(expression.getRightOperand());
+		children.addAll(expression.extendedOperands());
+		return children;
 	}
 
 	/**
@@ -129,10 +139,11 @@ public final class JpaJpqlJavaCompletionProposalComputer extends JpqlCompletionP
 		// - It is inside the string representation of a unicode character, \\u0|0E9 where | is the
 		//   cursor, then -1 is returned;
 		// - The string is not valid (it has some invalid characters)
-		int tokenStart = completionContext.getTokenStart();
-		if (tokenStart == -1) return Collections.emptyList();
+		int tokenStart[] = { completionContext.getTokenStart() };
+		int tokenEnd[]   = { completionContext.getTokenEnd() };
+		if (tokenStart[0] == -1) return Collections.emptyList();
 
-		int[] position = { completionContext.getOffset() - tokenStart - 1 };
+		int[] position = { completionContext.getOffset() - tokenStart[0] - 1 };
 		if (position[0] < 0) return Collections.emptyList();
 
 		ICompilationUnit compilationUnit = context.getCompilationUnit();
@@ -149,15 +160,15 @@ public final class JpaJpqlJavaCompletionProposalComputer extends JpqlCompletionP
 		checkCanceled(monitor);
 
 		// Retrieve the JPA's model object
-		NamedQuery namedQuery = namedQuery(jpaFile, tokenStart);
+		NamedQuery namedQuery = namedQuery(jpaFile, tokenStart[0]);
 		if (namedQuery == null) return Collections.emptyList();
 
 		// Retrieve the actual value of the element "query" since the content assist can be
 		// invoked before the model received the new content
-		String jpqlQuery = jpqlQuery(astRoot, tokenStart, completionContext.getTokenEnd(), position);
+		String jpqlQuery = retrieveQuery(astRoot, tokenStart, tokenEnd, position);
 
 		// Now create the proposals
-		return buildProposals(namedQuery, jpqlQuery, tokenStart, position[0]);
+		return buildProposals(namedQuery, jpqlQuery, tokenStart[0], tokenEnd[0], position[0]);
 	}
 
 	/**
@@ -178,10 +189,11 @@ public final class JpaJpqlJavaCompletionProposalComputer extends JpqlCompletionP
 
 			for (Query query : typeMapping.getQueries()){
 				if (query.getType().equals(NamedQuery.class)){
-					JavaNamedQuery namedQuery = (JavaNamedQuery)query;
-					TextRange textRange = namedQuery.getQueryAnnotation().getQueryTextRange();
-					if ((textRange != null) && textRange.includes(tokenStart)) {
-						return namedQuery;
+					JavaNamedQuery namedQuery = (JavaNamedQuery) query;
+					for (TextRange textRange : namedQuery.getQueryAnnotation().getQueryTextRanges()) {
+						if ((textRange != null) && textRange.includes(tokenStart)) {
+							return namedQuery;
+						}
 					}
 				}
 			}
@@ -204,20 +216,6 @@ public final class JpaJpqlJavaCompletionProposalComputer extends JpqlCompletionP
 		int startPosition = node.getStartPosition();
 		return startPosition <= tokenStart &&
 		       startPosition + node.getLength() >= tokenEnd;
-	}
-
-	private String jpqlQuery(CompilationUnit astRoot, int tokenStart, int tokenEnd, int[] position) {
-
-		String jpqlQuery = retrieveQuery(astRoot, tokenStart, tokenEnd);
-
-		if (jpqlQuery == null) {
-			jpqlQuery = StringTools.EMPTY_STRING;
-		}
-		else if (StringTools.isQuoted(jpqlQuery)) {
-			jpqlQuery = jpqlQuery.substring(1, jpqlQuery.length() - 1);
-		}
-
-		return jpqlQuery;
 	}
 
 	/**
@@ -254,12 +252,12 @@ public final class JpaJpqlJavaCompletionProposalComputer extends JpqlCompletionP
 	 * @return The actual value retrieved from the query element
 	 */
 	@SuppressWarnings("unchecked")
-	private String retrieveQuery(CompilationUnit astRoot, int tokenStart, int tokenEnd) {
+	private String retrieveQuery(CompilationUnit astRoot, int[] tokenStart, int[] tokenEnd, int[] position) {
 
 		// Dig into the TypeDeclarations
 		for (AbstractTypeDeclaration type : (List<AbstractTypeDeclaration>) astRoot.types()) {
 
-			if (isInsideNode(type, tokenStart, tokenEnd)) {
+			if (isInsideNode(type, tokenStart[0], tokenEnd[0])) {
 
 				// Dig inside its modifiers and annotations
 				for (IExtendedModifier modifier : (List<IExtendedModifier>) type.modifiers()) {
@@ -271,7 +269,7 @@ public final class JpaJpqlJavaCompletionProposalComputer extends JpqlCompletionP
 					Annotation annotation = (Annotation) modifier;
 
 					// Dig inside the annotation
-					if (isInsideNode(annotation, tokenStart, tokenEnd)) {
+					if (isInsideNode(annotation, tokenStart[0], tokenEnd[0])) {
 
 						// @NamedQueries({...})
 						if (annotation.isSingleMemberAnnotation()) {
@@ -282,22 +280,22 @@ public final class JpaJpqlJavaCompletionProposalComputer extends JpqlCompletionP
 								ArrayInitializer array = (ArrayInitializer) value;
 
 								for (Expression expression : (List<Expression>) array.expressions()) {
-									if (isInsideNode(expression, tokenStart, tokenEnd)) {
-										return retrieveQuery((NormalAnnotation) expression, tokenStart, tokenEnd);
+									if (isInsideNode(expression, tokenStart[0], tokenEnd[0])) {
+										return retrieveQuery((NormalAnnotation) expression, tokenStart, tokenEnd, position);
 									}
 								}
 							}
 							else {
 								NormalAnnotation childAnnotation = (NormalAnnotation) value;
 
-								if (isInsideNode(childAnnotation, tokenStart, tokenEnd)) {
-									return retrieveQuery(childAnnotation, tokenStart, tokenEnd);
+								if (isInsideNode(childAnnotation, tokenStart[0], tokenEnd[0])) {
+									return retrieveQuery(childAnnotation, tokenStart, tokenEnd, position);
 								}
 							}
 						}
 						// @NamedQuery()
 						else if (annotation.isNormalAnnotation()) {
-							return retrieveQuery((NormalAnnotation) annotation, tokenStart, tokenEnd);
+							return retrieveQuery((NormalAnnotation) annotation, tokenStart, tokenEnd, position);
 						}
 					}
 				}
@@ -308,17 +306,62 @@ public final class JpaJpqlJavaCompletionProposalComputer extends JpqlCompletionP
 	}
 
 	@SuppressWarnings("unchecked")
-	private String retrieveQuery(NormalAnnotation annotation, int tokenStart, int tokenEnd) {
+	private String retrieveQuery(NormalAnnotation annotation, int[] tokenStart, int[] tokenEnd, int[] position) {
 
 		for (MemberValuePair pair : (List<MemberValuePair>) annotation.values()) {
 			org.eclipse.jdt.core.dom.Expression expression = pair.getValue();
 
-			if (isInsideNode(expression, tokenStart, tokenEnd)) {
-				StringLiteral literal = (StringLiteral) pair.getValue();
-				return literal.getEscapedValue();
+			if (isInsideNode(expression, tokenStart[0], tokenEnd[0])) {
+				Expression child = pair.getValue();
+
+				// Single string
+				if (child.getNodeType() == ASTNode.STRING_LITERAL) {
+					StringLiteral literal = (StringLiteral) pair.getValue();
+					return unquotedString(literal.getEscapedValue());
+				}
+
+				// Build the JPQL query from the concatenated strings
+				if (child.getNodeType() == ASTNode.INFIX_EXPRESSION) {
+
+					StringBuilder sb = new StringBuilder();
+					boolean adjustPosition = true;
+
+					for (Expression childNode : children((InfixExpression) child)) {
+
+						StringLiteral literal = (StringLiteral) childNode;
+						sb.append(unquotedString(literal.getEscapedValue()));
+
+						if (adjustPosition && !isInsideNode(literal, tokenEnd[0], tokenEnd[0])) {
+							position[0] += (literal.getLength() - 2);
+						}
+						else {
+							adjustPosition = false;
+						}
+					}
+
+					// Now adjust the start and end offsets so it includes the entire InfixExpression
+					// because content assist will only replace one string literal and right now we
+					// only support replacing the entire string
+					tokenStart[0] = child.getStartPosition();
+					tokenEnd[0] = child.getStartPosition() + child.getLength();
+
+					return sb.toString();
+				}
 			}
 		}
 
-		return null;
+		return StringTools.EMPTY_STRING;
+	}
+
+	private String unquotedString(String value) {
+
+		if (value == null) {
+			value = StringTools.EMPTY_STRING;
+		}
+		else if (StringTools.isQuoted(value)) {
+			value = value.substring(1, value.length() - 1);
+		}
+
+		return value;
 	}
 }

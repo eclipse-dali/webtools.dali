@@ -25,6 +25,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 
 /**
  * <!-- begin-user-doc -->
@@ -49,6 +50,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
+@SuppressWarnings("nls")
 public class XmlNamedNativeQuery extends EBaseObjectImpl implements XmlQuery
 {
 	/**
@@ -545,6 +547,60 @@ public class XmlNamedNativeQuery extends EBaseObjectImpl implements XmlQuery
 
 	public TextRange getQueryTextRange() {
 		return getAttributeTextRange(JPA.QUERY);
+	}
+
+	public int getQueryOffset() {
+
+		IDOMNode node = getElementNode(JPA.QUERY);
+
+		if ((node != null) && node.hasChildNodes()) {
+
+			IDOMNode child = (IDOMNode) node.getFirstChild();
+			String jpqlQuery = child.getTextContent();
+			int offset = 0;
+
+			// Retrieve the length of whitespace before the query, which is the offset to return.
+			// This will help to adjust the cursor position within the query because the actual
+			// string handled by the model does not have those leading whitespace
+			for (int index = 0, count = jpqlQuery.length(); index < count; index++) {
+				if (Character.isWhitespace(jpqlQuery.charAt(index))) {
+					offset++;
+				}
+				else {
+					break;
+				}
+			}
+			return offset;
+		}
+
+		return 0;
+	}
+
+	public String getActualQuery() {
+
+		IDOMNode node = getElementNode(JPA.QUERY);
+
+		if ((node != null) && node.hasChildNodes()) {
+			IDOMNode child = (IDOMNode) node.getFirstChild();
+			if (child.getNodeType() == IDOMNode.CDATA_SECTION_NODE) {
+				return child.getTextContent();
+			}
+			return child.getSource();
+		}
+
+		return null;
+	}
+
+	public boolean isQueryInsideCDATASection() {
+
+		IDOMNode node = getElementNode(JPA.QUERY);
+
+		if ((node != null) && node.hasChildNodes()) {
+			IDOMNode child = (IDOMNode) node.getFirstChild();
+			return (child.getNodeType() == IDOMNode.CDATA_SECTION_NODE);
+		}
+
+		return false;
 	}
 
 	// ********** translators **********

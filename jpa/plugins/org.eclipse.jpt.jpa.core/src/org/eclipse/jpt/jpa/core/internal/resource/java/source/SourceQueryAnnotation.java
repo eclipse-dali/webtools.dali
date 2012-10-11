@@ -3,12 +3,13 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.resource.java.source;
 
+import java.util.List;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jpt.common.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
@@ -41,7 +42,7 @@ abstract class SourceQueryAnnotation
 	DeclarationAnnotationElementAdapter<String> queryDeclarationAdapter;
 	AnnotationElementAdapter<String> queryAdapter;
 	String query;
-	TextRange queryTextRange;
+	List<TextRange> queryTextRanges;
 
 	final QueryHintsAnnotationContainer hintsContainer = new QueryHintsAnnotationContainer();
 
@@ -60,7 +61,7 @@ abstract class SourceQueryAnnotation
 		this.name = this.buildName(astAnnotation);
 		this.nameTextRange = this.buildNameTextRange(astAnnotation);
 		this.query = this.buildQuery(astAnnotation);
-		this.queryTextRange = this.buildQueryTextRange(astAnnotation);
+		this.queryTextRanges = this.buildQueryTextRanges(astAnnotation);
 		this.hintsContainer.initializeFromContainerAnnotation(astAnnotation);
 	}
 
@@ -70,7 +71,7 @@ abstract class SourceQueryAnnotation
 		this.syncName(this.buildName(astAnnotation));
 		this.nameTextRange = this.buildNameTextRange(astAnnotation);
 		this.syncQuery(this.buildQuery(astAnnotation));
-		this.queryTextRange = this.buildQueryTextRange(astAnnotation);
+		this.queryTextRanges = this.buildQueryTextRanges(astAnnotation);
 		this.hintsContainer.synchronize(astAnnotation);
 	}
 
@@ -139,12 +140,12 @@ abstract class SourceQueryAnnotation
 		return this.queryAdapter.getValue(astAnnotation);
 	}
 
-	public TextRange getQueryTextRange() {
-		return this.queryTextRange;
+	public List<TextRange> getQueryTextRanges() {
+		return this.queryTextRanges;
 	}
 
-	private TextRange buildQueryTextRange(Annotation astAnnotation) {
-		return this.getElementTextRange(this.queryDeclarationAdapter, astAnnotation);
+	private List<TextRange> buildQueryTextRanges(Annotation astAnnotation) {
+		return this.getElementTextRanges(this.queryDeclarationAdapter, astAnnotation);
 	}
 
 	private DeclarationAnnotationElementAdapter<String> buildQueryDeclarationAdapter() {
@@ -208,7 +209,7 @@ abstract class SourceQueryAnnotation
 	/**
 	 * adapt the AnnotationContainer interface to the xml schema's xmlns
 	 */
-	class QueryHintsAnnotationContainer 
+	class QueryHintsAnnotationContainer
 		extends AnnotationContainer<QueryHintAnnotation>
 	{
 		@Override

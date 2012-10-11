@@ -3,12 +3,14 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.common.core.internal.utility.jdt;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -23,6 +25,7 @@ import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.IVariableBinding;
+import org.eclipse.jdt.core.dom.InfixExpression;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
@@ -50,7 +53,7 @@ public class ASTTools {
 		parser.setSource(compilationUnit);
 		return (CompilationUnit) parser.createAST(null);
 	}
-	
+
 	/**
 	 * Create an {@link IBinding} for the specified {@link IMember}
 	 * with its bindings resolved
@@ -60,7 +63,7 @@ public class ASTTools {
 		parser.setProject(member.getJavaProject());
 		return parser.createBindings(new IJavaElement[] { member }, null)[0];
 	}
-	
+
 	private static ASTParser astParser() {
 		ASTParser parser = ASTParser.newParser(AST.JLS3);
 		parser.setIgnoreMethodBodies(true);  // we don't need method bodies
@@ -105,10 +108,10 @@ public class ASTTools {
 		ITypeBinding resolvedTypeBinding = resolveTypeBinding(expression);
 		return (resolvedTypeBinding == null) ? null : resolvedTypeBinding.getQualifiedName();
 	}
-	
+
 	/**
 	 * If the specified expression is an array initializer, return an an iterable
-	 * on the types' fully qualfified names.  
+	 * on the types' fully qualfified names.
 	 * The results may include nulls.
 	 */
 	public static Iterable<String> resolveFullyQualifiedNames(Expression expression) {
@@ -119,7 +122,7 @@ public class ASTTools {
 			}
 		};
 	}
-	
+
 	/**
 	 * If the specified expression is a type literal, return the corresponding
 	 * type binding.
@@ -130,7 +133,7 @@ public class ASTTools {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * If the specified expression is an array initializer, return an iterable of
 	 * the corresponding type bindings for each sub-expression.
@@ -141,7 +144,7 @@ public class ASTTools {
 				resolveTypeBindings((ArrayInitializer) expression) :
 				EmptyIterable.<ITypeBinding>instance();
 	}
-	
+
 	private static Iterable<ITypeBinding> resolveTypeBindings(ArrayInitializer arrayExpression) {
 		@SuppressWarnings("unchecked")
 		Iterable<Expression> expressions = arrayExpression.expressions();
@@ -152,7 +155,7 @@ public class ASTTools {
 			}
 		};
 	}
-	
+
 	public static MethodSignature buildMethodSignature(MethodDeclaration methodDeclaration) {
 		return new SimpleMethodSignature(
 				methodDeclaration.getName().getFullyQualifiedName(),
@@ -204,12 +207,12 @@ public class ASTTools {
 			return typeBinding;
 		}
 		visited.add(typeName);
-		
+
 		ITypeBinding interfaceBinding = findTypeInInterfaces(typeBinding, searchTypeName, visited);
 		if (interfaceBinding != null) {
 			return interfaceBinding;
 		}
-		
+
 		return findTypeInSuperclasses(typeBinding, searchTypeName, visited);
 	}
 
@@ -223,7 +226,7 @@ public class ASTTools {
 		}
 		return null;
 	}
-	
+
 	private static ITypeBinding findTypeInSuperclasses(ITypeBinding typeBinding, String searchTypeName, HashSet<String> visited) {
 		ITypeBinding superBinding = typeBinding.getSuperclass();
 		if (superBinding != null) {  // recurse up superclasses
@@ -232,7 +235,7 @@ public class ASTTools {
 				return result;
 			}
 		}
-		return null;		
+		return null;
 	}
 
 	/**
@@ -243,14 +246,14 @@ public class ASTTools {
 	public static boolean typeImplementsInterface(ITypeBinding typeBinding, String searchInterfaceName) {
 		return findInterfaceInHierarchy(typeBinding, searchInterfaceName) != null;
 	}
-	
+
 	private static ITypeBinding findInterfaceInHierarchy(ITypeBinding typeBinding, String searchInterfaceName) {
 		HashSet<String> visited = new HashSet<String>();
 		ITypeBinding interfaceBinding = findTypeInInterfaces(typeBinding, searchInterfaceName, visited);
 		if (interfaceBinding != null) {
 			return interfaceBinding;
 		}
-		
+
 		return findTypeInSuperclasses(typeBinding, searchInterfaceName, visited);
 
 	}
@@ -260,6 +263,13 @@ public class ASTTools {
 	 */
 	public static TextRange buildTextRange(ASTNode astNode) {
 		return buildTextRange(astNode, null);
+	}
+
+	/**
+	 * Build and return a list of text ranges for the specified AST node.
+	 */
+	public static List<TextRange> buildTextRanges(ASTNode astNode) {
+		return buildTextRanges(astNode, null);
 	}
 
 	/**
@@ -275,5 +285,49 @@ public class ASTTools {
 		return (textRange == null) ?
 				new SimpleTextRange(offset, length, lineNumber) :
 				textRange.buildTextRange(offset, length, lineNumber);
+	}
+
+	/**
+	 * Build and return a text range for the specified AST node if it differs
+	 * from the specified text range or the specified text range is
+	 * <code>null</code>. If the AST node already matches the
+	 * specified text range, simply return the text range unchanged.
+	 */
+	public static List<TextRange> buildTextRanges(ASTNode astNode, TextRange textRange) {
+
+		if (astNode.getNodeType() == ASTNode.INFIX_EXPRESSION) {
+			return buildTextRanges((InfixExpression) astNode, textRange);
+		}
+		else {
+			return Collections.singletonList(buildTextRange(astNode, textRange));
+		}
+	}
+
+	/**
+	 * Build and return a list of text ranges for the specified {@link InfixExpression} if it differs
+	 * from the specified text range or the specified text range is <code>null</code>. If the AST
+	 * node already matches the specified text range, simply return the text range unchanged.
+	 */
+	@SuppressWarnings("unchecked")
+	public static List<TextRange> buildTextRanges(InfixExpression expression, TextRange textRange) {
+
+		// a + b + c + ... + n
+		List<TextRange> textRanges = new ArrayList<TextRange>();
+
+		// First add the left operand (a)
+		TextRange leftTextRange = buildTextRange(expression.getLeftOperand(), textRange);
+		textRanges.add(leftTextRange);
+
+		// Second add the right operand (b)
+		TextRange rightTextRange = buildTextRange(expression.getRightOperand(), textRange);
+		textRanges.add(rightTextRange);
+
+		// Now add the rest (c, ..., n)
+		for (Expression child : (List<Expression>) expression.extendedOperands()) {
+			TextRange childTextRange = buildTextRange(child, textRange);
+			textRanges.add(childTextRange);
+		}
+
+		return textRanges;
 	}
 }

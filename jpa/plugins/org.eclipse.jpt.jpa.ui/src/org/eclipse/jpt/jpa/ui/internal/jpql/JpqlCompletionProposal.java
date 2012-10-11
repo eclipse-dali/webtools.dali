@@ -26,29 +26,28 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 
 /**
- * The concrete implementation of a {@link org.eclipse.jface.text.contentassist.ICompletionProposal
- * ICompletionProposal} that adds relevance and toggling the completion insertion property behavior.
+ * The abstract implementation of {@link org.eclipse.jface.text.contentassist.ICompletionProposal
+ * ICompletionProposal} which adds relevance and toggling the completion insertion property behavior.
  *
- * @version 3.0
+ * @version 3.3
  * @since 3.0
  * @author Pascal Filion
  */
-final class JpqlCompletionProposal implements ICompletionProposal {
+abstract class JpqlCompletionProposal implements ICompletionProposal {
 
-	private String actualQuery;
 	private String additionalInfo;
-	private ContentAssistProposals proposals;
 	private int cursorOffset;
 	private String displayString;
-	private boolean escapeCharacters;
 	private Image image;
-	private String jpqlQuery;
+	String jpqlQuery;
 	private NamedQuery namedQuery;
-	private int offset;
-	private int position;
-	private String proposal;
-	private ResultQuery result;
-	private boolean toggleCompletion;
+	int position;
+	String proposal;
+	ContentAssistProposals proposals;
+	ResultQuery result;
+	boolean toggleCompletion;
+	private int tokenEnd;
+	private int tokenStart;
 
 	JpqlCompletionProposal(ContentAssistProposals proposals,
 	                       String proposal,
@@ -56,27 +55,25 @@ final class JpqlCompletionProposal implements ICompletionProposal {
 	                       String additionalInfo,
 	                       Image image,
 	                       NamedQuery namedQuery,
-	                       String actualQuery,
 	                       String jpqlQuery,
-	                       int offset,
+	                       int tokenStart,
+	                       int tokenEnd,
 	                       int position,
-	                       int cursorOffset,
-	                       boolean escapeCharacters) {
+	                       int cursorOffset) {
 
 		super();
 
 		this.image            = image;
-		this.offset           = offset;
+		this.tokenStart       = tokenStart;
+		this.tokenEnd         = tokenEnd;
 		this.position         = position;
 		this.proposal         = proposal;
 		this.jpqlQuery        = jpqlQuery;
 		this.proposals        = proposals;
 		this.namedQuery       = namedQuery;
-		this.actualQuery      = actualQuery;
 		this.cursorOffset     = cursorOffset;
 		this.displayString    = displayString;
 		this.additionalInfo   = additionalInfo;
-		this.escapeCharacters = escapeCharacters;
 	}
 
 	/**
@@ -84,35 +81,19 @@ final class JpqlCompletionProposal implements ICompletionProposal {
 	 */
 	public void apply(IDocument document) {
 		try {
-			ResultQuery result = buildResult();
-			document.replace(offset, actualQuery.length(), result.getQuery());
+			document.replace(tokenStart, tokenEnd - tokenStart, getResult().getQuery());
 		}
 		catch (BadLocationException e) {
 			// Ignore
 		}
 	}
 
-	private ResultQuery buildResult() {
-		if (result == null) {
-			if (escapeCharacters) {
-				result = proposals.buildEscapedQuery(
-					jpqlQuery,
-					proposal,
-					position,
-					isCompletionInserts() ^ toggleCompletion
-				);
-			}
-			else {
-				result = proposals.buildQuery(
-					jpqlQuery,
-					proposal,
-					position,
-					isCompletionInserts() ^ toggleCompletion
-				);
-			}
-		}
-		return result;
-	}
+	/**
+	 * Creates
+	 *
+	 * @return
+	 */
+	abstract ResultQuery buildResult();
 
 	/**
 	 * {@inheritDoc}
@@ -143,14 +124,25 @@ final class JpqlCompletionProposal implements ICompletionProposal {
 	}
 
 	/**
+	 * Returns
+	 *
+	 * @return
+	 */
+	final ResultQuery getResult() {
+		if (result == null) {
+			result = buildResult();
+		}
+		return result;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	public Point getSelection(IDocument document) {
-		ResultQuery result = buildResult();
-		return new Point(offset + result.getPosition() + cursorOffset, 0);
+		return new Point(tokenStart + getResult().getPosition() + cursorOffset, 0);
 	}
 
-	private boolean isCompletionInserts() {
+	final boolean isCompletionInserts() {
 		IJavaProject javaProject = namedQuery.getJpaProject().getJavaProject();
 		String value = PreferenceConstants.getPreference(PreferenceConstants.CODEASSIST_INSERT_COMPLETION, javaProject);
 		return Boolean.valueOf(value);

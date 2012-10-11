@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -66,7 +66,7 @@ public interface XmlQuery extends XmlQuery_2_0
 	void setName(String value);
 
 	/**
-	 * Returns the value of the '<em><b>Query</b></em>' attribute.
+	 * Returns the value of the '<em><b>Query</b></em>' element.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Query</em>' attribute isn't clear,
@@ -81,11 +81,24 @@ public interface XmlQuery extends XmlQuery_2_0
 	 */
 	String getQuery();
 
+	String getActualQuery();
+
+	/**
+	 * Returns the value of the '<em><b>Query</b></em>' element, including the whitespace before the
+	 * JPQL query.
+	 */
+	int getQueryOffset();
+
+	/**
+	 * Determines whether the JPQL query is inside a CDATA section.
+	 */
+	boolean isQueryInsideCDATASection();
+
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlQuery#getQuery <em>Query</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Query</em>' attribute.
+	 * @param value the new value of the '<em>Query</em>' element.
 	 * @see #getQuery()
 	 * @generated
 	 */

@@ -3,12 +3,14 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.common.core.internal.resource.java.source;
 
+import java.util.Collections;
+import java.util.List;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
@@ -18,7 +20,6 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.ConversionDeclarationAnn
 import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
@@ -163,6 +164,15 @@ public abstract class SourceAnnotation
 
 	/**
 	 * Convenience method.
+	 * Return the list of text ranges corresponding to the specified element.
+	 * If the specified element is missing, return the annotation's text range instead.
+	 */
+	protected List<TextRange> getElementTextRanges(DeclarationAnnotationElementAdapter<?> elementAdapter, org.eclipse.jdt.core.dom.Annotation astAnnotation) {
+		return this.getElementTextRanges(this.getAnnotationElementTextRanges(elementAdapter, astAnnotation), astAnnotation);
+	}
+
+	/**
+	 * Convenience method.
 	 * Return the text range corresponding to the specified element at the given index.
 	 * If the specified element is missing, return the annotation's text range instead.
 	 */
@@ -179,6 +189,14 @@ public abstract class SourceAnnotation
 	}
 
 	/**
+	 * Convenience method. If the specified element text range is null
+	 * return the member's text range instead.
+	 */
+	protected List<TextRange> getElementTextRanges(List<TextRange> elementTextRanges, org.eclipse.jdt.core.dom.Annotation astAnnotation) {
+		return !elementTextRanges.isEmpty() ? elementTextRanges : Collections.singletonList(this.getAnnotationTextRange(astAnnotation));
+	}
+
+	/**
 	 * Convenience method. Return whether the specified text range is not
 	 * null (meaning the corresponding AST node exists) and the specified position touches it.
 	 */
@@ -188,6 +206,10 @@ public abstract class SourceAnnotation
 
 	protected TextRange getAnnotationElementTextRange(DeclarationAnnotationElementAdapter<?> adapter, org.eclipse.jdt.core.dom.Annotation astAnnotation) {
 		return (astAnnotation == null) ? null : this.buildTextRange(this.getAnnotationElementExpression(adapter, astAnnotation));
+	}
+
+	protected List<TextRange> getAnnotationElementTextRanges(DeclarationAnnotationElementAdapter<?> adapter, org.eclipse.jdt.core.dom.Annotation astAnnotation) {
+		return (astAnnotation == null) ? Collections.<TextRange>emptyList() : this.buildTextRanges(this.getAnnotationElementExpression(adapter, astAnnotation));
 	}
 
 	protected TextRange getAnnotationElementTextRange(IndexedDeclarationAnnotationElementAdapter<?> adapter, int index, org.eclipse.jdt.core.dom.Annotation astAnnotation) {
@@ -216,6 +238,13 @@ public abstract class SourceAnnotation
 		return (astNode == null) ? null : ASTTools.buildTextRange(astNode);
 	}
 
+	/**
+	 * Return the list of text ranges corresponding to the specified AST node.
+	 * Return an empty list if the AST node is <code>null</code>.
+	 */
+	protected List<TextRange> buildTextRanges(ASTNode astNode) {
+		return (astNode == null) ? Collections.<TextRange>emptyList() : ASTTools.buildTextRanges(astNode);
+	}
 
 	// ********** NestableAnnotation implementation **********
 

@@ -96,7 +96,7 @@ public class GenericJavaNamedQuery2_0
 	}
 
 	// ********** metadata conversion *********
-	
+
 	public void convertTo(OrmQueryContainer queryContainer) {
 		queryContainer.addNamedQuery().convertFrom(this);
 	}
@@ -104,12 +104,20 @@ public class GenericJavaNamedQuery2_0
 	public void delete() {
 		this.getParent().removeNamedQuery(this);
 	}
-	
+
 	// ********** validation **********
 
 	@Override
 	protected void validateQuery_(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
-		queryHelper.validate(this, this.query, this.getQueryAnnotation().getQueryTextRange(), 1, messages);
+		queryHelper.validate(
+			this,
+			this.query,
+			this.query,
+			this.queryAnnotation.getQueryTextRanges(),
+			1,
+			JpaJpqlQueryHelper.EscapeType.JAVA,
+			messages
+		);
 	}
 
 	@Override
@@ -117,7 +125,7 @@ public class GenericJavaNamedQuery2_0
 		return super.isEquivalentTo(other)
 				&& this.isEquivalentTo((NamedQuery2_0) other);
 	}
-	
+
 	protected boolean isEquivalentTo(NamedQuery2_0 other) {
 		return this.specifiedLockMode == other.getSpecifiedLockMode();
 	}

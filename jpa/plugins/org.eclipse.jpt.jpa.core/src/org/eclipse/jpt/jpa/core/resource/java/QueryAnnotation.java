@@ -3,12 +3,13 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.resource.java;
 
+import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
@@ -23,8 +24,8 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
- * 
- * @version 2.2
+ *
+ * @version 3.3
  * @since 2.2
  */
 public interface QueryAnnotation
@@ -36,7 +37,7 @@ public interface QueryAnnotation
 	 * Corresponds to the 'name' element of the *Query annotation.
 	 * Return null if the element does not exist in Java.
 	 */
-	String getName();	
+	String getName();
 		String NAME_PROPERTY = "name"; //$NON-NLS-1$
 
 	/**
@@ -44,7 +45,7 @@ public interface QueryAnnotation
 	 * Set to null to remove the element.
 	 */
 	void setName(String name);
-	
+
 	/**
 	 * Return the {@link TextRange} for the 'name' element. If element
 	 * does not exist return the {@link TextRange} for the *Query annotation.
@@ -58,7 +59,7 @@ public interface QueryAnnotation
 	 * Corresponds to the 'query' element of the *Query annotation.
 	 * Return null if the element does not exist in Java.
 	 */
-	String getQuery();	
+	String getQuery();
 		String QUERY_PROPERTY = "query"; //$NON-NLS-1$
 
 	/**
@@ -66,12 +67,12 @@ public interface QueryAnnotation
 	 * Set to null to remove the element.
 	 */
 	void setQuery(String query);
-	
+
 	/**
 	 * Return the {@link TextRange} for the 'query' element. If element
 	 * does not exist return the {@link TextRange} for the *Query annotation.
 	 */
-	TextRange getQueryTextRange();
+	List<TextRange> getQueryTextRanges();
 
 
 	// ********** hints **********
@@ -82,7 +83,7 @@ public interface QueryAnnotation
 	 */
 	ListIterable<QueryHintAnnotation> getHints();
 		String HINTS_LIST = "hints"; //$NON-NLS-1$
-	
+
 	/**
 	 * Corresponds to the 'hints' element of the *Query annotation.
 	 */
@@ -92,12 +93,12 @@ public interface QueryAnnotation
 	 * Corresponds to the 'hints' element of the *Query annotation.
 	 */
 	QueryHintAnnotation hintAt(int index);
-	
+
 	/**
 	 * Corresponds to the 'hints' element of the *Query annotation.
 	 */
 	QueryHintAnnotation addHint(int index);
-	
+
 	/**
 	 * Corresponds to the 'hints' element of the *Query annotation.
 	 */
@@ -107,5 +108,5 @@ public interface QueryAnnotation
 	 * Corresponds to the 'hints' element of the *Query annotation.
 	 */
 	void removeHint(int index);
-	
+
 }

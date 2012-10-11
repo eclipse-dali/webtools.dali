@@ -13,6 +13,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpql;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.jpt.common.core.internal.utility.SimpleTextRange;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -78,6 +79,44 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 	}
 
 	/**
+	 * TODO: TO REMOVE ONCE THE NEXT ECLIPSE HERMES MILESTONE IS AVAILABLE.
+	 */
+	private static void repositionJava(String query, int[] positions) {
+
+		if ((query == null) || (query.length() == 0)) {
+			return;
+		}
+
+		StringBuilder sb = new StringBuilder(query);
+
+		for (int index = 0, count = sb.length(); index < count; index++) {
+
+			char character = sb.charAt(index);
+
+			switch (character) {
+				case '\b': case '\t': case '\n':
+				case '\f': case '\r': case '\"':
+				case '\\': case '\0': case '\1':
+				case '\2': case '\3': case '\4':
+				case '\5': case '\6': case '\7': {
+
+					// Translate both positions because the special
+					// character is written with its escape character
+					if (index < positions[0]) {
+						positions[0]++;
+						positions[1]++;
+					}
+					// Only translate the end position because the start
+					// position is before the current index
+					else if (index < positions[1]) {
+						positions[1]++;
+					}
+				}
+			}
+		}
+	}
+
+	/**
 	 * Create the builder that will create the right implementation of {@link org.eclipse.persistence.
 	 * jpa.jpql.spi.IManagedType IManagedType}.
 	 *
@@ -101,31 +140,53 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 	 *
 	 * @param problem The {@link JPQLQueryProblem problem} that was found in the JPQL query, which is
 	 * either a grammatical or semantic problem
-	 * @param parsedJpqlQuery The string representation of the parsed tree representation of the JPQL
-	 * query
-	 * @param actualQuery The actual JPQL query that was parsed and validated
+	 * @param parsedJpqlQuery The generated string from {@link org.eclipse.persistence.jpa.jpql.
+	 * parser.JPQLExpression JPQLExpression}
+	 * @param jpqlQuery The actual JPQL query that was parsed and validated
+	 * @param actualJpqlQuery The actual string that is not escaped and found in the document (either
+	 * in an XML file or in a Java annotation)
+	 * @param offset This offset is used to move the start position
+	 * @param escapeType Determines how to escape the JPQL query, if required
 	 * @return The start and end positions, which may have been adjusted
 	 */
-	public int[] buildPositions(JPQLQueryProblem problem, String parsedJpqlQuery, String actualQuery) {
+	public int[] buildPositions(JPQLQueryProblem problem,
+	                            String parsedJpqlQuery,
+	                            String jpqlQuery,
+	                            String actualJpqlQuery,
+	                            int offset,
+	                            EscapeType escapeType) {
 
-		int startPosition = problem.getStartPosition();
-		int endPosition   = problem.getEndPosition();
+		int[] positions = { problem.getStartPosition(), problem.getEndPosition() };
 
 		// If the start and end positions are the same, then expand the text range
-		if (startPosition == endPosition) {
-			startPosition = Math.max(startPosition - 1, 0);
+		if (positions[0] == positions[1]) {
+			positions[0] = Math.max(positions[0] - 1, 0);
 		}
 
-		// Reposition the cursor so it's correctly positioned in the actual query, which is the
-		// since it may contains more than one whitespace for a single whitespace
-		int newStartPosition = ExpressionTools.repositionCursor(parsedJpqlQuery, startPosition, actualQuery);
+		// Reposition the cursor so it's correctly positioned in the non-escaped JPQL query
+		// TODO: UPDATE ONCE THE NEXT ECLIPSELINK HERMES 2.5 MILESTONE IS AVAILABLE
+		// ExpressionTools.reposition(parsedJpqlQuery, positions, jpqlQuery);
+		positions[0] = ExpressionTools.repositionCursor(parsedJpqlQuery, positions[0], jpqlQuery);
+		positions[1] = ExpressionTools.repositionCursor(parsedJpqlQuery, positions[1], jpqlQuery);
 
-		if (newStartPosition != startPosition) {
-			endPosition  += (newStartPosition - startPosition);
-			startPosition = newStartPosition;
+		// Now add the leading offset
+		positions[0] += offset;
+		positions[1] += offset;
+
+		// Now convert the adjusted positions once again to be in the actual JPQL query that is
+		// found in the document, i.e. that may contain escape characters
+		if (escapeType == EscapeType.JAVA) {
+
+			// TODO: UPDATE ONCE THE NEXT ECLIPSELINK HERMES 2.5 MILESTONE IS AVAILABLE
+			// ExpressionTools.repositionJava(actualJpqlQuery, positions);
+			repositionJava(actualJpqlQuery, positions);
+		}
+		else if (escapeType == EscapeType.XML) {
+			// TODO: UPDATE ONCE THE NEXT ECLIPSELINK HERMES 2.5 MILESTONE IS AVAILABLE
+			XmlEscapeCharacterConverter.reposition(actualJpqlQuery, positions);
 		}
 
-		return new int[] { startPosition, endPosition };
+		return positions;
 	}
 
 	/**
@@ -135,51 +196,91 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 	 * problem
 	 * @param problem The {@link JPQLQueryProblem problem} that was found in the JPQL query, which is
 	 * either a grammatical or semantic problem
-	 * @param textRange The range of the JPQL query in the Java source file
-	 * @param parsedJpqlQuery The string representation of the parsed tree representation of the JPQL
-	 * query, which may differ from the actual JPQL query since it does not keep more than one
-	 * whitespace
-	 * @param actualQuery The actual JPQL query that was parsed and validated
+	 * @param textRanges The list of {@link TextRange} objects that represents the JPQL query string
+	 * within the document. The list should contain either one {@link TextRange} if the JPQL query is
+	 * a single string or many if the JPQL query is split into multiple strings
+	 * @param parsedJpqlQuery The generated string from {@link org.eclipse.persistence.jpa.jpql.
+	 * parser.JPQLExpression JPQLExpression}
+	 * @param jpqlQuery The actual JPQL query that was parsed and validated
+	 * @param actualJpqlQuery The actual string that is not escaped and found in the document (either
+	 * in an XML file or in a Java annotation)
 	 * @param offset This offset is used to move the start position
-	 * @return A new {@link IMessage} that has the required information to display the problem
-	 * underline and the error message in the Problems view
+	 * @param escapeType Determines how to escape the JPQL query, if required
+	 * @return The list {@link IMessage} objects that has the required information to display the
+	 * problem, which support split locations (i.e. for a split strings)
 	 */
-	protected IMessage buildProblem(NamedQuery namedQuery,
-	                                TextRange textRange,
-	                                JPQLQueryProblem problem,
-	                                String parsedJpqlQuery,
-	                                String actualQuery,
-	                                int offset) {
+	protected List<IMessage> buildProblems(NamedQuery namedQuery,
+	                                       List<TextRange> textRanges,
+	                                       JPQLQueryProblem problem,
+	                                       String parsedJpqlQuery,
+	                                       String jpqlQuery,
+	                                       String actualJpqlQuery,
+	                                       int offset,
+	                                       EscapeType escapeType) {
 
 		// Convert the positions from the parsed JPQL query to the actual JPQL query
-		int[] positions = buildPositions(problem, parsedJpqlQuery, actualQuery);
+		int[] positions = buildPositions(problem, parsedJpqlQuery, jpqlQuery, actualJpqlQuery, offset, escapeType);
 
-		// Now convert the adjusted positions once again to be in the query where the escape
-		// characters are in their literal forms
-		int[] newStartPosition = { positions[0] };
-		ExpressionTools.escape(actualQuery, newStartPosition);
-		int escapeOffset = positions[0] - newStartPosition[0];
+		List<IMessage> messages = new ArrayList<IMessage>();
+		int problemLength = positions[1] - positions[0];
+		int problemOffset = positions[0];
+		boolean done = false;
 
-		positions[0] -= escapeOffset;
-		positions[1] -= escapeOffset;
+		// Traverse the list of TextRanges in order to properly calculate
+		// the offset within either the single string or the split string
+		for (TextRange textRange : textRanges) {
 
-		// Create the text range of the problem
-		textRange = new SimpleTextRange(
-			textRange.getOffset() + positions[0] + offset,
-			positions[1] - positions[0],
-			textRange.getLineNumber()
-		);
+			// (offset * 2) is to not including the double quotes (specified by the offset) if present
+			int textRangeOffset = (escapeType == EscapeType.JAVA) ? 2 : 0;
+			int textRangeLength = (textRange.getLength() - textRangeOffset);
 
-		// Now create the message
-		IMessage message = DefaultJpaValidationMessages.buildMessage(
-			IMessage.HIGH_SEVERITY,
-			problem.getMessageKey(),
-			problem.getMessageArguments(),
-			namedQuery,
-			textRange
-		);
-		message.setBundleName("jpa_jpql_validation");
-		return message;
+			// The position of the problem is within the TextRange
+			if (problemOffset <= textRangeLength) {
+
+				// Calculate to see if the problem is entirely within the TextRange,
+				// otherwise it will be divided into two or more TextRanges
+				int partialProblemLength = problemLength;
+
+				if (problemOffset + problemLength > textRangeLength) {
+					partialProblemLength = textRangeLength - problemOffset;
+					problemLength -= partialProblemLength;
+					textRangeLength = 0;
+				}
+				else {
+					done = true;
+				}
+
+				// Now create the TextRange of the problem
+				TextRange problemTextRange = new SimpleTextRange(
+					textRange.getOffset() + problemOffset,
+					partialProblemLength,
+					textRange.getLineNumber()
+				);
+
+				// Create the validation message
+				IMessage message = DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					problem.getMessageKey(),
+					problem.getMessageArguments(),
+					namedQuery,
+					problemTextRange
+				);
+
+				message.setBundleName("jpa_jpql_validation");
+				messages.add(message);
+
+				// Done traversing the list of TextRanges
+				if (done) {
+					break;
+				}
+			}
+
+			// The problem is not within the TextRange, remove the TextRange length from the
+			// problem's data so it can be properly calculated within a subsequent TextRange
+			problemOffset = (textRangeLength == 0) ? 0 : problemOffset - textRangeLength;
+		}
+
+		return messages;
 	}
 
 	/**
@@ -201,8 +302,9 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 
 	protected String getValidationPreference(NamedQuery namedQuery) {
 		return JpaPreferences.getProblemSeverity(
-				namedQuery.getResource().getProject(),
-				JpaValidationMessages.JPQL_QUERY_VALIDATION);
+			namedQuery.getResource().getProject(),
+			JpaValidationMessages.JPQL_QUERY_VALIDATION
+		);
 	}
 
 	/**
@@ -234,15 +336,20 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 	 * @param namedQuery The JPQL query to validate
 	 * @param jpqlQuery The JPQL query, which might be different from what the model object since
 	 * the escape characters should not be in their literal forms (should have '\r' and not '\\r')
-	 * @param textRange The range of the JPQL query string within the document
+	 * @param textRanges The list of {@link TextRange} objects that represents the JPQL query string
+	 * within the document. The list should contain either one {@link TextRange} if the JPQL query is
+	 * a single string or many if the JPQL query is split into multiple strings
 	 * @param offset This offset is used to move the start position
-	 * @param messages The list of {@link IMessage IMessages} that will be used to add validation
-	 * problems
+	 * @param messages The list of {@link IMessage IMessages} that will be used to add validation problems
+	 * @param escapeCharacters Determines whether the special characters (\n, \r for instance) should
+	 * be escaped or not
 	 */
 	public void validate(NamedQuery namedQuery,
 	                     String jpqlQuery,
-	                     TextRange textRange,
+	                     String actualJpqlQuery,
+	                     List<TextRange> textRanges,
 	                     int offset,
+	                     EscapeType escapeType,
 	                     List<IMessage> messages) {
 
 		try {
@@ -254,16 +361,18 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 
 				for (JPQLQueryProblem problem : validate()) {
 
-					IMessage message = buildProblem(
+					List<IMessage> results = buildProblems(
 						namedQuery,
-						textRange,
+						textRanges,
 						problem,
 						parsedJpqlQuery,
 						jpqlQuery,
-						offset
+						actualJpqlQuery,
+						offset,
+						escapeType
 					);
 
-					messages.add(message);
+					messages.addAll(results);
 				}
 			}
 		}
@@ -271,5 +380,26 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 			// Only dispose the information related to the query
 			dispose();
 		}
+	}
+
+	/**
+	 * Constants used to determine how to escape the JPQL query.
+	 */
+	public enum EscapeType {
+
+		/**
+		 * Escapes some characters when the JPQL query is in an annotation, eg: \t becomes \\t.
+		 */
+		JAVA,
+
+		/**
+		 * No modification will be performed on the JPQL query.
+		 */
+		NONE,
+
+		/**
+		 * Escapes XML reserved characters when the JPQL query is in defined xml, eg: > becomes &gt;.
+		 */
+		XML
 	}
 }

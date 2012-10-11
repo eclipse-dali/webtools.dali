@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,6 +28,7 @@ import org.eclipse.jpt.jpa.core.resource.orm.v2_0.LockModeType_2_0;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.XmlNamedQuery_2_0;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
+import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegionList;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 
 /**
@@ -46,6 +47,7 @@ import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
  * @model kind="class"
  * @generated
  */
+@SuppressWarnings("nls")
 public class XmlNamedQuery extends EBaseObjectImpl implements XmlQuery, XmlNamedQuery_2_0
 {
 	/**
@@ -511,23 +513,101 @@ public class XmlNamedQuery extends EBaseObjectImpl implements XmlQuery, XmlNamed
 	}
 
 	public TextRange getQueryTextRange() {
+
 		// <named-query>
 		IDOMNode node = getElementNode(JPA.QUERY);
+
 		if (node != null) {
+
 			// The query element has text
 			if (node.hasChildNodes()) {
-				return buildTextRange((IDOMNode) node.getFirstChild());
+				IDOMNode child = (IDOMNode) node.getFirstChild();
+
+				// CDATA section
+				if (child.getNodeType() == IDOMNode.CDATA_SECTION_NODE) {
+					// A CDATA has either 2 sections (the open and close CDATA sections) or 3 sections
+					// (the open CDATA section, the actual content and the close CDATA section)
+					ITextRegionList regions = child.getFirstStructuredDocumentRegion().getRegions();
+					return new SimpleTextRange(
+						child.getStartOffset() + regions.get(1).getStart(),
+						(regions.size() == 3) ? regions.get(1).getLength() : 0,
+						buildTextRange(node).getLineNumber()
+					);
+				}
+				// Generic text node, the following handles the range with escape character,
+				// buildTextRange() uses the length of the converted text
+				else {
+					int startOffset = node.getStartStructuredDocumentRegion().getEndOffset();
+					int endOffset = node.getEndStructuredDocumentRegion().getStartOffset();
+					int lineNumber = child.getStructuredDocument().getLineOfOffset(startOffset) + 1;
+					return new SimpleTextRange(startOffset, endOffset - startOffset, lineNumber);
+				}
 			}
 			// The query element does not have text
-			TextRange textRange = buildTextRange(node);
-			return new SimpleTextRange(
-				node.getEndStructuredDocumentRegion().getStartOffset(),
-				0,
-				textRange.getLineNumber()
-			);
+			else {
+				return new SimpleTextRange(
+					node.getEndStructuredDocumentRegion().getStartOffset(),
+					0,
+					buildTextRange(node).getLineNumber()
+				);
+			}
 		}
 
 		return this.getValidationTextRange();
+	}
+
+	public int getQueryOffset() {
+
+		IDOMNode node = getElementNode(JPA.QUERY);
+
+		if ((node != null) && node.hasChildNodes()) {
+
+			IDOMNode child = (IDOMNode) node.getFirstChild();
+			String jpqlQuery = child.getTextContent();
+			int offset = 0;
+
+			// Retrieve the length of whitespace before the JPQL query, which is the offset to return.
+			// This will help to adjust the cursor position within the JPQL query because the actual
+			// string handled by the model does not have those leading whitespace
+			for (int index = 0, count = jpqlQuery.length(); index < count; index++) {
+				if (Character.isWhitespace(jpqlQuery.charAt(index))) {
+					offset++;
+				}
+				else {
+					break;
+				}
+			}
+			return offset;
+		}
+
+		return 0;
+	}
+
+	public String getActualQuery() {
+
+		IDOMNode node = getElementNode(JPA.QUERY);
+
+		if ((node != null) && node.hasChildNodes()) {
+			IDOMNode child = (IDOMNode) node.getFirstChild();
+			if (child.getNodeType() == IDOMNode.CDATA_SECTION_NODE) {
+				return child.getTextContent();
+			}
+			return child.getSource();
+		}
+
+		return null;
+	}
+
+	public boolean isQueryInsideCDATASection() {
+
+		IDOMNode node = getElementNode(JPA.QUERY);
+
+		if ((node != null) && node.hasChildNodes()) {
+			IDOMNode child = (IDOMNode) node.getFirstChild();
+			return (child.getNodeType() == IDOMNode.CDATA_SECTION_NODE);
+		}
+
+		return false;
 	}
 
 	// ********** translators **********

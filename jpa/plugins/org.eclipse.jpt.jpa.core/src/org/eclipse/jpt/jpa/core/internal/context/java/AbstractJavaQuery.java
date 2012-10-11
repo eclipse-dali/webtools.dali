@@ -145,7 +145,7 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 	public JavaQueryHint getHint(int index) {
 		return this.hintContainer.get(index);
 	}
-	
+
 	protected JavaQueryHint buildHint(QueryHintAnnotation hintAnnotation) {
 		return this.getJpaFactory().buildJavaQueryHint(this, hintAnnotation);
 	}
@@ -237,8 +237,8 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 		return this.getValidationTextRange(this.queryAnnotation.getNameTextRange());
 	}
 
-	public TextRange getQueryTextRange() {
-		return this.getValidationTextRange(this.queryAnnotation.getQueryTextRange());
+	public List<TextRange> getQueryTextRanges() {
+		return this.queryAnnotation.getQueryTextRanges();
 	}
 
 	public boolean isEquivalentTo(JpaNamedContextNode node) {
@@ -246,7 +246,7 @@ public abstract class AbstractJavaQuery<A extends QueryAnnotation>
 				(this.getType() == node.getType()) &&
 				this.isEquivalentTo((Query) node);
 	}
-	
+
 	protected boolean isEquivalentTo(Query other) {
 		return ObjectTools.equals(this.name, other.getName()) &&
 				ObjectTools.equals(this.query, other.getQuery()) &&

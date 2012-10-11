@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -31,7 +32,6 @@ import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlQuery;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlQueryHint;
-import org.eclipse.persistence.jpa.jpql.ExpressionTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -55,7 +55,7 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 		super(parent);
 		this.xmlQuery = xmlQuery;
 		this.name = xmlQuery.getName();
-		this.query = this.getUnescapedQuery();
+		this.query = this.xmlQuery.getQuery();
 		this.hintContainer = this.buildHintContainer();
 	}
 
@@ -65,7 +65,7 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		this.setName_(this.xmlQuery.getName());
-		this.setQuery_(this.getUnescapedQuery());
+		this.setQuery_(this.xmlQuery.getQuery());
 		this.syncHints();
 	}
 
@@ -111,14 +111,6 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 		this.firePropertyChanged(QUERY_PROPERTY, old, query);
 	}
 
-	protected String getUnescapedQuery() {
-		String queryString = this.xmlQuery.getQuery();
-		if (StringTools.isNotBlank(queryString)) {
-			queryString = ExpressionTools.unescape(queryString, new int[1]);
-		}
-		return queryString;
-	}
-
 
 	// ********** hints **********
 
@@ -162,7 +154,7 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 	public OrmQueryHint getHint(int index) {
 		return this.hintContainer.get(index);
 	}
-	
+
 	protected OrmQueryHint buildHint(XmlQueryHint xmlHint) {
 		return this.getContextNodeFactory().buildOrmQueryHint(this, xmlHint);
 	}
@@ -216,7 +208,7 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 			this.addHint().convertFrom(javaQueryHint);
 		}
 	}
-	
+
 	// ********** validation **********
 
 	public void validate(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
@@ -266,8 +258,8 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 		return this.getValidationTextRange(this.xmlQuery.getNameTextRange());
 	}
 
-	public TextRange getQueryTextRange() {
-		return this.getValidationTextRange(this.xmlQuery.getQueryTextRange());
+	public List<TextRange> getQueryTextRanges() {
+		return Collections.singletonList(this.xmlQuery.getQueryTextRange());
 	}
 
 	public boolean isEquivalentTo(JpaNamedContextNode node) {
@@ -275,7 +267,7 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 				(this.getType() == node.getType()) &&
 				this.isEquivalentTo((Query) node);
 	}
-	
+
 	protected boolean isEquivalentTo(Query other) {
 		return ObjectTools.equals(this.name, other.getName()) &&
 				ObjectTools.equals(this.query, other.getQuery()) &&

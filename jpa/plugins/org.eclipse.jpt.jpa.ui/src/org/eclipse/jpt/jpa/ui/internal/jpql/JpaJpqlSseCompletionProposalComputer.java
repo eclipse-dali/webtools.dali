@@ -36,9 +36,9 @@ import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQueryContainer;
+import org.eclipse.jpt.jpa.core.jpql.XmlEscapeCharacterConverter;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
-import org.eclipse.persistence.jpa.jpql.ExpressionTools;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.sse.ui.contentassist.CompletionProposalInvocationContext;
 import org.eclipse.wst.sse.ui.contentassist.ICompletionProposalComputer;
@@ -47,12 +47,14 @@ import org.eclipse.wst.sse.ui.contentassist.ICompletionProposalComputer;
  * This computer adds content assist support when it is invoked inside the &lt;query&gt; element
  * defined in a mapping file (ORM Configuration).
  *
- * @version 3.2
+ * @version 3.3
  * @since 3.0
  * @author Pascal Filion
  */
 public final class JpaJpqlSseCompletionProposalComputer extends JpqlCompletionProposalComputer<ICompletionProposal>
                                                         implements ICompletionProposalComputer {
+
+	private boolean cDATASection;
 
 	/**
 	 * Creates a new <code>JpaJpqlSseCompletionProposalComputer</code>.
@@ -71,19 +73,21 @@ public final class JpaJpqlSseCompletionProposalComputer extends JpqlCompletionPr
 	                                  Image image,
 	                                  int cursorOffset) {
 
-		return new JpqlCompletionProposal(
+		return new JpqlSseCompletionProposal(
 			contentAssistProposals,
 			proposal,
 			displayString,
 			additionalInfo,
 			image,
 			namedQuery,
-			actualQuery,
 			jpqlQuery,
-			offset,
+			actualQuery,
+			tokenStart,
+			tokenEnd,
 			position,
+			actualPosition,
 			cursorOffset,
-			false
+			cDATASection
 		);
 	}
 
@@ -117,12 +121,17 @@ public final class JpaJpqlSseCompletionProposalComputer extends JpqlCompletionPr
 			OrmNamedQuery namedQuery = namedQuery(jpaFile, offset, position);
 			if (namedQuery == null) return Collections.emptyList();
 
-			// Keep track of the beginning of the text since the entire string is always replaced
+			// Retrieve the entire JPQL query from the document
+			Object[] info = jpqlQuery(namedQuery, context.getDocument());
+			String jpqlQuery = (String) info[0];
+			this.cDATASection = (Boolean) info[1];
+
+			// Keep track of the beginning and ending offsets since the entire string is always replaced
 			int tokenStart = offset - position[0];
+			int tokenEnd   = tokenStart + jpqlQuery.length();
 
 			// Now create the proposals
-			String jpqlQuery = jpqlQuery(namedQuery, context.getDocument());
-			return buildProposals(namedQuery, jpqlQuery, tokenStart, position[0]);
+			return buildProposals(namedQuery, jpqlQuery, tokenStart, tokenEnd, position[0]);
 		}
 		catch (Exception ex) {
 			JptJpaUiPlugin.instance().logError(ex, JptUiMessages.JpaJpqlSseCompletionProposalComputer_Error);
@@ -175,24 +184,34 @@ public final class JpaJpqlSseCompletionProposalComputer extends JpqlCompletionPr
 	private OrmNamedQuery findNamedQuery(OrmQueryContainer container, int offset, int[] position) {
 
 		for (OrmNamedQuery namedQuery : container.getNamedQueries()) {
-			TextRange textRange = namedQuery.getQueryTextRange();
 
-			if (textRange.touches(offset)) {
-				position[0] = offset - textRange.getOffset();
-				return namedQuery;
+			for (TextRange textRange : namedQuery.getQueryTextRanges()) {
+
+				if (textRange.touches(offset)) {
+					position[0] = offset - textRange.getOffset();
+					return namedQuery;
+				}
 			}
 		}
 
 		return null;
 	}
 
-	private String jpqlQuery(OrmNamedQuery namedQuery, IDocument document) {
+	private Object[] jpqlQuery(OrmNamedQuery namedQuery, IDocument document) {
+
 		try {
-			TextRange range = namedQuery.getQueryTextRange();
-			return document.get(range.getOffset(), range.getLength());
+			TextRange range = namedQuery.getQueryTextRanges().get(0);
+
+			return new Object[] {
+				document.get(range.getOffset(), range.getLength()),
+				namedQuery.getXmlQuery().isQueryInsideCDATASection()
+			};
 		}
 		catch (BadLocationException e) {
-			return StringTools.EMPTY_STRING;
+			return new Object[] {
+				StringTools.EMPTY_STRING,
+				Boolean.FALSE
+			};
 		}
 	}
 
@@ -201,7 +220,15 @@ public final class JpaJpqlSseCompletionProposalComputer extends JpqlCompletionPr
 	 */
 	@Override
 	String modifyJpqlQuery(String jpqlQuery, int[] position) {
-		return ExpressionTools.unescape(jpqlQuery, position);
+
+		// The JPQL query is not encapsulated by a CDATA section,
+		// converts any escape characters like &lt; into '<'
+		if (!cDATASection) {
+			// TODO: UPDATE TO USE ECLIPSELINK HERMES 2.5 M2 ONCE IT IS AVAILABLE
+			jpqlQuery = XmlEscapeCharacterConverter.unescape(jpqlQuery, position);
+		}
+
+		return jpqlQuery;
 	}
 
 	private OrmNamedQuery namedQuery(JpaFile jpaFile, int offset, int[] position) {

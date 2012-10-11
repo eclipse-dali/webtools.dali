@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context;
 
+import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
@@ -26,7 +27,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
- * 
+ *
  * @version 3.3
  * @since 2.0
  */
@@ -91,11 +92,17 @@ public interface Query
 	 * Move the hint from the source index to the target index.
 	 */
 	void moveHint(int targetIndex, int sourceIndex);
-	
+
 	QueryHint getHint(int i);
 
-
+	/**
+	 * Returns the {@link TextRange} of the name property.
+	 */
 	TextRange getNameTextRange();
 
-	TextRange getQueryTextRange();
+	/**
+	 * Returns the list of {@link TextRange} of the query property, which is either a single object
+	 * if the string is not split or many objects if the JPQL query is split into many strings.
+	 */
+	List<TextRange> getQueryTextRanges();
 }

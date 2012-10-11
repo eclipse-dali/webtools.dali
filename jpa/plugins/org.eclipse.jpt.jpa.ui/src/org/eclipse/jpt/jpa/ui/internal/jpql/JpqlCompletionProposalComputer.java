@@ -47,6 +47,11 @@ import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.*;
 abstract class JpqlCompletionProposalComputer<T> {
 
 	/**
+	 * The position of the cursor within the actual JPQL query (not modified).
+	 */
+	int actualPosition;
+
+	/**
 	 * The current value of the query element.
 	 */
 	String actualQuery;
@@ -73,17 +78,12 @@ abstract class JpqlCompletionProposalComputer<T> {
 	NamedQuery namedQuery;
 
 	/**
-	 * The start position of the query within the document.
-	 */
-	int offset;
-
-	/**
 	 * The word before the position of the cursor.
 	 */
 	private String partialWord;
 
 	/**
-	 * The position of the cursor within {@link #actualQuery}.
+	 * The position of the cursor within the adjusted JPQL query.
 	 */
 	int position;
 
@@ -92,6 +92,16 @@ abstract class JpqlCompletionProposalComputer<T> {
 	 * required by content assist and to validate JPQL queries.
 	 */
 	JpaJpqlQueryHelper queryHelper;
+
+	/**
+	 * The end position of the query within the document.
+	 */
+	int tokenEnd;
+
+	/**
+	 * The start position of the query within the document.
+	 */
+	int tokenStart;
 
 	/**
 	 * Creates a new <code>JpqlCompletionProposalComputer</code>.
@@ -219,6 +229,10 @@ abstract class JpqlCompletionProposalComputer<T> {
 		);
 	}
 
+	private ImageDescriptor buildImageDescriptor(String key) {
+		return JptJpaUiPlugin.instance().buildImageDescriptor(key);
+	}
+
 	private T buildMappingProposal(IMapping mapping) {
 		String proposal = mapping.getName();
 		return buildProposal(proposal, proposal, mappingImage(mapping));
@@ -252,19 +266,25 @@ abstract class JpqlCompletionProposalComputer<T> {
 	 * the specified position.
 	 *
 	 * @param namedQuery The model object used to access the application metadata information
-	 * @param actualQuery The model object may sometimes be out of sync with the actual content, the
-	 * actual query is required for proper content assist
+	 * @param actualQuery The string representation of the JPQL query that is coming from the
+	 * document itself (Java source or XML)
 	 * @param offset The beginning of the string within the document
 	 * @param position The position of the cursor within the query, which starts at the beginning of
 	 * that query and not the document
 	 * @return The list of completion proposals
 	 */
-	final List<T> buildProposals(NamedQuery namedQuery, String actualQuery, int offset, int position) {
+	final List<T> buildProposals(NamedQuery namedQuery,
+	                             String actualQuery,
+	                             int tokenStart,
+	                             int tokenEnd,
+	                             int position) {
 
 		try {
-			this.offset      = offset;
-			this.actualQuery = actualQuery;
-			this.namedQuery  = namedQuery;
+			this.tokenStart     = tokenStart;
+			this.tokenEnd       = tokenEnd;
+			this.actualQuery    = actualQuery;
+			this.actualPosition = position;
+			this.namedQuery     = namedQuery;
 
 			// It's possible the string has literal representation of the escape characters, if required,
 			// convert them into actual escape characters and adjust the position accordingly
@@ -309,7 +329,8 @@ abstract class JpqlCompletionProposalComputer<T> {
 	 */
 	final void clearInformation() {
 		namedQuery  = null;
-		offset      = -1;
+		tokenStart  = -1;
+		tokenEnd    = -1;
 		position    = -1;
 		actualQuery = null;
 		namedQuery  = null;
@@ -339,10 +360,6 @@ abstract class JpqlCompletionProposalComputer<T> {
 			image = registry.get(key);
 		}
 		return image;
-	}
-
-	private ImageDescriptor buildImageDescriptor(String key) {
-		return JptJpaUiPlugin.instance().buildImageDescriptor(key);
 	}
 
 	private synchronized ImageRegistry getImageRegistry() {

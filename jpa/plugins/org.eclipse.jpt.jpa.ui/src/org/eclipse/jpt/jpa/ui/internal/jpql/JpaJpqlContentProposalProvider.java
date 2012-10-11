@@ -66,6 +66,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
+import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper.EscapeType;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.persistence.jpa.jpql.JPQLQueryProblem;
@@ -347,19 +348,18 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 	                                  Image image,
 	                                  int cursorOffset) {
 
-		return new JpqlCompletionProposal(
+		return new JpqlDefaultCompletionProposal(
 			contentAssistProposals,
 			proposal,
 			displayString,
 			additionalInfo,
 			image,
 			namedQuery,
-			actualQuery,
 			jpqlQuery,
-			offset,
+			tokenStart,
+			tokenEnd,
 			position,
-			cursorOffset,
-			false
+			cursorOffset
 		);
 	}
 
@@ -472,6 +472,9 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 
 		// Install a custom context menu to the widget
 		TextTransferHandler.installContextMenu(styledText, sourceViewer.getUndoManager());
+
+		// Make sure the document is up to date in case the text holder is already hooked to the model
+		sourceViewer.getDocument().set(textHolder.getValue());
 	}
 
 	/**
@@ -583,8 +586,8 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 
 			for (JPQLQueryProblem problem : sortProblems(queryHelper.validate())) {
 
-				// Create the range
-				int[] positions = queryHelper.buildPositions(problem, parsedJpqlQuery, jpqlQuery);
+				// Create the text range
+				int[] positions = queryHelper.buildPositions(problem, parsedJpqlQuery, jpqlQuery, jpqlQuery, 0, EscapeType.NONE);
 
 				// Add the problem to the tool tip
 				Annotation annotation = new Annotation(ERROR_TYPE, true, buildMessage(problem));
@@ -608,9 +611,16 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 		public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer, int offset) {
 
 			JpaJpqlContentProposalProvider.this.position = offset;
-
 			String jpqlQuery = viewer.getDocument().get();
-			List<ICompletionProposal> proposals = buildProposals(query(), jpqlQuery, 0, position);
+
+			List<ICompletionProposal> proposals = buildProposals(
+				query(),
+				jpqlQuery,
+				0,
+				jpqlQuery.length(),
+				position
+			);
+
 			return proposals.toArray(new ICompletionProposal[proposals.size()]);
 		}
 
