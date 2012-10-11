@@ -34,7 +34,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * to work OK on Windows and Linux.
  */
 @SuppressWarnings("nls")
-public class JDK {
+public class JDKTools {
 	private static final String CR = StringTools.CR;
 	private static final String FS = System.getProperty("file.separator");
 	private static final String JAVA_HOME = System.getProperty("java.home");
@@ -324,7 +324,7 @@ public class JDK {
 	/**
 	 * Suppress default constructor, ensuring non-instantiability.
 	 */
-	private JDK() {
+	private JDKTools() {
 		super();
 		throw new UnsupportedOperationException();
 	}
