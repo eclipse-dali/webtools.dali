@@ -15,13 +15,13 @@ import org.eclipse.jpt.common.utility.MultiThreadedExceptionHandler;
  * This thread group overrides {@link #uncaughtException(Thread, Throwable)}
  * and notifies the configured exception handler.
  */
-public class ExceptionHandlerThreadGroup<H extends MultiThreadedExceptionHandler>
+public class ExceptionHandlerThreadGroup
 	extends ThreadGroup
 {
 	/**
 	 * Broadcasting delegate.
 	 */
-	private final H exceptionHandler;
+	private final MultiThreadedExceptionHandler exceptionHandler;
 
 
 	// ********** constructors/initialization **********
@@ -29,16 +29,22 @@ public class ExceptionHandlerThreadGroup<H extends MultiThreadedExceptionHandler
 	/**
 	 * @see ThreadGroup#ThreadGroup(String)
 	 */
-	public ExceptionHandlerThreadGroup(String name, H exceptionHandler) {
+	public ExceptionHandlerThreadGroup(String name, MultiThreadedExceptionHandler exceptionHandler) {
 		super(name);
+		if (exceptionHandler == null) {
+			throw new NullPointerException();
+		}
 		this.exceptionHandler = exceptionHandler;
 	}
 
 	/**
 	 * @see ThreadGroup#ThreadGroup(ThreadGroup, String)
 	 */
-	public ExceptionHandlerThreadGroup(ThreadGroup parent, String name, H exceptionHandler) {
+	public ExceptionHandlerThreadGroup(ThreadGroup parent, String name, MultiThreadedExceptionHandler exceptionHandler) {
 		super(parent, name);
+		if (exceptionHandler == null) {
+			throw new NullPointerException();
+		}
 		this.exceptionHandler = exceptionHandler;
 	}
 
@@ -56,7 +62,7 @@ public class ExceptionHandlerThreadGroup<H extends MultiThreadedExceptionHandler
 	 * Return the exception handler the thread group uses to forward any
 	 * uncaught exceptions.
 	 */
-	public H getExceptionHandler() {
+	public MultiThreadedExceptionHandler getExceptionHandler() {
 		return this.exceptionHandler;
 	}
 }
