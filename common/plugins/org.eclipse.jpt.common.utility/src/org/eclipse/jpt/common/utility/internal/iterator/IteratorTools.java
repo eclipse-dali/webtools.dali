@@ -390,7 +390,7 @@ public final class IteratorTools {
 	 * the specified {@link ChainIterator.Linker linker}.
 	 * @see ChainIterator
 	 */
-	public static <E> Iterator<E> chainIterator(E startLink, ChainIterator.Linker<E> linker) {
+	public static <E> ChainIterator<E> chainIterator(E startLink, ChainIterator.Linker<E> linker) {
 		return new ChainIterator<E>(startLink, linker);
 	}
 
@@ -399,7 +399,7 @@ public final class IteratorTools {
 	 * elements.
 	 * @see CloneIterator
 	 */
-	public static <E> Iterator<E> cloneIterator(Collection<? extends E> collection) {
+	public static <E> CloneIterator<E> cloneIterator(Collection<? extends E> collection) {
 		return new CloneIterator<E>(collection);
 	}
 
@@ -408,7 +408,7 @@ public final class IteratorTools {
 	 * elements and uses the specified {@link CloneIterator.Remover remover}.
 	 * @see CloneIterator
 	 */
-	public static <E> Iterator<E> cloneIterator(Collection<? extends E> collection, CloneIterator.Remover<E> remover) {
+	public static <E> CloneIterator<E> cloneIterator(Collection<? extends E> collection, CloneIterator.Remover<E> remover) {
 		return new CloneIterator<E>(collection, remover);
 	}
 
@@ -417,7 +417,7 @@ public final class IteratorTools {
 	 * elements.
 	 * @see CloneIterator
 	 */
-	public static <E> Iterator<E> cloneIterator(E[] array) {
+	public static <E> CloneIterator<E> cloneIterator(E[] array) {
 		return new CloneIterator<E>(array);
 	}
 
@@ -426,7 +426,7 @@ public final class IteratorTools {
 	 * elements and uses the specified {@link CloneIterator.Remover remover}.
 	 * @see CloneIterator
 	 */
-	public static <E> Iterator<E> cloneIterator(E[] array, CloneIterator.Remover<E> remover) {
+	public static <E> CloneIterator<E> cloneIterator(E[] array, CloneIterator.Remover<E> remover) {
 		return new CloneIterator<E>(array, remover);
 	}
 
@@ -435,7 +435,7 @@ public final class IteratorTools {
 	 * elements.
 	 * @see CloneIterator
 	 */
-	public static <E> ListIterator<E> cloneListIterator(List<? extends E> list) {
+	public static <E> CloneListIterator<E> cloneListIterator(List<? extends E> list) {
 		return new CloneListIterator<E>(list);
 	}
 
@@ -444,7 +444,7 @@ public final class IteratorTools {
 	 * elements and uses the specified {@link CloneListIterator.Mutator mutator}.
 	 * @see CloneIterator
 	 */
-	public static <E> ListIterator<E> cloneListIterator(List<? extends E> list, CloneListIterator.Mutator<E> mutator) {
+	public static <E> CloneListIterator<E> cloneListIterator(List<? extends E> list, CloneListIterator.Mutator<E> mutator) {
 		return new CloneListIterator<E>(list, mutator);
 	}
 
@@ -453,7 +453,7 @@ public final class IteratorTools {
 	 * elements.
 	 * @see CloneIterator
 	 */
-	public static <E> ListIterator<E> cloneListIterator(E[] array) {
+	public static <E> CloneListIterator<E> cloneListIterator(E[] array) {
 		return new CloneListIterator<E>(array);
 	}
 
@@ -462,7 +462,7 @@ public final class IteratorTools {
 	 * elements and uses the specified {@link CloneListIterator.Mutator mutator}.
 	 * @see CloneIterator
 	 */
-	public static <E> ListIterator<E> cloneListIterator(E[] array, CloneListIterator.Mutator<E> mutator) {
+	public static <E> CloneListIterator<E> cloneListIterator(E[] array, CloneListIterator.Mutator<E> mutator) {
 		return new CloneListIterator<E>(array, mutator);
 	}
 
@@ -471,7 +471,7 @@ public final class IteratorTools {
 	 * elements in the specified iterable.
 	 * @see CompositeIterator
 	 */
-	public static <E> Iterator<E> compositeIterator(E object, Iterable<? extends E> iterable) {
+	public static <E> CompositeIterator<E> compositeIterator(E object, Iterable<? extends E> iterable) {
 		return compositeIterator(object, iterable.iterator());
 	}
 
@@ -481,7 +481,7 @@ public final class IteratorTools {
 	 * @see CompositeIterator
 	 */
 	@SuppressWarnings("unchecked")
-	public static <E> Iterator<E> compositeIterator(E object, Iterator<? extends E> iterator) {
+	public static <E> CompositeIterator<E> compositeIterator(E object, Iterator<? extends E> iterator) {
 		return compositeIterator(new Iterator[] { singletonIterator(object), iterator });
 	}
 
@@ -490,7 +490,7 @@ public final class IteratorTools {
 	 * elements in the specified iterable followed by the specified object.
 	 * @see CompositeIterator
 	 */
-	public static <E> Iterator<E> compositeIterator(Iterable<? extends E> iterable, E object) {
+	public static <E> CompositeIterator<E> compositeIterator(Iterable<? extends E> iterable, E object) {
 		return compositeIterator(iterable.iterator(), object);
 	}
 
@@ -499,7 +499,7 @@ public final class IteratorTools {
 	 * elements in the specified iterables.
 	 * @see CompositeIterator
 	 */
-	public static <E> Iterator<E> compositeIterator(Iterable<? extends E>... iterables) {
+	public static <E> CompositeIterator<E> compositeIterator(Iterable<? extends E>... iterables) {
 		return compositeIterator(Arrays.asList(iterables));
 	}
 
@@ -508,7 +508,7 @@ public final class IteratorTools {
 	 * elements in the specified iterables.
 	 * @see CompositeIterator
 	 */
-	public static <E> Iterator<E> compositeIterator(Iterable<? extends Iterable<? extends E>> iterables) {
+	public static <E> CompositeIterator<E> compositeIterator(Iterable<? extends Iterable<? extends E>> iterables) {
 		Transformer<Iterable<? extends E>, Iterator<? extends E>> transformer = iterableIteratorTransformer();
 		return compositeIterator(transformationIterator(iterables.iterator(), transformer));
 	}
@@ -519,7 +519,7 @@ public final class IteratorTools {
 	 * @see CompositeIterator
 	 */
 	@SuppressWarnings("unchecked")
-	public static <E> Iterator<E> compositeIterator(Iterator<? extends E> iterator, E object) {
+	public static <E> CompositeIterator<E> compositeIterator(Iterator<? extends E> iterator, E object) {
 		return compositeIterator(new Iterator[] { iterator, singletonIterator(object) });
 	}
 
@@ -528,7 +528,7 @@ public final class IteratorTools {
 	 * elements in the specified iterators.
 	 * @see CompositeIterator
 	 */
-	public static <E> Iterator<E> compositeIterator(Iterator<? extends E>... iterators) {
+	public static <E> CompositeIterator<E> compositeIterator(Iterator<? extends E>... iterators) {
 		return compositeIterator(iterator(iterators));
 	}
 
@@ -537,7 +537,7 @@ public final class IteratorTools {
 	 * elements in the specified iterators.
 	 * @see CompositeIterator
 	 */
-	public static <E> Iterator<E> compositeIterator(Iterator<? extends Iterator<? extends E>> iterators) {
+	public static <E> CompositeIterator<E> compositeIterator(Iterator<? extends Iterator<? extends E>> iterators) {
 		return new CompositeIterator<E>(iterators);
 	}
 
@@ -546,7 +546,7 @@ public final class IteratorTools {
 	 * Use the specified transformer to transform each parent into its children.
 	 * @see CompositeIterator
 	 */
-	public static <P, E> Iterator<E> compositeIterator(Iterator<? extends P> parents, Transformer<P, Iterator<? extends E>> childrenTransformer) {
+	public static <P, E> CompositeIterator<E> compositeIterator(Iterator<? extends P> parents, Transformer<P, Iterator<? extends E>> childrenTransformer) {
 		return compositeIterator(transformationIterator(parents, childrenTransformer));
 	}
 
@@ -555,7 +555,7 @@ public final class IteratorTools {
 	 * Use the specified transformer to transform each parent into its children.
 	 * @see CompositeIterator
 	 */
-	public static <P, E> Iterator<E> compositeIterator(Iterable<? extends P> parents, Transformer<P, Iterable<? extends E>> childrenTransformer) {
+	public static <P, E> CompositeIterator<E> compositeIterator(Iterable<? extends P> parents, Transformer<P, Iterable<? extends E>> childrenTransformer) {
 		return compositeIterator(IterableTools.transformationIterable(parents, childrenTransformer));
 	}
 
@@ -564,7 +564,7 @@ public final class IteratorTools {
 	 * elements in the specified list.
 	 * @see CompositeListIterator
 	 */
-	public static <E> ListIterator<E> compositeListIterator(E object, List<E> list) {
+	public static <E> CompositeListIterator<E> compositeListIterator(E object, List<E> list) {
 		return compositeListIterator(object, list.listIterator());
 	}
 
@@ -573,7 +573,7 @@ public final class IteratorTools {
 	 * elements in the specified iterable.
 	 * @see CompositeListIterator
 	 */
-	public static <E> ListIterator<E> compositeListIterator(E object, ListIterable<E> iterable) {
+	public static <E> CompositeListIterator<E> compositeListIterator(E object, ListIterable<E> iterable) {
 		return compositeListIterator(object, iterable.iterator());
 	}
 
@@ -583,7 +583,7 @@ public final class IteratorTools {
 	 * @see CompositeListIterator
 	 */
 	@SuppressWarnings("unchecked")
-	public static <E> ListIterator<E> compositeListIterator(E object, ListIterator<E> iterator) {
+	public static <E> CompositeListIterator<E> compositeListIterator(E object, ListIterator<E> iterator) {
 		return compositeListIterator(new ListIterator[] { singletonListIterator(object), iterator });
 	}
 
@@ -592,7 +592,7 @@ public final class IteratorTools {
 	 * elements in the specified lists.
 	 * @see CompositeListIterator
 	 */
-	public static <E> ListIterator<E> compositeListIterator(List<? extends List<E>> lists) {
+	public static <E> CompositeListIterator<E> compositeListIterator(List<? extends List<E>> lists) {
 		Transformer<List<E>, ListIterator<E>> transformer = listListIteratorTransformer();
 		return compositeListIterator(transformationListIterator(lists.listIterator(), transformer));
 	}
@@ -602,7 +602,7 @@ public final class IteratorTools {
 	 * followed by the specified object.
 	 * @see CompositeListIterator
 	 */
-	public static <E> ListIterator<E> compositeListIterator(List<E> list, E object) {
+	public static <E> CompositeListIterator<E> compositeListIterator(List<E> list, E object) {
 		return compositeListIterator(list.listIterator(), object);
 	}
 
@@ -611,7 +611,7 @@ public final class IteratorTools {
 	 * elements in the specified lists.
 	 * @see CompositeListIterator
 	 */
-	public static <E> ListIterator<E> compositeListIterator(List<E>... lists) {
+	public static <E> CompositeListIterator<E> compositeListIterator(List<E>... lists) {
 		return compositeListIterator(Arrays.asList(lists));
 	}
 
@@ -620,7 +620,7 @@ public final class IteratorTools {
 	 * elements in the specified iterable followed by the specified object.
 	 * @see CompositeListIterator
 	 */
-	public static <E> ListIterator<E> compositeListIterator(ListIterable<E> iterable, E object) {
+	public static <E> CompositeListIterator<E> compositeListIterator(ListIterable<E> iterable, E object) {
 		return compositeListIterator(iterable.iterator(), object);
 	}
 
@@ -629,7 +629,7 @@ public final class IteratorTools {
 	 * elements in the specified iterables.
 	 * @see CompositeListIterator
 	 */
-	public static <E> ListIterator<E> compositeListIterator(ListIterable<E>... iterables) {
+	public static <E> CompositeListIterator<E> compositeListIterator(ListIterable<E>... iterables) {
 		return compositeListIterator(IterableTools.listIterable(iterables));
 	}
 
@@ -638,7 +638,7 @@ public final class IteratorTools {
 	 * elements in the specified iterables.
 	 * @see CompositeListIterator
 	 */
-	public static <E> ListIterator<E> compositeListIterator(ListIterable<? extends ListIterable<E>> iterables) {
+	public static <E> CompositeListIterator<E> compositeListIterator(ListIterable<? extends ListIterable<E>> iterables) {
 		Transformer<ListIterable<E>, ListIterator<E>> transformer = listIterableListIteratorTransformer();
 		return compositeListIterator(transformationListIterator(iterables.iterator(), transformer));
 	}
@@ -648,7 +648,7 @@ public final class IteratorTools {
 	 * Use the specified transformer to transform each parent into its children.
 	 * @see CompositeListIterator
 	 */
-	public static <P, E> ListIterator<E> compositeListIterator(ListIterable<? extends P> parents, Transformer<P, ListIterable<E>> childrenTransformer) {
+	public static <P, E> CompositeListIterator<E> compositeListIterator(ListIterable<? extends P> parents, Transformer<P, ListIterable<E>> childrenTransformer) {
 		return compositeListIterator(IterableTools.transformationListIterable(parents, childrenTransformer));
 	}
 
@@ -658,7 +658,7 @@ public final class IteratorTools {
 	 * @see CompositeListIterator
 	 */
 	@SuppressWarnings("unchecked")
-	public static <E> ListIterator<E> compositeListIterator(ListIterator<E> iterator, E object) {
+	public static <E> CompositeListIterator<E> compositeListIterator(ListIterator<E> iterator, E object) {
 		return compositeListIterator(new ListIterator[] { iterator, singletonListIterator(object) });
 	}
 
@@ -667,7 +667,7 @@ public final class IteratorTools {
 	 * elements in the specified iterators.
 	 * @see CompositeListIterator
 	 */
-	public static <E> ListIterator<E> compositeListIterator(ListIterator<E>... iterators) {
+	public static <E> CompositeListIterator<E> compositeListIterator(ListIterator<E>... iterators) {
 		return compositeListIterator(listIterator(iterators));
 	}
 
@@ -676,7 +676,7 @@ public final class IteratorTools {
 	 * elements in the specified iterators.
 	 * @see CompositeListIterator
 	 */
-	public static <E> ListIterator<E> compositeListIterator(ListIterator<? extends ListIterator<E>> iterators) {
+	public static <E> CompositeListIterator<E> compositeListIterator(ListIterator<? extends ListIterator<E>> iterators) {
 		return new CompositeListIterator<E>(iterators);
 	}
 
@@ -685,7 +685,7 @@ public final class IteratorTools {
 	 * Use the specified transformer to transform each parent into its children.
 	 * @see CompositeListIterator
 	 */
-	public static <P, E> ListIterator<E> compositeListIterator(ListIterator<? extends P> parents, Transformer<P, ListIterator<E>> childrenTransformer) {
+	public static <P, E> CompositeListIterator<E> compositeListIterator(ListIterator<? extends P> parents, Transformer<P, ListIterator<E>> childrenTransformer) {
 		return compositeListIterator(transformationListIterator(parents, childrenTransformer));
 	}
 
@@ -708,7 +708,7 @@ public final class IteratorTools {
 	 * elements in the specified iterable.
 	 * @see FilteringIterator
 	 */
-	public static <E> Iterator<E> filteringIterator(Iterable<E> iterable, Filter<E> filter) {
+	public static <E> FilteringIterator<E> filteringIterator(Iterable<E> iterable, Filter<E> filter) {
 		return new FilteringIterator<E>(iterable, filter);
 	}
 
@@ -717,7 +717,7 @@ public final class IteratorTools {
 	 * elements in the specified iterator.
 	 * @see FilteringIterator
 	 */
-	public static <E> Iterator<E> filteringIterator(Iterator<E> iterator, Filter<E> filter) {
+	public static <E> FilteringIterator<E> filteringIterator(Iterator<E> iterator, Filter<E> filter) {
 		return new FilteringIterator<E>(iterator, filter);
 	}
 
@@ -726,7 +726,7 @@ public final class IteratorTools {
 	 * by its children etc. as determined by the specified Mr. Rogers.
 	 * @see GraphIterator
 	 */
-	public static <E> Iterator<E> graphIterator(E root, GraphIterator.MisterRogers<E> misterRogers) {
+	public static <E> GraphIterator<E> graphIterator(E root, GraphIterator.MisterRogers<E> misterRogers) {
 		return new GraphIterator<E>(root, misterRogers);
 	}
 
@@ -735,7 +735,7 @@ public final class IteratorTools {
 	 * by their children etc. as determined by the specified Mr. Rogers.
 	 * @see GraphIterator
 	 */
-	public static <E> Iterator<E> graphIterator(E[] roots, GraphIterator.MisterRogers<E> misterRogers) {
+	public static <E> GraphIterator<E> graphIterator(E[] roots, GraphIterator.MisterRogers<E> misterRogers) {
 		return new GraphIterator<E>(roots, misterRogers);
 	}
 
@@ -744,7 +744,7 @@ public final class IteratorTools {
 	 * by their children etc. as determined by the specified Mr. Rogers.
 	 * @see GraphIterator
 	 */
-	public static <E> Iterator<E> graphIterator(Iterable<E> roots, GraphIterator.MisterRogers<E> misterRogers) {
+	public static <E> GraphIterator<E> graphIterator(Iterable<E> roots, GraphIterator.MisterRogers<E> misterRogers) {
 		return new GraphIterator<E>(roots, misterRogers);
 	}
 
@@ -753,7 +753,7 @@ public final class IteratorTools {
 	 * by their children etc. as determined by the specified Mr. Rogers.
 	 * @see GraphIterator
 	 */
-	public static <E> Iterator<E> graphIterator(Iterator<E> roots, GraphIterator.MisterRogers<E> misterRogers) {
+	public static <E> GraphIterator<E> graphIterator(Iterator<E> roots, GraphIterator.MisterRogers<E> misterRogers) {
 		return new GraphIterator<E>(roots, misterRogers);
 	}
 
@@ -781,14 +781,14 @@ public final class IteratorTools {
 	/**
 	 * Return an iterator the corresponds to the specified enumeration.
 	 */
-	public static <E> Iterator<E> iterator(Enumeration<E> enumeration) {
+	public static <E> EnumerationIterator<E> iterator(Enumeration<E> enumeration) {
 		return new EnumerationIterator<E>(enumeration);
 	}
 
 	/**
 	 * Return an iterator on the elements in the specified array.
 	 */
-	public static <E> Iterator<E> iterator(E... array) {
+	public static <E> ArrayIterator<E> iterator(E... array) {
 		return iterator(array, 0);
 	}
 
@@ -796,7 +796,7 @@ public final class IteratorTools {
 	 * Return an iterator on the elements in the specified array
 	 * starting at the specified position in the array.
 	 */
-	public static <E> Iterator<E> iterator(E[] array, int start) {
+	public static <E> ArrayIterator<E> iterator(E[] array, int start) {
 		return iterator(array, start, array.length);
 	}
 
@@ -805,7 +805,7 @@ public final class IteratorTools {
 	 * starting at the specified start index, inclusive, and continuing to
 	 * the specified end index, exclusive.
 	 */
-	public static <E> Iterator<E> iterator(E[] array, int start, int end) {
+	public static <E> ArrayIterator<E> iterator(E[] array, int start, int end) {
 		return new ArrayIterator<E>(array, start, end);
 	}
 
@@ -813,7 +813,7 @@ public final class IteratorTools {
 	 * Return an iterator on the specified queue.
 	 * @see Queue
 	 */
-	public static <E> Iterator<E> iterator(Queue<E> queue) {
+	public static <E> QueueIterator<E> iterator(Queue<E> queue) {
 		return new QueueIterator<E>(queue);
 	}
 
@@ -821,7 +821,7 @@ public final class IteratorTools {
 	 * Return an iterator on the specified stack.
 	 * @see Stack
 	 */
-	public static <E> Iterator<E> iterator(Stack<E> stack) {
+	public static <E> StackIterator<E> iterator(Stack<E> stack) {
 		return new StackIterator<E>(stack);
 	}
 
@@ -829,7 +829,7 @@ public final class IteratorTools {
 	 * Return an iterator that converts the specified iterable's element type.
 	 * @see LateralIteratorWrapper
 	 */
-	public static <E1, E2> Iterator<E2> lateralIterator(Iterable<E1> iterable) {
+	public static <E1, E2> LateralIteratorWrapper<E1, E2> lateralIterator(Iterable<E1> iterable) {
 		return new LateralIteratorWrapper<E1, E2>(iterable);
 	}
 
@@ -837,7 +837,7 @@ public final class IteratorTools {
 	 * Return an iterator that converts the specified iterator's element type.
 	 * @see LateralIteratorWrapper
 	 */
-	public static <E1, E2> Iterator<E2> lateralIterator(Iterator<E1> iterator) {
+	public static <E1, E2> LateralIteratorWrapper<E1, E2> lateralIterator(Iterator<E1> iterator) {
 		return new LateralIteratorWrapper<E1, E2>(iterator);
 	}
 
@@ -845,7 +845,7 @@ public final class IteratorTools {
 	 * Return a list iterator that converts the specified list's element type.
 	 * @see LateralListIteratorWrapper
 	 */
-	public static <E1, E2> ListIterator<E2> lateralListIterator(List<E1> list) {
+	public static <E1, E2> LateralListIteratorWrapper<E1, E2> lateralListIterator(List<E1> list) {
 		return new LateralListIteratorWrapper<E1, E2>(list);
 	}
 
@@ -853,7 +853,7 @@ public final class IteratorTools {
 	 * Return a list iterator that converts the specified iterable's element type.
 	 * @see LateralListIteratorWrapper
 	 */
-	public static <E1, E2> ListIterator<E2> lateralListIterator(ListIterable<E1> iterable) {
+	public static <E1, E2> LateralListIteratorWrapper<E1, E2> lateralListIterator(ListIterable<E1> iterable) {
 		return new LateralListIteratorWrapper<E1, E2>(iterable);
 	}
 
@@ -861,7 +861,7 @@ public final class IteratorTools {
 	 * Return a list iterator that converts the specified iterator's element type.
 	 * @see LateralListIteratorWrapper
 	 */
-	public static <E1, E2> ListIterator<E2> lateralListIterator(ListIterator<E1> iterator) {
+	public static <E1, E2> LateralListIteratorWrapper<E1, E2> lateralListIterator(ListIterator<E1> iterator) {
 		return new LateralListIteratorWrapper<E1, E2>(iterator);
 	}
 
@@ -891,7 +891,7 @@ public final class IteratorTools {
 	/**
 	 * Return a list iterator for the specified array.
 	 */
-	public static <E> ListIterator<E> listIterator(E... array) {
+	public static <E> ArrayListIterator<E> listIterator(E... array) {
 		return listIterator(array, 0);
 	}
 
@@ -899,7 +899,7 @@ public final class IteratorTools {
 	 * Return a list iterator for the specified array
 	 * starting at the specified position in the array.
 	 */
-	public static <E> ListIterator<E> listIterator(E[] array, int start) {
+	public static <E> ArrayListIterator<E> listIterator(E[] array, int start) {
 		return listIterator(array, start, array.length);
 	}
 
@@ -908,7 +908,7 @@ public final class IteratorTools {
 	 * starting at the specified start index, inclusive, and continuing to
 	 * the specified end index, exclusive.
 	 */
-	public static <E> ListIterator<E> listIterator(E[] array, int start, int end) {
+	public static <E> ArrayListIterator<E> listIterator(E[] array, int start, int end) {
 		return new ArrayListIterator<E>(array, start, end);
 	}
 
@@ -939,7 +939,7 @@ public final class IteratorTools {
 	 * Return an iterator the returns <code>null</code> the specified number of times.
 	 * @see NullElementIterator
 	 */
-	public static <E> Iterator<E> nullElementIterator(int size) {
+	public static <E> NullElementIterator<E> nullElementIterator(int size) {
 		return new NullElementIterator<E>(size);
 	}
 
@@ -947,7 +947,7 @@ public final class IteratorTools {
 	 * Return a list iterator the returns <code>null</code> the specified number of times.
 	 * @see NullElementListIterator
 	 */
-	public static <E> ListIterator<E> nullElementListIterator(int size) {
+	public static <E> NullElementListIterator<E> nullElementListIterator(int size) {
 		return new NullElementListIterator<E>(size);
 	}
 
@@ -970,7 +970,7 @@ public final class IteratorTools {
 	 * elements in the specified list.
 	 * @see ReadOnlyCompositeListIterator
 	 */
-	public static <E> ListIterator<E> readOnlyCompositeListIterator(E object, List<? extends E> list) {
+	public static <E> ReadOnlyCompositeListIterator<E> readOnlyCompositeListIterator(E object, List<? extends E> list) {
 		return readOnlyCompositeListIterator(object, list.listIterator());
 	}
 
@@ -979,7 +979,7 @@ public final class IteratorTools {
 	 * elements in the specified iterable.
 	 * @see ReadOnlyCompositeListIterator
 	 */
-	public static <E> ListIterator<E> readOnlyCompositeListIterator(E object, ListIterable<? extends E> iterable) {
+	public static <E> ReadOnlyCompositeListIterator<E> readOnlyCompositeListIterator(E object, ListIterable<? extends E> iterable) {
 		return readOnlyCompositeListIterator(object, iterable.iterator());
 	}
 
@@ -989,7 +989,7 @@ public final class IteratorTools {
 	 * @see ReadOnlyCompositeListIterator
 	 */
 	@SuppressWarnings("unchecked")
-	public static <E> ListIterator<E> readOnlyCompositeListIterator(E object, ListIterator<? extends E> iterator) {
+	public static <E> ReadOnlyCompositeListIterator<E> readOnlyCompositeListIterator(E object, ListIterator<? extends E> iterator) {
 		return readOnlyCompositeListIterator(new ListIterator[] { singletonListIterator(object), iterator });
 	}
 
@@ -998,7 +998,7 @@ public final class IteratorTools {
 	 * elements in the specified lists.
 	 * @see ReadOnlyCompositeListIterator
 	 */
-	public static <E> ListIterator<E> readOnlyCompositeListIterator(List<? extends List<? extends E>> lists) {
+	public static <E> ReadOnlyCompositeListIterator<E> readOnlyCompositeListIterator(List<? extends List<? extends E>> lists) {
 		Transformer<List<? extends E>, ListIterator<? extends E>> transformer = readOnlyListListIteratorTransformer();
 		return readOnlyCompositeListIterator(transformationListIterator(lists.listIterator(), transformer));
 	}
@@ -1008,7 +1008,7 @@ public final class IteratorTools {
 	 * followed by the specified object.
 	 * @see ReadOnlyCompositeListIterator
 	 */
-	public static <E> ListIterator<E> readOnlyCompositeListIterator(List<? extends E> list, E object) {
+	public static <E> ReadOnlyCompositeListIterator<E> readOnlyCompositeListIterator(List<? extends E> list, E object) {
 		return readOnlyCompositeListIterator(list.listIterator(), object);
 	}
 
@@ -1017,7 +1017,7 @@ public final class IteratorTools {
 	 * elements in the specified lists.
 	 * @see ReadOnlyCompositeListIterator
 	 */
-	public static <E> ListIterator<E> readOnlyCompositeListIterator(List<? extends E>... lists) {
+	public static <E> ReadOnlyCompositeListIterator<E> readOnlyCompositeListIterator(List<? extends E>... lists) {
 		return readOnlyCompositeListIterator(Arrays.asList(lists));
 	}
 
@@ -1026,7 +1026,7 @@ public final class IteratorTools {
 	 * elements in the specified iterable followed by the specified object.
 	 * @see ReadOnlyCompositeListIterator
 	 */
-	public static <E> ListIterator<E> readOnlyCompositeListIterator(ListIterable<? extends E> iterable, E object) {
+	public static <E> ReadOnlyCompositeListIterator<E> readOnlyCompositeListIterator(ListIterable<? extends E> iterable, E object) {
 		return readOnlyCompositeListIterator(iterable.iterator(), object);
 	}
 
@@ -1035,7 +1035,7 @@ public final class IteratorTools {
 	 * elements in the specified iterables.
 	 * @see ReadOnlyCompositeListIterator
 	 */
-	public static <E> ListIterator<E> readOnlyCompositeListIterator(ListIterable<? extends E>... iterables) {
+	public static <E> ReadOnlyCompositeListIterator<E> readOnlyCompositeListIterator(ListIterable<? extends E>... iterables) {
 		return readOnlyCompositeListIterator(IterableTools.listIterable(iterables));
 	}
 
@@ -1044,7 +1044,7 @@ public final class IteratorTools {
 	 * elements in the specified iterables.
 	 * @see ReadOnlyCompositeListIterator
 	 */
-	public static <E> ListIterator<E> readOnlyCompositeListIterator(ListIterable<? extends ListIterable<? extends E>> iterables) {
+	public static <E> ReadOnlyCompositeListIterator<E> readOnlyCompositeListIterator(ListIterable<? extends ListIterable<? extends E>> iterables) {
 		Transformer<ListIterable<? extends E>, ListIterator<? extends E>> transformer = readOnlyListIterableListIteratorTransformer();
 		return readOnlyCompositeListIterator(transformationListIterator(iterables.iterator(), transformer));
 	}
@@ -1055,7 +1055,7 @@ public final class IteratorTools {
 	 * @see ReadOnlyCompositeListIterator
 	 */
 	@SuppressWarnings("unchecked")
-	public static <E> ListIterator<E> readOnlyCompositeListIterator(ListIterator<? extends E> iterator, E object) {
+	public static <E> ReadOnlyCompositeListIterator<E> readOnlyCompositeListIterator(ListIterator<? extends E> iterator, E object) {
 		return readOnlyCompositeListIterator(new ListIterator[] { iterator, singletonListIterator(object) });
 	}
 
@@ -1064,7 +1064,7 @@ public final class IteratorTools {
 	 * elements in the specified iterators.
 	 * @see ReadOnlyCompositeListIterator
 	 */
-	public static <E> ListIterator<E> readOnlyCompositeListIterator(ListIterator<? extends E>... iterators) {
+	public static <E> ReadOnlyCompositeListIterator<E> readOnlyCompositeListIterator(ListIterator<? extends E>... iterators) {
 		return readOnlyCompositeListIterator(listIterator(iterators));
 	}
 
@@ -1073,7 +1073,7 @@ public final class IteratorTools {
 	 * elements in the specified iterators.
 	 * @see ReadOnlyCompositeListIterator
 	 */
-	public static <E> ListIterator<E> readOnlyCompositeListIterator(ListIterator<? extends ListIterator<? extends E>> iterators) {
+	public static <E> ReadOnlyCompositeListIterator<E> readOnlyCompositeListIterator(ListIterator<? extends ListIterator<? extends E>> iterators) {
 		return new ReadOnlyCompositeListIterator<E>(iterators);
 	}
 
@@ -1082,7 +1082,7 @@ public final class IteratorTools {
 	 * Use the specified transformer to transform each parent into its children.
 	 * @see ReadOnlyCompositeListIterator
 	 */
-	public static <P, E> ListIterator<E> readOnlyCompositeListIterator(ListIterator<? extends P> parents, Transformer<P, ListIterator<? extends E>> childrenTransformer) {
+	public static <P, E> ReadOnlyCompositeListIterator<E> readOnlyCompositeListIterator(ListIterator<? extends P> parents, Transformer<P, ListIterator<? extends E>> childrenTransformer) {
 		return readOnlyCompositeListIterator(transformationListIterator(parents, childrenTransformer));
 	}
 
@@ -1113,7 +1113,7 @@ public final class IteratorTools {
 	 * Convert the specified iterable to read-only.
 	 * @see ReadOnlyIterator
 	 */
-	public static <E> Iterator<E> readOnlyIterator(Iterable<? extends E> iterable) {
+	public static <E> ReadOnlyIterator<E> readOnlyIterator(Iterable<? extends E> iterable) {
 		return new ReadOnlyIterator<E>(iterable);
 	}
 
@@ -1121,7 +1121,7 @@ public final class IteratorTools {
 	 * Convert the specified iterator to read-only.
 	 * @see ReadOnlyIterator
 	 */
-	public static <E> Iterator<E> readOnlyIterator(Iterator<? extends E> iterator) {
+	public static <E> ReadOnlyIterator<E> readOnlyIterator(Iterator<? extends E> iterator) {
 		return new ReadOnlyIterator<E>(iterator);
 	}
 
@@ -1129,7 +1129,7 @@ public final class IteratorTools {
 	 * Convert the specified list to read-only.
 	 * @see ReadOnlyListIterator
 	 */
-	public static <E> ListIterator<E> readOnlyListIterator(List<? extends E> list) {
+	public static <E> ReadOnlyListIterator<E> readOnlyListIterator(List<? extends E> list) {
 		return new ReadOnlyListIterator<E>(list);
 	}
 
@@ -1137,7 +1137,7 @@ public final class IteratorTools {
 	 * Convert the specified iterable to read-only.
 	 * @see ReadOnlyListIterator
 	 */
-	public static <E> ListIterator<E> readOnlyListIterator(ListIterable<? extends E> iterable) {
+	public static <E> ReadOnlyListIterator<E> readOnlyListIterator(ListIterable<? extends E> iterable) {
 		return new ReadOnlyListIterator<E>(iterable);
 	}
 
@@ -1145,7 +1145,7 @@ public final class IteratorTools {
 	 * Convert the specified iterator to read-only.
 	 * @see ReadOnlyListIterator
 	 */
-	public static <E> ListIterator<E> readOnlyListIterator(ListIterator<? extends E> iterator) {
+	public static <E> ReadOnlyListIterator<E> readOnlyListIterator(ListIterator<? extends E> iterator) {
 		return new ReadOnlyListIterator<E>(iterator);
 	}
 
@@ -1177,7 +1177,7 @@ public final class IteratorTools {
 	 * of times.
 	 * @see RepeatingElementIterator
 	 */
-	public static <E> Iterator<E> repeatingElementIterator(E element, int size) {
+	public static <E> RepeatingElementIterator<E> repeatingElementIterator(E element, int size) {
 		return new RepeatingElementIterator<E>(element, size);
 	}
 
@@ -1186,7 +1186,7 @@ public final class IteratorTools {
 	 * of times.
 	 * @see RepeatingElementIterator
 	 */
-	public static <E> ListIterator<E> repeatingElementListIterator(E element, int size) {
+	public static <E> RepeatingElementListIterator<E> repeatingElementListIterator(E element, int size) {
 		return new RepeatingElementListIterator<E>(element, size);
 	}
 
@@ -1195,7 +1195,7 @@ public final class IteratorTools {
 	 * specified result set.
 	 * @see ResultSetIterator
 	 */
-	public static <E> Iterator<E> resultSetIterator(ResultSet resultSet) {
+	public static <E> ResultSetIterator<E> resultSetIterator(ResultSet resultSet) {
 		return new ResultSetIterator<E>(resultSet);
 	}
 
@@ -1203,7 +1203,7 @@ public final class IteratorTools {
 	 * Return an iterator the returns the objects produced by the specified adapter.
 	 * @see ResultSetIterator
 	 */
-	public static <E> Iterator<E> resultSetIterator(ResultSet resultSet, ResultSetIterator.Adapter<E> adapter) {
+	public static <E> ResultSetIterator<E> resultSetIterator(ResultSet resultSet, ResultSetIterator.Adapter<E> adapter) {
 		return new ResultSetIterator<E>(resultSet, adapter);
 	}
 
@@ -1211,7 +1211,7 @@ public final class IteratorTools {
 	 * Return an iterator that returns the objects in the specified iterable
 	 * in reverse order.
 	 */
-	public static <E> Iterator<E> reverseIterator(Iterable<E> iterable) {
+	public static <E> ReverseIterator<E> reverseIterator(Iterable<E> iterable) {
 		return new ReverseIterator<E>(iterable);
 	}
 
@@ -1219,7 +1219,7 @@ public final class IteratorTools {
 	 * Return an iterator that returns the objects in the specified iterable
 	 * in reverse order.
 	 */
-	public static <E> Iterator<E> reverseIterator(Iterable<E> iterable, int iterableSize) {
+	public static <E> ReverseIterator<E> reverseIterator(Iterable<E> iterable, int iterableSize) {
 		return new ReverseIterator<E>(iterable, iterableSize);
 	}
 
@@ -1227,7 +1227,7 @@ public final class IteratorTools {
 	 * Return an iterator that returns the objects in the specified iterator
 	 * in reverse order.
 	 */
-	public static <E> Iterator<E> reverseIterator(Iterator<E> iterator) {
+	public static <E> ReverseIterator<E> reverseIterator(Iterator<E> iterator) {
 		return new ReverseIterator<E>(iterator);
 	}
 
@@ -1236,7 +1236,7 @@ public final class IteratorTools {
 	 * in reverse order.
 	 * The specified iterator size is a performance hint.
 	 */
-	public static <E> Iterator<E> reverseIterator(Iterator<E> iterator, int iteratorSize) {
+	public static <E> ReverseIterator<E> reverseIterator(Iterator<E> iterator, int iteratorSize) {
 		return new ReverseIterator<E>(iterator, iteratorSize);
 	}
 
@@ -1245,7 +1245,7 @@ public final class IteratorTools {
 	 * in the specified iterators.
 	 * @see SimultaneousIterator
 	 */
-	public static <E, I extends Iterator<E>> Iterator<List<E>> simultaneousIterator(I... iterators) {
+	public static <E, I extends Iterator<E>> SimultaneousIterator<E> simultaneousIterator(I... iterators) {
 		return new SimultaneousIterator<E>(iterators);
 	}
 
@@ -1254,7 +1254,7 @@ public final class IteratorTools {
 	 * in the specified iterables.
 	 * @see SimultaneousIterator
 	 */
-	public static <E, I extends Iterator<E>> Iterator<List<E>> simultaneousIterator(Iterable<I> iterables) {
+	public static <E, I extends Iterator<E>> SimultaneousIterator<E> simultaneousIterator(Iterable<I> iterables) {
 		return new SimultaneousIterator<E>(iterables);
 	}
 
@@ -1263,7 +1263,7 @@ public final class IteratorTools {
 	 * in the specified iterables.
 	 * @see SimultaneousIterator
 	 */
-	public static <E, I extends Iterator<E>> Iterator<List<E>> simultaneousIterator(Iterable<I> iterables, int iterablesSize) {
+	public static <E, I extends Iterator<E>> SimultaneousIterator<E> simultaneousIterator(Iterable<I> iterables, int iterablesSize) {
 		return new SimultaneousIterator<E>(iterables, iterablesSize);
 	}
 
@@ -1272,7 +1272,7 @@ public final class IteratorTools {
 	 * in the specified iterators.
 	 * @see SimultaneousListIterator
 	 */
-	public static <E, I extends ListIterator<E>> ListIterator<List<E>> simultaneousListIterator(I... iterators) {
+	public static <E, I extends ListIterator<E>> SimultaneousListIterator<E> simultaneousListIterator(I... iterators) {
 		return new SimultaneousListIterator<E>(iterators);
 	}
 
@@ -1281,7 +1281,7 @@ public final class IteratorTools {
 	 * in the specified iterables.
 	 * @see SimultaneousListIterator
 	 */
-	public static <E, I extends ListIterator<E>> ListIterator<List<E>> simultaneousListIterator(Iterable<I> iterables) {
+	public static <E, I extends ListIterator<E>> SimultaneousListIterator<E> simultaneousListIterator(Iterable<I> iterables) {
 		return new SimultaneousListIterator<E>(iterables);
 	}
 
@@ -1290,7 +1290,7 @@ public final class IteratorTools {
 	 * in the specified iterators.
 	 * @see SimultaneousListIterator
 	 */
-	public static <E, I extends ListIterator<E>> ListIterator<List<E>> simultaneousListIterator(Iterable<I> iterators, int iteratorsSize) {
+	public static <E, I extends ListIterator<E>> SimultaneousListIterator<E> simultaneousListIterator(Iterable<I> iterators, int iteratorsSize) {
 		return new SimultaneousListIterator<E>(iterators, iteratorsSize);
 	}
 
@@ -1299,7 +1299,7 @@ public final class IteratorTools {
 	 * specified object.
 	 * @see SingleElementIterator
 	 */
-	public static <E> Iterator<E> singletonIterator(E value) {
+	public static <E> SingleElementIterator<E> singletonIterator(E value) {
 		return new SingleElementIterator<E>(value);
 	}
 
@@ -1308,7 +1308,7 @@ public final class IteratorTools {
 	 * specified object.
 	 * @see SingleElementListIterator
 	 */
-	public static <E> ListIterator<E> singletonListIterator(E value) {
+	public static <E> SingleElementListIterator<E> singletonListIterator(E value) {
 		return new SingleElementListIterator<E>(value);
 	}
 
@@ -1316,7 +1316,7 @@ public final class IteratorTools {
 	 * Return an iterator that converts the specified iterable's element type.
 	 * @see SubIteratorWrapper
 	 */
-	public static <E1, E2 extends E1> Iterator<E2> subIterator(Iterable<E1> iterable) {
+	public static <E1, E2 extends E1> SubIteratorWrapper<E1, E2> subIterator(Iterable<E1> iterable) {
 		return new SubIteratorWrapper<E1, E2>(iterable);
 	}
 
@@ -1324,7 +1324,7 @@ public final class IteratorTools {
 	 * Return an iterator that converts the specified iterator's element type.
 	 * @see SubIteratorWrapper
 	 */
-	public static <E1, E2 extends E1> Iterator<E2> subIterator(Iterator<E1> iterator) {
+	public static <E1, E2 extends E1> SubIteratorWrapper<E1, E2> subIterator(Iterator<E1> iterator) {
 		return new SubIteratorWrapper<E1, E2>(iterator);
 	}
 
@@ -1332,7 +1332,7 @@ public final class IteratorTools {
 	 * Return an iterator that converts the specified list's element type.
 	 * @see SubListIteratorWrapper
 	 */
-	public static <E1, E2 extends E1> ListIterator<E2> subListIterator(List<E1> list) {
+	public static <E1, E2 extends E1> SubListIteratorWrapper<E1, E2> subListIterator(List<E1> list) {
 		return new SubListIteratorWrapper<E1, E2>(list);
 	}
 
@@ -1340,7 +1340,7 @@ public final class IteratorTools {
 	 * Return an iterator that converts the specified iterable's element type.
 	 * @see SubListIteratorWrapper
 	 */
-	public static <E1, E2 extends E1> ListIterator<E2> subListIterator(ListIterable<E1> iterable) {
+	public static <E1, E2 extends E1> SubListIteratorWrapper<E1, E2> subListIterator(ListIterable<E1> iterable) {
 		return new SubListIteratorWrapper<E1, E2>(iterable);
 	}
 
@@ -1348,7 +1348,7 @@ public final class IteratorTools {
 	 * Return an iterator that converts the specified iterator's element type.
 	 * @see SubListIteratorWrapper
 	 */
-	public static <E1, E2 extends E1> ListIterator<E2> subListIterator(ListIterator<E1> iterator) {
+	public static <E1, E2 extends E1> SubListIteratorWrapper<E1, E2> subListIterator(ListIterator<E1> iterator) {
 		return new SubListIteratorWrapper<E1, E2>(iterator);
 	}
 
@@ -1356,7 +1356,7 @@ public final class IteratorTools {
 	 * Return an iterator that converts the specified iterable's element type.
 	 * @see SuperIteratorWrapper
 	 */
-	public static <E> Iterator<E> superIterator(Iterable<? extends E> iterable) {
+	public static <E> Iterator<E> SuperIteratorWrapper(Iterable<? extends E> iterable) {
 		return new SuperIteratorWrapper<E>(iterable);
 	}
 
@@ -1364,7 +1364,7 @@ public final class IteratorTools {
 	 * Return an iterator that converts the specified iterator's element type.
 	 * @see SuperIteratorWrapper
 	 */
-	public static <E> Iterator<E> superIterator(Iterator<? extends E> iterator) {
+	public static <E> Iterator<E> SuperIteratorWrapper(Iterator<? extends E> iterator) {
 		return new SuperIteratorWrapper<E>(iterator);
 	}
 
@@ -1372,7 +1372,7 @@ public final class IteratorTools {
 	 * Return an iterator that converts the specified list's element type.
 	 * @see SuperListIteratorWrapper
 	 */
-	public static <E> ListIterator<E> superListIterator(List<? extends E> list) {
+	public static <E> ListIterator<E> SuperListIteratorWrapper(List<? extends E> list) {
 		return new SuperListIteratorWrapper<E>(list);
 	}
 
@@ -1380,7 +1380,7 @@ public final class IteratorTools {
 	 * Return an iterator that converts the specified iterable's element type.
 	 * @see SuperListIteratorWrapper
 	 */
-	public static <E> ListIterator<E> superListIterator(ListIterable<? extends E> iterable) {
+	public static <E> ListIterator<E> SuperListIteratorWrapper(ListIterable<? extends E> iterable) {
 		return new SuperListIteratorWrapper<E>(iterable);
 	}
 
@@ -1388,7 +1388,7 @@ public final class IteratorTools {
 	 * Return an iterator that converts the specified iterator's element type.
 	 * @see SuperListIteratorWrapper
 	 */
-	public static <E> ListIterator<E> superListIterator(ListIterator<? extends E> iterator) {
+	public static <E> ListIterator<E> SuperListIteratorWrapper(ListIterator<? extends E> iterator) {
 		return new SuperListIteratorWrapper<E>(iterator);
 	}
 
@@ -1396,7 +1396,7 @@ public final class IteratorTools {
 	 * Return an iterator that synchronizes the specified iterable's iterator on itself.
 	 * @see SynchronizedIterator
 	 */
-	public static <E> Iterator<E> synchronizedIterator(Iterable<? extends E> iterable) {
+	public static <E> SynchronizedIterator<E> synchronizedIterator(Iterable<? extends E> iterable) {
 		return new SynchronizedIterator<E>(iterable);
 	}
 
@@ -1405,7 +1405,7 @@ public final class IteratorTools {
 	 * specified mutex.
 	 * @see SynchronizedIterator
 	 */
-	public static <E> Iterator<E> synchronizedIterator(Iterable<? extends E> iterable, Object mutex) {
+	public static <E> SynchronizedIterator<E> synchronizedIterator(Iterable<? extends E> iterable, Object mutex) {
 		return new SynchronizedIterator<E>(iterable, mutex);
 	}
 
@@ -1413,7 +1413,7 @@ public final class IteratorTools {
 	 * Return an iterator that synchronizes the specified iterator on itself.
 	 * @see SynchronizedIterator
 	 */
-	public static <E> Iterator<E> synchronizedIterator(Iterator<? extends E> iterator) {
+	public static <E> SynchronizedIterator<E> synchronizedIterator(Iterator<? extends E> iterator) {
 		return new SynchronizedIterator<E>(iterator);
 	}
 
@@ -1422,7 +1422,7 @@ public final class IteratorTools {
 	 * specified mutex.
 	 * @see SynchronizedIterator
 	 */
-	public static <E> Iterator<E> synchronizedIterator(Iterator<? extends E> iterator, Object mutex) {
+	public static <E> SynchronizedIterator<E> synchronizedIterator(Iterator<? extends E> iterator, Object mutex) {
 		return new SynchronizedIterator<E>(iterator, mutex);
 	}
 
@@ -1430,7 +1430,7 @@ public final class IteratorTools {
 	 * Return an iterator that synchronizes the specified list's iterator on itself.
 	 * @see SynchronizedListIterator
 	 */
-	public static <E> ListIterator<E> synchronizedListIterator(List<E> list) {
+	public static <E> SynchronizedListIterator<E> synchronizedListIterator(List<E> list) {
 		return new SynchronizedListIterator<E>(list);
 	}
 
@@ -1438,7 +1438,7 @@ public final class IteratorTools {
 	 * Return an iterator that synchronizes the specified iterable's iterator on itself.
 	 * @see SynchronizedListIterator
 	 */
-	public static <E> ListIterator<E> synchronizedListIterator(ListIterable<E> iterable) {
+	public static <E> SynchronizedListIterator<E> synchronizedListIterator(ListIterable<E> iterable) {
 		return new SynchronizedListIterator<E>(iterable);
 	}
 
@@ -1447,7 +1447,7 @@ public final class IteratorTools {
 	 * specified mutex.
 	 * @see SynchronizedListIterator
 	 */
-	public static <E> ListIterator<E> synchronizedListIterator(ListIterable<E> iterable, Object mutex) {
+	public static <E> SynchronizedListIterator<E> synchronizedListIterator(ListIterable<E> iterable, Object mutex) {
 		return new SynchronizedListIterator<E>(iterable, mutex);
 	}
 
@@ -1455,7 +1455,7 @@ public final class IteratorTools {
 	 * Return an iterator that synchronizes the specified iterator on itself.
 	 * @see SynchronizedListIterator
 	 */
-	public static <E> ListIterator<E> synchronizedListIterator(ListIterator<E> iterator) {
+	public static <E> SynchronizedListIterator<E> synchronizedListIterator(ListIterator<E> iterator) {
 		return new SynchronizedListIterator<E>(iterator);
 	}
 
@@ -1464,7 +1464,7 @@ public final class IteratorTools {
 	 * specified mutex.
 	 * @see SynchronizedListIterator
 	 */
-	public static <E> ListIterator<E> synchronizedListIterator(ListIterator<E> iterator, Object mutex) {
+	public static <E> SynchronizedListIterator<E> synchronizedListIterator(ListIterator<E> iterator, Object mutex) {
 		return new SynchronizedListIterator<E>(iterator, mutex);
 	}
 
@@ -1473,7 +1473,7 @@ public final class IteratorTools {
 	 * elements in the specified iterable.
 	 * @see TransformationIterator
 	 */
-	public static <E1, E2> Iterator<E2> transformationIterator(Iterable<? extends E1> iterable, Transformer<E1, ? extends E2> transformer) {
+	public static <E1, E2> TransformationIterator<E1, E2> transformationIterator(Iterable<? extends E1> iterable, Transformer<E1, ? extends E2> transformer) {
 		return new TransformationIterator<E1, E2>(iterable, transformer);
 	}
 
@@ -1482,7 +1482,7 @@ public final class IteratorTools {
 	 * elements in the specified iterator.
 	 * @see TransformationIterator
 	 */
-	public static <E1, E2> Iterator<E2> transformationIterator(Iterator<? extends E1> iterator, Transformer<E1, ? extends E2> transformer) {
+	public static <E1, E2> TransformationIterator<E1, E2> transformationIterator(Iterator<? extends E1> iterator, Transformer<E1, ? extends E2> transformer) {
 		return new TransformationIterator<E1, E2>(iterator, transformer);
 	}
 
@@ -1491,7 +1491,7 @@ public final class IteratorTools {
 	 * elements in the specified list.
 	 * @see TransformationListIterator
 	 */
-	public static <E1, T1 extends E1, E2> ListIterator<E2> transformationListIterator(List<? extends E1> list, Transformer<E1, ? extends E2> transformer) {
+	public static <E1, T1 extends E1, E2> TransformationListIterator<E1, E2> transformationListIterator(List<? extends E1> list, Transformer<E1, ? extends E2> transformer) {
 		return new TransformationListIterator<E1, E2>(list, transformer);
 	}
 
@@ -1500,7 +1500,7 @@ public final class IteratorTools {
 	 * elements in the specified iterable.
 	 * @see TransformationListIterator
 	 */
-	public static <E1, E2> ListIterator<E2> transformationListIterator(ListIterable<? extends E1> iterable, Transformer<E1, ? extends E2> transformer) {
+	public static <E1, E2> TransformationListIterator<E1, E2> transformationListIterator(ListIterable<? extends E1> iterable, Transformer<E1, ? extends E2> transformer) {
 		return new TransformationListIterator<E1, E2>(iterable, transformer);
 	}
 
@@ -1509,7 +1509,7 @@ public final class IteratorTools {
 	 * elements in the specified iterator.
 	 * @see TransformationListIterator
 	 */
-	public static <E1, E2> ListIterator<E2> transformationListIterator(ListIterator<? extends E1> iterator, Transformer<E1, ? extends E2> transformer) {
+	public static <E1, E2> TransformationListIterator<E1, E2> transformationListIterator(ListIterator<? extends E1> iterator, Transformer<E1, ? extends E2> transformer) {
 		return new TransformationListIterator<E1, E2>(iterator, transformer);
 	}
 
@@ -1518,7 +1518,7 @@ public final class IteratorTools {
 	 * with the specified root and transformer.
 	 * @see TreeIterator
 	 */
-	public static <E> Iterator<E> treeIterator(E root, Transformer<E, Iterator<? extends E>> transformer) {
+	public static <E> TreeIterator<E> treeIterator(E root, Transformer<E, Iterator<? extends E>> transformer) {
 		return treeIterator(new SingleElementIterator<E>(root), transformer);
 	}
 
@@ -1527,7 +1527,7 @@ public final class IteratorTools {
 	 * with the specified roots and transformer.
 	 * @see TreeIterator
 	 */
-	public static <E> Iterator<E> treeIterator(E[] roots, Transformer<E, Iterator<? extends E>> transformer) {
+	public static <E> TreeIterator<E> treeIterator(E[] roots, Transformer<E, Iterator<? extends E>> transformer) {
 		return treeIterator(new ArrayIterator<E>(roots), transformer);
 	}
 
@@ -1536,7 +1536,7 @@ public final class IteratorTools {
 	 * with the specified roots and transformer.
 	 * @see TreeIterator
 	 */
-	public static <E> Iterator<E> treeIterator(Iterable<? extends E> roots, Transformer<E, Iterator<? extends E>> transformer) {
+	public static <E> TreeIterator<E> treeIterator(Iterable<? extends E> roots, Transformer<E, Iterator<? extends E>> transformer) {
 		return treeIterator(roots.iterator(), transformer);
 	}
 
@@ -1545,7 +1545,7 @@ public final class IteratorTools {
 	 * with the specified roots and transformer.
 	 * @see TreeIterator
 	 */
-	public static <E> Iterator<E> treeIterator(Iterator<? extends E> roots, Transformer<E, Iterator<? extends E>> transformer) {
+	public static <E> TreeIterator<E> treeIterator(Iterator<? extends E> roots, Transformer<E, Iterator<? extends E>> transformer) {
 		return new TreeIterator<E>(roots, transformer);
 	}
 
