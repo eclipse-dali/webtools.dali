@@ -10,12 +10,19 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.oxm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlAccessOrder;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlAccessType;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmFile;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaType;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlBindings;
+import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings;
+import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmFactory;
 
 public class OxmXmlBindingsImpl
 		extends AbstractJaxbContextNode
@@ -31,6 +38,8 @@ public class OxmXmlBindingsImpl
 	
 	protected String packageName;
 	
+	protected final ContextListContainer<OxmJavaType, EJavaType> javaTypeContainer;
+	
 	
 	public OxmXmlBindingsImpl(OxmFile parent, EXmlBindings eXmlBindings) {
 		super(parent);
@@ -39,6 +48,7 @@ public class OxmXmlBindingsImpl
 		this.specifiedAccessOrder = buildSpecifiedAccessOrder();
 		this.xmlMappingMetadataComplete = buildXmlMappingMetadataComplete();
 		this.packageName = buildPackageName();
+		this.javaTypeContainer = buildJavaTypeContainer();
 	}
 	
 	
@@ -51,6 +61,13 @@ public class OxmXmlBindingsImpl
 		setSpecifiedAccessOrder_(buildSpecifiedAccessOrder());
 		setXmlMappingMetadataComplete_(buildXmlMappingMetadataComplete());
 		setPackageName_(buildPackageName());
+		this.javaTypeContainer.synchronizeWithResourceModel();
+	}
+	
+	@Override
+	public void update() {
+		super.update();
+		this.javaTypeContainer.update();
 	}
 	
 	
@@ -156,6 +173,97 @@ public class OxmXmlBindingsImpl
 	
 	protected String buildPackageName() {
 		return this.eXmlBindings.getPackageName();
+	}
+	
+	/**
+	 * append package if the name is not qualified
+	 */
+	public String getQualifiedName(String className) {
+		if (className == null) {
+			return null;
+		}
+		if (className.indexOf('.') >= 0) {
+			return className;
+		}
+		return StringTools.concatenate(this.packageName, ".", className);
+	}
+	
+	
+	// ***** java types *****
+	
+	public ListIterable<OxmJavaType> getJavaTypes() {
+		return this.javaTypeContainer.getContextElements();
+	}
+	
+	public int getJavaTypesSize() {
+		return this.javaTypeContainer.getContextElementsSize();
+	}
+	
+	public OxmJavaType getJavaType(int index) {
+		return this.javaTypeContainer.getContextElement(index);
+	}
+	
+	public OxmJavaType getJavaType(String qualifiedName) {
+		for (OxmJavaType javaType : getJavaTypes()) {
+			if (Tools.valuesAreEqual(javaType.getQualifiedName(), qualifiedName)) {
+				return javaType;
+			}
+		}
+		return null;
+	}
+	
+	public OxmJavaType addJavaType(int index) {
+		EJavaType eJavaType = OxmFactory.eINSTANCE.createEJavaType();
+		OxmJavaType javaType = this.javaTypeContainer.addContextElement(index, eJavaType);
+		this.eXmlBindings.getJavaTypes().add(index, eJavaType);
+		return javaType;
+	}
+	
+	public void removeJavaType(int index) {
+		removeJavaType_(index);
+		this.eXmlBindings.getJavaTypes().remove(index);
+	}
+	
+	protected void removeJavaType_(int index) {
+		this.javaTypeContainer.removeContextElement(index);
+	}
+	
+	protected ListIterable<EJavaType> getEJavaTypes() {
+		return new LiveCloneListIterable<EJavaType>(this.eXmlBindings.getJavaTypes());
+	}
+	
+	protected OxmJavaType buildJavaType(EJavaType eJavaType) {
+		return new OxmJavaTypeImpl(this, eJavaType);
+	}
+	
+	protected ContextListContainer<OxmJavaType, EJavaType> buildJavaTypeContainer() {
+		JavaTypeContainer container = new JavaTypeContainer();
+		container.initialize();
+		return container;
+	}
+	
+	protected class JavaTypeContainer
+			extends ContextListContainer<OxmJavaType, EJavaType> {
+		@Override
+		protected String getContextElementsPropertyName() {
+			return JAVA_TYPES_LIST;
+		}
+		@Override
+		protected OxmJavaType buildContextElement(EJavaType resourceElement) {
+			return OxmXmlBindingsImpl.this.buildJavaType(resourceElement);
+		}
+		@Override
+		protected ListIterable<EJavaType> getResourceElements() {
+			return OxmXmlBindingsImpl.this.getEJavaTypes();
+		}
+		@Override
+		protected EJavaType getResourceElement(OxmJavaType contextElement) {
+			return contextElement.getEJavaType();
+		}
+//		@Override
+//		protected void disposeElement(OxmJavaType element) {
+//			element.dispose();
+//		}
 	}
 	
 	

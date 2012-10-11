@@ -45,6 +45,7 @@ public interface Oxm {
 	String JAVA_ATTRIBUTES = "java-attributes"; //$NON-NLS-1$
 	String JAVA_TYPE = "java-type"; //$NON-NLS-1$
 	String JAVA_TYPES = "java-types"; //$NON-NLS-1$
+	String NAME = "name"; //$NON-NLS-1$
 	String PACKAGE_NAME = "package-name"; //$NON-NLS-1$
 	String XML_ACCESSOR_ORDER = "xml-accessor-order"; //$NON-NLS-1$
 	String XML_ACCESSOR_TYPE = "xml-accessor-type"; //$NON-NLS-1$

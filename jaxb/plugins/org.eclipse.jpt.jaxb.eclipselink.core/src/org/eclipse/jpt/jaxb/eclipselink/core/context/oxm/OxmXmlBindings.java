@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.context.oxm;
 
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlAccessOrderHolder;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlAccessTypeHolder;
@@ -42,4 +43,29 @@ public interface OxmXmlBindings
 	String getPackageName();
 	
 	void setPackageName(String packageName);
+	
+	/**
+	 * Return a qualified name for the given child type
+	 */
+	String getQualifiedName(String childTypeName);
+	
+	
+	// ***** java types *****
+	
+	final static String JAVA_TYPES_LIST = "javaTypes"; //$NON-NLS-1$
+	
+	ListIterable<OxmJavaType> getJavaTypes();
+	
+	int getJavaTypesSize();
+	
+	OxmJavaType getJavaType(int index);
+	
+	OxmJavaType addJavaType(int index);
+	
+	void removeJavaType(int index);
+	
+	/**
+	 * Return the first java type with the given qualified name
+	 */
+	OxmJavaType getJavaType(String qualifiedName);
 }
