@@ -232,6 +232,7 @@ public class BodySourceWriter
 	protected static class ImportEntriesComparator
 		implements Comparator<Map.Entry<String, ImportPackage>>, Serializable
 	{
+		private static final long serialVersionUID = 1L;
 		public int compare(Map.Entry<String, ImportPackage> e1, Map.Entry<String, ImportPackage> e2) {
 			Collator collator = Collator.getInstance();
 			int pkg = collator.compare(e1.getValue().packageName, e2.getValue().packageName);
