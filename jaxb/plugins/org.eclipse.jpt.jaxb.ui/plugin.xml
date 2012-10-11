@@ -18,6 +18,26 @@
 	
 	
 	<extension
+		point="org.eclipse.core.runtime.adapters">
+		
+		<!-- JaxbPlatform -> JaxbPlatformUi -->
+		<factory
+			adaptableType="org.eclipse.jpt.jaxb.core.platform.JaxbPlatform"
+			class="org.eclipse.jpt.jaxb.ui.internal.JaxbPlatformAdapterFactory">
+			<adapter type="org.eclipse.jpt.jaxb.ui.platform.JaxbPlatformUi"/>
+		</factory>
+
+		<!-- IWorkbench -> JaxbWorkbench -->
+		<factory
+			adaptableType="org.eclipse.ui.IWorkbench"
+			class="org.eclipse.jpt.jaxb.ui.internal.WorkbenchAdapterFactory">
+			<adapter type="org.eclipse.jpt.jaxb.ui.JaxbWorkbench"/>
+		</factory>
+
+	</extension>
+
+
+	<extension
 		point="org.eclipse.ui.newWizards">
 
 		<category
@@ -290,7 +310,7 @@
 
 		<!-- contributions to the "Generate" submenu -->
 		<objectContribution
-			id="org.eclipse.jpt.jpa.ui.xsdFileActions"
+			id="org.eclipse.jpt.jaxb.ui.xsdFileActions"
 			objectClass="org.eclipse.core.resources.IFile"
 			nameFilter="*.xsd">
 			<filter

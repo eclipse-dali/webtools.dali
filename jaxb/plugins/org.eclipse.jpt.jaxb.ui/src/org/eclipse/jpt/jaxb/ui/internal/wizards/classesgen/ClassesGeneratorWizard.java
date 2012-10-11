@@ -15,6 +15,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.URI;
@@ -28,7 +29,8 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.common.ui.internal.dialogs.OptionalMessageDialog;
 import org.eclipse.jpt.common.ui.internal.wizards.JavaProjectWizardPage;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
-import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
+import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
+import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.core.SchemaLibrary;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGeneratorExtensionOptions;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGeneratorOptions;
@@ -178,9 +180,17 @@ public class ClassesGeneratorWizard
 	
 	/* may be null */
 	private JaxbProject getJaxbProject() {
-		return JptJaxbCorePlugin.instance().getProjectManager().getJaxbProject(getJavaProject().getProject());
+		return this.getJaxbProjectManager().getJaxbProject(getJavaProject().getProject());
 	}
 	
+	private JaxbProjectManager getJaxbProjectManager() {
+		return this.getJaxbWorkspace().getJaxbProjectManager();
+	}
+
+	private JaxbWorkspace getJaxbWorkspace() {
+		return (JaxbWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JaxbWorkspace.class);
+	}
+
 	/* return the physical location of the schema */
 	public URI getLocalSchemaUri() {
 		if (this.preselectedXsdFile != null) {

@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.core.internal.utility;
 
 import java.io.Serializable;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * A job scheduling rule that conflicts only with itself.
@@ -35,6 +35,6 @@ public final class SimpleSchedulingRule
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this);
+		return ObjectTools.toString(this);
 	}
 }

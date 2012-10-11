@@ -12,9 +12,9 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceXmlContextNode;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlProperty;
@@ -123,7 +123,7 @@ public class GenericPersistenceUnitProperty
 	// ********** refactoring **********
 
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
-		return Tools.valuesAreEqual(this.value, originalType.getFullyQualifiedName('.')) ?
+		return ObjectTools.equals(this.value, originalType.getFullyQualifiedName('.')) ?
 				new SingleElementIterable<ReplaceEdit>(this.createRenameTypeEdit(originalType, newName)) :
 				EmptyIterable.<ReplaceEdit>instance();
 	}
@@ -133,13 +133,13 @@ public class GenericPersistenceUnitProperty
 	}
 
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		return Tools.valuesAreEqual(this.value, originalType.getFullyQualifiedName('.')) ?
+		return ObjectTools.equals(this.value, originalType.getFullyQualifiedName('.')) ?
 				new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newPackage.getElementName())) :
 				EmptyIterable.<ReplaceEdit>instance();
 	}
 
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return Tools.valuesAreEqual(this.getValuePackageName(), originalPackage.getElementName()) ?
+		return ObjectTools.equals(this.getValuePackageName(), originalPackage.getElementName()) ?
 				new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newName)) :
 				EmptyIterable.<ReplaceEdit>instance();
 	}

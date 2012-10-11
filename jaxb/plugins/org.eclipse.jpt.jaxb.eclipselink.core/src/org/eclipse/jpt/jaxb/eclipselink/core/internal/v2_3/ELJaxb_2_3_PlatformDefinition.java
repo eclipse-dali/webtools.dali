@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_3;
 
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbPlatform;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_2.ELJaxb_2_2_PlatformDefinition;
 
@@ -35,7 +35,7 @@ public class ELJaxb_2_3_PlatformDefinition
 	
 	
 	@Override
-	public JaxbPlatformDescription getDescription() {
+	public JaxbPlatformConfig getConfig() {
 		return ELJaxbPlatform.VERSION_2_3;
 	}
 }

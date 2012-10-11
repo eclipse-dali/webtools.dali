@@ -15,10 +15,10 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.FetchType;
@@ -391,7 +391,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 	}
 
 	protected void validateTargetEntity(List<IMessage> messages) {
-		if (StringTools.stringIsEmpty(this.getTargetEntity())) {
+		if (StringTools.isBlank(this.getTargetEntity())) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,

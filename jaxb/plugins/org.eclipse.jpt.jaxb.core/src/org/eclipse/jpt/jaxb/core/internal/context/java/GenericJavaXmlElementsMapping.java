@@ -12,14 +12,14 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.Bag;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.HashBag;
+import org.eclipse.jpt.common.utility.collection.Bag;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.collection.HashBag;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
@@ -290,20 +290,20 @@ public class GenericJavaXmlElementsMapping
 	@Override
 	public Iterable<String> getCompletionProposals(int pos) {
 		Iterable<String> result = super.getCompletionProposals(pos);
-		if (! CollectionTools.isEmpty(result)) {
+		if (! IterableTools.isEmpty(result)) {
 			return result;
 		}
 		
 		for (XmlElement xmlElement : getXmlElements()) {
 			result = xmlElement.getCompletionProposals(pos);
-			if (! CollectionTools.isEmpty(result)) {
+			if (! IterableTools.isEmpty(result)) {
 				return result;
 			}
 		}
 		
 		if (this.xmlElementWrapper != null) {
 			result = this.xmlElementWrapper.getCompletionProposals(pos);
-			if (! CollectionTools.isEmpty(result)) {
+			if (! IterableTools.isEmpty(result)) {
 				return result;
 			}
 		}
@@ -339,11 +339,11 @@ public class GenericJavaXmlElementsMapping
 		
 		for (XmlElement xmlElement : getXmlElements()) {
 			String typeName = xmlElement.getFullyQualifiedType();
-			if (! StringTools.stringIsEmpty(typeName)) {
+			if (! StringTools.isBlank(typeName)) {
 				xmlElementTypes.add(typeName);
 			}
 			String elementName = xmlElement.getQName().getName();
-			if (! StringTools.stringIsEmpty(elementName)) {
+			if (! StringTools.isBlank(elementName)) {
 				xmlElementQNames.add(new QName(xmlElement.getQName().getNamespace(), elementName));
 			}
 		}

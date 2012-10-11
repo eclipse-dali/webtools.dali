@@ -13,7 +13,7 @@ import java.util.Collection;
 
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 
 /**
@@ -137,7 +137,7 @@ public interface JpaStructureNode
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.node);
+			return ObjectTools.toString(this, this.node);
 		}
 	}
 }

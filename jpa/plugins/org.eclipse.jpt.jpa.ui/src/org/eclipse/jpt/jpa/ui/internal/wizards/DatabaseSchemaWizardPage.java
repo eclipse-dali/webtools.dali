@@ -16,7 +16,7 @@ import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.db.ConnectionAdapter;
 import org.eclipse.jpt.jpa.db.ConnectionListener;

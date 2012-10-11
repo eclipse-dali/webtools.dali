@@ -15,12 +15,12 @@ import javax.xml.namespace.QName;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.Bag;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SubListIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
+import org.eclipse.jpt.common.utility.collection.Bag;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.SubListIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlElement;
@@ -125,13 +125,13 @@ public class ELJavaXmlElementsMapping
 	@Override
 	public Iterable<String> getCompletionProposals(int pos) {
 		Iterable<String> result = super.getCompletionProposals(pos);
-		if (! CollectionTools.isEmpty(result)) {
+		if (! IterableTools.isEmpty(result)) {
 			return result;
 		}
 		
 		for (ELJavaXmlPath xmlPath : this.xmlPathContainer.getContextElements()) {
 			result = xmlPath.getCompletionProposals(pos);
-			if (! CollectionTools.isEmpty(result)) {
+			if (! IterableTools.isEmpty(result)) {
 				return result;
 			}
 		}

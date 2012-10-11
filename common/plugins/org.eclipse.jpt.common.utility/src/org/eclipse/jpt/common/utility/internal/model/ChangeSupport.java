@@ -17,14 +17,14 @@ import java.util.Collections;
 import java.util.EventListener;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.HashBag;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.HashBag;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
@@ -38,16 +38,11 @@ import org.eclipse.jpt.common.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.common.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeAddEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeChangeEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeClearEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeRemoveEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
-import org.eclipse.jpt.common.utility.model.listener.TreeChangeListener;
 
 /**
  * Support object that can be used by implementors of the {@link Model} interface.
@@ -288,7 +283,7 @@ public class ChangeSupport
 	}
 
 	private boolean hasChangeListener(ChangeListener listener) {
-		return CollectionTools.contains(this.getChangeListeners(), listener);
+		return IterableTools.contains(this.getChangeListeners(), listener);
 	}
 
 
@@ -327,7 +322,7 @@ public class ChangeSupport
 	}
 
 	private boolean hasStateChangeListener(StateChangeListener listener) {
-		return CollectionTools.contains(this.getStateChangeListeners(), listener);
+		return IterableTools.contains(this.getStateChangeListeners(), listener);
 	}
 
 	/**
@@ -423,7 +418,7 @@ public class ChangeSupport
 	}
 
 	private boolean hasPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
-		return CollectionTools.contains(this.getPropertyChangeListeners(propertyName), listener);
+		return IterableTools.contains(this.getPropertyChangeListeners(propertyName), listener);
 	}
 
 	/**
@@ -643,7 +638,7 @@ public class ChangeSupport
 	}
 
 	private boolean hasCollectionChangeListener(String collectionName, CollectionChangeListener listener) {
-		return CollectionTools.contains(this.getCollectionChangeListeners(collectionName), listener);
+		return IterableTools.contains(this.getCollectionChangeListeners(collectionName), listener);
 	}
 
 	/**
@@ -1324,7 +1319,7 @@ public class ChangeSupport
 	}
 
 	private boolean hasListChangeListener(String listName, ListChangeListener listener) {
-		return CollectionTools.contains(this.getListChangeListeners(listName), listener);
+		return IterableTools.contains(this.getListChangeListeners(listName), listener);
 	}
 
 	/**
@@ -1965,7 +1960,7 @@ public class ChangeSupport
 			return false;
 		}
 
-		ArrayList<E> addedItems = CollectionTools.list(items);
+		ArrayList<E> addedItems = ListTools.list(items);
 		if (list.addAll(index, addedItems)) {
 			this.fireItemsAdded(listName, index, addedItems);
 			return true;
@@ -2038,7 +2033,7 @@ public class ChangeSupport
 	 * no empty check
 	 */
 	protected <E> boolean addItemsToList_(Iterator<? extends E> items, List<E> list, String listName) {
-		ArrayList<E> addedItems = CollectionTools.list(items);
+		ArrayList<E> addedItems = ListTools.list(items);
 		int index = list.size();
 		if (list.addAll(addedItems)) {
 			this.fireItemsAdded(listName, index, addedItems);
@@ -2330,7 +2325,7 @@ public class ChangeSupport
 			return false;
 		}
 		// it's unlikely but possible the list is unchanged by the move... (e.g. any moves within ["foo", "foo", "foo"]...)
-		CollectionTools.move(list, targetIndex, sourceIndex, length);
+		ListTools.move(list, targetIndex, sourceIndex, length);
 		this.fireItemsMoved(listName, targetIndex, sourceIndex, length);
 		return true;
 	}
@@ -2356,7 +2351,7 @@ public class ChangeSupport
 		if (this.valuesAreEqual(list.get(targetIndex), list.get(sourceIndex))) {
 			return false;
 		}
-		CollectionTools.move(list, targetIndex, sourceIndex);
+		ListTools.move(list, targetIndex, sourceIndex);
 		this.fireItemMoved_(listName, targetIndex, sourceIndex);
 		return true;
 	}
@@ -2416,7 +2411,7 @@ public class ChangeSupport
 		if (list.isEmpty()) {
 			return this.addItemsToList_(newList, list, listName);
 		}
-		return this.synchronizeList_(CollectionTools.list(newList), list, listName);
+		return this.synchronizeList_(ListTools.list(newList), list, listName);
 	}
 
 	/**
@@ -2453,305 +2448,41 @@ public class ChangeSupport
 	}
 
 
-	// ********** tree change support **********
-
-	protected static final Class<TreeChangeListener> TREE_CHANGE_LISTENER_CLASS = TreeChangeListener.class;
-
-	/**
-	 * Add a tree change listener for the specified tree. The listener
-	 * will be notified only for changes to the specified tree.
-	 */
-	public void addTreeChangeListener(String treeName, TreeChangeListener listener) {
-		this.addListener(TREE_CHANGE_LISTENER_CLASS, treeName, listener);
-	}
-
-	/**
-	 * Remove a tree change listener that was registered for a specific tree.
-	 */
-	public void removeTreeChangeListener(String treeName, TreeChangeListener listener) {
-		this.removeListener(TREE_CHANGE_LISTENER_CLASS, treeName, listener);
-	}
-
-	/**
-	 * Return whether there are any tree change listeners that will
-	 * be notified when the specified tree has changed.
-	 */
-	public boolean hasAnyTreeChangeListeners(String treeName) {
-		return this.hasAnyListeners(TREE_CHANGE_LISTENER_CLASS, treeName);
-	}
-
-	private ListenerList<TreeChangeListener> getTreeChangeListenerList(String treeName) {
-		return this.getListenerList(TREE_CHANGE_LISTENER_CLASS, treeName);
-	}
-
-	private Iterable<TreeChangeListener> getTreeChangeListeners(String treeName) {
-		ListenerList<TreeChangeListener> listenerList = this.getTreeChangeListenerList(treeName);
-		return (listenerList == null) ? null : listenerList.getListeners();
-	}
-
-	private boolean hasTreeChangeListener(String treeName, TreeChangeListener listener) {
-		return CollectionTools.contains(this.getTreeChangeListeners(treeName), listener);
-	}
-
-	/**
-	 * Report a bound tree update to any registered listeners.
-	 */
-	public void fireNodeAdded(TreeAddEvent event) {
-		String treeName = event.getTreeName();
-		Iterable<TreeChangeListener> listeners = this.getTreeChangeListeners(treeName);
-		if (listeners != null) {
-			for (TreeChangeListener listener : listeners) {
-				if (this.hasTreeChangeListener(treeName, listener)) {  // verify listener is still listening
-					listener.nodeAdded(event);
-				}
-			}
-		}
-
-		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
-		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
-					changeListener.nodeAdded(event);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Report a bound tree update to any registered listeners.
-	 */
-	public void fireNodeAdded(String treeName, List<?> path) {
-//		this.fireNodeAdded(new TreeAddEvent(this.source, treeName, path));
-		TreeAddEvent event = null;
-		Iterable<TreeChangeListener> listeners = this.getTreeChangeListeners(treeName);
-		if (listeners != null) {
-			for (TreeChangeListener listener : listeners) {
-				if (this.hasTreeChangeListener(treeName, listener)) {  // verify listener is still listening
-					if (event == null) {
-						event = new TreeAddEvent(this.source, treeName, path);
-					}
-					listener.nodeAdded(event);
-				}
-			}
-		}
-
-		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
-		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
-					if (event == null) {
-						event = new TreeAddEvent(this.source, treeName, path);
-					}
-					changeListener.nodeAdded(event);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Report a bound tree update to any registered listeners.
-	 */
-	public void fireNodeRemoved(TreeRemoveEvent event) {
-		String treeName = event.getTreeName();
-		Iterable<TreeChangeListener> listeners = this.getTreeChangeListeners(treeName);
-		if (listeners != null) {
-			for (TreeChangeListener listener : listeners) {
-				if (this.hasTreeChangeListener(treeName, listener)) {  // verify listener is still listening
-					listener.nodeRemoved(event);
-				}
-			}
-		}
-
-		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
-		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
-					changeListener.nodeRemoved(event);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Report a bound tree update to any registered listeners.
-	 */
-	public void fireNodeRemoved(String treeName, List<?> path) {
-//		this.fireNodeRemoved(new TreeRemoveEvent(this.source, treeName, path));
-
-		TreeRemoveEvent event = null;
-		Iterable<TreeChangeListener> listeners = this.getTreeChangeListeners(treeName);
-		if (listeners != null) {
-			for (TreeChangeListener listener : listeners) {
-				if (this.hasTreeChangeListener(treeName, listener)) {  // verify listener is still listening
-					if (event == null) {
-						event = new TreeRemoveEvent(this.source, treeName, path);
-					}
-					listener.nodeRemoved(event);
-				}
-			}
-		}
-
-		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
-		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
-					if (event == null) {
-						event = new TreeRemoveEvent(this.source, treeName, path);
-					}
-					changeListener.nodeRemoved(event);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Report a bound tree update to any registered listeners.
-	 */
-	public void fireTreeCleared(TreeClearEvent event) {
-		String treeName = event.getTreeName();
-		Iterable<TreeChangeListener> listeners = this.getTreeChangeListeners(treeName);
-		if (listeners != null) {
-			for (TreeChangeListener listener : listeners) {
-				if (this.hasTreeChangeListener(treeName, listener)) {  // verify listener is still listening
-					listener.treeCleared(event);
-				}
-			}
-		}
-
-		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
-		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
-					changeListener.treeCleared(event);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Report a bound tree update to any registered listeners.
-	 */
-	public void fireTreeCleared(String treeName) {
-//		this.fireTreeCleared(new TreeClearEvent(this.source, treeName));
-
-		TreeClearEvent event = null;
-		Iterable<TreeChangeListener> listeners = this.getTreeChangeListeners(treeName);
-		if (listeners != null) {
-			for (TreeChangeListener listener : listeners) {
-				if (this.hasTreeChangeListener(treeName, listener)) {  // verify listener is still listening
-					if (event == null) {
-						event = new TreeClearEvent(this.source, treeName);
-					}
-					listener.treeCleared(event);
-				}
-			}
-		}
-
-		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
-		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
-					if (event == null) {
-						event = new TreeClearEvent(this.source, treeName);
-					}
-					changeListener.treeCleared(event);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Report a bound tree update to any registered listeners.
-	 */
-	public void fireTreeChanged(TreeChangeEvent event) {
-		String treeName = event.getTreeName();
-		Iterable<TreeChangeListener> listeners = this.getTreeChangeListeners(treeName);
-		if (listeners != null) {
-			for (TreeChangeListener listener : listeners) {
-				if (this.hasTreeChangeListener(treeName, listener)) {  // verify listener is still listening
-					listener.treeChanged(event);
-				}
-			}
-		}
-
-		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
-		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
-					changeListener.treeChanged(event);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Report a bound tree update to any registered listeners.
-	 */
-	public void fireTreeChanged(String treeName, Collection<?> nodes) {
-//		this.fireTreeChanged(new TreeChangeEvent(this.source, treeName, nodes));
-
-		TreeChangeEvent event = null;
-		Iterable<TreeChangeListener> listeners = this.getTreeChangeListeners(treeName);
-		if (listeners != null) {
-			for (TreeChangeListener listener : listeners) {
-				if (this.hasTreeChangeListener(treeName, listener)) {  // verify listener is still listening
-					if (event == null) {
-						event = new TreeChangeEvent(this.source, treeName, nodes);
-					}
-					listener.treeChanged(event);
-				}
-			}
-		}
-
-		Iterable<ChangeListener> changeListeners = this.getChangeListeners();
-		if (changeListeners != null) {
-			for (ChangeListener changeListener : changeListeners) {
-				if (this.hasChangeListener(changeListener)) {  // verify listener is still listening
-					if (event == null) {
-						event = new TreeChangeEvent(this.source, treeName, nodes);
-					}
-					changeListener.treeChanged(event);
-				}
-			}
-		}
-	}
-
-
 	// ********** misc **********
 
 	/**
 	 * Convenience method for checking whether an attribute value has changed.
-	 * @see Tools#valuesAreEqual(Object, Object)
+	 * @see ObjectTools#equals(Object, Object)
 	 */
 	public boolean valuesAreEqual(Object value1, Object value2) {
-		return Tools.valuesAreEqual(value1, value2);
+		return ObjectTools.equals(value1, value2);
 	}
 
 	/**
 	 * Convenience method for checking whether an attribute value has changed.
-	 * @see Tools#valuesAreDifferent(Object, Object)
+	 * @see ObjectTools#notEquals(Object, Object)
 	 */
 	public boolean valuesAreDifferent(Object value1, Object value2) {
-		return Tools.valuesAreDifferent(value1, value2);
+		return ObjectTools.notEquals(value1, value2);
 	}
 
 	/**
-	 * @see CollectionTools#elementsAreEqual(Iterable, Iterable)
+	 * @see IterableTools#elementsAreEqual(Iterable, Iterable)
 	 */
 	public boolean elementsAreEqual(Iterable<?> iterable1, Iterable<?> iterable2) {
-		return CollectionTools.elementsAreEqual(iterable1, iterable2);
+		return IterableTools.elementsAreEqual(iterable1, iterable2);
 	}
 
 	/**
-	 * @see CollectionTools#elementsAreDifferent(Iterable, Iterable)
+	 * @see IterableTools#elementsAreDifferent(Iterable, Iterable)
 	 */
 	public boolean elementsAreDifferent(Iterable<?> iterable1, Iterable<?> iterable2) {
-		return CollectionTools.elementsAreDifferent(iterable1, iterable2);
+		return IterableTools.elementsAreDifferent(iterable1, iterable2);
 	}
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.source);
+		return ObjectTools.toString(this, this.source);
 	}
 
 
@@ -2783,7 +2514,7 @@ public class ChangeSupport
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.getAspectName());
+			return ObjectTools.toString(this, this.getAspectName());
 		}
 
 		abstract String getAspectName();

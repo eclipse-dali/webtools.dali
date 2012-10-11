@@ -20,16 +20,16 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.JDTModifiedDeclaration.Adapter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.CloneIterator;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterator.CloneIterator;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.AspectChangeSupport;
 import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.JpaFile;
@@ -443,7 +443,7 @@ public abstract class AbstractJpaNode
 				boolean match = false;
 				for (Iterator<C> stream = contextElements.iterator(); stream.hasNext(); ) {
 					C contextElement = stream.next();
-					if (Tools.valuesAreEqual(this.getResourceElement(contextElement), resourceElement)) {
+					if (ObjectTools.equals(this.getResourceElement(contextElement), resourceElement)) {
 						// we don't know the source index because the element has been moved by previously moved elements
 						this.moveContextElement(resourceIndex, contextElement);
 						stream.remove();

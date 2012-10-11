@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
@@ -98,7 +98,7 @@ public class GenericOrmUniqueConstraint
 		} 
 
 		for (int i=0; i<this.getColumnNamesSize(); i++) {
-			if (! Tools.valuesAreEqual(this.columnNames.get(i), uniqueConstraint.getColumnName(i))) {
+			if (! ObjectTools.equals(this.columnNames.get(i), uniqueConstraint.getColumnName(i))) {
 				return false;
 			}
 		}

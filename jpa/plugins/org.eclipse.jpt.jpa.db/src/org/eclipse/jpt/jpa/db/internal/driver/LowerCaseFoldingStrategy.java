@@ -39,7 +39,7 @@ class LowerCaseFoldingStrategy
 	}
 
 	public boolean nameIsFolded(String name) {
-		return StringTools.stringIsLowercase(name);
+		return StringTools.isLowercase(name);
 	}
 
 	@Override

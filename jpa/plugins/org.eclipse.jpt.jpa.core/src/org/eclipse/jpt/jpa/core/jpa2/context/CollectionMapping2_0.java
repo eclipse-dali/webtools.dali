@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.jpa2.context;
 
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.CollectionMapping;
 import org.eclipse.jpt.jpa.core.context.Column;

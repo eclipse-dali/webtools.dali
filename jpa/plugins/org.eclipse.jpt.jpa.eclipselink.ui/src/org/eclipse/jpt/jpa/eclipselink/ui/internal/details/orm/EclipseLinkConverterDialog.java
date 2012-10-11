@@ -11,11 +11,12 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.details.orm;
 
 import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.common.ui.internal.widgets.ValidatingDialog;
-import org.eclipse.jpt.common.utility.internal.StringConverter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticListValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter;
@@ -136,9 +137,10 @@ public class EclipseLinkConverterDialog
 			return new StaticListValueModel<Class<? extends EclipseLinkConverter>>(EclipseLinkConverter.TYPES);
 		}
 		
-		private StringConverter<Class<? extends EclipseLinkConverter>> buildStringConverter() {
-			return new StringConverter<Class<? extends EclipseLinkConverter>>() {
-				public String convertToString(Class<? extends EclipseLinkConverter> value) {
+		private Transformer<Class<? extends EclipseLinkConverter>, String> buildStringConverter() {
+			return new TransformerAdapter<Class<? extends EclipseLinkConverter>, String>() {
+				@Override
+				public String transform(Class<? extends EclipseLinkConverter> value) {
 					if (value == null) {
 						return null;
 					}

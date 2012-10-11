@@ -11,12 +11,12 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
@@ -342,7 +342,7 @@ public class GenericOrmJoinTable
 		 * the default table name. The table is always the join table.
 		 */
 		public boolean tableNameIsInvalid(String tableName) {
-			return Tools.valuesAreDifferent(this.getDefaultTableName(), tableName);
+			return ObjectTools.notEquals(this.getDefaultTableName(), tableName);
 		}
 
 		/**
@@ -353,7 +353,7 @@ public class GenericOrmJoinTable
 		}
 
 		public org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName) {
-			return Tools.valuesAreEqual(GenericOrmJoinTable.this.getName(), tableName) ?
+			return ObjectTools.equals(GenericOrmJoinTable.this.getName(), tableName) ?
 					GenericOrmJoinTable.this.getDbTable() :
 					null;
 		}

@@ -89,7 +89,7 @@ public class ELJavaXmlDiscriminatorValue
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		
-		if (StringTools.stringIsEmpty(this.value)) {
+		if (StringTools.isBlank(this.value)) {
 			messages.add(
 					ELJaxbValidationMessageBuilder.buildMessage(
 								IMessage.HIGH_SEVERITY,

@@ -17,9 +17,9 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
@@ -789,7 +789,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 	}
 	
 	protected Embeddable getResolvedTargetEmbeddable(ElementCollectionMapping2_0 mapping) {
-		return (Embeddable) ReflectionTools.executeMethod(mapping, "getResolvedTargetEmbeddable");
+		return (Embeddable) ObjectTools.execute(mapping, "getResolvedTargetEmbeddable");
 	}
 	
 	public void testResolvedTargetEmbeddable() throws Exception {
@@ -2509,7 +2509,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 
 		Iterator<NestableAnnotation> javaJoinColumns = resourceField.getAnnotations(JPA2_0.MAP_KEY_JOIN_COLUMN).iterator();
-		assertEquals(3, CollectionTools.size(javaJoinColumns));
+		assertEquals(3, IteratorTools.size(javaJoinColumns));
 
 
 		elementCollectionMapping.moveSpecifiedMapKeyJoinColumn(2, 0);

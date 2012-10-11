@@ -25,20 +25,20 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.NonEmptyStringFilter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.MappingFile;
@@ -424,7 +424,7 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	protected Iterable<String> getNonEmptyConverterNames() {
-		return new FilteringIterable<String>(this.getConverterNames(), NonEmptyStringFilter.instance());
+		return new FilteringIterable<String>(this.getConverterNames(), StringTools.NON_BLANK_FILTER);
 	}
 
 	protected Iterable<String> getConverterNames() {
@@ -440,7 +440,7 @@ public class EclipseLinkPersistenceUnit
 	 * @see #buildQueries()
 	 */
 	protected Iterable<EclipseLinkConverter> buildConverters() {
-		ArrayList<EclipseLinkConverter> result = CollectionTools.list(this.getMappingFileConverters());
+		ArrayList<EclipseLinkConverter> result = ListTools.list(this.getMappingFileConverters());
 
 		HashSet<String> mappingFileConverterNames = this.convertToNames(result);
 		HashMap<String, ArrayList<JavaEclipseLinkConverter<?>>> javaConverters = this.mapByName(this.getAllJavaConverters());
@@ -687,7 +687,7 @@ public class EclipseLinkPersistenceUnit
 		}
 
 		IJavaProject javaProject = getJpaProject().getJavaProject();
-		if (StringTools.stringIsEmpty(loggerProperty.getValue())) {
+		if (StringTools.isBlank(loggerProperty.getValue())) {
 			messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
@@ -728,7 +728,7 @@ public class EclipseLinkPersistenceUnit
 		}
 
 		IJavaProject javaProject = getJpaProject().getJavaProject();
-		if (StringTools.stringIsEmpty(handlerProperty.getValue())) {
+		if (StringTools.isBlank(handlerProperty.getValue())) {
 			messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
@@ -784,7 +784,7 @@ public class EclipseLinkPersistenceUnit
 		}
 
 		IJavaProject javaProject = getJpaProject().getJavaProject();
-		if (StringTools.stringIsEmpty(profilerProperty.getValue())) {
+		if (StringTools.isBlank(profilerProperty.getValue())) {
 			messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
@@ -836,7 +836,7 @@ public class EclipseLinkPersistenceUnit
 			}
 
 			IJavaProject javaProject = getJpaProject().getJavaProject();
-				if (StringTools.stringIsEmpty(property.getValue())) {
+				if (StringTools.isBlank(property.getValue())) {
 					messages.add(
 							DefaultEclipseLinkJpaValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
@@ -988,7 +988,7 @@ public class EclipseLinkPersistenceUnit
 		HashMap<String, ArrayList<EclipseLinkConverter>> convertersByName = this.mapByName(this.getConverters());
 		for (Map.Entry<String, ArrayList<EclipseLinkConverter>> entry : convertersByName.entrySet()) {
 			String converterName = entry.getKey();
-			if (StringTools.stringIsNotEmpty(converterName)) {  // ignore empty names
+			if (StringTools.isNotBlank(converterName)) {  // ignore empty names
 				ArrayList<EclipseLinkConverter> dups = entry.getValue();
 				if (dups.size() > 1) {
 					this.validateConvertersWithSameName(converterName, dups, messages);
@@ -1345,11 +1345,11 @@ public class EclipseLinkPersistenceUnit
 	protected <N extends JpaNamedContextNode> HashMap<String, ArrayList<N>> extractEclipseLinkConvertibleJavaNodes(Iterable<N> allJavaNodes, Iterable<? extends JpaNamedContextNode> mappingFileNodes) {
 		HashMap<String, ArrayList<N>> convertibleNodes = new HashMap<String, ArrayList<N>>();
 
-		HashSet<String> mappingFileNodeNames = this.convertToNames(CollectionTools.list(mappingFileNodes));
+		HashSet<String> mappingFileNodeNames = this.convertToNames(ListTools.list(mappingFileNodes));
 		HashMap<String, ArrayList<N>> allJavaNodesByName = this.mapByName(allJavaNodes);
 		for (Map.Entry<String, ArrayList<N>> entry : allJavaNodesByName.entrySet()) {
 			String javaNodeName = entry.getKey();
-			if (StringTools.stringIsEmpty(javaNodeName)) {
+			if (StringTools.isBlank(javaNodeName)) {
 				continue;  // ignore any nodes with an empty name(?)
 			}
 			if (mappingFileNodeNames.contains(javaNodeName)) {

@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.model.listener;
 
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionClearEvent;
@@ -22,10 +22,6 @@ import org.eclipse.jpt.common.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.common.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeAddEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeChangeEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeClearEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeRemoveEvent;
 
 /**
  * Convenience implementation of {@link ChangeListener}.
@@ -95,25 +91,8 @@ public class ChangeAdapter
 		// do nothing
 	}
 
-	// ***** tree
-	public void nodeAdded(TreeAddEvent event) {
-		// do nothing
-	}
-
-	public void nodeRemoved(TreeRemoveEvent event) {
-		// do nothing
-	}
-
-	public void treeCleared(TreeClearEvent event) {
-		// do nothing
-	}
-
-	public void treeChanged(TreeChangeEvent event) {
-		// do nothing
-	}
-
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this);
+		return ObjectTools.toString(this);
 	}
 }

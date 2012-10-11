@@ -98,7 +98,7 @@ class Sybase
 	//TODO query database for delimiter setting
 	@Override
 	boolean identifierIsDelimited(String identifier) {
-		return StringTools.stringIsBracketed(identifier)
+		return StringTools.isBracketed(identifier)
 					|| super.identifierIsDelimited(identifier);
 	}
 

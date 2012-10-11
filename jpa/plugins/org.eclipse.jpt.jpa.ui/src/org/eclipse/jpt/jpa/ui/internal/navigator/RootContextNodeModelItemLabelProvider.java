@@ -11,10 +11,10 @@ package org.eclipse.jpt.jpa.ui.internal.navigator;
 
 import org.eclipse.jpt.common.ui.internal.jface.AbstractItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
-import org.eclipse.jpt.common.utility.internal.Transformer;
-import org.eclipse.jpt.common.utility.internal.TransformerAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.ui.JpaRootContextNodeModel;
 import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;

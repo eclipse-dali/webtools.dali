@@ -9,9 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.DbGenerator;
 import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
@@ -119,7 +121,8 @@ public abstract class AbstractJavaSequenceGenerator<A extends SequenceGeneratorA
 	}
 
 	protected Iterable<String> getJavaCandidateSequences() {
-		return StringTools.convertToJavaStringLiteralContents(this.getCandidateSequences());
+		return new TransformationIterable<String, String>(this.getCandidateSequences(),
+				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 
 	protected Iterable<String> getCandidateSequences() {
@@ -142,7 +145,7 @@ public abstract class AbstractJavaSequenceGenerator<A extends SequenceGeneratorA
 	}
 	
 	protected boolean isEquivalentTo(SequenceGenerator generator) {
-		return Tools.valuesAreEqual(this.specifiedSequenceName, generator.getSpecifiedSequenceName());
+		return ObjectTools.equals(this.specifiedSequenceName, generator.getSpecifiedSequenceName());
 	}
 	
 	// ********** metadata conversion **********

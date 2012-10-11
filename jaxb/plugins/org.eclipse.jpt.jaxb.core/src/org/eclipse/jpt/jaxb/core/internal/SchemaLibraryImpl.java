@@ -15,13 +15,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
-import org.eclipse.jpt.common.utility.internal.Bag;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.HashBag;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.collection.Bag;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.collection.HashBag;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.jaxb.core.JaxbPreferences;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
-import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.SchemaEntry;
 import org.eclipse.jpt.jaxb.core.SchemaLibrary;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
@@ -54,7 +54,7 @@ public class SchemaLibraryImpl
 	
 	public List<String> getSchemaLocations() {
 		return Collections.unmodifiableList(
-				CollectionTools.list(
+				ListTools.list(
 						new TransformationIterable<SchemaEntry, String>(this.schemaEntries) {
 							@Override
 							protected String transform(SchemaEntry o) {
@@ -68,19 +68,19 @@ public class SchemaLibraryImpl
 			entry.dispose();
 		}
 		this.schemaEntries.clear();
-		JptJaxbCorePlugin.setSchemaLocations(this.project.getProject(), schemaLocations);
+		JaxbPreferences.setSchemaLocations(this.project.getProject(), schemaLocations);
 		readProjectPreferences();
 	}
 	
 	public XsdSchema getSchema(String namespace) {
 		for (SchemaEntry entry : this.schemaEntries) {
-			if (StringTools.stringsAreEqual(namespace, entry.getNamespace())) {
+			if (ObjectTools.equals(namespace, entry.getNamespace())) {
 				return entry.getXsdSchema(namespace);
 			}
 		}
 		
 		if (! this.impliedEntries.containsKey(namespace)) {
-			if (! StringTools.stringsAreEqual(XsdUtil.getResolvedUri(namespace), namespace)) {
+			if (! ObjectTools.equals(XsdUtil.getResolvedUri(namespace), namespace)) {
 				// the namespace itself resolves to a location.  add it as an implied entry
 				this.impliedEntries.put(namespace, new SchemaEntryImpl(namespace));
 			}
@@ -93,7 +93,7 @@ public class SchemaLibraryImpl
 	}
 	
 	protected void readProjectPreferences() {
-		List<String> schemas = JptJaxbCorePlugin.getSchemaLocations(this.project.getProject());
+		List<String> schemas = JaxbPreferences.getSchemaLocations(this.project.getProject());
 		for (String schemaLocation : schemas) {
 			SchemaEntryImpl entry = new SchemaEntryImpl(schemaLocation);
 			this.schemaEntries.add(entry);
@@ -102,7 +102,7 @@ public class SchemaLibraryImpl
 	
 	public void refreshSchema(String namespace) {
 		for (SchemaEntryImpl entry : this.schemaEntries) {
-			if (StringTools.stringsAreEqual(namespace, entry.getNamespace())) {
+			if (ObjectTools.equals(namespace, entry.getNamespace())) {
 				entry.refresh();
 			}
 		}

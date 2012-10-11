@@ -24,57 +24,61 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import org.eclipse.jpt.common.utility.internal.StringConverter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.StringMatcher;
+import org.eclipse.jpt.common.utility.internal.transformer.StringObjectTransformer;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * This panel presents an entry field and a list box of choices that
  * allows the user to filter the entries in the list box by entering
  * a pattern in the entry field.
- * 
- * By default, two wildcards are allowed in the pattern:
- * 	'*' will match any set of zero or more characters
- * 	'?' will match any single character
- * 
- * The panel consists of 4 components that can be customized:
- * 	- 1 text field
- * 	- 1 list box
- * 	- 2 labels, one for each of the above
- * 
- * Other aspects of the panel's behavior can be changed:
- * 	- the string converter determines how the objects in the
- * 		list are converted to strings and compared to the pattern
- * 		entered in the text field; by default the converter simply
- * 		uses the result of the object's #toString() method
- * 		(if you replace the string converter, you will probably
- * 		want to replace the list box's cell renderer also)
- * 	- the string matcher can also be changed if you would
- * 		like different pattern matching behavior than that
- * 		described above
- * 	- you can specify the maximum size of the list - this may
- * 		force the user to enter a pattern restrictive enough
- * 		to result in a list smaller than the maximum size; the
- * 		default is -1, which disables the restriction
- * 
+ * <p>
+ * Two wildcards are allowed in the pattern:<ul>
+ * <li>'*' will match any set of zero or more characters
+ * <li>'?' will match any single character
+ * <.ul>
+ * The panel consists of 4 components that can be customized:<ul>
+ * <li>1 text field
+ * <li>1 list box
+ * <li>2 labels, one for each of the above
+ * </ul>
+ * Other aspects of the panel's behavior can be changed:<ul>
+ * <li>the string converter determines how the objects in the
+ *     list are converted to strings and compared to the pattern
+ *     entered in the text field; by default the converter simply
+ *     uses the result of the object's #toString() method
+ *     (if you replace the string converter, you will probably
+ *     want to replace the list box's cell renderer also)
+ * <li>the string matcher can also be changed if you would
+ *     like different pattern matching behavior than that
+ *     described above
+ * <li>you can specify the maximum size of the list - this may
+ *     force the user to enter a pattern restrictive enough
+ *     to result in a list smaller than the maximum size; the
+ *     default is -1, which disables the restriction
+ * </ul>
  * This panel is not a typical panel, in the sense that it does not share
  * its model with clients via value models. Instead, this panel's model
  * is set and queried directly because it is designed to be used in a
  * dialog that directs the user's behavior (as opposed to a "normal"
  * window).
  */
-public class FilteringListPanel<T> extends JPanel {
-
+public class FilteringListPanel<T>
+	extends JPanel
+{
 	/**
 	 * The complete list of available choices
 	 * (as opposed to the partial list held by the list box).
 	 */
-	private Object[] completeList;
+	private T[] completeList;
 
 	/**
 	 * An adapter used to convert the objects in the list
 	 * to strings so they can be run through the matcher
 	 * and displayed in the text field.
 	 */
-	StringConverter<T> stringConverter;
+	Transformer<T, String> transformer;
 
 	/** The text field. */
 	private JTextField textField;
@@ -89,14 +93,6 @@ public class FilteringListPanel<T> extends JPanel {
 	private int maxListSize;
 
 	/**
-	 * The matcher used to filter the list against
-	 * the pattern entered in the text field. By default,
-	 * this allows the two wildcard characters described in
-	 * the class comment.
-	 */
-	private StringMatcher stringMatcher;
-
-	/**
 	 * Performance tweak: We use this buffer instead of
 	 * a temporary variable during filtering so we don't have
 	 * to keep re-allocating it.
@@ -105,6 +101,8 @@ public class FilteringListPanel<T> extends JPanel {
 
 	private static final Border TEXT_FIELD_LABEL_BORDER = BorderFactory.createEmptyBorder(0, 0, 5, 0);
 	private static final Border LIST_BOX_LABEL_BORDER = BorderFactory.createEmptyBorder(5, 0, 5, 0);
+
+	private static final long serialVersionUID = 1L;
 
 
 	// ********** constructors **********
@@ -115,8 +113,8 @@ public class FilteringListPanel<T> extends JPanel {
 	 * choices and selection to strings (which simply calls #toString() on
 	 * the objects).
 	 */
-	public FilteringListPanel(Object[] completeList, Object initialSelection) {
-		this(completeList, initialSelection, StringConverter.Default.<T>instance());
+	public FilteringListPanel(T[] completeList, T initialSelection) {
+		this(completeList, initialSelection, StringObjectTransformer.<T>instance());
 	}
 
 	/**
@@ -124,39 +122,36 @@ public class FilteringListPanel<T> extends JPanel {
 	 * and initial selection. Use the specified string converter to convert the
 	 * choices and selection to strings.
 	 */
-	public FilteringListPanel(Object[] completeList, Object initialSelection, StringConverter<T> stringConverter) {
+	public FilteringListPanel(T[] completeList, T initialSelection, Transformer<T, String> stringConverter) {
 		super(new BorderLayout());
 		this.completeList = completeList;
-		this.stringConverter = stringConverter;
+		this.transformer = stringConverter;
 		this.initialize(initialSelection);
 	}
 
 
 	// ********** initialization **********
 
-	private void initialize(Object initialSelection) {
-		this.maxListSize = this.defaultMaxListSize();
+	private void initialize(T initialSelection) {
+		this.maxListSize = this.getDefaultMaxListSize();
 		this.buffer = this.buildBuffer();
 
 		this.textFieldListener = this.buildTextFieldListener();
-
-		this.stringMatcher = this.buildStringMatcher();
 
 		this.initializeLayout(initialSelection);
 	}
 
 	private Object[] buildBuffer() {
-		return new Object[this.max()];
+		return new Object[this.getMax()];
 	}
 
 	/**
 	 * Return the current max number of entries allowed in the list box.
 	 */
-	private int max() {
-		if (this.maxListSize == -1) {
-			return this.completeList.length;
-		}
-		return Math.min(this.maxListSize, this.completeList.length);
+	private int getMax() {
+		return (this.maxListSize == -1) ?
+				this.completeList.length :
+				Math.min(this.maxListSize, this.completeList.length);
 	}
 
 	/**
@@ -164,29 +159,29 @@ public class FilteringListPanel<T> extends JPanel {
 	 * and filter the list appropriately.
 	 */
 	private DocumentListener buildTextFieldListener() {
-		return new DocumentListener() {
-			public void insertUpdate(DocumentEvent e) {
-				FilteringListPanel.this.filterList();
-			}
-			public void changedUpdate(DocumentEvent e) {
-				FilteringListPanel.this.filterList();
-			}
-			public void removeUpdate(DocumentEvent e) {
-				FilteringListPanel.this.filterList();
-			}
-			@Override
-			public String toString() {
-				return "text field listener"; //$NON-NLS-1$
-			}
-		};
+		return new TextFieldListener();
 	}
 
-	private int defaultMaxListSize() {
+	/* CU private */ class TextFieldListener
+		implements DocumentListener
+	{
+		public void insertUpdate(DocumentEvent e) {
+			FilteringListPanel.this.filterList();
+		}
+		public void changedUpdate(DocumentEvent e) {
+			FilteringListPanel.this.filterList();
+		}
+		public void removeUpdate(DocumentEvent e) {
+			FilteringListPanel.this.filterList();
+		}
+		@Override
+		public String toString() {
+			return ObjectTools.toString(this);
+		}
+	}
+
+	private int getDefaultMaxListSize() {
 		return -1;
-	}
-
-	private StringMatcher buildStringMatcher() {
-		return new SimpleStringMatcher<T>();
 	}
 
 	private void initializeLayout(Object initialSelection) {
@@ -211,10 +206,10 @@ public class FilteringListPanel<T> extends JPanel {
 
 		this.listBox = new JList();
 		this.listBox.setDoubleBuffered(true);
-		this.listBox.setModel(this.buildPartialArrayListModel(this.completeList, this.max()));
+		this.listBox.setModel(this.buildPartialArrayListModel(this.completeList, this.getMax()));
 		this.listBox.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		// performance tweak(?)
-		this.listBox.setPrototypeCellValue(this.prototypeCellValue());
+		this.listBox.setPrototypeCellValue(this.getPrototypeCellValue());
 		this.listBox.setPrototypeCellValue(null);
 		this.listBox.setCellRenderer(this.buildDefaultCellRenderer());
 		this.listBoxLabel.setLabelFor(this.listBox);
@@ -234,7 +229,7 @@ public class FilteringListPanel<T> extends JPanel {
 
 	// ********** public API **********
 
-	public Object selection() {
+	public Object getSelection() {
 		return this.listBox.getSelectedValue();
 	}
 
@@ -242,7 +237,7 @@ public class FilteringListPanel<T> extends JPanel {
 		this.listBox.setSelectedValue(selection, true);
 	}
 
-	public Object[] completeList() {
+	public T[] getCompleteList() {
 		return this.completeList;
 	}
 
@@ -250,37 +245,37 @@ public class FilteringListPanel<T> extends JPanel {
 	 * rebuild the filtering buffer and re-apply the filter
 	 * to the new list
 	 */
-	public void setCompleteList(Object[] completeList) {
+	public void setCompleteList(T[] completeList) {
 		this.completeList = completeList;
-		if (this.buffer.length < this.max()) {
+		if (this.buffer.length < this.getMax()) {
 			// the buffer will never shrink - might want to re-consider...  ~bjv
 			this.buffer = this.buildBuffer();
 		}
 		this.filterList();
 	}
 
-	public int maxListSize() {
+	public int getMaxListSize() {
 		return this.maxListSize;
 	}
 
 	public void setMaxListSize(int maxListSize) {
 		this.maxListSize = maxListSize;
-		if (this.buffer.length < this.max()) {
+		if (this.buffer.length < this.getMax()) {
 			// the buffer will never shrink - might want to re-consider...  ~bjv
 			this.buffer = this.buildBuffer();
 		}
 		this.filterList();
 	}
 
-	public StringConverter<T> stringConverter() {
-		return this.stringConverter;
+	public Transformer<T, String> getTransformer() {
+		return this.transformer;
 	}
 
 	/**
 	 * apply the new filter to the list
 	 */
-	public void setStringConverter(StringConverter<T> stringConverter) {
-		this.stringConverter = stringConverter;
+	public void setTransformer(Transformer<T, String> transformer) {
+		this.transformer = transformer;
 		this.filterList();
 	}
 
@@ -288,14 +283,14 @@ public class FilteringListPanel<T> extends JPanel {
 	 * allow client code to access the text field
 	 * (so we can set the focus)
 	 */
-	public JTextField textField() {
+	public JTextField getTextField() {
 		return this.textField;
 	}
 
 	/**
 	 * allow client code to access the text field label
 	 */
-	public JLabel textFieldLabel() {
+	public JLabel getTextFieldLabel() {
 		return this.textFieldLabel;
 	}
 
@@ -310,7 +305,7 @@ public class FilteringListPanel<T> extends JPanel {
 	 * allow client code to access the list box
 	 * (so we can add mouse listeners for double-clicking)
 	 */
-	public JList listBox() {
+	public JList getListBox() {
 		return this.listBox;
 	}
 
@@ -324,7 +319,7 @@ public class FilteringListPanel<T> extends JPanel {
 	/**
 	 * allow client code to access the list box label
 	 */
-	public JLabel listBoxLabel() {
+	public JLabel getListBoxLabel() {
 		return this.listBoxLabel;
 	}
 
@@ -345,18 +340,6 @@ public class FilteringListPanel<T> extends JPanel {
 		this.listBox.setFont(font);
 	}
 
-	public StringMatcher stringMatcher() {
-		return this.stringMatcher;
-	}
-
-	/**
-	 * re-apply the filter to the list
-	 */
-	public void setStringMatcher(StringMatcher stringMatcher) {
-		this.stringMatcher = stringMatcher;
-		this.filterList();
-	}
-
 
 	// ********** internal methods **********
 
@@ -364,7 +347,7 @@ public class FilteringListPanel<T> extends JPanel {
 	 * Allow subclasses to disable performance tweak
 	 * by returning null here.
 	 */
-	protected String prototypeCellValue() {
+	protected String getPrototypeCellValue() {
 		return "==========> A_STRING_THAT_IS_DEFINITELY_LONGER_THAN_EVERY_STRING_IN_THE_LIST <=========="; //$NON-NLS-1$
 	}
 
@@ -373,18 +356,24 @@ public class FilteringListPanel<T> extends JPanel {
 	 * used by the list box's cell renderer.
 	 */
 	protected ListCellRenderer buildDefaultCellRenderer() {
-		return new SimpleListCellRenderer() {
-			@Override
-			@SuppressWarnings("unchecked")
-			protected String buildText(Object value) {
-				return FilteringListPanel.this.stringConverter.convertToString((T) value);
-			}
-		};
+		return new DefaultCellRenderer();
+	}
+
+	protected class DefaultCellRenderer
+		extends SimpleListCellRenderer
+	{
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		@SuppressWarnings("unchecked")
+		protected String buildText(Object value) {
+			return FilteringListPanel.this.transformer.transform((T) value);
+		}
 	}
 
 	/**
 	 * Something has changed that requires us to filter the list.
-	 * 
+	 * <p>
 	 * This method is synchronized because a fast typist can
 	 * generate events quicker than we can filter the list. (?  ~bjv)
 	 */
@@ -401,14 +390,14 @@ public class FilteringListPanel<T> extends JPanel {
 	 */
 	private void filterList(String pattern) {
 		if (pattern.length() == 0) {
-			this.listBox.setModel(this.buildPartialArrayListModel(this.completeList, this.max()));
+			this.listBox.setModel(this.buildPartialArrayListModel(this.completeList, this.getMax()));
 		} else {
-			this.stringMatcher.setPatternString(pattern);
+			StringMatcher stringMatcher = new StringMatcher(pattern + ALL, true, false);
 			int j = 0;
 			int len = this.completeList.length;
-			int max = this.max();
+			int max = this.getMax();
 			for (int i = 0; i < len; i++) {
-				if (this.stringMatcher.matches(this.stringConverter.convertToString(this.entry(i)))) {
+				if (stringMatcher.match(this.transformer.transform(this.completeList[i]))) {
 					this.buffer[j++] = this.completeList[i];
 				}
 				if (j == max) {
@@ -427,27 +416,34 @@ public class FilteringListPanel<T> extends JPanel {
 			this.listBox.ensureIndexIsVisible(0);
 		}
 	}
-
-	/**
-	 * minimize scope of suppressed warnings
-	 */
-	@SuppressWarnings("unchecked")
-	private T entry(int index) {
-		return (T) this.completeList[index];
-	}
+	private static final String ALL = "*"; //$NON-NLS-1$
 
 	/**
 	 * Build a list model that wraps only a portion of the specified array.
 	 * The model will include the array entries from 0 to (size - 1).
 	 */
-	private ListModel buildPartialArrayListModel(final Object[] array, final int size) {
-		return new AbstractListModel() {
-			public int getSize() {
-				return size;
-			}
-			public Object getElementAt(int index) {
-				return array[index];
-			}
-		};
+	private ListModel buildPartialArrayListModel(Object[] array, int size) {
+		return new PartialArrayListModel<T>(array, size);
+	}
+
+	/* CU private */ static class PartialArrayListModel<T>
+		extends AbstractListModel
+	{
+		private final Object[] array;
+		private final int size;
+		private static final long serialVersionUID = 1L;
+
+		PartialArrayListModel(Object[] array, int size) {
+			super();
+			this.array = array;
+			this.size = size;
+		}
+		public int getSize() {
+			return this.size;
+		}
+		@SuppressWarnings("unchecked")
+		public T getElementAt(int index) {
+			return (T) this.array[index];
+		}
 	}
 }

@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.JptResourceModelListener;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
+import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
 
 public abstract class AbstractJaxbFileResourceModel<S>
 	implements JptResourceModel
@@ -53,7 +53,7 @@ public abstract class AbstractJaxbFileResourceModel<S>
 
 	protected String buildPackageName() {
 		String pkg = this.buildPackageName_();
-		return StringTools.stringIsEmpty(pkg) ? null : pkg;
+		return StringTools.isBlank(pkg) ? null : pkg;
 	}
 
 	protected String buildPackageName_() {

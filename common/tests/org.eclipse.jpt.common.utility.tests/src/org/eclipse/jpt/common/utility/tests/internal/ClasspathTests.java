@@ -22,8 +22,9 @@ import junit.framework.TestCase;
 
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.Classpath;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.SystemTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 
 @SuppressWarnings("nls")
 public class ClasspathTests extends TestCase {
@@ -249,8 +250,8 @@ public class ClasspathTests extends TestCase {
 	}
 
 	public void testJREClassNames() {
-		assertTrue("Vector is missing from JRE class names", CollectionTools.contains(Classpath.bootClasspath().getClassNames(), java.util.Vector.class.getName()));
-		assertTrue("File is missing from JRE class names", CollectionTools.contains(Classpath.bootClasspath().getClassNames(), java.io.File.class.getName()));
+		assertTrue("Vector is missing from JRE class names", IterableTools.contains(Classpath.bootClasspath().getClassNames(), java.util.Vector.class.getName()));
+		assertTrue("File is missing from JRE class names", IterableTools.contains(Classpath.bootClasspath().getClassNames(), java.io.File.class.getName()));
 	}
 
 	public void testJavaExtensionDirectoryNames() {
@@ -277,7 +278,7 @@ public class ClasspathTests extends TestCase {
 			String stdExtJarName = JAVA_HOME + sep + "lib" + sep + "ext" + sep + "dnsns.jar";
 			String msg = "jdk 1.4.x standard extension jar missing: " + stdExtJarName;
 			boolean jarPresent = jarNames.contains(stdExtJarName);
-			if (Tools.jvmIsSun() || (Tools.jvmIsIBM() && jdk.startsWith("1.6"))) {
+			if (SystemTools.jvmIsSun() || (SystemTools.jvmIsIBM() && jdk.startsWith("1.6"))) {
 				assertTrue(msg, jarPresent);
 			}
 		} else {
@@ -290,8 +291,8 @@ public class ClasspathTests extends TestCase {
 		if (jdk.startsWith("1.4") || jdk.startsWith("1.5") || jdk.startsWith("1.6")) {
 			String className = "sun.net.spi.nameservice.dns.DNSNameService";
 			String msg = "jdk 1.4.x standard extension class missing: " + className;
-			boolean classPresent = CollectionTools.contains(Classpath.javaExtensionClasspath().classNames(), className);
-			if (Tools.jvmIsSun() || (Tools.jvmIsIBM() && jdk.startsWith("1.6"))) {
+			boolean classPresent = IteratorTools.contains(Classpath.javaExtensionClasspath().classNames(), className);
+			if (SystemTools.jvmIsSun() || (SystemTools.jvmIsIBM() && jdk.startsWith("1.6"))) {
 				assertTrue(msg, classPresent);
 			}
 		} else {
@@ -306,7 +307,7 @@ public class ClasspathTests extends TestCase {
 		// when the tests are executed as an ANT task, they are run under
 		// an ANT class loader and the "Java" classpath does not include this class
 		if (cl.getClass().getName().startsWith("sun.misc")) {
-			assertTrue("class missing: " + className, CollectionTools.contains(Classpath.javaClasspath().getClassNames(), className));
+			assertTrue("class missing: " + className, IterableTools.contains(Classpath.javaClasspath().getClassNames(), className));
 		}
 	}
 
@@ -317,7 +318,7 @@ public class ClasspathTests extends TestCase {
 		// when the tests are executed as an ANT task, they are run under
 		// an ANT class loader and the "Java" classpath does not include this class
 		if (cl.getClass().getName().startsWith("sun.misc")) {
-			assertTrue("class missing: " + className, CollectionTools.contains(Classpath.completeClasspath().getClassNames(), className));
+			assertTrue("class missing: " + className, IterableTools.contains(Classpath.completeClasspath().getClassNames(), className));
 		}
 	}
 
@@ -343,9 +344,9 @@ public class ClasspathTests extends TestCase {
 	public void testEntry_getCanonicalFileName() {
 		Classpath.Entry entry = Classpath.bootClasspath().getEntryForClassNamed(java.lang.String.class.getName());
 		String name = entry.getCanonicalFileName();
-		if (Tools.jvmIsSun()) {
+		if (SystemTools.jvmIsSun()) {
 			assertTrue(name.endsWith("rt.jar"));
-		} else if (Tools.jvmIsIBM()) {
+		} else if (SystemTools.jvmIsIBM()) {
 			assertTrue(name.endsWith("vm.jar"));
 		}
 	}
@@ -367,12 +368,12 @@ public class ClasspathTests extends TestCase {
 
 	public void testEntry_getClassNames() {
 		Classpath.Entry entry = Classpath.bootClasspath().getEntryForClassNamed(java.lang.String.class.getName());
-		assertTrue(CollectionTools.contains(entry.getClassNames(), java.lang.String.class.getName()));
+		assertTrue(IterableTools.contains(entry.getClassNames(), java.lang.String.class.getName()));
 	}
 
 	public void testEntry_classNames() {
 		Classpath.Entry entry = Classpath.bootClasspath().getEntryForClassNamed(java.lang.String.class.getName());
-		assertTrue(CollectionTools.contains(entry.classNames(), java.lang.String.class.getName()));
+		assertTrue(IteratorTools.contains(entry.classNames(), java.lang.String.class.getName()));
 	}
 
 	/**

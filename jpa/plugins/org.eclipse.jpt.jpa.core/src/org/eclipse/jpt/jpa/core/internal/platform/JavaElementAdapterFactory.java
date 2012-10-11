@@ -11,11 +11,11 @@ package org.eclipse.jpt.jpa.core.internal.platform;
 
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
 
 /**
  * Factory to build Dali adapters for an {@link IJavaElement}:<ul>
- * <li>{@link JpaPlatformDescription}
+ * <li>{@link JpaPlatformConfig}
  * </ul>
  * See <code>org.eclipse.jpt.jpa.core/plugin.xml:org.eclipse.core.runtime.adapters</code>.
  */
@@ -23,7 +23,7 @@ public class JavaElementAdapterFactory
 	implements IAdapterFactory
 {
 	private static final Class<?>[] ADAPTER_LIST = new Class[] {
-			JpaPlatformDescription.class
+			JpaPlatformConfig.class
 		};
 
 	public Class<?>[] getAdapterList() {
@@ -38,8 +38,8 @@ public class JavaElementAdapterFactory
 	}
 	
 	private Object getAdapter(IJavaElement javaElement, Class<?> adapterType) {
-		if (adapterType == JpaPlatformDescription.class) {
-			return javaElement.getResource().getAdapter(JpaPlatformDescription.class);
+		if (adapterType == JpaPlatformConfig.class) {
+			return javaElement.getResource().getAdapter(JpaPlatformConfig.class);
 		}
 		return null;
 	}

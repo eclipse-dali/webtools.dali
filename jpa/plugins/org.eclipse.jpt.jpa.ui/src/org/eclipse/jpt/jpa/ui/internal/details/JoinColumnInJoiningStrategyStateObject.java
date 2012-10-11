@@ -10,7 +10,8 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
@@ -55,7 +56,7 @@ public class JoinColumnInJoiningStrategyStateObject
 	@Override
 	public ListIterator<String> tables() {
 		Schema schema = getDbSchema();
-		return schema == null ? super.tables() : CollectionTools.list(schema.getSortedTableIdentifiers()).listIterator();
+		return schema == null ? super.tables() : ListTools.list(schema.getSortedTableIdentifiers()).listIterator();
 	}
 	
 	protected Schema getDbSchema() {

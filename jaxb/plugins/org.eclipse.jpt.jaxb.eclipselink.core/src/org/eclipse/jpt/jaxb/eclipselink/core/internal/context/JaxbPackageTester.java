@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context;
 
 import org.eclipse.core.expressions.PropertyTester;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.resource.jaxbprops.JaxbPropertiesResource;
 
@@ -37,10 +37,10 @@ public class JaxbPackageTester
 			if (value) {
 				String factoryProp = "javax.xml.bind.context.factory";
 				String factoryPropValue = "org.eclipse.persistence.jaxb.JAXBContextFactory";
-				value = Tools.valuesAreEqual(jpr.getProperty(factoryProp), factoryPropValue);
+				value = ObjectTools.equals(jpr.getProperty(factoryProp), factoryPropValue);
 			}
 			
-			return Tools.valuesAreEqual(value, expectedValue);
+			return ObjectTools.equals(value, expectedValue);
 		}
 		return false;
 	}

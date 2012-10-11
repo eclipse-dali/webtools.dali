@@ -28,7 +28,7 @@ public abstract class ListValueModelWrapper<E>
 	extends AbstractListValueModel
 {
 	/** The wrapped list value model. */
-	protected final ListValueModel<? extends E> listHolder;
+	protected final ListValueModel<? extends E> listModel;
 
 	/** A listener that allows us to sync with changes to the wrapped list model. */
 	protected final ListChangeListener listChangeListener;
@@ -40,12 +40,12 @@ public abstract class ListValueModelWrapper<E>
 	 * Construct a list value model with the specified wrapped
 	 * list value model.
 	 */
-	protected ListValueModelWrapper(ListValueModel<? extends E> listHolder) {
+	protected ListValueModelWrapper(ListValueModel<? extends E> listModel) {
 		super();
-		if (listHolder == null) {
+		if (listModel == null) {
 			throw new NullPointerException();
 		}
-		this.listHolder = listHolder;
+		this.listModel = listModel;
 		this.listChangeListener = this.buildListChangeListener();
 	}
 
@@ -87,7 +87,7 @@ public abstract class ListValueModelWrapper<E>
 	 */
 	@Override
 	protected void engageModel() {
-		this.listHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.listChangeListener);
+		this.listModel.addListChangeListener(ListValueModel.LIST_VALUES, this.listChangeListener);
 	}
 
 	/**
@@ -95,7 +95,7 @@ public abstract class ListValueModelWrapper<E>
 	 */
 	@Override
 	protected void disengageModel() {
-		this.listHolder.removeListChangeListener(ListValueModel.LIST_VALUES, this.listChangeListener);
+		this.listModel.removeListChangeListener(ListValueModel.LIST_VALUES, this.listChangeListener);
 	}
 
 	// minimized scope of suppressed warnings

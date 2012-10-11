@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.core.libprov;
 
 import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationConfig;
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 
 
 public interface JaxbLibraryProviderInstallOperationConfig 
@@ -18,7 +18,7 @@ public interface JaxbLibraryProviderInstallOperationConfig
 	
 	public static final String PROP_JAXB_PLATFORM = "JAXB_PLATFORM"; //$NON-NLS-1$
 	
-	JaxbPlatformDescription getJaxbPlatform();
+	JaxbPlatformConfig getJaxbPlatformConfig();
 	
-	void setJaxbPlatform(JaxbPlatformDescription jaxbPlatform);
+	void setJaxbPlatformConfig(JaxbPlatformConfig jaxbPlatformConfig);
 }

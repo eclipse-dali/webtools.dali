@@ -12,11 +12,11 @@ package org.eclipse.jpt.jpa.db.internal;
 import java.util.Arrays;
 import java.util.List;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.ForeignKey;
 
@@ -55,7 +55,7 @@ final class DTPForeignKeyWrapper
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.getName() + ": " + Arrays.asList(this.getColumnPairArray()));  //$NON-NLS-1$
+		return ObjectTools.toString(this, this.getName() + ": " + Arrays.asList(this.getColumnPairArray()));  //$NON-NLS-1$
 	}
 
 
@@ -151,7 +151,7 @@ final class DTPForeignKeyWrapper
 	}
 
 	boolean baseColumnsContains(Column column) {
-		return CollectionTools.contains(this.getBaseColumns(), column);
+		return IterableTools.contains(this.getBaseColumns(), column);
 	}
 
 	public Iterable<Column> getNonPrimaryKeyBaseColumns() {
@@ -314,7 +314,7 @@ final class DTPForeignKeyWrapper
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.baseColumn.getName() + "=>" + this.referencedColumn.getName());  //$NON-NLS-1$
+			return ObjectTools.toString(this, this.baseColumn.getName() + "=>" + this.referencedColumn.getName());  //$NON-NLS-1$
 		}
 
 	}

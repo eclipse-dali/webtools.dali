@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import java.util.List;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.NamedNativeQuery;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedNativeQuery;
@@ -134,8 +134,8 @@ public class GenericJavaNamedNativeQuery
 	}
 	
 	protected boolean isEquivalentTo(NamedNativeQuery other) {
-		return Tools.valuesAreEqual(this.resultClass, other.getResultClass()) &&
-				Tools.valuesAreEqual(this.resultSetMapping, other.getResultSetMapping());
+		return ObjectTools.equals(this.resultClass, other.getResultClass()) &&
+				ObjectTools.equals(this.resultSetMapping, other.getResultSetMapping());
 	}
 
 	// ********** misc **********

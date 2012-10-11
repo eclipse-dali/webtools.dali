@@ -32,15 +32,16 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Transformer;
-import org.eclipse.jpt.common.utility.internal.TransformerAdapter;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * Java source annotated element
@@ -211,7 +212,7 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 	}
 
 	/* CU private */ boolean annotationIsValid(String annotationName) {
-		return CollectionTools.contains(this.getAnnotationProvider().getAnnotationNames(), annotationName);
+		return IterableTools.contains(this.getAnnotationProvider().getAnnotationNames(), annotationName);
 	}
 
 	/* CU private */ Annotation buildAnnotation(String annotationName) {
@@ -302,11 +303,11 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 	}
 
 	/* CU private */ boolean annotationIsValidContainer(String annotationName) {
-		return CollectionTools.contains(this.getAnnotationProvider().getContainerAnnotationNames(), annotationName);
+		return IterableTools.contains(this.getAnnotationProvider().getContainerAnnotationNames(), annotationName);
 	}
 
 	/* CU private */ boolean annotationIsValidNestable(String annotationName) {
-		return CollectionTools.contains(this.getAnnotationProvider().getNestableAnnotationNames(), annotationName);
+		return IterableTools.contains(this.getAnnotationProvider().getNestableAnnotationNames(), annotationName);
 	}
 
 	/* CU private */ NestableAnnotation buildNestableAnnotation(String annotationName, int index) {
@@ -503,7 +504,7 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 
 	public boolean isAnnotatedWithAnyOf(Iterable<String> annotationNames) {
 		for (Annotation annotation : this.getSignificantAnnotations()) {
-			if (CollectionTools.contains(annotationNames, annotation.getAnnotationName())) {
+			if (IterableTools.contains(annotationNames, annotation.getAnnotationName())) {
 				return true;
 			}
 		}
@@ -639,7 +640,7 @@ abstract class SourceAnnotatedElement<E extends AnnotatedElement>
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, node);
+			return ObjectTools.toString(this, node);
 		}
 	}
 

@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.core.resource.java;
 
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jpt.common.utility.MethodSignature;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 
 /**
  * Java source code or binary method

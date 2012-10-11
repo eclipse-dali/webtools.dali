@@ -12,12 +12,12 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 import java.util.List;
 import java.util.Vector;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
@@ -136,7 +136,7 @@ public abstract class AbstractOrmOverrideContainer<
 	 * remaining specified overrides.
 	 */
 	protected boolean overrideWillBeVirtual(String overrideName, S specifiedOverrideToBeRemoved) {
-		return CollectionTools.contains(this.getPossibleVirtualOverrideNames(), overrideName) &&
+		return IterableTools.contains(this.getPossibleVirtualOverrideNames(), overrideName) &&
 				(this.getSpecifiedOverrideNamed(overrideName, specifiedOverrideToBeRemoved) == null);
 	}
 

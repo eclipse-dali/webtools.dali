@@ -600,7 +600,7 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 
 				// Make sure that if the pattern is empty, we specify * in order
 				// to show all the mapping types
-				if (StringTools.stringIsEmpty(getPattern())) {
+				if (StringTools.isBlank(getPattern())) {
 					patternMatcher.setPattern("*");
 				}
 			}

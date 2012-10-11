@@ -12,9 +12,9 @@ package org.eclipse.jpt.jpa.db.internal;
 import java.util.List;
 import org.eclipse.datatools.modelbase.sql.schema.SQLObject;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.db.DatabaseObject;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
@@ -173,7 +173,7 @@ abstract class DTPSchemaContainerWrapper<P extends DTPDatabaseObject, S extends 
 		// assume 'names' is non-empty (!)
 		return (schema != null) ?
 				schema.getIdentifier() :
-				this.convertNameToIdentifier(CollectionTools.last(names));
+				this.convertNameToIdentifier(IterableTools.last(names));
 	}
 
 

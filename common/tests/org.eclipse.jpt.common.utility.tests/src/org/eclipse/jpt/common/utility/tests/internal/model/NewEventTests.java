@@ -13,8 +13,8 @@ import java.util.EventListener;
 
 import junit.framework.TestCase;
 
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.common.utility.model.Model;
@@ -101,7 +101,9 @@ public class NewEventTests extends TestCase {
 		void fooChanged(FooChangeEvent event);
 	}
 
-	static class FooChangeEvent extends ChangeEvent {
+	static class FooChangeEvent
+		extends ChangeEvent
+	{
 		private static final long serialVersionUID = 1L;
 		public FooChangeEvent(FooModel source) {
 			super(source);
@@ -111,7 +113,10 @@ public class NewEventTests extends TestCase {
 		}
 	}
 
-	static class AbstractFooModel extends AbstractModel implements FooModel {
+	static class AbstractFooModel
+		extends AbstractModel
+		implements FooModel
+	{
 		@Override
 		protected synchronized FooChangeSupport getChangeSupport() {
 			return (FooChangeSupport) super.getChangeSupport();
@@ -137,7 +142,10 @@ public class NewEventTests extends TestCase {
 		}
 	}
 
-	static class FooChangeSupport extends ChangeSupport {
+	static class FooChangeSupport
+		extends ChangeSupport
+	{
+		private static final long serialVersionUID = 1L;
 		FooChangeSupport(FooModel source) {
 			super(source);
 		}
@@ -159,7 +167,7 @@ public class NewEventTests extends TestCase {
 			return (listenerList == null) ? null : listenerList.getListeners();
 		}
 		private boolean hasFooChangeListener(FooChangeListener listener) {
-			return CollectionTools.contains(this.getFooChangeListeners(), listener);
+			return IterableTools.contains(this.getFooChangeListeners(), listener);
 		}
 		public void fireFooChanged() {
 			Iterable<FooChangeListener> listeners = this.getFooChangeListeners();

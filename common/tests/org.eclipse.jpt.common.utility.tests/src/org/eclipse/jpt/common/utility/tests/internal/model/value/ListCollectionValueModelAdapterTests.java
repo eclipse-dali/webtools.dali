@@ -17,9 +17,10 @@ import javax.swing.JList;
 
 import junit.framework.TestCase;
 
-import org.eclipse.jpt.common.utility.internal.Bag;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.HashBag;
+import org.eclipse.jpt.common.utility.collection.Bag;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.HashBag;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
@@ -187,7 +188,7 @@ public class ListCollectionValueModelAdapterTests extends TestCase {
 			@Override
 			public void itemsRemoved(CollectionRemoveEvent e) {
 				assertEquals("foo", e.getItems().iterator().next());
-				assertFalse(CollectionTools.contains(ListCollectionValueModelAdapterTests.this.adapter.iterator(), "joo"));
+				assertFalse(IteratorTools.contains(ListCollectionValueModelAdapterTests.this.adapter.iterator(), "joo"));
 				assertEquals(2, ListCollectionValueModelAdapterTests.this.adapter.size());
 			}
 			@Override

@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.resource.java;
 
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 
 /**
  * Corresponds to the JPA annotations:<code><ul>

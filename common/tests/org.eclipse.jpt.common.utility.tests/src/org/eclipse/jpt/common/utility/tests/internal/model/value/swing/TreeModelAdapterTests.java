@@ -24,10 +24,9 @@ import javax.swing.tree.TreeModel;
 
 import junit.framework.TestCase;
 
-import org.eclipse.jpt.common.utility.IndentingPrintWriter;
-import org.eclipse.jpt.common.utility.internal.HashBag;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ReadOnlyIterator;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.collection.HashBag;
+import org.eclipse.jpt.common.utility.internal.iterator.ReadOnlyIterator;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.AbstractTreeNodeValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
@@ -40,7 +39,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelW
 import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.TreeModelAdapter;
-import org.eclipse.jpt.common.utility.internal.swing.Displayable;
+import org.eclipse.jpt.common.utility.io.IndentingPrintWriter;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -50,6 +49,7 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.TreeNodeValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.tests.internal.model.Displayable;
 
 @SuppressWarnings("nls")
 public class TreeModelAdapterTests extends TestCase {
@@ -383,7 +383,7 @@ public class TreeModelAdapterTests extends TestCase {
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.name);
+			return ObjectTools.toString(this, this.name);
 		}
 
 	}

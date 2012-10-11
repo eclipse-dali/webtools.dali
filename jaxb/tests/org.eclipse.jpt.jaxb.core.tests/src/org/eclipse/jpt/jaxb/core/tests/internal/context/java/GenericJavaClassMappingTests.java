@@ -31,9 +31,9 @@ import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.Sourc
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
@@ -263,7 +263,7 @@ public class GenericJavaClassMappingTests
     public void testModifyFactoryClass() throws Exception {
 		createClassWithXmlType();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		
@@ -295,7 +295,7 @@ public class GenericJavaClassMappingTests
 	public void testUpdateFactoryClass() throws Exception {
 		createClassWithXmlType();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		
@@ -325,7 +325,7 @@ public class GenericJavaClassMappingTests
 	public void testModifyFactoryMethod() throws Exception {
 		createClassWithXmlType();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		
@@ -355,7 +355,7 @@ public class GenericJavaClassMappingTests
 	public void testUpdateFactoryMethod() throws Exception {
 		createClassWithXmlType();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		
@@ -383,7 +383,7 @@ public class GenericJavaClassMappingTests
 	public void testModifySchemaTypeName() throws Exception {
 		createClassWithXmlType();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		String defaultXmlTypeName = Introspector.decapitalize(TYPE_NAME);
@@ -419,7 +419,7 @@ public class GenericJavaClassMappingTests
 	public void testUpdateSchemaTypeName() throws Exception {
 		createClassWithXmlType();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		String defaultXmlTypeName = Introspector.decapitalize(TYPE_NAME);
@@ -452,7 +452,7 @@ public class GenericJavaClassMappingTests
 	public void testModifyNamespace() throws Exception {
 		createClassWithXmlType();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		
@@ -487,7 +487,7 @@ public class GenericJavaClassMappingTests
 	public void testUpdateNamespace() throws Exception {
 		createClassWithXmlType();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		
@@ -519,7 +519,7 @@ public class GenericJavaClassMappingTests
 	public void testModifyAccessType() throws Exception {
 		createXmlTypeWithAccessorType();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		
@@ -551,7 +551,7 @@ public class GenericJavaClassMappingTests
 	public void testUpdateAccessType() throws Exception {
 		createXmlTypeWithAccessorType();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		
@@ -616,7 +616,7 @@ public class GenericJavaClassMappingTests
 		classMapping.setSpecifiedAccessType(XmlAccessType.FIELD);
 		assertEquals(XmlAccessType.FIELD, childClassMapping.getDefaultAccessType());
 
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = IterableTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		classMapping.setSpecifiedAccessType(null);
 		assertEquals(XmlAccessType.PROPERTY, childClassMapping.getDefaultAccessType());
 		contextPackageInfo.setSpecifiedAccessType(XmlAccessType.FIELD);
@@ -653,7 +653,7 @@ public class GenericJavaClassMappingTests
 	public void testModifyAccessOrder() throws Exception {
 		createXmlTypeWithAccessorOrder();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		
@@ -677,7 +677,7 @@ public class GenericJavaClassMappingTests
 	public void testUpdateAccessOrder() throws Exception {
 		createXmlTypeWithAccessorOrder();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		
@@ -707,7 +707,7 @@ public class GenericJavaClassMappingTests
 	public void testGetPropOrder() throws Exception {
 		this.createClassWithXmlType();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		
@@ -736,7 +736,7 @@ public class GenericJavaClassMappingTests
 	public void testGetPropOrderSize() throws Exception {
 		this.createClassWithXmlType();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		
@@ -756,7 +756,7 @@ public class GenericJavaClassMappingTests
 	public void testAddProp() throws Exception {
 		this.createClassWithXmlType();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		
@@ -776,7 +776,7 @@ public class GenericJavaClassMappingTests
 	public void testAddProp2() throws Exception {
 		createClassWithXmlType();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		
@@ -796,7 +796,7 @@ public class GenericJavaClassMappingTests
 	public void testRemoveProp() throws Exception {
 		createClassWithXmlType();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		
@@ -826,7 +826,7 @@ public class GenericJavaClassMappingTests
 	public void testMoveProp() throws Exception {
 		createClassWithXmlType();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		
@@ -866,7 +866,7 @@ public class GenericJavaClassMappingTests
 	public void testSyncProps() throws Exception {
 		createClassWithXmlType();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		
@@ -980,7 +980,7 @@ public class GenericJavaClassMappingTests
 	public void testModifyXmlRootElement() throws Exception {
 		createClassWithXmlType();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		
@@ -1000,7 +1000,7 @@ public class GenericJavaClassMappingTests
 	public void testUpdateXmlRootElement() throws Exception {
 		createClassWithXmlType();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		JavaResourceAbstractType resourceType = jaxbClass.getJavaResourceType();
 		
@@ -1028,7 +1028,7 @@ public class GenericJavaClassMappingTests
 	public void testUpdateFieldAttributes() throws Exception {
 		this.createTestXmlTypeWithFieldAndPublicMemberAccess();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		
 		//public int foo;
@@ -1554,7 +1554,7 @@ public class GenericJavaClassMappingTests
 	public void testUpdatePropertyAttributes() throws Exception {
 		createTestXmlTypeWithPropertyAndPublicMemberAccess();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		
 		//public int getFoo();, public void setFoo(int);
@@ -1570,7 +1570,7 @@ public class GenericJavaClassMappingTests
 	public void testUpdateGetterPropertyAttributes() throws Exception {
 		createTestXmlTypeWithPropertyGetterAndPublicMemberAccess();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		
 		//public int getFoo(); PUBLIC_MEMBER access - not persistent
@@ -1642,7 +1642,7 @@ public class GenericJavaClassMappingTests
 	public void testUpdateSetterPropertyAttributes() throws Exception {
 		createTestXmlTypeWithPropertySetterAndPublicMemberAccess();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		
 		//public void setFoo(int foo); PUBLIC_MEMBER access - not persistent
@@ -1714,7 +1714,7 @@ public class GenericJavaClassMappingTests
 	public void testUpdateGetterListPropertyAttributes() throws Exception {
 		this.createTestXmlTypeWithPropertyGetterListAndPublicMemberAccess();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		
 		//public List<?> getFoo(); PUBLIC_MEMBER access - persistent
@@ -1871,7 +1871,7 @@ public class GenericJavaClassMappingTests
 
 	protected void publicStaticGetterSetterTest(JaxbClassMapping classMapping) {
 		Iterator<JaxbPersistentAttribute> attributes = classMapping.getAttributes().iterator();
-		PropertyAccessor propertyAccessor = (PropertyAccessor) ReflectionTools.getFieldValue(attributes.next(), "accessor");
+		PropertyAccessor propertyAccessor = (PropertyAccessor) ObjectTools.get(attributes.next(), "accessor");
 		JavaResourceMethod resourceGetter = propertyAccessor.getResourceGetterMethod();
 		JavaResourceMethod resourceSetter = propertyAccessor.getResourceSetterMethod();
 
@@ -1948,7 +1948,7 @@ public class GenericJavaClassMappingTests
 
 	protected void privateGetterSetterTest(JaxbClassMapping classMapping) {
 		Iterator<JaxbPersistentAttribute> attributes = classMapping.getAttributes().iterator();
-		PropertyAccessor propertyAccessor = (PropertyAccessor) ReflectionTools.getFieldValue(attributes.next(), "accessor");
+		PropertyAccessor propertyAccessor = (PropertyAccessor) ObjectTools.get(attributes.next(), "accessor");
 		JavaResourceMethod resourceGetter = propertyAccessor.getResourceGetterMethod();
 		JavaResourceMethod resourceSetter = propertyAccessor.getResourceSetterMethod();
 
@@ -2033,7 +2033,7 @@ public class GenericJavaClassMappingTests
 	public void testModifyXmlSeeAlso() throws Exception {
 		createClassWithXmlType();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		JavaResourceType resourceType = jaxbClass.getJavaResourceType();
 		
@@ -2055,7 +2055,7 @@ public class GenericJavaClassMappingTests
 	public void testUpdateXmlSeeAlso() throws Exception {
 		createClassWithXmlType();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		JavaResourceType resourceType = jaxbClass.getJavaResourceType();
 		

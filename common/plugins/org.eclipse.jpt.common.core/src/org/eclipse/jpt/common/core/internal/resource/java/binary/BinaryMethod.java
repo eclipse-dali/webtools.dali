@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.core.internal.resource.java.binary;
 
 import java.util.Vector;
+
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.JavaModelException;
@@ -23,13 +24,13 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.utility.MethodSignature;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.NameTools;
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 
 /**
  * binary method
@@ -180,7 +181,7 @@ final class BinaryMethod
 		}
 		
 		public String getAttributeName() {
-			return NameTools.convertGetterSetterMethodNameToPropertyName(this.method.getElementName());
+			return NameTools.convertGetterOrSetterMethodNameToPropertyName(this.method.getElementName());
 		}
 		
 		/* NB - may return null */

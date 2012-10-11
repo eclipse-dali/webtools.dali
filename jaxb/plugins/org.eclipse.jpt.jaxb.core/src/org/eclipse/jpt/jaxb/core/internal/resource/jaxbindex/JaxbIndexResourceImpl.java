@@ -16,9 +16,9 @@ import java.io.InputStreamReader;
 import java.util.Vector;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.common.utility.internal.Transformer;
-import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SnapshotCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.internal.resource.AbstractJaxbFileResourceModel;
 import org.eclipse.jpt.jaxb.core.resource.jaxbindex.JaxbIndexResource;
 

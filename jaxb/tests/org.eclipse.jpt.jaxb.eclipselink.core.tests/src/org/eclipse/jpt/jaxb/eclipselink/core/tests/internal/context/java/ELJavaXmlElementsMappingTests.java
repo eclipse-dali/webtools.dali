@@ -1,6 +1,7 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.context.java;
 
 import java.util.Iterator;
+
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
@@ -8,9 +9,9 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
@@ -70,13 +71,13 @@ public class ELJavaXmlElementsMappingTests
 	
 	public void testUpdateXmlElements() throws Exception {
 		createTypeWithXmlElements();
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
-		ELXmlElementsMapping mapping = (ELXmlElementsMapping) CollectionTools.get(classMapping.getAttributes(), 0).getMapping();
+		ELXmlElementsMapping mapping = (ELXmlElementsMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
 		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
 		
 		Iterable<ELXmlPath> xmlPaths = mapping.getXmlPaths();
-		assertTrue(CollectionTools.isEmpty(xmlPaths));
+		assertTrue(IterableTools.isEmpty(xmlPaths));
 		assertEquals(0, mapping.getXmlPathsSize());
 		
 		//add 2 XmlPath annotations
@@ -91,10 +92,10 @@ public class ELJavaXmlElementsMappingTests
 		
 		xmlPaths = mapping.getXmlPaths();
 		
-		assertFalse(CollectionTools.isEmpty(xmlPaths));
+		assertFalse(IterableTools.isEmpty(xmlPaths));
 		assertEquals(2, mapping.getXmlPathsSize());
-		assertEquals("foo", CollectionTools.get(xmlPaths, 0).getValue());
-		assertEquals("bar", CollectionTools.get(xmlPaths, 1).getValue());
+		assertEquals("foo", IterableTools.get(xmlPaths, 0).getValue());
+		assertEquals("bar", IterableTools.get(xmlPaths, 1).getValue());
 		
 		// switch XmlPath annotations
 		annotatedElement.edit(
@@ -106,10 +107,10 @@ public class ELJavaXmlElementsMappingTests
 		
 		xmlPaths = mapping.getXmlPaths();
 		
-		assertFalse(CollectionTools.isEmpty(xmlPaths));
+		assertFalse(IterableTools.isEmpty(xmlPaths));
 		assertEquals(2, mapping.getXmlPathsSize());
-		assertEquals("bar", CollectionTools.get(xmlPaths, 0).getValue());
-		assertEquals("foo", CollectionTools.get(xmlPaths, 1).getValue());
+		assertEquals("bar", IterableTools.get(xmlPaths, 0).getValue());
+		assertEquals("foo", IterableTools.get(xmlPaths, 1).getValue());
 		
 		// remove XmlPath annotations
 		annotatedElement.edit(
@@ -122,15 +123,15 @@ public class ELJavaXmlElementsMappingTests
 		
 		xmlPaths = mapping.getXmlPaths();
 		
-		assertTrue(CollectionTools.isEmpty(xmlPaths));
+		assertTrue(IterableTools.isEmpty(xmlPaths));
 		assertEquals(0, mapping.getXmlPathsSize());
 	}
 
 	public void testModifyXmlPaths() throws Exception {
 		createTypeWithXmlElements();
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
-		ELXmlElementsMapping mapping = (ELXmlElementsMapping) CollectionTools.get(classMapping.getAttributes(), 0).getMapping();
+		ELXmlElementsMapping mapping = (ELXmlElementsMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
 		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
 		
 		assertEquals(0, resourceAttribute.getAnnotationsSize(ELJaxb.XML_PATH));
@@ -143,22 +144,22 @@ public class ELJavaXmlElementsMappingTests
 		Iterable<XmlPathAnnotation> xmlPathAnnotations = 
 				new SubIterableWrapper(resourceAttribute.getAnnotations(ELJaxb.XML_PATH));
 		
-		assertEquals(3, CollectionTools.size(xmlPathAnnotations));
+		assertEquals(3, IterableTools.size(xmlPathAnnotations));
 		assertEquals(3, mapping.getXmlPathsSize());
-		assertEquals("foo", CollectionTools.get(xmlPathAnnotations, 0).getValue());
-		assertEquals("bar", CollectionTools.get(xmlPathAnnotations, 1).getValue());
-		assertEquals("baz", CollectionTools.get(xmlPathAnnotations, 2).getValue());
+		assertEquals("foo", IterableTools.get(xmlPathAnnotations, 0).getValue());
+		assertEquals("bar", IterableTools.get(xmlPathAnnotations, 1).getValue());
+		assertEquals("baz", IterableTools.get(xmlPathAnnotations, 2).getValue());
 		
 		mapping.moveXmlPath(1, 2);
 		
 		xmlPathAnnotations = 
 				new SubIterableWrapper(resourceAttribute.getAnnotations(ELJaxb.XML_PATH));
 		
-		assertEquals(3, CollectionTools.size(xmlPathAnnotations));
+		assertEquals(3, IterableTools.size(xmlPathAnnotations));
 		assertEquals(3, mapping.getXmlPathsSize());
-		assertEquals("foo", CollectionTools.get(xmlPathAnnotations, 0).getValue());
-		assertEquals("baz", CollectionTools.get(xmlPathAnnotations, 1).getValue());
-		assertEquals("bar", CollectionTools.get(xmlPathAnnotations, 2).getValue());
+		assertEquals("foo", IterableTools.get(xmlPathAnnotations, 0).getValue());
+		assertEquals("baz", IterableTools.get(xmlPathAnnotations, 1).getValue());
+		assertEquals("bar", IterableTools.get(xmlPathAnnotations, 2).getValue());
 		
 		mapping.removeXmlPath(2);
 		mapping.removeXmlPath(0);
@@ -167,7 +168,7 @@ public class ELJavaXmlElementsMappingTests
 		xmlPathAnnotations = 
 				new SubIterableWrapper(resourceAttribute.getAnnotations(ELJaxb.XML_PATH));
 		
-		assertEquals(0, CollectionTools.size(xmlPathAnnotations));
+		assertEquals(0, IterableTools.size(xmlPathAnnotations));
 		assertEquals(0, mapping.getXmlPathsSize());
 	}
 }

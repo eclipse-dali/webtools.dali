@@ -14,8 +14,8 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
@@ -62,7 +62,7 @@ public class AssociationOverrideTests extends JpaJavaResourceModelTestCase {
 	public void testGetName() throws Exception {
 		ICompilationUnit cu = this.createTestAssociationOverrideOnField();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		AssociationOverrideAnnotation associationOverride = this.getAssociationOverrideAnnotationAt(resourceField, 0);
 
 		assertNotNull(associationOverride);
@@ -72,7 +72,7 @@ public class AssociationOverrideTests extends JpaJavaResourceModelTestCase {
 	public void testSetName() throws Exception {
 		ICompilationUnit cu = this.createTestAssociationOverrideOnField();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		AssociationOverrideAnnotation associationOverride = this.getAssociationOverrideAnnotationAt(resourceField, 0);
 
 		assertNotNull(associationOverride);
@@ -86,7 +86,7 @@ public class AssociationOverrideTests extends JpaJavaResourceModelTestCase {
 	public void testSetNameNull() throws Exception {
 		ICompilationUnit cu = this.createTestAssociationOverrideOnField();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		AssociationOverrideAnnotation associationOverride = this.getAssociationOverrideAnnotationAt(resourceField, 0);
 
 		assertEquals(ASSOCIATION_OVERRIDE_NAME, associationOverride.getName());
@@ -102,7 +102,7 @@ public class AssociationOverrideTests extends JpaJavaResourceModelTestCase {
 	public void testJoinColumns() throws Exception {
 		ICompilationUnit cu = this.createTestAssociationOverrideOnField();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		AssociationOverrideAnnotation associationOverride = this.getAssociationOverrideAnnotationAt(resourceField, 0);
 		
 		assertEquals(0, associationOverride.getJoinColumnsSize());
@@ -111,7 +111,7 @@ public class AssociationOverrideTests extends JpaJavaResourceModelTestCase {
 	public void testJoinColumns2() throws Exception {
 		ICompilationUnit cu = this.createTestAssociationOverrideOnField();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		AssociationOverrideAnnotation associationOverride = this.getAssociationOverrideAnnotationAt(resourceField, 0);
 
 		
@@ -124,7 +124,7 @@ public class AssociationOverrideTests extends JpaJavaResourceModelTestCase {
 	public void testJoinColumns3() throws Exception {
 		ICompilationUnit cu = this.createTestAssociationOverrideWithJoinColumns();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		AssociationOverrideAnnotation associationOverride = this.getAssociationOverrideAnnotationAt(resourceField, 0);
 				
 		assertEquals(2, associationOverride.getJoinColumnsSize());
@@ -133,7 +133,7 @@ public class AssociationOverrideTests extends JpaJavaResourceModelTestCase {
 	public void testAddJoinColumn() throws Exception {
 		ICompilationUnit cu = this.createTestAssociationOverrideOnField();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		AssociationOverrideAnnotation associationOverride = this.getAssociationOverrideAnnotationAt(resourceField, 0);
 		
 		associationOverride.addJoinColumn(0).setName("FOO");
@@ -150,7 +150,7 @@ public class AssociationOverrideTests extends JpaJavaResourceModelTestCase {
 	public void testRemoveJoinColumn() throws Exception {
 		ICompilationUnit cu = this.createTestAssociationOverrideWithJoinColumns();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		AssociationOverrideAnnotation associationOverride = this.getAssociationOverrideAnnotationAt(resourceField, 0);
 		associationOverride.addJoinColumn(0).setName("FOO");
 		
@@ -183,7 +183,7 @@ public class AssociationOverrideTests extends JpaJavaResourceModelTestCase {
 	public void testMoveJoinColumn() throws Exception {
 		ICompilationUnit cu = this.createTestAssociationOverrideWithJoinColumns();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		AssociationOverrideAnnotation associationOverride = this.getAssociationOverrideAnnotationAt(resourceField, 0);
 		JoinColumnAnnotation joinColumn = associationOverride.joinColumnAt(0);
 		joinColumn.setReferencedColumnName("REF_NAME");
@@ -208,7 +208,7 @@ public class AssociationOverrideTests extends JpaJavaResourceModelTestCase {
 	public void testMoveJoinColumn2() throws Exception {
 		ICompilationUnit cu = this.createTestAssociationOverrideWithJoinColumns();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		AssociationOverrideAnnotation associationOverride = this.getAssociationOverrideAnnotationAt(resourceField, 0);
 		
 		JoinColumnAnnotation joinColumn = associationOverride.joinColumnAt(0);
@@ -234,7 +234,7 @@ public class AssociationOverrideTests extends JpaJavaResourceModelTestCase {
 	public void testSetJoinColumnName() throws Exception {
 		ICompilationUnit cu = this.createTestAssociationOverrideWithJoinColumns();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		AssociationOverrideAnnotation associationOverride = this.getAssociationOverrideAnnotationAt(resourceField, 0);
 				
 		assertEquals(2, associationOverride.getJoinColumnsSize());

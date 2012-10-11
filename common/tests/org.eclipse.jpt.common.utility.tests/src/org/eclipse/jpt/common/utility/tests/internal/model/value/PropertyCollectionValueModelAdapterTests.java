@@ -15,9 +15,9 @@ import javax.swing.JList;
 
 import junit.framework.TestCase;
 
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.HashBag;
-import org.eclipse.jpt.common.utility.internal.iterators.SingleElementIterator;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.HashBag;
+import org.eclipse.jpt.common.utility.internal.iterator.SingleElementIterator;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;

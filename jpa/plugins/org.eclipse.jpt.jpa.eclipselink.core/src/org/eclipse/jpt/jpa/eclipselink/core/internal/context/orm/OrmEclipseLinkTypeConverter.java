@@ -12,16 +12,15 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlTypeConverter;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -258,8 +257,8 @@ public class OrmEclipseLinkTypeConverter
 	}
 
 	protected boolean isEquivalentTo(EclipseLinkTypeConverter converter) {
-		return Tools.valuesAreEqual(this.fullyQualifiedDataType, converter.getFullyQualifiedDataType()) &&
-				Tools.valuesAreEqual(this.fullyQualifiedObjectType, converter.getFullyQualifiedObjectType());
+		return ObjectTools.equals(this.fullyQualifiedDataType, converter.getFullyQualifiedDataType()) &&
+				ObjectTools.equals(this.fullyQualifiedObjectType, converter.getFullyQualifiedObjectType());
 	}
 
 	// ********** metadata conversion **********
@@ -301,7 +300,7 @@ public class OrmEclipseLinkTypeConverter
 				MappingTools.getSortedJavaClassNames(getJavaProject()),
 				MappingTools.getPrimaryBasicTypeNames(),
 				MappingTools.getCollectionTypeNames(),
-				CollectionTools.sort(((EclipseLinkPersistenceUnit) this.getPersistenceUnit()).getEclipseLinkDynamicPersistentTypeNames())
+				IterableTools.sort(this.getPersistenceUnit().getEclipseLinkDynamicPersistentTypeNames())
 				);
 	}
 }

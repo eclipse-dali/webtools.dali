@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.utility;
 
 import java.io.Serializable;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * Simple interface for allowing clients to pass an exception handler to a
@@ -50,7 +50,7 @@ public interface ExceptionHandler {
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildSingletonToString(this);
+			return ObjectTools.singletonToString(this);
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -84,7 +84,7 @@ public interface ExceptionHandler {
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildSingletonToString(this);
+			return ObjectTools.singletonToString(this);
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -116,7 +116,7 @@ public interface ExceptionHandler {
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildSingletonToString(this);
+			return ObjectTools.singletonToString(this);
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {

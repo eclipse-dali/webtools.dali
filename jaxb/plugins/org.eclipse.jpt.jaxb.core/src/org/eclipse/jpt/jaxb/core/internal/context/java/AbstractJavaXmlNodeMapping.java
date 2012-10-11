@@ -10,10 +10,11 @@
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlNodeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
@@ -212,13 +213,13 @@ public abstract class AbstractJavaXmlNodeMapping<A extends Annotation>
 	@Override
 	public Iterable<String> getCompletionProposals(int pos) {
 		Iterable<String> result = super.getCompletionProposals(pos);
-		if (! CollectionTools.isEmpty(result)) {
+		if (! IterableTools.isEmpty(result)) {
 			return result;
 		}
 		
 		if (this.xmlSchemaType != null) {
 			result = this.xmlSchemaType.getCompletionProposals(pos);
-			if (! CollectionTools.isEmpty(result)) {
+			if (! IterableTools.isEmpty(result)) {
 				return result;
 			}
 		}

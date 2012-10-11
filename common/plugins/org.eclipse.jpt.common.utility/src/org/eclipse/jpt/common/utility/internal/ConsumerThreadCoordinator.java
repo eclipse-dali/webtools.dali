@@ -143,7 +143,7 @@ public class ConsumerThreadCoordinator {
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.thread);
+		return ObjectTools.toString(this, this.thread);
 	}
 
 

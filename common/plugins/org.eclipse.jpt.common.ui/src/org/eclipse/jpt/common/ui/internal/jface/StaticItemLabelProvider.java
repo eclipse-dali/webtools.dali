@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.ui.internal.jface;
 
 import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.swt.graphics.Image;
 
 /**
@@ -54,6 +54,6 @@ public class StaticItemLabelProvider
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.text);
+		return ObjectTools.toString(this, this.text);
 	}
 }

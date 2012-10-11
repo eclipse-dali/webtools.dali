@@ -24,8 +24,8 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.MethodAttribute;
 import org.eclipse.jpt.common.core.utility.jdt.Type;
 import org.eclipse.jpt.common.utility.MethodSignature;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 
 /**
  * Java source method

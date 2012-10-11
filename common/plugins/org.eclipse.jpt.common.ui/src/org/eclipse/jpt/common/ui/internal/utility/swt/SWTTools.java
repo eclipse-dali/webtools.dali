@@ -10,16 +10,17 @@
 package org.eclipse.jpt.common.ui.internal.utility.swt;
 
 import java.util.Arrays;
-
+import org.eclipse.jface.resource.StringConverter;
 import org.eclipse.jpt.common.utility.internal.BitTools;
-import org.eclipse.jpt.common.utility.internal.StringConverter;
-import org.eclipse.jpt.common.utility.internal.model.value.StaticCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ModifiablePropertyCollectionValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.StaticCollectionValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.StringObjectTransformer;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
@@ -79,7 +80,7 @@ public final class SWTTools {
 	 * on the items in the model list.
 	 */
 	public static <E> void bind(ListValueModel<E> listModel, List listBox) {
-		bind(listModel, listBox, StringConverter.Default.<E>instance());
+		bind(listModel, listBox, StringObjectTransformer.<E>instance());
 	}
 
 	/**
@@ -88,8 +89,8 @@ public final class SWTTools {
 	 * Use the specified string converter to convert the model items to strings
 	 * to be displayed in the list box.
 	 */
-	public static <E> void bind(ListValueModel<E> listModel, List listBox, StringConverter<E> stringConverter) {
-		bind(listModel, new SWTListAdapter(listBox), stringConverter);
+	public static <E> void bind(ListValueModel<E> listModel, List listBox, Transformer<E, String> transformer) {
+		bind(listModel, new SWTListAdapter(listBox), transformer);
 	}
 
 	/**
@@ -99,7 +100,7 @@ public final class SWTTools {
 	 * on the items in the model list.
 	 */
 	public static <E> void bind(ListValueModel<E> listModel, ModifiablePropertyValueModel<E> selectedItemModel, List listBox) {
-		bind(listModel, selectedItemModel, listBox, StringConverter.Default.<E>instance());
+		bind(listModel, selectedItemModel, listBox, StringObjectTransformer.<E>instance());
 	}
 
 	/**
@@ -107,9 +108,9 @@ public final class SWTTools {
 	 * Use the specified string converter to convert the model items to strings
 	 * to be displayed in the list box.
 	 */
-	public static <E> void bind(ListValueModel<E> listModel, ModifiablePropertyValueModel<E> selectedItemModel, List listBox, StringConverter<E> stringConverter) {
+	public static <E> void bind(ListValueModel<E> listModel, ModifiablePropertyValueModel<E> selectedItemModel, List listBox, Transformer<E, String> transformer) {
 		checkForSingleSelectionStyle(listBox);
-		bind(listModel, new ModifiablePropertyCollectionValueModelAdapter<E>(selectedItemModel), listBox, stringConverter);
+		bind(listModel, new ModifiablePropertyCollectionValueModelAdapter<E>(selectedItemModel), listBox, transformer);
 	}
 
 	/**
@@ -119,7 +120,7 @@ public final class SWTTools {
 	 * on the items in the model list.
 	 */
 	public static <E> void bind(ListValueModel<E> listModel, ModifiableCollectionValueModel<E> selectedItemsModel, List listBox) {
-		bind(listModel, selectedItemsModel, listBox, StringConverter.Default.<E>instance());
+		bind(listModel, selectedItemsModel, listBox, StringObjectTransformer.<E>instance());
 	}
 
 	/**
@@ -127,11 +128,11 @@ public final class SWTTools {
 	 * Use the specified string converter to convert the model items to strings
 	 * to be displayed in the list box.
 	 */
-	public static <E> void bind(ListValueModel<E> listModel, ModifiableCollectionValueModel<E> selectedItemsModel, List listBox, StringConverter<E> stringConverter) {
+	public static <E> void bind(ListValueModel<E> listModel, ModifiableCollectionValueModel<E> selectedItemsModel, List listBox, Transformer<E, String> transformer) {
 		bind(
 			listModel,
 			new SWTListAdapter(listBox),
-			stringConverter,
+			transformer,
 			new ListBoxSelectionBinding<E>(listModel, selectedItemsModel, listBox)
 		);
 	}
@@ -152,7 +153,7 @@ public final class SWTTools {
 	 * on the items in the model list.
 	 */
 	public static <E> void bind(ListValueModel<E> listModel, ModifiablePropertyValueModel<E> selectedItemModel, Combo dropDownListBox) {
-		bind(listModel, selectedItemModel, dropDownListBox, StringConverter.Default.<E>instance());
+		bind(listModel, selectedItemModel, dropDownListBox, StringObjectTransformer.<E>instance());
 	}
 
 	/**
@@ -160,13 +161,13 @@ public final class SWTTools {
 	 * Use the specified string converter to convert the model items to strings
 	 * to be displayed in the drop-down list box.
 	 */
-	public static <E> void bind(ListValueModel<E> listModel, ModifiablePropertyValueModel<E> selectedItemModel, Combo dropDownListBox, StringConverter<E> stringConverter) {
+	public static <E> void bind(ListValueModel<E> listModel, ModifiablePropertyValueModel<E> selectedItemModel, Combo dropDownListBox, Transformer<E, String> transformer) {
 		checkForReadOnlyStyle(dropDownListBox);
 		SWTComboAdapter comboAdapter = new SWTComboAdapter(dropDownListBox);
 		bind(
 			listModel,
 			comboAdapter,
-			stringConverter,
+			transformer,
 			new DropDownListBoxSelectionBinding<E>(listModel, selectedItemModel, comboAdapter)
 		);
 	}
@@ -186,8 +187,8 @@ public final class SWTTools {
 	 * Use the specified string converter to convert the model items to strings
 	 * to be displayed in the list box.
 	 */
-	private static <E> void bind(ListValueModel<E> listModel, ListWidgetModelBinding.ListWidget listWidget, StringConverter<E> stringConverter) {
-		bind(listModel, listWidget, stringConverter, ListWidgetModelBinding.SelectionBinding.Null.instance());
+	private static <E> void bind(ListValueModel<E> listModel, ListWidgetModelBinding.ListWidget listWidget, Transformer<E, String> transformer) {
+		bind(listModel, listWidget, transformer, ListWidgetModelBinding.SelectionBinding.Null.instance());
 	}
 
 	/**
@@ -196,9 +197,9 @@ public final class SWTTools {
 	 * Use the specified string converter to convert the model items to strings
 	 * to be displayed in the list box.
 	 */
-	private static <E> void bind(ListValueModel<E> listModel, ListWidgetModelBinding.ListWidget listWidget, StringConverter<E> stringConverter, ListWidgetModelBinding.SelectionBinding selectionBinding) {
+	private static <E> void bind(ListValueModel<E> listModel, ListWidgetModelBinding.ListWidget listWidget, Transformer<E, String> transformer, ListWidgetModelBinding.SelectionBinding selectionBinding) {
 		// the new binding will add itself as a listener to the value models and the list box
-		new ListWidgetModelBinding<E>(listModel, listWidget, stringConverter, selectionBinding);
+		new ListWidgetModelBinding<E>(listModel, listWidget, transformer, selectionBinding);
 	}
 
 

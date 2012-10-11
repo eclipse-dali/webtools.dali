@@ -20,9 +20,9 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
-import org.eclipse.jpt.common.utility.Filter;
+import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
@@ -496,7 +496,7 @@ public abstract class SpecifiedOrmPersistentAttribute
 
 	protected void validateUnresolvedAttribute(List<IMessage> messages) {
 		String name = this.getName();
-		if (StringTools.stringIsEmpty(name)) {
+		if (StringTools.isBlank(name)) {
 			// if the name null, there will already be an XSD-driven error;
 			// if the name is empty or whitespace, there will already be an attribute mapping error
 			return;

@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.utility;
 
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IWorkbenchPartReference;
 
@@ -45,6 +45,6 @@ public class PartAdapter2
 	}
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this);
+		return ObjectTools.toString(this);
 	}
 }

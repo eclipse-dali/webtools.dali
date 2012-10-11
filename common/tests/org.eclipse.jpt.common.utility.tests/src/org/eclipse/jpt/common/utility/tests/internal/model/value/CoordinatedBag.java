@@ -12,9 +12,9 @@ package org.eclipse.jpt.common.utility.tests.internal.model.value;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.eclipse.jpt.common.utility.internal.Bag;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.HashBag;
+import org.eclipse.jpt.common.utility.collection.Bag;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionClearEvent;

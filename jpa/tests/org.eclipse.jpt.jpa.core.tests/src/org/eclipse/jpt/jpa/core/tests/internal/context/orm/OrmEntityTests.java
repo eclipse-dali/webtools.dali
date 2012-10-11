@@ -13,8 +13,8 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
@@ -995,13 +995,13 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmPersistentType persistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		OrmEntity entity = (OrmEntity) persistentType.getMapping();
-		assertEquals(1, CollectionTools.size(entity.getAssociatedTables()));
+		assertEquals(1, IterableTools.size(entity.getAssociatedTables()));
 		
 		entity.addSpecifiedSecondaryTable(0).setSpecifiedName("FOO");
-		assertEquals(2, CollectionTools.size(entity.getAssociatedTables()));
+		assertEquals(2, IterableTools.size(entity.getAssociatedTables()));
 	
 		entity.addSpecifiedSecondaryTable(0).setSpecifiedName("BAR");
-		assertEquals(3, CollectionTools.size(entity.getAssociatedTables()));
+		assertEquals(3, IterableTools.size(entity.getAssociatedTables()));
 	}
 	
 	public void testAssociatedTableNamesIncludingInherited() throws Exception {

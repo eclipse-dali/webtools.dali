@@ -18,8 +18,8 @@ import java.util.TreeSet;
 
 import junit.framework.TestCase;
 
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.ReverseComparator;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelWrapper;
@@ -68,7 +68,7 @@ public class SortedListValueModelWrapperTests extends TestCase {
 		Collection<String> sortedSet = new TreeSet<String>(comparator);
 		sortedSet.addAll(expected);
 		List<String> expectedList = new ArrayList<String>(sortedSet);
-		List<String> actualList = CollectionTools.list(actual);
+		List<String> actualList = ListTools.list(actual);
 		assertEquals(expectedList, actualList);
 	}
 
@@ -100,7 +100,7 @@ public class SortedListValueModelWrapperTests extends TestCase {
 
 		this.verifyList(this.list, this.sortedListModel);
 		assertEquals(this.list, synchList);
-		assertEquals(CollectionTools.list(this.sortedListModel), sortedSynchList);
+		assertEquals(ListTools.list(this.sortedListModel), sortedSynchList);
 	}
 
 	public void testRemoveItem() {
@@ -120,7 +120,7 @@ public class SortedListValueModelWrapperTests extends TestCase {
 
 		this.verifyList(this.list, this.sortedListModel);
 		assertEquals(this.list, synchList);
-		assertEquals(CollectionTools.list(this.sortedListModel), sortedSynchList);
+		assertEquals(ListTools.list(this.sortedListModel), sortedSynchList);
 	}
 
 	public void testReplaceItem() {
@@ -140,7 +140,7 @@ public class SortedListValueModelWrapperTests extends TestCase {
 
 		this.verifyList(this.list, this.sortedListModel);
 		assertEquals(this.list, synchList);
-		assertEquals(CollectionTools.list(this.sortedListModel), sortedSynchList);
+		assertEquals(ListTools.list(this.sortedListModel), sortedSynchList);
 	}
 
 	public void testListSynch() {
@@ -181,7 +181,7 @@ public class SortedListValueModelWrapperTests extends TestCase {
 
 		this.verifyList(this.list, this.sortedListModel);
 		assertEquals(this.list, synchList);
-		assertEquals(CollectionTools.list(this.sortedListModel), sortedSynchList);
+		assertEquals(ListTools.list(this.sortedListModel), sortedSynchList);
 
 		this.sortedListModel.setComparator(new ReverseComparator<String>());
 		this.verifyList(this.list, this.sortedListModel, new ReverseComparator<String>());

@@ -20,17 +20,17 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.ui.internal.jface.SelectionChangedAdapter;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.utility.PropertyAdapter;
-import org.eclipse.jpt.common.utility.internal.AbstractTransformer;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Transformer;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.value.DoublePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.ui.JpaFileModel;
@@ -179,7 +179,7 @@ class JpaTextEditorManager
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this);
+			return ObjectTools.toString(this);
 		}
 	}
 
@@ -255,7 +255,7 @@ class JpaTextEditorManager
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.selection);
+			return ObjectTools.toString(this, this.selection);
 		}
 	}
 
@@ -351,6 +351,6 @@ class JpaTextEditorManager
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.textEditor);
+		return ObjectTools.toString(this, this.textEditor);
 	}
 }

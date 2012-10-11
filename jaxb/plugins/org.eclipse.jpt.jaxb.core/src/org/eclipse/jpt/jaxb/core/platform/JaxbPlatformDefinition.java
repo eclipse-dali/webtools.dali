@@ -13,7 +13,7 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.JaxbResourceModelProvider;
 import org.eclipse.jpt.jaxb.core.context.java.DefaultJavaAttributeMappingDefinition;
@@ -31,7 +31,7 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMappingDefinition;
  */
 public interface JaxbPlatformDefinition {
 	
-	JaxbPlatformDescription getDescription();
+	JaxbPlatformConfig getConfig();
 	
 	// ***** platform-y questions *****
 	

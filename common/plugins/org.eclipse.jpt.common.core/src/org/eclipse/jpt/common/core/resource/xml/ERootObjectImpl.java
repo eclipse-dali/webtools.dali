@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.common.core.internal.utility.translators.EnumeratedValueTranslator;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.wst.common.internal.emf.resource.ConstantAttributeTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 

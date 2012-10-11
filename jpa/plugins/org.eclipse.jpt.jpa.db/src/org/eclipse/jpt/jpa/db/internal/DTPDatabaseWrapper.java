@@ -14,9 +14,9 @@ import java.util.List;
 import org.eclipse.datatools.connectivity.sqm.core.definition.DatabaseDefinition;
 import org.eclipse.datatools.connectivity.sqm.internal.core.RDBCorePlugin;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Database;
 import org.eclipse.jpt.jpa.db.DatabaseObject;
@@ -250,7 +250,7 @@ final class DTPDatabaseWrapper
 			return catalog.getIdentifier();
 		}
 		Iterator<String> stream = names.iterator();
-		return stream.hasNext() ? this.convertNameToIdentifier(CollectionTools.last(stream)) : null;
+		return stream.hasNext() ? this.convertNameToIdentifier(IteratorTools.last(stream)) : null;
 	}
 
 

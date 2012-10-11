@@ -154,7 +154,7 @@ public class JavaEclipseLinkCachingImpl
 
 	public EclipseLinkCacheType getDefaultType() {
 		String puDefaultCacheTypeName = ((EclipseLinkPersistenceUnit)getPersistenceUnit()).getDefaultCacheTypePropertyValue();
-		if (!StringTools.stringIsEmpty(puDefaultCacheTypeName)) {
+		if (!StringTools.isBlank(puDefaultCacheTypeName)) {
 			try { 
 				return EclipseLinkCacheType.valueOf(StringTools.convertCamelCaseToAllCaps(puDefaultCacheTypeName));
 			} catch (IllegalArgumentException exception) {
@@ -191,7 +191,7 @@ public class JavaEclipseLinkCachingImpl
 
 	public int getDefaultSize() {
 		String puDefaultCacheSize = ((EclipseLinkPersistenceUnit)getPersistenceUnit()).getDefaultCacheSizePropertyValue();
-		if (!StringTools.stringIsEmpty(puDefaultCacheSize)) {
+		if (!StringTools.isBlank(puDefaultCacheSize)) {
 			try {
 				return Integer.valueOf(puDefaultCacheSize).intValue();
 			} catch (NumberFormatException exception) {
@@ -236,7 +236,7 @@ public class JavaEclipseLinkCachingImpl
 
 	public boolean isDefaultShared() {
 		String puDefaultSharedCache = ((EclipseLinkPersistenceUnit)getPersistenceUnit()).getDefaultCacheSharedPropertyValue();
-		return !StringTools.stringIsEmpty(puDefaultSharedCache) ? Boolean.valueOf(puDefaultSharedCache).booleanValue() : DEFAULT_SHARED;
+		return !StringTools.isBlank(puDefaultSharedCache) ? Boolean.valueOf(puDefaultSharedCache).booleanValue() : DEFAULT_SHARED;
 	}
 
 

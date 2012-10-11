@@ -268,7 +268,7 @@ public class JpaPreferencesPage extends PreferencePage
 		if(this.defaultPackageText == null) {
 			return null;
 		}
-		return (StringTools.stringIsEmpty(this.defaultPackageText.getText())) ?
+		return (StringTools.isBlank(this.defaultPackageText.getText())) ?
 						null :
 						this.defaultPackageText.getText();
 	}
@@ -285,7 +285,7 @@ public class JpaPreferencesPage extends PreferencePage
 		IPreferenceStore preferences = JptJpaUiPlugin.instance().getPreferenceStore();
 
 		String legacyCase = preferences.getString(JPQL_IDENTIFIER_CASE_PREF_KEY);
-		if( ! StringTools.stringIsEmpty(legacyCase)) { // value is not empty when legacy preference exist
+		if(StringTools.isNotBlank(legacyCase)) { // value is not empty when legacy preference exist
 			JpaPreferences.setJpqlIdentifierLowercase(legacyCase.equals("lowercase"));
 		}
 

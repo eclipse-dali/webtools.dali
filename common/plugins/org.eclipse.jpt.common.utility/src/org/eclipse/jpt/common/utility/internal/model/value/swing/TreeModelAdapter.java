@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,7 @@ import java.util.List;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
 
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.listener.awt.AWTListChangeListenerWrapper;
 import org.eclipse.jpt.common.utility.internal.model.listener.awt.AWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.common.utility.internal.model.listener.awt.AWTStateChangeListenerWrapper;
@@ -97,7 +97,7 @@ public class TreeModelAdapter<T>
 	 * We cache these so we can swap out the entire list of children
 	 * when we receive a #listChanged() event (which does not include
 	 * the items that were affected).
-	 * @see EventChangePolicy#rebuildChildren()
+	 * @see ChangeEventChangePolicy#rebuildChildren()
 	 */
 	final IdentityHashMap<TreeNodeValueModel<T>, List<TreeNodeValueModel<T>>> childrenLists;
 
@@ -108,6 +108,8 @@ public class TreeModelAdapter<T>
 	 * @see EventChangePolicy#parent()
 	 */
 	final IdentityHashMap<ListValueModel<TreeNodeValueModel<T>>, TreeNodeValueModel<T>> parents;
+
+	private static final long serialVersionUID = 1L;
 
 
 	// ********** constructors **********
@@ -476,7 +478,7 @@ public class TreeModelAdapter<T>
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.root);
+		return ObjectTools.toString(this, this.root);
 	}
 
 
@@ -574,7 +576,6 @@ public class TreeModelAdapter<T>
 		 * Return the current set of children.
 		 */
 		abstract Iterable<TreeNodeValueModel<T>> getChildren();
-
 	}
 
 
@@ -582,7 +583,9 @@ public class TreeModelAdapter<T>
 	 * Wraps a ListEvent for adding, removing, replacing,
 	 * and changing children.
 	 */
-	abstract class EventChangePolicy extends ChangePolicy {
+	/* CU private */ abstract class EventChangePolicy
+		extends ChangePolicy
+	{
 		final ListEvent event;
 
 		EventChangePolicy(ListEvent event) {
@@ -597,15 +600,15 @@ public class TreeModelAdapter<T>
 		TreeNodeValueModel<T> parent() {
 			return TreeModelAdapter.this.parents.get(this.event.getSource());
 		}
-
 	}
 
 
 	/**
 	 * Wraps a ListAddEvent for adding children.
 	 */
-	class AddEventChangePolicy extends EventChangePolicy {
-
+	/* CU private */ class AddEventChangePolicy
+		extends EventChangePolicy
+	{
 		AddEventChangePolicy(ListAddEvent event) {
 			super(event);
 		}
@@ -638,15 +641,15 @@ public class TreeModelAdapter<T>
 		Iterable<TreeNodeValueModel<T>> getChildren() {
 			return (Iterable<TreeNodeValueModel<T>>) this.getEvent().getItems();
 		}
-
 	}
 
 
 	/**
 	 * Wraps a ListRemoveEvent for adding children.
 	 */
-	class RemoveEventChangePolicy extends EventChangePolicy {
-
+	/* CU private */ class RemoveEventChangePolicy
+		extends EventChangePolicy
+	{
 		RemoveEventChangePolicy(ListRemoveEvent event) {
 			super(event);
 		}
@@ -679,15 +682,15 @@ public class TreeModelAdapter<T>
 		Iterable<TreeNodeValueModel<T>> getChildren() {
 			return (Iterable<TreeNodeValueModel<T>>) this.getEvent().getItems();
 		}
-
 	}
 
 
 	/**
 	 * Wraps a ListReplaceEvent for replacing children.
 	 */
-	class ReplaceEventChangePolicy extends EventChangePolicy {
-
+	/* CU private */ class ReplaceEventChangePolicy
+		extends EventChangePolicy
+	{
 		ReplaceEventChangePolicy(ListReplaceEvent event) {
 			super(event);
 		}
@@ -740,15 +743,15 @@ public class TreeModelAdapter<T>
 		protected Iterable<TreeNodeValueModel<T>> getOldItems() {
 			return (Iterable<TreeNodeValueModel<T>>) this.getEvent().getOldItems();
 		}
-
 	}
 
 
 	/**
 	 * Wraps a ListMoveEvent for moving children.
 	 */
-	class MoveEventChangePolicy extends EventChangePolicy {
-
+	/* CU private */ class MoveEventChangePolicy
+		extends EventChangePolicy
+	{
 		MoveEventChangePolicy(ListMoveEvent event) {
 			super(event);
 		}
@@ -775,15 +778,15 @@ public class TreeModelAdapter<T>
 		Iterable<TreeNodeValueModel<T>> getChildren() {
 			throw new UnsupportedOperationException();
 		}
-
 	}
 
 
 	/**
 	 * Wraps a ListClearEvent for clearing children.
 	 */
-	class ClearEventChangePolicy extends EventChangePolicy {
-
+	/* CU private */ class ClearEventChangePolicy
+		extends EventChangePolicy
+	{
 		ClearEventChangePolicy(ListClearEvent event) {
 			super(event);
 		}
@@ -814,15 +817,15 @@ public class TreeModelAdapter<T>
 		Iterable<TreeNodeValueModel<T>> getChildren() {
 			throw new UnsupportedOperationException();
 		}
-
 	}
 
 
 	/**
 	 * Wraps a ListChangeEvent for clearing children.
 	 */
-	class ChangeEventChangePolicy extends EventChangePolicy {
-
+	/* CU private */ class ChangeEventChangePolicy
+		extends EventChangePolicy
+	{
 		ChangeEventChangePolicy(ListChangeEvent event) {
 			super(event);
 		}
@@ -857,14 +860,15 @@ public class TreeModelAdapter<T>
 		Iterable<TreeNodeValueModel<T>> getChildren() {
 			throw new UnsupportedOperationException();
 		}
-
 	}
 
 
 	/**
 	 * Wraps a TreeNodeValueModel for adding and removing its children.
 	 */
-	class NodeChangePolicy extends ChangePolicy {
+	/* CU private */ class NodeChangePolicy
+		extends ChangePolicy
+	{
 		private final TreeNodeValueModel<T> node;
 
 		NodeChangePolicy(TreeNodeValueModel<T> node) {
@@ -908,7 +912,5 @@ public class TreeModelAdapter<T>
 		Iterable<TreeNodeValueModel<T>> getChildren() {
 			return this.node.childrenModel();
 		}
-
 	}
-
 }

@@ -10,8 +10,9 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import java.util.ArrayList;
+
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.jpa.core.context.orm.NullOrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
@@ -30,6 +31,7 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.OrmElementCollectionMa
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_3JpaPlatformProvider;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_3JpaPlatformProvider;
 
 
 public class EclipseLinkOrmXml2_3Definition

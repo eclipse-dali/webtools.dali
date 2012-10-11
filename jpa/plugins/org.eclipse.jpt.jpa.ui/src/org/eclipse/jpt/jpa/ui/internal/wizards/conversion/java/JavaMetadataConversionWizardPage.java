@@ -38,8 +38,8 @@ import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.utility.SynchronousUiCommandExecutor;
 import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.common.utility.command.Command;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
@@ -276,7 +276,7 @@ public abstract class JavaMetadataConversionWizardPage
 		}
 		String mappingFileVersion = ormXmlResource.getVersion();
 		String jpaProjectVersion = this.getJpaProjectVersion();
-		if (Tools.valuesAreDifferent(mappingFileVersion, jpaProjectVersion)) {
+		if (ObjectTools.notEquals(mappingFileVersion, jpaProjectVersion)) {
 			return NLS.bind(JptUiMessages.JavaMetadataConversion_mappingFileVersionIsInvalid, mappingFileVersion, jpaProjectVersion);
 		}
 		if (this.getEntityMappings(ormXmlResource) == null) {
@@ -312,12 +312,12 @@ public abstract class JavaMetadataConversionWizardPage
 
 	protected IPath getMappingFilePath() {
 		String mappingFileName = this.getMappingFileName();
-		return StringTools.stringIsEmpty(mappingFileName) ? null : new Path(mappingFileName);
+		return StringTools.isBlank(mappingFileName) ? null : new Path(mappingFileName);
 	}
 
 	protected String getMappingFileName() {
 		String mappingFileName = this.mappingFileNameModel.getValue();
-		return StringTools.stringIsEmpty(mappingFileName) ? null : mappingFileName;
+		return StringTools.isBlank(mappingFileName) ? null : mappingFileName;
 	}
 
 	protected String getJpaProjectVersion(){
@@ -481,7 +481,7 @@ public abstract class JavaMetadataConversionWizardPage
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this);
+			return ObjectTools.toString(this);
 		}
 
 		/**
@@ -552,7 +552,7 @@ public abstract class JavaMetadataConversionWizardPage
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.entityMappings.getPersistenceUnit());
+			return ObjectTools.toString(this, this.entityMappings.getPersistenceUnit());
 		}
 
 		public interface Strategy {
@@ -582,7 +582,7 @@ public abstract class JavaMetadataConversionWizardPage
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.resourceRoots[0]);
+			return ObjectTools.toString(this, this.resourceRoots[0]);
 		}
 	}
 
@@ -613,7 +613,7 @@ public abstract class JavaMetadataConversionWizardPage
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.file);
+			return ObjectTools.toString(this, this.file);
 		}
 	}
 

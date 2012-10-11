@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.swt;
 
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 
@@ -24,6 +24,6 @@ public class DisposeAdapter
 	}
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this);
+		return ObjectTools.toString(this);
 	}
 }

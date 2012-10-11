@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.ui.internal.swt;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -182,7 +182,7 @@ public class TriStateCheckBoxModelAdapter {
 
     @Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.booleanHolder);
+		return ObjectTools.toString(this, this.booleanHolder);
 	}
 
 }

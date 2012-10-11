@@ -12,10 +12,10 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
@@ -286,7 +286,7 @@ public class GenericJavaXmlElement
 	 */
 	public XsdTypeDefinition getTypeXsdTypeDefinition() {
 		String type = getFullyQualifiedType();
-		if (StringTools.stringIsEmpty(type) || XmlElement.DEFAULT_TYPE_PROPERTY.equals(type)) {
+		if (StringTools.isBlank(type) || XmlElement.DEFAULT_TYPE_PROPERTY.equals(type)) {
 			return null;
 		}
 		
@@ -319,12 +319,12 @@ public class GenericJavaXmlElement
 	@Override
 	public Iterable<String> getCompletionProposals(int pos) {
 		Iterable<String> result = super.getCompletionProposals(pos);
-		if (! CollectionTools.isEmpty(result)) {
+		if (! IterableTools.isEmpty(result)) {
 			return result;
 		}
 		
 		result = this.qName.getCompletionProposals(pos);
-		if (! CollectionTools.isEmpty(result)) {
+		if (! IterableTools.isEmpty(result)) {
 			return result;
 		}
 		
@@ -359,7 +359,7 @@ public class GenericJavaXmlElement
 	
 	protected void validateType(List<IMessage> messages, IReporter reporter) {
 		String fqType = getFullyQualifiedType();
-		if (StringTools.stringIsEmpty(fqType)) {
+		if (StringTools.isBlank(fqType)) {
 			messages.add(
 					DefaultValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
@@ -367,7 +367,7 @@ public class GenericJavaXmlElement
 							this,
 							getTypeTextRange()));
 		}
-		else if (! StringTools.stringIsEmpty(this.specifiedType)
+		else if (! StringTools.isBlank(this.specifiedType)
 				// verify that type actually exists before validating
 				&& JDTTools.findType(getJaxbProject().getJavaProject(), fqType) != null) {
 			String attributeBaseType = getAttributeMapping().getValueTypeName();

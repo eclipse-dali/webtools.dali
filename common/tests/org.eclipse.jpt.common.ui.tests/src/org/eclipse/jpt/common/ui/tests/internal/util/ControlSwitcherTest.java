@@ -14,9 +14,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
-import org.eclipse.jpt.common.utility.internal.Transformer;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
@@ -128,7 +128,7 @@ public final class ControlSwitcherTest {
 
 		// Test 1
 		switchHolder.setValue(true);
-		Control control = (Control) ReflectionTools.getFieldValue(pageBook, "currentPage");
+		Control control = (Control) ObjectTools.get(pageBook, "currentPage");
 
 		assertNotNull(
 			"The page book's page shouldn't be null",
@@ -158,7 +158,7 @@ public final class ControlSwitcherTest {
 
 		// Test 2
 		switchHolder.setValue(false);
-		control = (Control) ReflectionTools.getFieldValue(pageBook, "currentPage");
+		control = (Control) ObjectTools.get(pageBook, "currentPage");
 
 		assertNotNull(
 			"The page book's page shouldn't be null",

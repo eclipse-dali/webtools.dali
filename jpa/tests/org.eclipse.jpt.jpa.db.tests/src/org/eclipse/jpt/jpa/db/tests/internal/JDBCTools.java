@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.eclipse.jpt.common.utility.internal.iterators.ResultSetIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.ResultSetIterator;
 
 @SuppressWarnings("nls")
 public class JDBCTools {

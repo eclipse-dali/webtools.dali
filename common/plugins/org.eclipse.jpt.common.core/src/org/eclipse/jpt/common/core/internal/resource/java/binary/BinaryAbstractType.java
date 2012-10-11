@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * binary persistent type
@@ -88,7 +88,7 @@ abstract class BinaryAbstractType
 	
 	// ***** package
 	public boolean isIn(IPackageFragment packageFragment) {
-		return StringTools.stringsAreEqual(packageFragment.getElementName(), this.typeBinding.getPackageName());
+		return ObjectTools.equals(packageFragment.getElementName(), this.typeBinding.getPackageName());
 	}
 	
 	// ***** source folder

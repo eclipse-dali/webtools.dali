@@ -19,7 +19,8 @@ import javax.swing.ListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.common.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.ListClearEvent;
@@ -170,7 +171,7 @@ public class CoordinatedList<E> implements List<E>, ListChangeListener, ListData
 	}
 
 	public void itemsMoved(ListMoveEvent e) {
-		CollectionTools.move(this.list, e.getTargetIndex(), e.getSourceIndex(), e.getLength());
+		ListTools.move(this.list, e.getTargetIndex(), e.getSourceIndex(), e.getLength());
 	}
 
 	public void listCleared(ListClearEvent e) {

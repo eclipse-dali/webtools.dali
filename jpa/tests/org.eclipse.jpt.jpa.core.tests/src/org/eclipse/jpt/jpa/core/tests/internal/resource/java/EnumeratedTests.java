@@ -13,8 +13,8 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.resource.java.EnumType;
 import org.eclipse.jpt.jpa.core.resource.java.EnumeratedAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
@@ -55,7 +55,7 @@ public class EnumeratedTests extends JpaJavaResourceModelTestCase {
 	public void testEnumerated() throws Exception {
 		ICompilationUnit cu = this.createTestEnumerated();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EnumeratedAnnotation enumerated = (EnumeratedAnnotation) resourceField.getAnnotation(JPA.ENUMERATED);
 		assertNotNull(enumerated);
@@ -64,7 +64,7 @@ public class EnumeratedTests extends JpaJavaResourceModelTestCase {
 	public void testGetValue() throws Exception {
 		ICompilationUnit cu = this.createTestEnumeratedWithValue();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EnumeratedAnnotation enumerated = (EnumeratedAnnotation) resourceField.getAnnotation(JPA.ENUMERATED);
 		assertEquals(EnumType.ORDINAL, enumerated.getValue());
@@ -73,7 +73,7 @@ public class EnumeratedTests extends JpaJavaResourceModelTestCase {
 	public void testSetValue() throws Exception {
 		ICompilationUnit cu = this.createTestEnumerated();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 
 		EnumeratedAnnotation enumerated = (EnumeratedAnnotation) resourceField.getAnnotation(JPA.ENUMERATED);
 

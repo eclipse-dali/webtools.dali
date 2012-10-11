@@ -23,12 +23,12 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.JptResourceTypeManager;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
-import org.eclipse.jpt.common.core.internal.utility.XPointTools;
+import org.eclipse.jpt.common.core.internal.utility.ConfigurationElementTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.SimpleAssociation;
-import org.eclipse.jpt.common.utility.internal.SimpleFilter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SuperIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SuperIterableWrapper;
 
 /**
  * Resource type manager.
@@ -38,6 +38,10 @@ public class InternalJptResourceTypeManager
 {
 	private final InternalJptWorkspace jptWorkspace;
 
+	/**
+	 * The defined resource types.
+	 * Initialized during construction.
+	 */
 	private final ArrayList<InternalJptResourceType> resourceTypes = new ArrayList<InternalJptResourceType>();
 
 
@@ -118,7 +122,7 @@ public class InternalJptResourceTypeManager
 		String contributor = element.getContributor().getName();
 		// id
 		String id = element.getAttribute(ID_ATTRIBUTE);
-		if (StringTools.stringIsEmpty(id)) {
+		if (StringTools.isBlank(id)) {
 			this.logMissingAttribute(element, ID_ATTRIBUTE);
 			return null;
 		}
@@ -213,19 +217,7 @@ public class InternalJptResourceTypeManager
 	}
 
 	public Iterable<JptResourceType> getResourceTypes(IContentType contentType) {
-		return new FilteringIterable<JptResourceType>(this.getResourceTypes(), new ContentTypeFilter(contentType));
-	}
-
-	/* CU private */ class ContentTypeFilter
-		extends SimpleFilter<JptResourceType, IContentType>
-	{
-		ContentTypeFilter(IContentType contentType) {
-			super(contentType);
-		}
-		@Override
-		public boolean accept(JptResourceType resourceType) {
-			return resourceType.getContentType().equals(this.criterion);
-		}
+		return new FilteringIterable<JptResourceType>(this.getResourceTypes(), new InternalJptResourceType.ContentTypeFilter(contentType));
 	}
 
 	private boolean containsResourceType(String id) {
@@ -266,7 +258,7 @@ public class InternalJptResourceTypeManager
 	}
 
 	private void logMissingAttribute(IConfigurationElement element, String attributeName) {
-		this.getPlugin().logError(XPointTools.buildMissingAttributeMessage(element, attributeName));
+		this.getPlugin().logError(ConfigurationElementTools.buildMissingAttributeMessage(element, attributeName));
 	}
 
 	private void logInvalidContentType(IConfigurationElement element, String resourceTypeID, String contentTypeID) {
@@ -316,6 +308,6 @@ public class InternalJptResourceTypeManager
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.resourceTypes);
+		return ObjectTools.toString(this, this.resourceTypes);
 	}
 }

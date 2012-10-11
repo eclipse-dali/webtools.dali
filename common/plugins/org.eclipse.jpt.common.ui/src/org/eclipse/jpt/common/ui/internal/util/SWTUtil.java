@@ -310,7 +310,7 @@ public class SWTUtil {
 	 * with respect to the second specified rectangle.
 	 */
 	public static Rectangle calculateCenteredBounds(int width1, int height1, int x2, int y2, int width2, int height2) {
-		return new Rectangle(x2 + ((width2 - width1) / 2), y2 + ((height2 - height1) / 2), width1, height1);
+		return new Rectangle(x2 + ((width2 - width1) >> 1), y2 + ((height2 - height1) >> 1), width1, height1);
 	}
 
 	/**
@@ -346,7 +346,7 @@ public class SWTUtil {
 	 * with respect to the second specified rectangle.
 	 */
 	public static Point calculateCenteredPosition(int width1, int height1, int x2, int y2, int width2, int height2) {
-		return new Point(x2 + ((width2 - width1) / 2), y2 + ((height2 - height1) / 2));
+		return new Point(x2 + ((width2 - width1) >> 1), y2 + ((height2 - height1) >> 1));
 	}
 
 	/**

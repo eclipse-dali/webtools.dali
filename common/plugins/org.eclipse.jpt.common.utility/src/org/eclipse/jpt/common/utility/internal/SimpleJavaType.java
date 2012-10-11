@@ -21,7 +21,6 @@ import org.eclipse.jpt.common.utility.JavaType;
 public final class SimpleJavaType
 	implements JavaType, Cloneable, Serializable
 {
-
 	/**
 	 * store the type as a name, so we can reference classes
 	 * that are not loaded
@@ -75,7 +74,7 @@ public final class SimpleJavaType
 		if ((elementTypeName == null) || (elementTypeName.length() == 0)) {
 			throw new IllegalArgumentException("The element type name is required."); //$NON-NLS-1$
 		}
-		if (ClassName.getArrayDepth(elementTypeName) != 0) {		// e.g. "[Ljava.lang.Object;"
+		if (ClassNameTools.arrayDepth(elementTypeName) != 0) {		// e.g. "[Ljava.lang.Object;"
 			throw new IllegalArgumentException("The element type must not be an array: " + elementTypeName + '.'); //$NON-NLS-1$
 		}
 		if (arrayDepth < 0) {
@@ -100,7 +99,7 @@ public final class SimpleJavaType
 	 * </code></ul>
 	 */
 	public SimpleJavaType(String javaClassName) {
-		this(ClassName.getElementTypeName(javaClassName), ClassName.getArrayDepth(javaClassName));
+		this(ClassNameTools.elementTypeName(javaClassName), ClassNameTools.arrayDepth(javaClassName));
 	}
 
 	/**
@@ -129,27 +128,27 @@ public final class SimpleJavaType
 	}
 
 	public boolean isPrimitive() {
-		return (this.arrayDepth == 0) && ClassName.isPrimitive(this.elementTypeName);
+		return (this.arrayDepth == 0) && ClassNameTools.isPrimitive(this.elementTypeName);
 	}
 
 	public boolean isPrimitiveWrapper() {
-		return (this.arrayDepth == 0) && ClassName.isPrimitiveWrapper(this.elementTypeName);
+		return (this.arrayDepth == 0) && ClassNameTools.isPrimitiveWrapper(this.elementTypeName);
 	}
 
 	public boolean isVariablePrimitive() {
-		return (this.arrayDepth == 0) && ClassName.isVariablePrimitive(this.elementTypeName);
+		return (this.arrayDepth == 0) && ClassNameTools.isVariablePrimitive(this.elementTypeName);
 	}
 
 	public boolean isVariablePrimitiveWrapper() {
-		return (this.arrayDepth == 0) && ClassName.isVariablePrimitiveWrapper(this.elementTypeName);
+		return (this.arrayDepth == 0) && ClassNameTools.isVariablePrimitiveWrapper(this.elementTypeName);
 	}
 
 	public Class<?> getJavaClass() throws ClassNotFoundException {
-		return ReflectionTools.getClassForTypeDeclaration(this.elementTypeName, this.arrayDepth);
+		return ClassTools.forTypeDeclaration(this.elementTypeName, this.arrayDepth);
 	}
 
 	public String getJavaClassName() {
-		return ReflectionTools.getClassNameForTypeDeclaration(this.elementTypeName, this.arrayDepth);
+		return TypeDeclarationTools.className(this.elementTypeName, this.arrayDepth);
 	}
 
 
@@ -161,7 +160,7 @@ public final class SimpleJavaType
 	}
 
 	public boolean describes(String className) {
-		return this.equals(ClassName.getElementTypeName(className), ClassName.getArrayDepth(className));
+		return this.equals(ClassNameTools.elementTypeName(className), ClassNameTools.arrayDepth(className));
 	}
 
 	public boolean describes(Class<?> javaClass) {
@@ -238,5 +237,4 @@ public final class SimpleJavaType
 			throw new InternalError();
 		}
 	}
-
 }

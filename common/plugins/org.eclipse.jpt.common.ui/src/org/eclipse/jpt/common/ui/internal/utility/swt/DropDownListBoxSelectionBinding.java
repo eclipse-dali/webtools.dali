@@ -10,8 +10,7 @@
 package org.eclipse.jpt.common.ui.internal.utility.swt;
 
 import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -179,7 +178,7 @@ final class DropDownListBoxSelectionBinding<E>
 	private int indexOf(E item) {
 		int len = this.listModel.size();
 		for (int i = 0; i < len; i++) {
-			if (Tools.valuesAreEqual(this.listModel.get(i), item)) {
+			if (ObjectTools.equals(this.listModel.get(i), item)) {
 				return i;
 			}
 		}
@@ -231,7 +230,7 @@ final class DropDownListBoxSelectionBinding<E>
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.selectedItemModel);
+		return ObjectTools.toString(this, this.selectedItemModel);
 	}
 
 

@@ -13,7 +13,8 @@ import java.util.Collection;
 
 import junit.framework.TestCase;
 
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
@@ -224,7 +225,7 @@ public class CollectionPropertyValueModelAdapterTests extends TestCase {
 		}
 		@Override
 		protected Boolean buildValue() {
-			return Boolean.valueOf(CollectionTools.contains(this.collectionModel.iterator(), this.item));
+			return Boolean.valueOf(IteratorTools.contains(this.collectionModel.iterator(), this.item));
 		}
 
 		// ********** internal methods **********

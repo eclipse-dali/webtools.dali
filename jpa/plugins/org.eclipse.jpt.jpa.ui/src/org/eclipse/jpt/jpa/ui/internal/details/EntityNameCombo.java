@@ -12,12 +12,12 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.StringConverter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.transformer.StringObjectTransformer;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.osgi.util.NLS;
@@ -74,7 +74,7 @@ public class EntityNameCombo
 			container,
 			buildDefaultEntityNameListHolder(),
 			buildEntityNameHolder(),
-			StringConverter.Default.<String>instance(),
+			StringObjectTransformer.<String>instance(),
 			JpaHelpContextIds.ENTITY_NAME);
 		
 		SWTUtil.attachDefaultValueHandler(this.combo);

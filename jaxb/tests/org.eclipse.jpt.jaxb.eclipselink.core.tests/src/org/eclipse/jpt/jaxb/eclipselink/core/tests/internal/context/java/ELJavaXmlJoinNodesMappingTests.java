@@ -8,12 +8,12 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbPlatform;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlJoinNode;
@@ -32,7 +32,7 @@ public class ELJavaXmlJoinNodesMappingTests
 	
 	
 	@Override
-	protected JaxbPlatformDescription getPlatform() {
+	protected JaxbPlatformConfig getPlatformConfig() {
 		return ELJaxbPlatform.VERSION_2_2;
 	}
 	
@@ -78,13 +78,13 @@ public class ELJavaXmlJoinNodesMappingTests
 	
 	public void testUpdateXmlJoinNodes() throws Exception {
 		createTypeWithXmlJoinNodes();
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
-		ELXmlJoinNodesMapping mapping = (ELXmlJoinNodesMapping) CollectionTools.get(classMapping.getAttributes(), 0).getMapping();
+		ELXmlJoinNodesMapping mapping = (ELXmlJoinNodesMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
 		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
 		
 		Iterable<ELXmlJoinNode> xmlJoinNodes = mapping.getXmlJoinNodes();
-		assertTrue(CollectionTools.isEmpty(xmlJoinNodes));
+		assertTrue(IterableTools.isEmpty(xmlJoinNodes));
 		assertEquals(0, mapping.getXmlJoinNodesSize());
 		
 		//add 2 XmlJoinNode annotations
@@ -99,12 +99,12 @@ public class ELJavaXmlJoinNodesMappingTests
 		
 		xmlJoinNodes = mapping.getXmlJoinNodes();
 		
-		assertFalse(CollectionTools.isEmpty(xmlJoinNodes));
+		assertFalse(IterableTools.isEmpty(xmlJoinNodes));
 		assertEquals(2, mapping.getXmlJoinNodesSize());
-		assertEquals("foo", CollectionTools.get(xmlJoinNodes, 0).getXmlPath());
-		assertEquals("@foo", CollectionTools.get(xmlJoinNodes, 0).getReferencedXmlPath());
-		assertEquals("bar", CollectionTools.get(xmlJoinNodes, 1).getXmlPath());
-		assertEquals("@bar", CollectionTools.get(xmlJoinNodes, 1).getReferencedXmlPath());
+		assertEquals("foo", IterableTools.get(xmlJoinNodes, 0).getXmlPath());
+		assertEquals("@foo", IterableTools.get(xmlJoinNodes, 0).getReferencedXmlPath());
+		assertEquals("bar", IterableTools.get(xmlJoinNodes, 1).getXmlPath());
+		assertEquals("@bar", IterableTools.get(xmlJoinNodes, 1).getReferencedXmlPath());
 		
 		// switch XmlJoinNode annotations
 		annotatedElement.edit(
@@ -116,12 +116,12 @@ public class ELJavaXmlJoinNodesMappingTests
 		
 		xmlJoinNodes = mapping.getXmlJoinNodes();
 		
-		assertFalse(CollectionTools.isEmpty(xmlJoinNodes));
+		assertFalse(IterableTools.isEmpty(xmlJoinNodes));
 		assertEquals(2, mapping.getXmlJoinNodesSize());
-		assertEquals("bar", CollectionTools.get(xmlJoinNodes, 0).getXmlPath());
-		assertEquals("@bar", CollectionTools.get(xmlJoinNodes, 0).getReferencedXmlPath());
-		assertEquals("foo", CollectionTools.get(xmlJoinNodes, 1).getXmlPath());
-		assertEquals("@foo", CollectionTools.get(xmlJoinNodes, 1).getReferencedXmlPath());
+		assertEquals("bar", IterableTools.get(xmlJoinNodes, 0).getXmlPath());
+		assertEquals("@bar", IterableTools.get(xmlJoinNodes, 0).getReferencedXmlPath());
+		assertEquals("foo", IterableTools.get(xmlJoinNodes, 1).getXmlPath());
+		assertEquals("@foo", IterableTools.get(xmlJoinNodes, 1).getReferencedXmlPath());
 		
 		// remove XmlJoinNode annotations
 		annotatedElement.edit(
@@ -134,15 +134,15 @@ public class ELJavaXmlJoinNodesMappingTests
 		
 		xmlJoinNodes = mapping.getXmlJoinNodes();
 		
-		assertTrue(CollectionTools.isEmpty(xmlJoinNodes));
+		assertTrue(IterableTools.isEmpty(xmlJoinNodes));
 		assertEquals(0, mapping.getXmlJoinNodesSize());
 	}
 
 	public void testModifyXmlJoinNodes() throws Exception {
 		createTypeWithXmlJoinNodes();
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
-		ELXmlJoinNodesMapping mapping = (ELXmlJoinNodesMapping) CollectionTools.get(classMapping.getAttributes(), 0).getMapping();
+		ELXmlJoinNodesMapping mapping = (ELXmlJoinNodesMapping) IterableTools.get(classMapping.getAttributes(), 0).getMapping();
 		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
 		
 		assertEquals(0, resourceAttribute.getAnnotationsSize(ELJaxb.XML_JOIN_NODE));
@@ -161,28 +161,28 @@ public class ELJavaXmlJoinNodesMappingTests
 		Iterable<XmlJoinNodeAnnotation> xmlJoinNodeAnnotations = 
 				new SubIterableWrapper(resourceAttribute.getAnnotations(ELJaxb.XML_JOIN_NODE));
 		
-		assertEquals(3, CollectionTools.size(xmlJoinNodeAnnotations));
+		assertEquals(3, IterableTools.size(xmlJoinNodeAnnotations));
 		assertEquals(3, mapping.getXmlJoinNodesSize());
-		assertEquals("foo", CollectionTools.get(xmlJoinNodeAnnotations, 0).getXmlPath());
-		assertEquals("@foo", CollectionTools.get(xmlJoinNodeAnnotations, 0).getReferencedXmlPath());
-		assertEquals("bar", CollectionTools.get(xmlJoinNodeAnnotations, 1).getXmlPath());
-		assertEquals("@bar", CollectionTools.get(xmlJoinNodeAnnotations, 1).getReferencedXmlPath());
-		assertEquals("baz", CollectionTools.get(xmlJoinNodeAnnotations, 2).getXmlPath());
-		assertEquals("@baz", CollectionTools.get(xmlJoinNodeAnnotations, 2).getReferencedXmlPath());
+		assertEquals("foo", IterableTools.get(xmlJoinNodeAnnotations, 0).getXmlPath());
+		assertEquals("@foo", IterableTools.get(xmlJoinNodeAnnotations, 0).getReferencedXmlPath());
+		assertEquals("bar", IterableTools.get(xmlJoinNodeAnnotations, 1).getXmlPath());
+		assertEquals("@bar", IterableTools.get(xmlJoinNodeAnnotations, 1).getReferencedXmlPath());
+		assertEquals("baz", IterableTools.get(xmlJoinNodeAnnotations, 2).getXmlPath());
+		assertEquals("@baz", IterableTools.get(xmlJoinNodeAnnotations, 2).getReferencedXmlPath());
 		
 		mapping.moveXmlJoinNode(1, 2);
 		
 		xmlJoinNodeAnnotations = 
 				new SubIterableWrapper(resourceAttribute.getAnnotations(ELJaxb.XML_JOIN_NODE));
 		
-		assertEquals(3, CollectionTools.size(xmlJoinNodeAnnotations));
+		assertEquals(3, IterableTools.size(xmlJoinNodeAnnotations));
 		assertEquals(3, mapping.getXmlJoinNodesSize());
-		assertEquals("foo", CollectionTools.get(xmlJoinNodeAnnotations, 0).getXmlPath());
-		assertEquals("@foo", CollectionTools.get(xmlJoinNodeAnnotations, 0).getReferencedXmlPath());
-		assertEquals("baz", CollectionTools.get(xmlJoinNodeAnnotations, 1).getXmlPath());
-		assertEquals("@baz", CollectionTools.get(xmlJoinNodeAnnotations, 1).getReferencedXmlPath());
-		assertEquals("bar", CollectionTools.get(xmlJoinNodeAnnotations, 2).getXmlPath());
-		assertEquals("@bar", CollectionTools.get(xmlJoinNodeAnnotations, 2).getReferencedXmlPath());
+		assertEquals("foo", IterableTools.get(xmlJoinNodeAnnotations, 0).getXmlPath());
+		assertEquals("@foo", IterableTools.get(xmlJoinNodeAnnotations, 0).getReferencedXmlPath());
+		assertEquals("baz", IterableTools.get(xmlJoinNodeAnnotations, 1).getXmlPath());
+		assertEquals("@baz", IterableTools.get(xmlJoinNodeAnnotations, 1).getReferencedXmlPath());
+		assertEquals("bar", IterableTools.get(xmlJoinNodeAnnotations, 2).getXmlPath());
+		assertEquals("@bar", IterableTools.get(xmlJoinNodeAnnotations, 2).getReferencedXmlPath());
 		
 		mapping.removeXmlJoinNode(2);
 		mapping.removeXmlJoinNode(0);
@@ -191,7 +191,7 @@ public class ELJavaXmlJoinNodesMappingTests
 		xmlJoinNodeAnnotations = 
 				new SubIterableWrapper(resourceAttribute.getAnnotations(ELJaxb.XML_JOIN_NODE));
 		
-		assertEquals(0, CollectionTools.size(xmlJoinNodeAnnotations));
+		assertEquals(0, IterableTools.size(xmlJoinNodeAnnotations));
 		assertEquals(0, mapping.getXmlJoinNodesSize());
 	}
 }

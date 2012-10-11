@@ -15,14 +15,14 @@ import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -450,16 +450,16 @@ public class OrmEclipseLinkObjectTypeConverter
 	}
 
 	protected boolean isEquivalentTo(EclipseLinkObjectTypeConverter converter) {
-		return Tools.valuesAreEqual(this.fullyQualifiedObjectType, converter.getFullyQualifiedObjectType()) &&
-				Tools.valuesAreEqual(this.fullyQualifiedDataType, converter.getFullyQualifiedDataType()) &&
-				Tools.valuesAreEqual(this.defaultObjectValue, converter.getDefaultObjectValue()) &&
+		return ObjectTools.equals(this.fullyQualifiedObjectType, converter.getFullyQualifiedObjectType()) &&
+				ObjectTools.equals(this.fullyQualifiedDataType, converter.getFullyQualifiedDataType()) &&
+				ObjectTools.equals(this.defaultObjectValue, converter.getDefaultObjectValue()) &&
 				this.conversionValuesAreEquivalentTo(converter);
 	}
 
 	protected boolean conversionValuesAreEquivalentTo(EclipseLinkObjectTypeConverter converter) {
 		// get fixed lists of the conversion values
-		ArrayList<OrmEclipseLinkConversionValue> conversionValues1 = CollectionTools.list(this.getConversionValues());
-		ArrayList<? extends EclipseLinkConversionValue> conversionValues2 = CollectionTools.list(converter.getConversionValues());
+		ArrayList<OrmEclipseLinkConversionValue> conversionValues1 = ListTools.list(this.getConversionValues());
+		ArrayList<? extends EclipseLinkConversionValue> conversionValues2 = ListTools.list(converter.getConversionValues());
 		if (conversionValues1.size() != conversionValues2.size()) {
 			return false;
 		}

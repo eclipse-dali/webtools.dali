@@ -26,11 +26,12 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSeeAlsoAnnotation;
 
@@ -139,7 +140,7 @@ public final class SourceXmlSeeAlsoAnnotation
 	}
 	
 	public void moveClass(int targetIndex, int sourceIndex) {
-		CollectionTools.move(this.classes, targetIndex, sourceIndex);
+		ListTools.move(this.classes, targetIndex, sourceIndex);
 		this.suppressFQClassesEventNotification = true;
 		this.writeClasses();
 	}

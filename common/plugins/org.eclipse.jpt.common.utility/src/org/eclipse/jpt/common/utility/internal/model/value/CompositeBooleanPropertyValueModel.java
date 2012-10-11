@@ -10,11 +10,11 @@
 package org.eclipse.jpt.common.utility.internal.model.value;
 
 import java.util.Collection;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Transformer;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * A <code>CompositeBooleanPropertyValueModel</code> adapts a
@@ -293,7 +293,7 @@ public class CompositeBooleanPropertyValueModel
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildSingletonToString(this);
+			return ObjectTools.singletonToString(this);
 		}
 	}
 

@@ -13,7 +13,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
-import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 
@@ -28,7 +27,7 @@ public class JaxbFacetVersionChangeDelegate
 		SubMonitor sm = SubMonitor.convert(monitor, 2);
 		super.execute_(project, fv, config, sm.newChild(1));
 		
-		JptJaxbCorePlugin.instance().getProjectManager().rebuildJaxbProject(project);
+		this.getJaxbProjectManager().rebuildJaxbProject(project);
 		sm.worked(1);
 		// nothing further to do here *just* yet
 	}

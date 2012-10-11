@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationCon
 import org.eclipse.jpt.common.core.libval.LibraryValidator;
 import org.eclipse.jpt.common.eclipselink.core.internal.libval.EclipseLinkLibValUtil;
 import org.eclipse.jpt.jpa.core.internal.libprov.JpaUserLibraryProviderInstallOperationConfig;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
 import org.eclipse.jpt.jpa.eclipselink.core.platform.EclipseLinkPlatform;
 import org.eclipse.osgi.service.resolver.VersionRange;
 
@@ -33,31 +33,31 @@ public class EclipseLinkUserLibraryValidator
 	public IStatus validate(JptLibraryProviderInstallOperationConfig config) {
 		JpaUserLibraryProviderInstallOperationConfig jpaConfig 
 				= (JpaUserLibraryProviderInstallOperationConfig) config;
-		JpaPlatformDescription platform = jpaConfig.getJpaPlatform();
+		JpaPlatformConfig platformConfig = jpaConfig.getJpaPlatformConfig();
 		Set<VersionRange> versionRanges = new HashSet<VersionRange>();
 		
-		if (EclipseLinkPlatform.VERSION_1_0.equals(platform)) {
+		if (EclipseLinkPlatform.VERSION_1_0.equals(platformConfig)) {
 			versionRanges.add(new VersionRange("[1.0, 3.0)")); //$NON-NLS-1$
 		}
-		else if (EclipseLinkPlatform.VERSION_1_1.equals(platform)) {
+		else if (EclipseLinkPlatform.VERSION_1_1.equals(platformConfig)) {
 			versionRanges.add(new VersionRange("[1.1, 3.0)")); //$NON-NLS-1$
 		}
-		else if (EclipseLinkPlatform.VERSION_1_2.equals(platform)) {
+		else if (EclipseLinkPlatform.VERSION_1_2.equals(platformConfig)) {
 			versionRanges.add(new VersionRange("[1.2, 3.0)")); //$NON-NLS-1$
 		}
-		else if (EclipseLinkPlatform.VERSION_2_0.equals(platform)) {
+		else if (EclipseLinkPlatform.VERSION_2_0.equals(platformConfig)) {
 			versionRanges.add(new VersionRange("[2.0, 3.0)")); //$NON-NLS-1$
 		}
-		else if (EclipseLinkPlatform.VERSION_2_1.equals(platform)) {
+		else if (EclipseLinkPlatform.VERSION_2_1.equals(platformConfig)) {
 			versionRanges.add(new VersionRange("[2.1, 3.0)")); //$NON-NLS-1$
 		}
-		else if (EclipseLinkPlatform.VERSION_2_2.equals(platform)) {
+		else if (EclipseLinkPlatform.VERSION_2_2.equals(platformConfig)) {
 			versionRanges.add(new VersionRange("[2.2, 3.0)")); //$NON-NLS-1$
 		}
-		else if (EclipseLinkPlatform.VERSION_2_3.equals(platform)) {
+		else if (EclipseLinkPlatform.VERSION_2_3.equals(platformConfig)) {
 			versionRanges.add(new VersionRange("[2.3, 3.0)")); //$NON-NLS-1$
 		}
-		else if (EclipseLinkPlatform.VERSION_2_4.equals(platform)) {
+		else if (EclipseLinkPlatform.VERSION_2_4.equals(platformConfig)) {
 			versionRanges.add(new VersionRange("[2.4, 3.0)")); //$NON-NLS-1$
 		}
 		

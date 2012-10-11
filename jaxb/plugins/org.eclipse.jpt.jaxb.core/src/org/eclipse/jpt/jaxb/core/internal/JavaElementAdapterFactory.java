@@ -11,11 +11,11 @@ package org.eclipse.jpt.jaxb.core.internal;
 
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 
 /**
  * Factory to build Dali adapters for an {@link IJavaElement}:<ul>
- * <li>{@link JaxbPlatformDescription}
+ * <li>{@link JaxbPlatformConfig}
  * </ul>
  * See <code>org.eclipse.jpt.jaxb.core/plugin.xml:org.eclipse.core.runtime.adapters</code>.
  */
@@ -23,7 +23,7 @@ public class JavaElementAdapterFactory
 	implements IAdapterFactory
 {
 	private static final Class<?>[] ADAPTER_LIST = new Class[] {
-			JaxbPlatformDescription.class
+			JaxbPlatformConfig.class
 		};
 
 	public Class<?>[] getAdapterList() {
@@ -38,8 +38,8 @@ public class JavaElementAdapterFactory
 	}
 	
 	private Object getAdapter(IJavaElement javaElement, Class<?> adapterType) {
-		if (adapterType == JaxbPlatformDescription.class) {
-			return javaElement.getResource().getAdapter(JaxbPlatformDescription.class);
+		if (adapterType == JaxbPlatformConfig.class) {
+			return javaElement.getResource().getAdapter(JaxbPlatformConfig.class);
 		}
 		return null;
 	}

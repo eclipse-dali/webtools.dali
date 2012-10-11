@@ -10,7 +10,8 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 
 import java.util.List;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyOverride;
@@ -88,7 +89,7 @@ public abstract class OverrideValidator
 	}
 
 	protected boolean validateName(List<IMessage> messages) {
-		if ( ! CollectionTools.contains(this.container.getAllOverridableNames(), this.override.getName())) {
+		if ( ! IterableTools.contains(this.container.getAllOverridableNames(), this.override.getName())) {
 			messages.add(this.buildUnresolvedNameMessage());
 			return false;
 		}

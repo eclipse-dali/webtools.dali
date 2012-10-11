@@ -22,15 +22,16 @@ import java.util.ListIterator;
 import org.eclipse.jpt.common.ui.internal.swt.AbstractComboModelAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.AbstractComboModelAdapter.SelectionChangeEvent;
 import org.eclipse.jpt.common.ui.internal.swt.AbstractComboModelAdapter.SelectionChangeListener;
-import org.eclipse.jpt.common.utility.internal.StringConverter;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.common.utility.internal.swing.SimpleDisplayable;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.tests.internal.model.SimpleDisplayable;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.After;
@@ -91,9 +92,10 @@ public abstract class AbstractComboModelAdapterTest {
 		};
 	}
 
-	protected final StringConverter<SimpleDisplayable> buildStringConverter() {
-		return new StringConverter<SimpleDisplayable>() {
-			public String convertToString(SimpleDisplayable value) {
+	protected final Transformer<SimpleDisplayable, String> buildStringConverter() {
+		return new TransformerAdapter<SimpleDisplayable, String>() {
+			@Override
+			public String transform(SimpleDisplayable value) {
 				return (value == null) ? "" : value.displayString();
 			}
 		};

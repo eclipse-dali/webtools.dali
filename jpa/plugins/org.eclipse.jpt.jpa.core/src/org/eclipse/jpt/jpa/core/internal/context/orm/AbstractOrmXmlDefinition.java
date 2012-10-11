@@ -13,13 +13,14 @@ import java.util.ArrayList;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.UnsupportedOrmAttributeMappingDefinition;
+import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformProvider;
 
 /**
  * All the state in the definition should be "static"
@@ -57,7 +58,7 @@ public abstract class AbstractOrmXmlDefinition
 
 	public OrmTypeMappingDefinition getTypeMappingDefinition(String mappingKey) {
 		for (OrmTypeMappingDefinition definition : this.getTypeMappingDefinitions()) {
-			if (Tools.valuesAreEqual(definition.getKey(), mappingKey)) {
+			if (ObjectTools.equals(definition.getKey(), mappingKey)) {
 				return definition;
 			}
 		}
@@ -101,7 +102,7 @@ public abstract class AbstractOrmXmlDefinition
 
 	public OrmAttributeMappingDefinition getAttributeMappingDefinition(String mappingKey) {
 		for (OrmAttributeMappingDefinition definition : this.getAttributeMappingDefinitions()) {
-			if (Tools.valuesAreEqual(definition.getKey(), mappingKey)) {
+			if (ObjectTools.equals(definition.getKey(), mappingKey)) {
 				return definition;
 			}
 		}

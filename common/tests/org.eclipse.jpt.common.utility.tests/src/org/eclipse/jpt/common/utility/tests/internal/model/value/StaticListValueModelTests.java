@@ -12,7 +12,8 @@ package org.eclipse.jpt.common.utility.tests.internal.model.value;
 import java.util.ArrayList;
 import java.util.List;
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
@@ -55,7 +56,7 @@ public class StaticListValueModelTests extends TestCase {
 	}
 
 	public void testIterator() {
-		assertEquals(buildList(), CollectionTools.list(this.listHolder.listIterator()));
+		assertEquals(buildList(), ListTools.list(this.listHolder.listIterator()));
 	}
 
 	public void testSize() {

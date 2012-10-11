@@ -17,15 +17,15 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.Column;
@@ -1027,7 +1027,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 	}
 
 	protected void validateMapKeyClass_(List<IMessage> messages) {
-		if (StringTools.stringIsEmpty(getMapKeyClass())) {
+		if (StringTools.isBlank(getMapKeyClass())) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
@@ -1229,7 +1229,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		 * the default table name.  the table is always the collection table
 		 */
 		public boolean tableNameIsInvalid(String tableName) {
-			return Tools.valuesAreDifferent(this.getDefaultTableName(), tableName);
+			return ObjectTools.notEquals(this.getDefaultTableName(), tableName);
 		}
 
 		public JptValidator buildOverrideValidator(ReadOnlyOverride override, OverrideContainer container) {

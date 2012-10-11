@@ -25,8 +25,8 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
  * @since ... a while?
  */
 public interface ReadOnlyPersistentAttribute
-		extends JpaContextNode, JpaStructureNode, ReadOnlyAccessHolder {
-	
+	extends JpaContextNode, JpaStructureNode, ReadOnlyAccessHolder
+{
 	// ********** name **********
 
 	String getName();

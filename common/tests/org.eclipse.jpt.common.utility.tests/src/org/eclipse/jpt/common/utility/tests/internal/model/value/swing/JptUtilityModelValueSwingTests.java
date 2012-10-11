@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 public class JptUtilityModelValueSwingTests {
-	
+
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JptUtilityModelValueSwingTests.class.getPackage().getName());
 
@@ -30,13 +30,12 @@ public class JptUtilityModelValueSwingTests {
 		suite.addTestSuite(SpinnerModelAdapterTests.class);
 		suite.addTestSuite(TableModelAdapterTests.class);
 		suite.addTestSuite(TreeModelAdapterTests.class);
-	
+
 		return suite;
 	}
-	
+
 	private JptUtilityModelValueSwingTests() {
 		super();
 		throw new UnsupportedOperationException();
 	}
-	
 }

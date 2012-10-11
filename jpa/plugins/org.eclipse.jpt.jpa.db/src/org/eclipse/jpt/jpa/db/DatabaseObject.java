@@ -10,9 +10,9 @@
 package org.eclipse.jpt.jpa.db;
 
 import java.util.Comparator;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Transformer;
-import org.eclipse.jpt.common.utility.internal.TransformerAdapter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import com.ibm.icu.text.Collator;
 
 /**
@@ -84,7 +84,7 @@ public interface DatabaseObject {
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this);
+			return ObjectTools.toString(this);
 		}
 	}
 

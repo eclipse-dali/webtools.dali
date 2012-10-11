@@ -14,8 +14,8 @@ import java.util.List;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.node.AbstractNode;
-import org.eclipse.jpt.common.utility.internal.node.Node;
-import org.eclipse.jpt.common.utility.internal.node.Problem;
+import org.eclipse.jpt.common.utility.node.Node;
+import org.eclipse.jpt.common.utility.node.Problem;
 import org.eclipse.jpt.jpa.core.context.Query;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 
@@ -74,7 +74,7 @@ final class AddQueryStateObject extends AbstractNode
 	}
 
 	private void addNameProblemsTo(List<Problem> currentProblems) {
-		if (StringTools.stringIsEmpty(this.name)) {
+		if (StringTools.isBlank(this.name)) {
 			currentProblems.add(buildProblem(JptUiDetailsMessages.QueryStateObject_nameMustBeSpecified, IMessageProvider.ERROR));
 		}
 		else if (names().contains(this.name)){
@@ -83,7 +83,7 @@ final class AddQueryStateObject extends AbstractNode
 	}
 
 	private void addQueryTypeProblemsTo(List<Problem> currentProblems) {
-		if (StringTools.stringIsEmpty(this.queryType)) {
+		if (StringTools.isBlank(this.queryType)) {
 			currentProblems.add(buildProblem(JptUiDetailsMessages.QueryStateObject_typeMustBeSpecified, IMessageProvider.ERROR));
 		}
 	}

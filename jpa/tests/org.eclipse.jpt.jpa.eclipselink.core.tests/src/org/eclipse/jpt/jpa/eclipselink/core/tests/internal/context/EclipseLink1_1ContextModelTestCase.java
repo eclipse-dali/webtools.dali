@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context;
 
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
 import org.eclipse.jpt.jpa.eclipselink.core.platform.EclipseLinkPlatform;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
 
@@ -23,7 +23,7 @@ public abstract class EclipseLink1_1ContextModelTestCase extends EclipseLinkCont
 	}
 
 	@Override
-	protected JpaPlatformDescription getJpaPlatformDescription() {
+	protected JpaPlatformConfig getJpaPlatformConfig() {
 		return EclipseLinkPlatform.VERSION_1_1;
 	}
 

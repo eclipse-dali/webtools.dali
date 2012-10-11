@@ -34,13 +34,14 @@ import javax.swing.tree.DefaultTreeSelectionModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.EnumerationIterator;
+
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterator.EnumerationIterator;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.TreeModelAdapter;
-import org.eclipse.jpt.common.utility.internal.swing.Displayable;
 import org.eclipse.jpt.common.utility.model.value.TreeNodeValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.tests.internal.model.Displayable;
 import org.eclipse.jpt.common.utility.tests.internal.model.value.swing.TreeModelAdapterTests.SortedTestNode;
 import org.eclipse.jpt.common.utility.tests.internal.model.value.swing.TreeModelAdapterTests.TestModel;
 import org.eclipse.jpt.common.utility.tests.internal.model.value.swing.TreeModelAdapterTests.TestNode;
@@ -241,7 +242,7 @@ public class TreeModelAdapterUITest {
 		if (stream == null) {
 			return Collections.emptyList();
 		}
-		return CollectionTools.list(new EnumerationIterator<TreePath>(stream));
+		return ListTools.list(new EnumerationIterator<TreePath>(stream));
 	}
 
 	// ********** behavior **********

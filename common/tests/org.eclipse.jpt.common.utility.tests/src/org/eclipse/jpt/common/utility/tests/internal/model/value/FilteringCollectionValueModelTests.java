@@ -15,8 +15,8 @@ import java.util.Vector;
 
 import junit.framework.TestCase;
 
-import org.eclipse.jpt.common.utility.Filter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.filter.Filter;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.FilteringCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;

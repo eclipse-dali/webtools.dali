@@ -17,10 +17,10 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.internal.jface.ImageImageDescriptor;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
@@ -117,7 +117,7 @@ public abstract class MapAsContribution<T extends JpaStructureNode>
 		JpaPlatformUi jpaPlatformUi = (JpaPlatformUi) node.getJpaPlatform().getAdapter(JpaPlatformUi.class);
 		
 		Iterable<? extends MappingUiDefinition<T, ?>> sortedMappingUiDefinitions = 
-				CollectionTools.sort(
+				IterableTools.sort(
 					new FilteringIterable<MappingUiDefinition<T, ?>>(
 							getMappingUiDefinitions(jpaPlatformUi, node.getResourceType())) {
 						 @Override

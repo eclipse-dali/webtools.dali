@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.gen.internal;
 
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 public interface OverwriteConfirmer {
 	/**
@@ -40,7 +40,7 @@ public interface OverwriteConfirmer {
 
 		@Override
 		public String toString() {
-			return StringTools.buildSingletonToString(this);
+			return ObjectTools.singletonToString(this);
 		}
 	}
 
@@ -66,7 +66,7 @@ public interface OverwriteConfirmer {
 
 		@Override
 		public String toString() {
-			return StringTools.buildSingletonToString(this);
+			return ObjectTools.singletonToString(this);
 		}
 	}
 }

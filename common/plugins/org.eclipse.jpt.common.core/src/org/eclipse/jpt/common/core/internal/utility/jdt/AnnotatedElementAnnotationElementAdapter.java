@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
  /**
  * Adapt an annotated element and a declaration annotation element adapter.
@@ -70,7 +70,7 @@ public class AnnotatedElementAnnotationElementAdapter<T>
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.daea);
+		return ObjectTools.toString(this, this.daea);
 	}
 
 
@@ -101,7 +101,7 @@ public class AnnotatedElementAnnotationElementAdapter<T>
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this);
+			return ObjectTools.toString(this);
 		}
 	}
 

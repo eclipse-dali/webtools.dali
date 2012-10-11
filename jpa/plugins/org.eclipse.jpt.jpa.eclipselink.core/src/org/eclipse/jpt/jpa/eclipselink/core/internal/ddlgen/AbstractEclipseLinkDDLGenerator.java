@@ -242,10 +242,7 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 	 * Returns the Property string value of the given property value.
 	 */
 	protected String getPropertyStringValueOf(PersistenceXmlEnumValue value) {
-		if(value == null) {
-			return null;
-		}
-		return value.getPropertyValue();
+		return (value == null) ? null : value.getPropertyValue();
 	}
 
 	protected void buildAllProperties(Properties properties) {

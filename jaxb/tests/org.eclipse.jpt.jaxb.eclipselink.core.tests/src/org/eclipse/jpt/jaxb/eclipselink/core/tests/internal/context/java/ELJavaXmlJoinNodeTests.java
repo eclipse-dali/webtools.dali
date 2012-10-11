@@ -6,12 +6,12 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbPlatform;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELXmlJoinNode;
@@ -31,7 +31,7 @@ public class ELJavaXmlJoinNodeTests
 	
 	
 	@Override
-	protected JaxbPlatformDescription getPlatform() {
+	protected JaxbPlatformConfig getPlatformConfig() {
 		return ELJaxbPlatform.VERSION_2_2;
 	}
 	
@@ -58,12 +58,12 @@ public class ELJavaXmlJoinNodeTests
 	public void testModifyXmlPath() throws Exception {
 		createTypeWithXmlJoinNode();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
-		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(classMapping.getAttributes(), 0);
+		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
 		ELXmlJoinNodesMapping mapping = (ELXmlJoinNodesMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
-		ELXmlJoinNode xmlJoinNode = CollectionTools.get(mapping.getXmlJoinNodes(), 0);
+		ELXmlJoinNode xmlJoinNode = IterableTools.get(mapping.getXmlJoinNodes(), 0);
 		XmlJoinNodeAnnotation annotation = (XmlJoinNodeAnnotation) resourceAttribute.getAnnotation(0, ELJaxb.XML_JOIN_NODE);
 		
 		assertNull(annotation.getXmlPath());
@@ -88,12 +88,12 @@ public class ELJavaXmlJoinNodeTests
 	public void testUpdateXmlPath() throws Exception {
 		createTypeWithXmlJoinNode();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
-		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(classMapping.getAttributes(), 0);
+		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
 		ELJavaXmlJoinNodesMapping mapping = (ELJavaXmlJoinNodesMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
-		ELXmlJoinNode xmlJoinNode = CollectionTools.get(mapping.getXmlJoinNodes(), 0);
+		ELXmlJoinNode xmlJoinNode = IterableTools.get(mapping.getXmlJoinNodes(), 0);
 		XmlJoinNodeAnnotation annotation = (XmlJoinNodeAnnotation) resourceAttribute.getAnnotation(0, ELJaxb.XML_JOIN_NODE);
 		
 		assertNull(annotation.getXmlPath());
@@ -134,12 +134,12 @@ public class ELJavaXmlJoinNodeTests
 	public void testModifyReferencedXmlPath() throws Exception {
 		createTypeWithXmlJoinNode();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
-		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(classMapping.getAttributes(), 0);
+		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
 		ELXmlJoinNodesMapping mapping = (ELXmlJoinNodesMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
-		ELXmlJoinNode xmlJoinNode = CollectionTools.get(mapping.getXmlJoinNodes(), 0);
+		ELXmlJoinNode xmlJoinNode = IterableTools.get(mapping.getXmlJoinNodes(), 0);
 		XmlJoinNodeAnnotation annotation = (XmlJoinNodeAnnotation) resourceAttribute.getAnnotation(0, ELJaxb.XML_JOIN_NODE);
 		
 		assertNull(annotation.getReferencedXmlPath());
@@ -164,12 +164,12 @@ public class ELJavaXmlJoinNodeTests
 	public void testUpdateReferencedXmlPath() throws Exception {
 		createTypeWithXmlJoinNode();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
-		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(classMapping.getAttributes(), 0);
+		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
 		ELJavaXmlJoinNodesMapping mapping = (ELJavaXmlJoinNodesMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
-		ELXmlJoinNode xmlJoinNode = CollectionTools.get(mapping.getXmlJoinNodes(), 0);
+		ELXmlJoinNode xmlJoinNode = IterableTools.get(mapping.getXmlJoinNodes(), 0);
 		XmlJoinNodeAnnotation annotation = (XmlJoinNodeAnnotation) resourceAttribute.getAnnotation(0, ELJaxb.XML_JOIN_NODE);
 		
 		assertNull(annotation.getReferencedXmlPath());

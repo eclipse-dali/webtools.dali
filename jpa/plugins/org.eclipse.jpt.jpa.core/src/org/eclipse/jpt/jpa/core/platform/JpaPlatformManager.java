@@ -28,7 +28,7 @@ import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
  * @see JpaPlatform
- * @see JpaPlatformDescription
+ * @see JpaPlatformConfig
  * @version 3.0
  * @since 3.0
  */
@@ -47,50 +47,50 @@ public interface JpaPlatformManager {
 	JpaPlatform getJpaPlatform(String jpaPlatformID);
 
 
-	// ********** JPA platform group descriptions **********
+	// ********** JPA platform group configs **********
 
 	/**
-	 * Return all the JPA platform group descriptions.
+	 * Return all the JPA platform group configs.
 	 */
-	Iterable<JpaPlatformGroupDescription> getJpaPlatformGroupDescriptions();
+	Iterable<JpaPlatformGroupConfig> getJpaPlatformGroupConfigs();
 
 	/**
-	 * Return the JPA platform group description for the specified ID.
+	 * Return the JPA platform group config for the specified ID.
 	 */
-	JpaPlatformGroupDescription getJpaPlatformGroupDescription(String groupID);
+	JpaPlatformGroupConfig getJpaPlatformGroupConfig(String groupID);
 
 
-	// ********** JPA platform descriptions **********
+	// ********** JPA platform configs **********
 
 	/**
-	 * Return all the JPA platform descriptions.
+	 * Return all the JPA platform configs.
 	 */
-	Iterable<JpaPlatformDescription> getJpaPlatformDescriptions();
+	Iterable<JpaPlatformConfig> getJpaPlatformConfigs();
 
 	/**
-	 * Return the JPA platform description for the specified ID.
+	 * Return the JPA platform config for the specified ID.
 	 */
-	JpaPlatformDescription getJpaPlatformDescription(String jpaPlatformID);
+	JpaPlatformConfig getJpaPlatformConfig(String jpaPlatformID);
 
 	/**
-	 * Return the JPA platform descriptions that support the specified
+	 * Return the JPA platform configs that support the specified
 	 * JPA facet version.
 	 */
-	Iterable<JpaPlatformDescription> getJpaPlatformDescriptions(IProjectFacetVersion jpaFacetVersion);
+	Iterable<JpaPlatformConfig> getJpaPlatformConfigs(IProjectFacetVersion jpaFacetVersion);
 
 
-	// ********** default JPA platform description **********
+	// ********** default JPA platform config **********
 
 	/**
-	 * Return the JPA platform description that is the workspace's default for
+	 * Return the JPA platform config that is the workspace's default for
 	 * the specified JPA facet version.
 	 */
-	JpaPlatformDescription getDefaultJpaPlatformDescription(IProjectFacetVersion jpaFacetVersion);
+	JpaPlatformConfig getDefaultJpaPlatformConfig(IProjectFacetVersion jpaFacetVersion);
 
 	/**
-	 * Set the workspace's default JPA platform description for the specified
+	 * Set the workspace's default JPA platform config for the specified
 	 * JPA facet version.
-	 * @see #getDefaultJpaPlatformDescription(IProjectFacetVersion)
+	 * @see #getDefaultJpaPlatformConfig(IProjectFacetVersion)
 	 */
-	void setDefaultJpaPlatformDescription(IProjectFacetVersion jpaFacetVersion, JpaPlatformDescription description);
+	void setDefaultJpaPlatformConfig(IProjectFacetVersion jpaFacetVersion, JpaPlatformConfig config);
 }

@@ -14,7 +14,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.CommandExecutor;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * Combine the job command executor and command executor interfaces.
@@ -57,7 +57,7 @@ public interface CombinedCommandExecutor
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildSingletonToString(this);
+			return ObjectTools.singletonToString(this);
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
@@ -96,7 +96,7 @@ public interface CombinedCommandExecutor
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildSingletonToString(this);
+			return ObjectTools.singletonToString(this);
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {

@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaAttributeMappingDefinitionWrapper;
@@ -60,8 +60,8 @@ public class EclipseLinkJavaIdMappingDefinition2_0
 	 */
 	private boolean isDefaultDerivedId(JavaPersistentAttribute persistentAttribute) {
 		String defaultKey = persistentAttribute.getDefaultMappingKey();
-		return Tools.valuesAreEqual(defaultKey, this.getManyToOneKey()) ||
-				Tools.valuesAreEqual(defaultKey, this.getOneToOneKey());
+		return ObjectTools.equals(defaultKey, this.getManyToOneKey()) ||
+				ObjectTools.equals(defaultKey, this.getOneToOneKey());
 	}
 
 	private String getManyToOneKey() {

@@ -17,8 +17,8 @@ import javax.swing.ListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionListener;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 
 /**
  * This ListSelectionModel is aware of the ListModel and
@@ -33,6 +33,8 @@ public class ObjectListSelectionModel
 
 	/** A listener that allows us to clear the selection when the list model has changed. */
 	private final ListDataListener listDataListener;
+
+	private static final long serialVersionUID = 1L;
 
 
 	// ********** constructors **********
@@ -157,7 +159,7 @@ public class ObjectListSelectionModel
 		int max = this.getMaxSelectionIndex();
 
 		if ((min < 0) || (max < 0)) {
-			return Tools.EMPTY_OBJECT_ARRAY;
+			return ObjectTools.EMPTY_OBJECT_ARRAY;
 		}
 
 		int maxSize = (max - min) + 1;
@@ -215,7 +217,7 @@ public class ObjectListSelectionModel
 	 * Set the selected value.
 	 */
 	public void setSelectedValue(Object object) {
-		this.setSelectedValues(CollectionTools.singletonIterator(object));
+		this.setSelectedValues(IteratorTools.singletonIterator(object));
 	}
 
 	/**
@@ -242,7 +244,7 @@ public class ObjectListSelectionModel
 	 * @see javax.swing.ListSelectionModel#setSelectionInterval(int, int)
 	 */
 	public void setSelectedValues(Object[] objects) {
-		this.setSelectedValues(CollectionTools.iterator(objects));
+		this.setSelectedValues(IteratorTools.iterator(objects));
 	}
 
 	/**
@@ -250,7 +252,7 @@ public class ObjectListSelectionModel
 	 * @see javax.swing.ListSelectionModel#addSelectionInterval(int, int)
 	 */
 	public void addSelectedValue(Object object) {
-		this.addSelectedValues(CollectionTools.singletonIterator(object));
+		this.addSelectedValues(IteratorTools.singletonIterator(object));
 	}
 
 	/**
@@ -276,7 +278,7 @@ public class ObjectListSelectionModel
 	 * @see javax.swing.ListSelectionModel#addSelectionInterval(int, int)
 	 */
 	public void addSelectedValues(Object[] objects) {
-		this.addSelectedValues(CollectionTools.iterator(objects));
+		this.addSelectedValues(IteratorTools.iterator(objects));
 	}
 
 	/**
@@ -284,7 +286,7 @@ public class ObjectListSelectionModel
 	 * @see javax.swing.ListSelectionModel#removeSelectionInterval(int, int)
 	 */
 	public void removeSelectedValue(Object object) {
-		this.removeSelectedValues(CollectionTools.singletonIterator(object));
+		this.removeSelectedValues(IteratorTools.singletonIterator(object));
 	}
 
 	/**
@@ -315,7 +317,7 @@ public class ObjectListSelectionModel
 	 * @see javax.swing.ListSelectionModel#removeSelectionInterval(int, int)
 	 */
 	public void removeSelectedValues(Object[] objects) {
-		this.removeSelectedValues(CollectionTools.iterator(objects));
+		this.removeSelectedValues(IteratorTools.iterator(objects));
 	}
 
 	/**

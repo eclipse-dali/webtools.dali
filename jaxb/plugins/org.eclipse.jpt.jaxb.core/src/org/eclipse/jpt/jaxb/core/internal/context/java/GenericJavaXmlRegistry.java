@@ -16,12 +16,12 @@ import javax.xml.namespace.QName;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.Bag;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.HashBag;
+import org.eclipse.jpt.common.utility.collection.Bag;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.collection.HashBag;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
@@ -137,13 +137,13 @@ public class GenericJavaXmlRegistry
 	 @Override
 	public Iterable<String> getCompletionProposals(int pos) {
 		Iterable<String> result = super.getCompletionProposals(pos);
-		if (! CollectionTools.isEmpty(result)) {
+		if (! IterableTools.isEmpty(result)) {
 			return result;
 		}
 		
 		for (JaxbElementFactoryMethod efm : getElementFactoryMethods()) {
 			result = efm.getCompletionProposals(pos);
-				if (! CollectionTools.isEmpty(result)) {
+				if (! IterableTools.isEmpty(result)) {
 				return result;
 			}
 		}
@@ -165,7 +165,7 @@ public class GenericJavaXmlRegistry
 		super.validate(messages, reporter);
 		
 		Iterable<XmlRegistry> registries = getContextRoot().getXmlRegistries(getJaxbPackage());
-		if (CollectionTools.size(registries) > 1) {
+		if (IterableTools.size(registries) > 1) {
 			messages.add(
 					DefaultValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -187,7 +187,7 @@ public class GenericJavaXmlRegistry
 		
 		for (JaxbElementFactoryMethod xmlElementDecl : getElementFactoryMethods()) {
 			String elementDeclName = xmlElementDecl.getQName().getName();
-			if (! StringTools.stringIsEmpty(elementDeclName)) {
+			if (! StringTools.isBlank(elementDeclName)) {
 				String fqScope = xmlElementDecl.getFullyQualifiedScope();
 				if (xmlElementDeclQnames.get(fqScope) == null) {
 					xmlElementDeclQnames.put(fqScope, new HashBag<QName>());

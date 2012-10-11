@@ -14,12 +14,12 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jpt.common.core.internal.utility.ICUStringCollator;
 import org.eclipse.jpt.common.ui.internal.properties.JptProjectPropertiesPage;
 import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
-import org.eclipse.jpt.common.utility.internal.StringConverter;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.BufferedModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionValueModel;
@@ -27,17 +27,22 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionVal
 import org.eclipse.jpt.common.utility.internal.model.value.SetCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticCollectionValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jaxb.core.JaxbFacet;
+import org.eclipse.jpt.jaxb.core.JaxbPreferences;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
-import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
+import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
+import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.core.libprov.JaxbLibraryProviderInstallOperationConfig;
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformManager;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
 import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
@@ -62,7 +67,7 @@ public class JaxbProjectPropertiesPage
 	
 	private PropertyValueModel<JaxbProject> jaxbProjectModel;
 	
-	private BufferedModifiablePropertyValueModel<JaxbPlatformDescription> platformModel;
+	private BufferedModifiablePropertyValueModel<JaxbPlatformConfig> platformModel;
 	private PropertyChangeListener platformListener;
 	
 	/* private */ static final Comparator<String> STRING_COMPARATOR = new ICUStringCollator();
@@ -85,20 +90,20 @@ public class JaxbProjectPropertiesPage
 	
 	// ***** platform ID model
 	
-	private BufferedModifiablePropertyValueModel<JaxbPlatformDescription> buildPlatformModel() {
-		return new BufferedModifiablePropertyValueModel<JaxbPlatformDescription>(
+	private BufferedModifiablePropertyValueModel<JaxbPlatformConfig> buildPlatformModel() {
+		return new BufferedModifiablePropertyValueModel<JaxbPlatformConfig>(
 				new PlatformModel(this.jaxbProjectModel), this.trigger);
 	}
 	
 	private PropertyChangeListener buildPlatformListener(){
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent event) {
-				JaxbProjectPropertiesPage.this.platformChanged((JaxbPlatformDescription) event.getNewValue());
+				JaxbProjectPropertiesPage.this.platformChanged((JaxbPlatformConfig) event.getNewValue());
 			}
 		};
 	}
 	
-	void platformChanged(JaxbPlatformDescription newPlatform) {
+	void platformChanged(JaxbPlatformConfig newPlatform) {
 		if ( ! this.getControl().isDisposed()) {
 			// handle null, in the case the jpa facet is changed via the facets page,
 			// the library install delegate is temporarily null
@@ -142,7 +147,7 @@ public class JaxbProjectPropertiesPage
 				}
 			}
 			for (JaxbLibraryProviderInstallOperationConfig jaxbConfig : jaxbConfigs) {
-				jaxbConfig.setJaxbPlatform(this.platformModel.getValue());
+				jaxbConfig.setJaxbPlatformConfig(this.platformModel.getValue());
 			}
 		}
 	}
@@ -190,7 +195,7 @@ public class JaxbProjectPropertiesPage
 				buildPlatformChoicesModel(),
 				this.platformModel,
 				platformDropDown,
-				JAXB_PLATFORM_LABEL_CONVERTER);
+				JAXB_PLATFORM_CONFIG_LABEL_CONVERTER);
 		
 		buildFacetsPageLink(group, JptJaxbUiMessages.JaxbFacetWizardPage_facetsPageLink);
 	}
@@ -206,37 +211,37 @@ public class JaxbProjectPropertiesPage
 	 * would be no JAXB project!
 	 */
 	@SuppressWarnings("unchecked")
-	private ListValueModel<JaxbPlatformDescription> buildPlatformChoicesModel() {
-		return new SortedListValueModelAdapter<JaxbPlatformDescription>(
-				new SetCollectionValueModel<JaxbPlatformDescription>(
-						new CompositeCollectionValueModel<CollectionValueModel<JaxbPlatformDescription>, JaxbPlatformDescription>(
-								new PropertyCollectionValueModelAdapter<JaxbPlatformDescription>(this.platformModel),
+	private ListValueModel<JaxbPlatformConfig> buildPlatformChoicesModel() {
+		return new SortedListValueModelAdapter<JaxbPlatformConfig>(
+				new SetCollectionValueModel<JaxbPlatformConfig>(
+						CompositeCollectionValueModel.forModels(
+								new PropertyCollectionValueModelAdapter<JaxbPlatformConfig>(this.platformModel),
 								buildRegistryPlatformsModel())),
-				JAXB_PLATFORM_COMPARATOR);
+				JAXB_PLATFORM_CONFIG_COMPARATOR);
 	}
 	
-	private CollectionValueModel<JaxbPlatformDescription> buildRegistryPlatformsModel() {
-		Iterable<JaxbPlatformDescription> enabledPlatforms = 
-			new FilteringIterable<JaxbPlatformDescription>(
-					JptJaxbCorePlugin.getJaxbPlatformManager().getJaxbPlatforms()) {
+	private CollectionValueModel<JaxbPlatformConfig> buildRegistryPlatformsModel() {
+		Iterable<JaxbPlatformConfig> enabledPlatforms = 
+			new FilteringIterable<JaxbPlatformConfig>(this.getJaxbPlatformManager().getJaxbPlatformConfigs()) {
 				@Override
-				protected boolean accept(JaxbPlatformDescription o) {
+				protected boolean accept(JaxbPlatformConfig o) {
 					return o.supportsJaxbFacetVersion(getProjectFacetVersion());
 				}
 			};
-		return new StaticCollectionValueModel<JaxbPlatformDescription>(enabledPlatforms);
+		return new StaticCollectionValueModel<JaxbPlatformConfig>(enabledPlatforms);
 	}
 	
-	private static final Comparator<JaxbPlatformDescription> JAXB_PLATFORM_COMPARATOR =
-			new Comparator<JaxbPlatformDescription>() {
-				public int compare(JaxbPlatformDescription desc1, JaxbPlatformDescription desc2) {
+	private static final Comparator<JaxbPlatformConfig> JAXB_PLATFORM_CONFIG_COMPARATOR =
+			new Comparator<JaxbPlatformConfig>() {
+				public int compare(JaxbPlatformConfig desc1, JaxbPlatformConfig desc2) {
 					return STRING_COMPARATOR.compare(desc1.getLabel(), desc2.getLabel());
 				}
 			};
 	
-	private static final StringConverter<JaxbPlatformDescription> JAXB_PLATFORM_LABEL_CONVERTER =
-			new StringConverter<JaxbPlatformDescription>() {
-				public String convertToString(JaxbPlatformDescription desc) {
+	private static final Transformer<JaxbPlatformConfig, String> JAXB_PLATFORM_CONFIG_LABEL_CONVERTER =
+			new TransformerAdapter<JaxbPlatformConfig, String>() {
+				@Override
+				public String transform(JaxbPlatformConfig desc) {
 					return desc.getLabel();
 				}
 			};
@@ -252,7 +257,7 @@ public class JaxbProjectPropertiesPage
 	@Override
 	protected void rebuildProject() {
 		// if the JAXB platform is changed, we need to completely rebuild the JAXB project
-		JptJaxbCorePlugin.instance().getProjectManager().rebuildJaxbProject(getProject());
+		this.getJaxbProjectManager().rebuildJaxbProject(getProject());
 	}
 	
 	@Override
@@ -262,6 +267,18 @@ public class JaxbProjectPropertiesPage
 		};
 	}
 	
+	private JaxbPlatformManager getJaxbPlatformManager() {
+		return getJaxbWorkspace().getJaxbPlatformManager();
+	}
+
+	private JaxbProjectManager getJaxbProjectManager() {
+		return this.getJaxbWorkspace().getJaxbProjectManager();
+	}
+
+	private JaxbWorkspace getJaxbWorkspace() {
+		return (JaxbWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JaxbWorkspace.class);
+	}
+
 	
 	// ********** validation **********
 	
@@ -291,20 +308,20 @@ public class JaxbProjectPropertiesPage
 	 * different platform, we build an entirely new JAXB project.
 	 */
 	static class PlatformModel
-			extends AspectPropertyValueModelAdapter<JaxbProject, JaxbPlatformDescription> {
+			extends AspectPropertyValueModelAdapter<JaxbProject, JaxbPlatformConfig> {
 		
 		PlatformModel(PropertyValueModel<JaxbProject> jaxbProjectModel) {
 			super(jaxbProjectModel);
 		}
 		
 		@Override
-		protected JaxbPlatformDescription buildValue_() {
-			return this.subject.getPlatform().getDescription();
+		protected JaxbPlatformConfig buildValue_() {
+			return this.subject.getPlatform().getConfig();
 		}
 		
 		@Override
-		public void setValue_(JaxbPlatformDescription newPlatform) {
-			JptJaxbCorePlugin.setJaxbPlatform(this.subject.getProject(), newPlatform);
+		public void setValue_(JaxbPlatformConfig newPlatform) {
+			JaxbPreferences.setJaxbPlatformID(this.subject.getProject(), newPlatform.getId());
 		}
 		
 		@Override

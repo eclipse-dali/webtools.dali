@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelP
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.jpa.core.internal.operations.JpaFileCreationDataModelProperties;
 import org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProperties;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
 import org.eclipse.jpt.jpa.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.jpa.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkJpaProject;
@@ -88,7 +88,7 @@ public abstract class EclipseLinkContextModelTestCase
 	}
 
 	@Override
-	protected JpaPlatformDescription getJpaPlatformDescription() {
+	protected JpaPlatformConfig getJpaPlatformConfig() {
 		return  EclipseLinkPlatform.VERSION_1_0;
 	}
 

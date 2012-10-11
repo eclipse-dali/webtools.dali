@@ -9,17 +9,19 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.tests.internal.projects;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.internal.synchronizers.CallbackSynchronousSynchronizer;
-import org.eclipse.jpt.common.utility.internal.synchronizers.SynchronousSynchronizer;
-import org.eclipse.jpt.common.utility.synchronizers.CallbackSynchronizer;
-import org.eclipse.jpt.common.utility.synchronizers.Synchronizer;
 import org.eclipse.jpt.jaxb.core.JaxbFacet;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
-import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
+import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
+import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
+import org.eclipse.jpt.jaxb.core.internal.utility.CallbackSynchronousSynchronizer;
+import org.eclipse.jpt.jaxb.core.internal.utility.SynchronousSynchronizer;
+import org.eclipse.jpt.jaxb.core.utility.CallbackSynchronizer;
+import org.eclipse.jpt.jaxb.core.utility.Synchronizer;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
@@ -85,9 +87,17 @@ public class TestJaxbProject
 		if ((eclipseLinkJarName != null) && ! eclipseLinkJarName.equals(jaxbJarName)) {
 			this.addJar(eclipseLinkJarName);
 		}
-		this.jaxbProject = JptJaxbCorePlugin.instance().getProjectManager().getJaxbProject(this.getProject());
+		this.jaxbProject = this.getJaxbProjectManager().getJaxbProject(this.getProject());
 		this.jaxbProject.setContextModelSynchronizer(this.buildSynchronousContextModelSynchronizer());
 		this.jaxbProject.setUpdateSynchronizer(this.buildSynchronousUpdateSynchronizer());
+	}
+
+	private JaxbProjectManager getJaxbProjectManager() {
+		return this.getJaxbWorkspace().getJaxbProjectManager();
+	}
+
+	private JaxbWorkspace getJaxbWorkspace() {
+		return (JaxbWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JaxbWorkspace.class);
 	}
 	
 	protected Synchronizer buildSynchronousContextModelSynchronizer() {

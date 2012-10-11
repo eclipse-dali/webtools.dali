@@ -24,13 +24,15 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.eclipse.jpt.common.utility.Filter;
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.CompositeIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.FilteringIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.common.utility.filter.Filter;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.io.FileTools;
+import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.CompositeIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.FilteringIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.TransformationIterator;
 
 /**
  * <code>Classpath</code> models a Java classpath, which consists of a list of
@@ -624,7 +626,7 @@ public class Classpath
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.getPath());
+		return ObjectTools.toString(this, this.getPath());
 	}
 
 
@@ -808,7 +810,7 @@ public class Classpath
 		 * under the entry's directory.
 		 */
 		private Iterator<File> classFilesForDirectory() {
-			return new FilteringIterator<File>(FileTools.filesInTree(this.canonicalFile)) {
+			return new FilteringIterator<File>(FileTools.allFiles(this.canonicalFile)) {
 				@Override
 				protected boolean accept(File next) {
 					return Entry.this.fileNameMightBeForClassFile(next.getName());

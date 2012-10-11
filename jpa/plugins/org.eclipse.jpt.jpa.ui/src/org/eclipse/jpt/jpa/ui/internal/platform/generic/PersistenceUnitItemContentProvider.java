@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.platform.generic;
 
 import java.util.ArrayList;
 import org.eclipse.jpt.common.ui.internal.jface.AbstractItemTreeContentProvider;
-import org.eclipse.jpt.common.utility.internal.NotNullFilter;
+import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.FilteringCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
@@ -56,7 +56,7 @@ public class PersistenceUnitItemContentProvider
 	protected CollectionValueModel<JpaContextNode> buildChildrenModel() {
 		ArrayList<CollectionValueModel<? extends JpaContextNode>> list = new ArrayList<CollectionValueModel<? extends JpaContextNode>>(4);
 		this.addChildrenModelsTo(list);
-		return new CompositeCollectionValueModel<CollectionValueModel<? extends JpaContextNode>, JpaContextNode>(list);
+		return CompositeCollectionValueModel.forModels(list);
 	}
 
 	protected void addChildrenModelsTo(ArrayList<CollectionValueModel<? extends JpaContextNode>> list) {
@@ -153,7 +153,7 @@ public class PersistenceUnitItemContentProvider
 		ArrayList<CollectionValueModel<ClassRef>> list = new ArrayList<CollectionValueModel<ClassRef>>(2);
 		list.add(this.buildSpecifiedClassRefsModel());
 		list.add(this.buildImpliedClassRefsModel());
-		return new CompositeCollectionValueModel<CollectionValueModel<ClassRef>, ClassRef>(list);
+		return CompositeCollectionValueModel.forModels(list);
 	}
 
 	protected CollectionValueModel<ClassRef> buildSpecifiedClassRefsModel() {

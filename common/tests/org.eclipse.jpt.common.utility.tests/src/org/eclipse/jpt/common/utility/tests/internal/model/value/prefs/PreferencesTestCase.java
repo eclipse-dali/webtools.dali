@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.prefs.AbstractPreferences;
 import java.util.prefs.Preferences;
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
+import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 /**
@@ -76,7 +76,7 @@ public abstract class PreferencesTestCase extends TestCase {
 
 	@SuppressWarnings("unchecked")
 	private List<EventObject> preferencesEventQueue() {
-		return (List<EventObject>) ReflectionTools.getStaticFieldValue(AbstractPreferences.class, "eventQueue");
+		return (List<EventObject>) ClassTools.get(AbstractPreferences.class, "eventQueue");
 	}
 
 }

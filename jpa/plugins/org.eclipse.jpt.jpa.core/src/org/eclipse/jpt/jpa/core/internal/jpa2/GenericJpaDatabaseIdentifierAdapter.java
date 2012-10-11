@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2;
 
 import java.util.Iterator;
 
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
@@ -73,6 +73,6 @@ public class GenericJpaDatabaseIdentifierAdapter
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, Boolean.valueOf(this.treatIdentifiersAsDelimited()));
+		return ObjectTools.toString(this, Boolean.valueOf(this.treatIdentifiersAsDelimited()));
 	}
 }

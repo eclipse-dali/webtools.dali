@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jaxb.core.platform;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
@@ -29,9 +30,11 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMappingDefinition;
  * @version 3.0
  * @since 3.0
  */
-public interface JaxbPlatform {
+public interface JaxbPlatform
+	extends IAdaptable
+{
 	
-	JaxbPlatformDescription getDescription();
+	JaxbPlatformConfig getConfig();
 	
 	JaxbPlatformDefinition getDefinition();
 	

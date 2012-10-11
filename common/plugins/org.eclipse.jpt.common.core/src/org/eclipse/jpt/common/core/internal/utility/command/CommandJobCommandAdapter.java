@@ -14,7 +14,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * Adapt a {@link Command} to the {@link JobCommand} interface.
@@ -42,6 +42,6 @@ public class CommandJobCommandAdapter
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.command);
+		return ObjectTools.toString(this, this.command);
 	}
 }

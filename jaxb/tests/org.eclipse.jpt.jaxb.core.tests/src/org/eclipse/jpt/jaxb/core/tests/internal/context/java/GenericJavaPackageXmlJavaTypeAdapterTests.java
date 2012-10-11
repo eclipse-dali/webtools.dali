@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
@@ -42,7 +42,7 @@ public class GenericJavaPackageXmlJavaTypeAdapterTests extends JaxbContextModelT
 
 	public void testModifyValue() throws Exception {
 		this.createPackageInfoWithXmlJavaTypeAdapter();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = IterableTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = contextPackageInfo.getXmlJavaTypeAdapters().iterator().next();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
@@ -62,7 +62,7 @@ public class GenericJavaPackageXmlJavaTypeAdapterTests extends JaxbContextModelT
 
 	public void testUpdateValue() throws Exception {
 		this.createPackageInfoWithXmlJavaTypeAdapter();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = IterableTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = contextPackageInfo.getXmlJavaTypeAdapters().iterator().next();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
@@ -87,7 +87,7 @@ public class GenericJavaPackageXmlJavaTypeAdapterTests extends JaxbContextModelT
 
 	public void testModifyType() throws Exception {
 		this.createPackageInfoWithXmlJavaTypeAdapter();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = IterableTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = contextPackageInfo.getXmlJavaTypeAdapters().iterator().next();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
@@ -111,7 +111,7 @@ public class GenericJavaPackageXmlJavaTypeAdapterTests extends JaxbContextModelT
 
 	public void testUpdateType() throws Exception {
 		this.createPackageInfoWithXmlJavaTypeAdapter();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = IterableTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = contextPackageInfo.getXmlJavaTypeAdapters().iterator().next();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 

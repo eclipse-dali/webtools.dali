@@ -25,8 +25,8 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jpt.common.utility.internal.FileTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.io.FileTools;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
@@ -155,7 +155,7 @@ public class NewSchemaFileWizardPage extends WizardNewFileCreationPage {
     }
 
 	private IProject getProjectNamed(String projectName) {
-		if(StringTools.stringIsEmpty(projectName)) {
+		if(StringTools.isBlank(projectName)) {
 			return null;
 		}
 		return ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);

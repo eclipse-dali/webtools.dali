@@ -11,10 +11,11 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyListIterator;
+
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterator.EmptyListIterator;
 import org.eclipse.jpt.common.utility.internal.node.AbstractNode;
-import org.eclipse.jpt.common.utility.internal.node.Node;
+import org.eclipse.jpt.common.utility.node.Node;
 import org.eclipse.jpt.jpa.core.context.BaseJoinColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.jpa.db.Table;
@@ -119,7 +120,7 @@ public abstract class BaseJoinColumnStateObject
 		if (table == null) {
 			return EmptyListIterator.instance();
 		}
-		return CollectionTools.list(table.getSortedColumnIdentifiers()).listIterator();
+		return ListTools.list(table.getSortedColumnIdentifiers()).listIterator();
 	}
 	
 	private static int columnsSize(Table table) {
@@ -339,8 +340,8 @@ public abstract class BaseJoinColumnStateObject
 	}
 
 	public void setTable(String table) {
-		ArrayList<String> oldNames = CollectionTools.list(this.names());
-		ArrayList<String> oldRefColNames = CollectionTools.list(this.referenceColumnNames());
+		ArrayList<String> oldNames = ListTools.list(this.names());
+		ArrayList<String> oldRefColNames = ListTools.list(this.referenceColumnNames());
 		String oldTable = this.table;
 		this.table = table;
 		this.firePropertyChanged(TABLE_PROPERTY, oldTable, table);

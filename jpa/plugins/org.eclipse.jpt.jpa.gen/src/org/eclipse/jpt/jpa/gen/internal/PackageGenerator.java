@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.log.JdkLogChute;
@@ -42,7 +41,7 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
@@ -168,7 +167,7 @@ public class PackageGenerator {
 			persistenceUnit = persistence.getPersistenceUnit(0);
 		}
 		for (String className : genClasses) {
-			if (CollectionTools.isEmpty(persistenceUnit.getMappingFileRefsContaining(className)) && !persistenceUnit.specifiesPersistentType(className)) {
+			if (IterableTools.isEmpty(persistenceUnit.getMappingFileRefsContaining(className)) && !persistenceUnit.specifiesPersistentType(className)) {
 				persistenceUnit.addSpecifiedClassRef(className);
 			}
 		}

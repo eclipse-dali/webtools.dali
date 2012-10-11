@@ -16,8 +16,8 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Ki
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
@@ -415,7 +415,7 @@ public class EclipseLink2_3JavaMultitenancyTests extends EclipseLink2_3ContextMo
 		javaMultitenancy.addSpecifiedTenantDiscriminatorColumn(2).setSpecifiedName("BAZ");
 
 		Iterator<NestableAnnotation> javaTenantDiscriminatorColumns = resourceType.getAnnotations(EclipseLinkTenantDiscriminatorColumnAnnotation2_3.ANNOTATION_NAME).iterator();
-		assertEquals(3, CollectionTools.size(javaTenantDiscriminatorColumns));
+		assertEquals(3, IteratorTools.size(javaTenantDiscriminatorColumns));
 
 
 		javaMultitenancy.moveSpecifiedTenantDiscriminatorColumn(2, 0);

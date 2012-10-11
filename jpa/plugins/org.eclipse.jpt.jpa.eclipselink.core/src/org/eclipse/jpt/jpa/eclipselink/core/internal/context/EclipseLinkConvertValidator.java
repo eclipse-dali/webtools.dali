@@ -13,7 +13,7 @@ import java.util.List;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
@@ -58,7 +58,7 @@ public class EclipseLinkConvertValidator
 			return true;
 		}
 
-		if (CollectionTools.contains(this.getPersistenceUnit().getUniqueConverterNames(), converterName)) {
+		if (IterableTools.contains(this.getPersistenceUnit().getUniqueConverterNames(), converterName)) {
 			return true;
 		}
 

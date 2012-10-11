@@ -16,7 +16,7 @@ import static org.junit.Assert.fail;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jpt.common.ui.internal.util.ControlAligner;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
@@ -451,9 +451,9 @@ public final class ControlAlignerTest {
 		assertEquals(newLabelWidth1, controlAligner.getMaximumWidth());
 
 		// Make sure all the locked are removed
-		assertEquals(ReflectionTools.getFieldValue_(controlAligner, "locked"), Boolean.FALSE);
-		assertEquals(ReflectionTools.getFieldValue_(controlAligner2, "locked"), Boolean.FALSE);
-		assertEquals(ReflectionTools.getFieldValue_(controlAligner3, "locked"), Boolean.FALSE);
+		assertEquals(ObjectTools.get(controlAligner, "locked"), Boolean.FALSE);
+		assertEquals(ObjectTools.get(controlAligner2, "locked"), Boolean.FALSE);
+		assertEquals(ObjectTools.get(controlAligner3, "locked"), Boolean.FALSE);
 
 		// Change the text of label2
 		label2.setText("mm");
@@ -469,9 +469,9 @@ public final class ControlAlignerTest {
 		assertEquals(newLabelWidth2, newLabelWidth3);
 		assertEquals(newLabelWidth1, controlAligner.getMaximumWidth());
 
-		assertEquals(ReflectionTools.getFieldValue_(controlAligner, "locked"), Boolean.FALSE);
-		assertEquals(ReflectionTools.getFieldValue_(controlAligner2, "locked"), Boolean.FALSE);
-		assertEquals(ReflectionTools.getFieldValue_(controlAligner3, "locked"), Boolean.FALSE);
+		assertEquals(ObjectTools.get(controlAligner, "locked"), Boolean.FALSE);
+		assertEquals(ObjectTools.get(controlAligner2, "locked"), Boolean.FALSE);
+		assertEquals(ObjectTools.get(controlAligner3, "locked"), Boolean.FALSE);
 
 		// Change the text of label1
 		label1.setText("a");
@@ -497,9 +497,9 @@ public final class ControlAlignerTest {
 		assertEquals(newLabelWidth1, controlAligner.getMaximumWidth());
 		assertFalse(newLabelWidth1 == realWidth);
 
-		assertEquals(ReflectionTools.getFieldValue_(controlAligner, "locked"), Boolean.FALSE);
-		assertEquals(ReflectionTools.getFieldValue_(controlAligner2, "locked"), Boolean.FALSE);
-		assertEquals(ReflectionTools.getFieldValue_(controlAligner3, "locked"), Boolean.FALSE);
+		assertEquals(ObjectTools.get(controlAligner, "locked"), Boolean.FALSE);
+		assertEquals(ObjectTools.get(controlAligner2, "locked"), Boolean.FALSE);
+		assertEquals(ObjectTools.get(controlAligner3, "locked"), Boolean.FALSE);
 
 		// Change the text of label1
 		label1.setText("Yes another big long long text so that all the labels will have to take the size of this label to make sure ControlAligner works correctly");
@@ -531,9 +531,9 @@ public final class ControlAlignerTest {
 		assertEquals(controlAligner.getMaximumWidth(), newLabelWidth1);
 		assertEquals(realWidth, newLabelWidth1);
 
-		assertEquals(ReflectionTools.getFieldValue_(controlAligner, "locked"), Boolean.FALSE);
-		assertEquals(ReflectionTools.getFieldValue_(controlAligner2, "locked"), Boolean.FALSE);
-		assertEquals(ReflectionTools.getFieldValue_(controlAligner3, "locked"), Boolean.FALSE);
+		assertEquals(ObjectTools.get(controlAligner, "locked"), Boolean.FALSE);
+		assertEquals(ObjectTools.get(controlAligner2, "locked"), Boolean.FALSE);
+		assertEquals(ObjectTools.get(controlAligner3, "locked"), Boolean.FALSE);
 	}
 
 	@Test

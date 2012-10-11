@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.context.persistence;
 
-import org.eclipse.jpt.common.utility.internal.Transformer;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 
 /**

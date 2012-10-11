@@ -19,15 +19,15 @@ import java.util.List;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterators.CloneIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterator.CloneIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
+import org.eclipse.jpt.common.utility.internal.iterator.TransformationIterator;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.swing.ColumnAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.TableModelAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -217,7 +217,7 @@ public class TableModelAdapterTests extends TestCase {
 		return result;
 	}
 
-	private ColumnAdapter buildColumnAdapter() {
+	private TableModelAdapter.ColumnAdapter buildColumnAdapter() {
 		return new PersonColumnAdapter();
 	}
 
@@ -246,7 +246,9 @@ public class TableModelAdapterTests extends TestCase {
 
 	// ********** classes **********
 
-	public static class PersonColumnAdapter implements ColumnAdapter {
+	public static class PersonColumnAdapter
+		implements TableModelAdapter.ColumnAdapter
+	{
 		public static final int COLUMN_COUNT = 7;
 	
 		public static final int NAME_COLUMN = 0;
@@ -414,12 +416,11 @@ public class TableModelAdapterTests extends TestCase {
 	
 	
 		public Iterator<Person> people() {
-			return new CloneIterator<Person>(this.people) {
-				@Override
-				protected void remove(Person person) {
+			return new CloneIterator<Person>(this.people, new CloneIterator.Remover<Person>() {
+				public void remove(Person person) {
 					Crowd.this.removePerson(person);
 				}
-			};
+			});
 		}
 	
 		public int peopleSize() {
@@ -452,7 +453,7 @@ public class TableModelAdapterTests extends TestCase {
 			if (personName == null) {
 				throw new NullPointerException();
 			}
-			if (CollectionTools.contains(this.peopleNames(), personName)) {
+			if (IteratorTools.contains(this.peopleNames(), personName)) {
 				throw new IllegalArgumentException(personName);
 			}
 		}
@@ -478,7 +479,7 @@ public class TableModelAdapterTests extends TestCase {
 	
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, String.valueOf(this.people.size()) + " people");
+			return ObjectTools.toString(this, String.valueOf(this.people.size()) + " people");
 		}
 	
 	}

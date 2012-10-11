@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.core.internal.resource.java.source.SourcePackageIn
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbResourceModelProvider;
-import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
+import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
 
 /**
  * Java package-info.java source code

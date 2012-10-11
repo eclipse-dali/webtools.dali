@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.CompletionContext;
@@ -25,12 +26,13 @@ import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
-import org.eclipse.jpt.common.utility.Filter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
-import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
+import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
+import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 
@@ -104,13 +106,13 @@ public class JaxbJavaCompletionProposalComputer
 			return Collections.emptyList();
 		}
 		
-		JaxbProject jaxbProject = JptJaxbCorePlugin.instance().getProjectManager().getJaxbProject(file.getProject());
+		JaxbProject jaxbProject = this.getJaxbProjectManager().getJaxbProject(file.getProject());
 		if (jaxbProject == null) {
 			return Collections.emptyList();
 		}
 		
 		Iterable<? extends JaxbContextNode> javaNodes = jaxbProject.getPrimaryJavaNodes(cu);
-		if (CollectionTools.isEmpty(javaNodes)) {
+		if (IterableTools.isEmpty(javaNodes)) {
 			return Collections.emptyList();
 		}
 
@@ -141,7 +143,7 @@ public class JaxbJavaCompletionProposalComputer
 
 		List<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
 		for (JaxbContextNode javaNode : javaNodes) {
-			for (String proposal : this.getCompletionProposals(javaNode, context.getInvocationOffset(), filter)) {
+			for (String proposal : this.buildCompletionProposals(javaNode, context.getInvocationOffset(), filter)) {
 				if (tokenKind == CompletionContext.TOKEN_KIND_STRING_LITERAL) {//already quoted
 					proposals.add(new CompletionProposal(proposal, tokenStart, tokenEnd - tokenStart - 1, proposal.length()));					
 				}
@@ -153,7 +155,7 @@ public class JaxbJavaCompletionProposalComputer
 		return proposals;
 	}
 
-	private Iterable<String> getCompletionProposals(JaxbContextNode javaNode, int pos, Filter<String> filter) {
+	private Iterable<String> buildCompletionProposals(JaxbContextNode javaNode, int pos, Filter<String> filter) {
 		return new FilteringIterable<String>(javaNode.getCompletionProposals(pos), filter);
 	}
 
@@ -179,6 +181,14 @@ public class JaxbJavaCompletionProposalComputer
 		// do nothing
 	}
 
+	private JaxbProjectManager getJaxbProjectManager() {
+		return this.getJaxbWorkspace().getJaxbProjectManager();
+	}
+
+	private JaxbWorkspace getJaxbWorkspace() {
+		return (JaxbWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JaxbWorkspace.class);
+	}
+
 	private Filter<String> buildPrefixFilter(char[] prefix) {
 		return (prefix == null) ?
 				Filter.Transparent.<String>instance() :
@@ -194,7 +204,7 @@ public class JaxbJavaCompletionProposalComputer
 			this.prefix = new String(prefix);
 		}
 		public boolean accept(String s) {
-			return StringTools.stringStartsWithIgnoreCase(s, this.prefix);
+			return StringTools.startsWithIgnoreCase(s, this.prefix);
 		}
 	}
 }

@@ -35,15 +35,15 @@ import javax.swing.JScrollPane;
 import javax.swing.ListModel;
 import javax.swing.WindowConstants;
 
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.ListModelAdapter;
-import org.eclipse.jpt.common.utility.internal.swing.Displayable;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.tests.internal.model.Displayable;
 
 /**
  * an example UI for testing various permutations of the ListModelAdapter
@@ -363,7 +363,7 @@ public class ListModelAdapterUITest {
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.displayString());
+			return ObjectTools.toString(this, this.displayString());
 		}
 	}
 

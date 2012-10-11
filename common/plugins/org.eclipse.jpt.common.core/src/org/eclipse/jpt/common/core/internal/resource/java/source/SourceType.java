@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.EnumDeclaration;
@@ -42,12 +43,13 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.Type;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
 import org.eclipse.jpt.common.utility.MethodSignature;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.SimpleIntReference;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TreeIterable;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
+import org.eclipse.jpt.common.utility.internal.reference.SimpleIntReference;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * Java source type (type or interface)
@@ -300,7 +302,7 @@ final class SourceType
 	
 	public boolean hasPublicOrProtectedNoArgConstructor() {
 		Iterable<JavaResourceMethod> constructors = getConstructors();
-		if (CollectionTools.size(constructors) == 0) {
+		if (IterableTools.size(constructors) == 0) {
 			return true;
 		}
 		for (JavaResourceMethod constructor : constructors) {
@@ -314,7 +316,7 @@ final class SourceType
 	
 	public boolean hasPublicNoArgConstructor() {
 		Iterable<JavaResourceMethod> constructors = this.getConstructors();
-		if (CollectionTools.size(constructors) == 0) {
+		if (IterableTools.size(constructors) == 0) {
 			return true;
 		}
 		for (JavaResourceMethod constructor : constructors) {
@@ -342,12 +344,18 @@ final class SourceType
 	}
 
 	public Iterable<JavaResourceType> getAllTypes() {
-		return new TreeIterable<JavaResourceType>(this) {
-			@Override
-			protected Iterator<? extends JavaResourceType> children(JavaResourceType type) {
-				return type.getTypes().iterator();
-			}
-		};
+		return IterableTools.treeIterable(this, TYPES_TRANSFORMER);
+	}
+
+	private static final Transformer<JavaResourceType, Iterator<? extends JavaResourceType>> TYPES_TRANSFORMER = new TypesTransformer();
+
+	/* CU private */ static class TypesTransformer
+		extends TransformerAdapter<JavaResourceType, Iterator<? extends JavaResourceType>>
+	{
+		@Override
+		public Iterator<? extends JavaResourceType> transform(JavaResourceType type) {
+			return type.getTypes().iterator();
+		}
 	}
 
 	private JavaResourceType getType(String typeName, int occurrence) {
@@ -529,7 +537,7 @@ final class SourceType
 	
 	public JavaResourceField getField(String name) {
 		for (JavaResourceField field : getFields()) {
-			if (StringTools.stringsAreEqual(field.getName(), name)) {
+			if (ObjectTools.equals(field.getName(), name)) {
 				return field;
 			}
 		}
@@ -601,7 +609,7 @@ final class SourceType
 	
 	public JavaResourceMethod getMethod(String propertyName) {
 		for (JavaResourceMethod method : this.getMethods()) {
-			if (StringTools.stringsAreEqual(method.getMethodName(), propertyName)) {
+			if (ObjectTools.equals(method.getMethodName(), propertyName)) {
 				return method;
 			}
 		}
@@ -633,9 +641,9 @@ final class SourceType
 	// Both requirements are validated by the compiler so they are excluded here
 	public boolean hasEqualsMethod() {
 		for (JavaResourceMethod method : this.getMethods()) {
-			if (StringTools.stringsAreEqual(method.getMethodName(), "equals") //$NON-NLS-1$
+			if (ObjectTools.equals(method.getMethodName(), "equals") //$NON-NLS-1$
 					&& method.getParametersSize() == 1
-					&& StringTools.stringsAreEqual(method.getParameterTypeName(0), Object.class.getName())) {
+					&& ObjectTools.equals(method.getParameterTypeName(0), Object.class.getName())) {
 				return true;
 			}
 		}
@@ -648,7 +656,7 @@ final class SourceType
 	// Both requirements are validated by the compiler so they are excluded here
 	public boolean hasHashCodeMethod() {
 		for (JavaResourceMethod method : this.getMethods()) {
-			if (StringTools.stringsAreEqual(method.getMethodName(), "hashCode") //$NON-NLS-1$
+			if (ObjectTools.equals(method.getMethodName(), "hashCode") //$NON-NLS-1$
 					&& method.getParametersSize() == 0) {
 				return true;
 			}

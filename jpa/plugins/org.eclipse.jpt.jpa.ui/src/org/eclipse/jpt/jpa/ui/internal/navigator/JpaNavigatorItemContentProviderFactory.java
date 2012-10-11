@@ -11,10 +11,10 @@ package org.eclipse.jpt.jpa.ui.internal.navigator;
 
 import java.util.HashMap;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
+import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider.Manager;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
-import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider.Manager;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
@@ -80,6 +80,6 @@ public class JpaNavigatorItemContentProviderFactory
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this);
+		return ObjectTools.toString(this);
 	}
 }

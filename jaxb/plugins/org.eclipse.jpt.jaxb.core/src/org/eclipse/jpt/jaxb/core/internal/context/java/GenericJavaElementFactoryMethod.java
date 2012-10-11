@@ -12,10 +12,10 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
@@ -176,17 +176,17 @@ public class GenericJavaElementFactoryMethod
 	@Override
 	public Iterable<String> getCompletionProposals(int pos) {
 		Iterable<String> result = super.getCompletionProposals(pos);
-		if (! CollectionTools.isEmpty(result)) {
+		if (! IterableTools.isEmpty(result)) {
 			return result;
 		}
 		
 		result = this.qName.getCompletionProposals(pos);
-		if (! CollectionTools.isEmpty(result)) {
+		if (! IterableTools.isEmpty(result)) {
 			return result;
 		}
 		
 		result = this.substitutionHeadQName.getCompletionProposals(pos);
-		if (! CollectionTools.isEmpty(result)) {
+		if (! IterableTools.isEmpty(result)) {
 			return result;
 		}
 		
@@ -397,8 +397,8 @@ public class GenericJavaElementFactoryMethod
 								this,
 								getNameTextRange()));
 			}
-			else if (! StringTools.stringIsEmpty(getName())) {
-				if (Tools.valuesAreEqual(getName(), GenericJavaElementFactoryMethod.this.getQName().getName())) {
+			else if (! StringTools.isBlank(getName())) {
+				if (ObjectTools.equals(getName(), GenericJavaElementFactoryMethod.this.getQName().getName())) {
 					messages.add(
 							DefaultValidationMessages.buildMessage(
 									IMessage.HIGH_SEVERITY,
@@ -419,8 +419,8 @@ public class GenericJavaElementFactoryMethod
 			}
 			
 			for (JaxbElementFactoryMethod elementDecl : GenericJavaElementFactoryMethod.this.getRegistry().getElementFactoryMethods()) {
-				if (Tools.valuesAreEqual(getName(), elementDecl.getSubstitutionHeadQName().getName())
-						&& Tools.valuesAreEqual(getNamespace(), elementDecl.getSubstitutionHeadQName().getNamespace())) {
+				if (ObjectTools.equals(getName(), elementDecl.getSubstitutionHeadQName().getName())
+						&& ObjectTools.equals(getNamespace(), elementDecl.getSubstitutionHeadQName().getNamespace())) {
 					return;
 				}
 			}

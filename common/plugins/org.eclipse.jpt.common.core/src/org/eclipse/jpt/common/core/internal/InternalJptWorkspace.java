@@ -11,8 +11,10 @@ package org.eclipse.jpt.common.core.internal;
 
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.jpt.common.core.JptWorkspace;
+import org.eclipse.jpt.common.core.internal.libval.InternalLibraryValidatorManager;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.core.internal.resource.InternalResourceLocatorManager;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 public class InternalJptWorkspace
 	implements JptWorkspace
@@ -21,6 +23,8 @@ public class InternalJptWorkspace
 
 	// NB: the Dali workspace must be synchronized whenever accessing any of this state
 	private InternalJptResourceTypeManager resourceTypeManager;
+	private InternalLibraryValidatorManager libraryValidatorManager;
+	private InternalResourceLocatorManager resourceLocatorManager;
 
 
 	/**
@@ -33,7 +37,7 @@ public class InternalJptWorkspace
 	}
 
 	public IWorkspace getWorkspace() {
-		return workspace;
+		return this.workspace;
 	}
 
 
@@ -48,6 +52,34 @@ public class InternalJptWorkspace
 
 	private InternalJptResourceTypeManager buildResourceTypeManager() {
 		return new InternalJptResourceTypeManager(this);
+	}
+
+
+	// ********** Dali library validator manager **********
+
+	public synchronized InternalLibraryValidatorManager getLibraryValidatorManager() {
+		if ((this.libraryValidatorManager == null) && this.isActive()) {
+			this.libraryValidatorManager = this.buildLibraryValidatorManager();
+		}
+		return this.libraryValidatorManager;
+	}
+
+	private InternalLibraryValidatorManager buildLibraryValidatorManager() {
+		return new InternalLibraryValidatorManager(this);
+	}
+
+
+	// ********** Dali resource locator manager **********
+
+	public synchronized InternalResourceLocatorManager getResourceLocatorManager() {
+		if ((this.resourceLocatorManager == null) && this.isActive()) {
+			this.resourceLocatorManager = this.buildResourceLocatorManager();
+		}
+		return this.resourceLocatorManager;
+	}
+
+	private InternalResourceLocatorManager buildResourceLocatorManager() {
+		return new InternalResourceLocatorManager(this);
 	}
 
 
@@ -69,6 +101,6 @@ public class InternalJptWorkspace
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.workspace);
+		return ObjectTools.toString(this, this.workspace);
 	}
 }

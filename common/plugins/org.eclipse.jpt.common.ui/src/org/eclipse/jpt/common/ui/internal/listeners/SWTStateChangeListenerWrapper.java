@@ -11,19 +11,24 @@ package org.eclipse.jpt.common.ui.internal.listeners;
 
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.utility.internal.RunnableAdapter;
+import org.eclipse.jpt.common.utility.internal.collection.SynchronizedQueue;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 
 /**
  * Wrap another state change listener and forward events to it on the SWT
  * UI thread, asynchronously if necessary.
- * 
+ * <p>
+ * Any events received earlier (on a non-UI thread) will be
+ * forwarded, in the order received, before the current event is forwarded.
  * @see SWTPropertyChangeListenerWrapper
  */
 public class SWTStateChangeListenerWrapper
 	implements StateChangeListener
 {
 	private final StateChangeListener listener;
+	private final SynchronizedQueue<StateChangeEvent> events = new SynchronizedQueue<StateChangeEvent>();
+
 
 	public SWTStateChangeListenerWrapper(StateChangeListener listener) {
 		super();
@@ -34,25 +39,23 @@ public class SWTStateChangeListenerWrapper
 	}
 
 	public void stateChanged(StateChangeEvent event) {
-		this.execute(new StateChangedRunnable(event));
+		this.events.enqueue(event);
+		this.execute(new ForwardEventsRunnable());
 	}
 
-	/* CU private */ class StateChangedRunnable
+	/* CU private */ class ForwardEventsRunnable
 		extends RunnableAdapter
 	{
-		private final StateChangeEvent event;
-		StateChangedRunnable(StateChangeEvent event) {
-			super();
-			this.event = event;
-		}
 		@Override
 		public void run() {
-			SWTStateChangeListenerWrapper.this.stateChanged_(this.event);
+			SWTStateChangeListenerWrapper.this.forwardEvents();
 		}
 	}
 
-	void stateChanged_(StateChangeEvent event) {
-		this.listener.stateChanged(event);
+	void forwardEvents() {
+		for (StateChangeEvent event : this.events.drain()) {
+			this.listener.stateChanged(event);
+		}
 	}
 
 	/**

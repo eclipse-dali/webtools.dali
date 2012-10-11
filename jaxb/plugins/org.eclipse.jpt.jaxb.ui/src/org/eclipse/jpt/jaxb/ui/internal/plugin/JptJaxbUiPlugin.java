@@ -9,21 +9,22 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.plugin;
 
+import java.util.HashMap;
 import org.eclipse.jpt.common.core.internal.utility.JptPlugin;
 import org.eclipse.jpt.common.ui.internal.JptUIPlugin;
-import org.eclipse.jpt.jaxb.ui.internal.platform.JaxbPlatformUiManagerImpl;
-import org.eclipse.jpt.jaxb.ui.platform.JaxbPlatformUiManager;
+import org.eclipse.jpt.jaxb.ui.internal.InternalJaxbWorkbench;
+import org.eclipse.ui.IWorkbench;
 
 /**
- * Provisional API: This interface is part of an interim API that is still
- * under development and expected to change significantly before reaching
- * stability. It is available at this early stage to solicit feedback from
- * pioneering adopters on the understanding that any code that uses this API
- * will almost certainly be broken (repeatedly) as the API evolves.
+ * Dali JAXB UI plug-in.
  */
 public class JptJaxbUiPlugin
 	extends JptUIPlugin
 {
+	// NB: the plug-in must be synchronized whenever accessing any of this state
+	private final HashMap<IWorkbench, InternalJaxbWorkbench> jaxbWorkbenchs = new HashMap<IWorkbench, InternalJaxbWorkbench>();
+
+
 	// ********** singleton **********
 
 	private static JptJaxbUiPlugin INSTANCE;
@@ -47,10 +48,45 @@ public class JptJaxbUiPlugin
 		INSTANCE = (JptJaxbUiPlugin) plugin;
 	}
 
+	@Override
+	public void stop_() throws Exception {
+		try {
+			for (InternalJaxbWorkbench jaxbWorkbench : this.jaxbWorkbenchs.values()) {
+				try {
+					jaxbWorkbench.stop();
+				} catch (Throwable ex) {
+					this.logError(ex);  // keep going
+				}
+			}
+			this.jaxbWorkbenchs.clear();
+		} finally {
+			super.stop_();
+		}
+	}
 
-	// ********** misc **********
 
-	public static JaxbPlatformUiManager getJaxbPlatformUiManager() {
-		return JaxbPlatformUiManagerImpl.instance();
+	// ********** JAXB workbenchs **********
+
+	/**
+	 * Return the JAXB workbench corresponding to the specified Eclipse workbench.
+	 * <p>
+	 * The preferred way to retrieve a JAXB workbench is via the Eclipse
+	 * adapter framework:
+	 * <pre>
+	 * JaxbWorkbench jaxbWorkbench = PlatformTools.getAdapter(PlatformUI.getWorkbench(), JaxbWorkbench.class);
+	 * </pre>
+	 * @see org.eclipse.jpt.jaxb.ui.internal.WorkbenchAdapterFactory#getJaxbWorkbench(IWorkbench)
+	 */
+	public synchronized InternalJaxbWorkbench getJaxbWorkbench(IWorkbench workbench) {
+		InternalJaxbWorkbench jaxbWorkbench = this.jaxbWorkbenchs.get(workbench);
+		if ((jaxbWorkbench == null) && this.isActive()) {
+			jaxbWorkbench = this.buildJaxbWorkbench(workbench);
+			this.jaxbWorkbenchs.put(workbench, jaxbWorkbench);
+		}
+		return jaxbWorkbench;
+	}
+
+	private InternalJaxbWorkbench buildJaxbWorkbench(IWorkbench workbench) {
+		return new InternalJaxbWorkbench(workbench);
 	}
 }

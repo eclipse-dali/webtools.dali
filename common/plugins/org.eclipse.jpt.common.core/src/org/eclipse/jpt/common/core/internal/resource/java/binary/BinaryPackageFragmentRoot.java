@@ -21,9 +21,9 @@ import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragment;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 
 /**
  * binary package fragment root

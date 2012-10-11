@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.DbGenerator;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.java.JavaDbGenerator;
@@ -137,8 +137,8 @@ public abstract class AbstractJavaDbGenerator<A extends DbGeneratorAnnotation>
 
 	protected boolean isEquivalentTo(DbGenerator generator) {
 		return super.isEquivalentTo(generator) &&
-				Tools.valuesAreEqual(this.specifiedAllocationSize, generator.getSpecifiedAllocationSize()) &&
-				Tools.valuesAreEqual(this.specifiedInitialValue, generator.getSpecifiedInitialValue());
+				ObjectTools.equals(this.specifiedAllocationSize, generator.getSpecifiedAllocationSize()) &&
+				ObjectTools.equals(this.specifiedInitialValue, generator.getSpecifiedInitialValue());
 	}
 
 	// ********** database stuff **********

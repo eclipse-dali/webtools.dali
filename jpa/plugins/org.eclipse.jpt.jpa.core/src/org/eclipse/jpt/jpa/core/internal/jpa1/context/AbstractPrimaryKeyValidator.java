@@ -14,15 +14,16 @@ import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.ClassName;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.HashBag;
+import org.eclipse.jpt.common.utility.internal.ClassNameTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.collection.HashBag;
+import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
@@ -115,7 +116,7 @@ public abstract class AbstractPrimaryKeyValidator
 	// only one composite primary key strategy may be used
 	protected void validateOneOfIdClassOrEmbeddedIdIsUsed(List<IMessage> messages, IReporter reporter) {
 		if (idClassReference().isSpecified()
-				&& CollectionTools.size(typeMapping().getAllAttributeMappings(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY)) > 0) {
+				&& IterableTools.size(typeMapping().getAllAttributeMappings(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY)) > 0) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -141,7 +142,7 @@ public abstract class AbstractPrimaryKeyValidator
 	
 	// only one embedded id may be used
 	protected void validateOneEmbeddedId(List<IMessage> messages, IReporter reporter) {
-		if (CollectionTools.size(getEmbeddedIdMappings(typeMapping())) > 1) {
+		if (IterableTools.size(getEmbeddedIdMappings(typeMapping())) > 1) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -167,7 +168,7 @@ public abstract class AbstractPrimaryKeyValidator
 			AttributeMapping resolvedAttributeMapping = 
 					mapsIdRelationshipMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getDerivedIdAttributeMapping();
 			if (resolvedAttributeMapping != null 
-					&& ! ClassName.areAutoboxEquivalents(
+					&& ! ClassNameTools.isAutoboxEquivalent(
 						resolvedAttributeMapping.getPersistentAttribute().getTypeName(), 
 						getTargetEntityPrimaryKeyTypeName(mapsIdRelationshipMapping))) {
 				messages.add(DefaultJpaValidationMessages.buildMessage(
@@ -212,7 +213,7 @@ public abstract class AbstractPrimaryKeyValidator
 					String attributeMappingTypeName = getTypeNameForIdClass(attributeMapping);
 					if (attributeMappingTypeName != null 	// if it's null, there should be 
 																// another failing validation elsewhere
-							&& ! ClassName.areAutoboxEquivalents(idClassAttributeTypeName, attributeMappingTypeName)) {
+							&& ! ClassNameTools.isAutoboxEquivalent(idClassAttributeTypeName, attributeMappingTypeName)) {
 						messages.add(DefaultJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
 								JpaValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_TYPE_DOES_NOT_AGREE,
@@ -242,7 +243,7 @@ public abstract class AbstractPrimaryKeyValidator
 			} else if (type == AccessType.PROPERTY) {
 				// EclipseLink does not care about the existence status of property methods,
 				// but the matching field in the id class still needs to exist
-				if (!CollectionTools.contains(getIdClassFieldNames(idClass), attributeMapping.getName())) {
+				if (!IterableTools.contains(getIdClassFieldNames(idClass), attributeMapping.getName())) {
 					messages.add(DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							JpaValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_DOES_NOT_EXIST,
@@ -266,7 +267,7 @@ public abstract class AbstractPrimaryKeyValidator
 
 	protected void checkMissingAttribute(JavaPersistentType idClass,
 			AttributeMapping attributeMapping, List<IMessage> messages, IReporter reporter) {
-		if (!CollectionTools.contains(getIdClassAttributeNames(idClass), attributeMapping.getName())) {
+		if (!IterableTools.contains(getIdClassAttributeNames(idClass), attributeMapping.getName())) {
 			messages.add(DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_DOES_NOT_EXIST,
@@ -321,7 +322,7 @@ public abstract class AbstractPrimaryKeyValidator
 		for (AttributeMapping each : errorMappings) {
 			addNoIdClassAttributeMatchError(each, messages);
 		}
-		if (CollectionTools.size(errorDerivedIdMappings) > 1) {
+		if (IterableTools.size(errorDerivedIdMappings) > 1) {
 			for (AttributeMapping each : errorDerivedIdMappings) {
 				addDuplicateIdClassAttributeMatchError(each, messages);
 			}
@@ -425,7 +426,7 @@ public abstract class AbstractPrimaryKeyValidator
 	 */
 	protected boolean definesPrimaryKey(TypeMapping typeMapping) {
 		return getIdClass(typeMapping) != null
-				|| ! CollectionTools.isEmpty(getPrimaryKeyMappings(typeMapping));
+				|| ! IterableTools.isEmpty(getPrimaryKeyMappings(typeMapping));
 	}
 	
 	/**
@@ -466,10 +467,10 @@ public abstract class AbstractPrimaryKeyValidator
 	 */
 	protected boolean definesPrimaryKey(AttributeMapping attributeMapping) {
 		String mappingKey = attributeMapping.getKey();
-		if (CollectionTools.contains(this.getIdMappingKeys(), mappingKey)) {
+		if (IterableTools.contains(this.getIdMappingKeys(), mappingKey)) {
 			return true;
 		}
-		if (CollectionTools.contains(this.getSingleRelationshipMappingKeys(), mappingKey)) {
+		if (IterableTools.contains(this.getSingleRelationshipMappingKeys(), mappingKey)) {
 			SingleRelationshipMapping2_0 relationshipMapping = (SingleRelationshipMapping2_0) attributeMapping;
 			return (relationshipMapping.getDerivedIdentity().usesIdDerivedIdentityStrategy()
 					|| relationshipMapping.getDerivedIdentity().usesMapsIdDerivedIdentityStrategy());
@@ -551,7 +552,7 @@ public abstract class AbstractPrimaryKeyValidator
 		return new FilteringIterable<AttributeMapping>(typeMapping.getAllAttributeMappings()) {
 			@Override
 			protected boolean accept(AttributeMapping o) {
-				return !StringTools.stringsAreEqual(o.getKey(), MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
+				return !ObjectTools.equals(o.getKey(), MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
 			}
 		};
 	}
@@ -579,14 +580,14 @@ public abstract class AbstractPrimaryKeyValidator
 	}
 	
 	protected boolean hasAnyPrimaryKeyMappings(TypeMapping typeMapping) {
-		return ! CollectionTools.isEmpty(getPrimaryKeyMappings(typeMapping));
+		return ! IterableTools.isEmpty(getPrimaryKeyMappings(typeMapping));
 	}
 	
 	// **************** id mappings *******************************************
 	
 	protected IdMapping getIdMapping(TypeMapping typeMapping) {
 		Iterable<IdMapping> idMappings = getIdMappings(typeMapping);
-		if (CollectionTools.size(idMappings) == 1) {
+		if (IterableTools.size(idMappings) == 1) {
 			return idMappings.iterator().next();
 		}
 		return null;
@@ -610,7 +611,7 @@ public abstract class AbstractPrimaryKeyValidator
 	 * or on an ancestor
 	 */
 	protected boolean definesEmbeddedIdMapping(TypeMapping typeMapping) {
-		return ! CollectionTools.isEmpty(getEmbeddedIdMappings(typeMapping));
+		return ! IterableTools.isEmpty(getEmbeddedIdMappings(typeMapping));
 	}
 	
 	/**
@@ -618,12 +619,12 @@ public abstract class AbstractPrimaryKeyValidator
 	 * or on an ancestor
 	 */
 	protected boolean definesIdMapping(TypeMapping typeMapping) {
-		return ! CollectionTools.isEmpty(getIdMappings(typeMapping));
+		return ! IterableTools.isEmpty(getIdMappings(typeMapping));
 	}
 	
 	protected EmbeddedIdMapping getEmbeddedIdMapping(TypeMapping typeMapping) {
 		Iterable<EmbeddedIdMapping> embeddedIdMappings = getEmbeddedIdMappings(typeMapping);
-		if (CollectionTools.size(embeddedIdMappings) == 1) {
+		if (IterableTools.size(embeddedIdMappings) == 1) {
 			return embeddedIdMappings.iterator().next();
 		}
 		return null;
@@ -721,7 +722,7 @@ public abstract class AbstractPrimaryKeyValidator
 		// A complex primary key mapping can be 
 		// - a derived id relationship mapping to an entity with a complex primary key
 		int simplePrimaryKeyMappingCount = 
-				CollectionTools.size(getIdMappings(typeMapping()));
+				IterableTools.size(getIdMappings(typeMapping()));
 		if (simplePrimaryKeyMappingCount > 1) {
 			return true;
 		}
@@ -760,10 +761,10 @@ public abstract class AbstractPrimaryKeyValidator
 	
 	protected String getTypeNameForIdClass(AttributeMapping attributeMapping) {
 		String mappingKey = attributeMapping.getKey();
-		if (CollectionTools.contains(this.getIdMappingKeys(), mappingKey)) {
+		if (IterableTools.contains(this.getIdMappingKeys(), mappingKey)) {
 			return attributeMapping.getPersistentAttribute().getTypeName(typeMapping().getPersistentType());
 		}
-		if (CollectionTools.contains(this.getSingleRelationshipMappingKeys(), mappingKey)) {
+		if (IterableTools.contains(this.getSingleRelationshipMappingKeys(), mappingKey)) {
 			SingleRelationshipMapping2_0 relationshipMapping = (SingleRelationshipMapping2_0) attributeMapping;
 			Entity targetEntity = relationshipMapping.getResolvedTargetEntity();
 			if (targetEntity != null) {

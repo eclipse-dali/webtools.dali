@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,8 @@
 package org.eclipse.jpt.common.utility.internal.model.listener.awt;
 
 import java.awt.EventQueue;
-
+import org.eclipse.jpt.common.utility.internal.RunnableAdapter;
+import org.eclipse.jpt.common.utility.internal.collection.SynchronizedQueue;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 
@@ -19,12 +20,19 @@ import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
  * event queue, asynchronously if necessary. If the event arrived on the UI
  * thread that is probably because it was initiated by a UI widget; as a
  * result, we want to loop back synchronously so the events can be
- * short-circuited.
+ * short-circuited. (Typically, the adapter(s) between a <em>property</em> and
+ * its corresponding UI widget are read-write; as opposed to the adapter(s)
+ * between a <em>collection</em> (or <em>list</em>) and its UI widget, which
+ * is read-only.)
+ * <p>
+ * Any events received earlier (on a non-UI thread) will be
+ * forwarded, in the order received, before the current event is forwarded.
  */
 public final class AWTPropertyChangeListenerWrapper
 	implements PropertyChangeListener
 {
 	private final PropertyChangeListener listener;
+	private final SynchronizedQueue<PropertyChangeEvent> events = new SynchronizedQueue<PropertyChangeEvent>();
 
 
 	public AWTPropertyChangeListenerWrapper(PropertyChangeListener listener) {
@@ -36,27 +44,25 @@ public final class AWTPropertyChangeListenerWrapper
 	}
 
 	public void propertyChanged(PropertyChangeEvent event) {
+		this.events.enqueue(event);
 		if (this.isExecutingOnUIThread()) {
-			this.propertyChanged_(event);
+			this.forwardEvents();
 		} else {
-			this.executeOnEventQueue(this.buildPropertyChangedRunnable(event));
+			this.executeOnEventQueue(new ForwardEventsRunnable());
 		}
-	}
-
-	private Runnable buildPropertyChangedRunnable(final PropertyChangeEvent event) {
-		return new Runnable() {
-			public void run() {
-				AWTPropertyChangeListenerWrapper.this.propertyChanged_(event);
-			}
-			@Override
-			public String toString() {
-				return "property changed runnable"; //$NON-NLS-1$
-			}
-		};
 	}
 
 	private boolean isExecutingOnUIThread() {
 		return EventQueue.isDispatchThread();
+	}
+
+	/* CU private */ class ForwardEventsRunnable
+		extends RunnableAdapter
+	{
+		@Override
+		public void run() {
+			AWTPropertyChangeListenerWrapper.this.forwardEvents();
+		}
 	}
 
 	/**
@@ -75,13 +81,14 @@ public final class AWTPropertyChangeListenerWrapper
 //		}
 	}
 
-	void propertyChanged_(PropertyChangeEvent event) {
-		this.listener.propertyChanged(event);
+	void forwardEvents() {
+		for (PropertyChangeEvent event : this.events.drain()) {
+			this.listener.propertyChanged(event);
+		}
 	}
 
 	@Override
 	public String toString() {
 		return "AWT(" + this.listener.toString() + ')'; //$NON-NLS-1$
 	}
-
 }

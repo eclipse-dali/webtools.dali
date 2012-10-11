@@ -15,7 +15,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
@@ -155,7 +155,7 @@ public class OrmEclipseLinkIdMapping
 	//TODO copied from OrmEclipseLinkBasicMapping
 	protected void validateAttributeType(List<IMessage> messages) {
 		if (this.isVirtualAccess()) {
-			if (StringTools.stringIsEmpty(this.getAttributeType())) {
+			if (StringTools.isBlank(this.getAttributeType())) {
 				messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,

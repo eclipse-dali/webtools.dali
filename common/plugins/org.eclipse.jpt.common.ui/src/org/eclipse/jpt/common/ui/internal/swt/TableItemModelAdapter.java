@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.ui.internal.swt;
 
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -187,7 +187,7 @@ public class TableItemModelAdapter {
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this);
+		return ObjectTools.toString(this);
 	}
 
    private class TableItemPropertyChangeListener implements PropertyChangeListener {

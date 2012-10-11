@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.eclipselink.core.resource.java;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 
 /**
  * Corresponds to the EclipseLink annotation

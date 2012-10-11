@@ -16,9 +16,9 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.context.Accessor;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
@@ -263,7 +263,7 @@ public class GenericJavaPersistentAttribute
 	 */
 	protected JaxbAttributeMapping buildMapping_(JavaAttributeMappingDefinition definition) {
 		// 'mapping' is null during construction
-		if ((this.mapping != null) && this.mapping.isDefault() && Tools.valuesAreEqual(this.mapping.getKey(), definition.getKey())) {
+		if ((this.mapping != null) && this.mapping.isDefault() && ObjectTools.equals(this.mapping.getKey(), definition.getKey())) {
 			this.mapping.synchronizeWithResourceModel();  // the mapping instance hasn't changed, but some resource differences may have resulted
 			return this.mapping;
 		}
@@ -316,7 +316,7 @@ public class GenericJavaPersistentAttribute
 			return null;
 		}
 		for (JavaAttributeMappingDefinition definition : this.getSpecifiedMappingDefinitions()) {
-			if (Tools.valuesAreEqual(definition.getKey(), key)) {
+			if (ObjectTools.equals(definition.getKey(), key)) {
 				return definition;
 			}
 		}
@@ -361,7 +361,7 @@ public class GenericJavaPersistentAttribute
 	protected void updateMapping() {
 		JavaAttributeMappingDefinition definition = this.getDefaultMappingDefinition();
 		String newDefaultKey = (definition == null) ? null : definition.getKey();
-		if (this.mapping.isDefault() && Tools.valuesAreDifferent(this.mapping.getKey(), newDefaultKey)) {
+		if (this.mapping.isDefault() && ObjectTools.notEquals(this.mapping.getKey(), newDefaultKey)) {
 			this.setMapping(this.buildMapping(definition));  // the default mapping has changed
 		} else {
 			this.mapping.update();
@@ -392,12 +392,12 @@ public class GenericJavaPersistentAttribute
 	@Override
 	public Iterable<String> getCompletionProposals(int pos) {
 		Iterable<String> result = super.getCompletionProposals(pos);
-		if (! CollectionTools.isEmpty(result)) {
+		if (! IterableTools.isEmpty(result)) {
 			return result;
 		}
 		
 		result = this.mapping.getCompletionProposals(pos);
-		if (! CollectionTools.isEmpty(result)) {
+		if (! IterableTools.isEmpty(result)) {
 			return result;
 		}
 		
@@ -421,8 +421,8 @@ public class GenericJavaPersistentAttribute
 		Iterable<String> supportingAnnotationNames = currentMappingDefinition.getSupportingAnnotationNames();
 		
 		for (Annotation annotation : getJavaResourceAttribute().getTopLevelAnnotations()) {
-			if (Tools.valuesAreDifferent(currentMappingDefinition.getAnnotationName(), annotation.getAnnotationName())
-					&& ! CollectionTools.contains(supportingAnnotationNames, annotation.getAnnotationName())) {
+			if (ObjectTools.notEquals(currentMappingDefinition.getAnnotationName(), annotation.getAnnotationName())
+					&& ! IterableTools.contains(supportingAnnotationNames, annotation.getAnnotationName())) {
 				messages.add(
 						DefaultValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
@@ -443,7 +443,7 @@ public class GenericJavaPersistentAttribute
 						: getSpecifiedMappingDefinitions();
 		
 		for (JavaAttributeMappingDefinition mappingDefinition : mappingDefinitions) {
-			if (Tools.valuesAreEqual(mappingDefinition.getKey(), this.mapping.getKey())) {
+			if (ObjectTools.equals(mappingDefinition.getKey(), this.mapping.getKey())) {
 				return mappingDefinition;
 			}
 		}

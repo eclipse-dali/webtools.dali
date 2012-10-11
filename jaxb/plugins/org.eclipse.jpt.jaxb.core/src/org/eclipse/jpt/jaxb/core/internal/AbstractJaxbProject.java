@@ -47,23 +47,18 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageInfoCompilat
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
 import org.eclipse.jpt.common.utility.internal.BitTools;
-import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.command.ThreadLocalExtendedCommandExecutor;
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
-import org.eclipse.jpt.common.utility.internal.synchronizers.CallbackSynchronousSynchronizer;
-import org.eclipse.jpt.common.utility.internal.synchronizers.SynchronousSynchronizer;
-import org.eclipse.jpt.common.utility.synchronizers.CallbackSynchronizer;
-import org.eclipse.jpt.common.utility.synchronizers.Synchronizer;
+import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
+import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SnapshotCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jaxb.core.JaxbFacet;
 import org.eclipse.jpt.jaxb.core.JaxbFile;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
-import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.SchemaLibrary;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
@@ -71,12 +66,17 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbType;
 import org.eclipse.jpt.jaxb.core.internal.platform.JaxbPlatformImpl;
+import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
+import org.eclipse.jpt.jaxb.core.internal.utility.CallbackSynchronousSynchronizer;
+import org.eclipse.jpt.jaxb.core.internal.utility.SynchronousSynchronizer;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.libprov.JaxbLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
 import org.eclipse.jpt.jaxb.core.resource.jaxbindex.JaxbIndexResource;
 import org.eclipse.jpt.jaxb.core.resource.jaxbprops.JaxbPropertiesResource;
+import org.eclipse.jpt.jaxb.core.utility.CallbackSynchronizer;
+import org.eclipse.jpt.jaxb.core.utility.Synchronizer;
 import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
@@ -1181,7 +1181,7 @@ public abstract class AbstractJaxbProject
 		LibraryInstallDelegate lid = new LibraryInstallDelegate(facetedProject, facetVersion);
 		ILibraryProvider lp = lid.getLibraryProvider();
 		if (lid.getLibraryProviderOperationConfig() instanceof JaxbLibraryProviderInstallOperationConfig) {
-			((JaxbLibraryProviderInstallOperationConfig) lid.getLibraryProviderOperationConfig()).setJaxbPlatform(getPlatform().getDescription());
+			((JaxbLibraryProviderInstallOperationConfig) lid.getLibraryProviderOperationConfig()).setJaxbPlatformConfig(getPlatform().getConfig());
 		}
 		if (! lp.isEnabledFor(facetedProject, facetVersion) || ! lid.validate().isOK()) {
 			messages.add(

@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.context;
 
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
 import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbPlatform;
 
@@ -23,7 +23,7 @@ public abstract class ELJaxbContextModelTestCase
 	
 	
 	@Override
-	protected JaxbPlatformDescription getPlatform() {
-		return ELJaxbPlatform.getDefaultPlatform(getProjectFacetVersion());
+	protected JaxbPlatformConfig getPlatformConfig() {
+		return ELJaxbPlatform.getDefaultPlatformConfig(getProjectFacetVersion());
 	}
 }

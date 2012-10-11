@@ -10,8 +10,8 @@
 package org.eclipse.jpt.common.utility.internal.command;
 
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.SynchronizedBoolean;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.reference.SynchronizedBoolean;
 
 /**
  * A <em>synchronizing</em> command can be used to coordinate the execution of
@@ -158,6 +158,6 @@ public class SynchronizingCommand
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.flag);
+		return ObjectTools.toString(this, this.flag);
 	}
 }

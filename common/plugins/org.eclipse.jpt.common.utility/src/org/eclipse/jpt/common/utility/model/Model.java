@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,6 @@ import org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
-import org.eclipse.jpt.common.utility.model.listener.TreeChangeListener;
 
 /**
  * Interface to be implemented by models that notify listeners of
@@ -31,7 +30,6 @@ import org.eclipse.jpt.common.utility.model.listener.TreeChangeListener;
  * @see PropertyChangeListener
  * @see CollectionChangeListener
  * @see ListChangeListener
- * @see TreeChangeListener
  * @see org.eclipse.jpt.common.utility.internal.model.AbstractModel
  */
 // TODO use objects (IDs?) instead of strings to identify aspects?
@@ -121,23 +119,4 @@ public interface Model {
 	 * Throw an exception if the listener is null or if the listener was never added.
 	 */
 	void removeListChangeListener(String listName, ListChangeListener listener);
-
-
-	// ********** tree change **********
-
-	/**
-	 * Add a listener that listens to all tree change events with
-	 * the specified tree name.
-	 * Throw an exception if the same listener is added more than once.
-	 * The listener cannot be null.
-	 */
-	void addTreeChangeListener(String treeName, TreeChangeListener listener);
-
-	/**
-	 * Remove a listener that listens to all tree change events,
-	 * with the specified tree name.
-	 * Throw an exception if the listener is null or if the listener was never added.
-	 */
-	void removeTreeChangeListener(String treeName, TreeChangeListener listener);
-
 }

@@ -14,8 +14,7 @@ import java.util.prefs.NodeChangeListener;
 import java.util.prefs.PreferenceChangeEvent;
 import java.util.prefs.PreferenceChangeListener;
 import java.util.prefs.Preferences;
-
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.prefs.PreferencePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.Model;
@@ -23,8 +22,9 @@ import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 @SuppressWarnings("nls")
 public class PreferencePropertyValueModelTests extends PreferencesTestCase {
@@ -47,7 +47,7 @@ public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 		this.testNode.put(KEY_NAME, STRING_VALUE);
 
 		this.nodeHolder = new SimplePropertyValueModel<Preferences>(this.testNode);
-		this.preferenceAdapter = new PreferencePropertyValueModel<String>(this.nodeHolder, KEY_NAME);
+		this.preferenceAdapter = PreferencePropertyValueModel.forString(this.nodeHolder, KEY_NAME, null);
 		this.listener = this.buildValueChangeListener();
 		this.preferenceAdapter.addPropertyChangeListener(PropertyValueModel.VALUE, this.listener);
 		this.event = null;
@@ -179,7 +179,7 @@ public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 		// rebuild the adapter with a default value
 		String DEFAULT_VALUE = "default value";
 		this.preferenceAdapter.removePropertyChangeListener(PropertyValueModel.VALUE, this.listener);
-		this.preferenceAdapter = new PreferencePropertyValueModel<String>(this.nodeHolder, KEY_NAME, DEFAULT_VALUE);
+		this.preferenceAdapter = PreferencePropertyValueModel.forString(this.nodeHolder, KEY_NAME, DEFAULT_VALUE);
 		this.preferenceAdapter.addPropertyChangeListener(PropertyValueModel.VALUE, this.listener);
 
 		assertEquals(STRING_VALUE, this.testNode.get(KEY_NAME, null));
@@ -235,7 +235,7 @@ public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 		// stop listening to the node and convert it to an integer
 		this.preferenceAdapter.removePropertyChangeListener(PropertyValueModel.VALUE, this.listener);
 
-		PreferencePropertyValueModel<Integer> integerPreferenceAdapter = new PreferencePropertyValueModel<Integer>(this.nodeHolder, KEY_NAME);
+		PreferencePropertyValueModel<Integer> integerPreferenceAdapter = PreferencePropertyValueModel.forInteger(this.nodeHolder, KEY_NAME, 0);
 		this.testNode.putInt(KEY_NAME, 123);
 		integerPreferenceAdapter = PreferencePropertyValueModel.forInteger(this.testNode, KEY_NAME, 0);
 		integerPreferenceAdapter.addPropertyChangeListener(PropertyValueModel.VALUE, this.listener);
@@ -321,7 +321,7 @@ public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 		assertNull(this.preferenceEvent);
 
 		this.preferenceAdapter.removePropertyChangeListener(PropertyValueModel.VALUE, this.listener);
-		this.preferenceAdapter = new AlwaysUpdatePreferencePropertyValueModel<String>(this.nodeHolder, KEY_NAME);
+		this.preferenceAdapter = AlwaysUpdatePreferencePropertyValueModel.forString(this.nodeHolder, KEY_NAME, null);
 		this.preferenceAdapter.addPropertyChangeListener(PropertyValueModel.VALUE, this.listener);
 
 		this.testNode.addPreferenceChangeListener(this.buildPreferenceChangeListener());
@@ -373,7 +373,7 @@ public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 	}
 
 	private boolean nodeHasAnyPrefListeners(Preferences node) throws Exception {
-		PreferenceChangeListener[] prefListeners = (PreferenceChangeListener[]) ReflectionTools.getFieldValue(node, "prefListeners");
+		PreferenceChangeListener[] prefListeners = (PreferenceChangeListener[]) ObjectTools.get(node, "prefListeners");
 		return prefListeners.length > 0;
 	}
 
@@ -382,17 +382,29 @@ public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 	 * Use this adapter to test out always passing through the new value
 	 * to the preference.
 	 */
-	private class AlwaysUpdatePreferencePropertyValueModel<P> extends PreferencePropertyValueModel<P> {
+	/* CU private */ static class AlwaysUpdatePreferencePropertyValueModel<P>
+		extends PreferencePropertyValueModel<P>
+	{
+		public static PreferencePropertyValueModel<String> forString(PropertyValueModel<? extends Preferences> preferencesModel, String key, String defaultValue) {
+			return new AlwaysUpdatePreferencePropertyValueModel<String>(
+					preferencesModel,
+					key,
+					defaultValue,
+					Transformer.Null.<String>instance()
+				);
+		}
 
-		AlwaysUpdatePreferencePropertyValueModel(PropertyValueModel<Preferences> preferencesHolder, String key) {
-			super(preferencesHolder, key);
+		AlwaysUpdatePreferencePropertyValueModel(
+				PropertyValueModel<? extends Preferences> preferencesModel,
+				String key,
+				P defaultValue,
+				Transformer<String, P> stringTransformer) {
+			super(preferencesModel, key, defaultValue, stringTransformer);
 		}
 
 		@Override
 		protected boolean preferenceIsToBeSet(Object oldValue, Object newValue) {
 			return true;
 		}
-
 	}
-
 }

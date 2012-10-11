@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.utility;
 
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
@@ -97,7 +97,7 @@ public interface TextRange {
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildSingletonToString(this);
+			return ObjectTools.singletonToString(this);
 		}
 	}
 }

@@ -11,18 +11,20 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
+import org.eclipse.jface.resource.StringConverter;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
-import org.eclipse.jpt.common.utility.internal.StringConverter;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Combo;
@@ -168,9 +170,10 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject> exten
 		);
 	}
 
-	private StringConverter<String> buildDisplayableStringConverter(final DefaultValueHandler handler) {
-		return new StringConverter<String>() {
-			public String convertToString(String value) {
+	private Transformer<String, String> buildDisplayableStringConverter(final DefaultValueHandler handler) {
+		return new TransformerAdapter<String, String>() {
+			@Override
+			public String transform(String value) {
 
 				if (getSubject() == null) {
 					return null;
@@ -245,10 +248,10 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject> exten
 		ArrayList<ListValueModel<String>> holders = new ArrayList<ListValueModel<String>>(2);
 		holders.add(buildDefaultNameListHolder());
 		holders.add(buildNameListHolder());
-		return new CompositeListValueModel<ListValueModel<String>, String>(holders);
+		return CompositeListValueModel.forModels(holders);
 	}
 
-	private StringConverter<String> buildNameStringConverter() {
+	private Transformer<String, String> buildNameStringConverter() {
 		return buildDisplayableStringConverter(new DefaultValueHandler() {
 			public String getDefaultValue() {
 				return getSubject().getDefaultName();
@@ -295,10 +298,10 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject> exten
 		ArrayList<ListValueModel<String>> holders = new ArrayList<ListValueModel<String>>(2);
 		holders.add(buildDefaultReferencedColumnNameListHolder());
 		holders.add(buildReferencedColumnNameListHolder());
-		return new CompositeListValueModel<ListValueModel<String>, String>(holders);
+		return CompositeListValueModel.forModels(holders);
 	}
 
-	private StringConverter<String> buildReferencedColumnNameStringConverter() {
+	private Transformer<String, String> buildReferencedColumnNameStringConverter() {
 		return buildDisplayableStringConverter(new DefaultValueHandler() {
 			public String getDefaultValue() {
 				return getSubject().getDefaultReferencedColumnName();
@@ -341,10 +344,10 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject> exten
 		ArrayList<ListValueModel<String>> holders = new ArrayList<ListValueModel<String>>(2);
 		holders.add(buildDefaultTableListHolder());
 		holders.add(buildTableListHolder());
-		return new CompositeListValueModel<ListValueModel<String>, String>(holders);
+		return CompositeListValueModel.forModels(holders);
 	}
 
-	private StringConverter<String> buildTableStringConverter() {
+	private Transformer<String, String> buildTableStringConverter() {
 		return buildDisplayableStringConverter(new DefaultValueHandler() {
 			public String getDefaultValue() {
 				return getSubject().getDefaultTable();

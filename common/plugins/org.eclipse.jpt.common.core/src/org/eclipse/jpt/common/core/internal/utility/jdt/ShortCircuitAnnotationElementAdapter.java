@@ -16,7 +16,7 @@ import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * Wrap another annotation element adapter and short-circuit the
@@ -73,7 +73,7 @@ public class ShortCircuitAnnotationElementAdapter<T>
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.adapter);
+		return ObjectTools.toString(this, this.adapter);
 	}
 
 

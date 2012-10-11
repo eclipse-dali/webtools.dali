@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jaxb.core.xsd;
 
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.xsd.XSDEnumerationFacet;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import org.eclipse.xsd.XSDVariety;
@@ -95,12 +95,13 @@ public class XsdSimpleTypeDefinition
 	}
 	
 	public Iterable<String> getEnumValueProposals() {
-		return StringTools.convertToJavaStringLiteralContents(
+		return new TransformationIterable<String, String>(
 					new TransformationIterable<XSDEnumerationFacet, String>(getXSDComponent().getEnumerationFacets()) {
 						@Override
 						protected String transform(XSDEnumerationFacet enumFacet) {
 							return enumFacet.getLexicalValue();
 						}
-					});
+					},
+				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 }

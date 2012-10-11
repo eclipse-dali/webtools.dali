@@ -205,7 +205,7 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 		this.detailPanelStatckLayout.topControl = tableGenDetatilGroup;
 		this.detailPanel.layout();		
 
-		String baseClass = StringTools.stringIsEmpty(table.getExtends()) ? "" : table.getExtends();
+		String baseClass = StringTools.isBlank(table.getExtends()) ? "" : table.getExtends();
 		setSuperClass(baseClass, true);			
 		
 		

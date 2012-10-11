@@ -11,14 +11,12 @@ package org.eclipse.jpt.common.ui.internal.swt;
 
 import java.util.EventListener;
 import java.util.EventObject;
-
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTListChangeListenerWrapper;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
-import org.eclipse.jpt.common.utility.internal.StringConverter;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.common.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.ListClearEvent;
@@ -29,8 +27,9 @@ import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.ModifyEvent;
@@ -81,10 +80,10 @@ public abstract class AbstractComboModelAdapter<E> {
 	protected final PropertyChangeListener selectedItemChangeListener;
 
 	/**
-	 * A converter that converts items in the model list
+	 * A transformer that converts items in the model list
 	 * to strings that can be put in the combo.
 	 */
-	protected StringConverter<E> stringConverter;
+	protected Transformer<E, String> transformer;
 
 	// ********** UI **********
 	/**
@@ -133,19 +132,19 @@ public abstract class AbstractComboModelAdapter<E> {
 			ListValueModel<E> listHolder,
 			ModifiablePropertyValueModel<E> selectedItemHolder,
 			ComboHolder comboHolder,
-			StringConverter<E> stringConverter)
+			Transformer<E, String> transformer)
 	{
 		super();
 
 		Assert.isNotNull(listHolder,         "The holder of the items");
 		Assert.isNotNull(selectedItemHolder, "The holder of the selected item cannot be null");
 		Assert.isNotNull(comboHolder,        "The holder of the combo widget cannot be null");
-		Assert.isNotNull(stringConverter,    "The string converter cannot be null");
+		Assert.isNotNull(transformer,        "The string converter cannot be null");
 
 		this.listHolder         = listHolder;
 		this.selectedItemHolder = selectedItemHolder;
 		this.comboHolder        = comboHolder;
-		this.stringConverter    = stringConverter;
+		this.transformer    = transformer;
 
 		this.listChangeListener = this.buildListChangeListener();
 		this.listHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.listChangeListener);
@@ -275,9 +274,9 @@ public abstract class AbstractComboModelAdapter<E> {
 
 	// ********** string converter **********
 
-	public void setStringConverter(StringConverter<E> stringConverter) {
-		Assert.isNotNull(stringConverter, "The StringConverter cannot be null");
-		this.stringConverter = stringConverter;
+	public void setStringConverter(Transformer<E, String> transformer) {
+		Assert.isNotNull(transformer, "The StringConverter cannot be null");
+		this.transformer = transformer;
 		this.synchronizeCombo();
 	}
 
@@ -289,7 +288,7 @@ public abstract class AbstractComboModelAdapter<E> {
 	 * string that can be added to the combo.
 	 */
 	protected String convert(E item) {
-		return this.stringConverter.convertToString(item);
+		return this.transformer.transform(item);
 	}
 
 	/**
@@ -596,7 +595,7 @@ public abstract class AbstractComboModelAdapter<E> {
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.listHolder);
+		return ObjectTools.toString(this, this.listHolder);
 	}
 
 

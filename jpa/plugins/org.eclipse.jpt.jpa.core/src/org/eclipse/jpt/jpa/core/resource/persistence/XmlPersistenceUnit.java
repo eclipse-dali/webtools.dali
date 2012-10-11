@@ -23,7 +23,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.BooleanTranslator;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.resource.persistence.v2_0.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.persistence.v2_0.PersistenceV2_0Package;
 import org.eclipse.jpt.jpa.core.resource.persistence.v2_0.XmlPersistenceUnitCachingType_2_0;
@@ -1080,7 +1080,7 @@ public class XmlPersistenceUnit extends EBaseObjectImpl implements XmlPersistenc
 
 	public int getLocationToInsertMappingFileRef() {
 		if (getMappingFiles().size() > 0) {
-			XmlMappingFileRef mappingFileRef = CollectionTools.last(this.getMappingFiles());
+			XmlMappingFileRef mappingFileRef = IterableTools.last(this.getMappingFiles());
 			return mappingFileRef.getNodeEndOffset();
 		}
 

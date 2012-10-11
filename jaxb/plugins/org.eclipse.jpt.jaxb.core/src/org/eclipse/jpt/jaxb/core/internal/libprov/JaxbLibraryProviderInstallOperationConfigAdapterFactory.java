@@ -11,11 +11,11 @@ package org.eclipse.jpt.jaxb.core.internal.libprov;
 
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.jpt.jaxb.core.libprov.JaxbLibraryProviderInstallOperationConfig;
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 
 /**
  * Factory to build Dali adapters for an {@link JaxbLibraryProviderInstallOperationConfig}:<ul>
- * <li>{@link JaxbPlatformDescription}
+ * <li>{@link JaxbPlatformConfig}
  * </ul>
  * See <code>org.eclipse.jpt.jaxb.core/plugin.xml:org.eclipse.core.runtime.adapters</code>.
  */
@@ -23,7 +23,7 @@ public class JaxbLibraryProviderInstallOperationConfigAdapterFactory
 	implements IAdapterFactory
 {
 	private static final Class<?>[] ADAPTER_LIST = new Class[] {
-			JaxbPlatformDescription.class
+			JaxbPlatformConfig.class
 		};
 
 	public Class<?>[] getAdapterList() {
@@ -38,8 +38,8 @@ public class JaxbLibraryProviderInstallOperationConfigAdapterFactory
 	}
 	
 	private Object getAdapter(JaxbLibraryProviderInstallOperationConfig config, Class<?> adapterType) {
-		if (adapterType == JaxbPlatformDescription.class) {
-			return config.getJaxbPlatform();
+		if (adapterType == JaxbPlatformConfig.class) {
+			return config.getJaxbPlatformConfig();
 		}
 		return null;
 	}

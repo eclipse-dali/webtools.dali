@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConversionValue;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConversionValueAnnotation;
@@ -120,7 +120,7 @@ public class JavaEclipseLinkConversionValue
 	}
 
 	public boolean isEquivalentTo(EclipseLinkConversionValue conversionValue) {
-		return Tools.valuesAreEqual(this.dataValue, conversionValue.getDataValue()) &&
-				Tools.valuesAreEqual(this.objectValue, conversionValue.getObjectValue());
+		return ObjectTools.equals(this.dataValue, conversionValue.getDataValue()) &&
+				ObjectTools.equals(this.objectValue, conversionValue.getObjectValue());
 	}
 }

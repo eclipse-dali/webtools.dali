@@ -49,10 +49,10 @@ import org.eclipse.jpt.common.ui.internal.utility.SynchronousUiCommandExecutor;
 import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
@@ -136,7 +136,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 	}
 
 	protected Type[] buildTypes(final List<IType> selectedTypes) {
-		return CollectionTools.list(
+		return ListTools.list(
 			new TransformationIterable<IType, Type>(nonPersistentTypes(selectedTypes)) {
 				@Override
 				protected Type transform(IType jdtType) {
@@ -744,7 +744,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.selectedTypes);
+			return ObjectTools.toString(this, this.selectedTypes);
 		}
 	}
 
@@ -894,7 +894,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.selectedTypes);
+			return ObjectTools.toString(this, this.selectedTypes);
 		}
 	}
 }

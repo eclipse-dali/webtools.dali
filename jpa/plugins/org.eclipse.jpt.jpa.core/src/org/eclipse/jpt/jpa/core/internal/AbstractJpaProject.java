@@ -62,16 +62,17 @@ import org.eclipse.jpt.common.core.utility.command.JobCommand;
 import org.eclipse.jpt.common.core.utility.command.JobCommandExecutor;
 import org.eclipse.jpt.common.core.utility.command.NotifyingRepeatingJobCommand;
 import org.eclipse.jpt.common.core.utility.command.RepeatingJobCommand;
-import org.eclipse.jpt.common.utility.Filter;
+import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.BitTools;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
@@ -341,7 +342,7 @@ public abstract class AbstractJpaProject
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, AbstractJpaProject.this);
+			return ObjectTools.toString(this, AbstractJpaProject.this);
 		}
 	}
 
@@ -1159,7 +1160,7 @@ public abstract class AbstractJpaProject
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, AbstractJpaProject.this);
+			return ObjectTools.toString(this, AbstractJpaProject.this);
 		}
 	}
 
@@ -1199,7 +1200,7 @@ public abstract class AbstractJpaProject
 	}
 
 	protected boolean metamodelSourceFolderNameIsValid() {
-		return CollectionTools.contains(this.getJavaSourceFolderNames(), this.metamodelSourceFolderName);
+		return IterableTools.contains(this.getJavaSourceFolderNames(), this.metamodelSourceFolderName);
 	}
 
 
@@ -1515,7 +1516,7 @@ public abstract class AbstractJpaProject
 	protected void validateLibraryProvider_(List<IMessage> messages) throws CoreException {
 		Map<String, Object> enablementVariables = new HashMap<String, Object>();
 		enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_ENABLEMENT_EXP, this.getJpaPlatform().getId());
-		enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_DESCRIPTION_ENABLEMENT_EXP, this.getJpaPlatform().getDescription());
+		enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_DESCRIPTION_ENABLEMENT_EXP, this.getJpaPlatform().getConfig());
 
 		ILibraryProvider libraryProvider = LibraryProviderFramework.getCurrentProvider(this.project, JpaProject.FACET);
 		IFacetedProject facetedProject = ProjectFacetsManager.create(this.project);
@@ -1533,7 +1534,7 @@ public abstract class AbstractJpaProject
 
 	protected void validateConnection(List<IMessage> messages) {
 		String cpName = this.dataSource.getConnectionProfileName();
-		if (StringTools.stringIsEmpty(cpName)) {
+		if (StringTools.isBlank(cpName)) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.NORMAL_SEVERITY,
@@ -1632,7 +1633,7 @@ public abstract class AbstractJpaProject
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, AbstractJpaProject.this);
+			return ObjectTools.toString(this, AbstractJpaProject.this);
 		}
 	}
 
@@ -1684,7 +1685,7 @@ public abstract class AbstractJpaProject
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, AbstractJpaProject.this);
+			return ObjectTools.toString(this, AbstractJpaProject.this);
 		}
 	}
 
@@ -1766,7 +1767,7 @@ public abstract class AbstractJpaProject
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, AbstractJpaProject.this);
+			return ObjectTools.toString(this, AbstractJpaProject.this);
 		}
 	}
 
@@ -1890,7 +1891,7 @@ public abstract class AbstractJpaProject
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, AbstractJpaProject.this);
+			return ObjectTools.toString(this, AbstractJpaProject.this);
 		}
 	}
 
@@ -1955,7 +1956,7 @@ public abstract class AbstractJpaProject
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, AbstractJpaProject.this);
+			return ObjectTools.toString(this, AbstractJpaProject.this);
 		}
 	}
 
@@ -2033,7 +2034,7 @@ public abstract class AbstractJpaProject
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, AbstractJpaProject.this);
+			return ObjectTools.toString(this, AbstractJpaProject.this);
 		}
 	}
 
@@ -2067,7 +2068,7 @@ public abstract class AbstractJpaProject
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, AbstractJpaProject.this);
+			return ObjectTools.toString(this, AbstractJpaProject.this);
 		}
 	}
 
@@ -2117,7 +2118,7 @@ public abstract class AbstractJpaProject
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.defaultJobName);
+			return ObjectTools.toString(this, this.defaultJobName);
 		}
 	}
 }

@@ -21,9 +21,9 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement.Editor;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceIdAnnotation;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceOneToOneAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
@@ -671,7 +671,7 @@ public class JavaResourceAttributeTests extends JpaJavaResourceModelTestCase {
 		ICompilationUnit cu = createTestEntityMultipleVariableDeclarationsPerLine();
 		JavaResourceType typeResource = buildJavaResourceType(cu);
 		
-		assertEquals(4, CollectionTools.size(typeResource.getFields()));
+		assertEquals(4, IterableTools.size(typeResource.getFields()));
 		Iterator<JavaResourceField> fields = typeResource.getFields().iterator();
 		JavaResourceField resourceField = fields.next();
 		ColumnAnnotation column = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);

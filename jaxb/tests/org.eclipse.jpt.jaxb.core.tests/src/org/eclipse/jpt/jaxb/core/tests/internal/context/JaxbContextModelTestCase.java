@@ -15,8 +15,8 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.tests.internal.JaxbTestCase;
@@ -42,7 +42,7 @@ public abstract class JaxbContextModelTestCase
 	}
 	
 	protected AnnotatedElement annotatedElement(JavaResourceAnnotatedElement resource) {
-		return (AnnotatedElement) ReflectionTools.getFieldValue(resource, "annotatedElement");
+		return (AnnotatedElement) ObjectTools.get(resource, "annotatedElement");
 	}
 	
 	protected ICompilationUnit createUnannotatedPackageInfo(String packageName) throws CoreException {

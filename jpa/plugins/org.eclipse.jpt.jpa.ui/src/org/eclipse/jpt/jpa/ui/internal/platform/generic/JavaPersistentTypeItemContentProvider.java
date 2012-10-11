@@ -10,9 +10,9 @@
 package org.eclipse.jpt.jpa.ui.internal.platform.generic;
 
 import org.eclipse.jpt.common.ui.internal.jface.AbstractItemTreeContentProvider;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListCollectionValueModelAdapter;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;

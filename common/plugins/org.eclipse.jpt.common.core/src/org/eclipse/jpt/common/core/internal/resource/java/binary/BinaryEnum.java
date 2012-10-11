@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.core.internal.resource.java.binary;
 
 import java.util.Vector;
+
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
@@ -19,10 +20,11 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnumConstant;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 
 /**
  * binary enum
@@ -89,7 +91,7 @@ final class BinaryEnum
 	}
 	
 	private Iterable<IField> getEnumConstants(IType type) {
-		return new FilteringIterable<IField>(CollectionTools.iterable(this.getFields(type))) {
+		return new FilteringIterable<IField>(IterableTools.iterable(this.getFields(type))) {
 			@Override
 			protected boolean accept(IField jdtField) {
 				return isEnumConstant(jdtField);

@@ -10,9 +10,13 @@
 package org.eclipse.jpt.jpa.ui.internal;
 
 import org.eclipse.core.runtime.IAdapterFactory;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
-import org.eclipse.jpt.jpa.ui.internal.platform.JpaPlatformUiRegistry;
+import org.eclipse.jpt.jpa.ui.JpaPlatformUiManager;
+import org.eclipse.jpt.jpa.ui.JpaWorkbench;
+import org.eclipse.jpt.jpa.ui.internal.platform.InternalJpaPlatformUiManager;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * Factory to build adapters for a {@link JpaPlatform}:<ul>
@@ -20,7 +24,7 @@ import org.eclipse.jpt.jpa.ui.internal.platform.JpaPlatformUiRegistry;
  * </ul>
  * See <code>org.eclipse.jpt.jpa.ui/plugin.xml:org.eclipse.core.runtime.adapters</code>.
  * 
- * @see JpaPlatformUiRegistry
+ * @see InternalJpaPlatformUiManager
  */
 public class JpaPlatformAdapterFactory
 	implements IAdapterFactory
@@ -46,6 +50,16 @@ public class JpaPlatformAdapterFactory
 	}
 
 	private JpaPlatformUi getJpaPlatformUi(JpaPlatform jpaPlatform) {
-		return JpaPlatformUiRegistry.instance().getJpaPlatformUi(jpaPlatform.getId());
+		JpaPlatformUiManager jpaPlatformUiManager = this.getJpaPlatformUiManager();
+		return (jpaPlatformUiManager == null) ? null : jpaPlatformUiManager.getJpaPlatformUi(jpaPlatform);
+	}
+
+	private JpaPlatformUiManager getJpaPlatformUiManager() {
+		JpaWorkbench jpaWorkbench = this.getJpaWorkbench();
+		return (jpaWorkbench == null) ? null : jpaWorkbench.getJpaPlatformUiManager();
+	}
+
+	private JpaWorkbench getJpaWorkbench() {
+		return PlatformTools.getAdapter(PlatformUI.getWorkbench(), JpaWorkbench.class);
 	}
 }

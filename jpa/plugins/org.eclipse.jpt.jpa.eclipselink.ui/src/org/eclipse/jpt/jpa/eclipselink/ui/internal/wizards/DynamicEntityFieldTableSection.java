@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
@@ -32,7 +31,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
@@ -375,7 +374,7 @@ public class DynamicEntityFieldTableSection extends Composite {
 		public Object[] getElements(Object element) {
 			return (element instanceof List) ?
 					((List<?>) element).toArray() :
-					Tools.EMPTY_OBJECT_ARRAY;
+					ObjectTools.EMPTY_OBJECT_ARRAY;
 		}
 		public void inputChanged(Viewer aViewer, Object oldInput, Object newInput) {
 			//Default nothing

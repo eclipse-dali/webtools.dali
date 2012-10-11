@@ -30,16 +30,14 @@ import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWra
 import org.eclipse.jpt.common.ui.internal.properties.JptProjectPropertiesPage;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
-import org.eclipse.jpt.common.utility.internal.AbstractTransformer;
+import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.BitTools;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.FilterAdapter;
-import org.eclipse.jpt.common.utility.internal.NotBooleanTransformer;
-import org.eclipse.jpt.common.utility.internal.StringConverter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Transformer;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.model.value.AbstractCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectPropertyValueModelAdapter;
@@ -55,6 +53,9 @@ import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelA
 import org.eclipse.jpt.common.utility.internal.model.value.StaticCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.NotBooleanTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
@@ -63,6 +64,7 @@ import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -70,8 +72,8 @@ import org.eclipse.jpt.jpa.core.JpaWorkspace;
 import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.jpa.core.libprov.JpaLibraryProviderInstallOperationConfig;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformGroupDescription;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformGroupConfig;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.ConnectionAdapter;
@@ -119,8 +121,8 @@ public class JpaProjectPropertiesPage
 	private PropertyValueModel<JpaProject> jpaProjectModel;
 	private PropertyValueModel<Boolean> jpaProjectNotNullFlagModel;
 
-	private BufferedModifiablePropertyValueModel<JpaPlatformDescription> jpaPlatformDescriptionModel;
-	private PropertyChangeListener jpaPlatformDescriptionListener;
+	private BufferedModifiablePropertyValueModel<JpaPlatformConfig> jpaPlatformConfigModel;
+	private PropertyChangeListener jpaPlatformConfigListener;
 
 	private BufferedModifiablePropertyValueModel<String> connectionModel;
 	private PropertyValueModel<ConnectionProfile> connectionProfileModel;
@@ -161,8 +163,8 @@ public class JpaProjectPropertiesPage
 		this.jpaProjectModel = this.buildJpaProjectModel();
 		this.jpaProjectNotNullFlagModel = this.buildJpaProjectNotNullFlagModel();
 
-		this.jpaPlatformDescriptionModel = this.buildJpaPlatformDescriptionModel();
-		this.jpaPlatformDescriptionListener = this.buildJpaPlatformDescriptionListener();
+		this.jpaPlatformConfigModel = this.buildJpaPlatformConfigModel();
+		this.jpaPlatformConfigListener = this.buildJpaPlatformConfigListener();
 
 		this.connectionModel = this.buildConnectionModel();
 		this.connectionProfileModel = this.buildConnectionProfileModel();
@@ -224,25 +226,25 @@ public class JpaProjectPropertiesPage
 		}
 	}
 
-	// ***** JPA platform description model
-	private BufferedModifiablePropertyValueModel<JpaPlatformDescription> buildJpaPlatformDescriptionModel() {
-		return new BufferedModifiablePropertyValueModel<JpaPlatformDescription>(new JpaPlatformDescriptionModel(this.jpaProjectModel), this.trigger);
+	// ***** JPA platform config model
+	private BufferedModifiablePropertyValueModel<JpaPlatformConfig> buildJpaPlatformConfigModel() {
+		return new BufferedModifiablePropertyValueModel<JpaPlatformConfig>(new JpaPlatformConfigModel(this.jpaProjectModel), this.trigger);
 	}
 
-	private PropertyChangeListener buildJpaPlatformDescriptionListener(){
-		return new JpaPlatformDescriptionListener();
+	private PropertyChangeListener buildJpaPlatformConfigListener(){
+		return new JpaPlatformConfigListener();
 	}
 
-	/* CU private */ class JpaPlatformDescriptionListener
+	/* CU private */ class JpaPlatformConfigListener
 		extends PropertyChangeAdapter
 	{
 		@Override
 		public void propertyChanged(PropertyChangeEvent event) {
-			JpaProjectPropertiesPage.this.jpaPlatformDescriptionChanged();
+			JpaProjectPropertiesPage.this.jpaPlatformConfigChanged();
 		}
 	}
 
-	void jpaPlatformDescriptionChanged() {
+	void jpaPlatformConfigChanged() {
 		if ( ! this.getControl().isDisposed()) {
 			// handle null, in the case the jpa facet is changed via the facets page,
 			// the library install delegate is temporarily null
@@ -297,7 +299,7 @@ public class JpaProjectPropertiesPage
 	@SuppressWarnings("unchecked")
 	private CollectionValueModel<String> buildUnsortedCatalogChoicesModel() {
 		return new SetCollectionValueModel<String>(
-					new CompositeCollectionValueModel<CollectionValueModel<String>, String>(
+					CompositeCollectionValueModel.forModels(
 							new PropertyCollectionValueModelAdapter<String>(this.defaultCatalogModel),
 							this.buildDatabaseCatalogChoicesModel()
 					)
@@ -339,7 +341,7 @@ public class JpaProjectPropertiesPage
 	@SuppressWarnings("unchecked")
 	private CollectionValueModel<String> buildUnsortedSchemaChoicesModel() {
 		return new SetCollectionValueModel<String>(
-				new CompositeCollectionValueModel<CollectionValueModel<String>, String>(
+				CompositeCollectionValueModel.forModels(
 						new PropertyCollectionValueModelAdapter<String>(this.defaultSchemaModel),
 						this.buildDatabaseSchemaChoicesModel()
 				)
@@ -427,15 +429,15 @@ public class JpaProjectPropertiesPage
 
 		//TODO Ask Paul about these empty enablement variables - trying to reproduce Helios functionality
 		enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_ENABLEMENT_EXP, ""); //$NON-NLS-1$
-		enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_DESCRIPTION_ENABLEMENT_EXP, new EmptyJpaPlatformDescription());
+		enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_DESCRIPTION_ENABLEMENT_EXP, new EmptyJpaPlatformConfig());
 
 		LibraryInstallDelegate lid = new LibraryInstallDelegate(project, fv, enablementVariables);
 		lid.addListener(this.buildLibraryProviderListener());
 		return lid;
 	}
 
-	/* CU private */ class EmptyJpaPlatformDescription
-		implements JpaPlatformDescription
+	/* CU private */ class EmptyJpaPlatformConfig
+		implements JpaPlatformConfig
 	{
 		public JpaPlatformManager getJpaPlatformManager() {
 			return null;
@@ -461,7 +463,7 @@ public class JpaProjectPropertiesPage
 			return null;
 		}
 
-		public JpaPlatformGroupDescription getGroupDescription() {
+		public JpaPlatformGroupConfig getGroupConfig() {
 			return null;
 		}
 
@@ -477,11 +479,11 @@ public class JpaProjectPropertiesPage
 			return;
 		}
 
-		JpaPlatformDescription desc = this.jpaPlatformDescriptionModel.getValue();
-		String jpaPlatformID = (desc == null) ? "" : desc.getId(); //$NON-NLS-1$
+		JpaPlatformConfig jpaPlatformConfig = this.jpaPlatformConfigModel.getValue();
+		String jpaPlatformID = (jpaPlatformConfig == null) ? "" : jpaPlatformConfig.getId(); //$NON-NLS-1$
 
 		lid.setEnablementContextVariable(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_ENABLEMENT_EXP, jpaPlatformID);
-		lid.setEnablementContextVariable(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_DESCRIPTION_ENABLEMENT_EXP, desc);
+		lid.setEnablementContextVariable(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_DESCRIPTION_ENABLEMENT_EXP, jpaPlatformConfig);
 
 		ArrayList<JpaLibraryProviderInstallOperationConfig> jpaConfigs = new ArrayList<JpaLibraryProviderInstallOperationConfig>();
 		// add the currently selected one first
@@ -499,7 +501,7 @@ public class JpaProjectPropertiesPage
 			}
 		}
 		for (JpaLibraryProviderInstallOperationConfig jpaConfig : jpaConfigs) {
-			jpaConfig.setJpaPlatform(desc);
+			jpaConfig.setJpaPlatformConfig(jpaPlatformConfig);
 		}
 	}
 
@@ -528,13 +530,13 @@ public class JpaProjectPropertiesPage
 	@Override
 	protected void engageListeners() {
 		super.engageListeners();
-		this.jpaPlatformDescriptionModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.jpaPlatformDescriptionListener);
+		this.jpaPlatformConfigModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.jpaPlatformConfigListener);
 		this.disconnectedModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.disconnectedModelListener);
 	}
 
 	@Override
 	protected void disengageListeners() {
-		this.jpaPlatformDescriptionModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.jpaPlatformDescriptionListener);
+		this.jpaPlatformConfigModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.jpaPlatformConfigListener);
 		this.disconnectedModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.disconnectedModelListener);
 		super.disengageListeners();
 	}
@@ -550,10 +552,10 @@ public class JpaProjectPropertiesPage
 
 		Combo jpaPlatformDropDown = this.buildDropDown(group);
 		SWTTools.bind(
-				this.buildJpaPlatformDescriptionChoicesModel(),
-				this.jpaPlatformDescriptionModel,
+				this.buildJpaPlatformConfigChoicesModel(),
+				this.jpaPlatformConfigModel,
 				jpaPlatformDropDown,
-				JPA_PLATFORM_DESCRIPTION_LABEL_CONVERTER);
+				JPA_PLATFORM_CONFIG_LABEL_CONVERTER);
 
 		Link facetsPageLink = this.buildFacetsPageLink(group, JptUiMessages.JpaFacetWizardPage_facetsPageLink);
 
@@ -570,54 +572,54 @@ public class JpaProjectPropertiesPage
 	 * Because, if the project's JPA platform is completely invalid, there
 	 * would be no JPA project!
 	 */
-	private ListValueModel<JpaPlatformDescription> buildJpaPlatformDescriptionChoicesModel() {
-		return new SortedListValueModelAdapter<JpaPlatformDescription>(
-				new SetCollectionValueModel<JpaPlatformDescription>(
-					new CompositeCollectionValueModel<CollectionValueModel<JpaPlatformDescription>, JpaPlatformDescription>(
-						this.buildJpaPlatformDescriptionChoicesModels()
+	private ListValueModel<JpaPlatformConfig> buildJpaPlatformConfigChoicesModel() {
+		return new SortedListValueModelAdapter<JpaPlatformConfig>(
+				new SetCollectionValueModel<JpaPlatformConfig>(
+					CompositeCollectionValueModel.forModels(
+						this.buildJpaPlatformConfigChoicesModels()
 					)
 				),
-				JPA_PLATFORM_DESCRIPTION_COMPARATOR
+				JPA_PLATFORM_CONFIG_COMPARATOR
 			);
 	}
 
 	@SuppressWarnings("unchecked")
-	private CollectionValueModel<JpaPlatformDescription>[] buildJpaPlatformDescriptionChoicesModels() {
+	private CollectionValueModel<JpaPlatformConfig>[] buildJpaPlatformConfigChoicesModels() {
 		return new CollectionValueModel[] {
-				new PropertyCollectionValueModelAdapter<JpaPlatformDescription>(this.jpaPlatformDescriptionModel),
-				this.buildEnabledJpaPlatformDescriptionsModel()
+				new PropertyCollectionValueModelAdapter<JpaPlatformConfig>(this.jpaPlatformConfigModel),
+				this.buildEnabledJpaPlatformConfigsModel()
 			};
 	}
 
 	/**
-	 * Return only the JPA platform descriptions that support the project's
+	 * Return only the JPA platform configs that support the project's
 	 * JPA facet version.
 	 */
-	private CollectionValueModel<JpaPlatformDescription> buildEnabledJpaPlatformDescriptionsModel() {
-		return new StaticCollectionValueModel<JpaPlatformDescription>(
-				new FilteringIterable<JpaPlatformDescription>(
-					getJpaPlatformManager().getJpaPlatformDescriptions(),
-					new JpaPlatformDescriptionFilter()
+	private CollectionValueModel<JpaPlatformConfig> buildEnabledJpaPlatformConfigsModel() {
+		return new StaticCollectionValueModel<JpaPlatformConfig>(
+				new FilteringIterable<JpaPlatformConfig>(
+					getJpaPlatformManager().getJpaPlatformConfigs(),
+					new JpaPlatformConfigFilter()
 				)
 			);
 	}
 
-	/* CU private */ class JpaPlatformDescriptionFilter
-		extends FilterAdapter<JpaPlatformDescription>
+	/* CU private */ class JpaPlatformConfigFilter
+		extends Filter.Adapter<JpaPlatformConfig>
 	{
 		@Override
-		public boolean accept(JpaPlatformDescription description) {
-			return description.supportsJpaFacetVersion(JpaProjectPropertiesPage.this.getProjectFacetVersion());
+		public boolean accept(JpaPlatformConfig config) {
+			return config.supportsJpaFacetVersion(JpaProjectPropertiesPage.this.getProjectFacetVersion());
 		}
 	}
 
-	private static final Comparator<JpaPlatformDescription> JPA_PLATFORM_DESCRIPTION_COMPARATOR = new JpaPlatformDescriptionComparator();
+	private static final Comparator<JpaPlatformConfig> JPA_PLATFORM_CONFIG_COMPARATOR = new JpaPlatformConfigComparator();
 
-	/* CU private */ static class JpaPlatformDescriptionComparator
-		implements Comparator<JpaPlatformDescription>
+	/* CU private */ static class JpaPlatformConfigComparator
+		implements Comparator<JpaPlatformConfig>
 	{
-		public int compare(JpaPlatformDescription desc1, JpaPlatformDescription desc2) {
-			return STRING_COMPARATOR.compare(desc1.getLabel(), desc2.getLabel());
+		public int compare(JpaPlatformConfig config1, JpaPlatformConfig config2) {
+			return STRING_COMPARATOR.compare(config1.getLabel(), config2.getLabel());
 		}
 		@Override
 		public String toString() {
@@ -625,17 +627,14 @@ public class JpaProjectPropertiesPage
 		}
 	}
 
-	private static final StringConverter<JpaPlatformDescription> JPA_PLATFORM_DESCRIPTION_LABEL_CONVERTER = new JpaPlatformDescriptionLabelConverter();
+	private static final Transformer<JpaPlatformConfig, String> JPA_PLATFORM_CONFIG_LABEL_CONVERTER = new JpaPlatformConfigLabelConverter();
 
-	/* CU private */ static class JpaPlatformDescriptionLabelConverter
-		implements StringConverter<JpaPlatformDescription>
+	/* CU private */ static class JpaPlatformConfigLabelConverter
+		extends TransformerAdapter<JpaPlatformConfig, String>
 	{
-		public String convertToString(JpaPlatformDescription description) {
-			return description.getLabel();
-		}
 		@Override
-		public String toString() {
-			return this.getClass().getSimpleName();
+		public String transform(JpaPlatformConfig config) {
+			return config.getLabel();
 		}
 	}
 
@@ -696,9 +695,10 @@ public class JpaProjectPropertiesPage
 		SWTTools.controlEnabledState(this.jpaProjectNotNullFlagModel, group, connectionDropDown, addConnectionLink, overrideDefaultCatalogCheckBox, overrideDefaultSchemaButton);
 	}
 
-	private static final StringConverter<String> SIMPLE_STRING_CONVERTER =
-			new StringConverter<String>() {
-				public String convertToString(String string) {
+	private static final Transformer<String, String> SIMPLE_STRING_CONVERTER =
+			new TransformerAdapter<String, String>() {
+				@Override
+				public String transform(String string) {
 					return (string != null) ? string : JptUiMessages.JpaFacetWizardPage_none;
 				}
 			};
@@ -744,7 +744,7 @@ public class JpaProjectPropertiesPage
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this);
+			return ObjectTools.toString(this);
 		}
 	}
 
@@ -764,7 +764,7 @@ public class JpaProjectPropertiesPage
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this);
+			return ObjectTools.toString(this);
 		}
 	}
 
@@ -826,7 +826,7 @@ public class JpaProjectPropertiesPage
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this);
+			return ObjectTools.toString(this);
 		}
 	}
 
@@ -839,7 +839,7 @@ public class JpaProjectPropertiesPage
 
 	@Override
 	protected boolean projectRebuildRequired() {
-		return this.jpaPlatformDescriptionModel.isBuffering();
+		return this.jpaPlatformConfigModel.isBuffering();
 	}
 
 	@Override
@@ -863,7 +863,7 @@ public class JpaProjectPropertiesPage
 	@Override
 	protected BufferedModifiablePropertyValueModel<?>[] buildBufferedModels() {
 		return new BufferedModifiablePropertyValueModel[] {
-				this.jpaPlatformDescriptionModel,
+				this.jpaPlatformConfigModel,
 				this.connectionModel,
 				this.userOverrideDefaultCatalogFlagModel,
 				this.userOverrideDefaultCatalogModel,
@@ -880,7 +880,7 @@ public class JpaProjectPropertiesPage
 	@Override
 	protected Model[] buildValidationModels() {
 		return new Model[] {
-				this.jpaPlatformDescriptionModel,
+				this.jpaPlatformConfigModel,
 				this.connectionModel,
 				this.userOverrideDefaultCatalogFlagModel,
 				this.defaultCatalogModel,
@@ -905,7 +905,7 @@ public class JpaProjectPropertiesPage
 		/* connection */
 		ConnectionProfile connectionProfile = this.getConnectionProfile();
 		String connectionName = this.getConnectionName();
-		if ( ! StringTools.stringIsEmpty(connectionName)) {
+		if ( ! StringTools.isBlank(connectionName)) {
 			if (connectionProfile == null) {
 				statuses.get(ERROR_STATUS).add(this.buildErrorStatus(NLS.bind(
 						JptCoreMessages.VALIDATE_CONNECTION_INVALID,
@@ -919,12 +919,12 @@ public class JpaProjectPropertiesPage
 		/* default catalog */
 		if (this.userOverrideDefaultCatalogFlagIsSet()) {
 			String defaultCatalog = this.getUserOverrideDefaultCatalog();
-			if (StringTools.stringIsEmpty(defaultCatalog)) {
+			if (StringTools.isBlank(defaultCatalog)) {
 				statuses.get(ERROR_STATUS).add(this.buildErrorStatus(JptCoreMessages.VALIDATE_DEFAULT_CATALOG_NOT_SPECIFIED));
 			}
 			else if ((connectionProfile != null)
 					&& connectionProfile.isConnected()
-					&& ! CollectionTools.contains(this.catalogChoicesModel.iterator(), defaultCatalog)) {
+					&& ! IterableTools.contains(this.catalogChoicesModel, defaultCatalog)) {
 				statuses.get(WARNING_STATUS).add(this.buildWarningStatus(NLS.bind(
 						JptCoreMessages.VALIDATE_CONNECTION_DOESNT_CONTAIN_CATALOG,
 						defaultCatalog
@@ -935,12 +935,12 @@ public class JpaProjectPropertiesPage
 		/* default schema */
 		if (this.userOverrideDefaultSchemaFlagIsSet()) {
 			String defaultSchema = this.getUserOverrideDefaultSchema();
-			if (StringTools.stringIsEmpty(defaultSchema)) {
+			if (StringTools.isBlank(defaultSchema)) {
 				statuses.get(ERROR_STATUS).add(this.buildErrorStatus(JptCoreMessages.VALIDATE_DEFAULT_SCHEMA_NOT_SPECIFIED));
 			}
 			else if ((connectionProfile != null)
 					&& connectionProfile.isConnected()
-					&& ! CollectionTools.contains(this.schemaChoicesModel.iterator(), defaultSchema)) {
+					&& ! IterableTools.contains(this.schemaChoicesModel, defaultSchema)) {
 				statuses.get(WARNING_STATUS).add(this.buildWarningStatus(NLS.bind(
 						JptCoreMessages.VALIDATE_CONNECTION_DOESNT_CONTAIN_SCHEMA,
 						defaultSchema
@@ -956,8 +956,8 @@ public class JpaProjectPropertiesPage
         }
 
         Map<String, Object> enablementVariables = new HashMap<String, Object>();
-		enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_ENABLEMENT_EXP, this.jpaPlatformDescriptionModel.getValue());
-		enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_DESCRIPTION_ENABLEMENT_EXP, this.jpaProjectModel.getValue().getJpaPlatform().getDescription());
+		enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_ENABLEMENT_EXP, this.jpaPlatformConfigModel.getValue());
+		enablementVariables.put(JpaLibraryProviderInstallOperationConfig.JPA_PLATFORM_DESCRIPTION_ENABLEMENT_EXP, this.jpaProjectModel.getValue().getJpaPlatform().getConfig());
 
 		if ( ! libInstallDelegate.getLibraryProvider().isEnabledFor(
 				this.getFacetedProject(), this.getProjectFacetVersion(), enablementVariables)) {
@@ -1031,27 +1031,27 @@ public class JpaProjectPropertiesPage
 
 
 	/**
-	 * Treat the JPA platform description as an "aspect" of the JPA project.
+	 * Treat the JPA platform config as an "aspect" of the JPA project.
 	 * The JPA platform ID is stored in the project preferences.
 	 * The JPA platform does not change for a JPA project - if the user wants a
 	 * different JPA platform, we build an entirely new JPA project.
 	 */
-	static class JpaPlatformDescriptionModel
-		extends AspectPropertyValueModelAdapter<JpaProject, JpaPlatformDescription>
+	static class JpaPlatformConfigModel
+		extends AspectPropertyValueModelAdapter<JpaProject, JpaPlatformConfig>
 	{
-		JpaPlatformDescriptionModel(PropertyValueModel<JpaProject> jpaProjectModel) {
+		JpaPlatformConfigModel(PropertyValueModel<JpaProject> jpaProjectModel) {
 			super(jpaProjectModel);
 		}
 
 		@Override
-		protected JpaPlatformDescription buildValue_() {
+		protected JpaPlatformConfig buildValue_() {
 			String jpaPlatformID = JpaPreferences.getJpaPlatformID(this.subject.getProject());
-			return getJpaPlatformManager().getJpaPlatformDescription(jpaPlatformID);
+			return getJpaPlatformManager().getJpaPlatformConfig(jpaPlatformID);
 		}
 
 		@Override
-		public void setValue_(JpaPlatformDescription jpaPlatformDescription) {
-			String jpaPlatformID = jpaPlatformDescription.getId();
+		public void setValue_(JpaPlatformConfig jpaPlatformConfig) {
+			String jpaPlatformID = jpaPlatformConfig.getId();
 			JpaPreferences.setJpaPlatformID(this.subject.getProject(), jpaPlatformID);
 		}
 
@@ -1119,11 +1119,15 @@ public class JpaProjectPropertiesPage
 		}
 
 		public Iterator<String> iterator() {
-			return this.getConnectionProfileFactory().getConnectionProfileNames().iterator();
+			return this.getConnectionProfileNames().iterator();
+		}
+
+		private Iterable<String> getConnectionProfileNames() {
+			return this.getConnectionProfileFactory().getConnectionProfileNames();
 		}
 
 		public int size() {
-			return CollectionTools.size(this.iterator());
+			return IterableTools.size(this.getConnectionProfileNames());
 		}
 
 		@Override
@@ -1159,7 +1163,7 @@ public class JpaProjectPropertiesPage
 		}
 
 		boolean specifiesUserOverrideDefault() {
-			return ! StringTools.stringIsEmpty(this.getUserOverrideDefault());
+			return ! StringTools.isBlank(this.getUserOverrideDefault());
 		}
 
 		abstract String getUserOverrideDefault();
@@ -1325,7 +1329,7 @@ public class JpaProjectPropertiesPage
 			}
 			@Override
 			public String toString() {
-				return StringTools.buildToStringFor(this);
+				return ObjectTools.toString(this);
 			}
 		}
 

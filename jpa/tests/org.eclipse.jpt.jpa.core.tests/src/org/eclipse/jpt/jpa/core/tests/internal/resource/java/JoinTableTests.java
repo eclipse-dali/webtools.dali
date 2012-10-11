@@ -13,8 +13,8 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
@@ -125,7 +125,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testGetName() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTableWithName();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 		assertNotNull(table);
@@ -135,7 +135,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testGetNull() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTable();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 		assertNotNull(table);
@@ -147,7 +147,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testSetName() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTable();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 		assertNotNull(table);
@@ -162,7 +162,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testSetNameNull() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTableWithName();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 		assertEquals(TABLE_NAME, table.getName());
@@ -176,7 +176,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testGetCatalog() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTableWithCatalog();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 		assertNotNull(table);
@@ -186,7 +186,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testSetCatalog() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTable();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 		assertNotNull(table);
@@ -201,7 +201,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testSetCatalogNull() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTableWithCatalog();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 		assertEquals(CATALOG_NAME, table.getCatalog());
@@ -215,7 +215,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testGetSchema() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTableWithSchema();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 		assertNotNull(table);
@@ -225,7 +225,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testSetSchema() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTable();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 		assertNotNull(table);
@@ -240,7 +240,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testSetSchemaNull() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTableWithSchema();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 		assertEquals(SCHEMA_NAME, table.getSchema());
@@ -254,7 +254,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testUniqueConstraints() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTable();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 		
@@ -264,7 +264,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testUniqueConstraints2() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTable();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 
@@ -278,7 +278,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testUniqueConstraints3() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTableWithUniqueConstraints();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 				
@@ -288,7 +288,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testAddUniqueConstraint() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTable();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 		
@@ -306,7 +306,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testRemoveUniqueConstraint() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTableWithUniqueConstraints();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 		assertEquals("BAR", table.uniqueConstraintAt(0).columnNameAt(0));
@@ -333,7 +333,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testMoveUniqueConstraint() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTableWithUniqueConstraints();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 		assertSourceContains("@JoinTable(uniqueConstraints = {@UniqueConstraint(columnNames = {\"BAR\"}), @UniqueConstraint(columnNames = {\"FOO\"}), @UniqueConstraint(columnNames = {\"BAZ\"})})", cu);
@@ -345,7 +345,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testMoveUniqueConstraint2() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTableWithUniqueConstraints();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 		assertSourceContains("@JoinTable(uniqueConstraints = {@UniqueConstraint(columnNames = {\"BAR\"}), @UniqueConstraint(columnNames = {\"FOO\"}), @UniqueConstraint(columnNames = {\"BAZ\"})})", cu);
@@ -357,7 +357,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testJoinColumns() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTable();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 				
@@ -367,7 +367,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testJoinColumns2() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTable();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 
@@ -381,7 +381,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testJoinColumns3() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTableWithJoinColumns();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 				
@@ -391,7 +391,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testAddJoinColumn() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTable();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 		
@@ -408,7 +408,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testRemoveJoinColumn() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTableWithJoinColumns();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 		table.addJoinColumn(0).setName("FOO");
@@ -438,7 +438,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testMoveJoinColumn() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTableWithJoinColumns();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 		JoinColumnAnnotation joinColumn = table.joinColumnAt(0);
@@ -464,7 +464,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testMoveJoinColumn2() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTableWithJoinColumns();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 		
@@ -493,7 +493,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testSetJoinColumnName() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTableWithJoinColumns();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 				
@@ -512,7 +512,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testInverseJoinColumns() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTable();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 		
@@ -522,7 +522,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testInverseJoinColumns2() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTable();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 
@@ -536,7 +536,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testInverseJoinColumns3() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTableWithInverseJoinColumns();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 				
 		assertEquals(2, table.getInverseJoinColumnsSize());
@@ -545,7 +545,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testAddInverseJoinColumn() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTable();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 		
@@ -562,7 +562,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testRemoveInverseJoinColumn() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTableWithInverseJoinColumns();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 		table.addInverseJoinColumn(2).setName("FOO");
@@ -593,7 +593,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testMoveInverseJoinColumn() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTableWithInverseJoinColumns();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 		table.addInverseJoinColumn(0).setName("FOO");
@@ -615,7 +615,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testMoveInverseJoinColumn2() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTableWithInverseJoinColumns();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 		table.addInverseJoinColumn(1).setName("FOO");
@@ -637,7 +637,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	public void testSetInverseJoinColumnName() throws Exception {
 		ICompilationUnit cu = this.createTestJoinTableWithInverseJoinColumns();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) resourceField.getAnnotation(JPA.JOIN_TABLE);
 				

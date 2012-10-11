@@ -10,7 +10,8 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence;
 
 import java.util.Set;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.context.persistence.AbstractPersistenceUnitProperties;
 

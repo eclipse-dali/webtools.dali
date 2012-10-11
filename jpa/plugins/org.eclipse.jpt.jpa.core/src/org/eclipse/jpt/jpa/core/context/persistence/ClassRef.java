@@ -11,8 +11,8 @@ package org.eclipse.jpt.jpa.core.context.persistence;
 
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.common.utility.internal.AbstractTransformer;
-import org.eclipse.jpt.common.utility.internal.Transformer;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;

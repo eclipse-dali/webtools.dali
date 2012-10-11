@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.core.tests.internal.utility.jdt;
 
 import org.eclipse.jpt.common.core.internal.utility.jdt.DefaultAnnotationEditFormatter;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 @SuppressWarnings("nls")
 public class DefaultAnnotationEditFormatterTests extends AnnotationTestCase {
@@ -52,7 +52,7 @@ public class DefaultAnnotationEditFormatterTests extends AnnotationTestCase {
 	}
 
 	private int commaLength(String s) {
-		Integer len = (Integer) ReflectionTools.executeMethod(DefaultAnnotationEditFormatter.instance(), "commaLength", String.class, s);
+		Integer len = (Integer) ObjectTools.execute(DefaultAnnotationEditFormatter.instance(), "commaLength", String.class, s);
 		return len.intValue();
 	}
 
@@ -68,7 +68,7 @@ public class DefaultAnnotationEditFormatterTests extends AnnotationTestCase {
 	}
 
 	private boolean stringIsAnnotation(String s) {
-		Boolean b = (Boolean) ReflectionTools.executeMethod(DefaultAnnotationEditFormatter.instance(), "stringIsAnnotation", String.class, s);
+		Boolean b = (Boolean) ObjectTools.execute(DefaultAnnotationEditFormatter.instance(), "stringIsAnnotation", String.class, s);
 		return b.booleanValue();
 	}
 

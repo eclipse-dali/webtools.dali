@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import java.awt.Graphics;
 import javax.swing.Icon;
 
 /**
- * Implement the Icon interface with an icon that has a size but
+ * Implement the {@link Icon} interface with an icon that has a size but
  * does not paint anything on the graphics context.
  */
 public class EmptyIcon
@@ -26,18 +26,15 @@ public class EmptyIcon
 	public static final EmptyIcon NULL_INSTANCE = new EmptyIcon(0);
 
 
+	public EmptyIcon(int size) {
+		this(size, size);
+	}
+
 	public EmptyIcon(int width, int height) {
 		super();
 		this.width = width;
 		this.height = height;
 	}
-
-	public EmptyIcon(int size) {
-		this(size, size);
-	}
-
-
-	// ********** Icon implementation **********
 
 	public void paintIcon(Component c, Graphics g, int x, int y) {
 		// don't paint anything for an empty icon
@@ -50,5 +47,4 @@ public class EmptyIcon
 	public int getIconHeight() {
 		return this.height;
 	}
-
 }

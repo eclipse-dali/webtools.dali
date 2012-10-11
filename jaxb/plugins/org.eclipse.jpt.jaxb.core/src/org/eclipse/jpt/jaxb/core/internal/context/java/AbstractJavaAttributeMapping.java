@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
@@ -141,7 +141,7 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 	 */
 	public XsdTypeDefinition getDataTypeXsdTypeDefinition() {
 		String dataType = getDataTypeName();
-		if (StringTools.stringIsEmpty(dataType)) {
+		if (StringTools.isBlank(dataType)) {
 			return null;
 		}
 		

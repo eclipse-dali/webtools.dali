@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.ui.internal.jface;
 
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * Empty implementation of {@link ISelection}.
@@ -38,6 +38,6 @@ public class EmptySelection
 
 	@Override
 	public String toString() {
-		return StringTools.buildSingletonToString(this);
+		return ObjectTools.singletonToString(this);
 	}
 }

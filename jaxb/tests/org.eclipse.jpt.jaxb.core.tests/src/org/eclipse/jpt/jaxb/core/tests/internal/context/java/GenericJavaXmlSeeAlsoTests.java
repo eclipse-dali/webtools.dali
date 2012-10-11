@@ -17,8 +17,8 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlSeeAlso;
@@ -51,7 +51,7 @@ public class GenericJavaXmlSeeAlsoTests
 	
 	public void testModifyClasses() throws Exception {
 		createAnnotatedPersistentClassWithXmlSeeAlso();
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		XmlSeeAlso contextXmlSeeAlso = classMapping.getXmlSeeAlso();
 		JavaResourceType resourceType = jaxbClass.getJavaResourceType();
@@ -62,34 +62,34 @@ public class GenericJavaXmlSeeAlsoTests
 		contextXmlSeeAlso.addClass(0, "foo");
 		XmlSeeAlsoAnnotation annotation = (XmlSeeAlsoAnnotation) resourceType.getAnnotation(JAXB.XML_SEE_ALSO);
 		assertEquals(1, annotation.getClassesSize());
-		assertTrue(CollectionTools.contains(annotation.getClasses(), "foo"));
-		assertFalse(CollectionTools.contains(annotation.getClasses(), "bar"));
+		assertTrue(IterableTools.contains(annotation.getClasses(), "foo"));
+		assertFalse(IterableTools.contains(annotation.getClasses(), "bar"));
 		
 		// add another
 		contextXmlSeeAlso.addClass(0, "bar");
 		annotation = (XmlSeeAlsoAnnotation) resourceType.getAnnotation(JAXB.XML_SEE_ALSO);
 		assertEquals(2, annotation.getClassesSize());
-		assertTrue(CollectionTools.contains(annotation.getClasses(), "foo"));
-		assertTrue(CollectionTools.contains(annotation.getClasses(), "bar"));
+		assertTrue(IterableTools.contains(annotation.getClasses(), "foo"));
+		assertTrue(IterableTools.contains(annotation.getClasses(), "bar"));
 		
 		 // remove one
 		contextXmlSeeAlso.removeClass(1);
 		annotation = (XmlSeeAlsoAnnotation) resourceType.getAnnotation(JAXB.XML_SEE_ALSO);
 		assertEquals(1, annotation.getClassesSize());
-		assertFalse(CollectionTools.contains(annotation.getClasses(), "foo"));
-		assertTrue(CollectionTools.contains(annotation.getClasses(), "bar"));
+		assertFalse(IterableTools.contains(annotation.getClasses(), "foo"));
+		assertTrue(IterableTools.contains(annotation.getClasses(), "bar"));
 		
 		// remove the other
 		contextXmlSeeAlso.removeClass(0);
 		annotation = (XmlSeeAlsoAnnotation) resourceType.getAnnotation(JAXB.XML_SEE_ALSO);
 		assertEquals(0, annotation.getClassesSize());
-		assertFalse(CollectionTools.contains(annotation.getClasses(), "bar"));
-		assertFalse(CollectionTools.contains(annotation.getClasses(), "foo"));
+		assertFalse(IterableTools.contains(annotation.getClasses(), "bar"));
+		assertFalse(IterableTools.contains(annotation.getClasses(), "foo"));
 	}
 	
 	public void testUpdateClasses() throws Exception {
 		createAnnotatedPersistentClassWithXmlSeeAlso();
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
 		XmlSeeAlso contextXmlSeeAlso = classMapping.getXmlSeeAlso();
 		JavaResourceType resourceType = jaxbClass.getJavaResourceType();
@@ -104,8 +104,8 @@ public class GenericJavaXmlSeeAlsoTests
 			}
 		});
 		assertEquals(1, contextXmlSeeAlso.getClassesSize());
-		assertTrue(CollectionTools.contains(contextXmlSeeAlso.getClasses(), "foo"));
-		assertFalse(CollectionTools.contains(contextXmlSeeAlso.getClasses(), "bar"));
+		assertTrue(IterableTools.contains(contextXmlSeeAlso.getClasses(), "foo"));
+		assertFalse(IterableTools.contains(contextXmlSeeAlso.getClasses(), "bar"));
 		
 		// add another
 		annotatedElement.edit(new Member.Editor() {
@@ -114,8 +114,8 @@ public class GenericJavaXmlSeeAlsoTests
 			}
 		});
 		assertEquals(2, contextXmlSeeAlso.getClassesSize());
-		assertTrue(CollectionTools.contains(contextXmlSeeAlso.getClasses(), "foo"));
-		assertTrue(CollectionTools.contains(contextXmlSeeAlso.getClasses(), "bar"));
+		assertTrue(IterableTools.contains(contextXmlSeeAlso.getClasses(), "foo"));
+		assertTrue(IterableTools.contains(contextXmlSeeAlso.getClasses(), "bar"));
 		
 		 // remove one
 		annotatedElement.edit(new Member.Editor() {
@@ -124,8 +124,8 @@ public class GenericJavaXmlSeeAlsoTests
 			}
 		});
 		assertEquals(1, contextXmlSeeAlso.getClassesSize());
-		assertFalse(CollectionTools.contains(contextXmlSeeAlso.getClasses(), "foo"));
-		assertTrue(CollectionTools.contains(contextXmlSeeAlso.getClasses(), "bar"));
+		assertFalse(IterableTools.contains(contextXmlSeeAlso.getClasses(), "foo"));
+		assertTrue(IterableTools.contains(contextXmlSeeAlso.getClasses(), "bar"));
 		
 		// remove the other
 		annotatedElement.edit(new Member.Editor() {
@@ -134,8 +134,8 @@ public class GenericJavaXmlSeeAlsoTests
 			}
 		});
 		assertEquals(0, contextXmlSeeAlso.getClassesSize());
-		assertFalse(CollectionTools.contains(contextXmlSeeAlso.getClasses(), "bar"));
-		assertFalse(CollectionTools.contains(contextXmlSeeAlso.getClasses(), "foo"));
+		assertFalse(IterableTools.contains(contextXmlSeeAlso.getClasses(), "bar"));
+		assertFalse(IterableTools.contains(contextXmlSeeAlso.getClasses(), "foo"));
 	}
 	
 	protected void addClass(ModifiedDeclaration declaration, int index, String clazz) {

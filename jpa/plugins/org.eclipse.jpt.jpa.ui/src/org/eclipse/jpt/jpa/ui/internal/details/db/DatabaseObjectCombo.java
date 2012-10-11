@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.details.db;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.common.ui.internal.widgets.ComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;

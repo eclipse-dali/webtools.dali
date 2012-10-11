@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.core.internal.utility.command;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * Adapt a {@link JobCommand} to the {@link Command} interface.
@@ -39,6 +39,6 @@ public class JobCommandCommandAdapter
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.jobCommand);
+		return ObjectTools.toString(this, this.jobCommand);
 	}
 }

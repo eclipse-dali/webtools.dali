@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.utility.tests.internal.model.value;
 
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.Filter;
+import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.FilteringModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;

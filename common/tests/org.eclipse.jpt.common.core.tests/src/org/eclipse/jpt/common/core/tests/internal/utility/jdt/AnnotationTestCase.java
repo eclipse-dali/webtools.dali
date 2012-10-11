@@ -50,10 +50,10 @@ import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.core.utility.jdt.Type;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.SingleElementIterator;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.SingleElementIterator;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 /**
@@ -832,7 +832,7 @@ public abstract class AnnotationTestCase
 	protected void moveArrayElement(NormalAnnotation annotation, String elementName, int targetIndex, int sourceIndex) {
 		MemberValuePair pair = this.memberValuePair(annotation, elementName);
 		ArrayInitializer array = (ArrayInitializer) pair.getValue();
-		CollectionTools.move(this.expressions(array), targetIndex, sourceIndex);
+		ListTools.move(this.expressions(array), targetIndex, sourceIndex);
 	}
 
 	/**

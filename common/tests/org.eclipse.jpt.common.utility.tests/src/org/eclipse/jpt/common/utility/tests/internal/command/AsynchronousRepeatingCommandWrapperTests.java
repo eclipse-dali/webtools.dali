@@ -13,10 +13,10 @@ import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.RepeatingCommand;
 import org.eclipse.jpt.common.utility.internal.CollectingExceptionHandler;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.ConsumerThreadCoordinator;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.command.AsynchronousRepeatingCommandWrapper;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.tests.internal.MultiThreadedTestCase;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
@@ -180,8 +180,8 @@ public class AsynchronousRepeatingCommandWrapperTests
 	public void testThreadName() throws Exception {
 		RepeatingCommand s = new AsynchronousRepeatingCommandWrapper(this.command1, this.buildThreadFactory(), "sync", ExceptionHandler.Runtime.instance());
 		s.start();
-		ConsumerThreadCoordinator ctc = (ConsumerThreadCoordinator) ReflectionTools.getFieldValue(s, "consumerThreadCoordinator");
-		Thread t = (Thread) ReflectionTools.getFieldValue(ctc, "thread");
+		ConsumerThreadCoordinator ctc = (ConsumerThreadCoordinator) ObjectTools.get(s, "consumerThreadCoordinator");
+		Thread t = (Thread) ObjectTools.get(ctc, "thread");
 		assertEquals("sync", t.getName());
 		s.stop();
 	}
@@ -217,7 +217,7 @@ public class AsynchronousRepeatingCommandWrapperTests
 		this.sleep(TICK);
 
 		synchronizer.stop();
-		assertEquals(2, CollectionTools.size(exHandler.getExceptions()));
+		assertEquals(2, IterableTools.size(exHandler.getExceptions()));
 		assertEquals(2, command.count);
 	}
 

@@ -16,11 +16,11 @@ import org.eclipse.jpt.common.core.internal.resource.java.source.SourceNode;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SubListIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.SubListIterableWrapper;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
@@ -299,7 +299,7 @@ public class GenericJavaPackageInfo
 	public String getNamespaceForPrefix(String prefix) {
 		if (this.xmlSchema != null) {
 			for (XmlNs xmlns : this.xmlSchema.getXmlNsPrefixes()) {
-				if (StringTools.stringsAreEqual(xmlns.getPrefix(), prefix)) {
+				if (ObjectTools.equals(xmlns.getPrefix(), prefix)) {
 					return xmlns.getNamespaceURI();
 				}
 			}
@@ -310,7 +310,7 @@ public class GenericJavaPackageInfo
 	public String getPrefixForNamespace(String namespace) {
 		if (this.xmlSchema != null) {
 			for (XmlNs xmlns : this.xmlSchema.getXmlNsPrefixes()) {
-				if (StringTools.stringsAreEqual(xmlns.getNamespaceURI(), namespace)) {
+				if (ObjectTools.equals(xmlns.getNamespaceURI(), namespace)) {
 					return xmlns.getPrefix();
 				}
 			}
@@ -328,17 +328,17 @@ public class GenericJavaPackageInfo
 		getJaxbProject().getSchemaLibrary().refreshSchema(getJaxbPackage().getNamespace());
 		
 		Iterable<String> result = super.getCompletionProposals(pos);
-		if (! CollectionTools.isEmpty(result)) {
+		if (! IterableTools.isEmpty(result)) {
 			return result;
 		}
 		
 		result = this.xmlSchema.getCompletionProposals(pos);
-		if (! CollectionTools.isEmpty(result)) {
+		if (! IterableTools.isEmpty(result)) {
 			return result;
 		}		
 		for (XmlSchemaType xmlSchemaType : this.getXmlSchemaTypes()) {
 			result = xmlSchemaType.getCompletionProposals(pos);
-			if (!CollectionTools.isEmpty(result)) {
+			if (!IterableTools.isEmpty(result)) {
 				return result;
 			}
 		}

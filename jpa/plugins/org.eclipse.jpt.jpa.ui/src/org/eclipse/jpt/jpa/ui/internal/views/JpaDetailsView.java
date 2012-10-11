@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.views;
 
 import java.util.HashMap;
 import org.eclipse.jpt.common.ui.internal.widgets.PropertySheetWidgetFactory;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -267,7 +267,7 @@ public class JpaDetailsView
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this);
+		return ObjectTools.toString(this);
 	}
 
 
@@ -308,7 +308,7 @@ public class JpaDetailsView
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this);
+			return ObjectTools.toString(this);
 		}
 	}
 }

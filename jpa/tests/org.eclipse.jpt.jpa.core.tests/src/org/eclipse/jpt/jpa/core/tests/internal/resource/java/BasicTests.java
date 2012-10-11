@@ -13,8 +13,8 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.resource.java.BasicAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.FetchType;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
@@ -68,7 +68,7 @@ public class BasicTests extends JpaJavaResourceModelTestCase {
 	public void testBasic() throws Exception {
 		ICompilationUnit cu = this.createTestBasic();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		BasicAnnotation basic = (BasicAnnotation) resourceField.getAnnotation(JPA.BASIC);
 		assertNotNull(basic);
@@ -77,7 +77,7 @@ public class BasicTests extends JpaJavaResourceModelTestCase {
 	public void testGetOptional() throws Exception {
 		ICompilationUnit cu = this.createTestBasicWithOptional();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		BasicAnnotation basic = (BasicAnnotation) resourceField.getAnnotation(JPA.BASIC);
 		assertEquals(Boolean.TRUE, basic.getOptional());
@@ -86,7 +86,7 @@ public class BasicTests extends JpaJavaResourceModelTestCase {
 	public void testSetOptional() throws Exception {
 		ICompilationUnit cu = this.createTestBasicWithOptional();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		BasicAnnotation basic = (BasicAnnotation) resourceField.getAnnotation(JPA.BASIC);
 		assertEquals(Boolean.TRUE, basic.getOptional());
@@ -100,7 +100,7 @@ public class BasicTests extends JpaJavaResourceModelTestCase {
 	public void testSetOptionalNull() throws Exception {
 		ICompilationUnit cu = this.createTestBasicWithOptional();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		BasicAnnotation basic = (BasicAnnotation) resourceField.getAnnotation(JPA.BASIC);
 		assertEquals(Boolean.TRUE, basic.getOptional());
@@ -115,7 +115,7 @@ public class BasicTests extends JpaJavaResourceModelTestCase {
 	public void testGetFetch() throws Exception {
 		ICompilationUnit cu = this.createTestBasicWithFetch();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		BasicAnnotation basic = (BasicAnnotation) resourceField.getAnnotation(JPA.BASIC);
 		assertEquals(FetchType.EAGER, basic.getFetch());
@@ -124,7 +124,7 @@ public class BasicTests extends JpaJavaResourceModelTestCase {
 	public void testSetFetch() throws Exception {
 		ICompilationUnit cu = this.createTestBasicWithFetch();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		BasicAnnotation basic = (BasicAnnotation) resourceField.getAnnotation(JPA.BASIC);
 		assertEquals(FetchType.EAGER, basic.getFetch());
@@ -138,7 +138,7 @@ public class BasicTests extends JpaJavaResourceModelTestCase {
 	public void testSetFetchNull() throws Exception {
 		ICompilationUnit cu = this.createTestBasicWithFetch();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		BasicAnnotation basic = (BasicAnnotation) resourceField.getAnnotation(JPA.BASIC);
 		assertEquals(FetchType.EAGER, basic.getFetch());

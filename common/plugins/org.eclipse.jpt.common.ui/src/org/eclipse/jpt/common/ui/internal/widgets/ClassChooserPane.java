@@ -33,7 +33,7 @@ import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.common.ui.internal.plugin.JptCommonUiPlugin;
-import org.eclipse.jpt.common.utility.internal.ClassName;
+import org.eclipse.jpt.common.utility.internal.ClassNameTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
@@ -256,9 +256,9 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 		newClassWizardPage.setSuperClass(getSuperclassName(), true);
 		newClassWizardPage.setSuperInterfaces(getSuperInterfaceNames(), true);
 		String qualifiedClassName = this.getFullyQualifiedClassName();
-		if (!StringTools.stringIsEmpty(qualifiedClassName)) {
-			newClassWizardPage.setTypeName(ClassName.getSimpleName(qualifiedClassName), true);
-			String packageName = ClassName.getPackageName(qualifiedClassName);
+		if (!StringTools.isBlank(qualifiedClassName)) {
+			newClassWizardPage.setTypeName(ClassNameTools.simpleName(qualifiedClassName), true);
+			String packageName = ClassNameTools.packageName(qualifiedClassName);
 			newClassWizardPage.setPackageFragment(getFirstJavaSourceFolder().getPackageFragment(packageName), true);
 		}
 		NewClassCreationWizard wizard = new NewClassCreationWizard(newClassWizardPage, false);
@@ -367,7 +367,7 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 				scope,
 				getTypeDialogStyle(),
 				false,
-				StringTools.stringIsEmpty(getClassName()) ? "" : ClassName.getSimpleName(getClassName())
+				StringTools.isBlank(getClassName()) ? "" : ClassNameTools.simpleName(getClassName())
 			);
 		}
 		catch (JavaModelException e) {

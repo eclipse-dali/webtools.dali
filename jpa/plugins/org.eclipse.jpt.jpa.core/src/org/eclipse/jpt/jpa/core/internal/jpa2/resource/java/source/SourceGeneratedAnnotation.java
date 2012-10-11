@@ -23,9 +23,9 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.GeneratedAnnotation;
 
 /**
@@ -124,7 +124,7 @@ public final class SourceGeneratedAnnotation
 	}
 
 	public void moveValue(int targetIndex, int sourceIndex) {
-		CollectionTools.move(this.values, targetIndex, sourceIndex);
+		ListTools.move(this.values, targetIndex, sourceIndex);
 		this.writeValues();
 	}
 

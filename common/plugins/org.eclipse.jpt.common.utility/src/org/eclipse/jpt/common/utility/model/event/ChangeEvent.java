@@ -10,7 +10,8 @@
 package org.eclipse.jpt.common.utility.model.event;
 
 import java.util.EventObject;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+
+import org.eclipse.jpt.common.utility.internal.StringBuilderTools;
 import org.eclipse.jpt.common.utility.model.Model;
 
 /**
@@ -47,7 +48,7 @@ public abstract class ChangeEvent extends EventObject {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		StringTools.appendSimpleToString(sb, this);
+		StringBuilderTools.appendHashCodeToString(sb, this);
 		sb.append('(');
 		int len = sb.length();
 		this.toString(sb);

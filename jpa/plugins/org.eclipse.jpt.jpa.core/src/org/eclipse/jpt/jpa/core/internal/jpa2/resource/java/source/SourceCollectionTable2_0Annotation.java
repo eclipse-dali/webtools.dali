@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceBaseTableAnnotation;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.CollectionTable2_0Annotation;

@@ -19,20 +19,19 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.jpt.common.core.internal.JptCommonCoreMessages;
-import org.eclipse.jpt.common.core.internal.utility.XPointTools;
-import org.eclipse.jpt.common.utility.Filter;
-import org.eclipse.jpt.common.utility.internal.FilterAdapter;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SuperIterableWrapper;
+import org.eclipse.jpt.common.core.internal.utility.ConfigurationElementTools;
+import org.eclipse.jpt.common.utility.filter.Filter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SuperIterableWrapper;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaWorkspace;
 import org.eclipse.jpt.jpa.core.internal.InternalJpaWorkspace;
 import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformGroupDescription;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformGroupConfig;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
@@ -43,21 +42,21 @@ public class InternalJpaPlatformManager
 	implements JpaPlatformManager
 {
 	/**
-	 * The JPA platform description manager's JPA workspace.
+	 * The JPA platform manager's JPA workspace.
 	 */
 	private final InternalJpaWorkspace jpaWorkspace;
 
 	/**
-	 * The JPA platform group descriptions, keyed by ID.
+	 * The JPA platform group configs, keyed by ID.
 	 * Initialized during construction.
 	 */
-	private final HashMap<String, InternalJpaPlatformGroupDescription> jpaPlatformGroupDescriptions = new HashMap<String, InternalJpaPlatformGroupDescription>();
+	private final HashMap<String, InternalJpaPlatformGroupConfig> jpaPlatformGroupConfigs = new HashMap<String, InternalJpaPlatformGroupConfig>();
 
 	/**
-	 * The JPA platform descriptions, keyed by ID.
+	 * The JPA platform configs, keyed by ID.
 	 * Initialized during construction.
 	 */
-	private final HashMap<String, InternalJpaPlatformDescription> jpaPlatformDescriptions = new HashMap<String, InternalJpaPlatformDescription>();
+	private final HashMap<String, InternalJpaPlatformConfig> jpaPlatformConfigs = new HashMap<String, InternalJpaPlatformConfig>();
 
 
 	// ********** extension point element and attribute names **********
@@ -89,7 +88,7 @@ public class InternalJpaPlatformManager
 	private void initialize() {
 		IExtensionPoint extensionPoint = this.getExtensionPoint();
 		if (extensionPoint == null) {
-			throw new IllegalStateException();
+			throw new IllegalStateException("missing extension point: " + this.getExtensionPointName()); //$NON-NLS-1$
 		}
 
 		ArrayList<IConfigurationElement> jpaPlatformGroupElements = new ArrayList<IConfigurationElement>();
@@ -109,25 +108,25 @@ public class InternalJpaPlatformManager
 
 		// build the groups first so the platforms can be added as they are built
 		for (IConfigurationElement element : jpaPlatformGroupElements) {
-			InternalJpaPlatformGroupDescription desc = this.buildPlatformGroupDescription(element);
-			if (desc != null) {
-				this.jpaPlatformGroupDescriptions.put(desc.getId(), desc);
+			InternalJpaPlatformGroupConfig config = this.buildPlatformGroupConfig(element);
+			if (config != null) {
+				this.jpaPlatformGroupConfigs.put(config.getId(), config);
 			}
 		}
 
 		for (IConfigurationElement element : jpaPlatformElements) {
-			InternalJpaPlatformDescription desc = this.buildPlatformDescription(element);
-			if (desc != null) {
-				this.jpaPlatformDescriptions.put(desc.getId(), desc);
+			InternalJpaPlatformConfig config = this.buildPlatformConfig(element);
+			if (config != null) {
+				this.jpaPlatformConfigs.put(config.getId(), config);
 			}
 		}
 	}
 
 	/**
 	 * Return <code>null</code> if there is any sort of problem building a
-	 * group description from the specified configuration element.
+	 * group config from the specified configuration element.
 	 */
-	private InternalJpaPlatformGroupDescription buildPlatformGroupDescription(IConfigurationElement element) {
+	private InternalJpaPlatformGroupConfig buildPlatformGroupConfig(IConfigurationElement element) {
 		String contributor = element.getContributor().getName();
 		// id
 		String id = element.getAttribute(ID_ATTRIBUTE);
@@ -135,7 +134,7 @@ public class InternalJpaPlatformManager
 			this.logMissingAttribute(element, ID_ATTRIBUTE);
 			return null;
 		}
-		if (this.jpaPlatformGroupDescriptions.containsKey(id)) {
+		if (this.jpaPlatformGroupConfigs.containsKey(id)) {
 			this.logError(JptCommonCoreMessages.REGISTRY_DUPLICATE, this.getExtensionPointName(), contributor, ID_ATTRIBUTE, id);
 			return null;  // drop any duplicate platform groups
 		}
@@ -147,16 +146,16 @@ public class InternalJpaPlatformManager
 			return null;
 		}
 
-		InternalJpaPlatformGroupDescription desc = new InternalJpaPlatformGroupDescription(this, id, label);
-		desc.setPluginId(contributor);
-		return desc;
+		InternalJpaPlatformGroupConfig config = new InternalJpaPlatformGroupConfig(this, id, label);
+		config.setPluginId(contributor);
+		return config;
 	}
 
 	/**
 	 * Return <code>null</code> if there is any sort of problem building a
-	 * platform description from the specified configuration element.
+	 * platform config from the specified configuration element.
 	 */
-	private InternalJpaPlatformDescription buildPlatformDescription(IConfigurationElement element) {
+	private InternalJpaPlatformConfig buildPlatformConfig(IConfigurationElement element) {
 		String contributor = element.getContributor().getName();
 		// id
 		String id = element.getAttribute(ID_ATTRIBUTE);
@@ -164,7 +163,7 @@ public class InternalJpaPlatformManager
 			this.logMissingAttribute(element, ID_ATTRIBUTE);
 			return null;
 		}
-		if (this.jpaPlatformDescriptions.containsKey(id)) {
+		if (this.jpaPlatformConfigs.containsKey(id)) {
 			this.logError(JptCommonCoreMessages.REGISTRY_DUPLICATE, this.getExtensionPointName(), contributor, ID_ATTRIBUTE, id);
 			return null;  // drop any duplicate platforms
 		}
@@ -183,7 +182,7 @@ public class InternalJpaPlatformManager
 			return null;
 		}
 
-		InternalJpaPlatformDescription desc = new InternalJpaPlatformDescription(this, id, label, factoryClassName);
+		InternalJpaPlatformConfig config = new InternalJpaPlatformConfig(this, id, label, factoryClassName);
 
 		// JPA facet version
 		String jpaFacetVersionString = element.getAttribute(JPA_FACET_VERSION_ATTRIBUTE);
@@ -193,7 +192,7 @@ public class InternalJpaPlatformManager
 				this.logInvalidValue(element, JPA_FACET_VERSION_ATTRIBUTE, jpaFacetVersionString);
 				return null;
 			}
-			desc.setJpaFacetVersion(jpaFacetVersion);
+			config.setJpaFacetVersion(jpaFacetVersion);
 		}
 
 		// default
@@ -204,23 +203,23 @@ public class InternalJpaPlatformManager
 				this.logInvalidValue(element, DEFAULT_ATTRIBUTE, defaultString);
 				return null;
 			}
-			desc.setDefault(default_.booleanValue());
+			config.setDefault(default_.booleanValue());
 		}
 
 		// group
 		String groupID = element.getAttribute(GROUP_ATTRIBUTE);
 		if (groupID != null) {
-			InternalJpaPlatformGroupDescription group = this.jpaPlatformGroupDescriptions.get(groupID);
-			if (group == null) {
+			InternalJpaPlatformGroupConfig groupConfig = this.jpaPlatformGroupConfigs.get(groupID);
+			if (groupConfig == null) {
 				this.logInvalidValue(element, GROUP_ATTRIBUTE, groupID);
 				return null;  // drop any platform with an invalid group(?)
 			}
-			desc.setGroup(group);
-			group.addPlatform(desc);
+			config.setGroup(groupConfig);
+			groupConfig.addPlatform(config);
 		}
 
-		desc.setPluginId(contributor);
-		return desc;
+		config.setPluginId(contributor);
+		return config;
 	}
 
 
@@ -242,27 +241,27 @@ public class InternalJpaPlatformManager
 	}
 
 	private void initializeDefaultPreference(IProjectFacetVersion jpaFacetVersion) {
-		JpaPlatformDescription description = this.buildDefaultJpaPlatformDescription(jpaFacetVersion);
-		if (description != null) {
-			this.getPlugin().setDefaultPreference(this.buildDefaultJpaPlatformPreferenceKey(jpaFacetVersion), description.getId());
+		JpaPlatformConfig config = this.buildDefaultJpaPlatformConfig(jpaFacetVersion);
+		if (config != null) {
+			this.getPlugin().setDefaultPreference(this.buildDefaultJpaPlatformPreferenceKey(jpaFacetVersion), config.getId());
 		}
 	}
 
 	/**
-	 * Return the first JPA platform description registered as a default for the
+	 * Return the first JPA platform config registered as a default for the
 	 * specified JPA facet version. Return an <em>internal</em> platform
-	 * description if none are registered. Log an error and return
+	 * config if none are registered. Log an error and return
 	 * <code>null</code> if the specified JPA facet version is invalid.
 	 */
-	private JpaPlatformDescription buildDefaultJpaPlatformDescription(IProjectFacetVersion jpaFacetVersion) {
-		JpaPlatformDescription description = this.selectJpaPlatformDescription(this.getDefaultJpaPlatformDescriptions(), jpaFacetVersion);
-		if (description != null) {
-			return description;
+	private JpaPlatformConfig buildDefaultJpaPlatformConfig(IProjectFacetVersion jpaFacetVersion) {
+		JpaPlatformConfig config = this.selectJpaPlatformConfig(this.getDefaultJpaPlatformConfigs(), jpaFacetVersion);
+		if (config != null) {
+			return config;
 		}
 
-		description = this.selectJpaPlatformDescription(this.getInternalJpaPlatformDescriptions(), jpaFacetVersion);
-		if (description != null) {
-			return description;
+		config = this.selectJpaPlatformConfig(this.getInternalJpaPlatformConfigs(), jpaFacetVersion);
+		if (config != null) {
+			return config;
 		}
 
 		this.logError(JptCoreMessages.INVALID_FACET, jpaFacetVersion);
@@ -278,7 +277,7 @@ public class InternalJpaPlatformManager
 	 * workspace preferences. The keys can calculated by appending the
 	 * {@link IProjectFacetVersion#getVersionString() JPA facet version}
 	 * to this base.
-	 * @see #getDefaultJpaPlatformDescription(IProjectFacetVersion)
+	 * @see #getDefaultJpaPlatformConfig(IProjectFacetVersion)
 	 * @see org.eclipse.jpt.common.core.internal.utility.JptPlugin#getPreference(String)
 	 */
 	private static final String DEFAULT_JPA_PLATFORM_PREF_KEY_BASE = "defaultJpaPlatform_"; //$NON-NLS-1$
@@ -287,126 +286,115 @@ public class InternalJpaPlatformManager
 	// ********** JPA platforms **********
 
 	public JpaPlatform getJpaPlatform(String jpaPlatformID) {
-		InternalJpaPlatformDescription desc = this.jpaPlatformDescriptions.get(jpaPlatformID);
-		return (desc == null) ? null : desc.getJpaPlatform();
+		InternalJpaPlatformConfig config = this.jpaPlatformConfigs.get(jpaPlatformID);
+		return (config == null) ? null : config.getJpaPlatform();
 	}
 
 
-	// ********** JPA platform group descriptions **********
+	// ********** JPA platform group configs **********
 
-	public Iterable<JpaPlatformGroupDescription> getJpaPlatformGroupDescriptions() {
-		return new SuperIterableWrapper<JpaPlatformGroupDescription>(this.jpaPlatformGroupDescriptions.values());
+	public Iterable<JpaPlatformGroupConfig> getJpaPlatformGroupConfigs() {
+		return new SuperIterableWrapper<JpaPlatformGroupConfig>(this.jpaPlatformGroupConfigs.values());
 	}
 
-	public JpaPlatformGroupDescription getJpaPlatformGroupDescription(String groupID) {
-		return this.jpaPlatformGroupDescriptions.get(groupID);
+	public JpaPlatformGroupConfig getJpaPlatformGroupConfig(String groupID) {
+		return this.jpaPlatformGroupConfigs.get(groupID);
 	}
 
 
-	// ********** JPA platform descriptions **********
+	// ********** JPA platform configs **********
 
-	public Iterable<JpaPlatformDescription> getJpaPlatformDescriptions() {
-		return new SuperIterableWrapper<JpaPlatformDescription>(this.jpaPlatformDescriptions.values());
+	public Iterable<JpaPlatformConfig> getJpaPlatformConfigs() {
+		return new SuperIterableWrapper<JpaPlatformConfig>(this.jpaPlatformConfigs.values());
 	}
 
-	public JpaPlatformDescription getJpaPlatformDescription(String jpaPlatformID) {
-		return this.jpaPlatformDescriptions.get(jpaPlatformID);
+	public JpaPlatformConfig getJpaPlatformConfig(String jpaPlatformID) {
+		return this.jpaPlatformConfigs.get(jpaPlatformID);
 	}
 
-	public Iterable<JpaPlatformDescription> getJpaPlatformDescriptions(IProjectFacetVersion jpaFacetVersion) {
-		return this.selectJpaPlatformDescriptions(this.getJpaPlatformDescriptions(), jpaFacetVersion);
+	public Iterable<JpaPlatformConfig> getJpaPlatformConfigs(IProjectFacetVersion jpaFacetVersion) {
+		return this.selectJpaPlatformConfigs(this.getJpaPlatformConfigs(), jpaFacetVersion);
 	}
 
 	/**
-	 * Return the first description among those specified that supports the
+	 * Return the first config among those specified that supports the
 	 * specified JPA facet version.
 	 */
-	private JpaPlatformDescription selectJpaPlatformDescription(Iterable<JpaPlatformDescription> descriptions, IProjectFacetVersion jpaFacetVersion) {
-		Iterator<JpaPlatformDescription> stream = this.selectJpaPlatformDescriptions(descriptions, jpaFacetVersion).iterator();
+	private JpaPlatformConfig selectJpaPlatformConfig(Iterable<JpaPlatformConfig> configs, IProjectFacetVersion jpaFacetVersion) {
+		Iterator<JpaPlatformConfig> stream = this.selectJpaPlatformConfigs(configs, jpaFacetVersion).iterator();
 		return stream.hasNext() ? stream.next() : null;
 	}
 
 	/**
-	 * Return the JPA platform descriptions among those specified that support
+	 * Return the JPA platform configs among those specified that support
 	 * the specified facet version.
 	 */
-	private Iterable<JpaPlatformDescription> selectJpaPlatformDescriptions(Iterable<JpaPlatformDescription> descriptions, IProjectFacetVersion jpaFacetVersion) {
-		return new FilteringIterable<JpaPlatformDescription>(descriptions, this.buildJpaPlatformDescriptionFilter(jpaFacetVersion));
+	private Iterable<JpaPlatformConfig> selectJpaPlatformConfigs(Iterable<JpaPlatformConfig> configs, IProjectFacetVersion jpaFacetVersion) {
+		return new FilteringIterable<JpaPlatformConfig>(configs, this.buildJpaPlatformConfigFilter(jpaFacetVersion));
 	}
 
-	private Filter<JpaPlatformDescription> buildJpaPlatformDescriptionFilter(IProjectFacetVersion jpaFacetVersion) {
-		return new FacetVersionJpaPlatformDescriptionFilter(jpaFacetVersion);
+	private Filter<JpaPlatformConfig> buildJpaPlatformConfigFilter(IProjectFacetVersion jpaFacetVersion) {
+		return new FacetVersionJpaPlatformConfigFilter(jpaFacetVersion);
 	}
 
-	/* CU private */ static class FacetVersionJpaPlatformDescriptionFilter
-		extends FilterAdapter<JpaPlatformDescription>
+	/* CU private */ static class FacetVersionJpaPlatformConfigFilter
+		extends Filter.Adapter<JpaPlatformConfig>
 	{
 		private final IProjectFacetVersion jpaFacetVersion;
-		FacetVersionJpaPlatformDescriptionFilter(IProjectFacetVersion jpaFacetVersion) {
+		FacetVersionJpaPlatformConfigFilter(IProjectFacetVersion jpaFacetVersion) {
 			super();
 			this.jpaFacetVersion = jpaFacetVersion;
 		}
 		@Override
-		public boolean accept(JpaPlatformDescription description) {
-			return description.supportsJpaFacetVersion(this.jpaFacetVersion);
+		public boolean accept(JpaPlatformConfig config) {
+			return config.supportsJpaFacetVersion(this.jpaFacetVersion);
 		}
 	}
 
 	/**
 	 * "Default" platforms (i.e. third-party platforms flagged as "default").
 	 */
-	private Iterable<JpaPlatformDescription> getDefaultJpaPlatformDescriptions() {
-		return new FilteringIterable<JpaPlatformDescription>(this.getJpaPlatformDescriptions(), DEFAULT_JPA_PLATFORM_DESCRIPTION_FILTER);
-	}
-
-	private static final Filter<JpaPlatformDescription> DEFAULT_JPA_PLATFORM_DESCRIPTION_FILTER = new DefaultJpaPlatformDescriptionFilter();
-
-	/* CU private */ static class DefaultJpaPlatformDescriptionFilter
-		extends FilterAdapter<JpaPlatformDescription>
-	{
-		@Override
-		public boolean accept(JpaPlatformDescription desc) {
-			return desc.isDefault();
-		}
+	private Iterable<JpaPlatformConfig> getDefaultJpaPlatformConfigs() {
+		return new FilteringIterable<JpaPlatformConfig>(this.getJpaPlatformConfigs(), JpaPlatformConfig.DEFAULT_FILTER);
 	}
 
 	/**
 	 * "Internal" (i.e. Dali-defined generic) platforms.
 	 */
-	private Iterable<JpaPlatformDescription> getInternalJpaPlatformDescriptions() {
-		return new FilteringIterable<JpaPlatformDescription>(this.getJpaPlatformDescriptions(), this.buildInternalJpaPlatformDescriptionFilter());
+	private Iterable<JpaPlatformConfig> getInternalJpaPlatformConfigs() {
+		return new FilteringIterable<JpaPlatformConfig>(this.getJpaPlatformConfigs(), this.buildInternalJpaPlatformConfigFilter());
 	}
 
-	private Filter<JpaPlatformDescription> buildInternalJpaPlatformDescriptionFilter() {
-		return new InternalJpaPlatformDescriptionFilter(this.getPluginID());
+	private Filter<JpaPlatformConfig> buildInternalJpaPlatformConfigFilter() {
+		return new InternalJpaPlatformConfigFilter(this.getPluginID());
 	}
 
-	/* CU private */ static class InternalJpaPlatformDescriptionFilter
-		extends FilterAdapter<JpaPlatformDescription>
+	/* CU private */ static class InternalJpaPlatformConfigFilter
+		extends Filter.Adapter<JpaPlatformConfig>
 	{
 		private final String prefix;
-		InternalJpaPlatformDescriptionFilter(String prefix) {
+		InternalJpaPlatformConfigFilter(String prefix) {
 			super();
 			this.prefix = prefix;
 		}
 		@Override
-		public boolean accept(JpaPlatformDescription desc) {
-			return desc.getFactoryClassName().startsWith(this.prefix);
+		public boolean accept(JpaPlatformConfig config) {
+			return config.getFactoryClassName().startsWith(this.prefix);
 		}
 	}
 
 
-	// ********** default JPA platform description **********
+	// ********** default JPA platform config **********
 
-	public JpaPlatformDescription getDefaultJpaPlatformDescription(IProjectFacetVersion jpaFacetVersion) {
+	public JpaPlatformConfig getDefaultJpaPlatformConfig(IProjectFacetVersion jpaFacetVersion) {
 		String key = this.buildDefaultJpaPlatformPreferenceKey(jpaFacetVersion);
-		String platformID = this.getPlugin().getPreference(key);
-		return (platformID == null) ? null : this.getJpaPlatformDescription(platformID);
+		String id = this.getPlugin().getPreference(key);
+		return (id == null) ? null : this.getJpaPlatformConfig(id);
 	}
 
-	public void setDefaultJpaPlatformDescription(IProjectFacetVersion jpaFacetVersion, JpaPlatformDescription description) {
+	public void setDefaultJpaPlatformConfig(IProjectFacetVersion jpaFacetVersion, JpaPlatformConfig config) {
 		String key = this.buildDefaultJpaPlatformPreferenceKey(jpaFacetVersion);
-		this.getPlugin().setPreference(key, description.getId());
+		this.getPlugin().setPreference(key, config.getId());
 	}
 
 
@@ -417,11 +405,11 @@ public class InternalJpaPlatformManager
 	}
 
 	private void logMissingAttribute(IConfigurationElement element, String attributeName) {
-		this.getPlugin().logError(XPointTools.buildMissingAttributeMessage(element, attributeName));
+		this.getPlugin().logError(ConfigurationElementTools.buildMissingAttributeMessage(element, attributeName));
 	}
 
 	private void logInvalidValue(IConfigurationElement element, String nodeName, String invalidValue) {
-		this.getPlugin().logError(XPointTools.buildInvalidValueMessage(element, nodeName, invalidValue));
+		this.getPlugin().logError(ConfigurationElementTools.buildInvalidValueMessage(element, nodeName, invalidValue));
 	}
 
 
@@ -453,6 +441,6 @@ public class InternalJpaPlatformManager
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this);
+		return ObjectTools.toString(this);
 	}
 }

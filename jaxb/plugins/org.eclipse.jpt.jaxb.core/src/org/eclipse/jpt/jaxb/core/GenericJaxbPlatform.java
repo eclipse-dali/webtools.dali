@@ -9,8 +9,10 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core;
 
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformGroupDescription;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformGroupConfig;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformManager;
 
 /**
  * Constants pertaining to the Generic JAXB platforms and their group.
@@ -26,16 +28,29 @@ import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformGroupDescription;
  */
 public class GenericJaxbPlatform {
 	
-	public static final JaxbPlatformGroupDescription GROUP 
-			= JptJaxbCorePlugin.getJaxbPlatformManager().getJaxbPlatformGroup("generic"); //$NON-NLS-1$
+	public static final JaxbPlatformGroupConfig GROUP = getJaxbPlatformGroupConfig("generic"); //$NON-NLS-1$
 	
-	public static final JaxbPlatformDescription VERSION_2_1 
-			= JptJaxbCorePlugin.getJaxbPlatformManager().getJaxbPlatform("generic_2_1"); //$NON-NLS-1$
+	public static final JaxbPlatformConfig VERSION_2_1 = getJaxbPlatformConfig("generic_2_1"); //$NON-NLS-1$
 	
-	public static final JaxbPlatformDescription VERSION_2_2 
-			= JptJaxbCorePlugin.getJaxbPlatformManager().getJaxbPlatform("generic_2_2"); //$NON-NLS-1$
+	public static final JaxbPlatformConfig VERSION_2_2 = getJaxbPlatformConfig("generic_2_2"); //$NON-NLS-1$
 	
 	
+	private static JaxbPlatformGroupConfig getJaxbPlatformGroupConfig(String platformGroupID) {
+		return getJaxbPlatformManager().getJaxbPlatformGroupConfig(platformGroupID);
+	}
+
+	private static JaxbPlatformConfig getJaxbPlatformConfig(String platformID) {
+		return getJaxbPlatformManager().getJaxbPlatformConfig(platformID);
+	}
+
+	private static JaxbPlatformManager getJaxbPlatformManager() {
+		return getJaxbWorkspace().getJaxbPlatformManager();
+	}
+
+	private static JaxbWorkspace getJaxbWorkspace() {
+		return (JaxbWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JaxbWorkspace.class);
+	}
+
 	/**
 	 * Not for instantiation
 	 */

@@ -9,12 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.tests;
 
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
+import junit.framework.TestCase;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleReference;
-import junit.framework.TestCase;
 
 /**
  * This test case will verify that a class's "bundle activator" class
@@ -57,7 +57,7 @@ public class BundleActivatorTest
 		}
 		BundleContext bundleContext = this.bundle.getBundleContext();
 		// a little hackery:
-		BundleActivator activator = (BundleActivator) ReflectionTools.getFieldValue(bundleContext, "activator");
+		BundleActivator activator = (BundleActivator) ObjectTools.get(bundleContext, "activator");
 		String activatorClassName = activator.getClass().getName();
 		try {
 			Class<?> activatorClass = Class.forName(activatorClassName);

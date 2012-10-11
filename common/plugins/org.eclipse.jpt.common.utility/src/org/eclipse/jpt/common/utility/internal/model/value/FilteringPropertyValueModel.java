@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.model.value;
 
-import org.eclipse.jpt.common.utility.Filter;
+import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 
 /**

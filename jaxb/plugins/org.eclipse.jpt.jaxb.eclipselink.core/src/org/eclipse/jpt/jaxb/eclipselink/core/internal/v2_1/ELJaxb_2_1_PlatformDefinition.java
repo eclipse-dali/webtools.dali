@@ -15,14 +15,14 @@ import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.JaxbResourceModelProvider;
 import org.eclipse.jpt.jaxb.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jaxb.core.internal.jaxb21.GenericJaxb_2_1_PlatformDefinition;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbPlatform;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.AbstractELJaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlAnyAttributeMappingDefinition;
@@ -61,7 +61,7 @@ public class ELJaxb_2_1_PlatformDefinition
 		return GenericJaxb_2_1_PlatformDefinition.instance();
 	}
 	
-	public JaxbPlatformDescription getDescription() {
+	public JaxbPlatformConfig getConfig() {
 		return ELJaxbPlatform.VERSION_2_1;
 	}
 	

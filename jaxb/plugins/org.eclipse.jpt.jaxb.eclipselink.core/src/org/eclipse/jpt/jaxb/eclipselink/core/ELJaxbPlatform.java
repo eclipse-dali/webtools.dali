@@ -9,32 +9,29 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jpt.jaxb.core.JaxbFacet;
-import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformGroupDescription;
+import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformGroupConfig;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformManager;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 
 public class ELJaxbPlatform {
 	
-	public static final JaxbPlatformGroupDescription GROUP 
-			= JptJaxbCorePlugin.getJaxbPlatformManager().getJaxbPlatformGroup("eclipselink"); //$NON-NLS-1$
+	public static final JaxbPlatformGroupConfig GROUP = getJaxbPlatformGroupConfig("eclipselink"); //$NON-NLS-1$
 	
-	public static final JaxbPlatformDescription VERSION_2_1
-			= JptJaxbCorePlugin.getJaxbPlatformManager().getJaxbPlatform("eclipselink_2_1"); //$NON-NLS-1$
+	public static final JaxbPlatformConfig VERSION_2_1 = getJaxbPlatformConfig("eclipselink_2_1"); //$NON-NLS-1$
 	
-	public static final JaxbPlatformDescription VERSION_2_2
-			= JptJaxbCorePlugin.getJaxbPlatformManager().getJaxbPlatform("eclipselink_2_2"); //$NON-NLS-1$
+	public static final JaxbPlatformConfig VERSION_2_2 = getJaxbPlatformConfig("eclipselink_2_2"); //$NON-NLS-1$
 	
-	public static final JaxbPlatformDescription VERSION_2_3
-			= JptJaxbCorePlugin.getJaxbPlatformManager().getJaxbPlatform("eclipselink_2_3"); //$NON-NLS-1$
+	public static final JaxbPlatformConfig VERSION_2_3 = getJaxbPlatformConfig("eclipselink_2_3"); //$NON-NLS-1$
 	
-	public static final JaxbPlatformDescription VERSION_2_4
-			= JptJaxbCorePlugin.getJaxbPlatformManager().getJaxbPlatform("eclipselink_2_4"); //$NON-NLS-1$
+	public static final JaxbPlatformConfig VERSION_2_4 = getJaxbPlatformConfig("eclipselink_2_4"); //$NON-NLS-1$
 	
 	
-	public static JaxbPlatformDescription getDefaultPlatform(IProjectFacetVersion jaxbVersion) {
+	public static JaxbPlatformConfig getDefaultPlatformConfig(IProjectFacetVersion jaxbVersion) {
 		if (jaxbVersion.equals(JaxbFacet.VERSION_2_1)) {
 			return VERSION_2_1;
 		}
@@ -42,6 +39,22 @@ public class ELJaxbPlatform {
 	}
 	
 	
+	private static JaxbPlatformGroupConfig getJaxbPlatformGroupConfig(String platformGroupID) {
+		return getJaxbPlatformManager().getJaxbPlatformGroupConfig(platformGroupID);
+	}
+
+	private static JaxbPlatformConfig getJaxbPlatformConfig(String platformID) {
+		return getJaxbPlatformManager().getJaxbPlatformConfig(platformID);
+	}
+
+	private static JaxbPlatformManager getJaxbPlatformManager() {
+		return getJaxbWorkspace().getJaxbPlatformManager();
+	}
+
+	private static JaxbWorkspace getJaxbWorkspace() {
+		return (JaxbWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JaxbWorkspace.class);
+	}
+
 	/**
 	 * Not for instantiation
 	 */

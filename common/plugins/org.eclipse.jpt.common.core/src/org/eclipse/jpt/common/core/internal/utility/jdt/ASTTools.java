@@ -33,8 +33,8 @@ import org.eclipse.jpt.common.utility.JavaType;
 import org.eclipse.jpt.common.utility.MethodSignature;
 import org.eclipse.jpt.common.utility.internal.SimpleJavaType;
 import org.eclipse.jpt.common.utility.internal.SimpleMethodSignature;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 
 /**
  * Convenience methods for dealing with JDT ASTs.

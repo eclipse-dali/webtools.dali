@@ -12,11 +12,11 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.Query;
@@ -113,7 +113,7 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 
 	protected String getUnescapedQuery() {
 		String queryString = this.xmlQuery.getQuery();
-		if (StringTools.stringIsNotEmpty(queryString)) {
+		if (StringTools.isNotBlank(queryString)) {
 			queryString = ExpressionTools.unescape(queryString, new int[1]);
 		}
 		return queryString;
@@ -226,7 +226,7 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 	}
 
 	protected void validateName(List<IMessage> messages) {
-		if (StringTools.stringIsEmpty(this.name)) {
+		if (StringTools.isBlank(this.name)) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
@@ -240,7 +240,7 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 	}
 
 	protected void validateQuery(JpaJpqlQueryHelper queryHelper, List<IMessage> messages, IReporter reporter) {
-		if (StringTools.stringIsEmpty(this.query)){
+		if (StringTools.isBlank(this.query)){
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
@@ -277,15 +277,15 @@ public abstract class AbstractOrmQuery<X extends XmlQuery>
 	}
 	
 	protected boolean isEquivalentTo(Query other) {
-		return Tools.valuesAreEqual(this.name, other.getName()) &&
-				Tools.valuesAreEqual(this.query, other.getQuery()) &&
+		return ObjectTools.equals(this.name, other.getName()) &&
+				ObjectTools.equals(this.query, other.getQuery()) &&
 				this.hintsAreEquivalentTo(other);
 	}
 
 	protected boolean hintsAreEquivalentTo(Query other) {
 		// get fixed lists of the hints
-		ArrayList<OrmQueryHint> hints1 = CollectionTools.list(this.getHints());
-		ArrayList<? extends QueryHint> hints2 = CollectionTools.list(other.getHints());
+		ArrayList<OrmQueryHint> hints1 = ListTools.list(this.getHints());
+		ArrayList<? extends QueryHint> hints2 = ListTools.list(other.getHints());
 		if (hints1.size() != hints2.size()) {
 			return false;
 		}

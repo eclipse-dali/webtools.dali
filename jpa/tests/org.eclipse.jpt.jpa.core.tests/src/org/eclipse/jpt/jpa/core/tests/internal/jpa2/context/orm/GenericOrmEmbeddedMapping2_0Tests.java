@@ -13,8 +13,8 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
@@ -1438,7 +1438,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		AssociationOverrideContainer overrideContainer = embeddedMapping.getAssociationOverrideContainer();
 
 		assertEquals(2, overrideContainer.getVirtualOverridesSize());
-		VirtualAssociationOverride virtualAssociationOverride = CollectionTools.get(overrideContainer.getVirtualOverrides(), 1);
+		VirtualAssociationOverride virtualAssociationOverride = IterableTools.get(overrideContainer.getVirtualOverrides(), 1);
 		VirtualJoinTableRelationshipStrategy joiningStrategy = ((VirtualOverrideRelationship2_0) virtualAssociationOverride.getRelationship()).getJoinTableStrategy();
 		ReadOnlyJoinTable joinTable = joiningStrategy.getJoinTable();
 		assertEquals("addresses", virtualAssociationOverride.getName());
@@ -1490,7 +1490,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		inverseJoinColumn.setSpecifiedNullable(Boolean.FALSE);
 		
 		assertEquals(2, overrideContainer.getVirtualOverridesSize());
-		virtualAssociationOverride = CollectionTools.get(overrideContainer.getVirtualOverrides(), 1);
+		virtualAssociationOverride = IterableTools.get(overrideContainer.getVirtualOverrides(), 1);
 		joiningStrategy = ((VirtualOverrideRelationship2_0) virtualAssociationOverride.getRelationship()).getJoinTableStrategy();
 		joinTable = joiningStrategy.getJoinTable();
 		assertEquals("addresses", virtualAssociationOverride.getName());
@@ -1535,7 +1535,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 
 		
 		assertEquals(2, overrideContainer.getVirtualOverridesSize());
-		virtualAssociationOverride = CollectionTools.get(overrideContainer.getVirtualOverrides(), 1);
+		virtualAssociationOverride = IterableTools.get(overrideContainer.getVirtualOverrides(), 1);
 		joiningStrategy = ((VirtualOverrideRelationship2_0) virtualAssociationOverride.getRelationship()).getJoinTableStrategy();
 		joinTable = joiningStrategy.getJoinTable();
 		assertEquals("addresses", virtualAssociationOverride.getName());

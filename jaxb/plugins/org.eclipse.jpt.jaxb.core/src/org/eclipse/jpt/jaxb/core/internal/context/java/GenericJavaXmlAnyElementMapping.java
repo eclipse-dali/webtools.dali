@@ -11,11 +11,11 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
@@ -309,18 +309,18 @@ public class GenericJavaXmlAnyElementMapping
 	@Override
 	public Iterable<String> getCompletionProposals(int pos) {
 		Iterable<String> result = super.getCompletionProposals(pos);
-		if (! CollectionTools.isEmpty(result)) {
+		if (! IterableTools.isEmpty(result)) {
 			return result;
 		}
 		
 		result = this.xmlElementRefs.getCompletionProposals(pos);
-		if (! CollectionTools.isEmpty(result)) {
+		if (! IterableTools.isEmpty(result)) {
 			return result;
 		}
 		
 		if (this.xmlElementWrapper != null) {
 			result = this.xmlElementWrapper.getCompletionProposals(pos);
-			if (! CollectionTools.isEmpty(result)) {
+			if (! IterableTools.isEmpty(result)) {
 				return result;
 			}
 		}
@@ -438,7 +438,7 @@ public class GenericJavaXmlAnyElementMapping
 					removeXmlElementRefsAnnotation();
 				}
 				else if (xmlElementRefsAnnotation.getXmlElementRefsSize() == 1) {
-					XmlElementRefAnnotation xmlElementRefAnnotation = CollectionTools.get(xmlElementRefsAnnotation.getXmlElementRefs(), 0);
+					XmlElementRefAnnotation xmlElementRefAnnotation = IterableTools.get(xmlElementRefsAnnotation.getXmlElementRefs(), 0);
 					XmlElementRefAnnotation xmlElementRefAnnotationCopy = addXmlElementRefAnnotation();
 					xmlElementRefAnnotationCopy.setName(xmlElementRefAnnotation.getName());
 					xmlElementRefAnnotationCopy.setNamespace(xmlElementRefAnnotation.getNamespace());

@@ -21,7 +21,7 @@ import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.DefaultAnnotationEditFormatter;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.EntityGeneratorDatabaseAnnotationNameBuilder;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.JpaFile;
@@ -35,7 +35,7 @@ import org.eclipse.jpt.jpa.core.ResourceDefinition;
 import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
 import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar;
@@ -80,8 +80,8 @@ public class GenericJpaPlatform
 		return this.id;
 	}
 
-	public JpaPlatformDescription getDescription() {
-		return this.getJpaPlatformManager().getJpaPlatformDescription(this.getId());
+	public JpaPlatformConfig getConfig() {
+		return this.getJpaPlatformManager().getJpaPlatformConfig(this.getId());
 	}
 
 	private JpaPlatformManager getJpaPlatformManager() {
@@ -98,7 +98,7 @@ public class GenericJpaPlatform
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.id);
+		return ObjectTools.toString(this, this.id);
 	}
 
 

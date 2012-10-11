@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaSequenceGenerator;
@@ -49,7 +49,7 @@ public class GenericJavaSequenceGenerator
 	@Override
 	protected boolean isEquivalentTo(SequenceGenerator generator) {
 		return super.isEquivalentTo(generator) &&
-				Tools.valuesAreEqual(this.getDbSchema(), generator.getDbSchema()) &&
-				Tools.valuesAreEqual(this.getDbCatalog(), generator.getDbCatalog());
+				ObjectTools.equals(this.getDbSchema(), generator.getDbSchema()) &&
+				ObjectTools.equals(this.getDbCatalog(), generator.getDbCatalog());
 	}
 }

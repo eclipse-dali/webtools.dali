@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.common.core.utility.jdt;
 
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 
 /**
  * Represents a java type declaration, field type, method return type, etc.

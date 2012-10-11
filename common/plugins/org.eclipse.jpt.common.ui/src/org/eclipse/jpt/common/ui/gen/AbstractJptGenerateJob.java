@@ -27,7 +27,7 @@ import org.eclipse.jpt.common.core.gen.JptGenerator;
 import org.eclipse.jpt.common.core.gen.LaunchConfigListener;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
-import org.eclipse.jpt.common.utility.internal.SynchronizedBoolean;
+import org.eclipse.jpt.common.utility.internal.reference.SynchronizedBoolean;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;

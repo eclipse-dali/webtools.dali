@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
@@ -234,18 +234,18 @@ public class GenericJavaXmlElementRefMapping
 	@Override
 	public Iterable<String> getCompletionProposals(int pos) {
 		Iterable<String> result = super.getCompletionProposals(pos);
-		if (! CollectionTools.isEmpty(result)) {
+		if (! IterableTools.isEmpty(result)) {
 			return result;
 		}
 		
 		result = this.xmlElementRef.getCompletionProposals(pos);
-		if (! CollectionTools.isEmpty(result)) {
+		if (! IterableTools.isEmpty(result)) {
 			return result;
 		}
 		
 		if (this.xmlElementWrapper != null) {
 			result = this.xmlElementWrapper.getCompletionProposals(pos);
-			if (! CollectionTools.isEmpty(result)) {
+			if (! IterableTools.isEmpty(result)) {
 				return result;
 			}
 		}

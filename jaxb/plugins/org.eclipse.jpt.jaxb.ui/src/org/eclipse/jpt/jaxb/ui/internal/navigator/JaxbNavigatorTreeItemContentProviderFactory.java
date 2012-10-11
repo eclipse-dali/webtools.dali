@@ -14,8 +14,8 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
-import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 import org.eclipse.jpt.jaxb.ui.platform.JaxbPlatformUi;
 
 public class JaxbNavigatorTreeItemContentProviderFactory
@@ -29,7 +29,7 @@ public class JaxbNavigatorTreeItemContentProviderFactory
 	 * 
 	 * Key: platform id,  Value: delegate content provider factory
 	 */
-	private HashMap<JaxbPlatformDescription, ItemTreeContentProviderFactory> delegates = new HashMap<JaxbPlatformDescription, ItemTreeContentProviderFactory>();
+	private HashMap<JaxbPlatformConfig, ItemTreeContentProviderFactory> delegates = new HashMap<JaxbPlatformConfig, ItemTreeContentProviderFactory>();
 	
 	
 	public JaxbNavigatorTreeItemContentProviderFactory() {
@@ -56,14 +56,15 @@ public class JaxbNavigatorTreeItemContentProviderFactory
 			return null;
 		}
 		
-		JaxbPlatformDescription platformDesc = contextNode.getJaxbProject().getPlatform().getDescription();
-		if (delegates.containsKey(platformDesc)) {
-			return delegates.get(platformDesc);
+		JaxbPlatform jaxbPlatform = contextNode.getJaxbProject().getPlatform();
+		JaxbPlatformConfig jaxbPlatformConfig = jaxbPlatform.getConfig();
+		if (delegates.containsKey(jaxbPlatformConfig)) {
+			return delegates.get(jaxbPlatformConfig);
 		}
-		JaxbPlatformUi platformUi = JptJaxbUiPlugin.getJaxbPlatformUiManager().getJaxbPlatformUi(platformDesc);
+		JaxbPlatformUi platformUi = (JaxbPlatformUi) jaxbPlatform.getAdapter(JaxbPlatformUi.class);
 		ItemTreeContentProviderFactory delegate = 
 				(platformUi == null) ? null : platformUi.getNavigatorUi().getTreeItemContentProviderFactory();
-		delegates.put(platformDesc, delegate);
+		delegates.put(jaxbPlatformConfig, delegate);
 		return delegate;
 	}
 }

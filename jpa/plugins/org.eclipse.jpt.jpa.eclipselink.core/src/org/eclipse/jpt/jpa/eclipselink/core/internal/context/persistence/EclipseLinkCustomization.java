@@ -15,13 +15,13 @@ import java.util.Map;
 import java.util.Set;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CustomizationEntity;
@@ -98,7 +98,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	}
 
 	private List<String> buildSessionCustomizers() {
-		return CollectionTools.list(this.convertToValues(this.getPropertiesSetWithPrefix(ECLIPSELINK_SESSION_CUSTOMIZER)));
+		return ListTools.list(this.convertToValues(this.getPropertiesSetWithPrefix(ECLIPSELINK_SESSION_CUSTOMIZER)));
 	}
 
 	private Iterable<String> convertToValues(Iterable<PersistenceUnit.Property> properties) {
@@ -607,7 +607,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	
 	private void descriptorCustomizerChanged(String propertyName, String stringValue) {
 		String entityName = this.extractEntityNameOf(propertyName);
-		if( ! StringTools.stringIsEmpty(entityName)) {
+		if( ! StringTools.isBlank(entityName)) {
 			CustomizationEntity old = this.setEntityDescriptorCustomizerOf(entityName, stringValue);
 			this.firePropertyChanged(DESCRIPTOR_CUSTOMIZER_PROPERTY, old, this.getEntityNamed(entityName));
 		}
@@ -621,7 +621,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	 * Returns the old Entity
 	 */
 	private CustomizationEntity setEntityDescriptorCustomizerOf(String entityName, String descriptorCustomizerClassName) {
-		 if(( ! this.entityExists(entityName)) && StringTools.stringIsEmpty(descriptorCustomizerClassName)) {
+		 if(( ! this.entityExists(entityName)) && StringTools.isBlank(descriptorCustomizerClassName)) {
 				//this is a property that is currently being added, we don't need to deal with it until the value is set
 				 return null;
 			 }
@@ -649,7 +649,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	 */
 	private CustomizationEntity setEntityDescriptorCustomizerOf(PersistenceUnit.Property descriptorCustomizerProperty) {
 		String entityName = this.extractEntityNameOf(descriptorCustomizerProperty);
-		if(StringTools.stringIsEmpty(entityName)) {
+		if(StringTools.isBlank(entityName)) {
 			return null;
 		}
 		return this.setEntityDescriptorCustomizerOf(entityName, descriptorCustomizerProperty.getValue());

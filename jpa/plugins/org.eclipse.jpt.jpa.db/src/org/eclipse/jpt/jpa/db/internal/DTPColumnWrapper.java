@@ -17,7 +17,7 @@ import org.eclipse.datatools.modelbase.sql.datatypes.NumericalDataType;
 import org.eclipse.datatools.modelbase.sql.datatypes.PredefinedDataType;
 import org.eclipse.datatools.modelbase.sql.datatypes.PrimitiveType;
 import org.eclipse.jpt.common.utility.JavaType;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
+import org.eclipse.jpt.common.utility.internal.TypeDeclarationTools;
 import org.eclipse.jpt.common.utility.internal.SimpleJavaType;
 import org.eclipse.jpt.jpa.db.Column;
 
@@ -123,7 +123,7 @@ final class DTPColumnWrapper
 	private JavaType getJavaType(PredefinedDataType dataType) {
 		// this is just a bit hacky: moving from a type declaration to a class name to a type declaration...
 		String dtpJavaClassName = this.resolveDefinition(dataType).getJavaClassName();
-		return new SimpleJavaType(ReflectionTools.getClassNameForTypeDeclaration(dtpJavaClassName));
+		return new SimpleJavaType(TypeDeclarationTools.className(dtpJavaClassName));
 	}
 
 	private PredefinedDataTypeDefinition resolveDefinition(PredefinedDataType dataType) {

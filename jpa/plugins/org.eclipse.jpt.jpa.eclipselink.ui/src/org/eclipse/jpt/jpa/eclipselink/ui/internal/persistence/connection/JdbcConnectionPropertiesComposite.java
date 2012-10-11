@@ -25,8 +25,8 @@ import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -334,7 +334,7 @@ public class JdbcConnectionPropertiesComposite<T extends Connection>
 		                                   IProgressMonitor monitor) throws CoreException {
 
 			Iterable<String> profileNames = this.getConnectionProfileNames();
-			SubMonitor sm = SubMonitor.convert(monitor, CollectionTools.size(profileNames));
+			SubMonitor sm = SubMonitor.convert(monitor, IterableTools.size(profileNames));
 
 			// Add the connection names to the dialog
 			for (String name : profileNames) {
@@ -396,7 +396,7 @@ public class JdbcConnectionPropertiesComposite<T extends Connection>
 
 				// Make sure that if the pattern is empty, we specify * in order
 				// to show all the mapping types
-				if (StringTools.stringIsEmpty(getPattern())) {
+				if (StringTools.isBlank(getPattern())) {
 					patternMatcher.setPattern("*");
 				}
 			}

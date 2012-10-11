@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -17,16 +16,15 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.NotNullFilter;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
@@ -176,7 +174,7 @@ public abstract class AbstractJavaOverrideContainer<
 	 * remaining specified overrides.
 	 */
 	protected boolean overrideWillBeVirtual(String overrideName, S specifiedOverrideToBeRemoved) {
-		return CollectionTools.contains(this.getAllOverridableNames(), overrideName) &&
+		return IterableTools.contains(this.getAllOverridableNames(), overrideName) &&
 				(this.getSpecifiedOverrideNamed(overrideName, specifiedOverrideToBeRemoved) == null);
 	}
 
@@ -258,7 +256,7 @@ public abstract class AbstractJavaOverrideContainer<
 		// if we are adding to the end of the specified list,
 		// put the annotation after all the existing annotations
 		if (index == this.specifiedOverrides.size()) {
-			return CollectionTools.size(this.getOverrideAnnotations());
+			return IterableTools.size(this.getOverrideAnnotations());
 		}
 
 		// if we are adding to the front of the specified list,
@@ -277,7 +275,7 @@ public abstract class AbstractJavaOverrideContainer<
 	 * pre-condition: override exists at the specified index
 	 */
 	protected int translateToAnnotationIndex(int index) {
-		return CollectionTools.indexOf(this.getOverrideAnnotations(), this.specifiedOverrides.get(index).getOverrideAnnotation());
+		return IterableTools.indexOf(this.getOverrideAnnotations(), this.specifiedOverrides.get(index).getOverrideAnnotation());
 	}
 
 	protected abstract String getOverrideAnnotationName();
@@ -413,11 +411,7 @@ public abstract class AbstractJavaOverrideContainer<
 	 * specified overrides.
 	 */
 	protected Iterable<String> getVirtualOverrideNames() {
-		return CollectionTools.iterable(this.virtualOverrideNames());
-	}
-
-	protected Iterator<String> virtualOverrideNames() {
-		return new FilteringIterator<String>(this.getAllOverridableNames()) {
+		return new FilteringIterable<String>(this.getAllOverridableNames()) {
 			@Override
 			protected boolean accept(String name) {
 				return AbstractJavaOverrideContainer.this.overrideIsVirtual(name);

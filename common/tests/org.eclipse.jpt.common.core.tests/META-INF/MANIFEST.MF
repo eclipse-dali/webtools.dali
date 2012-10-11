@@ -20,4 +20,5 @@ Export-Package: org.eclipse.jpt.common.core.tests,
  org.eclipse.jpt.common.core.tests.internal;x-internal:=true,
  org.eclipse.jpt.common.core.tests.internal.projects;x-internal:=true,
  org.eclipse.jpt.common.core.tests.internal.resource.java;x-internal:=true,
+ org.eclipse.jpt.common.core.tests.internal.resource.java.binmodel;x-internal:=true,
  org.eclipse.jpt.common.core.tests.internal.utility.jdt;x-internal:=true

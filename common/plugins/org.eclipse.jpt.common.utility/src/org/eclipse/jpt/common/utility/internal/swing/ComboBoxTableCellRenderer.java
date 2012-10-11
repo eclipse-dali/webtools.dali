@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,13 +26,14 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * Make the cell look like a combo-box.
  */
-public class ComboBoxTableCellRenderer implements TableCellEditorAdapter.Renderer {
-
+public class ComboBoxTableCellRenderer
+	implements TableCellEditorAdapter.Renderer
+{
 	/* caching the combo box because we are caching the comboBoxModel.
 	 * Everytime we rebuilt the comboBox we would set the model on it and not
 	 * remove the model from the old combo box.  This meant that new listeners
@@ -123,15 +124,16 @@ public class ComboBoxTableCellRenderer implements TableCellEditorAdapter.Rendere
 
 		final JComboBox result = new JComboBox() {
 			private boolean fakeFocus;
+			private static final long serialVersionUID = 1L;
 			@Override
 			public boolean hasFocus() {
-				return fakeFocus || super.hasFocus();
+				return this.fakeFocus || super.hasFocus();
 			}
 			@Override
 			public void paint(Graphics g) {
-				fakeFocus = ComboBoxTableCellRenderer.this.fakeFocusFlag;
+				this.fakeFocus = ComboBoxTableCellRenderer.this.fakeFocusFlag;
 				super.paint(g);
-				fakeFocus = false;
+				this.fakeFocus = false;
 			}
 			//wrap the renderer to deal with the prototypeDisplayValue
 		    @Override
@@ -176,7 +178,7 @@ public class ComboBoxTableCellRenderer implements TableCellEditorAdapter.Rendere
 	
     
     private JList getListBox(JComboBox result) {
-        return (JList) ReflectionTools.getFieldValue(result.getUI(), "listBox"); //$NON-NLS-1$
+        return (JList) ObjectTools.get(result.getUI(), "listBox"); //$NON-NLS-1$
     }
 
 	
@@ -324,5 +326,4 @@ public class ComboBoxTableCellRenderer implements TableCellEditorAdapter.Rendere
 	public int preferredHeight() {
 		return height;
 	}
-
 }

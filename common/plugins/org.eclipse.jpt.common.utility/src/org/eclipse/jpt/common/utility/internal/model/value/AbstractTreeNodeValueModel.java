@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,8 +11,9 @@ package org.eclipse.jpt.common.utility.internal.model.value;
 
 import java.util.Iterator;
 import java.util.List;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ChainIterator;
+
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ChainIterator;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
@@ -114,7 +115,7 @@ public abstract class AbstractTreeNodeValueModel<T>
 	
 	@SuppressWarnings("unchecked")
 	public TreeNodeValueModel<T>[] path() {
-		List<TreeNodeValueModel<T>> path = CollectionTools.reverseList(this.backPath());
+		List<TreeNodeValueModel<T>> path = ListTools.reverse(ListTools.list(this.backPath()));
 		return path.toArray(new TreeNodeValueModel[path.size()]);
 	}
 

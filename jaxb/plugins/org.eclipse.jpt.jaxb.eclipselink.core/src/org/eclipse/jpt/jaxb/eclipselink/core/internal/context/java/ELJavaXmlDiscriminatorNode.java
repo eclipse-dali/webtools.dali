@@ -12,7 +12,7 @@ package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.JaxbNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.internal.context.java.AbstractJavaContextNode;
@@ -114,7 +114,7 @@ public class ELJavaXmlDiscriminatorNode
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		
-		if (StringTools.stringIsEmpty(this.value)) {
+		if (StringTools.isBlank(this.value)) {
 			messages.add(
 					ELJaxbValidationMessageBuilder.buildMessage(
 								IMessage.HIGH_SEVERITY,

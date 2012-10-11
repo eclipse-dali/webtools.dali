@@ -13,7 +13,8 @@ import java.util.Arrays;
 import java.util.List;
 import javax.swing.SpinnerListModel;
 import javax.swing.event.ChangeListener;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.listener.awt.AWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -41,7 +42,6 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 public class ListSpinnerModelAdapter
 	extends SpinnerListModel
 {
-
 	/**
 	 * The default spinner value; used when the underlying model value is null.
 	 * The default is the first item on the list.
@@ -53,6 +53,8 @@ public class ListSpinnerModelAdapter
 
 	/** A listener that allows us to synchronize with changes made to the underlying value. */
 	private final PropertyChangeListener valueChangeListener;
+
+	private static final long serialVersionUID = 1L;
 
 
 	// ********** constructors **********
@@ -134,7 +136,7 @@ public class ListSpinnerModelAdapter
 	 * have any listeners.
 	 * This is necessary because some crappy jdk code gets the value
 	 * from the model *before* listening to the model.  ~bjv
-	 * @see javax.swing.JSpinner.DefaultEditor(javax.swing.JSpinner)
+	 * @see javax.swing.JSpinner.DefaultEditor#DefaultEditor(javax.swing.JSpinner)
 	 */
     @Override
 	public Object getValue() {
@@ -212,7 +214,7 @@ public class ListSpinnerModelAdapter
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.valueHolder);
+		return ObjectTools.toString(this, this.valueHolder);
 	}
 
 }

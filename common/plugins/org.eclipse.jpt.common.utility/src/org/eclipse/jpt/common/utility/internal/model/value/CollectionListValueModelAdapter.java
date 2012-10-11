@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
 
-import org.eclipse.jpt.common.utility.internal.iterators.ReadOnlyListIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.ReadOnlyListIterator;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionClearEvent;

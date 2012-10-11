@@ -16,10 +16,11 @@ package org.eclipse.jpt.jpa.core.jpql.spi;
 import java.lang.annotation.Annotation;
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.StringBuilderTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
@@ -93,7 +94,7 @@ public abstract class JpaMapping implements IMapping {
 	protected ITypeDeclaration[] buildGenericTypeDeclarations() {
 		JavaPersistentAttribute javaPersistentAttribute = mapping.getPersistentAttribute().getJavaPersistentAttribute();
 		JavaResourceAttribute resource = javaPersistentAttribute == null ? null : javaPersistentAttribute.getResourceAttribute();
-		List<ITypeDeclaration> declarations = CollectionTools.list(buildGenericTypeDeclarations(resource));
+		List<ITypeDeclaration> declarations = ListTools.list(buildGenericTypeDeclarations(resource));
 		return declarations.toArray(new ITypeDeclaration[declarations.size()]);
 	}
 
@@ -126,14 +127,14 @@ public abstract class JpaMapping implements IMapping {
 
 			if (mappingType == ELEMENT_COLLECTION) {
 				String targetClass = ((ElementCollectionMapping2_0) mapping).getTargetClass();
-				if (StringTools.stringIsNotEmpty(targetClass)) {
+				if (StringTools.isNotBlank(targetClass)) {
 					return getTypeRepository().getType(targetClass);
 				}
 			}
 			else {
 				String entityName = ((RelationshipMapping) mapping).getTargetEntity();
 
-				if (StringTools.stringIsNotEmpty(entityName)) {
+				if (StringTools.isNotBlank(entityName)) {
 					IEntity entity = getParent().getProvider().getEntityNamed(entityName);
 					if (entity != null) {
 						return entity.getType();
@@ -361,8 +362,8 @@ public abstract class JpaMapping implements IMapping {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		StringTools.appendSimpleToString(sb, this);
-		sb.append(", name=");
+		StringBuilderTools.appendHashCodeToString(sb, this);
+		sb.append(" name=");
 		sb.append(getName());
 		sb.append(", mappingType=");
 		sb.append(getMappingType());

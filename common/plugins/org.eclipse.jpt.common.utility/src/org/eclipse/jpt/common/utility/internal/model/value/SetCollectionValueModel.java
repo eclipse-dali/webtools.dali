@@ -13,10 +13,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.HashBag;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ReadOnlyIterator;
+import org.eclipse.jpt.common.utility.internal.StringBuilderTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.HashBag;
+import org.eclipse.jpt.common.utility.internal.iterator.ReadOnlyIterator;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionClearEvent;
@@ -73,7 +73,7 @@ public class SetCollectionValueModel<E>
 		super.engageModel();
 		// sync our cache *after* we start listening to the nested collection,
 		// since its value might change when a listener is added
-		CollectionTools.addAll(this.bag, this.collectionHolder);
+		CollectionTools.addAll(this.bag, this.collectionModel);
 	}
 
 	@Override
@@ -122,12 +122,12 @@ public class SetCollectionValueModel<E>
 	@Override
 	protected void collectionChanged(CollectionChangeEvent event) {
 		this.bag.clear();
-		CollectionTools.addAll(this.bag, this.collectionHolder);
+		CollectionTools.addAll(this.bag, this.collectionModel);
 		this.fireCollectionChanged(VALUES, new HashSet<E>(this.bag));
 	}
 
 	@Override
 	public void toString(StringBuilder sb) {
-		StringTools.append(sb, this);
+		StringBuilderTools.append(sb, this);
 	}
 }

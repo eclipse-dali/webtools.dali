@@ -18,7 +18,7 @@ import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * 
@@ -76,7 +76,7 @@ public abstract class AbstractDeclarationAnnotationAdapter implements Declaratio
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.annotationName);
+		return ObjectTools.toString(this, this.annotationName);
 	}
 
 	/**

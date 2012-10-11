@@ -40,6 +40,8 @@ public class JptJaxbCoreMessages {
 	
 	public static String XML_ELEMENT_DECL__SCOPE;
 	
+	public static String INVALID_FACET;
+	
 	
 	private static final String BUNDLE_NAME = "jpt_jaxb_core"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptJaxbCoreMessages.class;

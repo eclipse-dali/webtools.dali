@@ -16,7 +16,7 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 
 /**
  * Maintain a thread-safe list of listeners that does not allow adding

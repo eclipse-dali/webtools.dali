@@ -14,8 +14,8 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.VersionAnnotation;
 
@@ -42,7 +42,7 @@ public class VersionTests extends JpaJavaResourceModelTestCase {
 	public void testVersion() throws Exception {
 		ICompilationUnit cu = this.createTestVersion();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		JavaResourceNode mappingAnnotation = resourceField.getAnnotation(VersionAnnotation.ANNOTATION_NAME);
 		assertTrue(mappingAnnotation instanceof VersionAnnotation);

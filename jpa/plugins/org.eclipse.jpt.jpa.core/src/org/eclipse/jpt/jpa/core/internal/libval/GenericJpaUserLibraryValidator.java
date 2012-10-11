@@ -9,38 +9,26 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.libval;
 
-import java.util.HashSet;
-import java.util.Set;
-import org.eclipse.core.runtime.IPath;
+import java.util.ArrayList;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jpt.common.core.internal.libval.LibValUtil;
+import org.eclipse.jpt.common.core.internal.libval.LibraryValidatorTools;
 import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.common.core.libval.LibraryValidator;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.core.internal.libprov.JpaUserLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
+import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollection2_0Annotation;
+import org.eclipse.jpt.jpa.core.resource.java.EntityAnnotation;
 
 public class GenericJpaUserLibraryValidator
-	implements LibraryValidator {
-	
+	implements LibraryValidator
+{
 	public IStatus validate(JptLibraryProviderInstallOperationConfig config) {
-		JpaUserLibraryProviderInstallOperationConfig jpaConfig 
-				= (JpaUserLibraryProviderInstallOperationConfig) config;
-		Set<String> classNames = new HashSet<String>();
-		classNames.add("javax.persistence.Entity"); //$NON-NLS-1$
+		JpaUserLibraryProviderInstallOperationConfig jpaConfig = (JpaUserLibraryProviderInstallOperationConfig) config;
+		ArrayList<String> classNames = new ArrayList<String>(2);
+		classNames.add(EntityAnnotation.ANNOTATION_NAME);
 		if (config.getProjectFacetVersion().compareTo(JpaProject2_0.FACET_VERSION) >= 0) {
-			classNames.add("javax.persistence.ElementCollection"); //$NON-NLS-1$
+			classNames.add(ElementCollection2_0Annotation.ANNOTATION_NAME);
 		}
-		
-		Iterable<IPath> libraryPaths = 
-			new TransformationIterable<IClasspathEntry, IPath>(jpaConfig.resolve()) {
-				@Override
-				protected IPath transform(IClasspathEntry o) {
-					return o.getPath();
-				}
-			};
-		
-		return LibValUtil.validate(libraryPaths, classNames);
+		return LibraryValidatorTools.validateClasspathEntries(jpaConfig.resolve(), classNames);
 	}
 }

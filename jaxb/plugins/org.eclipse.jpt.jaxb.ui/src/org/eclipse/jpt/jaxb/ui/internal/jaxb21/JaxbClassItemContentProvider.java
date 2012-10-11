@@ -37,7 +37,7 @@ public class JaxbClassItemContentProvider
 	@Override
 	protected CollectionValueModel<JaxbPersistentAttribute> buildChildrenModel() {
 		PropertyValueModel<JaxbClassMapping> mappingModel = buildMappingModel();
-		return new CompositeCollectionValueModel<CollectionValueModel<JaxbPersistentAttribute>, JaxbPersistentAttribute>(
+		return CompositeCollectionValueModel.forModels(
 				buildAttributesModel(mappingModel),
 				buildIncludedAttributesModel(mappingModel));
 	}

@@ -10,18 +10,19 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.context.java;
 
 import java.util.Iterator;
+
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbPlatform;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java.ELJavaXmlAttributeMapping;
@@ -39,7 +40,7 @@ public class ELJavaXmlAttributeMappingTests
 	
 	
 	@Override
-	protected JaxbPlatformDescription getPlatform() {
+	protected JaxbPlatformConfig getPlatformConfig() {
 		return ELJaxbPlatform.VERSION_2_2;
 	}
 	
@@ -85,36 +86,36 @@ public class ELJavaXmlAttributeMappingTests
 	public void testModifyXmlPath() throws Exception {
 		createTypeWithXmlAttribute();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
-		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(classMapping.getAttributes(), 0);
+		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
 		ELJavaXmlAttributeMapping mapping = (ELJavaXmlAttributeMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
 		
-		assertEquals(0, CollectionTools.size(resourceAttribute.getAnnotations(ELJaxb.XML_PATH)));
+		assertEquals(0, IterableTools.size(resourceAttribute.getAnnotations(ELJaxb.XML_PATH)));
 		assertNull(mapping.getXmlPath());
 		
 		mapping.addXmlPath();
 		
-		assertEquals(1, CollectionTools.size(resourceAttribute.getAnnotations(ELJaxb.XML_PATH)));
+		assertEquals(1, IterableTools.size(resourceAttribute.getAnnotations(ELJaxb.XML_PATH)));
 		assertNotNull(mapping.getXmlPath());
 		
 		mapping.removeXmlPath();
 		
-		assertEquals(0, CollectionTools.size(resourceAttribute.getAnnotations(ELJaxb.XML_PATH)));
+		assertEquals(0, IterableTools.size(resourceAttribute.getAnnotations(ELJaxb.XML_PATH)));
 		assertNull(mapping.getXmlPath());
 	}
 	
 	public void testUpdateXmlPath() throws Exception {
 		createTypeWithXmlAttribute();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
-		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(classMapping.getAttributes(), 0);
+		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
 		ELJavaXmlAttributeMapping mapping = (ELJavaXmlAttributeMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
 		
-		assertEquals(0, CollectionTools.size(resourceAttribute.getAnnotations(ELJaxb.XML_PATH)));
+		assertEquals(0, IterableTools.size(resourceAttribute.getAnnotations(ELJaxb.XML_PATH)));
 		assertNull(mapping.getXmlPath());
 		
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceAttribute);
@@ -125,7 +126,7 @@ public class ELJavaXmlAttributeMappingTests
 			}
 		});
 		
-		assertEquals(1, CollectionTools.size(resourceAttribute.getAnnotations(ELJaxb.XML_PATH)));
+		assertEquals(1, IterableTools.size(resourceAttribute.getAnnotations(ELJaxb.XML_PATH)));
 		assertNotNull(mapping.getXmlPath());
 		
 		annotatedElement.edit(new Member.Editor() {
@@ -134,16 +135,16 @@ public class ELJavaXmlAttributeMappingTests
 			}
 		});
 		
-		assertEquals(0, CollectionTools.size(resourceAttribute.getAnnotations(ELJaxb.XML_PATH)));
+		assertEquals(0, IterableTools.size(resourceAttribute.getAnnotations(ELJaxb.XML_PATH)));
 		assertNull(mapping.getXmlPath());
 	}
 	
 	public void testDefault() throws Exception {
 		createTypeWithXmlPath();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
-		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(classMapping.getAttributes(), 0);
+		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
 		JavaResourceAttribute resourceAttribute = persistentAttribute.getJavaResourceAttribute();
 		XmlPathAnnotation xmlPathAnnotation = (XmlPathAnnotation) resourceAttribute.getAnnotation(0, ELJaxb.XML_PATH);
 		
@@ -185,9 +186,9 @@ public class ELJavaXmlAttributeMappingTests
 	public void testModifyXmlKey() throws Exception {
 		createTypeWithXmlAttribute();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
-		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(classMapping.getAttributes(), 0);
+		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
 		ELJavaXmlAttributeMapping mapping = (ELJavaXmlAttributeMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
 		
@@ -208,9 +209,9 @@ public class ELJavaXmlAttributeMappingTests
 	public void testUpdateXmlKey() throws Exception {
 		createTypeWithXmlAttribute();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
-		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(classMapping.getAttributes(), 0);
+		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
 		ELJavaXmlAttributeMapping mapping = (ELJavaXmlAttributeMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
 		

@@ -18,8 +18,8 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.Generator;
@@ -256,7 +256,7 @@ public abstract class AbstractMappingFileRef<MF extends MappingFile>
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 
-		if (StringTools.stringIsEmpty(this.fileName)) {
+		if (StringTools.isBlank(this.fileName)) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,

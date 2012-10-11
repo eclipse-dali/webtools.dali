@@ -10,7 +10,8 @@
 package org.eclipse.jpt.common.utility.internal.model.value.swing;
 
 import javax.swing.ComboBoxModel;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.listener.awt.AWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -44,6 +45,8 @@ public class ComboBoxModelAdapter
 {
 	protected final ModifiablePropertyValueModel<Object> selectionHolder;
 	protected final PropertyChangeListener selectionListener;
+
+	private static final long serialVersionUID = 1L;
 
 
 	// ********** constructors **********
@@ -134,7 +137,7 @@ public class ComboBoxModelAdapter
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.selectionHolder + ":" + this.listHolder); //$NON-NLS-1$
+		return ObjectTools.toString(this, this.selectionHolder + ":" + this.listHolder); //$NON-NLS-1$
 	}
 
 }

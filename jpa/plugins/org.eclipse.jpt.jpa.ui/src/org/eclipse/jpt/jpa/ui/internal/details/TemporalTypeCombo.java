@@ -11,22 +11,22 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.Comparator;
 import java.util.List;
-
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.StringConverter;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.BaseTemporalConverter;
+import org.eclipse.jpt.jpa.core.context.ColumnMapping;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-
 import com.ibm.icu.text.Collator;
 
 /**
@@ -102,7 +102,7 @@ public class TemporalTypeCombo extends Pane<BaseTemporalConverter> {
 	}
 
 	private List<TemporalType> buildSortedTemporalTypeList() {
-		return CollectionTools.sort(CollectionTools.list(TemporalType.values()), this.buildTemporalTypeComparator());
+		return ListTools.sort(ListTools.list(TemporalType.values()), this.buildTemporalTypeComparator());
 	}
 
 	private Comparator<TemporalType> buildTemporalTypeComparator() {
@@ -115,9 +115,10 @@ public class TemporalTypeCombo extends Pane<BaseTemporalConverter> {
 		};
 	}
 
-	private StringConverter<TemporalType> buildTemporalTypeConverter() {
-		return new StringConverter<TemporalType>() {
-			public String convertToString(TemporalType value) {
+	private Transformer<TemporalType, String> buildTemporalTypeConverter() {
+		return new TransformerAdapter<TemporalType, String>() {
+			@Override
+			public String transform(TemporalType value) {
 				return (value == null) ? null : displayString(value);
 			}
 		};

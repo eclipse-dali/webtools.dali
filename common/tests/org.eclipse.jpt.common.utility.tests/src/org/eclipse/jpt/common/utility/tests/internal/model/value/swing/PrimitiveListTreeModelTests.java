@@ -18,7 +18,8 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.internal.iterators.ReadOnlyListIterator;
+
+import org.eclipse.jpt.common.utility.internal.iterator.ReadOnlyListIterator;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.PrimitiveListTreeModel;

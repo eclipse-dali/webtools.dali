@@ -49,10 +49,10 @@ public class GenerateJaxbClassesJob extends AbstractJptGenerateJob {
 		if (javaProject == null) {
 			throw new RuntimeException("Project is null");		//$NON-NLS-1$
 		}
-		else if (StringTools.stringIsEmpty(absoluteLocalXsdUri)) {
+		else if (StringTools.isBlank(absoluteLocalXsdUri)) {
 			throw new RuntimeException("Schema cannot be empty");	//$NON-NLS-1$
 		}
-		else if(StringTools.stringIsEmpty(outputDir)) {
+		else if(StringTools.isBlank(outputDir)) {
 				throw new RuntimeException("Output directory cannot be empty");	//$NON-NLS-1$
 		}
 		this.absoluteLocalXsdUri = absoluteLocalXsdUri;

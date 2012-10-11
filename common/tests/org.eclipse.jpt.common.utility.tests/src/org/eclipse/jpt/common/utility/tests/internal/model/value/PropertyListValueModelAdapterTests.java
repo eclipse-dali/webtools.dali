@@ -17,8 +17,8 @@ import javax.swing.JList;
 
 import junit.framework.TestCase;
 
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.SingleElementIterator;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterator.SingleElementIterator;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
@@ -53,7 +53,7 @@ public class PropertyListValueModelAdapterTests extends TestCase {
 	}
 
 	private Collection<String> wrappedList() {
-		return CollectionTools.list(new SingleElementIterator<String>(this.wrappedValueHolder.getValue()));
+		return ListTools.list(new SingleElementIterator<String>(this.wrappedValueHolder.getValue()));
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class PropertyListValueModelAdapterTests extends TestCase {
 		});
 		assertFalse(this.adapter.iterator().hasNext());
 		this.wrappedValueHolder.setValue("foo");
-		List<String> adapterList = CollectionTools.list(this.adapter.iterator());
+		List<String> adapterList = ListTools.list(this.adapter.iterator());
 		assertEquals(1, adapterList.size());
 		assertEquals(this.wrappedList(), adapterList);
 		assertEquals("foo", adapterList.iterator().next());
@@ -108,18 +108,18 @@ public class PropertyListValueModelAdapterTests extends TestCase {
 		};
 		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, listener);
 		this.wrappedValueHolder.setValue("foo");
-		List<String> adapterList = CollectionTools.list(this.adapter.iterator());
+		List<String> adapterList = ListTools.list(this.adapter.iterator());
 		assertEquals(1, adapterList.size());
 		assertEquals(this.wrappedList(), adapterList);
 		assertEquals("foo", adapterList.iterator().next());
 
 		this.adapter.removeListChangeListener(ListValueModel.LIST_VALUES, listener);
-		adapterList = CollectionTools.list(this.adapter.iterator());
+		adapterList = ListTools.list(this.adapter.iterator());
 		assertEquals(0, adapterList.size());
 		assertEquals(new ArrayList<String>(), adapterList);
 
 		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, listener);
-		adapterList = CollectionTools.list(this.adapter.iterator());
+		adapterList = ListTools.list(this.adapter.iterator());
 		assertEquals(1, adapterList.size());
 		assertEquals(this.wrappedList(), adapterList);
 		assertEquals("foo", adapterList.iterator().next());

@@ -19,7 +19,6 @@ import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ButtonModel;
@@ -46,8 +45,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.text.Document;
-
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
@@ -55,7 +53,6 @@ import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValue
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.CheckBoxModelAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.swing.ColumnAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.ComboBoxModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.DateSpinnerModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.DocumentAdapter;
@@ -182,7 +179,7 @@ public class TableModelAdapterUITest {
 		return new TableModelAdapter<Person>(this.sortedPeopleAdapter, this.buildColumnAdapter());
 	}
 
-	protected ColumnAdapter buildColumnAdapter() {
+	protected TableModelAdapter.ColumnAdapter buildColumnAdapter() {
 		return new PersonColumnAdapter();
 	}
 
@@ -444,7 +441,7 @@ public class TableModelAdapterUITest {
 			}
 			if ((eyeColor.length() == 0)) {
 				JOptionPane.showMessageDialog(null, "The eye color is required.", "Invalid Eye Color", JOptionPane.ERROR_MESSAGE);
-			} else if (CollectionTools.contains(this.eyeColorsHolder.iterator(), eyeColor)) {
+			} else if (IteratorTools.contains(this.eyeColorsHolder.iterator(), eyeColor)) {
 				JOptionPane.showMessageDialog(null, "The eye color already exists.", "Invalid Eye Color", JOptionPane.ERROR_MESSAGE);
 			} else {
 				return eyeColor;
@@ -512,7 +509,7 @@ public class TableModelAdapterUITest {
 			}
 			if ((name.length() == 0)) {
 				JOptionPane.showMessageDialog(null, "The name is required.", "Invalid Name", JOptionPane.ERROR_MESSAGE);
-			} else if (CollectionTools.contains(this.crowd().peopleNames(), name)) {
+			} else if (IteratorTools.contains(this.crowd().peopleNames(), name)) {
 				JOptionPane.showMessageDialog(null, "The name already exists.", "Invalid Name", JOptionPane.ERROR_MESSAGE);
 			} else {
 				return name;

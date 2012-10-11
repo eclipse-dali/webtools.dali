@@ -10,8 +10,9 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import java.util.ArrayList;
+
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.jpa.core.context.orm.NullOrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;

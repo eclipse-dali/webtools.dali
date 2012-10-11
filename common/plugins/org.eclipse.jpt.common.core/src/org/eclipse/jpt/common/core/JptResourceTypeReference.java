@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core;
 
-import org.eclipse.jpt.common.utility.internal.Transformer;
-import org.eclipse.jpt.common.utility.internal.TransformerAdapter;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * An object with a reference to a resource type.

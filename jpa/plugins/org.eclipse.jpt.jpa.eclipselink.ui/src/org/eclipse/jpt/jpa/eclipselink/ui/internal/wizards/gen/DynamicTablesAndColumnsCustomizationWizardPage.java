@@ -45,7 +45,7 @@ public class DynamicTablesAndColumnsCustomizationWizardPage extends
 		this.detailPanelStatckLayout.topControl = tableGenDetatilGroup;
 		this.detailPanel.layout();		
 
-		String baseClass = StringTools.stringIsEmpty(table.getExtends()) ? "" : table.getExtends();
+		String baseClass = StringTools.isBlank(table.getExtends()) ? "" : table.getExtends();
 		setSuperClass(baseClass, true);			
 		setSuperInterfaces(table.getImplements(), true);
 		

@@ -12,8 +12,8 @@ package org.eclipse.jpt.common.utility.internal.command;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.CommandExecutor;
 import org.eclipse.jpt.common.utility.command.StatefulCommandExecutor;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.SynchronizedBoolean;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.reference.SynchronizedBoolean;
 
 /**
  * Straightforward implementation of {@link StatefulCommandExecutor}
@@ -62,6 +62,6 @@ public abstract class AbstractStatefulCommandExecutor<E extends CommandExecutor>
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.commandExecutor);
+		return ObjectTools.toString(this, this.commandExecutor);
 	}
 }

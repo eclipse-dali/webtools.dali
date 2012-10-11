@@ -185,7 +185,7 @@ public class JPAEditorPreferencesPage extends FieldEditorPreferencePage
 	
 	public static IStatus validateDefaultFolder(String defaultFolder, String projectName) {
 		defaultFolder = defaultFolder.trim();
-		if (StringTools.stringIsEmpty(defaultFolder)) 
+		if (StringTools.isBlank(defaultFolder)) 
 			return new Status(IStatus.ERROR, 
 					  JPADiagramEditorPlugin.PLUGIN_ID, 
 					  JPAEditorMessages.JPAEditorPreferencesPage_emptyFolder);
@@ -210,7 +210,7 @@ public class JPAEditorPreferencesPage extends FieldEditorPreferencePage
 	
 	public static IStatus validateTableNamePrefix(String tableNamePrefix) {
 		String s = tableNamePrefix;
-		if (StringTools.stringIsEmpty(s))
+		if (StringTools.isBlank(s))
 			return new Status(IStatus.OK, JPADiagramEditor.ID, null);
 		if (Character.isDigit(s.charAt(0))) {
 			String message = MessageFormat.format(JPAEditorMessages.JPAEditorPreferencesPage_invalidTableNamePrefix, 

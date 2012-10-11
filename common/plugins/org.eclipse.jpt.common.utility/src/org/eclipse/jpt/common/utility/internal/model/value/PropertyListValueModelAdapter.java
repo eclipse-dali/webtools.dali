@@ -11,10 +11,10 @@ package org.eclipse.jpt.common.utility.internal.model.value;
 
 import java.util.Iterator;
 import java.util.ListIterator;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyListIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.SingleElementListIterator;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.StringBuilderTools;
+import org.eclipse.jpt.common.utility.internal.iterator.EmptyListIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.SingleElementListIterator;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
@@ -105,7 +105,7 @@ public class PropertyListValueModelAdapter<E>
 	}
 
 	public Object[] toArray() {
-		return (this.value == null) ? Tools.EMPTY_OBJECT_ARRAY : new Object[] {this.value};
+		return (this.value == null) ? ObjectTools.EMPTY_OBJECT_ARRAY : new Object[] {this.value};
 	}
 
 
@@ -150,6 +150,6 @@ public class PropertyListValueModelAdapter<E>
 
 	@Override
 	public void toString(StringBuilder sb) {
-		StringTools.append(sb, this);
+		StringBuilderTools.append(sb, this);
 	}
 }

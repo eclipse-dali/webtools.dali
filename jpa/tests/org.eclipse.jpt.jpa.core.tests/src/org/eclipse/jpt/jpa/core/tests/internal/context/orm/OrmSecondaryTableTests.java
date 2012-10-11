@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
@@ -750,7 +750,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		javaSecondaryTable.addUniqueConstraint().addColumnName("BAR");
 		javaSecondaryTable.addUniqueConstraint().addColumnName("BAZ");
 
-		List<ReadOnlyUniqueConstraint> uniqueConstraints = CollectionTools.list(ormSecondaryTable.getUniqueConstraints());
+		List<ReadOnlyUniqueConstraint> uniqueConstraints = ListTools.list(ormSecondaryTable.getUniqueConstraints());
 		assertEquals(3, uniqueConstraints.size());
 		assertEquals("FOO", uniqueConstraints.get(0).getColumnNames().iterator().next());
 		assertEquals("BAR", uniqueConstraints.get(1).getColumnNames().iterator().next());

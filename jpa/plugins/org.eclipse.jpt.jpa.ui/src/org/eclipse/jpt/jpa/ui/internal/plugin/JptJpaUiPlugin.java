@@ -9,32 +9,32 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.plugin;
 
+import java.util.HashMap;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jpt.common.core.internal.utility.JptPlugin;
 import org.eclipse.jpt.common.ui.internal.JptUIPlugin;
-import org.eclipse.jpt.common.utility.BooleanReference;
-import org.eclipse.jpt.common.utility.internal.AbstractBooleanReference;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.reference.AbstractBooleanReference;
+import org.eclipse.jpt.common.utility.reference.BooleanReference;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.JpaWorkspace;
+import org.eclipse.jpt.jpa.ui.internal.InternalJpaWorkbench;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.ui.IWorkbench;
 
 /**
  * Dali JPA UI plug-in.
- * <p>
- * Provisional API: This interface is part of an interim API that is still
- * under development and expected to change significantly before reaching
- * stability. It is available at this early stage to solicit feedback from
- * pioneering adopters on the understanding that any code that uses this API
- * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public class JptJpaUiPlugin
 	extends JptUIPlugin
 {
+	// NB: the plug-in must be synchronized whenever accessing any of this state
+	private final HashMap<IWorkbench, InternalJpaWorkbench> jpaWorkbenchs = new HashMap<IWorkbench, InternalJpaWorkbench>();
+
 	/**
 	 * @see #focusIn(Control)
 	 */
@@ -101,6 +101,15 @@ public class JptJpaUiPlugin
 	@Override
 	public void stop_() throws Exception {
 		try {
+			for (InternalJpaWorkbench jpaWorkbench : this.jpaWorkbenchs.values()) {
+				try {
+					jpaWorkbench.stop();
+				} catch (Throwable ex) {
+					this.logError(ex);  // keep going
+				}
+			}
+			this.jpaWorkbenchs.clear();
+
 			// must be on UI thread...
 			if ((this.display != null) && ( ! this.display.isDisposed())) {
 				this.display.removeFilter(SWT.FocusIn, this.focusListener);
@@ -110,6 +119,32 @@ public class JptJpaUiPlugin
 			this.display = null;
 			super.stop_();
 		}
+	}
+
+
+	// ********** JPA workbenchs **********
+
+	/**
+	 * Return the JPA workbench corresponding to the specified Eclipse workbench.
+	 * <p>
+	 * The preferred way to retrieve a JPA workbench is via the Eclipse
+	 * adapter framework:
+	 * <pre>
+	 * JpaWorkbench jpaWorkbench = PlatformTools.getAdapter(PlatformUI.getWorkbench(), JpaWorkbench.class);
+	 * </pre>
+	 * @see org.eclipse.jpt.jpa.ui.internal.WorkbenchAdapterFactory#getJpaWorkbench(IWorkbench)
+	 */
+	public synchronized InternalJpaWorkbench getJpaWorkbench(IWorkbench workbench) {
+		InternalJpaWorkbench jpaWorkbench = this.jpaWorkbenchs.get(workbench);
+		if ((jpaWorkbench == null) && this.isActive()) {
+			jpaWorkbench = this.buildJpaWorkbench(workbench);
+			this.jpaWorkbenchs.put(workbench, jpaWorkbench);
+		}
+		return jpaWorkbench;
+	}
+
+	private InternalJpaWorkbench buildJpaWorkbench(IWorkbench workbench) {
+		return new InternalJpaWorkbench(workbench);
 	}
 
 
@@ -126,7 +161,7 @@ public class JptJpaUiPlugin
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this);
+			return ObjectTools.toString(this);
 		}
 	}
 

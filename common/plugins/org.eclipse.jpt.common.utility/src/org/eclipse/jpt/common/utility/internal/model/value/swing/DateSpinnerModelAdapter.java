@@ -13,7 +13,8 @@ import java.util.Calendar;
 import java.util.Date;
 import javax.swing.SpinnerDateModel;
 import javax.swing.event.ChangeListener;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.listener.awt.AWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -36,7 +37,6 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 public class DateSpinnerModelAdapter
 	extends SpinnerDateModel
 {
-
 	/**
 	 * The default spinner value; used when the underlying model date value is null.
 	 * The default is the current date.
@@ -48,6 +48,8 @@ public class DateSpinnerModelAdapter
 
 	/** A listener that allows us to synchronize with changes made to the underlying date. */
 	private final PropertyChangeListener dateChangeListener;
+
+	private static final long serialVersionUID = 1L;
 
 
 	// ********** constructors **********
@@ -114,7 +116,7 @@ public class DateSpinnerModelAdapter
 	 * have any listeners.
 	 * This is necessary because some crappy jdk code gets the value
 	 * from the model *before* listening to the model.  ~bjv
-	 * @see javax.swing.JSpinner.DefaultEditor(javax.swing.JSpinner)
+	 * @see javax.swing.JSpinner.DefaultEditor#DefaultEditor(javax.swing.JSpinner)
 	 */
     @Override
 	public Object getValue() {
@@ -192,7 +194,7 @@ public class DateSpinnerModelAdapter
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.dateHolder);
+		return ObjectTools.toString(this, this.dateHolder);
 	}
 
 }

@@ -12,8 +12,8 @@ package org.eclipse.jpt.dbws.eclipselink.ui.internal.wizards.gen;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.common.ui.internal.wizards.JavaProjectWizardPage;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.dbws.eclipselink.ui.internal.DbwsGeneratorUi;
 
 /**

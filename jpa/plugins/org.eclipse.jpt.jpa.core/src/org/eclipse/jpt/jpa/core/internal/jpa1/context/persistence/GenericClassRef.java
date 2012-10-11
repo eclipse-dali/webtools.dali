@@ -17,9 +17,9 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Ki
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
@@ -145,7 +145,7 @@ public class GenericClassRef
 	 * with a '.'. Like <code>className</code>, this can be <code>null</code>.
 	 */
 	protected String getJavaClassName() {
-		return StringTools.stringIsEmpty(this.className) ? null : this.className.replace('$', '.');
+		return StringTools.isBlank(this.className) ? null : this.className.replace('$', '.');
 	}
 
 
@@ -208,11 +208,11 @@ public class GenericClassRef
 	}
 
 	public boolean isFor(String typeName) {
-		return Tools.valuesAreEqual(typeName, this.getJavaClassName());
+		return ObjectTools.equals(typeName, this.getJavaClassName());
 	}
 
 	protected boolean isInPackage(IPackageFragment packageFragment) {
-		return Tools.valuesAreEqual(this.getPackageName(), packageFragment.getElementName());
+		return ObjectTools.equals(this.getPackageName(), packageFragment.getElementName());
 	}
 
 	protected String getPackageName() {
@@ -332,7 +332,7 @@ public class GenericClassRef
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 
-		if (StringTools.stringIsEmpty(this.className)) {
+		if (StringTools.isBlank(this.className)) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,

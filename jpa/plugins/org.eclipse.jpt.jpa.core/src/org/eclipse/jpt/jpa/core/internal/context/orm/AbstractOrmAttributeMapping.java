@@ -14,11 +14,11 @@ import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.Transformer;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.ColumnMapping;
@@ -392,7 +392,7 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 	}
 
 	public AttributeMapping resolveAttributeMapping(String attributeName) {
-		return Tools.valuesAreEqual(attributeName, this.name) ? this : null;
+		return ObjectTools.equals(attributeName, this.name) ? this : null;
 	}
 
 	protected Transformer<String, String> buildQualifierTransformer() {
@@ -482,7 +482,7 @@ public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 		// we just check for a name that is either empty or whitespace here;
 		// the name will be null if the 'name' attribute is missing
 		// and there will already be an XSD-driven error
-		if ((this.name != null) && StringTools.stringIsEmpty(this.name)) {
+		if ((this.name != null) && StringTools.isBlank(this.name)) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,

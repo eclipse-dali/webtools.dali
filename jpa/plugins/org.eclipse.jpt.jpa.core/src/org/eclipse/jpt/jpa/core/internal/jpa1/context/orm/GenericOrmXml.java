@@ -19,8 +19,8 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.Generator;
@@ -253,7 +253,7 @@ public class GenericOrmXml
 	public boolean isIn(IFolder folder) {
 		IResource member = folder.findMember(this.xmlResource.getFile().getName());
 		IFile file = this.xmlResource.getFile();
-		return Tools.valuesAreEqual(member, file);
+		return ObjectTools.equals(member, file);
 	}
 
 	public boolean isGenericMappingFile() {

@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.model.value;
 
-import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * A <code>TransformationWritablePropertyValueModel</code> wraps another

@@ -14,7 +14,8 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.JptResourceTypeManager;
 import org.eclipse.jpt.common.utility.internal.VersionComparator;
-import org.eclipse.jpt.common.utility.internal.iterables.SuperIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.filter.SimpleFilter;
+import org.eclipse.jpt.common.utility.internal.iterable.SuperIterableWrapper;
 import com.ibm.icu.text.Collator;
 
 /**
@@ -24,13 +25,9 @@ public class InternalJptResourceType
 	implements JptResourceType
 {
 	private final InternalJptResourceTypeManager manager;
-
 	private final String id;
-
 	private final IContentType contentType;
-
 	private final String version;
-
 	private /* final */ String pluginId;
 
 	// ignore duplicates
@@ -128,5 +125,18 @@ public class InternalJptResourceType
 			sb.append(this.version);
 		}
 		return sb.toString();
+	}
+
+	static class ContentTypeFilter
+		extends SimpleFilter<JptResourceType, IContentType>
+	{
+		private static final long serialVersionUID = 1L;
+		ContentTypeFilter(IContentType contentType) {
+			super(contentType);
+		}
+		@Override
+		public boolean accept(JptResourceType resourceType) {
+			return resourceType.getContentType().equals(this.criterion);
+		}
 	}
 }

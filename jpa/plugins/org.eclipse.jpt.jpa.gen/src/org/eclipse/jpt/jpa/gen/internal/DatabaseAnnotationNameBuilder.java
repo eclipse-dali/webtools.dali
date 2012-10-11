@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.gen.internal;
 
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.ForeignKey;
 import org.eclipse.jpt.jpa.db.Table;
@@ -101,7 +101,7 @@ public interface DatabaseAnnotationNameBuilder {
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildSingletonToString(this);
+			return ObjectTools.singletonToString(this);
 		}
 	}
 

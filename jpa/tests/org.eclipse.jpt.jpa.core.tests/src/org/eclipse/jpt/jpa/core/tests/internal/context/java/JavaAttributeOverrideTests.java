@@ -14,8 +14,8 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
@@ -180,7 +180,7 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		assertEquals("id", attributeOverride.getColumn().getDefaultName());
 		
 		
-		JavaPersistentType mappedSuperclass = CollectionTools.list(getPersistenceUnit().getSpecifiedClassRefs()).get(1).getJavaPersistentType();
+		JavaPersistentType mappedSuperclass = ListTools.list(getPersistenceUnit().getSpecifiedClassRefs()).get(1).getJavaPersistentType();
 		BasicMapping basicMapping = (BasicMapping) mappedSuperclass.getAttributeNamed("id").getMapping();
 		basicMapping.getColumn().setSpecifiedName("FOO");
 	
@@ -203,7 +203,7 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		assertEquals("AnnotationTestTypeChild", attributeOverride.getColumn().getDefaultTable());
 
 		
-		JavaPersistentType mappedSuperclass = CollectionTools.list(getPersistenceUnit().getSpecifiedClassRefs()).get(1).getJavaPersistentType();
+		JavaPersistentType mappedSuperclass = ListTools.list(getPersistenceUnit().getSpecifiedClassRefs()).get(1).getJavaPersistentType();
 		BasicMapping basicMapping = (BasicMapping) mappedSuperclass.getAttributeNamed("id").getMapping();
 		basicMapping.getColumn().setSpecifiedTable("BAR");
 	

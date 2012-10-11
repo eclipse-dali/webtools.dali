@@ -10,11 +10,10 @@
 package org.eclipse.jpt.common.ui.internal.utility.swt;
 
 import java.util.ArrayList;
-
+import org.eclipse.jface.resource.StringConverter;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTListChangeListenerWrapper;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.StringConverter;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.common.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.ListClearEvent;
@@ -23,6 +22,7 @@ import org.eclipse.jpt.common.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.common.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 
@@ -53,10 +53,10 @@ final class ListWidgetModelBinding<E> {
 	private final ListChangeListener listChangeListener;
 
 	/**
-	 * A converter that converts items in the model list
+	 * A transformer that converts items in the model list
 	 * to strings that can be put in the list widget.
 	 */
-	private final StringConverter<E> stringConverter;
+	private final Transformer<E, String> transformer;
 
 	// ***** UI
 	/**
@@ -85,16 +85,16 @@ final class ListWidgetModelBinding<E> {
 	ListWidgetModelBinding(
 			ListValueModel<E> listModel,
 			ListWidget listWidget,
-			StringConverter<E> stringConverter,
+			Transformer<E, String> transformer,
 			SelectionBinding selectionBinding
 	) {
 		super();
-		if ((listModel == null) || (listWidget == null) || (stringConverter == null) || (selectionBinding == null)) {
+		if ((listModel == null) || (listWidget == null) || (transformer == null) || (selectionBinding == null)) {
 			throw new NullPointerException();
 		}
 		this.listModel = listModel;
 		this.listWidget = listWidget;
-		this.stringConverter = stringConverter;
+		this.transformer = transformer;
 		this.selectionBinding = selectionBinding;
 
 		this.listChangeListener = this.buildListChangeListener();
@@ -167,7 +167,7 @@ final class ListWidgetModelBinding<E> {
 	private void synchronizeListWidget_() {
 		ArrayList<String> items = new ArrayList<String>(this.listModel.size());
 		for (E item : this.listModel) {
-			items.add(this.convert(item));
+			items.add(this.transform(item));
 		}
 		this.listWidget.setItems(items.toArray(new String[items.size()]));
 
@@ -187,7 +187,7 @@ final class ListWidgetModelBinding<E> {
 	private void listItemsAdded_(ListAddEvent event) {
 		int i = event.getIndex();
 		for (E item : this.getItems(event)) {
-			this.listWidget.add(this.convert(item), i++);
+			this.listWidget.add(this.transform(item), i++);
 		}
 
 		// now that the list has changed, we need to synch the selection
@@ -257,7 +257,7 @@ final class ListWidgetModelBinding<E> {
 	private void listItemsReplaced_(ListReplaceEvent event) {
 		int i = event.getIndex();
 		for (E item : this.getNewItems(event)) {
-			this.listWidget.setItem(i++, this.convert(item));
+			this.listWidget.setItem(i++, this.transform(item));
 		}
 
 		// now that the list has changed, we need to synch the selection
@@ -297,11 +297,11 @@ final class ListWidgetModelBinding<E> {
 	}
 
 	/**
-	 * Use the string converter to convert the specified item to a
+	 * Use the {@link #transformer} to convert the specified item to a
 	 * string that can be added to the list widget.
 	 */
-	private String convert(E item) {
-		return this.stringConverter.convertToString(item);
+	private String transform(E item) {
+		return this.transformer.transform(item);
 	}
 
 
@@ -320,7 +320,7 @@ final class ListWidgetModelBinding<E> {
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.listModel);
+		return ObjectTools.toString(this, this.listModel);
 	}
 
 

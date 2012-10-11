@@ -20,8 +20,8 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
 import org.eclipse.jpt.jaxb.core.context.XmlNs;
@@ -55,7 +55,7 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 	
 	public void testModifyNamespace() throws Exception {
 		createPackageInfoWithXmlSchema();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = IterableTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		XmlSchema contextXmlSchema = contextPackageInfo.getXmlSchema();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 		
@@ -86,7 +86,7 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 	
 	public void testUpdateNamespace() throws Exception {
 		this.createPackageInfoWithXmlSchema();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = IterableTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		XmlSchema contextXmlSchema = contextPackageInfo.getXmlSchema();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 		
@@ -115,7 +115,7 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 	
 	public void testModifyLocation() throws Exception {
 		createPackageInfoWithXmlSchema();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = IterableTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		XmlSchema contextXmlSchema = contextPackageInfo.getXmlSchema();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 	
@@ -142,7 +142,7 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 	
 	public void testUpdateLocation() throws Exception {
 		this.createPackageInfoWithXmlSchema();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = IterableTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		XmlSchema contextXmlSchema = contextPackageInfo.getXmlSchema();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
@@ -169,7 +169,7 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 	
 	public void testModifyAttributeFormDefault() throws Exception {
 		createPackageInfoWithXmlSchema();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = IterableTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		XmlSchema contextXmlSchema = contextPackageInfo.getXmlSchema();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 		
@@ -201,7 +201,7 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 	
 	public void testUpdateAttributeFormDefault() throws Exception {
 		this.createPackageInfoWithXmlSchema();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = IterableTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		XmlSchema contextXmlSchema = contextPackageInfo.getXmlSchema();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 		
@@ -248,7 +248,7 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 	
 	public void testModifyElementFormDefault() throws Exception {
 		createPackageInfoWithXmlSchema();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = IterableTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		XmlSchema contextXmlSchema = contextPackageInfo.getXmlSchema();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 		
@@ -280,7 +280,7 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 	
 	public void testUpdateElementFormDefault() throws Exception {
 		this.createPackageInfoWithXmlSchema();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = IterableTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		XmlSchema contextXmlSchema = contextPackageInfo.getXmlSchema();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
@@ -327,7 +327,7 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 	
 	public void testGetXmlNsPrefixes() throws Exception {
 		this.createPackageInfoWithXmlSchema();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = IterableTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		XmlSchema contextXmlSchema = contextPackageInfo.getXmlSchema();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
@@ -369,7 +369,7 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 
 	public void testGetXmlNsPrexiesSize() throws Exception {
 		this.createPackageInfoWithXmlSchema();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = IterableTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		XmlSchema contextXmlSchema = contextPackageInfo.getXmlSchema();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
@@ -390,7 +390,7 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 		//create a package info with an annotation other than XmlSchema to test
 		//adding things to the null schema annotation
 		this.createPackageInfoWithAccessorType();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = IterableTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		XmlSchema contextXmlSchema = contextPackageInfo.getXmlSchema();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
@@ -421,7 +421,7 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 
 	public void testAddXmlNsPrefix2() throws Exception {
 		this.createPackageInfoWithXmlSchema();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = IterableTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		XmlSchema contextXmlSchema = contextPackageInfo.getXmlSchema();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
@@ -452,7 +452,7 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 
 	public void testRemoveXmlNsPrefix() throws Exception {
 		this.createPackageInfoWithXmlSchema();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = IterableTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		XmlSchema contextXmlSchema = contextPackageInfo.getXmlSchema();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
@@ -482,7 +482,7 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 
 	public void testMoveXmlNsPrefix() throws Exception {
 		this.createPackageInfoWithXmlSchema();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = IterableTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		XmlSchema contextXmlSchema = contextPackageInfo.getXmlSchema();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
@@ -523,7 +523,7 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 
 	public void testSyncXmlNsPrefixes() throws Exception {
 		this.createPackageInfoWithXmlSchema();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = IterableTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		XmlSchema contextXmlSchema = contextPackageInfo.getXmlSchema();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 

@@ -61,7 +61,7 @@ public class JpaEntityGenPreferencePage extends PropertyPage {
 	
 	private void updateProjectEntityGenPreferences() {
 		String pkgName = this.getDefaultPackage();
-		JpaPreferences.setEntityGenDefaultPackageName(this.getProject(), (StringTools.stringIsNotEmpty(pkgName) ? pkgName : null));
+		JpaPreferences.setEntityGenDefaultPackageName(this.getProject(), (StringTools.isNotBlank(pkgName) ? pkgName : null));
 	}
 
 	// ********** internal methods **********

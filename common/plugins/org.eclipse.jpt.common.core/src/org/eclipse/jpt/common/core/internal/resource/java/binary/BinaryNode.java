@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.core.internal.resource.java.AbstractJavaResourceNo
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * Binary convenience methods
@@ -61,7 +61,7 @@ public abstract class BinaryNode
 	 */
 	public Object[] getJdtMemberValues(IAnnotation jdtContainerAnnotation, String memberName) {
 		Object[] values = (Object[]) this.getJdtMemberValue(jdtContainerAnnotation, memberName);
-		return (values != null) ? values : Tools.EMPTY_OBJECT_ARRAY;
+		return (values != null) ? values : ObjectTools.EMPTY_OBJECT_ARRAY;
 	}
 
 	/**

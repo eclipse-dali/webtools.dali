@@ -23,11 +23,11 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -117,7 +117,7 @@ public class ProjectWizardPage extends WizardPage
 	private void projectChanged() {
 		this.setPageComplete(false);
 		String projectName = this.projectGroup.getProjectName();
-		if( ! StringTools.stringIsEmpty(projectName)) {
+		if( ! StringTools.isBlank(projectName)) {
 
 			IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 			this.setJavaProject(JavaCore.create(project));
@@ -144,7 +144,7 @@ public class ProjectWizardPage extends WizardPage
 			this.projectCombo = this.buildProjectCombo(composite, this.buildProjectComboSelectionListener());
 			this.updateProjectCombo();
 
-			setPageComplete( ! StringTools.stringIsEmpty(this.getProjectName()));
+			setPageComplete( ! StringTools.isBlank(this.getProjectName()));
 		}
 
 		// ********** listeners **********

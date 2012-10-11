@@ -9,11 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.internal.libprov;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jpt.common.core.internal.libval.LibraryValidatorManager;
+import org.eclipse.jpt.common.core.JptWorkspace;
 import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.common.core.libval.LibraryValidator;
+import org.eclipse.jpt.common.core.libval.LibraryValidatorManager;
 import org.eclipse.jst.j2ee.internal.common.classpath.WtpUserLibraryProviderInstallOperationConfig;
 
 
@@ -33,7 +35,7 @@ public abstract class JptUserLibraryProviderInstallOperationConfig
 			return status;
 		}
 		
-		for (LibraryValidator libraryValidator : LibraryValidatorManager.instance().getLibraryValidators(this)) {
+		for (LibraryValidator libraryValidator : this.getLibraryValidatorManager().getLibraryValidators(this)) {
 			status = libraryValidator.validate(this);
 			if (! status.isOK()) {
 				return status;
@@ -41,5 +43,13 @@ public abstract class JptUserLibraryProviderInstallOperationConfig
 		}
 		
 		return Status.OK_STATUS;
+	}
+
+	private LibraryValidatorManager getLibraryValidatorManager() {
+		return this.getJptWorkspace().getLibraryValidatorManager();
+	}
+
+	private JptWorkspace getJptWorkspace() {
+		return (JptWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JptWorkspace.class);
 	}
 }

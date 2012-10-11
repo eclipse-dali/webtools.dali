@@ -224,8 +224,8 @@ public class CheckboxTreeAndListGroup implements ICheckStateListener, ISelection
 		composite.setLayout(layout);
 		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		createTreeViewer(composite, width / 2, height);
-		createListViewer(composite, width / 2, height);
+		createTreeViewer(composite, width >> 1, height);
+		createListViewer(composite, width >> 1, height);
 
 		initialize();
 	}

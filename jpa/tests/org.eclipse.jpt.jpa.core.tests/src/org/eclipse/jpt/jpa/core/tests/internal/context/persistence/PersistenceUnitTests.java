@@ -15,9 +15,9 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -685,7 +685,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	
 	protected ClassRef getVirtualClassRef(String className) {
 		for (ClassRef ref : this.getPersistenceUnit().getImpliedClassRefs()) {
-			if (Tools.valuesAreEqual(ref.getClassName(), className)) {
+			if (ObjectTools.equals(ref.getClassName(), className)) {
 				return ref;
 			}
 		}
@@ -697,7 +697,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		getJpaProject().setDiscoversAnnotatedClasses(true);
 		JavaResourceType javaType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(1, CollectionTools.size(getPersistenceUnit().getImpliedClassRefs()));
+		assertEquals(1, IterableTools.size(getPersistenceUnit().getImpliedClassRefs()));
 		
 		javaType.removeAnnotation(JPA.ENTITY);
 		getJpaProject().synchronizeContextModel();

@@ -12,6 +12,8 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.GenerationType;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.java.JavaGeneratedValue;
@@ -175,7 +177,8 @@ public class GenericJavaGeneratedValue
 	}
 
 	protected Iterable<String> getJavaCandidateGeneratorNames() {
-		return StringTools.convertToJavaStringLiteralContents(this.getCandidateGeneratorNames());
+		return new TransformationIterable<String, String>(this.getCandidateGeneratorNames(),
+				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 
 	protected Iterable<String> getCandidateGeneratorNames() {

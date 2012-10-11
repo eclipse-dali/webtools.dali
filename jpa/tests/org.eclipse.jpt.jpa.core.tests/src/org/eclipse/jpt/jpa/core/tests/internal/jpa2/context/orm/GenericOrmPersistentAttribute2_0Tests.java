@@ -12,10 +12,10 @@ package org.eclipse.jpt.jpa.core.tests.internal.jpa2.context.orm;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
@@ -171,7 +171,7 @@ public class GenericOrmPersistentAttribute2_0Tests
 		
 		assertEquals(2, ormPersistentType.getDefaultAttributesSize());
 		
-		OrmReadOnlyPersistentAttribute ormPersistentAttribute = CollectionTools.get(ormPersistentType.getDefaultAttributes(), 1);
+		OrmReadOnlyPersistentAttribute ormPersistentAttribute = IterableTools.get(ormPersistentType.getDefaultAttributes(), 1);
 		assertEquals("id", ormPersistentAttribute.getName());
 		assertTrue(ormPersistentAttribute.isVirtual());
 		assertEquals(AccessType.PROPERTY, ormPersistentAttribute.getAccess());

@@ -13,8 +13,8 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkMapKeyConvertAnnotation2_0;
 
@@ -54,7 +54,7 @@ public class MapKeyConvertAnnotation2_0Tests extends EclipseLink2_0JavaResourceM
 	public void testMapKeyConvertAnnotation() throws Exception {
 		ICompilationUnit cu = this.createTestMapKeyConvert();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		assertNotNull(resourceField.getAnnotation(EclipseLink.MAP_KEY_CONVERT));
 		
@@ -68,7 +68,7 @@ public class MapKeyConvertAnnotation2_0Tests extends EclipseLink2_0JavaResourceM
 	public void testGetValue() throws Exception {
 		ICompilationUnit cu = this.createTestConverterWithValue();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkMapKeyConvertAnnotation2_0 convert = (EclipseLinkMapKeyConvertAnnotation2_0) resourceField.getAnnotation(EclipseLink.MAP_KEY_CONVERT);
 		assertEquals("myConverter", convert.getValue());
@@ -77,7 +77,7 @@ public class MapKeyConvertAnnotation2_0Tests extends EclipseLink2_0JavaResourceM
 	public void testSetValue() throws Exception {
 		ICompilationUnit cu = this.createTestConverterWithValue();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkMapKeyConvertAnnotation2_0 convert = (EclipseLinkMapKeyConvertAnnotation2_0) resourceField.getAnnotation(EclipseLink.MAP_KEY_CONVERT);
 		assertEquals("myConverter", convert.getValue());
@@ -91,7 +91,7 @@ public class MapKeyConvertAnnotation2_0Tests extends EclipseLink2_0JavaResourceM
 	public void testSetValueNull() throws Exception {
 		ICompilationUnit cu = this.createTestConverterWithValue();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkMapKeyConvertAnnotation2_0 convert = (EclipseLinkMapKeyConvertAnnotation2_0) resourceField.getAnnotation(EclipseLink.MAP_KEY_CONVERT);
 		assertEquals("myConverter", convert.getValue());

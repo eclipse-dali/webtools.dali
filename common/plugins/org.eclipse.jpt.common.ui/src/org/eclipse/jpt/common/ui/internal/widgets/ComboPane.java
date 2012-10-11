@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.ui.internal.widgets;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
@@ -262,12 +262,12 @@ public abstract class ComboPane<T extends Model>
 		}
 		
 		// convert empty string or default to null
-		if (StringTools.stringIsEmpty(newValue) || this.valueIsDefault(newValue)) {
+		if (StringTools.isBlank(newValue) || this.valueIsDefault(newValue)) {
 			newValue = null;
 		}
 		
 		// set the new value if it is different from the old value
-		if (Tools.valuesAreDifferent(oldValue, newValue)) {
+		if (ObjectTools.notEquals(oldValue, newValue)) {
 			this.setPopulating(true);
 			
 			try {
@@ -303,6 +303,6 @@ public abstract class ComboPane<T extends Model>
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this);
+		return ObjectTools.toString(this);
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,10 +10,13 @@
 package org.eclipse.jpt.common.utility.internal.node;
 
 import java.util.Arrays;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.node.Node;
+import org.eclipse.jpt.common.utility.node.Problem;
 
 /**
- * This class is a straightforward implementation of the Problem interface.
+ * This class is a straightforward implementation of the {@link Problem} interface.
  */
 public class DefaultProblem
 	implements Problem
@@ -79,7 +82,7 @@ public class DefaultProblem
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.messageKey);
+		return ObjectTools.toString(this, this.messageKey);
 	}
 
 }

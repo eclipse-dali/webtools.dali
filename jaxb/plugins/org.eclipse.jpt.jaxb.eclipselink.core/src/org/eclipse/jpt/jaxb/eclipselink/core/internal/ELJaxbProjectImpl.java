@@ -1,7 +1,7 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal;
 
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jaxb.core.JaxbFile;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.internal.AbstractJaxbProject;

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 
 /**
@@ -177,7 +177,7 @@ public final class JpaPreferences {
 	}
 
 	private static boolean getJpqlIdentifierLowercase(String value) {
-		return Tools.valuesAreEqual(value, JPQL_IDENTIFIER_CASE_VALUE_LOWERCASE);
+		return ObjectTools.equals(value, JPQL_IDENTIFIER_CASE_VALUE_LOWERCASE);
 	}
 
 	public static void setJpqlIdentifierLowercase(boolean value) {

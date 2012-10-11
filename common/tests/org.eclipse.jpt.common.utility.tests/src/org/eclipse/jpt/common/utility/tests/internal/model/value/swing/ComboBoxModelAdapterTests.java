@@ -15,16 +15,16 @@ import java.util.List;
 import javax.swing.ComboBoxModel;
 import javax.swing.ListModel;
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.ComboBoxModelAdapter;
-import org.eclipse.jpt.common.utility.internal.swing.Displayable;
-import org.eclipse.jpt.common.utility.internal.swing.SimpleDisplayable;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.tests.internal.model.Displayable;
+import org.eclipse.jpt.common.utility.tests.internal.model.SimpleDisplayable;
 import org.eclipse.jpt.common.utility.tests.internal.model.value.CoordinatedList;
 
 @SuppressWarnings("nls")
@@ -80,12 +80,12 @@ public class ComboBoxModelAdapterTests extends TestCase {
 	}
 
 	private void verifyHasNoListeners(ListModel listModel) throws Exception {
-		boolean hasNoListeners = ((Boolean) ReflectionTools.executeMethod(listModel, "hasNoListDataListeners")).booleanValue();
+		boolean hasNoListeners = ((Boolean) ObjectTools.execute(listModel, "hasNoListDataListeners")).booleanValue();
 		assertTrue(hasNoListeners);
 	}
 
 	private void verifyHasListeners(ListModel listModel) throws Exception {
-		boolean hasListeners = ((Boolean) ReflectionTools.executeMethod(listModel, "hasListDataListeners")).booleanValue();
+		boolean hasListeners = ((Boolean) ObjectTools.execute(listModel, "hasListDataListeners")).booleanValue();
 		assertTrue(hasListeners);
 	}
 

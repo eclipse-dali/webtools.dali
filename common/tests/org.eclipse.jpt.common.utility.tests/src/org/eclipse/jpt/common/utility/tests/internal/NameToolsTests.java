@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,32 +12,34 @@ package org.eclipse.jpt.common.utility.tests.internal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+
 import org.eclipse.jpt.common.utility.internal.NameTools;
 
 @SuppressWarnings("nls")
-public class NameToolsTests extends TestCase {
-
+public class NameToolsTests
+	extends TestCase
+{
 	public NameToolsTests(String name) {
 		super(name);
 	}
 
 	public void testStringAbsentIgnoreCase() {
 		List<String> colorCollection = this.buildColorCollection();
-		String returned = NameTools.uniqueNameForIgnoreCase("Taupe", colorCollection);
+		String returned = NameTools.uniqueNameIgnoreCase("Taupe", colorCollection);
 		assertEquals("Taupe", returned);
 	}
 
 	public void testStringPresentCaseDiffers() {
 		List<String> colorCollection = this.buildColorCollection();
-		String returned = NameTools.uniqueNameFor("green", colorCollection);
+		String returned = NameTools.uniqueName("green", colorCollection);
 		assertEquals("green", returned);
 	}
 
 	public void testStringPresentIgnoreCase() {
 		List<String> colorCollection = this.buildColorCollection();
-		String returned = NameTools.uniqueNameForIgnoreCase("green", colorCollection);
+		String returned = NameTools.uniqueNameIgnoreCase("green", colorCollection);
 		assertEquals("green2", returned);
 	}
 
@@ -45,7 +47,7 @@ public class NameToolsTests extends TestCase {
 		List<String> colorCollection = this.buildColorCollection();
 		colorCollection.add("Red1");
 		colorCollection.add("red2");
-		String returned = NameTools.uniqueNameForIgnoreCase("red", colorCollection);
+		String returned = NameTools.uniqueNameIgnoreCase("red", colorCollection);
 		colorCollection.remove("Red1");
 		colorCollection.remove("red2");
 		assertEquals("red3", returned);
@@ -71,12 +73,12 @@ public class NameToolsTests extends TestCase {
 		strings.add("oracle1");
 		strings.add("Oracl");
 
-		assertEquals("Oracle3", NameTools.uniqueNameFor("Oracle", strings));
-		assertEquals("Test", NameTools.uniqueNameFor("Test", strings));
+		assertEquals("Oracle3", NameTools.uniqueName("Oracle", strings));
+		assertEquals("Test", NameTools.uniqueName("Test", strings));
 
-		assertEquals("Oracle3", NameTools.uniqueNameForIgnoreCase("Oracle", strings));
-		assertEquals("oracle3", NameTools.uniqueNameForIgnoreCase("oracle", strings));
-		assertEquals("Test", NameTools.uniqueNameForIgnoreCase("Test", strings));
+		assertEquals("Oracle3", NameTools.uniqueNameIgnoreCase("Oracle", strings));
+		assertEquals("oracle3", NameTools.uniqueNameIgnoreCase("oracle", strings));
+		assertEquals("Test", NameTools.uniqueNameIgnoreCase("Test", strings));
 	}
 
 	public void testUniqueNameForCollection2() {
@@ -86,13 +88,13 @@ public class NameToolsTests extends TestCase {
 		strings.add("Oracle2");
 		strings.add("Oracle1");
 
-		assertEquals("Oracle3", NameTools.uniqueNameFor("Oracle", strings));
-		assertEquals("Test", NameTools.uniqueNameFor("Test", strings));
+		assertEquals("Oracle3", NameTools.uniqueName("Oracle", strings));
+		assertEquals("Test", NameTools.uniqueName("Test", strings));
 
 		strings.add("Oracle Corporation");
-		assertEquals("Oracle3", NameTools.uniqueNameForIgnoreCase("Oracle", strings));
-		assertEquals("oracle3", NameTools.uniqueNameForIgnoreCase("oracle", strings));
-		assertEquals("Test", NameTools.uniqueNameForIgnoreCase("Test", strings));
+		assertEquals("Oracle3", NameTools.uniqueNameIgnoreCase("Oracle", strings));
+		assertEquals("oracle3", NameTools.uniqueNameIgnoreCase("oracle", strings));
+		assertEquals("Test", NameTools.uniqueNameIgnoreCase("Test", strings));
 	}
 
 	public void testUniqueNameForCollection3() {
@@ -102,10 +104,10 @@ public class NameToolsTests extends TestCase {
 		strings.add("Oracle2");
 		strings.add("Oracle1");
 
-		assertEquals("Oracle3", NameTools.uniqueNameFor("Oracle", strings));
+		assertEquals("Oracle3", NameTools.uniqueName("Oracle", strings));
 	}
 
-	public void testUniqueNameForIterator1() {
+	public void testUniqueNameForIterable1() {
 		Collection<String> strings = new ArrayList<String>();
 		strings.add("Oracle");
 		strings.add("Oracle Corporation");
@@ -113,51 +115,51 @@ public class NameToolsTests extends TestCase {
 		strings.add("oracle1");
 		strings.add("Oracl");
 
-		assertEquals("Oracle3", NameTools.uniqueNameFor("Oracle", strings.iterator()));
-		assertEquals("Test", NameTools.uniqueNameFor("Test", strings.iterator()));
+		assertEquals("Oracle3", NameTools.uniqueName("Oracle", (Iterable<String>) strings));
+		assertEquals("Test", NameTools.uniqueName("Test", (Iterable<String>) strings));
 
-		assertEquals("Oracle3", NameTools.uniqueNameForIgnoreCase("Oracle", strings.iterator()));
-		assertEquals("oracle3", NameTools.uniqueNameForIgnoreCase("oracle", strings.iterator()));
-		assertEquals("Test", NameTools.uniqueNameForIgnoreCase("Test", strings.iterator()));
+		assertEquals("Oracle3", NameTools.uniqueNameIgnoreCase("Oracle", (Iterable<String>) strings));
+		assertEquals("oracle3", NameTools.uniqueNameIgnoreCase("oracle", (Iterable<String>) strings));
+		assertEquals("Test", NameTools.uniqueNameIgnoreCase("Test", (Iterable<String>) strings));
 	}
 
-	public void testUniqueNameForIterator2() {
+	public void testUniqueNameForIterable2() {
 		Collection<String> strings = new ArrayList<String>();
 		strings.add("Oracle");
 		strings.add("oracle");
 		strings.add("Oracle2");
 		strings.add("Oracle1");
 
-		assertEquals("Oracle3", NameTools.uniqueNameFor("Oracle", strings.iterator()));
-		assertEquals("Test", NameTools.uniqueNameFor("Test", strings.iterator()));
+		assertEquals("Oracle3", NameTools.uniqueName("Oracle", (Iterable<String>) strings));
+		assertEquals("Test", NameTools.uniqueName("Test", (Iterable<String>) strings));
 
 		strings.add("Oracle Corporation");
-		assertEquals("Oracle3", NameTools.uniqueNameForIgnoreCase("Oracle", strings.iterator()));
-		assertEquals("oracle3", NameTools.uniqueNameForIgnoreCase("oracle", strings.iterator()));
-		assertEquals("Test", NameTools.uniqueNameForIgnoreCase("Test", strings.iterator()));
+		assertEquals("Oracle3", NameTools.uniqueNameIgnoreCase("Oracle", (Iterable<String>) strings));
+		assertEquals("oracle3", NameTools.uniqueNameIgnoreCase("oracle", (Iterable<String>) strings));
+		assertEquals("Test", NameTools.uniqueNameIgnoreCase("Test", (Iterable<String>) strings));
 	}
 
-	public void testUniqueNameForIterator3() {
+	public void testUniqueNameForIterable3() {
 		Collection<String> strings = new ArrayList<String>();
 		strings.add("Oracle");
 		strings.add("Oracle");
 		strings.add("Oracle2");
 		strings.add("Oracle1");
 
-		assertEquals("Oracle3", NameTools.uniqueNameFor("Oracle", strings.iterator()));
+		assertEquals("Oracle3", NameTools.uniqueName("Oracle", (Iterable<String>) strings));
 	}
 
 	public void testBuildQualifiedDatabaseObjectName() {
-		assertEquals("catalog.schema.name", NameTools.buildQualifiedDatabaseObjectName("catalog", "schema", "name"));
-		assertEquals("catalog..name", NameTools.buildQualifiedDatabaseObjectName("catalog", null, "name"));
-		assertEquals("schema.name", NameTools.buildQualifiedDatabaseObjectName(null, "schema", "name"));
-		assertEquals("name", NameTools.buildQualifiedDatabaseObjectName(null, null, "name"));
+		assertEquals("catalog.schema.name", NameTools.buildQualifiedName("catalog", "schema", "name"));
+		assertEquals("catalog..name", NameTools.buildQualifiedName("catalog", null, "name"));
+		assertEquals("schema.name", NameTools.buildQualifiedName(null, "schema", "name"));
+		assertEquals("name", NameTools.buildQualifiedName(null, null, "name"));
 	}
 
 	public void testJavaReservedWords() {
-		assertTrue(CollectionTools.contains(NameTools.javaReservedWords(), "class"));
-		assertFalse(CollectionTools.contains(NameTools.javaReservedWords(), "Class"));
-		assertTrue(CollectionTools.contains(NameTools.javaReservedWords(), "private"));
+		assertTrue(NameTools.JAVA_RESERVED_WORDS.contains("class"));
+		assertFalse(NameTools.JAVA_RESERVED_WORDS.contains("Class"));
+		assertTrue(NameTools.JAVA_RESERVED_WORDS.contains("private"));
 	}
 
 	public void testconvertToJavaIdentifierString() {
@@ -215,12 +217,11 @@ public class NameToolsTests extends TestCase {
 	}
 
 	public void testStringIsLegalJavaIdentifier() {
-		assertFalse(NameTools.stringIsLegalJavaIdentifier("class"));
-		assertTrue(NameTools.stringIsLegalJavaIdentifier("clasS"));
+		assertFalse(NameTools.isLegalJavaIdentifier("class"));
+		assertTrue(NameTools.isLegalJavaIdentifier("clasS"));
 
-		assertFalse(NameTools.stringIsLegalJavaIdentifier("7foo"));
-		assertFalse(NameTools.stringIsLegalJavaIdentifier("foo@bar"));
-		assertTrue(NameTools.stringIsLegalJavaIdentifier("_foo"));
+		assertFalse(NameTools.isLegalJavaIdentifier("7foo"));
+		assertFalse(NameTools.isLegalJavaIdentifier("foo@bar"));
+		assertTrue(NameTools.isLegalJavaIdentifier("_foo"));
 	}
-
 }

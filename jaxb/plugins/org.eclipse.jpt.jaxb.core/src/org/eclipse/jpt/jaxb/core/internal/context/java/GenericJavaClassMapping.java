@@ -18,19 +18,20 @@ import java.util.Set;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.Bag;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.collection.Bag;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.ChainIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.ChainIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributesContainer;
@@ -245,7 +246,7 @@ public class GenericJavaClassMapping
 	
 	protected ListIterable<String> getResourcePropOrder() {
 		ListIterable<String> result = getXmlTypeAnnotation().getPropOrder();
-		if (CollectionTools.size(result) == 1 && StringTools.EMPTY_STRING.equals(CollectionTools.get(result, 0))) {
+		if (IterableTools.size(result) == 1 && StringTools.EMPTY_STRING.equals(IterableTools.get(result, 0))) {
 			return EmptyListIterable.instance();
 		}
 		return result;
@@ -574,7 +575,7 @@ public class GenericJavaClassMapping
 		}
 		
 		Set<JaxbPersistentAttribute> newAttributes = CollectionTools.set(getIncludedAttributes());
-		if (CollectionTools.elementsAreDifferent(oldAttributes, newAttributes)) {
+		if (IterableTools.elementsAreDifferent(oldAttributes, newAttributes)) {
 			fireCollectionChanged(INCLUDED_ATTRIBUTES_COLLECTION, newAttributes);
 		}
 	}
@@ -736,7 +737,7 @@ public class GenericJavaClassMapping
 	public Iterable<String> getCompletionProposals(int pos) {
 		
 		Iterable<String> result = super.getCompletionProposals(pos);
-		if (! CollectionTools.isEmpty(result)) {
+		if (! IterableTools.isEmpty(result)) {
 			return result;
 		}
 		
@@ -748,7 +749,7 @@ public class GenericJavaClassMapping
 		
 		for (JaxbPersistentAttribute attribute : this.getAttributes()) {
 			result = attribute.getCompletionProposals(pos);
-			if (!CollectionTools.isEmpty(result)) {
+			if (!IterableTools.isEmpty(result)) {
 				return result;
 			}
 		}
@@ -757,13 +758,14 @@ public class GenericJavaClassMapping
 	}
 	
 	protected Iterable<String> getPropProposals() {
-		return StringTools.convertToJavaStringLiteralContents(
-				new TransformationIterable<JaxbPersistentAttribute, String>(getAllLocallyDefinedAttributes()) {
-					@Override
-					protected String transform(JaxbPersistentAttribute o) {
-						return o.getName();
-					}
-				});
+		return new TransformationIterable<String, String>(
+					new TransformationIterable<JaxbPersistentAttribute, String>(getAllLocallyDefinedAttributes()) {
+						@Override
+						protected String transform(JaxbPersistentAttribute o) {
+							return o.getName();
+						}
+					},
+				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 	
 	
@@ -789,7 +791,7 @@ public class GenericJavaClassMapping
 		// TODO - factory class/method
 		
 		if (! JAXB.XML_TYPE__DEFAULT_FACTORY_CLASS.equals(getFactoryClass())) {
-			if (StringTools.stringIsEmpty(getFactoryMethod())) {
+			if (StringTools.isBlank(getFactoryMethod())) {
 				messages.add(
 						DefaultValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
@@ -814,7 +816,7 @@ public class GenericJavaClassMapping
 	}
 	
 	protected void validatePropOrder(List<IMessage> messages, IReporter reporter) {
-		if (CollectionTools.isEmpty(getPropOrder())) {
+		if (IterableTools.isEmpty(getPropOrder())) {
 			return;
 		}
 		

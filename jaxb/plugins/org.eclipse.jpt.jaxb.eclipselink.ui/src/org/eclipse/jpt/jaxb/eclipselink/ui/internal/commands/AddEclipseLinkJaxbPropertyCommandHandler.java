@@ -30,7 +30,6 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.resource.jaxbprops.JaxbPropertiesResource;
 import org.eclipse.jpt.jaxb.eclipselink.ui.internal.plugin.JptJaxbEclipseLinkUiPlugin;
@@ -179,7 +178,7 @@ public class AddEclipseLinkJaxbPropertyCommandHandler
 			properties.store(outStream, null);
 		}
 		catch (Exception e) {
-			JptJaxbCorePlugin.instance().logError(e);
+			JptJaxbEclipseLinkUiPlugin.instance().logError(e);
 			return new ByteArrayInputStream(new byte[0]);
 		}
 		finally {

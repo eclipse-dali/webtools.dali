@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,6 @@ package org.eclipse.jpt.common.utility.internal.model;
 import java.util.Collection;
 import java.util.EventListener;
 import java.util.List;
-
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
@@ -26,10 +25,6 @@ import org.eclipse.jpt.common.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.common.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeAddEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeChangeEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeClearEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeRemoveEvent;
 
 /**
  * This change support class changes the behavior of the standard
@@ -325,56 +320,4 @@ public class SingleAspectChangeSupport
 		this.check(LIST_CHANGE_LISTENER_CLASS, listName);
 		super.fireListChanged(listName, list);
 	}
-
-
-	// ********** tree change support **********
-
-	@Override
-	public void fireNodeAdded(TreeAddEvent event) {
-		this.check(TREE_CHANGE_LISTENER_CLASS, event.getTreeName());
-		super.fireNodeAdded(event);
-	}
-
-	@Override
-	public void fireNodeAdded(String treeName, List<?> path) {
-		this.check(TREE_CHANGE_LISTENER_CLASS, treeName);
-		super.fireNodeAdded(treeName, path);
-	}
-
-	@Override
-	public void fireNodeRemoved(TreeRemoveEvent event) {
-		this.check(TREE_CHANGE_LISTENER_CLASS, event.getTreeName());
-		super.fireNodeRemoved(event);
-	}
-
-	@Override
-	public void fireNodeRemoved(String treeName, List<?> path) {
-		this.check(TREE_CHANGE_LISTENER_CLASS, treeName);
-		super.fireNodeRemoved(treeName, path);
-	}
-
-	@Override
-	public void fireTreeCleared(TreeClearEvent event) {
-		this.check(TREE_CHANGE_LISTENER_CLASS, event.getTreeName());
-		super.fireTreeCleared(event);
-	}
-
-	@Override
-	public void fireTreeCleared(String treeName) {
-		this.check(TREE_CHANGE_LISTENER_CLASS, treeName);
-		super.fireTreeCleared(treeName);
-	}
-
-	@Override
-	public void fireTreeChanged(TreeChangeEvent event) {
-		this.check(TREE_CHANGE_LISTENER_CLASS, event.getTreeName());
-		super.fireTreeChanged(event);
-	}
-
-	@Override
-	public void fireTreeChanged(String treeName, Collection<?> nodes) {
-		this.check(TREE_CHANGE_LISTENER_CLASS, treeName);
-		super.fireTreeChanged(treeName, nodes);
-	}
-
 }

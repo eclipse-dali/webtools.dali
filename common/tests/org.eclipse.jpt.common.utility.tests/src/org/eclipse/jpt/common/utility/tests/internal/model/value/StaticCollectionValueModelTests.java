@@ -11,8 +11,9 @@ package org.eclipse.jpt.common.utility.tests.internal.model.value;
 
 import java.util.Collection;
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.HashBag;
+
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;

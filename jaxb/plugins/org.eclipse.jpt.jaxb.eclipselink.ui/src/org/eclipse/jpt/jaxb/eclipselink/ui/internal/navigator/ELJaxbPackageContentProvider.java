@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.ui.internal.navigator;
 
-import org.eclipse.jpt.common.utility.internal.NotNullFilter;
+import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.FilteringCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
@@ -30,7 +30,7 @@ public class ELJaxbPackageContentProvider
 	
 	@Override
 	protected CollectionValueModel<JaxbContextNode> buildChildrenModel() {
-		return new CompositeCollectionValueModel(
+		return CompositeCollectionValueModel.forModels(
 				buildOxmFileChildrenModel(),
 				super.buildChildrenModel());
 	}

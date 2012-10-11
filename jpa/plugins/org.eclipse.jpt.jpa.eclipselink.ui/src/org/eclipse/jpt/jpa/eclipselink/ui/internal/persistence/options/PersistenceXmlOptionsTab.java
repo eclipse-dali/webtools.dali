@@ -14,25 +14,29 @@ import java.util.Comparator;
 import java.util.Iterator;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.StringConverter;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.StringConverter;
-import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
+import org.eclipse.jpt.common.utility.internal.iterator.TransformationIterator;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.StringObjectTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logging;
@@ -142,7 +146,7 @@ public class PersistenceXmlOptionsTab<T extends PersistenceUnit>
 			container,
 			this.buildDefaultSessionNameListHolder(),
 			this.buildSessionNameHolder(),
-			StringConverter.Default.<String>instance(),
+			StringObjectTransformer.<String>instance(),
 			EclipseLinkHelpContextIds.PERSISTENCE_OPTIONS_SESSION_NAME
 			
 		);
@@ -154,7 +158,7 @@ public class PersistenceXmlOptionsTab<T extends PersistenceUnit>
 			container,
 			this.buildDefaultSessionsXmlFileNameListHolder(),
 			this.buildSessionsXmlFileNameHolder(),
-			StringConverter.Default.<String>instance(),
+			StringObjectTransformer.<String>instance(),
 			EclipseLinkHelpContextIds.PERSISTENCE_OPTIONS_SESSIONS_XML);
 		SWTUtil.attachDefaultValueHandler(sessionsXmlCombo);
 
@@ -437,9 +441,10 @@ public class PersistenceXmlOptionsTab<T extends PersistenceUnit>
 		};
 	}
 
-	private StringConverter<String> buildTargetDatabaseConverter() {
-		return new StringConverter<String>() {
-			public String convertToString(String value) {
+	private Transformer<String, String> buildTargetDatabaseConverter() {
+		return new TransformerAdapter<String, String>() {
+			@Override
+			public String transform(String value) {
 				try {
 					TargetDatabase.valueOf(value);
 					value = buildTargetDatabaseDisplayString(value);
@@ -479,11 +484,11 @@ public class PersistenceXmlOptionsTab<T extends PersistenceUnit>
 		ArrayList<ListValueModel<String>> holders = new ArrayList<ListValueModel<String>>(2);
 		holders.add(buildDefaultTargetDatabaseListHolder());
 		holders.add(buildTargetDatabasesListHolder());
-		return new CompositeListValueModel<ListValueModel<String>, String>(holders);
+		return CompositeListValueModel.forModels(holders);
 	}
 
 	private Iterator<String> buildTargetDatabases() {
-		return new TransformationIterator<TargetDatabase, String>(CollectionTools.iterator(TargetDatabase.values())) {
+		return new TransformationIterator<TargetDatabase, String>(IteratorTools.iterator(TargetDatabase.values())) {
 			@Override
 			protected String transform(TargetDatabase next) {
 				return next.name();
@@ -573,9 +578,10 @@ public class PersistenceXmlOptionsTab<T extends PersistenceUnit>
 		};
 	}
 
-	private StringConverter<String> buildTargetServerConverter() {
-		return new StringConverter<String>() {
-			public String convertToString(String value) {
+	private Transformer<String, String> buildTargetServerConverter() {
+		return new TransformerAdapter<String, String>() {
+			@Override
+			public String transform(String value) {
 				try {
 					TargetServer.valueOf(value);
 					value = buildTargetServerDisplayString(value);
@@ -613,11 +619,11 @@ public class PersistenceXmlOptionsTab<T extends PersistenceUnit>
 		ArrayList<ListValueModel<String>> holders = new ArrayList<ListValueModel<String>>(2);
 		holders.add(buildDefaultTargetServerListHolder());
 		holders.add(buildTargetServersListHolder());
-		return new CompositeListValueModel<ListValueModel<String>, String>(holders);
+		return CompositeListValueModel.forModels(holders);
 	}
 
 	private Iterator<String> buildTargetServers() {
-		return new TransformationIterator<TargetServer, String>(CollectionTools.iterator(TargetServer.values())) {
+		return new TransformationIterator<TargetServer, String>(IteratorTools.iterator(TargetServer.values())) {
 			@Override
 			protected String transform(TargetServer next) {
 				return next.name();

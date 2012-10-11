@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * Wrap a declaration annotation element adapter that deals with AST
@@ -96,7 +96,7 @@ public class ConversionDeclarationAnnotationElementAdapter<T>
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.adapter);
+		return ObjectTools.toString(this, this.adapter);
 	}
 
 

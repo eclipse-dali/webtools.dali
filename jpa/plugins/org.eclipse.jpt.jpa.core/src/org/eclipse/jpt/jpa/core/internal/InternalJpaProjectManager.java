@@ -42,17 +42,17 @@ import org.eclipse.jpt.common.core.internal.utility.command.SimpleJobCommandExec
 import org.eclipse.jpt.common.core.internal.utility.command.SingleUseQueueingExtendedJobCommandExecutor;
 import org.eclipse.jpt.common.core.utility.command.ExtendedJobCommandExecutor;
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
-import org.eclipse.jpt.common.utility.BooleanReference;
 import org.eclipse.jpt.common.utility.ExceptionHandler;
-import org.eclipse.jpt.common.utility.ModifiableObjectReference;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.command.ThreadLocalExtendedCommandExecutor;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SnapshotCloneIterable;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
+import org.eclipse.jpt.common.utility.reference.BooleanReference;
+import org.eclipse.jpt.common.utility.reference.ModifiableObjectReference;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -61,7 +61,7 @@ import org.eclipse.jpt.jpa.core.JpaWorkspace;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
@@ -654,8 +654,8 @@ public class InternalJpaProjectManager
 		if (jpaFacetVersion == null) {
 			return null;
 		}
-		JpaPlatformDescription desc = this.jpaWorkspace.getJpaPlatformManager().getDefaultJpaPlatformDescription(jpaFacetVersion);
-		return (desc == null) ? null : desc.getId();
+		JpaPlatformConfig config = this.jpaWorkspace.getJpaPlatformManager().getDefaultJpaPlatformConfig(jpaFacetVersion);
+		return (config == null) ? null : config.getId();
 	}
 
 	private IProjectFacetVersion getJpaFacetVersion(IProject project) {
@@ -1042,7 +1042,7 @@ public class InternalJpaProjectManager
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.jobCommand);
+			return ObjectTools.toString(this, this.jobCommand);
 		}
 	}
 
@@ -1109,7 +1109,7 @@ public class InternalJpaProjectManager
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this);
+			return ObjectTools.toString(this);
 		}
 	}
 
@@ -1281,7 +1281,7 @@ public class InternalJpaProjectManager
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this);
+			return ObjectTools.toString(this);
 		}
 	}
 
@@ -1306,7 +1306,7 @@ public class InternalJpaProjectManager
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.isActive() ? "active" : "inactive"); //$NON-NLS-1$ //$NON-NLS-2$
+			return ObjectTools.toString(this, this.isActive() ? "active" : "inactive"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 

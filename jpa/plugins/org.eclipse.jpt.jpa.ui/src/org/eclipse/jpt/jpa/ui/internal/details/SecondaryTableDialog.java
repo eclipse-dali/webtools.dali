@@ -382,7 +382,7 @@ public class SecondaryTableDialog extends Dialog {
 	}
 
 	protected boolean validateEntryValues() {
-		return ! StringTools.stringIsEmpty(this.tableCombo.getText());
+		return ! StringTools.isBlank(this.tableCombo.getText());
 	}
 
 

@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
@@ -120,7 +120,7 @@ public class GenericOrmCollectionTable2_0
 		}
 
 		public org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName) {
-			return Tools.valuesAreEqual(GenericOrmCollectionTable2_0.this.getName(), tableName) ?
+			return ObjectTools.equals(GenericOrmCollectionTable2_0.this.getName(), tableName) ?
 					GenericOrmCollectionTable2_0.this.getDbTable() :
 					null;
 		}

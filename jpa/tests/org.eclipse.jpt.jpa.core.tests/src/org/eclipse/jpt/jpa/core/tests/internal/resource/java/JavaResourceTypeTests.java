@@ -18,9 +18,9 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement.Editor;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceEmbeddableAnnotation;
 import org.eclipse.jpt.jpa.core.internal.resource.java.source.SourceEntityAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.EmbeddableAnnotation;
@@ -596,8 +596,8 @@ public class JavaResourceTypeTests extends JpaJavaResourceModelTestCase {
 		ICompilationUnit cu = createTestEntityWithMemberTypes();
 		JavaResourceType resourceType = buildJavaResourceType(cu);
 		
-		assertEquals("only not classes and interfaces should be returned by #getTypes()", 2, CollectionTools.size(resourceType.getTypes()));
-		assertEquals("only enums should be returned by #getEnums()", 1, CollectionTools.size(resourceType.getEnums()));
+		assertEquals("only not classes and interfaces should be returned by #getTypes()", 2, IterableTools.size(resourceType.getTypes()));
+		assertEquals("only enums should be returned by #getEnums()", 1, IterableTools.size(resourceType.getEnums()));
 	}
 	
 	public void testDuplicateEntityAnnotations() throws Exception {

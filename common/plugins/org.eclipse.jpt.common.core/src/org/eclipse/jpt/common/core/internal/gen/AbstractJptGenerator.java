@@ -41,7 +41,6 @@ import org.eclipse.jpt.common.core.gen.JptGenerator;
 import org.eclipse.jpt.common.core.gen.LaunchConfigListener;
 import org.eclipse.jpt.common.core.internal.JptCommonCoreMessages;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
 import org.eclipse.osgi.service.datalocation.Location;
 import org.osgi.framework.Bundle;
@@ -201,10 +200,8 @@ public abstract class AbstractJptGenerator implements JptGenerator
 			}
 
 			private boolean generationIsSuccessful(ILaunch launch) {
-				Iterator<IProcess> processes = CollectionTools.iterator(launch.getProcesses());
 				int exitValue = -1;
-				while (processes.hasNext()) {
-					IProcess process = (IProcess)processes.next();
+				for (IProcess process : launch.getProcesses()) {
 					try {
 						exitValue = process.getExitValue();
 						break;

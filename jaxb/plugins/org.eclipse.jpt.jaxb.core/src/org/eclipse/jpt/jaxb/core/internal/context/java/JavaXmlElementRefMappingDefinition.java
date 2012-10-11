@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.ArrayListIterable;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;

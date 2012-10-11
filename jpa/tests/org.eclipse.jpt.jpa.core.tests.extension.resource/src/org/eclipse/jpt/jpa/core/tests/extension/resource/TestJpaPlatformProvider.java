@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.tests.extension.resource;
 
 import java.util.ArrayList;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.jpa.core.JpaPlatformProvider;
 import org.eclipse.jpt.jpa.core.JpaResourceModelProvider;
 import org.eclipse.jpt.jpa.core.ResourceDefinition;

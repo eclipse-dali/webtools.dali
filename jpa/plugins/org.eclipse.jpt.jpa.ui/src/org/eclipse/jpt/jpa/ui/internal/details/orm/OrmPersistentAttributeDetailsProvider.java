@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
@@ -48,7 +48,7 @@ public class OrmPersistentAttributeDetailsProvider
 	
 	
 	public boolean providesDetails(JpaStructureNode structureNode) {
-			return Tools.valuesAreEqual(structureNode.getType(), OrmPersistentAttribute.class)
+			return ObjectTools.equals(structureNode.getType(), OrmPersistentAttribute.class)
 				&& structureNode.getResourceType().getContentType().isKindOf(ResourceMappingFile.Root.CONTENT_TYPE);
 	}
 	

@@ -307,10 +307,7 @@ public class EntityCachingPropertyComposite extends Pane<CachingEntity> {
 		ArrayList<ListValueModel<Boolean>> holders = new ArrayList<ListValueModel<Boolean>>(2);
 		holders.add(buildSharedCacheListHolder());
 		holders.add(buildDefaultSharedCacheListHolder());
-
-		return new CompositeListValueModel<ListValueModel<Boolean>, Boolean>(
-			holders
-		);
+		return CompositeListValueModel.forModels(holders);
 	}
 
 	private ListValueModel<Boolean> buildSharedCacheListHolder() {

@@ -26,12 +26,14 @@ import org.eclipse.jpt.common.core.internal.resource.java.source.SourceNode;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.ClassName;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
-import org.eclipse.jpt.common.utility.internal.Transformer;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.ClassNameTools;
+import org.eclipse.jpt.common.utility.internal.TypeDeclarationTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
 import org.eclipse.jpt.jpa.core.context.ColumnMapping;
@@ -69,21 +71,21 @@ public final class MappingTools {
 			return false;
 		}
 
-		int arrayDepth = ReflectionTools.getArrayDepthForTypeDeclaration(fullyQualifiedName);
+		int arrayDepth = TypeDeclarationTools.arrayDepth(fullyQualifiedName);
 		if (arrayDepth > 1) {
 			return false;  // multi-dimensional arrays are not supported
 		}
 
 		if (arrayDepth == 1) {
-			String elementTypeName = ReflectionTools.getElementTypeNameForTypeDeclaration(fullyQualifiedName, 1);
+			String elementTypeName = TypeDeclarationTools.elementTypeName(fullyQualifiedName, 1);
 			return elementTypeIsValidForBasicArray(elementTypeName);
 		}
 
 		// arrayDepth == 0
-		if (ClassName.isVariablePrimitive(fullyQualifiedName)) {
+		if (ClassNameTools.isVariablePrimitive(fullyQualifiedName)) {
 			return true;  // any primitive but 'void'
 		}
-		if (ClassName.isVariablePrimitiveWrapper(fullyQualifiedName)) {
+		if (ClassNameTools.isVariablePrimitiveWrapper(fullyQualifiedName)) {
 			return true;  // any primitive wrapper but 'java.lang.Void'
 		}
 		if (typeIsOtherValidBasicType(fullyQualifiedName)) {
@@ -540,7 +542,7 @@ public final class MappingTools {
 	 * Returns sorted names of interfaces of the given project
 	 */
 	public static Iterable<String> getSortedJavaInterfaceNames(IJavaProject javaProject) {
-		return CollectionTools.sort(getJavaInterfaceNames(javaProject));
+		return IterableTools.sort(getJavaInterfaceNames(javaProject));
 	}
 	
 	/**
@@ -576,7 +578,7 @@ public final class MappingTools {
 	 * Returns sorted names of classes of the given project
 	 */
 	public static Iterable<String> getSortedJavaClassNames(IJavaProject javaProject) {
-		return CollectionTools.sort(getJavaClassNames(javaProject));
+		return IterableTools.sort(getJavaClassNames(javaProject));
 	}
 	
 	/**
@@ -642,7 +644,7 @@ public final class MappingTools {
 	 * Returns sorted names of enums in the given project
 	 */
 	public static Iterable<String> getSortedJavaEnumNames(IJavaProject javaProject) {
-		return CollectionTools.sort(getJavaEnumNames(javaProject));
+		return IterableTools.sort(getJavaEnumNames(javaProject));
 	}
 	
 	/**
@@ -673,7 +675,7 @@ public final class MappingTools {
 	 * Returns the names of basic array types.
 	 */
 	public static Iterable<String> getBasicArrayTypeNames() {
-		return CollectionTools.list(BASIC_ARRAY_TYPE_NAMES);
+		return ListTools.list(BASIC_ARRAY_TYPE_NAMES);
 	}
 	
 	
@@ -682,8 +684,8 @@ public final class MappingTools {
 	 */
 	public static Iterable<String> getPrimaryBasicTypeNamesWithoutPrimitives() {
 		List<String> names = new ArrayList<String>();
-		names.addAll(CollectionTools.list(PRIMITIVE_WRAPPER_TYPE_NAMES));
-		names.addAll(CollectionTools.list(OTHER_VALID_BASIC_TYPE_NAMES));
+		CollectionTools.addAll(names, PRIMITIVE_WRAPPER_TYPE_NAMES);
+		CollectionTools.addAll(names, OTHER_VALID_BASIC_TYPE_NAMES);
 		return names;
 	}
 	
@@ -692,9 +694,9 @@ public final class MappingTools {
 	 */
 	public static Iterable<String> getPrimaryBasicTypeNames() {
 		List<String> names = new ArrayList<String>();
-		names.addAll(CollectionTools.list(PRIMITIVE_TYPE_NAMES));
-		names.addAll(CollectionTools.list(PRIMITIVE_WRAPPER_TYPE_NAMES));
-		names.addAll(CollectionTools.list(OTHER_VALID_BASIC_TYPE_NAMES));
+		CollectionTools.addAll(names, PRIMITIVE_TYPE_NAMES);
+		CollectionTools.addAll(names, PRIMITIVE_WRAPPER_TYPE_NAMES);
+		CollectionTools.addAll(names, OTHER_VALID_BASIC_TYPE_NAMES);
 		return names;
 	}
 	
@@ -708,8 +710,8 @@ public final class MappingTools {
 	 */
 	public static Iterable<String> getAllBasicTypeNames() {
 		List<String> names = new ArrayList<String>();
-		names.addAll(CollectionTools.list(getPrimaryBasicTypeNames()));
-		names.addAll(CollectionTools.list(BASIC_ARRAY_TYPE_NAMES));
+		CollectionTools.addAll(names, getPrimaryBasicTypeNames());
+		CollectionTools.addAll(names, BASIC_ARRAY_TYPE_NAMES);
 		names.add(Enum.class.getSimpleName());
 		return names;
 	}
@@ -719,7 +721,7 @@ public final class MappingTools {
 	 */
 	public static Iterable<String> getCollectionTypeNames() {
 		List<String> names = new ArrayList<String>();
-		names.addAll(CollectionTools.list(COLLECTION_TYPE_NAMES));
+		CollectionTools.addAll(names, COLLECTION_TYPE_NAMES);
 		return names;
 	}
 

@@ -10,8 +10,9 @@
 package org.eclipse.jpt.jpa.core.context;
 
 import java.io.Serializable;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Transformer;
+
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * Named context node. Sorta. :-)
@@ -57,7 +58,7 @@ public interface JpaNamedContextNode
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildSingletonToString(this);
+			return ObjectTools.singletonToString(this);
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {

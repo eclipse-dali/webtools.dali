@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal;
 import java.util.ArrayList;
 import org.eclipse.jpt.common.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.jpa.core.JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.jpa.core.internal.resource.java.AssociationOverrideAnnotationDefinition;
 import org.eclipse.jpt.jpa.core.internal.resource.java.AssociationOverridesAnnotationDefinition;

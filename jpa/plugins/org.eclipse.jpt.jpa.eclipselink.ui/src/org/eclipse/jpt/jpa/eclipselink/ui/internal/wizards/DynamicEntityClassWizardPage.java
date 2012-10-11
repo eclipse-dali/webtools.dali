@@ -43,10 +43,10 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaProject;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_1JpaPlatformFactory;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkJpaPlatformVersion;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
@@ -441,8 +441,8 @@ public class DynamicEntityClassWizardPage extends DataModelWizardPage{
 	}
 
 	protected String getJpaPlatformGroupId(IProject project) {
-		JpaPlatformDescription desc = (JpaPlatformDescription) project.getAdapter(JpaPlatformDescription.class);
-		return desc.getGroupDescription().getId();
+		JpaPlatformConfig config = (JpaPlatformConfig) project.getAdapter(JpaPlatformConfig.class);
+		return config.getGroupConfig().getId();
 	}
 	
 	private boolean projectIsEclipseLink2_1Compatible(IProject project) {
@@ -540,7 +540,7 @@ public class DynamicEntityClassWizardPage extends DataModelWizardPage{
 			for (IPackageFragmentRoot packageRoot : packRoots) {
 				for (IJavaElement element : packageRoot.getChildren()) {
 					// eliminate the duplicate package names
-					if (!CollectionTools.contains(getJavaElementNames(pkList), element.getElementName())) {
+					if (!IterableTools.contains(getJavaElementNames(pkList), element.getElementName())) {
 						pkList.add(element);
 					}
 				}

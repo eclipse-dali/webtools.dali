@@ -16,7 +16,7 @@ import java.util.prefs.NodeChangeListener;
 import java.util.prefs.PreferenceChangeListener;
 import java.util.prefs.Preferences;
 
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.prefs.PreferencePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.prefs.PreferencesCollectionValueModel;
@@ -63,11 +63,23 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 		this.testNode.put(KEY_NAME_3, STRING_VALUE_3);	this.expectedValues.put(KEY_NAME_3, STRING_VALUE_3);
 
 		this.nodeHolder = new SimplePropertyValueModel<Preferences>(this.testNode);
-		this.preferencesAdapter = new PreferencesCollectionValueModel<String>(this.nodeHolder);
+		this.preferencesAdapter = new PreferencesCollectionValueModel<String>(this.nodeHolder, new XXX());
 		this.listener = this.buildCollectionChangeListener();
 		this.itemListener = this.buildItemListener();
 		this.preferencesAdapter.addCollectionChangeListener(CollectionValueModel.VALUES, this.listener);
 		this.event = null;
+	}
+
+	protected static class XXX
+		implements PreferencesCollectionValueModel.Adapter<String>
+	{
+		public PreferencePropertyValueModel<String> buildPreferenceModel(PropertyValueModel<? extends Preferences> preferencesModel, String key) {
+			return PreferencePropertyValueModel.forString(preferencesModel, key, null);
+		}
+		@Override
+		public String toString() {
+			return ObjectTools.toString(this);
+		}
 	}
 
 	private CollectionChangeListener buildCollectionChangeListener() {
@@ -305,7 +317,7 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 	}
 
 	private boolean nodeHasAnyPrefListeners(Preferences node) throws Exception {
-		PreferenceChangeListener[] prefListeners = (PreferenceChangeListener[]) ReflectionTools.getFieldValue(node, "prefListeners");
+		PreferenceChangeListener[] prefListeners = (PreferenceChangeListener[]) ObjectTools.get(node, "prefListeners");
 		return prefListeners.length > 0;
 	}
 

@@ -17,8 +17,8 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.BasicMapping;
 import org.eclipse.jpt.jpa.core.context.EmbeddedIdMapping;
@@ -717,7 +717,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
 		
 		Iterator<NestableAnnotation> javaJoinColumns = resourceField.getAnnotations(JPA.JOIN_COLUMN).iterator();
-		assertEquals(3, CollectionTools.size(javaJoinColumns));
+		assertEquals(3, IteratorTools.size(javaJoinColumns));
 		
 		joinColumns.moveSpecifiedJoinColumn(2, 0);
 		ListIterator<? extends JoinColumn> primaryKeyJoinColumns = joinColumns.getSpecifiedJoinColumns().iterator();

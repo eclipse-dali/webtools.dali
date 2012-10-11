@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPrimaryKeyJoinColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmEntity;

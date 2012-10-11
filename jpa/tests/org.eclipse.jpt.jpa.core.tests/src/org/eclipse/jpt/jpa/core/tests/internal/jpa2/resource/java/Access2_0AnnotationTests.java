@@ -14,8 +14,8 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.Access2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.java.AccessType;
@@ -106,7 +106,7 @@ public class Access2_0AnnotationTests extends JavaResourceModel2_0TestCase {
 	public void testGetAccessOnField() throws Exception {
 		ICompilationUnit cu = this.createTestAccessOnField();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		Access2_0Annotation access = (Access2_0Annotation) resourceField.getAnnotation(JPA2_0.ACCESS);
 		assertNotNull(access);
@@ -116,7 +116,7 @@ public class Access2_0AnnotationTests extends JavaResourceModel2_0TestCase {
 	public void testSetAccessOnField() throws Exception {
 		ICompilationUnit cu = this.createTestType();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		Access2_0Annotation access = (Access2_0Annotation) resourceField.getAnnotation(JPA2_0.ACCESS);
 		assertNull(access);
@@ -142,7 +142,7 @@ public class Access2_0AnnotationTests extends JavaResourceModel2_0TestCase {
 	public void testGetAccessOnProperty() throws Exception {
 		ICompilationUnit cu = this.createTestAccessOnProperty();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceMethod resourceMethod = CollectionTools.get(resourceType.getMethods(), 0);
+		JavaResourceMethod resourceMethod = IterableTools.get(resourceType.getMethods(), 0);
 		
 		Access2_0Annotation access = (Access2_0Annotation) resourceMethod.getAnnotation(JPA2_0.ACCESS);
 		assertNotNull(access);
@@ -152,7 +152,7 @@ public class Access2_0AnnotationTests extends JavaResourceModel2_0TestCase {
 	public void testSetAccessOnProperty() throws Exception {
 		ICompilationUnit cu = this.createTestType();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceMethod resourceMethod = CollectionTools.get(resourceType.getMethods(), 0);
+		JavaResourceMethod resourceMethod = IterableTools.get(resourceType.getMethods(), 0);
 		
 		Access2_0Annotation access = (Access2_0Annotation) resourceMethod.getAnnotation(JPA2_0.ACCESS);
 		assertNull(access);

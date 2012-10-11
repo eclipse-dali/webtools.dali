@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
 import java.util.List;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
@@ -181,7 +181,7 @@ public abstract class AbstractOrmJoinTableRelationshipStrategy
 	}
 
 	public boolean tableNameIsInvalid(String tableName) {
-		return Tools.valuesAreDifferent(this.getTableName(), tableName);
+		return ObjectTools.notEquals(this.getTableName(), tableName);
 	}
 
 	public String getColumnTableNotValidDescription() {

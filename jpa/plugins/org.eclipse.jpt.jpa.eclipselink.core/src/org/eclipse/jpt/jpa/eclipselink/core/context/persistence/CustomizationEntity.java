@@ -39,7 +39,7 @@ public class CustomizationEntity extends AbstractModel implements Cloneable, Ser
 	}
 	
 	private void initialize(String name) {
-		if(StringTools.stringIsEmpty(name)) {
+		if(StringTools.isBlank(name)) {
 			throw new IllegalArgumentException();
 		}
 		this.name = name;
@@ -78,7 +78,7 @@ public class CustomizationEntity extends AbstractModel implements Cloneable, Ser
 	}
 	
 	public boolean entityNameIsValid() {
-		return ! StringTools.stringIsEmpty(this.name);
+		return ! StringTools.isBlank(this.name);
 	}
 
 	public Customization getParent() {

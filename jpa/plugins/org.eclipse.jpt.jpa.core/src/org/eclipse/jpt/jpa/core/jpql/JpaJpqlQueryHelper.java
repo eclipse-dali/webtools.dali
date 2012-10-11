@@ -16,7 +16,7 @@ package org.eclipse.jpt.jpa.core.jpql;
 import java.util.List;
 import org.eclipse.jpt.common.core.internal.utility.SimpleTextRange;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
@@ -223,7 +223,7 @@ public abstract class JpaJpqlQueryHelper extends AbstractJPQLQueryHelper {
 	}
 
 	protected boolean shouldValidate(NamedQuery namedQuery) {
-		return ! StringTools.stringsAreEqual(
+		return ObjectTools.notEquals(
 				getValidationPreference(namedQuery), 
 				JpaPreferences.PROBLEM_IGNORE);
 	}

@@ -24,7 +24,7 @@ public class JaxbFacetInstallDataModelProvider
 		boolean ok = super.propertySet(propertyName, propertyValue);
 		
 		if (propertyName.equals(FACET_VERSION)) {
-			if (! getPlatform().supportsJaxbFacetVersion(getProjectFacetVersion())) {
+			if (! getPlatformConfig().supportsJaxbFacetVersion(getProjectFacetVersion())) {
 				getDataModel().setProperty(PLATFORM, null);
 			}
 		}

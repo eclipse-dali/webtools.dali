@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWra
 import org.eclipse.jpt.common.ui.internal.swt.DisposeAdapter;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.utility.internal.RunnableAdapter;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -201,7 +201,7 @@ abstract class BooleanStateController {
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.booleanModel);
+		return ObjectTools.toString(this, this.booleanModel);
 	}
 
 

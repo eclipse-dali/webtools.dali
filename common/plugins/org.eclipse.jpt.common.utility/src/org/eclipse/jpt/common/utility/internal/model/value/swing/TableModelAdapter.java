@@ -92,6 +92,8 @@ public class TableModelAdapter<E>
 	 */
 	private final PropertyChangeListener cellListener;
 
+	private static final long serialVersionUID = 1L;
+
 
 	// ********** constructors **********
 
@@ -417,4 +419,39 @@ public class TableModelAdapter<E>
 		this.fireTableDataChanged();
 	}
 
+
+	/**
+	 * This adapter is used by the table model adapter to
+	 * convert a model object into the models used for each of
+	 * the cells for the object's corresponding row in the table.
+	 */
+	public interface ColumnAdapter {
+		/**
+		 * Return the number of columns in the table.
+		 * Typically this is static.
+		 */
+		int columnCount();
+
+		/**
+		 * Return the name of the specified column.
+		 */
+		String columnName(int index);
+
+		/**
+		 * Return the class of the specified column.
+		 */
+		Class<?> columnClass(int index);
+
+		/**
+		 * Return whether the specified column is editable.
+		 * Typically this is the same for every row.
+		 */
+		boolean columnIsEditable(int index);
+
+		/**
+		 * Return the cell models for the specified subject
+		 * that corresponds to a single row in the table.
+		 */
+		ModifiablePropertyValueModel<Object>[] cellModels(Object subject);
+	}
 }

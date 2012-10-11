@@ -17,9 +17,9 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.SnapshotCloneIterable;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextRoot;
@@ -169,7 +169,7 @@ public class ELJaxbContextRootImpl
 		for (JaxbPackage jp : getPackages()) {
 			String pn = jp.getName();
 			JaxbPropertiesResource jpr = getJaxbProject().getJaxbPropertiesResource(pn);
-			if (jpr != null && StringTools.stringsAreEqual(jpr.getProperty(factoryProp), factoryPropValue)) {
+			if (jpr != null && ObjectTools.equals(jpr.getProperty(factoryProp), factoryPropValue)) {
 				return;
 			}
 		}

@@ -23,10 +23,10 @@ import org.eclipse.jdt.ui.text.java.IJavaCompletionProposalComputer;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
-import org.eclipse.jpt.common.utility.Filter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
@@ -141,7 +141,7 @@ public class JpaJavaCompletionProposalComputer
 
 		List<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
 		for (JpaStructureNode structureNode : rootStructureNodes) {
-			for (String s : this.getCompletionProposals((JavaPersistentType) structureNode, context.getInvocationOffset(), filter)) {
+			for (String s : this.buildCompletionProposals((JavaPersistentType) structureNode, context.getInvocationOffset(), filter)) {
 				if (tokenKind == CompletionContext.TOKEN_KIND_STRING_LITERAL) {//already quoted
 					proposals.add(new CompletionProposal(s , tokenStart + 1, tokenEnd - tokenStart - 1, s.length()));					
 				}
@@ -153,7 +153,7 @@ public class JpaJavaCompletionProposalComputer
 		return proposals;
 	}
 
-	private Iterable<String> getCompletionProposals(JavaPersistentType structureNode, int pos, Filter<String> filter) {
+	private Iterable<String> buildCompletionProposals(JavaPersistentType structureNode, int pos, Filter<String> filter) {
 		return new FilteringIterable<String>(structureNode.getCompletionProposals(pos), filter);
 	}
 
@@ -198,7 +198,7 @@ public class JpaJavaCompletionProposalComputer
 			this.prefix = new String(prefix);
 		}
 		public boolean accept(String s) {
-			return StringTools.stringStartsWithIgnoreCase(s, this.prefix);
+			return StringTools.startsWithIgnoreCase(s, this.prefix);
 		}
 	}
 }

@@ -13,16 +13,19 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jaxb.core.JaxbFacet;
-import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
+import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
+import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.libprov.JaxbLibraryProviderInstallOperationConfig;
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformManager;
 import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
 import org.eclipse.jst.common.project.facet.core.libprov.IPropertyChangeListener;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
@@ -86,7 +89,7 @@ public abstract class JaxbFacetDataModelProvider
 			return JaxbFacet.ID;
 		}
 		else if (propertyName.equals(PLATFORM)) {
-			return getDefaultPlatform();
+			return getDefaultPlatformConfig();
 		}
 		else if (propertyName.equals(LIBRARY_INSTALL_DELEGATE)) {
 			return getDefaultLibraryInstallDelegate();
@@ -95,8 +98,8 @@ public abstract class JaxbFacetDataModelProvider
 		return super.getDefaultProperty(propertyName);
 	}
 	
-	protected JaxbPlatformDescription getDefaultPlatform() {
-		return JptJaxbCorePlugin.getDefaultPlatform(getProjectFacetVersion());
+	protected JaxbPlatformConfig getDefaultPlatformConfig() {
+		return this.getJaxbPlatformManager().getDefaultJaxbPlatformConfig(getProjectFacetVersion());
 	}
 	
 	protected LibraryInstallDelegate getDefaultLibraryInstallDelegate() {
@@ -153,7 +156,7 @@ public abstract class JaxbFacetDataModelProvider
 				}
 			}
 			for (JaxbLibraryProviderInstallOperationConfig jaxbConfig : jaxbConfigs) {
-				jaxbConfig.setJaxbPlatform(getPlatform());
+				jaxbConfig.setJaxbPlatformConfig(getPlatformConfig());
 			}
 		}
 	}
@@ -189,38 +192,45 @@ public abstract class JaxbFacetDataModelProvider
 	}
 	
 	protected DataModelPropertyDescriptor[] buildValidPlatformDescriptors() {
-		Iterable<JaxbPlatformDescription> validPlatformDescriptions = buildValidPlatformDescriptions();
+		Iterable<JaxbPlatformConfig> validPlatformConfigs = buildValidPlatformConfigs();
 		Iterable<DataModelPropertyDescriptor> validPlatformDescriptors =
-				new TransformationIterable<JaxbPlatformDescription, DataModelPropertyDescriptor>(validPlatformDescriptions) {
+				new TransformationIterable<JaxbPlatformConfig, DataModelPropertyDescriptor>(validPlatformConfigs) {
 					@Override
-					protected DataModelPropertyDescriptor transform(JaxbPlatformDescription description) {
-						return buildPlatformDescriptor(description);
+					protected DataModelPropertyDescriptor transform(JaxbPlatformConfig config) {
+						return buildPlatformDescriptor(config);
 					}
 				};
 		return ArrayTools.sort(ArrayTools.array(validPlatformDescriptors, EMPTY_DMPD_ARRAY), DMPD_COMPARATOR);
 	}
 	
-	protected Iterable<JaxbPlatformDescription> buildValidPlatformDescriptions() {
-		return new FilteringIterable<JaxbPlatformDescription>(
-				JptJaxbCorePlugin.getJaxbPlatformManager().getJaxbPlatforms()) {
+	protected Iterable<JaxbPlatformConfig> buildValidPlatformConfigs() {
+		return new FilteringIterable<JaxbPlatformConfig>(this.getJaxbPlatformManager().getJaxbPlatformConfigs()) {
 			@Override
-			protected boolean accept(JaxbPlatformDescription o) {
+			protected boolean accept(JaxbPlatformConfig o) {
 				return o.supportsJaxbFacetVersion(getProjectFacetVersion());
 			}
 		};
 	}
 	
+	protected JaxbPlatformManager getJaxbPlatformManager() {
+		return this.getJaxbWorkspace().getJaxbPlatformManager();
+	}
+
+	protected JaxbWorkspace getJaxbWorkspace() {
+		return (JaxbWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JaxbWorkspace.class);
+	}
+
 	@Override
 	public DataModelPropertyDescriptor getPropertyDescriptor(String propertyName) {
 		if (propertyName.equals(PLATFORM)) {
-			return buildPlatformDescriptor(getPlatform());
+			return buildPlatformDescriptor(getPlatformConfig());
 		}
 		
 		return super.getPropertyDescriptor(propertyName);
 	}
 	
-	protected DataModelPropertyDescriptor buildPlatformDescriptor(JaxbPlatformDescription desc) {
-		return new DataModelPropertyDescriptor(desc, desc.getLabel());
+	protected DataModelPropertyDescriptor buildPlatformDescriptor(JaxbPlatformConfig config) {
+		return new DataModelPropertyDescriptor(config, config.getLabel());
 	}
 	
 	// ********** validation **********
@@ -248,7 +258,7 @@ public abstract class JaxbFacetDataModelProvider
 	}
 	
 	protected IStatus validatePlatform() {
-		return (getPlatform() == null) ? 
+		return (getPlatformConfig() == null) ? 
 				buildErrorStatus(JptJaxbCoreMessages.JaxbFacetConfig_validatePlatformNotSpecified) 
 				: OK_STATUS;
 	}
@@ -261,8 +271,8 @@ public abstract class JaxbFacetDataModelProvider
 		return (IProjectFacetVersion) getProperty(FACET_VERSION);
 	}
 	
-	protected JaxbPlatformDescription getPlatform() {
-		return (JaxbPlatformDescription) getProperty(PLATFORM);
+	protected JaxbPlatformConfig getPlatformConfig() {
+		return (JaxbPlatformConfig) getProperty(PLATFORM);
 	}
 	
 	protected LibraryInstallDelegate getLibraryInstallDelegate() {

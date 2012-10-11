@@ -13,8 +13,8 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapKeyClass2_0Annotation;
 
@@ -69,7 +69,7 @@ public class MapKeyClass2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 	public void testMapKeyClass() throws Exception {
 		ICompilationUnit cu = this.createTestMapKeyClass();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 
 		MapKeyClass2_0Annotation mapKeyClass = (MapKeyClass2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_CLASS);
 		assertNotNull(mapKeyClass);
@@ -79,7 +79,7 @@ public class MapKeyClass2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 	public void testGetValue() throws Exception {
 		ICompilationUnit cu = this.createTestMapKeyClassWithValue();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 
 		MapKeyClass2_0Annotation mapKeyClass = (MapKeyClass2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_CLASS);
 		assertEquals(MAP_KEY_CLASS_VALUE, mapKeyClass.getValue());
@@ -88,7 +88,7 @@ public class MapKeyClass2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 	public void testSetValue() throws Exception {
 		ICompilationUnit cu = this.createTestMapKeyClassWithValue();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 
 		MapKeyClass2_0Annotation mapKeyClass = (MapKeyClass2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_CLASS);
 		assertEquals(MAP_KEY_CLASS_VALUE, mapKeyClass.getValue());
@@ -106,7 +106,7 @@ public class MapKeyClass2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 	public void testGetFullyQualifiedClass() throws Exception {
 		ICompilationUnit cu = this.createTestMapKeyClassWithValue();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 
 		MapKeyClass2_0Annotation mapKeyClass = (MapKeyClass2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_CLASS);
 		assertNotNull(mapKeyClass.getValue());
@@ -122,7 +122,7 @@ public class MapKeyClass2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 	public void testGetPrimitiveValue() throws Exception {
 		ICompilationUnit cu = this.createTestMapKeyClassWithPrimitiveValue();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 
 		MapKeyClass2_0Annotation mapKeyClass = (MapKeyClass2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_CLASS);
 		assertEquals("int", mapKeyClass.getValue());
@@ -132,7 +132,7 @@ public class MapKeyClass2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 	public void testSetPrimitiveValue() throws Exception {
 		ICompilationUnit cu = this.createTestMapKeyClassWithValue();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 
 		MapKeyClass2_0Annotation mapKeyClass = (MapKeyClass2_0Annotation) resourceField.getAnnotation(JPA2_0.MAP_KEY_CLASS);
 		assertEquals(MAP_KEY_CLASS_VALUE, mapKeyClass.getValue());

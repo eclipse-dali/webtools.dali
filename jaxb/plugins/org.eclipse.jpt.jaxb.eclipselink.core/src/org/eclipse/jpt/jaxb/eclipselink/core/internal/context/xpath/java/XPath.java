@@ -14,12 +14,12 @@ import java.util.Vector;
 import org.eclipse.jpt.common.core.internal.utility.SimpleTextRange;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jaxb.core.JaxbNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
@@ -159,7 +159,7 @@ public class XPath {
 			stepValue = stepValue.substring(colon +1);
 		}
 		
-		if (StringTools.stringIsEmpty(stepValue)
+		if (StringTools.isBlank(stepValue)
 				|| stepValue.indexOf(COLON) >= 0 
 				|| stepValue.indexOf(OPEN_BRACKET) >= 0 
 				|| stepValue.indexOf(CLOSE_BRACKET) >= 0
@@ -495,7 +495,7 @@ public class XPath {
 				final String prefix, int pos) {
 			
 			if (getTextRange(context).includes(pos) || getNextStep() == null) {
-				return StringTools.convertToJavaStringLiteralContents(
+				return new TransformationIterable<String, String>(
 								new TransformationIterable<String, String>(
 										new CompositeIterable<String>(
 												getTextProposals(context, previousType),
@@ -505,7 +505,8 @@ public class XPath {
 									protected String transform(String o) {
 										return StringTools.concatenate(prefix, o);
 									}
-								});
+								},
+				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 			}
 			
 			Step nextStep = getNextStep();

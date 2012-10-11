@@ -10,11 +10,11 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import java.util.ArrayList;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.DbGenerator;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.TableGenerator;
@@ -439,19 +439,19 @@ public class GenericOrmTableGenerator
 	}
 
 	protected boolean isEquivalentTo(TableGenerator generator) {
-		return Tools.valuesAreEqual(this.specifiedTable, generator.getSpecifiedTable()) &&
-				Tools.valuesAreEqual(this.specifiedSchema, generator.getSpecifiedSchema()) &&
-				Tools.valuesAreEqual(this.specifiedCatalog, generator.getSpecifiedCatalog()) &&
-				Tools.valuesAreEqual(this.specifiedPkColumnName, generator.getSpecifiedPkColumnName()) &&
-				Tools.valuesAreEqual(this.specifiedValueColumnName, generator.getSpecifiedValueColumnName()) &&
-				Tools.valuesAreEqual(this.specifiedPkColumnValue, generator.getSpecifiedPkColumnValue()) &&
+		return ObjectTools.equals(this.specifiedTable, generator.getSpecifiedTable()) &&
+				ObjectTools.equals(this.specifiedSchema, generator.getSpecifiedSchema()) &&
+				ObjectTools.equals(this.specifiedCatalog, generator.getSpecifiedCatalog()) &&
+				ObjectTools.equals(this.specifiedPkColumnName, generator.getSpecifiedPkColumnName()) &&
+				ObjectTools.equals(this.specifiedValueColumnName, generator.getSpecifiedValueColumnName()) &&
+				ObjectTools.equals(this.specifiedPkColumnValue, generator.getSpecifiedPkColumnValue()) &&
 				this.uniqueConstrainsAreEquivalentTo(generator);
 	}
 
 	protected boolean uniqueConstrainsAreEquivalentTo(TableGenerator generator) {
 		// get fixed lists of the unique constraints
-		ArrayList<OrmUniqueConstraint> uniqueConstraints1 = CollectionTools.list(this.getUniqueConstraints());
-		ArrayList<UniqueConstraint> uniqueConstraints2 = CollectionTools.list(generator.getUniqueConstraints());
+		ArrayList<OrmUniqueConstraint> uniqueConstraints1 = ListTools.list(this.getUniqueConstraints());
+		ArrayList<UniqueConstraint> uniqueConstraints2 = ListTools.list(generator.getUniqueConstraints());
 		if (uniqueConstraints1.size() != uniqueConstraints2.size()) {
 			return false;
 		}

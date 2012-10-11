@@ -253,7 +253,7 @@ public class ClassesGeneratorOptionsWizardPage extends WizardPage
 				public void widgetSelected(SelectionEvent e) {
 
 					String filePath = promptProxyFile();
-					if ( ! StringTools.stringIsEmpty(filePath)) {
+					if ( ! StringTools.isBlank(filePath)) {
 						ProxyOptionsComposite.this.proxyFileText.setText(makeRelativeToProjectPath(filePath));
 					}
 				}

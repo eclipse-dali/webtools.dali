@@ -18,9 +18,9 @@ import java.util.Vector;
 import org.eclipse.jdt.core.dom.IPackageBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
-import org.eclipse.jpt.common.utility.internal.ClassName;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.ClassNameTools;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 
 
 public class JavaResourceTypeBinding
@@ -143,7 +143,7 @@ public class JavaResourceTypeBinding
 	}
 	
 	public boolean isVariablePrimitive() {
-		return (this.qualifiedName != null) && ClassName.isVariablePrimitive(this.qualifiedName);
+		return (this.qualifiedName != null) && ClassNameTools.isVariablePrimitive(this.qualifiedName);
 	}
 	
 	public boolean isGenericTypeDeclaration() {

@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.utility.tests.internal.model.listener;
 
 import java.lang.reflect.Method;
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -49,7 +49,7 @@ public class ReflectiveStateChangeListenerTests extends TestCase {
 	public void testSingleArgument2() throws Exception {
 		TestModel testModel = new TestModel();
 		Target target = new Target(testModel);
-		Method method = ReflectionTools.getMethod(target, "stateChangedSingleArgument2", new Class[] {Object.class});
+		Method method = ObjectTools.method(target, "stateChangedSingleArgument2", new Class[] {Object.class});
 		testModel.addStateChangeListener(ReflectiveChangeListener.buildStateChangeListener(target, method));
 		testModel.changeState();
 		assertFalse(target.zeroArgumentFlag);
@@ -92,7 +92,7 @@ public class ReflectiveStateChangeListenerTests extends TestCase {
 	public void testBogusDoubleArgument2() throws Exception {
 		TestModel testModel = new TestModel();
 		Target target = new Target(testModel);
-		Method method = ReflectionTools.getMethod(target, "stateChangedDoubleArgument", new Class[] {StateChangeEvent.class, Object.class});
+		Method method = ObjectTools.method(target, "stateChangedDoubleArgument", new Class[] {StateChangeEvent.class, Object.class});
 		boolean exCaught = false;
 		try {
 			StateChangeListener listener = ReflectiveChangeListener.buildStateChangeListener(target, method);

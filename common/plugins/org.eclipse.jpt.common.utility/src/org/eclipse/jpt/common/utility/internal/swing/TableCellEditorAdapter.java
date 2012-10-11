@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,10 +18,14 @@ import javax.swing.table.TableCellRenderer;
 /**
  * A table cell editor that wraps a table cell renderer.
  */
-public class TableCellEditorAdapter extends AbstractCellEditor implements TableCellEditor {
-
+public class TableCellEditorAdapter
+	extends AbstractCellEditor
+	implements TableCellEditor
+{
 	/** delegate to a renderer */
 	private Renderer renderer;
+
+	private static final long serialVersionUID = 1L;
 	
 	
 	// ********** constructors/initialization **********
@@ -72,8 +76,9 @@ public class TableCellEditorAdapter extends AbstractCellEditor implements TableC
 	 * This interface defines the methods that must be implemented by a renderer
 	 * that can be wrapped by a TableCellEditorAdapter.
 	 */
-	public interface Renderer extends TableCellRenderer {
-		
+	public interface Renderer
+		extends TableCellRenderer
+	{
 		/**
 		 * Return the current value of the renderer.
 		 */
@@ -87,7 +92,6 @@ public class TableCellEditorAdapter extends AbstractCellEditor implements TableC
 	
 	
 	public interface ImmediateEditListener {
-		
 		/**
 		 * Called when the renderer does an "immediate edit"
 		 */

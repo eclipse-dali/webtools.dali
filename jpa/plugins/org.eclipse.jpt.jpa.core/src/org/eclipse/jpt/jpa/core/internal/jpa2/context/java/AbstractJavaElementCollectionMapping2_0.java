@@ -16,20 +16,21 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.Association;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.Association;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.SimpleAssociation;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.Transformer;
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SubListIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SubListIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
@@ -1409,7 +1410,8 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	protected Iterable<String> getJavaCandidateMapKeyNames() {
-		return StringTools.convertToJavaStringLiteralContents(this.getCandidateMapKeyNames());
+		return new TransformationIterable<String, String>(this.getCandidateMapKeyNames(),
+				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 
 
@@ -1480,7 +1482,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 			if (embeddable != null && embeddable != parentEmbeddable) {
 				embeddableContainsElementCollection(messages, embeddable);
 				embeddableContainsProhibitedRelationshipMapping(messages, embeddable);
-				if (!CollectionTools.contains(visited, embeddable)) {
+				if (!visited.contains(embeddable)) {
 					visited.add(embeddable);
 					embeddableHierarchyContainsProhibitedMapping(messages, embeddable, visited);
 				}
@@ -1492,7 +1494,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 			if (embeddable != null && embeddable != parentEmbeddable) {
 				embeddableContainsElementCollection(messages, embeddable);
 				embeddableContainsProhibitedRelationshipMapping(messages, embeddable);
-				if (!CollectionTools.contains(visited, embeddable)) {
+				if (!visited.contains(embeddable)) {
 					visited.add(embeddable);
 					embeddableHierarchyContainsProhibitedMapping(messages, embeddable, visited);
 				}
@@ -1807,7 +1809,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 
 		public org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName) {
 			JavaCollectionTable2_0 table = this.getCollectionTable();
-			return Tools.valuesAreEqual(table.getName(), tableName) ? table.getDbTable() : null;
+			return ObjectTools.equals(table.getName(), tableName) ? table.getDbTable() : null;
 		}
 
 		public Iterable<String> getCandidateTableNames() {
@@ -1819,7 +1821,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		 * the default table name.  the table is always the collection table
 		 */
 		public boolean tableNameIsInvalid(String tableName) {
-			return Tools.valuesAreDifferent(this.getDefaultTableName(), tableName);
+			return ObjectTools.notEquals(this.getDefaultTableName(), tableName);
 		}
 
 		public TextRange getValidationTextRange() {
@@ -2014,7 +2016,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		 * the default table name.  The table is always the collection table.
 		 */
 		public boolean tableNameIsInvalid(String tableName) {
-			return Tools.valuesAreDifferent(this.getDefaultTableName(), tableName);
+			return ObjectTools.notEquals(this.getDefaultTableName(), tableName);
 		}
 
 		public Iterable<String> getCandidateTableNames() {

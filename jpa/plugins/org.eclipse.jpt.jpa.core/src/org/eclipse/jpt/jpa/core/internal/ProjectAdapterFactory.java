@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.IAdapterFactory;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -123,7 +123,7 @@ public class ProjectAdapterFactory
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.project);
+			return ObjectTools.toString(this, this.project);
 		}
 	}
 }

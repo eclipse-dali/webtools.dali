@@ -17,8 +17,8 @@ import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.internal.utility.jdt.DefaultAnnotationEditFormatter;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.JaxbFile;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
@@ -28,7 +28,7 @@ import org.eclipse.jpt.jaxb.core.context.java.DefaultJavaAttributeMappingDefinit
 import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 
 public final class JaxbPlatformImpl
 		implements JaxbPlatform {
@@ -45,8 +45,8 @@ public final class JaxbPlatformImpl
 	}
 	
 	
-	public JaxbPlatformDescription getDescription() {
-		return this.platformDefinition.getDescription();
+	public JaxbPlatformConfig getConfig() {
+		return this.platformDefinition.getConfig();
 	}
 	
 	public JaxbPlatformDefinition getDefinition() {
@@ -124,7 +124,7 @@ public final class JaxbPlatformImpl
 
 	public JavaAttributeMappingDefinition getSpecifiedJavaAttributeMappingDefinition(String mappingKey) {
 		for (JavaAttributeMappingDefinition definition : getSpecifiedJavaAttributeMappingDefinitions()) {
-			if (Tools.valuesAreEqual(definition.getKey(), mappingKey)) {
+			if (ObjectTools.equals(definition.getKey(), mappingKey)) {
 				return definition;
 			}
 		}
@@ -133,5 +133,13 @@ public final class JaxbPlatformImpl
 
 	public Iterable<DefaultJavaAttributeMappingDefinition> getDefaultJavaAttributeMappingDefinitions() {
 		return this.platformDefinition.getDefaultJavaAttributeMappingDefinitions();
+	}
+
+
+	// ********** adapter **********
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public Object getAdapter(Class adapter) {
+		return PlatformTools.getAdapter(this, adapter);
 	}
 }

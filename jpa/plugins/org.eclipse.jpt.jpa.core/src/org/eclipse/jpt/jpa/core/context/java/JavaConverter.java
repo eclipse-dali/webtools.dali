@@ -11,8 +11,8 @@ package org.eclipse.jpt.jpa.core.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
-import org.eclipse.jpt.common.utility.internal.ClassName;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ClassNameTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
@@ -148,7 +148,7 @@ public interface JavaConverter
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, ClassName.getSimpleName(this.getAnnotationName()));
+			return ObjectTools.toString(this, ClassNameTools.simpleName(this.getAnnotationName()));
 		}
 	}
 }

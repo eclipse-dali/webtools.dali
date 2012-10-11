@@ -28,9 +28,9 @@ import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationExpression;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterators.FilteringIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.SubIteratorWrapper;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterator.FilteringIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.SubIteratorWrapper;
 
 /**
  * Wrap any of the AST nodes that have modifiers (specifically, annotations);
@@ -438,7 +438,7 @@ public class JDTModifiedDeclaration
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.adapter.toString());
+		return ObjectTools.toString(this, this.adapter.toString());
 	}
 
 
@@ -477,7 +477,7 @@ public class JDTModifiedDeclaration
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.declaration.toString());
+			return ObjectTools.toString(this, this.declaration.toString());
 		}
 	}
 	
@@ -496,7 +496,7 @@ public class JDTModifiedDeclaration
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.declaration.toString());
+			return ObjectTools.toString(this, this.declaration.toString());
 		}
 	}
 	
@@ -520,7 +520,7 @@ public class JDTModifiedDeclaration
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.declaration.toString());
+			return Object_.toString(this, this.declaration.toString());
 		}
 	}*/
 
@@ -539,7 +539,7 @@ public class JDTModifiedDeclaration
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.declaration.toString());
+			return ObjectTools.toString(this, this.declaration.toString());
 		}
 	}
 
@@ -558,7 +558,7 @@ public class JDTModifiedDeclaration
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.declaration.toString());
+			return ObjectTools.toString(this, this.declaration.toString());
 		}
 	}
 
@@ -577,7 +577,7 @@ public class JDTModifiedDeclaration
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.declaration.toString());
+			return ObjectTools.toString(this, this.declaration.toString());
 		}
 	}
 

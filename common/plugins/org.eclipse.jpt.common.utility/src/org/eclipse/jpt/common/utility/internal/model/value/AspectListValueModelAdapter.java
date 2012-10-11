@@ -12,12 +12,12 @@ package org.eclipse.jpt.common.utility.internal.model.value;
 import java.util.EventListener;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyListIterator;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterator.EmptyListIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -69,6 +69,8 @@ public abstract class AspectListValueModelAdapter<S, E>
 	extends AspectAdapter<S, List<E>>
 	implements ListValueModel<E>
 {
+	// ********** constructors **********
+
 	/**
 	 * Construct a list value model adapter for an aspect of the
 	 * specified subject.
@@ -118,7 +120,7 @@ public abstract class AspectListValueModelAdapter<S, E>
 	 * Return the element at the specified index of the subject's list aspect.
 	 */
 	public E get(int index) {
-		return CollectionTools.get(this.listIterator(), index);
+		return IteratorTools.get(this.listIterator(), index);
 	}
 
 	/**
@@ -135,14 +137,14 @@ public abstract class AspectListValueModelAdapter<S, E>
 	 * @see #size()
 	 */
 	protected int size_() {
-		return CollectionTools.size(this.listIterator());
+		return IteratorTools.size(this.listIterator());
 	}
 
 	/**
 	 * Return an array manifestation of the subject's list aspect.
 	 */
 	public Object[] toArray() {
-		return this.subject == null ? Tools.EMPTY_OBJECT_ARRAY : this.toArray_();
+		return this.subject == null ? ObjectTools.EMPTY_OBJECT_ARRAY : this.toArray_();
 	}
 
 	/**
@@ -187,7 +189,7 @@ public abstract class AspectListValueModelAdapter<S, E>
 	}
 
 	protected List<E> buildValueList() {
-		return CollectionTools.list(this.iterator());
+		return ListTools.list(this.iterator());
 	}
 
 	@Override

@@ -16,8 +16,8 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Ki
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
@@ -416,11 +416,11 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 			namedQuery2.setSpecifiedLockMode(LockModeType2_0.OPTIMISTIC);
 		
 		Iterator<NestableAnnotation> javaNamedQueries = resourceType.getAnnotations(JPA.NAMED_QUERY).iterator();
-		assertEquals(3, CollectionTools.size(javaNamedQueries));
+		assertEquals(3, IteratorTools.size(javaNamedQueries));
 		
 		entity.getQueryContainer().removeNamedQuery(0);
 		javaNamedQueries = resourceType.getAnnotations(JPA.NAMED_QUERY).iterator();
-		assertEquals(2, CollectionTools.size(javaNamedQueries));
+		assertEquals(2, IteratorTools.size(javaNamedQueries));
 		javaNamedQueries = resourceType.getAnnotations(JPA.NAMED_QUERY).iterator();
 		NamedQuery2_0Annotation annotation1 = (NamedQuery2_0Annotation) javaNamedQueries.next();
 			assertEquals("BAR", annotation1.getName());
@@ -432,7 +432,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 
 		entity.getQueryContainer().removeNamedQuery(0);
 		javaNamedQueries = resourceType.getAnnotations(JPA.NAMED_QUERY).iterator();
-		assertEquals(1, CollectionTools.size(javaNamedQueries));
+		assertEquals(1, IteratorTools.size(javaNamedQueries));
 		javaNamedQueries = resourceType.getAnnotations(JPA.NAMED_QUERY).iterator();
 		annotation2 = (NamedQuery2_0Annotation) javaNamedQueries.next();
 			assertEquals("BAZ", annotation2.getName());
@@ -440,7 +440,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		
 		entity.getQueryContainer().removeNamedQuery(0);
 		javaNamedQueries = resourceType.getAnnotations(JPA.NAMED_QUERY).iterator();
-		assertEquals(0, CollectionTools.size(javaNamedQueries));
+		assertEquals(0, IteratorTools.size(javaNamedQueries));
 	}
 
 	public void testMoveNamedQuery2_0() throws Exception {
@@ -457,7 +457,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		entity.getQueryContainer().addNamedQuery(2).setName("BAZ");
 		
 		Iterator<NestableAnnotation> javaNamedQueries = resourceType.getAnnotations(JPA.NAMED_QUERY).iterator();
-		assertEquals(3, CollectionTools.size(javaNamedQueries));
+		assertEquals(3, IteratorTools.size(javaNamedQueries));
 		
 		
 		entity.getQueryContainer().moveNamedQuery(2, 0);
@@ -999,7 +999,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, Kind.TYPE);
-		assertEquals(3, CollectionTools.size(resourceType.getAnnotations(JPA.ATTRIBUTE_OVERRIDE).iterator()));
+		assertEquals(3, IteratorTools.size(resourceType.getAnnotations(JPA.ATTRIBUTE_OVERRIDE).iterator()));
 
 		overrideContainer.getSpecifiedOverrides().iterator().next().convertToVirtual();
 		
@@ -1048,7 +1048,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, Kind.TYPE);
 		
 		Iterator<NestableAnnotation> javaAttributeOverrides = resourceType.getAnnotations(JPA.ATTRIBUTE_OVERRIDE).iterator();
-		assertEquals(3, CollectionTools.size(javaAttributeOverrides));
+		assertEquals(3, IteratorTools.size(javaAttributeOverrides));
 		
 		
 		overrideContainer.moveSpecifiedOverride(2, 0);
@@ -1482,7 +1482,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, Kind.TYPE);
-		assertEquals(2, CollectionTools.size(resourceType.getAnnotations(JPA.ASSOCIATION_OVERRIDE).iterator()));
+		assertEquals(2, IteratorTools.size(resourceType.getAnnotations(JPA.ASSOCIATION_OVERRIDE).iterator()));
 
 		overrideContainer.getSpecifiedOverrides().iterator().next().convertToVirtual();
 		
@@ -1518,7 +1518,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, Kind.TYPE);
 		
 		Iterator<NestableAnnotation> javaAssociationOverrides = resourceType.getAnnotations(JPA.ASSOCIATION_OVERRIDE).iterator();
-		assertEquals(2, CollectionTools.size(javaAssociationOverrides));
+		assertEquals(2, IteratorTools.size(javaAssociationOverrides));
 		
 		
 		overrideContainer.moveSpecifiedOverride(1, 0);

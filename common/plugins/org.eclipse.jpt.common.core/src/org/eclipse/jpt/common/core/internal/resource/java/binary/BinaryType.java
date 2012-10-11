@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Vector;
+
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IMethod;
@@ -33,12 +34,13 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 
 /**
  * binary type
@@ -218,7 +220,7 @@ final class BinaryType
 	
 	public boolean hasPublicOrProtectedNoArgConstructor() {
 		Iterable<JavaResourceMethod> constructors = this.getConstructors();
-		if (CollectionTools.size(constructors) == 0) {
+		if (IterableTools.size(constructors) == 0) {
 			return true;
 		}
 		for (JavaResourceMethod constructor : constructors) {
@@ -232,7 +234,7 @@ final class BinaryType
 	
 	public boolean hasPublicNoArgConstructor() {
 		Iterable<JavaResourceMethod> constructors = this.getConstructors();
-		if (CollectionTools.size(constructors) == 0) {
+		if (IterableTools.size(constructors) == 0) {
 			return true;
 		}
 		for (JavaResourceMethod constructor : constructors) {
@@ -291,7 +293,7 @@ final class BinaryType
 	
 	public JavaResourceField getField(String name) {
 		for (JavaResourceField field : getFields()) {
-			if (StringTools.stringsAreEqual(field.getName(), name)) {
+			if (ObjectTools.equals(field.getName(), name)) {
 				return field;
 			}
 		}
@@ -336,7 +338,7 @@ final class BinaryType
 	
 	public JavaResourceMethod getMethod(String propertyName) {
 		for (JavaResourceMethod method : this.getMethods()) {
-			if (StringTools.stringsAreEqual(method.getMethodName(), propertyName)) {
+			if (ObjectTools.equals(method.getMethodName(), propertyName)) {
 				return method;
 			}
 		}
@@ -438,9 +440,9 @@ final class BinaryType
 	// Both requirements are validated by the compiler so they are excluded here
 	public boolean hasEqualsMethod() {
 		for (JavaResourceMethod method : this.getMethods()) {
-			if (StringTools.stringsAreEqual(method.getMethodName(), "equals") //$NON-NLS-1$
+			if (ObjectTools.equals(method.getMethodName(), "equals") //$NON-NLS-1$
 					&& method.getParametersSize() == 1
-					&& StringTools.stringsAreEqual(method.getParameterTypeName(0), Object.class.getName())) {
+					&& ObjectTools.equals(method.getParameterTypeName(0), Object.class.getName())) {
 				return true;
 			}
 		}
@@ -453,7 +455,7 @@ final class BinaryType
 	// Both requirements are validated by the compiler so they are excluded here
 	public boolean hasHashCodeMethod() {
 		for (JavaResourceMethod method : this.getMethods()) {
-			if (StringTools.stringsAreEqual(method.getMethodName(), "hashCode") //$NON-NLS-1$
+			if (ObjectTools.equals(method.getMethodName(), "hashCode") //$NON-NLS-1$
 					&& method.getParametersSize() == 0) {
 				return true;
 			}

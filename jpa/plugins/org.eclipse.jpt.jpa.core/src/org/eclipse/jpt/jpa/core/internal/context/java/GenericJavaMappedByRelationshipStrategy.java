@@ -12,8 +12,9 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationshipStrategy;
@@ -138,8 +139,8 @@ public class GenericJavaMappedByRelationshipStrategy
 		String thisEntityName = this.getEntityName();
 		Entity otherEntity = otherMapping.getResolvedTargetEntity();
 		String otherEntityName = (otherEntity == null) ? null : otherEntity.getName();
-		return Tools.valuesAreEqual(thisEntityName, otherEntityName) &&
-				Tools.valuesAreEqual(this.mappedByAttribute, otherMapping.getName());
+		return ObjectTools.equals(thisEntityName, otherEntityName) &&
+				ObjectTools.equals(this.mappedByAttribute, otherMapping.getName());
 	}
 
 	protected String getEntityName() {
@@ -184,9 +185,9 @@ public class GenericJavaMappedByRelationshipStrategy
 	}
 
 	protected Iterable<String> getJavaCandidateMappedByAttributeNames() {
-		return StringTools.convertToJavaStringLiteralContents(this.getCandidateMappedByAttributeNames());
+		return new TransformationIterable<String, String>(this.getCandidateMappedByAttributeNames(),
+				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
-
 
 	// ********** validation **********
 

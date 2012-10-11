@@ -10,6 +10,8 @@
 package org.eclipse.jpt.jpa.core.tests.internal.context.java;
 
 import java.util.Iterator;
+
+import org.eclipse.core.internal.utils.ArrayIterator;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
@@ -18,9 +20,9 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
@@ -44,7 +46,7 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
+				return IteratorTools.iterator(JPA.ENTITY, JPA.ID);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -62,7 +64,7 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
+				return IteratorTools.iterator(JPA.ENTITY, JPA.ID);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -268,7 +270,7 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY);
+				return IteratorTools.iterator(JPA.ENTITY);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -287,7 +289,7 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
+				return IteratorTools.iterator(JPA.ENTITY, JPA.ID);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -319,9 +321,9 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 		createGenericSuperclass();
 		createGenericSubclass();
 		JavaPersistentType superclassPT = 
-				((ClassRef) CollectionTools.get(getPersistenceUnit().getClassRefs(), 0)).getJavaPersistentType();
+				((ClassRef) IterableTools.get(getPersistenceUnit().getClassRefs(), 0)).getJavaPersistentType();
 		JavaPersistentType subclassPT = 
-				((ClassRef) CollectionTools.get(getPersistenceUnit().getClassRefs(), 1)).getJavaPersistentType();
+				((ClassRef) IterableTools.get(getPersistenceUnit().getClassRefs(), 1)).getJavaPersistentType();
 		
 		// generic field
 		JavaPersistentAttribute genericAttribute = superclassPT.getAttributeNamed("genericField");

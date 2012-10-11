@@ -12,6 +12,8 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.internal.context.java.AbstractJavaNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.AbstractJavaNamedDiscriminatorColumn;
 import org.eclipse.jpt.jpa.eclipselink.core.context.ReadOnlyTenantDiscriminatorColumn2_3;
@@ -250,7 +252,8 @@ public class EclipseLinkJavaTenantDiscriminatorColumn2_3
 	}
 
 	protected Iterable<String> getJavaCandidateTableNames() {
-		return StringTools.convertToJavaStringLiteralContents(this.getCandidateTableNames());
+		return new TransformationIterable<String, String>(this.getCandidateTableNames(),
+				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 
 	public Iterable<String> getCandidateTableNames() {

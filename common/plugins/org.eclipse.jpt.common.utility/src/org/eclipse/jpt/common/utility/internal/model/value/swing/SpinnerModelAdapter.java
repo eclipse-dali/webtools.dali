@@ -14,7 +14,8 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.listener.awt.AWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -201,7 +202,7 @@ public class SpinnerModelAdapter
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.valueHolder);
+		return ObjectTools.toString(this, this.valueHolder);
 	}
 
 }

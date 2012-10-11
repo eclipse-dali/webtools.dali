@@ -10,8 +10,7 @@
 package org.eclipse.jpt.common.utility.model.listener;
 
 import java.lang.reflect.Method;
-
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.ChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
@@ -27,11 +26,6 @@ import org.eclipse.jpt.common.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.common.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeAddEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeChangeEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeClearEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeRemoveEvent;
 
 /**
  * This factory builds listeners that reflectively forward change events.
@@ -114,27 +108,6 @@ public abstract class ReflectiveChangeListener {
 	protected static final Class<ListChangeEvent>[] LIST_CHANGE_EVENT_CLASS_ARRAY = new Class[] {LIST_CHANGE_EVENT_CLASS};
 
 
-	protected static final Class<TreeEvent> TREE_EVENT_CLASS = TreeEvent.class;
-	@SuppressWarnings("unchecked")
-	protected static final Class<TreeEvent>[] TREE_EVENT_CLASS_ARRAY = new Class[] {TREE_EVENT_CLASS};
-
-	protected static final Class<TreeAddEvent> TREE_ADD_EVENT_CLASS = TreeAddEvent.class;
-	@SuppressWarnings("unchecked")
-	protected static final Class<TreeAddEvent>[] TREE_ADD_EVENT_CLASS_ARRAY = new Class[] {TREE_ADD_EVENT_CLASS};
-
-	protected static final Class<TreeRemoveEvent> TREE_REMOVE_EVENT_CLASS = TreeRemoveEvent.class;
-	@SuppressWarnings("unchecked")
-	protected static final Class<TreeRemoveEvent>[] TREE_REMOVE_EVENT_CLASS_ARRAY = new Class[] {TREE_REMOVE_EVENT_CLASS};
-
-	protected static final Class<TreeClearEvent> TREE_CLEAR_EVENT_CLASS = TreeClearEvent.class;
-	@SuppressWarnings("unchecked")
-	protected static final Class<TreeClearEvent>[] TREE_CLEAR_EVENT_CLASS_ARRAY = new Class[] {TREE_CLEAR_EVENT_CLASS};
-
-	protected static final Class<TreeChangeEvent> TREE_CHANGE_EVENT_CLASS = TreeChangeEvent.class;
-	@SuppressWarnings("unchecked")
-	protected static final Class<TreeChangeEvent>[] TREE_CHANGE_EVENT_CLASS_ARRAY = new Class[] {TREE_CHANGE_EVENT_CLASS};
-
-
 	// ********** helper methods **********
 
 	/**
@@ -143,9 +116,9 @@ public abstract class ReflectiveChangeListener {
 	 */
 	private static Method findChangeListenerMethod(Object target, String methodName, Class<? extends ChangeEvent>[] eventClassArray) {
 		try {
-			return ReflectionTools.getMethod(target, methodName, eventClassArray);
+			return ObjectTools.method(target, methodName, eventClassArray);
 		} catch (RuntimeException ex1) {
-			return ReflectionTools.getMethod(target, methodName);
+			return ObjectTools.method(target, methodName);
 		}
 	}
 
@@ -309,55 +282,6 @@ public abstract class ReflectiveChangeListener {
 	 */
 	public static ListChangeListener buildListChangeListener(Object target, String methodName) {
 		return buildListChangeListener(target, findChangeListenerMethod(target, methodName, LIST_EVENT_CLASS_ARRAY));
-	}
-
-
-	// ********** factory methods: TreeChangeListener **********
-
-	/**
-	 * Construct a tree change listener that will invoke the specified methods
-	 * on the specified target.
-	 */
-	public static TreeChangeListener buildTreeChangeListener(Object target, Method addMethod, Method removeMethod, Method clearMethod, Method changeMethod) {
-		checkChangeListenerMethod(addMethod, TREE_ADD_EVENT_CLASS);
-		checkChangeListenerMethod(removeMethod, TREE_REMOVE_EVENT_CLASS);
-		checkChangeListenerMethod(clearMethod, TREE_CLEAR_EVENT_CLASS);
-		checkChangeListenerMethod(changeMethod, TREE_CHANGE_EVENT_CLASS);
-		return new MultiMethodReflectiveChangeListener(target, addMethod, removeMethod, clearMethod, changeMethod);
-	}
-
-	/**
-	 * Construct a tree change listener that will invoke the specified method
-	 * on the specified target for any change event.
-	 */
-	public static TreeChangeListener buildTreeChangeListener(Object target, Method method) {
-		return buildTreeChangeListener(target, method, method, method, method);
-	}
-
-	/**
-	 * Construct a tree change listener that will invoke the specified methods
-	 * on the specified target for change events. If a single-argument method
-	 * with the specified name and appropriate argument is found, it will be invoked;
-	 * otherwise, a zero-argument method with the specified name will be invoked.
-	 */
-	public static TreeChangeListener buildTreeChangeListener(Object target, String addMethodName, String removeMethodName, String clearMethodName, String changeMethodName) {
-		return buildTreeChangeListener(
-				target,
-				findChangeListenerMethod(target, addMethodName, TREE_ADD_EVENT_CLASS_ARRAY),
-				findChangeListenerMethod(target, removeMethodName, TREE_REMOVE_EVENT_CLASS_ARRAY),
-				findChangeListenerMethod(target, clearMethodName, TREE_CLEAR_EVENT_CLASS_ARRAY),
-				findChangeListenerMethod(target, changeMethodName, TREE_CHANGE_EVENT_CLASS_ARRAY)
-		);
-	}
-
-	/**
-	 * Construct a tree change listener that will invoke the specified method
-	 * on the specified target for any change event. If a single-argument method
-	 * with the specified name and appropriate argument is found, it will be invoked;
-	 * otherwise, a zero-argument method with the specified name will be invoked.
-	 */
-	public static TreeChangeListener buildTreeChangeListener(Object target, String methodName) {
-		return buildTreeChangeListener(target, findChangeListenerMethod(target, methodName, TREE_EVENT_CLASS_ARRAY));
 	}
 
 

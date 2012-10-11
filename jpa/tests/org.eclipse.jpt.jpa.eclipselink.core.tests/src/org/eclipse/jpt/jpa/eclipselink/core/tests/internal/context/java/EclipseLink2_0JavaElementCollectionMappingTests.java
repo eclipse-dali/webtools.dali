@@ -17,8 +17,8 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
@@ -694,7 +694,7 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 	}
 
 	protected Embeddable getResolvedTargetEmbeddable(ElementCollectionMapping2_0 mapping) {
-		return (Embeddable) ReflectionTools.executeMethod(mapping, "getResolvedTargetEmbeddable");
+		return (Embeddable) ObjectTools.execute(mapping, "getResolvedTargetEmbeddable");
 	}
 	
 	public void testResolvedTargetEmbeddable() throws Exception {

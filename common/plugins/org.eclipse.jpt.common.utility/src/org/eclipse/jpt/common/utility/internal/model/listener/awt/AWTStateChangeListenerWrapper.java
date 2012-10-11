@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,8 @@
 package org.eclipse.jpt.common.utility.internal.model.listener.awt;
 
 import java.awt.EventQueue;
-
+import org.eclipse.jpt.common.utility.internal.RunnableAdapter;
+import org.eclipse.jpt.common.utility.internal.collection.SynchronizedQueue;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 
@@ -20,11 +21,17 @@ import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
  * thread that is probably because it was initiated by a UI widget; as a
  * result, we want to loop back synchronously so the events can be
  * short-circuited.
+ * <p>
+ * Any events received earlier (on a non-UI thread) will be
+ * forwarded, in the order received, before the current event is forwarded.
+ * @see AWTPropertyChangeListenerWrapper
  */
 public final class AWTStateChangeListenerWrapper
 	implements StateChangeListener
 {
 	private final StateChangeListener listener;
+	private final SynchronizedQueue<StateChangeEvent> events = new SynchronizedQueue<StateChangeEvent>();
+
 
 	public AWTStateChangeListenerWrapper(StateChangeListener listener) {
 		super();
@@ -35,27 +42,25 @@ public final class AWTStateChangeListenerWrapper
 	}
 
 	public void stateChanged(StateChangeEvent event) {
+		this.events.enqueue(event);
 		if (this.isExecutingOnUIThread()) {
-			this.stateChanged_(event);
+			this.forwardEvents();
 		} else {
-			this.executeOnEventQueue(this.buildStateChangedRunnable(event));
+			this.executeOnEventQueue(new ForwardEventsRunnable());
 		}
-	}
-
-	private Runnable buildStateChangedRunnable(final StateChangeEvent event) {
-		return new Runnable() {
-			public void run() {
-				AWTStateChangeListenerWrapper.this.stateChanged_(event);
-			}
-			@Override
-			public String toString() {
-				return "state changed runnable"; //$NON-NLS-1$
-			}
-		};
 	}
 
 	private boolean isExecutingOnUIThread() {
 		return EventQueue.isDispatchThread();
+	}
+
+	/* CU private */ class ForwardEventsRunnable
+		extends RunnableAdapter
+	{
+		@Override
+		public void run() {
+			AWTStateChangeListenerWrapper.this.forwardEvents();
+		}
 	}
 
 	/**
@@ -74,13 +79,14 @@ public final class AWTStateChangeListenerWrapper
 //		}
 	}
 
-	void stateChanged_(StateChangeEvent event) {
-		this.listener.stateChanged(event);
+	void forwardEvents() {
+		for (StateChangeEvent event : this.events.drain()) {
+			this.listener.stateChanged(event);
+		}
 	}
 
 	@Override
 	public String toString() {
 		return "AWT(" + this.listener.toString() + ')'; //$NON-NLS-1$
 	}
-
 }

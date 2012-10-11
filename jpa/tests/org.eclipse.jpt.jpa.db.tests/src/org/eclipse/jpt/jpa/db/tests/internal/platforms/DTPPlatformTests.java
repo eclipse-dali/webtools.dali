@@ -44,11 +44,12 @@ import org.eclipse.datatools.connectivity.internal.ConnectivityPlugin;
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObjectListener;
 import org.eclipse.datatools.connectivity.sqm.core.rte.RefreshManager;
-import org.eclipse.jpt.common.utility.IndentingPrintWriter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ResultSetIterator;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.io.WriterTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ResultSetIterator;
+import org.eclipse.jpt.common.utility.io.IndentingPrintWriter;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.ConnectionListener;
@@ -152,12 +153,12 @@ public abstract class DTPPlatformTests extends TestCase {
 
 	@SuppressWarnings("unchecked")
 	protected Hashtable<ICatalogObject, Vector<ICatalogObjectListener>> getDTPRefreshListeners() {
-		return (Hashtable<ICatalogObject, Vector<ICatalogObjectListener>>) ReflectionTools.getFieldValue(RefreshManager.getInstance(), "listeners");
+		return (Hashtable<ICatalogObject, Vector<ICatalogObjectListener>>) ObjectTools.get(RefreshManager.getInstance(), "listeners");
 	}
 
 	@SuppressWarnings("unchecked")
 	protected Vector<ICatalogObjectListener> getDTPGlobalRefreshListeners() {
-		return (Vector<ICatalogObjectListener>) ReflectionTools.getFieldValue(RefreshManager.getInstance(), "globalListeners");
+		return (Vector<ICatalogObjectListener>) ObjectTools.get(RefreshManager.getInstance(), "globalListeners");
 	}
 
 	// ***** platform properties file
@@ -610,7 +611,7 @@ public abstract class DTPPlatformTests extends TestCase {
 
 	protected String getRequiredPlatformProperty(String propertyKey) {
 		String propertyValue = this.platformProperties.getProperty(propertyKey);
-		if (StringTools.stringIsEmpty(propertyValue)) {
+		if (StringTools.isBlank(propertyValue)) {
 			throw new IllegalArgumentException("The database platform properties file '" + this.getPlatformPropertiesFilePath()
 					+ "' is missing a value for the property '" + propertyKey + "'.");
 		}
@@ -622,7 +623,7 @@ public abstract class DTPPlatformTests extends TestCase {
 	}
 
 	protected static boolean connectionProfileHasAnyListeners(ConnectionProfile cp) {
-		return ((Boolean) ReflectionTools.executeMethod(cp, "hasAnyListeners")).booleanValue();
+		return ((Boolean) ObjectTools.execute(cp, "hasAnyListeners")).booleanValue();
 	}
 
 	protected boolean connectionProfileHasNoListeners() {
@@ -630,7 +631,7 @@ public abstract class DTPPlatformTests extends TestCase {
 	}
 
 	protected static boolean connectionProfileHasNoListeners(ConnectionProfile cp) {
-		return ((Boolean) ReflectionTools.executeMethod(cp, "hasNoListeners")).booleanValue();
+		return ((Boolean) ObjectTools.execute(cp, "hasNoListeners")).booleanValue();
 	}
 
 
@@ -645,7 +646,7 @@ public abstract class DTPPlatformTests extends TestCase {
 	}
 
 	protected static IConnectionProfile getDTPConnectionProfile(ConnectionProfile cp) {
-		return (IConnectionProfile) ReflectionTools.getFieldValue(cp, "dtpConnectionProfile");
+		return (IConnectionProfile) ObjectTools.get(cp, "dtpConnectionProfile");
 	}
 
 	protected org.eclipse.datatools.modelbase.sql.schema.Database getDTPDatabase() {
@@ -657,7 +658,7 @@ public abstract class DTPPlatformTests extends TestCase {
 	}
 
 	protected Object extractDTPObject(DatabaseObject databaseObject) {
-		return ReflectionTools.getFieldValue(databaseObject, "dtpObject");
+		return ObjectTools.get(databaseObject, "dtpObject");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -710,11 +711,11 @@ public abstract class DTPPlatformTests extends TestCase {
 		}
 	}
 
-	protected void dump(String sql) throws SQLException {
+	protected void dump(String sql) throws Exception {
 		this.dump(sql, 30);
 	}
 
-	protected void dump(String sql, int columnWidth) throws SQLException {
+	protected void dump(String sql, int columnWidth) throws Exception {
 		IndentingPrintWriter pw = new IndentingPrintWriter(new OutputStreamWriter(System.out));
 		// synchronize the console so everything is contiguous
 		synchronized (System.out) {
@@ -723,13 +724,13 @@ public abstract class DTPPlatformTests extends TestCase {
 		pw.flush();
 	}
 
-	protected void dumpOn(String sql, IndentingPrintWriter pw, int columnWidth) throws SQLException {
+	protected void dumpOn(String sql, IndentingPrintWriter pw, int columnWidth) throws Exception {
 		pw.println(sql);
 		for (HashMap<String, Object> row : this.execute(sql)) {
 			for (Map.Entry<String, Object> field : row.entrySet()) {
-				StringTools.padOrTruncateOn(String.valueOf(field.getKey()), columnWidth/2, pw);
+				WriterTools.fit(pw, String.valueOf(field.getKey()), columnWidth/2);
 				pw.print('=');
-				StringTools.padOrTruncateOn(String.valueOf(field.getValue()), columnWidth/2, pw);
+				WriterTools.fit(pw, String.valueOf(field.getValue()), columnWidth/2);
 				pw.print(' ');
 			}
 			pw.println();

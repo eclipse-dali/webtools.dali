@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
@@ -234,7 +234,7 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 
 	private void cacheTypeChanged(String propertyName, String stringValue) {
 		String entityName = this.extractEntityNameOf(propertyName);
-		if( ! StringTools.stringIsEmpty(entityName)) {
+		if( ! StringTools.isBlank(entityName)) {
 			CachingEntity old = this.setEntityCacheTypeOf(entityName, stringValue); 
 			this.firePropertyChanged(CACHE_TYPE_PROPERTY, old, this.getEntityNamed(entityName));
 		}
@@ -258,7 +258,7 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 
 	private void cacheSizeChanged(String propertyName, String stringValue) {
 		String entityName = this.extractEntityNameOf(propertyName);
-		if( ! StringTools.stringIsEmpty(entityName)) {
+		if( ! StringTools.isBlank(entityName)) {
 			CachingEntity old = this.setEntityCacheSizeOf(entityName, stringValue);
 			this.firePropertyChanged(CACHE_SIZE_PROPERTY, old, this.getEntityNamed(entityName));
 		}
@@ -282,7 +282,7 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 
 	private void sharedCacheChanged(String propertyName, String stringValue) {
 		String entityName = this.extractEntityNameOf(propertyName);
-		if( ! StringTools.stringIsEmpty(entityName)) {
+		if( ! StringTools.isBlank(entityName)) {
 			CachingEntity old = this.setEntitySharedCacheOf(entityName, stringValue);
 			this.firePropertyChanged(SHARED_CACHE_PROPERTY, old, this.getEntityNamed(entityName));
 		}
@@ -391,7 +391,7 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 	 * Returns the old Entity
 	 */
 	private CachingEntity setEntityCacheTypeOf(String entityName, String stringValue) {
-		 if(( ! this.entityExists(entityName)) && StringTools.stringIsEmpty(stringValue)) {
+		 if(( ! this.entityExists(entityName)) && StringTools.isBlank(stringValue)) {
 				//this is a property that is currently being added, we don't need to deal with it until the value is set
 				 return null;
 			 }
@@ -431,7 +431,7 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 	 * Returns the old Entity
 	 */
 	private CachingEntity setEntityCacheSizeOf(String entityName, String stringValue) {
-		 if(( ! this.entityExists(entityName)) && StringTools.stringIsEmpty(stringValue)) {
+		 if(( ! this.entityExists(entityName)) && StringTools.isBlank(stringValue)) {
 				//this is a property that is currently being added, we don't need to deal with it until the value is set
 				 return null;
 			 }
@@ -471,7 +471,7 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 	 * Returns the old Entity
 	 */
 	private CachingEntity setEntitySharedCacheOf(String entityName, String stringValue) {
-		 if(( ! this.entityExists(entityName)) && StringTools.stringIsEmpty(stringValue)) {
+		 if(( ! this.entityExists(entityName)) && StringTools.isBlank(stringValue)) {
 				//this is a property that is currently being added, we don't need to deal with it until the value is set
 				 return null;
 			 }

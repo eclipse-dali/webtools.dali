@@ -26,4 +26,5 @@ Export-Package: org.eclipse.jpt.jaxb.eclipselink.core.tests.internal;x-internal:
  org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.context;x-internal:=true,
  org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.context.java;x-internal:=true,
  org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.resource;x-internal:=true,
- org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.resource.java;x-internal:=true
+ org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.resource.java;x-internal:=true,
+ org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.resource.oxm;x-internal:=true

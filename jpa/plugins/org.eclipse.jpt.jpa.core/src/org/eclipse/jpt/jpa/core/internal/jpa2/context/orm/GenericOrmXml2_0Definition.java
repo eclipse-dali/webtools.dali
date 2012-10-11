@@ -10,9 +10,10 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 
 import java.util.ArrayList;
+
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.jpa.core.context.orm.NullOrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;

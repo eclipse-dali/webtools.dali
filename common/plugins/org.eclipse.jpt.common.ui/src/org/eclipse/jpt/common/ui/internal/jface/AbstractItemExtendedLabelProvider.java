@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.ui.internal.jface;
 
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -230,6 +230,6 @@ public abstract class AbstractItemExtendedLabelProvider<I>
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.item);
+		return ObjectTools.toString(this, this.item);
 	}
 }

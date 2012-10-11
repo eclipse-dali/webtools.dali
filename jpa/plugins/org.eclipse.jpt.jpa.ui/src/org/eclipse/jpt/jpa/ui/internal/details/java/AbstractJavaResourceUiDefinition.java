@@ -15,8 +15,8 @@ import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.jface.SimpleItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.SuperIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterable.SuperIterableWrapper;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -102,7 +102,7 @@ public abstract class AbstractJavaResourceUiDefinition
 
 	protected JavaTypeMappingUiDefinition<? extends TypeMapping> getSpecifiedJavaTypeMappingUiDefinition(String mappingKey) {
 		for (JavaTypeMappingUiDefinition<? extends TypeMapping> definition : this.getSpecifiedTypeMappingUiDefinitions()) {
-			if (Tools.valuesAreEqual(definition.getKey(), mappingKey)) {
+			if (ObjectTools.equals(definition.getKey(), mappingKey)) {
 				return definition;
 			}
 		}
@@ -158,7 +158,7 @@ public abstract class AbstractJavaResourceUiDefinition
 
 	protected JavaAttributeMappingUiDefinition<? extends AttributeMapping> getSpecifiedAttributeMappingUiDefinition(String mappingKey) {
 		for (JavaAttributeMappingUiDefinition<? extends AttributeMapping> definition : this.getSpecifiedAttributeMappingUiDefinitions()) {
-			if (Tools.valuesAreEqual(definition.getKey(), mappingKey)) {
+			if (ObjectTools.equals(definition.getKey(), mappingKey)) {
 				return definition;
 			}
 		}
@@ -189,7 +189,7 @@ public abstract class AbstractJavaResourceUiDefinition
 
 	public DefaultJavaAttributeMappingUiDefinition<? extends AttributeMapping> getDefaultAttributeMappingUiDefinition(String mappingKey) {
 		for (DefaultJavaAttributeMappingUiDefinition<? extends AttributeMapping> definition : this.getDefaultAttributeMappingUiDefinitions()) {
-			if (Tools.valuesAreEqual(definition.getDefaultKey(), mappingKey)) {
+			if (ObjectTools.equals(definition.getDefaultKey(), mappingKey)) {
 				return definition;
 			}
 		}

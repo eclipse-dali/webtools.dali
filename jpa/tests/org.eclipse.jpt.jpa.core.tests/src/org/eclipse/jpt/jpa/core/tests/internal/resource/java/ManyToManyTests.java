@@ -13,8 +13,8 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.resource.java.FetchType;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.ManyToManyAnnotation;
@@ -120,7 +120,7 @@ public class ManyToManyTests extends JpaJavaResourceModelTestCase {
 	public void testManyToMany() throws Exception {
 		ICompilationUnit cu = this.createTestManyToMany();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) resourceField.getAnnotation(JPA.MANY_TO_MANY);
 		assertNotNull(manyToMany);
@@ -129,7 +129,7 @@ public class ManyToManyTests extends JpaJavaResourceModelTestCase {
 	public void testGetFetch() throws Exception {
 		ICompilationUnit cu = this.createTestManyToManyWithFetch();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) resourceField.getAnnotation(JPA.MANY_TO_MANY);
 		assertEquals(FetchType.EAGER, manyToMany.getFetch());
@@ -138,7 +138,7 @@ public class ManyToManyTests extends JpaJavaResourceModelTestCase {
 	public void testSetFetch() throws Exception {
 		ICompilationUnit cu = this.createTestManyToManyWithFetch();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) resourceField.getAnnotation(JPA.MANY_TO_MANY);
 		assertEquals(FetchType.EAGER, manyToMany.getFetch());
@@ -152,7 +152,7 @@ public class ManyToManyTests extends JpaJavaResourceModelTestCase {
 	public void testSetFetchNull() throws Exception {
 		ICompilationUnit cu = this.createTestManyToManyWithFetch();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) resourceField.getAnnotation(JPA.MANY_TO_MANY);
 		assertEquals(FetchType.EAGER, manyToMany.getFetch());
@@ -167,7 +167,7 @@ public class ManyToManyTests extends JpaJavaResourceModelTestCase {
 	public void testGetTargetEntity() throws Exception {
 		ICompilationUnit cu = this.createTestManyToManyWithTargetEntity();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) resourceField.getAnnotation(JPA.MANY_TO_MANY);
 		assertEquals(TYPE_NAME, manyToMany.getTargetEntity());
@@ -176,7 +176,7 @@ public class ManyToManyTests extends JpaJavaResourceModelTestCase {
 	public void testSetTargetEntity() throws Exception {
 		ICompilationUnit cu = this.createTestManyToManyWithTargetEntity();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) resourceField.getAnnotation(JPA.MANY_TO_MANY);
 		assertEquals(TYPE_NAME, manyToMany.getTargetEntity());
@@ -189,7 +189,7 @@ public class ManyToManyTests extends JpaJavaResourceModelTestCase {
 	public void testSetTargetEntityNull() throws Exception {
 		ICompilationUnit cu = this.createTestManyToManyWithTargetEntity();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) resourceField.getAnnotation(JPA.MANY_TO_MANY);
 		assertEquals(TYPE_NAME, manyToMany.getTargetEntity());
@@ -204,7 +204,7 @@ public class ManyToManyTests extends JpaJavaResourceModelTestCase {
 	public void testGetFullyQualifiedTargetEntity() throws Exception {
 		ICompilationUnit cu = this.createTestManyToManyWithTargetEntity();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) resourceField.getAnnotation(JPA.MANY_TO_MANY);
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, manyToMany.getFullyQualifiedTargetEntityClassName());
@@ -221,7 +221,7 @@ public class ManyToManyTests extends JpaJavaResourceModelTestCase {
 	public void testGetMappedBy() throws Exception {
 		ICompilationUnit cu = this.createTestManyToManyWithMappedBy();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) resourceField.getAnnotation(JPA.MANY_TO_MANY);
 		assertEquals("foo", manyToMany.getMappedBy());
@@ -230,7 +230,7 @@ public class ManyToManyTests extends JpaJavaResourceModelTestCase {
 	public void testGetMappedByNull() throws Exception {
 		ICompilationUnit cu = this.createTestManyToMany();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) resourceField.getAnnotation(JPA.MANY_TO_MANY);
 		assertEquals(null, manyToMany.getMappedBy());
@@ -239,7 +239,7 @@ public class ManyToManyTests extends JpaJavaResourceModelTestCase {
 	public void testSetMappedBy() throws Exception {
 		ICompilationUnit cu = this.createTestManyToMany();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) resourceField.getAnnotation(JPA.MANY_TO_MANY);
 		assertNull(manyToMany.getMappedBy());
@@ -252,7 +252,7 @@ public class ManyToManyTests extends JpaJavaResourceModelTestCase {
 	public void testSetMappedByNull() throws Exception {
 		ICompilationUnit cu = this.createTestManyToManyWithMappedBy();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) resourceField.getAnnotation(JPA.MANY_TO_MANY);
 		assertEquals("foo", manyToMany.getMappedBy());
@@ -267,7 +267,7 @@ public class ManyToManyTests extends JpaJavaResourceModelTestCase {
 	public void testSetCascadeAll() throws Exception {
 		ICompilationUnit cu = this.createTestManyToMany();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) resourceField.getAnnotation(JPA.MANY_TO_MANY);
 		assertFalse(manyToMany.isCascadeAll());
@@ -281,7 +281,7 @@ public class ManyToManyTests extends JpaJavaResourceModelTestCase {
 	public void testSetCascadeMerge() throws Exception {
 		ICompilationUnit cu = this.createTestManyToMany();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) resourceField.getAnnotation(JPA.MANY_TO_MANY);
 		assertFalse(manyToMany.isCascadeMerge());
@@ -295,7 +295,7 @@ public class ManyToManyTests extends JpaJavaResourceModelTestCase {
 	public void testSetCascadePersist() throws Exception {
 		ICompilationUnit cu = this.createTestManyToMany();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) resourceField.getAnnotation(JPA.MANY_TO_MANY);
 		assertFalse(manyToMany.isCascadePersist());
@@ -309,7 +309,7 @@ public class ManyToManyTests extends JpaJavaResourceModelTestCase {
 	public void testSetCascadeRemove() throws Exception {
 		ICompilationUnit cu = this.createTestManyToMany();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) resourceField.getAnnotation(JPA.MANY_TO_MANY);
 		assertFalse(manyToMany.isCascadeRemove());
@@ -323,7 +323,7 @@ public class ManyToManyTests extends JpaJavaResourceModelTestCase {
 	public void testSetCascadeRefresh() throws Exception {
 		ICompilationUnit cu = this.createTestManyToMany();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) resourceField.getAnnotation(JPA.MANY_TO_MANY);
 		assertFalse(manyToMany.isCascadeRefresh());
@@ -337,7 +337,7 @@ public class ManyToManyTests extends JpaJavaResourceModelTestCase {
 	public void testCascadeMoreThanOnce() throws Exception {
 		ICompilationUnit cu = this.createTestManyToManyWithCascade();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) resourceField.getAnnotation(JPA.MANY_TO_MANY);
 		assertTrue(manyToMany.isCascadeAll());
@@ -362,7 +362,7 @@ public class ManyToManyTests extends JpaJavaResourceModelTestCase {
 	public void testDuplicateCascade() throws Exception {
 		ICompilationUnit cu = this.createTestManyToManyWithDuplicateCascade();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) resourceField.getAnnotation(JPA.MANY_TO_MANY);
 		assertTrue(manyToMany.isCascadeMerge());
@@ -380,7 +380,7 @@ public class ManyToManyTests extends JpaJavaResourceModelTestCase {
 	public void testMultipleCascade() throws Exception {
 		ICompilationUnit cu = this.createTestManyToManyWithMultipleCascade();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) resourceField.getAnnotation(JPA.MANY_TO_MANY);
 		assertTrue(manyToMany.isCascadeMerge());

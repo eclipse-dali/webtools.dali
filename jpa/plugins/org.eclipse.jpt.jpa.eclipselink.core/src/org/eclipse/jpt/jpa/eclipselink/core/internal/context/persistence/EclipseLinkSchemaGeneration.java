@@ -212,7 +212,7 @@ public class EclipseLinkSchemaGeneration
 
 	public void setApplicationLocation(String newApplicationLocation) {
 		String old = this.applicationLocation;
-		this.applicationLocation = (StringTools.stringIsNotEmpty(newApplicationLocation)) ? 
+		this.applicationLocation = (StringTools.isNotBlank(newApplicationLocation)) ? 
 												newApplicationLocation : 
 												this.getDefaultApplicationLocation();
 		this.putProperty(APPLICATION_LOCATION_PROPERTY, this.applicationLocation);

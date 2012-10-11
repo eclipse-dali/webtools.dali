@@ -38,8 +38,8 @@ import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.NodeFinder;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterable.SnapshotCloneIterable;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.persistence.jpa.jpql.ExpressionTools;
 import org.eclipse.persistence.jpa.jpql.spi.IConstructor;
@@ -431,6 +431,6 @@ public class JpaType implements IJpaType {
 	 */
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, typeName);
+		return ObjectTools.toString(this, typeName);
 	}
 }

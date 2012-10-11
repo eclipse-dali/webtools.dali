@@ -12,7 +12,7 @@ package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsForm;
@@ -225,7 +225,7 @@ public class XmlSchemaAnnotationTests
 		JavaResourcePackage packageResource = buildJavaResourcePackage(cu); 
 		
 		XmlSchemaAnnotation schemaAnnotation = (XmlSchemaAnnotation) packageResource.getAnnotation(JAXB.XML_SCHEMA);
-		assertFalse(CollectionTools.isEmpty(schemaAnnotation.getXmlns()));
+		assertFalse(IterableTools.isEmpty(schemaAnnotation.getXmlns()));
 		assertEquals(1, schemaAnnotation.getXmlnsSize());
 		
 		schemaAnnotation.addXmlns(1);

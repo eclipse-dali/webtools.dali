@@ -14,8 +14,8 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
@@ -102,7 +102,7 @@ public class EclipseLinkPersistenceUnitTests
 		xmlMappingFileRef.setFileName("META-INF/eclipselink-orm.xml");
 		xmlPersistenceUnit.getMappingFiles().add(xmlMappingFileRef);
 		
-		assertEquals(1, CollectionTools.size(persistenceUnit.getSpecifiedMappingFileRefs()));
+		assertEquals(1, IterableTools.size(persistenceUnit.getSpecifiedMappingFileRefs()));
 		
 		assertTrue(eclipseLinkOrmResource.fileExists());
 		assertNotNull(persistenceUnit.getImpliedMappingFileRef());

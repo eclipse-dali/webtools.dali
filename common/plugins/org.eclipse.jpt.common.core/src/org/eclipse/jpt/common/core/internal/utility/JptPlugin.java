@@ -33,8 +33,8 @@ import org.eclipse.jpt.common.core.internal.JptCommonCoreMessages;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.osgi.service.debug.DebugOptions;
 import org.eclipse.osgi.service.debug.DebugTrace;
 import org.eclipse.osgi.util.NLS;
@@ -758,7 +758,7 @@ public abstract class JptPlugin
 	 * @see IStatus#getSeverity()
 	 */
 	public IStatus log(int severity, String message) {
-		return this.log(severity, message, Tools.EMPTY_OBJECT_ARRAY);
+		return this.log(severity, message, ObjectTools.EMPTY_OBJECT_ARRAY);
 	}
 
 	/**
@@ -855,7 +855,7 @@ public abstract class JptPlugin
 	 * @see IStatus#getCode()
 	 */
 	public IStatus log(int severity, int code, Throwable throwable, String message) {
-		return this.log(severity, code, throwable, message, Tools.EMPTY_OBJECT_ARRAY);
+		return this.log(severity, code, throwable, message, ObjectTools.EMPTY_OBJECT_ARRAY);
 	}
 
 	/**
@@ -1026,7 +1026,7 @@ public abstract class JptPlugin
 	 * @see IStatus#getSeverity()
 	 */
 	public IStatus buildStatus(int severity, String message) {
-		return this.buildStatus(severity, message, Tools.EMPTY_OBJECT_ARRAY);
+		return this.buildStatus(severity, message, ObjectTools.EMPTY_OBJECT_ARRAY);
 	}
 
 	/**
@@ -1101,7 +1101,7 @@ public abstract class JptPlugin
 	 * @see IStatus#getSeverity()
 	 */
 	public IStatus buildStatus(int severity, Throwable throwable, String message) {
-		return this.buildStatus(severity, throwable, message, Tools.EMPTY_OBJECT_ARRAY);
+		return this.buildStatus(severity, throwable, message, ObjectTools.EMPTY_OBJECT_ARRAY);
 	}
 
 	/**
@@ -1130,7 +1130,7 @@ public abstract class JptPlugin
 	 * @see IStatus#getCode()
 	 */
 	public IStatus buildStatus(int severity, int code, Throwable throwable, String message) {
-		return this.buildStatus(severity, code, throwable, message, Tools.EMPTY_OBJECT_ARRAY);
+		return this.buildStatus(severity, code, throwable, message, ObjectTools.EMPTY_OBJECT_ARRAY);
 	}
 
 	/**
@@ -1199,7 +1199,7 @@ public abstract class JptPlugin
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this);
+			return ObjectTools.toString(this);
 		}
 	}
 
@@ -1513,7 +1513,7 @@ public abstract class JptPlugin
 	}
 
 	protected void checkDebugOption(String option) {
-		if (StringTools.stringIsEmpty(option)) {
+		if (StringTools.isBlank(option)) {
 			throw new IllegalArgumentException("debug option cannot be blank"); //$NON-NLS-1$
 		}
 	}
@@ -1556,7 +1556,7 @@ public abstract class JptPlugin
 	 * @see #dumpStackTrace(String, String)
 	 */
 	public void trace(String option, String message) {
-		this.trace(option, message, Tools.EMPTY_OBJECT_ARRAY);
+		this.trace(option, message, ObjectTools.EMPTY_OBJECT_ARRAY);
 	}
 
 	/**
@@ -1616,7 +1616,7 @@ public abstract class JptPlugin
 	 * the specified message is not traced.
 	 */
 	public void trace(String option, Throwable throwable, String message) {
-		this.trace(option, throwable, message, Tools.EMPTY_OBJECT_ARRAY);
+		this.trace(option, throwable, message, ObjectTools.EMPTY_OBJECT_ARRAY);
 	}
 
 	/**
@@ -1686,7 +1686,7 @@ public abstract class JptPlugin
 	 * the stack trace is not dumped.
 	 */
 	public void dumpStackTrace(String option, String message) {
-		this.dumpStackTrace(option, message, Tools.EMPTY_OBJECT_ARRAY);
+		this.dumpStackTrace(option, message, ObjectTools.EMPTY_OBJECT_ARRAY);
 	}
 
 	/**
@@ -1869,6 +1869,6 @@ public abstract class JptPlugin
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.getBundle());
+		return ObjectTools.toString(this, this.getBundle());
 	}
 }

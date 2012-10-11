@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.Accessor;
@@ -59,8 +59,8 @@ public class SpecifiedJavaEclipseLinkPersistentAttribute
 	 * mapping.
 	 */
 	protected boolean specifiedKeyIsInvalid(String key) {
-		return Tools.valuesAreEqual(key, MappingKeys.ID_ATTRIBUTE_MAPPING_KEY) &&
-			Tools.valuesAreEqual(this.getDefaultMappingKey(), MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		return ObjectTools.equals(key, MappingKeys.ID_ATTRIBUTE_MAPPING_KEY) &&
+			ObjectTools.equals(this.getDefaultMappingKey(), MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 	}
 
 

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.context.java;
 
 import java.util.Iterator;
+
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
@@ -17,8 +18,8 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
@@ -57,9 +58,9 @@ public class ELJavaXmlInverseReferenceMappingTests
 	public void testModifyMappedBy() throws Exception {
 		createTypeWithXmlInverseReference();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
-		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(classMapping.getAttributes(), 0);
+		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
 		ELJavaXmlInverseReferenceMapping mapping = (ELJavaXmlInverseReferenceMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
 		XmlInverseReferenceAnnotation annotation = (XmlInverseReferenceAnnotation) resourceAttribute.getAnnotation(ELJaxb.XML_INVERSE_REFERENCE);
@@ -81,9 +82,9 @@ public class ELJavaXmlInverseReferenceMappingTests
 	public void testUpdateMappedBy() throws Exception {
 		createTypeWithXmlInverseReference();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		JaxbClassMapping classMapping = jaxbClass.getMapping();
-		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(classMapping.getAttributes(), 0);
+		JaxbPersistentAttribute persistentAttribute = IterableTools.get(classMapping.getAttributes(), 0);
 		ELJavaXmlInverseReferenceMapping mapping = (ELJavaXmlInverseReferenceMapping) persistentAttribute.getMapping();
 		JavaResourceAttribute resourceAttribute = mapping.getPersistentAttribute().getJavaResourceAttribute();
 		XmlInverseReferenceAnnotation annotation = (XmlInverseReferenceAnnotation) resourceAttribute.getAnnotation(ELJaxb.XML_INVERSE_REFERENCE);

@@ -13,7 +13,7 @@ import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObjectListener;
 import org.eclipse.datatools.connectivity.sqm.core.rte.RefreshManager;
 import org.eclipse.datatools.modelbase.sql.schema.SQLObject;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.db.DatabaseObject;
 import org.eclipse.jpt.jpa.db.internal.driver.DTPDriverAdapter;
 
@@ -144,7 +144,7 @@ abstract class DTPDatabaseObjectWrapper<P extends DTPDatabaseObject, S extends S
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this);
+			return ObjectTools.toString(this);
 		}
 	}
 
@@ -255,6 +255,6 @@ abstract class DTPDatabaseObjectWrapper<P extends DTPDatabaseObject, S extends S
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.getName());
+		return ObjectTools.toString(this, this.getName());
 	}
 }

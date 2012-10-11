@@ -127,7 +127,7 @@ public class GenerateDynamicEntitiesFromSchemaWizard extends GenerateEntitiesFro
 		if(jpaProject == null) {
 			return false;
 		}
-		return jpaProject.getJpaPlatform().getDescription().getGroupDescription().getId().
+		return jpaProject.getJpaPlatform().getConfig().getGroupConfig().getId().
 			equals(EclipseLinkPlatform.GROUP.getId());
 	}
 	

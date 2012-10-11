@@ -9,8 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.ArrayListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
@@ -57,7 +57,7 @@ public class ELJavaXmlJoinNodesMappingDefinition
 	@Override
 	public boolean isSpecified(JaxbPersistentAttribute persistentAttribute) {
 		return persistentAttribute.getJavaResourceAttribute().getContainerAnnotation(getAnnotationName()) != null
-				|| ! CollectionTools.isEmpty(persistentAttribute.getJavaResourceAttribute().getAnnotations(ELJaxb.XML_JOIN_NODE));
+				|| ! IterableTools.isEmpty(persistentAttribute.getJavaResourceAttribute().getAnnotations(ELJaxb.XML_JOIN_NODE));
 	}
 	
 	public Iterable<String> getSupportingAnnotationNames() {

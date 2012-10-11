@@ -1,4 +1,5 @@
 /*******************************************************************************
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
@@ -11,9 +12,8 @@ package org.eclipse.jpt.jaxb.core.internal.context;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
-import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
 import org.eclipse.jpt.jaxb.core.context.XmlRegistry;
@@ -99,10 +99,10 @@ public class GenericPackage
 	
 	public XmlRegistry getRegistry() {
 		Iterable<XmlRegistry> registries = getContextRoot().getXmlRegistries(this);
-		if (CollectionTools.isEmpty(registries)) {
+		if (IterableTools.isEmpty(registries)) {
 			return null;
 		}
-		return CollectionTools.get(registries, 0);
+		return IterableTools.get(registries, 0);
 	}
 	
 	

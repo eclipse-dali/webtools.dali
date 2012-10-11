@@ -13,14 +13,14 @@ import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.Bag;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.HashBag;
+import org.eclipse.jpt.common.utility.collection.Bag;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SubListIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.collection.HashBag;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.SubListIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.internal.context.java.AbstractJavaAttributeMapping;
@@ -70,7 +70,7 @@ public class ELJavaXmlJoinNodesMapping
 	@Override
 	protected boolean buildDefault() {
 		return getAnnotation() == null 
-				&& CollectionTools.isEmpty(getPersistentAttribute().getJavaResourceAttribute().getAnnotations(ELJaxb.XML_JOIN_NODE));
+				&& IterableTools.isEmpty(getPersistentAttribute().getJavaResourceAttribute().getAnnotations(ELJaxb.XML_JOIN_NODE));
 	}
 	
 	
@@ -135,7 +135,7 @@ public class ELJavaXmlJoinNodesMapping
 	
 	public ELClassMapping getReferencedClassMapping() {
 		String valueType = getValueTypeName();
-		if (StringTools.stringIsEmpty(valueType)) {
+		if (StringTools.isBlank(valueType)) {
 			return null;
 		}
 		
@@ -154,13 +154,13 @@ public class ELJavaXmlJoinNodesMapping
 	public Iterable<String> getCompletionProposals(int pos) {
 		
 		Iterable<String> result = super.getCompletionProposals(pos);
-		if (! CollectionTools.isEmpty(result)) {
+		if (! IterableTools.isEmpty(result)) {
 			return result;
 		}
 		
 		for (ELJavaXmlJoinNode xmlJoinNode : this.xmlJoinNodeContainer.getContextElements()) {
 			result = xmlJoinNode.getCompletionProposals(pos);
-			if (! CollectionTools.isEmpty(result)) {
+			if (! IterableTools.isEmpty(result)) {
 				return result;
 			}
 		}
@@ -200,11 +200,11 @@ public class ELJavaXmlJoinNodesMapping
 		
 		for (ELJavaXmlJoinNode joinNode : this.xmlJoinNodeContainer.getContextElements()) {
 			String xmlPath = joinNode.getXmlPath();
-			if (! StringTools.stringIsEmpty(xmlPath)) {
+			if (StringTools.isNotBlank(xmlPath)) {
 				xmlPaths.add(xmlPath);
 			}
 			String referencedXmlPath = joinNode.getReferencedXmlPath();
-			if (! StringTools.stringIsEmpty(referencedXmlPath)) {
+			if (StringTools.isNotBlank(referencedXmlPath)) {
 				referencedXmlPaths.add(referencedXmlPath);
 			}
 		}

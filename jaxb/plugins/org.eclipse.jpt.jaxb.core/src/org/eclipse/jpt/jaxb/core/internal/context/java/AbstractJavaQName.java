@@ -11,9 +11,10 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbQName;
@@ -64,8 +65,8 @@ public abstract class AbstractJavaQName
 	// ***** namespace *****
 	
 	public String getNamespace() {
-		if (StringTools.stringIsEmpty(getSpecifiedNamespace())  // namespace="" is actually interpreted as unspecified by JAXB tools
-				|| StringTools.stringsAreEqual(getSpecifiedNamespace(), JAXB.DEFAULT_STRING)) {
+		if (StringTools.isBlank(getSpecifiedNamespace())  // namespace="" is actually interpreted as unspecified by JAXB tools
+				|| ObjectTools.equals(getSpecifiedNamespace(), JAXB.DEFAULT_STRING)) {
 			return getDefaultNamespace();
 		}
 		return getSpecifiedNamespace();
@@ -101,7 +102,7 @@ public abstract class AbstractJavaQName
 	
 	public String getName() {
 		if (getSpecifiedName() == null
-				|| StringTools.stringsAreEqual(getSpecifiedName(), JAXB.DEFAULT_STRING)) {
+				|| ObjectTools.equals(getSpecifiedName(), JAXB.DEFAULT_STRING)) {
 			return getDefaultName();
 		}
 		return getSpecifiedName();
@@ -138,7 +139,7 @@ public abstract class AbstractJavaQName
 	@Override
 	public Iterable<String> getCompletionProposals(int pos) {
 		Iterable<String> result = super.getCompletionProposals(pos);
-		if (! CollectionTools.isEmpty(result)) {
+		if (! IterableTools.isEmpty(result)) {
 			return result;
 		}
 		
@@ -191,13 +192,13 @@ public abstract class AbstractJavaQName
 		
 		validateName(messages, reporter);
 		
-		if (! StringTools.stringIsEmpty(getName())) {
+		if (! StringTools.isBlank(getName())) {
 			validateReference(messages, reporter);
 		}
 	}
 	
 	protected void validateName(List<IMessage> messages, IReporter reporter) {
-		if (StringTools.stringIsEmpty(getName())) {
+		if (StringTools.isBlank(getName())) {
 			messages.add(
 				DefaultValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,

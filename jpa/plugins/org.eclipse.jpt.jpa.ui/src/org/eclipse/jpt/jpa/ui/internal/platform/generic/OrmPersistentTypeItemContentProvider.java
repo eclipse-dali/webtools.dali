@@ -12,11 +12,11 @@ package org.eclipse.jpt.jpa.ui.internal.platform.generic;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.jpt.common.ui.internal.jface.AbstractItemTreeContentProvider;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListCollectionValueModelAdapter;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
@@ -38,7 +38,7 @@ public class OrmPersistentTypeItemContentProvider
 		List<CollectionValueModel<OrmReadOnlyPersistentAttribute>> list = new ArrayList<CollectionValueModel<OrmReadOnlyPersistentAttribute>>(2);
 		list.add(this.buildSpecifiedPersistentAttributesModel());
 		list.add(this.buildDefaultPersistentAttributesModel());
-		return new CompositeCollectionValueModel<CollectionValueModel<OrmReadOnlyPersistentAttribute>, OrmReadOnlyPersistentAttribute>(list);
+		return CompositeCollectionValueModel.forModels(list);
 	}
 
 	protected CollectionValueModel<OrmReadOnlyPersistentAttribute> buildSpecifiedPersistentAttributesModel() {

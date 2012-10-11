@@ -182,7 +182,7 @@ public class VersionComparator<T extends Comparable<T>>
 			private static final Integer ZERO = Integer.valueOf(0);
 			@Override
 			public String toString() {
-				return StringTools.buildSingletonToString(this);
+				return ObjectTools.singletonToString(this);
 			}
 			private static final long serialVersionUID = 1L;
 			private Object readResolve() {
@@ -217,7 +217,7 @@ public class VersionComparator<T extends Comparable<T>>
 			}
 			@Override
 			public String toString() {
-				return StringTools.buildSingletonToString(this);
+				return ObjectTools.singletonToString(this);
 			}
 			private static final long serialVersionUID = 1L;
 			private Object readResolve() {

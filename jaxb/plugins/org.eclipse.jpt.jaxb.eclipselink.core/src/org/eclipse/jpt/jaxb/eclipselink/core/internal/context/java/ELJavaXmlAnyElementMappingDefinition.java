@@ -1,7 +1,7 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
 import org.eclipse.jpt.jaxb.core.internal.context.java.JavaXmlAnyElementMappingDefinition;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
 

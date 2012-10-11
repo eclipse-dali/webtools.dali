@@ -10,13 +10,12 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
 import java.util.List;
-
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
-import org.eclipse.jpt.common.utility.internal.Association;
+import org.eclipse.jpt.common.utility.Association;
 import org.eclipse.jpt.common.utility.internal.SimpleAssociation;
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;

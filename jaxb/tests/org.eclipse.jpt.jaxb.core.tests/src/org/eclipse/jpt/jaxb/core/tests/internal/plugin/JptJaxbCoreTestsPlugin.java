@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.tests.internal.plugin;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jpt.common.core.internal.utility.JptPlugin;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
-import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
-import org.eclipse.jpt.jaxb.core.internal.prefs.JaxbPreferencesManager;
+import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 
 /**
  * Configure the core for testing:<ul>
@@ -43,9 +43,17 @@ public class JptJaxbCoreTestsPlugin
 	@Override
 	protected void start_() throws Exception {
 		super.start_();
-		JaxbProjectManager jaxbProjectManager = JptJaxbCorePlugin.instance().getProjectManager();
-		ReflectionTools.executeMethod(jaxbProjectManager, "handleEventsSynchronously");
-		ReflectionTools.executeStaticMethod(JaxbPreferencesManager.class, "doNotFlushPreferences");
+		JaxbProjectManager jaxbProjectManager = this.getJaxbProjectManager();
+		ObjectTools.execute(jaxbProjectManager, "handleEventsSynchronously");
+		JptPlugin.FlushPreferences = false;
+	}
+
+	private JaxbProjectManager getJaxbProjectManager() {
+		return this.getJaxbWorkspace().getJaxbProjectManager();
+	}
+
+	private JaxbWorkspace getJaxbWorkspace() {
+		return (JaxbWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JaxbWorkspace.class);
 	}
 
 	@Override

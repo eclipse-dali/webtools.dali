@@ -18,42 +18,44 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 import java.util.Vector;
-
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterators.CloneIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterator.CloneIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.FilteringIterator;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.AspectChangeSupport;
 import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
+import org.eclipse.jpt.common.utility.node.Node;
+import org.eclipse.jpt.common.utility.node.Problem;
 
 /**
- * Base class for Node classes.
- * Provides support for the following:
- *     initialization
- *     enforced object identity wrt #equals()/#hashCode()
- *     containment hierarchy (parent/child)
- *     user comment
- *     dirty flag
- *     problems
- *     sorting
- * 
- * Typically, subclasses should consider implementing the following methods:
- *     the appropriate constructors
- *         (with the appropriately-restrictive type declaration for parent)
- *     #initialize()
- *     #initialize(Node parentNode)
- *     #checkParent(Node parentNode)
- *     #addChildrenTo(List list)
- *     #nodeRemoved(Node)
- *     #validator()
- *     #transientAspectNames() or
- *         #addTransientAspectNamesTo(Set transientAspectNames)
- *     #addProblemsTo(List currentProblems)
- *     #nonValidatedAspectNames()
- *         #addNonValidatedAspectNamesTo(Set nonValidatedAspectNames)
- *     #displayString()
- *     #toString(StringBuilder sb)
+ * Base class for {@link Node} classes.
+ * Provides support for the following:<ul>
+ * <li>initialization
+ * <li>enforced object identity wrt #equals()/#hashCode()
+ * <li>containment hierarchy (parent/child)
+ * <li>user comment
+ * <li>dirty flag
+ * <li>problems
+ * <li>sorting
+ * </ul>
+ * Typically, subclasses should consider implementing the following methods:<ul>
+ * <li>the appropriate constructors
+ *     (with the appropriately-restrictive type declaration for parent)
+ * <li>{@link #initialize()}
+ * <li>{@link #initialize(Node)}
+ * <li>{@link #checkParent(Node)}
+ * <li>{@link #addChildrenTo(List)}
+ * <li>{@link #nodeRemoved(Node)}
+ * <li>{@link #getValidator()}
+ * <li>{@link #transientAspectNames()} or
+ *     {@link #addTransientAspectNamesTo(Set)}
+ * <li>{@link #addProblemsTo(List)}
+ * <li>{@link #nonValidatedAspectNames()}
+ * <li>{@link #addNonValidatedAspectNamesTo(Set)}
+ * <li>{@link #displayString()}
+ * <li>{@link #toString(StringBuilder)}
+ * </ul>
  */
 public abstract class AbstractNode 
 	extends AbstractModel
@@ -278,7 +280,7 @@ public abstract class AbstractNode
 	 * to "owned" by another object.
 	 * This method is of particular concern to Handles, since most
 	 * (hopefully all) "references" are held by Handles.
-	 * @see Reference
+	 * @see org.eclipse.jpt.common.utility.node.Node.Reference
 	 * @see #children()
 	 */
 	public void addBranchReferencesTo(Collection<Node.Reference> branchReferences) {
@@ -711,7 +713,7 @@ public abstract class AbstractNode
 	}
 
 	protected final Problem buildProblem(String messageKey, int messageType) {
-		return this.buildProblem(messageKey, messageType, Tools.EMPTY_OBJECT_ARRAY);
+		return this.buildProblem(messageKey, messageType, ObjectTools.EMPTY_OBJECT_ARRAY);
 	}
 
 	/**

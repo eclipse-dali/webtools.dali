@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.resource.java.QueryAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.QueryHintAnnotation;
 

@@ -9,12 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.model.value;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.ListIterator;
-
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyListIterator;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.EmptyListIterator;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 
@@ -26,8 +26,10 @@ import org.eclipse.jpt.common.utility.model.value.ListValueModel;
  */
 public final class NullListValueModel<E>
 	extends AbstractModel
-	implements ListValueModel<E>
+	implements ListValueModel<E>, Serializable
 {
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Default constructor.
 	 */
@@ -55,7 +57,7 @@ public final class NullListValueModel<E>
 	}
 
 	public Object[] toArray() {
-		return Tools.EMPTY_OBJECT_ARRAY;
+		return ObjectTools.EMPTY_OBJECT_ARRAY;
 	}
 
 

@@ -25,16 +25,25 @@
 	<extension
 		point="org.eclipse.core.runtime.adapters">
 
+		<!-- IWorkspace -> JaxbWorkspace -->
+		<factory
+			adaptableType="org.eclipse.core.resources.IWorkspace"
+			class="org.eclipse.jpt.jaxb.core.internal.WorkspaceAdapterFactory">
+			<adapter type="org.eclipse.jpt.jaxb.core.JaxbWorkspace"/>
+		</factory>
+
+		<!-- IResource -> JaxbPlatformConfig -->
 		<factory
 			class="org.eclipse.jpt.jaxb.core.internal.ResourceAdapterFactory"
 			adaptableType="org.eclipse.core.resources.IResource">
-			<adapter type="org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription"/>
+			<adapter type="org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig"/>
 		</factory>
 
+		<!-- IJavaElement -> JaxbPlatformConfig -->
 		<factory
 			class="org.eclipse.jpt.jaxb.core.internal.JavaElementAdapterFactory"
 			adaptableType="org.eclipse.jdt.core.IJavaElement">
-			<adapter type="org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription"/>
+			<adapter type="org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig"/>
 		</factory>
 		
 		<!-- IPackageFragment -> JaxbPackage -->
@@ -44,10 +53,11 @@
 			<adapter type="org.eclipse.jpt.jaxb.core.context.JaxbPackage"/>
 		</factory>
 
+		<!-- JaxbLibraryProviderInstallOperationConfigAdapterFactory -> JaxbPlatformConfig -->
 		<factory
 			class="org.eclipse.jpt.jaxb.core.internal.libprov.JaxbLibraryProviderInstallOperationConfigAdapterFactory"
 			adaptableType="org.eclipse.jpt.jaxb.core.libprov.JaxbLibraryProviderInstallOperationConfig">
-			<adapter type="org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription"/>
+			<adapter type="org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig"/>
 		</factory>
 
 	</extension>
@@ -99,7 +109,7 @@
 
 		<propertyTester
 			id="org.eclipse.jpt.jaxb.core.propertyTester.jaxbPlatformDescription"
-			type="org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription"
+			type="org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig"
 			namespace="org.eclipse.jpt.jaxb.core"
 			properties="jaxbPlatform, jaxbPlatformGroup"
 			class="org.eclipse.jpt.jaxb.core.internal.platform.JaxbPlatformTester"/>
@@ -113,6 +123,16 @@
 		
 	</extension>
 			
+
+	<!-- ***** preferences ***** -->
+
+	<extension
+		point="org.eclipse.core.runtime.preferences">
+
+		<initializer class="org.eclipse.jpt.jaxb.core.internal.JaxbPreferenceInitializer"/>
+
+	</extension>
+
 
 	<!-- ***** markers ***** -->
 	<!--

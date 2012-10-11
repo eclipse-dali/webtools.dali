@@ -17,8 +17,9 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
@@ -1210,7 +1211,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
 		JavaResourceField resourceField = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
-		assertEquals(2, CollectionTools.size(resourceField.getAnnotations(JPA.ASSOCIATION_OVERRIDE).iterator()));
+		assertEquals(2, IteratorTools.size(resourceField.getAnnotations(JPA.ASSOCIATION_OVERRIDE).iterator()));
 
 		overrideContainer.getSpecifiedOverrides().iterator().next().convertToVirtual();
 		
@@ -1248,7 +1249,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		JavaResourceField resourceField = ((JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE)).getFields().iterator().next();
 		
 		Iterator<NestableAnnotation> javaAssociationOverrides = resourceField.getAnnotations(JPA.ASSOCIATION_OVERRIDE).iterator();
-		assertEquals(2, CollectionTools.size(javaAssociationOverrides));
+		assertEquals(2, IteratorTools.size(javaAssociationOverrides));
 		
 		
 		overrideContainer.moveSpecifiedOverride(1, 0);
@@ -1376,7 +1377,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 		
 		assertEquals(2, overrideContainer.getVirtualOverridesSize());
-		VirtualAssociationOverride virtualAssociationOverride = CollectionTools.get(overrideContainer.getVirtualOverrides(), 1);
+		VirtualAssociationOverride virtualAssociationOverride = IterableTools.get(overrideContainer.getVirtualOverrides(), 1);
 		VirtualJoinTableRelationshipStrategy joiningStrategy = ((VirtualOverrideRelationship2_0) virtualAssociationOverride.getRelationship()).getJoinTableStrategy();
 		VirtualJoinTable joinTable = joiningStrategy.getJoinTable();
 		assertEquals("addresses", virtualAssociationOverride.getName());
@@ -1432,7 +1433,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		assertEquals(0, resourceField.getAnnotationsSize(AssociationOverrideAnnotation.ANNOTATION_NAME));
 		
 		assertEquals(2, overrideContainer.getVirtualOverridesSize());
-		virtualAssociationOverride = CollectionTools.get(overrideContainer.getVirtualOverrides(), 1);
+		virtualAssociationOverride = IterableTools.get(overrideContainer.getVirtualOverrides(), 1);
 		joiningStrategy = ((VirtualOverrideRelationship2_0) virtualAssociationOverride.getRelationship()).getJoinTableStrategy();
 		joinTable = joiningStrategy.getJoinTable();
 		assertEquals("addresses", virtualAssociationOverride.getName());

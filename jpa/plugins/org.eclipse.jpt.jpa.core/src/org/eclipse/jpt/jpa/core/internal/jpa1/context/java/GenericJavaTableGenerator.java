@@ -10,14 +10,14 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import java.util.ArrayList;
-
-import org.eclipse.jpt.common.utility.Filter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.filter.Filter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.DbGenerator;
 import org.eclipse.jpt.jpa.core.context.TableGenerator;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
@@ -473,7 +473,8 @@ public class GenericJavaTableGenerator
 	}
 
 	protected Iterable<String> getJavaCandidateTables() {
-		return StringTools.convertToJavaStringLiteralContents(this.getCandidateTables());
+		return new TransformationIterable<String, String>(this.getCandidateTables(),
+				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 
 	protected Iterable<String> getCandidateTables() {
@@ -488,7 +489,8 @@ public class GenericJavaTableGenerator
 	}
 
 	protected Iterable<String> getJavaCandidateSchemata() {
-		return StringTools.convertToJavaStringLiteralContents(this.getCandidateSchemata());
+		return new TransformationIterable<String, String>(this.getCandidateSchemata(),
+				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 
 	protected Iterable<String> getCandidateSchemata() {
@@ -503,7 +505,8 @@ public class GenericJavaTableGenerator
 	}
 
 	protected Iterable<String> getJavaCandidateCatalogs(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiteralContents(this.getCandidateCatalogs(filter));
+		return new TransformationIterable<String, String>(this.getCandidateCatalogs(filter),
+				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 
 	protected Iterable<String> getCandidateCatalogs(Filter<String> filter) {
@@ -522,7 +525,8 @@ public class GenericJavaTableGenerator
 	}
 
 	protected Iterable<String> getJavaCandidateColumnNames() {
-		return StringTools.convertToJavaStringLiteralContents(this.getCandidateColumnNames());
+		return new TransformationIterable<String, String>(this.getCandidateColumnNames(),
+				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 
 	protected Iterable<String> getCandidateColumnNames() {
@@ -561,19 +565,19 @@ public class GenericJavaTableGenerator
 	}
 
 	protected boolean isEquivalentTo(TableGenerator generator) {
-		return Tools.valuesAreEqual(this.specifiedTable, generator.getSpecifiedTable()) &&
-				Tools.valuesAreEqual(this.specifiedSchema, generator.getSpecifiedSchema()) &&
-				Tools.valuesAreEqual(this.specifiedCatalog, generator.getSpecifiedCatalog()) &&
-				Tools.valuesAreEqual(this.specifiedPkColumnName, generator.getSpecifiedPkColumnName()) &&
-				Tools.valuesAreEqual(this.specifiedPkColumnValue, generator.getSpecifiedPkColumnValue()) &&
-				Tools.valuesAreEqual(this.specifiedValueColumnName, generator.getSpecifiedValueColumnName()) &&
+		return ObjectTools.equals(this.specifiedTable, generator.getSpecifiedTable()) &&
+				ObjectTools.equals(this.specifiedSchema, generator.getSpecifiedSchema()) &&
+				ObjectTools.equals(this.specifiedCatalog, generator.getSpecifiedCatalog()) &&
+				ObjectTools.equals(this.specifiedPkColumnName, generator.getSpecifiedPkColumnName()) &&
+				ObjectTools.equals(this.specifiedPkColumnValue, generator.getSpecifiedPkColumnValue()) &&
+				ObjectTools.equals(this.specifiedValueColumnName, generator.getSpecifiedValueColumnName()) &&
 				this.uniqueConstrainsAreEquivalentTo(generator);
 	}
 
 	protected boolean uniqueConstrainsAreEquivalentTo(TableGenerator generator) {
 		// get fixed lists of the unique constraints
-		ArrayList<JavaUniqueConstraint> uniqueConstraints1 = CollectionTools.list(this.getUniqueConstraints());
-		ArrayList<UniqueConstraint> uniqueConstraints2 = CollectionTools.list(generator.getUniqueConstraints());
+		ArrayList<JavaUniqueConstraint> uniqueConstraints1 = ListTools.list(this.getUniqueConstraints());
+		ArrayList<UniqueConstraint> uniqueConstraints2 = ListTools.list(generator.getUniqueConstraints());
 		if (uniqueConstraints1.size() != uniqueConstraints2.size()) {
 			return false;
 		}

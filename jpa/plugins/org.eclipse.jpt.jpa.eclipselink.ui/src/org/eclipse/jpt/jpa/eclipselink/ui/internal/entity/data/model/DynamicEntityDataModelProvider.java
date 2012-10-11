@@ -30,9 +30,11 @@ import org.eclipse.jdt.core.Signature;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
@@ -214,7 +216,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 	private IStatus validateXmlName(String xmlName) {
 		IProject project = this.getTargetProject();
 		if (project != null) {
-			JptXmlResource ormXmlResource = StringTools.stringIsEmpty(xmlName) ? null : getOrmXmlResource(xmlName);
+			JptXmlResource ormXmlResource = StringTools.isBlank(xmlName) ? null : getOrmXmlResource(xmlName);
 			if (ormXmlResource == null) {
 				return JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.DynamicEntityClassWizardPage_invalidXMLName);
 			}
@@ -302,8 +304,8 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 	}
 
 	private boolean hasIDAndEmbeddedIDMappingDefined(Iterable<String> mappingKeys) {
-		return CollectionTools.contains(mappingKeys, MappingKeys.ID_ATTRIBUTE_MAPPING_KEY) 
-				&& CollectionTools.contains(mappingKeys, MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
+		return IterableTools.contains(mappingKeys, MappingKeys.ID_ATTRIBUTE_MAPPING_KEY) 
+				&& IterableTools.contains(mappingKeys, MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
 	}
 
 	private boolean hasMultipleEmbeddedIDMappings(Iterable<String> mappingKeys) {
@@ -563,7 +565,7 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 	@Override
 	protected IStatus canCreateTypeInClasspath(String packageName, String typeName) {
 		String fullyQualifiedName = StringTools.EMPTY_STRING;
-		if (!StringTools.stringIsEmpty(packageName)) {
+		if (!StringTools.isBlank(packageName)) {
 			fullyQualifiedName = packageName + DOT + typeName;
 		} else {
 			fullyQualifiedName = typeName;
@@ -571,20 +573,20 @@ public class DynamicEntityDataModelProvider extends NewJavaClassDataModelProvide
 		//Since the existence of a static ORM type depends on the corresponding Java type,
 		//there is no need for a separate validation of it.
 		for (String name : this.getJavaTypeNames()) {
-			if (StringTools.stringsAreEqual(name, fullyQualifiedName)) {
+			if (ObjectTools.equals(name, fullyQualifiedName)) {
 				return JptJpaEclipseLinkUiPlugin.instance().buildStatus(IStatus.WARNING, EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeExistsWarning, fullyQualifiedName);
 
-			} else if (StringTools.stringsAreEqualIgnoreCase(name, fullyQualifiedName)) {
+			} else if (StringTools.equalsIgnoreCase(name, fullyQualifiedName)) {
 				return JptJpaEclipseLinkUiPlugin.instance().buildStatus(IStatus.WARNING, EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_typeWithDiffCaseExistsWarning, fullyQualifiedName);
 			}
 		}
 		PersistenceUnit pu = this.getPersistenceUnit();
 		if (pu != null) {
 			for (String name : ((EclipseLinkPersistenceUnit)this.getPersistenceUnit()).getEclipseLinkDynamicPersistentTypeNames()) {
-				if (StringTools.stringsAreEqual(name, fullyQualifiedName)) {
+				if (ObjectTools.equals(name, fullyQualifiedName)) {
 					return JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_dynamicTypeExistsError, fullyQualifiedName);
 
-				} else if (StringTools.stringsAreEqualIgnoreCase(name, fullyQualifiedName)) {
+				} else if (StringTools.equalsIgnoreCase(name, fullyQualifiedName)) {
 					return JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.EclipseLinkDynamicEntityWizard_dynamicTypeWithDiffCaseExistsError, fullyQualifiedName);
 				}
 			}

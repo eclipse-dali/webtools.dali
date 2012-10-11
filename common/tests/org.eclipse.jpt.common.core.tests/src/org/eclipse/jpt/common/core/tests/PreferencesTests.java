@@ -20,7 +20,8 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jpt.common.core.internal.utility.JptPlugin;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
+import org.eclipse.jpt.common.utility.internal.ClassTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 /**
@@ -123,18 +124,18 @@ public abstract class PreferencesTests
 
 	protected void flushWorkspacePrefs() throws Exception {
 		JptPlugin plugin = this.getPlugin();
-		IEclipsePreferences prefs = (IEclipsePreferences) ReflectionTools.executeMethod(plugin, "getWorkspacePreferences");
+		IEclipsePreferences prefs = (IEclipsePreferences) ObjectTools.execute(plugin, "getWorkspacePreferences");
 		prefs.flush();
 	}
 
 	protected void flushProjectPrefs() throws Exception {
 		JptPlugin plugin = this.getPlugin();
-		IEclipsePreferences prefs = (IEclipsePreferences) ReflectionTools.executeMethod(plugin, "getProjectPreferences", IProject.class, this.getProject());
+		IEclipsePreferences prefs = (IEclipsePreferences) ObjectTools.execute(plugin, "getProjectPreferences", IProject.class, this.getProject());
 		prefs.flush();
 	}
 
 	protected JptPlugin getPlugin() throws Exception {
-		return (JptPlugin) ReflectionTools.executeStaticMethod(this.getPreferencesClass(), "getPlugin");
+		return (JptPlugin) ClassTools.execute(this.getPreferencesClass(), "getPlugin");
 	}
 
 	/**

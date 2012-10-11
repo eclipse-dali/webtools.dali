@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageInfoCompilationUnit;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.common.utility.command.CommandExecutor;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 
 /**
  * @author Dmitry Geraskov

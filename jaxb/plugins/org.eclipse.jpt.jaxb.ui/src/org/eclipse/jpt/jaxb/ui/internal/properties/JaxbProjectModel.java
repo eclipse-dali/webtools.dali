@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jaxb.ui.internal.properties;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.listener.CollectionChangeAdapter;
@@ -17,7 +18,7 @@ import org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
-import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
+import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 
 /**
  * Treat the JAXB project as an "aspect" of the Eclipse project (IProject);
@@ -61,20 +62,28 @@ class JaxbProjectModel
 	
 	@Override
 	protected void engageSubject_() {
-		JptJaxbCorePlugin.instance().getProjectManager().addCollectionChangeListener(
+		this.getJaxbProjectManager().addCollectionChangeListener(
 					JaxbProjectManager.JAXB_PROJECTS_COLLECTION, 
 					this.projectManagerListener);
 	}
 	
 	@Override
 	protected void disengageSubject_() {
-		JptJaxbCorePlugin.instance().getProjectManager().removeCollectionChangeListener(
+		this.getJaxbProjectManager().removeCollectionChangeListener(
 					JaxbProjectManager.JAXB_PROJECTS_COLLECTION, 
 					this.projectManagerListener);
 	}
 	
 	@Override
 	protected JaxbProject buildValue_() {
-		return JptJaxbCorePlugin.instance().getProjectManager().getJaxbProject(this.subject);
-	}		
+		return this.getJaxbProjectManager().getJaxbProject(this.subject);
+	}
+
+	private JaxbProjectManager getJaxbProjectManager() {
+		return this.getJaxbWorkspace().getJaxbProjectManager();
+	}
+
+	private JaxbWorkspace getJaxbWorkspace() {
+		return (JaxbWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JaxbWorkspace.class);
+	}
 }

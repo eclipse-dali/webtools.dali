@@ -14,7 +14,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
@@ -105,7 +105,7 @@ public class JpaValidator
 		
 		for (IMessage message : messages) {
 			// check preferences for IGNORE
-			if (Tools.valuesAreDifferent(JpaPreferences.getProblemSeverity(project, message.getId()), JpaPreferences.PROBLEM_IGNORE)) {
+			if (ObjectTools.notEquals(JpaPreferences.getProblemSeverity(project, message.getId()), JpaPreferences.PROBLEM_IGNORE)) {
 				reporter.addMessage(this, message);
 			}
 		}

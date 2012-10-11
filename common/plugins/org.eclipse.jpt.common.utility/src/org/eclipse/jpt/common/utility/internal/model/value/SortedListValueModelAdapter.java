@@ -14,8 +14,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.Range;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 
@@ -115,7 +116,7 @@ public class SortedListValueModelAdapter<E>
 		@SuppressWarnings("unchecked")
 		ArrayList<E> unsortedList = (ArrayList<E>) this.list.clone();
 		Collections.sort(this.list, this.comparator);
-		Range diffRange = CollectionTools.identityDiffRange(unsortedList, this.list);
+		Range diffRange = ListTools.identityDifferenceRange(unsortedList, this.list);
 		if (diffRange.size > 0) {
 			List<E> unsortedItems = unsortedList.subList(diffRange.start, diffRange.end + 1);
 			List<E> sortedItems = this.list.subList(diffRange.start, diffRange.end + 1);

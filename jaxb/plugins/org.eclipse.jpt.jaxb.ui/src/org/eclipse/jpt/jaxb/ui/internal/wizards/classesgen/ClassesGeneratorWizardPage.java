@@ -12,6 +12,8 @@ package org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
@@ -50,11 +52,13 @@ import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.util.TableLayoutComposite;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
+import org.eclipse.jpt.jaxb.core.JaxbPreferences;
+import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
+import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGenerator;
-import org.eclipse.jpt.jaxb.core.internal.prefs.JaxbPreferencesManager;
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformGroupDescription;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformGroupConfig;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformManager;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
 import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 import org.eclipse.osgi.util.NLS;
@@ -84,8 +88,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 	static public final String JPT_ECLIPSELINK_UI_PLUGIN_ID = "org.eclipse.jpt.jpa.eclipselink.ui";   //$NON-NLS-1$
 	static public final String XML_FILTER = "*.xml";   //$NON-NLS-1$
 	static public final String[] bindingdFilesFilterExtensions = {".xjb",".xml",".xbd"}; //$NON-NLS-1$
-	static public final JaxbPlatformGroupDescription ECLIPSELINK_PLATFORM_GROUP 
-			= JptJaxbCorePlugin.getJaxbPlatformManager().getJaxbPlatformGroup("eclipselink");   //$NON-NLS-1$
+	public static final String ECLIPSELINK_PLATFORM_GROUP_ID = "eclipselink";   //$NON-NLS-1$
 
 	public static final String HELP_CONTEXT_ID = "org.eclipse.jpt.ui.configure_jaxb_class_generation_dialog"; //$NON-NLS-1$
 
@@ -148,9 +151,9 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			String newPackageName = packageFragment.getElementName();
 
 			if( ! this.isPackageInitialInitialization(newPackageName)) {
-				JaxbPreferencesManager prefs = new JaxbPreferencesManager(this.getJavaProject().getProject());
-				if( ! newPackageName.equals(prefs.getClassGenPackage())) {
-					prefs.setClassGenPackage(newPackageName);
+				IProject project = this.getJavaProject().getProject();
+				if( ! newPackageName.equals(JaxbPreferences.getClassGenPackage(project))) {
+					JaxbPreferences.setClassGenPackage(project, newPackageName);
 				}
 			}
 			this.targetPackage = packageFragment.getElementName();
@@ -208,8 +211,8 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			this.validateProjectClasspath();
 
 			if(this.getPackageText().equals("")) {  //$NON-NLS-1$
-				String packagePref = (new JaxbPreferencesManager(this.getJavaProject().getProject()).getClassGenPackage());
-				if( ! StringTools.stringIsEmpty(packagePref)) {
+				String packagePref = (JaxbPreferences.getClassGenPackage(this.getJavaProject().getProject()));
+				if( ! StringTools.isBlank(packagePref)) {
 					this.setPackageName(this.getPackageFragmentRoot(), packagePref);
 				}
 			}
@@ -451,13 +454,27 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 	}
 
 	private boolean projectPlatformIsJaxb() {
-		return JptJaxbCorePlugin.instance().getProjectManager().getJaxbProject(this.getJavaProject().getProject()) != null;
+		return this.getJaxbProjectManager().getJaxbProject(this.getJavaProject().getProject()) != null;
 	}
 
+	private JaxbPlatformManager getJaxbPlatformManager() {
+		return this.getJaxbWorkspace().getJaxbPlatformManager();
+	}
+
+	private JaxbProjectManager getJaxbProjectManager() {
+		return this.getJaxbWorkspace().getJaxbProjectManager();
+	}
+
+	private JaxbWorkspace getJaxbWorkspace() {
+		return (JaxbWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JaxbWorkspace.class);
+	}
+
+	// huh? why is this here???
 	private boolean projectJaxbPlatformIsEclipseLink() {
-		JaxbPlatformDescription jaxbPlatform = JptJaxbCorePlugin.getJaxbPlatformDescription(this.getJavaProject().getProject());
-		JaxbPlatformGroupDescription jaxbPlatformGroup = (jaxbPlatform == null) ? null : jaxbPlatform.getGroup();
-		return jaxbPlatformGroup == ECLIPSELINK_PLATFORM_GROUP;
+		String jaxbPlatformID = JaxbPreferences.getJaxbPlatformID(this.getJavaProject().getProject());
+		JaxbPlatformConfig jaxbPlatformConfig = this.getJaxbPlatformManager().getJaxbPlatformConfig(jaxbPlatformID);
+		JaxbPlatformGroupConfig jaxbPlatformGroupConfig = (jaxbPlatformConfig == null) ? null : jaxbPlatformConfig.getGroupConfig();
+		return (jaxbPlatformGroupConfig != null) && jaxbPlatformGroupConfig.getId().equals(ECLIPSELINK_PLATFORM_GROUP_ID);
 	}
 	
 	private boolean isPackageInitialInitialization(String newPackageName) {
@@ -471,8 +488,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		IPackageFragment packageFragment = packageFragmentRoot.getPackageFragment(packageName);
 		this.setPackageFragment(packageFragment, true);
 		
-		JaxbPreferencesManager prefs = new JaxbPreferencesManager(this.getJavaProject().getProject());
-		prefs.setClassGenPackage(packageName);
+		JaxbPreferences.setClassGenPackage(this.getJavaProject().getProject(), packageName);
 	}
 	
 	private void displayWarning(String message) {
@@ -575,7 +591,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 				public void widgetSelected(SelectionEvent e) {
 
 					String filePath = promptXmlFile();
-					if( ! StringTools.stringIsEmpty(filePath)) {
+					if( ! StringTools.isBlank(filePath)) {
 						
 						catalogText.setText(makeRelativeToProjectPath(filePath));
 					}
@@ -637,7 +653,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 
 				public void widgetSelected(SelectionEvent e) {
 					String filePath = addBindingsFileDialog();
-					if( ! StringTools.stringIsEmpty(filePath)) {
+					if( ! StringTools.isBlank(filePath)) {
 						addBindingsFile(filePath, tableDataModel);
 						tableViewer.refresh();
 					}

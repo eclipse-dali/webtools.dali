@@ -15,9 +15,10 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
-import org.eclipse.jpt.common.utility.internal.Bag;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.HashBag;
+import org.eclipse.jpt.common.utility.collection.Bag;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.HashBag;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
@@ -101,24 +102,24 @@ public class SimpleCollectionValueModelTests extends TestCase {
 	}
 
 	public void testSize() {
-		assertEquals(this.buildBag().size(), CollectionTools.size(this.bagHolder.iterator()));
-		assertEquals(this.buildSet().size(), CollectionTools.size(this.setHolder.iterator()));
+		assertEquals(this.buildBag().size(), IteratorTools.size(this.bagHolder.iterator()));
+		assertEquals(this.buildSet().size(), IteratorTools.size(this.setHolder.iterator()));
 	}
 
 	private boolean bagHolderContains(Object item) {
-		return CollectionTools.contains(this.bagHolder.iterator(), item);
+		return IteratorTools.contains(this.bagHolder.iterator(), item);
 	}
 
 	private boolean setHolderContains(Object item) {
-		return CollectionTools.contains(this.setHolder.iterator(), item);
+		return IteratorTools.contains(this.setHolder.iterator(), item);
 	}
 
 	private boolean bagHolderContainsAll(Collection<String> items) {
-		return CollectionTools.containsAll(this.bagHolder.iterator(), items);
+		return IteratorTools.containsAll(this.bagHolder.iterator(), items);
 	}
 
 	private boolean setHolderContainsAll(Collection<String> items) {
-		return CollectionTools.containsAll(this.setHolder.iterator(), items);
+		return IteratorTools.containsAll(this.setHolder.iterator(), items);
 	}
 
 	private boolean bagHolderContainsAny(Collection<String> items) {

@@ -44,7 +44,7 @@ public class CachingEntity extends AbstractModel implements Cloneable, Serializa
 	}
 	
 	private void initialize(String name) {
-		if(StringTools.stringIsEmpty(name)) {
+		if(StringTools.isBlank(name)) {
 			throw new IllegalArgumentException();
 		}
 		this.name = name;
@@ -88,7 +88,7 @@ public class CachingEntity extends AbstractModel implements Cloneable, Serializa
 	}
 	
 	public boolean entityNameIsValid() {
-		return ! StringTools.stringIsEmpty(this.name);
+		return ! StringTools.isBlank(this.name);
 	}
 
 	public Caching getParent() {

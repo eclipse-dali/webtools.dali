@@ -30,7 +30,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;

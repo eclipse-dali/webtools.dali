@@ -34,9 +34,8 @@ import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.common.core.tests.internal.utility.jdt.AnnotationTestCase;
 import org.eclipse.jpt.common.utility.command.CommandExecutor;
 import org.eclipse.jpt.common.utility.internal.BitTools;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 
 @SuppressWarnings("nls")
 public abstract class JavaResourceModelTestCase
@@ -77,7 +76,7 @@ public abstract class JavaResourceModelTestCase
 		
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this);
+			return ObjectTools.toString(this);
 		}
 	}
 	
@@ -160,19 +159,19 @@ public abstract class JavaResourceModelTestCase
 	}
 
 	protected JavaResourceField getField(JavaResourceType type, int index) {
-		return CollectionTools.get(type.getFields(), index);
+		return IterableTools.get(type.getFields(), index);
 	}
 
 	protected JavaResourceMethod getMethod(JavaResourceType type, int index) {
-		return CollectionTools.get(type.getMethods(), index);
+		return IterableTools.get(type.getMethods(), index);
 	}
 
 	protected JavaResourceEnumConstant getEnumConstant(JavaResourceEnum resourceEnum, int index) {
-		return CollectionTools.get(resourceEnum.getEnumConstants(), index);
+		return IterableTools.get(resourceEnum.getEnumConstants(), index);
 	}
 
 	protected JavaResourceAbstractType hackJavaResourceType() {
-		return (JavaResourceAbstractType) ReflectionTools.getFieldValue(this.javaResourceCompilationUnit, "primaryType");
+		return (JavaResourceAbstractType) ObjectTools.get(this.javaResourceCompilationUnit, "primaryType");
 	}
 
 	protected JavaResourceCompilationUnit buildJavaResourceCompilationUnit(ICompilationUnit cu) {

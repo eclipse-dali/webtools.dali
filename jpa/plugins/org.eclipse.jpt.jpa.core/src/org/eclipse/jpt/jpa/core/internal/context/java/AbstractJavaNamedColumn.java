@@ -12,7 +12,9 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaNamedColumn;
@@ -238,7 +240,8 @@ public abstract class AbstractJavaNamedColumn<A extends NamedColumnAnnotation, O
 	}
 
 	protected Iterable<String> getJavaCandidateNames() {
-		return StringTools.convertToJavaStringLiteralContents(this.getCandidateNames());
+		return new TransformationIterable<String, String>(this.getCandidateNames(),
+				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 
 	protected Iterable<String> getCandidateNames() {

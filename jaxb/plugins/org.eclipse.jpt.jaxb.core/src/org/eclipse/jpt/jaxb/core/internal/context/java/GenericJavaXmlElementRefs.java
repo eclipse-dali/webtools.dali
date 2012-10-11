@@ -12,14 +12,14 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.Bag;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.HashBag;
+import org.eclipse.jpt.common.utility.collection.Bag;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.collection.HashBag;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRef;
 import org.eclipse.jpt.jaxb.core.context.XmlElementRefs;
@@ -111,13 +111,13 @@ public class GenericJavaXmlElementRefs
 	@Override
 	public Iterable<String> getCompletionProposals(int pos) {
 		Iterable<String> result = super.getCompletionProposals(pos);
-		if (! CollectionTools.isEmpty(result)) {
+		if (! IterableTools.isEmpty(result)) {
 			return result;
 		}
 		
 		for (XmlElementRef elementRef : getXmlElementRefs()) {
 			result = elementRef.getCompletionProposals(pos);
-			if (! CollectionTools.isEmpty(result)) {
+			if (! IterableTools.isEmpty(result)) {
 				return result;
 			}
 		}
@@ -152,11 +152,11 @@ public class GenericJavaXmlElementRefs
 		for (XmlElementRef xmlElementRef : getXmlElementRefs()) {
 			String typeName = xmlElementRef.getFullyQualifiedType();
 			boolean isJaxbElement = JAXB.JAXB_ELEMENT.equals(typeName);
-			if (! isJaxbElement && ! StringTools.stringIsEmpty(typeName)) {
+			if (! isJaxbElement && ! StringTools.isBlank(typeName)) {
 				xmlElementRefTypes.add(typeName);
 			}
 			String elementRefName = xmlElementRef.getQName().getName();
-			if (isJaxbElement && ! StringTools.stringIsEmpty(elementRefName)) {
+			if (isJaxbElement && ! StringTools.isBlank(elementRefName)) {
 				xmlElementRefQnames.add(new QName(xmlElementRef.getQName().getNamespace(), elementRefName));
 			}
 		}

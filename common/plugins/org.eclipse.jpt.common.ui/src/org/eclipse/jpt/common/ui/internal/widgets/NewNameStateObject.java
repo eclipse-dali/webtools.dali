@@ -15,8 +15,8 @@ import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.node.AbstractNode;
-import org.eclipse.jpt.common.utility.internal.node.Node;
-import org.eclipse.jpt.common.utility.internal.node.Problem;
+import org.eclipse.jpt.common.utility.node.Node;
+import org.eclipse.jpt.common.utility.node.Problem;
 
 /**
  * This is the state object used by the <code>NewNameDialog</code>, which stores
@@ -75,7 +75,7 @@ final class NewNameStateObject extends AbstractNode
 	 */
 	private void addNameProblems(List<Problem> currentProblems) {
 
-		if (StringTools.stringIsEmpty(name)) {
+		if (StringTools.isBlank(name)) {
 			currentProblems.add(buildProblem(JptCommonUiMessages.NewNameStateObject_nameMustBeSpecified, IMessageProvider.ERROR));
 		}
 		else if (names.contains(name.trim())) {

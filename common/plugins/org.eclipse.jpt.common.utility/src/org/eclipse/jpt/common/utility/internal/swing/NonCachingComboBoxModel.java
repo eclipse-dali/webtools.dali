@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,8 +18,11 @@ import javax.swing.event.ListDataListener;
  * list can be generated with little latency). All the normal ComboBoxModel
  * behavior is delegated to a client-supplied ComboBoxModel.
  */
-public class NonCachingComboBoxModel implements CachingComboBoxModel {
+public class NonCachingComboBoxModel
+	implements CachingComboBoxModel
+{
 	private ComboBoxModel wrappedComboBoxModel;
+
 
 	public NonCachingComboBoxModel(ComboBoxModel wrappedComboBoxModel) {
 		this.wrappedComboBoxModel = wrappedComboBoxModel;
@@ -69,5 +72,4 @@ public class NonCachingComboBoxModel implements CachingComboBoxModel {
 	public void removeListDataListener(ListDataListener l) {
 		this.wrappedComboBoxModel.removeListDataListener(l);
 	}  
-
 }

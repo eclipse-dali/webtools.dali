@@ -69,7 +69,7 @@ import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlValueAnnotationDefini
 import org.eclipse.jpt.jaxb.core.internal.resource.jaxbindex.JaxbIndexResourceModelProvider;
 import org.eclipse.jpt.jaxb.core.internal.resource.jaxbprops.JaxbPropertiesResourceModelProvider;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 
 public class GenericJaxb_2_1_PlatformDefinition
 		extends  AbstractJaxbPlatformDefinition {
@@ -89,7 +89,7 @@ public class GenericJaxb_2_1_PlatformDefinition
 	}
 	
 	
-	public JaxbPlatformDescription getDescription() {
+	public JaxbPlatformConfig getConfig() {
 		return GenericJaxbPlatform.VERSION_2_1;
 	}
 	

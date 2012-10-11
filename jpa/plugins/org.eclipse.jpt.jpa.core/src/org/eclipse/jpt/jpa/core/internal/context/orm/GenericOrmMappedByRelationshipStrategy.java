@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationshipStrategy;
@@ -126,8 +126,8 @@ public class GenericOrmMappedByRelationshipStrategy
 		String thisEntityName = this.getEntityName();
 		Entity otherEntity = otherMapping.getResolvedTargetEntity();
 		String otherEntityName = (otherEntity == null) ? null : otherEntity.getName();
-		return Tools.valuesAreEqual(thisEntityName, otherEntityName) &&
-				Tools.valuesAreEqual(this.mappedByAttribute, otherMapping.getName());
+		return ObjectTools.equals(thisEntityName, otherEntityName) &&
+				ObjectTools.equals(this.mappedByAttribute, otherMapping.getName());
 	}
 
 	protected String getEntityName() {

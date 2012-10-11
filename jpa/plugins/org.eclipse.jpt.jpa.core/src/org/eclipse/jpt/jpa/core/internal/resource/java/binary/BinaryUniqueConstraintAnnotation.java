@@ -13,8 +13,8 @@ import java.util.Vector;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
 

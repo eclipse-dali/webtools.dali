@@ -19,8 +19,8 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.ClassName;
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.ClassNameTools;
+import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
@@ -261,8 +261,8 @@ public class VirtualJavaPersistentAttribute
 		if (typeName == null) {
 			return MetamodelField.DEFAULT_TYPE_NAME;
 		}
-		if (ClassName.isPrimitive(typeName)) {
-			return ClassName.getWrapperClassName(typeName);  // ???
+		if (ClassNameTools.isPrimitive(typeName)) {
+			return ClassNameTools.primitiveWrapperClassName(typeName);  // ???
 		}
 		return typeName;
 	}

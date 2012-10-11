@@ -12,10 +12,13 @@ package org.eclipse.jpt.common.core.internal.resource;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.jpt.common.core.JptWorkspace;
 import org.eclipse.jpt.common.core.resource.ProjectResourceLocator;
 import org.eclipse.jpt.common.core.resource.ResourceLocator;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.core.resource.ResourceLocatorManager;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * @see org.eclipse.jpt.common.core.internal.resource.ProjectAdapterFactory
@@ -58,11 +61,19 @@ public class SimpleProjectResourceLocator
 	}
 
 	protected ResourceLocator getResourceLocator() {
-		return ResourceLocatorManager.instance().getResourceLocator(this.project);
+		return this.getResourceLocatorManager().getResourceLocator(this.project);
+	}
+
+	private ResourceLocatorManager getResourceLocatorManager() {
+		return this.getJptWorkspace().getResourceLocatorManager();
+	}
+
+	private JptWorkspace getJptWorkspace() {
+		return (JptWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JptWorkspace.class);
 	}
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.project);
+		return ObjectTools.toString(this, this.project);
 	}
 }

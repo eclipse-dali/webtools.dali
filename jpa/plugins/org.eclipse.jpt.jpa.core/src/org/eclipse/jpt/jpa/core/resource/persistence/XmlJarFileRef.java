@@ -205,7 +205,7 @@ public class XmlJarFileRef extends EBaseObjectImpl implements EBaseObject
 	
 	@Override
 	public TextRange getValidationTextRange() {
-		return (! StringTools.stringIsEmpty(this.fileName)) ?
+		return (! StringTools.isBlank(this.fileName)) ?
 			getTextTextRange() :
 			super.getValidationTextRange();
 	}

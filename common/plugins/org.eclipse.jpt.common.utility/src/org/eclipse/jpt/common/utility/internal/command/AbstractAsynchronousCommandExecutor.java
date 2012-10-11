@@ -10,13 +10,14 @@
 package org.eclipse.jpt.common.utility.internal.command;
 
 import java.util.concurrent.ThreadFactory;
+
 import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.StatefulCommandExecutor;
 import org.eclipse.jpt.common.utility.internal.ConsumerThreadCoordinator;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.SimpleThreadFactory;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.SynchronizedQueue;
+import org.eclipse.jpt.common.utility.internal.collection.SynchronizedQueue;
 
 /**
  * This command executor will dispatch commands to be executed in a separate
@@ -158,7 +159,7 @@ public abstract class AbstractAsynchronousCommandExecutor<E extends StatefulComm
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.consumerThreadCoordinator);
+		return ObjectTools.toString(this, this.commands);
 	}
 
 

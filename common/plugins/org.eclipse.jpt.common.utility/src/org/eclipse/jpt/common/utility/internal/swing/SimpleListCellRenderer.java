@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,7 @@ import java.awt.Component;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.Icon;
 import javax.swing.JList;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 
 /**
  * This renderer should behave the same as the DefaultListCellRenderer;
@@ -27,6 +28,7 @@ import javax.swing.JList;
 public class SimpleListCellRenderer
 	extends DefaultListCellRenderer
 {
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Construct a simple renderer.
@@ -90,7 +92,7 @@ public class SimpleListCellRenderer
 	 * value itself is an icon, in which case no text is displayed.
 	 */
 	protected String buildText(Object value) {
-		return (value instanceof Icon) ? "" : ((value == null) ? "" : value.toString()); //$NON-NLS-1$ //$NON-NLS-2$
+		return (value instanceof Icon) ? StringTools.EMPTY_STRING : ((value == null) ? StringTools.EMPTY_STRING : value.toString());
 	}
 
 	/**
@@ -124,5 +126,4 @@ public class SimpleListCellRenderer
 	protected String buildAccessibleName(@SuppressWarnings("unused") Object value) {
 		return null;
 	}
-
 }

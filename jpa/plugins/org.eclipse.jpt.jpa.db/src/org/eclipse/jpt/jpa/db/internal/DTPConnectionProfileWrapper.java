@@ -21,7 +21,7 @@ import org.eclipse.datatools.connectivity.sqm.core.connection.ConnectionInfo;
 import org.eclipse.datatools.sqltools.core.DatabaseIdentifier;
 import org.eclipse.datatools.sqltools.core.profile.ProfileUtil;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.db.ConnectionListener;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.DatabaseIdentifierAdapter;
@@ -375,7 +375,7 @@ final class DTPConnectionProfileWrapper
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.getName());
+		return ObjectTools.toString(this, this.getName());
 	}
 
 

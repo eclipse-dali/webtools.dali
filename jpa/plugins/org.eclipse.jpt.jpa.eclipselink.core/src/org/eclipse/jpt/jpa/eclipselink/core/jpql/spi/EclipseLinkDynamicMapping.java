@@ -129,9 +129,9 @@ public class EclipseLinkDynamicMapping implements IMapping {
 		String typeName = getTypeName();
 		int dimensionality = 0;
 
-		if (StringTools.stringIsNotEmpty(typeName)) {
+		if (StringTools.isNotBlank(typeName)) {
 			int index = typeName.indexOf("[]");
-			dimensionality = (typeName.length() - index) / 2;
+			dimensionality = (typeName.length() - index) >> 1;
 		}
 
 		return new JpaTypeDeclaration(getType(), buildGenericTypeDeclarations(), dimensionality);

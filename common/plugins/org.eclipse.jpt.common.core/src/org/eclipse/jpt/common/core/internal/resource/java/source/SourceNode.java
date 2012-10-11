@@ -25,10 +25,10 @@ import org.eclipse.jpt.common.core.internal.resource.java.AbstractJavaResourceNo
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 
 
 /**
@@ -164,7 +164,7 @@ public abstract class SourceNode
 		}
 
 		private A moveNestedAnnotation_(int targetIndex, int sourceIndex) {
-			A nestedAnnotation = CollectionTools.move(this.nestedAnnotations, targetIndex, sourceIndex).get(targetIndex);
+			A nestedAnnotation = ListTools.move(this.nestedAnnotations, targetIndex, sourceIndex).get(targetIndex);
 			this.syncAstAnnotationsAfterMove(targetIndex, sourceIndex, nestedAnnotation);
 			return nestedAnnotation;
 		}
@@ -365,7 +365,7 @@ public abstract class SourceNode
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.nestedAnnotations);
+			return ObjectTools.toString(this, this.nestedAnnotations);
 		}
 	}
 }

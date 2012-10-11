@@ -12,9 +12,9 @@ package org.eclipse.jpt.common.utility.internal.model.value;
 import java.util.Collections;
 import java.util.Iterator;
 
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.SingleElementIterator;
+import org.eclipse.jpt.common.utility.internal.StringBuilderTools;
+import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.SingleElementIterator;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
@@ -135,6 +135,6 @@ public class PropertyCollectionValueModelAdapter<E>
 
 	@Override
 	public void toString(StringBuilder sb) {
-		StringTools.append(sb, this);
+		StringBuilderTools.append(sb, this);
 	}
 }

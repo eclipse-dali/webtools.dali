@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.structure;
 import org.eclipse.jpt.common.ui.internal.jface.StaticItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
@@ -101,6 +101,6 @@ public class PersistenceStructureItemLabelProviderFactory
 
 	@Override
 	public String toString() {
-		return StringTools.buildSingletonToString(this);
+		return ObjectTools.singletonToString(this);
 	}
 }

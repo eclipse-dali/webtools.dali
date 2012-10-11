@@ -27,9 +27,8 @@ import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jpt.common.ui.internal.plugin.JptCommonUiPlugin;
-import org.eclipse.jpt.common.ui.internal.properties.JptProjectPropertiesPage.OkRunnableWithProgress.OkWorkspaceRunnable;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.value.BufferedModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.Model;
@@ -108,7 +107,7 @@ public abstract class JptProjectPropertiesPage
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this);
+			return ObjectTools.toString(this);
 		}
 	}
 
@@ -171,7 +170,7 @@ public abstract class JptProjectPropertiesPage
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this);
+			return ObjectTools.toString(this);
 		}
 	}
 
@@ -291,7 +290,7 @@ public abstract class JptProjectPropertiesPage
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this);
+			return ObjectTools.toString(this);
 		}
 
 		/* class private */ class OkWorkspaceRunnable
@@ -302,7 +301,7 @@ public abstract class JptProjectPropertiesPage
 			}
 			@Override
 			public String toString() {
-				return StringTools.buildToStringFor(this);
+				return ObjectTools.toString(this);
 			}
 		}
 	}

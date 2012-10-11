@@ -10,6 +10,8 @@
 package org.eclipse.jpt.common.core;
 
 import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.jpt.common.core.libval.LibraryValidatorManager;
+import org.eclipse.jpt.common.core.resource.ResourceLocatorManager;
 
 /**
  * The Dali state corresponding to an {@link IWorkspace Eclipse workspace}.
@@ -43,4 +45,14 @@ public interface JptWorkspace {
 	 * Return the manager for the workspace's Dali resource types.
 	 */
 	JptResourceTypeManager getResourceTypeManager();
+
+	/**
+	 * Return the manager for the workspace's library validators.
+	 */
+	LibraryValidatorManager getLibraryValidatorManager();
+
+	/**
+	 * Return the manager for the workspace's resource locators.
+	 */
+	ResourceLocatorManager getResourceLocatorManager();
 }

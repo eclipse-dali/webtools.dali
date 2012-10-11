@@ -15,6 +15,9 @@ import org.eclipse.jpt.common.core.internal.utility.JptPlugin;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.internal.InternalJpaWorkspace;
 
+/**
+ * Dali JPA core plug-in.
+ */
 public class JptJpaCorePlugin
 	extends JptPlugin
 {

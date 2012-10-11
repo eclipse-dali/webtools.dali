@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal.structure;
 
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProviderFactory;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.ui.internal.platform.generic.PersistentAttributeItemLabelProvider;
@@ -48,6 +48,6 @@ public abstract class MappingStructureItemLabelProviderFactory
 
 	@Override
 	public String toString() {
-		return StringTools.buildSingletonToString(this);
+		return ObjectTools.singletonToString(this);
 	}
 }

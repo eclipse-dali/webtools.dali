@@ -14,8 +14,7 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.NonEmptyStringFilter;
-import org.eclipse.jpt.common.utility.internal.StringConverter;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.FilteringCollectionValueModel;
@@ -26,10 +25,12 @@ import org.eclipse.jpt.common.utility.internal.model.value.SetCollectionValueMod
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationListValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
@@ -125,7 +126,7 @@ public class EclipseLinkConvertCombo
 		list.add(buildDefaultNameListHolder());
 		list.add(buildReservedConverterNameListHolder());
 		list.add(buildSortedConverterNamesModel());
-		return new CompositeListValueModel<ListValueModel<String>, String>(list);
+		return CompositeListValueModel.forModels(list);
 	}
 
 	protected ListValueModel<String> buildDefaultNameListHolder() {
@@ -152,9 +153,10 @@ public class EclipseLinkConvertCombo
 		};
 	}
 
-	private StringConverter<String> buildNameConverter() {
-		return new StringConverter<String>() {
-			public String convertToString(String value) {
+	private Transformer<String, String> buildNameConverter() {
+		return new TransformerAdapter<String, String>() {
+			@Override
+			public String transform(String value) {
 
 				if (getSubject() == null) {
 					return value;
@@ -206,7 +208,7 @@ public class EclipseLinkConvertCombo
 	}
 
 	protected CollectionValueModel<String> buildConverterNamesModel() {
-		return new FilteringCollectionValueModel<String>(this.buildConverterNamesModel_(), NonEmptyStringFilter.instance());
+		return new FilteringCollectionValueModel<String>(this.buildConverterNamesModel_(), StringTools.NON_BLANK_FILTER);
 	}
 
 	protected ListValueModel<String> buildConverterNamesModel_() {

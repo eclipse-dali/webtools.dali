@@ -13,8 +13,9 @@ import java.util.Collection;
 import java.util.EventListener;
 import java.util.Iterator;
 
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -110,7 +111,7 @@ public abstract class AspectCollectionValueModelAdapter<S, E>
 	 * @see #size()
 	 */
 	protected int size_() {
-		return CollectionTools.size(this.iterator());
+		return IteratorTools.size(this.iterator());
 	}
 
 

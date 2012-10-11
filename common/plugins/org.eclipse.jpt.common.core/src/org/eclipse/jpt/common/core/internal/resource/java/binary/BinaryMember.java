@@ -12,6 +12,7 @@ package org.eclipse.jpt.common.core.internal.resource.java.binary;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.ITypeParameter;
@@ -21,7 +22,7 @@ import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 
 /**
  * binary persistent member

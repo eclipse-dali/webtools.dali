@@ -20,7 +20,7 @@ import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * Manipulate an annotation that either occurs stand-alone, e.g.
@@ -203,7 +203,7 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.getAnnotationName());
+		return ObjectTools.toString(this, this.getAnnotationName());
 	}
 
 

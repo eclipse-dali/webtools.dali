@@ -46,9 +46,9 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.ui.internal.swt.ColumnAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.TableModelAdapter;
 import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.BufferedModifiablePropertyValueModel;
@@ -61,11 +61,12 @@ import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
-import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
+import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
+import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.core.SchemaEntry;
 import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
@@ -317,7 +318,7 @@ public class JaxbSchemasPropertiesPage
 	}
 	
 	private void removeSelectedSchemas() {
-		this.schemasModel.removeSchemas(CollectionTools.iterable(this.schemasSelectionModel.iterator()));
+		this.schemasModel.removeSchemas(this.schemasSelectionModel);
 	}
 	
 	private void updateButtons() {
@@ -393,9 +394,17 @@ public class JaxbSchemasPropertiesPage
 	void performOk_(IProgressMonitor monitor) throws CoreException {
 		if (this.schemasModel.hasChanges()) {
 			this.trigger.accept();
-			JptJaxbCorePlugin.instance().getProjectManager().rebuildJaxbProject(getProject());
+			this.getJaxbProjectManager().rebuildJaxbProject(getProject());
 			getProject().build(IncrementalProjectBuilder.FULL_BUILD, monitor);
 		}
+	}
+
+	private JaxbProjectManager getJaxbProjectManager() {
+		return this.getJaxbWorkspace().getJaxbProjectManager();
+	}
+
+	private JaxbWorkspace getJaxbWorkspace() {
+		return (JaxbWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JaxbWorkspace.class);
 	}
 	
 	@Override
@@ -879,7 +888,7 @@ public class JaxbSchemasPropertiesPage
 			else if (isDuplicateNamespace()) {
 				setErrorMessage(JptJaxbUiMessages.SchemasPage_duplicateNamespaceMessage);
 			}
-			else if (StringTools.stringIsEmpty(this.location.getValue())) {
+			else if (StringTools.isBlank(this.location.getValue())) {
 				setErrorMessage(JptJaxbUiMessages.SchemasPage_noLocationMessage);
 			}
 			else {

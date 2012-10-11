@@ -12,8 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 import java.util.Collection;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.NonEmptyStringFilter;
-import org.eclipse.jpt.common.utility.internal.StringConverter;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.FilteringCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
@@ -22,10 +21,11 @@ import org.eclipse.jpt.common.utility.internal.model.value.SetCollectionValueMod
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationListValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.StringObjectTransformer;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.GeneratedValue;
 import org.eclipse.jpt.jpa.core.context.GenerationType;
 import org.eclipse.jpt.jpa.core.context.Generator;
@@ -167,7 +167,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 			container,
 			buildSortedGeneraterNamesModel(),
 			buildGeneratorNameHolder(),
-			StringConverter.Default.<String>instance(),
+			StringObjectTransformer.<String>instance(),
 			JpaHelpContextIds.MAPPING_GENERATED_VALUE_GENERATOR_NAME
 		);
 
@@ -488,7 +488,7 @@ public class IdMappingGenerationComposite extends Pane<IdMapping>
 	}
 
 	protected CollectionValueModel<String> buildGeneratorNamesModel() {
-		return new FilteringCollectionValueModel<String>(this.buildGeneratorNamesModel_(), NonEmptyStringFilter.instance());
+		return new FilteringCollectionValueModel<String>(this.buildGeneratorNamesModel_(), StringTools.NON_BLANK_FILTER);
 	}
 
 	protected ListValueModel<String> buildGeneratorNamesModel_() {

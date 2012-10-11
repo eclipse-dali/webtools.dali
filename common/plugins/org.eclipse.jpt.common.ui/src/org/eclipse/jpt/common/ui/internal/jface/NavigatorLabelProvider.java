@@ -11,9 +11,8 @@ package org.eclipse.jpt.common.ui.internal.jface;
 
 import org.eclipse.jface.viewers.BaseLabelProvider;
 import org.eclipse.jface.viewers.LabelProviderChangedEvent;
-import org.eclipse.jpt.common.ui.internal.jface.LabelProviderAdapter;
 import org.eclipse.jpt.common.ui.jface.TreeStateProvider;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.navigator.ICommonContentExtensionSite;
@@ -85,7 +84,7 @@ public class NavigatorLabelProvider
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this);
+		return ObjectTools.toString(this);
 	}
 
 	/**

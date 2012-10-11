@@ -11,11 +11,11 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.XmlNs;
 import org.eclipse.jpt.jaxb.core.context.XmlSchema;
@@ -127,7 +127,7 @@ public class GenericJavaXmlNs
 	
 	protected Iterable<String> getNamespaceURICompletionProposals(int pos) {
 		String packageNamespace = getJaxbPackageInfo().getJaxbPackage().getNamespace();
-		Iterable<String> result = (StringTools.stringIsEmpty(packageNamespace)) ?
+		Iterable<String> result = (StringTools.isBlank(packageNamespace)) ?
 				EmptyIterable.instance() : new SingleElementIterable(StringTools.convertToJavaStringLiteralContent(packageNamespace));
 		XsdSchema schema = getJaxbPackageInfo().getJaxbPackage().getXsdSchema();
 		if (schema != null) { 

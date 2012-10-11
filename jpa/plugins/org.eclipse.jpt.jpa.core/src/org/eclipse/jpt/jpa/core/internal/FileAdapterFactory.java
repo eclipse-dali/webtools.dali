@@ -14,7 +14,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
 
@@ -124,7 +124,7 @@ public class FileAdapterFactory
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.file);
+			return ObjectTools.toString(this, this.file);
 		}
 	}
 }

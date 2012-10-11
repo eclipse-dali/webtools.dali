@@ -15,11 +15,13 @@ package org.eclipse.jpt.jpa.eclipselink.core.jpql.spi;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SnapshotCloneIterable;
+import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.jpql.spi.JpaManagedType;
 import org.eclipse.jpt.jpa.core.jpql.spi.JpaManagedTypeProvider;
 import org.eclipse.persistence.jpa.jpql.spi.IManagedType;
 import org.eclipse.persistence.jpa.jpql.spi.IMapping;
+import org.eclipse.persistence.jpa.jpql.spi.IMappingBuilder;
 import org.eclipse.persistence.jpa.jpql.spi.IType;
 
 /**

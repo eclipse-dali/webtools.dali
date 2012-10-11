@@ -14,12 +14,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-
 import junit.framework.TestCase;
-
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.CloneIterator;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterator.CloneIterator;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
@@ -199,7 +197,7 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 		TestModel testModel = new TestModel();
 		String string = "foo";
 		Target target = new Target(testModel, TestModel.STRINGS_COLLECTION, string);
-		Method method = ReflectionTools.getMethod(target, "collectionChangedDoubleArgument", new Class[] {CollectionChangeEvent.class, Object.class});
+		Method method = ObjectTools.method(target, "collectionChangedDoubleArgument", new Class[] {CollectionChangeEvent.class, Object.class});
 		boolean exCaught = false;
 		try {
 			CollectionChangeListener listener = ReflectiveChangeListener.buildCollectionChangeListener(target, method);
@@ -239,12 +237,11 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 			super();
 		}
 		Iterator<String> strings() {
-			return new CloneIterator<String>(this.strings) {
-				@Override
-				protected void remove(String s) {
+			return new CloneIterator<String>(this.strings, new CloneIterator.Remover<String>() {
+				public void remove(String s) {
 					TestModel.this.removeString(s);
 				}
-			};
+			});
 		}
 		void addString(String string) {
 			this.addItemToCollection(string, this.strings, STRINGS_COLLECTION);

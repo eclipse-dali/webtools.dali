@@ -13,8 +13,8 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkReadTransformerAnnotation;
 
@@ -67,7 +67,7 @@ public class ReadTransformerAnnotationTests extends EclipseLinkJavaResourceModel
 	public void testReadTransformerAnnotation() throws Exception {
 		ICompilationUnit cu = this.createTestReadTransformer();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		assertNotNull(resourceField.getAnnotation(EclipseLink.READ_TRANSFORMER));
 		
@@ -81,7 +81,7 @@ public class ReadTransformerAnnotationTests extends EclipseLinkJavaResourceModel
 	public void testGetTransformerClass() throws Exception {
 		ICompilationUnit cu = this.createTestReadTransformerWithTransformerClass();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkReadTransformerAnnotation readTransformer = (EclipseLinkReadTransformerAnnotation) resourceField.getAnnotation(EclipseLink.READ_TRANSFORMER);
 		assertEquals("Foo", readTransformer.getTransformerClass());
@@ -90,7 +90,7 @@ public class ReadTransformerAnnotationTests extends EclipseLinkJavaResourceModel
 	public void testSetTransformerClass() throws Exception {
 		ICompilationUnit cu = this.createTestReadTransformerWithTransformerClass();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkReadTransformerAnnotation readTransformer = (EclipseLinkReadTransformerAnnotation) resourceField.getAnnotation(EclipseLink.READ_TRANSFORMER);
 		assertEquals("Foo", readTransformer.getTransformerClass());
@@ -104,7 +104,7 @@ public class ReadTransformerAnnotationTests extends EclipseLinkJavaResourceModel
 	public void testSetTransformerClassNull() throws Exception {
 		ICompilationUnit cu = this.createTestReadTransformerWithTransformerClass();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkReadTransformerAnnotation readTransformer = (EclipseLinkReadTransformerAnnotation) resourceField.getAnnotation(EclipseLink.READ_TRANSFORMER);
 		assertEquals("Foo", readTransformer.getTransformerClass());
@@ -119,7 +119,7 @@ public class ReadTransformerAnnotationTests extends EclipseLinkJavaResourceModel
 	public void testGetMethod() throws Exception {
 		ICompilationUnit cu = this.createTestReadTransformerWithMethod();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkReadTransformerAnnotation readTransformer = (EclipseLinkReadTransformerAnnotation) resourceField.getAnnotation(EclipseLink.READ_TRANSFORMER);
 		assertEquals("transformerMethod", readTransformer.getMethod());
@@ -128,7 +128,7 @@ public class ReadTransformerAnnotationTests extends EclipseLinkJavaResourceModel
 	public void testSetMethod() throws Exception {
 		ICompilationUnit cu = this.createTestReadTransformerWithMethod();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkReadTransformerAnnotation readTransformer = (EclipseLinkReadTransformerAnnotation) resourceField.getAnnotation(EclipseLink.READ_TRANSFORMER);
 		assertEquals("transformerMethod", readTransformer.getMethod());
@@ -142,7 +142,7 @@ public class ReadTransformerAnnotationTests extends EclipseLinkJavaResourceModel
 	public void testSetMethodNull() throws Exception {
 		ICompilationUnit cu = this.createTestReadTransformerWithMethod();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkReadTransformerAnnotation readTransformer = (EclipseLinkReadTransformerAnnotation) resourceField.getAnnotation(EclipseLink.READ_TRANSFORMER);
 		assertEquals("transformerMethod", readTransformer.getMethod());

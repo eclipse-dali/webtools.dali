@@ -20,9 +20,9 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTCollectionChangeListenerWrapper;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTListChangeListenerWrapper;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
@@ -180,7 +180,7 @@ public class TableModelAdapter<E> {
 		
 		return new SelectionChangeListener() {
 			public void selectionChanged(SelectionChangeEvent event) {
-				selectionModel.setValues(CollectionTools.iterable(event.selection()));
+				selectionModel.setValues(event.getSelection());
 			}
 		};
 	}
@@ -664,7 +664,7 @@ public class TableModelAdapter<E> {
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.listHolder);
+		return ObjectTools.toString(this, this.listHolder);
 	}
 
 
@@ -739,8 +739,8 @@ public class TableModelAdapter<E> {
 			return (TableModelAdapter<E>) super.getSource();
 		}
 
-		public Iterator<E> selection() {
-			return this.selection.iterator();
+		public Iterable<E> getSelection() {
+			return this.selection;
 		}
 	}
 }

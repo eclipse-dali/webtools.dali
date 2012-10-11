@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.Annotation;
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.java.JavaMappedSuperclass;

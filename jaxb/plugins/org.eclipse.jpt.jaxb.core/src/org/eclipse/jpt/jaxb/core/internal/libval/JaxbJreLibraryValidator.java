@@ -14,8 +14,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.common.core.libval.LibraryValidator;
 import org.eclipse.jpt.jaxb.core.GenericJaxbPlatform;
-import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
+import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.libprov.JaxbLibraryProviderInstallOperationConfig;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
@@ -28,7 +28,7 @@ public class JaxbJreLibraryValidator
 		JaxbLibraryProviderInstallOperationConfig jaxbConfig 
 				= (JaxbLibraryProviderInstallOperationConfig) config;
 		
-		if (! jaxbConfig.getJaxbPlatform().getGroup().equals(GenericJaxbPlatform.GROUP)) {
+		if (! jaxbConfig.getJaxbPlatformConfig().getGroupConfig().equals(GenericJaxbPlatform.GROUP)) {
 			return JptJaxbCorePlugin.instance().buildErrorStatus(JptJaxbCoreMessages.JreLibraryValidator_invalidPlatform);
 		}
 		

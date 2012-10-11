@@ -13,7 +13,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.jpql.spi;
 
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.TypeMapping;
 import org.eclipse.persistence.jpa.jpql.spi.IManagedType;
 import org.eclipse.persistence.jpa.jpql.spi.IManagedTypeProvider;

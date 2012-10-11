@@ -92,6 +92,13 @@
 			<adapter type="org.eclipse.jpt.jpa.ui.selection.JpaSelectionManager"/>
 		</factory>
 
+		<!-- IWorkbench -> JpaWorkbench -->
+		<factory
+			adaptableType="org.eclipse.ui.IWorkbench"
+			class="org.eclipse.jpt.jpa.ui.internal.WorkbenchAdapterFactory">
+			<adapter type="org.eclipse.jpt.jpa.ui.JpaWorkbench"/>
+		</factory>
+
 		<!-- IWorkbenchWindow -> JpaSelectionManager -->
 		<factory
 			adaptableType="org.eclipse.ui.IWorkbenchWindow"

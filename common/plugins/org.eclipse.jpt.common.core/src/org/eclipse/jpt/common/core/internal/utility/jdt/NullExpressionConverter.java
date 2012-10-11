@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.core.internal.utility.jdt;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * No conversion.
@@ -48,7 +48,7 @@ public final class NullExpressionConverter
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this);
+		return ObjectTools.toString(this);
 	}
 
 }

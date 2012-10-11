@@ -11,7 +11,7 @@ package org.eclipse.jpt.jaxb.core.tests.internal.context.java;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
@@ -60,52 +60,52 @@ public class GenericJavaPersistentAttributeTests
 		JaxbClassMapping classMapping = ((JaxbClass) getContextRoot().getType(PACKAGE_NAME_ + TEST_CLASS_NAME)).getMapping();
 		
 		// String string
-		JaxbPersistentAttribute att = CollectionTools.get(classMapping.getAttributes(), 0);
+		JaxbPersistentAttribute att = IterableTools.get(classMapping.getAttributes(), 0);
 		assertEquals("java.lang.String", att.getJavaResourceAttributeBaseTypeName());
 		assertEquals(false, att.isJavaResourceAttributeCollectionType());
 		
 		// List<String> stringList
-		att = CollectionTools.get(classMapping.getAttributes(), 1);
+		att = IterableTools.get(classMapping.getAttributes(), 1);
 		assertEquals("java.lang.String", att.getJavaResourceAttributeBaseTypeName());
 		assertEquals(true, att.isJavaResourceAttributeCollectionType());
 		
 		// String[] stringArray
-		att = CollectionTools.get(classMapping.getAttributes(), 2);
+		att = IterableTools.get(classMapping.getAttributes(), 2);
 		assertEquals("java.lang.String", att.getJavaResourceAttributeBaseTypeName());
 		assertEquals(true, att.isJavaResourceAttributeCollectionType());
 		
 		// String[][] stringDoubleArray
-		att = CollectionTools.get(classMapping.getAttributes(), 3);
+		att = IterableTools.get(classMapping.getAttributes(), 3);
 		assertEquals("java.lang.String[][]", att.getJavaResourceAttributeBaseTypeName());
 		assertEquals(false, att.isJavaResourceAttributeCollectionType());
 		
 		// T generic
-		att = CollectionTools.get(classMapping.getAttributes(), 4);
+		att = IterableTools.get(classMapping.getAttributes(), 4);
 		assertEquals("java.lang.Number", att.getJavaResourceAttributeBaseTypeName());
 		assertEquals(false, att.isJavaResourceAttributeCollectionType());
 		
 		// List<T> genericList
-		att = CollectionTools.get(classMapping.getAttributes(), 5);
+		att = IterableTools.get(classMapping.getAttributes(), 5);
 		assertEquals("java.lang.Number", att.getJavaResourceAttributeBaseTypeName());
 		assertEquals(true, att.isJavaResourceAttributeCollectionType());
 		
 		// T[] genericArray
-		att = CollectionTools.get(classMapping.getAttributes(), 6);
+		att = IterableTools.get(classMapping.getAttributes(), 6);
 		assertEquals("java.lang.Number", att.getJavaResourceAttributeBaseTypeName());
 		assertEquals(true, att.isJavaResourceAttributeCollectionType());
 		
 		// List<?> wildcardList
-		att = CollectionTools.get(classMapping.getAttributes(), 7);
+		att = IterableTools.get(classMapping.getAttributes(), 7);
 		assertEquals("java.lang.Object", att.getJavaResourceAttributeBaseTypeName());
 		assertEquals(true, att.isJavaResourceAttributeCollectionType());
 		
 		// byte[] byteArray
-		att = CollectionTools.get(classMapping.getAttributes(), 8);
+		att = IterableTools.get(classMapping.getAttributes(), 8);
 		assertEquals("byte[]", att.getJavaResourceAttributeBaseTypeName());
 		assertEquals(false, att.isJavaResourceAttributeCollectionType());
 		
 		// List list
-		att = CollectionTools.get(classMapping.getAttributes(), 9);
+		att = IterableTools.get(classMapping.getAttributes(), 9);
 		assertEquals("java.lang.Object", att.getJavaResourceAttributeBaseTypeName());
 		assertEquals(true, att.isJavaResourceAttributeCollectionType());
 	}

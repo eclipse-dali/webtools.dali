@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal;
 
 import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaWorkspace;
 import org.eclipse.jpt.jpa.core.internal.platform.InternalJpaPlatformManager;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
@@ -35,7 +35,7 @@ public class InternalJpaWorkspace
 	}
 
 	public IWorkspace getWorkspace() {
-		return workspace;
+		return this.workspace;
 	}
 
 	/**
@@ -99,6 +99,6 @@ public class InternalJpaWorkspace
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.workspace);
+		return ObjectTools.toString(this, this.workspace);
 	}
 }

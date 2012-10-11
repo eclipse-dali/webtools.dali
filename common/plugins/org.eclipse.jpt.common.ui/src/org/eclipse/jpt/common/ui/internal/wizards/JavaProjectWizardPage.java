@@ -23,11 +23,11 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -111,7 +111,7 @@ public class JavaProjectWizardPage extends WizardPage {
 		if(this.projectTable.getSelectionIndex() != -1) {
 			TableItem item =  this.projectTable.getItem(this.projectTable.getSelectionIndex());
 			String projectName = item.getText(0);
-			if( ! StringTools.stringIsEmpty(projectName)) {
+			if( ! StringTools.isBlank(projectName)) {
 
 				IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 				this.setJavaProject(JavaCore.create(project));

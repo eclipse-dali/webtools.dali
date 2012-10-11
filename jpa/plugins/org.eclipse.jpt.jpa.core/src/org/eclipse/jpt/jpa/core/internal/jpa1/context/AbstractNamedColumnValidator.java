@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa1.context;
 import java.util.List;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTableColumn;
@@ -149,7 +149,7 @@ public abstract class AbstractNamedColumnValidator<C extends ReadOnlyNamedColumn
 			}
 			@Override
 			public String toString() {
-				return StringTools.buildSingletonToString(this);
+				return ObjectTools.singletonToString(this);
 			}
 		}
 	}
@@ -174,7 +174,7 @@ public abstract class AbstractNamedColumnValidator<C extends ReadOnlyNamedColumn
 			// its default table, don't do the table validation against it - bug 377110
 			String specifiedTable = this.getColumn().getSpecifiedTable();
 			String defaultTable = this.getColumn().getDefaultTable();
-			if (specifiedTable == null || StringTools.stringsAreEqual(specifiedTable, defaultTable)) {
+			if (specifiedTable == null || ObjectTools.equals(specifiedTable, defaultTable)) {
 				return true;
 			}
 			if (this.getColumn().tableNameIsInvalid()) {

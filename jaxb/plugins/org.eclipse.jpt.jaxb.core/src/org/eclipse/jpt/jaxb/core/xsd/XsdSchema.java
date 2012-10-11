@@ -10,10 +10,10 @@
 package org.eclipse.jpt.jaxb.core.xsd;
 
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SnapshotCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
@@ -34,7 +34,7 @@ public class XsdSchema
 	
 	public Iterable<String> getNamespaces() {
 		Iterable<String> result = new SnapshotCloneIterable(getXSDSchema().getQNamePrefixToNamespaceMap().values());
-		if (StringTools.stringIsEmpty(getXSDSchema().getTargetNamespace())) {
+		if (StringTools.isBlank(getXSDSchema().getTargetNamespace())) {
 			result = new CompositeIterable<String>("", result);
 		}
 		return result;
@@ -180,36 +180,39 @@ public class XsdSchema
 	}
 
 	public Iterable<String> getNamespaceProposals() {
-		return StringTools.convertToJavaStringLiteralContents(getNamespaces());
+		return new TransformationIterable<String, String>(getNamespaces(), StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 	
 	public Iterable<String> getTypeNameProposals(String namespace) {
-		return StringTools.convertToJavaStringLiteralContents(
+		return new TransformationIterable<String, String>(
 					new TransformationIterable<XsdTypeDefinition, String>(this.getTypeDefinitions(namespace)) {
 						@Override
 						protected String transform(XsdTypeDefinition o) {
 							return o.getName();
 						}
-					});
+					},
+				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 	
 	public Iterable<String> getSimpleTypeNameProposals(String namespace) {
-		return StringTools.convertToJavaStringLiteralContents(
+		return new TransformationIterable<String, String>(
 						new TransformationIterable<XsdSimpleTypeDefinition, String>(this.getSimpleTypeDefinitions(namespace)) {
 							@Override
 							protected String transform(XsdSimpleTypeDefinition o) {
 								return o.getName();
 							}
-						});
+						},
+				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 	
 	public Iterable<String> getElementNameProposals(String namespace) {
-		return StringTools.convertToJavaStringLiteralContents(
+		return new TransformationIterable<String, String>(
 						new TransformationIterable<XsdElementDeclaration, String>(this.getElementDeclarations(namespace)) {
 							@Override
 							protected String transform(XsdElementDeclaration o) {
 								return o.getName();
 							}
-						});
+						},
+				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 }

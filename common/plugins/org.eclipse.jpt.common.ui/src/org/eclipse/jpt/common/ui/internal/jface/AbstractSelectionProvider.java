@@ -16,7 +16,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * Provide support for {@link ISelectionChangedListener selection change
@@ -48,7 +48,7 @@ public abstract class AbstractSelectionProvider
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this);
+		return ObjectTools.toString(this);
 	}
 
 
@@ -76,7 +76,7 @@ public abstract class AbstractSelectionProvider
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.listener);
+			return ObjectTools.toString(this, this.listener);
 		}
 	}
 }

@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.GeneratedAnnotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.StaticMetamodelAnnotation;
@@ -105,7 +106,7 @@ public interface MetamodelSynchronizer {
 
 		@Override
 		public String toString() {
-			return StringTools.buildSingletonToString(this);
+			return ObjectTools.singletonToString(this);
 		}
 
 		private static final long serialVersionUID = 1L;
@@ -169,7 +170,7 @@ public interface MetamodelSynchronizer {
 			if ( ! generatedAnnotation.getValue(0).equals(METAMODEL_GENERATED_ANNOTATION_VALUE)) {
 				return false;
 			}
-			if (StringTools.stringIsEmpty(generatedAnnotation.getDate())) {
+			if (StringTools.isBlank(generatedAnnotation.getDate())) {
 				return false;
 			}
 			return true;

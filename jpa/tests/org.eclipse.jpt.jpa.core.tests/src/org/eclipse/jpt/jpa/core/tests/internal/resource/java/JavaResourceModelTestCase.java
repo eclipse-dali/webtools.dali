@@ -26,8 +26,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.tests.internal.utility.jdt.AnnotationTestCase;
 import org.eclipse.jpt.common.utility.command.CommandExecutor;
 import org.eclipse.jpt.common.utility.internal.BitTools;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.jpa.core.internal.JpaAnnotationProvider;
@@ -72,7 +71,7 @@ public class JavaResourceModelTestCase
 		
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this);
+			return ObjectTools.toString(this);
 		}
 	}
 	
@@ -147,7 +146,7 @@ public class JavaResourceModelTestCase
 	}
 
 	protected JavaResourceType hackJavaResourceType() {
-		return (JavaResourceType) ReflectionTools.getFieldValue(this.javaResourceCompilationUnit, "primaryType");
+		return (JavaResourceType) ObjectTools.get(this.javaResourceCompilationUnit, "primaryType");
 	}
 
 	protected JavaResourceCompilationUnit buildJavaResourceCompilationUnit(ICompilationUnit cu) {

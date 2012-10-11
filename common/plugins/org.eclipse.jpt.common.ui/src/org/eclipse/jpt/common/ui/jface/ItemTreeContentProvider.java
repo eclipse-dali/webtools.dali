@@ -10,8 +10,7 @@
 package org.eclipse.jpt.common.ui.jface;
 
 import java.io.Serializable;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * Implementations of this interface can be used to maintain the content of a
@@ -85,13 +84,13 @@ public interface ItemTreeContentProvider
 			super();
 		}
 		public Object[] getElements() {
-			return Tools.EMPTY_OBJECT_ARRAY;
+			return ObjectTools.EMPTY_OBJECT_ARRAY;
 		}
 		public Object getParent() {
 			return null;
 		}
 		public Object[] getChildren() {
-			return Tools.EMPTY_OBJECT_ARRAY;
+			return ObjectTools.EMPTY_OBJECT_ARRAY;
 		}
 		public boolean hasChildren() {
 			return false;
@@ -101,7 +100,7 @@ public interface ItemTreeContentProvider
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildSingletonToString(this);
+			return ObjectTools.singletonToString(this);
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {

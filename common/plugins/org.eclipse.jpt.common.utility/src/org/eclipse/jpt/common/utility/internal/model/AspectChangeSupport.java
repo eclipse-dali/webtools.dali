@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,10 +26,6 @@ import org.eclipse.jpt.common.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.common.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeAddEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeChangeEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeClearEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeRemoveEvent;
 
 /**
  * This change support class will notify listeners whenever one of the source's
@@ -294,56 +290,4 @@ public class AspectChangeSupport
 		super.fireListChanged(listName, list);
 		this.aspectChanged(listName);
 	}
-
-
-	// ********** tree change support **********
-
-	@Override
-	public void fireNodeAdded(TreeAddEvent event) {
-		super.fireNodeAdded(event);
-		this.aspectChanged(event.getTreeName());
-	}
-
-	@Override
-	public void fireNodeAdded(String treeName, List<?> path) {
-		super.fireNodeAdded(treeName, path);
-		this.aspectChanged(treeName);
-	}
-
-	@Override
-	public void fireNodeRemoved(TreeRemoveEvent event) {
-		super.fireNodeRemoved(event);
-		this.aspectChanged(event.getTreeName());
-	}
-
-	@Override
-	public void fireNodeRemoved(String treeName, List<?> path) {
-		super.fireNodeRemoved(treeName, path);
-		this.aspectChanged(treeName);
-	}
-
-	@Override
-	public void fireTreeCleared(TreeClearEvent event) {
-		super.fireTreeCleared(event);
-		this.aspectChanged(event.getTreeName());
-	}
-
-	@Override
-	public void fireTreeCleared(String treeName) {
-		super.fireTreeCleared(treeName);
-		this.aspectChanged(treeName);
-	}
-
-	@Override
-	public void fireTreeChanged(TreeChangeEvent event) {
-		super.fireTreeChanged(event);
-		this.aspectChanged(event.getTreeName());
-	}
-
-	@Override
-	public void fireTreeChanged(String treeName, Collection<?> nodes) {
-		super.fireTreeChanged(treeName, nodes);
-		this.aspectChanged(treeName);
-	}
-
 }

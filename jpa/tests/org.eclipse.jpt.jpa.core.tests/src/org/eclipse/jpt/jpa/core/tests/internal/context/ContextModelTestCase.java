@@ -33,7 +33,7 @@ import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProperties;
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProvider;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
@@ -91,7 +91,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	protected IDataModel buildJpaConfigDataModel() {
 		IDataModel dataModel = DataModelFactory.createDataModel(new JpaFacetInstallDataModelProvider());		
 		dataModel.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, this.getJpaFacetVersionString());
-		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM, this.getJpaPlatformDescription());
+		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM, this.getJpaPlatformConfig());
 		dataModel.setProperty(JpaFacetInstallDataModelProperties.CREATE_ORM_XML, Boolean.valueOf(this.createOrmXml()));
 		return dataModel;
 	}
@@ -102,8 +102,8 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	}
 	
 	// most tests use the basic generic platform
-	protected JpaPlatformDescription getJpaPlatformDescription() {
-		return this.getJpaPlatformManager().getJpaPlatformDescription(this.getJpaPlatformID());
+	protected JpaPlatformConfig getJpaPlatformConfig() {
+		return this.getJpaPlatformManager().getJpaPlatformConfig(this.getJpaPlatformID());
 	}
 
 	protected String getJpaPlatformID() {

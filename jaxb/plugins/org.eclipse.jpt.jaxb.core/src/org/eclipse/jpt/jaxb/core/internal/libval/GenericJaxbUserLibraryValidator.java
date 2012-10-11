@@ -11,18 +11,15 @@ package org.eclipse.jpt.jaxb.core.internal.libval;
 
 import java.util.HashSet;
 import java.util.Set;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jpt.common.core.internal.libval.LibValUtil;
+import org.eclipse.jpt.common.core.internal.libval.LibraryValidatorTools;
 import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.common.core.libval.LibraryValidator;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jaxb.core.JaxbFacet;
-import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.internal.libprov.JaxbUserLibraryProviderInstallOperationConfig;
+import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 public class GenericJaxbUserLibraryValidator
@@ -36,14 +33,6 @@ public class GenericJaxbUserLibraryValidator
 		IProjectFacetVersion jaxbVersion = config.getProjectFacetVersion();
 		IProjectFacetVersion javaVersion = JaxbLibValUtil.getJavaVersion(jaxbConfig);
 		IProjectFacetVersion javaJaxbVersion = JaxbLibValUtil.findJavaJaxbVersion(jaxbConfig);
-		
-		Iterable<IPath> libraryPaths = 
-				new TransformationIterable<IClasspathEntry, IPath>(jaxbConfig.resolve()) {
-					@Override
-					protected IPath transform(IClasspathEntry o) {
-						return o.getPath();
-					}
-				};
 		
 		// dev-time portion of validation - error if actual java library *conflicts with* jaxb facet
 		// or if library does not provide supplemental classes
@@ -65,7 +54,7 @@ public class GenericJaxbUserLibraryValidator
 				classNames.add("javax.xml.bind.JAXBPermission"); //$NON-NLS-1$
 			}
 			
-			IStatus status = LibValUtil.validate(libraryPaths, classNames);
+			IStatus status = LibraryValidatorTools.validateClasspathEntries(jaxbConfig.resolve(), classNames);
 			
 			if (! status.isOK()) {
 				return status;

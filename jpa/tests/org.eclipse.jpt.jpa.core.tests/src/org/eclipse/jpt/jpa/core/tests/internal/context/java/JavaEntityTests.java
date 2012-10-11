@@ -16,8 +16,9 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Ki
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AccessType;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
@@ -1012,7 +1013,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		entity.addSpecifiedSecondaryTable(2).setSpecifiedName("BAZ");
 		
 		Iterator<NestableAnnotation> javaSecondaryTables = resourceType.getAnnotations(SecondaryTableAnnotation.ANNOTATION_NAME).iterator();
-		assertEquals(3, CollectionTools.size(javaSecondaryTables));
+		assertEquals(3, IteratorTools.size(javaSecondaryTables));
 		
 		
 		entity.moveSpecifiedSecondaryTable(2, 0);
@@ -1096,7 +1097,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTables();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(3, CollectionTools.size(getJavaEntity().getAssociatedTables()));
+		assertEquals(3, IterableTools.size(getJavaEntity().getAssociatedTables()));
 		Iterator<ReadOnlyTable> associatedTables = getJavaEntity().getAssociatedTables().iterator();
 		ReadOnlyTable table1 = associatedTables.next();
 		SecondaryTable table2 = (SecondaryTable) associatedTables.next();
@@ -1116,7 +1117,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		Entity childEntity = (Entity) specifiedClassRefs.next().getJavaPersistentType().getMapping();
 		Entity rootEntity = (Entity) specifiedClassRefs.next().getJavaPersistentType().getMapping();
 
-		assertEquals(3, CollectionTools.size(rootEntity.getAllAssociatedTables()));
+		assertEquals(3, IterableTools.size(rootEntity.getAllAssociatedTables()));
 		Iterator<ReadOnlyTable> associatedTables = rootEntity.getAllAssociatedTables().iterator();
 		ReadOnlyTable table1 = associatedTables.next();
 		SecondaryTable table2 = (SecondaryTable) associatedTables.next();
@@ -1127,7 +1128,7 @@ public class JavaEntityTests extends ContextModelTestCase
 
 		//TODO probably want this to be 3, since in this case the child descriptor really uses the
 		//parent table because it is single table inheritance strategy.  Not sure yet how to deal with this.
-		assertEquals(4, CollectionTools.size(childEntity.getAllAssociatedTables()));
+		assertEquals(4, IterableTools.size(childEntity.getAllAssociatedTables()));
 	}
 	
 	public void testAssociatedTableNamesIncludingInherited() throws Exception {
@@ -1140,7 +1141,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		Entity childEntity = (Entity) specifiedClassRefs.next().getJavaPersistentType().getMapping();
 		Entity rootEntity = (Entity) specifiedClassRefs.next().getJavaPersistentType().getMapping();
 		
-		assertEquals(3, CollectionTools.size(rootEntity.getAllAssociatedTableNames()));
+		assertEquals(3, IterableTools.size(rootEntity.getAllAssociatedTableNames()));
 		Iterator<String> associatedTables = rootEntity.getAllAssociatedTableNames().iterator();
 		String table1 = associatedTables.next();
 		String table2 = associatedTables.next();
@@ -1151,7 +1152,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		//TODO probably want this to be 3, since in this case the child descriptor really uses the
 		//parent table because it is single table inheritance strategy.  Not sure yet how to deal with this.
-		assertEquals(4, CollectionTools.size(childEntity.getAllAssociatedTableNames()));
+		assertEquals(4, IterableTools.size(childEntity.getAllAssociatedTableNames()));
 	}
 	
 	public void testAddSecondaryTableToResourceModel() throws Exception {
@@ -1569,7 +1570,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		entity.addSpecifiedPrimaryKeyJoinColumn(2).setSpecifiedName("BAZ");
 		
 		Iterator<NestableAnnotation> javaPrimaryKeyJoinColumns = resourceType.getAnnotations(PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME).iterator();
-		assertEquals(3, CollectionTools.size(javaPrimaryKeyJoinColumns));
+		assertEquals(3, IteratorTools.size(javaPrimaryKeyJoinColumns));
 		
 		
 		entity.moveSpecifiedPrimaryKeyJoinColumn(2, 0);
@@ -2148,7 +2149,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		overrideContainer.getVirtualOverrides().iterator().next().convertToSpecified();
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, Kind.TYPE);
-		assertEquals(4, CollectionTools.size(resourceType.getAnnotations(AttributeOverrideAnnotation.ANNOTATION_NAME)));
+		assertEquals(4, IterableTools.size(resourceType.getAnnotations(AttributeOverrideAnnotation.ANNOTATION_NAME)));
 
 		overrideContainer.getSpecifiedOverrides().iterator().next().convertToVirtual();
 		
@@ -2212,7 +2213,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, Kind.TYPE);
 		
 		Iterator<NestableAnnotation> javaAttributeOverrides = resourceType.getAnnotations(AttributeOverrideAnnotation.ANNOTATION_NAME).iterator();
-		assertEquals(4, CollectionTools.size(javaAttributeOverrides));
+		assertEquals(4, IteratorTools.size(javaAttributeOverrides));
 		
 		overrideContainer.moveSpecifiedOverride(2, 0);
 		ListIterator<JavaAttributeOverride> attributeOverrides = overrideContainer.getSpecifiedOverrides().iterator();
@@ -2726,7 +2727,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, Kind.TYPE);
 		
 		Iterator<NestableAnnotation> javaAssociationOverrides = resourceType.getAnnotations(AssociationOverrideAnnotation.ANNOTATION_NAME).iterator();
-		assertEquals(2, CollectionTools.size(javaAssociationOverrides));
+		assertEquals(2, IteratorTools.size(javaAssociationOverrides));
 		
 		
 		overrideContainer.moveSpecifiedOverride(1, 0);
@@ -2892,24 +2893,24 @@ public class JavaEntityTests extends ContextModelTestCase
 		entity.getQueryContainer().addNamedQuery(2).setName("BAZ");
 		
 		Iterator<NestableAnnotation> javaNamedQueries = resourceType.getAnnotations(NamedQueryAnnotation.ANNOTATION_NAME).iterator();
-		assertEquals(3, CollectionTools.size(javaNamedQueries));
+		assertEquals(3, IteratorTools.size(javaNamedQueries));
 		
 		entity.getQueryContainer().removeNamedQuery(0);
 		javaNamedQueries = resourceType.getAnnotations(NamedQueryAnnotation.ANNOTATION_NAME).iterator();
-		assertEquals(2, CollectionTools.size(javaNamedQueries));
+		assertEquals(2, IteratorTools.size(javaNamedQueries));
 		javaNamedQueries = resourceType.getAnnotations(NamedQueryAnnotation.ANNOTATION_NAME).iterator();
 		assertEquals("BAR", ((NamedQueryAnnotation) javaNamedQueries.next()).getName());
 		assertEquals("BAZ", ((NamedQueryAnnotation) javaNamedQueries.next()).getName());
 
 		entity.getQueryContainer().removeNamedQuery(0);
 		javaNamedQueries = resourceType.getAnnotations(NamedQueryAnnotation.ANNOTATION_NAME).iterator();
-		assertEquals(1, CollectionTools.size(javaNamedQueries));
+		assertEquals(1, IteratorTools.size(javaNamedQueries));
 		javaNamedQueries = resourceType.getAnnotations(NamedQueryAnnotation.ANNOTATION_NAME).iterator();
 		assertEquals("BAZ", ((NamedQueryAnnotation) javaNamedQueries.next()).getName());
 		
 		entity.getQueryContainer().removeNamedQuery(0);
 		javaNamedQueries = resourceType.getAnnotations(NamedQueryAnnotation.ANNOTATION_NAME).iterator();
-		assertEquals(0, CollectionTools.size(javaNamedQueries));
+		assertEquals(0, IteratorTools.size(javaNamedQueries));
 	}
 	
 	public void testAddNamedNativeQueryWithNamedQuery() throws Exception {
@@ -2962,7 +2963,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		entity.getQueryContainer().addNamedQuery(2).setName("BAZ");
 		
 		Iterator<NestableAnnotation> javaNamedQueries = resourceType.getAnnotations(NamedQueryAnnotation.ANNOTATION_NAME).iterator();
-		assertEquals(3, CollectionTools.size(javaNamedQueries));
+		assertEquals(3, IteratorTools.size(javaNamedQueries));
 		
 		
 		entity.getQueryContainer().moveNamedQuery(2, 0);
@@ -3115,24 +3116,24 @@ public class JavaEntityTests extends ContextModelTestCase
 		entity.getQueryContainer().addNamedNativeQuery(2).setName("BAZ");
 		
 		Iterator<NestableAnnotation> javaNamedQueries = resourceType.getAnnotations(NamedNativeQueryAnnotation.ANNOTATION_NAME).iterator();
-		assertEquals(3, CollectionTools.size(javaNamedQueries));
+		assertEquals(3, IteratorTools.size(javaNamedQueries));
 		
 		entity.getQueryContainer().removeNamedNativeQuery(0);
 		javaNamedQueries = resourceType.getAnnotations(NamedNativeQueryAnnotation.ANNOTATION_NAME).iterator();
-		assertEquals(2, CollectionTools.size(javaNamedQueries));
+		assertEquals(2, IteratorTools.size(javaNamedQueries));
 		javaNamedQueries = resourceType.getAnnotations(NamedNativeQueryAnnotation.ANNOTATION_NAME).iterator();
 		assertEquals("BAR", ((NamedNativeQueryAnnotation) javaNamedQueries.next()).getName());
 		assertEquals("BAZ", ((NamedNativeQueryAnnotation) javaNamedQueries.next()).getName());
 
 		entity.getQueryContainer().removeNamedNativeQuery(0);
 		javaNamedQueries = resourceType.getAnnotations(NamedNativeQueryAnnotation.ANNOTATION_NAME).iterator();
-		assertEquals(1, CollectionTools.size(javaNamedQueries));
+		assertEquals(1, IteratorTools.size(javaNamedQueries));
 		javaNamedQueries = resourceType.getAnnotations(NamedNativeQueryAnnotation.ANNOTATION_NAME).iterator();
 		assertEquals("BAZ", ((NamedNativeQueryAnnotation) javaNamedQueries.next()).getName());
 		
 		entity.getQueryContainer().removeNamedNativeQuery(0);
 		javaNamedQueries = resourceType.getAnnotations(NamedNativeQueryAnnotation.ANNOTATION_NAME).iterator();
-		assertEquals(0, CollectionTools.size(javaNamedQueries));
+		assertEquals(0, IteratorTools.size(javaNamedQueries));
 	}
 	
 	public void testMoveNamedNativeQuery() throws Exception {
@@ -3147,7 +3148,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		entity.getQueryContainer().addNamedNativeQuery(2).setName("BAZ");
 		
 		Iterator<NestableAnnotation> javaNamedQueries = resourceType.getAnnotations(NamedNativeQueryAnnotation.ANNOTATION_NAME).iterator();
-		assertEquals(3, CollectionTools.size(javaNamedQueries));
+		assertEquals(3, IteratorTools.size(javaNamedQueries));
 		
 		entity.getQueryContainer().moveNamedNativeQuery(2, 0);
 		ListIterator<JavaNamedNativeQuery> namedQueries = entity.getQueryContainer().getNamedNativeQueries().iterator();

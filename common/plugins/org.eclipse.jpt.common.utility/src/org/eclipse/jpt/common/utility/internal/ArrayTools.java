@@ -10,19 +10,31 @@
 package org.eclipse.jpt.common.utility.internal;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Random;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 
 /**
- * Array-related utility methods.
+ * {@link Array} utility methods.
+ * There are a number of other useful utility methods in {@link ListTools}
+ * that can be use by converting an array to a list ({@link Arrays#asList(Object...)}).
+ * @see CharArrayTools
+ * @see CollectionTools
+ * @see IterableTools
+ * @see IteratorTools
+ * @see ListTools
  */
 public final class ArrayTools {
-	public static final char[] EMPTY_CHAR_ARRAY = new char[0];
 	public static final int[] EMPTY_INT_ARRAY = new int[0];
 
 	// ********** instantiation **********
@@ -31,63 +43,55 @@ public final class ArrayTools {
 	 * Return a new array with the same length
 	 * and the same component type as the specified array.
 	 * <p>
-	 * <code>Arrays.newArray(Object[] array)</code>
+	 * <strong>NB:</strong> The array's reified component type may be a sub-type of
+	 * the array's <em>declared</em> component type.
+	 * @see Array#newInstance(Class, int)
 	 */
-	public static <E> E[] newArray(E[] array) {
-		return newArray(array, array.length);
+	public static <E> E[] newInstance(E[] array) {
+		return newInstance(array, array.length);
 	}
 
 	/**
 	 * Return a new array with the specified length
 	 * and the same component type as the specified array.
 	 * <p>
-	 * <code>Arrays.newArray(Object[] array, int length)</code>
+	 * <strong>NB:</strong> The array's reified component type may be a sub-type of
+	 * the array's <em>declared</em> component type.
+	 * @see Array#newInstance(Class, int)
 	 */
-	public static <E> E[] newArray(E[] array, int length) {
-		return newArray(componentType(array), length);
-	}
-
-	/**
-	 * Return the specified array's component type, with appropriate support
-	 * for generics.
-	 */
-	public static <E> Class<? extends E> componentType(E[] array) {
-		Class<?> rawComponentType = array.getClass().getComponentType();
-		@SuppressWarnings("unchecked")
-		Class<? extends E> componentType = (Class<? extends E>) rawComponentType;
-		return componentType;
+	public static <E> E[] newInstance(E[] array, int length) {
+		return newInstance(componentType(array), length);
 	}
 
 	/**
 	 * Return a new array with the specified component type and length,
 	 * with appropriate support for generics. The component type cannot be a
 	 * primitive type.
+	 * @see Array#newInstance(Class, int)
 	 */
-	public static <E> E[] newArray(Class<? extends E> componentType, int length) {
+	public static <E> E[] newInstance(Class<E> componentType, int length) {
 		if (componentType.isPrimitive()) {
 			throw new IllegalArgumentException("Array class cannot be primitive: " + componentType); //$NON-NLS-1$
 		}
-		return newArray_(componentType, length);
+		return newInstance_(componentType, length);
 	}
 
 	/**
-	 * assume the component type is not a primitive class
+	 * pre-condition: the component type is not a primitive class
 	 */
 	@SuppressWarnings("unchecked")
-	private static <E> E[] newArray_(Class<? extends E> componentType, int length) {
+	private static <E> E[] newInstance_(Class<E> componentType, int length) {
 		return (E[]) ((componentType == OBJECT_CLASS) ?
-				new Object[length] :
+				(length == 0) ? ObjectTools.EMPTY_OBJECT_ARRAY : new Object[length] :
 				Array.newInstance(componentType, length));
 	}
 	private static final Class<Object> OBJECT_CLASS = Object.class;
 
 
-	// ********** conversion **********
+	// ********** factory methods **********
 
 	/**
 	 * Return an array corresponding to the specified iterable.
-	 * <p>
-	 * <code>Iterable.toArray()</code>
 	 * @see Collection#toArray()
 	 */
 	public static Object[] array(Iterable<?> iterable) {
@@ -97,12 +101,29 @@ public final class ArrayTools {
 	/**
 	 * Return an array corresponding to the specified iterable.
 	 * The specified iterable size is a performance hint.
-	 * <p>
-	 * <code>Iterable.toArray()</code>
 	 * @see Collection#toArray()
 	 */
 	public static Object[] array(Iterable<?> iterable, int iterableSize) {
 		return array(iterable.iterator(), iterableSize);
+	}
+
+	/**
+	 * Return an array corresponding to the specified iterable with the
+	 * specified component type.
+	 * @see Collection#toArray(Object[])
+	 */
+	public static <E> E[] array(Iterable<?> iterable, Class<E> componentType) {
+		return array(iterable.iterator(), componentType);
+	}
+
+	/**
+	 * Return an array corresponding to the specified iterable with the
+	 * specified component type.
+	 * The specified iterable size is a performance hint.
+	 * @see Collection#toArray(Object[])
+	 */
+	public static <E> E[] array(Iterable<?> iterable, int iterableSize, Class<E> componentType) {
+		return array(iterable.iterator(), iterableSize, componentType);
 	}
 
 	/**
@@ -111,8 +132,6 @@ public final class ArrayTools {
 	 * If the iterable fits in the specified array, it is returned therein.
 	 * Otherwise, a new array is allocated with the runtime type of the
 	 * specified array and the size of the iterable.
-	 * <p>
-	 * <code>Iterable.toArray(Object[])</code>
 	 * @see Collection#toArray(Object[])
 	 */
 	public static <E> E[] array(Iterable<? extends E> iterable, E[] array) {
@@ -126,8 +145,6 @@ public final class ArrayTools {
 	 * Otherwise, a new array is allocated with the runtime type of the
 	 * specified array and the size of the iterable.
 	 * The specified iterable size is a performance hint.
-	 * <p>
-	 * <code>Iterable.toArray(Object[])</code>
 	 * @see Collection#toArray(Object[])
 	 */
 	public static <E> E[] array(Iterable<? extends E> iterable, int iterableSize, E[] array) {
@@ -136,27 +153,47 @@ public final class ArrayTools {
 
 	/**
 	 * Return an array corresponding to the specified iterator.
-	 * <p>
-	 * <code>Iterator.toArray()</code>
 	 * @see Collection#toArray()
 	 */
 	public static Object[] array(Iterator<?> iterator) {
 		return iterator.hasNext() ?
-				CollectionTools.list(iterator).toArray() :
-				Tools.EMPTY_OBJECT_ARRAY;
+				ListTools.list(iterator).toArray() :
+				ObjectTools.EMPTY_OBJECT_ARRAY;
 	}
 
 	/**
 	 * Return an array corresponding to the specified iterator.
 	 * The specified iterator size is a performance hint.
-	 * <p>
-	 * <code>Iterator.toArray()</code>
 	 * @see Collection#toArray()
 	 */
 	public static Object[] array(Iterator<?> iterator, int iteratorSize) {
 		return iterator.hasNext() ?
-				CollectionTools.list(iterator, iteratorSize).toArray() :
-				Tools.EMPTY_OBJECT_ARRAY;
+				ListTools.list(iterator, iteratorSize).toArray() :
+				ObjectTools.EMPTY_OBJECT_ARRAY;
+	}
+
+	/**
+	 * Return an array corresponding to the specified iterator with the
+	 * specified component type.
+	 * @see Collection#toArray(Object[])
+	 */
+	public static <E> E[] array(Iterator<?> iterator, Class<E> componentType) {
+		E[] array = newInstance(componentType, 0);
+		return iterator.hasNext() ?
+				ListTools.list(iterator).toArray(array) :
+				array;
+	}
+
+	/**
+	 * Return an array corresponding to the specified iterator with the
+	 * specified component type.
+	 * The specified iterator size is a performance hint.
+	 * @see Collection#toArray(Object[])
+	 */
+	public static <E> E[] array(Iterator<?> iterator, int iteratorSize, Class<E> componentType) {
+		return iterator.hasNext() ?
+				ListTools.list(iterator, iteratorSize).toArray(newInstance(componentType, iteratorSize)) :
+				newInstance(componentType, 0);
 	}
 
 	/**
@@ -165,13 +202,11 @@ public final class ArrayTools {
 	 * If the iterator fits in the specified array, it is returned therein.
 	 * Otherwise, a new array is allocated with the runtime type of the
 	 * specified array and the size of the iterator.
-	 * <p>
-	 * <code>Iterator.toArray(Object[])</code>
 	 * @see Collection#toArray(Object[])
 	 */
 	public static <E> E[] array(Iterator<? extends E> iterator, E[] array) {
 		return iterator.hasNext() ?
-				CollectionTools.list(iterator).toArray(array) :
+				ListTools.list(iterator).toArray(array) :
 				emptyArray(array);
 	}
 
@@ -182,19 +217,17 @@ public final class ArrayTools {
 	 * Otherwise, a new array is allocated with the runtime type of the
 	 * specified array and the size of the iterator.
 	 * The specified iterator size is a performance hint.
-	 * <p>
-	 * <code>Iterator.toArray(Object[])</code>
 	 * @see Collection#toArray(Object[])
 	 */
 	public static <E> E[] array(Iterator<? extends E> iterator, int iteratorSize, E[] array) {
 		return iterator.hasNext() ?
-				CollectionTools.list(iterator, iteratorSize).toArray(array) :
+				ListTools.list(iterator, iteratorSize).toArray(array) :
 				emptyArray(array);
 	}
 
 	/**
 	 * If the specified array is empty, return it;
-	 * otherwise, set its first element to null.
+	 * otherwise, set its first element to <code>null</code>.
 	 * @see Collection#toArray(Object[])
 	 */
 	private static <E> E[] emptyArray(E[] array) {
@@ -202,7 +235,8 @@ public final class ArrayTools {
 	}
 
 	/**
-	 * Set the specified array's first element to null and and return the array.
+	 * Set the specified array's first element to <code>null</code> and and
+	 * return the array.
 	 * Assume the array length > 0.
 	 */
 	private static <E> E[] clearFirst(E[] array) {
@@ -216,12 +250,10 @@ public final class ArrayTools {
 	/**
 	 * Return a new array containing the elements in the
 	 * specified array followed by the specified object to be added.
-	 * <p>
-	 * <code>Arrays.add(Object[] array, Object o)</code>
 	 */
 	public static <E> E[] add(E[] array, E value) {
 		int len = array.length;
-		E[] result = newArray(array, len + 1);
+		E[] result = newInstance(array, len + 1);
 		if (len > 0) {
 			System.arraycopy(array, 0, result, 0, len);
 		}
@@ -232,12 +264,10 @@ public final class ArrayTools {
 	/**
 	 * Return a new array containing the elements in the
 	 * specified array with the specified object added at the specified index.
-	 * <p>
-	 * <code>Arrays.add(Object[] array, int index, Object o)</code>
 	 */
 	public static <E> E[] add(E[] array, int index, E value) {
 		int len = array.length;
-		E[] result = newArray(array, len + 1);
+		E[] result = newInstance(array, len + 1);
 		if (index > 0) {
 			System.arraycopy(array, 0, result, 0, index);
 		}
@@ -251,8 +281,6 @@ public final class ArrayTools {
 	/**
 	 * Return a new array containing the elements in the
 	 * specified array followed by the specified value to be added.
-	 * <p>
-	 * <code>Arrays.add(char[] array, char value)</code>
 	 */
 	public static char[] add(char[] array, char value) {
 		int len = array.length;
@@ -267,8 +295,6 @@ public final class ArrayTools {
 	/**
 	 * Return a new array containing the elements in the
 	 * specified array with the specified value added at the specified index.
-	 * <p>
-	 * <code>Arrays.add(char[] array, int index, char value)</code>
 	 */
 	public static char[] add(char[] array, int index, char value) {
 		int len = array.length;
@@ -286,8 +312,6 @@ public final class ArrayTools {
 	/**
 	 * Return a new array containing the elements in the
 	 * specified array followed by the specified value to be added.
-	 * <p>
-	 * <code>Arrays.add(int[] array, int value)</code>
 	 */
 	public static int[] add(int[] array, int value) {
 		int len = array.length;
@@ -302,8 +326,6 @@ public final class ArrayTools {
 	/**
 	 * Return a new array containing the elements in the
 	 * specified array with the specified value added at the specified index.
-	 * <p>
-	 * <code>Arrays.add(int[] array, int index, int value)</code>
 	 */
 	public static int[] add(int[] array, int index, int value) {
 		int len = array.length;
@@ -325,8 +347,6 @@ public final class ArrayTools {
 	 * Return an array containing the elements in the
 	 * specified array followed by the elements
 	 * in the specified collection.
-	 *<p>
-	 * <code>Arrays.addAll(Object[] array, Collection collection)</code>
 	 */
 	public static <E> E[] addAll(E[] array, Collection<? extends E> collection) {
 		return addAll(array, collection, collection.size());
@@ -358,7 +378,7 @@ public final class ArrayTools {
 	 */
 	private static <E> E[] addAll(E[] array, Collection<? extends E> collection, int arrayLength, int collectionSize) {
 		return (arrayLength == 0) ?
-				collection.toArray(newArray(array, collectionSize)) :
+				collection.toArray(newInstance(array, collectionSize)) :
 				addAll_(array, collection, arrayLength, collectionSize);
 	}
 
@@ -366,7 +386,7 @@ public final class ArrayTools {
 	 * assume array length and collection size > zero
 	 */
 	private static <E> E[] addAll_(E[] array, Collection<? extends E> collection, int arrayLength, int collectionSize) {
-		E[] result = newArray(array, arrayLength + collectionSize);
+		E[] result = newInstance(array, arrayLength + collectionSize);
 		System.arraycopy(array, 0, result, 0, arrayLength);
 		int i = arrayLength;
 		for (E element : collection) {
@@ -379,8 +399,6 @@ public final class ArrayTools {
 	 * Return an array containing the elements in the
 	 * specified array followed by the elements
 	 * in the specified iterable.
-	 * <p>
-	 * <code>Arrays.addAll(Object[] array, Iterable iterable)</code>
 	 */
 	public static <E> E[] addAll(E[] array, Iterable<? extends E> iterable) {
 		return addAll(array, iterable.iterator());
@@ -391,8 +409,6 @@ public final class ArrayTools {
 	 * specified array followed by the elements
 	 * in the specified iterable.
 	 * The specified iterable size is a performance hint.
-	 * <p>
-	 * <code>Arrays.addAll(Object[] array, Iterable iterable)</code>
 	 */
 	public static <E> E[] addAll(E[] array, Iterable<? extends E> iterable, int iterableSize) {
 		return addAll(array, iterable.iterator(), iterableSize);
@@ -402,11 +418,9 @@ public final class ArrayTools {
 	 * Return an array containing the elements in the
 	 * specified array followed by the elements
 	 * in the specified iterator.
-	 * <p>
-	 * <code>Arrays.addAll(Object[] array, Iterator iterator)</code>
 	 */
 	public static <E> E[] addAll(E[] array, Iterator<? extends E> iterator) {
-		return iterator.hasNext() ? addAll_(array, CollectionTools.list(iterator)) : array;
+		return iterator.hasNext() ? addAll_(array, ListTools.list(iterator)) : array;
 	}
 
 	/**
@@ -414,19 +428,15 @@ public final class ArrayTools {
 	 * specified array followed by the elements
 	 * in the specified iterator.
 	 * The specified iterator size is a performance hint.
-	 * <p>
-	 * <code>Arrays.addAll(Object[] array, Iterator iterator)</code>
 	 */
 	public static <E> E[] addAll(E[] array, Iterator<? extends E> iterator, int iteratorSize) {
-		return iterator.hasNext() ? addAll_(array, CollectionTools.list(iterator, iteratorSize)) : array;
+		return iterator.hasNext() ? addAll_(array, ListTools.list(iterator, iteratorSize)) : array;
 	}
 
 	/**
 	 * Return an array containing the elements in the
 	 * specified array 1 followed by the elements
 	 * in the specified array 2.
-	 * <p>
-	 * <code>Arrays.addAll(Object[] array1, Object[] array2)</code>
 	 */
 	public static <E> E[] addAll(E[] array1, E... array2) {
 		return addAll(array1, array2, array2.length);
@@ -457,7 +467,7 @@ public final class ArrayTools {
 	 * assume both array lengths > 0
 	 */
 	private static <E> E[] addAll_(E[] array1, E[] array2, int array1Length, int array2Length) {
-		E[] result = newArray(array1, array1Length + array2Length);
+		E[] result = newInstance(array1, array1Length + array2Length);
 		System.arraycopy(array1, 0, result, 0, array1Length);
 		System.arraycopy(array2, 0, result, array1Length, array2Length);
 		return result;
@@ -467,8 +477,6 @@ public final class ArrayTools {
 	 * Return an array containing the elements in the
 	 * first specified array with the objects in the second
 	 * specified array added at the specified index.
-	 * <p>
-	 * <code>Arrays.addAll(Object[] array1, int index, Object[] array2)</code>
 	 */
 	public static <E> E[] addAll(E[] array1, int index, E... array2) {
 		return addAll(array1, index, array2, array2.length);
@@ -503,7 +511,7 @@ public final class ArrayTools {
 	 * assume both array lengths > 0 and index != array 1 length
 	 */
 	private static <E> E[] addAll_(E[] array1, int index, E[] array2, int array1Length, int array2Length) {
-		E[] result = newArray(array1, array1Length + array2Length);
+		E[] result = newInstance(array1, array1Length + array2Length);
 		System.arraycopy(array1, 0, result, 0, index);
 		System.arraycopy(array2, 0, result, index, array2Length);
 		System.arraycopy(array1, index, result, index + array2Length, array1Length - index);
@@ -514,8 +522,6 @@ public final class ArrayTools {
 	 * Return an array containing the elements in the
 	 * specified array with the elements
 	 * in the specified collection inserted at the specified index.
-	 * <p>
-	 * <code>Arrays.addAll(Object[] array, int index, Collection c)</code>
 	 */
 	public static <E> E[] addAll(E[] array, int index, Collection<? extends E> collection) {
 		return addAll(array, index, collection, collection.size());
@@ -541,7 +547,7 @@ public final class ArrayTools {
 	private static <E> E[] addAll(E[] array, int index, Collection<? extends E> collection, int arrayLength, int collectionSize) {
 		if (arrayLength == 0) {
 			if (index == 0) {
-				return collection.toArray(newArray(array, collectionSize));
+				return collection.toArray(newInstance(array, collectionSize));
 			}
 			throw new IndexOutOfBoundsException("Index: " + index + ", Size: 0"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
@@ -554,7 +560,7 @@ public final class ArrayTools {
 	 * assume array length and collection size > 0 and index != array length
 	 */
 	private static <E> E[] addAll_(E[] array, int index, Collection<? extends E> collection, int arrayLength, int collectionSize) {
-		E[] result = newArray(array, arrayLength + collectionSize);
+		E[] result = newInstance(array, arrayLength + collectionSize);
 		System.arraycopy(array, 0, result, 0, index);
 		int i = index;
 		for (E item : collection) {
@@ -568,8 +574,6 @@ public final class ArrayTools {
 	 * Return an array containing the elements in the
 	 * specified array with the elements
 	 * in the specified iterable inserted at the specified index.
-	 * <p>
-	 * <code>Arrays.addAll(Object[] array, int index, Iterable iterable)</code>
 	 */
 	public static <E> E[] addAll(E[] array, int index, Iterable<? extends E> iterable) {
 		return addAll(array, index, iterable.iterator());
@@ -579,8 +583,6 @@ public final class ArrayTools {
 	 * Return an array containing the elements in the
 	 * specified array with the elements
 	 * in the specified iterable inserted at the specified index.
-	 * <p>
-	 * <code>Arrays.addAll(Object[] array, int index, Iterable iterable)</code>
 	 */
 	public static <E> E[] addAll(E[] array, int index, Iterable<? extends E> iterable, int iterableSize) {
 		return addAll(array, index, iterable.iterator(), iterableSize);
@@ -590,11 +592,9 @@ public final class ArrayTools {
 	 * Return an array containing the elements in the
 	 * specified array with the elements
 	 * in the specified iterator inserted at the specified index.
-	 * <p>
-	 * <code>Arrays.addAll(Object[] array, int index, Iterator iterator)</code>
 	 */
 	public static <E> E[] addAll(E[] array, int index, Iterator<? extends E> iterator) {
-		return iterator.hasNext() ? addAll_(array, index, CollectionTools.list(iterator)) : array;
+		return iterator.hasNext() ? addAll_(array, index, ListTools.list(iterator)) : array;
 	}
 
 	/**
@@ -602,11 +602,9 @@ public final class ArrayTools {
 	 * specified array with the elements
 	 * in the specified iterator inserted at the specified index.
 	 * The specified iterator size is a performance hint.
-	 * <p>
-	 * <code>Arrays.addAll(Object[] array, int index, Iterator iterator)</code>
 	 */
 	public static <E> E[] addAll(E[] array, int index, Iterator<? extends E> iterator, int iteratorSize) {
-		return iterator.hasNext() ? addAll_(array, index, CollectionTools.list(iterator, iteratorSize)) : array;
+		return iterator.hasNext() ? addAll_(array, index, ListTools.list(iterator, iteratorSize)) : array;
 	}
 
 	/**
@@ -620,8 +618,6 @@ public final class ArrayTools {
 	 * Return an array containing the elements in the
 	 * specified array 1 followed by the elements
 	 * in the specified array 2.
-	 * <p>
-	 * <code>Arrays.addAll(char[] array1, char[] array2)</code>
 	 */
 	public static char[] addAll(char[] array1, char... array2) {
 		return addAll(array1, array2, array2.length);
@@ -662,8 +658,6 @@ public final class ArrayTools {
 	 * Return an array containing the elements in the
 	 * first specified array with the objects in the second
 	 * specified array added at the specified index.
-	 * <p>
-	 * <code>Arrays.add(char[] array1, int index, char[] array2)</code>
 	 */
 	public static char[] addAll(char[] array1, int index, char... array2) {
 		return addAll(array1, index, array2, array2.length);
@@ -709,8 +703,6 @@ public final class ArrayTools {
 	 * Return an array containing the elements in the
 	 * specified array 1 followed by the elements
 	 * in the specified array 2.
-	 * <p>
-	 * <code>Arrays.addAll(int[] array1, int[] array2)</code>
 	 */
 	public static int[] addAll(int[] array1, int... array2) {
 		return addAll(array1, array2, array2.length);
@@ -751,8 +743,6 @@ public final class ArrayTools {
 	 * Return an array containing the elements in the
 	 * first specified array with the objects in the second
 	 * specified array added at the specified index.
-	 * <p>
-	 * <code>Arrays.add(int[] array1, int index, int[] array2)</code>
 	 */
 	public static int[] addAll(int[] array1, int index, int... array2) {
 		return addAll(array1, index, array2, array2.length);
@@ -799,11 +789,26 @@ public final class ArrayTools {
 
 	/**
 	 * Return an empty array with the same component type as the specified array.
-	 * <p>
-	 * <code>Arrays.clear(Object[] array)</code>
 	 */
 	public static <E> E[] clear(E[] array) {
-		return (array.length == 0) ? array : newArray(array, 0);
+		return (array.length == 0) ? array : newInstance(array, 0);
+	}
+
+
+	// ********** component type **********
+
+	/**
+	 * Return the specified array's component type, with appropriate support
+	 * for generics.
+	 * <p>
+	 * <strong>NB:</strong> The array's reified component type may be a sub-type of
+	 * the array's <em>declared</em> component type.
+	 */
+	public static <E> Class<? extends E> componentType(E[] array) {
+		Class<?> rawComponentType = array.getClass().getComponentType();
+		@SuppressWarnings("unchecked")
+		Class<? extends E> componentType = (Class<? extends E>) rawComponentType;
+		return componentType;
 	}
 
 
@@ -813,15 +818,13 @@ public final class ArrayTools {
 	 * Return an array containing all the elements in all the
 	 * specified arrays, concatenated in the specified order.
 	 * This is useful for building constant arrays out of other constant arrays.
-	 * <p>
-	 * <code>Arrays.concatenate(Object[]... arrays)</code>
 	 */
 	public static <E> E[] concatenate(E[]... arrays) {
 		int len = 0;
 		for (E[] array : arrays) {
 			len += array.length;
 		}
-		E[] result = newArray(arrays[0], len);
+		E[] result = newInstance(arrays[0], len);
 		if (len == 0) {
 			return result;
 		}
@@ -840,8 +843,6 @@ public final class ArrayTools {
 	 * Return an array containing all the elements in  all the
 	 * specified arrays, concatenated in the specified order.
 	 * This is useful for building constant arrays out other constant arrays.
-	 * <p>
-	 * <code>Arrays.concatenate(char[]... arrays)</code>
 	 */
 	public static char[] concatenate(char[]... arrays) {
 		int len = 0;
@@ -849,7 +850,7 @@ public final class ArrayTools {
 			len += array.length;
 		}
 		if (len == 0) {
-			return EMPTY_CHAR_ARRAY;
+			return CharArrayTools.EMPTY_CHAR_ARRAY;
 		}
 		char[] result = new char[len];
 		int current = 0;
@@ -867,8 +868,6 @@ public final class ArrayTools {
 	 * Return an array containing all the elements in  all the
 	 * specified arrays, concatenated in the specified order.
 	 * This is useful for building constant arrays out other constant arrays.
-	 * <p>
-	 * <code>Arrays.concatenate(int[]... arrays)</code>
 	 */
 	public static int[] concatenate(int[]... arrays) {
 		int len = 0;
@@ -896,8 +895,6 @@ public final class ArrayTools {
 	/**
 	 * Return whether the specified array contains the
 	 * specified element.
-	 * <p>
-	 * <code>Arrays.contains(Object[] array, Object o)</code>
 	 */
 	public static boolean contains(Object[] array, Object value) {
 		return contains(array, value, array.length);
@@ -913,7 +910,7 @@ public final class ArrayTools {
 	/**
 	 * assume array length > 0
 	 */
-	public static boolean contains_(Object[] array, Object value, int arrayLength) {
+	private static boolean contains_(Object[] array, Object value, int arrayLength) {
 		if (value == null) {
 			for (int i = arrayLength; i-- > 0; ) {
 				if (array[i] == null) {
@@ -933,8 +930,6 @@ public final class ArrayTools {
 	/**
 	 * Return whether the specified array contains the
 	 * specified element.
-	 * <p>
-	 * <code>Arrays.contains(char[] array, char value)</code>
 	 */
 	public static boolean contains(char[] array, char value) {
 		return contains(array, value, array.length);
@@ -962,8 +957,6 @@ public final class ArrayTools {
 	/**
 	 * Return whether the specified array contains the
 	 * specified element.
-	 * <p>
-	 * <code>Arrays.contains(int[] array, int value)</code>
 	 */
 	public static boolean contains(int[] array, int value) {
 		return contains(array, value, array.length);
@@ -994,8 +987,6 @@ public final class ArrayTools {
 	/**
 	 * Return whether the specified array contains all of the
 	 * elements in the specified collection.
-	 * <p>
-	 * <code>Arrays.containsAll(Object[] array, Collection collection)</code>
 	 */
 	public static boolean containsAll(Object[] array, Collection<?> collection) {
 		return containsAll(array, collection.iterator());
@@ -1004,8 +995,6 @@ public final class ArrayTools {
 	/**
 	 * Return whether the specified array contains all of the
 	 * elements in the specified iterable.
-	 * <p>
-	 * <code>Arrays.containsAll(Object[] array, Iterable iterable)</code>
 	 */
 	public static boolean containsAll(Object[] array, Iterable<?> iterable) {
 		return containsAll(array, iterable.iterator());
@@ -1014,8 +1003,6 @@ public final class ArrayTools {
 	/**
 	 * Return whether the specified array contains all of the
 	 * elements in the specified iterator.
-	 * <p>
-	 * <code>Arrays.containsAll(Object[] array, Iterator iterator)</code>
 	 */
 	public static boolean containsAll(Object[] array, Iterator<?> iterator) {
 		// use hashed lookup
@@ -1031,8 +1018,6 @@ public final class ArrayTools {
 	/**
 	 * Return whether the specified array 1 contains all of the
 	 * elements in the specified array 2.
-	 * <p>
-	 * <code>Arrays.containsAll(Object[] array1, Object[] array2)</code>
 	 */
 	public static boolean containsAll(Object[] array1, Object... array2) {
 		// use hashed lookup
@@ -1048,8 +1033,6 @@ public final class ArrayTools {
 	/**
 	 * Return whether the specified array 1 contains all of the
 	 * elements in the specified array 2.
-	 * <p>
-	 * <code>Arrays.containsAll(char[] array1, char[] array2)</code>
 	 */
 	public static boolean containsAll(char[] array1, char... array2) {
 		for (int i = array2.length; i-- > 0; ) {
@@ -1063,8 +1046,6 @@ public final class ArrayTools {
 	/**
 	 * Return whether the specified array 1 contains all of the
 	 * elements in the specified array 2.
-	 * <p>
-	 * <code>Arrays.containsAll(int[] array1, int[] array2)</code>
 	 */
 	public static boolean containsAll(int[] array1, int... array2) {
 		for (int i = array2.length; i-- > 0; ) {
@@ -1079,6 +1060,53 @@ public final class ArrayTools {
 	// ********** diff **********
 
 	/**
+	 * Return the range of elements in the specified
+	 * arrays that are different.
+	 * If the arrays are identical, return <code>[size, -1]</code>.
+	 * Use the elements' {@link Object#equals(Object)} method to compare the
+	 * elements.
+	 * @see #indexOfDifference(Object[], Object[])
+	 * @see #lastIndexOfDifference(Object[], Object[])
+	 */
+	public static Range differenceRange(Object[] array1, Object[] array2) {
+		int end = lastIndexOfDifference(array1, array2);
+		if (end == -1) {
+			// the lists are identical, the start is the size of the two lists
+			return new Range(array1.length, end);
+		}
+		// the lists are different, calculate the start of the range
+		return new Range(indexOfDifference(array1, array2), end);
+	}
+
+	/**
+	 * Return the index of the first elements in the specified
+	 * arrays that are different. If the arrays are identical, return
+	 * the size of the two arrays (i.e. one past the last index).
+	 * If the arrays are different sizes and all the elements in
+	 * the shorter array match their corresponding elements in
+	 * the longer array, return the size of the shorter array
+	 * (i.e. one past the last index of the shorter array).
+	 * Use the elements' {@link Object#equals(Object)} method to compare the
+	 * elements.
+	 */
+	public static int indexOfDifference(Object[] array1, Object[] array2) {
+		int end = Math.min(array1.length, array2.length);
+		for (int i = 0; i < end; i++) {
+			Object o = array1[i];
+			if (o == null) {
+				if (array2[i] != null) {
+					return i;
+				}
+			} else {
+				if ( ! o.equals(array2[i])) {
+					return i;
+				}
+			}
+		}
+		return end;
+	}
+
+	/**
 	 * Return the index of the first elements in the specified
 	 * arrays that are different, beginning at the end.
 	 * If the arrays are identical, return -1.
@@ -1087,7 +1115,7 @@ public final class ArrayTools {
 	 * Use the elements' {@link Object#equals(Object)} method to compare the
 	 * elements.
 	 */
-	public static int diffEnd(Object[] array1, Object[] array2) {
+	public static int lastIndexOfDifference(Object[] array1, Object[] array2) {
 		int len1 = array1.length;
 		int len2 = array2.length;
 		if (len1 != len2) {
@@ -1106,96 +1134,27 @@ public final class ArrayTools {
 			}
 		}
 		return -1;
-	}
-
-	/**
-	 * Return the range of elements in the specified
-	 * arrays that are different.
-	 * If the arrays are identical, return [size, -1].
-	 * Use the elements' {@link Object#equals(Object)} method to compare the
-	 * elements.
-	 * @see #diffStart(Object[], Object[])
-	 * @see #diffEnd(Object[], Object[])
-	 */
-	public static Range diffRange(Object[] array1, Object[] array2) {
-		int end = diffEnd(array1, array2);
-		if (end == -1) {
-			// the lists are identical, the start is the size of the two lists
-			return new Range(array1.length, end);
-		}
-		// the lists are different, calculate the start of the range
-		return new Range(diffStart(array1, array2), end);
-	}
-
-	/**
-	 * Return the index of the first elements in the specified
-	 * arrays that are different. If the arrays are identical, return
-	 * the size of the two arrays (i.e. one past the last index).
-	 * If the arrays are different sizes and all the elements in
-	 * the shorter array match their corresponding elements in
-	 * the longer array, return the size of the shorter array
-	 * (i.e. one past the last index of the shorter array).
-	 * Use the elements' {@link Object#equals(Object)} method to compare the
-	 * elements.
-	 */
-	public static int diffStart(Object[] array1, Object[] array2) {
-		int end = Math.min(array1.length, array2.length);
-		for (int i = 0; i < end; i++) {
-			Object o = array1[i];
-			if (o == null) {
-				if (array2[i] != null) {
-					return i;
-				}
-			} else {
-				if ( ! o.equals(array2[i])) {
-					return i;
-				}
-			}
-		}
-		return end;
 	}
 
 
 	// ********** identity diff **********
 
 	/**
-	 * Return the index of the first elements in the specified
-	 * arrays that are different, beginning at the end.
-	 * If the arrays are identical, return -1.
-	 * If the arrays are different sizes, return the index of the
-	 * last element in the longer array.
-	 * Use object identity to compare the elements.
-	 */
-	public static int identityDiffEnd(Object[] array1, Object[] array2) {
-		int len1 = array1.length;
-		int len2 = array2.length;
-		if (len1 != len2) {
-			return Math.max(len1, len2) - 1;
-		}
-		for (int i = len1 - 1; i > -1; i--) {
-			if (array1[i] != array2[i]) {
-				return i;
-			}
-		}
-		return -1;
-	}
-
-	/**
 	 * Return the range of elements in the specified
 	 * arrays that are different.
-	 * If the arrays are identical, return [size, -1].
+	 * If the arrays are identical, return <code>[size, -1]</code>.
 	 * Use object identity to compare the elements.
-	 * @see #identityDiffStart(Object[], Object[])
-	 * @see #identityDiffEnd(Object[], Object[])
+	 * @see #indexOfIdentityDifference(Object[], Object[])
+	 * @see #lastIndexOfIdentityDifference(Object[], Object[])
 	 */
-	public static Range identityDiffRange(Object[] array1, Object[] array2) {
-		int end = identityDiffEnd(array1, array2);
+	public static Range identityDifferenceRange(Object[] array1, Object[] array2) {
+		int end = lastIndexOfIdentityDifference(array1, array2);
 		if (end == -1) {
 			// the lists are identical, the start is the size of the two lists
 			return new Range(array1.length, end);
 		}
 		// the lists are different, calculate the start of the range
-		return new Range(identityDiffStart(array1, array2), end);
+		return new Range(indexOfIdentityDifference(array1, array2), end);
 	}
 
 	/**
@@ -1208,7 +1167,7 @@ public final class ArrayTools {
 	 * (i.e. one past the last index of the shorter array).
 	 * Use object identity to compare the elements.
 	 */
-	public static int identityDiffStart(Object[] array1, Object[] array2) {
+	public static int indexOfIdentityDifference(Object[] array1, Object[] array2) {
 		int end = Math.min(array1.length, array2.length);
 		for (int i = 0; i < end; i++) {
 			if (array1[i] != array2[i]) {
@@ -1216,6 +1175,28 @@ public final class ArrayTools {
 			}
 		}
 		return end;
+	}
+
+	/**
+	 * Return the index of the first elements in the specified
+	 * arrays that are different, beginning at the end.
+	 * If the arrays are identical, return -1.
+	 * If the arrays are different sizes, return the index of the
+	 * last element in the longer array.
+	 * Use object identity to compare the elements.
+	 */
+	public static int lastIndexOfIdentityDifference(Object[] array1, Object[] array2) {
+		int len1 = array1.length;
+		int len2 = array2.length;
+		if (len1 != len2) {
+			return Math.max(len1, len2) - 1;
+		}
+		for (int i = len1 - 1; i > -1; i--) {
+			if (array1[i] != array2[i]) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 
@@ -1223,8 +1204,6 @@ public final class ArrayTools {
 
 	/**
 	 * Return whether the specified arrays contain the same elements.
-	 * <p>
-	 * <code>Arrays.identical(Object[] array1, Object[] array2)</code>
 	 */
 	public static boolean elementsAreIdentical(Object[] array1, Object[] array2) {
 		if (array1 == array2) {
@@ -1252,8 +1231,6 @@ public final class ArrayTools {
 	 * Return the index of the first occurrence of the
 	 * specified element in the specified array,
 	 * or return -1 if there is no such index.
-	 * <p>
-	 * <code>Arrays.indexOf(Object[] array, Object o)</code>
 	 */
 	public static int indexOf(Object[] array, Object value) {
 		int len = array.length;
@@ -1277,8 +1254,6 @@ public final class ArrayTools {
 	 * Return the index of the first occurrence of the
 	 * specified element in the specified array,
 	 * or return -1 if there is no such index.
-	 * <p>
-	 * <code>Arrays.identityIndexOf(Object[] array, Object o)</code>
 	 */
 	public static int identityIndexOf(Object[] array, Object value) {
 		int len = array.length;
@@ -1294,8 +1269,6 @@ public final class ArrayTools {
 	 * Return the index of the first occurrence of the
 	 * specified element in the specified array,
 	 * or return -1 if there is no such index.
-	 * <p>
-	 * <code>Arrays.indexOf(char[] array, char value)</code>
 	 */
 	public static int indexOf(char[] array, char value) {
 		int len = array.length;
@@ -1311,8 +1284,6 @@ public final class ArrayTools {
 	 * Return the index of the first occurrence of the
 	 * specified element in the specified array,
 	 * or return -1 if there is no such index.
-	 * <p>
-	 * <code>Arrays.indexOf(int[] array, int value)</code>
 	 */
 	public static int indexOf(int[] array, int value) {
 		int len = array.length;
@@ -1328,11 +1299,100 @@ public final class ArrayTools {
 	// ********** insertion index of **********
 
 	/**
-	 * Return the maximum index of where the specified comparable object
+	 * Return the minimum index of where the specified comparable object
 	 * should be inserted into the specified sorted array and still keep
 	 * the array sorted.
 	 */
 	public static <E extends Comparable<? super E>> int insertionIndexOf(E[] sortedArray, Comparable<E> value) {
+		int len = sortedArray.length;
+		for (int i = 0; i < len; i++) {
+			if (value.compareTo(sortedArray[i]) <= 0) {
+				return i;
+			}
+		}
+		return len;
+	}
+
+	/**
+	 * Return the minimum index of where the specified comparable object
+	 * should be inserted into the specified sorted array and still keep
+	 * the array sorted.
+	 */
+	public static <E> int insertionIndexOf(E[] sortedArray, E value, Comparator<? super E> comparator) {
+		int len = sortedArray.length;
+		for (int i = 0; i < len; i++) {
+			if (comparator.compare(value, sortedArray[i]) <= 0) {
+				return i;
+			}
+		}
+		return len;
+	}
+
+
+	// ********** iterable **********
+
+	/**
+	 * Return an iterable corresponding to the specified array.
+	 */
+	public static <E> ArrayIterable<E> iterable(E[] array) {
+		return new ArrayIterable<E>(array);
+	}
+
+	/**
+	 * Return an iterable corresponding to the specified array,
+	 * starting at the specified start index and continuing for
+	 * the rest of the array.
+	 */
+	public static <E> ArrayIterable<E> iterable(E[] array, int start) {
+		return new ArrayIterable<E>(array, start);
+	}
+
+	/**
+	 * Return an iterable corresponding to the specified array,
+	 * starting at the specified start index, inclusive, and continuing to
+	 * the specified end index, exclusive.
+	 */
+	public static <E> ArrayIterable<E> iterable(E[] array, int start, int end) {
+		return new ArrayIterable<E>(array, start, end);
+	}
+
+
+	// ********** iterator **********
+
+	/**
+	 * Return an iterator corresponding to the specified array.
+	 */
+	public static <E> ArrayIterator<E> iterator(E[] array) {
+		return new ArrayIterator<E>(array);
+	}
+
+	/**
+	 * Return an iterator corresponding to the specified array,
+	 * starting at the specified start index and continuing for
+	 * the rest of the array.
+	 */
+	public static <E> ArrayIterator<E> iterator(E[] array, int start) {
+		return new ArrayIterator<E>(array, start);
+	}
+
+	/**
+	 * Return an iterator corresponding to the specified array,
+	 * starting at the specified start index, inclusive, and continuing to
+	 * the specified end index, exclusive.
+	 */
+	public static <E> ArrayIterator<E> iterator(E[] array, int start, int end) {
+		return new ArrayIterator<E>(array, start, end);
+	}
+
+
+	// ********** last insertion index of **********
+
+	/**
+	 * Return the maximum index of where the specified comparable object
+	 * should be inserted into the specified sorted array and still keep
+	 * the array sorted.
+	 */
+	public static <E extends Comparable<? super E>> int lastInsertionIndexOf(E[] sortedArray, Comparable<E> value) {
 		int len = sortedArray.length;
 		for (int i = 0; i < len; i++) {
 			if (value.compareTo(sortedArray[i]) < 0) {
@@ -1347,7 +1407,7 @@ public final class ArrayTools {
 	 * should be inserted into the specified sorted array and still keep
 	 * the array sorted.
 	 */
-	public static <E> int insertionIndexOf(E[] sortedArray, E value, Comparator<? super E> comparator) {
+	public static <E> int lastInsertionIndexOf(E[] sortedArray, E value, Comparator<? super E> comparator) {
 		int len = sortedArray.length;
 		for (int i = 0; i < len; i++) {
 			if (comparator.compare(value, sortedArray[i]) < 0) {
@@ -1364,8 +1424,6 @@ public final class ArrayTools {
 	 * Return the index of the last occurrence of the
 	 * specified element in the specified array;
 	 * return -1 if there is no such index.
-	 * <p>
-	 * <code>Arrays.lastIndexOf(Object[] array, Object o)</code>
 	 */
 	public static int lastIndexOf(Object[] array, Object value) {
 		int len = array.length;
@@ -1389,8 +1447,6 @@ public final class ArrayTools {
 	 * Return the index of the last occurrence of the
 	 * specified element in the specified array,
 	 * or return -1 if there is no such index.
-	 * <p>
-	 * <code>Arrays.lastIndexOf(char[] array, char value)</code>
 	 */
 	public static int lastIndexOf(char[] array, char value) {
 		for (int i = array.length; i-- > 0; ) {
@@ -1405,8 +1461,6 @@ public final class ArrayTools {
 	 * Return the index of the last occurrence of the
 	 * specified element in the specified array,
 	 * or return -1 if there is no such index.
-	 * <p>
-	 * <code>Arrays.lastIndexOf(int[] array, int value)</code>
 	 */
 	public static int lastIndexOf(int[] array, int value) {
 		for (int i = array.length; i-- > 0; ) {
@@ -1421,9 +1475,45 @@ public final class ArrayTools {
 	// ********** min/max **********
 
 	/**
+	 * Return the element from the specified array with the minimum value.
+	 */
+	public static <E extends Comparable<? super E>> E min(E[] array) {
+		int len = array.length;
+		if (len == 0) {
+			throw new IndexOutOfBoundsException();
+		}
+		int last = len - 1;
+		E min = array[last];
+		for (int i = last; i-- > 0; ) {
+			E e = array[i];
+			if (min.compareTo(e) > 0) {
+				min = e;
+			}
+		}
+		return min;
+	}
+
+	/**
+	 * Return the element from the specified array with the minimum value.
+	 */
+	public static <E extends Comparable<? super E>> E min(E[] array, Comparator<? super E> comparator) {
+		int len = array.length;
+		if (len == 0) {
+			throw new IndexOutOfBoundsException();
+		}
+		int last = len - 1;
+		E min = array[last];
+		for (int i = last; i-- > 0; ) {
+			E e = array[i];
+			if (comparator.compare(min, e) > 0) {
+				min = e;
+			}
+		}
+		return min;
+	}
+
+	/**
 	 * Return the character from the specified array with the minimum value.
-	 * <p>
-	 * <code>Arrays.min(char[] array)</code>
 	 */
 	public static char min(char... array) {
 		int len = array.length;
@@ -1443,8 +1533,6 @@ public final class ArrayTools {
 
 	/**
 	 * Return the integer from the specified array with the minimum value.
-	 * <p>
-	 * <code>Arrays.min(int[] array)</code>
 	 */
 	public static int min(int... array) {
 		int len = array.length;
@@ -1463,9 +1551,45 @@ public final class ArrayTools {
 	}
 
 	/**
+	 * Return the element from the specified array with the maximum value.
+	 */
+	public static <E extends Comparable<? super E>> E max(E[] array) {
+		int len = array.length;
+		if (len == 0) {
+			throw new IndexOutOfBoundsException();
+		}
+		int last = len - 1;
+		E max = array[last];
+		for (int i = last; i-- > 0; ) {
+			E e = array[i];
+			if (max.compareTo(e) < 0) {
+				max = e;
+			}
+		}
+		return max;
+	}
+
+	/**
+	 * Return the element from the specified array with the maximum value.
+	 */
+	public static <E extends Comparable<? super E>> E max(E[] array, Comparator<? super E> comparator) {
+		int len = array.length;
+		if (len == 0) {
+			throw new IndexOutOfBoundsException();
+		}
+		int last = len - 1;
+		E max = array[last];
+		for (int i = last; i-- > 0; ) {
+			E e = array[i];
+			if (comparator.compare(max, e) < 0) {
+				max = e;
+			}
+		}
+		return max;
+	}
+
+	/**
 	 * Return the character from the specified array with the maximum value.
-	 * <p>
-	 * <code>Arrays.max(char[] array)</code>
 	 */
 	public static char max(char... array) {
 		int len = array.length;
@@ -1485,8 +1609,6 @@ public final class ArrayTools {
 
 	/**
 	 * Return the integer from the specified array with the maximum value.
-	 * <p>
-	 * <code>Arrays.max(int[] array)</code>
 	 */
 	public static int max(int... array) {
 		int len = array.length;
@@ -1510,8 +1632,6 @@ public final class ArrayTools {
 	/**
 	 * Move an element from the specified source index to the specified target
 	 * index. Return the altered array.
-	 * <p>
-	 * <code>Arrays.move(Object[] array, int targetIndex, int sourceIndex)</code>
 	 */
 	public static <E> E[] move(E[] array, int targetIndex, int sourceIndex) {
 		return (targetIndex == sourceIndex) ? array : move_(array, targetIndex, sourceIndex);
@@ -1534,8 +1654,6 @@ public final class ArrayTools {
 	/**
 	 * Move elements from the specified source index to the specified target
 	 * index. Return the altered array.
-	 * <p>
-	 * <code>Arrays.move(Object[] array, int targetIndex, int sourceIndex, int length)</code>
 	 */
 	public static <E> E[] move(E[] array, int targetIndex, int sourceIndex, int length) {
 		if ((targetIndex == sourceIndex) || (length == 0)) {
@@ -1544,7 +1662,7 @@ public final class ArrayTools {
 		if (length == 1) {
 			return move_(array, targetIndex, sourceIndex);
 		}
-		E[] temp = newArray(array, length);
+		E[] temp = newInstance(array, length);
 		System.arraycopy(array, sourceIndex, temp, 0, length);
 		if (targetIndex < sourceIndex) {
 			System.arraycopy(array, targetIndex, array, targetIndex + length, sourceIndex - targetIndex);
@@ -1558,8 +1676,6 @@ public final class ArrayTools {
 	/**
 	 * Move an element from the specified source index to the specified target
 	 * index. Return the altered array.
-	 * <p>
-	 * <code>Arrays.move(int[] array, int targetIndex, int sourceIndex)</code>
 	 */
 	public static int[] move(int[] array, int targetIndex, int sourceIndex) {
 		return (targetIndex == sourceIndex) ? array : move_(array, targetIndex, sourceIndex);
@@ -1582,8 +1698,6 @@ public final class ArrayTools {
 	/**
 	 * Move elements from the specified source index to the specified target
 	 * index. Return the altered array.
-	 * <p>
-	 * <code>Arrays.move(int[] array, int targetIndex, int sourceIndex, int length)</code>
 	 */
 	public static int[] move(int[] array, int targetIndex, int sourceIndex, int length) {
 		if ((targetIndex == sourceIndex) || (length == 0)) {
@@ -1606,8 +1720,6 @@ public final class ArrayTools {
 	/**
 	 * Move an element from the specified source index to the specified target
 	 * index. Return the altered array.
-	 * <p>
-	 * <code>Arrays.move(char[] array, int targetIndex, int sourceIndex)</code>
 	 */
 	public static char[] move(char[] array, int targetIndex, int sourceIndex) {
 		return (targetIndex == sourceIndex) ? array : move_(array, targetIndex, sourceIndex);
@@ -1630,8 +1742,6 @@ public final class ArrayTools {
 	/**
 	 * Move elements from the specified source index to the specified target
 	 * index. Return the altered array.
-	 * <p>
-	 * <code>Arrays.move(char[] array, int targetIndex, int sourceIndex, int length)</code>
 	 */
 	public static char[] move(char[] array, int targetIndex, int sourceIndex, int length) {
 		if ((targetIndex == sourceIndex) || (length == 0)) {
@@ -1657,8 +1767,6 @@ public final class ArrayTools {
 	/**
 	 * Return a new array that contains the elements in the
 	 * specified array with the specified element removed.
-	 * <p>
-	 * <code>Arrays.remove(Object[] array, Object value)</code>
 	 */
 	public static <E> E[] remove(E[] array, Object value) {
 		return removeElementAtIndex(array, indexOf(array, value));
@@ -1667,8 +1775,6 @@ public final class ArrayTools {
 	/**
 	 * Return a new array that contains the elements in the
 	 * specified array with the specified element removed.
-	 * <p>
-	 * <code>Arrays.remove(char[] array, char value)</code>
 	 */
 	public static char[] remove(char[] array, char value) {
 		return removeElementAtIndex(array, indexOf(array, value));
@@ -1677,8 +1783,6 @@ public final class ArrayTools {
 	/**
 	 * Return a new array that contains the elements in the
 	 * specified array with the specified element removed.
-	 * <p>
-	 * <code>Arrays.remove(int[] array, int value)</code>
 	 */
 	public static int[] remove(int[] array, int value) {
 		return removeElementAtIndex(array, indexOf(array, value));
@@ -1687,8 +1791,6 @@ public final class ArrayTools {
 	/**
 	 * Return a new array that contains the elements in the
 	 * specified array with the first element removed.
-	 * <p>
-	 * <code>Arrays.removeFirst(Object[] array)</code>
 	 */
 	public static <E> E[] removeFirst(E[] array) {
 		return removeElementAtIndex(array, 0);
@@ -1697,8 +1799,6 @@ public final class ArrayTools {
 	/**
 	 * Return a new array that contains the elements in the
 	 * specified array with the first element removed.
-	 * <p>
-	 * <code>Arrays.removeFirst(char[] array)</code>
 	 */
 	public static char[] removeFirst(char[] array) {
 		return removeElementAtIndex(array, 0);
@@ -1707,8 +1807,6 @@ public final class ArrayTools {
 	/**
 	 * Return a new array that contains the elements in the
 	 * specified array with the first element removed.
-	 * <p>
-	 * <code>Arrays.removeFirst(int[] array)</code>
 	 */
 	public static int[] removeFirst(int[] array) {
 		return removeElementAtIndex(array, 0);
@@ -1717,8 +1815,6 @@ public final class ArrayTools {
 	/**
 	 * Return a new array that contains the elements in the
 	 * specified array with the last element removed.
-	 * <p>
-	 * <code>Arrays.removeLast(Object[] array)</code>
 	 */
 	public static <E> E[] removeLast(E[] array) {
 		return removeElementAtIndex(array, array.length - 1);
@@ -1727,8 +1823,6 @@ public final class ArrayTools {
 	/**
 	 * Return a new array that contains the elements in the
 	 * specified array with the last element removed.
-	 * <p>
-	 * <code>Arrays.removeLast(char[] array)</code>
 	 */
 	public static char[] removeLast(char[] array) {
 		return removeElementAtIndex(array, array.length - 1);
@@ -1737,8 +1831,6 @@ public final class ArrayTools {
 	/**
 	 * Return a new array that contains the elements in the
 	 * specified array with the last element removed.
-	 * <p>
-	 * <code>Arrays.removeLast(int[] array)</code>
 	 */
 	public static int[] removeLast(int[] array) {
 		return removeElementAtIndex(array, array.length - 1);
@@ -1750,8 +1842,6 @@ public final class ArrayTools {
 	/**
 	 * Remove from the specified array all the elements in
 	 * the specified iterable and return the result.
-	 * <p>
-	 * <code>Arrays.removeAll(Object[] array, Iterable iterable)</code>
 	 */
 	public static <E> E[] removeAll(E[] array, Iterable<?> iterable) {
 		return removeAll(array, iterable.iterator());
@@ -1761,8 +1851,6 @@ public final class ArrayTools {
 	 * Remove from the specified array all the elements in
 	 * the specified iterable and return the result.
 	 * The specified iterable size is a performance hint.
-	 * <p>
-	 * <code>Arrays.removeAll(Object[] array, Iterable iterable)</code>
 	 */
 	public static <E> E[] removeAll(E[] array, Iterable<?> iterable, int iterableSize) {
 		return removeAll(array, iterable.iterator(), iterableSize);
@@ -1771,8 +1859,6 @@ public final class ArrayTools {
 	/**
 	 * Remove from the specified array all the elements in
 	 * the specified iterator and return the result.
-	 * <p>
-	 * <code>Arrays.removeAll(Object[] array, Iterator iterator)</code>
 	 */
 	public static <E> E[] removeAll(E[] array, Iterator<?> iterator) {
 		// convert to a set to take advantage of hashed look-up
@@ -1783,8 +1869,6 @@ public final class ArrayTools {
 	 * Remove from the specified array all the elements in
 	 * the specified iterator and return the result.
 	 * The specified iterator size is a performance hint.
-	 * <p>
-	 * <code>Arrays.removeAll(Object[] array, Iterator iterator)</code>
 	 */
 	public static <E> E[] removeAll(E[] array, Iterator<?> iterator, int iteratorSize) {
 		// convert to a set to take advantage of hashed look-up
@@ -1794,8 +1878,6 @@ public final class ArrayTools {
 	/**
 	 * Remove from the specified array all the elements in
 	 * the specified collection and return the result.
-	 * <p>
-	 * <code>Arrays.removeAll(Object[] array, Collection collection)</code>
 	 */
 	public static <E> E[] removeAll(E[] array, Collection<?> collection) {
 		return collection.isEmpty() ? array : removeAll_(array, collection);
@@ -1830,7 +1912,7 @@ public final class ArrayTools {
 		if (j == arrayLength) {
 			return array;  // nothing was removed
 		}
-		E[] result = newArray(array, j);
+		E[] result = newInstance(array, j);
 		int resultLength = result.length;
 		for (int i = 0; i < resultLength; i++) {
 			result[i] = array[indices[i]];
@@ -1841,8 +1923,6 @@ public final class ArrayTools {
 	/**
 	 * Remove from the first specified array all the elements in
 	 * the second specified array and return the result.
-	 * <p>
-	 * <code>Arrays.removeAll(Object[] array1, Object[] array2)</code>
 	 */
 	public static <E> E[] removeAll(E[] array1, Object... array2) {
 		// convert to a set to take advantage of hashed look-up
@@ -1852,8 +1932,6 @@ public final class ArrayTools {
 	/**
 	 * Remove from the first specified array all the elements in
 	 * the second specified array and return the result.
-	 * <p>
-	 * <code>Arrays#removeAll(char[] array1, char[] array2)</code>
 	 */
 	public static char[] removeAll(char[] array1, char... array2) {
 		if (array2.length == 0) {
@@ -1884,8 +1962,6 @@ public final class ArrayTools {
 	/**
 	 * Remove from the first specified array all the elements in
 	 * the second specified array and return the result.
-	 * <p>
-	 * <code>Arrays#removeAll(int[] array1, int[] array2)</code>
 	 */
 	public static int[] removeAll(int[] array1, int... array2) {
 		if (array2.length == 0) {
@@ -1919,8 +1995,6 @@ public final class ArrayTools {
 	/**
 	 * Remove from the specified array all occurrences of
 	 * the specified element and return the result.
-	 * <p>
-	 * <code>Arrays.removeAllOccurrences(Object[] array, Object value)</code>
 	 */
 	public static <E> E[] removeAllOccurrences(E[] array, Object value) {
 		int arrayLength = array.length;
@@ -1945,7 +2019,7 @@ public final class ArrayTools {
 		if (j == arrayLength) {
 			return array;  // nothing was removed
 		}
-		E[] result = newArray(array, j);
+		E[] result = newInstance(array, j);
 		int resultLength = result.length;
 		for (int i = 0; i < resultLength; i++) {
 			result[i] = array[indices[i]];
@@ -1956,8 +2030,6 @@ public final class ArrayTools {
 	/**
 	 * Remove from the specified array all occurrences of
 	 * the specified element and return the result.
-	 * <p>
-	 * <code>Arrays.removeAllOccurrences(char[] array, char value)</code>
 	 */
 	public static char[] removeAllOccurrences(char[] array, char value) {
 		int arrayLength = array.length;
@@ -1985,8 +2057,6 @@ public final class ArrayTools {
 	/**
 	 * Remove from the specified array all occurrences of
 	 * the specified element and return the result.
-	 * <p>
-	 * <code>Arrays.removeAllOccurrences(int[] array, int value)</code>
 	 */
 	public static int[] removeAllOccurrences(int[] array, int value) {
 		int arrayLength = array.length;
@@ -2023,10 +2093,17 @@ public final class ArrayTools {
 		if ((len == 0) || (len == 1)) {
 			return array;
 		}
-		ArrayList<E> temp = CollectionTools.list(array);
-		return CollectionTools.removeDuplicateElements(temp, len) ?
-					temp.toArray(newArray(array, temp.size())) :
-					array;
+
+		LinkedHashSet<E> temp = new LinkedHashSet<E>(len);  // take advantage of hashed look-up
+		boolean modified = false;
+		for (E item : array) {
+			if ( ! temp.add(item)) {
+				modified = true;  // duplicate item
+			}
+		}
+		return modified ?
+				temp.toArray(newInstance(array, temp.size())) :
+				array;
 	}
 
 
@@ -2035,8 +2112,6 @@ public final class ArrayTools {
 	/**
 	 * Return a new array that contains the elements in the
 	 * specified array with the specified element removed.
-	 * <p>
-	 * <code>Arrays.removeElementAtIndex(Object[] array, int index)</code>
 	 */
 	public static <E> E[] removeElementAtIndex(E[] array, int index) {
 		return removeElementsAtIndex(array, index, 1);
@@ -2045,8 +2120,6 @@ public final class ArrayTools {
 	/**
 	 * Return a new array that contains the elements in the
 	 * specified array with the specified element removed.
-	 * <p>
-	 * <code>Arrays.removeElementAtIndex(char[] array, int index)</code>
 	 */
 	public static char[] removeElementAtIndex(char[] array, int index) {
 		return removeElementsAtIndex(array, index, 1);
@@ -2055,8 +2128,6 @@ public final class ArrayTools {
 	/**
 	 * Return a new array that contains the elements in the
 	 * specified array with the specified element removed.
-	 * <p>
-	 * <code>Arrays.removeElementAtIndex(int[] array, int index)</code>
 	 */
 	public static int[] removeElementAtIndex(int[] array, int index) {
 		return removeElementsAtIndex(array, index, 1);
@@ -2068,8 +2139,6 @@ public final class ArrayTools {
 	/**
 	 * Return a new array that contains the elements in the
 	 * specified array with the specified elements removed.
-	 * <p>
-	 * <code>Arrays.removeElementsAtIndex(Object[] array, int index, int length)</code>
 	 */
 	public static <E> E[] removeElementsAtIndex(E[] array, int index, int length) {
 		if (length == 0) {
@@ -2077,7 +2146,7 @@ public final class ArrayTools {
 		}
 		int arrayLength = array.length;
 		int newLength = arrayLength - length;
-		E[] result = newArray(array, newLength);
+		E[] result = newInstance(array, newLength);
 		if ((newLength == 0) && (index == 0)) {
 			return result;  // performance tweak
 		}
@@ -2094,8 +2163,6 @@ public final class ArrayTools {
 	/**
 	 * Return a new array that contains the elements in the
 	 * specified array with the specified elements removed.
-	 * <p>
-	 * <code>Arrays.removeElementsAtIndex(char[] array, int index, int length)
 	 */
 	public static char[] removeElementsAtIndex(char[] array, int index, int length) {
 		if (length == 0) {
@@ -2104,7 +2171,7 @@ public final class ArrayTools {
 		int arrayLength = array.length;
 		int newLength = arrayLength - length;
 		if ((newLength == 0) && (index == 0)) {
-			return EMPTY_CHAR_ARRAY;  // performance tweak
+			return CharArrayTools.EMPTY_CHAR_ARRAY;  // performance tweak
 		}
 		char[] result = new char[newLength];
 		if (index != 0) {
@@ -2120,8 +2187,6 @@ public final class ArrayTools {
 	/**
 	 * Return a new array that contains the elements in the
 	 * specified array with the specified elements removed.
-	 * <p>
-	 * <code>Arrays.removeElementsAtIndex(int[] array, int index, int length)
 	 */
 	public static int[] removeElementsAtIndex(int[] array, int index, int length) {
 		if (length == 0) {
@@ -2149,8 +2214,6 @@ public final class ArrayTools {
 	/**
 	 * Replace all occurrences of the specified old value with
 	 * the specified new value. Return the altered array.
-	 * <p>
-	 * <code>Arrays.replaceAll(Object[] array, Object oldValue, Object newValue)</code>
 	 */
 	public static <E> E[] replaceAll(E[] array, Object oldValue, E newValue) {
 		if (oldValue == null) {
@@ -2172,8 +2235,6 @@ public final class ArrayTools {
 	/**
 	 * Replace all occurrences of the specified old value with
 	 * the specified new value. Return the altered array.
-	 *<p>
-	 * <code> Arrays.replaceAll(int[] array, int oldValue, int newValue)</code>
 	 */
 	public static int[] replaceAll(int[] array, int oldValue, int newValue) {
 		for (int i = array.length; i-- > 0; ) {
@@ -2187,8 +2248,6 @@ public final class ArrayTools {
 	/**
 	 * Replace all occurrences of the specified old value with
 	 * the specified new value. Return the altered array.
-	 * <p>
-	 * <code>Arrays.replaceAll(char[] array, char oldValue, char newValue)</code>
 	 */
 	public static char[] replaceAll(char[] array, char oldValue, char newValue) {
 		for (int i = array.length; i-- > 0; ) {
@@ -2205,8 +2264,6 @@ public final class ArrayTools {
 	/**
 	 * Retain in the specified array all the elements in
 	 * the specified iterable and return the result.
-	 * <p>
-	 * <code>Arrays.retainAll(Object[] array, Iterable iterable)</code>
 	 */
 	public static <E> E[] retainAll(E[] array, Iterable<?> iterable) {
 		int arrayLength = array.length;
@@ -2217,8 +2274,6 @@ public final class ArrayTools {
 	 * Retain in the specified array all the elements in
 	 * the specified iterable and return the result.
 	 * The specified iterable size is a performance hint.
-	 * <p>
-	 * <code>Arrays.retainAll(Object[] array, Iterable iterable)</code>
 	 */
 	public static <E> E[] retainAll(E[] array, Iterable<?> iterable, int iterableSize) {
 		int arrayLength = array.length;
@@ -2228,8 +2283,6 @@ public final class ArrayTools {
 	/**
 	 * Retain in the specified array all the elements in
 	 * the specified iterator and return the result.
-	 * <p>
-	 * <code>Arrays.retainAll(Object[] array, Iterator iterator)</code>
 	 */
 	public static <E> E[] retainAll(E[] array, Iterator<?> iterator) {
 		int arrayLength = array.length;
@@ -2240,8 +2293,6 @@ public final class ArrayTools {
 	 * Retain in the specified array all the elements in
 	 * the specified iterator and return the result.
 	 * The specified iterator size is a performance hint.
-	 * <p>
-	 * <code>Arrays.retainAll(Object[] array, Iterator iterator)</code>
 	 */
 	public static <E> E[] retainAll(E[] array, Iterator<?> iterator, int iteratorSize) {
 		int arrayLength = array.length;
@@ -2254,7 +2305,7 @@ public final class ArrayTools {
 	private static <E> E[] retainAll(E[] array, int arrayLength, Iterator<?> iterator) {
 		return iterator.hasNext() ?
 				retainAll_(array, CollectionTools.set(iterator), arrayLength) :
-				newArray(array, 0);
+				newInstance(array, 0);
 	}
 
 	/**
@@ -2263,14 +2314,12 @@ public final class ArrayTools {
 	private static <E> E[] retainAll(E[] array, int arrayLength, Iterator<?> iterator, int iteratorSize) {
 		return iterator.hasNext() ?
 				retainAll_(array, CollectionTools.set(iterator, iteratorSize), arrayLength) :
-				newArray(array, 0);
+				newInstance(array, 0);
 	}
 
 	/**
 	 * Retain in the specified array all the elements in
 	 * the specified collection and return the result.
-	 * <p>
-	 * <code>Arrays.retainAll(Object[] array, Collection collection)</code>
 	 */
 	public static <E> E[] retainAll(E[] array, Collection<?> collection) {
 		int arrayLength = array.length;
@@ -2282,7 +2331,7 @@ public final class ArrayTools {
 	 */
 	private static <E> E[] retainAll(E[] array, Collection<?> collection, int arrayLength) {
 		return collection.isEmpty() ?
-				newArray(array, 0) :
+				newInstance(array, 0) :
 				retainAll_(array, collection, arrayLength);
 	}
 
@@ -2300,7 +2349,7 @@ public final class ArrayTools {
 		if (j == arrayLength) {
 			return array;  // everything was retained
 		}
-		E[] result = newArray(array, j);
+		E[] result = newInstance(array, j);
 		int resultLength = result.length;
 		for (int i = 0; i < resultLength; i++) {
 			result[i] = array[indices[i]];
@@ -2311,23 +2360,19 @@ public final class ArrayTools {
 	/**
 	 * Remove from the first specified array all the elements in
 	 * the second specified array and return the result.
-	 * <p>
-	 * <code>Arrays.retainAll(Object[] array1, Object[] array2)</code>
 	 */
 	public static <E> E[] retainAll(E[] array1, Object[] array2) {
 		int array1Length = array1.length;
 		return (array1Length == 0) ?
 				array1 :
 				(array2.length == 0) ?
-					newArray(array1, 0) :
+					newInstance(array1, 0) :
 					retainAll(array1, CollectionTools.set(array2), array1Length);
 	}
 
 	/**
 	 * Remove from the first specified array all the elements in
 	 * the second specified array and return the result.
-	 * <p>
-	 * <code>Arrays.retainAll(char[] array1, char[] array2)</code>
 	 */
 	public static char[] retainAll(char[] array1, char... array2) {
 		int array1Length = array1.length;
@@ -2339,7 +2384,7 @@ public final class ArrayTools {
 	 */
 	private static char[] retainAll(char[] array1, char[] array2, int array1Length) {
 		int array2Length = array2.length;
-		return (array2Length == 0) ? EMPTY_CHAR_ARRAY : retainAll(array1, array2, array1Length, array2Length);
+		return (array2Length == 0) ? CharArrayTools.EMPTY_CHAR_ARRAY : retainAll(array1, array2, array1Length, array2Length);
 	}
 
 	/**
@@ -2367,8 +2412,6 @@ public final class ArrayTools {
 	/**
 	 * Remove from the first specified array all the elements in
 	 * the second specified array and return the result.
-	 * <p>
-	 * <code>Arrays.retainAll(int[] array1, int[] array2)</code>
 	 */
 	public static int[] retainAll(int[] array1, int... array2) {
 		int array1Length = array1.length;
@@ -2410,8 +2453,6 @@ public final class ArrayTools {
 
 	/**
 	 * Return the array, reversed.
-	 * <p>
-	 * <code>Arrays.reverse(Object... array)</code>
 	 */
 	public static <E> E[] reverse(E... array) {
 		int len = array.length;
@@ -2426,8 +2467,6 @@ public final class ArrayTools {
 
 	/**
 	 * Return the array, reversed.
-	 * <p>
-	 * <code>Arrays.reverse(char... array)</code>
 	 */
 	public static char[] reverse(char... array) {
 		int len = array.length;
@@ -2442,8 +2481,6 @@ public final class ArrayTools {
 
 	/**
 	 * Return the array, reversed.
-	 * <p>
-	 * <code>Arrays.reverse(int... array)</code>
 	 */
 	public static int[] reverse(int... array) {
 		int len = array.length;
@@ -2461,8 +2498,6 @@ public final class ArrayTools {
 
 	/**
 	 * Return the rotated array after rotating it one position.
-	 * <p>
-	 * <code>Arrays.rotate(Object[] array)</code>
 	 */
 	public static <E> E[] rotate(E... array) {
 		return rotate(array, 1);
@@ -2470,8 +2505,6 @@ public final class ArrayTools {
 
 	/**
 	 * Return the rotated array after rotating it the specified distance.
-	 * <p>
-	 * <code>Arrays.rotate(Object[] array, int distance)</code>
 	 */
 	public static <E> E[] rotate(E[] array, int distance) {
 		int len = array.length;
@@ -2504,8 +2537,6 @@ public final class ArrayTools {
 
 	/**
 	 * Return the rotated array after rotating it one position.
-	 * <p>
-	 * <code>Arrays.rotate(char[] array)</code>
 	 */
 	public static char[] rotate(char... array) {
 		return rotate(array, 1);
@@ -2513,8 +2544,6 @@ public final class ArrayTools {
 
 	/**
 	 * Return the rotated array after rotating it the specified distance.
-	 * <p>
-	 * <code>Arrays.rotate(char[] array, int distance)</code>
 	 */
 	public static char[] rotate(char[] array, int distance) {
 		int len = array.length;
@@ -2547,8 +2576,6 @@ public final class ArrayTools {
 
 	/**
 	 * Return the rotated array after rotating it one position.
-	 * <p>
-	 * <code>Arrays.rotate(int[] array)</code>
 	 */
 	public static int[] rotate(int... array) {
 		return rotate(array, 1);
@@ -2556,8 +2583,6 @@ public final class ArrayTools {
 
 	/**
 	 * Return the rotated array after rotating it the specified distance.
-	 * <p>
-	 * <code>Arrays.rotate(int[] array, int distance)</code>
 	 */
 	public static int[] rotate(int[] array, int distance) {
 		int len = array.length;
@@ -2595,8 +2620,6 @@ public final class ArrayTools {
 
 	/**
 	 * Return the array after "shuffling" it.
-	 * <p>
-	 * <code>Arrays.shuffle(Object... array)</code>
 	 */
 	public static <E> E[] shuffle(E... array) {
 		return shuffle(array, RANDOM);
@@ -2604,8 +2627,6 @@ public final class ArrayTools {
 
 	/**
 	 * Return the array after "shuffling" it.
-	 * <p>
-	 * <code>Arrays.shuffle(Object[] array, Random r)</code>
 	 */
 	public static <E> E[] shuffle(E[] array, Random random) {
 		int len = array.length;
@@ -2620,8 +2641,6 @@ public final class ArrayTools {
 
 	/**
 	 * Return the array after "shuffling" it.
-	 * <p>
-	 * <code>Arrays.shuffle(char... array)</code>
 	 */
 	public static char[] shuffle(char... array) {
 		return shuffle(array, RANDOM);
@@ -2629,8 +2648,6 @@ public final class ArrayTools {
 
 	/**
 	 * Return the array after "shuffling" it.
-	 * <p>
-	 * <code>Arrays.shuffle(char[] array, Random r)</code>
 	 */
 	public static char[] shuffle(char[] array, Random random) {
 		int len = array.length;
@@ -2645,8 +2662,6 @@ public final class ArrayTools {
 
 	/**
 	 * Return the array after "shuffling" it.
-	 * <p>
-	 * <code>Arrays.shuffle(int... array)</code>
 	 */
 	public static int[] shuffle(int... array) {
 		return shuffle(array, RANDOM);
@@ -2654,8 +2669,6 @@ public final class ArrayTools {
 
 	/**
 	 * Return the array after "shuffling" it.
-	 * <p>
-	 * <code>Arrays.shuffle(int[] array, Random r)</code>
 	 */
 	public static int[] shuffle(int[] array, Random random) {
 		int len = array.length;
@@ -2673,13 +2686,19 @@ public final class ArrayTools {
 
 	/**
 	 * Return a sub-array of the specified array with elements copied from
+	 * the specified index to the end of the specified array.
+	 */
+	public static <E> E[] subArray(E[] array, int index) {
+		return subArray(array, index, array.length);
+	}
+
+	/**
+	 * Return a sub-array of the specified array with elements copied from
 	 * the specified range. The "from" index is inclusive; the "to" index is exclusive.
-	 * <p>
-	 * <code>Arrays.subArray(E[] array, int fromIndex, int toIndex)</code>
 	 */
 	public static <E> E[] subArray(E[] array, int fromIndex, int toIndex) {
 		int len = toIndex - fromIndex;
-		E[] result = newArray(array, len);
+		E[] result = newInstance(array, len);
 		if (len > 0) {
 			System.arraycopy(array, fromIndex, result, 0, len);
 		}
@@ -2688,35 +2707,47 @@ public final class ArrayTools {
 
 	/**
 	 * Return a sub-array of the specified array with elements copied from
-	 * the specified range. The "from" index is inclusive; the "to" index is exclusive.
-	 * <p>
-	 * <code>Arrays.subArray(int[] array, int fromIndex, int toIndex)</code>
+	 * the specified index to the end of the specified array.
 	 */
-	public static int[] subArray(int[] array, int fromIndex, int toIndex) {
-		int len = toIndex - fromIndex;
-		if (len == 0) {
-			return EMPTY_INT_ARRAY;
-		}
-		int[] result = new int[len];
-		System.arraycopy(array, fromIndex, result, 0, len);
-		return result;
+	public static int[] subArray(int[] array, int index) {
+		return subArray(array, index, array.length);
 	}
 
 	/**
 	 * Return a sub-array of the specified array with elements copied from
 	 * the specified range. The "from" index is inclusive; the "to" index is exclusive.
-	 * <p>
-	 * <code>
-	 * Arrays.subArray(char[] array, int fromIndex, int toIndex)</code>
-	 * </code>
+	 */
+	public static int[] subArray(int[] array, int fromIndex, int toIndex) {
+		int len = toIndex - fromIndex;
+		return (len == 0) ? EMPTY_INT_ARRAY : subArray_(array, fromIndex, len);
+	}
+
+	private static int[] subArray_(int[] array, int fromIndex, int length) {
+		int[] result = new int[length];
+		System.arraycopy(array, fromIndex, result, 0, length);
+		return result;
+	}
+
+	/**
+	 * Return a sub-array of the specified array with elements copied from
+	 * the specified index to the end of the specified array.
+	 */
+	public static char[] subArray(char[] array, int index) {
+		return subArray(array, index, array.length);
+	}
+
+	/**
+	 * Return a sub-array of the specified array with elements copied from
+	 * the specified range. The "from" index is inclusive; the "to" index is exclusive.
 	 */
 	public static char[] subArray(char[] array, int fromIndex, int toIndex) {
 		int len = toIndex - fromIndex;
-		if (len == 0) {
-			return EMPTY_CHAR_ARRAY;
-		}
-		char[] result = new char[len];
-		System.arraycopy(array, fromIndex, result, 0, len);
+		return (len == 0) ? CharArrayTools.EMPTY_CHAR_ARRAY : subArray_(array, fromIndex, len);
+	}
+
+	static char[] subArray_(char[] array, int fromIndex, int length) {
+		char[] result = new char[length];
+		System.arraycopy(array, fromIndex, result, 0, length);
 		return result;
 	}
 
@@ -2725,8 +2756,6 @@ public final class ArrayTools {
 
 	/**
 	 * Return the array after the specified elements have been "swapped".
-	 * <p>
-	 * <code>Arrays.swap(Object[] array, int i, int j)</code>
 	 */
 	public static <E> E[] swap(E[] array, int i, int j) {
 		return (i == j) ? array : swap_(array, i, j);
@@ -2744,8 +2773,6 @@ public final class ArrayTools {
 
 	/**
 	 * Return the array after the specified elements have been "swapped".
-	 * <p>
-	 * <code>Arrays.swap(char[] array, int i, int j)</code>
 	 */
 	public static char[] swap(char[] array, int i, int j) {
 		return (i == j) ? array : swap_(array, i, j);
@@ -2763,8 +2790,6 @@ public final class ArrayTools {
 
 	/**
 	 * Return the array after the specified elements have been "swapped".
-	 * <p>
-	 * <code>Arrays.swap(int[] array, int i, int j)</code>
 	 */
 	public static int[] swap(int[] array, int i, int j) {
 		return (i == j) ? array : swap_(array, i, j);
@@ -2782,6 +2807,69 @@ public final class ArrayTools {
 
 
 	// ********** Arrays enhancements **********
+
+	/**
+	 * @see Arrays#equals(boolean[], boolean[])
+	 */
+	public static boolean notEquals(boolean[] array1, boolean[] array2) {
+		return ! Arrays.equals(array1, array2);
+	}
+
+	/**
+	 * @see Arrays#equals(byte[], byte[])
+	 */
+	public static boolean notEquals(byte[] array1, byte[] array2) {
+		return ! Arrays.equals(array1, array2);
+	}
+
+	/**
+	 * @see Arrays#equals(char[], char[])
+	 */
+	public static boolean notEquals(char[] array1, char[] array2) {
+		return ! Arrays.equals(array1, array2);
+	}
+
+	/**
+	 * @see Arrays#equals(double[], double[])
+	 */
+	public static boolean notEquals(double[] array1, double[] array2) {
+		return ! Arrays.equals(array1, array2);
+	}
+
+	/**
+	 * @see Arrays#equals(float[], float[])
+	 */
+	public static boolean notEquals(float[] array1, float[] array2) {
+		return ! Arrays.equals(array1, array2);
+	}
+
+	/**
+	 * @see Arrays#equals(int[], int[])
+	 */
+	public static boolean notEquals(int[] array1, int[] array2) {
+		return ! Arrays.equals(array1, array2);
+	}
+
+	/**
+	 * @see Arrays#equals(Object[], Object[])
+	 */
+	public static boolean notEquals(Object[] array1, Object[] array2) {
+		return ! Arrays.equals(array1, array2);
+	}
+
+	/**
+	 * @see Arrays#equals(long[], long[])
+	 */
+	public static boolean notEquals(long[] array1, long[] array2) {
+		return ! Arrays.equals(array1, array2);
+	}
+
+	/**
+	 * @see Arrays#equals(short[], short[])
+	 */
+	public static boolean notEquals(short[] array1, short[] array2) {
+		return ! Arrays.equals(array1, array2);
+	}
 
 	/**
 	 * Return the array after it has been "filled".
@@ -3107,6 +3195,78 @@ public final class ArrayTools {
 		return array;
 	}
 
+	/**
+	 * Return whether the sorted array contains the specified value.
+	 * @see Arrays#binarySearch(byte[], byte)
+	 */
+	public static boolean binarySearch(byte[] array, byte value) {
+		return Arrays.binarySearch(array, value) >= 0;
+	}
+
+	/**
+	 * Return whether the sorted array contains the specified value.
+	 * @see Arrays#binarySearch(char[], char)
+	 */
+	public static boolean binarySearch(char[] array, char value) {
+		return Arrays.binarySearch(array, value) >= 0;
+	}
+
+	/**
+	 * Return whether the sorted array contains the specified value.
+	 * @see Arrays#binarySearch(double[], double)
+	 */
+	public static boolean binarySearch(double[] array, double value) {
+		return Arrays.binarySearch(array, value) >= 0;
+	}
+
+	/**
+	 * Return whether the sorted array contains the specified value.
+	 * @see Arrays#binarySearch(float[], float)
+	 */
+	public static boolean binarySearch(float[] array, float value) {
+		return Arrays.binarySearch(array, value) >= 0;
+	}
+
+	/**
+	 * Return whether the sorted array contains the specified value.
+	 * @see Arrays#binarySearch(int[], int)
+	 */
+	public static boolean binarySearch(int[] array, int value) {
+		return Arrays.binarySearch(array, value) >= 0;
+	}
+
+	/**
+	 * Return whether the sorted array contains the specified value.
+	 * @see Arrays#binarySearch(long[], long)
+	 */
+	public static boolean binarySearch(long[] array, long value) {
+		return Arrays.binarySearch(array, value) >= 0;
+	}
+
+	/**
+	 * Return whether the sorted array contains the specified value.
+	 * @see Arrays#binarySearch(Object[], Object)
+	 */
+	public static boolean binarySearch(Object[] array, Object value) {
+		return Arrays.binarySearch(array, value) >= 0;
+	}
+
+	/**
+	 * Return whether the sorted array contains the specified value.
+	 * @see Arrays#binarySearch(short[], short)
+	 */
+    public static <T> boolean binarySearch(T[] array, T value, Comparator<? super T> comparator) {
+		return Arrays.binarySearch(array, value, comparator) >= 0;
+	}
+
+	/**
+	 * Return whether the sorted array contains the specified value.
+	 * @see Arrays#binarySearch(short[], short)
+	 */
+	public static boolean binarySearch(short[] array, short value) {
+		return Arrays.binarySearch(array, value) >= 0;
+	}
+
 
 	// ********** constructor **********
 
@@ -3117,5 +3277,4 @@ public final class ArrayTools {
 		super();
 		throw new UnsupportedOperationException();
 	}
-
 }

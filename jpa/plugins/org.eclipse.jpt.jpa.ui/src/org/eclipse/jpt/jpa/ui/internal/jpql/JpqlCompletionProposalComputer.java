@@ -19,7 +19,7 @@ import java.util.List;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
@@ -441,10 +441,10 @@ abstract class JpqlCompletionProposalComputer<T> {
 	}
 
 	private <I extends Comparable<? super I>> Iterable<I> sort(Iterable<I> iterator) {
-		return CollectionTools.sort(iterator);
+		return IterableTools.sort(iterator);
 	}
 
 	private Iterable<IEntity> sortByNames(Iterable<IEntity> abstractSchemaTypes) {
-		return CollectionTools.sort(abstractSchemaTypes, buildEntityNameComparator());
+		return IterableTools.sort(abstractSchemaTypes, buildEntityNameComparator());
 	}
 }

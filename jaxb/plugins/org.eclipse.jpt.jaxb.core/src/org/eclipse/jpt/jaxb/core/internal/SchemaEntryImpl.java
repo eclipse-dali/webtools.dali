@@ -3,7 +3,7 @@ package org.eclipse.jpt.jaxb.core.internal;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jaxb.core.SchemaEntry;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
 import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
@@ -50,7 +50,7 @@ public class SchemaEntryImpl
 			this.unloaded = false;
 		}
 		
-		if (! StringTools.stringsAreEqual(this.namespace, namespace)) {
+		if (! ObjectTools.equals(this.namespace, namespace)) {
 			return null;
 		}
 		

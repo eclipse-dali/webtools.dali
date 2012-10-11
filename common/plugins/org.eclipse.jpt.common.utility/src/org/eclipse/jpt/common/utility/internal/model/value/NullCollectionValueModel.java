@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,9 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.model.value;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 
@@ -25,7 +26,7 @@ import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
  */
 public final class NullCollectionValueModel<E>
 	extends AbstractModel
-	implements CollectionValueModel<E>
+	implements CollectionValueModel<E>, Serializable
 {
 	private static final long serialVersionUID = 1L;
 
@@ -54,5 +55,4 @@ public final class NullCollectionValueModel<E>
 	public String toString() {
     	return this.getClass().getSimpleName();
 	}
-
 }

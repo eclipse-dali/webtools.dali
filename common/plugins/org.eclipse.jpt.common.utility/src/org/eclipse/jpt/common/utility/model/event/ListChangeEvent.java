@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,8 +11,8 @@ package org.eclipse.jpt.common.utility.model.event;
 
 import java.util.List;
 
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.StringBuilderTools;
+import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.model.Model;
 
 /**
@@ -80,7 +80,7 @@ public final class ListChangeEvent extends ListEvent {
 	protected void toString(StringBuilder sb) {
 		super.toString(sb);
 		sb.append(": "); //$NON-NLS-1$
-		StringTools.append(sb, this.list);
+		StringBuilderTools.append(sb, this.list);
 	}
 
 

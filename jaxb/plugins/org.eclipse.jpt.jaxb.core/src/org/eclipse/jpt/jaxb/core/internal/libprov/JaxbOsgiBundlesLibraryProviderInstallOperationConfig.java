@@ -11,14 +11,14 @@ package org.eclipse.jpt.jaxb.core.internal.libprov;
 
 import org.eclipse.jpt.common.core.internal.libprov.JptOsgiBundlesLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jaxb.core.libprov.JaxbLibraryProviderInstallOperationConfig;
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 
 
 public class JaxbOsgiBundlesLibraryProviderInstallOperationConfig
 		extends JptOsgiBundlesLibraryProviderInstallOperationConfig
 		implements JaxbLibraryProviderInstallOperationConfig {
 	
-	private JaxbPlatformDescription jaxbPlatform;
+	private JaxbPlatformConfig jaxbPlatformConfig;
 	
 	
 	public JaxbOsgiBundlesLibraryProviderInstallOperationConfig() {
@@ -26,13 +26,13 @@ public class JaxbOsgiBundlesLibraryProviderInstallOperationConfig
 	}
 	
 	
-	public JaxbPlatformDescription getJaxbPlatform() {
-		return this.jaxbPlatform;
+	public JaxbPlatformConfig getJaxbPlatformConfig() {
+		return this.jaxbPlatformConfig;
 	}
 	
-	public void setJaxbPlatform(JaxbPlatformDescription jaxbPlatform) {
-		JaxbPlatformDescription old = this.jaxbPlatform;
-		this.jaxbPlatform = jaxbPlatform;
-		notifyListeners(PROP_JAXB_PLATFORM, old, jaxbPlatform);
+	public void setJaxbPlatformConfig(JaxbPlatformConfig jaxbPlatformConfig) {
+		JaxbPlatformConfig old = this.jaxbPlatformConfig;
+		this.jaxbPlatformConfig = jaxbPlatformConfig;
+		notifyListeners(PROP_JAXB_PLATFORM, old, jaxbPlatformConfig);
 	}
 }

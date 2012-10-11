@@ -15,12 +15,14 @@ package org.eclipse.jpt.jpa.core.jpql.spi;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.persistence.jpa.jpql.spi.IEntity;
 import org.eclipse.persistence.jpa.jpql.spi.IManagedTypeVisitor;
+import org.eclipse.persistence.jpa.jpql.spi.IMapping;
 import org.eclipse.persistence.jpa.jpql.spi.IMappingBuilder;
 import org.eclipse.persistence.jpa.jpql.spi.IQuery;
 

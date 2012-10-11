@@ -11,7 +11,9 @@ package org.eclipse.jpt.common.core.internal.utility;
 
 import java.util.Comparator;
 import java.util.Locale;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+
 import com.ibm.icu.text.Collator;
 
 /**
@@ -58,6 +60,6 @@ public class ICUStringCollator
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.collator);
+		return ObjectTools.toString(this, this.collator);
 	}
 }

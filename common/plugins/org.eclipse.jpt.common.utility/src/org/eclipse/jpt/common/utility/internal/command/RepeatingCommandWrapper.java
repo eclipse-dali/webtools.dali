@@ -15,7 +15,7 @@ import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.CommandExecutor;
 import org.eclipse.jpt.common.utility.command.RepeatingCommand;
 import org.eclipse.jpt.common.utility.internal.StackTrace;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * Wrap a repeating {@link Command}.
@@ -152,7 +152,7 @@ public class RepeatingCommandWrapper
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, RepeatingCommandWrapper.this.command);
+			return ObjectTools.toString(this, RepeatingCommandWrapper.this.command);
 		}
 	}
 
@@ -187,6 +187,6 @@ public class RepeatingCommandWrapper
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.command);
+		return ObjectTools.toString(this, this.command);
 	}
 }

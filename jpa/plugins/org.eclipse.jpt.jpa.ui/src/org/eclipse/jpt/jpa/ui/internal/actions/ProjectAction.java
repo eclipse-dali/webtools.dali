@@ -16,7 +16,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
-import org.eclipse.jpt.jpa.ui.internal.platform.JpaPlatformUiRegistry;
+import org.eclipse.jpt.jpa.ui.internal.platform.InternalJpaPlatformUiManager;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 

@@ -9,22 +9,20 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.libval;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jpt.common.core.internal.libval.LibValUtil;
+import org.eclipse.jpt.common.core.internal.libval.LibraryValidatorTools;
 import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.common.core.libval.LibraryValidator;
 import org.eclipse.jpt.common.eclipselink.core.internal.JptCommonEclipseLinkCoreMessages;
 import org.eclipse.jpt.common.eclipselink.core.internal.libval.EclipseLinkLibValUtil;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
-import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.internal.libprov.JaxbUserLibraryProviderInstallOperationConfig;
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbPlatform;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.plugin.JptJaxbEclipseLinkCorePlugin;
 import org.eclipse.osgi.service.resolver.VersionRange;
 
 
@@ -41,19 +39,19 @@ public class ELJaxbUserLibraryValidator
 	public IStatus validate(JptLibraryProviderInstallOperationConfig config) {
 		JaxbUserLibraryProviderInstallOperationConfig jaxbConfig 
 				= (JaxbUserLibraryProviderInstallOperationConfig) config;
-		JaxbPlatformDescription platform = jaxbConfig.getJaxbPlatform();
+		JaxbPlatformConfig platformConfig = jaxbConfig.getJaxbPlatformConfig();
 		Set<VersionRange> versionRanges = new HashSet<VersionRange>();
 		
-		if (ELJaxbPlatform.VERSION_2_1.equals(platform)) {
+		if (ELJaxbPlatform.VERSION_2_1.equals(platformConfig)) {
 			versionRanges.add(new VersionRange("[2.1, 3.0)")); //$NON-NLS-1$
 		}
-		else if (ELJaxbPlatform.VERSION_2_2.equals(platform)) {
+		else if (ELJaxbPlatform.VERSION_2_2.equals(platformConfig)) {
 			versionRanges.add(new VersionRange("[2.2, 3.0)")); //$NON-NLS-1$
 		}
-		else if (ELJaxbPlatform.VERSION_2_3.equals(platform)) {
+		else if (ELJaxbPlatform.VERSION_2_3.equals(platformConfig)) {
 			versionRanges.add(new VersionRange("[2.3, 3.0)")); //$NON-NLS-1$
 		}
-		else if (ELJaxbPlatform.VERSION_2_4.equals(platform)) {
+		else if (ELJaxbPlatform.VERSION_2_4.equals(platformConfig)) {
 			versionRanges.add(new VersionRange("[2.4, 3.0)")); //$NON-NLS-1$
 		}
 		
@@ -65,23 +63,15 @@ public class ELJaxbUserLibraryValidator
 		
 		// finally look for xjc classes
 		
-		Set<String> classNames = new HashSet<String>();
+		ArrayList<String> classNames = new ArrayList<String>(2);
 		
 		classNames.add("com.sun.tools.xjc.XJCFacade"); //$NON-NLS-1$
 		classNames.add("com.sun.xml.bind.Util"); //$NON-NLS-1$
 		
-		Iterable<IPath> libraryPaths = 
-				new TransformationIterable<IClasspathEntry, IPath>(jaxbConfig.resolve()) {
-					@Override
-					protected IPath transform(IClasspathEntry o) {
-						return o.getPath();
-					}
-				};
-		
-		status = LibValUtil.validate(libraryPaths, classNames);
+		status = LibraryValidatorTools.validateClasspathEntries(jaxbConfig.resolve(), classNames);
 		
 		return status.isOK() ?
 				Status.OK_STATUS :
-				JptJaxbCorePlugin.instance().buildStatus(IStatus.WARNING, JptCommonEclipseLinkCoreMessages.ELJaxbUserLibraryValidator_noXjcClasses);
+				JptJaxbEclipseLinkCorePlugin.instance().buildStatus(IStatus.WARNING, JptCommonEclipseLinkCoreMessages.ELJaxbUserLibraryValidator_noXjcClasses);
 	}
 }

@@ -18,10 +18,11 @@ import java.util.TreeSet;
 
 import junit.framework.TestCase;
 
-import org.eclipse.jpt.common.utility.internal.Bag;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.HashBag;
+import org.eclipse.jpt.common.utility.collection.Bag;
 import org.eclipse.jpt.common.utility.internal.ReverseComparator;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.HashBag;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
@@ -70,7 +71,7 @@ public class SortedListValueModelAdapterTests extends TestCase {
 		Collection<String> sortedSet = new TreeSet<String>(comparator);
 		sortedSet.addAll(expected);
 		List<String> expectedList = new ArrayList<String>(sortedSet);
-		List<String> actualList = CollectionTools.list(actual.iterator());
+		List<String> actualList = ListTools.list(actual.iterator());
 		assertEquals(expectedList, actualList);
 	}
 

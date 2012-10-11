@@ -13,8 +13,8 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.OrderColumn2_0Annotation;
 
@@ -83,7 +83,7 @@ public class OrderColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 	public void testGetName() throws Exception {
 		ICompilationUnit cu = this.createTestOrderColumnWithName();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.ORDER_COLUMN);
 		assertNotNull(column);
 		assertEquals(COLUMN_NAME, column.getName());
@@ -92,7 +92,7 @@ public class OrderColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 	public void testGetNull() throws Exception {
 		ICompilationUnit cu = this.createTestOrderColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.ORDER_COLUMN);
 		assertNotNull(column);
 		assertNull(column.getName());
@@ -105,7 +105,7 @@ public class OrderColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 	public void testSetName() throws Exception {
 		ICompilationUnit cu = this.createTestOrderColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.ORDER_COLUMN);
 
 		assertNotNull(column);
@@ -120,7 +120,7 @@ public class OrderColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 	public void testSetNameNull() throws Exception {
 		ICompilationUnit cu = this.createTestOrderColumnWithName();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.ORDER_COLUMN);
 
 		assertEquals(COLUMN_NAME, column.getName());
@@ -136,7 +136,7 @@ public class OrderColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 	public void testGetColumnDefinition() throws Exception {
 		ICompilationUnit cu = this.createTestOrderColumnWithColumnDefinition();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.ORDER_COLUMN);
 		assertEquals(COLUMN_COLUMN_DEFINITION, column.getColumnDefinition());
 	}
@@ -144,7 +144,7 @@ public class OrderColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 	public void testSetColumnDefinition() throws Exception {
 		ICompilationUnit cu = this.createTestOrderColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.ORDER_COLUMN);
 
 		assertNotNull(column);
@@ -165,7 +165,7 @@ public class OrderColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 	public void testGetNullable() throws Exception {
 		ICompilationUnit cu = this.createTestOrderColumnWithBooleanElement("nullable");
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.ORDER_COLUMN);
 
 		assertEquals(Boolean.TRUE, column.getNullable());
@@ -174,7 +174,7 @@ public class OrderColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 	public void testSetNullable() throws Exception {
 		ICompilationUnit cu = this.createTestOrderColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.ORDER_COLUMN);
 
 		assertNotNull(column);
@@ -194,7 +194,7 @@ public class OrderColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 	public void testGetInsertable() throws Exception {
 		ICompilationUnit cu = this.createTestOrderColumnWithBooleanElement("insertable");
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.ORDER_COLUMN);
 
 		assertEquals(Boolean.TRUE, column.getInsertable());
@@ -203,7 +203,7 @@ public class OrderColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 	public void testSetInsertable() throws Exception {
 		ICompilationUnit cu = this.createTestOrderColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.ORDER_COLUMN);
 
 		assertNotNull(column);
@@ -223,7 +223,7 @@ public class OrderColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 	public void testGetUpdatable() throws Exception {
 		ICompilationUnit cu = this.createTestOrderColumnWithBooleanElement("updatable");
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.ORDER_COLUMN);
 
 		assertEquals(Boolean.TRUE, column.getUpdatable());
@@ -232,7 +232,7 @@ public class OrderColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 	public void testSetUpdatable() throws Exception {
 		ICompilationUnit cu = this.createTestOrderColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		OrderColumn2_0Annotation column = (OrderColumn2_0Annotation) resourceField.getAnnotation(JPA2_0.ORDER_COLUMN);
 
 		assertNotNull(column);

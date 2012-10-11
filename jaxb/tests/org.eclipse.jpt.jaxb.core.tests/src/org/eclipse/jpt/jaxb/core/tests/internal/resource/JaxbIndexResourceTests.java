@@ -16,8 +16,8 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.common.core.tests.internal.utility.jdt.AnnotationTestCase;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.internal.resource.jaxbindex.JaxbIndexResourceModelProvider;
 import org.eclipse.jpt.jaxb.core.resource.jaxbindex.JaxbIndexResource;
 
@@ -60,35 +60,35 @@ public class JaxbIndexResourceTests
 		IFile jaxbIndex = createJaxbIndex(new Path("src/test"), "foo", "bar");
 		JaxbIndexResource resource = JaxbIndexResourceModelProvider.instance().buildResourceModel(jaxbIndex);
 		
-		assertTrue(CollectionTools.elementsAreEqual(
+		assertTrue(IterableTools.elementsAreEqual(
 				resource.getFullyQualifiedClassNames(), 
 				new ArrayIterable<String>(new String[] {"test.foo", "test.bar"})));
 		
 		setClassNames(jaxbIndex, "foo", "bar", "baz");
 		
-		assertTrue(CollectionTools.elementsAreEqual(
+		assertTrue(IterableTools.elementsAreEqual(
 				resource.getFullyQualifiedClassNames(), 
 				new ArrayIterable<String>(new String[] {"test.foo", "test.bar", "test.baz"})));
 		
 		setClassNames(jaxbIndex);
 		
-		assertTrue(CollectionTools.isEmpty(resource.getFullyQualifiedClassNames()));
+		assertTrue(IterableTools.isEmpty(resource.getFullyQualifiedClassNames()));
 		
 		jaxbIndex = createJaxbIndex(new Path("src"), "foo", "bar");
 		resource = JaxbIndexResourceModelProvider.instance().buildResourceModel(jaxbIndex);
 		
-		assertTrue(CollectionTools.elementsAreEqual(
+		assertTrue(IterableTools.elementsAreEqual(
 				resource.getFullyQualifiedClassNames(), 
 				new ArrayIterable<String>(new String[] {"foo", "bar"})));
 		
 		setClassNames(jaxbIndex, "foo", "bar", "baz");
 		
-		assertTrue(CollectionTools.elementsAreEqual(
+		assertTrue(IterableTools.elementsAreEqual(
 				resource.getFullyQualifiedClassNames(), 
 				new ArrayIterable<String>(new String[] {"foo", "bar", "baz"})));
 		
 		setClassNames(jaxbIndex);
 		
-		assertTrue(CollectionTools.isEmpty(resource.getFullyQualifiedClassNames()));
+		assertTrue(IterableTools.isEmpty(resource.getFullyQualifiedClassNames()));
 	}
 }

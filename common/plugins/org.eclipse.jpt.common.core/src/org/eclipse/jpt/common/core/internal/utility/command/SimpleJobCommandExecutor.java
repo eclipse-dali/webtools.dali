@@ -16,8 +16,9 @@ import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jpt.common.core.utility.command.CombinedExtendedCommandExecutor;
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.SynchronizedBoolean;
+import org.eclipse.jpt.common.utility.internal.ClassTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.reference.SynchronizedBoolean;
 
 /**
  * A command executor that schedules a {@link org.eclipse.core.runtime.jobs.Job
@@ -176,12 +177,12 @@ public class SimpleJobCommandExecutor
 		if (this.defaultJobName != null) {
 			return this.defaultJobName;
 		}
-		return StringTools.buildToStringClassName(command.getClass());
+		return ClassTools.toStringName(command.getClass());
 	}
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this);
+		return ObjectTools.toString(this);
 	}
 
 

@@ -29,9 +29,9 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapt
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedExpressionConverter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
 
@@ -310,7 +310,7 @@ public final class SourceXmlTypeAnnotation
 	}
 
 	public void moveProp(int targetIndex, int sourceIndex) {
-		CollectionTools.move(this.propOrder, targetIndex, sourceIndex);
+		ListTools.move(this.propOrder, targetIndex, sourceIndex);
 		this.writePropOrder();
 	}
 

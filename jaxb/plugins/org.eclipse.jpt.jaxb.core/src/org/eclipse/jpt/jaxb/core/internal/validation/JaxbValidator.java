@@ -12,11 +12,14 @@ package org.eclipse.jpt.jaxb.core.internal.validation;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
-import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
+import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
+import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
+import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
 import org.eclipse.wst.validation.AbstractValidator;
 import org.eclipse.wst.validation.ValidationResult;
 import org.eclipse.wst.validation.ValidationState;
@@ -105,7 +108,7 @@ public class JaxbValidator
 	}
 
 	private Iterable<IMessage> buildValidationMessages(IReporter reporter, IProject project) {
-		JaxbProject jaxbProject = JptJaxbCorePlugin.instance().getProjectManager().getJaxbProject(project);
+		JaxbProject jaxbProject = this.getJaxbProjectManager().getJaxbProject(project);
 		if (jaxbProject != null) {
 			return jaxbProject.getValidationMessages(reporter);
 		}
@@ -114,5 +117,13 @@ public class JaxbValidator
 						IMessage.HIGH_SEVERITY,
 						JaxbValidationMessages.NO_JAXB_PROJECT,
 						project));
+	}
+
+	private JaxbProjectManager getJaxbProjectManager() {
+		return this.getJaxbWorkspace().getJaxbProjectManager();
+	}
+
+	private JaxbWorkspace getJaxbWorkspace() {
+		return (JaxbWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JaxbWorkspace.class);
 	}
 }

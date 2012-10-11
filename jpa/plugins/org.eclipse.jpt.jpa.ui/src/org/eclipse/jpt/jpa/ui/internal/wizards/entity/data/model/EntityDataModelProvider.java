@@ -272,7 +272,7 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 			String projectName = this.model.getStringProperty(PROJECT_NAME);
 			IProject project = ProjectUtilities.getProject(projectName);
 			if (project != null) {
-				JptXmlResource ormXmlResource = StringTools.stringIsEmpty(xmlName) ? null : getOrmXmlResource(xmlName);
+				JptXmlResource ormXmlResource = StringTools.isBlank(xmlName) ? null : getOrmXmlResource(xmlName);
 				if (ormXmlResource == null) {
 					return JptJpaUiPlugin.instance().buildErrorStatus(EntityWizardMsg.INVALID_XML_NAME);
 				}

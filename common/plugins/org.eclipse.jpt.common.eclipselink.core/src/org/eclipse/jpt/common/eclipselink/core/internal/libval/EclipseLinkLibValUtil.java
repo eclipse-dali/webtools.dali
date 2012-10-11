@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.eclipselink.core.internal.libval;
 
+import java.util.Arrays;
 import java.util.Set;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -18,7 +19,6 @@ import org.eclipse.jdt.core.util.IClassFileReader;
 import org.eclipse.jdt.core.util.IFieldInfo;
 import org.eclipse.jpt.common.eclipselink.core.internal.JptCommonEclipseLinkCoreMessages;
 import org.eclipse.jpt.common.eclipselink.core.internal.plugin.JptCommonEclipseLinkCorePlugin;
-import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.osgi.service.resolver.VersionRange;
 import org.osgi.framework.Version;
 
@@ -40,7 +40,7 @@ public class EclipseLinkLibValUtil {
 							entry.getPath().toFile().getAbsolutePath(), VERSION_CLASS_PATH, IClassFileReader.FIELD_INFOS);
 				if (classReader != null) {
 					for (IFieldInfo field : classReader.getFieldInfos()) {
-						if (StringTools.stringsAreEqual(field.getName(), VERSION_FIELD_NAME.toCharArray())) {
+						if (Arrays.equals(field.getName(), VERSION_FIELD_NAME.toCharArray())) {
 							try {
 								versionString = field.getConstantValueAttribute().getConstantValue().getStringValue();
 							}

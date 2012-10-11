@@ -14,8 +14,8 @@ import java.util.List;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.node.AbstractNode;
-import org.eclipse.jpt.common.utility.internal.node.Node;
-import org.eclipse.jpt.common.utility.internal.node.Problem;
+import org.eclipse.jpt.common.utility.node.Node;
+import org.eclipse.jpt.common.utility.node.Problem;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 
@@ -74,7 +74,7 @@ final class AddGeneratorStateObject extends AbstractNode
 	}
 
 	private void addNameProblemsTo(List<Problem> currentProblems) {
-		if (StringTools.stringIsEmpty(this.name)) {
+		if (StringTools.isBlank(this.name)) {
 			currentProblems.add(buildProblem(JptUiDetailsOrmMessages.GeneratorStateObject_nameMustBeSpecified, IMessageProvider.ERROR));
 		} 
 		else if (names().contains(this.name)){
@@ -83,7 +83,7 @@ final class AddGeneratorStateObject extends AbstractNode
 	}
 
 	private void addGeneratorTypeProblemsTo(List<Problem> currentProblems) {
-		if (StringTools.stringIsEmpty(this.generatorType)) {
+		if (StringTools.isBlank(this.generatorType)) {
 			currentProblems.add(buildProblem(JptUiDetailsOrmMessages.GeneratorStateObject_typeMustBeSpecified, IMessageProvider.ERROR));
 		}
 	}

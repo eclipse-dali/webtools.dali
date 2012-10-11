@@ -16,18 +16,20 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserComboPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.StringConverter;
-import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
+import org.eclipse.jpt.common.utility.internal.iterator.TransformationIterator;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Profiler;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
@@ -134,9 +136,10 @@ public class ProfilerClassChooser extends ClassChooserComboPane<Customization>
 	}
 
 	@Override
-	protected StringConverter<String> buildClassConverter() {
-		return new StringConverter<String>() {
-			public String convertToString(String value) {
+	protected Transformer<String, String> buildClassConverter() {
+		return new TransformerAdapter<String, String>() {
+			@Override
+			public String transform(String value) {
 				try {
 					Profiler.valueOf(value);
 					value = buildDisplayString(value);
@@ -154,11 +157,11 @@ public class ProfilerClassChooser extends ClassChooserComboPane<Customization>
 		ArrayList<ListValueModel<String>> holders = new ArrayList<ListValueModel<String>>(2);
 		holders.add(this.buildDefaultProfilerListHolder());
 		holders.add(this.buildProfilersListHolder());
-		return new CompositeListValueModel<ListValueModel<String>, String>(holders);
+		return CompositeListValueModel.forModels(holders);
 	}
 
 	private Iterator<String> buildProfilers() {
-		return new TransformationIterator<Profiler, String>(CollectionTools.iterator(Profiler.values())) {
+		return new TransformationIterator<Profiler, String>(IteratorTools.iterator(Profiler.values())) {
 			@Override
 			protected String transform(Profiler next) {
 				return next.name();

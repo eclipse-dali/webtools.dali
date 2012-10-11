@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
@@ -42,7 +42,7 @@ public class GenericJavaXmlSchemaTypeTests extends JaxbContextModelTestCase
 	
 	public void testModifyName() throws Exception {
 		this.createPackageInfoWithXmlSchemaType();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = IterableTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		XmlSchemaType contextXmlSchemaType = contextPackageInfo.getXmlSchemaTypes().iterator().next();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
@@ -62,7 +62,7 @@ public class GenericJavaXmlSchemaTypeTests extends JaxbContextModelTestCase
 	
 	public void testUpdateName() throws Exception {
 		this.createPackageInfoWithXmlSchemaType();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = IterableTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		XmlSchemaType contextXmlSchemaType = contextPackageInfo.getXmlSchemaTypes().iterator().next();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
@@ -87,7 +87,7 @@ public class GenericJavaXmlSchemaTypeTests extends JaxbContextModelTestCase
 	
 	public void testModifyNamespace() throws Exception {
 		this.createPackageInfoWithXmlSchemaType();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = IterableTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		XmlSchemaType contextXmlSchemaType = contextPackageInfo.getXmlSchemaTypes().iterator().next();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 	
@@ -111,7 +111,7 @@ public class GenericJavaXmlSchemaTypeTests extends JaxbContextModelTestCase
 	
 	public void testUpdateNamespace() throws Exception {
 		this.createPackageInfoWithXmlSchemaType();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = IterableTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		XmlSchemaType contextXmlSchemaType = contextPackageInfo.getXmlSchemaTypes().iterator().next();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
@@ -139,7 +139,7 @@ public class GenericJavaXmlSchemaTypeTests extends JaxbContextModelTestCase
 	
 	public void testModifyType() throws Exception {
 		this.createPackageInfoWithXmlSchemaType();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = IterableTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		XmlSchemaType contextXmlSchemaType = contextPackageInfo.getXmlSchemaTypes().iterator().next();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 	
@@ -159,7 +159,7 @@ public class GenericJavaXmlSchemaTypeTests extends JaxbContextModelTestCase
 	
 	public void testUpdateType() throws Exception {
 		this.createPackageInfoWithXmlSchemaType();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = IterableTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		XmlSchemaType contextXmlSchemaType = contextPackageInfo.getXmlSchemaTypes().iterator().next();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 

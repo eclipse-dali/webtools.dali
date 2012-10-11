@@ -13,7 +13,7 @@ import java.util.Map;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logger;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Logging;
@@ -283,7 +283,7 @@ public class EclipseLinkLogging extends EclipseLinkPersistenceUnitProperties
 
 	public void setLogFileLocation(String newLogFileLocation) {
 		String old = this.logFileLocation;
-		this.logFileLocation = (StringTools.stringIsNotEmpty(newLogFileLocation)) ? 
+		this.logFileLocation = (StringTools.isNotBlank(newLogFileLocation)) ? 
 										newLogFileLocation : 
 										this.getDefaultLogFileLocation();
 		this.putProperty(LOG_FILE_LOCATION_PROPERTY, this.logFileLocation);

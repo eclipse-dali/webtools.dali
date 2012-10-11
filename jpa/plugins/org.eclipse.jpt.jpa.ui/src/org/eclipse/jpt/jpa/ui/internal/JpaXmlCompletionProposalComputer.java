@@ -22,8 +22,8 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.XmlFile;
@@ -85,17 +85,16 @@ public class JpaXmlCompletionProposalComputer extends DefaultJpaXmlCompletionPro
 			int rOffset = contentAssistRequest.getReplacementBeginPosition();
 			int rLength = contentAssistRequest.getReplacementLength();
 			for (String possibleValue : proposedValues) {
-				if ((newMatchString.length() == 0) || StringTools.stringStartsWithIgnoreCase(possibleValue, newMatchString)) {
+				if ((newMatchString.length() == 0) || StringTools.startsWithIgnoreCase(possibleValue, newMatchString)) {
 
 					// handle values that include special characters like double-quote or apostrophe
 					String convertedPossibleValue = null;
 					if (matchString.startsWith("\"")) { //$NON-NLS-1$
-						convertedPossibleValue = StringTools.convertToXmlStringLiteralQuote(possibleValue);
+						convertedPossibleValue = StringTools.convertToDoubleQuotedXmlAttributeValue(possibleValue);
 					} else if (matchString.startsWith("'")) { //$NON-NLS-1$
-						convertedPossibleValue = StringTools.convertToXmlStringLiteralApostrophe(possibleValue);
+						convertedPossibleValue = StringTools.convertToSingleQuotedXmlAttributeValue(possibleValue);
 					} else {
-						// convert to XML string literal with quotes by default
-						convertedPossibleValue = StringTools.convertToXmlStringLiteralQuote(possibleValue);
+						convertedPossibleValue = StringTools.convertToXmlAttributeValue(possibleValue);
 					}
 
 					CompletionProposal proposal = null;
@@ -174,26 +173,21 @@ public class JpaXmlCompletionProposalComputer extends DefaultJpaXmlCompletionPro
 				}
 			}
 
-			for (String possibleValue : proposedValues) {
+			for (String proposedValue : proposedValues) {
 				
-				String convertedPossibleValue = null;
-				if ((matchString.length() == 0) || StringTools.stringStartsWithIgnoreCase(possibleValue, matchString)) {
-					if (possibleValue.startsWith("\"")) { //$NON-NLS-1$
-						convertedPossibleValue = StringTools.convertToXmlElementStringLiteral(possibleValue);
-					} else {
-						convertedPossibleValue = possibleValue;
-					}
+				if ((matchString.length() == 0) || StringTools.startsWithIgnoreCase(proposedValue, matchString)) {
+					String convertedProposedValue = StringTools.convertToXmlElementText(proposedValue);
 
 					CompletionProposal proposal = null;
-					if (possibleValue.startsWith("\"")) { //$NON-NLS-1$
+					if (proposedValue.startsWith("\"")) { //$NON-NLS-1$
 						proposal = new CompletionProposal(
-								convertedPossibleValue, begin, length, convertedPossibleValue.length(), 
-								JptJpaUiPlugin.instance().getImage(JptUiIcons.JPA_CONTENT), possibleValue, null, 
+								convertedProposedValue, begin, length, convertedProposedValue.length(), 
+								JptJpaUiPlugin.instance().getImage(JptUiIcons.JPA_CONTENT), proposedValue, null, 
 								JptUiMessages.JpaXmlCompletionProposalComputer_SpecialNameMsg);
 					} else {
 						proposal = new CompletionProposal(
-								convertedPossibleValue, begin, length, convertedPossibleValue.length(), 
-								JptJpaUiPlugin.instance().getImage(JptUiIcons.JPA_CONTENT), possibleValue, null, null);
+								convertedProposedValue, begin, length, convertedProposedValue.length(), 
+								JptJpaUiPlugin.instance().getImage(JptUiIcons.JPA_CONTENT), proposedValue, null, null);
 					}
 
 					contentAssistRequest.addProposal(proposal);
@@ -239,8 +233,6 @@ public class JpaXmlCompletionProposalComputer extends DefaultJpaXmlCompletionPro
 
 	/**
 	 * This method can check if the cursor is after the XMLPI
-	 * 
-	 * @param ContentAssistRequest car
 	 */
 	protected boolean isCursorAfterXMLPI(ContentAssistRequest car) {
 		Node aNode = car.getNode();
@@ -292,8 +284,6 @@ public class JpaXmlCompletionProposalComputer extends DefaultJpaXmlCompletionPro
 	/**
 	 * This is to determine if a tag is a special meta-info comment tag that
 	 * shows up as an ELEMENT
-	 * 
-	 * @param node
 	 */
 	private boolean isCommentNode(IDOMNode node) {
 		return ((node != null) && (node instanceof IDOMElement) && ((IDOMElement) node).isCommentTag());

@@ -11,12 +11,12 @@ package org.eclipse.jpt.common.ui.internal.widgets;
 
 import java.util.Arrays;
 import java.util.List;
-
-import org.eclipse.jpt.common.utility.internal.StringConverter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.StringObjectTransformer;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -99,8 +99,8 @@ public abstract class FileChooserComboPane<T extends Model> extends FileChooserP
 	 * The converter responsible to transform each combo box item
 	 * into a string representation
 	 */
-	protected StringConverter<String> buildStringConverter() {
-		return StringConverter.Default.<String>instance();
+	protected Transformer<String, String> buildStringConverter() {
+		return StringObjectTransformer.<String>instance();
 	}
 
 }

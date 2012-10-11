@@ -58,16 +58,16 @@ public class EntityGenTools {
 	 */
 	public static String convertToUniqueJavaStyleIdentifier(String identifier, boolean capitalizeFirstLetter, Collection<String> identifiers) {
 		String result = identifier;
-		if (StringTools.stringIsUppercase(result) || StringTools.stringIsLowercase(result)) {
+		if (StringTools.isUppercase(result) || StringTools.isLowercase(result)) {
 			// leave mixed case identifiers alone?
-			result = StringTools.convertUnderscoresToCamelCase(result, capitalizeFirstLetter);
+			result = StringTools.convertAllCapsToCamelCase(result, capitalizeFirstLetter);
 		} else {
 			result = capitalizeFirstLetter ? StringTools.capitalize(result) : StringTools.uncapitalize(result);
 		}
 		result = NameTools.convertToJavaIdentifier(result);
 		// assume that converting to a unique name will not result in a Java reserved word
 		// (since no Java reserved words end with a number)
-		result = NameTools.uniqueNameForIgnoreCase(result, identifiers);
+		result = NameTools.uniqueNameIgnoreCase(result, identifiers);
 		return result;
 	}
 

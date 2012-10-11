@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.QueryHint;
 import org.eclipse.jpt.jpa.core.context.java.JavaQueryHint;
 import org.eclipse.jpt.jpa.core.context.orm.OrmQuery;
@@ -99,8 +99,8 @@ public class GenericOrmQueryHint
 	}
 
 	public boolean isEquivalentTo(QueryHint hint) {
-		return Tools.valuesAreEqual(this.name, hint.getName()) &&
-				Tools.valuesAreEqual(this.value, hint.getValue()) ;
+		return ObjectTools.equals(this.name, hint.getName()) &&
+				ObjectTools.equals(this.value, hint.getValue()) ;
 	}
 
 	// ********** misc **********

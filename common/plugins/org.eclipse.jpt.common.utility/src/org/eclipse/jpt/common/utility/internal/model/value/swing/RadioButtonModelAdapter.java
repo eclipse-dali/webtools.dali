@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.model.value.swing;
 
-import org.eclipse.jpt.common.utility.Filter;
-import org.eclipse.jpt.common.utility.internal.Transformer;
+import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.model.value.FilteringModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * This {@link javax.swing.ButtonModel} can be used to keep a listener
@@ -31,6 +31,8 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 public class RadioButtonModelAdapter
 	extends ToggleButtonModelAdapter
 {
+	private static final long serialVersionUID = 1L;
+
 	// ********** constructors **********
 
 	/**

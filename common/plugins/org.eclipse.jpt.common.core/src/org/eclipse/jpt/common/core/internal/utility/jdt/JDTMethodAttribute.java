@@ -140,7 +140,7 @@ public class JDTMethodAttribute
 	 * return "foo" for a method named "getFoo", "isFoo", "setFoo"
 	 */
 	public String getAttributeName() {
-		return NameTools.convertGetterSetterMethodNameToPropertyName(this.getName());
+		return NameTools.convertGetterOrSetterMethodNameToPropertyName(this.getName());
 	}
 
 

@@ -27,7 +27,7 @@ import javax.swing.text.PlainDocument;
 import javax.swing.text.Position;
 import javax.swing.text.Segment;
 
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.listener.awt.AWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -45,7 +45,6 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 public class DocumentAdapter
 	implements Document, Serializable
 {
-
 	/** The delegate document whose behavior we "enhance". */
 	protected final Document delegate;
 
@@ -313,7 +312,7 @@ public class DocumentAdapter
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.stringHolder);
+		return ObjectTools.toString(this, this.stringHolder);
 	}
 
 	private void readObject(ObjectInputStream s) throws ClassNotFoundException, IOException {
@@ -351,6 +350,8 @@ public class DocumentAdapter
 	{
 		protected DocumentEvent delegate;
 	
+		private static final long serialVersionUID = 1L;
+
 		protected InternalDocumentEvent(Document document, DocumentEvent delegate) {
 			super(document);
 			this.delegate = delegate;

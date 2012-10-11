@@ -12,12 +12,12 @@ package org.eclipse.jpt.jpa.core.internal.facet;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.internal.JptCoreMessages;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
 
 public class JpaFacetVersionChangeDataModelProvider
 	extends JpaFacetDataModelProvider
@@ -55,8 +55,8 @@ public class JpaFacetVersionChangeDataModelProvider
 	// **************** defaults **********************************************
 	
 	@Override
-	protected JpaPlatformDescription getDefaultPlatformDescription() {
-		return getJpaProject().getJpaPlatform().getDescription();
+	protected JpaPlatformConfig getDefaultPlatformConfig() {
+		return getJpaProject().getJpaPlatform().getConfig();
 	}
 	
 	@Override
@@ -105,13 +105,13 @@ public class JpaFacetVersionChangeDataModelProvider
 	// **************** valid property descriptors ****************************
 	
 	@Override
-	protected Iterable<JpaPlatformDescription> buildValidPlatformDescriptions() {
+	protected Iterable<JpaPlatformConfig> buildValidPlatformConfigs() {
 		// add existing platform to list of choices
-		Iterable<JpaPlatformDescription> validPlatformDescs = super.buildValidPlatformDescriptions();
-		if (! CollectionTools.contains(validPlatformDescs, getDefaultPlatformDescription())) {
-			validPlatformDescs = new CompositeIterable<JpaPlatformDescription>(getDefaultPlatformDescription(), validPlatformDescs);
+		Iterable<JpaPlatformConfig> validPlatformConfigs = super.buildValidPlatformConfigs();
+		if (! IterableTools.contains(validPlatformConfigs, getDefaultPlatformConfig())) {
+			validPlatformConfigs = new CompositeIterable<JpaPlatformConfig>(getDefaultPlatformConfig(), validPlatformConfigs);
 		}
-		return validPlatformDescs;
+		return validPlatformConfigs;
 	}
 	
 	
@@ -122,7 +122,7 @@ public class JpaFacetVersionChangeDataModelProvider
 		IStatus status = super.validatePlatform();
 		
 		if (status.isOK()) {
-			if (! getPlatform().supportsJpaFacetVersion(getProjectFacetVersion())) {
+			if (! getPlatformConfig().supportsJpaFacetVersion(getProjectFacetVersion())) {
 				status = JptJpaCorePlugin.instance().buildErrorStatus(JptCoreMessages.VALIDATE_PLATFORM_DOES_NOT_SUPPORT_FACET_VERSION);
 			}
 		}

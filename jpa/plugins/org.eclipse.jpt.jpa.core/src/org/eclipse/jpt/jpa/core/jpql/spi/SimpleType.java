@@ -15,7 +15,7 @@ package org.eclipse.jpt.jpa.core.jpql.spi;
 
 import java.lang.annotation.Annotation;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.persistence.jpa.jpql.spi.IConstructor;
 import org.eclipse.persistence.jpa.jpql.spi.IType;
 import org.eclipse.persistence.jpa.jpql.spi.ITypeDeclaration;

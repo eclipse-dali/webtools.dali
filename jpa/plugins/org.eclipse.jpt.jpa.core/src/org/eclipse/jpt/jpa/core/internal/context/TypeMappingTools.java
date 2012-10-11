@@ -9,12 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context;
 
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.Transformer;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyTable;
@@ -41,7 +41,7 @@ public class TypeMappingTools {
 		// the attribute name may be qualified - we test only the first attribute name
 		int dotIndex = attributeName.indexOf('.');
 		attributeName = (dotIndex == -1) ? attributeName : attributeName.substring(0, dotIndex);
-		return CollectionTools.contains(getMapsIdDerivedIdAttributeNames(typeMapping), attributeName);
+		return IterableTools.contains(getMapsIdDerivedIdAttributeNames(typeMapping), attributeName);
 	}
 
 	/**

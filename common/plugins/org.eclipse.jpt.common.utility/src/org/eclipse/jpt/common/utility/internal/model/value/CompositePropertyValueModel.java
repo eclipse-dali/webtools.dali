@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.utility.internal.model.value;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import org.eclipse.jpt.common.utility.internal.IdentityHashBag;
+import org.eclipse.jpt.common.utility.internal.collection.IdentityHashBag;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionClearEvent;

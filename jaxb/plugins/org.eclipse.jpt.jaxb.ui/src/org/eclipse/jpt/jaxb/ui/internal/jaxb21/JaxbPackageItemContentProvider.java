@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.ui.internal.jaxb21;
 
 import org.eclipse.jpt.common.ui.internal.jface.AbstractItemTreeContentProvider;
-import org.eclipse.jpt.common.utility.internal.iterables.SuperIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.iterable.SuperIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;

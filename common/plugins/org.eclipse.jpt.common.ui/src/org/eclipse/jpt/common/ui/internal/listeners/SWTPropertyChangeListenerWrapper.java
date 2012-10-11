@@ -11,6 +11,7 @@ package org.eclipse.jpt.common.ui.internal.listeners;
 
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.utility.internal.RunnableAdapter;
+import org.eclipse.jpt.common.utility.internal.collection.SynchronizedQueue;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 
@@ -23,11 +24,16 @@ import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
  * its corresponding UI widget are read-write; as opposed to the adapter(s)
  * between a <em>collection</em> (or <em>list</em>) and its UI widget, which
  * is read-only.)
+ * <p>
+ * Any events received earlier (on a non-UI thread) will be
+ * forwarded, in the order received, before the current event is forwarded.
  */
 public class SWTPropertyChangeListenerWrapper
 	implements PropertyChangeListener
 {
 	private final PropertyChangeListener listener;
+	private final SynchronizedQueue<PropertyChangeEvent> events = new SynchronizedQueue<PropertyChangeEvent>();
+
 
 	public SWTPropertyChangeListenerWrapper(PropertyChangeListener listener) {
 		super();
@@ -38,25 +44,23 @@ public class SWTPropertyChangeListenerWrapper
 	}
 
 	public void propertyChanged(PropertyChangeEvent event) {
-		this.execute(new PropertyChangedRunnable(event));
+		this.events.enqueue(event);
+		this.execute(new ForwardEventsRunnable());
 	}
 
-	/* CU private */ class PropertyChangedRunnable
+	/* CU private */ class ForwardEventsRunnable
 		extends RunnableAdapter
 	{
-		private final PropertyChangeEvent event;
-		PropertyChangedRunnable(PropertyChangeEvent event) {
-			super();
-			this.event = event;
-		}
 		@Override
 		public void run() {
-			SWTPropertyChangeListenerWrapper.this.propertyChanged_(this.event);
+			SWTPropertyChangeListenerWrapper.this.forwardEvents();
 		}
 	}
 
-	void propertyChanged_(PropertyChangeEvent event) {
-		this.listener.propertyChanged(event);
+	void forwardEvents() {
+		for (PropertyChangeEvent event : this.events.drain()) {
+			this.listener.propertyChanged(event);
+		}
 	}
 
 	/**

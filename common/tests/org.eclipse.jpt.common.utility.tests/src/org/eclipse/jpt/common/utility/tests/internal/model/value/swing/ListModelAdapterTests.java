@@ -21,9 +21,9 @@ import javax.swing.ListModel;
 
 import junit.framework.TestCase;
 
-import org.eclipse.jpt.common.utility.internal.Bag;
-import org.eclipse.jpt.common.utility.internal.HashBag;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
+import org.eclipse.jpt.common.utility.collection.Bag;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
@@ -263,12 +263,12 @@ public class ListModelAdapterTests extends TestCase {
 	}
 
 	private void verifyHasNoListeners(ListModel listModel) throws Exception {
-		boolean hasNoListeners = ((Boolean) ReflectionTools.executeMethod(listModel, "hasNoListDataListeners")).booleanValue();
+		boolean hasNoListeners = ((Boolean) ObjectTools.execute(listModel, "hasNoListDataListeners")).booleanValue();
 		assertTrue(hasNoListeners);
 	}
 
 	private void verifyHasListeners(ListModel listModel) throws Exception {
-		boolean hasListeners = ((Boolean) ReflectionTools.executeMethod(listModel, "hasListDataListeners")).booleanValue();
+		boolean hasListeners = ((Boolean) ObjectTools.execute(listModel, "hasListDataListeners")).booleanValue();
 		assertTrue(hasListeners);
 	}
 

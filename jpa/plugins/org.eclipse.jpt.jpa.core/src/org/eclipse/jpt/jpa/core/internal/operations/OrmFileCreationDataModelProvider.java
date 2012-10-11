@@ -15,9 +15,9 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
@@ -167,7 +167,7 @@ public class OrmFileCreationDataModelProvider
 	}
 	
 	DataModelPropertyDescriptor persistenceUnitPropertyDescriptor(String persistenceUnitName) {
-		if (StringTools.stringIsEmpty(persistenceUnitName)) {
+		if (StringTools.isBlank(persistenceUnitName)) {
 			return new DataModelPropertyDescriptor(null, JptCoreMessages.NONE);
 		}
 		return new DataModelPropertyDescriptor(persistenceUnitName);
@@ -214,7 +214,7 @@ public class OrmFileCreationDataModelProvider
 		String projectName = getProject().getName();
 		String pUnitName = getStringProperty(PERSISTENCE_UNIT);
 		if (addToPUnit) {
-			if (StringTools.stringIsEmpty(pUnitName)) {
+			if (StringTools.isBlank(pUnitName)) {
 				return JptJpaCorePlugin.instance().buildErrorStatus(JptCoreMessages.VALIDATE_PERSISTENCE_UNIT_DOES_NOT_SPECIFIED, pUnitName);
 			}
 			if (getPersistenceUnit() == null) {
@@ -230,7 +230,7 @@ public class OrmFileCreationDataModelProvider
 	protected PersistenceUnit getPersistenceUnit() {
 		String pUnitName = getStringProperty(PERSISTENCE_UNIT);
 		JpaProject jpaProject = 
-			(StringTools.stringIsEmpty(pUnitName)) ? null : getJpaProject();
+			(StringTools.isBlank(pUnitName)) ? null : getJpaProject();
 		PersistenceXml persistenceXml = 
 			(jpaProject == null) ? null : jpaProject.getRootContextNode().getPersistenceXml();
 		Persistence persistence = 

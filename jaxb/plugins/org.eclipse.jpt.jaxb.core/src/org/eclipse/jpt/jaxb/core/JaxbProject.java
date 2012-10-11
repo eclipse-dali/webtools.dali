@@ -20,14 +20,14 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
-import org.eclipse.jpt.common.utility.synchronizers.CallbackSynchronizer;
-import org.eclipse.jpt.common.utility.synchronizers.Synchronizer;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.core.resource.jaxbindex.JaxbIndexResource;
 import org.eclipse.jpt.jaxb.core.resource.jaxbprops.JaxbPropertiesResource;
+import org.eclipse.jpt.jaxb.core.utility.CallbackSynchronizer;
+import org.eclipse.jpt.jaxb.core.utility.Synchronizer;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 

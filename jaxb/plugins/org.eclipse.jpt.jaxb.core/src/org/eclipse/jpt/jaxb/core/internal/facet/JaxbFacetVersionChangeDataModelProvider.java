@@ -10,10 +10,10 @@
 package org.eclipse.jpt.jaxb.core.internal.facet;
 
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 
 public class JaxbFacetVersionChangeDataModelProvider
 		extends JaxbFacetDataModelProvider 
@@ -25,11 +25,11 @@ public class JaxbFacetVersionChangeDataModelProvider
 	
 	
 	@Override
-	protected Iterable<JaxbPlatformDescription> buildValidPlatformDescriptions() {
+	protected Iterable<JaxbPlatformConfig> buildValidPlatformConfigs() {
 		// add existing platform to list of choices
-		Iterable<JaxbPlatformDescription> validPlatformDescs = super.buildValidPlatformDescriptions();
-		if (! CollectionTools.contains(validPlatformDescs, getPlatform())) {
-			validPlatformDescs = new CompositeIterable(getPlatform(), validPlatformDescs);
+		Iterable<JaxbPlatformConfig> validPlatformDescs = super.buildValidPlatformConfigs();
+		if (! IterableTools.contains(validPlatformDescs, getPlatformConfig())) {
+			validPlatformDescs = new CompositeIterable(getPlatformConfig(), validPlatformDescs);
 		}
 		return validPlatformDescs;
 	}
@@ -39,7 +39,7 @@ public class JaxbFacetVersionChangeDataModelProvider
 		IStatus status = super.validatePlatform();
 		
 		if (status.isOK()) {
-			if (! getPlatform().supportsJaxbFacetVersion(getProjectFacetVersion())) {
+			if (! getPlatformConfig().supportsJaxbFacetVersion(getProjectFacetVersion())) {
 				status = buildErrorStatus(JptJaxbCoreMessages.JaxbFacetConfig_validatePlatformDoesNotSupportFacetVersion);
 			}
 		}

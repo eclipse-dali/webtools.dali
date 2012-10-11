@@ -15,7 +15,9 @@ import junit.framework.TestSuite;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbCoreContextModelTests;
 import org.eclipse.jpt.jaxb.core.tests.internal.projects.TestJaxbProject;
 import org.eclipse.jpt.jaxb.core.tests.internal.resource.JaxbCoreResourceModelTests;
+import org.eclipse.jpt.jaxb.core.tests.internal.utility.JaxbCoreUtilityTests;
 
+@SuppressWarnings("nls")
 public class JaxbCoreTests {
 
 	public static Test suite() {
@@ -25,6 +27,7 @@ public class JaxbCoreTests {
 		TestSuite suite = new TestSuite(JaxbCoreTests.class.getPackage().getName());
 		suite.addTest(JaxbCoreResourceModelTests.suite());
 		suite.addTest(JaxbCoreContextModelTests.suite());
+		suite.addTest(JaxbCoreUtilityTests.suite());
 		suite.addTest(JaxbCoreMiscTests.suite());
 		return suite;
 	}

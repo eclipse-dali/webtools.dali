@@ -14,6 +14,7 @@ import java.util.Collection;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
+import org.eclipse.jface.resource.StringConverter;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jpt.common.ui.WidgetFactory;
@@ -26,17 +27,18 @@ import org.eclipse.jpt.common.ui.internal.swt.TriStateCheckBoxModelAdapter;
 import org.eclipse.jpt.common.ui.internal.util.LabeledButton;
 import org.eclipse.jpt.common.ui.internal.util.LabeledControlUpdater;
 import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
-import org.eclipse.jpt.common.utility.internal.NonNullBooleanTransformer;
-import org.eclipse.jpt.common.utility.internal.StringConverter;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeBooleanPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.NonNullBooleanTransformer;
+import org.eclipse.jpt.common.utility.internal.transformer.StringObjectTransformer;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -800,7 +802,7 @@ public abstract class Pane<T extends Model>
 	protected final <V> Combo addCombo(Composite container,
 	                                     ListValueModel<V> listHolder,
 	                                     ModifiablePropertyValueModel<V> selectedItemHolder,
-	                                     StringConverter<V> stringConverter,
+	                                     Transformer<V, String> stringConverter,
 	                                     String helpId) {
 
 		Combo combo = this.addCombo(container, helpId);
@@ -830,7 +832,7 @@ public abstract class Pane<T extends Model>
 	private <V> Combo addUnmanagedCombo(Composite container,
 	                                     ListValueModel<V> listHolder,
 	                                     ModifiablePropertyValueModel<V> selectedItemHolder,
-	                                     StringConverter<V> stringConverter) {
+	                                     Transformer<V, String> stringConverter) {
 
 		Combo combo = this.addUnmanagedCombo(container);
 
@@ -848,7 +850,7 @@ public abstract class Pane<T extends Model>
 			Composite container,
 			ListValueModel<V> listHolder,
 			ModifiablePropertyValueModel<V> selectedItemHolder,
-			StringConverter<V> stringConverter,
+			Transformer<V, String> stringConverter,
 			PropertyValueModel<Boolean> enabledModel) {
 
 		Combo combo = this.addUnmanagedCombo(container, listHolder, selectedItemHolder, stringConverter);
@@ -913,7 +915,7 @@ public abstract class Pane<T extends Model>
 			Composite container,
 			ListValueModel<V> listHolder,
 			ModifiablePropertyValueModel<V> selectedItemHolder,
-			StringConverter<V> stringConverter,
+			Transformer<V, String> stringConverter,
 			PropertyValueModel<Boolean> enabledModel) {
 
 		return this.addEditableCombo(container, listHolder, selectedItemHolder, stringConverter, enabledModel, null);
@@ -923,7 +925,7 @@ public abstract class Pane<T extends Model>
 			Composite container,
 			ListValueModel<V> listHolder,
 			ModifiablePropertyValueModel<V> selectedItemHolder,
-			StringConverter<V> stringConverter,
+			Transformer<V, String> stringConverter,
 			PropertyValueModel<Boolean> enabledModel,
 			String helpId) {
 
@@ -956,7 +958,7 @@ public abstract class Pane<T extends Model>
 			container, 
 			listHolder, 
 			selectedItemHolder, 
-			StringConverter.Default.<V>instance(),
+			StringObjectTransformer.<V>instance(),
 			(String) null);
 	}
 	
@@ -975,7 +977,7 @@ public abstract class Pane<T extends Model>
 	protected final <V> Combo addEditableCombo(Composite container,
 	                                             ListValueModel<V> listHolder,
 	                                             ModifiablePropertyValueModel<V> selectedItemHolder,
-	                                             StringConverter<V> stringConverter,
+	                                             Transformer<V, String> stringConverter,
 	                                             String helpId) {
 
 		Combo combo = this.addEditableCombo(container, helpId);
@@ -1257,7 +1259,7 @@ public abstract class Pane<T extends Model>
 	private <V> Combo addUnmanagedEditableCombo(Composite container,
 	                                               ListValueModel<V> listHolder,
 	                                               ModifiablePropertyValueModel<V> selectedItemHolder,
-	                                               StringConverter<V> stringConverter,
+	                                               Transformer<V, String> stringConverter,
 	                                               String helpId) {
 
 		Combo combo = addUnmanagedEditableCombo(container, helpId);

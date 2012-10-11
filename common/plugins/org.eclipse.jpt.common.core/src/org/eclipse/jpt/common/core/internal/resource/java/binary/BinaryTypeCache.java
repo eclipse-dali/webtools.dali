@@ -18,9 +18,9 @@ import org.eclipse.jpt.common.core.AnnotationProvider;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceTypeCache;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 
 /**
  * cache used to hold binary "external" Java resource types
@@ -149,7 +149,7 @@ public final class BinaryTypeCache
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.type);
+			return ObjectTools.toString(this, this.type);
 		}
 
 	}

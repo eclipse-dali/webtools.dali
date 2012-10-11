@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.ui.selection;
 
 import java.io.Serializable;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 
 /**
@@ -52,7 +52,7 @@ import org.eclipse.jpt.jpa.core.JpaStructureNode;
  * @see org.eclipse.jpt.jpa.ui.internal.selection.WorkbenchAdapterFactory
  * @see org.eclipse.jpt.jpa.ui.internal.selection.WorkbenchWindowAdapterFactory
  * @see org.eclipse.jpt.jpa.ui.internal.selection.WorkbenchPageAdapterFactory
- * @see org.eclipse.jpt.jpa.ui.internal.selection.JpaWorkbenchManager
+ * @see org.eclipse.jpt.jpa.ui.internal.selection.JpaWorkbenchSelectionManager
  */
 public interface JpaSelectionManager {
 	/**
@@ -80,7 +80,7 @@ public interface JpaSelectionManager {
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildSingletonToString(this);
+			return ObjectTools.singletonToString(this);
 		}
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {

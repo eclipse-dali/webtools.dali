@@ -23,10 +23,10 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
@@ -112,7 +112,7 @@ public abstract class AbstractJpaDeleteTypeParticipant
 		//we can at least set the subtask and report no progress. Only happens first time getJpaProjectManager() is called.
 		monitor.subTask(JpaCoreRefactoringMessages.JPA_REFACORING_PARTICIPANT_LOADING_JPA_PROJECTS_SUB_TASK_NAME);
 		Iterable<JpaProject> jpaProjects = this.getJpaProjects();
-		int size = CollectionTools.size(jpaProjects);
+		int size = IterableTools.size(jpaProjects);
 		if (size == 0) {
 			return null;
 		}
@@ -196,7 +196,7 @@ public abstract class AbstractJpaDeleteTypeParticipant
 		}
 		SubMonitor sm = SubMonitor.convert(monitor, 1 + persistenceUnit.getMappingFileRefsSize());
 		Iterable<DeleteEdit> edits = this.createPersistenceXmlDeleteEdits(persistenceUnit);
-		if (!CollectionTools.isEmpty(edits)) {
+		if (! IterableTools.isEmpty(edits)) {
 			this.persistenceXmlDeleteEdits.put(jpaProject.getPersistenceXmlResource().getFile(), edits);
 		}
 		sm.worked(1);
@@ -205,7 +205,7 @@ public abstract class AbstractJpaDeleteTypeParticipant
 				throw new OperationCanceledException();
 			}
 			Iterable<DeleteEdit> mappingFileDeleteEdits = this.createMappingFileDeleteTypeEdits(mappingFileRef);
-			if (!CollectionTools.isEmpty(mappingFileDeleteEdits)) {
+			if (! IterableTools.isEmpty(mappingFileDeleteEdits)) {
 				this.mappingFilePersistentTypeDeleteEdits.put((IFile) mappingFileRef.getMappingFile().getResource(), mappingFileDeleteEdits);
 			}
 			sm.worked(1);

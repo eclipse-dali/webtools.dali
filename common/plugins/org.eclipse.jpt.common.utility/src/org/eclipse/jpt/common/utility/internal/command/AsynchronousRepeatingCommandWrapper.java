@@ -15,10 +15,10 @@ import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.RepeatingCommand;
 import org.eclipse.jpt.common.utility.internal.ConsumerThreadCoordinator;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.SimpleThreadFactory;
 import org.eclipse.jpt.common.utility.internal.StackTrace;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.SynchronizedBoolean;
+import org.eclipse.jpt.common.utility.internal.reference.SynchronizedBoolean;
 
 /**
  * This repeating command will perform a client-supplied command in a separate
@@ -166,7 +166,7 @@ public class AsynchronousRepeatingCommandWrapper
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.consumerThreadCoordinator);
+		return ObjectTools.toString(this, this.consumerThreadCoordinator);
 	}
 
 
@@ -217,7 +217,7 @@ public class AsynchronousRepeatingCommandWrapper
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.command);
+			return ObjectTools.toString(this, this.command);
 		}
 	}
 

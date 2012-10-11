@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
+import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
 import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolverPlugin;
 import org.eclipse.wst.xml.core.internal.XMLCorePlugin;
 import org.eclipse.wst.xml.core.internal.catalog.provisional.ICatalog;
@@ -55,7 +55,7 @@ public class XsdUtil {
 	
 	public static boolean namespaceEquals(XSDNamedComponent comp, String namespace) {
 		String xsdNamespace = comp.getTargetNamespace();
-		return (xsdNamespace == null) ? StringTools.stringIsEmpty(namespace) : xsdNamespace.equals(namespace);
+		return (xsdNamespace == null) ? StringTools.isBlank(namespace) : xsdNamespace.equals(namespace);
 	}
 	
 	public static String getResolvedUri(String location) {
@@ -63,7 +63,7 @@ public class XsdUtil {
 		
 		ICatalog catalog = XMLCorePlugin.getDefault().getDefaultXMLCatalog();
 		
-		if (! StringTools.stringIsEmpty(location)) {
+		if (! StringTools.isBlank(location)) {
 			try {
 				resolvedUri = catalog.resolveSystem(location);
 				if (resolvedUri == null) {

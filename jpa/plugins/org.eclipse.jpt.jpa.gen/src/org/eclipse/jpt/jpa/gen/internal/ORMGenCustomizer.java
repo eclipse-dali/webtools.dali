@@ -559,7 +559,7 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 		return StringTools.convertToJavaStringLiteral(s);
 	}
 	public String convertToXmlStringLiteral(String s) {
-		return StringTools.convertToXmlStringLiteral(s);
+		return StringTools.convertToXmlAttributeValue(s);
 	}
 	/**
 	 * Appends an annotation member name and value to an existing annotation.

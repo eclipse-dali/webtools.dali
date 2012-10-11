@@ -13,9 +13,10 @@ import java.beans.Introspector;
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbQName;
@@ -312,18 +313,18 @@ public abstract class AbstractJavaTypeMapping
 		}
 		
 		Iterable<String> result = super.getCompletionProposals(pos);
-		if (! CollectionTools.isEmpty(result)) {
+		if (! IterableTools.isEmpty(result)) {
 			return result;
 		}
 		
 		result = this.qName.getCompletionProposals(pos);
-		if (! CollectionTools.isEmpty(result)) {
+		if (! IterableTools.isEmpty(result)) {
 			return result;
 		}
 		
 		if (this.xmlRootElement != null) {
 			result = this.xmlRootElement.getCompletionProposals(pos);
-			if (! CollectionTools.isEmpty(result)) {
+			if (! IterableTools.isEmpty(result)) {
 				return result;
 			}
 		}
@@ -363,7 +364,7 @@ public abstract class AbstractJavaTypeMapping
 			return null;
 		}
 		
-		if (! StringTools.stringIsEmpty(this.qName.getName())) {
+		if (! StringTools.isBlank(this.qName.getName())) {
 			return xsdSchema.getTypeDefinition(this.qName.getNamespace(), this.qName.getName());
 		}
 		
@@ -437,7 +438,7 @@ public abstract class AbstractJavaTypeMapping
 			// do not call super... - it is not an error if the name is ""
 			// if name is absent (""), namespace cannot be different from package namespace
 			if ("".equals(getName()) 
-					&& ! StringTools.stringsAreEqual(
+					&& ! ObjectTools.equals(
 							getNamespace(),
 							getDefaultNamespace())) {
 				messages.add(
@@ -455,7 +456,7 @@ public abstract class AbstractJavaTypeMapping
 			String name = getName();
 			String namespace = getNamespace();
 			
-			if (! StringTools.stringIsEmpty(name)) {
+			if (! StringTools.isBlank(name)) {
 				XsdSchema schema = this.getXsdSchema();
 				if (schema != null) {
 					XsdTypeDefinition schemaType = schema.getTypeDefinition(namespace, name);

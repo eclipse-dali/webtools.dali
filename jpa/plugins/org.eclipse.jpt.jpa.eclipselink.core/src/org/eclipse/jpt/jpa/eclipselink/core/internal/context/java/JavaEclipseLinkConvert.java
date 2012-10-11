@@ -12,7 +12,8 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 import java.util.Arrays;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
@@ -124,7 +125,8 @@ public class JavaEclipseLinkConvert
 	}
 
 	protected Iterable<String> getJavaCandidateConverterNames() {
-		return StringTools.convertToJavaStringLiteralContents(this.getConverterNames());
+		return new TransformationIterable<String, String>(this.getConverterNames(),
+				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 
 	/**

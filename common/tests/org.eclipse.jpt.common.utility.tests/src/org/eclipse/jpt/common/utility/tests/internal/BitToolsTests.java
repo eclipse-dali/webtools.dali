@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,10 +14,11 @@ import java.lang.reflect.InvocationTargetException;
 import junit.framework.TestCase;
 
 import org.eclipse.jpt.common.utility.internal.BitTools;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
+import org.eclipse.jpt.common.utility.internal.ClassTools;
 
-public class BitToolsTests extends TestCase {
-
+public class BitToolsTests
+	extends TestCase
+{
 	public BitToolsTests(String name) {
 		super(name);
 	}
@@ -32,6 +33,13 @@ public class BitToolsTests extends TestCase {
 		assertFalse(BitTools.flagIsSet(0x0000, 0x1103));
 	}
 
+	public void testSetFlagIntInt() {
+		assertEquals(0x0003, BitTools.setFlag(0x0003, 0x0001));
+
+		assertEquals(0x1303, BitTools.setFlag(0x0303, 0x1103));
+		assertEquals(0x1103, BitTools.setFlag(0x0000, 0x1103));
+	}
+
 	public void testFlagIsOffIntInt() {
 		assertFalse(BitTools.flagIsOff(0x0003, 0x0001));
 		assertFalse(BitTools.flagIsOff(0x0303, 0x0001));
@@ -40,6 +48,13 @@ public class BitToolsTests extends TestCase {
 
 		assertTrue(BitTools.flagIsOff(0x2204, 0x1103));
 		assertTrue(BitTools.flagIsOff(0x0000, 0x1103));
+	}
+
+	public void testClearFlagIntInt() {
+		assertEquals(0x0002, BitTools.clearFlag(0x0003, 0x0001));
+
+		assertEquals(0x0200, BitTools.clearFlag(0x0303, 0x1103));
+		assertEquals(0x0000, BitTools.clearFlag(0x0000, 0x1103));
 	}
 
 	public void testOnlyFlagIsSetIntInt() {
@@ -87,6 +102,13 @@ public class BitToolsTests extends TestCase {
 		assertFalse(BitTools.allFlagsAreSet(0x0000, 0x1103));
 	}
 
+	public void testSetAllFlagsIntInt() {
+		assertEquals(0x0003, BitTools.setAllFlags(0x0003, 0x0001));
+
+		assertEquals(0x1303, BitTools.setAllFlags(0x0303, 0x1103));
+		assertEquals(0x1103, BitTools.setAllFlags(0x0000, 0x1103));
+	}
+
 	public void testAllFlagsAreOffIntInt() {
 		assertFalse(BitTools.allFlagsAreOff(0x0003, 0x0001));
 		assertFalse(BitTools.allFlagsAreOff(0x0303, 0x0001));
@@ -95,6 +117,13 @@ public class BitToolsTests extends TestCase {
 
 		assertTrue(BitTools.allFlagsAreOff(0x2204, 0x1103));
 		assertTrue(BitTools.allFlagsAreOff(0x0000, 0x1103));
+	}
+
+	public void testClearAllFlagsIntInt() {
+		assertEquals(0x0002, BitTools.clearAllFlags(0x0003, 0x0001));
+
+		assertEquals(0x0200, BitTools.clearAllFlags(0x0303, 0x1103));
+		assertEquals(0x0000, BitTools.clearAllFlags(0x0000, 0x1103));
 	}
 
 	public void testOnlyFlagsAreSetIntInt() {
@@ -160,6 +189,13 @@ public class BitToolsTests extends TestCase {
 		assertFalse(BitTools.allFlagsAreSet(0x0000, new int[] { 0x1000, 0x0100, 0x0002, 0x0001 }));
 	}
 
+	public void testSetAllFlagsIntIntArray() {
+		assertEquals(0x0003, BitTools.setAllFlags(0x0003, new int[] { 0x0001 }));
+
+		assertEquals(0x1303, BitTools.setAllFlags(0x0303, new int[] { 0x0003, 0x1100 }));
+		assertEquals(0x1103, BitTools.setAllFlags(0x0000, new int[] { 0x0003, 0x1100 }));
+	}
+
 	public void testAllFlagsAreOffIntIntArray() {
 		assertFalse(BitTools.allFlagsAreOff(0x0003, new int[] { 0x0001 }));
 		assertFalse(BitTools.allFlagsAreOff(0x0303, new int[] { 0x0001 }));
@@ -168,6 +204,13 @@ public class BitToolsTests extends TestCase {
 
 		assertTrue(BitTools.allFlagsAreOff(0x0303, new int[] { 0x1000, 0x0400, 0x0020, 0x0000 }));
 		assertTrue(BitTools.allFlagsAreOff(0x0000, new int[] { 0x1000, 0x0100, 0x0002, 0x0001 }));
+	}
+
+	public void testClearAllFlagsIntIntArray() {
+		assertEquals(0x0002, BitTools.clearAllFlags(0x0003, new int[] { 0x0001 }));
+
+		assertEquals(0x0200, BitTools.clearAllFlags(0x0303, new int[] { 0x0003, 0x1100 }));
+		assertEquals(0x0000, BitTools.clearAllFlags(0x0000, new int[] { 0x0003, 0x1100 }));
 	}
 
 	public void testOnlyFlagsAreSetIntIntArray() {
@@ -244,10 +287,43 @@ public class BitToolsTests extends TestCase {
 		assertEquals(0xF010, BitTools.xorFlags(new int[] { 0x0001, 0x0011, 0xF000, 0x0F01, 0x0F01 }));
 	}
 
+	public void testIsEven() {
+		assertTrue(BitTools.isEven(-22));
+		assertTrue(BitTools.isEven(0));
+		assertTrue(BitTools.isEven(22));
+
+		assertFalse(BitTools.isEven(-21));
+		assertFalse(BitTools.isEven(21));
+	}
+
+	public void testIsOdd() {
+		assertFalse(BitTools.isOdd(-22));
+		assertFalse(BitTools.isOdd(0));
+		assertFalse(BitTools.isOdd(22));
+
+		assertTrue(BitTools.isOdd(-21));
+		assertTrue(BitTools.isOdd(21));
+	}
+
+	public void testHalf() {
+		assertEquals(-11, BitTools.half(-22));
+		assertEquals(0, BitTools.half(0));
+		assertEquals(11, BitTools.half(22));
+
+		assertEquals(-11, BitTools.half(-21));
+		assertEquals(10, BitTools.half(21));
+	}
+
+	public void testTwice() {
+		assertEquals(-22, BitTools.twice(-11));
+		assertEquals(0, BitTools.twice(0));
+		assertEquals(22, BitTools.twice(11));
+	}
+
 	public void testConstructor() {
 		boolean exCaught = false;
 		try {
-			Object at = ReflectionTools.newInstance(BitTools.class);
+			Object at = ClassTools.newInstance(BitTools.class);
 			fail("bogus: " + at); //$NON-NLS-1$
 		} catch (RuntimeException ex) {
 			if (ex.getCause() instanceof InvocationTargetException) {

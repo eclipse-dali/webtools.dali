@@ -12,7 +12,6 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.entity.data.model;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
@@ -111,7 +110,7 @@ public class DynamicEntityTemplateModel {
 	 */
 	public boolean isEntityNameSet() {
 		boolean result = false;
-		if (!StringTools.stringIsEmpty(getEntityName()) && !getClassName().equals(getEntityName())) {
+		if (!StringTools.isBlank(getEntityName()) && !getClassName().equals(getEntityName())) {
 			result = true;
 		}
 		return result;

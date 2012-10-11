@@ -21,7 +21,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -73,7 +73,7 @@ public class CreatePackageInfoCommandHandler
 	}
 	
 	private IPackageFragment getJdtPackage(JaxbPackage jaxbPackage) {
-		return (IPackageFragment) CollectionTools.get(
+		return (IPackageFragment) IterableTools.get(
 				jaxbPackage.getContextRoot().getTypes(jaxbPackage), 0).
 					getJavaResourceType().getJavaResourceCompilationUnit().getCompilationUnit().getParent();
 	}

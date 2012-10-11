@@ -14,7 +14,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.DocumentEvent.EventType;
 import javax.swing.text.Document;
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.DocumentAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -129,14 +129,14 @@ public class DocumentAdapterTests extends TestCase {
 	}
 
 	private void verifyHasNoListeners(Object document) throws Exception {
-		Object delegate = ReflectionTools.getFieldValue(document, "delegate");
-		Object[] listeners = (Object[]) ReflectionTools.executeMethod(delegate, "getDocumentListeners");
+		Object delegate = ObjectTools.get(document, "delegate");
+		Object[] listeners = (Object[]) ObjectTools.execute(delegate, "getDocumentListeners");
 		assertEquals(0, listeners.length);
 	}
 
 	private void verifyHasListeners(Object document) throws Exception {
-		Object delegate = ReflectionTools.getFieldValue(document, "delegate");
-		Object[] listeners = (Object[]) ReflectionTools.executeMethod(delegate, "getDocumentListeners");
+		Object delegate = ObjectTools.get(document, "delegate");
+		Object[] listeners = (Object[]) ObjectTools.execute(delegate, "getDocumentListeners");
 		assertFalse(listeners.length == 0);
 	}
 

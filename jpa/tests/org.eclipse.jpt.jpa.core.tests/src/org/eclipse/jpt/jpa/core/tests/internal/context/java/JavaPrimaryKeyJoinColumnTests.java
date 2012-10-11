@@ -13,8 +13,8 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PrimaryKeyJoinColumn;
@@ -274,7 +274,7 @@ public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		PrimaryKeyJoinColumn specifiedPkJoinColumn = getJavaEntity().getSpecifiedPrimaryKeyJoinColumns().iterator().next();
-		assertFalse(((Boolean) ReflectionTools.executeMethod(specifiedPkJoinColumn, "referencedColumnIsResolved")).booleanValue());
+		assertFalse(((Boolean) ObjectTools.execute(specifiedPkJoinColumn, "referencedColumnIsResolved")).booleanValue());
 	}
 	
 	public void testDbColumn() throws Exception {
@@ -290,7 +290,7 @@ public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		PrimaryKeyJoinColumn specifiedPkJoinColumn = getJavaEntity().getSpecifiedPrimaryKeyJoinColumns().iterator().next();
-		assertFalse(((Boolean) ReflectionTools.executeMethod(specifiedPkJoinColumn, "referencedColumnIsResolved")).booleanValue());
+		assertFalse(((Boolean) ObjectTools.execute(specifiedPkJoinColumn, "referencedColumnIsResolved")).booleanValue());
 	}
 	
 	public void testDbTable() throws Exception {

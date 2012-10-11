@@ -23,7 +23,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.CommandExecutor;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.text.edits.MalformedTreeException;
 import org.eclipse.text.edits.TextEdit;
 
@@ -90,7 +90,7 @@ public abstract class JDTAnnotatedElement
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.name);
+		return ObjectTools.toString(this, this.name);
 	}
 
 

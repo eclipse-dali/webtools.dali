@@ -15,12 +15,12 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.HashBag;
-import org.eclipse.jpt.common.utility.internal.iterators.CloneIterator;
+import org.eclipse.jpt.common.utility.internal.collection.HashBag;
+import org.eclipse.jpt.common.utility.internal.iterator.CloneIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.node.AbstractNode;
-import org.eclipse.jpt.common.utility.internal.node.Node;
-import org.eclipse.jpt.common.utility.internal.node.Problem;
+import org.eclipse.jpt.common.utility.node.Node;
+import org.eclipse.jpt.common.utility.node.Problem;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
@@ -87,19 +87,19 @@ public class AbstractNodeTests extends TestCase {
 	public void testParentAndChildren() {
 		TestWorkbenchModel node = this.root.testDescendantNamed("node 1.1.3");
 		assertEquals("node 1.1.3", node.getName());
-		assertEquals(0, CollectionTools.size(node.children()));
+		assertEquals(0, IteratorTools.size(node.children()));
 
 		node = (TestWorkbenchModel) node.getParent();
 		assertEquals("node 1.1", node.getName());
-		assertEquals(3, CollectionTools.size(node.children()));
+		assertEquals(3, IteratorTools.size(node.children()));
 
 		node = (TestWorkbenchModel) node.getParent();
 		assertEquals("node 1", node.getName());
-		assertEquals(2, CollectionTools.size(node.children()));
+		assertEquals(2, IteratorTools.size(node.children()));
 
 		node = (TestWorkbenchModel) node.getParent();
 		assertEquals("root", node.getName());
-		assertEquals(4, CollectionTools.size(node.children()));
+		assertEquals(4, IteratorTools.size(node.children()));
 
 		node = (TestWorkbenchModel) node.getParent();
 		assertNull(node);
@@ -323,7 +323,7 @@ public class AbstractNodeTests extends TestCase {
 		assertEquals(0, parent.problemsSize());
 		assertEquals(0, parent.branchProblemsSize());
 		assertEquals(0, node.problemsSize());
-		assertEquals(0, CollectionTools.size(node.branchProblems()));
+		assertEquals(0, IteratorTools.size(node.branchProblems()));
 	}
 
 	public void testRemovedBranchProblems() {
@@ -336,11 +336,11 @@ public class AbstractNodeTests extends TestCase {
 		this.root.validateBranch();
 
 		assertEquals(1, this.root.problemsSize());
-		assertEquals(3, CollectionTools.size(this.root.branchProblems()));
+		assertEquals(3, IteratorTools.size(this.root.branchProblems()));
 		assertEquals(1, parent.problemsSize());
 		assertEquals(2, parent.branchProblemsSize());
 		assertEquals(1, node.problemsSize());
-		assertEquals(1, CollectionTools.size(node.branchProblems()));
+		assertEquals(1, IteratorTools.size(node.branchProblems()));
 
 		// completely remove a node that has problems -
 		// the entire tree should recalculate its "branch" problems
@@ -349,7 +349,7 @@ public class AbstractNodeTests extends TestCase {
 		this.root.validateBranch();
 
 		assertEquals(1, this.root.problemsSize());
-		assertEquals(2, CollectionTools.size(this.root.branchProblems()));
+		assertEquals(2, IteratorTools.size(this.root.branchProblems()));
 		assertEquals(1, parent.problemsSize());
 		assertEquals(1, parent.branchProblemsSize());
 	}
@@ -406,12 +406,11 @@ public class AbstractNodeTests extends TestCase {
 		}
 	
 		public Iterator<TestWorkbenchModel> testChildren() {
-			return new CloneIterator<TestWorkbenchModel>(this.testChildren) {
-				@Override
-				protected void remove(TestWorkbenchModel current) {
+			return new CloneIterator<TestWorkbenchModel>(this.testChildren, new CloneIterator.Remover<TestWorkbenchModel>() {
+				public void remove(TestWorkbenchModel current) {
 					TestWorkbenchModel.this.removeTestChild(current);
 				}
-			};
+			});
 		}
 		public int testChildrenSize() {
 			return this.testChildren.size();

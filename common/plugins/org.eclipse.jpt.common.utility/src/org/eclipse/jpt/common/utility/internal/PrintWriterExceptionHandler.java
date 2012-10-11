@@ -39,6 +39,6 @@ public class PrintWriterExceptionHandler
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this);
+		return ObjectTools.toString(this);
 	}
 }

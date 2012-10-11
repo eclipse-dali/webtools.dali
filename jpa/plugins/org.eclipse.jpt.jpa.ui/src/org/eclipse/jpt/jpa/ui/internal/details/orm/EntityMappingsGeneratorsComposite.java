@@ -18,19 +18,19 @@ import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.Transformer;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.TableGenerator;
@@ -191,10 +191,10 @@ public class EntityMappingsGeneratorsComposite extends Pane<EntityMappings>
 					int index = -1;
 
 					if (generator instanceof OrmSequenceGenerator) {
-						index = CollectionTools.indexOf(getSubject().getSequenceGenerators(), generator);
+						index = IterableTools.indexOf(getSubject().getSequenceGenerators(), generator);
 					}
 					else {
-						index = CollectionTools.indexOf(getSubject().getTableGenerators(), generator);
+						index = IterableTools.indexOf(getSubject().getTableGenerators(), generator);
 					}
 
 					name = NLS.bind(JptUiDetailsOrmMessages.OrmGeneratorsComposite_displayString, Integer.valueOf(index));
@@ -209,7 +209,7 @@ public class EntityMappingsGeneratorsComposite extends Pane<EntityMappings>
 		List<ListValueModel<? extends OrmGenerator>> list = new ArrayList<ListValueModel<? extends OrmGenerator>>();
 		list.add(buildSequenceGeneratorListHolder());
 		list.add(buildTableGeneratorListHolder());
-		return new CompositeListValueModel<ListValueModel<? extends OrmGenerator>, OrmGenerator>(list);
+		return CompositeListValueModel.forModels(list);
 	}
 
 	private Transformer<OrmGenerator, Control> buildPaneTransformer(final Composite container) {

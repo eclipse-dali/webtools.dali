@@ -82,7 +82,7 @@ public class GenericJavaXmlAdapter
 		}
 		
 		String superResourceTypeName = resourceType.getSuperclassQualifiedName();
-		if (! StringTools.stringIsEmpty(superResourceTypeName)) {
+		if (! StringTools.isBlank(superResourceTypeName)) {
 			JavaResourceType superResourceType 
 					= (JavaResourceType) getJaxbProject().getJavaResourceType(superResourceTypeName, JavaResourceAbstractType.Kind.TYPE);
 			if (superResourceType != null) {

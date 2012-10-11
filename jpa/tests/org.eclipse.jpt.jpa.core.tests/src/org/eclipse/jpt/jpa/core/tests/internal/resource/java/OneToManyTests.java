@@ -13,8 +13,8 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.resource.java.FetchType;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.OneToManyAnnotation;
@@ -120,7 +120,7 @@ public class OneToManyTests extends JpaJavaResourceModelTestCase {
 	public void testOneToMany() throws Exception {
 		ICompilationUnit cu = this.createTestOneToMany();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		OneToManyAnnotation oneToMany = (OneToManyAnnotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		assertNotNull(oneToMany);
@@ -129,7 +129,7 @@ public class OneToManyTests extends JpaJavaResourceModelTestCase {
 	public void testGetFetch() throws Exception {
 		ICompilationUnit cu = this.createTestOneToManyWithFetch();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		OneToManyAnnotation oneToMany = (OneToManyAnnotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		assertEquals(FetchType.EAGER, oneToMany.getFetch());
@@ -138,7 +138,7 @@ public class OneToManyTests extends JpaJavaResourceModelTestCase {
 	public void testSetFetch() throws Exception {
 		ICompilationUnit cu = this.createTestOneToManyWithFetch();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		OneToManyAnnotation oneToMany = (OneToManyAnnotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		assertEquals(FetchType.EAGER, oneToMany.getFetch());
@@ -152,7 +152,7 @@ public class OneToManyTests extends JpaJavaResourceModelTestCase {
 	public void testSetFetchNull() throws Exception {
 		ICompilationUnit cu = this.createTestOneToManyWithFetch();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		OneToManyAnnotation oneToMany = (OneToManyAnnotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		assertEquals(FetchType.EAGER, oneToMany.getFetch());
@@ -168,7 +168,7 @@ public class OneToManyTests extends JpaJavaResourceModelTestCase {
 	public void testGetTargetEntity() throws Exception {
 		ICompilationUnit cu = this.createTestOneToManyWithTargetEntity();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		OneToManyAnnotation oneToMany = (OneToManyAnnotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		assertEquals(TYPE_NAME, oneToMany.getTargetEntity());
@@ -177,7 +177,7 @@ public class OneToManyTests extends JpaJavaResourceModelTestCase {
 	public void testSetTargetEntity() throws Exception {
 		ICompilationUnit cu = this.createTestOneToManyWithTargetEntity();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		OneToManyAnnotation oneToMany = (OneToManyAnnotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		assertEquals(TYPE_NAME, oneToMany.getTargetEntity());
@@ -190,7 +190,7 @@ public class OneToManyTests extends JpaJavaResourceModelTestCase {
 	public void testSetTargetEntityNull() throws Exception {
 		ICompilationUnit cu = this.createTestOneToManyWithTargetEntity();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		OneToManyAnnotation oneToMany = (OneToManyAnnotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		assertEquals(TYPE_NAME, oneToMany.getTargetEntity());
@@ -205,7 +205,7 @@ public class OneToManyTests extends JpaJavaResourceModelTestCase {
 	public void testGetFullyQualifiedTargetEntity() throws Exception {
 		ICompilationUnit cu = this.createTestOneToManyWithTargetEntity();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		OneToManyAnnotation oneToMany = (OneToManyAnnotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, oneToMany.getFullyQualifiedTargetEntityClassName());
@@ -222,7 +222,7 @@ public class OneToManyTests extends JpaJavaResourceModelTestCase {
 	public void testGetMappedBy() throws Exception {
 		ICompilationUnit cu = this.createTestOneToManyWithMappedBy();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		OneToManyAnnotation oneToMany = (OneToManyAnnotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		assertEquals("foo", oneToMany.getMappedBy());
@@ -232,7 +232,7 @@ public class OneToManyTests extends JpaJavaResourceModelTestCase {
 	public void testGetMappedByNull() throws Exception {
 		ICompilationUnit cu = this.createTestOneToMany();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		OneToManyAnnotation oneToMany = (OneToManyAnnotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		assertEquals(null, oneToMany.getMappedBy());
@@ -241,7 +241,7 @@ public class OneToManyTests extends JpaJavaResourceModelTestCase {
 	public void testSetMappedBy() throws Exception {
 		ICompilationUnit cu = this.createTestOneToMany();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		OneToManyAnnotation oneToMany = (OneToManyAnnotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		assertNull(oneToMany.getMappedBy());
@@ -254,7 +254,7 @@ public class OneToManyTests extends JpaJavaResourceModelTestCase {
 	public void testSetMappedByNull() throws Exception {
 		ICompilationUnit cu = this.createTestOneToManyWithMappedBy();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		OneToManyAnnotation oneToMany = (OneToManyAnnotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		assertEquals("foo", oneToMany.getMappedBy());
@@ -269,7 +269,7 @@ public class OneToManyTests extends JpaJavaResourceModelTestCase {
 	public void testSetCascadeAll() throws Exception {
 		ICompilationUnit cu = this.createTestOneToMany();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		OneToManyAnnotation oneToMany = (OneToManyAnnotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		assertFalse(oneToMany.isCascadeAll());
@@ -283,7 +283,7 @@ public class OneToManyTests extends JpaJavaResourceModelTestCase {
 	public void testSetCascadeMerge() throws Exception {
 		ICompilationUnit cu = this.createTestOneToMany();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		OneToManyAnnotation oneToMany = (OneToManyAnnotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		assertFalse(oneToMany.isCascadeMerge());
@@ -297,7 +297,7 @@ public class OneToManyTests extends JpaJavaResourceModelTestCase {
 	public void testSetCascadePersist() throws Exception {
 		ICompilationUnit cu = this.createTestOneToMany();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		OneToManyAnnotation oneToMany = (OneToManyAnnotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		assertFalse(oneToMany.isCascadePersist());
@@ -311,7 +311,7 @@ public class OneToManyTests extends JpaJavaResourceModelTestCase {
 	public void testSetCascadeRemove() throws Exception {
 		ICompilationUnit cu = this.createTestOneToMany();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		OneToManyAnnotation oneToMany = (OneToManyAnnotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		assertFalse(oneToMany.isCascadeRemove());
@@ -325,7 +325,7 @@ public class OneToManyTests extends JpaJavaResourceModelTestCase {
 	public void testSetCascadeRefresh() throws Exception {
 		ICompilationUnit cu = this.createTestOneToMany();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		OneToManyAnnotation oneToMany = (OneToManyAnnotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		assertFalse(oneToMany.isCascadeRefresh());
@@ -339,7 +339,7 @@ public class OneToManyTests extends JpaJavaResourceModelTestCase {
 	public void testCascadeMoreThanOnce() throws Exception {
 		ICompilationUnit cu = this.createTestOneToManyWithCascade();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		OneToManyAnnotation oneToMany = (OneToManyAnnotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		assertTrue(oneToMany.isCascadeAll());
@@ -364,7 +364,7 @@ public class OneToManyTests extends JpaJavaResourceModelTestCase {
 	public void testDuplicateCascade() throws Exception {
 		ICompilationUnit cu = this.createTestOneToManyWithDuplicateCascade();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		OneToManyAnnotation oneToMany = (OneToManyAnnotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		assertTrue(oneToMany.isCascadeMerge());
@@ -382,7 +382,7 @@ public class OneToManyTests extends JpaJavaResourceModelTestCase {
 	public void testMultipleCascade() throws Exception {
 		ICompilationUnit cu = this.createTestOneToManyWithMultipleCascade();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		OneToManyAnnotation oneToMany = (OneToManyAnnotation) resourceField.getAnnotation(JPA.ONE_TO_MANY);
 		assertTrue(oneToMany.isCascadeMerge());

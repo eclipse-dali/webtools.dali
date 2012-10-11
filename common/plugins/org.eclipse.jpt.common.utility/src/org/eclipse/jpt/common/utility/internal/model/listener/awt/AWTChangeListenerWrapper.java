@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.common.utility.internal.model.listener.awt;
 
 import java.awt.EventQueue;
-
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionClearEvent;
@@ -23,10 +22,6 @@ import org.eclipse.jpt.common.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.common.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeAddEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeChangeEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeClearEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeRemoveEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
 
 /**
@@ -143,38 +138,6 @@ public final class AWTChangeListenerWrapper
 			this.listChanged_(event);
 		} else {
 			this.executeOnEventQueue(this.buildListChangedRunnable(event));
-		}
-	}
-
-	public void nodeAdded(TreeAddEvent event) {
-		if (this.isExecutingOnUIThread()) {
-			this.nodeAdded_(event);
-		} else {
-			this.executeOnEventQueue(this.buildNodeAddedRunnable(event));
-		}
-	}
-
-	public void nodeRemoved(TreeRemoveEvent event) {
-		if (this.isExecutingOnUIThread()) {
-			this.nodeRemoved_(event);
-		} else {
-			this.executeOnEventQueue(this.buildNodeRemovedRunnable(event));
-		}
-	}
-
-	public void treeCleared(TreeClearEvent event) {
-		if (this.isExecutingOnUIThread()) {
-			this.treeCleared_(event);
-		} else {
-			this.executeOnEventQueue(this.buildTreeClearedRunnable(event));
-		}
-	}
-
-	public void treeChanged(TreeChangeEvent event) {
-		if (this.isExecutingOnUIThread()) {
-			this.treeChanged_(event);
-		} else {
-			this.executeOnEventQueue(this.buildTreeChangedRunnable(event));
 		}
 	}
 
@@ -314,54 +277,6 @@ public final class AWTChangeListenerWrapper
 		};
 	}
 
-	private Runnable buildNodeAddedRunnable(final TreeAddEvent event) {
-		return new Runnable() {
-			public void run() {
-				AWTChangeListenerWrapper.this.nodeAdded_(event);
-			}
-			@Override
-			public String toString() {
-				return "node added runnable"; //$NON-NLS-1$
-			}
-		};
-	}
-
-	private Runnable buildNodeRemovedRunnable(final TreeRemoveEvent event) {
-		return new Runnable() {
-			public void run() {
-				AWTChangeListenerWrapper.this.nodeRemoved_(event);
-			}
-			@Override
-			public String toString() {
-				return "node removed runnable"; //$NON-NLS-1$
-			}
-		};
-	}
-
-	private Runnable buildTreeClearedRunnable(final TreeClearEvent event) {
-		return new Runnable() {
-			public void run() {
-				AWTChangeListenerWrapper.this.treeCleared_(event);
-			}
-			@Override
-			public String toString() {
-				return "tree cleared runnable"; //$NON-NLS-1$
-			}
-		};
-	}
-
-	private Runnable buildTreeChangedRunnable(final TreeChangeEvent event) {
-		return new Runnable() {
-			public void run() {
-				AWTChangeListenerWrapper.this.treeChanged_(event);
-			}
-			@Override
-			public String toString() {
-				return "tree changed runnable"; //$NON-NLS-1$
-			}
-		};
-	}
-
 	private boolean isExecutingOnUIThread() {
 		return EventQueue.isDispatchThread();
 	}
@@ -430,25 +345,8 @@ public final class AWTChangeListenerWrapper
 		this.listener.listChanged(event);
 	}
 
-	void nodeAdded_(TreeAddEvent event) {
-		this.listener.nodeAdded(event);
-	}
-
-	void nodeRemoved_(TreeRemoveEvent event) {
-		this.listener.nodeRemoved(event);
-	}
-
-	void treeCleared_(TreeClearEvent event) {
-		this.listener.treeCleared(event);
-	}
-
-	void treeChanged_(TreeChangeEvent event) {
-		this.listener.treeChanged(event);
-	}
-
 	@Override
 	public String toString() {
 		return "AWT(" + this.listener.toString() + ')'; //$NON-NLS-1$
 	}
-
 }

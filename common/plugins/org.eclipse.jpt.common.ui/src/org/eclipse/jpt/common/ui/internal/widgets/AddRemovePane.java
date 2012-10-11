@@ -12,10 +12,10 @@ package org.eclipse.jpt.common.ui.internal.widgets;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTListChangeListenerWrapper;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
@@ -330,7 +330,7 @@ public abstract class AddRemovePane<T extends Model, E extends Object> extends P
 	protected void itemsRemoved(ListRemoveEvent e) {
 		//clear the selection if any of the removed items were part of the selection
 		for (Object removedItem : e.getItems()) {
-			if (CollectionTools.contains(this.selectedItemsModel, removedItem)) {
+			if (IterableTools.contains(this.selectedItemsModel, removedItem)) {
 				this.selectedItemsModel.setValues(EmptyIterable.<E>instance());
 				break;
 			}

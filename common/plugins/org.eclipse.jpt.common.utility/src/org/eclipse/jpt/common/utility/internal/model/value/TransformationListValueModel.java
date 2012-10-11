@@ -14,8 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.eclipse.jpt.common.utility.internal.Transformer;
-import org.eclipse.jpt.common.utility.internal.iterators.ReadOnlyListIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.ReadOnlyListIterator;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.common.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.ListClearEvent;
@@ -24,6 +23,7 @@ import org.eclipse.jpt.common.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.common.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * An adapter that allows us to transform a {@link ListValueModel}
@@ -141,7 +141,7 @@ public class TransformationListValueModel<E1, E2>
 		super.engageModel();
 		// sync the transformed list *after* we start listening to the list model,
 		// since its value might change when a listener is added
-		this.transformedList.addAll(this.transformItems(this.listHolder));
+		this.transformedList.addAll(this.transformItems(this.listModel));
 	}
 
     @Override
@@ -223,7 +223,7 @@ public class TransformationListValueModel<E1, E2>
 	 * Synchronize our cache with the wrapped collection.
 	 */
 	protected void rebuildTransformedList() {
-		this.synchronizeList(this.transformItems(this.listHolder), this.transformedList, LIST_VALUES);
+		this.synchronizeList(this.transformItems(this.listModel), this.transformedList, LIST_VALUES);
 	}
 
 	@Override

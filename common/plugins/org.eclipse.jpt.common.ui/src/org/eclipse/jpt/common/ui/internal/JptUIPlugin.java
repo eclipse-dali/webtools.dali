@@ -311,7 +311,7 @@ public abstract class JptUIPlugin
 	protected static final String IMAGE_FILE_EXT = "gif"; //$NON-NLS-1$
 
 	protected void checkImageKey(String key) {
-		if (StringTools.stringIsEmpty(key)) {
+		if (StringTools.isBlank(key)) {
 			throw new IllegalArgumentException("image key cannot be blank"); //$NON-NLS-1$
 		}
 	}

@@ -13,15 +13,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
+import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXmlEnumValue;
 import org.eclipse.text.edits.ReplaceEdit;
 
 /**
@@ -260,7 +261,7 @@ public abstract class AbstractPersistenceUnitProperties extends AbstractModel
 	}
 
 	protected Integer getIntegerValueOf(String puStringValue) {
-		if  (StringTools.stringIsEmpty(puStringValue)) {
+		if  (StringTools.isBlank(puStringValue)) {
 			return null;
 		}
 		try {
@@ -322,7 +323,7 @@ public abstract class AbstractPersistenceUnitProperties extends AbstractModel
 	}
 	
 	protected Boolean getBooleanValueOf(String puStringValue) {
-		if (StringTools.stringIsEmpty(puStringValue)) {
+		if (StringTools.isBlank(puStringValue)) {
 			return null;
 		}
 		return Boolean.valueOf(puStringValue);
@@ -498,16 +499,16 @@ public abstract class AbstractPersistenceUnitProperties extends AbstractModel
 	}
 
 	private String buildCompositeValue(String value, String valueToAppend) {
-		if((StringTools.stringIsEmpty(valueToAppend)) ) {
+		if((StringTools.isBlank(valueToAppend)) ) {
 			return value;
 		}
-		return (StringTools.stringIsEmpty(value)) ? 
+		return (StringTools.isBlank(value)) ? 
 						valueToAppend : 
 						(value + PROPERTY_VALUE_DELIMITER + valueToAppend);
 	}
 
 	protected List<String> extractCompositeValue(String compositeValue) {
-		if(StringTools.stringIsEmpty(compositeValue)) {
+		if(StringTools.isBlank(compositeValue)) {
 			return new ArrayList<String>(0);
 		}
 		String[] values = compositeValue.split(PROPERTY_VALUE_DELIMITER);
@@ -519,7 +520,7 @@ public abstract class AbstractPersistenceUnitProperties extends AbstractModel
 	}
 
 	private String removeValueFrom(String compositeValue, String valueToRemove) {
-		if((StringTools.stringIsEmpty(valueToRemove))) {
+		if((StringTools.isBlank(valueToRemove))) {
 			return compositeValue;
 		}
 		String[] values = compositeValue.split(PROPERTY_VALUE_DELIMITER);

@@ -23,9 +23,9 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.utility.BodySourceWriter;
-import org.eclipse.jpt.common.utility.internal.ClassName;
-import org.eclipse.jpt.common.utility.internal.SimpleStack;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ClassNameTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.collection.LinkedStack;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
@@ -152,7 +152,7 @@ public class GenericMetamodelSynchronizer
 	}
 
 	protected String buildPackageName(String topLevelSourceTypeName) {
-		return this.buildPackageName_(ClassName.getPackageName(topLevelSourceTypeName));
+		return this.buildPackageName_(ClassNameTools.packageName(topLevelSourceTypeName));
 	}
 
 	// TODO
@@ -162,7 +162,7 @@ public class GenericMetamodelSynchronizer
 	}
 
 	protected String getFileName() {
-		return ClassName.getSimpleName(this.getClassName()) + ".java";
+		return ClassNameTools.simpleName(this.getClassName()) + ".java";
 	}
 
 	protected String getClassName() {
@@ -175,10 +175,10 @@ public class GenericMetamodelSynchronizer
 
 	protected String buildClassName(String sourceTypeName, Map<String, Collection<MetamodelSourceType>> memberTypeTree) {
 		String current = sourceTypeName;
-		SimpleStack<String> stack = new SimpleStack<String>();
+		LinkedStack<String> stack = new LinkedStack<String>();
 
 		while (true) {
-			stack.push(ClassName.getSimpleName(current));
+			stack.push(ClassNameTools.simpleName(current));
 			String declaringTypeName = this.getDeclaringTypeName(current, memberTypeTree);
 			if (declaringTypeName == null) {
 				break;
@@ -196,11 +196,11 @@ public class GenericMetamodelSynchronizer
 	}
 
 	protected String buildClassName(String topLevelSourceTypeName) {
-		return this.buildPackageName(topLevelSourceTypeName) + '.' + this.buildSimpleClassName(ClassName.getSimpleName(topLevelSourceTypeName));
+		return this.buildPackageName(topLevelSourceTypeName) + '.' + this.buildSimpleClassName(ClassNameTools.simpleName(topLevelSourceTypeName));
 	}
 
 	protected String getSimpleClassName() {
-		return this.buildSimpleClassName(ClassName.getSimpleName(this.sourceType.getName()));
+		return this.buildSimpleClassName(ClassNameTools.simpleName(this.sourceType.getName()));
 	}
 
 	// TODO
@@ -428,7 +428,7 @@ public class GenericMetamodelSynchronizer
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.sourceType.getName());
+		return ObjectTools.toString(this, this.sourceType.getName());
 	}
 
 }

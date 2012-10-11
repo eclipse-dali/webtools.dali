@@ -13,8 +13,8 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.resource.java.GeneratedValueAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.GenerationType;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
@@ -69,7 +69,7 @@ public class GeneratedValueTests extends JpaJavaResourceModelTestCase {
 	public void testGeneratedValue() throws Exception {
 		ICompilationUnit cu = this.createTestGeneratedValue();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) resourceField.getAnnotation(JPA.GENERATED_VALUE);
 		assertNotNull(generatedValue);
@@ -78,7 +78,7 @@ public class GeneratedValueTests extends JpaJavaResourceModelTestCase {
 	public void testGetGenerator() throws Exception {
 		ICompilationUnit cu = this.createTestGeneratedValueWithGenerator();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) resourceField.getAnnotation(JPA.GENERATED_VALUE);
 		assertEquals(GENERATOR, generatedValue.getGenerator());
@@ -87,7 +87,7 @@ public class GeneratedValueTests extends JpaJavaResourceModelTestCase {
 	public void testSetGenerator() throws Exception {
 		ICompilationUnit cu = this.createTestGeneratedValueWithGenerator();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) resourceField.getAnnotation(JPA.GENERATED_VALUE);
 		assertEquals(GENERATOR, generatedValue.getGenerator());
@@ -107,7 +107,7 @@ public class GeneratedValueTests extends JpaJavaResourceModelTestCase {
 	public void testGetStrategy() throws Exception {
 		ICompilationUnit cu = this.createTestGeneratedValueWithStrategy();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) resourceField.getAnnotation(JPA.GENERATED_VALUE);
 		assertEquals(GenerationType.SEQUENCE, generatedValue.getStrategy());
@@ -116,7 +116,7 @@ public class GeneratedValueTests extends JpaJavaResourceModelTestCase {
 	public void testSetStrategy() throws Exception {
 		ICompilationUnit cu = this.createTestGeneratedValueWithStrategy();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) resourceField.getAnnotation(JPA.GENERATED_VALUE);
 		assertEquals(GenerationType.SEQUENCE, generatedValue.getStrategy());

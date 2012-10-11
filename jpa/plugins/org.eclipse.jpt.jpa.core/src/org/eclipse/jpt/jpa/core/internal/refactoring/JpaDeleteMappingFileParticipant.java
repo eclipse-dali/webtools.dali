@@ -18,9 +18,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
@@ -108,7 +108,7 @@ public class JpaDeleteMappingFileParticipant
 		//we can at least set the subtask and report no progress. Only happens first time getJpaProjectManager() is called.
 		monitor.subTask(JpaCoreRefactoringMessages.JPA_REFACORING_PARTICIPANT_LOADING_JPA_PROJECTS_SUB_TASK_NAME);
 		Iterable<JpaProject> jpaProjects = this.getJpaProjects();
-		int size = CollectionTools.size(jpaProjects);
+		int size = IterableTools.size(jpaProjects);
 		if (size == 0) {
 			return null;
 		}
@@ -150,7 +150,7 @@ public class JpaDeleteMappingFileParticipant
 			return;
 		}
 		Iterable<DeleteEdit> classRefDeleteEdits = this.createSpecifiedMappingFileRefDeleteEdits(persistenceUnit);
-		if (!CollectionTools.isEmpty(classRefDeleteEdits)) {
+		if (!IterableTools.isEmpty(classRefDeleteEdits)) {
 			this.persistenceXmlMappingFileDeleteEdits.put(jpaProject.getPersistenceXmlResource().getFile(), classRefDeleteEdits);
 		}
 	}

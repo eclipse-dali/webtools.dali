@@ -20,10 +20,10 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.context.persistence.MappingFileRef;
@@ -109,7 +109,7 @@ public abstract class AbstractJpaMoveJavaElementParticipant
 	public RefactoringStatus checkConditions(IProgressMonitor monitor, CheckConditionsContext context) throws OperationCanceledException {
 		monitor.subTask(JpaCoreRefactoringMessages.JPA_REFACORING_PARTICIPANT_LOADING_JPA_PROJECTS_SUB_TASK_NAME);
 		Iterable<JpaProject> jpaProjects = this.getJpaProjects();
-		int size = CollectionTools.size(jpaProjects);
+		int size = IterableTools.size(jpaProjects);
 		if (size == 0) {
 			return null;
 		}
@@ -192,7 +192,7 @@ public abstract class AbstractJpaMoveJavaElementParticipant
 		SubMonitor sm = SubMonitor.convert(monitor, 1 + persistenceUnit.getMappingFileRefsSize());
 		Iterable<ReplaceEdit> classRefDeleteEdits = this.createPersistenceUnitReplaceEditsCheckClasspath(persistenceUnit);
 		sm.worked(1);
-		if (!CollectionTools.isEmpty(classRefDeleteEdits)) {
+		if (!IterableTools.isEmpty(classRefDeleteEdits)) {
 			this.persistenceXmlReplaceEdits.put(jpaProject.getPersistenceXmlResource().getFile(), classRefDeleteEdits);
 		}
 		for (MappingFileRef mappingFileRef : persistenceUnit.getMappingFileRefs()) {
@@ -200,7 +200,7 @@ public abstract class AbstractJpaMoveJavaElementParticipant
 				throw new OperationCanceledException();
 			}
 			Iterable<ReplaceEdit> edits = this.createMappingFileReplaceEditsCheckClasspath(mappingFileRef);
-			if (!CollectionTools.isEmpty(edits)) {
+			if (!IterableTools.isEmpty(edits)) {
 				IFile file = (IFile) mappingFileRef.getMappingFile().getResource();
 				this.mappingFileReplaceEdits.put(file, edits);
 			}

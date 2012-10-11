@@ -16,9 +16,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.Range;
-import org.eclipse.jpt.common.utility.internal.iterators.ReadOnlyListIterator;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ReadOnlyListIterator;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.common.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.ListClearEvent;
@@ -135,7 +135,7 @@ public class SortedListValueModelWrapper<E>
 
 	protected void buildSortedList() {
 		// if the new list is empty, do nothing
-		int size = this.listHolder.size();
+		int size = this.listModel.size();
 		if (size != 0) {
 			this.buildSortedList(size);
 		}
@@ -143,7 +143,7 @@ public class SortedListValueModelWrapper<E>
 
 	protected void buildSortedList(int size) {
 		this.sortedList.ensureCapacity(size);
-		for (E each : this.listHolder) {
+		for (E each : this.listModel) {
 			this.sortedList.add(each);
 		}
 		Collections.sort(this.sortedList, this.comparator);
@@ -207,7 +207,7 @@ public class SortedListValueModelWrapper<E>
 	 */
     @Override
 	protected void listChanged(ListChangeEvent event) {
-		int size = this.listHolder.size();
+		int size = this.listModel.size();
 		if (size == 0) {
 			if (this.sortedList.isEmpty()) {
 				// no change
@@ -234,7 +234,7 @@ public class SortedListValueModelWrapper<E>
 		@SuppressWarnings("unchecked")
 		ArrayList<E> unsortedList = (ArrayList<E>) this.sortedList.clone();
 		Collections.sort(this.sortedList, this.comparator);
-		Range diffRange = CollectionTools.identityDiffRange(unsortedList, this.sortedList);
+		Range diffRange = ListTools.identityDifferenceRange(unsortedList, this.sortedList);
 		if (diffRange.size > 0) {
 			List<E> unsortedItems = unsortedList.subList(diffRange.start, diffRange.end + 1);
 			List<E> sortedItems = this.sortedList.subList(diffRange.start, diffRange.end + 1);

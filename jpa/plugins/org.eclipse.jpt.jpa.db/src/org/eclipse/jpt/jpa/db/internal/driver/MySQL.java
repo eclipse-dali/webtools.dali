@@ -14,7 +14,8 @@ import java.util.List;
 import java.util.Map;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.SystemTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.db.Database;
 import org.eclipse.jpt.jpa.db.DatabaseObject;
 import org.eclipse.jpt.jpa.db.Schema;
@@ -135,8 +136,8 @@ class MySQL
 	 */
 	@Override
 	boolean identifierIsDelimited(String identifier) {
-		return StringTools.stringIsDelimited(identifier, BACKTICK)
-					|| (StringTools.stringIsQuoted(identifier) && this.doubleQuoteIsIdentifierDelimiter());
+		return StringTools.isDelimited(identifier, BACKTICK)
+					|| (StringTools.isQuoted(identifier) && this.doubleQuoteIsIdentifierDelimiter());
 	}
 	private static final char BACKTICK = '`';
 
@@ -229,7 +230,7 @@ class MySQL
 			return -1;
 		}
 		Map<String, Object> row = rows.get(0);
-		if (Tools.valuesAreEqual(row.get("Variable_name"), "lower_case_table_names")) { //$NON-NLS-1$ //$NON-NLS-2$
+		if (ObjectTools.equals(row.get("Variable_name"), "lower_case_table_names")) { //$NON-NLS-1$ //$NON-NLS-2$
 			return Integer.valueOf((String) row.get("Value")).intValue(); //$NON-NLS-1$
 		}
 		return -1;
@@ -241,10 +242,10 @@ class MySQL
 	 * client O/S, not the MySQL Server O/S...).
 	 */
 	private int getLowerCaseTableNamesFromOS() {
-		if (Tools.osIsMac()) {
+		if (SystemTools.osIsMac()) {
 			return 2;
 		}
-		if (Tools.osIsWindows()) {
+		if (SystemTools.osIsWindows()) {
 			return 1;
 		}
 		return 0;  // Linux etc.

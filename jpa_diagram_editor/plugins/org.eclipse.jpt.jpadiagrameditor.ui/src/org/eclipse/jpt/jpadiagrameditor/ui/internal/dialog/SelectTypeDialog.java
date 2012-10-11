@@ -234,7 +234,7 @@ public class SelectTypeDialog extends TitleAreaDialog {
     
     private boolean validatePage() {
 		String type = text.getText().trim();
-		if (StringTools.stringIsEmpty(type)) {
+		if (StringTools.isBlank(type)) {
 			setErrorMessage(JPAEditorMessages.SelectTypeDialog_emptyTypeErrorText);
 			return false;
 		}

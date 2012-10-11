@@ -11,11 +11,11 @@ package org.eclipse.jpt.jpa.core.internal.libprov;
 
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.jpt.jpa.core.libprov.JpaLibraryProviderInstallOperationConfig;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
 
 /**
  * Factory to build Dali adapters for an {@link JpaLibraryProviderInstallOperationConfig}:<ul>
- * <li>{@link JpaPlatformDescription}
+ * <li>{@link JpaPlatformConfig}
  * </ul>
  * See <code>org.eclipse.jpt.jpa.core/plugin.xml:org.eclipse.core.runtime.adapters</code>.
  */
@@ -23,7 +23,7 @@ public class JpaLibraryProviderInstallOperationConfigAdapterFactory
 	implements IAdapterFactory
 {
 	private static final Class<?>[] ADAPTER_LIST = new Class[] {
-			JpaPlatformDescription.class
+			JpaPlatformConfig.class
 		};
 
 	public Class<?>[] getAdapterList() {
@@ -38,8 +38,8 @@ public class JpaLibraryProviderInstallOperationConfigAdapterFactory
 	}
 	
 	private Object getAdapter(JpaLibraryProviderInstallOperationConfig config, Class<?> adapterType) {
-		if (adapterType == JpaPlatformDescription.class) {
-			return config.getJpaPlatform();
+		if (adapterType == JpaPlatformConfig.class) {
+			return config.getJpaPlatformConfig();
 		}
 		return null;
 	}

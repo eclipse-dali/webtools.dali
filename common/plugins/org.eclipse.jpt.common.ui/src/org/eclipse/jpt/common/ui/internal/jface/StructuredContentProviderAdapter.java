@@ -14,7 +14,7 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTListChangeListenerWrapper;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionListValueModelAdapter;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.common.utility.model.event.ListChangeEvent;
@@ -259,7 +259,7 @@ public class StructuredContentProviderAdapter
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.listHolder);
+		return ObjectTools.toString(this, this.listHolder);
 	}
 
 }

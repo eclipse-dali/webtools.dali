@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.utility.tests.internal;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.eclipse.jpt.common.utility.internal.Association;
+import org.eclipse.jpt.common.utility.Association;
 import org.eclipse.jpt.common.utility.internal.SimpleAssociation;
 
 @SuppressWarnings("nls")

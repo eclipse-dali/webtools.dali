@@ -20,15 +20,16 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.NotNullFilter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SnapshotCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
@@ -167,7 +168,7 @@ public abstract class AbstractJaxbContextRoot
 				JaxbType jaxbType = getType(typeToScan);
 				if (jaxbType != null) {
 					for (String referencedTypeName : jaxbType.getReferencedXmlTypeNames()) {
-						if (! StringTools.stringIsEmpty(referencedTypeName) && ! totalTypes.contains(referencedTypeName)) {
+						if (! StringTools.isBlank(referencedTypeName) && ! totalTypes.contains(referencedTypeName)) {
 							JavaResourceAbstractType referencedType = getJaxbProject().getJavaResourceType(referencedTypeName);
 							if (referencedType != null) {
 								resourceTypesToProcess.add(referencedType);
@@ -356,7 +357,7 @@ public abstract class AbstractJaxbContextRoot
 
 	public JaxbPackage getPackage(String packageName) {
 		for (JaxbPackage jaxbPackage : this.getPackages()) {
-			if (StringTools.stringsAreEqual(jaxbPackage.getName(), packageName)) {
+			if (ObjectTools.equals(jaxbPackage.getName(), packageName)) {
 				return jaxbPackage;
 			}
 		}

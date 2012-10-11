@@ -22,12 +22,12 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.BodySourceWriter;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.ChainIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.ChainIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
@@ -160,7 +160,7 @@ public class VirtualJavaPersistentType
 		if (spt == null) {
 			return null;
 		}
-		if (CollectionTools.contains(spt.getInheritanceHierarchy(), this)) {
+		if (IterableTools.contains(spt.getInheritanceHierarchy(), this)) {
 			return null;  // short-circuit in this case, we have circular inheritance
 		}
 		return spt.isMapped() ? spt : spt.getSuperPersistentType();
@@ -179,7 +179,7 @@ public class VirtualJavaPersistentType
 	 * hierarchy are handled in {@link #buildSuperPersistentType()}.
 	 */
 	protected PersistentType resolveSuperPersistentType(String typeName, Collection<JavaResourceType> visited) {
-		if (StringTools.stringIsEmpty(typeName)) {
+		if (StringTools.isBlank(typeName)) {
 			return null;
 		}
 		PersistentType spt = this.resolvePersistentType(typeName);

@@ -13,8 +13,8 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 
@@ -110,7 +110,7 @@ public class ColumnTests extends JpaJavaResourceModelTestCase {
 	public void testGetName() throws Exception {
 		ICompilationUnit cu = this.createTestColumnWithName();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		ColumnAnnotation column = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);
 		assertNotNull(column);
 		assertEquals(COLUMN_NAME, column.getName());
@@ -119,7 +119,7 @@ public class ColumnTests extends JpaJavaResourceModelTestCase {
 	public void testGetNull() throws Exception {
 		ICompilationUnit cu = this.createTestColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		ColumnAnnotation column = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);
 		assertNotNull(column);
 		assertNull(column.getName());
@@ -134,7 +134,7 @@ public class ColumnTests extends JpaJavaResourceModelTestCase {
 	public void testSetName() throws Exception {
 		ICompilationUnit cu = this.createTestColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		ColumnAnnotation column = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);
 
 		assertNotNull(column);
@@ -149,7 +149,7 @@ public class ColumnTests extends JpaJavaResourceModelTestCase {
 	public void testSetNameNull() throws Exception {
 		ICompilationUnit cu = this.createTestColumnWithName();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		ColumnAnnotation column = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);
 
 		assertEquals(COLUMN_NAME, column.getName());
@@ -163,7 +163,7 @@ public class ColumnTests extends JpaJavaResourceModelTestCase {
 	public void testGetTable() throws Exception {
 		ICompilationUnit cu = this.createTestColumnWithTable();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		ColumnAnnotation column = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);
 		assertEquals(COLUMN_TABLE, column.getTable());
 	}
@@ -171,7 +171,7 @@ public class ColumnTests extends JpaJavaResourceModelTestCase {
 	public void testSetTable() throws Exception {
 		ICompilationUnit cu = this.createTestColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		ColumnAnnotation column = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);
 
 		assertNotNull(column);
@@ -190,7 +190,7 @@ public class ColumnTests extends JpaJavaResourceModelTestCase {
 	public void testGetColumnDefinition() throws Exception {
 		ICompilationUnit cu = this.createTestColumnWithColumnDefinition();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		ColumnAnnotation column = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);
 		assertEquals(COLUMN_COLUMN_DEFINITION, column.getColumnDefinition());
 	}
@@ -198,7 +198,7 @@ public class ColumnTests extends JpaJavaResourceModelTestCase {
 	public void testSetColumnDefinition() throws Exception {
 		ICompilationUnit cu = this.createTestColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		ColumnAnnotation column = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);
 
 		assertNotNull(column);
@@ -217,7 +217,7 @@ public class ColumnTests extends JpaJavaResourceModelTestCase {
 	public void testGetUnique() throws Exception {
 		ICompilationUnit cu = this.createTestColumnWithBooleanElement("unique");
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		ColumnAnnotation column = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);
 
 		assertEquals(Boolean.TRUE, column.getUnique());
@@ -226,7 +226,7 @@ public class ColumnTests extends JpaJavaResourceModelTestCase {
 	public void testSetUnique() throws Exception {
 		ICompilationUnit cu = this.createTestColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		ColumnAnnotation column = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);
 
 		assertNotNull(column);
@@ -244,7 +244,7 @@ public class ColumnTests extends JpaJavaResourceModelTestCase {
 	public void testGetNullable() throws Exception {
 		ICompilationUnit cu = this.createTestColumnWithBooleanElement("nullable");
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		ColumnAnnotation column = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);
 
 		assertEquals(Boolean.TRUE, column.getNullable());
@@ -253,7 +253,7 @@ public class ColumnTests extends JpaJavaResourceModelTestCase {
 	public void testSetNullable() throws Exception {
 		ICompilationUnit cu = this.createTestColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		ColumnAnnotation column = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);
 
 		assertNotNull(column);
@@ -271,7 +271,7 @@ public class ColumnTests extends JpaJavaResourceModelTestCase {
 	public void testGetInsertable() throws Exception {
 		ICompilationUnit cu = this.createTestColumnWithBooleanElement("insertable");
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		ColumnAnnotation column = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);
 
 		assertEquals(Boolean.TRUE, column.getInsertable());
@@ -280,7 +280,7 @@ public class ColumnTests extends JpaJavaResourceModelTestCase {
 	public void testSetInsertable() throws Exception {
 		ICompilationUnit cu = this.createTestColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		ColumnAnnotation column = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);
 
 		assertNotNull(column);
@@ -298,7 +298,7 @@ public class ColumnTests extends JpaJavaResourceModelTestCase {
 	public void testGetUpdatable() throws Exception {
 		ICompilationUnit cu = this.createTestColumnWithBooleanElement("updatable");
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		ColumnAnnotation column = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);
 
 		assertEquals(Boolean.TRUE, column.getUpdatable());
@@ -307,7 +307,7 @@ public class ColumnTests extends JpaJavaResourceModelTestCase {
 	public void testSetUpdatable() throws Exception {
 		ICompilationUnit cu = this.createTestColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		ColumnAnnotation column = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);
 
 		assertNotNull(column);
@@ -325,7 +325,7 @@ public class ColumnTests extends JpaJavaResourceModelTestCase {
 	public void testGetLength() throws Exception {
 		ICompilationUnit cu = this.createTestColumnWithIntElement("length");
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		ColumnAnnotation column = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);
 
 		assertEquals(Integer.valueOf(5), column.getLength());
@@ -334,7 +334,7 @@ public class ColumnTests extends JpaJavaResourceModelTestCase {
 	public void testSetLength() throws Exception {
 		ICompilationUnit cu = this.createTestColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		ColumnAnnotation column = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);
 
 		assertNotNull(column);
@@ -352,7 +352,7 @@ public class ColumnTests extends JpaJavaResourceModelTestCase {
 	public void testGetPrecision() throws Exception {
 		ICompilationUnit cu = this.createTestColumnWithIntElement("precision");
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		ColumnAnnotation column = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);
 
 		assertEquals(Integer.valueOf(5), column.getPrecision());
@@ -361,7 +361,7 @@ public class ColumnTests extends JpaJavaResourceModelTestCase {
 	public void testSetPrecision() throws Exception {
 		ICompilationUnit cu = this.createTestColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		ColumnAnnotation column = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);
 
 		assertNotNull(column);
@@ -379,7 +379,7 @@ public class ColumnTests extends JpaJavaResourceModelTestCase {
 	public void testGetScale() throws Exception {
 		ICompilationUnit cu = this.createTestColumnWithIntElement("scale");
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		ColumnAnnotation column = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);
 
 		assertEquals(Integer.valueOf(5), column.getScale());
@@ -388,7 +388,7 @@ public class ColumnTests extends JpaJavaResourceModelTestCase {
 	public void testSetScale() throws Exception {
 		ICompilationUnit cu = this.createTestColumn();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		ColumnAnnotation column = (ColumnAnnotation) resourceField.getAnnotation(JPA.COLUMN);
 
 		assertNotNull(column);

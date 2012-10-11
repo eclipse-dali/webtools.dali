@@ -13,9 +13,9 @@ import java.util.List;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.orm.AbstractOrmEmbeddedIdMapping;
@@ -55,7 +55,7 @@ public class OrmEclipseLinkEmbeddedIdMapping
 	@Override
 	protected boolean validateTargetEmbeddable(List<IMessage> messages) {
 		if (this.isVirtualAccess()) {
-			if (StringTools.stringIsEmpty(this.getAttributeType())) {
+			if (StringTools.isBlank(this.getAttributeType())) {
 				messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -117,7 +117,7 @@ public class OrmEclipseLinkEmbeddedIdMapping
 	protected Iterable<String> getCandidateAttributeTypeNames() {
 		return new CompositeIterable<String>(
 				MappingTools.getSortedJavaClassNames(getJavaProject()),
-				CollectionTools.sort(((EclipseLinkPersistenceUnit) this.getPersistenceUnit()).getEclipseLinkDynamicPersistentTypeNames())
+				IterableTools.sort(((EclipseLinkPersistenceUnit) this.getPersistenceUnit()).getEclipseLinkDynamicPersistentTypeNames())
 				);
 	}
 }

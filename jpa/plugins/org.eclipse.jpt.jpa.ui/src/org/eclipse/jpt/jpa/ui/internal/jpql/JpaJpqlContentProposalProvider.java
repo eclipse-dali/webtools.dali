@@ -564,7 +564,7 @@ public final class JpaJpqlContentProposalProvider extends JpqlCompletionProposal
 		// Nothing to validate
 		if ((query() == null) ||
 		    styledText.isDisposed() ||
-		    StringTools.stringIsEmpty(styledText.getText())) {
+		    StringTools.isBlank(styledText.getText())) {
 
 			return;
 		}

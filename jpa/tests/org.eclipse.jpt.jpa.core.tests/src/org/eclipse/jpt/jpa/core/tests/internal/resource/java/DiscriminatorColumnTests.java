@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.core.tests.internal.resource.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.resource.java.DiscriminatorColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.DiscriminatorType;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;

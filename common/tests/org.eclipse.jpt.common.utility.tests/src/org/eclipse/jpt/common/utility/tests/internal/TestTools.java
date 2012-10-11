@@ -24,15 +24,13 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestFailure;
 import junit.framework.TestResult;
 import junit.textui.TestRunner;
-
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
+import org.eclipse.jpt.common.utility.internal.ClassTools;
+import org.junit.Assert;
 
 /**
  * Various tools that can be used by test cases.
@@ -203,7 +201,8 @@ public final class TestTools {
 	public static void clear(TestCase testCase) throws IllegalAccessException {
 		for (Class<?> clazz = testCase.getClass(); clazz != TestCase_class; clazz = clazz.getSuperclass()) {
 			for (Field field : clazz.getDeclaredFields()) {
-				// leave primitives alone - they don't get garbage-collected, and we can't set them to null...
+				// leave primitives alone - they don't get garbage-collected,
+				// and we can't set them to null...
 				if (field.getType().isPrimitive()) {
 					continue;
 				}
@@ -220,19 +219,19 @@ public final class TestTools {
 	private static final Class<TestCase> TestCase_class = TestCase.class;
 
 	/**
+	 * Return the value of the specified class's <code>DEBUG</code> constant.
+	 */
+	public static boolean debug(Class<?> clazz) {
+		Boolean debug = (Boolean) ClassTools.get(clazz, "DEBUG");
+		return debug.booleanValue();
+	}
+
+	/**
 	 * Verify the specified class's <code>DEBUG</code> constant is set to
 	 * <code>false</code>.
 	 */
 	public static void assertFalseDEBUG(Class<?> clazz) {
 		Assert.assertFalse("Recompile with \"DEBUG = false\": " + clazz.getName(), debug(clazz));
-	}
-	
-	/**
-	 * Return the value of the specified class's <code>DEBUG</code> constant.
-	 */
-	public static boolean debug(Class<?> clazz) {
-		Boolean debug = (Boolean) ReflectionTools.getStaticFieldValue(clazz, "DEBUG");
-		return debug.booleanValue();
 	}
 
 	/**

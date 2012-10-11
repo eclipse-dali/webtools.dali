@@ -11,14 +11,14 @@ package org.eclipse.jpt.jpa.ui.internal.details.orm;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.common.ui.internal.widgets.ValidatingDialog;
-import org.eclipse.jpt.common.utility.internal.StringConverter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticListValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -150,9 +150,10 @@ public class AddGeneratorDialog extends ValidatingDialog<AddGeneratorStateObject
 			return new StaticListValueModel<String>(generatorTypes);
 		}
 		
-		private StringConverter<String> buildStringConverter() {
-			return new StringConverter<String>() {
-				public String convertToString(String value) {
+		private Transformer<String, String> buildStringConverter() {
+			return new TransformerAdapter<String, String>() {
+				@Override
+				public String transform(String value) {
 					if (value == TABLE_GENERATOR) {
 						return JptUiDetailsOrmMessages.AddGeneratorDialog_tableGenerator;
 					}

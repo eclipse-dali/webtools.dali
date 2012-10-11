@@ -11,10 +11,10 @@ package org.eclipse.jpt.common.utility.internal.model.value;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import org.eclipse.jpt.common.utility.Filter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.ReadOnlyIterator;
+import org.eclipse.jpt.common.utility.filter.Filter;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterator.ReadOnlyIterator;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionClearEvent;
@@ -108,7 +108,7 @@ public class FilteringCollectionValueModel<E>
 		super.engageModel();
 		// sync our cache *after* we start listening to the nested collection,
 		// since its value might change when a listener is added
-		CollectionTools.addAll(this.filteredItems, this.filter(this.collectionHolder));
+		CollectionTools.addAll(this.filteredItems, this.filter(this.collectionModel));
 	}
 
 	@Override
@@ -165,7 +165,7 @@ public class FilteringCollectionValueModel<E>
 	 */
 	protected void rebuildFilteredItems() {
 		this.filteredItems.clear();
-		CollectionTools.addAll(this.filteredItems, this.filter(this.collectionHolder));
+		CollectionTools.addAll(this.filteredItems, this.filter(this.collectionModel));
 		this.fireCollectionChanged(VALUES, this.filteredItems);
 	}
 

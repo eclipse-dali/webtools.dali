@@ -11,8 +11,8 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.context.java.JavaGenerator;
@@ -75,7 +75,7 @@ public abstract class AbstractJavaGenerator<A extends GeneratorAnnotation>
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 
-		if (StringTools.stringIsEmpty(this.name)){
+		if (StringTools.isBlank(this.name)){
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
@@ -105,7 +105,7 @@ public abstract class AbstractJavaGenerator<A extends GeneratorAnnotation>
 	}
 	
 	protected boolean isEquivalentTo(Generator generator) {
-		return Tools.valuesAreEqual(this.name, generator.getName());
+		return ObjectTools.equals(this.name, generator.getName());
 	}
 
 

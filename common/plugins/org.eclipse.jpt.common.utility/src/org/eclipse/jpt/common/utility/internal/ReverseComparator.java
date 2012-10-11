@@ -21,6 +21,7 @@ public class ReverseComparator<E extends Comparable<? super E>>
 	implements Comparator<E>, Serializable
 {
 	private final Comparator<E> comparator;
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Construct a reverse comparator that will reverse the natural order of
@@ -40,6 +41,11 @@ public class ReverseComparator<E extends Comparable<? super E>>
 	}
 
 	public int compare(E e1, E e2) {
-		return (this.comparator == null) ? e2.compareTo(e1) : this.comparator.compare(e2, e1);
+		return (this.comparator != null) ? this.comparator.compare(e2, e1) : e2.compareTo(e1);
+	}
+
+	@Override
+	public String toString() {
+		return ObjectTools.toString(this, this.comparator);
 	}
 }

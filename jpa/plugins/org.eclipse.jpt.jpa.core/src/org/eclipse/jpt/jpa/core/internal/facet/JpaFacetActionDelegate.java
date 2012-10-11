@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaWorkspace;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -45,8 +45,8 @@ public abstract class JpaFacetActionDelegate
 		IDataModel dataModel = (IDataModel) config;
 		
 		// project settings
-		JpaPlatformDescription platformDescription = (JpaPlatformDescription) dataModel.getProperty(PLATFORM);
-		JpaPreferences.setJpaPlatformID(project, platformDescription.getId());
+		JpaPlatformConfig platformConfig = (JpaPlatformConfig) dataModel.getProperty(PLATFORM);
+		JpaPreferences.setJpaPlatformID(project, platformConfig.getId());
 		subMonitor.worked(1);
 		
 		// do NOT use IDataModel.getStringProperty(String) - or the connection profile name can
@@ -68,7 +68,7 @@ public abstract class JpaFacetActionDelegate
 		subMonitor.worked(1);
 		
 		// defaults settings
-		this.getJpaPlatformManager().setDefaultJpaPlatformDescription(fv, platformDescription);
+		this.getJpaPlatformManager().setDefaultJpaPlatformConfig(fv, platformConfig);
 		subMonitor.worked(1);
 		
 		//Delegate to LibraryInstallDelegate to configure the project classpath

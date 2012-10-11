@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,20 +14,18 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EventListener;
 import java.util.HashSet;
 import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.SystemTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
@@ -44,11 +42,6 @@ import org.eclipse.jpt.common.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.common.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeAddEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeChangeEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeClearEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeRemoveEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.CollectionChangeAdapter;
@@ -57,7 +50,6 @@ import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
-import org.eclipse.jpt.common.utility.model.listener.TreeChangeAdapter;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
@@ -105,14 +97,6 @@ public class ChangeSupportTests
 	static final int ADD_INDEX = 3;
 	static final int REMOVE_INDEX = 5;
 	static final int REPLACE_INDEX = 2;
-
-	TreeEvent treeEvent;
-	boolean nodeAddedCalled = false;
-	boolean nodeRemovedCalled = false;
-	boolean treeChangedCalled = false;
-	boolean treeClearedCalled = false;
-	static final String TREE_NAME = "treeName";
-	static final List<Object> OBJECT_PATH = Arrays.asList(new Object[] {new Object(), new Object(), new String()});
 
 
 	public ChangeSupportTests(String name) {
@@ -1673,7 +1657,7 @@ public class ChangeSupportTests
 		assertEquals(COLLECTION_NAME, this.collectionEvent.getCollectionName());
 		assertEquals(items.length, this.getCollectionEventItemsSize());
 		for (Object item : items) {
-			assertTrue(CollectionTools.contains(this.getCollectionEventItems(), item));
+			assertTrue(IterableTools.contains(this.getCollectionEventItems(), item));
 		}
 	}
 
@@ -3070,332 +3054,6 @@ public class ChangeSupportTests
 	}
 
 
-	// ********** tree change tests **********
-
-	public void testFireNodeAddedTree() {
-		this.treeEvent = null;
-		this.nodeAddedCalled = false;
-		this.testModel.addChangeListener(this.changeListener);
-		this.testModel.testFireNodeAddedTree();
-		this.verifyTreeEvent(OBJECT_PATH);
-		assertTrue(this.nodeAddedCalled);
-
-		this.treeEvent = null;
-		this.nodeAddedCalled = false;
-		this.testModel.removeChangeListener(this.changeListener);
-		this.testModel.testFireNodeAddedTree();
-		assertNull(this.treeEvent);
-		assertFalse(this.nodeAddedCalled);
-
-		this.treeEvent = null;
-		this.nodeAddedCalled = false;
-		this.testModel.addTreeChangeListener(TREE_NAME, this.changeListener);
-		this.testModel.testFireNodeAddedTree();
-		this.verifyTreeEvent(OBJECT_PATH);
-		assertTrue(this.nodeAddedCalled);
-
-		this.treeEvent = null;
-		this.nodeAddedCalled = false;
-		this.testModel.removeTreeChangeListener(TREE_NAME, this.changeListener);
-		this.testModel.testFireNodeAddedTree();
-		assertNull(this.treeEvent);
-		assertFalse(this.nodeAddedCalled);
-	}
-
-	public void testFireNodeAddedTreeEvent() {
-		this.treeEvent = null;
-		this.nodeAddedCalled = false;
-		this.testModel.addChangeListener(this.changeListener);
-		this.testModel.testFireNodeAddedTreeEvent();
-		this.verifyTreeEvent(OBJECT_PATH);
-		assertTrue(this.nodeAddedCalled);
-
-		this.treeEvent = null;
-		this.nodeAddedCalled = false;
-		this.testModel.removeChangeListener(this.changeListener);
-		this.testModel.testFireNodeAddedTreeEvent();
-		assertNull(this.treeEvent);
-		assertFalse(this.nodeAddedCalled);
-
-		this.treeEvent = null;
-		this.nodeAddedCalled = false;
-		this.testModel.addTreeChangeListener(TREE_NAME, this.changeListener);
-		this.testModel.testFireNodeAddedTreeEvent();
-		this.verifyTreeEvent(OBJECT_PATH);
-		assertTrue(this.nodeAddedCalled);
-
-		this.treeEvent = null;
-		this.nodeAddedCalled = false;
-		this.testModel.removeTreeChangeListener(TREE_NAME, this.changeListener);
-		this.testModel.testFireNodeAddedTreeEvent();
-		assertNull(this.treeEvent);
-		assertFalse(this.nodeAddedCalled);
-	}
-
-	public void testFireNodeRemovedTreeEvent() {
-		this.treeEvent = null;
-		this.nodeRemovedCalled = false;
-		this.testModel.addChangeListener(this.changeListener);
-		this.testModel.testFireNodeRemovedTreeEvent();
-		this.verifyTreeEvent(OBJECT_PATH);
-		assertTrue(this.nodeRemovedCalled);
-
-		this.treeEvent = null;
-		this.nodeRemovedCalled = false;
-		this.testModel.removeChangeListener(this.changeListener);
-		this.testModel.testFireNodeRemovedTreeEvent();
-		assertNull(this.treeEvent);
-		assertFalse(this.nodeRemovedCalled);
-
-		this.treeEvent = null;
-		this.nodeRemovedCalled = false;
-		this.testModel.addTreeChangeListener(TREE_NAME, this.changeListener);
-		this.testModel.testFireNodeRemovedTreeEvent();
-		this.verifyTreeEvent(OBJECT_PATH);
-		assertTrue(this.nodeRemovedCalled);
-
-		this.treeEvent = null;
-		this.nodeRemovedCalled = false;
-		this.testModel.removeTreeChangeListener(TREE_NAME, this.changeListener);
-		this.testModel.testFireNodeRemovedTreeEvent();
-		assertNull(this.treeEvent);
-		assertFalse(this.nodeRemovedCalled);
-	}
-
-	public void testFireNodeRemovedTree() {
-		this.treeEvent = null;
-		this.nodeRemovedCalled = false;
-		this.testModel.addChangeListener(this.changeListener);
-		this.testModel.testFireNodeRemovedTree();
-		this.verifyTreeEvent(OBJECT_PATH);
-		assertTrue(this.nodeRemovedCalled);
-
-		this.treeEvent = null;
-		this.nodeRemovedCalled = false;
-		this.testModel.removeChangeListener(this.changeListener);
-		this.testModel.testFireNodeRemovedTree();
-		assertNull(this.treeEvent);
-		assertFalse(this.nodeRemovedCalled);
-
-		this.treeEvent = null;
-		this.nodeRemovedCalled = false;
-		this.testModel.addTreeChangeListener(TREE_NAME, this.changeListener);
-		this.testModel.testFireNodeRemovedTree();
-		this.verifyTreeEvent(OBJECT_PATH);
-		assertTrue(this.nodeRemovedCalled);
-
-		this.treeEvent = null;
-		this.nodeRemovedCalled = false;
-		this.testModel.removeTreeChangeListener(TREE_NAME, this.changeListener);
-		this.testModel.testFireNodeRemovedTree();
-		assertNull(this.treeEvent);
-		assertFalse(this.nodeRemovedCalled);
-	}
-
-	public void testFireTreeClearedEvent() {
-		this.treeEvent = null;
-		this.treeClearedCalled = false;
-		this.testModel.addChangeListener(this.changeListener);
-		this.testModel.testFireTreeClearedEvent();
-		this.verifyTreeEvent(null);
-		assertTrue(this.treeClearedCalled);
-
-		this.treeEvent = null;
-		this.treeClearedCalled = false;
-		this.testModel.removeChangeListener(this.changeListener);
-		this.testModel.testFireTreeClearedEvent();
-		assertNull(this.treeEvent);
-		assertFalse(this.treeClearedCalled);
-
-		this.treeEvent = null;
-		this.treeClearedCalled = false;
-		this.testModel.addTreeChangeListener(TREE_NAME, this.changeListener);
-		this.testModel.testFireTreeClearedEvent();
-		this.verifyTreeEvent(null);
-		assertTrue(this.treeClearedCalled);
-
-		this.treeEvent = null;
-		this.treeClearedCalled = false;
-		this.testModel.removeTreeChangeListener(TREE_NAME, this.changeListener);
-		this.testModel.testFireTreeClearedEvent();
-		assertNull(this.treeEvent);
-		assertFalse(this.treeClearedCalled);
-	}
-
-	public void testFireTreeCleared() {
-		this.treeEvent = null;
-		this.treeClearedCalled = false;
-		this.testModel.addChangeListener(this.changeListener);
-		this.testModel.testFireTreeCleared();
-		this.verifyTreeEvent(null);
-		assertTrue(this.treeClearedCalled);
-
-		this.treeEvent = null;
-		this.treeClearedCalled = false;
-		this.testModel.removeChangeListener(this.changeListener);
-		this.testModel.testFireTreeCleared();
-		assertNull(this.treeEvent);
-		assertFalse(this.treeClearedCalled);
-
-		this.treeEvent = null;
-		this.treeClearedCalled = false;
-		this.testModel.addTreeChangeListener(TREE_NAME, this.changeListener);
-		this.testModel.testFireTreeCleared();
-		this.verifyTreeEvent(null);
-		assertTrue(this.treeClearedCalled);
-
-		this.treeEvent = null;
-		this.treeClearedCalled = false;
-		this.testModel.removeTreeChangeListener(TREE_NAME, this.changeListener);
-		this.testModel.testFireTreeCleared();
-		assertNull(this.treeEvent);
-		assertFalse(this.treeClearedCalled);
-	}
-
-	public void testFireTreeChangedEvent() {
-		this.treeEvent = null;
-		this.treeChangedCalled = false;
-		this.testModel.addChangeListener(this.changeListener);
-		this.testModel.testFireTreeChangedEvent();
-		this.verifyTreeEvent(null);
-		assertTrue(this.treeChangedCalled);
-
-		this.treeEvent = null;
-		this.treeChangedCalled = false;
-		this.testModel.removeChangeListener(this.changeListener);
-		this.testModel.testFireTreeChangedEvent();
-		assertNull(this.treeEvent);
-		assertFalse(this.treeChangedCalled);
-
-		this.treeEvent = null;
-		this.treeChangedCalled = false;
-		this.testModel.addTreeChangeListener(TREE_NAME, this.changeListener);
-		this.testModel.testFireTreeChangedEvent();
-		this.verifyTreeEvent(null);
-		assertTrue(this.treeChangedCalled);
-
-		this.treeEvent = null;
-		this.treeChangedCalled = false;
-		this.testModel.removeTreeChangeListener(TREE_NAME, this.changeListener);
-		this.testModel.testFireTreeChangedEvent();
-		assertNull(this.treeEvent);
-		assertFalse(this.treeChangedCalled);
-	}
-
-	public void testFireTreeChanged() {
-		this.treeEvent = null;
-		this.treeChangedCalled = false;
-		this.testModel.addChangeListener(this.changeListener);
-		this.testModel.testFireTreeChanged();
-		this.verifyTreeEvent(null);
-		assertTrue(this.treeChangedCalled);
-
-		this.treeEvent = null;
-		this.treeChangedCalled = false;
-		this.testModel.removeChangeListener(this.changeListener);
-		this.testModel.testFireTreeChanged();
-		assertNull(this.treeEvent);
-		assertFalse(this.treeChangedCalled);
-
-		this.treeEvent = null;
-		this.treeChangedCalled = false;
-		this.testModel.addTreeChangeListener(TREE_NAME, this.changeListener);
-		this.testModel.testFireTreeChanged();
-		this.verifyTreeEvent(null);
-		assertTrue(this.treeChangedCalled);
-
-		this.treeEvent = null;
-		this.treeChangedCalled = false;
-		this.testModel.removeTreeChangeListener(TREE_NAME, this.changeListener);
-		this.testModel.testFireTreeChanged();
-		assertNull(this.treeEvent);
-		assertFalse(this.treeChangedCalled);
-	}
-
-	public void testHasAnyTreeChangeListeners() {
-		assertTrue(this.testModel.hasNoTreeChangeListeners(TREE_NAME));
-		this.testModel.addChangeListener(this.changeListener);
-		assertTrue(this.testModel.hasAnyTreeChangeListeners(TREE_NAME));
-		this.testModel.removeChangeListener(this.changeListener);
-		assertTrue(this.testModel.hasNoTreeChangeListeners(TREE_NAME));
-
-		assertTrue(this.testModel.hasNoTreeChangeListeners(TREE_NAME));
-		this.testModel.addTreeChangeListener(TREE_NAME, this.changeListener);
-		assertTrue(this.testModel.hasAnyTreeChangeListeners(TREE_NAME));
-		this.testModel.removeTreeChangeListener(TREE_NAME, this.changeListener);
-		assertTrue(this.testModel.hasNoTreeChangeListeners(TREE_NAME));
-	}
-
-	public void testAddNullTreeListener() {
-		boolean exCaught = false;
-		try {
-			this.testModel.addTreeChangeListener("foo", null);
-		} catch (NullPointerException ex) {
-			exCaught = true;
-		}
-		assertTrue(exCaught);
-	}
-
-	public void testRemoveBogusTreeListener() {
-		boolean exCaught = false;
-		try {
-			this.testModel.removeTreeChangeListener("foo", this.changeListener);
-		} catch (IllegalArgumentException ex) {
-			exCaught = true;
-		}
-		assertTrue(exCaught);
-
-		this.testModel.addPropertyChangeListener("foo", this.changeListener);
-		exCaught = false;
-		try {
-			this.testModel.removeTreeChangeListener("foo", this.changeListener);
-		} catch (IllegalArgumentException ex) {
-			exCaught = true;
-		}
-		assertTrue(exCaught);
-
-		this.testModel.addTreeChangeListener("foo", this.changeListener);
-		exCaught = false;
-		try {
-			this.testModel.removeTreeChangeListener("foo", new TreeChangeAdapter());
-		} catch (IllegalArgumentException ex) {
-			exCaught = true;
-		}
-		assertTrue(exCaught);
-
-		exCaught = false;
-		try {
-			this.testModel.removeTreeChangeListener("foo", new TreeChangeAdapter());
-		} catch (IllegalArgumentException ex) {
-			exCaught = true;
-		}
-		assertTrue(exCaught);
-	}
-
-	private void verifyTreeEvent(List<?> path) {
-		assertNotNull(this.treeEvent);
-		assertEquals(this.testModel, this.treeEvent.getSource());
-		assertEquals(TREE_NAME, this.treeEvent.getTreeName());
-		assertEquals(path, this.getListPath());
-	}
-
-	private List<?> getListPath() {
-		Iterable<?> iterable = this.getPath();
-		return (iterable == null)  ? null : CollectionTools.list(iterable);
-	}
-
-	private Iterable<?> getPath() {
-		if (this.treeEvent instanceof TreeAddEvent) {
-			return ((TreeAddEvent) this.treeEvent).getPath();
-		}
-		if (this.treeEvent instanceof TreeRemoveEvent) {
-			return ((TreeRemoveEvent) this.treeEvent).getPath();
-		}
-		return null;
-	}
-	
-
-
 	// ********** convenience method tests **********
 
 	public void testElementsAreEqual() {
@@ -3592,23 +3250,6 @@ public class ChangeSupportTests
 		public void listChanged(ListChangeEvent e) {
 			ChangeSupportTests.this.listChangedCalled = true;
 			ChangeSupportTests.this.listEvent = e;
-		}
-	
-		public void nodeAdded(TreeAddEvent e) {
-			ChangeSupportTests.this.nodeAddedCalled = true;
-			ChangeSupportTests.this.treeEvent = e;
-		}
-		public void nodeRemoved(TreeRemoveEvent e) {
-			ChangeSupportTests.this.nodeRemovedCalled = true;
-			ChangeSupportTests.this.treeEvent = e;
-		}
-		public void treeCleared(TreeClearEvent e) {
-			ChangeSupportTests.this.treeClearedCalled = true;
-			ChangeSupportTests.this.treeEvent = e;
-		}
-		public void treeChanged(TreeChangeEvent e) {
-			ChangeSupportTests.this.treeChangedCalled = true;
-			ChangeSupportTests.this.treeEvent = e;
 		}
 	}
 
@@ -4114,39 +3755,6 @@ public class ChangeSupportTests
 			assertEquals(newList, oldList);
 		}
 
-		// ***** tree
-		public void testFireNodeAddedTreeEvent() {
-			this.fireNodeAdded(new TreeAddEvent(this, TREE_NAME, OBJECT_PATH));
-		}
-
-		public void testFireNodeAddedTree() {
-			this.fireNodeAdded(TREE_NAME, OBJECT_PATH);
-		}
-
-		public void testFireNodeRemovedTreeEvent() {
-			this.fireNodeRemoved(new TreeRemoveEvent(this, TREE_NAME, OBJECT_PATH));
-		}
-
-		public void testFireNodeRemovedTree() {
-			this.fireNodeRemoved(TREE_NAME, OBJECT_PATH);
-		}
-
-		public void testFireTreeClearedEvent() {
-			this.fireTreeCleared(new TreeClearEvent(this, TREE_NAME));
-		}
-
-		public void testFireTreeCleared() {
-			this.fireTreeCleared(TREE_NAME);
-		}
-
-		public void testFireTreeChangedEvent() {
-			this.fireTreeChanged(new TreeChangeEvent(this, TREE_NAME, OBJECT_PATH));
-		}
-
-		public void testFireTreeChanged() {
-			this.fireTreeChanged(TREE_NAME, OBJECT_PATH);
-		}
-
 		public boolean testAttributeValueHasChanged(Object value1, Object value2) {
 			return this.attributeValueHasChanged(value1, value2);
 		}
@@ -4191,7 +3799,7 @@ public class ChangeSupportTests
 
 	// ********** serialization test **********
 	public void testSerialization() throws java.io.IOException, ClassNotFoundException {
-		if (Tools.jvmIsSun()) {
+		if (SystemTools.jvmIsSun()) {
 			// This test doesn't pass in the Eclipse build environment (Linux/IBM JVM) for some reason
 			this.verifySerialization();
 		}
@@ -4241,12 +3849,16 @@ public class ChangeSupportTests
 
 	@SuppressWarnings("unchecked")
 	private ListenerList<EventListener> getListenerList(LocalModel model, Class<? extends EventListener> listenerClass, String aspectName) {
-		ChangeSupport changeSupport = (ChangeSupport) ReflectionTools.getFieldValue(model, "changeSupport");
-		return (ListenerList<EventListener>) ReflectionTools.executeMethod(changeSupport, "getListenerList_", new Class<?>[] {Class.class, String.class}, new Object[] {listenerClass, aspectName});
+		ChangeSupport changeSupport = (ChangeSupport) ObjectTools.get(model, "changeSupport");
+		return (ListenerList<EventListener>) ObjectTools.execute(changeSupport, "getListenerList_", new Class<?>[] {Class.class, String.class}, new Object[] {listenerClass, aspectName});
 	}
 
 	// we have to manually handle 'changeSupport' since AbstractModel is not Serializable
-	private static class LocalModel extends AbstractModel implements Serializable {
+	/* CU private */ static class LocalModel
+		extends AbstractModel
+		implements Serializable
+	{
+		private static final long serialVersionUID = 1L;
 		LocalModel() {
 			super();
 		}
@@ -4260,7 +3872,10 @@ public class ChangeSupportTests
 		}
 	}
 
-	private static class Foo implements Serializable, StateChangeListener {
+	/* CU private */ static class Foo
+		implements Serializable, StateChangeListener
+	{
+		private static final long serialVersionUID = 1L;
 		Foo() {
 			super();
 		}
@@ -4269,7 +3884,9 @@ public class ChangeSupportTests
 		}
 	}
 
-	private static class Bar implements StateChangeListener {
+	/* CU private */ static class Bar
+		implements StateChangeListener
+	{
 		Bar() {
 			super();
 		}
@@ -4278,13 +3895,19 @@ public class ChangeSupportTests
 		}
 	}
 
-	private static class Joo extends ListChangeAdapter implements Serializable {
+	/* CU private */ static class Joo
+		extends ListChangeAdapter
+		implements Serializable
+	{
+		private static final long serialVersionUID = 1L;
 		Joo() {
 			super();
 		}
 	}
 
-	private static class Jar extends ListChangeAdapter {
+	/* CU private */ static class Jar
+		extends ListChangeAdapter
+	{
 		Jar() {
 			super();
 		}
@@ -4346,16 +3969,6 @@ public class ChangeSupportTests
 		);
 	}
 
-	public void testIndirectRemoveTreeListener() {
-		this.verifyIndirectRemoveListener(
-			new NotifyCommand() {
-				public void notifyListeners(LocalA localA) {
-					localA.notifyTreeListeners();
-				}
-			}
-		);
-	}
-
 	public void verifyIndirectRemoveListener(NotifyCommand command) {
 		LocalA localA = new LocalA();
 		LocalB localB = new LocalB(localA);
@@ -4408,9 +4021,6 @@ public class ChangeSupportTests
 		void notifyListListeners() {
 			this.fireListChanged("foo", Collections.emptyList());
 		}
-		void notifyTreeListeners() {
-			this.fireTreeChanged("foo", Collections.emptySet());
-		}
 	}
 
 	/**
@@ -4449,13 +4059,6 @@ public class ChangeSupportTests
 		public void itemsRemoved(ListRemoveEvent e) {/*ignore*/}
 		public void itemsReplaced(ListReplaceEvent e) {/*ignore*/}
 		public void itemsMoved(ListMoveEvent e) {/*ignore*/}
-
-		public void treeChanged(TreeChangeEvent e) {
-			this.fireTreeChanged("bar", Collections.emptySet());
-		}
-		public void treeCleared(TreeClearEvent e) {/*ignore*/}
-		public void nodeAdded(TreeAddEvent e) {/*ignore*/}
-		public void nodeRemoved(TreeRemoveEvent e) {/*ignore*/}
 
 	}
 
@@ -4552,24 +4155,6 @@ public class ChangeSupportTests
 		public void itemsRemoved(ListRemoveEvent e) {/*ignore*/}
 		public void itemsReplaced(ListReplaceEvent e) {/*ignore*/}
 		public void itemsMoved(ListMoveEvent e) {/*ignore*/}
-
-		public void treeChanged(TreeChangeEvent e) {
-			Object source = e.getSource();
-			if (source == this.localA) {
-				if ( ! this.listeningToLocalA) {
-					throw new IllegalStateException(ISE_MESSAGE);
-				}
-			} else if (source == this.localB) {
-				this.localA.removeChangeListener(this);
-				this.listeningToLocalA = false;
-			} else {
-				throw new IllegalStateException("bogus event source: " + source);
-			}
-		}
-		public void treeCleared(TreeClearEvent e) {/*ignore*/}
-		public void nodeAdded(TreeAddEvent e) {/*ignore*/}
-		public void nodeRemoved(TreeRemoveEvent e) {/*ignore*/}
-
 	}
 
 }

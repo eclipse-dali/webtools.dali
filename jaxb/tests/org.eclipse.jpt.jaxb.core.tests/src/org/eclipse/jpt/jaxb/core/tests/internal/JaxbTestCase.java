@@ -9,16 +9,18 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.tests.internal;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.common.core.tests.internal.utility.jdt.AnnotationTestCase;
 import org.eclipse.jpt.jaxb.core.JaxbFacet;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
-import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
+import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetDataModelProperties;
 import org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetInstallDataModelProvider;
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformManager;
 import org.eclipse.jpt.jaxb.core.tests.internal.projects.TestJaxbProject;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
@@ -50,14 +52,22 @@ public class JaxbTestCase
 	protected IDataModel buildJaxbFacetInstallConfig() {
 		IDataModel config = DataModelFactory.createDataModel(new JaxbFacetInstallDataModelProvider());		
 		config.setProperty(IFacetDataModelProperties.FACET_VERSION, getProjectFacetVersion());
-		config.setProperty(JaxbFacetDataModelProperties.PLATFORM, getPlatform());
+		config.setProperty(JaxbFacetDataModelProperties.PLATFORM, getPlatformConfig());
 		return config;
 	}
 	
-	protected JaxbPlatformDescription getPlatform() {
-		return JptJaxbCorePlugin.getDefaultPlatform(getProjectFacetVersion());
+	protected JaxbPlatformConfig getPlatformConfig() {
+		return this.getJaxbPlatformManager().getDefaultJaxbPlatformConfig(getProjectFacetVersion());
 	}
-	
+
+	protected JaxbPlatformManager getJaxbPlatformManager() {
+		return this.getJaxbWorkspace().getJaxbPlatformManager();
+	}
+
+	protected JaxbWorkspace getJaxbWorkspace() {
+		return (JaxbWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JaxbWorkspace.class);
+	}
+
 	protected IProjectFacetVersion getProjectFacetVersion() {
 		return JaxbFacet.VERSION_2_2;
 	}

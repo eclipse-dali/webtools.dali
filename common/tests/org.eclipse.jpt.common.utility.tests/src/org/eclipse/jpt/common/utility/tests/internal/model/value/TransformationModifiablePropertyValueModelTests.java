@@ -10,16 +10,16 @@
 package org.eclipse.jpt.common.utility.tests.internal.model.value;
 
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 @SuppressWarnings("nls")
 public class TransformationModifiablePropertyValueModelTests

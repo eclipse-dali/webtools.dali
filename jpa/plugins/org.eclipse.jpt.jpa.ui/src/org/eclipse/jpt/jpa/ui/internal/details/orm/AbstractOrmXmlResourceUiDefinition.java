@@ -12,8 +12,8 @@ package org.eclipse.jpt.jpa.ui.internal.details.orm;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.SuperIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterable.SuperIterableWrapper;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -72,7 +72,7 @@ public abstract class AbstractOrmXmlResourceUiDefinition
 
 	protected OrmTypeMappingUiDefinition<? extends TypeMapping> getOrmTypeMappingUiDefinition_(String mappingKey) {
 		for (OrmTypeMappingUiDefinition<? extends TypeMapping> definition : this.getOrmTypeMappingUiDefinitions()) {
-			if (Tools.valuesAreEqual(definition.getKey(), mappingKey)) {
+			if (ObjectTools.equals(definition.getKey(), mappingKey)) {
 				return definition;
 			}
 		}
@@ -122,7 +122,7 @@ public abstract class AbstractOrmXmlResourceUiDefinition
 
 	protected OrmAttributeMappingUiDefinition<? extends AttributeMapping> getOrmAttributeMappingUiDefinition_(String mappingKey) {
 		for (OrmAttributeMappingUiDefinition<? extends AttributeMapping> definition : this.getOrmAttributeMappingUiDefinitions()) {
-			if (Tools.valuesAreEqual(definition.getKey(), mappingKey)) {
+			if (ObjectTools.equals(definition.getKey(), mappingKey)) {
 				return definition;
 			}
 		}

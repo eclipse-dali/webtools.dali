@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,89 +9,132 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.internal.libval;
 
-import static org.eclipse.jst.common.project.facet.core.internal.FacetedProjectFrameworkJavaPlugin.log;
 import org.eclipse.core.expressions.EvaluationContext;
 import org.eclipse.core.expressions.EvaluationResult;
 import org.eclipse.core.expressions.Expression;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jpt.common.core.internal.utility.XPointTools;
+import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.common.core.libval.LibraryValidator;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
-public class LibraryValidatorConfig {
-	
-	public static final String CONFIG_EXPR_VAR = "config";  //$NON-NLS-1$
-	public static final String LIBRARY_PROVIDER_EXPR_VAR = "libraryProvider"; //$NON-NLS-1$
-	
-	
-	private String id;
-	private String pluginId;
-	private String className;
-	private Expression enablementCondition;
-	
-	
-	LibraryValidatorConfig() {
+class LibraryValidatorConfig {
+	private final InternalLibraryValidatorManager manager;
+	private final String id;
+	private final String className;
+	private /* final */ String pluginID;
+	private /* final */ Expression enablementExpression;
+
+	// lazily initialized
+	private LibraryValidator libraryValidator;
+
+
+	LibraryValidatorConfig(InternalLibraryValidatorManager manager, String id, String className) {
 		super();
-	}
-	
-	
-	public String getId() {
-		return this.id;
-	}
-	
-	void setId(String id) {
+		this.manager = manager;
 		this.id = id;
-	}
-	
-	public String getPluginId() {
-		return this.pluginId;
-	}
-	
-	void setPluginId(String pluginId) {
-		this.pluginId = pluginId;
-	}
-	
-	public String getClassName() {
-		return this.className;
-	}
-	
-	void setClassName(String className) {
 		this.className = className;
 	}
-	
-	public Expression getEnablementCondition() {
-		return this.enablementCondition;
+
+	InternalLibraryValidatorManager getManager() {
+		return this.manager;
 	}
-	
-	void setEnablementCondition(Expression enablementCondition) {
-		this.enablementCondition = enablementCondition;
+
+	String getID() {
+		return this.id;
 	}
-	
-	public LibraryValidator getLibraryValidator() {
-		return XPointTools.instantiate(
-				this.pluginId, LibraryValidatorManager.QUALIFIED_EXTENSION_POINT_ID, 
-				this.className, LibraryValidator.class);
+
+	String getClassName() {
+		return this.className;
 	}
-	
-	public boolean isEnabledFor(JptLibraryProviderInstallOperationConfig config) {
-		EvaluationContext evalContext = new EvaluationContext(null, config);
+
+	String getPluginID() {
+		return this.pluginID;
+	}
+
+	void setPluginID(String pluginID) {
+		this.pluginID = pluginID;
+	}
+
+	Expression getEnablementExpression() {
+		return this.enablementExpression;
+	}
+
+	void setEnablementExpression(Expression enablementExpression) {
+		this.enablementExpression = enablementExpression;
+	}
+
+	boolean isEnabled(JptLibraryProviderInstallOperationConfig installConfig) {
+		return (this.enablementExpression == null) || this.isEnabled_(installConfig);
+	}
+
+	/**
+	 * Pre-condition: enablement expression is not <code>null</code>.
+	 */
+	private boolean isEnabled_(JptLibraryProviderInstallOperationConfig installConfig) {
+		EvaluationContext evalContext = new EvaluationContext(null, installConfig);
 		evalContext.setAllowPluginActivation(true);
-		evalContext.addVariable(CONFIG_EXPR_VAR, config);
-		evalContext.addVariable(LIBRARY_PROVIDER_EXPR_VAR, config.getLibraryProvider());
-		
-		if (this.enablementCondition != null) {
-			try {
-				EvaluationResult evalResult = this.enablementCondition.evaluate(evalContext);
-				
-				if (evalResult == EvaluationResult.FALSE) {
-					return false;
-				}
-			}
-			catch (CoreException e) {
-				log(e);
-			}
+		evalContext.addVariable(CONFIG_ENABLEMENT_EXPRESSION_VARIABLE, installConfig);
+		evalContext.addVariable(LIBRARY_PROVIDER_ENABLEMENT_EXPRESSION_VARIABLE, installConfig.getLibraryProvider());
+
+		try {
+			// EvaluationResult.NOT_LOADED will return false
+			return this.enablementExpression.evaluate(evalContext) == EvaluationResult.TRUE;
+		} catch (CoreException ex) {
+			JptCommonCorePlugin.instance().logError(ex);
+			return false;
 		}
-		
-		return true;
+	}
+	private static final String CONFIG_ENABLEMENT_EXPRESSION_VARIABLE = "config";  //$NON-NLS-1$
+	private static final String LIBRARY_PROVIDER_ENABLEMENT_EXPRESSION_VARIABLE = "libraryProvider"; //$NON-NLS-1$
+
+	synchronized LibraryValidator getLibraryValidator() {
+		if (this.libraryValidator == null) {
+			this.libraryValidator = this.buildLibraryValidator();
+		}
+		return this.libraryValidator;
+	}
+
+	private LibraryValidator buildLibraryValidator() {
+		return PlatformTools.instantiate(this.pluginID, this.manager.getExtensionPointName(), this.className, LibraryValidator.class);
+	}
+
+	@Override
+	public String toString() {
+		return ObjectTools.toString(this, this.className);
+	}
+
+
+	// ********** enabled filter **********
+
+	static class EnabledFilter
+		extends FilterAdapter<LibraryValidatorConfig>
+	{
+		private final JptLibraryProviderInstallOperationConfig installConfig;
+		EnabledFilter(JptLibraryProviderInstallOperationConfig installConfig) {
+			super();
+			this.installConfig = installConfig;
+		}
+		@Override
+		public boolean accept(LibraryValidatorConfig config) {
+			return config.isEnabled(this.installConfig);
+		}
+	}
+
+
+	// ********** library validator transformer **********
+
+	static final Transformer<LibraryValidatorConfig, LibraryValidator> LIBRARY_VALIDATOR_TRANSFORMER = new LibraryValidatorTransformer();
+	static class LibraryValidatorTransformer
+		extends TransformerAdapter<LibraryValidatorConfig, LibraryValidator>
+	{
+		@Override
+		public LibraryValidator transform(LibraryValidatorConfig config) {
+			return config.getLibraryValidator();
+		}
 	}
 }

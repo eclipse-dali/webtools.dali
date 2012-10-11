@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -538,7 +538,7 @@ public final class ControlAligner
 		sb.append(maximumWidth);
 		sb.append(", wrappers=");
 		sb.append(wrappers);
-		return StringTools.buildToStringFor(this, sb);
+		return ObjectTools.toString(this, sb);
 	}
 
 	/**
@@ -675,7 +675,7 @@ public final class ControlAligner
 			sb.append(cachedSize);
 			sb.append(", ControlAligner=");
 			sb.append(controlAligner);
-			return StringTools.buildToStringFor(this, sb);
+			return ObjectTools.toString(this, sb);
 		}
 	}
 
@@ -838,7 +838,7 @@ public final class ControlAligner
 			sb.append(cachedSize);
 			sb.append(", Control=");
 			sb.append(control);
-			return StringTools.buildToStringFor(this, sb);
+			return ObjectTools.toString(this, sb);
 		}
 	}
 

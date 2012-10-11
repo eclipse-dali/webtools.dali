@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jaxb.ui.internal.navigator;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -27,9 +28,7 @@ import org.eclipse.jpt.common.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
-import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
-import org.eclipse.jpt.jaxb.ui.internal.plugin.JptJaxbUiPlugin;
+import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.ui.platform.JaxbPlatformUi;
 
 /**
@@ -53,7 +52,7 @@ public class JaxbNavigatorContentProvider
 	public JaxbNavigatorContentProvider() {
 		super();
 		this.jaxbProjectListener = this.buildJaxbProjectListener();
-		JptJaxbCorePlugin.instance().getProjectManager().addCollectionChangeListener(JaxbProjectManager.JAXB_PROJECTS_COLLECTION, this.jaxbProjectListener);
+		this.getJaxbProjectManager().addCollectionChangeListener(JaxbProjectManager.JAXB_PROJECTS_COLLECTION, this.jaxbProjectListener);
 	}
 	
 	protected CollectionChangeListener buildJaxbProjectListener() {
@@ -71,9 +70,9 @@ public class JaxbNavigatorContentProvider
 	}
 
 	@Override
-	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-		super.inputChanged(viewer, oldInput, newInput);
-		this.viewer = (StructuredViewer) viewer;
+	public void inputChanged(Viewer v, Object oldInput, Object newInput) {
+		super.inputChanged(v, oldInput, newInput);
+		this.viewer = (StructuredViewer) v;
 	}
 	
 	@Override
@@ -82,12 +81,9 @@ public class JaxbNavigatorContentProvider
 			IProject project = (IProject) ((IAdaptable) element).getAdapter(IProject.class);
 			
 			if (project != null) {
-				JaxbProject jaxbProject = JptJaxbCorePlugin.instance().getProjectManager().getJaxbProject(project);
+				JaxbProject jaxbProject = this.getJaxbProjectManager().getJaxbProject(project);
 				if (jaxbProject != null) {
-					JaxbPlatformDescription desc = jaxbProject.getPlatform().getDescription();
-					JaxbPlatformUi platformUi = 
-							JptJaxbUiPlugin.getJaxbPlatformUiManager().getJaxbPlatformUi(desc);
-					
+					JaxbPlatformUi platformUi = (JaxbPlatformUi) jaxbProject.getPlatform().getAdapter(JaxbPlatformUi.class);
 					return platformUi != null;
 				}	
 			}
@@ -101,12 +97,9 @@ public class JaxbNavigatorContentProvider
 			IProject project = (IProject) ((IAdaptable) parentElement).getAdapter(IProject.class);
 			
 			if (project != null) {
-				JaxbProject jaxbProject = JptJaxbCorePlugin.instance().getProjectManager().getJaxbProject(project);
+				JaxbProject jaxbProject = this.getJaxbProjectManager().getJaxbProject(project);
 				if (jaxbProject != null) {
-					JaxbPlatformDescription desc = jaxbProject.getPlatform().getDescription();
-					JaxbPlatformUi platformUi = 
-							JptJaxbUiPlugin.getJaxbPlatformUiManager().getJaxbPlatformUi(desc);
-					
+					JaxbPlatformUi platformUi =  (JaxbPlatformUi) jaxbProject.getPlatform().getAdapter(JaxbPlatformUi.class);
 					if (platformUi != null) {
 						return new Object[] {jaxbProject.getContextRoot()};
 					}
@@ -119,9 +112,17 @@ public class JaxbNavigatorContentProvider
 	@Override
 	public void dispose() {
 		super.dispose();
-		JptJaxbCorePlugin.instance().getProjectManager().removeCollectionChangeListener(JaxbProjectManager.JAXB_PROJECTS_COLLECTION, this.jaxbProjectListener);
+		this.getJaxbProjectManager().removeCollectionChangeListener(JaxbProjectManager.JAXB_PROJECTS_COLLECTION, this.jaxbProjectListener);
 	}
 	
+	private JaxbProjectManager getJaxbProjectManager() {
+		return this.getJaxbWorkspace().getJaxbProjectManager();
+	}
+
+	private JaxbWorkspace getJaxbWorkspace() {
+		return (JaxbWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JaxbWorkspace.class);
+	}
+
 	
 	// **************** member classes *****************************************
 	

@@ -13,8 +13,8 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.MapKeyAnnotation;
 
@@ -54,7 +54,7 @@ public class MapKeyTests extends JpaJavaResourceModelTestCase {
 	public void testMapKey() throws Exception {
 		ICompilationUnit cu = this.createTestMapKey();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		MapKeyAnnotation mapKey = (MapKeyAnnotation) resourceField.getAnnotation(JPA.MAP_KEY);
 		assertNotNull(mapKey);
@@ -63,7 +63,7 @@ public class MapKeyTests extends JpaJavaResourceModelTestCase {
 	public void testGetName() throws Exception {
 		ICompilationUnit cu = this.createTestMapKeyWithName();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		MapKeyAnnotation mapKey = (MapKeyAnnotation) resourceField.getAnnotation(JPA.MAP_KEY);
 		assertEquals("key", mapKey.getName());
@@ -72,7 +72,7 @@ public class MapKeyTests extends JpaJavaResourceModelTestCase {
 	public void testSetName() throws Exception {
 		ICompilationUnit cu = this.createTestMapKey();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 
 		MapKeyAnnotation mapKey = (MapKeyAnnotation) resourceField.getAnnotation(JPA.MAP_KEY);
 

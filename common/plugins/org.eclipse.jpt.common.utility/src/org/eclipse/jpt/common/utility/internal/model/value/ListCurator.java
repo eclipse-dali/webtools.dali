@@ -14,8 +14,9 @@ import java.util.EventListener;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ReadOnlyListIterator;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ReadOnlyListIterator;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
@@ -179,7 +180,7 @@ public abstract class ListCurator<S extends Model, E>
 	// ********** behavior **********
 
 	void submitInventoryReport() {
-		List<E> newRecord = CollectionTools.list(this.iteratorForRecord());
+		List<E> newRecord = ListTools.list(this.iteratorForRecord());
 		int recordIndex = 0;
 
 		// add items from the new record

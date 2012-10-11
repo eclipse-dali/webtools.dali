@@ -17,7 +17,10 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.common.utility.model.event.ListChangeEvent;
@@ -86,15 +89,15 @@ public class SimpleListValueModelTests extends TestCase {
 	}
 
 	public void testIterator() {
-		assertEquals(this.buildList(), CollectionTools.list(this.listHolder.iterator()));
+		assertEquals(this.buildList(), ListTools.list(this.listHolder.iterator()));
 	}
 
 	public void testListIterator() {
-		assertEquals(this.buildList(), CollectionTools.list(this.listHolder.listIterator()));
+		assertEquals(this.buildList(), ListTools.list(this.listHolder.listIterator()));
 	}
 
 	public void testListIteratorInt() {
-		assertEquals(CollectionTools.list(this.buildList().listIterator(1)), CollectionTools.list(this.listHolder.listIterator(1)));
+		assertEquals(ListTools.list(this.buildList().listIterator(1)), ListTools.list(this.listHolder.listIterator(1)));
 	}
 
 	public void testSize() {
@@ -102,11 +105,11 @@ public class SimpleListValueModelTests extends TestCase {
 	}
 
 	private boolean listContains(Object item) {
-		return CollectionTools.contains(this.listHolder.listIterator(), item);
+		return IteratorTools.contains(this.listHolder.listIterator(), item);
 	}
 
 	private boolean listContainsAll(Collection<String> items) {
-		return CollectionTools.containsAll(this.listHolder.listIterator(), items);
+		return IteratorTools.containsAll(this.listHolder.listIterator(), items);
 	}
 
 	private boolean listContainsAny(Collection<String> items) {
@@ -284,14 +287,14 @@ public class SimpleListValueModelTests extends TestCase {
 		this.eventType = null;
 		this.listHolder.addAll(0, this.buildList());
 		this.verifyEvent(ADD);
-		assertEquals(this.buildList(), CollectionTools.list(((ListAddEvent) this.event).getItems()));
+		assertEquals(this.buildList(), ListTools.list(((ListAddEvent) this.event).getItems()));
 
 		this.event = null;
 		this.eventType = null;
 		this.listHolder.set(0, "joo");
 		this.verifyEvent(REPLACE);
-		assertFalse(CollectionTools.contains(((ListReplaceEvent) this.event).getNewItems(), "foo"));
-		assertTrue(CollectionTools.contains(((ListReplaceEvent) this.event).getNewItems(), "joo"));
+		assertFalse(IterableTools.contains(((ListReplaceEvent) this.event).getNewItems(), "foo"));
+		assertTrue(IterableTools.contains(((ListReplaceEvent) this.event).getNewItems(), "joo"));
 	}
 
 	private ListChangeListener buildListener() {

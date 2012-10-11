@@ -17,9 +17,9 @@ import java.util.ListIterator;
 
 import junit.framework.TestCase;
 
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.common.utility.model.event.ListChangeEvent;
@@ -323,7 +323,7 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		TestModel testModel = new TestModel();
 		String string = "foo";
 		Target target = new Target(testModel, TestModel.STRINGS_LIST, string, 0);
-		Method method = ReflectionTools.getMethod(target, "listChangedDoubleArgument", new Class[] {ListChangeEvent.class, Object.class});
+		Method method = ObjectTools.method(target, "listChangedDoubleArgument", new Class[] {ListChangeEvent.class, Object.class});
 		boolean exCaught = false;
 		try {
 			ListChangeListener listener = ReflectiveChangeListener.buildListChangeListener(target, method);

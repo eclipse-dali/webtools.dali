@@ -36,21 +36,21 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.BodySourceWriter;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.NonEmptyStringFilter;
-import org.eclipse.jpt.common.utility.internal.NotNullFilter;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SubIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
@@ -675,7 +675,7 @@ public abstract class AbstractPersistenceUnit
 
 	protected boolean mappingFileIsSpecified(String impliedMappingFileName) {
 		for (MappingFileRef specifiedMappingFileRef : this.getSpecifiedMappingFileRefs()) {
-			if (Tools.valuesAreEqual(specifiedMappingFileRef.getFileName(), impliedMappingFileName)) {
+			if (ObjectTools.equals(specifiedMappingFileRef.getFileName(), impliedMappingFileName)) {
 				return true;
 			}
 		}
@@ -787,6 +787,7 @@ public abstract class AbstractPersistenceUnit
 	public int getClassRefsSize() {
 		return this.getSpecifiedClassRefsSize() + this.getImpliedClassRefsSize();
 	}
+
 
 	// ********** specified class refs **********
 
@@ -1050,7 +1051,7 @@ public abstract class AbstractPersistenceUnit
 		return new FilteringIterable<Property>(this.getProperties()) {
 			@Override
 			protected boolean accept(Property property) {
-				return Tools.valuesAreEqual(property.getName(), propertyName);
+				return ObjectTools.equals(property.getName(), propertyName);
 			}
 		};
 	}
@@ -1513,7 +1514,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected Iterable<String> getNonEmptyGeneratorNames() {
-		return new FilteringIterable<String>(this.getGeneratorNames(), NonEmptyStringFilter.instance());
+		return new FilteringIterable<String>(this.getGeneratorNames(), StringTools.NON_BLANK_FILTER);
 	}
 
 	protected Iterable<String> getGeneratorNames() {
@@ -1529,7 +1530,7 @@ public abstract class AbstractPersistenceUnit
 	 * @see #buildQueries()
 	 */
 	protected Iterable<Generator> buildGenerators() {
-		ArrayList<Generator> result = CollectionTools.list(this.getMappingFileGenerators());
+		ArrayList<Generator> result = ListTools.list(this.getMappingFileGenerators());
 
 		HashSet<String> mappingFileGeneratorNames = this.convertToNames(result);
 		HashMap<String, ArrayList<JavaGenerator>> allJavaGenerators = this.mapByName(this.getAllJavaGenerators());
@@ -1630,7 +1631,7 @@ public abstract class AbstractPersistenceUnit
 	 * or multiple, non-overridden Java queries with the same name.
 	 */
 	protected Iterable<Query> buildQueries() {
-		ArrayList<Query> result = CollectionTools.list(this.getMappingFileQueries());
+		ArrayList<Query> result = ListTools.list(this.getMappingFileQueries());
 
 		HashSet<String> mappingFileQueryNames = this.convertToNames(result);
 		HashMap<String, ArrayList<JavaQuery>> allJavaQueries = this.mapByName(this.getAllJavaQueries());
@@ -1967,7 +1968,7 @@ public abstract class AbstractPersistenceUnit
 	 * type mappings (by full qualified class name).
 	 */
 	protected Iterable<TypeMapping> getActiveTypeMappings(){
-		ArrayList<TypeMapping> result = CollectionTools.list(this.getMappingFileTypeMappings());
+		ArrayList<TypeMapping> result = ListTools.list(this.getMappingFileTypeMappings());
 
 		HashSet<String> mappingFileClassNames = this.convertToClassNames(result);
 		HashMap<String, ArrayList<TypeMapping>> javaTypeMappings = this.mapTypeMappingsByClassName(this.getJavaTypeMappings());
@@ -2153,7 +2154,7 @@ public abstract class AbstractPersistenceUnit
 	}
 	protected JavaTypeMappingDefinition getJavaTypeMappingDefinition(String key) {
 		for (JavaTypeMappingDefinition definition : this.getJpaPlatform().getJavaTypeMappingDefinitions()) {
-			if (Tools.valuesAreEqual(definition.getKey(), key)) {
+			if (ObjectTools.equals(definition.getKey(), key)) {
 				return definition;
 			}
 		}
@@ -2218,11 +2219,11 @@ public abstract class AbstractPersistenceUnit
 	protected <N extends JpaNamedContextNode> ArrayList<N> extractConvertibleJavaNodes(Iterable<N> allJavaNodes, Iterable<? extends JpaNamedContextNode> mappingFileNodes) {
 		ArrayList<N> convertibleNodes = new ArrayList<N>();
 
-		HashSet<String> mappingFileNodeNames = this.convertToNames(CollectionTools.list(mappingFileNodes));
+		HashSet<String> mappingFileNodeNames = this.convertToNames(ListTools.list(mappingFileNodes));
 		HashMap<String, ArrayList<N>> allJavaNodesByName = this.mapByName(allJavaNodes);
 		for (Map.Entry<String, ArrayList<N>> entry : allJavaNodesByName.entrySet()) {
 			String javaNodeName = entry.getKey();
-			if (StringTools.stringIsEmpty(javaNodeName)) {
+			if (StringTools.isBlank(javaNodeName)) {
 				continue;  // ignore any nodes with an empty name(?)
 			}
 			ArrayList<N> javaNodesWithSameName = entry.getValue();
@@ -2273,7 +2274,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected void checkForMultiplePersistenceUnitMetadata(List<IMessage> messages) {
-		ArrayList<MappingFileRef> pumdMappingFileRefs = CollectionTools.list(this.getPersistenceUnitMetadataMappingFileRefs());
+		ArrayList<MappingFileRef> pumdMappingFileRefs = ListTools.list(this.getPersistenceUnitMetadataMappingFileRefs());
 		if (pumdMappingFileRefs.size() > 1) {
 			for (MappingFileRef mappingFileRef : pumdMappingFileRefs) {
 				messages.add(
@@ -2301,7 +2302,7 @@ public abstract class AbstractPersistenceUnit
 	protected void checkForDuplicateMappingFileRefs(List<IMessage> messages) {
 		for (Map.Entry<String, ArrayList<MappingFileRef>> entry : this.mapMappingFileRefsByFileName().entrySet()) {
 			String fileName = entry.getKey();
-			if (StringTools.stringIsNotEmpty(fileName)) {
+			if (StringTools.isNotBlank(fileName)) {
 				ArrayList<MappingFileRef> dups = entry.getValue();
 				if (dups.size() > 1) {
 					String[] parms = new String[] {fileName};
@@ -2342,7 +2343,7 @@ public abstract class AbstractPersistenceUnit
 	protected void checkForDuplicateMappingFileClasses(List<IMessage> messages) {
 		for (Map.Entry<String, ArrayList<PersistentType>> entry : this.mapMappingFilePersistentTypesByName().entrySet()) {
 			String ptName = entry.getKey();
-			if (StringTools.stringIsNotEmpty(ptName)) {
+			if (StringTools.isNotBlank(ptName)) {
 				ArrayList<PersistentType> dups = entry.getValue();
 				if (dups.size() > 1) {
 					String[] parms = new String[] {ptName};
@@ -2390,7 +2391,7 @@ public abstract class AbstractPersistenceUnit
 	protected void checkForDuplicateClassRefs(List<IMessage> messages) {
 		for (Map.Entry<String, ArrayList<ClassRef>> entry : this.mapClassRefsByName().entrySet()) {
 			String className = entry.getKey();
-			if (StringTools.stringIsNotEmpty(className)) {
+			if (StringTools.isNotBlank(className)) {
 				ArrayList<ClassRef> dups = entry.getValue();
 				if (dups.size() > 1) {
 					String[] parms = new String[] {className};
@@ -2438,7 +2439,7 @@ public abstract class AbstractPersistenceUnit
 	protected void checkForDuplicateJarFileRefs(List<IMessage> messages) {
 		for (Map.Entry<String, ArrayList<JarFileRef>> entry : this.mapJarFileRefsByName().entrySet()) {
 			String fileName = entry.getKey();
-			if (StringTools.stringIsNotEmpty(fileName)) {
+			if (StringTools.isNotBlank(fileName)) {
 				ArrayList<JarFileRef> dups = entry.getValue();
 				if (dups.size() > 1) {
 					String[] parms = new String[] {fileName};
@@ -2502,7 +2503,7 @@ public abstract class AbstractPersistenceUnit
 		HashMap<String, ArrayList<Generator>> generatorsByName = this.mapByName(this.getGenerators());
 		for (Map.Entry<String, ArrayList<Generator>> entry : generatorsByName.entrySet()) {
 			String generatorName = entry.getKey();
-			if (StringTools.stringIsNotEmpty(generatorName)) {  // ignore empty names
+			if (StringTools.isNotBlank(generatorName)) {  // ignore empty names
 				ArrayList<Generator> dups = entry.getValue();
 				if (dups.size() > 1) {
 					this.validateGeneratorsWithSameName(generatorName, dups, messages);
@@ -2570,7 +2571,7 @@ public abstract class AbstractPersistenceUnit
 		HashMap<String, ArrayList<Query>> queriesByName = this.mapByName(this.getQueries());
 		for (Map.Entry<String, ArrayList<Query>> entry : queriesByName.entrySet()) {
 			String queryName = entry.getKey();
-			if (StringTools.stringIsNotEmpty(queryName)) {  // ignore empty names
+			if (StringTools.isNotBlank(queryName)) {  // ignore empty names
 				ArrayList<Query> dups = entry.getValue();
 				if (dups.size() > 1) {
 					this.validateQueriesWithSameName(queryName, dups, messages);
@@ -2619,7 +2620,7 @@ public abstract class AbstractPersistenceUnit
 	protected void validateEntityNames(List<IMessage> messages) {
 		for (Map.Entry<String, ArrayList<Entity>> entry : this.mapTypeMappingsByName(this.getActiveEntities()).entrySet()) {
 			String entityName = entry.getKey();
-			if (StringTools.stringIsNotEmpty(entityName)) {
+			if (StringTools.isNotBlank(entityName)) {
 				ArrayList<Entity> dups = entry.getValue();
 				if (dups.size() > 1) {
 					this.validateEntitiesWithSameName(entityName, dups, messages);

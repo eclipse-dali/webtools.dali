@@ -27,7 +27,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleRootTranslator;
 import org.eclipse.jpt.common.core.resource.xml.ERootObjectImpl;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.text.edits.ReplaceEdit;

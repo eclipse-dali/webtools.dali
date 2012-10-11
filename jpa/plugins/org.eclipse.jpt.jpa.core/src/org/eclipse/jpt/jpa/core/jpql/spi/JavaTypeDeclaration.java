@@ -93,7 +93,7 @@ public class JavaTypeDeclaration implements ITypeDeclaration {
 
 		StringBuilder sb = new StringBuilder();
 		int index = arrayTypeName.indexOf('[');
-		int dimensionality = (arrayTypeName.length() - index) / 2;
+		int dimensionality = (arrayTypeName.length() - index) >> 1;
 		String typeName = arrayTypeName.substring(0, index);
 
 		while (--dimensionality >= 0) {

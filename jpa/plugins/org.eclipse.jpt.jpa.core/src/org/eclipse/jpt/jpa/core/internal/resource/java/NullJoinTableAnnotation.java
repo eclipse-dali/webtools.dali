@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jpa.core.internal.resource.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JoinTableAnnotation;
 

@@ -25,9 +25,9 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
 
@@ -94,7 +94,7 @@ public final class SourceUniqueConstraintAnnotation
 	}
 
 	public void moveColumnName(int targetIndex, int sourceIndex) {
-		CollectionTools.move(this.columnNames, targetIndex, sourceIndex);
+		ListTools.move(this.columnNames, targetIndex, sourceIndex);
 		this.writeColumnNames();
 	}
 

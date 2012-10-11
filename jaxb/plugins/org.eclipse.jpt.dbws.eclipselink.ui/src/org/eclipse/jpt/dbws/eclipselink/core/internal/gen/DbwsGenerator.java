@@ -84,7 +84,7 @@ public class DbwsGenerator extends AbstractJptGenerator
 		// Default Project classpath
 		classpath.add(this.getDefaultProjectClasspathEntry().getMemento());
 		// JDBC jar
-		if( ! StringTools.stringIsEmpty(this.driverJarList)) {
+		if( ! StringTools.isBlank(this.driverJarList)) {
 			classpath.add(this.getJdbcJarClasspathEntry().getMemento());
 		}
 		// System Library  

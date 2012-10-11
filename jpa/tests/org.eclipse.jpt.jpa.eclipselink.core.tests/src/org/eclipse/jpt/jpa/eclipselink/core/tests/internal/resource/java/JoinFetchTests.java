@@ -13,8 +13,8 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkJoinFetchAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.JoinFetchType;
@@ -55,7 +55,7 @@ public class JoinFetchTests extends EclipseLinkJavaResourceModelTestCase {
 	public void testJoinFetch() throws Exception {
 		ICompilationUnit cu = this.createTestJoinFetch();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 
 		EclipseLinkJoinFetchAnnotation joinFetch = (EclipseLinkJoinFetchAnnotation) resourceField.getAnnotation(EclipseLink.JOIN_FETCH);
 		assertNotNull(joinFetch);
@@ -64,7 +64,7 @@ public class JoinFetchTests extends EclipseLinkJavaResourceModelTestCase {
 	public void testGetValue() throws Exception {
 		ICompilationUnit cu = this.createTestJoinFetchWithValue();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkJoinFetchAnnotation joinFetch = (EclipseLinkJoinFetchAnnotation) resourceField.getAnnotation(EclipseLink.JOIN_FETCH);
 		assertEquals(JoinFetchType.OUTER, joinFetch.getValue());
@@ -73,7 +73,7 @@ public class JoinFetchTests extends EclipseLinkJavaResourceModelTestCase {
 	public void testSetValue() throws Exception {
 		ICompilationUnit cu = this.createTestJoinFetchWithValue();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkJoinFetchAnnotation joinFetch = (EclipseLinkJoinFetchAnnotation) resourceField.getAnnotation(EclipseLink.JOIN_FETCH);
 		assertEquals(JoinFetchType.OUTER, joinFetch.getValue());

@@ -22,9 +22,10 @@ import java.util.Map;
 import org.eclipse.datatools.connectivity.sqm.core.definition.DatabaseDefinition;
 import org.eclipse.datatools.connectivity.sqm.internal.core.RDBCorePlugin;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ResultSetIterator;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ResultSetIterator;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
@@ -319,7 +320,7 @@ abstract class AbstractDTPDriverAdapter
 	 * double-quotes; but some databases allow otherwise (e.g. Sybase).
 	 */
 	boolean identifierIsDelimited(String identifier) {
-		return StringTools.stringIsQuoted(identifier);
+		return StringTools.isQuoted(identifier);
 	}
 
 
@@ -483,6 +484,6 @@ abstract class AbstractDTPDriverAdapter
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.database);
+		return ObjectTools.toString(this, this.database);
 	}
 }

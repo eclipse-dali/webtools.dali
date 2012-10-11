@@ -11,6 +11,7 @@ package org.eclipse.jpt.common.core.internal.resource.java.binary;
 
 import java.util.Hashtable;
 import java.util.Vector;
+
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMemberValuePair;
@@ -22,15 +23,15 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.Transformer;
-import org.eclipse.jpt.common.utility.internal.TransformerAdapter;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * Java binary annotated element
@@ -113,15 +114,15 @@ abstract class BinaryAnnotatedElement
 	}
 	
 	private boolean annotationIsValid(String annotationName) {
-		return CollectionTools.contains(this.getAnnotationProvider().getAnnotationNames(), annotationName);
+		return IterableTools.contains(this.getAnnotationProvider().getAnnotationNames(), annotationName);
 	}
 	
 	private boolean annotationIsValidContainer(String annotationName) {
-		return CollectionTools.contains(this.getAnnotationProvider().getContainerAnnotationNames(), annotationName);
+		return IterableTools.contains(this.getAnnotationProvider().getContainerAnnotationNames(), annotationName);
 	}
 	
 	private boolean annotationIsValidNestable(String annotationName) {
-		return CollectionTools.contains(this.getAnnotationProvider().getNestableAnnotationNames(), annotationName);
+		return IterableTools.contains(this.getAnnotationProvider().getNestableAnnotationNames(), annotationName);
 	}
 	
 	
@@ -263,7 +264,7 @@ abstract class BinaryAnnotatedElement
 	
 	public boolean isAnnotatedWithAnyOf(Iterable<String> annotationNames) {
 		for (Annotation annotation : this.getSignificantAnnotations()) {
-			if (CollectionTools.contains(annotationNames, annotation.getAnnotationName())) {
+			if (IterableTools.contains(annotationNames, annotation.getAnnotationName())) {
 				return true;
 			}
 		}

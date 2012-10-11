@@ -17,21 +17,22 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.ClassName;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.NotNullFilter;
+import org.eclipse.jpt.common.utility.internal.ClassNameTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.CompositeIterator;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterator.CompositeIterator;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.JpaPlatformVariation.Supported;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
@@ -307,7 +308,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			return javaEntity.getName();
 		}
 		String className = this.getClass_();
-		return StringTools.stringIsEmpty(className) ? null : ClassName.getSimpleName(className);
+		return StringTools.isBlank(className) ? null : ClassNameTools.simpleName(className);
 	}
 
 
@@ -364,8 +365,8 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		String typeName = this.getPersistentType().getName();
 		String entityTypeName = entity.getPersistentType().getName();
 		String rootEntityTypeName = entity.getRootEntity().getPersistentType().getName();
-		return Tools.valuesAreDifferent(typeName, entityTypeName) &&
-				Tools.valuesAreEqual(typeName, rootEntityTypeName);
+		return ObjectTools.notEquals(typeName, entityTypeName) &&
+				ObjectTools.equals(typeName, rootEntityTypeName);
 	}
 
 
@@ -1409,7 +1410,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	public Iterable<ReadOnlyTable> getAllAssociatedTables() {
-		return CollectionTools.iterable(this.allAssociatedTables());
+		return CollectionTools.collection(this.allAssociatedTables());
 	}
 
 	public Iterator<ReadOnlyTable> allAssociatedTables() {
@@ -1461,7 +1462,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		if (tableName != null && tableName.equals(this.getPrimaryTableName())) {
 			return true;
 		}
-		return CollectionTools.contains(this.getAllAssociatedTableNames(), tableName);
+		return IterableTools.contains(this.getAllAssociatedTableNames(), tableName);
 	}
 
 
@@ -1769,7 +1770,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	protected void validateEntityName(List<IMessage> messages) {
-		if (StringTools.stringIsEmpty(this.getName())){
+		if (StringTools.isBlank(this.getName())){
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,

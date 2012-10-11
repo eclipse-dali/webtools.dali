@@ -11,7 +11,7 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
@@ -62,7 +62,7 @@ public class GenericJavaXmlIDREF
 			String typeName = ref.getFullyQualifiedType();
 			
 			// Object may be used in some cases of a *single* type, but can't be validated
-			if (! (Object.class.getName().equals(typeName) && CollectionTools.size(this.context.getReferences()) == 1)) {
+			if (! (Object.class.getName().equals(typeName) && IterableTools.size(this.context.getReferences()) == 1)) {
 					
 				JaxbClassMapping classMapping = getContextRoot().getClassMapping(typeName);
 				if (classMapping == null || classMapping.getXmlIdMapping() == null) {

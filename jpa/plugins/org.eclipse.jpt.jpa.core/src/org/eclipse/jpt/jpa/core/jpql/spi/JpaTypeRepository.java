@@ -121,7 +121,7 @@ public class JpaTypeRepository implements ITypeRepository {
 	protected String convertToJavaArrayType(String typeName) {
 
 		int index = typeName.indexOf("[]");
-		int dimensionality = (typeName.length() - index) / 2;
+		int dimensionality = (typeName.length() - index) >> 1;
 		StringBuilder sb = new StringBuilder();
 
 		while (dimensionality-- > 0) {
@@ -194,7 +194,7 @@ public class JpaTypeRepository implements ITypeRepository {
 	public IJpaType getEnumType(String enumTypeName) {
 
 		// Make sure the enum type name is not empty before doing operations over it
-		if (StringTools.stringIsEmpty(enumTypeName)) {
+		if (StringTools.isBlank(enumTypeName)) {
 			return null;
 		}
 
@@ -262,7 +262,7 @@ public class JpaTypeRepository implements ITypeRepository {
 	 */
 	public IJpaType getType(String typeName) {
 
-		if (StringTools.stringIsEmpty(typeName) ||
+		if (StringTools.isBlank(typeName) ||
 		    IJpaType.UNRESOLVABLE_TYPE == typeName) {
 
 			return unresolvableType();
@@ -303,7 +303,7 @@ public class JpaTypeRepository implements ITypeRepository {
 			catch (Exception e) {
 
 				int index = typeName.indexOf("[]");
-				int dimensionality = (typeName.length() - index) / 2;
+				int dimensionality = (typeName.length() - index) >> 1;
 
 				type = getType(typeName.substring(0, index));
 
@@ -358,7 +358,7 @@ public class JpaTypeRepository implements ITypeRepository {
 			catch (Exception e) {
 
 				int index = typeName.lastIndexOf("[");
-				int dimensionality = index / 2;
+				int dimensionality = index >> 1;
 
 				type = getType(typeName.substring(index, typeName.endsWith(";") ? typeName.length() - 1 : typeName.length()));
 

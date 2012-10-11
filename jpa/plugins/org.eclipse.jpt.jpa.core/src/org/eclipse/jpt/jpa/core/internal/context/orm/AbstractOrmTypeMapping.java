@@ -14,13 +14,13 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
@@ -369,7 +369,7 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 		return new FilteringIterable<AttributeMapping>(this.getAttributeMappings()) {
 			@Override
 			protected boolean accept(AttributeMapping o) {
-				return Tools.valuesAreEqual(o.getKey(), mappingKey);
+				return ObjectTools.equals(o.getKey(), mappingKey);
 			}
 		};
 	}
@@ -378,7 +378,7 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 		return new FilteringIterable<AttributeMapping>(this.getAllAttributeMappings()) {
 			@Override
 			protected boolean accept(AttributeMapping o) {
-				return Tools.valuesAreEqual(o.getKey(), mappingKey);
+				return ObjectTools.equals(o.getKey(), mappingKey);
 			}
 		};
 	}
@@ -568,7 +568,7 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 	}
 
 	protected void validateClass(List<IMessage> messages, IReporter reporter) {
-		if (StringTools.stringIsEmpty(this.class_)) {
+		if (StringTools.isBlank(this.class_)) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,

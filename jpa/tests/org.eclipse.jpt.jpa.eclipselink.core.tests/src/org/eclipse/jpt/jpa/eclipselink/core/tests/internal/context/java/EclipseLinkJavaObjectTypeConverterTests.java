@@ -15,8 +15,8 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
@@ -406,24 +406,24 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		converter.addConversionValue(2).setDataValue("O");
 		
 		ListIterator<EclipseLinkConversionValueAnnotation> resourceConversionValues = converterAnnotation.getConversionValues().iterator();
-		assertEquals(3, CollectionTools.size(resourceConversionValues));
+		assertEquals(3, IteratorTools.size(resourceConversionValues));
 		
 		converter.removeConversionValue(0);
 		resourceConversionValues = converterAnnotation.getConversionValues().iterator();
-		assertEquals(2, CollectionTools.size(resourceConversionValues));
+		assertEquals(2, IteratorTools.size(resourceConversionValues));
 		resourceConversionValues = converterAnnotation.getConversionValues().iterator();
 		assertEquals("M", resourceConversionValues.next().getDataValue());
 		assertEquals("O", resourceConversionValues.next().getDataValue());
 
 		converter.removeConversionValue(0);
 		resourceConversionValues = converterAnnotation.getConversionValues().iterator();
-		assertEquals(1, CollectionTools.size(resourceConversionValues));
+		assertEquals(1, IteratorTools.size(resourceConversionValues));
 		resourceConversionValues = converterAnnotation.getConversionValues().iterator();
 		assertEquals("O", resourceConversionValues.next().getDataValue());
 		
 		converter.removeConversionValue(0);
 		resourceConversionValues = converterAnnotation.getConversionValues().iterator();
-		assertEquals(0, CollectionTools.size(resourceConversionValues));
+		assertEquals(0, IteratorTools.size(resourceConversionValues));
 	}
 
 	public void testMoveConversionValue() throws Exception {
@@ -443,11 +443,11 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		converter.addConversionValue(2).setDataValue("O");
 		
 		ListIterator<EclipseLinkConversionValueAnnotation> resourceConversionValues = converterAnnotation.getConversionValues().iterator();
-		assertEquals(3, CollectionTools.size(resourceConversionValues));
+		assertEquals(3, IteratorTools.size(resourceConversionValues));
 		
 		converter.moveConversionValue(2,0);
 		resourceConversionValues = converterAnnotation.getConversionValues().iterator();
-		assertEquals(3, CollectionTools.size(resourceConversionValues));
+		assertEquals(3, IteratorTools.size(resourceConversionValues));
 		resourceConversionValues = converterAnnotation.getConversionValues().iterator();
 		assertEquals("M", resourceConversionValues.next().getDataValue());
 		assertEquals("O", resourceConversionValues.next().getDataValue());
@@ -455,7 +455,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkContextM
 		
 		converter.moveConversionValue(0,1);
 		resourceConversionValues = converterAnnotation.getConversionValues().iterator();
-		assertEquals(3, CollectionTools.size(resourceConversionValues));
+		assertEquals(3, IteratorTools.size(resourceConversionValues));
 		resourceConversionValues = converterAnnotation.getConversionValues().iterator();
 		assertEquals("O", resourceConversionValues.next().getDataValue());
 		assertEquals("M", resourceConversionValues.next().getDataValue());

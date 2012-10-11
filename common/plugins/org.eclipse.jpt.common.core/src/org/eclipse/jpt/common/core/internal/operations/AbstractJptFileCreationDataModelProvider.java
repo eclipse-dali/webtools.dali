@@ -83,7 +83,7 @@ public abstract class AbstractJptFileCreationDataModelProvider
 			return JptCommonCorePlugin.instance().buildErrorStatus(JptCommonCoreMessages.VALIDATE_CONTAINER_NOT_SPECIFIED);
 		}
 		String fileName = getStringProperty(FILE_NAME);
-		if (StringTools.stringIsEmpty(fileName)) {
+		if (StringTools.isBlank(fileName)) {
 			// verifies file name has been specified, but should be unnecessary in most cases.
 			// there is almost always a default, and the new file wizard does this validation as well.
 			return JptCommonCorePlugin.instance().buildErrorStatus(JptCommonCoreMessages.VALIDATE_FILE_NAME_NOT_SPECIFIED);

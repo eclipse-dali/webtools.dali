@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal.command;
 
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.SynchronizedObject;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.reference.SynchronizedObject;
 
 /**
  * Provide the state machine to support minimal repeat command executions.
@@ -63,6 +63,7 @@ public class RepeatingCommandState {
 			case EXECUTING:
 			case REPEAT:
 			case STOPPING:
+			default:
 				throw this.buildISE();
 		}
 	}
@@ -101,8 +102,9 @@ public class RepeatingCommandState {
 			case STOPPING:
 				// no further executions are allowed
 				return false;
+			default:
+				throw this.buildISE();
 		}
-		throw this.buildISE();
 	}
 
 	/**
@@ -130,9 +132,9 @@ public class RepeatingCommandState {
 			case EXECUTING:
 			case REPEAT:
 			case STOPPING:
+			default:
 				throw this.buildISE();
 		}
-		throw this.buildISE();
 	}
 
 	/**
@@ -159,8 +161,9 @@ public class RepeatingCommandState {
 				// mark the "stop" complete and perform no more executions
 				this.state.setValue(State.STOPPED);
 				return false;
+			default:
+				throw this.buildISE();
 		}
-		throw this.buildISE();
 	}
 
 	/**
@@ -191,6 +194,7 @@ public class RepeatingCommandState {
 				break;
 			case STOPPED:
 			case STOPPING:
+			default:
 				throw this.buildISE();
 		}
 	}
@@ -215,6 +219,6 @@ public class RepeatingCommandState {
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.state);
+		return ObjectTools.toString(this, this.state);
 	}
 }

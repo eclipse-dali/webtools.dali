@@ -12,10 +12,10 @@ package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
@@ -98,7 +98,7 @@ public class ELJavaXmlInverseReferenceMapping
 	
 	protected JaxbPersistentAttribute getReferencedAttribute() {
 		String mappedBy = getMappedBy();
-		if (StringTools.stringIsEmpty(mappedBy)) {
+		if (StringTools.isBlank(mappedBy)) {
 			return null;
 		}
 		JaxbClassMapping referencedClassMapping = getReferencedClassMapping();
@@ -125,14 +125,14 @@ public class ELJavaXmlInverseReferenceMapping
 	@Override
 	public Iterable<String> getCompletionProposals(int pos) {
 		Iterable<String> result = super.getCompletionProposals(pos);
-		if (! CollectionTools.isEmpty(result)) {
+		if (! IterableTools.isEmpty(result)) {
 			return result;
 		}
 		
 		if (getXmlInverseReferenceAnnotation().mappedByTouches(pos)) {
 			result = getMappedByProposals();
 		}
-		if (! CollectionTools.isEmpty(result)) {
+		if (! IterableTools.isEmpty(result)) {
 			return result;
 		}
 		
@@ -146,13 +146,14 @@ public class ELJavaXmlInverseReferenceMapping
 			return EmptyIterable.instance();
 		}
 		
-		return StringTools.convertToJavaStringLiteralContents(
+		return new TransformationIterable<String, String>(
 				new TransformationIterable<JaxbPersistentAttribute, String>(referencedClassMapping.getAllLocallyDefinedAttributes()) {
 					@Override
 					protected String transform(JaxbPersistentAttribute o) {
 						return o.getName();
 					}
-				});
+				},
+				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 	
 	
@@ -166,7 +167,7 @@ public class ELJavaXmlInverseReferenceMapping
 	}
 	
 	protected void validateMappedBy(List<IMessage> messages, IReporter reporter) {
-		if (StringTools.stringIsEmpty(mappedBy)) {
+		if (StringTools.isBlank(mappedBy)) {
 			messages.add(
 					ELJaxbValidationMessageBuilder.buildMessage(
 							IMessage.HIGH_SEVERITY,

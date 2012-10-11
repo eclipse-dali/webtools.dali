@@ -14,7 +14,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 
@@ -65,7 +65,7 @@ public class JptResourceModelPropertyTester
 			return true; // effectively disable "upgrade"
 		}
 		String latestVersion = jpaProject.getJpaPlatform().getMostRecentSupportedResourceType(resourceType.getContentType()).getVersion();
-		return Tools.valuesAreEqual(resourceType.getVersion(), latestVersion);
+		return ObjectTools.equals(resourceType.getVersion(), latestVersion);
 	}
 
 	private boolean isGenericMappingFile(JptResourceModel resourceModel) {
@@ -80,7 +80,7 @@ public class JptResourceModelPropertyTester
 			return true; // effectively disable "upgrade"
 		}
 		IContentType contentType =  resourceType.getContentType();
-		return Tools.valuesAreEqual(contentType, XmlEntityMappings.CONTENT_TYPE);
+		return ObjectTools.equals(contentType, XmlEntityMappings.CONTENT_TYPE);
 	}
 
 	private JpaProject getJpaProject(IProject project) {

@@ -10,7 +10,8 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.SingleElementListIterator;
+
+import org.eclipse.jpt.common.utility.internal.iterator.SingleElementListIterator;
 import org.eclipse.jpt.jpa.core.context.JoinColumn;
 import org.eclipse.jpt.jpa.core.context.JoinTable;
 import org.eclipse.jpt.jpa.core.context.ReferenceTable;

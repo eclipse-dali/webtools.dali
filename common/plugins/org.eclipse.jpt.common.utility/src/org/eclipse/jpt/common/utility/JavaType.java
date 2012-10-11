@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -38,8 +38,8 @@ public interface JavaType {
 	int getArrayDepth();
 
 	/**
-	 * Return whether the type is an array (i.e. its "array depth" is greater
-	 * than zero).
+	 * Return whether the type is an array (i.e. its {@link #getArrayDepth()
+	 * "array depth"} is greater than zero).
 	 */
 	boolean isArray();
 
@@ -131,5 +131,4 @@ public interface JavaType {
 	 * </ul>
 	 */
 	void printDeclarationOn(PrintWriter pw);
-
 }

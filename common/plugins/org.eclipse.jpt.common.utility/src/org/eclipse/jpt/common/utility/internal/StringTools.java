@@ -9,82 +9,128 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.internal;
 
-import java.io.IOException;
-import java.io.Writer;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayListIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.common.utility.filter.Filter;
+import org.eclipse.jpt.common.utility.internal.io.WriterTools;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
- * Convenience methods related to the java.lang.String class.
- *
- * As of jdk 1.5, it's tempting to convert all of these methods to use
- * java.lang.Appendable (instead of StringBuffer, StringBuilder, and Writer);
- * but all the Appendable methods throw java.io.IOException (yech) and we
- * [might?] get a bit better performance invoking methods on classes than
- * we get on interfaces. :-)
+ * {@link String} utility methods
+ * 
+ * @see CharArrayTools
+ * @see WriterTools
+ * @see StringBuilderTools
+ * @see StringBufferTools
  */
 public final class StringTools {
 
 	/** carriage return */
 	public static final String CR = System.getProperty("line.separator");  //$NON-NLS-1$
 
-	/** double quote */
-	public static final char QUOTE = '"';
-	
-	/** XML double quote */
-	public static final String XML_QUOTE = "&quot;"; //$NON-NLS-1$
-	
-	/** XML apostrophe */
-	public static final String XML_APOSTROPHE = "&apos;";
-	
-	/** XML ampersand */
-	public static final String XML_AMPERSAND = "&amp;";
-	
-	/** parenthesis */
-	public static final char OPEN_PARENTHESIS = '(';
-	public static final char CLOSE_PARENTHESIS = ')';
-
-	/** brackets */
-	public static final char OPEN_BRACKET = '[';
-	public static final char CLOSE_BRACKET = ']';
-
-	/** brackets */
-	public static final char OPEN_BRACE = '{';
-	public static final char CLOSE_BRACE = '}';
-
-	/** brackets */
-	public static final char OPEN_CHEVRON = '<';
-	public static final char CLOSE_CHEVRON = '>';
-
-	/** XML angle brackets */
-	public static final String XML_OPEN_CHEVRON= "&lt;";
-	public static final String XML_CLOSE_CHEVRON = "&gt;";
-
 	/** empty string */
 	public static final String EMPTY_STRING = ""; //$NON-NLS-1$
-
-	/** empty char array */
-	public static final char[] EMPTY_CHAR_ARRAY = new char[0];
 
 	/** empty string array */
 	public static final String[] EMPTY_STRING_ARRAY = new String[0];
 
 
+	// ********** last **********
 
-	// ********** padding/truncating **********
+	/**
+	 * Return the last character of the specified string.
+	 */
+	public static char last(String string) {
+		return string.charAt(string.length() - 1);
+	}
+
+
+	// ********** concatenation **********
+
+	/**
+	 * Return a concatenation of the specified strings.
+	 */
+	public static String concatenate(String... strings) {
+		int stringLength = 0;
+		for (String string : strings) {
+			stringLength += string.length();
+		}
+		StringBuilder sb = new StringBuilder(stringLength);
+		for (String string : strings) {
+			sb.append(string);
+		}
+		return sb.toString();
+	}
+
+	/**
+	 * Return a concatenation of the specified strings.
+	 */
+	public static String concatenate(Iterable<String> strings) {
+		return concatenate(strings.iterator());
+	}
+
+	/**
+	 * Return a concatenation of the specified strings.
+	 */
+	public static String concatenate(Iterator<String> strings) {
+		StringBuilder sb = new StringBuilder();
+		while (strings.hasNext()) {
+			sb.append(strings.next());
+		}
+		return sb.toString();
+	}
+
+
+	// ********** padding/truncating/centering **********
+
+	/**
+	 * Center the specified string in the specified length.
+	 * If the string is already the specified length, return it unchanged.
+	 * If the string is longer than the specified length, truncate it.
+	 * If the string is shorter than the specified length, pad it with spaces at
+	 * each end.
+	 */
+	public static String center(String string, int length) {
+		return center(string, length, ' ');
+	}
+
+	/**
+	 * Center the specified string in the specified length.
+	 * If the string is already the specified length, return it unchanged.
+	 * If the string is longer than the specified length, truncate it.
+	 * If the string is shorter than the specified length, pad it with the
+	 * specified character at each end.
+	 */
+	public static String center(String string, int length, char c) {
+		if (length == 0) {
+			return EMPTY_STRING;
+		}
+		int stringLength = string.length();
+		if (stringLength == length) {
+			return string;
+		}
+		if (stringLength > length) {
+			int begin = (stringLength - length) >> 1; // take fewer characters off the front
+			return string.substring(begin, begin + length);
+		}
+		// stringLength < length
+		char[] result = new char[length];
+		int begin = (length - stringLength) >> 1; // add fewer characters to the front
+		Arrays.fill(result, 0, begin, c);
+		string.getChars(0, stringLength, result, begin);
+		Arrays.fill(result, begin + stringLength, length, c);
+		return new String(result);
+	}
 
 	/**
 	 * Pad the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
-	 * If it is shorter than the specified length, it is padded with spaces at the end.
-	 * <p>
-	 * <code>
-	 * String.pad(int)
-	 * </code>
+	 * If the string is already the specified length, return it unchanged.
+	 * If the string is longer than the specified length, throw an
+	 * {@link IllegalArgumentException}.
+	 * If the string is shorter than the specified length, pad it with spaces
+	 * at the end.
 	 */
 	public static String pad(String string, int length) {
 		return pad(string, length, ' ');
@@ -92,56 +138,11 @@ public final class StringTools {
 
 	/**
 	 * Pad the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
-	 * If it is shorter than the specified length, it is padded with spaces at the end.
-	 * <p>
-	 * <code>
-	 * String.padOn(int, Writer)
-	 * </code>
-	 */
-	public static void padOn(String string, int length, Writer writer) {
-		padOn(string, length, ' ', writer);
-	}
-
-	/**
-	 * Pad the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
-	 * If it is shorter than the specified length, it is padded with spaces at the end.
-	 * <p>
-	 * <code>
-	 * String.padOn(int, StringBuffer)
-	 * </code>
-	 */
-	public static void padOn(String string, int length, StringBuffer sb) {
-		padOn(string, length, ' ', sb);
-	}
-
-	/**
-	 * Pad the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
-	 * If it is shorter than the specified length, it is padded with spaces at the end.
-	 * <p>
-	 * <code>
-	 * String.padOn(int, StringBuilder)
-	 * </code>
-	 */
-	public static void padOn(String string, int length, StringBuilder sb) {
-		padOn(string, length, ' ', sb);
-	}
-
-	/**
-	 * Pad the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
-	 * If it is shorter than the specified length, it is padded with the
+	 * If the string is already the specified length, return it unchanged.
+	 * If the string is longer than the specified length, throw an
+	 * {@link IllegalArgumentException}.
+	 * If the string is shorter than the specified length, pad it with the
 	 * specified character at the end.
-	 * <p>
-	 * <code>
-	 * String.pad(int, char)
-	 * </code>
 	 */
 	public static String pad(String string, int length, char c) {
 		int stringLength = string.length();
@@ -151,293 +152,31 @@ public final class StringTools {
 		if (stringLength == length) {
 			return string;
 		}
-		return pad_(string, length, c);
-	}
-
-	/**
-	 * Pad the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
-	 * If it is shorter than the specified length, it is padded with the
-	 * specified character at the end.
-	 * <p>
-	 * <code>
-	 * String.padOn(int, char, Writer)
-	 * </code>
-	 */
-	public static void padOn(String string, int length, char c, Writer writer) {
-		int stringLength = string.length();
-		if (stringLength > length) {
-			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);  //$NON-NLS-1$  //$NON-NLS-2$
-		}
-		if (stringLength == length) {
-			writeStringOn(string, writer);
-		} else {
-			padOn_(string, length, c, writer);
-		}
-	}
-
-	/**
-	 * Pad the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
-	 * If it is shorter than the specified length, it is padded with the
-	 * specified character at the end.
-	 * <p>
-	 * <code>
-	 * String.padOn(int, char, StringBuffer)
-	 * </code>
-	 */
-	public static void padOn(String string, int length, char c, StringBuffer sb) {
-		int stringLength = string.length();
-		if (stringLength > length) {
-			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);  //$NON-NLS-1$  //$NON-NLS-2$
-		}
-		if (stringLength == length) {
-			sb.append(string);
-		} else {
-			padOn_(string, length, c, sb);
-		}
-	}
-
-	/**
-	 * Pad the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
-	 * If it is shorter than the specified length, it is padded with the
-	 * specified character at the end.
-	 * <p>
-	 * <code>
-	 * String.padOn(int, char, StringBuilder)
-	 * </code>
-	 */
-	public static void padOn(String string, int length, char c, StringBuilder sb) {
-		int stringLength = string.length();
-		if (stringLength > length) {
-			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);  //$NON-NLS-1$  //$NON-NLS-2$
-		}
-		if (stringLength == length) {
-			sb.append(string);
-		} else {
-			padOn_(string, length, c, sb);
-		}
-	}
-
-	/**
-	 * Pad the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
-	 * If it is shorter than the specified length, it is padded with spaces at the end.
-	 * <p>
-	 * <code>
-	 * String.pad(int)
-	 * </code>
-	 */
-	public static char[] pad(char[] string, int length) {
-		return pad(string, length, ' ');
-	}
-
-	/**
-	 * Pad the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
-	 * If it is shorter than the specified length, it is padded with spaces at the end.
-	 * <p>
-	 * <code>
-	 * String.padOn(int, writer)
-	 * </code>
-	 */
-	public static void padOn(char[] string, int length, Writer writer) {
-		padOn(string, length, ' ', writer);
-	}
-
-	/**
-	 * Pad the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
-	 * If it is shorter than the specified length, it is padded with spaces at the end.
-	 * <p>
-	 * <code>
-	 * String.padOn(int, StringBuffer)
-	 * </code>
-	 */
-	public static void padOn(char[] string, int length, StringBuffer sb) {
-		padOn(string, length, ' ', sb);
-	}
-
-	/**
-	 * Pad the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
-	 * If it is shorter than the specified length, it is padded with spaces at the end.
-	 * <p>
-	 * <code>
-	 * String.padOn(int, StringBuilder)
-	 * </code>
-	 */
-	public static void padOn(char[] string, int length, StringBuilder sb) {
-		padOn(string, length, ' ', sb);
-	}
-
-	/**
-	 * Pad the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
-	 * If it is shorter than the specified length, it is padded with the
-	 * specified character at the end.
-	 * <p>
-	 * <code>
-	 * String.pad(int, char)
-	 * </code>
-	 */
-	public static char[] pad(char[] string, int length, char c) {
-		int stringLength = string.length;
-		if (stringLength > length) {
-			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);  //$NON-NLS-1$  //$NON-NLS-2$
-		}
-		if (stringLength == length) {
-			return string;
-		}
-		return pad_(string, length, c);
-	}
-
-	/**
-	 * Pad the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
-	 * If it is shorter than the specified length, it is padded with the
-	 * specified character at the end.
-	 * <p>
-	 * <code>
-	 * String.padOn(int, char, Writer)
-	 * </code>
-	 */
-	public static void padOn(char[] string, int length, char c, Writer writer) {
-		int stringLength = string.length;
-		if (stringLength > length) {
-			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);  //$NON-NLS-1$  //$NON-NLS-2$
-		}
-		if (stringLength == length) {
-			writeStringOn(string, writer);
-		} else {
-			padOn_(string, length, c, writer);
-		}
-	}
-
-	/**
-	 * Pad the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
-	 * If it is shorter than the specified length, it is padded with the
-	 * specified character at the end.
-	 * <p>
-	 * <code>
-	 * String.padOn(int, char, StringBuffer)
-	 * </code>
-	 */
-	public static void padOn(char[] string, int length, char c, StringBuffer sb) {
-		int stringLength = string.length;
-		if (stringLength > length) {
-			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);  //$NON-NLS-1$  //$NON-NLS-2$
-		}
-		if (stringLength == length) {
-			sb.append(string);
-		} else {
-			padOn_(string, length, c, sb);
-		}
-	}
-
-	/**
-	 * Pad the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
-	 * If it is shorter than the specified length, it is padded with the
-	 * specified character at the end.
-	 * <p>
-	 * <code>
-	 * String.padOn(int, char, StringBuilder)
-	 * </code>
-	 */
-	public static void padOn(char[] string, int length, char c, StringBuilder sb) {
-		int stringLength = string.length;
-		if (stringLength > length) {
-			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);  //$NON-NLS-1$  //$NON-NLS-2$
-		}
-		if (stringLength == length) {
-			sb.append(string);
-		} else {
-			padOn_(string, length, c, sb);
-		}
+		return pad(string, length, c, stringLength);
 	}
 
 	/**
 	 * Pad or truncate the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, it is truncated.
-	 * If it is shorter than the specified length, it is padded with spaces at the end.
-	 * <p>
-	 * <code>
-	 * String.padOrTruncate(int)
-	 * </code>
+	 * If the string is already the specified length, returned it unchanged.
+	 * If the string is longer than the specified length, truncate it.
+	 * If the string is shorter than the specified length, pad it with spaces at
+	 * the end.
 	 */
-	public static String padOrTruncate(String string, int length) {
-		return padOrTruncate(string, length, ' ');
+	public static String fit(String string, int length) {
+		return fit(string, length, ' ');
 	}
 
 	/**
 	 * Pad or truncate the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, it is truncated.
-	 * If it is shorter than the specified length, it is padded with spaces at the end.
-	 * <p>
-	 * <code>
-	 * String.padOrTruncateOn(int, Writer)
-	 * </code>
-	 */
-	public static void padOrTruncateOn(String string, int length, Writer writer) {
-		padOrTruncateOn(string, length, ' ', writer);
-	}
-
-	/**
-	 * Pad or truncate the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, it is truncated.
-	 * If it is shorter than the specified length, it is padded with spaces at the end.
-	 * <p>
-	 * <code>
-	 * String.padOrTruncateOn(int, StringBuffer)
-	 * </code>
-	 */
-	public static void padOrTruncateOn(String string, int length, StringBuffer sb) {
-		padOrTruncateOn(string, length, ' ', sb);
-	}
-
-	/**
-	 * Pad or truncate the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, it is truncated.
-	 * If it is shorter than the specified length, it is padded with spaces at the end.
-	 * <p>
-	 * <code>
-	 * String.padOrTruncateOn(int, StringBuilder)
-	 * </code>
-	 */
-	public static void padOrTruncateOn(String string, int length, StringBuilder sb) {
-		padOrTruncateOn(string, length, ' ', sb);
-	}
-
-	/**
-	 * Pad or truncate the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, it is truncated.
-	 * If it is shorter than the specified length, it is padded with the
+	 * If the string is already the specified length, return it unchanged.
+	 * If the string is longer than the specified length, truncate it.
+	 * If the string is shorter than the specified length, pad it with the
 	 * specified character at the end.
-	 * <p>
-	 * <code>
-	 * String.padOrTruncate(int, char)
-	 * </code>
 	 */
-	public static String padOrTruncate(String string, int length, char c) {
+	public static String fit(String string, int length, char c) {
+		if (length == 0) {
+			return EMPTY_STRING;
+		}
 		int stringLength = string.length();
 		if (stringLength == length) {
 			return string;
@@ -445,368 +184,26 @@ public final class StringTools {
 		if (stringLength > length) {
 			return string.substring(0, length);
 		}
-		return pad_(string, length, c);
+		return pad(string, length, c, stringLength);
 	}
 
 	/**
-	 * Pad or truncate the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, it is truncated.
-	 * If it is shorter than the specified length, it is padded with the
-	 * specified character at the end.
-	 * <p>
-	 * <code>
-	 * String.padOrTruncateOn(int, char, Writer)
-	 * </code>
+	 * no length checks
 	 */
-	public static void padOrTruncateOn(String string, int length, char c, Writer writer) {
-		int stringLength = string.length();
-		if (stringLength == length) {
-			writeStringOn(string, writer);
-		} else if (stringLength > length) {
-			writeStringOn(string.substring(0, length), writer);
-		} else {
-			padOn_(string, length, c, writer);
-		}
-	}
-
-	/**
-	 * Pad or truncate the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, it is truncated.
-	 * If it is shorter than the specified length, it is padded with the
-	 * specified character at the end.
-	 * <p>
-	 * <code>
-	 * String.padOrTruncateOn(int, char, StringBuffer)
-	 * </code>
-	 */
-	public static void padOrTruncateOn(String string, int length, char c, StringBuffer sb) {
-		int stringLength = string.length();
-		if (stringLength == length) {
-			sb.append(string);
-		} else if (stringLength > length) {
-			sb.append(string.substring(0, length));
-		} else {
-			padOn_(string, length, c, sb);
-		}
-	}
-
-	/**
-	 * Pad or truncate the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, it is truncated.
-	 * If it is shorter than the specified length, it is padded with the
-	 * specified character at the end.
-	 * <p>
-	 * <code>
-	 * String.padOrTruncateOn(int, char, StringBuilder)
-	 * </code>
-	 */
-	public static void padOrTruncateOn(String string, int length, char c, StringBuilder sb) {
-		int stringLength = string.length();
-		if (stringLength == length) {
-			sb.append(string);
-		} else if (stringLength > length) {
-			sb.append(string.substring(0, length));
-		} else {
-			padOn_(string, length, c, sb);
-		}
-	}
-
-	/**
-	 * Pad or truncate the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, it is truncated.
-	 * If it is shorter than the specified length, it is padded with spaces at the end.
-	 * <p>
-	 * <code>
-	 * String.padOrTruncate(int)
-	 * </code>
-	 */
-	public static char[] padOrTruncate(char[] string, int length) {
-		return padOrTruncate(string, length, ' ');
-	}
-
-	/**
-	 * Pad or truncate the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, it is truncated.
-	 * If it is shorter than the specified length, it is padded with spaces at the end.
-	 * <p>
-	 * <code>
-	 * String.padOrTruncateOn(int, Writer)
-	 * </code>
-	 */
-	public static void padOrTruncateOn(char[] string, int length, Writer writer) {
-		padOrTruncateOn(string, length, ' ', writer);
-	}
-
-	/**
-	 * Pad or truncate the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, it is truncated.
-	 * If it is shorter than the specified length, it is padded with spaces at the end.
-	 * <p>
-	 * <code>
-	 * String.padOrTruncateOn(int, StringBuffer)
-	 * </code>
-	 */
-	public static void padOrTruncate(char[] string, int length, StringBuffer sb) {
-		padOrTruncateOn(string, length, ' ', sb);
-	}
-
-	/**
-	 * Pad or truncate the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, it is truncated.
-	 * If it is shorter than the specified length, it is padded with spaces at the end.
-	 * <p>
-	 * <code>
-	 * String.padOrTruncateOn(int, StringBuilder)
-	 * </code>
-	 */
-	public static void padOrTruncate(char[] string, int length, StringBuilder sb) {
-		padOrTruncateOn(string, length, ' ', sb);
-	}
-
-	/**
-	 * Pad or truncate the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, it is truncated.
-	 * If it is shorter than the specified length, it is padded with the
-	 * specified character at the end.
-	 * <p>
-	 * <code>
-	 * String.padOrTruncate(int, char)
-	 * </code>
-	 */
-	public static char[] padOrTruncate(char[] string, int length, char c) {
-		int stringLength = string.length;
-		if (stringLength == length) {
-			return string;
-		}
-		if (stringLength > length) {
-			char[] result = new char[length];
-			System.arraycopy(string, 0, result, 0, length);
-			return result;
-		}
-		return pad_(string, length, c);
-	}
-
-	/**
-	 * Pad or truncate the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, it is truncated.
-	 * If it is shorter than the specified length, it is padded with the
-	 * specified character at the end.
-	 * <p>
-	 * <code>
-	 * String.padOrTruncateOn(int, char, Writer)
-	 * </code>
-	 */
-	public static void padOrTruncateOn(char[] string, int length, char c, Writer writer) {
-		int stringLength = string.length;
-		if (stringLength == length) {
-			writeStringOn(string, writer);
-		} else if (stringLength > length) {
-			writeStringOn(string, 0, length, writer);
-		} else {
-			padOn_(string, length, c, writer);
-		}
-	}
-
-	/**
-	 * Pad or truncate the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, it is truncated.
-	 * If it is shorter than the specified length, it is padded with the
-	 * specified character at the end.
-	 * <p>
-	 * <code>
-	 * String.padOrTruncateOn(int, char, StringBuffer)
-	 * </code>
-	 */
-	public static void padOrTruncateOn(char[] string, int length, char c, StringBuffer sb) {
-		int stringLength = string.length;
-		if (stringLength == length) {
-			sb.append(string);
-		} else if (stringLength > length) {
-			sb.append(string, 0, length);
-		} else {
-			padOn_(string, length, c, sb);
-		}
-	}
-
-	/**
-	 * Pad or truncate the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, it is truncated.
-	 * If it is shorter than the specified length, it is padded with the
-	 * specified character at the end.
-	 * <p>
-	 * <code>
-	 * String.padOrTruncateOn(int, char, StringBuilder)
-	 * </code>
-	 */
-	public static void padOrTruncateOn(char[] string, int length, char c, StringBuilder sb) {
-		int stringLength = string.length;
-		if (stringLength == length) {
-			sb.append(string);
-		} else if (stringLength > length) {
-			sb.append(string, 0, length);
-		} else {
-			padOn_(string, length, c, sb);
-		}
-	}
-
-	/*
-	 * Pad the specified string without validating the parms.
-	 */
-	private static String pad_(String string, int length, char c) {
-		return new String(pad_(string.toCharArray(), length, c));
-	}
-
-	/*
-	 * Pad the specified string without validating the parms.
-	 */
-	private static void padOn_(String string, int length, char c, Writer writer) {
-		writeStringOn(string, writer);
-		fill_(string, length, c, writer);
-	}
-
-	/*
-	 * Add enough characters to the specified writer to compensate for
-	 * the difference between the specified string and specified length.
-	 */
-	private static void fill_(String string, int length, char c, Writer writer) {
-		fill_(string.length(), length, c, writer);
-	}
-
-	/*
-	 * Add enough characters to the specified writer to compensate for
-	 * the difference between the specified string and specified length.
-	 */
-	private static void fill_(char[] string, int length, char c, Writer writer) {
-		fill_(string.length, length, c, writer);
-	}
-
-	/*
-	 * Add enough characters to the specified writer to compensate for
-	 * the difference between the specified string and specified length.
-	 */
-	private static void fill_(int stringLength, int length, char c, Writer writer) {
-		writeStringOn(ArrayTools.fill(new char[length - stringLength], c), writer);
-	}
-
-	/*
-	 * Pad the specified string without validating the parms.
-	 */
-	private static void padOn_(String string, int length, char c, StringBuffer sb) {
-		sb.append(string);
-		fill_(string, length, c, sb);
-	}
-
-	/*
-	 * Add enough characters to the specified string buffer to compensate for
-	 * the difference between the specified string and specified length.
-	 */
-	private static void fill_(String string, int length, char c, StringBuffer sb) {
-		fill_(string.length(), length, c, sb);
-	}
-
-	/*
-	 * Add enough characters to the specified string buffer to compensate for
-	 * the difference between the specified string and specified length.
-	 */
-	private static void fill_(char[] string, int length, char c, StringBuffer sb) {
-		fill_(string.length, length, c, sb);
-	}
-
-	/*
-	 * Add enough characters to the specified string buffer to compensate for
-	 * the difference between the specified string and specified length.
-	 */
-	private static void fill_(int stringLength, int length, char c, StringBuffer sb) {
-		sb.append(ArrayTools.fill(new char[length - stringLength], c));
-	}
-
-	/*
-	 * Pad the specified string without validating the parms.
-	 */
-	private static void padOn_(String string, int length, char c, StringBuilder sb) {
-		sb.append(string);
-		fill_(string, length, c, sb);
-	}
-
-	/*
-	 * Add enough characters to the specified string builder to compensate for
-	 * the difference between the specified string and specified length.
-	 */
-	private static void fill_(String string, int length, char c, StringBuilder sb) {
-		fill_(string.length(), length, c, sb);
-	}
-
-	/*
-	 * Add enough characters to the specified string builder to compensate for
-	 * the difference between the specified string and specified length.
-	 */
-	private static void fill_(char[] string, int length, char c, StringBuilder sb) {
-		fill_(string.length, length, c, sb);
-	}
-
-	/*
-	 * Add enough characters to the specified string builder to compensate for
-	 * the difference between the specified string and specified length.
-	 */
-	private static void fill_(int stringLength, int length, char c, StringBuilder sb) {
-		sb.append(ArrayTools.fill(new char[length - stringLength], c));
-	}
-
-	/*
-	 * Pad the specified string without validating the parms.
-	 */
-	private static char[] pad_(char[] string, int length, char c) {
+	private static String pad(String string, int length, char c, int stringLength) {
 		char[] result = new char[length];
-		int stringLength = string.length;
-		System.arraycopy(string, 0, result, 0, stringLength);
+		string.getChars(0, stringLength, result, 0);
 		Arrays.fill(result, stringLength, length, c);
-		return result;
-	}
-
-	/*
-	 * Pad the specified string without validating the parms.
-	 */
-	private static void padOn_(char[] string, int length, char c, Writer writer) {
-		writeStringOn(string, writer);
-		fill_(string, length, c, writer);
-	}
-
-	/*
-	 * Pad the specified string without validating the parms.
-	 */
-	private static void padOn_(char[] string, int length, char c, StringBuffer sb) {
-		sb.append(string);
-		fill_(string, length, c, sb);
-	}
-
-	/*
-	 * Pad the specified string without validating the parms.
-	 */
-	private static void padOn_(char[] string, int length, char c, StringBuilder sb) {
-		sb.append(string);
-		fill_(string, length, c, sb);
+		return new String(result);
 	}
 
 	/**
 	 * Pad the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
-	 * If it is shorter than the specified length, it is padded with zeros at the front.
-	 * <p>
-	 * <code>
-	 * String.zeroPad(int)
-	 * </code>
+	 * If the string is already the specified length, return it unchanged.
+	 * If the string is longer than the specified length, throw an
+	 * {@link IllegalArgumentException}.
+	 * If the string is shorter than the specified length, pad it with zeros
+	 * at the front.
 	 */
 	public static String zeroPad(String string, int length) {
 		return frontPad(string, length, '0');
@@ -814,56 +211,11 @@ public final class StringTools {
 
 	/**
 	 * Pad the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
-	 * If it is shorter than the specified length, it is padded with zeros at the front.
-	 * <p>
-	 * <code>
-	 * String.zeroPadOn(int, Writer)
-	 * </code>
-	 */
-	public static void zeroPadOn(String string, int length, Writer writer) {
-		frontPadOn(string, length, '0', writer);
-	}
-
-	/**
-	 * Pad the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
-	 * If it is shorter than the specified length, it is padded with zeros at the front.
-	 * <p>
-	 * <code>
-	 * String.zeroPadOn(int, StringBuffer)
-	 * </code>
-	 */
-	public static void zeroPadOn(String string, int length, StringBuffer sb) {
-		frontPadOn(string, length, '0', sb);
-	}
-
-	/**
-	 * Pad the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
-	 * If it is shorter than the specified length, it is padded with zeros at the front.
-	 * <p>
-	 * <code>
-	 * String.zeroPadOn(int, StringBuilder)
-	 * </code>
-	 */
-	public static void zeroPadOn(String string, int length, StringBuilder sb) {
-		frontPadOn(string, length, '0', sb);
-	}
-
-	/**
-	 * Pad the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
-	 * If it is shorter than the specified length, it is padded with the
+	 * If the string is already the specified length, return it unchanged.
+	 * If the string is longer than the specified length, throw an
+	 * {@link IllegalArgumentException}.
+	 * If the string is shorter than the specified length, pad it with the
 	 * specified character at the front.
-	 * <p>
-	 * <code>
-	 * String.frontPad(int, char)
-	 * </code>
 	 */
 	public static String frontPad(String string, int length, char c) {
 		int stringLength = string.length();
@@ -873,293 +225,33 @@ public final class StringTools {
 		if (stringLength == length) {
 			return string;
 		}
-		return frontPad_(string, length, c);
-	}
-
-	/**
-	 * Pad the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
-	 * If it is shorter than the specified length, it is padded with the
-	 * specified character at the front.
-	 * <p>
-	 * <code>
-	 * String.frontPadOn(int, char, Writer)
-	 * </code>
-	 */
-	public static void frontPadOn(String string, int length, char c, Writer writer) {
-		int stringLength = string.length();
-		if (stringLength > length) {
-			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);  //$NON-NLS-1$  //$NON-NLS-2$
-		}
-		if (stringLength == length) {
-			writeStringOn(string, writer);
-		} else {
-			frontPadOn_(string, length, c, writer);
-		}
-	}
-
-	/**
-	 * Pad the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
-	 * If it is shorter than the specified length, it is padded with the
-	 * specified character at the front.
-	 * <p>
-	 * <code>
-	 * String.frontPadOn(int, char, StringBuffer)
-	 * </code>
-	 */
-	public static void frontPadOn(String string, int length, char c, StringBuffer sb) {
-		int stringLength = string.length();
-		if (stringLength > length) {
-			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);  //$NON-NLS-1$  //$NON-NLS-2$
-		}
-		if (stringLength == length) {
-			sb.append(string);
-		} else {
-			frontPadOn_(string, length, c, sb);
-		}
-	}
-
-	/**
-	 * Pad the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
-	 * If it is shorter than the specified length, it is padded with the
-	 * specified character at the front.
-	 * <p>
-	 * <code>
-	 * String.frontPadOn(int, char, StringBuilder)
-	 * </code>
-	 */
-	public static void frontPadOn(String string, int length, char c, StringBuilder sb) {
-		int stringLength = string.length();
-		if (stringLength > length) {
-			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);  //$NON-NLS-1$  //$NON-NLS-2$
-		}
-		if (stringLength == length) {
-			sb.append(string);
-		} else {
-			frontPadOn_(string, length, c, sb);
-		}
-	}
-
-	/**
-	 * Pad the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
-	 * If it is shorter than the specified length, it is padded with zeros at the front.
-	 * <p>
-	 * <code>
-	 * String.zeroPad(int)
-	 * </code>
-	 */
-	public static char[] zeroPad(char[] string, int length) {
-		return frontPad(string, length, '0');
-	}
-
-	/**
-	 * Pad the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
-	 * If it is shorter than the specified length, it is padded with zeros at the front.
-	 * <p>
-	 * <code>
-	 * String.zeroPadOn(int, Writer)
-	 * </code>
-	 */
-	public static void zeroPadOn(char[] string, int length, Writer writer) {
-		frontPadOn(string, length, '0', writer);
-	}
-
-	/**
-	 * Pad the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
-	 * If it is shorter than the specified length, it is padded with zeros at the front.
-	 * <p>
-	 * <code>
-	 * String.zeroPadOn(int, StringBuffer)
-	 * </code>
-	 */
-	public static void zeroPadOn(char[] string, int length, StringBuffer sb) {
-		frontPadOn(string, length, '0', sb);
-	}
-
-	/**
-	 * Pad the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
-	 * If it is shorter than the specified length, it is padded with zeros at the front.
-	 * <p>
-	 * <code>
-	 * String.zeroPadOn(int, StringBuilder)
-	 * </code>
-	 */
-	public static void zeroPadOn(char[] string, int length, StringBuilder sb) {
-		frontPadOn(string, length, '0', sb);
-	}
-
-	/**
-	 * Pad the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
-	 * If it is shorter than the specified length, it is padded with the
-	 * specified character at the front.
-	 * <p>
-	 * <code>
-	 * String.frontPad(int, char)
-	 * </code>
-	 */
-	public static char[] frontPad(char[] string, int length, char c) {
-		int stringLength = string.length;
-		if (stringLength > length) {
-			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);  //$NON-NLS-1$  //$NON-NLS-2$
-		}
-		if (stringLength == length) {
-			return string;
-		}
-		return frontPad_(string, length, c);
-	}
-
-	/**
-	 * Pad the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
-	 * If it is shorter than the specified length, it is padded with the
-	 * specified character at the front.
-	 * <p>
-	 * <code>
-	 * String.frontPadOn(int, char, Writer)
-	 * </code>
-	 */
-	public static void frontPadOn(char[] string, int length, char c, Writer writer) {
-		int stringLength = string.length;
-		if (stringLength > length) {
-			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);  //$NON-NLS-1$  //$NON-NLS-2$
-		}
-		if (stringLength == length) {
-			writeStringOn(string, writer);
-		} else {
-			frontPadOn_(string, length, c, writer);
-		}
-	}
-
-	/**
-	 * Pad the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
-	 * If it is shorter than the specified length, it is padded with the
-	 * specified character at the front.
-	 * <p>
-	 * <code>
-	 * String.frontPadOn(int, char, StringBuffer)
-	 * </code>
-	 */
-	public static void frontPadOn(char[] string, int length, char c, StringBuffer sb) {
-		int stringLength = string.length;
-		if (stringLength > length) {
-			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);  //$NON-NLS-1$  //$NON-NLS-2$
-		}
-		if (stringLength == length) {
-			sb.append(string);
-		} else {
-			frontPadOn_(string, length, c, sb);
-		}
-	}
-
-	/**
-	 * Pad the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, an IllegalArgumentException is thrown.
-	 * If it is shorter than the specified length, it is padded with the
-	 * specified character at the front.
-	 * <p>
-	 * <code>
-	 * String.frontPadOn(int, char, StringBuilder)
-	 * </code>
-	 */
-	public static void frontPadOn(char[] string, int length, char c, StringBuilder sb) {
-		int stringLength = string.length;
-		if (stringLength > length) {
-			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);  //$NON-NLS-1$  //$NON-NLS-2$
-		}
-		if (stringLength == length) {
-			sb.append(string);
-		} else {
-			frontPadOn_(string, length, c, sb);
-		}
+		return frontPad(string, length, c, stringLength);
 	}
 
 	/**
 	 * Pad or truncate the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, only the last part of the string is returned.
-	 * If it is shorter than the specified length, it is padded with zeros at the front.
-	 * <p>
-	 * <code>
-	 * String.zeroPadOrTruncate(int)
-	 * </code>
+	 * If the string is already the specified length, return it unchanged.
+	 * If the string is longer than the specified length, return only the last
+	 * part of the string.
+	 * If the string is shorter than the specified length, pad it with zeros
+	 * at the front.
 	 */
-	public static String zeroPadOrTruncate(String string, int length) {
-		return frontPadOrTruncate(string, length, '0');
+	public static String zeroFit(String string, int length) {
+		return frontFit(string, length, '0');
 	}
 
 	/**
 	 * Pad or truncate the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, only the last part of the string is returned.
-	 * If it is shorter than the specified length, it is padded with zeros at the front.
-	 * <p>
-	 * <code>
-	 * String.zeroPadOrTruncateOn(int, Writer)
-	 * </code>
-	 */
-	public static void zeroPadOrTruncateOn(String string, int length, Writer writer) {
-		frontPadOrTruncateOn(string, length, '0', writer);
-	}
-
-	/**
-	 * Pad or truncate the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, only the last part of the string is returned.
-	 * If it is shorter than the specified length, it is padded with zeros at the front.
-	 * <p>
-	 * <code>
-	 * String.zeroPadOrTruncateOn(int, StringBuffer)
-	 * </code>
-	 */
-	public static void zeroPadOrTruncateOn(String string, int length, StringBuffer sb) {
-		frontPadOrTruncateOn(string, length, '0', sb);
-	}
-
-	/**
-	 * Pad or truncate the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, only the last part of the string is returned.
-	 * If it is shorter than the specified length, it is padded with zeros at the front.
-	 * <p>
-	 * <code>
-	 * String.zeroPadOrTruncateOn(int, StringBuilder)
-	 * </code>
-	 */
-	public static void zeroPadOrTruncateOn(String string, int length, StringBuilder sb) {
-		frontPadOrTruncateOn(string, length, '0', sb);
-	}
-
-	/**
-	 * Pad or truncate the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, only the last part of the string is returned.
-	 * If it is shorter than the specified length, it is padded with the
+	 * If the string is already the specified length, return it unchanged.
+	 * If the string is longer than the specified length, return only the last
+	 * part of the string.
+	 * If the string is shorter than the specified length, pad it with the
 	 * specified character at the front.
-	 * <p>
-	 * <code>
-	 * String.frontPadOrTruncate(int, char)
-	 * </code>
 	 */
-	public static String frontPadOrTruncate(String string, int length, char c) {
+	public static String frontFit(String string, int length, char c) {
+		if (length == 0) {
+			return EMPTY_STRING;
+		}
 		int stringLength = string.length();
 		if (stringLength == length) {
 			return string;
@@ -1167,286 +259,18 @@ public final class StringTools {
 		if (stringLength > length) {
 			return string.substring(stringLength - length);
 		}
-		return frontPad_(string, length, c);
+		return frontPad(string, length, c, stringLength);
 	}
 
 	/**
-	 * Pad or truncate the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, only the last part of the string is returned.
-	 * If it is shorter than the specified length, it is padded with the
-	 * specified character at the front.
-	 * <p>
-	 * <code>
-	 * String.frontPadOrTruncateOn(int, char, Writer)
-	 * </code>
+	 * no length checks
 	 */
-	public static void frontPadOrTruncateOn(String string, int length, char c, Writer writer) {
-		int stringLength = string.length();
-		if (stringLength == length) {
-			writeStringOn(string, writer);
-		} else if (stringLength > length) {
-			writeStringOn(string.substring(stringLength - length), writer);
-		} else {
-			frontPadOn_(string, length, c, writer);
-		}
-	}
-
-	/**
-	 * Pad or truncate the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, only the last part of the string is returned.
-	 * If it is shorter than the specified length, it is padded with the
-	 * specified character at the front.
-	 * <p>
-	 * <code>
-	 * String.frontPadOrTruncateOn(int, char, StringBuffer)
-	 * </code>
-	 */
-	public static void frontPadOrTruncateOn(String string, int length, char c, StringBuffer sb) {
-		int stringLength = string.length();
-		if (stringLength == length) {
-			sb.append(string);
-		} else if (stringLength > length) {
-			sb.append(string.substring(stringLength - length));
-		} else {
-			frontPadOn_(string, length, c, sb);
-		}
-	}
-
-	/**
-	 * Pad or truncate the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, only the last part of the string is returned.
-	 * If it is shorter than the specified length, it is padded with the
-	 * specified character at the front.
-	 * <p>
-	 * <code>
-	 * String.frontPadOrTruncateOn(int, char, StringBuilder)
-	 * </code>
-	 */
-	public static void frontPadOrTruncateOn(String string, int length, char c, StringBuilder sb) {
-		int stringLength = string.length();
-		if (stringLength == length) {
-			sb.append(string);
-		} else if (stringLength > length) {
-			sb.append(string.substring(stringLength - length));
-		} else {
-			frontPadOn_(string, length, c, sb);
-		}
-	}
-
-	/**
-	 * Pad or truncate the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, only the last part of the string is returned.
-	 * If it is shorter than the specified length, it is padded with zeros at the front.
-	 * <p>
-	 * <code>
-	 * String.zeroPadOrTruncate(int)
-	 * </code>
-	 */
-	public static char[] zeroPadOrTruncate(char[] string, int length) {
-		return frontPadOrTruncate(string, length, '0');
-	}
-
-	/**
-	 * Pad or truncate the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, only the last part of the string is returned.
-	 * If it is shorter than the specified length, it is padded with zeros at the front.
-	 * <p>
-	 * <code>
-	 * String.zeroPadOrTruncateOn(int, Writer)
-	 * </code>
-	 */
-	public static void zeroPadOrTruncateOn(char[] string, int length, Writer writer) {
-		frontPadOrTruncateOn(string, length, '0', writer);
-	}
-
-	/**
-	 * Pad or truncate the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, only the last part of the string is returned.
-	 * If it is shorter than the specified length, it is padded with zeros at the front.
-	 * <p>
-	 * <code>
-	 * String.zeroPadOrTruncateOn(int, StringBuffer)
-	 * </code>
-	 */
-	public static void zeroPadOrTruncateOn(char[] string, int length, StringBuffer sb) {
-		frontPadOrTruncateOn(string, length, '0', sb);
-	}
-
-	/**
-	 * Pad or truncate the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, only the last part of the string is returned.
-	 * If it is shorter than the specified length, it is padded with zeros at the front.
-	 * <p>
-	 * <code>
-	 * String.zeroPadOrTruncateOn(int, StringBuilder)
-	 * </code>
-	 */
-	public static void zeroPadOrTruncateOn(char[] string, int length, StringBuilder sb) {
-		frontPadOrTruncateOn(string, length, '0', sb);
-	}
-
-	/**
-	 * Pad or truncate the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, only the last part of the string is returned.
-	 * If it is shorter than the specified length, it is padded with the
-	 * specified character at the front.
-	 * <p>
-	 * <code>
-	 * String.frontPadOrTruncate(int, char)
-	 * </code>
-	 */
-	public static char[] frontPadOrTruncate(char[] string, int length, char c) {
-		int stringLength = string.length;
-		if (stringLength == length) {
-			return string;
-		}
-		if (stringLength > length) {
-			char[] result = new char[length];
-			System.arraycopy(string, stringLength - length, result, 0, length);
-			return result;
-		}
-		return frontPad_(string, length, c);
-	}
-
-	/**
-	 * Pad or truncate the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, only the last part of the string is returned.
-	 * If it is shorter than the specified length, it is padded with the
-	 * specified character at the front.
-	 * <p>
-	 * <code>
-	 * String.frontPadOrTruncateOn(int, char, Writer)
-	 * </code>
-	 */
-	public static void frontPadOrTruncateOn(char[] string, int length, char c, Writer writer) {
-		int stringLength = string.length;
-		if (stringLength == length) {
-			writeStringOn(string, writer);
-		} else if (stringLength > length) {
-			writeStringOn(string, stringLength - length, length, writer);
-		} else {
-			frontPadOn_(string, length, c, writer);
-		}
-	}
-
-	/**
-	 * Pad or truncate the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, only the last part of the string is returned.
-	 * If it is shorter than the specified length, it is padded with the
-	 * specified character at the front.
-	 * <p>
-	 * <code>
-	 * String.frontPadOrTruncateOn(int, char, StringBuffer)
-	 * </code>
-	 */
-	public static void frontPadOrTruncateOn(char[] string, int length, char c, StringBuffer sb) {
-		int stringLength = string.length;
-		if (stringLength == length) {
-			sb.append(string);
-		} else if (stringLength > length) {
-			sb.append(string, stringLength - length, length);
-		} else {
-			frontPadOn_(string, length, c, sb);
-		}
-	}
-
-	/**
-	 * Pad or truncate the specified string to the specified length.
-	 * If the string is already the specified length, it is returned unchanged.
-	 * If it is longer than the specified length, only the last part of the string is returned.
-	 * If it is shorter than the specified length, it is padded with the
-	 * specified character at the front.
-	 * <p>
-	 * <code>
-	 * String.frontPadOrTruncateOn(int, char, StringBuilder)
-	 * </code>
-	 */
-	public static void frontPadOrTruncateOn(char[] string, int length, char c, StringBuilder sb) {
-		int stringLength = string.length;
-		if (stringLength == length) {
-			sb.append(string);
-		} else if (stringLength > length) {
-			sb.append(string, stringLength - length, length);
-		} else {
-			frontPadOn_(string, length, c, sb);
-		}
-	}
-
-	/*
-	 * Front-pad the specified string without validating the parms.
-	 */
-	private static String frontPad_(String string, int length, char c) {
-		return new String(frontPad_(string.toCharArray(), length, c));
-	}
-
-	/*
-	 * Zero-pad the specified string without validating the parms.
-	 */
-	private static char[] frontPad_(char[] string, int length, char c) {
+	private static String frontPad(String string, int length, char c, int stringLength) {
 		char[] result = new char[length];
-		int stringLength = string.length;
 		int padLength = length - stringLength;
-		System.arraycopy(string, 0, result, padLength, stringLength);
+		string.getChars(0, stringLength, result, padLength);
 		Arrays.fill(result, 0, padLength, c);
-		return result;
-	}
-
-	/*
-	 * Pad the specified string without validating the parms.
-	 */
-	private static void frontPadOn_(String string, int length, char c, Writer writer) {
-		fill_(string, length, c, writer);
-		writeStringOn(string, writer);
-	}
-
-	/*
-	 * Pad the specified string without validating the parms.
-	 */
-	private static void frontPadOn_(char[] string, int length, char c, Writer writer) {
-		fill_(string, length, c, writer);
-		writeStringOn(string, writer);
-	}
-
-	/*
-	 * Pad the specified string without validating the parms.
-	 */
-	private static void frontPadOn_(String string, int length, char c, StringBuffer sb) {
-		fill_(string, length, c, sb);
-		sb.append(string);
-	}
-
-	/*
-	 * Pad the specified string without validating the parms.
-	 */
-	private static void frontPadOn_(char[] string, int length, char c, StringBuffer sb) {
-		fill_(string, length, c, sb);
-		sb.append(string);
-	}
-
-	/*
-	 * Pad the specified string without validating the parms.
-	 */
-	private static void frontPadOn_(String string, int length, char c, StringBuilder sb) {
-		fill_(string, length, c, sb);
-		sb.append(string);
-	}
-
-	/*
-	 * Pad the specified string without validating the parms.
-	 */
-	private static void frontPadOn_(char[] string, int length, char c, StringBuilder sb) {
-		fill_(string, length, c, sb);
-		sb.append(string);
+		return new String(result);
 	}
 
 
@@ -1454,95 +278,32 @@ public final class StringTools {
 
 	/**
 	 * Separate the segments of the specified string with the specified
-	 * separator:<pre>
-	 *     separate("012345", '-', 2) => "01-23-45"
-	 * </pre>
+	 * separator:<p>
+	 * <code>
+	 * separate("012345", '-', 2) => "01-23-45"
+	 * </code>
 	 */
 	public static String separate(String string, char separator, int segmentSize) {
 		if (segmentSize <= 0) {
 			throw new IllegalArgumentException("segment size must be positive: " + segmentSize); //$NON-NLS-1$
 		}
-		int len = string.length();
-		return (len <= segmentSize) ? string : new String(separate(string.toCharArray(), separator, segmentSize, len));
+		int stringLength = string.length();
+		return (stringLength <= segmentSize) ? string : separate(string, separator, segmentSize, stringLength);
 	}
 
 	/**
-	 * Separate the segments of the specified string with the specified
-	 * separator:<pre>
-	 *     separate("012345", '-', 2) => "01-23-45"
-	 * </pre>
+	 * Pre-conditions: string is longer than segment size; segment size is positive
 	 */
-	public static void separateOn(String string, char separator, int segmentSize, Writer writer) {
-		if (segmentSize <= 0) {
-			throw new IllegalArgumentException("segment size must be positive: " + segmentSize); //$NON-NLS-1$
-		}
-		if (string.length() <= segmentSize) {
-			writeStringOn(string, writer);
-		} else {
-			separateOn_(string.toCharArray(), separator, segmentSize, writer);
-		}
-	}
-
-	/**
-	 * Separate the segments of the specified string with the specified
-	 * separator:<pre>
-	 *     separate("012345", '-', 2) => "01-23-45"
-	 * </pre>
-	 */
-	public static void separateOn(String string, char separator, int segmentSize, StringBuffer sb) {
-		if (segmentSize <= 0) {
-			throw new IllegalArgumentException("segment size must be positive: " + segmentSize); //$NON-NLS-1$
-		}
-		if (string.length() <= segmentSize) {
-			sb.append(string);
-		} else {
-			separateOn_(string.toCharArray(), separator, segmentSize, sb);
-		}
-	}
-
-	/**
-	 * Separate the segments of the specified string with the specified
-	 * separator:<pre>
-	 *     separate("012345", '-', 2) => "01-23-45"
-	 * </pre>
-	 */
-	public static void separateOn(String string, char separator, int segmentSize, StringBuilder sb) {
-		if (segmentSize <= 0) {
-			throw new IllegalArgumentException("segment size must be positive: " + segmentSize); //$NON-NLS-1$
-		}
-		if (string.length() <= segmentSize) {
-			sb.append(string);
-		} else {
-			separateOn_(string.toCharArray(), separator, segmentSize, sb);
-		}
-	}
-
-	/**
-	 * Separate the segments of the specified string with the specified
-	 * separator:<pre>
-	 *     separate("012345", '-', 2) => "01-23-45"
-	 * </pre>
-	 */
-	public static char[] separate(char[] string, char separator, int segmentSize) {
-		if (segmentSize <= 0) {
-			throw new IllegalArgumentException("segment size must be positive: " + segmentSize); //$NON-NLS-1$
-		}
-		int len = string.length;
-		return (len <= segmentSize) ? string : separate(string, separator, segmentSize, len);
-	}
-
-	/**
-	 * pre-conditions: string is longer than segment size; segment size is positive
-	 */
-	private static char[] separate(char[] string, char separator, int segmentSize, int len) {
-		int resultLen = len + (len / segmentSize);
-		if ((len % segmentSize) == 0) {
+	private static String separate(String string, char separator, int segmentSize, int stringLength) {
+		int resultLen = stringLength + (stringLength / segmentSize);
+		if ((stringLength % segmentSize) == 0) {
 			resultLen--;  // no separator after the final segment if nothing following it
 		}
 		char[] result = new char[resultLen];
 		int j = 0;
 		int segCount = 0;
-		for (char c : string) {
+		for (int i = 0; i < stringLength; i++) {
+			char c = string.charAt(i);
 			if (segCount == segmentSize) {
 				result[j++] = separator;
 				segCount = 0;
@@ -1550,103 +311,7 @@ public final class StringTools {
 			segCount++;
 			result[j++] = c;
 		}
-		return result;
-	}
-
-	/**
-	 * Separate the segments of the specified string with the specified
-	 * separator:<pre>
-	 *     separate("012345", '-', 2) => "01-23-45"
-	 * </pre>
-	 */
-	public static void separateOn(char[] string, char separator, int segmentSize, Writer writer) {
-		if (segmentSize <= 0) {
-			throw new IllegalArgumentException("segment size must be positive: " + segmentSize); //$NON-NLS-1$
-		}
-		if (string.length <= segmentSize) {
-			writeStringOn(string, writer);
-		} else {
-			separateOn_(string, separator, segmentSize, writer);
-		}
-	}
-
-	/**
-	 * pre-conditions: string is longer than segment size; segment size is positive
-	 */
-	private static void separateOn_(char[] string, char separator, int segmentSize, Writer writer) {
-		int segCount = 0;
-		for (char c : string) {
-			if (segCount == segmentSize) {
-				writeCharOn(separator, writer);
-				segCount = 0;
-			}
-			segCount++;
-			writeCharOn(c, writer);
-		}
-	}
-
-	/**
-	 * Separate the segments of the specified string with the specified
-	 * separator:<pre>
-	 *     separate("012345", '-', 2) => "01-23-45"
-	 * </pre>
-	 */
-	public static void separateOn(char[] string, char separator, int segmentSize, StringBuffer sb) {
-		if (segmentSize <= 0) {
-			throw new IllegalArgumentException("segment size must be positive: " + segmentSize); //$NON-NLS-1$
-		}
-		if (string.length <= segmentSize) {
-			sb.append(string);
-		} else {
-			separateOn_(string, separator, segmentSize, sb);
-		}
-	}
-
-	/**
-	 * pre-conditions: string is longer than segment size; segment size is positive
-	 */
-	private static void separateOn_(char[] string, char separator, int segmentSize, StringBuffer sb) {
-		int segCount = 0;
-		for (char c : string) {
-			if (segCount == segmentSize) {
-				sb.append(separator);
-				segCount = 0;
-			}
-			segCount++;
-			sb.append(c);
-		}
-	}
-
-	/**
-	 * Separate the segments of the specified string with the specified
-	 * separator:<pre>
-	 *     separate("012345", '-', 2) => "01-23-45"
-	 * </pre>
-	 */
-	public static void separateOn(char[] string, char separator, int segmentSize, StringBuilder sb) {
-		if (segmentSize <= 0) {
-			throw new IllegalArgumentException("segment size must be positive: " + segmentSize); //$NON-NLS-1$
-		}
-		if (string.length <= segmentSize) {
-			sb.append(string);
-		} else {
-			separateOn_(string, separator, segmentSize, sb);
-		}
-	}
-
-	/**
-	 * pre-conditions: string is longer than segment size; segment size is positive
-	 */
-	private static void separateOn_(char[] string, char separator, int segmentSize, StringBuilder sb) {
-		int segCount = 0;
-		for (char c : string) {
-			if (segCount == segmentSize) {
-				sb.append(separator);
-				segCount = 0;
-			}
-			segCount++;
-			sb.append(c);
-		}
+		return new String(result);
 	}
 
 
@@ -1658,43 +323,7 @@ public final class StringTools {
 	 * double quote.
 	 */
 	public static String quote(String string) {
-		return delimit(string, QUOTE);
-	}
-
-	/**
-	 * Delimit the specified string with double quotes.
-	 * Escape any occurrences of a double quote in the string with another
-	 * double quote.
-	 */
-	public static void quoteOn(String string, Writer writer) {
-		delimitOn(string, QUOTE, writer);
-	}
-
-	/**
-	 * Delimit the specified string with double quotes.
-	 * Escape any occurrences of a double quote in the string with another
-	 * double quote.
-	 */
-	public static void quoteOn(String string, StringBuffer sb) {
-		delimitOn(string, QUOTE, sb);
-	}
-
-	/**
-	 * Delimit the specified string with double quotes.
-	 * Escape any occurrences of a double quote in the string with another
-	 * double quote.
-	 */
-	public static void quoteOn(String string, StringBuilder sb) {
-		delimitOn(string, QUOTE, sb);
-	}
-
-	/**
-	 * Delimit each of the specified strings with double quotes.
-	 * Escape any occurrences of a double quote in a string with another
-	 * double quote.
-	 */
-	public static Iterator<String> quote(Iterator<String> strings) {
-		return delimit(strings, QUOTE);
+		return delimit(string, CharacterTools.QUOTE);
 	}
 
 	/**
@@ -1703,62 +332,26 @@ public final class StringTools {
 	 * Escape any occurrences of the delimiter in the string with another delimiter.
 	 */
 	public static String delimit(String string, char delimiter) {
-		return new String(delimit(string.toCharArray(), delimiter));
+		int stringLength = string.length();
+		StringBuilder sb = new StringBuilder(stringLength + 2);
+		StringBuilderTools.delimit(sb, string, delimiter, stringLength);
+		return sb.toString();
 	}
 
 	/**
-	 * Delimit the specified string with the specified delimiter; i.e. put a copy of
-	 * the delimiter at the front and back of the resulting string.
-	 * Escape any occurrences of the delimiter in the string with another delimiter.
+	 * @see #delimit(String, char)
 	 */
-	public static void delimitOn(String string, char delimiter, Writer writer) {
-		delimitOn(string.toCharArray(), delimiter, writer);
-	}
-
-	/**
-	 * Delimit the specified string with the specified delimiter; i.e. put a copy of
-	 * the delimiter at the front and back of the resulting string.
-	 * Escape any occurrences of the delimiter in the string with another delimiter.
-	 */
-	public static void delimitOn(String string, char delimiter, StringBuffer sb) {
-		delimitOn(string.toCharArray(), delimiter, sb);
-	}
-
-	/**
-	 * Delimit the specified string with the specified delimiter; i.e. put a copy of
-	 * the delimiter at the front and back of the resulting string.
-	 * Escape any occurrences of the delimiter in the string with another delimiter.
-	 */
-	public static void delimitOn(String string, char delimiter, StringBuilder sb) {
-		delimitOn(string.toCharArray(), delimiter, sb);
-	}
-
-	/**
-	 * Delimit each of the specified strings with the specified delimiter; i.e. put a
-	 * copy of the delimiter at the front and back of the resulting string.
-	 * Escape any occurrences of the delimiter in a string with another delimiter.
-	 */
-	public static Iterable<String> delimit(Iterable<String> strings, char delimiter) {
-		return new TransformationIterable<String, String>(strings, new CharStringDelimiter(delimiter));
-	}
-
-	/**
-	 * Delimit each of the specified strings with the specified delimiter; i.e. put a
-	 * copy of the delimiter at the front and back of the resulting string.
-	 * Escape any occurrences of the delimiter in a string with another delimiter.
-	 */
-	public static Iterator<String> delimit(Iterator<String> strings, char delimiter) {
-		return new TransformationIterator<String, String>(strings, new CharStringDelimiter(delimiter));
-	}
-
-	private static class CharStringDelimiter implements Transformer<String, String> {
-		private char delimiter;
-		CharStringDelimiter(char delimiter) {
+	public static class CharDelimiter
+		extends TransformerAdapter<String, String>
+	{
+		private final char delimiter;
+		public CharDelimiter(char delimiter) {
 			super();
 			this.delimiter = delimiter;
 		}
+		@Override
 		public String transform(String string) {
-			return StringTools.delimit(string, this.delimiter);
+			return delimit(string, this.delimiter);
 		}
 	}
 
@@ -1769,317 +362,48 @@ public final class StringTools {
 	 * another delimiter.
 	 */
 	public static String delimit(String string, String delimiter) {
-		if (delimiter.length() == 1) {
-			return delimit(string, delimiter.charAt(0));
-		}
-		return new String(delimit(string.toCharArray(), delimiter.toCharArray()));
+		return delimit(string, delimiter, delimiter.length());
 	}
 
-	/**
-	 * Delimit the specified string with the specified delimiter; i.e. put a copy of
-	 * the delimiter at the front and back of the resulting string.
-	 * Escape any occurrences of a single-character delimiter in the string with
-	 * another delimiter.
-	 */
-	public static void delimitOn(String string, String delimiter, Writer writer) {
-		if (delimiter.length() == 1) {
-			delimitOn(string, delimiter.charAt(0), writer);
-		} else {
-			delimitOn(string.toCharArray(), delimiter.toCharArray(), writer);
+	/* CU private */ static String delimit(String string, String delimiter, int delimiterLength) {
+		switch (delimiterLength) {
+			case 0:
+				return string;
+			case 1:
+				return delimit(string, delimiter.charAt(0));
+			default:
+				return delimit_(string, delimiter, delimiterLength);
 		}
 	}
 
 	/**
-	 * Delimit the specified string with the specified delimiter; i.e. put a copy of
-	 * the delimiter at the front and back of the resulting string.
-	 * Escape any occurrences of a single-character delimiter in the string with
-	 * another delimiter.
+	 * No parm check
 	 */
-	public static void delimitOn(String string, String delimiter, StringBuffer sb) {
-		if (delimiter.length() == 1) {
-			delimitOn(string, delimiter.charAt(0), sb);
-		} else {
-			delimitOn(string.toCharArray(), delimiter.toCharArray(), sb);
-		}
+	private static String delimit_(String string, String delimiter, int delimiterLength) {
+		int stringLength = string.length();
+		char[] result = new char[stringLength + (2 * delimiterLength)];
+		delimiter.getChars(0, delimiterLength, result, 0);
+		string.getChars(0, stringLength, result, delimiterLength);
+		delimiter.getChars(0, delimiterLength, result, delimiterLength+stringLength);
+		return new String(result);
 	}
 
 	/**
-	 * Delimit the specified string with the specified delimiter; i.e. put a copy of
-	 * the delimiter at the front and back of the resulting string.
-	 * Escape any occurrences of a single-character delimiter in the string with
-	 * another delimiter.
+	 * @see #delimit(String, String)
 	 */
-	public static void delimitOn(String string, String delimiter, StringBuilder sb) {
-		if (delimiter.length() == 1) {
-			delimitOn(string, delimiter.charAt(0), sb);
-		} else {
-			delimitOn(string.toCharArray(), delimiter.toCharArray(), sb);
-		}
-	}
-
-	/**
-	 * Delimit each of the specified strings with the specified delimiter; i.e. put a
-	 * copy of the delimiter at the front and back of the resulting string.
-	 * Escape any occurrences of a single-character delimiter in a string with
-	 * another delimiter.
-	 */
-	public static Iterable<String> delimit(Iterable<String> strings, String delimiter) {
-		return (delimiter.length() == 1) ?
-				delimit(strings, delimiter.charAt(0)) :
-				new TransformationIterable<String, String>(strings, new StringStringDelimiter(delimiter));
-	}
-
-	/**
-	 * Delimit each of the specified strings with the specified delimiter; i.e. put a
-	 * copy of the delimiter at the front and back of the resulting string.
-	 * Escape any occurrences of a single-character delimiter in a string with
-	 * another delimiter.
-	 */
-	public static Iterator<String> delimit(Iterator<String> strings, String delimiter) {
-		return (delimiter.length() == 1) ?
-				delimit(strings, delimiter.charAt(0)) :
-				new TransformationIterator<String, String>(strings, new StringStringDelimiter(delimiter));
-	}
-
-	private static class StringStringDelimiter implements Transformer<String, String> {
-		private String delimiter;
-		StringStringDelimiter(String delimiter) {
+	public static class StringDelimiter
+		extends TransformerAdapter<String, String>
+	{
+		private final String delimiter;
+		private final int delimiterLength;
+		public StringDelimiter(String delimiter) {
 			super();
 			this.delimiter = delimiter;
+			this.delimiterLength = delimiter.length();
 		}
+		@Override
 		public String transform(String string) {
-			return StringTools.delimit(string, this.delimiter);
-		}
-	}
-
-	/**
-	 * Delimit the specified string with double quotes.
-	 * Escape any occurrences of a double quote in the string with another
-	 * double quote.
-	 */
-	public static char[] quote(char[] string) {
-		return delimit(string, QUOTE);
-	}
-
-	/**
-	 * Delimit the specified string with double quotes.
-	 * Escape any occurrences of a double quote in the string with another
-	 * double quote.
-	 */
-	public static void quoteOn(char[] string, Writer writer) {
-		delimitOn(string, QUOTE, writer);
-	}
-
-	/**
-	 * Delimit the specified string with double quotes.
-	 * Escape any occurrences of a double quote in the string with another
-	 * double quote.
-	 */
-	public static void quoteOn(char[] string, StringBuffer sb) {
-		delimitOn(string, QUOTE, sb);
-	}
-
-	/**
-	 * Delimit the specified string with double quotes.
-	 * Escape any occurrences of a double quote in the string with another
-	 * double quote.
-	 */
-	public static void quoteOn(char[] string, StringBuilder sb) {
-		delimitOn(string, QUOTE, sb);
-	}
-
-	/**
-	 * Delimit each of the specified strings with double quotes.
-	 * Escape any occurrences of a double quote in a string with another
-	 * double quote.
-	 */
-	// cannot name method simply 'quote' because of type-erasure...
-	public static Iterator<char[]> quoteCharArrays(Iterator<char[]> strings) {
-		return delimitCharArrays(strings, QUOTE);
-	}
-
-	/**
-	 * Delimit the specified string with the specified delimiter; i.e. put a copy of
-	 * the delimiter at the front and back of the resulting string.
-	 * Escape any occurrences of the delimiter in the string with another delimiter.
-	 */
-	public static char[] delimit(char[] string, char delimiter) {
-		StringBuilder sb = new StringBuilder(string.length + 2);
-		delimitOn(string, delimiter, sb);
-		return convertToCharArray(sb);
-	}
-
-	/**
-	 * Delimit the specified string with the specified delimiter; i.e. put a copy of
-	 * the delimiter at the front and back of the resulting string.
-	 * Escape any occurrences of the delimiter in the string with another delimiter.
-	 */
-	public static void delimitOn(char[] string, char delimiter, Writer writer) {
-		writeCharOn(delimiter, writer);
-		writeStringOn(string, delimiter, writer);
-		writeCharOn(delimiter, writer);
-	}
-
-	/**
-	 * Delimit the specified string with the specified delimiter; i.e. put a copy of
-	 * the delimiter at the front and back of the resulting string.
-	 * Escape any occurrences of the delimiter in the string with another delimiter.
-	 */
-	public static void delimitOn(char[] string, char delimiter, StringBuffer sb) {
-		sb.append(delimiter);
-		for (char c : string) {
-			if (c == delimiter) {
-				sb.append(c);
-			}
-			sb.append(c);
-		}
-		sb.append(delimiter);
-	}
-
-	/**
-	 * Delimit the specified string with the specified delimiter; i.e. put a copy of
-	 * the delimiter at the front and back of the resulting string.
-	 * Escape any occurrences of the delimiter in the string with another delimiter.
-	 */
-	public static void delimitOn(char[] string, char delimiter, StringBuilder sb) {
-		sb.append(delimiter);
-		for (char c : string) {
-			if (c == delimiter) {
-				sb.append(c);
-			}
-			sb.append(c);
-		}
-		sb.append(delimiter);
-	}
-
-	/**
-	 * Delimit each of the specified strings with the specified delimiter; i.e. put a
-	 * copy of the delimiter at the front and back of the resulting string.
-	 * Escape any occurrences of the delimiter in a string with another delimiter.
-	 */
-	// cannot name method simply 'delimit' because of type-erasure...
-	public static Iterable<char[]> delimitCharArrays(Iterable<char[]> strings, char delimiter) {
-		return new TransformationIterable<char[], char[]>(strings, new CharCharArrayDelimiter(delimiter));
-	}
-
-	/**
-	 * Delimit each of the specified strings with the specified delimiter; i.e. put a
-	 * copy of the delimiter at the front and back of the resulting string.
-	 * Escape any occurrences of the delimiter in a string with another delimiter.
-	 */
-	// cannot name method simply 'delimit' because of type-erasure...
-	public static Iterator<char[]> delimitCharArrays(Iterator<char[]> strings, char delimiter) {
-		return new TransformationIterator<char[], char[]>(strings, new CharCharArrayDelimiter(delimiter));
-	}
-
-	private static class CharCharArrayDelimiter implements Transformer<char[], char[]> {
-		private char delimiter;
-		CharCharArrayDelimiter(char delimiter) {
-			super();
-			this.delimiter = delimiter;
-		}
-		public char[] transform(char[] string) {
-			return StringTools.delimit(string, this.delimiter);
-		}
-	}
-
-	/**
-	 * Delimit the specified string with the specified delimiter; i.e. put a copy of
-	 * the delimiter at the front and back of the resulting string.
-	 * Escape any occurrences of a single-character delimiter in the string with
-	 * another delimiter.
-	 */
-	public static char[] delimit(char[] string, char[] delimiter) {
-		int delimiterLength = delimiter.length;
-		if (delimiterLength == 1) {
-			return delimit(string, delimiter[0]);
-		}
-		int stringLength = string.length;
-		char[] result = new char[stringLength+(2*delimiterLength)];
-		System.arraycopy(delimiter, 0, result, 0, delimiterLength);
-		System.arraycopy(string, 0, result, delimiterLength, stringLength);
-		System.arraycopy(delimiter, 0, result, stringLength+delimiterLength, delimiterLength);
-		return result;
-	}
-
-	/**
-	 * Delimit the specified string with the specified delimiter; i.e. put a copy of
-	 * the delimiter at the front and back of the resulting string.
-	 * Escape any occurrences of a single-character delimiter in the string with
-	 * another delimiter.
-	 */
-	public static void delimitOn(char[] string, char[] delimiter, Writer writer) {
-		if (delimiter.length == 1) {
-			delimitOn(string, delimiter[0], writer);
-		} else {
-			writeStringOn(delimiter, writer);
-			writeStringOn(string, writer);
-			writeStringOn(delimiter, writer);
-		}
-	}
-
-	/**
-	 * Delimit the specified string with the specified delimiter; i.e. put a copy of
-	 * the delimiter at the front and back of the resulting string.
-	 * Escape any occurrences of a single-character delimiter in the string with
-	 * another delimiter.
-	 */
-	public static void delimitOn(char[] string, char[] delimiter, StringBuffer sb) {
-		if (delimiter.length == 1) {
-			delimitOn(string, delimiter[0], sb);
-		} else {
-			sb.append(delimiter);
-			sb.append(string);
-			sb.append(delimiter);
-		}
-	}
-
-	/**
-	 * Delimit the specified string with the specified delimiter; i.e. put a copy of
-	 * the delimiter at the front and back of the resulting string.
-	 * Escape any occurrences of a single-character delimiter in the string with
-	 * another delimiter.
-	 */
-	public static void delimitOn(char[] string, char[] delimiter, StringBuilder sb) {
-		if (delimiter.length == 1) {
-			delimitOn(string, delimiter[0], sb);
-		} else {
-			sb.append(delimiter);
-			sb.append(string);
-			sb.append(delimiter);
-		}
-	}
-
-	/**
-	 * Delimit each of the specified strings with the specified delimiter; i.e. put a
-	 * copy of the delimiter at the front and back of the resulting string.
-	 * Escape any occurrences of a single-character delimiter in a string with
-	 * another delimiter.
-	 */
-	// cannot name method simply 'delimit' because of type-erasure...
-	public static Iterable<char[]> delimitCharArrays(Iterable<char[]> strings, char[] delimiter) {
-		return new TransformationIterable<char[], char[]>(strings, new CharArrayCharArrayDelimiter(delimiter));
-	}
-
-	/**
-	 * Delimit each of the specified strings with the specified delimiter; i.e. put a
-	 * copy of the delimiter at the front and back of the resulting string.
-	 * Escape any occurrences of a single-character delimiter in a string with
-	 * another delimiter.
-	 */
-	// cannot name method simply 'delimit' because of type-erasure...
-	public static Iterator<char[]> delimitCharArrays(Iterator<char[]> strings, char[] delimiter) {
-		return new TransformationIterator<char[], char[]>(strings, new CharArrayCharArrayDelimiter(delimiter));
-	}
-
-	private static class CharArrayCharArrayDelimiter implements Transformer<char[], char[]> {
-		private char[] delimiter;
-		CharArrayCharArrayDelimiter(char[] delimiter) {
-			super();
-			this.delimiter = delimiter;
-		}
-		public char[] transform(char[] string) {
-			return StringTools.delimit(string, this.delimiter);
+			return delimit(string, this.delimiter, this.delimiterLength);
 		}
 	}
 
@@ -2087,117 +411,84 @@ public final class StringTools {
 	// ********** delimiting queries **********
 
 	/**
-	 * Return whether the specified string is quoted: "\"foo\"".
+	 * Return whether the specified string is quoted:
+	 * <p>
+	 * <code>
+	 * "\"foo\""
+	 * </code>
 	 */
-	public static boolean stringIsQuoted(String string) {
-		return stringIsDelimited(string, QUOTE);
+	public static boolean isQuoted(String string) {
+		return isDelimited(string, CharacterTools.QUOTE);
 	}
 
 	/**
-	 * Return whether the specified string is parenthetical: "(foo)".
+	 * Return whether the specified string is parenthetical:
+	 * <p>
+	 * <code>
+	 * "(foo)"
+	 * </code>
 	 */
-	public static boolean stringIsParenthetical(String string) {
-		return stringIsDelimited(string, OPEN_PARENTHESIS, CLOSE_PARENTHESIS);
+	public static boolean isParenthetical(String string) {
+		return isDelimited(string, CharacterTools.OPEN_PARENTHESIS, CharacterTools.CLOSE_PARENTHESIS);
 	}
 
 	/**
-	 * Return whether the specified string is bracketed: "[foo]".
+	 * Return whether the specified string is bracketed:
+	 * <p>
+	 * <code>
+	 * "[foo]"
+	 * </code>
 	 */
-	public static boolean stringIsBracketed(String string) {
-		return stringIsDelimited(string, OPEN_BRACKET, CLOSE_BRACKET);
+	public static boolean isBracketed(String string) {
+		return isDelimited(string, CharacterTools.OPEN_BRACKET, CharacterTools.CLOSE_BRACKET);
 	}
 
 	/**
-	 * Return whether the specified string is braced: "{foo}".
+	 * Return whether the specified string is braced:
+	 * <p>
+	 * <code>
+	 * "{foo}"
+	 * </code>
 	 */
-	public static boolean stringIsBraced(String string) {
-		return stringIsDelimited(string, OPEN_BRACE, CLOSE_BRACE);
+	public static boolean isBraced(String string) {
+		return isDelimited(string, CharacterTools.OPEN_BRACE, CharacterTools.CLOSE_BRACE);
 	}
 
 	/**
-	 * Return whether the specified string is chevroned: "<foo>".
+	 * Return whether the specified string is chevroned:
+	 * <p>
+	 * {@code
+	 * "<foo>"
+	 * }
 	 */
-	public static boolean stringIsChevroned(String string) {
-		return stringIsDelimited(string, OPEN_CHEVRON, CLOSE_CHEVRON);
-	}
-
-	/**
-	 * Return whether the specified string is delimited by the specified
-	 * character.
-	 */
-	public static boolean stringIsDelimited(String string, char c) {
-		return stringIsDelimited(string, c, c);
-	}
-
-	/**
-	 * Return whether the specified string is delimited by the specified
-	 * characters.
-	 */
-	public static boolean stringIsDelimited(String string, char start, char end) {
-		int len = string.length();
-		if (len < 2) {
-			return false;
-		}
-		return stringIsDelimited(string.toCharArray(), start, end, len);
-	}
-
-	/**
-	 * Return whether the specified string is quoted: "\"foo\"".
-	 */
-	public static boolean stringIsQuoted(char[] string) {
-		return stringIsDelimited(string, QUOTE);
-	}
-
-	/**
-	 * Return whether the specified string is parenthetical: "(foo)".
-	 */
-	public static boolean stringIsParenthetical(char[] string) {
-		return stringIsDelimited(string, OPEN_PARENTHESIS, CLOSE_PARENTHESIS);
-	}
-
-	/**
-	 * Return whether the specified string is bracketed: "[foo]".
-	 */
-	public static boolean stringIsBracketed(char[] string) {
-		return stringIsDelimited(string, OPEN_BRACKET, CLOSE_BRACKET);
-	}
-
-	/**
-	 * Return whether the specified string is braced: "{foo}".
-	 */
-	public static boolean stringIsBraced(char[] string) {
-		return stringIsDelimited(string, OPEN_BRACE, CLOSE_BRACE);
-	}
-
-	/**
-	 * Return whether the specified string is chevroned: "<foo>".
-	 */
-	public static boolean stringIsChevroned(char[] string) {
-		return stringIsDelimited(string, OPEN_CHEVRON, CLOSE_CHEVRON);
+	public static boolean isChevroned(String string) {
+		return isDelimited(string, CharacterTools.OPEN_CHEVRON, CharacterTools.CLOSE_CHEVRON);
 	}
 
 	/**
 	 * Return whether the specified string is delimited by the specified
 	 * character.
 	 */
-	public static boolean stringIsDelimited(char[] string, char c) {
-		return stringIsDelimited(string, c, c);
+	public static boolean isDelimited(String string, char c) {
+		return isDelimited(string, c, c);
 	}
 
 	/**
 	 * Return whether the specified string is delimited by the specified
 	 * characters.
 	 */
-	public static boolean stringIsDelimited(char[] string, char start, char end) {
-		int len = string.length;
-		if (len < 2) {
-			return false;
-		}
-		return stringIsDelimited(string, start, end, len);
+	public static boolean isDelimited(String string, char start, char end) {
+		int stringLength = string.length();
+		return (stringLength < 2) ?
+				false :
+				isDelimited(string, start, end, stringLength);
 	}
 
-	private static boolean stringIsDelimited(char[] s, char start, char end, int len) {
-		return (s[0] == start) && (s[len - 1] == end);
+	/**
+	 * no length check
+	 */
+	private static boolean isDelimited(String string, char start, char end, int stringLength) {
+		return (string.charAt(0) == start) && (string.charAt(stringLength - 1) == end);
 	}
 
 
@@ -2205,340 +496,52 @@ public final class StringTools {
 
 	/**
 	 * Remove the delimiters from the specified string, removing any escape
-	 * characters. Throw an IllegalArgumentException if the string is too short
+	 * characters. Throw an {@link IllegalArgumentException} if the string is too short
 	 * to undelimit (i.e. length < 2).
 	 */
 	public static String undelimit(String string) {
-		int len = string.length() - 2;
-		if (len < 0) {
+		int stringLength = string.length();
+		int resultLength = stringLength - 2;
+		if (resultLength < 0) {
 			throw new IllegalArgumentException("invalid string: \"" + string + '"'); //$NON-NLS-1$
 		}
-		if (len == 0) {
+		if (resultLength == 0) {
 			return EMPTY_STRING;
 		}
-		return new String(undelimit_(string.toCharArray(), len));
+		// delegate to StringBuilderTools to take care of embedded delimiters
+		StringBuilder sb = new StringBuilder(resultLength);
+		StringBuilderTools.undelimit_(sb, string, stringLength);
+		return sb.toString();
 	}
 
 	/**
 	 * Remove the first and last count characters from the specified string.
 	 * If the string is too short to be undelimited, throw an
-	 * IllegalArgumentException.
+	 * {@link IllegalArgumentException}.
 	 * Use this method to undelimit strings that do not escape embedded
 	 * delimiters.
 	 */
 	public static String undelimit(String string, int count) {
-		int len = string.length() - (2 * count);
-		if (len < 0) {
+		if (count == 0) {
+			return string;
+		}
+		int resultLength = string.length() - (2 * count);
+		if (resultLength < 0) {
 			throw new IllegalArgumentException("invalid string: \"" + string + '"'); //$NON-NLS-1$
 		}
-		if (len == 0) {
+		if (resultLength == 0) {
 			return EMPTY_STRING;
 		}
-		return new String(undelimit(string.toCharArray(), len, count));
+		return undelimit(string, count, resultLength);
 	}
 
 	/**
-	 * Remove the delimiters from the specified string, removing any escape
-	 * characters. Throw an IllegalArgumentException if the string is too short
-	 * to undelimit (i.e. length < 2).
+	 * No parm checks
 	 */
-	public static char[] undelimit(char[] string) {
-		int len = string.length - 2;
-		if (len < 0) {
-			throw new IllegalArgumentException("invalid string: \"" + new String(string) + '"'); //$NON-NLS-1$
-		}
-		if (len == 0) {
-			return EMPTY_CHAR_ARRAY;
-		}
-		return undelimit_(string, len);
-	}
-
-	private static char[] undelimit_(char[] string, int length) {
-		StringBuilder sb = new StringBuilder(length);
-		undelimitOn_(string, sb);
-		return convertToCharArray(sb);
-	}
-
-	/**
-	 * Remove the first and last count characters from the specified string.
-	 * If the string is too short to be undelimited, throw an
-	 * IllegalArgumentException.
-	 * Use this method to undelimit strings that do not escape embedded
-	 * delimiters.
-	 */
-	public static char[] undelimit(char[] string, int count) {
-		int len = string.length - (2 * count);
-		if (len < 0) {
-			throw new IllegalArgumentException("invalid string: \"" + new String(string) + '"'); //$NON-NLS-1$
-		}
-		if (len == 0) {
-			return EMPTY_CHAR_ARRAY;
-		}
-		return undelimit(string, len, count);
-	}
-
-	private static char[] undelimit(char[] string, int len, int count) {
-		char[] result = new char[len];
-		System.arraycopy(string, count, result, 0, len);
-		return result;
-	}
-
-	/**
-	 * Remove the delimiters from the specified string, removing any escape
-	 * characters. Throw an IllegalArgumentException if the string is too short
-	 * to undelimit (i.e. length < 2).
-	 */
-	public static void undelimitOn(String string, Writer writer) {
-		undelimitOn(string.toCharArray(), writer);
-	}
-
-	/**
-	 * Remove the first and last count characters from the specified string.
-	 * If the string is too short to be undelimited, throw an
-	 * IllegalArgumentException.
-	 * Use this method to undelimit strings that do not escape embedded
-	 * delimiters.
-	 */
-	public static void undelimitOn(String string, int count, Writer writer) {
-		int len = string.length() - (2 * count);
-		if (len < 0) {
-			throw new IllegalArgumentException("invalid string: \"" + string + '"'); //$NON-NLS-1$
-		}
-		if (len == 0) {
-			return;
-		}
-		writeStringOn(string, count, len, writer);
-	}
-
-	/**
-	 * Remove the delimiters from the specified string, removing any escape
-	 * characters. Throw an IllegalArgumentException if the string is too short
-	 * to undelimit (i.e. length < 2).
-	 */
-	public static void undelimitOn(String string, StringBuffer sb) {
-		undelimitOn(string.toCharArray(), sb);
-	}
-
-	/**
-	 * Remove the first and last count characters from the specified string.
-	 * If the string is too short to be undelimited, throw an
-	 * IllegalArgumentException.
-	 * Use this method to undelimit strings that do not escape embedded
-	 * delimiters.
-	 */
-	public static void undelimitOn(String string, int count, StringBuffer sb) {
-		int len = string.length() - (2 * count);
-		if (len < 0) {
-			throw new IllegalArgumentException("invalid string: \"" + string + '"'); //$NON-NLS-1$
-		}
-		if (len == 0) {
-			return;
-		}
-		sb.append(string, count, count + len);
-	}
-
-	/**
-	 * Remove the delimiters from the specified string, removing any escape
-	 * characters. Throw an IllegalArgumentException if the string is too short
-	 * to undelimit (i.e. length < 2).
-	 */
-	public static void undelimitOn(String string, StringBuilder sb) {
-		undelimitOn(string.toCharArray(), sb);
-	}
-
-	/**
-	 * Remove the first and last count characters from the specified string.
-	 * If the string is too short to be undelimited, throw an
-	 * IllegalArgumentException.
-	 * Use this method to undelimit strings that do not escape embedded
-	 * delimiters.
-	 */
-	public static void undelimitOn(String string, int count, StringBuilder sb) {
-		int len = string.length() - (2 * count);
-		if (len < 0) {
-			throw new IllegalArgumentException("invalid string: \"" + string + '"'); //$NON-NLS-1$
-		}
-		if (len == 0) {
-			return;
-		}
-		sb.append(string, count, count + len);
-	}
-
-	/**
-	 * Remove the delimiters from the specified string, removing any escape
-	 * characters. Throw an IllegalArgumentException if the string is too short
-	 * to undelimit (i.e. length < 2).
-	 */
-	public static void undelimitOn(char[] string, Writer writer) {
-		int len = string.length - 2;
-		if (len < 0) {
-			throw new IllegalArgumentException("invalid string: \"" + new String(string) + '"'); //$NON-NLS-1$
-		}
-		if (len == 0) {
-			return;
-		}
-		undelimitOn_(string, writer);
-	}
-
-	/**
-	 * pre-condition: string is at least 3 characters long
-	 */
-	private static void undelimitOn_(char[] string, Writer writer) {
-		char delimiter = string[0];  // the first char is the delimiter
-		char c = string[0];
-		char next = string[1];
-		int i = 1;
-		int last = string.length - 1;
-		do {
-			c = next;
-			writeCharOn(c, writer);
-			i++;
-			next = string[i];
-			if (c == delimiter) {
-				if ((next != delimiter) || (i == last)) {
-					// an embedded delimiter must be followed by another delimiter
-					return;
-				}
-				i++;
-				next = string[i];
-			}
-		} while (i != last);
-	}
-
-	/**
-	 * Remove the first and last count characters from the specified string.
-	 * If the string is too short to be undelimited, throw an
-	 * IllegalArgumentException.
-	 * Use this method to undelimit strings that do not escape embedded
-	 * delimiters.
-	 */
-	public static void undelimitOn(char[] string, int count, Writer writer) {
-		int len = string.length - (2 * count);
-		if (len < 0) {
-			throw new IllegalArgumentException("invalid string: \"" + new String(string) + '"'); //$NON-NLS-1$
-		}
-		if (len == 0) {
-			return;
-		}
-		writeStringOn(string, count, len, writer);
-	}
-
-	/**
-	 * Remove the delimiters from the specified string, removing any escape
-	 * characters. Throw an IllegalArgumentException if the string is too short
-	 * to undelimit (i.e. length < 2).
-	 */
-	public static void undelimitOn(char[] string, StringBuffer sb) {
-		int len = string.length - 2;
-		if (len < 0) {
-			throw new IllegalArgumentException("invalid string: \"" + new String(string) + '"'); //$NON-NLS-1$
-		}
-		if (len == 0) {
-			return;
-		}
-		undelimitOn_(string, sb);
-	}
-
-	/**
-	 * pre-condition: string is at least 3 characters long
-	 */
-	private static void undelimitOn_(char[] string, StringBuffer sb) {
-		char delimiter = string[0];  // the first char is the delimiter
-		char c = string[0];
-		char next = string[1];
-		int i = 1;
-		int last = string.length - 1;
-		do {
-			c = next;
-			sb.append(c);
-			i++;
-			next = string[i];
-			if (c == delimiter) {
-				if ((next != delimiter) || (i == last)) {
-					// an embedded delimiter must be followed by another delimiter
-					return;
-				}
-				i++;
-				next = string[i];
-			}
-		} while (i != last);
-	}
-
-	/**
-	 * Remove the first and last count characters from the specified string.
-	 * If the string is too short to be undelimited, throw an
-	 * IllegalArgumentException.
-	 * Use this method to undelimit strings that do not escape embedded
-	 * delimiters.
-	 */
-	public static void undelimitOn(char[] string, int count, StringBuffer sb) {
-		int len = string.length - (2 * count);
-		if (len < 0) {
-			throw new IllegalArgumentException("invalid string: \"" + new String(string) + '"'); //$NON-NLS-1$
-		}
-		if (len == 0) {
-			return;
-		}
-		sb.append(string, count, len);
-	}
-
-	/**
-	 * Remove the delimiters from the specified string, removing any escape
-	 * characters. Throw an IllegalArgumentException if the string is too short
-	 * to undelimit (i.e. length < 2).
-	 */
-	public static void undelimitOn(char[] string, StringBuilder sb) {
-		int len = string.length - 2;
-		if (len < 0) {
-			throw new IllegalArgumentException("invalid string: \"" + new String(string) + '"'); //$NON-NLS-1$
-		}
-		if (len == 0) {
-			return;
-		}
-		undelimitOn_(string, sb);
-	}
-
-	/**
-	 * pre-condition: string is at least 3 characters long
-	 */
-	private static void undelimitOn_(char[] string, StringBuilder sb) {
-		char delimiter = string[0];  // the first char is the delimiter
-		char c = string[0];
-		char next = string[1];
-		int i = 1;
-		int last = string.length - 1;
-		do {
-			c = next;
-			sb.append(c);
-			i++;
-			next = string[i];
-			if (c == delimiter) {
-				if ((next != delimiter) || (i == last)) {
-					// an embedded delimiter must be followed by another delimiter
-					return;
-				}
-				i++;
-				next = string[i];
-			}
-		} while (i != last);
-	}
-
-	/**
-	 * Remove the first and last count characters from the specified string.
-	 * If the string is too short to be undelimited, throw an
-	 * IllegalArgumentException.
-	 * Use this method to undelimit strings that do not escape embedded
-	 * delimiters.
-	 */
-	public static void undelimitOn(char[] string, int count, StringBuilder sb) {
-		int len = string.length - (2 * count);
-		if (len < 0) {
-			throw new IllegalArgumentException("invalid string: \"" + new String(string) + '"'); //$NON-NLS-1$
-		}
-		if (len == 0) {
-			return;
-		}
-		sb.append(string, count, len);
+	private static String undelimit(String string, int count, int resultLength) {
+		char[] result = new char[resultLength];
+		string.getChars(count, count+resultLength, result, 0);
+		return new String(result);
 	}
 
 
@@ -2547,10 +550,6 @@ public final class StringTools {
 	/**
 	 * Remove the first occurrence of the specified character
 	 * from the specified string and return the result.
-	 * <p>
-	 * <code>
-	 * String.removeFirstOccurrence(char)
-	 * </code>
 	 */
 	public static String removeFirstOccurrence(String string, char c) {
 		int index = string.indexOf(c);
@@ -2562,901 +561,98 @@ public final class StringTools {
 			// character found at the front of string
 			return string.substring(1);
 		}
-		int last = string.length() - 1;
+		int stringLength = string.length();
+		int last = stringLength - 1;
 		if (index == last) {
 			// character found at the end of string
 			return string.substring(0, last);
 		}
 		// character found somewhere in the middle of the string
-		return string.substring(0, index).concat(string.substring(index + 1));
-	}
-
-	/**
-	 * Remove the first occurrence of the specified character
-	 * from the specified string and print the result on the specified stream.
-	 * <p>
-	 * <code>
-	 * String.removeFirstOccurrenceOn(char, Writer)
-	 * </code>
-	 */
-	public static void removeFirstOccurrenceOn(String string, char c, Writer writer) {
-		int index = string.indexOf(c);
-		if (index == -1) {
-			writeStringOn(string, writer);
-		} else {
-			removeCharAtIndexOn(string.toCharArray(), index, writer);
-		}
-	}
-
-	/**
-	 * Remove the first occurrence of the specified character
-	 * from the specified string and print the result on the specified stream.
-	 * <p>
-	 * <code>
-	 * String.removeFirstOccurrenceOn(char, StringBuffer)
-	 * </code>
-	 */
-	public static void removeFirstOccurrenceOn(String string, char c, StringBuffer sb) {
-		int index = string.indexOf(c);
-		if (index == -1) {
-			sb.append(string);
-		} else {
-			removeCharAtIndexOn(string.toCharArray(), index, sb);
-		}
-	}
-
-	/**
-	 * Remove the first occurrence of the specified character
-	 * from the specified string and print the result on the specified stream.
-	 * <p>
-	 * <code>
-	 * String.removeFirstOccurrenceOn(char, StringBuilder)
-	 * </code>
-	 */
-	public static void removeFirstOccurrenceOn(String string, char c, StringBuilder sb) {
-		int index = string.indexOf(c);
-		if (index == -1) {
-			sb.append(string);
-		} else {
-			removeCharAtIndexOn(string.toCharArray(), index, sb);
-		}
-	}
-
-	/**
-	 * Remove the first occurrence of the specified character
-	 * from the specified string and return the result.
-	 * <p>
-	 * <code>
-	 * String.removeFirstOccurrence(char)
-	 * </code>
-	 */
-	public static char[] removeFirstOccurrence(char[] string, char c) {
-		int index = ArrayTools.indexOf(string, c);
-		if (index == -1) {
-			// character not found
-			return string;
-		}
-		int last = string.length - 1;
-		char[] result = new char[last];
-		if (index == 0) {
-			// character found at the front of string
-			System.arraycopy(string, 1, result, 0, last);
-		} else if (index == last) {
-			// character found at the end of string
-			System.arraycopy(string, 0, result, 0, last);
-		} else {
-			// character found somewhere in the middle of the string
-			System.arraycopy(string, 0, result, 0, index);
-			System.arraycopy(string, index + 1, result, index, last - index);
-		}
-		return result;
-	}
-
-	/**
-	 * Remove the first occurrence of the specified character
-	 * from the specified string and print the result on the specified stream.
-	 * <p>
-	 * <code>
-	 * String.removeFirstOccurrenceOn(char, Writer)
-	 * </code>
-	 */
-	public static void removeFirstOccurrenceOn(char[] string, char c, Writer writer) {
-		int index = ArrayTools.indexOf(string, c);
-		if (index == -1) {
-			writeStringOn(string, writer);
-		} else {
-			removeCharAtIndexOn(string, index, writer);
-		}
-	}
-
-	private static void removeCharAtIndexOn(char[] string, int index, Writer writer) {
-		int last = string.length - 1;
-		if (index == 0) {
-			// character found at the front of string
-			writeStringOn(string, 1, last, writer);
-		} else if (index == last) {
-			// character found at the end of string
-			writeStringOn(string, 0, last, writer);
-		} else {
-			// character found somewhere in the middle of the string
-			writeStringOn(string, 0, index, writer);
-			writeStringOn(string, index + 1, last - index, writer);
-		}
-	}
-
-	/**
-	 * Remove the first occurrence of the specified character
-	 * from the specified string and print the result on the specified stream.
-	 * <p>
-	 * <code>
-	 * String.removeFirstOccurrenceOn(char, StringBuffer)
-	 * </code>
-	 */
-	public static void removeFirstOccurrenceOn(char[] string, char c, StringBuffer sb) {
-		int index = ArrayTools.indexOf(string, c);
-		if (index == -1) {
-			sb.append(string);
-		} else {
-			removeCharAtIndexOn(string, index, sb);
-		}
-	}
-
-	private static void removeCharAtIndexOn(char[] string, int index, StringBuffer sb) {
-		int last = string.length - 1;
-		if (index == 0) {
-			// character found at the front of string
-			sb.append(string, 1, last);
-		} else if (index == last) {
-			// character found at the end of string
-			sb.append(string, 0, last);
-		} else {
-			// character found somewhere in the middle of the string
-			sb.append(string, 0, index);
-			sb.append(string, index + 1, last - index);
-		}
-	}
-
-	/**
-	 * Remove the first occurrence of the specified character
-	 * from the specified string and print the result on the specified stream.
-	 * <p>
-	 * <code>
-	 * String.removeFirstOccurrenceOn(char, StringBuilder)
-	 * </code>
-	 */
-	public static void removeFirstOccurrenceOn(char[] string, char c, StringBuilder sb) {
-		int index = ArrayTools.indexOf(string, c);
-		if (index == -1) {
-			sb.append(string);
-		} else {
-			removeCharAtIndexOn(string, index, sb);
-		}
-	}
-
-	private static void removeCharAtIndexOn(char[] string, int index, StringBuilder sb) {
-		int last = string.length - 1;
-		if (index == 0) {
-			// character found at the front of string
-			sb.append(string, 1, last);
-		} else if (index == last) {
-			// character found at the end of string
-			sb.append(string, 0, last);
-		} else {
-			// character found somewhere in the middle of the string
-			sb.append(string, 0, index);
-			sb.append(string, index + 1, last - index);
-		}
+		StringBuilder sb = new StringBuilder(last);
+		sb.append(string, 0, index);  // NB: end index is exclusive
+		sb.append(string, index + 1, stringLength);  // NB: end index is exclusive
+		return sb.toString();
 	}
 
 	/**
 	 * Remove all occurrences of the specified character
 	 * from the specified string and return the result.
-	 * <p>
-	 * <code>
-	 * String.removeAllOccurrences(char)
-	 * </code>
 	 */
 	public static String removeAllOccurrences(String string, char c) {
 		int first = string.indexOf(c);
-		return (first == -1) ? string : new String(removeAllOccurrences_(string.toCharArray(), c, first));
+		return (first == -1) ? string : removeAllOccurrences(string, c, first);
 	}
 
 	/**
-	 * Remove all occurrences of the specified character
-	 * from the specified string and write the result to the specified stream.
-	 * <p>
-	 * <code>
-	 * String.removeAllOccurrencesOn(char, Writer)
-	 * </code>
+	 * no occurrence check
 	 */
-	public static void removeAllOccurrencesOn(String string, char c, Writer writer) {
-		int first = string.indexOf(c);
-		if (first == -1) {
-			writeStringOn(string, writer);
-		} else {
-			removeAllOccurrencesOn_(string.toCharArray(), c, first, writer);
-		}
-	}
-
-	/**
-	 * Remove all occurrences of the specified character
-	 * from the specified string and write the result to the specified stream.
-	 * <p>
-	 * <code>
-	 * String.removeAllOccurrencesOn(char, StringBuffer)
-	 * </code>
-	 */
-	public static void removeAllOccurrencesOn(String string, char c, StringBuffer sb) {
-		int first = string.indexOf(c);
-		if (first == -1) {
-			sb.append(string);
-		} else {
-			removeAllOccurrencesOn_(string.toCharArray(), c, first, sb);
-		}
-	}
-
-	/**
-	 * Remove all occurrences of the specified character
-	 * from the specified string and write the result to the specified stream.
-	 * <p>
-	 * <code>
-	 * String.removeAllOccurrencesOn(char, StringBuilder)
-	 * </code>
-	 */
-	public static void removeAllOccurrencesOn(String string, char c, StringBuilder sb) {
-		int first = string.indexOf(c);
-		if (first == -1) {
-			sb.append(string);
-		} else {
-			removeAllOccurrencesOn_(string.toCharArray(), c, first, sb);
-		}
-	}
-
-	/**
-	 * Remove all occurrences of the specified character
-	 * from the specified string and return the result.
-	 * <p>
-	 * <code>
-	 * String.removeAllOccurrences(char)
-	 * </code>
-	 */
-	public static char[] removeAllOccurrences(char[] string, char c) {
-		int first = ArrayTools.indexOf(string, c);
-		return (first == -1) ? string : removeAllOccurrences_(string, c, first);
-	}
-
-	/*
-	 * The index of the first matching character is passed in.
-	 */
-	private static char[] removeAllOccurrences_(char[] string, char c, int first) {
-		StringBuilder sb = new StringBuilder(string.length);
-		removeAllOccurrencesOn_(string, c, first, sb);
-		return convertToCharArray(sb);
-	}
-
-	/**
-	 * Remove all occurrences of the specified character
-	 * from the specified string and write the result to the
-	 * specified writer.
-	 * <p>
-	 * <code>
-	 * String.removeAllOccurrencesOn(char, Writer)
-	 * </code>
-	 */
-	public static void removeAllOccurrencesOn(char[] string, char c, Writer writer) {
-		int first = ArrayTools.indexOf(string, c);
-		if (first == -1) {
-			writeStringOn(string, writer);
-		} else {
-			removeAllOccurrencesOn_(string, c, first, writer);
-		}
-	}
-
-	/*
-	 * The index of the first matching character is passed in.
-	 */
-	private static void removeAllOccurrencesOn_(char[] string, char c, int first, Writer writer) {
-		writeStringOn(string, 0, first, writer);
-		int len = string.length;
-		for (int i = first; i < len; i++) {
-			char d = string[i];
-			if (d != c) {
-				writeCharOn(d, writer);
-			}
-		}
-	}
-
-	/**
-	 * Remove all occurrences of the specified character
-	 * from the specified string and append the result to the
-	 * specified string buffer.
-	 * <p>
-	 * <code>
-	 * String.removeAllOccurrencesOn(char, StringBuffer)
-	 * </code>
-	 */
-	public static void removeAllOccurrencesOn(char[] string, char c, StringBuffer sb) {
-		int first = ArrayTools.indexOf(string, c);
-		if (first == -1) {
-			sb.append(string);
-		} else {
-			removeAllOccurrencesOn_(string, c, first, sb);
-		}
-	}
-
-	/*
-	 * The index of the first matching character is passed in.
-	 */
-	private static void removeAllOccurrencesOn_(char[] string, char c, int first, StringBuffer sb) {
-		sb.append(string, 0, first);
-		int len = string.length;
-		for (int i = first; i < len; i++) {
-			char d = string[i];
-			if (d != c) {
-				sb.append(d);
-			}
-		}
-	}
-
-	/**
-	 * Remove all occurrences of the specified character
-	 * from the specified string and append the result to the
-	 * specified string builder.
-	 * <p>
-	 * <code>
-	 * String.removeAllOccurrencesOn(char, StringBuilder)
-	 * </code>
-	 */
-	public static void removeAllOccurrencesOn(char[] string, char c, StringBuilder sb) {
-		int first = ArrayTools.indexOf(string, c);
-		if (first == -1) {
-			sb.append(string);
-		} else {
-			removeAllOccurrencesOn_(string, c, first, sb);
-		}
-	}
-
-	/*
-	 * The index of the first matching character is passed in.
-	 */
-	private static void removeAllOccurrencesOn_(char[] string, char c, int first, StringBuilder sb) {
-		sb.append(string, 0, first);
-		int len = string.length;
-		for (int i = first; i < len; i++) {
-			char d = string[i];
-			if (d != c) {
-				sb.append(d);
-			}
-		}
+	private static String removeAllOccurrences(String string, char c, int first) {
+		int stringLength = string.length();
+		StringBuilder sb = new StringBuilder(stringLength);
+		StringBuilderTools.removeAllOccurrences(sb, string, c, first, stringLength);
+		return sb.toString();
 	}
 
 	/**
 	 * Remove all the spaces from the specified string and return the result.
-	 * <p>
-	 * <code>
-	 * String.removeAllSpaces()
-	 * </code>
 	 */
 	public static String removeAllSpaces(String string) {
 		return removeAllOccurrences(string, ' ');
 	}
 
 	/**
-	 * Remove all the spaces
-	 * from the specified string and write the result to the specified writer.
-	 * <p>
-	 * <code>
-	 * String.removeAllSpacesOn(Writer)
-	 * </code>
-	 */
-	public static void removeAllSpacesOn(String string, Writer writer) {
-		removeAllOccurrencesOn(string, ' ', writer);
-	}
-
-	/**
-	 * Remove all the spaces
-	 * from the specified string and write the result to the specified
-	 * string buffer.
-	 * <p>
-	 * <code>
-	 * String.removeAllSpacesOn(StringBuffer)
-	 * </code>
-	 */
-	public static void removeAllSpacesOn(String string, StringBuffer sb) {
-		removeAllOccurrencesOn(string, ' ', sb);
-	}
-
-	/**
-	 * Remove all the spaces
-	 * from the specified string and write the result to the specified
-	 * string builder.
-	 * <p>
-	 * <code>
-	 * String.removeAllSpacesOn(StringBuilder)
-	 * </code>
-	 */
-	public static void removeAllSpacesOn(String string, StringBuilder sb) {
-		removeAllOccurrencesOn(string, ' ', sb);
-	}
-
-	/**
-	 * Remove all the spaces from the specified string and return the result.
-	 * <p>
-	 * <code>
-	 * String.removeAllSpaces()
-	 * </code>
-	 */
-	public static char[] removeAllSpaces(char[] string) {
-		return removeAllOccurrences(string, ' ');
-	}
-
-	/**
-	 * Remove all the spaces
-	 * from the specified string and write the result to the
-	 * specified writer.
-	 * <p>
-	 * <code>
-	 * String.removeAllSpacesOn(Writer)
-	 * </code>
-	 */
-	public static void removeAllSpacesOn(char[] string, Writer writer) {
-		removeAllOccurrencesOn(string, ' ', writer);
-	}
-
-	/**
-	 * Remove all the spaces
-	 * from the specified string and append the result to the
-	 * specified string buffer.
-	 * <p>
-	 * <code>
-	 * String.removeAllSpacesOn(StringBuffer)
-	 * </code>
-	 */
-	public static void removeAllSpacesOn(char[] string, StringBuffer sb) {
-		removeAllOccurrencesOn(string, ' ', sb);
-	}
-
-	/**
-	 * Remove all the spaces
-	 * from the specified string and append the result to the
-	 * specified string builder.
-	 * <p>
-	 * <code>
-	 * String.removeAllSpacesOn(StringBuilder)
-	 * </code>
-	 */
-	public static void removeAllSpacesOn(char[] string, StringBuilder sb) {
-		removeAllOccurrencesOn(string, ' ', sb);
-	}
-
-	/**
 	 * Remove all the whitespace from the specified string and return the result.
-	 * <p>
-	 * <code>
-	 * String.removeAllWhitespace()
-	 * </code>
+	 * @see Character#isWhitespace(char)
 	 */
 	public static String removeAllWhitespace(String string) {
-		char[] string2 = string.toCharArray();
-		int first = indexOfWhitespace_(string2);
-		return (first == -1) ? string : new String(removeAllWhitespace_(string2, first));
+		int first = indexOfWhitespace(string);
+		return (first == -1) ? string : removeAllWhitespace(string, first);
 	}
 
 	/**
-	 * Remove all the whitespace
-	 * from the specified string and append the result to the
-	 * specified writer.
-	 * <p>
-	 * <code>
-	 * String.removeAllWhitespaceOn(Writer)
-	 * </code>
+	 * Return the index of the first whitespace character in the specified
+	 * string. Return -1 if the specified string contains no whitespace.
+	 * @see Character#isWhitespace(char)
 	 */
-	public static void removeAllWhitespaceOn(String string, Writer writer) {
-		char[] string2 = string.toCharArray();
-		int first = indexOfWhitespace_(string2);
-		if (first == -1) {
-			writeStringOn(string, writer);
-		} else {
-			removeAllWhitespaceOn_(string2, first, writer);
-		}
-	}
-
-	/**
-	 * Remove all the whitespace
-	 * from the specified string and append the result to the
-	 * specified string buffer.
-	 * <p>
-	 * <code>
-	 * String.removeAllWhitespaceOn(StringBuffer)
-	 * </code>
-	 */
-	public static void removeAllWhitespaceOn(String string, StringBuffer sb) {
-		char[] string2 = string.toCharArray();
-		int first = indexOfWhitespace_(string2);
-		if (first == -1) {
-			sb.append(string);
-		} else {
-			removeAllWhitespaceOn_(string2, first, sb);
-		}
-	}
-
-	/**
-	 * Remove all the whitespace
-	 * from the specified string and append the result to the
-	 * specified string builder.
-	 * <p>
-	 * <code>
-	 * String.removeAllWhitespaceOn(StringBuilder)
-	 * </code>
-	 */
-	public static void removeAllWhitespaceOn(String string, StringBuilder sb) {
-		char[] string2 = string.toCharArray();
-		int first = indexOfWhitespace_(string2);
-		if (first == -1) {
-			sb.append(string);
-		} else {
-			removeAllWhitespaceOn_(string2, first, sb);
-		}
-	}
-
-	/**
-	 * Remove all the whitespace from the specified string and return the result.
-	 * <p>
-	 * <code>
-	 * String.removeAllWhitespace()
-	 * </code>
-	 */
-	public static char[] removeAllWhitespace(char[] string) {
-		int first = indexOfWhitespace_(string);
-		return (first == -1) ? string : removeAllWhitespace_(string, first);
-	}
-
-	private static int indexOfWhitespace_(char[] string) {
-		int len = string.length;
-		for (int i = 0; i < len; i++) {
-			if (Character.isWhitespace(string[i])) {
+	public static int indexOfWhitespace(String string) {
+		int stringLength = string.length();
+		for (int i = 0; i < stringLength; i++) {
+			if (Character.isWhitespace(string.charAt(i))) {
 				return i;
 			}
 		}
 		return -1;
 	}
 
-	/*
-	 * The index of the first non-whitespace character is passed in.
-	 */
-	private static char[] removeAllWhitespace_(char[] string, int first) {
-		StringBuilder sb = new StringBuilder(string.length);
-		removeAllWhitespaceOn_(string, first, sb);
-		return convertToCharArray(sb);
-	}
-
 	/**
-	 * Remove all the whitespace
-	 * from the specified string and append the result to the
-	 * specified writer.
-	 * <p>
-	 * <code>
-	 * String.removeAllWhitespaceOn(Writer)
-	 * </code>
+	 * no whitespace check
 	 */
-	public static void removeAllWhitespaceOn(char[] string, Writer writer) {
-		int first = indexOfWhitespace_(string);
-		if (first == -1) {
-			writeStringOn(string, writer);
-		} else {
-			removeAllWhitespaceOn_(string, first, writer);
-		}
+	private static String removeAllWhitespace(String string, int first) {
+		int stringLength = string.length();
+		StringBuilder sb = new StringBuilder(stringLength);
+		StringBuilderTools.removeAllWhitespace(sb, string, first, stringLength);
+		return sb.toString();
 	}
 
-	/*
-	 * The index of the first whitespace character is passed in.
-	 */
-	private static void removeAllWhitespaceOn_(char[] string, int first, Writer writer) {
-		writeStringOn(string, 0, first, writer);
-		int len = string.length;
-		for (int i = first; i < len; i++) {
-			char c = string[i];
-			if ( ! Character.isWhitespace(c)) {
-				writeCharOn(c, writer);
-			}
-		}
-	}
-
-	/**
-	 * Remove all the whitespace
-	 * from the specified string and append the result to the
-	 * specified string buffer.
-	 * <p>
-	 * <code>
-	 * String.removeAllWhitespaceOn(StringBuffer)
-	 * </code>
-	 */
-	public static void removeAllWhitespaceOn(char[] string, StringBuffer sb) {
-		int first = indexOfWhitespace_(string);
-		if (first == -1) {
-			sb.append(string);
-		} else {
-			removeAllWhitespaceOn_(string, first, sb);
-		}
-	}
-
-	/*
-	 * The index of the first whitespace character is passed in.
-	 */
-	private static void removeAllWhitespaceOn_(char[] string, int first, StringBuffer sb) {
-		sb.append(string, 0, first);
-		int len = string.length;
-		for (int i = first; i < len; i++) {
-			char c = string[i];
-			if ( ! Character.isWhitespace(c)) {
-				sb.append(c);
-			}
-		}
-	}
-
-	/**
-	 * Remove all the whitespace
-	 * from the specified string and append the result to the
-	 * specified string builder.
-	 * <p>
-	 * <code>
-	 * String.removeAllWhitespaceOn(StringBuilder)
-	 * </code>
-	 */
-	public static void removeAllWhitespaceOn(char[] string, StringBuilder sb) {
-		int first = indexOfWhitespace_(string);
-		if (first == -1) {
-			sb.append(string);
-		} else {
-			removeAllWhitespaceOn_(string, first, sb);
-		}
-	}
-
-	/*
-	 * The index of the first whitespace character is passed in.
-	 */
-	private static void removeAllWhitespaceOn_(char[] string, int first, StringBuilder sb) {
-		sb.append(string, 0, first);
-		int len = string.length;
-		for (int i = first; i < len; i++) {
-			char c = string[i];
-			if ( ! Character.isWhitespace(c)) {
-				sb.append(c);
-			}
-		}
-	}
-//===============================
 	/**
 	 * Compress the whitespace in the specified string and return the result.
 	 * The whitespace is compressed by replacing any occurrence of one or more
 	 * whitespace characters with a single space.
-	 * <p>
-	 * <code>
-	 * String.compressWhitespace()
-	 * </code>
+	 * @see Character#isWhitespace(char)
 	 */
 	public static String compressWhitespace(String string) {
-		char[] string2 = string.toCharArray();
-		int first = indexOfWhitespace_(string2);
-		return (first == -1) ? string : new String(compressWhitespace_(string2, first));
+		int first = indexOfWhitespace(string);
+		return (first == -1) ? string : new String(compressWhitespace(string, first));
 	}
 
 	/**
-	 * Compress the whitespace
-	 * in the specified string and append the result to the
-	 * specified writer.
-	 * The whitespace is compressed by replacing any occurrence of one or more
-	 * whitespace characters with a single space.
-	 * <p>
-	 * <code>
-	 * String.compressWhitespaceOn(Writer)
-	 * </code>
+	 * no whitespace check
 	 */
-	public static void compressWhitespaceOn(String string, Writer writer) {
-		char[] string2 = string.toCharArray();
-		int first = indexOfWhitespace_(string2);
-		if (first == -1) {
-			writeStringOn(string, writer);
-		} else {
-			compressWhitespaceOn_(string2, first, writer);
-		}
-	}
-
-	/**
-	 * Compress the whitespace
-	 * in the specified string and append the result to the
-	 * specified string buffer.
-	 * The whitespace is compressed by replacing any occurrence of one or more
-	 * whitespace characters with a single space.
-	 * <p>
-	 * <code>
-	 * String.compressWhitespaceOn(StringBuffer)
-	 * </code>
-	 */
-	public static void compressWhitespaceOn(String string, StringBuffer sb) {
-		char[] string2 = string.toCharArray();
-		int first = indexOfWhitespace_(string2);
-		if (first == -1) {
-			sb.append(string);
-		} else {
-			compressWhitespaceOn_(string2, first, sb);
-		}
-	}
-
-	/**
-	 * Compress the whitespace
-	 * in the specified string and append the result to the
-	 * specified string builder.
-	 * The whitespace is compressed by replacing any occurrence of one or more
-	 * whitespace characters with a single space.
-	 * <p>
-	 * <code>
-	 * String.compressWhitespaceOn(StringBuilder)
-	 * </code>
-	 */
-	public static void compressWhitespaceOn(String string, StringBuilder sb) {
-		char[] string2 = string.toCharArray();
-		int first = indexOfWhitespace_(string2);
-		if (first == -1) {
-			sb.append(string);
-		} else {
-			compressWhitespaceOn_(string2, first, sb);
-		}
-	}
-
-	/**
-	 * Compress the whitespace in the specified string and return the result.
-	 * The whitespace is compressed by replacing any occurrence of one or more
-	 * whitespace characters with a single space.
-	 * <p>
-	 * <code>
-	 * String.compressWhitespace()
-	 * </code>
-	 */
-	public static char[] compressWhitespace(char[] string) {
-		int first = indexOfWhitespace_(string);
-		return (first == -1) ? string : compressWhitespace_(string, first);
-	}
-
-	/*
-	 * The index of the first whitespace character is passed in.
-	 */
-	private static char[] compressWhitespace_(char[] string, int first) {
-		StringBuilder sb = new StringBuilder(string.length);
-		compressWhitespaceOn_(string, first, sb);
-		return convertToCharArray(sb);
-	}
-
-	/**
-	 * Compress the whitespace
-	 * in the specified string and append the result to the
-	 * specified writer.
-	 * The whitespace is compressed by replacing any occurrence of one or more
-	 * whitespace characters with a single space.
-	 * <p>
-	 * <code>
-	 * String.compressWhitespaceOn(Writer)
-	 * </code>
-	 */
-	public static void compressWhitespaceOn(char[] string, Writer writer) {
-		int first = indexOfWhitespace_(string);
-		if (first == -1) {
-			writeStringOn(string, writer);
-		} else {
-			compressWhitespaceOn_(string, first, writer);
-		}
-	}
-
-	/*
-	 * The index of the first whitespace character is passed in.
-	 */
-	private static void compressWhitespaceOn_(char[] string, int first, Writer writer) {
-		writeStringOn(string, 0, first, writer);
-		boolean spaceWritten = false;
-		int len = string.length;
-		for (int i = first; i < len; i++) {
-			char c = string[i];
-			if (Character.isWhitespace(c)) {
-				if (spaceWritten) {
-					// skip subsequent whitespace characters
-				} else {
-					// replace first whitespace character with a space
-					spaceWritten = true;
-					writeCharOn(' ', writer);
-				}
-			} else {
-				spaceWritten = false;
-				writeCharOn(c, writer);
-			}
-		}
-	}
-
-	/**
-	 * Compress the whitespace
-	 * in the specified string and append the result to the
-	 * specified string buffer.
-	 * The whitespace is compressed by replacing any occurrence of one or more
-	 * whitespace characters with a single space.
-	 * <p>
-	 * <code>
-	 * String.compressWhitespaceOn(StringBuffer)
-	 * </code>
-	 */
-	public static void compressWhitespaceOn(char[] string, StringBuffer sb) {
-		int first = indexOfWhitespace_(string);
-		if (first == -1) {
-			sb.append(string);
-		} else {
-			compressWhitespaceOn_(string, first, sb);
-		}
-	}
-
-	/*
-	 * The index of the first whitespace character is passed in.
-	 */
-	private static void compressWhitespaceOn_(char[] string, int first, StringBuffer sb) {
-		sb.append(string, 0, first);
-		boolean spaceWritten = false;
-		int len = string.length;
-		for (int i = first; i < len; i++) {
-			char c = string[i];
-			if (Character.isWhitespace(c)) {
-				if (spaceWritten) {
-					// skip subsequent whitespace characters
-				} else {
-					// replace first whitespace character with a space
-					spaceWritten = true;
-					sb.append(' ');
-				}
-			} else {
-				spaceWritten = false;
-				sb.append(c);
-			}
-		}
-	}
-
-	/**
-	 * Compress the whitespace
-	 * in the specified string and append the result to the
-	 * specified string builder.
-	 * The whitespace is compressed by replacing any occurrence of one or more
-	 * whitespace characters with a single space.
-	 * <p>
-	 * <code>
-	 * String.compressWhitespaceOn(StringBuilder)
-	 * </code>
-	 */
-	public static void compressWhitespaceOn(char[] string, StringBuilder sb) {
-		int first = indexOfWhitespace_(string);
-		if (first == -1) {
-			sb.append(string);
-		} else {
-			compressWhitespaceOn_(string, first, sb);
-		}
-	}
-
-	/*
-	 * The index of the first whitespace character is passed in.
-	 */
-	private static void compressWhitespaceOn_(char[] string, int first, StringBuilder sb) {
-		sb.append(string, 0, first);
-		boolean spaceWritten = false;
-		int len = string.length;
-		for (int i = first; i < len; i++) {
-			char c = string[i];
-			if (Character.isWhitespace(c)) {
-				if (spaceWritten) {
-					// skip subsequent whitespace characters
-				} else {
-					// replace first whitespace character with a space
-					spaceWritten = true;
-					sb.append(' ');
-				}
-			} else {
-				spaceWritten = false;
-				sb.append(c);
-			}
-		}
+	private static String compressWhitespace(String string, int first) {
+		int stringLength = string.length();
+		StringBuilder sb = new StringBuilder(stringLength);
+		StringBuilderTools.compressWhitespace(sb, string, first, stringLength);
+		return sb.toString();
 	}
 
 
@@ -3464,50 +660,18 @@ public final class StringTools {
 
 	/**
 	 * Return the length of the common prefix shared by the specified strings.
-	 * <p>
-	 * <code>
-	 * String.commonPrefixLength(String)
-	 * </code>
 	 */
 	public static int commonPrefixLength(String s1, String s2) {
-		return commonPrefixLength(s1.toCharArray(), s2.toCharArray());
-	}
-
-	/**
-	 * Return the length of the common prefix shared by the specified strings.
-	 */
-	public static int commonPrefixLength(char[] s1, char[] s2) {
-		return commonPrefixLength_(s1, s2, Math.min(s1.length, s2.length));
+		return commonPrefixLength(s1, s2, Math.min(s1.length(), s2.length()));
 	}
 
 	/**
 	 * Return the length of the common prefix shared by the specified strings;
 	 * but limit the length to the specified maximum.
-	 * <p>
-	 * <code>
-	 * String.commonPrefixLength(String, int)
-	 * </code>
 	 */
 	public static int commonPrefixLength(String s1, String s2, int max) {
-		return commonPrefixLength(s1.toCharArray(), s2.toCharArray(), max);
-	}
-
-	/**
-	 * Return the length of the common prefix shared by the specified strings;
-	 * but limit the length to the specified maximum.
-	 */
-	public static int commonPrefixLength(char[] s1, char[] s2, int max) {
-		return commonPrefixLength_(s1, s2, Math.min(max, Math.min(s1.length, s2.length)));
-	}
-
-	/*
-	 * Return the length of the common prefix shared by the specified strings;
-	 * but limit the length to the specified maximum. Assume the specified
-	 * maximum is less than the lengths of the specified strings.
-	 */
-	private static int commonPrefixLength_(char[] s1, char[] s2, int max) {
 		for (int i = 0; i < max; i++) {
-			if (s1[i] != s2[i]) {
+			if (s1.charAt(i) != s2.charAt(i)) {
 				return i;
 			}
 		}
@@ -3517,251 +681,64 @@ public final class StringTools {
 
 	// ********** capitalization **********
 
-	/*
-	 * no zero-length check or lower case check
-	 */
-	private static char[] capitalize_(char[] string) {
-		string[0] = Character.toUpperCase(string[0]);
-		return string;
-	}
-
-	/**
-	 * Modify and return the specified string with
-	 * its first letter capitalized.
-	 */
-	public static char[] capitalize(char[] string) {
-		if ((string.length == 0) || Character.isUpperCase(string[0])) {
-			return string;
-		}
-		return capitalize_(string);
-	}
-
 	/**
 	 * Return the specified string with its first letter capitalized.
-	 * <p>
-	 * <code>
-	 * String.capitalize()
-	 * </code>
 	 */
 	public static String capitalize(String string) {
-		if ((string.length() == 0) || Character.isUpperCase(string.charAt(0))) {
-			return string;
-		}
-		return new String(capitalize_(string.toCharArray()));
+		int stringLength = string.length();
+		return ((stringLength == 0) || Character.isUpperCase(string.charAt(0))) ?
+				string :
+				capitalize(string, stringLength);
 	}
 
 	/**
-	 * Modify each of the specified strings, capitalizing the first letter of
-	 * each.
-	 */
-	public static Iterable<String> capitalize(Iterable<String> strings) {
-		return new TransformationIterable<String, String>(strings, STRING_CAPITALIZER);
-	}
-
-	/**
-	 * Modify each of the specified strings, capitalizing the first letter of
-	 * each.
-	 */
-	public static Iterator<String> capitalize(Iterator<String> strings) {
-		return new TransformationIterator<String, String>(strings, STRING_CAPITALIZER);
-	}
-
-	private static final Transformer<String, String> STRING_CAPITALIZER = new Transformer<String, String>() {
-		public String transform(String string) {
-			return StringTools.capitalize(string);
-		}
-	};
-
-	/**
-	 * Modify each of the specified strings, capitalizing the first letter of
-	 * each.
-	 */
-	// cannot name method simply 'capitalize' because of type-erasure...
-	public static Iterable<char[]> capitalizeCharArrays(Iterable<char[]> strings) {
-		return new TransformationIterable<char[], char[]>(strings, CHAR_ARRAY_CAPITALIZER);
-	}
-
-	/**
-	 * Modify each of the specified strings, capitalizing the first letter of
-	 * each.
-	 */
-	// cannot name method simply 'capitalize' because of type-erasure...
-	public static Iterator<char[]> capitalizeCharArrays(Iterator<char[]> strings) {
-		return new TransformationIterator<char[], char[]>(strings, CHAR_ARRAY_CAPITALIZER);
-	}
-
-	private static final Transformer<char[], char[]> CHAR_ARRAY_CAPITALIZER = new Transformer<char[], char[]>() {
-		public char[] transform(char[] string) {
-			return StringTools.capitalize(string);
-		}
-	};
-
-	/*
-	 * no zero-length check or upper case check
-	 */
-	private static void capitalizeOn_(char[] string, StringBuffer sb) {
-		sb.append(Character.toUpperCase(string[0]));
-		sb.append(string, 1, string.length - 1);
-	}
-
-	/**
-	 * Append the specified string to the specified string buffer
-	 * with its first letter capitalized.
-	 */
-	public static void capitalizeOn(char[] string, StringBuffer sb) {
-		if (string.length == 0) {
-			return;
-		}
-		if (Character.isUpperCase(string[0])) {
-			sb.append(string);
-		} else {
-			capitalizeOn_(string, sb);
-		}
-	}
-
-	/**
-	 * Append the specified string to the specified string buffer
-	 * with its first letter capitalized.
-	 * <p>
-	 * <code>
-	 * String.capitalizeOn(StringBuffer)
-	 * </code>
-	 */
-	public static void capitalizeOn(String string, StringBuffer sb) {
-		if (string.length() == 0) {
-			return;
-		}
-		if (Character.isUpperCase(string.charAt(0))) {
-			sb.append(string);
-		} else {
-			capitalizeOn_(string.toCharArray(), sb);
-		}
-	}
-
-	/*
-	 * no zero-length check or upper case check
-	 */
-	private static void capitalizeOn_(char[] string, StringBuilder sb) {
-		sb.append(Character.toUpperCase(string[0]));
-		sb.append(string, 1, string.length - 1);
-	}
-
-	/**
-	 * Append the specified string to the specified string builder
-	 * with its first letter capitalized.
-	 */
-	public static void capitalizeOn(char[] string, StringBuilder sb) {
-		if (string.length == 0) {
-			return;
-		}
-		if (Character.isUpperCase(string[0])) {
-			sb.append(string);
-		} else {
-			capitalizeOn_(string, sb);
-		}
-	}
-
-	/**
-	 * Append the specified string to the specified string builder
-	 * with its first letter capitalized.
-	 * <p>
-	 * <code>
-	 * String.capitalizeOn(StringBuffer)
-	 * </code>
-	 */
-	public static void capitalizeOn(String string, StringBuilder sb) {
-		if (string.length() == 0) {
-			return;
-		}
-		if (Character.isUpperCase(string.charAt(0))) {
-			sb.append(string);
-		} else {
-			capitalizeOn_(string.toCharArray(), sb);
-		}
-	}
-
-	/*
-	 * no zero-length check or upper case check
-	 */
-	private static void capitalizeOn_(char[] string, Writer writer) {
-		writeCharOn(Character.toUpperCase(string[0]), writer);
-		writeStringOn(string, 1, string.length - 1, writer);
-	}
-
-	/**
-	 * Append the specified string to the specified string buffer
-	 * with its first letter capitalized.
-	 */
-	public static void capitalizeOn(char[] string, Writer writer) {
-		if (string.length == 0) {
-			return;
-		}
-		if (Character.isUpperCase(string[0])) {
-			writeStringOn(string, writer);
-		} else {
-			capitalizeOn_(string, writer);
-		}
-	}
-
-	/**
-	 * Append the specified string to the specified string buffer
-	 * with its first letter capitalized.
-	 * <p>
-	 * <code>
-	 * String.capitalizeOn(Writer)
-	 * </code>
-	 */
-	public static void capitalizeOn(String string, Writer writer) {
-		if (string.length() == 0) {
-			return;
-		}
-		if (Character.isUpperCase(string.charAt(0))) {
-			writeStringOn(string, writer);
-		} else {
-			capitalizeOn_(string.toCharArray(), writer);
-		}
-	}
-
-	/*
 	 * no zero-length check or lower case check
 	 */
-	private static char[] uncapitalize_(char[] string) {
-		string[0] = Character.toLowerCase(string[0]);
-		return string;
-	}
-
-	private static boolean stringNeedNotBeUncapitalized_(char[] string) {
-		if (string.length == 0) {
-			return true;
-		}
-		if (Character.isLowerCase(string[0])) {
-			return true;
-		}
-		// if both the first and second characters are capitalized,
-		// return the string unchanged
-		if ((string.length > 1)
-				&& Character.isUpperCase(string[1])
-				&& Character.isUpperCase(string[0])){
-			return true;
-		}
-		return false;
+	private static String capitalize(String string, int stringLength) {
+		char[] result = new char[stringLength];
+		result[0] = Character.toUpperCase(string.charAt(0));
+		string.getChars(1, stringLength, result, 1);
+		return new String(result);
 	}
 
 	/**
-	 * Modify and return the specified string with its
-	 * first letter converted to lower case.
+	 * @see #capitalize(String)
+	 */
+	public static final Transformer<String, String> CAPITALIZER = new Capitalizer();
+
+	/* CU private */ static class Capitalizer
+		extends TransformerAdapter<String, String>
+		implements Serializable
+	{
+		@Override
+		public String transform(String string) {
+			return capitalize(string);
+		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return CAPITALIZER;
+		}
+	}
+
+	/**
+	 * Return the specified string with its first letter converted to lower case.
 	 * (Unless both the first and second letters are upper case,
 	 * in which case the string is returned unchanged.)
 	 */
-	public static char[] uncapitalize(char[] string) {
-		if (stringNeedNotBeUncapitalized_(string)) {
-			return string;
-		}
-		return uncapitalize_(string);
+	public static String uncapitalize(String string) {
+		int stringLength = string.length();
+		return needNotBeUncapitalized(string, stringLength) ?
+				string :
+				uncapitalize(string, stringLength);
 	}
 
-	private static boolean stringNeedNotBeUncapitalized_(String string) {
-		if (string.length() == 0) {
+	/**
+	 * Return whether the specified string need not have its first character
+	 * capitalized when the specified string is to be capitalized.
+	 */
+	public static boolean needNotBeUncapitalized(String string, int stringLength) {
+		if (stringLength == 0) {
 			return true;
 		}
 		if (Character.isLowerCase(string.charAt(0))) {
@@ -3769,7 +746,7 @@ public final class StringTools {
 		}
 		// if both the first and second characters are capitalized,
 		// return the string unchanged
-		if ((string.length() > 1)
+		if ((stringLength > 1)
 				&& Character.isUpperCase(string.charAt(1))
 				&& Character.isUpperCase(string.charAt(0))){
 			return true;
@@ -3778,348 +755,59 @@ public final class StringTools {
 	}
 
 	/**
-	 * Return the specified string with its first letter converted to lower case.
-	 * (Unless both the first and second letters are upper case,
-	 * in which case the string is returned unchanged.)
-	 * <p>
-	 * <code>
-	 * String.uncapitalize()
-	 * </code>
-	 */
-	public static String uncapitalize(String string) {
-		if (stringNeedNotBeUncapitalized_(string)) {
-			return string;
-		}
-		return new String(uncapitalize_(string.toCharArray()));
-	}
-
-	/*
 	 * no zero-length check or lower case check
 	 */
-	private static void uncapitalizeOn_(char[] string, StringBuffer sb) {
-		sb.append(Character.toLowerCase(string[0]));
-		sb.append(string, 1, string.length - 1);
+	private static String uncapitalize(String string, int stringLength) {
+		char[] result = new char[stringLength];
+		result[0] = Character.toLowerCase(string.charAt(0));
+		string.getChars(1, stringLength, result, 1);
+		return new String(result);
 	}
 
 	/**
-	 * Append the specified string to the specified string buffer
-	 * with its first letter converted to lower case.
-	 * (Unless both the first and second letters are upper case,
-	 * in which case the string is returned unchanged.)
+	 * @see #uncapitalize(String)
 	 */
-	public static void uncapitalizeOn(char[] string, StringBuffer sb) {
-		if (stringNeedNotBeUncapitalized_(string)) {
-			sb.append(string);
-		} else {
-			uncapitalizeOn_(string, sb);
+	public static final Transformer<String, String> UNCAPITALIZER = new Uncapitalizer();
+
+	/* CU private */ static class Uncapitalizer
+		extends TransformerAdapter<String, String>
+		implements Serializable
+	{
+		@Override
+		public String transform(String string) {
+			return uncapitalize(string);
 		}
-	}
-
-	/**
-	 * Append the specified string to the specified string buffer
-	 * with its first letter converted to lower case.
-	 * (Unless both the first and second letters are upper case,
-	 * in which case the string is returned unchanged.)
-	 * <p>
-	 * <code>
-	 * String.uncapitalizeOn(StringBuffer)
-	 * </code>
-	 */
-	public static void uncapitalizeOn(String string, StringBuffer sb) {
-		if (stringNeedNotBeUncapitalized_(string)) {
-			sb.append(string);
-		} else {
-			uncapitalizeOn_(string.toCharArray(), sb);
-		}
-	}
-
-	/*
-	 * no zero-length check or lower case check
-	 */
-	private static void uncapitalizeOn_(char[] string, StringBuilder sb) {
-		sb.append(Character.toLowerCase(string[0]));
-		sb.append(string, 1, string.length - 1);
-	}
-
-	/**
-	 * Append the specified string to the specified string builder
-	 * with its first letter converted to lower case.
-	 * (Unless both the first and second letters are upper case,
-	 * in which case the string is returned unchanged.)
-	 */
-	public static void uncapitalizeOn(char[] string, StringBuilder sb) {
-		if (stringNeedNotBeUncapitalized_(string)) {
-			sb.append(string);
-		} else {
-			uncapitalizeOn_(string, sb);
-		}
-	}
-
-	/**
-	 * Append the specified string to the specified string builder
-	 * with its first letter converted to lower case.
-	 * (Unless both the first and second letters are upper case,
-	 * in which case the string is returned unchanged.)
-	 * <p>
-	 * <code>
-	 * String.uncapitalizeOn(StringBuffer)
-	 * </code>
-	 */
-	public static void uncapitalizeOn(String string, StringBuilder sb) {
-		if (stringNeedNotBeUncapitalized_(string)) {
-			sb.append(string);
-		} else {
-			uncapitalizeOn_(string.toCharArray(), sb);
-		}
-	}
-
-	/*
-	 * no zero-length check or upper case check
-	 */
-	private static void uncapitalizeOn_(char[] string, Writer writer) {
-		writeCharOn(Character.toLowerCase(string[0]), writer);
-		writeStringOn(string, 1, string.length - 1, writer);
-	}
-
-	/**
-	 * Append the specified string to the specified string buffer
-	 * with its first letter converted to lower case.
-	 * (Unless both the first and second letters are upper case,
-	 * in which case the string is returned unchanged.)
-	 */
-	public static void uncapitalizeOn(char[] string, Writer writer) {
-		if (stringNeedNotBeUncapitalized_(string)) {
-			writeStringOn(string, writer);
-		} else {
-			uncapitalizeOn_(string, writer);
-		}
-	}
-
-	/**
-	 * Append the specified string to the specified string buffer
-	 * with its first letter converted to lower case.
-	 * (Unless both the first and second letters are upper case,
-	 * in which case the string is returned unchanged.)
-	 * <p>
-	 * <code>
-	 * String.uncapitalizeOn(Writer)
-	 * </code>
-	 */
-	public static void uncapitalizeOn(String string, Writer writer) {
-		if (stringNeedNotBeUncapitalized_(string)) {
-			writeStringOn(string, writer);
-		} else {
-			uncapitalizeOn_(string.toCharArray(), writer);
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return UNCAPITALIZER;
 		}
 	}
 
 
-	// ********** toString() helper methods **********
-
-	/**
-	 * Build a "Dali standard" {@link Object#toString() toString()} result for
-	 * the specified object and additional information:<pre>
-	 *     ClassName[00-F3-EE-42](add'l info)
-	 * </pre>
-	 */
-	public static String buildToStringFor(Object o, Object additionalInfo) {
-		StringBuilder sb = new StringBuilder();
-		appendSimpleToString(sb, o);
-		sb.append('(');
-		sb.append(additionalInfo);
-		sb.append(')');
-		return sb.toString();
-	}
-
-	/**
-	 * Build a "Dali standard" {@link Object#toString() toString()} result for
-	 * the specified object:<pre>
-	 *     ClassName[00-F3-EE-42]
-	 * </pre>
-	 */
-	public static String buildToStringFor(Object o) {
-		StringBuilder sb = new StringBuilder();
-		appendSimpleToString(sb, o);
-		return sb.toString();
-	}
-
-	/**
-	 * Append a "Dali standard" {@link Object#toString() toString()} result for
-	 * the specified object to the specified string builder:<pre>
-	 *     ClassName[00-F3-EE-42]
-	 */
-	public static void appendSimpleToString(StringBuilder sb, Object o) {
-		appendToStringClassName(sb, o.getClass());
-		sb.append('[');
-		separateOn(buildHashCode(o), '-', 2, sb);
-		sb.append(']');
-	}
-
-	private static String buildHashCode(Object o) {
-		// use System.identityHashCode(Object), since Object.hashCode() may be overridden
-		return zeroPad(Integer.toHexString(System.identityHashCode(o)).toUpperCase(), 8);
-	}
-
-	/**
-	 * Return a name suitable for a "Dali standard"
-	 * {@link Object#toString() toString()} implementation.
-	 * {@link Class#getSimpleName()} isn't quite useful enough:<ul>
-	 * <li>An <em>anonymous</em> class's simple name is an empty string.
-	 *     Return the "Dali standard" name of the anonymous class's super class
-	 *     instead, which is a bit more helpful.
-	 * <li>A <em>member</em> or <em>local</em> class's simple name does not
-	 *     include its context. Prefix the class's simple name with its
-	 *     enclosing class's "Dali standard" name.
-	 * </ul>
-	 */
-	public static String buildToStringClassName(Class<?> javaClass) {
-		StringBuilder sb = new StringBuilder();
-		appendToStringClassName(sb, javaClass);
-		return sb.toString();
-	}
-
-	/**
-	 * Return a string suitable for a <em>singleton</em>; which is the simple
-	 * name of the object's class, since there should only be one.
-	 */
-	public static String buildSingletonToString(Object o) {
-		return buildToStringClassName(o.getClass());
-	}
-
-	/**
-	 * Append a name suitable for a "Dali standard"
-	 * {@link Object#toString() toString()} implementation to the specified
-	 * string builder.
-	 * @see #buildToStringClassName(Class)
-	 */
-	public static void appendToStringClassName(StringBuilder sb, Class<?> javaClass) {
-		if (javaClass.isAnonymousClass()) {
-			appendToStringClassName(sb, javaClass.getSuperclass());  // recurse
-		} else {
-			Class<?> enclosingClass = javaClass.getEnclosingClass();
-			if (enclosingClass == null) {
-				appendToStringClassName_(sb, javaClass);  // top-level class
-			} else {
-				appendToStringClassName(sb, enclosingClass);  // recurse
-				sb.append('.');
-				sb.append(javaClass.getSimpleName());
-			}
-		}
-	}
-
-	/**
-	 * pre-condition: the specified class is a top-level class
-	 */
-	private static void appendToStringClassName_(StringBuilder sb, Class<?> javaClass) {
-		String fullName = javaClass.getName();
-		int dot = fullName.lastIndexOf('.');
-		if (dot == -1) {
-			sb.append(fullName);  // "default" package
-		} else {
-			sb.append(fullName, dot + 1, fullName.length());
-		}
-	}
-
-	/**
-	 * Append the string representations of the objects in the specified array
-	 * to the specified string builder:<pre>
-	 *     ["foo", "bar", "baz"]
-	 * </pre>
-	 * <p>
-	 * <code>
-	 * StringBuilder.append(Object[])
-	 * </code>
-	 */
-	public static <T> String append(StringBuilder sb, T[] array) {
-		return append(sb, new ArrayListIterator<T>(array));
-	}
-
-	/**
-	 * Append the string representations of the objects in the specified iterable
-	 * to the specified string builder:<pre>
-	 *     ["foo", "bar", "baz"]
-	 * </pre>
-	 * <p>
-	 * <code>
-	 * StringBuilder.append(Iterable)
-	 * </code>
-	 */
-	public static <T> String append(StringBuilder sb, Iterable<T> iterable) {
-		return append(sb, iterable.iterator());
-	}
-
-	/**
-	 * Append the string representations of the objects in the specified iterator
-	 * to the specified string builder:<pre>
-	 *     ["foo", "bar", "baz"]
-	 * </pre>
-	 * <p>
-	 * <code>
-	 * StringBuilder.append(Iterator)
-	 * </code>
-	 */
-	public static <T> String append(StringBuilder sb, Iterator<T> iterator) {
-		sb.append('[');
-		while (iterator.hasNext()) {
-			sb.append(iterator.next());
-			if (iterator.hasNext()) {
-				sb.append(", "); //$NON-NLS-1$
-			}
-		}
-		sb.append(']');
-		return sb.toString();
-	}
-	
-	/**
-	 * Return a concatenation of the given strings
-	 * 
-	 * @param strings - the strings to concatenate
-	 * @return the resultant concatenated string
-	 */
-	public static String concatenate(String ... strings) {
-		StringBuilder sb = new StringBuilder();
-		for (String string : strings) {
-			sb.append(string);
-		}
-		return sb.toString();
-	}
-
-
-	// ********** queries **********
+	// ********** string queries **********
 
 	/**
 	 * Return whether the specified string is <code>null</code>, empty, or
 	 * contains only whitespace characters.
 	 */
-	public static boolean stringIsEmpty(String string) {
+	public static boolean isBlank(String string) {
 		if (string == null) {
 			return true;
 		}
-		int len = string.length();
-		if (len == 0) {
+		int stringLength = string.length();
+		if (stringLength == 0) {
 			return true;
 		}
-		return stringIsEmpty_(string.toCharArray(), len);
+		return isBlank(string, stringLength);
 	}
 
 	/**
-	 * Return whether the specified string is <code>null</code>, empty, or
-	 * contains only whitespace characters.
+	 * no <code>null</code> or length checks
 	 */
-	public static boolean stringIsEmpty(char[] string) {
-		if (string == null) {
-			return true;
-		}
-		int len = string.length;
-		if (len == 0) {
-			return true;
-		}
-		return stringIsEmpty_(string, len);
-	}
-
-	private static boolean stringIsEmpty_(char[] s, int len) {
-		for (int i = len; i-- > 0; ) {
-			if ( ! Character.isWhitespace(s[i])) {
+	private static boolean isBlank(String string, int stringLength) {
+		for (int i = stringLength; i-- > 0; ) {
+			if ( ! Character.isWhitespace(string.charAt(i))) {
 				return false;
 			}
 		}
@@ -4130,158 +818,121 @@ public final class StringTools {
 	 * Return whether the specified string is non-<code>null</code>, non-empty,
 	 * and does not contain only whitespace characters.
 	 */
-	public static boolean stringIsNotEmpty(String string) {
-		return ! stringIsEmpty(string);
+	public static boolean isNotBlank(String string) {
+		return ! isBlank(string);
 	}
 
 	/**
-	 * Return whether the specified string is non-<code>null</code>, non-empty,
-	 * and does not contain only whitespace characters.
+	 * @see #isNotBlank(String)
 	 */
-	public static boolean stringIsNotEmpty(char[] string) {
-		return ! stringIsEmpty(string);
-	}
+	public static final Filter<String> NON_BLANK_FILTER = new NonBlankFilter();
 
-	/**
-	 * Return whether the specified strings are equal.
-	 * Check for <code>null</code>s.
-	 */
-	public static boolean stringsAreEqual(String s1, String s2) {
-		return Tools.valuesAreEqual(s1, s2);
-	}
-
-	/**
-	 * Return whether the specified strings are equal.
-	 * Check for <code>null</code>s.
-	 */
-	public static boolean stringsAreEqual(char[] s1, char[] s2) {
-		return (s1 == null) ?
-				(s2 == null) :
-				((s2 != null) && stringsAreEqual_(s1, s2));
-	}
-
-	/**
-	 * no <code>null</code> checks
-	 */
-	private static boolean stringsAreEqual_(char[] s1, char[] s2) {
-		int len = s1.length;
-		if (len != s2.length) {
-			return false;
+	/* CU private */ static class NonBlankFilter
+		extends Filter.Adapter<String>
+		implements Serializable
+	{
+		@Override
+		public boolean accept(String string) {
+			return isNotBlank(string);
 		}
-		for (int i = len; i-- > 0; ) {
-			if (s1[i] != s2[i]) {
-				return false;
-			}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return NON_BLANK_FILTER;
 		}
-		return true;
 	}
 
 	/**
 	 * Return whether the specified strings are equal, ignoring case.
 	 * Check for <code>null</code>s.
 	 */
-	public static boolean stringsAreEqualIgnoreCase(String s1, String s2) {
-		return (s1 == null) ?
-				(s2 == null) :
-				((s2 != null) && s1.equalsIgnoreCase(s2));
-	}
-
-	/**
-	 * Return whether the specified strings are equal, ignoring case.
-	 * Check for <code>null</code>s.
-	 */
-	public static boolean stringsAreEqualIgnoreCase(char[] s1, char[] s2) {
-		return (s1 == null) ?
-				(s2 == null) :
-				((s2 != null) && stringsAreEqualIgnoreCase_(s1, s2));
-	}
-
-	/**
-	 * no <code>null</code> checks
-	 */
-	private static boolean stringsAreEqualIgnoreCase_(char[] s1, char[] s2) {
-		int len = s1.length;
-		if (len != s2.length) {
-			return false;
-		}
-		for (int i = len; i-- > 0; ) {
-			if ( ! charactersAreEqualIgnoreCase(s1[i], s2[i])) {
-				return false;
-			}
-		}
-		return true;
+	public static boolean equalsIgnoreCase(String s1, String s2) {
+		return (s1 == null) ? (s2 == null) : s1.equalsIgnoreCase(s2);
 	}
 
 	/**
 	 * Return whether the specified string starts with the specified prefix,
 	 * ignoring case.
+	 * @see String#regionMatches(boolean, int, String, int, int)
 	 */
-	public static boolean stringStartsWithIgnoreCase(char[] string, char[] prefix) {
-		int prefixLength = prefix.length;
-		if (string.length < prefixLength) {
-			return false;
-		}
-		for (int i = prefixLength; i-- > 0; ) {
-			if ( ! charactersAreEqualIgnoreCase(string[i], prefix[i])) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	/**
-	 * Return whether the specified string starts with the specified prefix,
-	 * ignoring case.
-	 */
-	public static boolean stringStartsWithIgnoreCase(String string, String prefix) {
+	public static boolean startsWithIgnoreCase(String string, String prefix) {
 		return string.regionMatches(true, 0, prefix, 0, prefix.length());
 	}
 
 	/**
-	 * Return whether the specified characters are are equal, ignoring case.
-	 * @see String#regionMatches(boolean, int, String, int, int)
+	 * Return whether the specified string is uppercase.
 	 */
-	public static boolean charactersAreEqualIgnoreCase(char c1, char c2) {
-		//  something about the Georgian alphabet requires us to check lower case also
-		return (c1 == c2)
-				|| (Character.toUpperCase(c1) == Character.toUpperCase(c2))
-				|| (Character.toLowerCase(c1) == Character.toLowerCase(c2));
+	public static boolean isUppercase(String string) {
+		return (string.length() != 0) && isUppercase_(string);
 	}
 
 	/**
-	 * Return whether the specified string is uppercase.
+	 * no length check
 	 */
-	public static boolean stringIsUppercase(String string) {
-		return (string.length() == 0) ? false : stringIsUppercase_(string);
-	}
-
-	/**
-	 * Return whether the specified string is uppercase.
-	 */
-	public static boolean stringIsUppercase(char[] string) {
-		return (string.length == 0) ? false : stringIsUppercase_(new String(string));
-	}
-
-	private static boolean stringIsUppercase_(String string) {
+	static boolean isUppercase_(String string) {
 		return string.equals(string.toUpperCase());
 	}
 
 	/**
 	 * Return whether the specified string is lowercase.
 	 */
-	public static boolean stringIsLowercase(String string) {
-		return (string.length() == 0) ? false : stringIsLowercase_(string);
+	public static boolean isLowercase(String string) {
+		return (string.length() != 0) && isLowercase_(string);
 	}
 
 	/**
-	 * Return whether the specified string is lowercase.
+	 * no length check
 	 */
-	public static boolean stringIsLowercase(char[] string) {
-		return (string.length == 0) ? false : stringIsLowercase_(new String(string));
+	static boolean isLowercase_(String string) {
+		return string.equals(string.toLowerCase());
 	}
 
-	private static boolean stringIsLowercase_(String string) {
-		return string.equals(string.toLowerCase());
+
+	// ********** byte arrays **********
+
+	/**
+	 * Convert the specified string of hexadecimal characters to a byte array.
+	 * @see ByteArrayTools#convertToHexString(byte[])
+	 */
+	public static byte[] convertHexStringToByteArray(String hexString) {
+		int hexStringLength = hexString.length();
+		if (hexStringLength == 0) {
+			return ByteArrayTools.EMPTY_BYTE_ARRAY;
+		}
+		if (BitTools.isOdd(hexStringLength)) {
+			throw new IllegalArgumentException("Odd-sized hexadecimal string: " + hexString + " (" + hexStringLength + " characters)"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+		return convertHexStringToByteArray(hexString, hexStringLength);
+	}
+
+	/**
+	 * Pre-condition: the string is neither empty nor odd-sized
+	 */
+	private static byte[] convertHexStringToByteArray(String hexString, int hexStringLength) {
+		byte[] bytes = new byte[BitTools.half(hexStringLength)];
+		for (int bi = bytes.length - 1, si = hexStringLength - 2; bi >= 0; bi--, si -= 2) {
+			byte digit1 = (byte) Character.digit(hexString.charAt(si), 16);
+			if (digit1 == -1) {
+				throw new IllegalArgumentException(buildIllegalHexCharMessage(hexString, si));
+			}
+			byte digit2 = (byte) Character.digit(hexString.charAt(si + 1), 16);
+			if (digit2 == -1) {
+				throw new IllegalArgumentException(buildIllegalHexCharMessage(hexString, si + 1));
+			}
+			bytes[bi] = (byte) ((digit1 << 4) + digit2);
+		}
+		return bytes;
+	}
+
+	static String buildIllegalHexCharMessage(String hexString, int index) {
+		StringBuilder sb = new StringBuilder(hexString.length() + 40);
+		sb.append("Illegal hexadecimal character: "); //$NON-NLS-1$
+		sb.append(hexString, 0, index);
+		sb.append('[');
+		sb.append(hexString.charAt(index));
+		sb.append(']');
+		sb.append(hexString, index + 1, hexString.length());
+		return sb.toString();
 	}
 
 
@@ -4289,329 +940,74 @@ public final class StringTools {
 
 	/**
 	 * Convert the specified "camel case" string to an "all caps" string:
+	 * <p>
+	 * <code>
 	 * "largeProject" -> "LARGE_PROJECT"
+	 * </code>
 	 */
 	public static String convertCamelCaseToAllCaps(String camelCaseString) {
-		int len = camelCaseString.length();
-		if (len == 0) {
-			return camelCaseString;
-		}
-		return new String(convertCamelCaseToAllCaps_(camelCaseString.toCharArray(), len));
+		int stringLength = camelCaseString.length();
+		return (stringLength == 0) ?
+				camelCaseString :
+				convertCamelCaseToAllCaps_(camelCaseString, stringLength);
 	}
 
 	/**
-	 * Convert the specified "camel case" string to an "all caps" string:
-	 * "largeProject" -> "LARGE_PROJECT"
+	 * no length check
 	 */
-	public static char[] convertCamelCaseToAllCaps(char[] camelCaseString) {
-		int len = camelCaseString.length;
-		if (len == 0) {
-			return camelCaseString;
-		}
-		return convertCamelCaseToAllCaps_(camelCaseString, len);
-	}
-
-	private static char[] convertCamelCaseToAllCaps_(char[] camelCaseString, int len) {
-		StringBuilder sb = new StringBuilder(len * 2);
-		convertCamelCaseToAllCapsOn_(camelCaseString, len, sb);
-		return convertToCharArray(sb);
+	private static String convertCamelCaseToAllCaps_(String camelCaseString, int stringLength) {
+		StringBuilder sb = new StringBuilder(stringLength + (stringLength / 4));
+		StringBuilderTools.convertCamelCaseToAllCaps_(sb, camelCaseString, stringLength);
+		return sb.toString();
 	}
 
 	/**
 	 * Convert the specified "camel case" string to an "all caps" string:
+	 * <p>
+	 * <code>
 	 * "largeProject" -> "LARGE_PROJECT"
-	 */
-	public static void convertCamelCaseToAllCapsOn(String camelCaseString, StringBuffer sb) {
-		int len = camelCaseString.length();
-		if (len != 0) {
-			convertCamelCaseToAllCapsOn_(camelCaseString.toCharArray(), len, sb);
-		}
-	}
-
-	/**
-	 * Convert the specified "camel case" string to an "all caps" string:
-	 * "largeProject" -> "LARGE_PROJECT"
-	 */
-	public static void convertCamelCaseToAllCapsOn(char[] camelCaseString, StringBuffer sb) {
-		int len = camelCaseString.length;
-		if (len != 0) {
-			convertCamelCaseToAllCapsOn_(camelCaseString, len, sb);
-		}
-	}
-
-	private static void convertCamelCaseToAllCapsOn_(char[] camelCaseString, int len, StringBuffer sb) {
-		char prev = 0;	// assume 0 is not a valid char
-		char c = 0;
-		char next = camelCaseString[0];
-		for (int i = 1; i <= len; i++) {	// NB: start at 1 and end at len!
-			c = next;
-			next = ((i == len) ? 0 : camelCaseString[i]);
-			if (camelCaseWordBreak_(prev, c, next)) {
-				sb.append('_');
-			}
-			sb.append(Character.toUpperCase(c));
-			prev = c;
-		}
-	}
-
-	/**
-	 * Convert the specified "camel case" string to an "all caps" string:
-	 * "largeProject" -> "LARGE_PROJECT"
-	 */
-	public static void convertCamelCaseToAllCapsOn(String camelCaseString, StringBuilder sb) {
-		int len = camelCaseString.length();
-		if (len != 0) {
-			convertCamelCaseToAllCapsOn_(camelCaseString.toCharArray(), len, sb);
-		}
-	}
-
-	/**
-	 * Convert the specified "camel case" string to an "all caps" string:
-	 * "largeProject" -> "LARGE_PROJECT"
-	 */
-	public static void convertCamelCaseToAllCapsOn(char[] camelCaseString, StringBuilder sb) {
-		int len = camelCaseString.length;
-		if (len != 0) {
-			convertCamelCaseToAllCapsOn_(camelCaseString, len, sb);
-		}
-	}
-
-	private static void convertCamelCaseToAllCapsOn_(char[] camelCaseString, int len, StringBuilder sb) {
-		char prev = 0;	// assume 0 is not a valid char
-		char c = 0;
-		char next = camelCaseString[0];
-		for (int i = 1; i <= len; i++) {	// NB: start at 1 and end at len!
-			c = next;
-			next = ((i == len) ? 0 : camelCaseString[i]);
-			if (camelCaseWordBreak_(prev, c, next)) {
-				sb.append('_');
-			}
-			sb.append(Character.toUpperCase(c));
-			prev = c;
-		}
-	}
-
-	/**
-	 * Convert the specified "camel case" string to an "all caps" string:
-	 * "largeProject" -> "LARGE_PROJECT"
-	 */
-	public static void convertCamelCaseToAllCapsOn(String camelCaseString, Writer writer) {
-		int len = camelCaseString.length();
-		if (len != 0) {
-			convertCamelCaseToAllCapsOn_(camelCaseString.toCharArray(), len, writer);
-		}
-	}
-
-	/**
-	 * Convert the specified "camel case" string to an "all caps" string:
-	 * "largeProject" -> "LARGE_PROJECT"
-	 */
-	public static void convertCamelCaseToAllCapsOn(char[] camelCaseString, Writer writer) {
-		int len = camelCaseString.length;
-		if (len != 0) {
-			convertCamelCaseToAllCapsOn_(camelCaseString, len, writer);
-		}
-	}
-
-	private static void convertCamelCaseToAllCapsOn_(char[] camelCaseString, int len, Writer writer) {
-		char prev = 0;	// assume 0 is not a valid char
-		char c = 0;
-		char next = camelCaseString[0];
-		for (int i = 1; i <= len; i++) {	// NB: start at 1 and end at len!
-			c = next;
-			next = ((i == len) ? 0 : camelCaseString[i]);
-			if (camelCaseWordBreak_(prev, c, next)) {
-				writeCharOn('_', writer);
-			}
-			writeCharOn(Character.toUpperCase(c), writer);
-			prev = c;
-		}
-	}
-
-	/**
-	 * Convert the specified "camel case" string to an "all caps" string:
-	 * "largeProject" -> "LARGE_PROJECT"
+	 * </code>
+	 * <p>
 	 * Limit the resulting string to the specified maximum length.
 	 */
 	public static String convertCamelCaseToAllCaps(String camelCaseString, int maxLength) {
-		int len = camelCaseString.length();
-		if ((len == 0) || (maxLength == 0)) {
-			return camelCaseString;
+		if (maxLength == 0) {
+			return EMPTY_STRING;
 		}
-		return new String(convertCamelCaseToAllCaps_(camelCaseString.toCharArray(), maxLength, len));
+		int stringLength = camelCaseString.length();
+		return (stringLength == 0) ?
+				camelCaseString :
+				convertCamelCaseToAllCaps(camelCaseString, maxLength, stringLength);
 	}
 
 	/**
-	 * Convert the specified "camel case" string to an "all caps" string:
-	 * "largeProject" -> "LARGE_PROJECT"
-	 * Limit the resulting string to the specified maximum length.
+	 * no check for empty string or zero max length
 	 */
-	public static char[] convertCamelCaseToAllCaps(char[] camelCaseString, int maxLength) {
-		int len = camelCaseString.length;
-		if ((len == 0) || (maxLength == 0)) {
-			return camelCaseString;
-		}
-		return convertCamelCaseToAllCaps_(camelCaseString, maxLength, len);
-	}
-
-	private static char[] convertCamelCaseToAllCaps_(char[] camelCaseString, int maxLength, int len) {
+	private static String convertCamelCaseToAllCaps(String camelCaseString, int maxLength, int stringLength) {
 		StringBuilder sb = new StringBuilder(maxLength);
-		convertCamelCaseToAllCapsOn_(camelCaseString, maxLength, len, sb);
-		return convertToCharArray(sb);
+		StringBuilderTools.convertCamelCaseToAllCaps(sb, camelCaseString, maxLength, stringLength);
+		return sb.toString();
 	}
 
 	/**
-	 * Convert the specified "camel case" string to an "all caps" string:
-	 * "largeProject" -> "LARGE_PROJECT"
-	 * Limit the resulting string to the specified maximum length.
-	 */
-	public static void convertCamelCaseToAllCapsOn(String camelCaseString, int maxLength, StringBuffer sb) {
-		int len = camelCaseString.length();
-		if ((len != 0) && (maxLength != 0)) {
-			convertCamelCaseToAllCapsOn_(camelCaseString.toCharArray(), maxLength, len, sb);
-		}
-	}
-
-	/**
-	 * Convert the specified "camel case" string to an "all caps" string:
-	 * "largeProject" -> "LARGE_PROJECT"
-	 * Limit the resulting string to the specified maximum length.
-	 */
-	public static void convertCamelCaseToAllCapsOn(char[] camelCaseString, int maxLength, StringBuffer sb) {
-		int len = camelCaseString.length;
-		if ((len != 0) && (maxLength != 0)) {
-			convertCamelCaseToAllCapsOn_(camelCaseString, maxLength, len, sb);
-		}
-	}
-
-	private static void convertCamelCaseToAllCapsOn_(char[] camelCaseString, int maxLength, int len, StringBuffer sb) {
-		char prev = 0;	// assume 0 is not a valid char
-		char c = 0;
-		char next = camelCaseString[0];
-		for (int i = 1; i <= len; i++) {	// NB: start at 1 and end at len!
-			c = next;
-			next = ((i == len) ? 0 : camelCaseString[i]);
-			if (camelCaseWordBreak_(prev, c, next)) {
-				sb.append('_');
-				if (sb.length() == maxLength) {
-					return;
-				}
-			}
-			sb.append(Character.toUpperCase(c));
-			if (sb.length() == maxLength) {
-				return;
-			}
-			prev = c;
-		}
-	}
-
-	/**
-	 * Convert the specified "camel case" string to an "all caps" string:
-	 * "largeProject" -> "LARGE_PROJECT"
-	 * Limit the resulting string to the specified maximum length.
-	 */
-	public static void convertCamelCaseToAllCapsOn(String camelCaseString, int maxLength, StringBuilder sb) {
-		int len = camelCaseString.length();
-		if ((len != 0) && (maxLength != 0)) {
-			convertCamelCaseToAllCapsOn_(camelCaseString.toCharArray(), maxLength, len, sb);
-		}
-	}
-
-	/**
-	 * Convert the specified "camel case" string to an "all caps" string:
-	 * "largeProject" -> "LARGE_PROJECT"
-	 * Limit the resulting string to the specified maximum length.
-	 */
-	public static void convertCamelCaseToAllCapsOn(char[] camelCaseString, int maxLength, StringBuilder sb) {
-		int len = camelCaseString.length;
-		if ((len != 0) && (maxLength != 0)) {
-			convertCamelCaseToAllCapsOn_(camelCaseString, maxLength, len, sb);
-		}
-	}
-
-	private static void convertCamelCaseToAllCapsOn_(char[] camelCaseString, int maxLength, int len, StringBuilder sb) {
-		char prev = 0;	// assume 0 is not a valid char
-		char c = 0;
-		char next = camelCaseString[0];
-		for (int i = 1; i <= len; i++) {	// NB: start at 1 and end at len!
-			c = next;
-			next = ((i == len) ? 0 : camelCaseString[i]);
-			if (camelCaseWordBreak_(prev, c, next)) {
-				sb.append('_');
-				if (sb.length() == maxLength) {
-					return;
-				}
-			}
-			sb.append(Character.toUpperCase(c));
-			if (sb.length() == maxLength) {
-				return;
-			}
-			prev = c;
-		}
-	}
-
-	/**
-	 * Convert the specified "camel case" string to an "all caps" string:
-	 * "largeProject" -> "LARGE_PROJECT"
-	 * Limit the resulting string to the specified maximum length.
-	 */
-	public static void convertCamelCaseToAllCapsOn(String camelCaseString, int maxLength, Writer writer) {
-		int len = camelCaseString.length();
-		if ((len != 0) && (maxLength != 0)) {
-			convertCamelCaseToAllCapsOn_(camelCaseString.toCharArray(), maxLength, len, writer);
-		}
-	}
-
-	/**
-	 * Convert the specified "camel case" string to an "all caps" string:
-	 * "largeProject" -> "LARGE_PROJECT"
-	 * Limit the resulting string to the specified maximum length.
-	 */
-	public static void convertCamelCaseToAllCapsOn(char[] camelCaseString, int maxLength, Writer writer) {
-		int len = camelCaseString.length;
-		if ((len != 0) && (maxLength != 0)) {
-			convertCamelCaseToAllCapsOn_(camelCaseString, maxLength, len, writer);
-		}
-	}
-
-	private static void convertCamelCaseToAllCapsOn_(char[] camelCaseString, int maxLength, int len, Writer writer) {
-		char prev = 0;	// assume 0 is not a valid char
-		char c = 0;
-		char next = camelCaseString[0];
-		int writerLength = 0;
-		for (int i = 1; i <= len; i++) {	// NB: start at 1 and end at len!
-			c = next;
-			next = ((i == len) ? 0 : camelCaseString[i]);
-			if (camelCaseWordBreak_(prev, c, next)) {
-				writeCharOn('_', writer);
-				if (++writerLength == maxLength) {
-					return;
-				}
-			}
-			writeCharOn(Character.toUpperCase(c), writer);
-			if (++writerLength == maxLength) {
-				return;
-			}
-			prev = c;
-		}
-	}
-
-	/*
 	 * Return whether the specified series of characters occur at
-	 * a "camel case" work break:
-	 *     "*aa" -> false
-	 *     "*AA" -> false
-	 *     "*Aa" -> false
-	 *     "AaA" -> false
-	 *     "AAA" -> false
-	 *     "aa*" -> false
-	 *     "AaA" -> false
-	 *     "aAa" -> true
-	 *     "AA*" -> false
-	 *     "AAa" -> true
-	 * where '*' == any char
+	 * a "camel case" work break:<ul>
+	 * <code>
+	 * <li>"*aa" -> false
+	 * <li>"*AA" -> false
+	 * <li>"*Aa" -> false
+	 * <li>"AaA" -> false
+	 * <li>"AAA" -> false
+	 * <li>"aa*" -> false
+	 * <li>"AaA" -> false
+	 * <li>"aAa" -> true
+	 * <li>"AA*" -> false
+	 * <li>"AAa" -> true
+	 * </code>
+	 * </ul>
+	 * where <code>'*' == &lt;any char&gt;</code>
 	 */
-	private static boolean camelCaseWordBreak_(char prev, char c, char next) {
+	public static boolean camelCaseWordBreak(char prev, char c, char next) {
 		if (prev == 0) {	// start of string
 			return false;
 		}
@@ -4628,665 +1024,422 @@ public final class StringTools {
 	}
 
 
-	// ********** convert underscores to camel case **********
+	// ********** convert all caps to camel case **********
 
 	/**
-	 * Convert the specified "underscore" string to a "camel case" string:
+	 * Convert the specified "all caps" string to a "camel case" string:
+	 * <p>
+	 * <code>
 	 * "LARGE_PROJECT" -> "LargeProject"
+	 * </code>
+	 * <p>
 	 * Capitalize the first letter.
 	 */
-	public static String convertUnderscoresToCamelCase(String underscoreString) {
-		return convertUnderscoresToCamelCase(underscoreString, true);
+	public static String convertAllCapsToCamelCase(String allCapsString) {
+		return convertAllCapsToCamelCase(allCapsString, true);  // true => capitalize first letter
 	}
 
 	/**
-	 * Convert the specified "underscore" string to a "camel case" string:
-	 * "LARGE_PROJECT" -> "LargeProject"
-	 * Capitalize the first letter.
-	 */
-	public static char[] convertUnderscoresToCamelCase(char[] underscoreString) {
-		return convertUnderscoresToCamelCase(underscoreString, true);
-	}
-
-	/**
-	 * Convert the specified "underscore" string to a "camel case" string:
+	 * Convert the specified "all caps" string to a "camel case" string:
+	 * <p>
+	 * <code>
 	 * "LARGE_PROJECT" -> "largeProject"
+	 * </code>
+	 * <p>
 	 * Optionally capitalize the first letter.
 	 */
-	public static String convertUnderscoresToCamelCase(String underscoreString, boolean capitalizeFirstLetter) {
-		int len = underscoreString.length();
-		if (len == 0) {
-			return underscoreString;
-		}
-		return new String(convertUnderscoresToCamelCase_(underscoreString.toCharArray(), capitalizeFirstLetter, len));
+	public static String convertAllCapsToCamelCase(String allCapsString, boolean capitalizeFirstLetter) {
+		int stringLength = allCapsString.length();
+		return (stringLength == 0) ?
+			allCapsString :
+			convertAllCapsToCamelCase(allCapsString, capitalizeFirstLetter, stringLength);
 	}
 
 	/**
-	 * Convert the specified "underscore" string to a "camel case" string:
-	 * "LARGE_PROJECT" -> "largeProject"
-	 * Optionally capitalize the first letter.
+	 * no length check
 	 */
-	public static char[] convertUnderscoresToCamelCase(char[] underscoreString, boolean capitalizeFirstLetter) {
-		int len = underscoreString.length;
-		if (len == 0) {
-			return underscoreString;
-		}
-		return convertUnderscoresToCamelCase_(underscoreString, capitalizeFirstLetter, len);
-	}
-
-	private static char[] convertUnderscoresToCamelCase_(char[] underscoreString, boolean capitalizeFirstLetter, int len) {
-		StringBuilder sb = new StringBuilder(len);
-		convertUnderscoresToCamelCaseOn_(underscoreString, capitalizeFirstLetter, len, sb);
-		return convertToCharArray(sb);
-	}
-
-	/**
-	 * Convert the specified "underscore" string to a "camel case" string:
-	 * "LARGE_PROJECT" -> "largeProject"
-	 * Optionally capitalize the first letter.
-	 */
-	public static void convertUnderscoresToCamelCaseOn(String underscoreString, boolean capitalizeFirstLetter, StringBuffer sb) {
-		int len = underscoreString.length();
-		if (len != 0) {
-			convertUnderscoresToCamelCaseOn_(underscoreString.toCharArray(), capitalizeFirstLetter, len, sb);
-		}
-	}
-
-	/**
-	 * Convert the specified "underscore" string to a "camel case" string:
-	 * "LARGE_PROJECT" -> "largeProject"
-	 * Optionally capitalize the first letter.
-	 */
-	public static void convertUnderscoresToCamelCaseOn(char[] underscoreString, boolean capitalizeFirstLetter, StringBuffer sb) {
-		int len = underscoreString.length;
-		if (len != 0) {
-			convertUnderscoresToCamelCaseOn_(underscoreString, capitalizeFirstLetter, len, sb);
-		}
-	}
-
-	private static void convertUnderscoresToCamelCaseOn_(char[] underscoreString, boolean capitalizeFirstLetter, int len, StringBuffer sb) {
-		char prev = 0;
-		char c = 0;
-		boolean first = true;
-		for (int i = 0; i < len; i++) {
-			prev = c;
-			c = underscoreString[i];
-			if (c == '_') {
-				continue;
-			}
-			if (first) {
-				first = false;
-				sb.append(capitalizeFirstLetter ? Character.toUpperCase(c) : Character.toLowerCase(c));
-			} else {
-				sb.append((prev == '_') ? Character.toUpperCase(c) : Character.toLowerCase(c));
-			}
-		}
-	}
-
-	/**
-	 * Convert the specified "underscore" string to a "camel case" string:
-	 * "LARGE_PROJECT" -> "largeProject"
-	 * Optionally capitalize the first letter.
-	 */
-	public static void convertUnderscoresToCamelCaseOn(String underscoreString, boolean capitalizeFirstLetter, StringBuilder sb) {
-		int len = underscoreString.length();
-		if (len != 0) {
-			convertUnderscoresToCamelCaseOn_(underscoreString.toCharArray(), capitalizeFirstLetter, len, sb);
-		}
-	}
-
-	/**
-	 * Convert the specified "underscore" string to a "camel case" string:
-	 * "LARGE_PROJECT" -> "largeProject"
-	 * Optionally capitalize the first letter.
-	 */
-	public static void convertUnderscoresToCamelCaseOn(char[] underscoreString, boolean capitalizeFirstLetter, StringBuilder sb) {
-		int len = underscoreString.length;
-		if (len != 0) {
-			convertUnderscoresToCamelCaseOn_(underscoreString, capitalizeFirstLetter, len, sb);
-		}
-	}
-
-	private static void convertUnderscoresToCamelCaseOn_(char[] underscoreString, boolean capitalizeFirstLetter, int len, StringBuilder sb) {
-		char prev = 0;
-		char c = 0;
-		boolean first = true;
-		for (int i = 0; i < len; i++) {
-			prev = c;
-			c = underscoreString[i];
-			if (c == '_') {
-				continue;
-			}
-			if (first) {
-				first = false;
-				sb.append(capitalizeFirstLetter ? Character.toUpperCase(c) : Character.toLowerCase(c));
-			} else {
-				sb.append((prev == '_') ? Character.toUpperCase(c) : Character.toLowerCase(c));
-			}
-		}
-	}
-
-	/**
-	 * Convert the specified "underscore" string to a "camel case" string:
-	 * "LARGE_PROJECT" -> "largeProject"
-	 * Optionally capitalize the first letter.
-	 */
-	public static void convertUnderscoresToCamelCaseOn(String underscoreString, boolean capitalizeFirstLetter, Writer writer) {
-		int len = underscoreString.length();
-		if (len != 0) {
-			convertUnderscoresToCamelCaseOn_(underscoreString.toCharArray(), capitalizeFirstLetter, len, writer);
-		}
-	}
-
-	/**
-	 * Convert the specified "underscore" string to a "camel case" string:
-	 * "LARGE_PROJECT" -> "largeProject"
-	 * Optionally capitalize the first letter.
-	 */
-	public static void convertUnderscoresToCamelCaseOn(char[] underscoreString, boolean capitalizeFirstLetter, Writer writer) {
-		int len = underscoreString.length;
-		if (len != 0) {
-			convertUnderscoresToCamelCaseOn_(underscoreString, capitalizeFirstLetter, len, writer);
-		}
-	}
-
-	private static void convertUnderscoresToCamelCaseOn_(char[] underscoreString, boolean capitalizeFirstLetter, int len, Writer writer) {
-		char prev = 0;
-		char c = 0;
-		boolean first = true;
-		for (int i = 0; i < len; i++) {
-			prev = c;
-			c = underscoreString[i];
-			if (c == '_') {
-				continue;
-			}
-			if (first) {
-				first = false;
-				writeCharOn(capitalizeFirstLetter ? Character.toUpperCase(c) : Character.toLowerCase(c), writer);
-			} else {
-				writeCharOn((prev == '_') ? Character.toUpperCase(c) : Character.toLowerCase(c), writer);
-			}
-		}
+	private static String convertAllCapsToCamelCase(String allCapsString, boolean capitalizeFirstLetter, int stringLength) {
+		StringBuilder sb = new StringBuilder(stringLength);
+		StringBuilderTools.convertAllCapsToCamelCase(sb, allCapsString, capitalizeFirstLetter, stringLength);
+		return sb.toString();
 	}
 
 
 	// ********** convert to Java string literal **********
 
+	/**
+	 * Value: {@value}
+	 */
 	public static final String EMPTY_JAVA_STRING_LITERAL = "\"\"";  //$NON-NLS-1$
-	public static final char[] EMPTY_JAVA_STRING_LITERAL_CHAR_ARRAY = EMPTY_JAVA_STRING_LITERAL.toCharArray();
 
+	/**
+	 * Convert the specified string to a Java string literal, with the
+	 * appropriate escaped characters.
+	 */
 	public static String convertToJavaStringLiteral(String string) {
-		int len = string.length();
-		if (len == 0) {
+		int stringLength = string.length();
+		if (stringLength == 0) {
 			return EMPTY_JAVA_STRING_LITERAL;
 		}
-		StringBuilder sb = new StringBuilder(len + 5);
-		convertToJavaStringLiteralOn_(string.toCharArray(), sb, len);
+		StringBuilder sb = new StringBuilder(stringLength + 6);
+		StringBuilderTools.convertToJavaStringLiteral(sb, string, stringLength);
 		return sb.toString();
 	}
 
+	/**
+	 * @see #convertToJavaStringLiteral(String)
+	 */
+	public static final Transformer<String, String> JAVA_STRING_LITERAL_TRANSFORMER = new JavaStringLiteralTransformer();
+
+	/* CU private */ static class JavaStringLiteralTransformer
+		extends TransformerAdapter<String, String>
+		implements Serializable
+	{
+		@Override
+		public String transform(String string) {
+			return convertToJavaStringLiteral(string);
+		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return JAVA_STRING_LITERAL_TRANSFORMER;
+		}
+	}
+
+	/**
+	 * Convert the specified string to the contents of a Java string literal,
+	 * with the appropriate escaped characters.
+	 */
 	public static String convertToJavaStringLiteralContent(String string) {
-		int len = string.length();
-		if (len == 0) {
-			return EMPTY_JAVA_STRING_LITERAL;
-		}
-		StringBuilder sb = new StringBuilder(len + 5);
-		convertToJavaStringLiteralContentOn_(string.toCharArray(), sb, len);
-		return sb.toString();
-	}
-
-	public static char[] convertToJavaStringLiteral(char[] string) {
-		int len = string.length;
-		if (len == 0) {
-			return EMPTY_JAVA_STRING_LITERAL_CHAR_ARRAY;
-		}
-		StringBuilder sb = new StringBuilder(len + 5);
-		convertToJavaStringLiteralOn_(string, sb, len);
-		len = sb.length();
-		char[] result = new char[len];
-		sb.getChars(0, len, result, 0);
-		return result;
-	}
-
-	public static char[] convertToJavaStringLiteralContent(char[] string) {
-		int len = string.length;
-		if (len == 0) {
-			return EMPTY_JAVA_STRING_LITERAL_CHAR_ARRAY;
-		}
-		StringBuilder sb = new StringBuilder(len + 5);
-		convertToJavaStringLiteralContentOn_(string, sb, len);
-		len = sb.length();
-		char[] result = new char[len];
-		sb.getChars(0, len, result, 0);
-		return result;
-	}
-
-	public static Iterable<String> convertToJavaStringLiterals(Iterable<String> strings) {
-		return new TransformationIterable<String, String>(strings, STRING_TO_JAVA_STRING_LITERAL_TRANSFORMER);
-	}
-
-	public static Iterable<String> convertToJavaStringLiteralContents(Iterable<String> strings) {
-		return new TransformationIterable<String, String>(strings, STRING_TO_JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
-	}
-
-	public static Iterator<String> convertToJavaStringLiterals(Iterator<String> strings) {
-		return new TransformationIterator<String, String>(strings, STRING_TO_JAVA_STRING_LITERAL_TRANSFORMER);
-	}
-
-	private static final Transformer<String, String> STRING_TO_JAVA_STRING_LITERAL_TRANSFORMER = new Transformer<String, String>() {
-		public String transform(String string) {
-			return StringTools.convertToJavaStringLiteral(string);
-		}
-	};
-
-	private static final Transformer<String, String> STRING_TO_JAVA_STRING_LITERAL_CONTENT_TRANSFORMER = new Transformer<String, String>() {
-		public String transform(String string) {
-			return StringTools.convertToJavaStringLiteralContent(string);
-		}
-	};
-
-	// cannot name method simply 'convertToJavaStringLiterals' because of type-erasure...
-	public static Iterable<char[]> convertToJavaCharArrayLiterals(Iterable<char[]> strings) {
-		return new TransformationIterable<char[], char[]>(strings, CHAR_ARRAY_TO_JAVA_STRING_LITERAL_TRANSFORMER);
-	}
-
-	// cannot name method simply 'convertToJavaStringLiterals' because of type-erasure...
-	public static Iterator<char[]> convertToJavaCharArrayLiterals(Iterator<char[]> strings) {
-		return new TransformationIterator<char[], char[]>(strings, CHAR_ARRAY_TO_JAVA_STRING_LITERAL_TRANSFORMER);
-	}
-
-	private static final Transformer<char[], char[]> CHAR_ARRAY_TO_JAVA_STRING_LITERAL_TRANSFORMER = new Transformer<char[], char[]>() {
-		public char[] transform(char[] string) {
-			return StringTools.convertToJavaStringLiteral(string);
-		}
-	};
-
-	public static void convertToJavaStringLiteralOn(String string, StringBuffer sb) {
-		int len = string.length();
-		if (len == 0) {
-			sb.append(EMPTY_JAVA_STRING_LITERAL);
-		} else {
-			convertToJavaStringLiteralOn_(string.toCharArray(), sb, len);
-		}
-	}
-
-	public static void convertToJavaStringLiteralContentOn(String string, StringBuffer sb) {
-		int len = string.length();
-		if (len == 0) {
-			sb.append(EMPTY_JAVA_STRING_LITERAL);
-		} else {
-			convertToJavaStringLiteralContentOn_(string.toCharArray(), sb, len);
-		}
-	}
-
-	public static void convertToJavaStringLiteralOn(char[] string, StringBuffer sb) {
-		int len = string.length;
-		if (len == 0) {
-			sb.append(EMPTY_JAVA_STRING_LITERAL);
-		} else {
-			convertToJavaStringLiteralOn_(string, sb, len);
-		}
-	}
-
-	public static void convertToJavaStringLiteralContentOn(char[] string, StringBuffer sb) {
-		int len = string.length;
-		if (len == 0) {
-			sb.append(EMPTY_JAVA_STRING_LITERAL);
-		} else {
-			convertToJavaStringLiteralContentOn_(string, sb, len);
-		}
-	}
-
-	/*
-	 * no length checks
-	 */
-	private static void convertToJavaStringLiteralOn_(char[] string, StringBuffer sb, int len) {
-		sb.ensureCapacity(sb.length() + len + 5);
-		sb.append(QUOTE);
-		convertToJavaStringLiteralContentOn_(string, sb, len);
-		sb.append(QUOTE);
-	}
-
-	/*
-	 * no length checks
-	 */
-	private static void convertToJavaStringLiteralContentOn_(char[] string, StringBuffer sb, int len) {
-		sb.ensureCapacity(sb.length() + len + 5);
-		for (char c : string) {
-			switch (c) {
-				case '\b':  // backspace
-					sb.append("\\b");  //$NON-NLS-1$
-					break;
-				case '\t':  // horizontal tab
-					sb.append("\\t");  //$NON-NLS-1$
-					break;
-				case '\n':  // line-feed LF
-					sb.append("\\n");  //$NON-NLS-1$
-					break;
-				case '\f':  // form-feed FF
-					sb.append("\\f");  //$NON-NLS-1$
-					break;
-				case '\r':  // carriage-return CR
-					sb.append("\\r");  //$NON-NLS-1$
-					break;
-				case '"':  // double-quote
-					sb.append("\\\"");  //$NON-NLS-1$
-					break;
-//				case '\'':  // single-quote
-//					sb.append("\\'");  //$NON-NLS-1$
-//					break;
-				case '\\':  // backslash
-					sb.append("\\\\");  //$NON-NLS-1$
-					break;
-				default:
-					sb.append(c);
-					break;
-			}
-		}
-	}
-
-	public static void convertToJavaStringLiteralOn(String string, StringBuilder sb) {
-		int len = string.length();
-		if (len == 0) {
-			sb.append(EMPTY_JAVA_STRING_LITERAL);
-		} else {
-			convertToJavaStringLiteralOn_(string.toCharArray(), sb, len);
-		}
-	}
-
-	public static void convertToJavaStringLiteralOn(char[] string, StringBuilder sb) {
-		int len = string.length;
-		if (len == 0) {
-			sb.append(EMPTY_JAVA_STRING_LITERAL);
-		} else {
-			convertToJavaStringLiteralOn_(string, sb, len);
-		}
-	}
-
-	public static void convertToJavaStringLiteralContentOn(String string, StringBuilder sb) {
-		int len = string.length();
-		if (len == 0) {
-			sb.append(EMPTY_JAVA_STRING_LITERAL);
-		} else {
-			convertToJavaStringLiteralContentOn_(string.toCharArray(), sb, len);
-		}
-	}
-
-	public static void convertToJavaStringLiteralContentOn(char[] string, StringBuilder sb) {
-		int len = string.length;
-		if (len == 0) {
-			sb.append(EMPTY_JAVA_STRING_LITERAL);
-		} else {
-			convertToJavaStringLiteralContentOn_(string, sb, len);
-		}
-	}
-
-	/*
-	 * no length checks
-	 */
-	private static void convertToJavaStringLiteralOn_(char[] string, StringBuilder sb, int len) {
-		sb.ensureCapacity(sb.length() + len + 5);
-		sb.append(QUOTE);
-		convertToJavaStringLiteralContentOn_(string, sb, len);
-		sb.append(QUOTE);
-	}
-
-	/*
-	 * no length checks
-	 */
-	private static void convertToJavaStringLiteralContentOn_(char[] string, StringBuilder sb, int len) {
-		sb.ensureCapacity(sb.length() + len + 5);
-		for (char c : string) {
-			switch (c) {
-				case '\b':  // backspace
-					sb.append("\\b");  //$NON-NLS-1$
-					break;
-				case '\t':  // horizontal tab
-					sb.append("\\t");  //$NON-NLS-1$
-					break;
-				case '\n':  // line-feed LF
-					sb.append("\\n");  //$NON-NLS-1$
-					break;
-				case '\f':  // form-feed FF
-					sb.append("\\f");  //$NON-NLS-1$
-					break;
-				case '\r':  // carriage-return CR
-					sb.append("\\r");  //$NON-NLS-1$
-					break;
-				case '"':  // double-quote
-					sb.append("\\\"");  //$NON-NLS-1$
-					break;
-//				case '\'':  // single-quote
-//					sb.append("\\'");  //$NON-NLS-1$
-//					break;
-				case '\\':  // backslash
-					sb.append("\\\\");  //$NON-NLS-1$
-					break;
-				default:
-					sb.append(c);
-					break;
-			}
-		}
-	}
-
-	public static void convertToJavaStringLiteralOn(String string, Writer writer) {
-		if (string.length() == 0) {
-			writeStringOn(EMPTY_JAVA_STRING_LITERAL, writer);
-		} else {
-			convertToJavaStringLiteralOn_(string.toCharArray(), writer);
-		}
-	}
-
-	public static void convertToJavaStringLiteralOn(char[] string, Writer writer) {
-		if (string.length == 0) {
-			writeStringOn(EMPTY_JAVA_STRING_LITERAL, writer);
-		} else {
-			convertToJavaStringLiteralOn_(string, writer);
-		}
-	}
-
-	public static void convertToJavaStringLiteralContentOn(String string, Writer writer) {
-		if (string.length() == 0) {
-			writeStringOn(EMPTY_JAVA_STRING_LITERAL, writer);
-		} else {
-			convertToJavaStringLiteralContentOn_(string.toCharArray(), writer);
-		}
-	}
-
-	public static void convertToJavaStringLiteralContentOn(char[] string, Writer writer) {
-		if (string.length == 0) {
-			writeStringOn(EMPTY_JAVA_STRING_LITERAL, writer);
-		} else {
-			convertToJavaStringLiteralContentOn_(string, writer);
-		}
-	}
-
-	/*
-	 * no length checks
-	 */
-	private static void convertToJavaStringLiteralOn_(char[] string, Writer writer) {
-		writeCharOn(QUOTE, writer);
-		convertToJavaStringLiteralContentOn_(string, writer);
-		writeCharOn(QUOTE, writer);
-	}
-
-	/*
-	 * no length checks
-	 */
-	private static void convertToJavaStringLiteralContentOn_(char[] string, Writer writer) {
-		for (char c : string) {
-			switch (c) {
-				case '\b':  // backspace
-					writeStringOn("\\b", writer);  //$NON-NLS-1$
-					break;
-				case '\t':  // horizontal tab
-					writeStringOn("\\t", writer);  //$NON-NLS-1$
-					break;
-				case '\n':  // line-feed LF
-					writeStringOn("\\n", writer);  //$NON-NLS-1$
-					break;
-				case '\f':  // form-feed FF
-					writeStringOn("\\f", writer);  //$NON-NLS-1$
-					break;
-				case '\r':  // carriage-return CR
-					writeStringOn("\\r", writer);  //$NON-NLS-1$
-					break;
-				case '"':  // double-quote
-					writeStringOn("\\\"", writer);  //$NON-NLS-1$
-					break;
-//				case '\'':  // single-quote
-//					writeStringOn("\\'", writer);  //$NON-NLS-1$
-//					break;
-				case '\\':  // backslash
-					writeStringOn("\\\\", writer);  //$NON-NLS-1$
-					break;
-				default:
-					writeCharOn(c, writer);
-					break;
-			}
-		}
-	}
-
-	// ********** convert to XML string literal **********
-
-	public static String convertToXmlStringLiteral(String string) {
-		return convertToXmlStringLiteralQuote(string);
-	}
-	
-	public static String convertToXmlStringLiteralQuote(String string) {
-		return convertToXmlStringLiteral(string, '"');
-	}
-	
-	public static String convertToXmlStringLiteralApostrophe(String string) {
-		return convertToXmlStringLiteral(string, '\'');
-	}
-	
-	public static String convertToXmlStringLiteral(String string, char delimiter) {
-		int len = string.length();
-		if (len == 0) {
-			return EMPTY_JAVA_STRING_LITERAL;
-		}
-		StringBuilder sb = new StringBuilder(len + 5);
-		convertToXmlStringLiteralOn_(string.toCharArray(), sb, len, delimiter);
-		return sb.toString();
-	}
-
-	//TODO need to add the rest of the predifende entities to this switch (amp, lt, and gt)
-	private static void convertToXmlStringLiteralOn_(char[] string, StringBuilder sb, int len, char delimiter) {
-		sb.ensureCapacity(sb.length() + len + 5);
-		sb.append(delimiter);
-		for (char c : string) {
-			switch (c) {
-				case '"':  // double-quote
-					sb.append((delimiter == '"') ? XML_QUOTE : '"');
-					break;
-				case '\'':  // apostrophe
-					sb.append((delimiter == '\'') ? XML_APOSTROPHE : '\'');
-					break;
-				default:
-					sb.append(c);
-					break;
-			}
-		}
-		sb.append(delimiter);
-	}
-	
-	public static String convertToXmlElementStringLiteral(String string) {
-		int len = string.length();
-		if (len == 0) {
+		int stringLength = string.length();
+		if (stringLength == 0) {
 			return EMPTY_STRING;
 		}
-		StringBuilder sb = new StringBuilder(len + 5);
-		convertToXmlElementStringLiteralOn_(string.toCharArray(), sb, len);
+		StringBuilder sb = new StringBuilder(stringLength + 6);
+		StringBuilderTools.convertToJavaStringLiteralContent(sb, string, stringLength);
 		return sb.toString();
-		}
-		
-		private static void convertToXmlElementStringLiteralOn_(char[] string, StringBuilder sb, int len) {
-		sb.ensureCapacity(sb.length() + len + 5);
-		for (char c : string) {
-		switch (c) {
-					case '&':  // ampersand
-						sb.append(XML_AMPERSAND);
-						break;
-					case '<':  // less-than sign
-						sb.append(XML_OPEN_CHEVRON);
-						break;
-					case '>':  // greater-than sign
-						sb.append(XML_CLOSE_CHEVRON);
-						break;
-					default:
-						sb.append(c);
-						break;
-				}
-			}
-		}
-	
-	// ********** convenience **********
-
-	public static char[] convertToCharArray(StringBuffer sb) {
-		int len = sb.length();
-		char[] result = new char[len];
-		sb.getChars(0, len, result, 0);
-		return result;
 	}
 
-	public static char[] convertToCharArray(StringBuilder sb) {
-		int len = sb.length();
-		char[] result = new char[len];
-		sb.getChars(0, len, result, 0);
-		return result;
-	}
+	/**
+	 * @see #convertToJavaStringLiteralContent(String)
+	 */
+	public static final Transformer<String, String> JAVA_STRING_LITERAL_CONTENT_TRANSFORMER = new JavaStringLiteralContentTransformer();
 
-	private static void writeStringOn(char[] string, Writer writer) {
-		try {
-			writer.write(string);
-		} catch (IOException ex) {
-			throw new RuntimeException(ex);
+	/* CU private */ static class JavaStringLiteralContentTransformer
+		extends TransformerAdapter<String, String>
+		implements Serializable
+	{
+		@Override
+		public String transform(String string) {
+			return convertToJavaStringLiteralContent(string);
+		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return JAVA_STRING_LITERAL_CONTENT_TRANSFORMER;
 		}
 	}
 
-	private static void writeStringOn(char[] string, char escape, Writer writer) {
-		try {
-			for (char c : string) {
-				if (c == escape) {
-					writer.write(c);
-				}
-				writer.write(c);
-			}
-		} catch (IOException ex) {
-			throw new RuntimeException(ex);
+
+	// ********** convert to XML **********
+
+	public static final String EMPTY_DOUBLE_QUOTED_XML_ATTRIBUTE_VALUE = "\"\"";  //$NON-NLS-1$
+	public static final String EMPTY_SINGLE_QUOTED_XML_ATTRIBUTE_VALUE = "''";  //$NON-NLS-1$
+	public static final String EMPTY_XML_ATTRIBUTE_VALUE = EMPTY_DOUBLE_QUOTED_XML_ATTRIBUTE_VALUE;
+	public static final String XML_ELEMENT_CDATA_START = "<![CDATA[";  //$NON-NLS-1$
+	public static final String XML_ELEMENT_CDATA_END = "]]>";  //$NON-NLS-1$
+	public static final String EMPTY_XML_ELEMENT_CDATA = XML_ELEMENT_CDATA_START + XML_ELEMENT_CDATA_END;
+
+	// XML predefined entities
+	public static final String XML_QUOTE = "&quot;"; //$NON-NLS-1$
+	public static final String XML_AMP   = "&amp;"; //$NON-NLS-1$
+	public static final String XML_APOS  = "&apos;"; //$NON-NLS-1$
+	public static final String XML_LT    = "&lt;"; //$NON-NLS-1$
+	public static final String XML_GT    = "&gt;"; //$NON-NLS-1$
+
+	/**
+	 * Convert the specified string to an XML attribute value, escaping the
+	 * appropriate characters. Delimit with quotes (<code>"</code>) unless
+	 * there are <em>embedded</em> quotes (<em>and</em> no embedded
+	 * apostrophes); in which case, delimit with apostrophes (<code>'</code>).
+	 */
+	public static String convertToXmlAttributeValue(String string) {
+		int stringLength = string.length();
+		if (stringLength == 0) {
+			return EMPTY_XML_ATTRIBUTE_VALUE;
+		}
+		StringBuilder sb = new StringBuilder(stringLength + 12);
+		StringBuilderTools.convertToXmlAttributeValue(sb, string, stringLength);
+		return sb.toString();
+	}
+
+	/**
+	 * @see #convertToXmlAttributeValue(String)
+	 */
+	public static final Transformer<String, String> XML_ATTRIBUTE_VALUE_TRANSFORMER = new XmlAttributeValueTransformer();
+
+	/* CU private */ static class XmlAttributeValueTransformer
+		extends TransformerAdapter<String, String>
+		implements Serializable
+	{
+		@Override
+		public String transform(String string) {
+			return convertToXmlAttributeValue(string);
+		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return XML_ATTRIBUTE_VALUE_TRANSFORMER;
 		}
 	}
 
-	private static void writeStringOn(char[] string, int off, int len, Writer writer) {
-		try {
-			writer.write(string, off, len);
-		} catch (IOException ex) {
-			throw new RuntimeException(ex);
+	/**
+	 * Convert the specified string to a double-quoted XML
+	 * attribute value, escaping the appropriate characters (i.e. the embedded
+	 * double quotes).
+	 * @see #convertToXmlAttributeValue(String)
+	 */
+	public static String convertToDoubleQuotedXmlAttributeValue(String string) {
+		int stringLength = string.length();
+		if (stringLength == 0) {
+			return EMPTY_DOUBLE_QUOTED_XML_ATTRIBUTE_VALUE;
+		}
+		StringBuilder sb = new StringBuilder(stringLength + 12);
+		StringBuilderTools.convertToDoubleQuotedXmlAttributeValue(sb, string, stringLength);
+		return sb.toString();
+	}
+
+	/**
+	 * @see #convertToDoubleQuotedXmlAttributeValue(String)
+	 */
+	public static final Transformer<String, String> DOUBLE_QUOTED_XML_ATTRIBUTE_VALUE_TRANSFORMER = new DoubleQuotedXmlAttributeValueTransformer();
+
+	/* CU private */ static class DoubleQuotedXmlAttributeValueTransformer
+		extends TransformerAdapter<String, String>
+		implements Serializable
+	{
+		@Override
+		public String transform(String string) {
+			return convertToDoubleQuotedXmlAttributeValue(string);
+		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return DOUBLE_QUOTED_XML_ATTRIBUTE_VALUE_TRANSFORMER;
 		}
 	}
 
-	private static void writeStringOn(String string, int off, int len, Writer writer) {
-		try {
-			writer.write(string, off, len);
-		} catch (IOException ex) {
-			throw new RuntimeException(ex);
+	/**
+	 * Convert the specified string to the contents of a double-quoted XML
+	 * attribute value, escaping the appropriate characters (i.e. the embedded
+	 * double quotes).
+	 * @see #convertToXmlAttributeValue(String)
+	 */
+	public static String convertToDoubleQuotedXmlAttributeValueContent(String string) {
+		int stringLength = string.length();
+		if (stringLength == 0) {
+			return EMPTY_STRING;
+		}
+		StringBuilder sb = new StringBuilder(stringLength + 10);
+		StringBuilderTools.convertToDoubleQuotedXmlAttributeValueContent(sb, string, stringLength);
+		return sb.toString();
+	}
+
+	/**
+	 * @see #convertToDoubleQuotedXmlAttributeValueContent(String)
+	 */
+	public static final Transformer<String, String> XML_DOUBLE_QUOTED_ATTRIBUTE_VALUE_CONTENT_TRANSFORMER = new XmlDoubleQuotedAttributeValueContentTransformer();
+
+	/* CU private */ static class XmlDoubleQuotedAttributeValueContentTransformer
+		extends TransformerAdapter<String, String>
+		implements Serializable
+	{
+		@Override
+		public String transform(String string) {
+			return convertToDoubleQuotedXmlAttributeValueContent(string);
+		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return XML_DOUBLE_QUOTED_ATTRIBUTE_VALUE_CONTENT_TRANSFORMER;
 		}
 	}
 
-	private static void writeStringOn(String string, Writer writer) {
-		try {
-			writer.write(string);
-		} catch (IOException ex) {
-			throw new RuntimeException(ex);
+	/**
+	 * Convert the specified string to a single-quoted XML
+	 * attribute value, escaping the appropriate characters (i.e. the embedded
+	 * single quotes).
+	 * @see #convertToXmlAttributeValue(String)
+	 */
+	public static String convertToSingleQuotedXmlAttributeValue(String string) {
+		int stringLength = string.length();
+		if (stringLength == 0) {
+			return EMPTY_SINGLE_QUOTED_XML_ATTRIBUTE_VALUE;
+		}
+		StringBuilder sb = new StringBuilder(stringLength + 12);
+		StringBuilderTools.convertToSingleQuotedXmlAttributeValue(sb, string, stringLength);
+		return sb.toString();
+	}
+
+	/**
+	 * @see #convertToSingleQuotedXmlAttributeValue(String)
+	 */
+	public static final Transformer<String, String> SINGLE_QUOTED_XML_ATTRIBUTE_VALUE_TRANSFORMER = new SingleQuotedXmlAttributeValueTransformer();
+
+	/* CU private */ static class SingleQuotedXmlAttributeValueTransformer
+		extends TransformerAdapter<String, String>
+		implements Serializable
+	{
+		@Override
+		public String transform(String string) {
+			return convertToSingleQuotedXmlAttributeValue(string);
+		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return SINGLE_QUOTED_XML_ATTRIBUTE_VALUE_TRANSFORMER;
 		}
 	}
 
-	private static void writeCharOn(char c, Writer writer) {
-		try {
-			writer.write(c);
-		} catch (IOException ex) {
-			throw new RuntimeException(ex);
+	/**
+	 * Convert the specified string to the contents of a single-quoted XML
+	 * attribute value, escaping the appropriate characters (i.e. the embedded
+	 * single quotes).
+	 * @see #convertToXmlAttributeValue(String)
+	 */
+	public static String convertToSingleQuotedXmlAttributeValueContent(String string) {
+		int stringLength = string.length();
+		if (stringLength == 0) {
+			return EMPTY_STRING;
+		}
+		StringBuilder sb = new StringBuilder(stringLength + 10);
+		StringBuilderTools.convertToSingleQuotedXmlAttributeValueContent(sb, string, stringLength);
+		return sb.toString();
+	}
+
+	/**
+	 * @see #convertToSingleQuotedXmlAttributeValueContent(String)
+	 */
+	public static final Transformer<String, String> XML_SINGLE_QUOTED_ATTRIBUTE_VALUE_CONTENT_TRANSFORMER = new XmlSingleQuotedAttributeValueContentTransformer();
+
+	/* CU private */ static class XmlSingleQuotedAttributeValueContentTransformer
+		extends TransformerAdapter<String, String>
+		implements Serializable
+	{
+		@Override
+		public String transform(String string) {
+			return convertToSingleQuotedXmlAttributeValueContent(string);
+		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return XML_SINGLE_QUOTED_ATTRIBUTE_VALUE_CONTENT_TRANSFORMER;
+		}
+	}
+
+	/**
+	 * Convert the specified string to an XML element text, escaping the
+	 * appropriate characters.
+	 * @see #convertToXmlElementCDATA(String)
+	 */
+	public static String convertToXmlElementText(String string) {
+		int stringLength = string.length();
+		if (stringLength == 0) {
+			return string;
+		}
+		StringBuilder sb = new StringBuilder(stringLength + 8);
+		StringBuilderTools.convertToXmlElementText(sb, string, stringLength);
+		return sb.toString();
+	}
+
+	/**
+	 * @see #convertToXmlElementText(String)
+	 */
+	public static final Transformer<String, String> XML_ELEMENT_TEXT_TRANSFORMER = new XmlElementTextTransformer();
+
+	/* CU private */ static class XmlElementTextTransformer
+		extends TransformerAdapter<String, String>
+		implements Serializable
+	{
+		@Override
+		public String transform(String string) {
+			return convertToXmlElementText(string);
+		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return XML_ELEMENT_TEXT_TRANSFORMER;
+		}
+	}
+
+	/**
+	 * Convert the specified string to an XML element CDATA, escaping the
+	 * appropriate characters.
+	 * @see #convertToXmlElementText(String)
+	 */
+	public static String convertToXmlElementCDATA(String string) {
+		int stringLength = string.length();
+		if (stringLength == 0) {
+			return EMPTY_XML_ELEMENT_CDATA;
+		}
+		StringBuilder sb = new StringBuilder(stringLength + EMPTY_XML_ELEMENT_CDATA.length() + 6);
+		StringBuilderTools.convertToXmlElementCDATA(sb, string, stringLength);
+		return sb.toString();
+	}
+
+	/**
+	 * @see #convertToXmlElementCDATA(String)
+	 */
+	public static final Transformer<String, String> XML_ELEMENT_CDATA_TRANSFORMER = new XmlElementCDATATransformer();
+
+	/* CU private */ static class XmlElementCDATATransformer
+		extends TransformerAdapter<String, String>
+		implements Serializable
+	{
+		@Override
+		public String transform(String string) {
+			return convertToXmlElementCDATA(string);
+		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return XML_ELEMENT_CDATA_TRANSFORMER;
+		}
+	}
+
+	/**
+	 * Convert the specified string to the contents of an XML element CDATA,
+	 * escaping the appropriate characters.
+	 * @see #convertToXmlElementCDATA(String)
+	 * @see #convertToXmlElementText(String)
+	 */
+	public static String convertToXmlElementCDATAContent(String string) {
+		int stringLength = string.length();
+		if (stringLength == 0) {
+			return EMPTY_STRING;
+		}
+		StringBuilder sb = new StringBuilder(stringLength + 6);
+		StringBuilderTools.convertToXmlElementCDATAContent(sb, string, stringLength);
+		return sb.toString();
+	}
+
+	/**
+	 * @see #convertToXmlElementCDATAContent(String)
+	 */
+	public static final Transformer<String, String> XML_ELEMENT_CDATA_CONTENT_TRANSFORMER = new XmlElementCDATAContentTransformer();
+
+	/* CU private */ static class XmlElementCDATAContentTransformer
+		extends TransformerAdapter<String, String>
+		implements Serializable
+	{
+		@Override
+		public String transform(String string) {
+			return convertToXmlElementCDATAContent(string);
+		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			// replace this object with the singleton
+			return XML_ELEMENT_CDATA_CONTENT_TRANSFORMER;
 		}
 	}
 

@@ -10,8 +10,9 @@
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.java;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.jpa.core.context.UniqueConstraint;
@@ -99,7 +100,8 @@ public class GenericJavaUniqueConstraint
 	}
 
 	protected Iterable<String> getJavaCandidateColumnNames() {
-		return StringTools.convertToJavaStringLiteralContents(this.getCandidateColumnNames());
+		return new TransformationIterable<String, String>(this.getCandidateColumnNames(),
+				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 
 	protected Iterable<String> getCandidateColumnNames() {
@@ -124,7 +126,7 @@ public class GenericJavaUniqueConstraint
 		} 
 
 		for (int i=0; i<this.getColumnNamesSize(); i++) {
-			if (! Tools.valuesAreEqual(this.columnNames.get(i), uniqueConstraint.getColumnName(i))) {
+			if (ObjectTools.notEquals(this.columnNames.get(i), uniqueConstraint.getColumnName(i))) {
 				return false;
 			}
 		}

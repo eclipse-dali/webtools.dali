@@ -13,8 +13,8 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.ElementCollection2_0Annotation;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.resource.java.FetchType;
@@ -82,7 +82,7 @@ public class ElementCollection2_0AnnotationTests extends JavaResourceModel2_0Tes
 	public void testElementCollection() throws Exception {
 		ICompilationUnit cu = this.createTestElementCollection();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		ElementCollection2_0Annotation elementCollection = (ElementCollection2_0Annotation) resourceField.getAnnotation(JPA2_0.ELEMENT_COLLECTION);
 		assertNotNull(elementCollection);
@@ -91,7 +91,7 @@ public class ElementCollection2_0AnnotationTests extends JavaResourceModel2_0Tes
 	public void testGetFetch() throws Exception {
 		ICompilationUnit cu = this.createTestElementCollectionWithFetch();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		ElementCollection2_0Annotation elementCollection = (ElementCollection2_0Annotation) resourceField.getAnnotation(JPA2_0.ELEMENT_COLLECTION);
 		assertEquals(FetchType.EAGER, elementCollection.getFetch());
@@ -100,7 +100,7 @@ public class ElementCollection2_0AnnotationTests extends JavaResourceModel2_0Tes
 	public void testSetFetch() throws Exception {
 		ICompilationUnit cu = this.createTestElementCollectionWithFetch();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		ElementCollection2_0Annotation elementCollection = (ElementCollection2_0Annotation) resourceField.getAnnotation(JPA2_0.ELEMENT_COLLECTION);
 		assertEquals(FetchType.EAGER, elementCollection.getFetch());
@@ -114,7 +114,7 @@ public class ElementCollection2_0AnnotationTests extends JavaResourceModel2_0Tes
 	public void testSetFetchNull() throws Exception {
 		ICompilationUnit cu = this.createTestElementCollectionWithFetch();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		ElementCollection2_0Annotation elementCollection = (ElementCollection2_0Annotation) resourceField.getAnnotation(JPA2_0.ELEMENT_COLLECTION);
 		assertEquals(FetchType.EAGER, elementCollection.getFetch());
@@ -130,7 +130,7 @@ public class ElementCollection2_0AnnotationTests extends JavaResourceModel2_0Tes
 	public void testGetTargetClass() throws Exception {
 		ICompilationUnit cu = this.createTestElementCollectionWithTargetClass();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		ElementCollection2_0Annotation elementCollection = (ElementCollection2_0Annotation) resourceField.getAnnotation(JPA2_0.ELEMENT_COLLECTION);
 		assertEquals(TYPE_NAME, elementCollection.getTargetClass());
@@ -139,7 +139,7 @@ public class ElementCollection2_0AnnotationTests extends JavaResourceModel2_0Tes
 	public void testSetTargetClass() throws Exception {
 		ICompilationUnit cu = this.createTestElementCollectionWithTargetClass();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		ElementCollection2_0Annotation elementCollection = (ElementCollection2_0Annotation) resourceField.getAnnotation(JPA2_0.ELEMENT_COLLECTION);
 		assertEquals(TYPE_NAME, elementCollection.getTargetClass());
@@ -152,7 +152,7 @@ public class ElementCollection2_0AnnotationTests extends JavaResourceModel2_0Tes
 	public void testSetTargetClassNull() throws Exception {
 		ICompilationUnit cu = this.createTestElementCollectionWithTargetClass();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		ElementCollection2_0Annotation elementCollection = (ElementCollection2_0Annotation) resourceField.getAnnotation(JPA2_0.ELEMENT_COLLECTION);
 		assertEquals(TYPE_NAME, elementCollection.getTargetClass());
@@ -167,7 +167,7 @@ public class ElementCollection2_0AnnotationTests extends JavaResourceModel2_0Tes
 	public void testGetFullyQualifiedTargetClass() throws Exception {
 		ICompilationUnit cu = this.createTestElementCollectionWithTargetClass();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		ElementCollection2_0Annotation elementCollection = (ElementCollection2_0Annotation) resourceField.getAnnotation(JPA2_0.ELEMENT_COLLECTION);
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, elementCollection.getFullyQualifiedTargetClassName());
@@ -184,7 +184,7 @@ public class ElementCollection2_0AnnotationTests extends JavaResourceModel2_0Tes
 	public void testGetPrimitiveTargetClass() throws Exception {
 		ICompilationUnit cu = this.createTestElementCollectionWithPrimitiveTargetClass();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 
 		ElementCollection2_0Annotation elementCollection = (ElementCollection2_0Annotation) resourceField.getAnnotation(JPA2_0.ELEMENT_COLLECTION);
 		assertEquals("byte", elementCollection.getTargetClass());
@@ -193,7 +193,7 @@ public class ElementCollection2_0AnnotationTests extends JavaResourceModel2_0Tes
 	public void testSetPrimitiveTargetClass() throws Exception {
 		ICompilationUnit cu = this.createTestElementCollection();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 
 		ElementCollection2_0Annotation elementCollection = (ElementCollection2_0Annotation) resourceField.getAnnotation(JPA2_0.ELEMENT_COLLECTION);
 		assertEquals(null, elementCollection.getTargetClass());

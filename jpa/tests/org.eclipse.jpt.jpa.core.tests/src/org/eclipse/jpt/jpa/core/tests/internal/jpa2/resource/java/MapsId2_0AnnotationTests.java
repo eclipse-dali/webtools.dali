@@ -14,8 +14,8 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.jpa.core.jpa2.resource.java.MapsId2_0Annotation;
 
@@ -57,7 +57,7 @@ public class MapsId2_0AnnotationTests
 	public void testMapsId() throws Exception {
 		ICompilationUnit cu = this.createTestMapsId();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		MapsId2_0Annotation annotation = (MapsId2_0Annotation) resourceField.getAnnotation(JPA2_0.MAPS_ID);
 		assertNotNull(annotation);
@@ -66,7 +66,7 @@ public class MapsId2_0AnnotationTests
 	public void testGetValue() throws Exception {
 		ICompilationUnit cu = this.createTestMapsIdWithValue();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		MapsId2_0Annotation annotation = (MapsId2_0Annotation) resourceField.getAnnotation(JPA2_0.MAPS_ID);
 		assertEquals("foo", annotation.getValue());
@@ -75,7 +75,7 @@ public class MapsId2_0AnnotationTests
 	public void testSetValue() throws Exception {
 		ICompilationUnit cu = this.createTestMapsId();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 
 		MapsId2_0Annotation annotation = (MapsId2_0Annotation) resourceField.getAnnotation(JPA2_0.MAPS_ID);
 		annotation.setValue("foo");

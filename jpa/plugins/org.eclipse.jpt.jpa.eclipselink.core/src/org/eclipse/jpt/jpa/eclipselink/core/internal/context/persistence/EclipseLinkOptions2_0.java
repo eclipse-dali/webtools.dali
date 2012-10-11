@@ -11,8 +11,9 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence;
 
 import java.util.List;
 import java.util.Map;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
+
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Options2_0;
 

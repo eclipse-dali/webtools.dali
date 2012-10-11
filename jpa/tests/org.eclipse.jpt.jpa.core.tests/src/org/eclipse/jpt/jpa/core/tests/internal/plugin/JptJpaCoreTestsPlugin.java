@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.tests.internal.plugin;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jpt.common.core.internal.utility.JptPlugin;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 
 /**
@@ -43,7 +43,7 @@ public class JptJpaCoreTestsPlugin
 	protected void start_() throws Exception {
 		super.start_();
 		JpaProjectManager jpaProjectManager = this.getJpaProjectManager();
-		ReflectionTools.executeMethod(jpaProjectManager, "executeCommandsSynchronously");
+		ObjectTools.execute(jpaProjectManager, "executeCommandsSynchronously");
 		JptPlugin.FlushPreferences = false;
 	}
 

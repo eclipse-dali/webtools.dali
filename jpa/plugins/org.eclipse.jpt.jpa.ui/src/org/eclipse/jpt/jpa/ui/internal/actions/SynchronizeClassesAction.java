@@ -27,7 +27,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.ui.internal.utility.SynchronousUiCommandExecutor;
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
@@ -236,7 +236,7 @@ public class SynchronizeClassesAction
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.persistenceUnit);
+			return ObjectTools.toString(this, this.persistenceUnit);
 		}
 	}
 }

@@ -75,6 +75,6 @@ public class EclipseLinkOrmFileCreationDataModelProvider
 	
 	@Override
 	protected boolean platformIsSupported(JpaPlatform jpaPlatform) {
-		return jpaPlatform.getDescription().getGroupDescription().equals(EclipseLinkPlatform.GROUP);
+		return jpaPlatform.getConfig().getGroupConfig().equals(EclipseLinkPlatform.GROUP);
 	}
 }

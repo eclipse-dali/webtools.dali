@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.ui.internal.jface;
 import java.lang.reflect.InvocationTargetException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * Convenience implementation of {@link IRunnableWithProgress}.
@@ -26,6 +26,6 @@ public class RunnableWithProgressAdapter
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this);
+		return ObjectTools.toString(this);
 	}
 }

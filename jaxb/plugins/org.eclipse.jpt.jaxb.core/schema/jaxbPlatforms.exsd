@@ -102,7 +102,7 @@
          <attribute name="factoryClass" type="string" use="required">
             <annotation>
                <documentation>
-                  The class that implements &lt;samp&gt;org.eclipse.jpt.jaxb.core.JaxbPlatformDefinitionFactory&lt;/samp&gt;.
+                  The class that implements &lt;samp&gt;org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinitionFactory&lt;/samp&gt;.
                </documentation>
                <appinfo>
                   <meta.attribute kind="java" basedOn=":org.eclipse.jpt.jaxb.core.JaxbPlatformDefinitionFactory"/>

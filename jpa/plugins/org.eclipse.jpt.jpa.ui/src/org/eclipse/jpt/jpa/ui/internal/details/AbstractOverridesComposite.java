@@ -19,9 +19,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Transformer;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
@@ -29,10 +27,12 @@ import org.eclipse.jpt.common.utility.internal.model.value.ModifiablePropertyCol
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.AttributeOverride;
@@ -251,7 +251,7 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 		// Format the name
 		String name = override.getName();
 		
-		if (StringTools.stringIsEmpty(name)) {
+		if (StringTools.isBlank(name)) {
 			name = JptUiDetailsMessages.OverridesComposite_noName;
 		}
 		
@@ -299,7 +299,7 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 			list.add(buildDefaultAssociationOverridesListHolder(associationOverrideContainerHolder));
 		}
 		
-		return new CompositeListValueModel<ListValueModel<? extends ReadOnlyOverride>, ReadOnlyOverride>(list);
+		return CompositeListValueModel.forModels(list);
 	}
 	
 	protected abstract PropertyValueModel<AttributeOverrideContainer> buildAttributeOverrideContainerHolder();

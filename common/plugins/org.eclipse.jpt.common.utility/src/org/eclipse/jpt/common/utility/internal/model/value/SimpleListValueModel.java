@@ -15,7 +15,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.common.utility.internal.model.SingleAspectChangeSupport;
@@ -151,9 +152,9 @@ public class SimpleListValueModel<E>
 			return true;
 		}
 		if ((o instanceof List<?>) && (o instanceof ListValueModel<?>)) {
-			List<E> l1 = CollectionTools.list(this.list);
+			List<E> l1 = ListTools.list(this.list);
 			@SuppressWarnings("unchecked")
-			List<E> l2 = CollectionTools.list(((List<E>) o).iterator());
+			List<E> l2 = ListTools.list(((List<E>) o).iterator());
 			return l1.equals(l2);
 		}
 		return false;

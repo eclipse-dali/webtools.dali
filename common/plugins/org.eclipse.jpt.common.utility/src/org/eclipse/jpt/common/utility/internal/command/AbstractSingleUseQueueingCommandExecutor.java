@@ -11,8 +11,8 @@ package org.eclipse.jpt.common.utility.internal.command;
 
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.StatefulCommandExecutor;
-import org.eclipse.jpt.common.utility.internal.SimpleQueue;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.collection.LinkedQueue;
 
 /**
  * This is a command executor that queues up any commands that are
@@ -30,7 +30,7 @@ public abstract class AbstractSingleUseQueueingCommandExecutor<E extends Statefu
 {
 	protected final E commandExecutor;
 	private State state;
-	private SimpleQueue<Command> queue = new SimpleQueue<Command>();
+	private LinkedQueue<Command> queue = new LinkedQueue<Command>();
 
 	private enum State {
 		PRE_START,
@@ -92,8 +92,9 @@ public abstract class AbstractSingleUseQueueingCommandExecutor<E extends Statefu
 			case DEAD:
 				// ignore
 				return false;
+			default:
+				throw this.buildISE();
 		}
-		throw this.buildISE();
 	}
 
 	/**
@@ -147,6 +148,7 @@ public abstract class AbstractSingleUseQueueingCommandExecutor<E extends Statefu
 				break;
 			case PRE_START:
 			case DEAD:
+			default:
 				throw this.buildISE();
 		}
 
@@ -160,6 +162,6 @@ public abstract class AbstractSingleUseQueueingCommandExecutor<E extends Statefu
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.state);
+		return ObjectTools.toString(this, this.state);
 	}
 }

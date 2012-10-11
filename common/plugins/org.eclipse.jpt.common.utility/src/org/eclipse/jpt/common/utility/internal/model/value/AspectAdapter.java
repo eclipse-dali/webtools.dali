@@ -53,7 +53,7 @@ public abstract class AspectAdapter<S, A>
 	 * For now, this is can only be set upon construction and is
 	 * immutable.
 	 */
-	protected final PropertyValueModel<? extends S> subjectHolder;
+	protected final PropertyValueModel<? extends S> subjectModel;
 
 	/** A listener that keeps us in sync with the subject model. */
 	protected final PropertyChangeListener subjectListener;
@@ -77,7 +77,7 @@ public abstract class AspectAdapter<S, A>
 		if (subjectModel == null) {
 			throw new NullPointerException();
 		}
-		this.subjectHolder = subjectModel;
+		this.subjectModel = subjectModel;
 		this.subjectListener = this.buildSubjectListener();
 		// the subject is null when we are not listening to it
 		// this will typically result in our value being null
@@ -122,7 +122,7 @@ public abstract class AspectAdapter<S, A>
 		if (hasListeners) {
 			this.disengageSubject();
 		}
-		this.subject = this.subjectHolder.getValue();
+		this.subject = this.subjectModel.getValue();
 		if (hasListeners) {
 			this.engageSubject();
 			this.fireAspectChanged(old, this.getAspectValue());
@@ -177,10 +177,10 @@ public abstract class AspectAdapter<S, A>
 	}
 
 	protected void engageSubjectHolder() {
-		this.subjectHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.subjectListener);
+		this.subjectModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.subjectListener);
 		// sync our subject *after* we start listening to the subject holder,
 		// since its value might change when a listener is added
-		this.subject = this.subjectHolder.getValue();
+		this.subject = this.subjectModel.getValue();
 	}
 
 	protected void engageSubject() {
@@ -216,7 +216,7 @@ public abstract class AspectAdapter<S, A>
 	protected abstract void disengageSubject_();
 
 	protected void disengageSubjectHolder() {
-		this.subjectHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.subjectListener);
+		this.subjectModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.subjectListener);
 		// clear out the subject when we are not listening to its holder
 		this.subject = null;
 	}

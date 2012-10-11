@@ -10,8 +10,8 @@
 package org.eclipse.jpt.common.core;
 
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.common.utility.internal.Transformer;
-import org.eclipse.jpt.common.utility.internal.TransformerAdapter;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * Specifies the file content type and version for Dali resources.

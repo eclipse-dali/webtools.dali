@@ -16,8 +16,8 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
@@ -80,7 +80,7 @@ public class AttributeOverridesTests extends JpaJavaResourceModelTestCase {
 	public void testGetName() throws Exception {
 		ICompilationUnit cu = this.createTestAttributeOverrideOnField();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		AttributeOverrideAnnotation attributeOverride = this.getAttributeOverrideAnnotationAt(resourceField, 0);
 
 		assertNotNull(attributeOverride);
@@ -90,7 +90,7 @@ public class AttributeOverridesTests extends JpaJavaResourceModelTestCase {
 	public void testGetNullColumn() throws Exception {
 		ICompilationUnit cu = this.createTestAttributeOverrideOnField();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		AttributeOverrideAnnotation attributeOverride = this.getAttributeOverrideAnnotationAt(resourceField, 0);
 
 		ColumnAnnotation column = attributeOverride.getColumn();
@@ -101,7 +101,7 @@ public class AttributeOverridesTests extends JpaJavaResourceModelTestCase {
 	public void testSetName() throws Exception {
 		ICompilationUnit cu = this.createTestAttributeOverrideOnField();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		AttributeOverrideAnnotation attributeOverride = this.getAttributeOverrideAnnotationAt(resourceField, 0);
 
 		assertNotNull(attributeOverride);
@@ -115,7 +115,7 @@ public class AttributeOverridesTests extends JpaJavaResourceModelTestCase {
 	public void testSetNameNull() throws Exception {
 		ICompilationUnit cu = this.createTestAttributeOverrideOnField();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		AttributeOverrideAnnotation attributeOverride = this.getAttributeOverrideAnnotationAt(resourceField, 0);
 
 		assertEquals(ATTRIBUTE_OVERRIDE_NAME, attributeOverride.getName());
@@ -131,7 +131,7 @@ public class AttributeOverridesTests extends JpaJavaResourceModelTestCase {
 	public void testColumnGetName() throws Exception {
 		ICompilationUnit cu = this.createTestAttributeOverrideWithColumnOnField();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		AttributeOverrideAnnotation attributeOverride = this.getAttributeOverrideAnnotationAt(resourceField, 0);
 
 		ColumnAnnotation column = attributeOverride.getColumn();
@@ -141,7 +141,7 @@ public class AttributeOverridesTests extends JpaJavaResourceModelTestCase {
 	public void testColumnSetName() throws Exception {
 		ICompilationUnit cu = this.createTestAttributeOverrideWithColumnOnField();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		AttributeOverrideAnnotation attributeOverride = this.getAttributeOverrideAnnotationAt(resourceField, 0);
 
 		ColumnAnnotation column = attributeOverride.getColumn();

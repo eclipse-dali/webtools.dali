@@ -277,7 +277,7 @@ public class CreateEntityTemplateModel {
 	 */
 	public boolean isEntityNameSet() {
 		boolean result = false;
-		if (!StringTools.stringIsEmpty(getEntityName()) && !getClassName().equals(getEntityName())) {
+		if (!StringTools.isBlank(getEntityName()) && !getClassName().equals(getEntityName())) {
 			result = true;
 		}
 		return result;

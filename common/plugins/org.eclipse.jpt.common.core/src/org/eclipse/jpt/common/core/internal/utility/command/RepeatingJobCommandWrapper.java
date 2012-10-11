@@ -20,7 +20,7 @@ import org.eclipse.jpt.common.core.utility.command.JobCommandExecutor;
 import org.eclipse.jpt.common.core.utility.command.RepeatingJobCommand;
 import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.StackTrace;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.command.RepeatingCommandState;
 
 /**
@@ -173,7 +173,7 @@ public class RepeatingJobCommandWrapper
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, RepeatingJobCommandWrapper.this.command);
+			return ObjectTools.toString(this, RepeatingJobCommandWrapper.this.command);
 		}
 	}
 
@@ -215,6 +215,6 @@ public class RepeatingJobCommandWrapper
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.command);
+		return ObjectTools.toString(this, this.command);
 	}
 }

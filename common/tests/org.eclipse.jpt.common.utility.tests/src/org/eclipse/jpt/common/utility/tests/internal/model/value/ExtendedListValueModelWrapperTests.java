@@ -16,7 +16,9 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ExtendedListValueModelWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
@@ -101,25 +103,25 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 
 	public void testIterator() {
 		this.extendedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.buildListener());
-		assertEquals(this.buildExtendedList(), CollectionTools.list(this.extendedListHolder.iterator()));
+		assertEquals(this.buildExtendedList(), ListTools.list(this.extendedListHolder.iterator()));
 	}
 
 	public void testSize() {
 		this.extendedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.buildListener());
-		assertEquals(this.buildExtendedList().size(), CollectionTools.size(this.extendedListHolder.iterator()));
+		assertEquals(this.buildExtendedList().size(), IteratorTools.size(this.extendedListHolder.iterator()));
 		assertEquals(this.buildExtendedList().size(), this.extendedListHolder.size());
 	}
 
 	private boolean extendedListContains(Object item) {
-		return CollectionTools.contains(this.extendedListHolder.iterator(), item);
+		return IteratorTools.contains(this.extendedListHolder.iterator(), item);
 	}
 
 	private boolean extendedListContainsAll(Collection<String> items) {
-		return CollectionTools.containsAll(this.extendedListHolder.iterator(), items);
+		return IteratorTools.containsAll(this.extendedListHolder.iterator(), items);
 	}
 
 	private boolean extendedListContainsAny(Collection<String> items) {
-		List<String> extendedList = CollectionTools.list(this.extendedListHolder.iterator());
+		List<String> extendedList = ListTools.list(this.extendedListHolder.iterator());
 		for (Iterator<String> stream = items.iterator(); stream.hasNext(); ) {
 			if (extendedList.contains(stream.next())) {
 				return true;
@@ -129,11 +131,11 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 	}
 
 	private boolean listContains(Object item) {
-		return CollectionTools.contains(this.listHolder.iterator(), item);
+		return IteratorTools.contains(this.listHolder.iterator(), item);
 	}
 
 	private boolean listContainsAll(Collection<String> items) {
-		return CollectionTools.containsAll(this.listHolder.iterator(), items);
+		return IteratorTools.containsAll(this.listHolder.iterator(), items);
 	}
 
 //	private boolean listContainsAny(Collection<String> items) {
@@ -224,14 +226,14 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 		this.eventType = null;
 		this.listHolder.addAll(0, this.buildList());
 		this.verifyEvent(ADD);
-		assertEquals(this.buildList(), CollectionTools.list(((ListAddEvent) this.event).getItems()));
+		assertEquals(this.buildList(), ListTools.list(((ListAddEvent) this.event).getItems()));
 
 		this.event = null;
 		this.eventType = null;
 		this.listHolder.set(0, "AA");
 		this.verifyEvent(REPLACE);
-		assertFalse(CollectionTools.contains(((ListReplaceEvent) this.event).getNewItems(), "A"));
-		assertTrue(CollectionTools.contains(((ListReplaceEvent) this.event).getNewItems(), "AA"));
+		assertFalse(IterableTools.contains(((ListReplaceEvent) this.event).getNewItems(), "A"));
+		assertTrue(IterableTools.contains(((ListReplaceEvent) this.event).getNewItems(), "AA"));
 	}
 
 	private ChangeListener buildListener() {

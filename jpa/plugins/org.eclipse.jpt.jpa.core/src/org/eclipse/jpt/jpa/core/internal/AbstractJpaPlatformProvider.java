@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.jpt.common.core.ContentTypeReference;
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.common.utility.internal.Transformer;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaPlatformProvider;
 import org.eclipse.jpt.jpa.core.JpaResourceModelProvider;
 import org.eclipse.jpt.jpa.core.ResourceDefinition;

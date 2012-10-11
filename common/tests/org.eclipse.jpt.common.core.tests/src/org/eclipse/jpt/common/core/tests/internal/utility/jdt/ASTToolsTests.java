@@ -19,8 +19,8 @@ import org.eclipse.jpt.common.core.internal.utility.jdt.JDTFieldAttribute;
 import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 
 @SuppressWarnings("nls")
 public class ASTToolsTests
@@ -134,8 +134,8 @@ public class ASTToolsTests
 		Iterable<String> actual = ASTTools.resolveFullyQualifiedNames(daea.getExpression(field.getModifiedDeclaration(this.buildASTRoot(cu))));
 		
 		assertEquals(
-				CollectionTools.list(new String[] {fqOtherClassName, fqOtherClassName2}),
-				CollectionTools.list(actual));
+				ListTools.list(new String[] {fqOtherClassName, fqOtherClassName2}),
+				ListTools.list(actual));
 	}
 	
 	public void testResolveFullyQualifiedNames2() throws Exception {
@@ -162,8 +162,8 @@ public class ASTToolsTests
 		Iterable<String> actual = ASTTools.resolveFullyQualifiedNames(daea.getExpression(field.getModifiedDeclaration(this.buildASTRoot(cu))));
 		
 		assertEquals(
-				CollectionTools.list(new String[] {null, fqOtherClassName}),
-				CollectionTools.list(actual));
+				ListTools.list(new String[] {null, fqOtherClassName}),
+				ListTools.list(actual));
 	}
 	
 	public void testResolveFullyQualifiedNames3() throws Exception {
@@ -190,7 +190,7 @@ public class ASTToolsTests
 		Iterable<String> actual = ASTTools.resolveFullyQualifiedNames(daea.getExpression(field.getModifiedDeclaration(this.buildASTRoot(cu))));
 		
 		assertEquals(
-				CollectionTools.list(new String[] {null, fqOtherClassName}),
-				CollectionTools.list(actual));
+				ListTools.list(new String[] {null, fqOtherClassName}),
+				ListTools.list(actual));
 	}
 }

@@ -10,9 +10,9 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
 import java.util.List;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlElement;
@@ -264,13 +264,13 @@ public class ELJavaXmlElementMapping
 		}
 		
 		String name = this.xmlElement.getQName().getName();
-		if (StringTools.stringIsEmpty(name)) {
+		if (StringTools.isBlank(name)) {
 			// no name is invalid
 			return null;
 		}
 		
 		String namespace = this.xmlElement.getQName().getNamespace();
-		if (StringTools.stringIsEmpty(namespace)) {
+		if (StringTools.isBlank(namespace)) {
 			// empty namespace means "no" namespace
 			return XPath.elementXPath(null, name);
 		}
@@ -290,13 +290,13 @@ public class ELJavaXmlElementMapping
 	@Override
 	public Iterable<String> getCompletionProposals(int pos) {
 		Iterable<String> result = super.getCompletionProposals(pos);
-		if (! CollectionTools.isEmpty(result)) {
+		if (! IterableTools.isEmpty(result)) {
 			return result;
 		}
 		
 		if (this.xmlPath != null) {
 			result = this.xmlPath.getCompletionProposals(pos);
-			if (! CollectionTools.isEmpty(result)) {
+			if (! IterableTools.isEmpty(result)) {
 				return result;
 			}
 		}

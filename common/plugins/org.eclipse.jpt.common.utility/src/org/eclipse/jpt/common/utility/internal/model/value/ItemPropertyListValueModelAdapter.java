@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.utility.internal.model.value;
 import java.util.Arrays;
 import java.util.EventListener;
 import java.util.EventObject;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.common.utility.internal.model.SingleAspectChangeSupport;
 import org.eclipse.jpt.common.utility.model.Model;
@@ -99,7 +99,7 @@ public class ItemPropertyListValueModelAdapter<E>
 	protected void itemAspectChanged(EventObject event) {
 		Object item = event.getSource();
 		this.getChangeSupport().fireItemsReplaced(
-			new ListReplaceEvent(this, LIST_VALUES, CollectionTools.indexOf(this.listHolder, item), item, item));
+			new ListReplaceEvent(this, LIST_VALUES, IterableTools.indexOf(this.listModel, item), item, item));
 	}
 
 	@Override
@@ -107,8 +107,9 @@ public class ItemPropertyListValueModelAdapter<E>
 		return new LocalChangeSupport(this, ListChangeListener.class, ListValueModel.LIST_VALUES);
 	}
 
-	private class LocalChangeSupport extends SingleAspectChangeSupport {
-		public LocalChangeSupport(Model source, Class<? extends EventListener> validListenerClass, String validAspectName) {
+	/* CU private */ class LocalChangeSupport extends SingleAspectChangeSupport {
+		private static final long serialVersionUID = 1L;
+		LocalChangeSupport(Model source, Class<? extends EventListener> validListenerClass, String validAspectName) {
 			super(source, validListenerClass, validAspectName);
 		}
 		@Override

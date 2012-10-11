@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.dialogs;
 
 import java.util.Comparator;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
@@ -35,8 +34,8 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
@@ -202,7 +201,7 @@ public class AddVirtualAttributeDialog extends StatusDialog {
 
 			public Object[] getElements(Object inputElement) {
 				return ArrayTools.array(
-					CollectionTools.sort(
+					IterableTools.sort(
 						((JpaPlatformUi) inputElement).getAttributeMappingUiDefinitions(AddVirtualAttributeDialog.this.getJptResourceType()),
 						getProvidersComparator()));
 			}
@@ -352,7 +351,7 @@ public class AddVirtualAttributeDialog extends StatusDialog {
 	}
 
 	private void validate() {
-		if (StringTools.stringIsEmpty(this.getAttributeName())) {
+		if (StringTools.isBlank(this.getAttributeName())) {
 			updateStatus(JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.AddVirtualAttributeDialog_noNameError));
 			return;
 		}
@@ -361,13 +360,13 @@ public class AddVirtualAttributeDialog extends StatusDialog {
 			return;
 		}
 		if (!this.getAttributeMappingDefinition(this.getMappingKey()).isSingleRelationshipMapping() && 
-				StringTools.stringIsEmpty(this.getAttributeType())) {
+				StringTools.isBlank(this.getAttributeType())) {
 			updateStatus(JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.AddVirtualAttributeDialog_noAttributeTypeError));
 			return;
 		}
 		if ((this.getAttributeMappingDefinition(this.getMappingKey()).isSingleRelationshipMapping() || 
 				this.getAttributeMappingDefinition(this.getMappingKey()).isCollectionMapping()) &&
-				StringTools.stringIsEmpty(this.getTargetType())) {
+				StringTools.isBlank(this.getTargetType())) {
 			updateStatus(JptJpaEclipseLinkUiPlugin.instance().buildErrorStatus(EclipseLinkUiMessages.AddVirtualAttributeDialog_noTargetTypeError));
 			return;
 		}

@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core;
 
-import org.eclipse.jpt.common.utility.BooleanReference;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
 import org.eclipse.jpt.common.utility.model.Model;
+import org.eclipse.jpt.common.utility.reference.BooleanReference;
 
 /**
  * The JPA project manager holds all the JPA projects in an Eclipse workspace

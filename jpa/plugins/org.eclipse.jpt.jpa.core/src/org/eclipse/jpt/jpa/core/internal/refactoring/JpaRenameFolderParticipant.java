@@ -19,8 +19,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
@@ -94,7 +94,7 @@ public class JpaRenameFolderParticipant
 		//we can at least set the subtask and report no progress. Only happens first time getJpaProjectManager() is called.
 		monitor.subTask(JpaCoreRefactoringMessages.JPA_REFACORING_PARTICIPANT_LOADING_JPA_PROJECTS_SUB_TASK_NAME);
 		Iterable<JpaProject> jpaProjects = this.getJpaProjects();
-		int size = CollectionTools.size(jpaProjects);
+		int size = IterableTools.size(jpaProjects);
 		if (size == 0) {
 			return null;
 		}
@@ -136,7 +136,7 @@ public class JpaRenameFolderParticipant
 			return;
 		}
 		Iterable<ReplaceEdit> replaceEdits = this.createPersistenceUnitReplaceEdits(persistenceUnit);
-		if (!CollectionTools.isEmpty(replaceEdits)) {
+		if (!IterableTools.isEmpty(replaceEdits)) {
 			this.persistenceXmlReplaceEdits.put(jpaProject.getPersistenceXmlResource().getFile(), replaceEdits);
 		}
 	}

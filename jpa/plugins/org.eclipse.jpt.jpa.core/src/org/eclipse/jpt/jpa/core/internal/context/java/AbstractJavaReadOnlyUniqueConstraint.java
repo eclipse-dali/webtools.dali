@@ -10,7 +10,8 @@
 package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.Vector;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
+
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyUniqueConstraint;
 

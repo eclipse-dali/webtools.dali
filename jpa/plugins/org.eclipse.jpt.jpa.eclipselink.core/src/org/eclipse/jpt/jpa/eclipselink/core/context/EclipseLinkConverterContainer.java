@@ -9,13 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.context;
 
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkObjectTypeConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkStructConverter;
-import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeConverter;
 
 /**
  * EclipseLink converter container

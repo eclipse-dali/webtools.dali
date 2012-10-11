@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.jpa.core.context.java.JavaBaseColumn;
@@ -343,7 +344,8 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 	}
 
 	protected Iterable<String> getJavaCandidateTableNames() {
-		return StringTools.convertToJavaStringLiteralContents(this.getCandidateTableNames());
+		return new TransformationIterable<String, String>(this.getCandidateTableNames(),
+				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 
 	public Iterable<String> getCandidateTableNames() {

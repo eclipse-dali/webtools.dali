@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.ui.internal.jface;
 
 import org.eclipse.jface.viewers.IStructuredContentProvider;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * Convenience implementation of {@link IStructuredContentProvider}.
@@ -26,6 +26,6 @@ public class StructuredContentProvider
 	}
 
 	public Object[] getElements(Object inputElement) {
-		return Tools.EMPTY_OBJECT_ARRAY;
+		return ObjectTools.EMPTY_OBJECT_ARRAY;
 	}
 }

@@ -13,8 +13,8 @@ import java.util.List;
 
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterClassConverter;
@@ -109,7 +109,7 @@ public abstract class JavaEclipseLinkConverterClassConverter<A extends EclipseLi
 			return;
 		}
 
-		if (StringTools.stringIsEmpty(this.converterClass)) {
+		if (StringTools.isBlank(this.converterClass)) {
 			messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
@@ -180,6 +180,6 @@ public abstract class JavaEclipseLinkConverterClassConverter<A extends EclipseLi
 	}
 
 	protected boolean isEquivalentTo(EclipseLinkConverterClassConverter converter) {
-		return Tools.valuesAreEqual(this.getFullyQualifiedConverterClass(), converter.getFullyQualifiedConverterClass());
+		return ObjectTools.equals(this.getFullyQualifiedConverterClass(), converter.getFullyQualifiedConverterClass());
 	}
 }

@@ -9,10 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
-import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
+import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
+import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 
 
@@ -41,10 +43,15 @@ public class JaxbPackageAdapterFactory
 	}
 	
 	private JaxbPackage getJaxbPackage(IPackageFragment packageFragment) {
-		JaxbProject jaxbProject = JptJaxbCorePlugin.instance().getProjectManager().getJaxbProject(packageFragment.getJavaProject().getProject());
-		if (jaxbProject == null) {
-			return null;
-		}
-		return jaxbProject.getContextRoot().getPackage(packageFragment.getElementName());
+		JaxbProject jaxbProject = this.getJaxbProjectManager().getJaxbProject(packageFragment.getJavaProject().getProject());
+		return (jaxbProject == null) ? null : jaxbProject.getContextRoot().getPackage(packageFragment.getElementName());
+	}
+
+	private JaxbProjectManager getJaxbProjectManager() {
+		return this.getJaxbWorkspace().getJaxbProjectManager();
+	}
+
+	private JaxbWorkspace getJaxbWorkspace() {
+		return (JaxbWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JaxbWorkspace.class);
 	}
 }

@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.utility.internal.command;
 import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.CommandExecutor;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * This command executor wraps another command executor and uses an exception
@@ -52,6 +52,6 @@ public abstract class AbstractSafeCommandExecutor<E extends CommandExecutor>
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.commandExecutor);
+		return ObjectTools.toString(this, this.commandExecutor);
 	}
 }

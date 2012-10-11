@@ -23,12 +23,17 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.core.runtime.content.IContentTypeManager;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.JptWorkspace;
+import org.eclipse.jpt.common.core.internal.JptCommonCoreMessages;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
+import org.osgi.framework.Bundle;
 
 /**
  * A collection of utilities for dealing with the Eclipse platform API.
  */
 public class PlatformTools {
+
+	// ********** adapter **********
+
 	/**
 	 * Add some Generic Goodness to the method signature.
 	 * @see org.eclipse.core.runtime.IAdapterManager#getAdapter(Object, Class)
@@ -38,8 +43,11 @@ public class PlatformTools {
 		return (A) Platform.getAdapterManager().getAdapter(o, adapterType);
 	}
 
+
+	// ********** resources **********
+
 	/**
-	 * Return the {@link IContainer} with the workspace relative "full" path
+	 * Return the {@link IContainer} with the workspace-relative "full" path
 	 */
 	public static IContainer getContainer(IPath fullContainerPath) {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
@@ -47,10 +55,7 @@ public class PlatformTools {
 		String projectName = fullContainerPath.segment(0).toString();
 		IPath projectRelativePath = fullContainerPath.removeFirstSegments(1);
 		IProject project = root.getProject(projectName);
-		if (projectRelativePath.isEmpty()) {
-			return project;
-		}
-		return project.getFolder(projectRelativePath);
+		return (projectRelativePath.isEmpty()) ? project : project.getFolder(projectRelativePath);
 	}
 	
 	/**
@@ -65,6 +70,9 @@ public class PlatformTools {
 		return project.getFile(projectRelativePath);
 	}
 	
+
+	// ********** resource type **********
+
 	public static JptResourceType getResourceType(IContentType contentType) {
 		JptWorkspace jptWorkspace = getJptWorkspace();
 		return (jptWorkspace == null) ? null : jptWorkspace.getResourceTypeManager().getResourceType(contentType);
@@ -78,6 +86,9 @@ public class PlatformTools {
 	private static JptWorkspace getJptWorkspace() {
 		return getAdapter(ResourcesPlugin.getWorkspace(), JptWorkspace.class);
 	}
+
+
+	// ********** content type **********
 
 	/**
 	 * Return the specified file's content type,
@@ -123,6 +134,110 @@ public class PlatformTools {
 	private static IContentTypeManager getContentTypeManager() {
 		return Platform.getContentTypeManager();
 	}
+
+
+	// ********** instantiation **********
+
+	/**
+	 * Load the specified class, using the specified bundle, and, if it is a
+	 * sub-type of the specified interface, instantiate it and return the resulting
+	 * object, cast appropriately.
+	 * Log an error and return <code>null</code> for any of the following
+	 * conditions:<ul>
+	 * <li>the bundle cannot be resolved
+	 * <li>the class fails to load
+	 * <li>the loaded class is not a sub-type of the specified interface
+	 * <li>the loaded class cannot be instantiated
+	 * </ul>
+	 */
+	public static <T> T instantiate(String pluginID, String extensionPoint, String className, Class<T> interfaze) {
+		Class<T> clazz = loadClass(pluginID, extensionPoint, className, interfaze);
+		return (clazz == null) ? null : instantiate(pluginID, extensionPoint, clazz);
+    }
+
+	/**
+	 * Load the specified class, using the specified bundle, and cast it to the
+	 * specified interface before returning it.
+	 * Log an error and return <code>null</code> for any of the following
+	 * conditions:<ul>
+	 * <li>the bundle cannot be resolved
+	 * <li>the class fails to load
+	 * <li>the loaded class is not a sub-type of the specified interface
+	 * </ul>
+	 */
+	private static <T> Class<T> loadClass(String pluginID, String extensionPoint, String className, Class<T> interfaze) {
+		Bundle bundle = Platform.getBundle(pluginID);
+		if (bundle == null) {
+			logError(JptCommonCoreMessages.REGISTRY_MISSING_BUNDLE, pluginID);
+			return null;
+		}
+
+		Class<?> clazz;
+		try {
+			clazz = bundle.loadClass(className);
+		} catch (Exception ex) {
+			logFailedClassLoad(ex, pluginID, extensionPoint, className);
+			return null;
+		}
+
+		if ( ! interfaze.isAssignableFrom(clazz)) {
+			logFailedInterfaceAssignment(pluginID, extensionPoint, clazz, interfaze);
+			return null;
+		}
+
+		@SuppressWarnings("unchecked")
+		Class<T> clazzT = (Class<T>) clazz;
+		return clazzT;
+    }
+
+	private static void logFailedClassLoad(Exception ex, String pluginID, String extensionPoint, String className) {
+		logError(ex, JptCommonCoreMessages.REGISTRY_FAILED_CLASS_LOAD,
+				className,
+				extensionPoint,
+				pluginID
+			);
+	}
+
+	private static void logFailedInterfaceAssignment(String pluginID, String extensionPoint, Class<?> clazz, Class<?> interfaze) {
+		logError(JptCommonCoreMessages.REGISTRY_FAILED_INTERFACE_ASSIGNMENT,
+				clazz.getName(),
+				extensionPoint,
+				pluginID,
+				interfaze.getName()
+			);
+	}
+
+	/**
+	 * Instantiate the specified class.
+	 * Log an error and return <code>null</code> if the instantiation fails.
+	 */
+	private static <T> T instantiate(String pluginID, String extensionPoint, Class<T> clazz) {
+		try {
+			return clazz.newInstance();
+		} catch (Exception ex) {
+			logFailedInstantiation(ex, pluginID, extensionPoint, clazz);
+			return null;
+		}
+	}
+
+	private static void logFailedInstantiation(Exception ex, String pluginID, String extensionPoint, Class<?> clazz) {
+		logError(ex, JptCommonCoreMessages.REGISTRY_FAILED_INSTANTIATION,
+				clazz.getName(),
+				extensionPoint,
+				pluginID
+			);
+	}
+
+	private static void logError(String msg, Object... args) {
+		JptCommonCorePlugin.instance().logError(msg, args);
+	}
+
+	private static void logError(Throwable ex, String msg, Object... args) {
+		JptCommonCorePlugin.instance().logError(ex, msg, args);
+	}
+
+
+	// ********** disabled constructor **********
 
 	private PlatformTools() {
 		super();

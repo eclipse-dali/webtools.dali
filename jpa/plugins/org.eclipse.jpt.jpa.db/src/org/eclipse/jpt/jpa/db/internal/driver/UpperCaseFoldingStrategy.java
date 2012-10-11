@@ -39,7 +39,7 @@ class UpperCaseFoldingStrategy
 	}
 
 	public boolean nameIsFolded(String name) {
-		return StringTools.stringIsUppercase(name);
+		return StringTools.isUppercase(name);
 	}
 
 	@Override

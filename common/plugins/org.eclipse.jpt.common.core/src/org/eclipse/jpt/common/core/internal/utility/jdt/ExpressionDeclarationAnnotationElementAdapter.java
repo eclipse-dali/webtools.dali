@@ -22,7 +22,7 @@ import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * Most obvious implementation of the interface.
@@ -88,7 +88,7 @@ public class ExpressionDeclarationAnnotationElementAdapter<E extends Expression>
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.elementName);
+		return ObjectTools.toString(this, this.elementName);
 	}
 
 

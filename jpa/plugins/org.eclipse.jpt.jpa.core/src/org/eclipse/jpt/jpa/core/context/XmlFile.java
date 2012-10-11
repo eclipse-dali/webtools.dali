@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.context;
 
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 
@@ -81,7 +81,7 @@ public interface XmlFile
 		public static boolean isLatestSupportedVersion(XmlFile xmlFile) {
 			String xmlFileVersion = xmlFile.getXmlResource().getVersion();
 			String latestVersion = xmlFile.getJpaProject().getJpaPlatform().getMostRecentSupportedResourceType(xmlFile.getXmlResource().getContentType()).getVersion();
-			return Tools.valuesAreEqual(xmlFileVersion, latestVersion);
+			return ObjectTools.equals(xmlFileVersion, latestVersion);
 		}
 
 		/**
@@ -89,7 +89,7 @@ public interface XmlFile
 		 */
 		public static boolean isGenericMappingFile(XmlFile xmlFile) {
 			IContentType contentType = xmlFile.getXmlResource().getContentType();
-			return Tools.valuesAreEqual(contentType, XmlEntityMappings.CONTENT_TYPE);
+			return ObjectTools.equals(contentType, XmlEntityMappings.CONTENT_TYPE);
 		}
 
 		private XmlFile_() {

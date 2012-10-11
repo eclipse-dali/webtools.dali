@@ -13,7 +13,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import javax.swing.JToggleButton.ToggleButtonModel;
 import javax.swing.event.ChangeListener;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.listener.awt.AWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -42,6 +43,8 @@ public class ToggleButtonModelAdapter
 	 * changes made to the underlying model boolean.
 	 */
 	protected final PropertyChangeListener booleanChangeListener;
+
+	private static final long serialVersionUID = 1L;
 
 
 	// ********** constructors **********
@@ -218,7 +221,7 @@ public class ToggleButtonModelAdapter
 
     @Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.booleanHolder);
+		return ObjectTools.toString(this, this.booleanHolder);
 	}
 
 }

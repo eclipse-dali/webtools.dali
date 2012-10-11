@@ -213,7 +213,7 @@ public final class JpaJpqlJavaCompletionProposalComputer extends JpqlCompletionP
 		if (jpqlQuery == null) {
 			jpqlQuery = StringTools.EMPTY_STRING;
 		}
-		else if (StringTools.stringIsQuoted(jpqlQuery)) {
+		else if (StringTools.isQuoted(jpqlQuery)) {
 			jpqlQuery = jpqlQuery.substring(1, jpqlQuery.length() - 1);
 		}
 

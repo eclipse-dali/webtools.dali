@@ -11,9 +11,9 @@ package org.eclipse.jpt.common.utility.internal.command;
 
 import org.eclipse.jpt.common.utility.command.Command;
 import org.eclipse.jpt.common.utility.command.StatefulCommandExecutor;
-import org.eclipse.jpt.common.utility.internal.SimpleQueue;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.SynchronizedBoolean;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.collection.LinkedQueue;
+import org.eclipse.jpt.common.utility.internal.reference.SynchronizedBoolean;
 
 /**
  * This is a command executor that queues up any commands
@@ -26,7 +26,7 @@ public abstract class AbstractQueueingCommandExecutor<E extends StatefulCommandE
 {
 	protected final E commandExecutor;
 	protected final SynchronizedBoolean active = new SynchronizedBoolean(false);
-	private SimpleQueue<Command> queue = new SimpleQueue<Command>();
+	private LinkedQueue<Command> queue = new LinkedQueue<Command>();
 
 
 	protected AbstractQueueingCommandExecutor(E commandExecutor) {
@@ -91,6 +91,6 @@ public abstract class AbstractQueueingCommandExecutor<E extends StatefulCommandE
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.queue);
+		return ObjectTools.toString(this, this.queue);
 	}
 }

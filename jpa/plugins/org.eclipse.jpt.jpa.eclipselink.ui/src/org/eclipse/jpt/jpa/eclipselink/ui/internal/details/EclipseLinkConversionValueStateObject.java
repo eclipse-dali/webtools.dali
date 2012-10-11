@@ -15,8 +15,8 @@ import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jpt.common.ui.internal.widgets.NewNameDialog;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.node.AbstractNode;
-import org.eclipse.jpt.common.utility.internal.node.Node;
-import org.eclipse.jpt.common.utility.internal.node.Problem;
+import org.eclipse.jpt.common.utility.node.Node;
+import org.eclipse.jpt.common.utility.node.Problem;
 
 /**
  * This is the state object used by the <code>NewNameDialog</code>, which stores
@@ -77,7 +77,7 @@ final class EclipseLinkConversionValueStateObject extends AbstractNode
 	}
 
 	private void addDataValueProblemsTo(List<Problem> currentProblems) {
-		if (StringTools.stringIsEmpty(this.dataValue)) {
+		if (StringTools.isBlank(this.dataValue)) {
 			currentProblems.add(buildProblem(EclipseLinkUiDetailsMessages.EclipseLinkConversionValueStateObject_dataValueMustBeSpecified, IMessageProvider.ERROR));
 		}
 		else if (this.dataValues.contains(this.dataValue)) {
@@ -86,7 +86,7 @@ final class EclipseLinkConversionValueStateObject extends AbstractNode
 	}
 
 	private void addObjectValueProblemsTo(List<Problem> currentProblems) {
-		if (StringTools.stringIsEmpty(this.objectValue)) {
+		if (StringTools.isBlank(this.objectValue)) {
 			currentProblems.add(buildProblem(EclipseLinkUiDetailsMessages.EclipseLinkConversionValueStateObject_objectValueMustBeSpecified, IMessageProvider.ERROR));
 		}
 	}

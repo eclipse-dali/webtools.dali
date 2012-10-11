@@ -12,8 +12,8 @@ package org.eclipse.jpt.jpa.core.internal.context;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 
 /**
@@ -102,7 +102,7 @@ public class ContextContainerTools {
 			boolean match = false;
 			for (Iterator<C> stream = contextElements.iterator(); stream.hasNext(); ) {
 				C contextElement = stream.next();
-				if (Tools.valuesAreEqual(adapter.getResourceElement(contextElement), resourceElement)) {
+				if (ObjectTools.equals(adapter.getResourceElement(contextElement), resourceElement)) {
 					// we don't know the source index because the element has been moved by previously moved elements
 					adapter.moveContextElement(resourceIndex, contextElement);
 					stream.remove();

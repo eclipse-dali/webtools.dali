@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.utility.internal.model.value.swing;
 import javax.swing.AbstractListModel;
 import javax.swing.event.ListDataListener;
 
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.listener.awt.AWTListChangeListenerWrapper;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionListValueModelAdapter;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
@@ -42,12 +42,14 @@ public class ListModelAdapter
 
 	/**
 	 * Cache the size of the list for "dramatic" changes.
-	 * @see #listChanged(ListChangeEvent)
+	 * @see #listChanged()
 	 */
 	protected int listSize;
 
 	/** A listener that allows us to forward changes made to the underlying model list. */
 	protected final ListChangeListener listChangeListener;
+
+	private static final long serialVersionUID = 1L;
 
 
 	// ********** constructors **********
@@ -286,7 +288,7 @@ public class ListModelAdapter
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.listHolder);
+		return ObjectTools.toString(this, this.listHolder);
 	}
 
 }

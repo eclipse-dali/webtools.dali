@@ -13,12 +13,12 @@ import javax.swing.Icon;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
- * This implementation of LongListComponent.Browser uses a
- * JOptionPane to prompt the user for the selection. The JOPtionPane
- * is passed a FilteringListPanel to assist the user in making
+ * This implementation of ListChooser.ListBrowser uses a
+ * {@link JOptionPane} to prompt the user for the selection. The {@link JOptionPane}
+ * is passed a {@link FilteringListPanel} to assist the user in making
  * a selection.
  */
 public class FilteringListBrowser<T> 
@@ -48,82 +48,86 @@ public class FilteringListBrowser<T>
 		int option = 
 			JOptionPane.showOptionDialog(
 				chooser, 
-				this.message(chooser), 
-				this.title(chooser), 
-				this.optionType(chooser), 
-				this.messageType(chooser), 
-				this.icon(chooser), 
-				this.selectionValues(chooser), 
-				this.initialSelectionValue(chooser)
+				this.buildMessage(chooser), 
+				this.buildTitle(chooser), 
+				this.buildOptionType(chooser), 
+				this.buildMessageType(chooser), 
+				this.buildIcon(chooser), 
+				this.buildSelectionValues(chooser), 
+				this.buildInitialSelectionValue(chooser)
 		);
 		
 		if (option == JOptionPane.OK_OPTION) {
-			chooser.getModel().setSelectedItem(this.panel.selection());
+			chooser.getModel().setSelectedItem(this.panel.getSelection());
 		}
 		
 		// clear the text field so the list box is re-filtered
-		this.panel.textField().setText(""); //$NON-NLS-1$
+		this.panel.getTextField().setText(""); //$NON-NLS-1$
 	}
 	
 	protected void initializeCellRenderer(JComboBox comboBox) {
 		// default behavior should be to use the cell renderer from the combobox.
-		this.panel.listBox().setCellRenderer(comboBox.getRenderer());
+		this.panel.getListBox().setCellRenderer(comboBox.getRenderer());
 	}
 
 	/**
 	 * the message can be anything - here we build a component
 	 */
-	protected Object message(JComboBox comboBox) {
-		this.panel.setCompleteList(this.convertToArray(comboBox.getModel()));
+	protected Object buildMessage(JComboBox comboBox) {
+		this.panel.setCompleteList(this.convertListModelToArray(comboBox.getModel()));
 		this.panel.setSelection(comboBox.getModel().getSelectedItem());
 		return this.panel;
-	}
-
-	protected String title(@SuppressWarnings("unused") JComboBox comboBox) {
-		return null;
-	}
-
-	protected int optionType(@SuppressWarnings("unused") JComboBox comboBox) {
-		return JOptionPane.OK_CANCEL_OPTION;
-	}
-
-	protected int messageType(@SuppressWarnings("unused") JComboBox comboBox) {
-		return JOptionPane.QUESTION_MESSAGE;
-	}
-
-	protected Icon icon(@SuppressWarnings("unused") JComboBox comboBox) {
-		return null;
-	}
-
-	protected Object[] selectionValues(@SuppressWarnings("unused") JComboBox comboBox) {
-		return null;
-	}
-
-	protected Object initialSelectionValue(@SuppressWarnings("unused") JComboBox comboBox) {
-		return null;
 	}
 
 	/**
 	 * Convert the list of objects in the specified list model
 	 * into an array.
 	 */
-	protected Object[] convertToArray(ListModel model) {
+	@SuppressWarnings("unchecked")
+	protected T[] convertListModelToArray(ListModel model) {
 		int size = model.getSize();
-		Object[] result = new Object[size];
+		T[] result = (T[]) new Object[size];
 		for (int i = 0; i < size; i++) {
-			result[i] = model.getElementAt(i);
+			result[i] = (T) model.getElementAt(i);
 		}
 		return result;
 	}
 	
+	protected String buildTitle(@SuppressWarnings("unused") JComboBox comboBox) {
+		return null;
+	}
+
+	protected int buildOptionType(@SuppressWarnings("unused") JComboBox comboBox) {
+		return JOptionPane.OK_CANCEL_OPTION;
+	}
+
+	protected int buildMessageType(@SuppressWarnings("unused") JComboBox comboBox) {
+		return JOptionPane.QUESTION_MESSAGE;
+	}
+
+	protected Icon buildIcon(@SuppressWarnings("unused") JComboBox comboBox) {
+		return null;
+	}
+
+	protected Object[] buildSelectionValues(@SuppressWarnings("unused") JComboBox comboBox) {
+		return null;
+	}
+
+	protected Object buildInitialSelectionValue(@SuppressWarnings("unused") JComboBox comboBox) {
+		return null;
+	}
+
 	
 	// ********** custom panel **********
 	
 	protected static class LocalFilteringListPanel<S>
 		extends FilteringListPanel<S>
 	{
+		private static final long serialVersionUID = 1L;
+
+		@SuppressWarnings("unchecked")
 		protected LocalFilteringListPanel() {
-			super(Tools.EMPTY_OBJECT_ARRAY, null);
+			super((S[]) ObjectTools.EMPTY_OBJECT_ARRAY, null);
 		}
 	
 		/**
@@ -132,10 +136,8 @@ public class FilteringListBrowser<T>
 		 * and it looks a bit clumsy.
 		 */
 		@Override
-		protected String prototypeCellValue() {
+		protected String getPrototypeCellValue() {
 			return null;
 		}
-	
 	}
-
 }

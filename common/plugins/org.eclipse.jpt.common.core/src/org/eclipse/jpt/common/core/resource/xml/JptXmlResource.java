@@ -30,7 +30,7 @@ import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jst.j2ee.internal.xml.J2EEXmlDtDEntityResolver;
 import org.eclipse.wst.common.internal.emf.resource.Renderer;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
@@ -258,7 +258,7 @@ public class JptXmlResource
 	@Override
 	public String toString() {
 		// implementation in TranslatorResourceImpl is a bit off...
-		return StringTools.buildToStringFor(this, this.getURI());
+		return ObjectTools.toString(this, this.getURI());
 	}
 	
 	

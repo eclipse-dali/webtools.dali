@@ -10,8 +10,7 @@
 package org.eclipse.jpt.common.ui.internal.jface;
 
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * Item tree content provider that contains unchanging parent and children.
@@ -37,7 +36,7 @@ public class StaticItemTreeContentProvider
 	 * parent but no children.
 	 */
 	public StaticItemTreeContentProvider(Object parent) {
-		this(parent, Tools.EMPTY_OBJECT_ARRAY);
+		this(parent, ObjectTools.EMPTY_OBJECT_ARRAY);
 	}
 
 	/**
@@ -75,6 +74,6 @@ public class StaticItemTreeContentProvider
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this);
+		return ObjectTools.toString(this);
 	}
 }

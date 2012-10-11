@@ -12,14 +12,14 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.NotNullFilter;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
+import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Embeddable;
@@ -120,7 +120,7 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 	}
 
 	public Iterable<String> getSortedCandidateIdAttributeNames() {
-		return CollectionTools.sort(this.getNonNullCandidateIdAttributeNames());
+		return IterableTools.sort(this.getNonNullCandidateIdAttributeNames());
 	}
 
 	protected Iterable<String> getNonNullCandidateIdAttributeNames() {
@@ -148,7 +148,7 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 		return new TransformationIterable<AttributeMapping, Iterable<AttributeMapping>>(attributeMappings) {
 			@Override
 			protected Iterable<AttributeMapping> transform(AttributeMapping attributeMapping) {
-				return Tools.valuesAreEqual(attributeMapping.getKey(), MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY) ?
+				return ObjectTools.equals(attributeMapping.getKey(), MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY) ?
 						this.getEmbeddedIdMappingChoiceIterable((EmbeddedIdMapping) attributeMapping) :
 						new SingleElementIterable<AttributeMapping>(attributeMapping);
 			}
@@ -216,7 +216,7 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 	}
 
 	protected boolean mappingIsIdMapping(AttributeMapping mapping) {
-		return CollectionTools.contains(this.getIdMappingKeys(), mapping.getKey());
+		return IterableTools.contains(this.getIdMappingKeys(), mapping.getKey());
 	}
 
 	protected Iterable<String> getIdMappingKeys() {
@@ -253,7 +253,7 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 			messages.add(this.buildMessage(JpaValidationMessages.MAPS_ID_VALUE_NOT_RESOLVED, new String[] {this.getIdAttributeName()}));
 		} else {
 			// test whether attribute mapping is allowable
-			if ( ! CollectionTools.contains(this.getValidAttributeMappingChoices(), attributeMapping)) {
+			if ( ! IterableTools.contains(this.getValidAttributeMappingChoices(), attributeMapping)) {
 				messages.add(this.buildMessage(JpaValidationMessages.MAPS_ID_VALUE_INVALID, new String[] {this.getIdAttributeName()}));
 			}
 		}

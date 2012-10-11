@@ -256,7 +256,7 @@ public class AddPersistentClassDialog extends StatusDialog
 	private void validate() {
 		String className = getClassName();
 		
-		if (StringTools.stringIsEmpty(className)) {
+		if (StringTools.isBlank(className)) {
 			updateStatus(JptJpaUiPlugin.instance().buildErrorStatus(JptUiMessages.AddPersistentClassDialog_noClassError));
 			return;
 		}

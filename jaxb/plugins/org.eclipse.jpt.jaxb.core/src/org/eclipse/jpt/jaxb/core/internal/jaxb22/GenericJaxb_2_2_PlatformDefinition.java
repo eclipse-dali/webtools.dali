@@ -14,7 +14,7 @@ import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.internal.jaxb21.GenericJaxb_2_1_Factory;
 import org.eclipse.jpt.jaxb.core.internal.jaxb21.GenericJaxb_2_1_PlatformDefinition;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 
 
 public class GenericJaxb_2_2_PlatformDefinition
@@ -38,7 +38,7 @@ public class GenericJaxb_2_2_PlatformDefinition
 	
 	
 	@Override
-	public JaxbPlatformDescription getDescription() {
+	public JaxbPlatformConfig getConfig() {
 		return GenericJaxbPlatform.VERSION_2_2;
 	}
 	

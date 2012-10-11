@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.context;
 
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.jpa2.context.MetamodelField;
 
 /**
@@ -66,9 +66,9 @@ public class SimpleMetamodelField
 
 	@Override
 	public int hashCode() {
-		return CollectionTools.hashCode(this.modifiers) ^
+		return IterableTools.hashCode(this.modifiers) ^
 					this.typeName.hashCode() ^
-					CollectionTools.hashCode(this.typeArgumentNames) ^
+					IterableTools.hashCode(this.typeArgumentNames) ^
 					this.name.hashCode();
 	}
 
@@ -78,9 +78,9 @@ public class SimpleMetamodelField
 			return false;
 		}
 		MetamodelField other = (MetamodelField) o;
-		return CollectionTools.elementsAreEqual(this.getModifiers(), other.getModifiers()) &&
+		return IterableTools.elementsAreEqual(this.getModifiers(), other.getModifiers()) &&
 					this.getTypeName().equals(other.getTypeName()) &&
-					CollectionTools.elementsAreEqual(this.getTypeArgumentNames(), other.getTypeArgumentNames()) &&
+					IterableTools.elementsAreEqual(this.getTypeArgumentNames(), other.getTypeArgumentNames()) &&
 					this.getName().equals(other.getName());
 	}
 

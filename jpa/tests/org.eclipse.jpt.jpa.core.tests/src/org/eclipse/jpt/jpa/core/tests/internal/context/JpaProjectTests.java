@@ -22,7 +22,7 @@ import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelPropertie
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProvider;
 import org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProvider;
 import org.eclipse.jpt.jpa.core.internal.operations.PersistenceFileCreationDataModelProvider;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlPersistence;
@@ -53,13 +53,13 @@ public class JpaProjectTests
 	protected IDataModel buildJpaConfigDataModel() {
 		IDataModel dataModel = DataModelFactory.createDataModel(new JpaFacetInstallDataModelProvider());		
 		dataModel.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, JpaProject.FACET_VERSION_STRING);
-		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM, this.getJpaPlatformDescription());
+		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM, this.getJpaPlatformConfig());
 		dataModel.setProperty(JpaFacetInstallDataModelProperties.CREATE_ORM_XML, Boolean.TRUE);
 		return dataModel;
 	}
 
-	protected JpaPlatformDescription getJpaPlatformDescription() {
-		return this.getJpaPlatformManager().getJpaPlatformDescription(GenericJpaPlatformFactory.ID);
+	protected JpaPlatformConfig getJpaPlatformConfig() {
+		return this.getJpaPlatformManager().getJpaPlatformConfig(GenericJpaPlatformFactory.ID);
 	}
 
 	protected JpaPlatformManager getJpaPlatformManager() {

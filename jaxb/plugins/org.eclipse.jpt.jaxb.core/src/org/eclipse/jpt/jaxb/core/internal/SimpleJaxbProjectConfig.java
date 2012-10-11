@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.core.internal;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
 
@@ -48,6 +48,6 @@ public class SimpleJaxbProjectConfig
 	
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.project.getName());
+		return ObjectTools.toString(this, this.project.getName());
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,63 +13,61 @@ import java.beans.Introspector;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.SortedSet;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 
 /**
  * Various helper methods for generating names.
  */
 public final class NameTools {
 
+	// ********** unique names **********
+
 	/**
-	 * Given a "root" name and a set of existing names, generate a unique
-	 * name that is either the "root" name or some variation on the "root"
-	 * name (e.g. "root2", "root3",...). The names are case-sensitive
-	 * (i.e. "Root" and "root" are both allowed).
+	 * @see #uniqueName(String, Collection)
 	 */
-	public static String uniqueNameFor(String rootName, Iterator<String> existingNames) {
-		return uniqueNameFor(rootName, CollectionTools.set(existingNames));
+	public static String uniqueName(String rootName, Iterable<String> existingNames) {
+		return uniqueName(rootName, CollectionTools.set(existingNames));
 	}
 	
 	/**
 	 * Given a "root" name and a set of existing names, generate a unique
 	 * name that is either the "root" name or some variation on the "root"
-	 * name (e.g. "root2", "root3",...). The names are case-sensitive
-	 * (i.e. "Root" and "root" are both allowed).
+	 * name (e.g. <code>"root2"</code>, <code>"root3"</code>,...).
+	 * The names are case-sensitive (i.e. <code>"Root"</code> and
+	 * <code>"root"</code> are allowed to co-exist).
 	 */
-	public static String uniqueNameFor(String rootName, Collection<String> existingNames) {
-		return uniqueNameFor(rootName, existingNames, rootName);
+	public static String uniqueName(String rootName, Collection<String> existingNames) {
+		return uniqueName(rootName, existingNames, rootName);
+	}
+
+	/**
+	 * @see #uniqueNameIgnoreCase(String, Collection)
+	 */
+	public static String uniqueNameIgnoreCase(String rootName, Iterable<String> existingNames) {
+		return uniqueNameIgnoreCase(rootName, CollectionTools.set(existingNames));
 	}
 
 	/**
 	 * Given a "root" name and a set of existing names, generate a unique
 	 * name that is either the "root" name or some variation on the "root"
-	 * name (e.g. "root2", "root3",...). The names are NOT case-sensitive
-	 * (i.e. "Root" and "root" are NOT both allowed).
+	 * name (e.g. <code>"root2"</code>, <code>"root3"</code>,...).
+	 * The names are <em>not</em> case-sensitive (i.e. <code>"Root"</code> and
+	 * <code>"root"</code> are <em>not</em> both allowed).
 	 */
-	public static String uniqueNameForIgnoreCase(String rootName, Iterator<String> existingNames) {
-		return uniqueNameForIgnoreCase(rootName, CollectionTools.set(existingNames));
+	public static String uniqueNameIgnoreCase(String rootName, Collection<String> existingNames) {
+		return uniqueName(rootName, convertToLowerCase(existingNames), rootName.toLowerCase());
 	}
 
 	/**
-	 * Given a "root" name and a set of existing names, generate a unique
-	 * name that is either the "root" name or some variation on the "root"
-	 * name (e.g. "root2", "root3",...). The names are NOT case-sensitive
-	 * (i.e. "Root" and "root" are NOT both allowed).
-	 */
-	public static String uniqueNameForIgnoreCase(String rootName, Collection<String> existingNames) {
-		return uniqueNameFor(rootName, convertToLowerCase(existingNames), rootName.toLowerCase());
-	}
-
-	/**
-	 * use the suffixed "template" name to perform the comparisons, but RETURN
+	 * Use the suffixed "template" name to perform the comparisons, but <em>return</em>
 	 * the suffixed "root" name; this allows case-insensitive comparisons
 	 * (i.e. the "template" name has been morphed to the same case as
 	 * the "existing" names, while the "root" name has not, but the "root" name
-	 * is what the client wants morphed to be unique)
+	 * is what the client wants morphed to be unique).
 	 */
-	private static String uniqueNameFor(String rootName, Collection<String> existingNames, String templateName) {
+	private static String uniqueName(String rootName, Collection<String> existingNames, String templateName) {
 		if ( ! existingNames.contains(templateName)) {
 			return rootName;
 		}
@@ -93,42 +91,45 @@ public final class NameTools {
 		return result;
 	}
 
-	/**
-	 * Build a fully-qualified name for the specified database object.
-	 * Variations:
-	 *     catalog.schema.name
-	 *     catalog..name
-	 *     schema.name
-	 *     name
-	 */
-	public static String buildQualifiedDatabaseObjectName(String catalog, String schema, String name) {
-		if (name == null) {
-			return null;
-		}
-		if ((catalog == null) && (schema == null)) {
-			return name;
-		}
 
+	// ********** qualified name **********
+
+	/**
+	 * Build a fully-qualified name for the specified name segments.
+	 * Typical database variations:<ul>
+	 * <li><code>catalog.schema.name</code>
+	 * <li><code>catalog..name</code>
+	 * <li><code>schema.name</code>
+	 * <li><code>name</code>
+	 * </ul>
+	 */
+	public static String buildQualifiedName(String... segments) {
 		StringBuilder sb = new StringBuilder(100);
-		if (catalog != null) {
-			sb.append(catalog);
-			sb.append('.');
+		boolean next = false;
+		for (String segment : segments) {
+			if (next) {
+				sb.append('.');
+			}
+			if (segment != null) {
+				next = true;
+				sb.append(segment);
+			}
 		}
-		if (schema != null) {
-			sb.append(schema);
-		}
-		sb.append('.');
-		sb.append(name);
 		return sb.toString();
 	}
+
+
+	// ********** Java identifiers **********
 
 	/**
 	 * The set of reserved words in the Java programming language.
 	 * These words cannot be used as identifiers (i.e. names).
-	 * http://java.sun.com/docs/books/tutorial/java/nutsandbolts/_keywords.html
+	 * <p>
+	 * <a href="http://java.sun.com/docs/books/tutorial/java/nutsandbolts/_keywords.html">
+	 * Java Language Keywords</a>
 	 */
 	@SuppressWarnings("nls")
-	public static final String[] JAVA_RESERVED_WORDS = new String[] {
+	private static final String[] JAVA_RESERVED_WORDS_ARRAY = new String[] {
 				"abstract",
 				"assert",  // jdk 1.4
 				"boolean",
@@ -187,50 +188,55 @@ public final class NameTools {
 	/**
 	 * The set of reserved words in the Java programming language.
 	 * These words cannot be used as identifiers (i.e. names).
-	 * http://java.sun.com/docs/books/tutorial/java/nutsandbolts/_keywords.html
+	 * <p>
+	 * <a href="http://java.sun.com/docs/books/tutorial/java/nutsandbolts/_keywords.html">
+	 * Java Language Keywords</a>
 	 */
-	public static final SortedSet<String> JAVA_RESERVED_WORDS_SET = 
-		Collections.unmodifiableSortedSet(CollectionTools.sortedSet(JAVA_RESERVED_WORDS));
-
-	/**
-	 * Return the set of Java programming language reserved words.
-	 * These words cannot be used as identifiers (i.e. names).
-	 * http://java.sun.com/docs/books/tutorial/java/nutsandbolts/_keywords.html
-	 */
-	public static Iterator<String> javaReservedWords() {
-		return new ArrayIterator<String>(JAVA_RESERVED_WORDS);
-	}
+	public static final SortedSet<String> JAVA_RESERVED_WORDS = 
+		Collections.unmodifiableSortedSet(CollectionTools.sortedSet(JAVA_RESERVED_WORDS_ARRAY));
 
 	/**
 	 * Return whether the specified string consists of Java identifier
 	 * characters (but may be a reserved word).
 	 */
-	public static boolean stringConsistsOfJavaIdentifierCharacters(String string) {
-		if (string.length() == 0) {
-			return false;
-		}
-		return stringConsistsOfJavaIdentifierCharacters_(string.toCharArray());
+	public static boolean consistsOfJavaIdentifierCharacters(String string) {
+		int len = string.length();
+		return (len != 0) &&
+				consistsOfJavaIdentifierCharacters(string, len);
 	}
 
 	/**
-	 * Return whether the specified string consists of Java identifier
-	 * characters (but may be a reserved word).
+	 * Pre-condition: the specified string is not empty.
 	 */
-	public static boolean stringConsistsOfJavaIdentifierCharacters(char[] string) {
-		if (string.length == 0) {
+	private static boolean consistsOfJavaIdentifierCharacters(String string, int len) {
+		if ( ! Character.isJavaIdentifierStart(string.charAt(0))) {
 			return false;
 		}
-		return stringConsistsOfJavaIdentifierCharacters_(string);
+		for (int i = len; i-- > 1; ) {  // NB: end with 1
+			if ( ! Character.isJavaIdentifierPart(string.charAt(i))) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
-	 * The specified string must not be empty.
+	 * @see #consistsOfJavaIdentifierCharacters(String)
 	 */
-	private static boolean stringConsistsOfJavaIdentifierCharacters_(char[] string) {
+	public static boolean consistsOfJavaIdentifierCharacters(char[] string) {
+		int len = string.length;
+		return (len != 0) &&
+				consistsOfJavaIdentifierCharacters(string, len);
+	}
+
+	/**
+	 * Pre-condition: the specified string is not empty.
+	 */
+	private static boolean consistsOfJavaIdentifierCharacters(char[] string, int len) {
 		if ( ! Character.isJavaIdentifierStart(string[0])) {
 			return false;
 		}
-		for (int i = string.length; i-- > 1; ) {  // NB: end with 1
+		for (int i = len; i-- > 1; ) {  // NB: end with 1
 			if ( ! Character.isJavaIdentifierPart(string[i])) {
 				return false;
 			}
@@ -241,23 +247,23 @@ public final class NameTools {
 	/**
 	 * Return whether the specified string is a valid Java identifier.
 	 */
-	public static boolean stringIsLegalJavaIdentifier(String string) {
-		return stringConsistsOfJavaIdentifierCharacters(string)
-				&& ! JAVA_RESERVED_WORDS_SET.contains(string);
+	public static boolean isLegalJavaIdentifier(String string) {
+		return consistsOfJavaIdentifierCharacters(string)
+				&& ! JAVA_RESERVED_WORDS.contains(string);
 	}
 
 	/**
-	 * Return whether the specified string is a valid Java identifier.
+	 * @see #isLegalJavaIdentifier(String)
 	 */
-	public static boolean stringIsLegalJavaIdentifier(char[] string) {
-		return stringConsistsOfJavaIdentifierCharacters(string)
-				&& ! JAVA_RESERVED_WORDS_SET.contains(new String(string));
+	public static boolean isLegalJavaIdentifier(char[] string) {
+		return consistsOfJavaIdentifierCharacters(string)
+				&& ! JAVA_RESERVED_WORDS.contains(new String(string));
 	}
 
 	/**
 	 * Convert the specified string to a valid Java identifier
-	 * by substituting an underscore '_' for any invalid characters
-	 * in the string and appending an underscore '_' to the string if
+	 * by substituting an underscore (<code>'_'</code>) for any invalid characters
+	 * in the string and appending an underscore (<code>'_'</code>) to the string if
 	 * it is a Java reserved word.
 	 */
 	public static String convertToJavaIdentifier(String string) {
@@ -274,7 +280,7 @@ public final class NameTools {
 		if (string.length() == 0) {
 			return string;
 		}
-		if (JAVA_RESERVED_WORDS_SET.contains(string)) {
+		if (JAVA_RESERVED_WORDS.contains(string)) {
 			// a reserved word is a valid identifier, we just need to tweak it a bit
 			checkCharIsJavaIdentifierPart(c);
 			return convertToJavaIdentifier(string + c, c);
@@ -284,36 +290,30 @@ public final class NameTools {
 	}
 
 	/**
-	 * Convert the specified string to a valid Java identifier
-	 * by substituting an underscore '_' for any invalid characters
-	 * in the string and appending an underscore '_' to the string if
-	 * it is a Java reserved word.
+	 * @see #convertToJavaIdentifier(String)
 	 */
 	public static char[] convertToJavaIdentifier(char[] string) {
 		return convertToJavaIdentifier(string, '_');
 	}
 
 	/**
-	 * Convert the specified string to a valid Java identifier
-	 * by substituting the specified character for any invalid characters
-	 * in the string and, if necessary, appending the specified character
-	 * to the string until it is not a Java reserved word.
+	 * @see #convertToJavaIdentifier(String, char)
 	 */
 	public static char[] convertToJavaIdentifier(char[] string, char c) {
 		if (string.length == 0) {
 			return string;
 		}
-		if (JAVA_RESERVED_WORDS_SET.contains(new String(string))) {
+		if (JAVA_RESERVED_WORDS.contains(new String(string))) {
 			// a reserved word is a valid identifier, we just need to tweak it a bit
 			checkCharIsJavaIdentifierPart(c);
 			return convertToJavaIdentifier(ArrayTools.add(string, c), c);
 		}
-		convertToJavaIdentifier_(string, c);
-		return string;
+		char[] copy = string.clone();
+		return convertToJavaIdentifier_(copy, c) ? copy : string;
 	}
 
 	/**
-	 * The specified string must not be empty.
+	 * Pre-condition: The specified string is not empty.
 	 * Return whether the string was modified.
 	 */
 	private static boolean convertToJavaIdentifier_(char[] string, char c) {
@@ -349,7 +349,7 @@ public final class NameTools {
 	 * Convert the specified method name to a property name.
 	 * @see Introspector#decapitalize(String)
 	 */
-	public static String convertGetterSetterMethodNameToPropertyName(String methodName) {
+	public static String convertGetterOrSetterMethodNameToPropertyName(String methodName) {
 		int beginIndex = 0;
 		if (methodName.startsWith("get")) { //$NON-NLS-1$
 			beginIndex = 3;
@@ -373,5 +373,4 @@ public final class NameTools {
 		super();
 		throw new UnsupportedOperationException();
 	}
-
 }

@@ -10,10 +10,10 @@
 package org.eclipse.jpt.jpa.ui.internal.jpa2;
 
 import java.io.Serializable;
-import org.eclipse.jpt.common.utility.internal.AbstractTransformer;
-import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.AbstractTransformer;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.jpt.jpa.core.JpaNode;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
 

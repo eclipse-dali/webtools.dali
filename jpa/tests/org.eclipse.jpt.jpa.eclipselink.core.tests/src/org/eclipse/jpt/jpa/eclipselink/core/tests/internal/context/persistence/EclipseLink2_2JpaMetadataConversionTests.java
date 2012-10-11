@@ -14,8 +14,9 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.context.java.JavaEntity;
 import org.eclipse.jpt.jpa.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
@@ -498,7 +499,7 @@ public class EclipseLink2_2JpaMetadataConversionTests extends EclipseLink2_2Cont
 		
 		JavaEclipseLinkEntity entity = getJavaEntity();
 		EclipseLinkConvertibleMapping mapping = (EclipseLinkConvertibleMapping)entity.getAttributeMappings().iterator().next();
-		assertTrue(CollectionTools.contains(persistenceUnit.getConverters(), mapping.getConverterContainer().getConverters().iterator().next()));
+		assertTrue(IterableTools.contains(persistenceUnit.getConverters(), mapping.getConverterContainer().getConverters().iterator().next()));
 				
 		persistenceUnit.convertJavaConverters(entityMappings, progressMonitor);
 		

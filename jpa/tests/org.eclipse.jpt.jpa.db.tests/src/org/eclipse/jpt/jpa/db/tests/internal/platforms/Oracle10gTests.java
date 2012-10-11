@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.db.tests.internal.platforms;
 
-import java.sql.SQLException;
-
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.ForeignKey;
@@ -390,7 +388,7 @@ public class Oracle10gTests extends DTPPlatformTests {
 //		this.executeUpdateIgnoreErrors("DROP SEQUENCE " + sequenceName);
 //	}
 //
-	protected void dumpUserObjects() throws SQLException {
+	protected void dumpUserObjects() throws Exception {
 		this.dump("select * from user_objects");
 	}
 

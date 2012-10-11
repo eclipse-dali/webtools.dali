@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,8 +12,7 @@ package org.eclipse.jpt.common.utility.internal.model;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.StringBuilderTools;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
@@ -27,16 +26,11 @@ import org.eclipse.jpt.common.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.common.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeAddEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeChangeEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeClearEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeRemoveEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
-import org.eclipse.jpt.common.utility.model.listener.TreeChangeListener;
 
 /**
  * Reasonable implementation of the {@link Model} protocol
@@ -834,94 +828,6 @@ public abstract class AbstractModel
 	}
 
 
-	// ********** tree change support **********
-
-	/**
-	 * @see ChangeSupport#addTreeChangeListener(String, TreeChangeListener)
-	 */
-	public void addTreeChangeListener(String treeName, TreeChangeListener listener) {
-		this.getChangeSupport().addTreeChangeListener(treeName, listener);
-	}
-
-	/**
-	 * @see ChangeSupport#removeTreeChangeListener(String, TreeChangeListener)
-	 */
-	public void removeTreeChangeListener(String treeName, TreeChangeListener listener) {
-		this.getChangeSupport().removeTreeChangeListener(treeName, listener);
-	}
-
-	/**
-	 * @see ChangeSupport#hasAnyTreeChangeListeners(String)
-	 */
-	public boolean hasAnyTreeChangeListeners(String treeName) {
-		return (this.changeSupport != null) && this.changeSupport.hasAnyTreeChangeListeners(treeName);
-	}
-
-	/**
-	 * Return whether the model has no tree change listeners that will
-	 * be notified when the specified tree has changed.
-	 */
-	public boolean hasNoTreeChangeListeners(String treeName) {
-		return ! this.hasAnyTreeChangeListeners(treeName);
-	}
-
-	/**
-	 * @see ChangeSupport#fireNodeAdded(TreeAddEvent)
-	 */
-	protected final void fireNodeAdded(TreeAddEvent event) {
-		this.getChangeSupport().fireNodeAdded(event);
-	}
-
-	/**
-	 * @see ChangeSupport#fireNodeAdded(String, List)
-	 */
-	protected final void fireNodeAdded(String treeName, List<?> path) {
-		this.getChangeSupport().fireNodeAdded(treeName, path);
-	}
-
-	/**
-	 * @see ChangeSupport#fireNodeRemoved(TreeRemoveEvent)
-	 */
-	protected final void fireNodeRemoved(TreeRemoveEvent event) {
-		this.getChangeSupport().fireNodeRemoved(event);
-	}
-
-	/**
-	 * @see ChangeSupport#fireNodeRemoved(String, List)
-	 */
-	protected final void fireNodeRemoved(String treeName, List<?> path) {
-		this.getChangeSupport().fireNodeRemoved(treeName, path);
-	}
-
-	/**
-	 * @see ChangeSupport#fireTreeCleared(TreeClearEvent)
-	 */
-	protected final void fireTreeCleared(TreeClearEvent event) {
-		this.getChangeSupport().fireTreeCleared(event);
-	}
-
-	/**
-	 * @see ChangeSupport#fireTreeCleared(String)
-	 */
-	protected final void fireTreeCleared(String treeName) {
-		this.getChangeSupport().fireTreeCleared(treeName);
-	}
-
-	/**
-	 * @see ChangeSupport#fireTreeChanged(TreeChangeEvent)
-	 */
-	protected final void fireTreeChanged(TreeChangeEvent event) {
-		this.getChangeSupport().fireTreeChanged(event);
-	}
-
-	/**
-	 * @see ChangeSupport#fireTreeChanged(String, Collection)
-	 */
-	protected final void fireTreeChanged(String treeName, Collection<?> nodes) {
-		this.getChangeSupport().fireTreeChanged(treeName, nodes);
-	}
-
-
 	// ********** convenience methods **********
 
 	/**
@@ -985,7 +891,7 @@ public abstract class AbstractModel
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		StringTools.appendSimpleToString(sb, this);
+		StringBuilderTools.appendHashCodeToString(sb, this);
 		sb.append('(');
 		int len = sb.length();
 		this.toString(sb);

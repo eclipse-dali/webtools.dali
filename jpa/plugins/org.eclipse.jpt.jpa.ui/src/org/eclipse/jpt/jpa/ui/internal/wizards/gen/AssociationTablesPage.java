@@ -13,11 +13,10 @@ package org.eclipse.jpt.jpa.ui.internal.wizards.gen;
 import static org.eclipse.jpt.jpa.ui.internal.wizards.gen.SWTUtil.createButton;
 import static org.eclipse.jpt.jpa.ui.internal.wizards.gen.SWTUtil.createLabel;
 import static org.eclipse.jpt.jpa.ui.internal.wizards.gen.SWTUtil.createText;
-
 import java.util.ArrayList;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ResourceManager;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.jpa.gen.internal.Association;
@@ -25,6 +24,7 @@ import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
 import org.eclipse.jpt.jpa.ui.internal.ImageRepository;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.persistence.jpa.jpql.util.CollectionTools;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -34,7 +34,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 
@@ -221,16 +220,16 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 	}
 
 	private String buildTableErrorMessage() {
-		if ( !CollectionTools.contains(this.customizer.getTableNames(), this.table1TextField.getText()) ) {
+		if ( !IterableTools.contains(this.customizer.getTableNames(), this.table1TextField.getText()) ) {
 			return NLS.bind(JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_nonexsistent_table, this.table1TextField.getText());
-		} else if ( !CollectionTools.contains(this.customizer.getTableNames(), this.table2TextField.getText()) ) {
+		} else if ( !IterableTools.contains(this.customizer.getTableNames(), this.table2TextField.getText()) ) {
 			return NLS.bind(JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_nonexsistent_table, this.table2TextField.getText());
 		}
 		return null;
 	}
 	
 	private String buildJoinTableErrorMessage() {
-		if (!CollectionTools.contains(this.getAllTableNames(this.customizer.getSchema()), this.joinTableTextField.getText())) {
+		if (!IterableTools.contains(this.getAllTableNames(this.customizer.getSchema()), this.joinTableTextField.getText())) {
 			return NLS.bind(JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_nonexsistent_join_table, this.joinTableTextField.getText());
 		}
 		return null;

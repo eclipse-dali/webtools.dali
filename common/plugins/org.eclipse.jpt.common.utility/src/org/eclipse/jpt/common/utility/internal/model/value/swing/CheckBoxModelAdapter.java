@@ -22,6 +22,7 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 public class CheckBoxModelAdapter
 	extends ToggleButtonModelAdapter
 {
+	private static final long serialVersionUID = 1L;
 
 	// ********** constructors **********
 

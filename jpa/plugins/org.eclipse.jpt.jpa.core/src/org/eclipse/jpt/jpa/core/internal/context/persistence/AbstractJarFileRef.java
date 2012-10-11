@@ -20,8 +20,8 @@ import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
@@ -199,7 +199,7 @@ public abstract class AbstractJarFileRef
 	}
 
 	protected JavaResourcePackageFragmentRoot resolveJavaResourcePackageFragmentRoot() {
-		return StringTools.stringIsEmpty(this.fileName) ? null : this.resolveJavaResourcePackageFragmentRoot_();
+		return StringTools.isBlank(this.fileName) ? null : this.resolveJavaResourcePackageFragmentRoot_();
 	}
 
 	/**
@@ -343,7 +343,7 @@ public abstract class AbstractJarFileRef
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 
-		if (StringTools.stringIsEmpty(this.xmlJarFileRef.getFileName())) {
+		if (StringTools.isBlank(this.xmlJarFileRef.getFileName())) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,

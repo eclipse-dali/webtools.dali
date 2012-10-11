@@ -27,22 +27,24 @@ import org.eclipse.jpt.common.core.resource.xml.EmfTools;
 import org.eclipse.jpt.common.core.utility.BodySourceWriter;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
-import org.eclipse.jpt.common.utility.Filter;
-import org.eclipse.jpt.common.utility.internal.ClassName;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.filter.Filter;
+import org.eclipse.jpt.common.utility.internal.ClassNameTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.ChainIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterable.ChainIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
@@ -216,7 +218,7 @@ public abstract class SpecifiedOrmPersistentType
 
 	public String getSimpleName(){
 		String className = this.getName();
-		return StringTools.stringIsEmpty(className) ? null : ClassName.getSimpleName(className);
+		return StringTools.isBlank(className) ? null : ClassNameTools.simpleName(className);
 	}
 
 	protected String getMappingClassName() {
@@ -403,7 +405,7 @@ public abstract class SpecifiedOrmPersistentType
 		return new FilteringIterable<OrmReadOnlyPersistentAttribute>(this.getAttributes()) {
 			@Override
 			protected boolean accept(OrmReadOnlyPersistentAttribute attribute) {
-				return Tools.valuesAreEqual(attributeName, attribute.getName());
+				return ObjectTools.equals(attributeName, attribute.getName());
 			}
 		};
 	}
@@ -492,7 +494,7 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	protected int getSpecifiedAttributeInsertionIndex(OrmPersistentAttribute attribute) {
-		return CollectionTools.insertionIndexOf(this.specifiedAttributes, attribute, this.getAttributeComparator());
+		return ListTools.insertionIndexOf(this.specifiedAttributes, attribute, this.getAttributeComparator());
 	}
 
 	protected Comparator<OrmPersistentAttribute> getAttributeComparator() {
@@ -561,7 +563,7 @@ public abstract class SpecifiedOrmPersistentType
 	 * remaining specified attributes.
 	 */
 	protected boolean javaResourceFieldWillBeDefault(JavaResourceField javaResourceField, OrmPersistentAttribute specifiedAttributeToBeRemoved) {
-		return CollectionTools.contains(this.getJavaResourceFields(), javaResourceField) &&
+		return IterableTools.contains(this.getJavaResourceFields(), javaResourceField) &&
 				(this.getSpecifiedAttributeFor(javaResourceField, specifiedAttributeToBeRemoved) == null);
 	}
 
@@ -573,8 +575,8 @@ public abstract class SpecifiedOrmPersistentType
 	 * remaining specified attributes.
 	 */
 	protected boolean javaResourcePropertyWillBeDefault(JavaResourceMethod javaResourceGetter, JavaResourceMethod javaResourceSetter, OrmPersistentAttribute specifiedAttributeToBeRemoved) {
-		return CollectionTools.contains(this.getJavaResourceMethods(), javaResourceGetter) &&
-				CollectionTools.contains(this.getJavaResourceMethods(), javaResourceSetter) &&
+		return IterableTools.contains(this.getJavaResourceMethods(), javaResourceGetter) &&
+				IterableTools.contains(this.getJavaResourceMethods(), javaResourceSetter) &&
 				(this.getSpecifiedAttributeFor(javaResourceGetter, javaResourceSetter, specifiedAttributeToBeRemoved) == null);
 	}
 
@@ -1024,7 +1026,7 @@ public abstract class SpecifiedOrmPersistentType
 			return null;
 		}
 		// check for circular inheritance
-		return CollectionTools.contains(spt.getInheritanceHierarchy(), this) ? null : spt;
+		return IterableTools.contains(spt.getInheritanceHierarchy(), this) ? null : spt;
 	}
 
 	protected PersistentType buildSuperPersistentType_() {
@@ -1339,12 +1341,12 @@ public abstract class SpecifiedOrmPersistentType
 	}
 
 	public boolean isFor(String typeName) {
-		return Tools.valuesAreEqual(typeName, this.getName());
+		return ObjectTools.equals(typeName, this.getName());
 	}
 
 	public boolean isIn(IPackageFragment packageFragment) {
 		String packageName = this.getPackageName();
-		if (Tools.valuesAreEqual(packageName, packageFragment.getElementName())) {
+		if (ObjectTools.equals(packageName, packageFragment.getElementName())) {
 			return true;
 		}
 		return false;

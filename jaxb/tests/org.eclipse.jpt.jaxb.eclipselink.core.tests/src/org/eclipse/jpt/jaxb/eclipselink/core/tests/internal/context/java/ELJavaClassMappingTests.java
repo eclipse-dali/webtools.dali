@@ -13,9 +13,9 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbClass;
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbPlatform;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.java.ELClassMapping;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.java.ELJaxb;
@@ -33,14 +33,14 @@ public class ELJavaClassMappingTests
 	
 	
 	@Override
-	protected JaxbPlatformDescription getPlatform() {
+	protected JaxbPlatformConfig getPlatformConfig() {
 		return ELJaxbPlatform.VERSION_2_2;
 	}
 	
 	public void testModifyXmlDiscriminatorNode() throws Exception {
 		createClassWithXmlType();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		ELClassMapping classMapping = (ELClassMapping) jaxbClass.getMapping();
 		JavaResourceType resourceType = jaxbClass.getJavaResourceType();
 		
@@ -63,7 +63,7 @@ public class ELJavaClassMappingTests
 	public void testUpdateXmlDiscriminatorNode() throws Exception {
 		createClassWithXmlType();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		ELClassMapping classMapping = (ELClassMapping) jaxbClass.getMapping();
 		JavaResourceType resourceType = jaxbClass.getJavaResourceType();
 		
@@ -98,7 +98,7 @@ public class ELJavaClassMappingTests
 	public void testModifyXmlDiscriminatorValue() throws Exception {
 		createClassWithXmlType();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		ELClassMapping classMapping = (ELClassMapping) jaxbClass.getMapping();
 		JavaResourceType resourceType = jaxbClass.getJavaResourceType();
 		
@@ -121,7 +121,7 @@ public class ELJavaClassMappingTests
 	public void testUpdateXmlDiscriminatorValue() throws Exception {
 		createClassWithXmlType();
 		
-		JaxbClass jaxbClass = (JaxbClass) CollectionTools.get(getContextRoot().getTypes(), 0);
+		JaxbClass jaxbClass = (JaxbClass) IterableTools.get(getContextRoot().getTypes(), 0);
 		ELClassMapping classMapping = (ELClassMapping) jaxbClass.getMapping();
 		JavaResourceType resourceType = jaxbClass.getJavaResourceType();
 		

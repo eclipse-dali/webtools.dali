@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.ui.internal.structure;
 
 import java.util.ArrayList;
 import org.eclipse.jpt.common.ui.internal.jface.AbstractItemTreeContentProvider;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
@@ -19,6 +18,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -51,7 +51,7 @@ public class PersistenceUnitItemContentProvider
 	protected ListValueModel<JpaStructureNode> buildChildrenModel_() {
 		ArrayList<ListValueModel<? extends JpaStructureNode>> list = new ArrayList<ListValueModel<? extends JpaStructureNode>>();
 		this.addChildrenModelsTo(list);
-		return new CompositeListValueModel<ListValueModel<? extends JpaStructureNode>, JpaStructureNode>(list);
+		return CompositeListValueModel.forModels(list);
 	}
 
 	protected void addChildrenModelsTo(ArrayList<ListValueModel<? extends JpaStructureNode>> list) {

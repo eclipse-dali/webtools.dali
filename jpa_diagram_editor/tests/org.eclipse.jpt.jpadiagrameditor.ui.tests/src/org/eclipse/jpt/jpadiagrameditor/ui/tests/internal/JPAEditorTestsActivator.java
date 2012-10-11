@@ -17,7 +17,7 @@ package org.eclipse.jpt.jpadiagrameditor.ui.tests.internal;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Plugin;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.osgi.framework.BundleContext;
 
@@ -37,7 +37,7 @@ public class JPAEditorTestsActivator extends Plugin {
 		super.start(context);
 		plugin = this;
 		JpaProjectManager jpaProjectManager = this.getJpaProjectManager();
-		ReflectionTools.executeMethod(jpaProjectManager, "executeCommandsSynchronously"); //$NON-NLS-1$
+		ObjectTools.execute(jpaProjectManager, "executeCommandsSynchronously"); //$NON-NLS-1$
 	}
 
 	protected JpaProjectManager getJpaProjectManager() {

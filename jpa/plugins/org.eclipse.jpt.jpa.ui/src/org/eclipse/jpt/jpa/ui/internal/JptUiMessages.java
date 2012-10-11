@@ -197,6 +197,8 @@ public class JptUiMessages {
 
 	public static String JpaXmlCompletionProposalComputer_SpecialNameMsg;
 
+	public static String JpaPlatformUi_missingJpaPlatform;
+
 	private JptUiMessages() {
 		throw new UnsupportedOperationException();
 	}

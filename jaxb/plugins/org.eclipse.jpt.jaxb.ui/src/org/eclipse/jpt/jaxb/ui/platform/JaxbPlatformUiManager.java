@@ -9,10 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.platform;
 
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
+import org.eclipse.jpt.jaxb.ui.JaxbWorkbench;
 
 /**
- * Repository for {@link JaxbPlatformUi}s
+ * The <code>org.eclipse.jpt.jaxb.ui.jaxbPlatformUis</code> extension point
+ * corresponding to a {@link JaxbWorkbench Dali JAXB workbench}.
+ * <p>
+ * See <code>org.eclipse.jpt.jaxb.ui/plugin.xml:jaxbPlatformUis</code>.
+ * <p>
+ * Not intended to be implemented by clients.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -24,10 +30,16 @@ import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
  * @since 3.0
  */
 public interface JaxbPlatformUiManager {
-	
 	/**
-	 * Return the platform UI responsible for providing UI elements for the given
-	 * JAXB platform description
+	 * Return the manager's Dali JAXB workbench.
 	 */
-	public JaxbPlatformUi getJaxbPlatformUi(JaxbPlatformDescription platformDesc);
+	JaxbWorkbench getJaxbWorkbench();
+
+
+	// ********** JAXB platform UIs **********
+
+	/**
+	 * Return the UI for the specified JAXB platform.
+	 */
+	JaxbPlatformUi getJaxbPlatformUi(JaxbPlatform jaxbPlatform);
 }

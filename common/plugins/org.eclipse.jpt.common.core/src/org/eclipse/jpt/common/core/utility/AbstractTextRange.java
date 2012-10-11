@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.core.utility;
 
 import org.eclipse.jpt.common.core.internal.utility.SimpleTextRange;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * Partial implementation of text range.
@@ -79,6 +79,6 @@ public abstract class AbstractTextRange
 		String start = String.valueOf(this.getOffset());
 		String end = String.valueOf(this.getEnd());
 		String line = String.valueOf(this.getLineNumber());
-		return StringTools.buildToStringFor(this, start + ", " + end + " [" + line + ']'); //$NON-NLS-1$ //$NON-NLS-2$
+		return ObjectTools.toString(this, start + ", " + end + " [" + line + ']'); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

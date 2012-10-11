@@ -10,11 +10,13 @@
 package org.eclipse.jpt.common.utility.internal.node;
 
 import java.io.Serializable;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.SynchronizedBoolean;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.reference.SynchronizedBoolean;
+import org.eclipse.jpt.common.utility.node.Node;
 
 /**
- * This implementation of the Validator interface implements the
+ * This implementation of the {@link org.eclipse.jpt.common.utility.node.Node.Validator}
+ * interface implements the
  * pause/resume portion of the protocol, but delegates the actual
  * validation to a "pluggable" delegate.
  */
@@ -79,7 +81,7 @@ public class PluggableValidator
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.delegate);
+		return ObjectTools.toString(this, this.delegate);
 	}
 
 
@@ -115,7 +117,7 @@ public class PluggableValidator
 			}
 			@Override
 			public String toString() {
-				return StringTools.buildSingletonToString(this);
+				return ObjectTools.singletonToString(this);
 			}
 			private static final long serialVersionUID = 1L;
 			private Object readResolve() {

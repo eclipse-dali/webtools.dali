@@ -178,6 +178,9 @@ public class JptJaxbUiMessages {
 	public static String JaxbFacetWizardPage_jaxbImplementationLabel;
 	
 	
+	public static String JaxbPlatformUi_missingJaxbPlatform;
+
+
 	private static final String BUNDLE_NAME = "jpt_jaxb_ui"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptJaxbUiMessages.class;
 	static {

@@ -13,12 +13,12 @@ import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.NotNullFilter;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.Column;
@@ -180,7 +180,7 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 		return new FilteringIterable<JavaAttributeMapping>(this.getAttributeMappings()) {
 			@Override
 			protected boolean accept(JavaAttributeMapping attributeMapping) {
-				return Tools.valuesAreEqual(attributeMapping.getKey(), mappingKey);
+				return ObjectTools.equals(attributeMapping.getKey(), mappingKey);
 			}
 		};
 	}
@@ -201,7 +201,7 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 		return new FilteringIterable<AttributeMapping>(this.getAllAttributeMappings()) {
 			@Override
 			protected boolean accept(AttributeMapping attributeMapping) {
-				return Tools.valuesAreEqual(attributeMapping.getKey(), mappingKey);
+				return ObjectTools.equals(attributeMapping.getKey(), mappingKey);
 			}
 		};
 	}

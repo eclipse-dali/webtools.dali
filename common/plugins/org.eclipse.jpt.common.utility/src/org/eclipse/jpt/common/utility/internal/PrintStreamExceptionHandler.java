@@ -39,6 +39,6 @@ public class PrintStreamExceptionHandler
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this);
+		return ObjectTools.toString(this);
 	}
 }

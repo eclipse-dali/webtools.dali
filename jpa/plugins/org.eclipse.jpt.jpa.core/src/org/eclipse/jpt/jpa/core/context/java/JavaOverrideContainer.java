@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.context.java;
 
 import org.eclipse.jpt.common.core.resource.java.JavaResourceMember;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.context.OverrideContainer;
 import org.eclipse.jpt.jpa.core.context.Override_;
 import org.eclipse.jpt.jpa.core.context.VirtualOverride;

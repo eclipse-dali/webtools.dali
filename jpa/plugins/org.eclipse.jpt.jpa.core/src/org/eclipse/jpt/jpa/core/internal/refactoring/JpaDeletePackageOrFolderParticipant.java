@@ -28,10 +28,10 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatform;
@@ -225,7 +225,7 @@ public class JpaDeletePackageOrFolderParticipant
 		}
 		catch (JavaModelException e) {
 			JptJpaCorePlugin.instance().logError(e);
-			return Tools.EMPTY_OBJECT_ARRAY;
+			return ObjectTools.EMPTY_OBJECT_ARRAY;
 		}
 	}
 	

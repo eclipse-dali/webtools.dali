@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.utility.internal;
 
 import java.util.Vector;
 import org.eclipse.jpt.common.utility.ExceptionHandler;
-import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SnapshotCloneIterable;
 
 /**
  * An exception handler that collects and holds the exceptions handed to it.
@@ -22,6 +22,11 @@ public class CollectingExceptionHandler
 	implements ExceptionHandler
 {
 	private final Vector<Throwable> exceptions = new Vector<Throwable>();
+
+
+	public CollectingExceptionHandler() {
+		super();
+	}
 
 	public void handleException(Throwable t) {
 		this.exceptions.add(t);
@@ -48,6 +53,6 @@ public class CollectingExceptionHandler
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.exceptions);
+		return ObjectTools.toString(this, this.exceptions);
 	}
 }

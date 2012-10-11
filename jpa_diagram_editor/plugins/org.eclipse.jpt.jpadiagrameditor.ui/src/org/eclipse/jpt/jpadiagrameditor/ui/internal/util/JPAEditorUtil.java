@@ -994,7 +994,7 @@ public class JPAEditorUtil {
 			y = isCardinality ? CORR : CORR + TXT_HEIGHT + 2;
 		} else if (relEndDir.equals(RelEndDir.DOWN)) {
 			x = isCardinality ? (-CORR - TXT_WIDTH) : CORR;
-			y = -CORR - (isCardinality ? TXT_HEIGHT : (TXT_HEIGHT + 2) * 2);
+			y = -CORR - (isCardinality ? TXT_HEIGHT : (TXT_HEIGHT + 2) << 1);
 		}
 		return new Point(x, y);
 	}

@@ -15,8 +15,8 @@ import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.node.AbstractNode;
-import org.eclipse.jpt.common.utility.internal.node.Node;
-import org.eclipse.jpt.common.utility.internal.node.Problem;
+import org.eclipse.jpt.common.utility.node.Node;
+import org.eclipse.jpt.common.utility.node.Problem;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterContainer;
@@ -83,7 +83,7 @@ final class EclipseLinkConverterStateObject extends AbstractNode
 	}
 
 	private void addNameProblemsTo(List<Problem> currentProblems) {
-		if (StringTools.stringIsEmpty(this.name)) {
+		if (StringTools.isBlank(this.name)) {
 			currentProblems.add(buildProblem(EclipseLinkUiDetailsMessages.EclipseLinkConverterStateObject_nameMustBeSpecified, IMessageProvider.ERROR));
 		} 
 		else if (names().contains(this.name)) {

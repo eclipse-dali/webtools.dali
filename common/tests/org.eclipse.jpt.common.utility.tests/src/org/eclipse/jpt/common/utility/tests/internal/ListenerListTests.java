@@ -14,9 +14,9 @@ import java.util.EventListener;
 
 import junit.framework.TestCase;
 
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.SystemTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 
 @SuppressWarnings("nls")
 public class ListenerListTests extends TestCase {
@@ -30,14 +30,14 @@ public class ListenerListTests extends TestCase {
 		Listener listener1 = new LocalListener();
 		Listener listener2 = new LocalListener();
 		Iterable<Listener> listeners = listenerList.getListeners();
-		assertEquals(0, CollectionTools.size(listeners));
+		assertEquals(0, IterableTools.size(listeners));
 
 		listenerList.add(listener1);
 		listenerList.add(listener2);
 		listeners = listenerList.getListeners();
-		assertEquals(2, CollectionTools.size(listeners));
-		assertTrue(CollectionTools.contains(listeners, listener1));
-		assertTrue(CollectionTools.contains(listeners, listener2));
+		assertEquals(2, IterableTools.size(listeners));
+		assertTrue(IterableTools.contains(listeners, listener1));
+		assertTrue(IterableTools.contains(listeners, listener2));
 	}
 
 	public void testSize() throws Exception {
@@ -95,15 +95,15 @@ public class ListenerListTests extends TestCase {
 		Listener listener2 = new LocalListener();
 		listenerList.add(listener1);
 		listenerList.add(listener2);
-		assertTrue(CollectionTools.contains(listenerList.getListeners(), listener1));
-		assertTrue(CollectionTools.contains(listenerList.getListeners(), listener2));
+		assertTrue(IterableTools.contains(listenerList.getListeners(), listener1));
+		assertTrue(IterableTools.contains(listenerList.getListeners(), listener2));
 
 		listenerList.remove(listener1);
-		assertFalse(CollectionTools.contains(listenerList.getListeners(), listener1));
-		assertTrue(CollectionTools.contains(listenerList.getListeners(), listener2));
+		assertFalse(IterableTools.contains(listenerList.getListeners(), listener1));
+		assertTrue(IterableTools.contains(listenerList.getListeners(), listener2));
 
 		listenerList.remove(listener2);
-		assertFalse(CollectionTools.contains(listenerList.getListeners(), listener2));
+		assertFalse(IterableTools.contains(listenerList.getListeners(), listener2));
 	}
 
 	public void testRemove_null() throws Exception {
@@ -140,17 +140,17 @@ public class ListenerListTests extends TestCase {
 		Listener listener2 = new LocalListener();
 		listenerList.add(listener1);
 		listenerList.add(listener2);
-		assertTrue(CollectionTools.contains(listenerList.getListeners(), listener1));
-		assertTrue(CollectionTools.contains(listenerList.getListeners(), listener2));
+		assertTrue(IterableTools.contains(listenerList.getListeners(), listener1));
+		assertTrue(IterableTools.contains(listenerList.getListeners(), listener2));
 
 		listenerList.clear();
-		assertFalse(CollectionTools.contains(listenerList.getListeners(), listener1));
-		assertFalse(CollectionTools.contains(listenerList.getListeners(), listener2));
+		assertFalse(IterableTools.contains(listenerList.getListeners(), listener1));
+		assertFalse(IterableTools.contains(listenerList.getListeners(), listener2));
 	}
 
 	public void testSerialization() throws Exception {
 		// This test doesn't pass in the Eclipse build environment (Linux/IBM VM) for some reason
-		if (Tools.jvmIsSun()) {
+		if (SystemTools.jvmIsSun()) {
 			this.verifySerialization();
 		}
 	}
@@ -180,6 +180,7 @@ public class ListenerListTests extends TestCase {
 	}
 	
 	static class LocalListener implements Listener, Serializable {
+		private static final long serialVersionUID = 1L;
 		public void somethingHappened() {
 			// do nothing
 		}

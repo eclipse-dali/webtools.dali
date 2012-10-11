@@ -13,7 +13,7 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
-import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
+import org.eclipse.jpt.jaxb.core.internal.plugin.JptJaxbCorePlugin;
 
 public interface JaxbIndexResource
 		extends JptResourceModel {

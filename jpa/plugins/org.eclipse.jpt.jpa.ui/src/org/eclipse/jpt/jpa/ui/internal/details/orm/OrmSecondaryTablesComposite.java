@@ -13,11 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.jpt.common.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListPropertyValueModelAdapter;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiableCollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -81,7 +81,7 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 		List<ListValueModel<? extends ReadOnlySecondaryTable>> list = new ArrayList<ListValueModel<? extends ReadOnlySecondaryTable>>();
 		list.add(buildSpecifiedSecondaryTablesListHolder());
 		list.add(buildVirtualSecondaryTablesListHolder());
-		return new CompositeListValueModel<ListValueModel<? extends ReadOnlySecondaryTable>, ReadOnlySecondaryTable>(list);
+		return CompositeListValueModel.forModels(list);
 	}
 
 	private ListValueModel<ReadOnlySecondaryTable> buildSecondaryTablesListModel() {

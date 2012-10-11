@@ -10,9 +10,8 @@
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyJoinColumn;
@@ -103,7 +102,7 @@ public class GenericJavaCollectionTable2_0
 		}
 
 		public org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName) {
-			return Tools.valuesAreEqual(GenericJavaCollectionTable2_0.this.getName(), tableName) ?
+			return ObjectTools.equals(GenericJavaCollectionTable2_0.this.getName(), tableName) ?
 					GenericJavaCollectionTable2_0.this.getDbTable() :
 					null;
 		}
@@ -133,7 +132,7 @@ public class GenericJavaCollectionTable2_0
 		 * the default table name. The table is always the collection table.
 		 */
 		public boolean tableNameIsInvalid(String tableName) {
-			return ! StringTools.stringsAreEqual(this.getDefaultTableName(), tableName);
+			return ! ObjectTools.equals(this.getDefaultTableName(), tableName);
 		}
 
 		/**

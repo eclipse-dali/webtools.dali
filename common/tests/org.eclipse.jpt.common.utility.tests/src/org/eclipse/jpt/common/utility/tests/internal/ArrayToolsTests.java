@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,42 +21,42 @@ import java.util.Vector;
 import junit.framework.TestCase;
 
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.Range;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
 import org.eclipse.jpt.common.utility.internal.ReverseComparator;
-import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
 
 @SuppressWarnings("nls")
-public class ArrayToolsTests extends TestCase {
-
+public class ArrayToolsTests
+	extends TestCase
+{
 	public ArrayToolsTests(String name) {
 		super(name);
 	}
 
-
 	// ********** instantiation **********
 
-	public void testNewArrayObjectArray() {
+	public void testNewInstanceObjectArray() {
 		String[] array1 = new String[2];
-		String[] array2 = ArrayTools.newArray(array1);
+		String[] array2 = ArrayTools.newInstance(array1);
 		array2[0] = "foo";
 		array2[1] = "bar";
 		assertEquals(String.class, array2.getClass().getComponentType());
 		assertEquals(2, array2.length);
 	}
 
-	public void testNewArrayObjectArrayInt() {
+	public void testNewInstanceObjectArrayInt() {
 		String[] array1 = new String[2];
-		String[] array2 = ArrayTools.newArray(array1, 5);
+		String[] array2 = ArrayTools.newInstance(array1, 5);
 		array2[0] = "foo";
 		array2[4] = "bar";
 		assertEquals(String.class, array2.getClass().getComponentType());
 		assertEquals(5, array2.length);
 	}
 
-	public void testNewArrayObjectArrayInt_Exception() {
+	public void testNewInstanceObjectArrayInt_Exception() {
 		String[] array1 = new String[2];
-		Object[] array2 = ArrayTools.newArray(array1, 5);
+		Object[] array2 = ArrayTools.newInstance(array1, 5);
 		boolean exCaught = false;
 		try {
 			array2[1] = Integer.valueOf(7);
@@ -67,22 +67,16 @@ public class ArrayToolsTests extends TestCase {
 		assertTrue(exCaught);
 	}
 
-	public void testComponentType() {
-		String[] array = new String[2];
-		Class<? extends String> javaClass = ArrayTools.componentType(array);
-		assertEquals(String.class, javaClass);
-	}
-
-	public void testNewArrayClassInt() {
-		String[] array = ArrayTools.newArray(String.class, 5);
+	public void testNewInstanceClassInt() {
+		String[] array = ArrayTools.newInstance(String.class, 5);
 		array[0] = "foo";
 		array[4] = "bar";
 		assertEquals(String.class, array.getClass().getComponentType());
 		assertEquals(5, array.length);
 	}
 
-	public void testNewArrayClassInt_Exception() {
-		Object[] array = ArrayTools.newArray(String.class, 5);
+	public void testNewInstanceClassInt_Exception() {
+		Object[] array = ArrayTools.newInstance(String.class, 5);
 		boolean exCaught = false;
 		try {
 			array[1] = Integer.valueOf(7);
@@ -93,10 +87,10 @@ public class ArrayToolsTests extends TestCase {
 		assertTrue(exCaught);
 	}
 
-	public void testNewArrayClassInt_Primitive() {
+	public void testNewInstanceClassInt_Primitive() {
 		boolean exCaught = false;
 		try {
-			Object[] array = ArrayTools.newArray(int.class, 5);
+			Object[] array = ArrayTools.newInstance(int.class, 5);
 			fail("bogus array: " + Arrays.toString(array));
 		} catch (IllegalArgumentException ex) {
 			exCaught = true;
@@ -104,8 +98,15 @@ public class ArrayToolsTests extends TestCase {
 		assertTrue(exCaught);
 	}
 
+	public void testNewInstanceClassInt_Super() {
+		Number[] array = ArrayTools.newInstance(Integer.class, 5);
+		Class<?> javaClass = array.getClass().getComponentType();
+		assertFalse(javaClass == Number.class);
+		assertTrue(javaClass == Integer.class);
+	}
 
-	// ********** conversion **********
+
+	// ********** factory methods **********
 
 	public void testArrayIterable() {
 		Iterable<String> iterable = this.buildStringList1();
@@ -815,6 +816,22 @@ public class ArrayToolsTests extends TestCase {
 	}
 
 
+	// ********** component type **********
+
+	public void testComponentType() {
+		String[] array = new String[2];
+		Class<? extends String> javaClass = ArrayTools.componentType(array);
+		assertEquals(String.class, javaClass);
+	}
+
+	public void testComponentType_Super() {
+		Number[] array = new Integer[2];
+		Class<? extends Number> javaClass = ArrayTools.componentType(array);
+		assertFalse(javaClass == Number.class);
+		assertTrue(javaClass == Integer.class);
+	}
+
+
 	// ********** concatenate **********
 
 	public void testConcatenateObjectArrayArray() {
@@ -986,57 +1003,57 @@ public class ArrayToolsTests extends TestCase {
 
 		array1 = new String[] { a, b, c, d, e };
 		array2 = new String[] { a_, b_, c_, d_, e_ };
-		assertEquals(-1, ArrayTools.diffEnd(array1, array2));
+		assertEquals(-1, ArrayTools.lastIndexOfDifference(array1, array2));
 
 		array1 = new String[] { a };
 		array2 = new String[] { a_ };
-		assertEquals(-1, ArrayTools.diffEnd(array1, array2));
+		assertEquals(-1, ArrayTools.lastIndexOfDifference(array1, array2));
 
 		array1 = new String[] { b, c, d, e };
 		array2 = new String[] { a_, b_, c_, d_, e_ };
-		assertEquals(4, ArrayTools.diffEnd(array1, array2));
+		assertEquals(4, ArrayTools.lastIndexOfDifference(array1, array2));
 
 		array1 = new String[] { a, b, c, d, e };
 		array2 = new String[] { b_, c_, d_, e_ };
-		assertEquals(4, ArrayTools.diffEnd(array1, array2));
+		assertEquals(4, ArrayTools.lastIndexOfDifference(array1, array2));
 
 		array1 = new String[0];
 		array2 = new String[] { a_, b_, c_, d_, e_ };
-		assertEquals(4, ArrayTools.diffEnd(array1, array2));
+		assertEquals(4, ArrayTools.lastIndexOfDifference(array1, array2));
 
 		array1 = new String[] { a, b, c, d, e };
 		array2 = new String[0];
-		assertEquals(4, ArrayTools.diffEnd(array1, array2));
+		assertEquals(4, ArrayTools.lastIndexOfDifference(array1, array2));
 
 		array1 = new String[0];
 		array2 = new String[0];
-		assertEquals(-1, ArrayTools.diffEnd(array1, array2));
+		assertEquals(-1, ArrayTools.lastIndexOfDifference(array1, array2));
 
 		array1 = new String[] { a, b, c, d, e };
 		array2 = new String[] { b_, c_, a_, d_, e_ };
-		assertEquals(2, ArrayTools.diffEnd(array1, array2));
+		assertEquals(2, ArrayTools.lastIndexOfDifference(array1, array2));
 
 		array1 = new String[] { b, c, d, e };
 		array2 = new String[] { a_, c_, d_, e_ };
-		assertEquals(0, ArrayTools.diffEnd(array1, array2));
+		assertEquals(0, ArrayTools.lastIndexOfDifference(array1, array2));
 
 		array1 = new String[] { a, b, c, e };
 		array2 = new String[] { a_, b_, c_, d_ };
-		assertEquals(3, ArrayTools.diffEnd(array1, array2));
+		assertEquals(3, ArrayTools.lastIndexOfDifference(array1, array2));
 
 		String c__ = new String(c);
 		assertTrue((c != c__) && c.equals(c_));
 		array1 = new String[] { a, b, c, d, e };
 		array2 = new String[] { a_, b_, c__, d_, e_ };
-		assertEquals(-1, ArrayTools.diffEnd(array1, array2));
+		assertEquals(-1, ArrayTools.lastIndexOfDifference(array1, array2));
 
 		array1 = new String[] { a, b, null, d, e };
 		array2 = new String[] { a_, b_, c_, d_, e_ };
-		assertEquals(2, ArrayTools.diffEnd(array1, array2));
+		assertEquals(2, ArrayTools.lastIndexOfDifference(array1, array2));
 
 		array1 = new String[] { a, b, null, d, e };
 		array2 = new String[] { a_, b_, null, d_, e_ };
-		assertEquals(-1, ArrayTools.diffEnd(array1, array2));
+		assertEquals(-1, ArrayTools.lastIndexOfDifference(array1, array2));
 	}
 
 	public void testDiffRange() {
@@ -1060,57 +1077,57 @@ public class ArrayToolsTests extends TestCase {
 
 		array1 = new String[] { a, b, c, d, e };
 		array2 = new String[] { a_, b_, c_, d_, e_ };
-		assertEquals(new Range(5, -1), ArrayTools.diffRange(array1, array2));
+		assertEquals(new Range(5, -1), ArrayTools.differenceRange(array1, array2));
 
 		array1 = new String[] { a };
 		array2 = new String[] { a_ };
-		assertEquals(new Range(1, -1), ArrayTools.diffRange(array1, array2));
+		assertEquals(new Range(1, -1), ArrayTools.differenceRange(array1, array2));
 
 		array1 = new String[] { b, c, d, e };
 		array2 = new String[] { a_, b_, c_, d_, e_ };
-		assertEquals(new Range(0, 4), ArrayTools.diffRange(array1, array2));
+		assertEquals(new Range(0, 4), ArrayTools.differenceRange(array1, array2));
 
 		array1 = new String[] { a, b, c, d, e };
 		array2 = new String[] { b_, c_, d_, e_ };
-		assertEquals(new Range(0, 4), ArrayTools.diffRange(array1, array2));
+		assertEquals(new Range(0, 4), ArrayTools.differenceRange(array1, array2));
 
 		array1 = new String[0];
 		array2 = new String[] { a_, b_, c_, d_, e_ };
-		assertEquals(new Range(0, 4), ArrayTools.diffRange(array1, array2));
+		assertEquals(new Range(0, 4), ArrayTools.differenceRange(array1, array2));
 
 		array1 = new String[] { a, b, c, d, e };
 		array2 = new String[0];
-		assertEquals(new Range(0, 4), ArrayTools.diffRange(array1, array2));
+		assertEquals(new Range(0, 4), ArrayTools.differenceRange(array1, array2));
 
 		array1 = new String[0];
 		array2 = new String[0];
-		assertEquals(new Range(0, -1), ArrayTools.diffRange(array1, array2));
+		assertEquals(new Range(0, -1), ArrayTools.differenceRange(array1, array2));
 
 		array1 = new String[] { a, b, c, d, e };
 		array2 = new String[] { b_, c_, a_, d_, e_ };
-		assertEquals(new Range(0, 2), ArrayTools.diffRange(array1, array2));
+		assertEquals(new Range(0, 2), ArrayTools.differenceRange(array1, array2));
 
 		array1 = new String[] { b, c, d, e };
 		array2 = new String[] { a_, c_, d_, e_ };
-		assertEquals(new Range(0, 0), ArrayTools.diffRange(array1, array2));
+		assertEquals(new Range(0, 0), ArrayTools.differenceRange(array1, array2));
 
 		array1 = new String[] { a, b, c, e };
 		array2 = new String[] { a_, b_, c_, d_ };
-		assertEquals(new Range(3, 3), ArrayTools.diffRange(array1, array2));
+		assertEquals(new Range(3, 3), ArrayTools.differenceRange(array1, array2));
 
 		String c__ = new String(c);
 		assertTrue((c != c__) && c.equals(c_));
 		array1 = new String[] { a, b, c, d, e };
 		array2 = new String[] { a_, b_, c__, d_, e_ };
-		assertEquals(new Range(5, -1), ArrayTools.diffRange(array1, array2));
+		assertEquals(new Range(5, -1), ArrayTools.differenceRange(array1, array2));
 
 		array1 = new String[] { a, b, null, d, e };
 		array2 = new String[] { a_, b_, c_, d_, e_ };
-		assertEquals(new Range(2, 2), ArrayTools.diffRange(array1, array2));
+		assertEquals(new Range(2, 2), ArrayTools.differenceRange(array1, array2));
 
 		array1 = new String[] { a, b, null, d, e };
 		array2 = new String[] { a_, b_, null, d_, e_ };
-		assertEquals(new Range(5, -1), ArrayTools.diffRange(array1, array2));
+		assertEquals(new Range(5, -1), ArrayTools.differenceRange(array1, array2));
 	}
 
 	public void testDiffStart() {
@@ -1134,57 +1151,57 @@ public class ArrayToolsTests extends TestCase {
 
 		array1 = new String[] { a, b, c, d, e };
 		array2 = new String[] { a_, b_, c_, d_, e_ };
-		assertEquals(5, ArrayTools.diffStart(array1, array2));
+		assertEquals(5, ArrayTools.indexOfDifference(array1, array2));
 
 		array1 = new String[] { a };
 		array2 = new String[] { a_ };
-		assertEquals(1, ArrayTools.diffStart(array1, array2));
+		assertEquals(1, ArrayTools.indexOfDifference(array1, array2));
 
 		array1 = new String[] { a, b, c, d };
 		array2 = new String[] { a_, b_, c_, d_, e_ };
-		assertEquals(4, ArrayTools.diffStart(array1, array2));
+		assertEquals(4, ArrayTools.indexOfDifference(array1, array2));
 
 		array1 = new String[] { a, b, c, d, e };
 		array2 = new String[] { a_, b_, c_, d_ };
-		assertEquals(4, ArrayTools.diffStart(array1, array2));
+		assertEquals(4, ArrayTools.indexOfDifference(array1, array2));
 
 		array1 = new String[0];
 		array2 = new String[] { a_, b_, c_, d_, e_ };
-		assertEquals(0, ArrayTools.diffStart(array1, array2));
+		assertEquals(0, ArrayTools.indexOfDifference(array1, array2));
 
 		array1 = new String[] { a, b, c, d, e };
 		array2 = new String[0];
-		assertEquals(0, ArrayTools.diffStart(array1, array2));
+		assertEquals(0, ArrayTools.indexOfDifference(array1, array2));
 
 		array1 = new String[0];
 		array2 = new String[0];
-		assertEquals(0, ArrayTools.diffStart(array1, array2));
+		assertEquals(0, ArrayTools.indexOfDifference(array1, array2));
 
 		array1 = new String[] { a, b, c, d, e };
 		array2 = new String[] { a_, b_, e_, c_, d_ };
-		assertEquals(2, ArrayTools.diffStart(array1, array2));
+		assertEquals(2, ArrayTools.indexOfDifference(array1, array2));
 
 		array1 = new String[] { a, b, c, e };
 		array2 = new String[] { a_, b_, c_, d_ };
-		assertEquals(3, ArrayTools.diffStart(array1, array2));
+		assertEquals(3, ArrayTools.indexOfDifference(array1, array2));
 
 		array1 = new String[] { b, c, d, e };
 		array2 = new String[] { a_, c_, d_, e_ };
-		assertEquals(0, ArrayTools.diffStart(array1, array2));
+		assertEquals(0, ArrayTools.indexOfDifference(array1, array2));
 
 		String c__ = new String(c);
 		assertTrue((c != c__) && c.equals(c__));
 		array1 = new String[] { a, b, c, d, e };
 		array2 = new String[] { a_, b_, c__, d_, e_ };
-		assertEquals(5, ArrayTools.diffStart(array1, array2));
+		assertEquals(5, ArrayTools.indexOfDifference(array1, array2));
 
 		array1 = new String[] { a, b, null, d, e };
 		array2 = new String[] { a_, b_, c_, d_, e_ };
-		assertEquals(2, ArrayTools.diffStart(array1, array2));
+		assertEquals(2, ArrayTools.indexOfDifference(array1, array2));
 
 		array1 = new String[] { a, b, null, d, e };
 		array2 = new String[] { a_, b_, null, d_, e_ };
-		assertEquals(5, ArrayTools.diffStart(array1, array2));
+		assertEquals(5, ArrayTools.indexOfDifference(array1, array2));
 	}
 
 
@@ -1211,57 +1228,57 @@ public class ArrayToolsTests extends TestCase {
 
 		array1 = new String[] { a, b, c, d, e };
 		array2 = new String[] { a_, b_, c_, d_, e_ };
-		assertEquals(-1, ArrayTools.identityDiffEnd(array1, array2));
+		assertEquals(-1, ArrayTools.lastIndexOfIdentityDifference(array1, array2));
 
 		array1 = new String[] { a };
 		array2 = new String[] { a_ };
-		assertEquals(-1, ArrayTools.identityDiffEnd(array1, array2));
+		assertEquals(-1, ArrayTools.lastIndexOfIdentityDifference(array1, array2));
 
 		array1 = new String[] { b, c, d, e };
 		array2 = new String[] { a_, b_, c_, d_, e_ };
-		assertEquals(4, ArrayTools.identityDiffEnd(array1, array2));
+		assertEquals(4, ArrayTools.lastIndexOfIdentityDifference(array1, array2));
 
 		array1 = new String[] { a, b, c, d, e };
 		array2 = new String[] { b_, c_, d_, e_ };
-		assertEquals(4, ArrayTools.identityDiffEnd(array1, array2));
+		assertEquals(4, ArrayTools.lastIndexOfIdentityDifference(array1, array2));
 
 		array1 = new String[0];
 		array2 = new String[] { a_, b_, c_, d_, e_ };
-		assertEquals(4, ArrayTools.identityDiffEnd(array1, array2));
+		assertEquals(4, ArrayTools.lastIndexOfIdentityDifference(array1, array2));
 
 		array1 = new String[] { a, b, c, d, e };
 		array2 = new String[0];
-		assertEquals(4, ArrayTools.identityDiffEnd(array1, array2));
+		assertEquals(4, ArrayTools.lastIndexOfIdentityDifference(array1, array2));
 
 		array1 = new String[0];
 		array2 = new String[0];
-		assertEquals(-1, ArrayTools.identityDiffEnd(array1, array2));
+		assertEquals(-1, ArrayTools.lastIndexOfIdentityDifference(array1, array2));
 
 		array1 = new String[] { a, b, c, d, e };
 		array2 = new String[] { b_, c_, a_, d_, e_ };
-		assertEquals(2, ArrayTools.identityDiffEnd(array1, array2));
+		assertEquals(2, ArrayTools.lastIndexOfIdentityDifference(array1, array2));
 
 		array1 = new String[] { b, c, d, e };
 		array2 = new String[] { a_, c_, d_, e_ };
-		assertEquals(0, ArrayTools.identityDiffEnd(array1, array2));
+		assertEquals(0, ArrayTools.lastIndexOfIdentityDifference(array1, array2));
 
 		array1 = new String[] { a, b, c, e };
 		array2 = new String[] { a_, b_, c_, d_ };
-		assertEquals(3, ArrayTools.identityDiffEnd(array1, array2));
+		assertEquals(3, ArrayTools.lastIndexOfIdentityDifference(array1, array2));
 
 		String c__ = new String(c);
 		assertTrue((c != c__) && c.equals(c_));
 		array1 = new String[] { a, b, c, d, e };
 		array2 = new String[] { a_, b_, c__, d_, e_ };
-		assertEquals(2, ArrayTools.identityDiffEnd(array1, array2));
+		assertEquals(2, ArrayTools.lastIndexOfIdentityDifference(array1, array2));
 
 		array1 = new String[] { a, b, null, d, e };
 		array2 = new String[] { a_, b_, c_, d_, e_ };
-		assertEquals(2, ArrayTools.identityDiffEnd(array1, array2));
+		assertEquals(2, ArrayTools.lastIndexOfIdentityDifference(array1, array2));
 
 		array1 = new String[] { a, b, null, d, e };
 		array2 = new String[] { a_, b_, null, d_, e_ };
-		assertEquals(-1, ArrayTools.identityDiffEnd(array1, array2));
+		assertEquals(-1, ArrayTools.lastIndexOfIdentityDifference(array1, array2));
 	}
 
 	public void testIdentityDiffRange() {
@@ -1285,57 +1302,57 @@ public class ArrayToolsTests extends TestCase {
 
 		array1 = new String[] { a, b, c, d, e };
 		array2 = new String[] { a_, b_, c_, d_, e_ };
-		assertEquals(new Range(5, -1), ArrayTools.identityDiffRange(array1, array2));
+		assertEquals(new Range(5, -1), ArrayTools.identityDifferenceRange(array1, array2));
 
 		array1 = new String[] { a };
 		array2 = new String[] { a_ };
-		assertEquals(new Range(1, -1), ArrayTools.identityDiffRange(array1, array2));
+		assertEquals(new Range(1, -1), ArrayTools.identityDifferenceRange(array1, array2));
 
 		array1 = new String[] { b, c, d, e };
 		array2 = new String[] { a_, b_, c_, d_, e_ };
-		assertEquals(new Range(0, 4), ArrayTools.identityDiffRange(array1, array2));
+		assertEquals(new Range(0, 4), ArrayTools.identityDifferenceRange(array1, array2));
 
 		array1 = new String[] { a, b, c, d, e };
 		array2 = new String[] { b_, c_, d_, e_ };
-		assertEquals(new Range(0, 4), ArrayTools.identityDiffRange(array1, array2));
+		assertEquals(new Range(0, 4), ArrayTools.identityDifferenceRange(array1, array2));
 
 		array1 = new String[0];
 		array2 = new String[] { a_, b_, c_, d_, e_ };
-		assertEquals(new Range(0, 4), ArrayTools.identityDiffRange(array1, array2));
+		assertEquals(new Range(0, 4), ArrayTools.identityDifferenceRange(array1, array2));
 
 		array1 = new String[] { a, b, c, d, e };
 		array2 = new String[0];
-		assertEquals(new Range(0, 4), ArrayTools.identityDiffRange(array1, array2));
+		assertEquals(new Range(0, 4), ArrayTools.identityDifferenceRange(array1, array2));
 
 		array1 = new String[0];
 		array2 = new String[0];
-		assertEquals(new Range(0, -1), ArrayTools.identityDiffRange(array1, array2));
+		assertEquals(new Range(0, -1), ArrayTools.identityDifferenceRange(array1, array2));
 
 		array1 = new String[] { a, b, c, d, e };
 		array2 = new String[] { b_, c_, a_, d_, e_ };
-		assertEquals(new Range(0, 2), ArrayTools.identityDiffRange(array1, array2));
+		assertEquals(new Range(0, 2), ArrayTools.identityDifferenceRange(array1, array2));
 
 		array1 = new String[] { b, c, d, e };
 		array2 = new String[] { a_, c_, d_, e_ };
-		assertEquals(new Range(0, 0), ArrayTools.identityDiffRange(array1, array2));
+		assertEquals(new Range(0, 0), ArrayTools.identityDifferenceRange(array1, array2));
 
 		array1 = new String[] { a, b, c, e };
 		array2 = new String[] { a_, b_, c_, d_ };
-		assertEquals(new Range(3, 3), ArrayTools.identityDiffRange(array1, array2));
+		assertEquals(new Range(3, 3), ArrayTools.identityDifferenceRange(array1, array2));
 
 		String c__ = new String(c);
 		assertTrue((c != c__) && c.equals(c_));
 		array1 = new String[] { a, b, c, d, e };
 		array2 = new String[] { a_, b_, c__, d_, e_ };
-		assertEquals(new Range(2, 2), ArrayTools.identityDiffRange(array1, array2));
+		assertEquals(new Range(2, 2), ArrayTools.identityDifferenceRange(array1, array2));
 
 		array1 = new String[] { a, b, null, d, e };
 		array2 = new String[] { a_, b_, c_, d_, e_ };
-		assertEquals(new Range(2, 2), ArrayTools.identityDiffRange(array1, array2));
+		assertEquals(new Range(2, 2), ArrayTools.identityDifferenceRange(array1, array2));
 
 		array1 = new String[] { a, b, null, d, e };
 		array2 = new String[] { a_, b_, null, d_, e_ };
-		assertEquals(new Range(5, -1), ArrayTools.identityDiffRange(array1, array2));
+		assertEquals(new Range(5, -1), ArrayTools.identityDifferenceRange(array1, array2));
 	}
 
 	public void testIdentityDiffStart() {
@@ -1359,57 +1376,57 @@ public class ArrayToolsTests extends TestCase {
 
 		array1 = new String[] { a, b, c, d, e };
 		array2 = new String[] { a_, b_, c_, d_, e_ };
-		assertEquals(5, ArrayTools.identityDiffStart(array1, array2));
+		assertEquals(5, ArrayTools.indexOfIdentityDifference(array1, array2));
 
 		array1 = new String[] { a };
 		array2 = new String[] { a_ };
-		assertEquals(1, ArrayTools.identityDiffStart(array1, array2));
+		assertEquals(1, ArrayTools.indexOfIdentityDifference(array1, array2));
 
 		array1 = new String[] { a, b, c, d };
 		array2 = new String[] { a_, b_, c_, d_, e_ };
-		assertEquals(4, ArrayTools.identityDiffStart(array1, array2));
+		assertEquals(4, ArrayTools.indexOfIdentityDifference(array1, array2));
 
 		array1 = new String[] { a, b, c, d, e };
 		array2 = new String[] { a_, b_, c_, d_ };
-		assertEquals(4, ArrayTools.identityDiffStart(array1, array2));
+		assertEquals(4, ArrayTools.indexOfIdentityDifference(array1, array2));
 
 		array1 = new String[0];
 		array2 = new String[] { a_, b_, c_, d_, e_ };
-		assertEquals(0, ArrayTools.identityDiffStart(array1, array2));
+		assertEquals(0, ArrayTools.indexOfIdentityDifference(array1, array2));
 
 		array1 = new String[] { a, b, c, d, e };
 		array2 = new String[0];
-		assertEquals(0, ArrayTools.identityDiffStart(array1, array2));
+		assertEquals(0, ArrayTools.indexOfIdentityDifference(array1, array2));
 
 		array1 = new String[0];
 		array2 = new String[0];
-		assertEquals(0, ArrayTools.identityDiffStart(array1, array2));
+		assertEquals(0, ArrayTools.indexOfIdentityDifference(array1, array2));
 
 		array1 = new String[] { a, b, c, d, e };
 		array2 = new String[] { a_, b_, e_, c_, d_ };
-		assertEquals(2, ArrayTools.identityDiffStart(array1, array2));
+		assertEquals(2, ArrayTools.indexOfIdentityDifference(array1, array2));
 
 		array1 = new String[] { a, b, c, e };
 		array2 = new String[] { a_, b_, c_, d_ };
-		assertEquals(3, ArrayTools.identityDiffStart(array1, array2));
+		assertEquals(3, ArrayTools.indexOfIdentityDifference(array1, array2));
 
 		array1 = new String[] { b, c, d, e };
 		array2 = new String[] { a_, c_, d_, e_ };
-		assertEquals(0, ArrayTools.identityDiffStart(array1, array2));
+		assertEquals(0, ArrayTools.indexOfIdentityDifference(array1, array2));
 
 		String c__ = new String(c);
 		assertTrue((c != c__) && c.equals(c_));
 		array1 = new String[] { a, b, c, d, e };
 		array2 = new String[] { a_, b_, c__, d_, e_ };
-		assertEquals(2, ArrayTools.identityDiffStart(array1, array2));
+		assertEquals(2, ArrayTools.indexOfIdentityDifference(array1, array2));
 
 		array1 = new String[] { a, b, null, d, e };
 		array2 = new String[] { a_, b_, c_, d_, e_ };
-		assertEquals(2, ArrayTools.identityDiffStart(array1, array2));
+		assertEquals(2, ArrayTools.indexOfIdentityDifference(array1, array2));
 
 		array1 = new String[] { a, b, null, d, e };
 		array2 = new String[] { a_, b_, null, d_, e_ };
-		assertEquals(5, ArrayTools.identityDiffStart(array1, array2));
+		assertEquals(5, ArrayTools.indexOfIdentityDifference(array1, array2));
 	}
 
 
@@ -1528,10 +1545,10 @@ public class ArrayToolsTests extends TestCase {
 		assertEquals(1, ArrayTools.insertionIndexOf(a, "B"));
 
 		a = new String[] { "A", "B", "C", "D" };
-		assertEquals(2, ArrayTools.insertionIndexOf(a, "B"));
+		assertEquals(1, ArrayTools.insertionIndexOf(a, "B"));
 
 		a = new String[] { "A", "B", "B", "B", "C", "D" };
-		assertEquals(4, ArrayTools.insertionIndexOf(a, "B"));
+		assertEquals(1, ArrayTools.insertionIndexOf(a, "B"));
 
 		a = new String[] { "A", "B", "B", "B", "C", "D" };
 		assertEquals(6, ArrayTools.insertionIndexOf(a, "E"));
@@ -1540,7 +1557,7 @@ public class ArrayToolsTests extends TestCase {
 		assertEquals(0, ArrayTools.insertionIndexOf(a, "A"));
 
 		a = new String[] { "A", "A", "B", "B", "C", "D" };
-		assertEquals(2, ArrayTools.insertionIndexOf(a, "A"));
+		assertEquals(0, ArrayTools.insertionIndexOf(a, "A"));
 	}
 
 	public void testInsertionIndexOfObjectArrayObjectComparator() {
@@ -1549,10 +1566,10 @@ public class ArrayToolsTests extends TestCase {
 		assertEquals(2, ArrayTools.insertionIndexOf(a, "B", c));
 
 		a = new String[] { "D", "C", "B", "A" };
-		assertEquals(3, ArrayTools.insertionIndexOf(a, "B", c));
+		assertEquals(2, ArrayTools.insertionIndexOf(a, "B", c));
 
 		a = new String[] { "D", "C", "B", "B", "B", "A" };
-		assertEquals(5, ArrayTools.insertionIndexOf(a, "B", c));
+		assertEquals(2, ArrayTools.insertionIndexOf(a, "B", c));
 
 		a = new String[] { "D", "C", "B", "B", "B", "A" };
 		assertEquals(0, ArrayTools.insertionIndexOf(a, "E", c));
@@ -1561,7 +1578,51 @@ public class ArrayToolsTests extends TestCase {
 		assertEquals(5, ArrayTools.insertionIndexOf(a, "A", c));
 
 		a = new String[] { "D", "C", "B", "B", "A", "A" };
-		assertEquals(6, ArrayTools.insertionIndexOf(a, "A", c));
+		assertEquals(4, ArrayTools.insertionIndexOf(a, "A", c));
+	}
+
+
+	// ********** last insertion index of **********
+
+	public void testLastInsertionIndexOfObjectArrayComparable() {
+		String[] a = new String[] { "A", "C", "D" };
+		assertEquals(1, ArrayTools.lastInsertionIndexOf(a, "B"));
+
+		a = new String[] { "A", "B", "C", "D" };
+		assertEquals(2, ArrayTools.lastInsertionIndexOf(a, "B"));
+
+		a = new String[] { "A", "B", "B", "B", "C", "D" };
+		assertEquals(4, ArrayTools.lastInsertionIndexOf(a, "B"));
+
+		a = new String[] { "A", "B", "B", "B", "C", "D" };
+		assertEquals(6, ArrayTools.lastInsertionIndexOf(a, "E"));
+
+		a = new String[] { "B", "B", "B", "C", "D" };
+		assertEquals(0, ArrayTools.lastInsertionIndexOf(a, "A"));
+
+		a = new String[] { "A", "A", "B", "B", "C", "D" };
+		assertEquals(2, ArrayTools.lastInsertionIndexOf(a, "A"));
+	}
+
+	public void testLastInsertionIndexOfObjectArrayObjectComparator() {
+		Comparator<String> c = new ReverseComparator<String>();
+		String[] a = new String[] { "D", "C", "A" };
+		assertEquals(2, ArrayTools.lastInsertionIndexOf(a, "B", c));
+
+		a = new String[] { "D", "C", "B", "A" };
+		assertEquals(3, ArrayTools.lastInsertionIndexOf(a, "B", c));
+
+		a = new String[] { "D", "C", "B", "B", "B", "A" };
+		assertEquals(5, ArrayTools.lastInsertionIndexOf(a, "B", c));
+
+		a = new String[] { "D", "C", "B", "B", "B", "A" };
+		assertEquals(0, ArrayTools.lastInsertionIndexOf(a, "E", c));
+
+		a = new String[] { "D", "C", "B", "B", "B" };
+		assertEquals(5, ArrayTools.lastInsertionIndexOf(a, "A", c));
+
+		a = new String[] { "D", "C", "B", "B", "A", "A" };
+		assertEquals(6, ArrayTools.lastInsertionIndexOf(a, "A", c));
 	}
 
 
@@ -3445,7 +3506,7 @@ public class ArrayToolsTests extends TestCase {
 	public void testConstructor() {
 		boolean exCaught = false;
 		try {
-			Object at = ReflectionTools.newInstance(ArrayTools.class);
+			Object at = ClassTools.newInstance(ArrayTools.class);
 			fail("bogus: " + at);
 		} catch (RuntimeException ex) {
 			if (ex.getCause() instanceof InvocationTargetException) {

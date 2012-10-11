@@ -19,8 +19,8 @@ import org.eclipse.jpt.common.ui.internal.swt.ColumnAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.TableModelAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.TableModelAdapter.SelectionChangeEvent;
 import org.eclipse.jpt.common.ui.internal.swt.TableModelAdapter.SelectionChangeListener;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
@@ -82,7 +82,7 @@ public class TableModelAdapterTest {
 		return new SelectionChangeListener<Employee>() {
 			public void selectionChanged(SelectionChangeEvent<Employee> e) {
 				employees.clear();
-				CollectionTools.addAll(employees, e.selection());
+				CollectionTools.addAll(employees, e.getSelection());
 			}
 		};
 	}

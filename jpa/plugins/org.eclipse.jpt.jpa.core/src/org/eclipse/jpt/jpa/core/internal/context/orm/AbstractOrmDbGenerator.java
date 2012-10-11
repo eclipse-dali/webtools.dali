@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.DbGenerator;
 import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
@@ -138,8 +138,8 @@ public abstract class AbstractOrmDbGenerator<X extends XmlGenerator>
 	}
 
 	protected boolean isEquivalentTo(DbGenerator generator) {
-		return Tools.valuesAreEqual(this.specifiedAllocationSize, generator.getSpecifiedAllocationSize()) &&
-				Tools.valuesAreEqual(this.specifiedInitialValue, generator.getSpecifiedInitialValue());
+		return ObjectTools.equals(this.specifiedAllocationSize, generator.getSpecifiedAllocationSize()) &&
+				ObjectTools.equals(this.specifiedInitialValue, generator.getSpecifiedInitialValue());
 	}
 
 	// ************* completion proposals *************

@@ -16,8 +16,8 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Ki
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 import org.eclipse.jpt.jpa.core.MappingKeys;
 import org.eclipse.jpt.jpa.core.context.AssociationOverride;
 import org.eclipse.jpt.jpa.core.context.AssociationOverrideContainer;
@@ -799,7 +799,7 @@ public class EclipseLink2_0JavaEntityTests extends EclipseLink2_0ContextModelTes
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, Kind.TYPE);
 		
 		Iterator<NestableAnnotation> javaAttributeOverrides = resourceType.getAnnotations(AttributeOverrideAnnotation.ANNOTATION_NAME).iterator();
-		assertEquals(3, CollectionTools.size(javaAttributeOverrides));
+		assertEquals(3, IteratorTools.size(javaAttributeOverrides));
 		
 		
 		overrideContainer.moveSpecifiedOverride(2, 0);
@@ -1268,7 +1268,7 @@ public class EclipseLink2_0JavaEntityTests extends EclipseLink2_0ContextModelTes
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_SUB_TYPE_NAME, Kind.TYPE);
 		
 		Iterator<NestableAnnotation> javaAssociationOverrides = resourceType.getAnnotations(AssociationOverrideAnnotation.ANNOTATION_NAME).iterator();
-		assertEquals(2, CollectionTools.size(javaAssociationOverrides));
+		assertEquals(2, IteratorTools.size(javaAssociationOverrides));
 		
 		
 		overrideContainer.moveSpecifiedOverride(1, 0);

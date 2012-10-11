@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import java.util.List;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmManyToOneMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkJoinFetch;
@@ -71,7 +71,7 @@ public class OrmEclipseLinkManyToOneMapping
 	protected Iterable<String> getCandidateTargetEntityClassNames() {
 		return new CompositeIterable<String>(
 				super.getCandidateTargetEntityClassNames(),
-				CollectionTools.sort(((EclipseLinkPersistenceUnit) this.getPersistenceUnit()).getEclipseLinkDynamicPersistentTypeNames())
+				IterableTools.sort(((EclipseLinkPersistenceUnit) this.getPersistenceUnit()).getEclipseLinkDynamicPersistentTypeNames())
 				);
 	}
 }

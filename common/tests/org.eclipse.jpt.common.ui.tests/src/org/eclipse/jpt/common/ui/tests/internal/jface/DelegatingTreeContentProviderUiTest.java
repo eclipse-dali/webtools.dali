@@ -30,22 +30,23 @@ import org.eclipse.jpt.common.ui.internal.jface.AbstractItemTreeContentProvider;
 import org.eclipse.jpt.common.ui.internal.jface.ItemTreeStateProviderManager;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProviderFactory;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.NotNullFilter;
-import org.eclipse.jpt.common.utility.internal.iterators.FilteringIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.ReadOnlyListIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.filter.NotNullFilter;
+import org.eclipse.jpt.common.utility.internal.iterator.FilteringIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.ReadOnlyListIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.TransformationIterator;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticCollectionValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -355,23 +356,27 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 
 		@Override
 		protected CollectionValueModel<TreeNode> buildChildrenModel() {
-				return new CompositeCollectionValueModel<TreeNode, TreeNode>(super.buildChildrenModel()) {
-						@Override
-						protected CollectionValueModel<TreeNode> transform(TreeNode value) {
-							if (value instanceof Nest) {
-								final Nest nest = (Nest) value;
-								return new ListCollectionValueModelAdapter<TreeNode>(
-										new ListAspectAdapter<TreeNode, TreeNode>(TreeNode.CHILDREN_LIST, nest) {
-											@Override
-											protected ListIterator<TreeNode> listIterator_() {
-												return nest.children();
-											}
-										}
-									);
+				return new CompositeCollectionValueModel<TreeNode, TreeNode>(super.buildChildrenModel(), new TreeNodeTransformer());
+		}
+	}
+
+	static class TreeNodeTransformer
+		extends TransformerAdapter<TreeNode, CollectionValueModel<TreeNode>>
+	{
+		@Override
+		public CollectionValueModel<TreeNode> transform(TreeNode value) {
+			if (value instanceof Nest) {
+				final Nest nest = (Nest) value;
+				return new ListCollectionValueModelAdapter<TreeNode>(
+						new ListAspectAdapter<TreeNode, TreeNode>(TreeNode.CHILDREN_LIST, nest) {
+							@Override
+							protected ListIterator<TreeNode> listIterator_() {
+								return nest.children();
 							}
-							return new StaticCollectionValueModel<TreeNode>(CollectionTools.collection(value));
 						}
-					};
+					);
+			}
+			return new StaticCollectionValueModel<TreeNode>(CollectionTools.collection(value));
 		}
 	}
 

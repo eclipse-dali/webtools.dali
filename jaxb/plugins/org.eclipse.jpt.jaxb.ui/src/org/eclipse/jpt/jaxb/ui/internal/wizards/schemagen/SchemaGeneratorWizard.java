@@ -31,8 +31,8 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jpt.common.core.gen.JptGenerator;
 import org.eclipse.jpt.common.ui.gen.AbstractJptGenerateJob;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.FileTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.io.FileTools;
 import org.eclipse.jpt.jaxb.core.internal.gen.SchemaGenerator;
 import org.eclipse.jpt.jaxb.core.internal.operations.SchemaFileCreationDataModelProvider;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiIcons;
@@ -187,7 +187,7 @@ public class SchemaGeneratorWizard extends Wizard implements INewWizard
 			String packageName = javaElement.getParent().getElementName();
 			String elementName = javaElement.getElementName();
 			String className = FileTools.stripExtension(elementName);
-			if(StringTools.stringIsEmpty(packageName)) {
+			if(StringTools.isBlank(packageName)) {
 				classNames.add(className);
 			}
 			else {

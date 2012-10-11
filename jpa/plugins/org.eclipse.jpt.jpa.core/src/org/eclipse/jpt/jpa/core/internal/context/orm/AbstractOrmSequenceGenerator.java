@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.context.orm;
 
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.DbGenerator;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
@@ -109,7 +109,7 @@ public abstract class AbstractOrmSequenceGenerator
 	}
 	
 	protected boolean isEquivalentTo(SequenceGenerator generator) {
-		return Tools.valuesAreEqual(this.specifiedSequenceName, generator.getSpecifiedSequenceName());
+		return ObjectTools.equals(this.specifiedSequenceName, generator.getSpecifiedSequenceName());
 	}
 	
 	// ********** metadata conversion **********

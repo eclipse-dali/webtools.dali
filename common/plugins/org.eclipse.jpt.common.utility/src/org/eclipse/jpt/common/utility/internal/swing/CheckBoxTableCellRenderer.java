@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,8 +25,9 @@ import org.eclipse.jpt.common.utility.internal.swing.TableCellEditorAdapter.Imme
 /**
  * Make the cell look like a check box.
  */
-public class CheckBoxTableCellRenderer implements TableCellEditorAdapter.Renderer {
-
+public class CheckBoxTableCellRenderer
+	implements TableCellEditorAdapter.Renderer
+{
 	/** the component used to paint the cell */
 	private final JCheckBox checkBox;
 	
@@ -202,5 +203,4 @@ public class CheckBoxTableCellRenderer implements TableCellEditorAdapter.Rendere
 		// add in space for the border top and bottom
 		return (int) this.checkBox.getPreferredSize().getHeight() + 2;
 	}
-
 }

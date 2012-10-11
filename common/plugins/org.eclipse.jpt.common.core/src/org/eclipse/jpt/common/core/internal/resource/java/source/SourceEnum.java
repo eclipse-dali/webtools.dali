@@ -22,10 +22,10 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceEnumConstant;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.Enum;
 import org.eclipse.jpt.common.core.utility.jdt.Type;
-import org.eclipse.jpt.common.utility.internal.SimpleIntReference;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.reference.SimpleIntReference;
 
 /**
  * Java source type

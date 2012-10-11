@@ -11,7 +11,7 @@ package org.eclipse.jpt.jaxb.core.context;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 

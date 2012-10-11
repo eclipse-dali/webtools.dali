@@ -12,8 +12,8 @@ package org.eclipse.jpt.jpa.core.internal.resource.java;
 import org.eclipse.jpt.common.core.internal.resource.java.NullAnnotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.resource.java.BaseTableAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.UniqueConstraintAnnotation;
 

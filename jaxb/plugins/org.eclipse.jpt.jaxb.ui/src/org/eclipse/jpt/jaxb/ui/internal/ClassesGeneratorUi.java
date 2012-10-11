@@ -12,6 +12,7 @@ package org.eclipse.jpt.jaxb.ui.internal;
 import java.util.List;
 import java.util.Vector;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jdt.core.IJavaProject;
@@ -22,7 +23,8 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jpt.common.ui.internal.dialogs.OptionalMessageDialog;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
-import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
+import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
+import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
 import org.eclipse.jpt.jaxb.core.SchemaLibrary;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGeneratorExtensionOptions;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGeneratorOptions;
@@ -171,9 +173,17 @@ public class ClassesGeneratorUi {
 	
 	/* may be null */
 	private JaxbProject getJaxbProject() {
-		return JptJaxbCorePlugin.instance().getProjectManager().getJaxbProject(this.javaProject.getProject());
+		return this.getJaxbProjectManager().getJaxbProject(this.javaProject.getProject());
 	}
 	
+	private JaxbProjectManager getJaxbProjectManager() {
+		return this.getJaxbWorkspace().getJaxbProjectManager();
+	}
+
+	private JaxbWorkspace getJaxbWorkspace() {
+		return (JaxbWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JaxbWorkspace.class);
+	}
+
 	private boolean isOverwritingClasses(ClassesGeneratorOptions generatorOptions) {
 		if(generatorOptions == null) {
 			throw new NullPointerException();

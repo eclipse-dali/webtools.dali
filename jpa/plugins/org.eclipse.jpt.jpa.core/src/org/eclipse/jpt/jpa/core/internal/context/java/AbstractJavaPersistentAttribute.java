@@ -21,11 +21,11 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
-import org.eclipse.jpt.common.utility.internal.ClassName;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.ClassNameTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.TypeDeclarationTools;
+import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
@@ -325,7 +325,7 @@ public abstract class AbstractJavaPersistentAttribute
 	 */
 	protected JavaAttributeMapping buildMapping_(JavaAttributeMappingDefinition definition) {
 		// 'mapping' is null during construction
-		if ((this.mapping != null) && this.mapping.isDefault() && Tools.valuesAreEqual(this.mapping.getKey(), definition.getKey())) {
+		if ((this.mapping != null) && this.mapping.isDefault() && ObjectTools.equals(this.mapping.getKey(), definition.getKey())) {
 			this.mapping.updateDefault();  // since nothing here changes, we need to update the mapping's flag
 			return this.mapping;
 		}
@@ -355,7 +355,7 @@ public abstract class AbstractJavaPersistentAttribute
 			return null;
 		}
 		for (JavaAttributeMappingDefinition definition : this.getSpecifiedMappingDefinitions()) {
-			if (Tools.valuesAreEqual(definition.getKey(), key)) {
+			if (ObjectTools.equals(definition.getKey(), key)) {
 				return definition;
 			}
 		}
@@ -403,7 +403,7 @@ public abstract class AbstractJavaPersistentAttribute
 		
 		JavaAttributeMappingDefinition defaultDefinition = this.getDefaultMappingDefinition();
 		String newDefaultKey = (defaultDefinition == null) ? null : defaultDefinition.getKey();
-		if (Tools.valuesAreDifferent(this.mapping.getKey(), newDefaultKey)) {
+		if (ObjectTools.notEquals(this.mapping.getKey(), newDefaultKey)) {
 			newDefinition = defaultDefinition;  // the default mapping has changed - hold on to the definition
 		}
 		this.setDefaultMappingKey(newDefaultKey);
@@ -412,7 +412,7 @@ public abstract class AbstractJavaPersistentAttribute
 		String newSpecifiedKey = (specifiedDefinition == null) ? null : specifiedDefinition.getKey();
 		if (specifiedDefinition != null) {
 			newDefinition = null;  // unset definition if it was set from default calculation
-			if (this.mapping.isDefault() || Tools.valuesAreDifferent(this.mapping.getKey(), newSpecifiedKey)) {
+			if (this.mapping.isDefault() || ObjectTools.notEquals(this.mapping.getKey(), newSpecifiedKey)) {
 				newDefinition = specifiedDefinition; // mapping is now specified or a different specified
 			}
 		}
@@ -494,21 +494,21 @@ public abstract class AbstractJavaPersistentAttribute
 			return false;
 		}
 
-		int arrayDepth = ReflectionTools.getArrayDepthForTypeDeclaration(typeName);
+		int arrayDepth = TypeDeclarationTools.arrayDepth(typeName);
 		if (arrayDepth > 1) {
 			return false;  // multi-dimensional arrays are not supported
 		}
 
 		if (arrayDepth == 1) {
-			String elementTypeName = ReflectionTools.getElementTypeNameForTypeDeclaration(typeName, 1);
+			String elementTypeName = TypeDeclarationTools.elementTypeName(typeName, 1);
 			return MappingTools.elementTypeIsValidForBasicArray(elementTypeName);
 		}
 
 		// arrayDepth == 0
-		if (ClassName.isVariablePrimitive(typeName)) {
+		if (ClassNameTools.isVariablePrimitive(typeName)) {
 			return true;  // any primitive but 'void'
 		}
-		if (ClassName.isVariablePrimitiveWrapper(typeName)) {
+		if (ClassNameTools.isVariablePrimitiveWrapper(typeName)) {
 			return true;  // any primitive wrapper but 'java.lang.Void'
 		}
 		if (MappingTools.typeIsOtherValidBasicType(typeName)) {
@@ -530,7 +530,7 @@ public abstract class AbstractJavaPersistentAttribute
 		if (typeName == null) {
 			return null;
 		}
-		if (ReflectionTools.getArrayDepthForTypeDeclaration(typeName) != 0) {
+		if (TypeDeclarationTools.arrayDepth(typeName) != 0) {
 			return null;  // arrays cannot be entities
 		}
 		if (this.typeIsContainer()) {
@@ -684,8 +684,8 @@ public abstract class AbstractJavaPersistentAttribute
 		if (typeName == null) {
 			return MetamodelField.DEFAULT_TYPE_NAME;
 		}
-		if (ClassName.isPrimitive(typeName)) {
-			return ClassName.getWrapperClassName(typeName);  // ???
+		if (ClassNameTools.isPrimitive(typeName)) {
+			return ClassNameTools.primitiveWrapperClassName(typeName);  // ???
 		}
 		return typeName;
 	}

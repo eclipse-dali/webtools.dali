@@ -15,7 +15,7 @@ import java.util.Set;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceModel;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
@@ -168,5 +168,4 @@ public class GenericJpaFile
 		sb.append(this.contentType.getName());
 		sb.append(']');
 	}
-
 }

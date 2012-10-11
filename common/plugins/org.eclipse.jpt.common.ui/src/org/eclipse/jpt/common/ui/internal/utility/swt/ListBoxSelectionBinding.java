@@ -14,8 +14,7 @@ import java.util.Arrays;
 
 import org.eclipse.jpt.common.ui.internal.listeners.SWTCollectionChangeListenerWrapper;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionClearEvent;
@@ -259,7 +258,7 @@ final class ListBoxSelectionBinding<E>
 	private int indexOf(E item) {
 		int len = this.listModel.size();
 		for (int i = 0; i < len; i++) {
-			if (Tools.valuesAreEqual(this.listModel.get(i), item)) {
+			if (ObjectTools.equals(this.listModel.get(i), item)) {
 				return i;
 			}
 		}
@@ -299,7 +298,7 @@ final class ListBoxSelectionBinding<E>
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.selectedItemsModel);
+		return ObjectTools.toString(this, this.selectedItemsModel);
 	}
 
 }

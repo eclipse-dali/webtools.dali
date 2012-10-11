@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.core.internal;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
@@ -101,6 +101,6 @@ public class SimpleJpaProjectConfig
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.project.getName());
+		return ObjectTools.toString(this, this.project.getName());
 	}
 }

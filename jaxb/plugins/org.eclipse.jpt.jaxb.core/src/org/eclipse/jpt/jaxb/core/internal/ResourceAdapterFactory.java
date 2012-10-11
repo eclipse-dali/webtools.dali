@@ -10,13 +10,16 @@
 package org.eclipse.jpt.jaxb.core.internal;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdapterFactory;
-import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
+import org.eclipse.jpt.jaxb.core.JaxbPreferences;
+import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformManager;
 
 /**
  * Factory to build Dali adapters for an {@link IResource}:<ul>
- * <li>{@link JaxbPlatformDescription}
+ * <li>{@link JaxbPlatformConfig}
  * </ul>
  * See <code>org.eclipse.jpt.jaxb.core/plugin.xml:org.eclipse.core.runtime.adapters</code>.
  */
@@ -24,7 +27,7 @@ public class ResourceAdapterFactory
 	implements IAdapterFactory
 {
 	private static final Class<?>[] ADAPTER_LIST = new Class[] {
-			JaxbPlatformDescription.class
+			JaxbPlatformConfig.class
 		};
 
 	public Class<?>[] getAdapterList() {
@@ -39,13 +42,21 @@ public class ResourceAdapterFactory
 	}
 	
 	private Object getAdapter(IResource resource, Class<?> adapterType) {
-		if (adapterType == JaxbPlatformDescription.class) {
-			return this.getJaxbPlatformDescription(resource);
+		if (adapterType == JaxbPlatformConfig.class) {
+			return this.getJaxbPlatformConfig(resource);
 		}
 		return null;
 	}
 	
-	private JaxbPlatformDescription getJaxbPlatformDescription(IResource resource) {
-		return JptJaxbCorePlugin.getJaxbPlatformManager().getJaxbPlatform(JptJaxbCorePlugin.getJaxbPlatformId(resource.getProject()));
+	private JaxbPlatformConfig getJaxbPlatformConfig(IResource resource) {
+		return this.getJaxbPlatformManager().getJaxbPlatformConfig(JaxbPreferences.getJaxbPlatformID(resource.getProject()));
+	}
+
+	private JaxbPlatformManager getJaxbPlatformManager() {
+		return getJaxbWorkspace().getJaxbPlatformManager();
+	}
+
+	private JaxbWorkspace getJaxbWorkspace() {
+		return (JaxbWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JaxbWorkspace.class);
 	}
 }

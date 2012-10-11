@@ -21,12 +21,14 @@ import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
  * another collection value model, "lazily" listen to it, and propagate
  * its change notifications. Subclasses must implement the appropriate
  * {@link CollectionValueModel}.
+ * 
+ * @param <E> the type of elements held by the model
  */
 public abstract class CollectionValueModelWrapper<E>
 	extends AbstractCollectionValueModel
 {
 	/** The wrapped collection value model. */
-	protected final CollectionValueModel<? extends E> collectionHolder;
+	protected final CollectionValueModel<? extends E> collectionModel;
 
 	/** A listener that allows us to sync with changes to the wrapped collection model. */
 	protected final CollectionChangeListener collectionChangeListener;
@@ -38,9 +40,12 @@ public abstract class CollectionValueModelWrapper<E>
 	 * Construct a collection value model with the specified wrapped
 	 * collection value model.
 	 */
-	protected CollectionValueModelWrapper(CollectionValueModel<? extends E> collectionHolder) {
+	protected CollectionValueModelWrapper(CollectionValueModel<? extends E> collectionModel) {
 		super();
-		this.collectionHolder = collectionHolder;
+		if (collectionModel == null) {
+			throw new NullPointerException();
+		}
+		this.collectionModel = collectionModel;
 		this.collectionChangeListener = this.buildCollectionChangeListener();
 	}
 
@@ -76,7 +81,7 @@ public abstract class CollectionValueModelWrapper<E>
 	 */
 	@Override
 	protected void engageModel() {
-		this.collectionHolder.addCollectionChangeListener(CollectionValueModel.VALUES, this.collectionChangeListener);
+		this.collectionModel.addCollectionChangeListener(CollectionValueModel.VALUES, this.collectionChangeListener);
 	}
 
 	/**
@@ -84,7 +89,7 @@ public abstract class CollectionValueModelWrapper<E>
 	 */
 	@Override
 	protected void disengageModel() {
-		this.collectionHolder.removeCollectionChangeListener(CollectionValueModel.VALUES, this.collectionChangeListener);
+		this.collectionModel.removeCollectionChangeListener(CollectionValueModel.VALUES, this.collectionChangeListener);
 	}
 
 

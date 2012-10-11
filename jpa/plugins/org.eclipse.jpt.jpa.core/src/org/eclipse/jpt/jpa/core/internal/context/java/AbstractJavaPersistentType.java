@@ -29,19 +29,20 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
-import org.eclipse.jpt.common.utility.Filter;
-import org.eclipse.jpt.common.utility.internal.ClassName;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.filter.Filter;
+import org.eclipse.jpt.common.utility.internal.ClassNameTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.ChainIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SuperListIterableWrapper;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.ChainIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SuperListIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.AccessType;
@@ -127,7 +128,7 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	public String getSimpleName(){
-		return ClassName.getSimpleName(this.name);
+		return ClassNameTools.simpleName(this.name);
 	}
 
 	protected void setName(String name) {
@@ -156,7 +157,7 @@ public abstract class AbstractJavaPersistentType
 		if (spt == null) {
 			return null;
 		}
-		if (CollectionTools.contains(spt.getInheritanceHierarchy(), this)) {
+		if (IterableTools.contains(spt.getInheritanceHierarchy(), this)) {
 			return null;  // short-circuit in this case, we have circular inheritance
 		}
 		return spt.isMapped() ? spt : spt.getSuperPersistentType();
@@ -308,7 +309,7 @@ public abstract class AbstractJavaPersistentType
 
 	protected JavaTypeMapping buildMapping(String key) {
 		for (JavaTypeMappingDefinition definition : this.getMappingDefinitions()) {
-			if (Tools.valuesAreEqual(definition.getKey(), key)) {
+			if (ObjectTools.equals(definition.getKey(), key)) {
 				Annotation annotation = this.resourceType.setPrimaryAnnotation(definition.getAnnotationName(), definition.getSupportingAnnotationNames());
 				return definition.buildMapping(this, annotation, this.getJpaFactory());
 			}
@@ -425,7 +426,7 @@ public abstract class AbstractJavaPersistentType
 		return new FilteringIterable<JavaPersistentAttribute>(this.getAttributes()) {
 			@Override
 			protected boolean accept(JavaPersistentAttribute attribute) {
-				return Tools.valuesAreEqual(attributeName, attribute.getName());
+				return ObjectTools.equals(attributeName, attribute.getName());
 			}
 		};
 	}
@@ -1076,11 +1077,11 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	public boolean isFor(String typeName) {
-		return Tools.valuesAreEqual(typeName, this.name);
+		return ObjectTools.equals(typeName, this.name);
 	}
 
 	public boolean isIn(IPackageFragment packageFragment) {
-		return Tools.valuesAreEqual(packageFragment.getElementName(), this.getPackageName());
+		return ObjectTools.equals(packageFragment.getElementName(), this.getPackageName());
 	}
 
 	protected String getPackageName() {

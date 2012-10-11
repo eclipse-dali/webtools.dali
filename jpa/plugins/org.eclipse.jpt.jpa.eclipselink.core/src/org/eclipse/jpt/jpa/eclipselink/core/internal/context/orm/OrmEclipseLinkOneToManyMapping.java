@@ -14,9 +14,9 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.MappingTools;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmOneToManyMapping;
@@ -174,7 +174,7 @@ public class OrmEclipseLinkOneToManyMapping
 	@Override
 	protected void validateAttributeType(List<IMessage> messages, IReporter reporter) {
 		if (this.isVirtualAccess()) {
-			if (StringTools.stringIsEmpty(this.getAttributeType())) {
+			if (StringTools.isBlank(this.getAttributeType())) {
 				messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -245,7 +245,7 @@ public class OrmEclipseLinkOneToManyMapping
 	protected Iterable<String> getCandidateTargetEntityClassNames() {
 		return new CompositeIterable<String>(
 				super.getCandidateTargetEntityClassNames(),
-				CollectionTools.sort(((EclipseLinkPersistenceUnit) this.getPersistenceUnit()).getEclipseLinkDynamicPersistentTypeNames())
+				IterableTools.sort(((EclipseLinkPersistenceUnit) this.getPersistenceUnit()).getEclipseLinkDynamicPersistentTypeNames())
 				);
 	}
 	
@@ -254,7 +254,7 @@ public class OrmEclipseLinkOneToManyMapping
 	protected Iterable<String> getCandidateMapKeyClassNames() {
 		return new CompositeIterable<String>(
 				super.getCandidateMapKeyClassNames(),
-				CollectionTools.sort(((EclipseLinkPersistenceUnit) this.getPersistenceUnit()).getEclipseLinkDynamicPersistentTypeNames())
+				IterableTools.sort(((EclipseLinkPersistenceUnit) this.getPersistenceUnit()).getEclipseLinkDynamicPersistentTypeNames())
 				);
 	}
 }

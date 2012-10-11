@@ -30,7 +30,7 @@ import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.internal.utility.ProjectTools;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.resource.ResourceMappingFile;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlEntityMappings;
@@ -358,7 +358,7 @@ public class EntityClassWizardPage
 		}
 		if (dialog.open() == Window.OK) {
 			boolean noNameChange = false;
-			if (StringTools.stringsAreEqual(this.model.getStringProperty(IEntityDataModelProperties.XML_NAME), dialog.getChosenName())) {
+			if (ObjectTools.equals(this.model.getStringProperty(IEntityDataModelProperties.XML_NAME), dialog.getChosenName())) {
 				noNameChange = true;
 			}
 			this.model.setProperty(IEntityDataModelProperties.XML_NAME, dialog.getChosenName());

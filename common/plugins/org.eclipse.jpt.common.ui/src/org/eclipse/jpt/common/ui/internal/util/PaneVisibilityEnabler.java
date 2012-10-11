@@ -12,8 +12,9 @@ package org.eclipse.jpt.common.ui.internal.util;
 import java.util.Collection;
 import java.util.Iterator;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
+import org.eclipse.jpt.common.utility.internal.iterator.TransformationIterator;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 
 /**
@@ -66,7 +67,7 @@ public class PaneVisibilityEnabler extends StateController
 	                             Pane<?> pane,
 	                             boolean defaultValue) {
 
-		this(booleanHolder, CollectionTools.singletonIterator(pane), false);
+		this(booleanHolder, IteratorTools.singletonIterator(pane), false);
 	}
 
 	/**
@@ -82,7 +83,7 @@ public class PaneVisibilityEnabler extends StateController
 	                             Pane<?>[] panes,
 	                             boolean defaultValue) {
 
-		this(booleanHolder, CollectionTools.iterator(panes), defaultValue);
+		this(booleanHolder, IteratorTools.iterator(panes), defaultValue);
 	}
 
 	/**

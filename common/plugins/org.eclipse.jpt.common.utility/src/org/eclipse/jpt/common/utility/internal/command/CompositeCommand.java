@@ -10,8 +10,8 @@
 package org.eclipse.jpt.common.utility.internal.command;
 
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 
 /**
  * <code>CompositeCommand</code> provides support for treating a collection of
@@ -42,6 +42,6 @@ public class CompositeCommand
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.commands);
+		return ObjectTools.toString(this, this.commands);
 	}
 }

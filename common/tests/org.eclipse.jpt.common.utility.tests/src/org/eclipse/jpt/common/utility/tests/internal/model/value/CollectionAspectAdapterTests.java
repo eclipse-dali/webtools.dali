@@ -15,9 +15,10 @@ import java.util.Iterator;
 
 import junit.framework.TestCase;
 
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.HashBag;
-import org.eclipse.jpt.common.utility.internal.iterators.ReadOnlyIterator;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.HashBag;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ReadOnlyIterator;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
@@ -235,8 +236,8 @@ public class CollectionAspectAdapterTests extends TestCase {
 	}
 
 	public void testSize() {
-		assertEquals(this.subject1Names().size(), CollectionTools.size(this.subject1.names()));
-		assertEquals(this.subject1Names().size(), CollectionTools.size(this.aa1.iterator()));
+		assertEquals(this.subject1Names().size(), IteratorTools.size(this.subject1.names()));
+		assertEquals(this.subject1Names().size(), IteratorTools.size(this.aa1.iterator()));
 	}
 
 	public void testHasListeners() {

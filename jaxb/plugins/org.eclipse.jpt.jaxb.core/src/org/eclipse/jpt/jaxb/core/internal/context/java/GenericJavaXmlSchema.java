@@ -12,11 +12,11 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jpt.common.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.SchemaEntry;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
@@ -249,7 +249,7 @@ public class GenericJavaXmlSchema
 	@Override
 	public Iterable<String> getCompletionProposals(int pos) {
 		Iterable<String> result = super.getCompletionProposals(pos);
-		if (! CollectionTools.isEmpty(result)) {
+		if (! IterableTools.isEmpty(result)) {
 			return result;
 		}
 		
@@ -259,7 +259,7 @@ public class GenericJavaXmlSchema
 		
 		for (XmlNs xmlns : getXmlNsPrefixes()) {
 			result = xmlns.getCompletionProposals(pos);
-			if (! CollectionTools.isEmpty(result)) {
+			if (! IterableTools.isEmpty(result)) {
 				return result;
 			}
 		}
@@ -272,14 +272,15 @@ public class GenericJavaXmlSchema
 	}
 	
 	protected Iterable<String> getNamespaceProposals() {
-		return StringTools.convertToJavaStringLiteralContents(
+		return new TransformationIterable<String, String>(
 						new TransformationIterable<SchemaEntry, String>(
 								getJaxbProject().getSchemaLibrary().getSchemaEntries()) {
 							@Override
 							protected String transform(SchemaEntry o) {
 								return o.getNamespace();
 							}
-						});
+						},
+				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 	
 	

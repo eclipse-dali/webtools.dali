@@ -14,8 +14,8 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkConversionValueAnnotation;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
@@ -108,7 +108,7 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 	public void testObjectTypeConverterAnnotation() throws Exception {
 		ICompilationUnit cu = this.createTestObjectTypeConverter();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		assertNotNull(resourceField.getAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER));
 		
@@ -122,7 +122,7 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 	public void testGetDataType() throws Exception {
 		ICompilationUnit cu = this.createTestObjectTypeConverterWithDataType();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER);
 		assertEquals("Foo", converter.getDataType());
@@ -131,7 +131,7 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 	public void testSetDataType() throws Exception {
 		ICompilationUnit cu = this.createTestObjectTypeConverterWithDataType();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER);
 		assertEquals("Foo", converter.getDataType());
@@ -149,7 +149,7 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 	public void testSetDataTypeNull() throws Exception {
 		ICompilationUnit cu = this.createTestObjectTypeConverterWithDataType();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER);
 		assertEquals("Foo", converter.getDataType());
@@ -164,7 +164,7 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 	public void testGetObjectType() throws Exception {
 		ICompilationUnit cu = this.createTestObjectTypeConverterWithObjectType();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER);
 		assertEquals("Foo", converter.getObjectType());
@@ -173,7 +173,7 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 	public void testSetObjectType() throws Exception {
 		ICompilationUnit cu = this.createTestObjectTypeConverterWithObjectType();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER);
 		assertEquals("Foo", converter.getObjectType());
@@ -191,7 +191,7 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 	public void testSetObjectTypeNull() throws Exception {
 		ICompilationUnit cu = this.createTestObjectTypeConverterWithObjectType();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER);
 		assertEquals("Foo", converter.getObjectType());
@@ -206,7 +206,7 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 	public void testGetName() throws Exception {
 		ICompilationUnit cu = this.createTestObjectTypeConverterWithName();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER);
 		assertEquals("bar", converter.getName());
@@ -215,7 +215,7 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 	public void testSetName() throws Exception {
 		ICompilationUnit cu = this.createTestObjectTypeConverterWithName();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER);
 		assertEquals("bar", converter.getName());
@@ -229,7 +229,7 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 	public void testSetNameNull() throws Exception {
 		ICompilationUnit cu = this.createTestObjectTypeConverterWithName();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER);
 		assertEquals("bar", converter.getName());
@@ -245,7 +245,7 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 	public void testGetDefaultObjectValue() throws Exception {
 		ICompilationUnit cu = this.createTestObjectTypeConverterWithDefaultObjectValue();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER);
 		assertEquals("f", converter.getDefaultObjectValue());
@@ -254,7 +254,7 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 	public void testSetDefaultObjectValue() throws Exception {
 		ICompilationUnit cu = this.createTestObjectTypeConverterWithDefaultObjectValue();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER);
 		assertEquals("f", converter.getDefaultObjectValue());
@@ -268,7 +268,7 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 	public void testSetDefaultObjectValueNull() throws Exception {
 		ICompilationUnit cu = this.createTestObjectTypeConverterWithDefaultObjectValue();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER);
 		assertEquals("f", converter.getDefaultObjectValue());
@@ -283,7 +283,7 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 	public void testConversionValues() throws Exception {
 		ICompilationUnit cu = this.createTestObjectTypeConverterWithName();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER);
 		
@@ -294,7 +294,7 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 	public void testConversionValues2() throws Exception {
 		ICompilationUnit cu = this.createTestObjectTypeConverterWithName();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER);
 
@@ -313,7 +313,7 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 	public void testConversionValues3() throws Exception {
 		ICompilationUnit cu = this.createTestObjectTypeConverterWithConversionValues();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER);
 				
@@ -331,7 +331,7 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 	public void testAddConversionValue() throws Exception {
 		ICompilationUnit cu = this.createTestObjectTypeConverterWithName();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER);
 		
@@ -352,7 +352,7 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 	public void testRemoveConversionValue() throws Exception {
 		ICompilationUnit cu = this.createTestObjectTypeConverterWithConversionValues();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER);
 		converter.addConversionValue(0).setObjectValue("FOO");
@@ -386,7 +386,7 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 	public void testMoveConversionValue() throws Exception {
 		ICompilationUnit cu = this.createTestObjectTypeConverterWithConversionValues();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER);
 		converter.addConversionValue(0).setObjectValue("FOO");
@@ -407,7 +407,7 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 	public void testMoveConversionValue2() throws Exception {
 		ICompilationUnit cu = this.createTestObjectTypeConverterWithConversionValues();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkObjectTypeConverterAnnotation converter = (EclipseLinkObjectTypeConverterAnnotation) resourceField.getAnnotation(0, EclipseLink.OBJECT_TYPE_CONVERTER);
 		converter.addConversionValue(0).setObjectValue("FOO");

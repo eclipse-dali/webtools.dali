@@ -17,7 +17,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
@@ -72,7 +72,7 @@ public class CompositeListValueModelTests extends TestCase {
 		this.uberLVM.add(this.lvm2);
 		this.uberLVM.add(this.lvm3);
 
-		this.compositeLVM = new CompositeListValueModel<LocalListValueModel<String>, String>((ListValueModel<LocalListValueModel<String>>) this.uberLVM);
+		this.compositeLVM = CompositeListValueModel.forModels((ListValueModel<LocalListValueModel<String>>) this.uberLVM);
 	}
 
 	@Override

@@ -17,6 +17,7 @@ import java.util.Vector;
  * <p>
  * Copied from org.eclipse.ui.internal.navigator.StringMatcher
  */
+@SuppressWarnings({"unqualified-field-access", "rawtypes", "unchecked", "javadoc"})
 public class StringMatcher {
 	protected String fPattern;
 

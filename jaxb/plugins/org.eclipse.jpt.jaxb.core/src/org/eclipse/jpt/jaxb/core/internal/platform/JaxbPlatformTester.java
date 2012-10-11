@@ -10,13 +10,15 @@
 package org.eclipse.jpt.jaxb.core.internal.platform;
 
 import org.eclipse.core.expressions.PropertyTester;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformGroupDescription;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.jaxb.core.JaxbWorkspace;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformGroupConfig;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformManager;
 
 /**
- * Property tester for {@link JaxbPlatformDescription}.
+ * Property tester for {@link JaxbPlatformConfig}.
  * See <code>org.eclipse.jpt.jaxb.core/plugin.xml:org.eclipse.core.expressions.propertyTesters</code>
  */
 public class JaxbPlatformTester
@@ -26,29 +28,37 @@ public class JaxbPlatformTester
 	public static final String JAXB_PLATFORM_GROUP = "jaxbPlatformGroup"; //$NON-NLS-1$
 
 	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
-		if (receiver instanceof JaxbPlatformDescription) {
-			return this.test((JaxbPlatformDescription) receiver, property, expectedValue);
+		if (receiver instanceof JaxbPlatformConfig) {
+			return this.test((JaxbPlatformConfig) receiver, property, expectedValue);
 		}
 		return false;
 	}
 	
-	private boolean test(JaxbPlatformDescription platform, String property, Object expectedValue) {
+	private boolean test(JaxbPlatformConfig platformConfig, String property, Object expectedValue) {
 		if (property.equals(JAXB_PLATFORM)) {
-			JaxbPlatformDescription expected = this.getJaxbPlatform(expectedValue);
-			return Tools.valuesAreEqual(platform, expected);
+			JaxbPlatformConfig expected = this.getJaxbPlatformConfig(expectedValue);
+			return ObjectTools.equals(platformConfig, expected);
 		}
 		if (property.equals(JAXB_PLATFORM_GROUP)) {
-			JaxbPlatformGroupDescription expected = this.getJaxbPlatformGroup(expectedValue);
-			return Tools.valuesAreEqual(platform.getGroup(), expected);
+			JaxbPlatformGroupConfig expected = this.getJaxbPlatformGroupConfig(expectedValue);
+			return ObjectTools.equals(platformConfig.getGroupConfig(), expected);
 		}
 		return false;
 	}
 
-	private JaxbPlatformDescription getJaxbPlatform(Object id) {
-		return JptJaxbCorePlugin.getJaxbPlatformManager().getJaxbPlatform((String) id);
+	private JaxbPlatformConfig getJaxbPlatformConfig(Object id) {
+		return this.getJaxbPlatformManager().getJaxbPlatformConfig((String) id);
 	}
 
-	private JaxbPlatformGroupDescription getJaxbPlatformGroup(Object id) {
-		return JptJaxbCorePlugin.getJaxbPlatformManager().getJaxbPlatformGroup((String) id);
+	private JaxbPlatformGroupConfig getJaxbPlatformGroupConfig(Object id) {
+		return this.getJaxbPlatformManager().getJaxbPlatformGroupConfig((String) id);
+	}
+
+	private JaxbPlatformManager getJaxbPlatformManager() {
+		return getJaxbWorkspace().getJaxbPlatformManager();
+	}
+
+	private JaxbWorkspace getJaxbWorkspace() {
+		return (JaxbWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JaxbWorkspace.class);
 	}
 }

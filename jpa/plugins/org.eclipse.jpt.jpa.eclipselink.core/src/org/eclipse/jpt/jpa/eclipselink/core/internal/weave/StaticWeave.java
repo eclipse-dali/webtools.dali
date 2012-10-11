@@ -103,19 +103,19 @@ public class StaticWeave extends AbstractJptGenerator
 	protected void specifyProgramArguments() {
 		StringBuffer programArguments = new StringBuffer();
 
-		if(StringTools.stringIsEmpty(this.source)) {
+		if(StringTools.isBlank(this.source)) {
 			throw new RuntimeException("Source directory cannot be empty");	  //$NON-NLS-1$
 		}
-		if(StringTools.stringIsEmpty(this.target)) {
+		if(StringTools.isBlank(this.target)) {
 			throw new RuntimeException("Target directory cannot be empty");	  //$NON-NLS-1$
 		}
 
-		if( ! StringTools.stringIsEmpty(this.loglevel)) {
+		if( ! StringTools.isBlank(this.loglevel)) {
 			programArguments.append("-loglevel ");	  //$NON-NLS-1$
 			programArguments.append(this.loglevel);
 		}
 
-		if( ! StringTools.stringIsEmpty(this.persistenceinfo)) {
+		if( ! StringTools.isBlank(this.persistenceinfo)) {
 			programArguments.append(" -persistenceinfo ");	  //$NON-NLS-1$
 			programArguments.append(StringTools.quote(this.persistenceinfo));
 		}

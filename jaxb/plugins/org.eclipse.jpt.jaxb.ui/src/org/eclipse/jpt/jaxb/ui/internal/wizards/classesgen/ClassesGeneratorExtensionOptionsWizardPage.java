@@ -72,12 +72,12 @@ public class ClassesGeneratorExtensionOptionsWizardPage extends WizardPage
 	public void setVisible(boolean visible) {
 		super.setVisible(visible);
 		String facetVersion = this.getFacetVersion();
-		if( ! StringTools.stringIsEmpty(facetVersion)) {
-			if(StringTools.stringIsEmpty(this.additionalArgsComposite.getAdditionalArgs())) {
+		if(StringTools.isNotBlank(facetVersion)) {
+			if(StringTools.isBlank(this.additionalArgsComposite.getAdditionalArgs())) {
 				this.additionalArgsComposite.setAdditionalArgs(TARGET_OPTION + facetVersion);
 			}
 		}
-	};
+	}
 
 	// ********** intra-wizard methods **********
 

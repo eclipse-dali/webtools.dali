@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.core.internal.context;
 
 import org.eclipse.core.expressions.PropertyTester;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 
 
@@ -29,7 +29,7 @@ public class JaxbPackageTester
 	private boolean test(JaxbPackage jaxbPackage, String property, Object expectedValue) {
 		if (property.equals(HAS_PACKAGE_INFO)) {
 			boolean hasPackageInfo = jaxbPackage.getJaxbProject().getJavaResourcePackage(jaxbPackage.getName()) != null;
-			return Tools.valuesAreEqual(hasPackageInfo, expectedValue);
+			return ObjectTools.equals(hasPackageInfo, expectedValue);
 		}
 		return false;
 	}

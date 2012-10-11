@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.core.JptResourceType;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsProvider;
@@ -24,7 +24,7 @@ public abstract class AbstractEntityMappingsDetailsProvider
 	
 	
 	public final boolean providesDetails(JpaStructureNode structureNode) {
-		return Tools.valuesAreEqual(structureNode.getType(), EntityMappings.class)
+		return ObjectTools.equals(structureNode.getType(), EntityMappings.class)
 				&& providesDetails(structureNode.getResourceType());
 	}
 	

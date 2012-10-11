@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.ui.internal;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdapterFactory;
-import org.eclipse.jpt.common.utility.internal.SimpleFilter;
+import org.eclipse.jpt.common.utility.internal.filter.SimpleFilter;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ElementPropertyValueModelAdapter;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;

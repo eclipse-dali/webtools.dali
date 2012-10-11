@@ -10,8 +10,7 @@
 package org.eclipse.jpt.common.utility.model.listener;
 
 import java.lang.reflect.Method;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
 
@@ -41,9 +40,9 @@ class SingleMethodReflectiveChangeListener
 
 	public void stateChanged(StateChangeEvent event) {
 		if (this.methodIsZeroArgument) {
-			ReflectionTools.executeMethod(this.method, this.target, Tools.EMPTY_OBJECT_ARRAY);
+			ObjectTools.execute(this.target, this.method, ObjectTools.EMPTY_OBJECT_ARRAY);
 		} else {
-			ReflectionTools.executeMethod(this.method, this.target, new StateChangeEvent[] {event});
+			ObjectTools.execute(this.target, this.method, new StateChangeEvent[] {event});
 		}
 	}
 
@@ -52,10 +51,9 @@ class SingleMethodReflectiveChangeListener
 
 	public void propertyChanged(PropertyChangeEvent event) {
 		if (this.methodIsZeroArgument) {
-			ReflectionTools.executeMethod(this.method, this.target, Tools.EMPTY_OBJECT_ARRAY);
+			ObjectTools.execute(this.target, this.method, ObjectTools.EMPTY_OBJECT_ARRAY);
 		} else {
-			ReflectionTools.executeMethod(this.method, this.target, new PropertyChangeEvent[] {event});
+			ObjectTools.execute(this.target, this.method, new PropertyChangeEvent[] {event});
 		}
 	}
-
 }

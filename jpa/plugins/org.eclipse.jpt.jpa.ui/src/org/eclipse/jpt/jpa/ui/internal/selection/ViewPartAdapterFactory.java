@@ -47,6 +47,6 @@ public class ViewPartAdapterFactory
 	 * not already exist (i.e. never return <code>null</code>).
 	 */
 	private JpaViewManager.PageManager getPageManager(IViewPart view) {
-		return JpaPageManager.forPage_(view.getSite().getPage());
+		return JpaPageSelectionManager.forPage_(view.getSite().getPage());
 	}
 }

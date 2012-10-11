@@ -35,7 +35,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jpt.common.core.internal.gen.AbstractJptGenerator;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
-import org.eclipse.jpt.common.utility.internal.FileTools;
+import org.eclipse.jpt.common.utility.internal.io.FileTools;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 
 /**

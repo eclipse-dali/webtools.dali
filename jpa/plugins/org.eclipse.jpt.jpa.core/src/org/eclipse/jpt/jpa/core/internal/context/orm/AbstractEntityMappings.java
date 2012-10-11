@@ -25,16 +25,16 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.core.MappingKeys;
@@ -528,7 +528,7 @@ public abstract class AbstractEntityMappings
 	 * append package if the name is not qualified
 	 */
 	public String getFullyQualifiedName(String className) {
-		if (StringTools.stringIsEmpty(className)) {
+		if (StringTools.isBlank(className)) {
 			return null;
 		}
 		String primitiveClassName = getPrimitiveClassName(className);
@@ -759,7 +759,7 @@ public abstract class AbstractEntityMappings
 	}
 
 	protected int calculateInsertionIndex(OrmPersistentType ormPersistentType) {
-		return CollectionTools.insertionIndexOf(this.persistentTypes, ormPersistentType, MAPPING_COMPARATOR);
+		return ListTools.insertionIndexOf(this.persistentTypes, ormPersistentType, MAPPING_COMPARATOR);
 	}
 
 	protected static final Comparator<OrmPersistentType> MAPPING_COMPARATOR =
@@ -1185,7 +1185,7 @@ public abstract class AbstractEntityMappings
 	}
 
 	protected Iterable<ReplaceEdit> createRenamePackageEdit(final IPackageFragment originalPackage, final String newName) {
-		return Tools.valuesAreEqual(this.package_, originalPackage.getElementName()) ?
+		return ObjectTools.equals(this.package_, originalPackage.getElementName()) ?
 				new SingleElementIterable<ReplaceEdit>(this.xmlEntityMappings.createRenamePackageEdit(newName)) :
 				EmptyIterable.<ReplaceEdit>instance();
 	}

@@ -60,25 +60,25 @@
 			<adapter type="org.eclipse.jpt.common.core.resource.xml.JptXmlResource"/>
 		</factory>
 
-		<!-- IResource -> JpaPlatformDescription -->
+		<!-- IResource -> JpaPlatformConfig -->
 		<factory
 			adaptableType="org.eclipse.core.resources.IResource"
 			class="org.eclipse.jpt.jpa.core.internal.platform.ResourceAdapterFactory">
-			<adapter type="org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription"/>
+			<adapter type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig"/>
 		</factory>
 
-		<!-- IJavaElement -> JpaPlatformDescription -->
+		<!-- IJavaElement -> JpaPlatformConfig -->
 		<factory
 			adaptableType="org.eclipse.jdt.core.IJavaElement"
 			class="org.eclipse.jpt.jpa.core.internal.platform.JavaElementAdapterFactory">
-			<adapter type="org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription"/>
+			<adapter type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig"/>
 		</factory>
 
-		<!-- JpaLibraryProviderInstallOperationConfig -> JpaPlatformDescription -->
+		<!-- JpaLibraryProviderInstallOperationConfig -> JpaPlatformConfig -->
 		<factory
 			adaptableType="org.eclipse.jpt.jpa.core.libprov.JpaLibraryProviderInstallOperationConfig"
 			class="org.eclipse.jpt.jpa.core.internal.libprov.JpaLibraryProviderInstallOperationConfigAdapterFactory">
-			<adapter type="org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription"/>
+			<adapter type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig"/>
 		</factory>
 
 		<!-- XmlFile -> JpaPlatformDescription -->
@@ -186,11 +186,11 @@
 			class="org.eclipse.jpt.jpa.core.internal.context.PersistentAttributePropertyTester"/>
 
 		<propertyTester
-			id="org.eclipse.jpt.jpa.core.propertyTester.JpaPlatformDescription"
-			type="org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription"
+			id="org.eclipse.jpt.jpa.core.propertyTester.JpaPlatformConfig"
+			type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig"
 			namespace="org.eclipse.jpt.jpa.core"
 			properties="jpaPlatform, jpaPlatformGroup"
-			class="org.eclipse.jpt.jpa.core.internal.platform.JpaPlatformDescriptionPropertyTester"/>
+			class="org.eclipse.jpt.jpa.core.internal.platform.JpaPlatformConfigPropertyTester"/>
 
 		<propertyTester
 			id="org.eclipse.jpt.jpa.core.propertyTester.XmlFile"

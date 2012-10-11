@@ -11,8 +11,8 @@ package org.eclipse.jpt.jpa.eclipselink.core.platform;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jpt.jpa.core.JpaWorkspace;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformGroupDescription;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformGroupConfig;
 import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
 
 /**
@@ -29,30 +29,30 @@ import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
  */
 public class EclipseLinkPlatform {
 	
-	public static final JpaPlatformGroupDescription GROUP = getJpaPlatformGroupDescription("eclipselink"); //$NON-NLS-1$
+	public static final JpaPlatformGroupConfig GROUP = getJpaPlatformGroupConfig("eclipselink"); //$NON-NLS-1$
 	
-	public static final JpaPlatformDescription VERSION_1_0 = getJpaPlatformDescription("org.eclipse.eclipselink.platform"); //$NON-NLS-1$
+	public static final JpaPlatformConfig VERSION_1_0 = getJpaPlatformConfig("org.eclipse.eclipselink.platform"); //$NON-NLS-1$
 	
-	public static final JpaPlatformDescription VERSION_1_1 = getJpaPlatformDescription("eclipselink1_1"); //$NON-NLS-1$
+	public static final JpaPlatformConfig VERSION_1_1 = getJpaPlatformConfig("eclipselink1_1"); //$NON-NLS-1$
 	
-	public static final JpaPlatformDescription VERSION_1_2 = getJpaPlatformDescription("eclipselink1_2"); //$NON-NLS-1$
+	public static final JpaPlatformConfig VERSION_1_2 = getJpaPlatformConfig("eclipselink1_2"); //$NON-NLS-1$
 	
-	public static final JpaPlatformDescription VERSION_2_0 = getJpaPlatformDescription("eclipselink2_0"); //$NON-NLS-1$
+	public static final JpaPlatformConfig VERSION_2_0 = getJpaPlatformConfig("eclipselink2_0"); //$NON-NLS-1$
 	
-	public static final JpaPlatformDescription VERSION_2_1 = getJpaPlatformDescription("eclipselink2_1"); //$NON-NLS-1$
+	public static final JpaPlatformConfig VERSION_2_1 = getJpaPlatformConfig("eclipselink2_1"); //$NON-NLS-1$
 	
-	public static final JpaPlatformDescription VERSION_2_2 = getJpaPlatformDescription("eclipselink2_2"); //$NON-NLS-1$
+	public static final JpaPlatformConfig VERSION_2_2 = getJpaPlatformConfig("eclipselink2_2"); //$NON-NLS-1$
 	
-	public static final JpaPlatformDescription VERSION_2_3 = getJpaPlatformDescription("eclipselink2_3"); //$NON-NLS-1$
+	public static final JpaPlatformConfig VERSION_2_3 = getJpaPlatformConfig("eclipselink2_3"); //$NON-NLS-1$
 	
-	public static final JpaPlatformDescription VERSION_2_4 = getJpaPlatformDescription("eclipselink2_4"); //$NON-NLS-1$
+	public static final JpaPlatformConfig VERSION_2_4 = getJpaPlatformConfig("eclipselink2_4"); //$NON-NLS-1$
 	
-	private static JpaPlatformGroupDescription getJpaPlatformGroupDescription(String platformGroupID) {
-		return getJpaPlatformManager().getJpaPlatformGroupDescription(platformGroupID);
+	private static JpaPlatformGroupConfig getJpaPlatformGroupConfig(String platformGroupID) {
+		return getJpaPlatformManager().getJpaPlatformGroupConfig(platformGroupID);
 	}
 
-	private static JpaPlatformDescription getJpaPlatformDescription(String platformID) {
-		return getJpaPlatformManager().getJpaPlatformDescription(platformID);
+	private static JpaPlatformConfig getJpaPlatformConfig(String platformID) {
+		return getJpaPlatformManager().getJpaPlatformConfig(platformID);
 	}
 
 	private static JpaPlatformManager getJpaPlatformManager() {

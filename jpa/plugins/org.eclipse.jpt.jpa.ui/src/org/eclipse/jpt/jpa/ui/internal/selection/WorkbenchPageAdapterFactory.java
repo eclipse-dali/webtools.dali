@@ -19,7 +19,7 @@ import org.eclipse.ui.IWorkbenchPage;
  * </ul>
  * See <code>org.eclipse.jpt.jpa.ui/plugin.xml:org.eclipse.core.runtime.adapters</code>.
  * 
- * @see JpaWorkbenchManager
+ * @see JpaWorkbenchSelectionManager
  */
 public class WorkbenchPageAdapterFactory
 	implements IAdapterFactory
@@ -48,7 +48,7 @@ public class WorkbenchPageAdapterFactory
 	 * Never return <code>null</code>.
 	 */
 	private JpaSelectionManager getJpaSelectionManager(IWorkbenchPage workbenchPage) {
-		JpaSelectionManager manager = JpaPageManager.forPage(workbenchPage);
+		JpaSelectionManager manager = JpaPageSelectionManager.forPage(workbenchPage);
 		return (manager != null) ? manager : JpaSelectionManager.Null.instance();
 	}
 }

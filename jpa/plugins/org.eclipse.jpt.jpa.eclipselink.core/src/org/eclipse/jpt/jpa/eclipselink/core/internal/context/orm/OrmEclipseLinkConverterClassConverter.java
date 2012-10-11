@@ -15,10 +15,10 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementIterable;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkConverterClassConverter;
@@ -109,7 +109,7 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 	}
 
 	protected void validateConverterClass(List<IMessage> messages) {
-		if (StringTools.stringIsEmpty(this.converterClass)) {
+		if (StringTools.isBlank(this.converterClass)) {
 			messages.add(
 				DefaultEclipseLinkJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
@@ -182,7 +182,7 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 	}
 
 	protected boolean isEquivalentTo(EclipseLinkConverterClassConverter converter) {
-		return Tools.valuesAreEqual(this.getFullyQualifiedConverterClass(), converter.getFullyQualifiedConverterClass());
+		return ObjectTools.equals(this.getFullyQualifiedConverterClass(), converter.getFullyQualifiedConverterClass());
 	}
 
 	// ********** refactoring **********

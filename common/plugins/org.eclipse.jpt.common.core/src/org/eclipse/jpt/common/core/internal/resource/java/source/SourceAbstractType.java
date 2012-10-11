@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.core.utility.jdt.AbstractType;
 import org.eclipse.jpt.common.core.utility.jdt.TypeBinding;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * Java source type
@@ -98,7 +98,7 @@ abstract class SourceAbstractType<A extends AbstractType>
 	
 	// ***** package
 	public boolean isIn(IPackageFragment packageFragment) {
-		return StringTools.stringsAreEqual(packageFragment.getElementName(), this.typeBinding.getPackageName());
+		return ObjectTools.equals(packageFragment.getElementName(), this.typeBinding.getPackageName());
 	}
 
 	// ***** source folder

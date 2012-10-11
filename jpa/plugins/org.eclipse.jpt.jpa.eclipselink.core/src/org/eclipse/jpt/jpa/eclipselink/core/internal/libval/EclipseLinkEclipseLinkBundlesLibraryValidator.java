@@ -15,7 +15,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jpa.core.internal.libprov.JpaOsgiBundlesLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jpa.core.internal.libval.AbstractOsgiBundlesLibraryValidator;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
 import org.eclipse.jpt.jpa.eclipselink.core.platform.EclipseLinkPlatform;
 import org.eclipse.osgi.service.resolver.VersionRange;
 
@@ -26,8 +26,8 @@ public class EclipseLinkEclipseLinkBundlesLibraryValidator
 		JpaOsgiBundlesLibraryProviderInstallOperationConfig jpaConfig 
 				= (JpaOsgiBundlesLibraryProviderInstallOperationConfig) config;
 		Map<String, VersionRange[]> bundleVersionRanges = new HashMap<String, VersionRange[]>();
-		JpaPlatformDescription platform = jpaConfig.getJpaPlatform();
-		if (EclipseLinkPlatform.VERSION_1_0.equals(platform)) {
+		JpaPlatformConfig platformConfig = jpaConfig.getJpaPlatformConfig();
+		if (EclipseLinkPlatform.VERSION_1_0.equals(platformConfig)) {
 			bundleVersionRanges.put(
 					"org.eclipse.persistence.core", //$NON-NLS-1$
 					new VersionRange[] {new VersionRange("[1.0, 3.0)")}); //$NON-NLS-1$
@@ -41,7 +41,7 @@ public class EclipseLinkEclipseLinkBundlesLibraryValidator
 					"org.eclipse.persistence.antlr", //$NON-NLS-1$
 					new VersionRange[] {new VersionRange("[1.0, 3.0)")}); //$NON-NLS-1$
 		}
-		else if (EclipseLinkPlatform.VERSION_1_1.equals(platform)) {
+		else if (EclipseLinkPlatform.VERSION_1_1.equals(platformConfig)) {
 			bundleVersionRanges.put(
 					"org.eclipse.persistence.core", //$NON-NLS-1$
 					new VersionRange[] {new VersionRange("[1.1, 3.0)")}); //$NON-NLS-1$
@@ -55,7 +55,7 @@ public class EclipseLinkEclipseLinkBundlesLibraryValidator
 					"org.eclipse.persistence.antlr", //$NON-NLS-1$
 					new VersionRange[] {new VersionRange("[1.1, 3.0)")}); //$NON-NLS-1$
 		}
-		else if (EclipseLinkPlatform.VERSION_1_2.equals(platform)) {
+		else if (EclipseLinkPlatform.VERSION_1_2.equals(platformConfig)) {
 			bundleVersionRanges.put(
 					"org.eclipse.persistence.core", //$NON-NLS-1$
 					new VersionRange[] {new VersionRange("[1.2, 3.0)")}); //$NON-NLS-1$
@@ -69,7 +69,7 @@ public class EclipseLinkEclipseLinkBundlesLibraryValidator
 					"org.eclipse.persistence.antlr", //$NON-NLS-1$
 					new VersionRange[] {new VersionRange("[1.2, 3.0)")}); //$NON-NLS-1$
 		}
-		else if (EclipseLinkPlatform.VERSION_2_0.equals(platform)) {
+		else if (EclipseLinkPlatform.VERSION_2_0.equals(platformConfig)) {
 			bundleVersionRanges.put(
 					"org.eclipse.persistence.core", //$NON-NLS-1$
 					new VersionRange[] {new VersionRange("[2.0, 3.0)")}); //$NON-NLS-1$
@@ -83,7 +83,7 @@ public class EclipseLinkEclipseLinkBundlesLibraryValidator
 					"org.eclipse.persistence.antlr", //$NON-NLS-1$
 					new VersionRange[] {new VersionRange("[2.0, 3.0)")}); //$NON-NLS-1$
 		}
-		else if (EclipseLinkPlatform.VERSION_2_1.equals(platform)) {
+		else if (EclipseLinkPlatform.VERSION_2_1.equals(platformConfig)) {
 			bundleVersionRanges.put(
 					"org.eclipse.persistence.core", //$NON-NLS-1$
 					new VersionRange[] {new VersionRange("[2.1, 3.0)")}); //$NON-NLS-1$
@@ -97,7 +97,7 @@ public class EclipseLinkEclipseLinkBundlesLibraryValidator
 					"org.eclipse.persistence.antlr", //$NON-NLS-1$
 					new VersionRange[] {new VersionRange("[2.1, 3.0)")}); //$NON-NLS-1$
 		}
-		else if (EclipseLinkPlatform.VERSION_2_2.equals(platform)) {
+		else if (EclipseLinkPlatform.VERSION_2_2.equals(platformConfig)) {
 			bundleVersionRanges.put(
 					"org.eclipse.persistence.core", //$NON-NLS-1$
 					new VersionRange[] {new VersionRange("[2.2, 3.0)")}); //$NON-NLS-1$
@@ -111,7 +111,7 @@ public class EclipseLinkEclipseLinkBundlesLibraryValidator
 					"org.eclipse.persistence.antlr", //$NON-NLS-1$
 					new VersionRange[] {new VersionRange("[2.2, 3.0)")}); //$NON-NLS-1$
 		}
-		else if (EclipseLinkPlatform.VERSION_2_3.equals(platform)) {
+		else if (EclipseLinkPlatform.VERSION_2_3.equals(platformConfig)) {
 			bundleVersionRanges.put(
 					"org.eclipse.persistence.core", //$NON-NLS-1$
 					new VersionRange[] {new VersionRange("[2.3, 3.0)")}); //$NON-NLS-1$
@@ -125,7 +125,7 @@ public class EclipseLinkEclipseLinkBundlesLibraryValidator
 					"org.eclipse.persistence.antlr", //$NON-NLS-1$
 					new VersionRange[] {new VersionRange("[2.3, 3.0)")}); //$NON-NLS-1$
 		}
-		else if (EclipseLinkPlatform.VERSION_2_4.equals(platform)) {
+		else if (EclipseLinkPlatform.VERSION_2_4.equals(platformConfig)) {
 			bundleVersionRanges.put(
 					"org.eclipse.persistence.core", //$NON-NLS-1$
 					new VersionRange[] {new VersionRange("[2.4, 3.0)")}); //$NON-NLS-1$

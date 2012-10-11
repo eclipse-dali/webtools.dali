@@ -10,7 +10,6 @@
 package org.eclipse.jpt.common.utility.tests.internal.model.value;
 
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.internal.BidiTransformer;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
@@ -18,9 +17,10 @@ import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 @SuppressWarnings("nls")
 public class CachingTransformationPropertyValueModelTests extends TestCase {
@@ -41,13 +41,10 @@ public class CachingTransformationPropertyValueModelTests extends TestCase {
 		this.transformationObjectHolder = new TransformationPropertyValueModel<Person, Person>(this.objectHolder, this.buildTransformer());
 	}
 
-	private BidiTransformer<Person, Person> buildTransformer() {
-		return new BidiTransformer<Person, Person>() {
+	private Transformer<Person, Person> buildTransformer() {
+		return new Transformer<Person, Person>() {
 			public Person transform(Person p) {
 				return (p == null) ? null : p.getParent();
-			}
-			public Person reverseTransform(Person p) {
-				return (p == null) ? null : p.getChild();
 			}
 		};
 	}

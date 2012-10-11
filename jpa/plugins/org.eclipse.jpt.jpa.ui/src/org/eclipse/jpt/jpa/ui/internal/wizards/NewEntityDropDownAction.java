@@ -12,17 +12,12 @@
 package org.eclipse.jpt.jpa.ui.internal.wizards;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
-import org.eclipse.core.runtime.Platform;
-
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.Shell;
-
+import org.eclipse.core.runtime.RegistryFactory;
+import org.eclipse.jdt.internal.ui.util.CoreUtility;
+import org.eclipse.jdt.ui.actions.AbstractOpenWizardAction;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
@@ -33,15 +28,16 @@ import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowPulldownDelegate2;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-
-import org.eclipse.jdt.ui.actions.AbstractOpenWizardAction;
-import org.eclipse.jdt.internal.ui.util.CoreUtility;
 
 
 /**
@@ -216,7 +212,7 @@ public class NewEntityDropDownAction extends Action implements IMenuCreator, IWo
 	public static OpenJptWizardAction[] getActionFromDescriptors() {
 		ArrayList<OpenJptWizardAction> containers= new ArrayList<OpenJptWizardAction>();
 		
-		IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(PlatformUI.PLUGIN_ID, PL_NEW);
+		IExtensionPoint extensionPoint = RegistryFactory.getRegistry().getExtensionPoint(PlatformUI.PLUGIN_ID, PL_NEW);
 		if (extensionPoint != null) {
 			IConfigurationElement[] elements = extensionPoint.getConfigurationElements();
 			for (int i = 0; i < elements.length; i++) {
@@ -226,9 +222,7 @@ public class NewEntityDropDownAction extends Action implements IMenuCreator, IWo
 				}
 			}
 		}
-		OpenJptWizardAction[] actions = containers.toArray(new OpenJptWizardAction[containers.size()]);
-		Arrays.sort(actions);
-		return actions;
+		return ArrayTools.sort(containers.toArray(new OpenJptWizardAction[containers.size()]));
 	}
 		
 	private static boolean isJptArtifactWizard(IConfigurationElement element) {

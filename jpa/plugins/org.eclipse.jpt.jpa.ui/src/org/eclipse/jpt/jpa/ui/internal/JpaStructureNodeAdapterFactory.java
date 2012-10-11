@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.ui.internal;
 
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.jpt.common.ui.WidgetFactory;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.ui.JpaPlatformUi;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsPageManager;
@@ -70,7 +70,7 @@ public class JpaStructureNodeAdapterFactory
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.jpaStructureNode);
+			return ObjectTools.toString(this, this.jpaStructureNode);
 		}
 	}
 }

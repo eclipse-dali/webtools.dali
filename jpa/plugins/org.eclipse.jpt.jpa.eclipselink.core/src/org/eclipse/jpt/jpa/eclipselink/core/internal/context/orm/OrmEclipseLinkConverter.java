@@ -14,8 +14,8 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmXmlContextNode;
@@ -112,7 +112,7 @@ public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 	}
 
 	protected void validateName(List<IMessage> messages) {
-		if (StringTools.stringIsEmpty(this.name)) {
+		if (StringTools.isBlank(this.name)) {
 			messages.add(
 				DefaultEclipseLinkJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY, 
@@ -150,7 +150,7 @@ public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 	public boolean isEquivalentTo(JpaNamedContextNode node) {
 		return (this != node) &&
 				(this.getType() == node.getType()) &&
-				Tools.valuesAreEqual(this.name, node.getName());
+				ObjectTools.equals(this.name, node.getName());
 	}
 
 	// ********** metadata conversion **********

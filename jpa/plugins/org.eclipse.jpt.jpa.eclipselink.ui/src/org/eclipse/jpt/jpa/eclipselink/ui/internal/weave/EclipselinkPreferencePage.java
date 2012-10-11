@@ -81,11 +81,11 @@ public class EclipselinkPreferencePage extends PropertyPage {
 	// ********** preferences **********
 	
 	private void updateProjectStaticWeavingPreferences() {
-		String location = StringTools.stringIsEmpty(this.getSourceFolder()) ? this.getDefaultSource() : this.getSourceFolder();
+		String location = StringTools.isBlank(this.getSourceFolder()) ? this.getDefaultSource() : this.getSourceFolder();
 		this.configurator.setSourceLocationPreference(location);
-		location = StringTools.stringIsEmpty(this.getTargetFolder()) ? this.getDefaultTarget() : this.getTargetFolder();
+		location = StringTools.isBlank(this.getTargetFolder()) ? this.getDefaultTarget() : this.getTargetFolder();
 		this.configurator.setTargetLocationPreference(location);
-		location = StringTools.stringIsEmpty(this.getPersistenceInfo()) ? this.getDefaultPersistenceInfo() : this.getPersistenceInfo();
+		location = StringTools.isBlank(this.getPersistenceInfo()) ? this.getDefaultPersistenceInfo() : this.getPersistenceInfo();
 		this.configurator.setPersistenceInfoPreference(location);
 		this.configurator.setLogLevelPreference(this.getLogLevel());
 	}
@@ -363,7 +363,7 @@ public class EclipselinkPreferencePage extends PropertyPage {
 				public void widgetSelected(SelectionEvent e) {
 
 					String directory = promptFolder(title, description, getSourceFolder());
-					if ( ! StringTools.stringIsEmpty(directory)) {
+					if ( ! StringTools.isBlank(directory)) {
 						StaticWeavingComposite.this.sourceFolderText.setText(makeRelativeToProjectPath(directory));
 					}
 				}
@@ -377,7 +377,7 @@ public class EclipselinkPreferencePage extends PropertyPage {
 				public void widgetSelected(SelectionEvent e) {
 
 					String directory = promptFolder(title, description, getTargetFolder());
-					if ( ! StringTools.stringIsEmpty(directory)) {
+					if ( ! StringTools.isBlank(directory)) {
 						StaticWeavingComposite.this.targetFolderText.setText(makeRelativeToProjectPath(directory));
 					}
 				}
@@ -391,7 +391,7 @@ public class EclipselinkPreferencePage extends PropertyPage {
 				public void widgetSelected(SelectionEvent e) {
 
 					String directory = promptFolder(title, description, getPersistenceInfoFolder());
-					if ( ! StringTools.stringIsEmpty(directory)) {
+					if ( ! StringTools.isBlank(directory)) {
 						StaticWeavingComposite.this.persistenceInfoText.setText(makeRelativeToProjectPath(directory));
 					}
 				}
@@ -490,7 +490,7 @@ public class EclipselinkPreferencePage extends PropertyPage {
 		
 		protected String filterPath(String relativeLocation) {
 			IPath location = getProject().getLocation(); 
-			if( ! StringTools.stringIsEmpty(relativeLocation)) {
+			if( ! StringTools.isBlank(relativeLocation)) {
 				location = location.append(relativeLocation);
 			}
 			return location.toPortableString();

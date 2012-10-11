@@ -317,7 +317,7 @@ public class AddRemoveListPane<T extends Model, E extends Object> extends AddRem
 				int height = table.getItemCount() * table.getItemHeight();
 
 				// Remove the border from the height
-				height += (table.getBorderWidth() * 2);
+				height += (table.getBorderWidth() << 1);
 
 				return (clientArea.height < height);
 			}
@@ -363,7 +363,7 @@ public class AddRemoveListPane<T extends Model, E extends Object> extends AddRem
 			                                    boolean verticalScrollbarBarVisible) {
 
 				// Remove the border from the width
-				width -= (table.getBorderWidth() * 2);
+				width -= (table.getBorderWidth() << 1);
 
 				// Remove the scrollbar from the width if it is shown
 				if (verticalScrollbarBarVisible) {

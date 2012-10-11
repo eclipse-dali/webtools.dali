@@ -13,20 +13,22 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.internal.Bag;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.Transformer;
-import org.eclipse.jpt.common.utility.internal.iterators.CompositeIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.common.utility.collection.Bag;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterator.CompositeIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
+import org.eclipse.jpt.common.utility.internal.iterator.TransformationIterator;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.tests.internal.TestTools;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 @SuppressWarnings("nls")
 public class CompositeCollectionValueModelTests extends TestCase {
@@ -50,16 +52,12 @@ public class CompositeCollectionValueModelTests extends TestCase {
 		super.tearDown();
 	}
 
-	public void testSynch1() {
+	public void testSynch() {
 		this.verifySynch(this.buildAllMembersComposite(this.neighborhoodHolder));
 	}
 
-	public void testSynch2() {
-		this.verifySynch(this.buildAllMembersComposite2(this.neighborhoodHolder));
-	}
-
 	private void verifySynch(CollectionValueModel<Member> compositeCVM) {
-		assertEquals(0, CollectionTools.size(compositeCVM.iterator()));
+		assertEquals(0, IteratorTools.size(compositeCVM.iterator()));
 		Bag<Family> familiesSynch = new CoordinatedBag<Family>(this.buildFamiliesAspectAdapter(this.neighborhoodHolder));
 		Bag<Member> membersSynch = new CoordinatedBag<Member>(compositeCVM);
 		this.populateNeighborhood(this.neighborhood);
@@ -67,35 +65,35 @@ public class CompositeCollectionValueModelTests extends TestCase {
 		Family jetsons = this.neighborhood.familyNamed("Jetson");
 
 		assertEquals(3, familiesSynch.size());
-		assertEquals(12, CollectionTools.size(this.neighborhood.allMembers()));
+		assertEquals(12, IteratorTools.size(this.neighborhood.allMembers()));
 		assertEquals(12, membersSynch.size());
 		assertEquals(CollectionTools.bag(this.neighborhood.allMembers()), membersSynch);
 		assertEquals(membersSynch, CollectionTools.bag(compositeCVM.iterator()));
 
 		jetsons.removeMember(jetsons.memberNamed("Astro"));
 		assertEquals(3, familiesSynch.size());
-		assertEquals(11, CollectionTools.size(this.neighborhood.allMembers()));
+		assertEquals(11, IteratorTools.size(this.neighborhood.allMembers()));
 		assertEquals(11, membersSynch.size());
 		assertEquals(CollectionTools.bag(this.neighborhood.allMembers()), membersSynch);
 		assertEquals(membersSynch, CollectionTools.bag(compositeCVM.iterator()));
 
 		jetsons.removeMember(jetsons.memberNamed("Judy"));
 		assertEquals(3, familiesSynch.size());
-		assertEquals(10, CollectionTools.size(this.neighborhood.allMembers()));
+		assertEquals(10, IteratorTools.size(this.neighborhood.allMembers()));
 		assertEquals(10, membersSynch.size());
 		assertEquals(CollectionTools.bag(this.neighborhood.allMembers()), membersSynch);
 		assertEquals(membersSynch, CollectionTools.bag(compositeCVM.iterator()));
 
 		jetsons.addMember("Fido");
 		assertEquals(3, familiesSynch.size());
-		assertEquals(11, CollectionTools.size(this.neighborhood.allMembers()));
+		assertEquals(11, IteratorTools.size(this.neighborhood.allMembers()));
 		assertEquals(11, membersSynch.size());
 		assertEquals(CollectionTools.bag(this.neighborhood.allMembers()), membersSynch);
 		assertEquals(membersSynch, CollectionTools.bag(compositeCVM.iterator()));
 
 		this.neighborhood.removeFamily(jetsons);
 		assertEquals(2, familiesSynch.size());
-		assertEquals(7, CollectionTools.size(this.neighborhood.allMembers()));
+		assertEquals(7, IteratorTools.size(this.neighborhood.allMembers()));
 		assertEquals(7, membersSynch.size());
 		assertEquals(CollectionTools.bag(this.neighborhood.allMembers()), membersSynch);
 		assertEquals(membersSynch, CollectionTools.bag(compositeCVM.iterator()));
@@ -103,14 +101,14 @@ public class CompositeCollectionValueModelTests extends TestCase {
 		Family bears = this.neighborhood.addFamily("Bear");
 			bears.addMember("Yogi");
 		assertEquals(3, familiesSynch.size());
-		assertEquals(8, CollectionTools.size(this.neighborhood.allMembers()));
+		assertEquals(8, IteratorTools.size(this.neighborhood.allMembers()));
 		assertEquals(8, membersSynch.size());
 		assertEquals(CollectionTools.bag(this.neighborhood.allMembers()), membersSynch);
 		assertEquals(membersSynch, CollectionTools.bag(compositeCVM.iterator()));
 
 		bears.addMember("Boo-Boo");
 		assertEquals(3, familiesSynch.size());
-		assertEquals(9, CollectionTools.size(this.neighborhood.allMembers()));
+		assertEquals(9, IteratorTools.size(this.neighborhood.allMembers()));
 		assertEquals(9, membersSynch.size());
 		assertEquals(CollectionTools.bag(this.neighborhood.allMembers()), membersSynch);
 		assertEquals(membersSynch, CollectionTools.bag(compositeCVM.iterator()));
@@ -119,7 +117,7 @@ public class CompositeCollectionValueModelTests extends TestCase {
 		this.neighborhoodHolder.setValue(n2);
 		this.populateNeighborhood(n2);
 		assertEquals(3, familiesSynch.size());
-		assertEquals(12, CollectionTools.size(n2.allMembers()));
+		assertEquals(12, IteratorTools.size(n2.allMembers()));
 		assertEquals(12, membersSynch.size());
 		assertEquals(CollectionTools.bag(n2.allMembers()), membersSynch);
 		assertEquals(membersSynch, CollectionTools.bag(compositeCVM.iterator()));
@@ -131,7 +129,7 @@ public class CompositeCollectionValueModelTests extends TestCase {
 		Collection<CollectionValueModel<String>> collection = new ArrayList<CollectionValueModel<String>>();
 		collection.add(subCVM1);
 		collection.add(subCVM2);
-		Bag<String> synchBag = new CoordinatedBag<String>(new CompositeCollectionValueModel<CollectionValueModel<String>, String>(collection));
+		Bag<String> synchBag = new CoordinatedBag<String>(CompositeCollectionValueModel.forModels(collection));
 
 		assertEquals(0, synchBag.size());
 
@@ -223,28 +221,15 @@ public class CompositeCollectionValueModelTests extends TestCase {
 	}
 
 	private CompositeCollectionValueModel<Family, Member> buildAllMembersComposite(PropertyValueModel<Neighborhood> communeHolder) {
-		// override #transform(Object)
-		return new CompositeCollectionValueModel<Family, Member>(this.buildFamiliesAspectAdapter(communeHolder)) {
-			@Override
-			protected CollectionValueModel<Member> transform(Family family) {
-				return CompositeCollectionValueModelTests.this.buildMembersAdapter(family);
-			}
-		};
-	}
-
-	private CollectionValueModel<Member> buildAllMembersComposite2(PropertyValueModel<Neighborhood> communeHolder) {
 		// build a custom Transformer
 		return new CompositeCollectionValueModel<Family, Member>(this.buildFamiliesAspectAdapter(communeHolder), this.buildTransformer());
 	}
 
 	private Transformer<Family, CollectionValueModel<Member>> buildTransformer() {
-		return new Transformer<Family, CollectionValueModel<Member>>() {
+		return new TransformerAdapter<Family, CollectionValueModel<Member>>() {
+			@Override
 			public CollectionValueModel<Member> transform(Family family) {
 				return CompositeCollectionValueModelTests.this.buildMembersAdapter(family);
-			}
-			@Override
-			public String toString() {
-				return "Local Transformer";
 			}
 		};
 	}

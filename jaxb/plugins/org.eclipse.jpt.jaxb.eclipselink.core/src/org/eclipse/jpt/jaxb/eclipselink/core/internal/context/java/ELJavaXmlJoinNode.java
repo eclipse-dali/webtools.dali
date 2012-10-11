@@ -11,10 +11,12 @@ package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.jaxb.core.JaxbNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbClassMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
@@ -155,7 +157,8 @@ public class ELJavaXmlJoinNode
 			if (referencedClassMapping != null) {
 				result = new CompositeIterable<String>(
 								result, 
-								StringTools.convertToJavaStringLiteralContents(referencedClassMapping.getKeyXPaths()));
+								new TransformationIterable<String, String>(referencedClassMapping.getKeyXPaths(),
+										StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER));
 			}
 			
 			return CollectionTools.sortedSet(result);
@@ -181,7 +184,7 @@ public class ELJavaXmlJoinNode
 	}
 	
 	protected void validateXmlPath(List<IMessage> messages) {
-		if (StringTools.stringIsEmpty(this.xmlPath)) {
+		if (StringTools.isBlank(this.xmlPath)) {
 			messages.add(
 					ELJaxbValidationMessageBuilder.buildMessage(
 								IMessage.HIGH_SEVERITY,
@@ -207,7 +210,7 @@ public class ELJavaXmlJoinNode
 	}
 	
 	protected void validateReferencedXmlPath(List<IMessage> messages) {
-		if (StringTools.stringIsEmpty(this.referencedXmlPath)) {
+		if (StringTools.isBlank(this.referencedXmlPath)) {
 			messages.add(
 					ELJaxbValidationMessageBuilder.buildMessage(
 							IMessage.HIGH_SEVERITY,
@@ -229,7 +232,7 @@ public class ELJavaXmlJoinNode
 		
 		ELClassMapping referencedClassMapping = this.context.getAttributeMapping().getReferencedClassMapping();
 		if (referencedClassMapping != null && 
-				! CollectionTools.contains(referencedClassMapping.getKeyXPaths(), this.referencedXmlPath)) {
+				! IterableTools.contains(referencedClassMapping.getKeyXPaths(), this.referencedXmlPath)) {
 			messages.add(
 					ELJaxbValidationMessageBuilder.buildMessage(
 							IMessage.HIGH_SEVERITY,

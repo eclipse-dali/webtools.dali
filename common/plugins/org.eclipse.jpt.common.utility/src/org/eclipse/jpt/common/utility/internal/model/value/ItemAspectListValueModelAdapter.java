@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,10 +16,10 @@ import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.ListIterator;
 
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.SimpleIntReference;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ReadOnlyListIterator;
+import org.eclipse.jpt.common.utility.internal.StringBuilderTools;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ReadOnlyListIterator;
+import org.eclipse.jpt.common.utility.internal.reference.SimpleIntReference;
 import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.common.utility.model.event.ListChangeEvent;
@@ -85,19 +85,19 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	}
 
 	public ListIterator<E> listIterator() {
-		return new ReadOnlyListIterator<E>(this.listHolder.listIterator());
+		return new ReadOnlyListIterator<E>(this.listModel.listIterator());
 	}
 
 	public E get(int index) {
-		return this.listHolder.get(index);
+		return this.listModel.get(index);
 	}
 
 	public int size() {
-		return this.listHolder.size();
+		return this.listModel.size();
 	}
 
 	public Object[] toArray() {
-		return this.listHolder.toArray();
+		return this.listModel.toArray();
 	}
 
 
@@ -113,7 +113,7 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	}
 
 	protected void engageAllItems() {
-		this.engageItems(this.listHolder);
+		this.engageItems(this.listModel);
 	}
 
 	protected void engageItems(Iterable<? extends E> items) {
@@ -148,7 +148,7 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	}
 
 	protected void disengageAllItems() {
-		this.disengageItems(this.listHolder);
+		this.disengageItems(this.listModel);
 	}
 
 	protected void disengageItems(Iterable<? extends E> items) {
@@ -177,7 +177,7 @@ public abstract class ItemAspectListValueModelAdapter<E>
 
 	@Override
 	public void toString(StringBuilder sb) {
-		StringTools.append(sb, this);
+		StringBuilderTools.append(sb, this);
 	}
 
 
@@ -268,7 +268,7 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	 * whether the item aspect change is significant.
 	 */
 	protected void itemAspectChanged(@SuppressWarnings("unused") EventObject event) {
-		this.fireListChanged(LIST_VALUES, CollectionTools.list(this.listHolder, this.listHolder.size()));
+		this.fireListChanged(LIST_VALUES, ListTools.list(this.listModel, this.listModel.size()));
 	}
 
 }

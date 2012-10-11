@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.utility.internal;
 
 import java.io.IOException;
 import java.io.Serializable;
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 
 /**
  * Container for holding and printing the {@StackTraceElement stack trace

@@ -9,12 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.libprov;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jpt.common.core.internal.libval.LibraryValidatorManager;
+import org.eclipse.jpt.common.core.JptWorkspace;
 import org.eclipse.jpt.common.core.libval.LibraryValidator;
+import org.eclipse.jpt.common.core.libval.LibraryValidatorManager;
 import org.eclipse.jpt.jaxb.core.libprov.JaxbLibraryProviderInstallOperationConfig;
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryProviderInstallOperationConfig;
 
 
@@ -22,7 +24,7 @@ public class JaxbJreLibraryProviderInstallOperationConfig
 		extends LibraryProviderInstallOperationConfig
 		implements JaxbLibraryProviderInstallOperationConfig {
 	
-	private JaxbPlatformDescription jaxbPlatform;
+	private JaxbPlatformConfig jaxbPlatformConfig;
 	
 	
 	public JaxbJreLibraryProviderInstallOperationConfig() {
@@ -30,15 +32,15 @@ public class JaxbJreLibraryProviderInstallOperationConfig
 	}
 	
 	
-	public JaxbPlatformDescription getJaxbPlatform() {
-		return this.jaxbPlatform;
+	public JaxbPlatformConfig getJaxbPlatformConfig() {
+		return this.jaxbPlatformConfig;
 	}
 	
-	public void setJaxbPlatform(JaxbPlatformDescription jaxbPlatform) {
-		JaxbPlatformDescription old = this.jaxbPlatform;
-		this.jaxbPlatform = jaxbPlatform;
-		if (old != jaxbPlatform) {
-			notifyListeners(PROP_JAXB_PLATFORM, old, jaxbPlatform);
+	public void setJaxbPlatformConfig(JaxbPlatformConfig jaxbPlatformConfig) {
+		JaxbPlatformConfig old = this.jaxbPlatformConfig;
+		this.jaxbPlatformConfig = jaxbPlatformConfig;
+		if (old != jaxbPlatformConfig) {
+			notifyListeners(PROP_JAXB_PLATFORM, old, jaxbPlatformConfig);
 		}
 	}
 	
@@ -49,7 +51,7 @@ public class JaxbJreLibraryProviderInstallOperationConfig
 			return status;
 		}
 		
-		for (LibraryValidator libraryValidator : LibraryValidatorManager.instance().getLibraryValidators(this)) {
+		for (LibraryValidator libraryValidator : this.getLibraryValidatorManager().getLibraryValidators(this)) {
 			status = libraryValidator.validate(this);
 			if (! status.isOK()) {
 				return status;
@@ -57,5 +59,13 @@ public class JaxbJreLibraryProviderInstallOperationConfig
 		}
 		
 		return Status.OK_STATUS;
+	}
+
+	private LibraryValidatorManager getLibraryValidatorManager() {
+		return this.getJptWorkspace().getLibraryValidatorManager();
+	}
+
+	private JptWorkspace getJptWorkspace() {
+		return (JptWorkspace) ResourcesPlugin.getWorkspace().getAdapter(JptWorkspace.class);
 	}
 }

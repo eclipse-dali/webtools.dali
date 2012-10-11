@@ -9,9 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.swt;
 
-import org.eclipse.jpt.common.utility.internal.StringConverter;
+import org.eclipse.jpt.common.utility.internal.transformer.StringObjectTransformer;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.ModifyListener;
@@ -50,7 +51,7 @@ public class ComboModelAdapter<E> extends AbstractComboModelAdapter<E> {
 			listHolder,
 			selectedItemHolder,
 			combo,
-			StringConverter.Default.<T>instance()
+			StringObjectTransformer.<T>instance()
 		);
 	}
 
@@ -63,13 +64,13 @@ public class ComboModelAdapter<E> extends AbstractComboModelAdapter<E> {
 			ListValueModel<T> listHolder,
 			ModifiablePropertyValueModel<T> selectedItemHolder,
 			Combo combo,
-			StringConverter<T> stringConverter)
+			Transformer<T, String> transformer)
 	{
 		return new ComboModelAdapter<T>(
 			listHolder,
 			selectedItemHolder,
 			combo,
-			stringConverter
+			transformer
 		);
 	}
 
@@ -84,12 +85,12 @@ public class ComboModelAdapter<E> extends AbstractComboModelAdapter<E> {
 			ListValueModel<E> listHolder,
 			ModifiablePropertyValueModel<E> selectedItemHolder,
 			Combo combo,
-			StringConverter<E> stringConverter)
+			Transformer<E, String> transformer)
 	{
 		super(listHolder,
 		      selectedItemHolder,
 		      new SWTComboHolder(combo),
-		      stringConverter);
+		      transformer);
 	}
 
 

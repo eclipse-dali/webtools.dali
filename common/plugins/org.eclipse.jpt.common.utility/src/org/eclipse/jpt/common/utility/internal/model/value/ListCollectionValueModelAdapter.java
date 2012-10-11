@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.utility.internal.model.value;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.eclipse.jpt.common.utility.internal.iterators.ReadOnlyIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.ReadOnlyIterator;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.common.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.ListClearEvent;

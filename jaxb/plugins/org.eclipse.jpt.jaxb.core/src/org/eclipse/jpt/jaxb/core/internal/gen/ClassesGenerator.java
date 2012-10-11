@@ -173,7 +173,7 @@ public class ClassesGenerator extends AbstractJptGenerator
 	}
 
 	private IRuntimeClasspathEntry getToolsClasspathEntry() {
-		return (StringTools.stringIsEmpty(this.toolsJarPath)) ?
+		return (StringTools.isBlank(this.toolsJarPath)) ?
 			null :
 			getArchiveClasspathEntry(new Path(this.toolsJarPath));
 	}
@@ -204,25 +204,25 @@ public class ClassesGenerator extends AbstractJptGenerator
 		StringBuffer programArguments = new StringBuffer();
 		
 		programArguments.append("-d ");	  //$NON-NLS-1$
-		if(StringTools.stringIsEmpty(this.outputDir)) {
+		if(StringTools.isBlank(this.outputDir)) {
 			throw new RuntimeException("Output directory cannot be empty");	  //$NON-NLS-1$
 		}
 		programArguments.append(StringTools.quote(this.outputDir));
-		if( ! StringTools.stringIsEmpty(this.targetPackage)) {
+		if( ! StringTools.isBlank(this.targetPackage)) {
 			programArguments.append(" -p ");	  //$NON-NLS-1$
 			programArguments.append(this.targetPackage);
 		}
-		if( ! StringTools.stringIsEmpty(this.catalog)) {
+		if( ! StringTools.isBlank(this.catalog)) {
 			programArguments.append(" -catalog ");	  //$NON-NLS-1$
 			programArguments.append(StringTools.quote(this.catalog));
 		}
 
 		// Options
-		if( ! StringTools.stringIsEmpty(this.generatorOptions.getProxy())) {
+		if( ! StringTools.isBlank(this.generatorOptions.getProxy())) {
 			programArguments.append(" -httpproxy ");	  //$NON-NLS-1$
 			programArguments.append(this.generatorOptions.getProxy());
 		}
-		if( ! StringTools.stringIsEmpty(this.generatorOptions.getProxyFile())) {
+		if( ! StringTools.isBlank(this.generatorOptions.getProxyFile())) {
 			programArguments.append(" -httpproxyfile ");	  //$NON-NLS-1$
 			programArguments.append(StringTools.quote(this.generatorOptions.getProxyFile()));
 		}
@@ -272,18 +272,18 @@ public class ClassesGenerator extends AbstractJptGenerator
 		if(this.generatorExtensionOptions.allowsExtensions()) {
 			programArguments.append(" -extension");	  //$NON-NLS-1$
 		}
-		if( ! StringTools.stringIsEmpty(this.generatorExtensionOptions.getClasspath())) {
+		if( ! StringTools.isBlank(this.generatorExtensionOptions.getClasspath())) {
 			programArguments.append(" -classpath ");	  //$NON-NLS-1$
 			programArguments.append(StringTools.quote(this.generatorExtensionOptions.getClasspath()));
 		}
-		if( ! StringTools.stringIsEmpty(this.generatorExtensionOptions.getAdditionalArgs())) {
+		if( ! StringTools.isBlank(this.generatorExtensionOptions.getAdditionalArgs())) {
 			programArguments.append(' ');
 			programArguments.append(this.generatorExtensionOptions.getAdditionalArgs());
 		}
 
 		// schema
 		programArguments.append(' ');
-		if(StringTools.stringIsEmpty(this.schemaPathOrUri)) {
+		if(StringTools.isBlank(this.schemaPathOrUri)) {
 			throw new RuntimeException("Schema cannot be empty");	  //$NON-NLS-1$
 		}
 		programArguments.append(StringTools.quote(this.schemaPathOrUri));

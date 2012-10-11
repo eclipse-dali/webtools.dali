@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.ui.internal.jface;
 import java.util.ConcurrentModificationException;
 import org.eclipse.jpt.common.ui.jface.ItemTreeContentProvider;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionClearEvent;
@@ -182,6 +182,6 @@ public abstract class AbstractItemTreeContentProvider<I, C>
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.item);
+		return ObjectTools.toString(this, this.item);
 	}
 }

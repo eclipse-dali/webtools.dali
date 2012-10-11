@@ -24,7 +24,6 @@ public class JptUtilityModelValueTests {
 
 		suite.addTestSuite(BufferedModifiablePropertyValueModelTests.class);
 		suite.addTestSuite(CachingTransformationPropertyValueModelTests.class);
-		suite.addTestSuite(TransformationModifiablePropertyValueModelTests.class);
 		suite.addTestSuite(CollectionAspectAdapterTests.class);
 		suite.addTestSuite(CollectionListValueModelAdapterTests.class);
 		suite.addTestSuite(CollectionPropertyValueModelAdapterTests.class);
@@ -32,8 +31,8 @@ public class JptUtilityModelValueTests {
 		suite.addTestSuite(CompositeCollectionValueModelTests.class);
 		suite.addTestSuite(CompositeListValueModelTests.class);
 		suite.addTestSuite(CompositePropertyValueModelTests.class);
-		suite.addTestSuite(DoublePropertyValueModelTests.class);
 		suite.addTestSuite(DoubleModifiablePropertyValueModelTests.class);
+		suite.addTestSuite(DoublePropertyValueModelTests.class);
 		suite.addTestSuite(ExtendedListValueModelWrapperTests.class);
 		suite.addTestSuite(FilteringCollectionValueModelTests.class);
 		suite.addTestSuite(FilteringPropertyValueModelTests.class);
@@ -62,12 +61,13 @@ public class JptUtilityModelValueTests {
 		suite.addTestSuite(StaticValueModelTests.class);
 		suite.addTestSuite(TransformationListValueModelTests.class);
 		suite.addTestSuite(TransformationListValueModelTests.TransformerTests.class);
+		suite.addTestSuite(TransformationModifiablePropertyValueModelTests.class);
 		suite.addTestSuite(TransformationPropertyValueModelTests.class);
 		suite.addTestSuite(ValueCollectionAdapterTests.class);
 		suite.addTestSuite(ValueListAdapterTests.class);
 		suite.addTestSuite(ValuePropertyAdapterTests.class);
 		suite.addTestSuite(ValueStateAdapterTests.class);
-	
+
 		return suite;
 	}
 

@@ -13,7 +13,7 @@ import javax.swing.SpinnerModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.SpinnerModelAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -94,14 +94,14 @@ public class SpinnerModelAdapterTests extends TestCase {
 	}
 
 	private void verifyHasNoListeners(Object adapter) throws Exception {
-		Object delegate = ReflectionTools.getFieldValue(adapter, "delegate");
-		Object[] listeners = (Object[]) ReflectionTools.executeMethod(delegate, "getChangeListeners");
+		Object delegate = ObjectTools.get(adapter, "delegate");
+		Object[] listeners = (Object[]) ObjectTools.execute(delegate, "getChangeListeners");
 		assertEquals(0, listeners.length);
 	}
 
 	private void verifyHasListeners(Object adapter) throws Exception {
-		Object delegate = ReflectionTools.getFieldValue(adapter, "delegate");
-		Object[] listeners = (Object[]) ReflectionTools.executeMethod(delegate, "getChangeListeners");
+		Object delegate = ObjectTools.get(adapter, "delegate");
+		Object[] listeners = (Object[]) ObjectTools.execute(delegate, "getChangeListeners");
 		assertFalse(listeners.length == 0);
 	}
 

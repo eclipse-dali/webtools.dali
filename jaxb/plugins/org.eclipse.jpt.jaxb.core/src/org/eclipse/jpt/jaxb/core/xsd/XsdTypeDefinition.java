@@ -9,7 +9,10 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.xsd;
 
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.xsd.XSDTypeDefinition;
 
 /**
@@ -48,7 +51,7 @@ public abstract class XsdTypeDefinition<A extends XSDTypeDefinition>
 	public abstract boolean hasTextContent();
 	
 	public boolean matches(String namespace, String name) {
-		return XsdUtil.namespaceEquals(getXSDComponent(), namespace) && StringTools.stringsAreEqual(getName(), name); 
+		return XsdUtil.namespaceEquals(getXSDComponent(), namespace) && ObjectTools.equals(getName(), name); 
 	}
 	
 	public boolean typeIsValid(XsdTypeDefinition xsdType, boolean isItemType) {
@@ -67,7 +70,7 @@ public abstract class XsdTypeDefinition<A extends XSDTypeDefinition>
 	public abstract XsdAttributeUse getAttribute(String namespace, String name);
 	
 	public Iterable<String> getAttributeNameProposals(String namespace) {
-		return StringTools.convertToJavaStringLiteralContents(getAttributeNames(namespace));
+		return new TransformationIterable<String, String>(getAttributeNames(namespace), StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 	
 	public abstract Iterable<String> getAttributeNames(String namespace);
@@ -82,8 +85,8 @@ public abstract class XsdTypeDefinition<A extends XSDTypeDefinition>
 		return getElementNameProposals(namespace, false);
 	}
 	
-	public Iterable<String> getElementNameProposals(String namespace, boolean recurseChildren) {
-		return StringTools.convertToJavaStringLiteralContents(getElementNames(namespace, recurseChildren));
+	public Iterable getElementNameProposals(String namespace, boolean recurseChildren) {
+		return new TransformationIterable<String, String>(getElementNames(namespace, recurseChildren), StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 	
 	public abstract Iterable<String> getElementNames(String namespace, boolean recurseChildren);

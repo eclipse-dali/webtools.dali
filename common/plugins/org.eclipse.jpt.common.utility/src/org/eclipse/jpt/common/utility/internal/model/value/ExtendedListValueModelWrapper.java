@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,16 +15,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ReadOnlyCompositeListIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.ReadOnlyListIterator;
+import org.eclipse.jpt.common.utility.internal.StringBuilderTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.ListTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ReadOnlyCompositeListIterator;
+import org.eclipse.jpt.common.utility.internal.iterator.ReadOnlyListIterator;
 import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.common.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.ListClearEvent;
 import org.eclipse.jpt.common.utility.model.event.ListMoveEvent;
 import org.eclipse.jpt.common.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.common.utility.model.event.ListReplaceEvent;
+import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 
 /**
@@ -125,7 +127,7 @@ public class ExtendedListValueModelWrapper<E>
 	protected ListIterator<E> listIterator_() {
 		return new ReadOnlyCompositeListIterator<E>(
 			this.prefix.listIterator(),
-			this.listHolder.listIterator(),
+			this.listModel.listIterator(),
 			this.suffix.listIterator()
 		);
 	}
@@ -134,21 +136,21 @@ public class ExtendedListValueModelWrapper<E>
 		int prefixSize = this.prefix.size();
 		if (index < prefixSize) {
 			return this.prefix.get(index);
-		} else if (index >= prefixSize + this.listHolder.size()) {
-			return this.suffix.get(index - (prefixSize + this.listHolder.size()));
+		} else if (index >= prefixSize + this.listModel.size()) {
+			return this.suffix.get(index - (prefixSize + this.listModel.size()));
 		} else {
-			return this.listHolder.get(index - prefixSize);
+			return this.listModel.get(index - prefixSize);
 		}
 	}
 
 	public int size() {
-		return this.prefix.size() + this.listHolder.size() + this.suffix.size();
+		return this.prefix.size() + this.listModel.size() + this.suffix.size();
 	}
 
 	public Object[] toArray() {
 		ArrayList<E> list = new ArrayList<E>(this.size());
 		list.addAll(this.prefix);
-		CollectionTools.addAll(list, this.listHolder.iterator());
+		CollectionTools.addAll(list, this.listModel.iterator());
 		list.addAll(this.suffix);
 		return list.toArray();
 	}
@@ -188,7 +190,7 @@ public class ExtendedListValueModelWrapper<E>
 
 	@Override
 	public void toString(StringBuilder sb) {
-		StringTools.append(sb, this);
+		StringBuilderTools.append(sb, this);
 	}
 
 
@@ -205,7 +207,7 @@ public class ExtendedListValueModelWrapper<E>
 	}
 
 	private List<E> buildList() {
-		return CollectionTools.list(this.listIterator_());
+		return ListTools.list(this.listIterator_());
 	}
 
 }

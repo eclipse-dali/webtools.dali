@@ -21,7 +21,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.common.core.gen.JptGenerator;
 import org.eclipse.jpt.common.core.gen.LaunchConfigListener;
-import org.eclipse.jpt.common.utility.internal.SynchronizedBoolean;
+import org.eclipse.jpt.common.utility.internal.reference.SynchronizedBoolean;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.plugin.JptJpaEclipseLinkCorePlugin;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.JptJpaEclipseLinkCoreMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.internal.weave.StaticWeave;

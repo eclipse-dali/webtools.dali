@@ -9,7 +9,7 @@
 *******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2.context.orm;
 
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.SequenceGenerator;
 import org.eclipse.jpt.jpa.core.context.java.JavaSequenceGenerator;
@@ -136,8 +136,8 @@ public class GenericOrmSequenceGenerator2_0
 	@Override
 	protected boolean isEquivalentTo(SequenceGenerator generator) {
 		return super.isEquivalentTo(generator) &&
-				Tools.valuesAreEqual(this.specifiedSchema, ((SequenceGenerator2_0) generator).getSpecifiedSchema()) &&
-				Tools.valuesAreEqual(this.specifiedCatalog, ((SequenceGenerator2_0) generator).getSpecifiedCatalog());
+				ObjectTools.equals(this.specifiedSchema, ((SequenceGenerator2_0) generator).getSpecifiedSchema()) &&
+				ObjectTools.equals(this.specifiedCatalog, ((SequenceGenerator2_0) generator).getSpecifiedCatalog());
 	}
 
 	// ********** metadata conversion **********

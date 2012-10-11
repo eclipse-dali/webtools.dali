@@ -10,9 +10,8 @@
 package org.eclipse.jpt.jpa.core.context;
 
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-
+import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 /**
  * Named and named native queries.
  * <p>

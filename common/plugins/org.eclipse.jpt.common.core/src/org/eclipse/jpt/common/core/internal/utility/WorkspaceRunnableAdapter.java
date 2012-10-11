@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.core.internal.utility;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 
 /**
  * Convenience implementation of {@link IWorkspaceRunnable}.
@@ -26,6 +26,6 @@ public class WorkspaceRunnableAdapter
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this);
+		return ObjectTools.toString(this);
 	}
 }

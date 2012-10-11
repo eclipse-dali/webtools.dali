@@ -16,12 +16,13 @@ import java.util.prefs.BackingStoreException;
 import java.util.prefs.PreferenceChangeEvent;
 import java.util.prefs.PreferenceChangeListener;
 import java.util.prefs.Preferences;
-
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
-import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.AspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -35,12 +36,14 @@ public class PreferencesCollectionValueModel<P>
 	extends AspectAdapter<Preferences, Object>
 	implements CollectionValueModel<PreferencePropertyValueModel<P>>
 {
-
 	/** Cache the current preferences, stored in models and keyed by name. */
-	protected final HashMap<String, PreferencePropertyValueModel<P>> preferences;
+	protected final HashMap<String, PreferencePropertyValueModel<P>> preferenceModels = new HashMap<String, PreferencePropertyValueModel<P>>();
 
 	/** A listener that listens to the preferences node for added or removed preferences. */
 	protected final PreferenceChangeListener preferenceChangeListener;
+
+	/** Adapter to convert a preferences node into a property value model. */
+	protected final Adapter<P> adapter;
 
 
 	// ********** constructors **********
@@ -48,17 +51,17 @@ public class PreferencesCollectionValueModel<P>
 	/**
 	 * Construct an adapter for the specified preferences node.
 	 */
-	public PreferencesCollectionValueModel(Preferences preferences) {
-		this(new StaticPropertyValueModel<Preferences>(preferences));
+	public PreferencesCollectionValueModel(Preferences preferences, Adapter<P> adapter) {
+		this(new StaticPropertyValueModel<Preferences>(preferences), adapter);
 	}
 
 	/**
 	 * Construct an adapter for the specified preferences node.
 	 */
-	public PreferencesCollectionValueModel(PropertyValueModel<? extends Preferences> preferencesHolder) {
-		super(preferencesHolder);
-		this.preferences = new HashMap<String, PreferencePropertyValueModel<P>>();
+	public PreferencesCollectionValueModel(PropertyValueModel<? extends Preferences> preferencesModel, Adapter<P> adapter) {
+		super(preferencesModel);
 		this.preferenceChangeListener = this.buildPreferenceChangeListener();
+		this.adapter = adapter;
 	}
 
 
@@ -68,16 +71,23 @@ public class PreferencesCollectionValueModel<P>
 	 * A preferences have changed, notify the listeners.
 	 */
 	protected PreferenceChangeListener buildPreferenceChangeListener() {
-		// transform the preference change events into VALUE collection change events
-		return new PreferenceChangeListener() {
-			public void preferenceChange(PreferenceChangeEvent event) {
-				PreferencesCollectionValueModel.this.preferenceChanged(event.getKey(), event.getNewValue());
-			}
-			@Override
-			public String toString() {
-				return "preference change listener"; //$NON-NLS-1$
-			}
-		};
+		return new LocalPreferenceChangeListener();
+	}
+
+	protected class LocalPreferenceChangeListener
+		implements PreferenceChangeListener
+	{
+		/**
+		 * Transform the preference change events into <code>VALUE</code>
+		 * collection change events.
+		 */
+		public void preferenceChange(PreferenceChangeEvent event) {
+			PreferencesCollectionValueModel.this.preferenceChanged(event.getKey(), event.getNewValue());
+		}
+		@Override
+		public String toString() {
+			return ObjectTools.toString(this);
+		}
 	}
 
 
@@ -87,11 +97,11 @@ public class PreferencesCollectionValueModel<P>
 	 * Return an iterator on the preference models.
 	 */
 	public synchronized Iterator<PreferencePropertyValueModel<P>> iterator() {
-		return this.preferences.values().iterator();
+		return this.preferenceModels.values().iterator();
 	}
 
 	public synchronized int size() {
-		return this.preferences.size();
+		return this.preferenceModels.size();
 	}
 
 
@@ -126,9 +136,8 @@ public class PreferencesCollectionValueModel<P>
     @Override
 	protected void engageSubject_() {
 		this.subject.addPreferenceChangeListener(this.preferenceChangeListener);
-		for (Iterator<PreferencePropertyValueModel<P>> stream = this.preferenceModels(); stream.hasNext(); ) {
-			PreferencePropertyValueModel<P> preferenceModel = stream.next();
-			this.preferences.put(preferenceModel.getKey(), preferenceModel);
+		for (PreferencePropertyValueModel<P> preferenceModel : this.getPreferenceModels()) {
+			this.preferenceModels.put(preferenceModel.getKey(), preferenceModel);
 		}
 	}
 
@@ -144,7 +153,7 @@ public class PreferencesCollectionValueModel<P>
 				throw ex;
 			}
 		}
-		this.preferences.clear();
+		this.preferenceModels.clear();
 	}
 
 
@@ -159,22 +168,32 @@ public class PreferencesCollectionValueModel<P>
 	// ********** internal methods **********
 
 	/**
-	 * Return an iterator on the preference models.
-	 * At this point we can be sure that the subject is not null.
+	 * Return the preference models.
+	 * At this point we can be sure that the subject is not <code>null</code>.
 	 */
-	protected Iterator<PreferencePropertyValueModel<P>> preferenceModels() {
-		String[] keys;
+	protected Iterable<PreferencePropertyValueModel<P>> getPreferenceModels() {
+		return new TransformationIterable<String, PreferencePropertyValueModel<P>>(this.getPreferenceKeys(), new PreferenceKeyTransformer());
+	}
+
+	protected Iterable<String> getPreferenceKeys() {
+		return new ArrayIterable<String>(this.getPreferenceKeys_());
+	}
+
+	protected String[] getPreferenceKeys_() {
 		try {
-			keys = this.subject.keys();
+			return this.subject.keys();
 		} catch (BackingStoreException ex) {
 			throw new RuntimeException(ex);
 		}
-		return new TransformationIterator<String, PreferencePropertyValueModel<P>>(new ArrayIterator<String>(keys)) {
-			@Override
-			protected PreferencePropertyValueModel<P> transform(String key) {
-				return PreferencesCollectionValueModel.this.buildPreferenceModel(key);
-			}
-		};
+	}
+
+	protected class PreferenceKeyTransformer
+		extends TransformerAdapter<String, PreferencePropertyValueModel<P>>
+	{
+		@Override
+		public PreferencePropertyValueModel<P> transform(String key) {
+			return PreferencesCollectionValueModel.this.buildPreferenceModel(key);
+		}
 	}
 
 	/**
@@ -182,21 +201,26 @@ public class PreferencesCollectionValueModel<P>
 	 * specified preference (e.g. to customize the model's converter).
 	 */
 	protected PreferencePropertyValueModel<P> buildPreferenceModel(String key) {
-		return new PreferencePropertyValueModel<P>(this.subjectHolder, key);
+		return this.adapter.buildPreferenceModel(this.subjectModel, key);
+//		return new PreferencePropertyValueModel<P>(this.subjectModel, key, null, Transformer.Null.<P>instance());
 	}
 
 	protected synchronized void preferenceChanged(String key, String newValue) {
 		if (newValue == null) {
 			// a preference was removed
-			PreferencePropertyValueModel<P> preferenceModel = this.preferences.remove(key);
+			PreferencePropertyValueModel<P> preferenceModel = this.preferenceModels.remove(key);
 			this.fireItemRemoved(VALUES, preferenceModel);
-		} else if ( ! this.preferences.containsKey(key)) {
+		} else if ( ! this.preferenceModels.containsKey(key)) {
 			// a preference was added
 			PreferencePropertyValueModel<P> preferenceModel = this.buildPreferenceModel(key);
-			this.preferences.put(key, preferenceModel);
+			this.preferenceModels.put(key, preferenceModel);
 			this.fireItemAdded(VALUES, preferenceModel);
 		} else {
 			// a preference's value changed - do nothing
 		}
+	}
+
+	public interface Adapter<P> {
+		PreferencePropertyValueModel<P> buildPreferenceModel(PropertyValueModel<? extends Preferences> preferencesModel, String key);
 	}
 }

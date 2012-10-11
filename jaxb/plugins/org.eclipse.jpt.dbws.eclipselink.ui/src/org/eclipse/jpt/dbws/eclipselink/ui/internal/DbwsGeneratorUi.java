@@ -109,7 +109,7 @@ public class DbwsGeneratorUi
     
 	private DbwsGeneratorUi(IProject webProject, String builderXmlFile) {
 		super();
-		if(webProject == null || StringTools.stringIsEmpty(builderXmlFile)) {
+		if(webProject == null || StringTools.isBlank(builderXmlFile)) {
 			throw new NullPointerException();
 		}
 		this.javaProject = this.getJavaProjectFrom(webProject);
@@ -201,7 +201,7 @@ public class DbwsGeneratorUi
 	 */
 	private boolean classIsOnProjectsClasspath(String driverName) {
 		try {
-			if(StringTools.stringIsEmpty(driverName)) {
+			if(StringTools.isBlank(driverName)) {
 				return false;
 			}
 			IType genClass = this.javaProject.findType(driverName);

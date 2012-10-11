@@ -15,16 +15,17 @@ import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.common.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.Association;
+import org.eclipse.jpt.common.utility.Association;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.SimpleAssociation;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.common.utility.internal.Tools;
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
-import org.eclipse.jpt.common.utility.internal.iterables.SubListIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SingleElementListIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.SubListIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.iterable.TransformationIterable;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jpa.core.JpaFactory;
 import org.eclipse.jpt.jpa.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.jpa.core.context.Column;
@@ -921,7 +922,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 	}
 
 	protected Iterable<String> getJavaCandidateMapKeyNames() {
-		return StringTools.convertToJavaStringLiteralContents(this.getCandidateMapKeyNames());
+		return new TransformationIterable<String, String>(this.getCandidateMapKeyNames(),
+				StringTools.JAVA_STRING_LITERAL_CONTENT_TRANSFORMER);
 	}
 
 	public Iterable<String> getCandidateMapKeyNames() {
@@ -1170,7 +1172,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 		 * the default table name.  the table is always the collection table
 		 */
 		public boolean tableNameIsInvalid(String tableName) {
-			return Tools.valuesAreDifferent(this.getDefaultTableName(), tableName);
+			return ObjectTools.notEquals(this.getDefaultTableName(), tableName);
 		}
 
 		public Iterable<String> getAllOverridableNames() {

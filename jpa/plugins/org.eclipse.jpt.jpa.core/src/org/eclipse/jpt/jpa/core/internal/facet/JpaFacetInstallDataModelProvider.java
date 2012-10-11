@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.facet;
 
 import java.util.Set;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.Database;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
@@ -83,8 +83,8 @@ public class JpaFacetInstallDataModelProvider
 	}
 	
 	@Override
-	protected JpaPlatformDescription getDefaultPlatformDescription() {
-		return this.getJpaPlatformManager().getDefaultJpaPlatformDescription(this.getProjectFacetVersion());
+	protected JpaPlatformConfig getDefaultPlatformConfig() {
+		return this.getJpaPlatformManager().getDefaultJpaPlatformConfig(this.getProjectFacetVersion());
 	}
 	
 	@Override

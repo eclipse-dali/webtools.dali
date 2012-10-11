@@ -12,9 +12,9 @@ package org.eclipse.jpt.jpa.core.tests.internal.platform;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -57,12 +57,12 @@ public class JpaPlatformExtensionTests
 		IActionConfigFactory configFactory = new JpaFacetInstallDataModelProvider();
 		IDataModel config = (IDataModel) configFactory.create();
 		config.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, JpaProject.FACET_VERSION_STRING);
-		config.setProperty(JpaFacetDataModelProperties.PLATFORM, this.getJpaPlatformManager().getJpaPlatformDescription(TEST_PLATFORM_ID));
+		config.setProperty(JpaFacetDataModelProperties.PLATFORM, this.getJpaPlatformManager().getJpaPlatformConfig(TEST_PLATFORM_ID));
 		return config;
 	}
 
 	public static void verifyExtensionTestProjectExists() {
-		IExtensionRegistry registry = Platform.getExtensionRegistry();
+		IExtensionRegistry registry = RegistryFactory.getRegistry();
 		IExtensionPoint extensionPoint = 
 			registry.getExtensionPoint(JptJpaCorePlugin.instance().getPluginID(), "jpaPlatform");
 		IExtension[] extensions = extensionPoint.getExtensions();
@@ -83,11 +83,11 @@ public class JpaPlatformExtensionTests
 	}
 	
 	public void testAllJpaPlatformIds() {
-		assertTrue(CollectionTools.size(getJpaPlatformManager().getJpaPlatformDescriptions()) >= 2);
+		assertTrue(IterableTools.size(getJpaPlatformManager().getJpaPlatformConfigs()) >= 2);
 	}
 	
 	public void testJpaPlatformLabel() {
-		assertEquals(TEST_PLATFORM_LABEL, getJpaPlatformManager().getJpaPlatformDescription(TEST_PLATFORM_ID).getLabel());	
+		assertEquals(TEST_PLATFORM_LABEL, getJpaPlatformManager().getJpaPlatformConfig(TEST_PLATFORM_ID).getLabel());	
 	}
 	
 	public void testJpaPlatform() {

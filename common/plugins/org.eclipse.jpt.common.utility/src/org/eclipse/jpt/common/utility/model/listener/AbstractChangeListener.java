@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.model.listener;
 
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.ChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
@@ -23,10 +23,6 @@ import org.eclipse.jpt.common.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.common.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeAddEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeChangeEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeClearEvent;
-import org.eclipse.jpt.common.utility.model.event.TreeRemoveEvent;
 
 /**
  * Convenience abstract implementation of {@link ChangeListener}.
@@ -97,22 +93,6 @@ public abstract class AbstractChangeListener
 		this.modelChanged(event);
 	}
 
-	public void nodeAdded(TreeAddEvent event) {
-		this.modelChanged(event);
-	}
-
-	public void nodeRemoved(TreeRemoveEvent event) {
-		this.modelChanged(event);
-	}
-
-	public void treeChanged(TreeChangeEvent event) {
-		this.modelChanged(event);
-	}
-
-	public void treeCleared(TreeClearEvent event) {
-		this.modelChanged(event);
-	}
-
 	/**
 	 * The model has notified the listener of the change described by the
 	 * specified change event. By default the listener executes {@link #modelChanged()}.
@@ -131,6 +111,6 @@ public abstract class AbstractChangeListener
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this);
+		return ObjectTools.toString(this);
 	}
 }

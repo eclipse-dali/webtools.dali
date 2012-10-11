@@ -30,7 +30,7 @@ import org.eclipse.jpt.common.ui.internal.jface.SimpleMessageTreeContent;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.common.ui.jface.TreeStateProvider;
-import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -174,7 +174,7 @@ public class JpaStructurePage
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this);
+			return ObjectTools.toString(this);
 		}
 	}
 
@@ -221,7 +221,7 @@ public class JpaStructurePage
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.jpaFile);
+			return ObjectTools.toString(this, this.jpaFile);
 		}
 	}
 
@@ -336,7 +336,7 @@ public class JpaStructurePage
 
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.selection);
+			return ObjectTools.toString(this, this.selection);
 		}
 	}
 
@@ -514,6 +514,6 @@ public class JpaStructurePage
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.getEditorJpaFile());
+		return ObjectTools.toString(this, this.getEditorJpaFile());
 	}
 }

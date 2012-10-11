@@ -14,16 +14,15 @@ package org.eclipse.jpt.jpa.ui.internal.wizards.entity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import org.eclipse.jdt.ui.IJavaElementSearchConstants;
-import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaConventions;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
-import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.ui.IJavaElementSearchConstants;
+import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.jface.bindings.keys.ParseException;
 import org.eclipse.jface.dialogs.Dialog;
@@ -47,7 +46,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.model.EntityRow;
 import org.eclipse.jpt.jpa.ui.internal.wizards.entity.data.model.IEntityDataModelProperties;
@@ -257,7 +256,7 @@ public class EntityRowTableWizardSection extends Composite {
 				Point buttonArea = buttonComposition.computeSize(SWT.DEFAULT, SWT.DEFAULT);
 				Rectangle area = table.getParent().getClientArea();
 				Point preferredSize = mTableViewer.getTable().computeSize(SWT.DEFAULT, SWT.DEFAULT);
-				int width = area.width - 2 * table.getBorderWidth()- buttonArea.x - columns.length * 2 - pkColumn.getWidth();
+				int width = area.width - 2 * table.getBorderWidth()- buttonArea.x - (columns.length << 1) - pkColumn.getWidth();
 				if (preferredSize.y > area.height + table.getHeaderHeight()) {
 					// Subtract the scrollbar width from the total column width
 					// if a vertical scrollbar will be required
@@ -273,13 +272,13 @@ public class EntityRowTableWizardSection extends Composite {
 						// smaller first and then resize the table to
 						// match the client area width
 						consumeWidth = setColumntWidth(width, columns, consumeWidth, i);
-						table.setSize(area.width - buttonArea.x	- (col * 2 + pkColumn.getWidth()), area.height);
+						table.setSize(area.width - buttonArea.x	- ((col << 1) + pkColumn.getWidth()), area.height);
 					} else {
 						// table is getting bigger so make the table
 						// bigger first and then make the columns wider
 						// to match the client area width
 						consumeWidth = setColumntWidth(width, columns, 	consumeWidth, i);
-						table.setSize(area.width - buttonArea.x - (col * 2 + pkColumn.getWidth()), area.height);
+						table.setSize(area.width - buttonArea.x - ((col << 1) + pkColumn.getWidth()), area.height);
 					}
 				}
 			}
@@ -431,7 +430,7 @@ public class EntityRowTableWizardSection extends Composite {
 		public Object[] getElements(Object element) {
 			return (element instanceof List) ?
 					((List<?>) element).toArray() :
-					Tools.EMPTY_OBJECT_ARRAY;
+					ObjectTools.EMPTY_OBJECT_ARRAY;
 		}
 		public void inputChanged(Viewer aViewer, Object oldInput, Object newInput) {
 			//Default nothing

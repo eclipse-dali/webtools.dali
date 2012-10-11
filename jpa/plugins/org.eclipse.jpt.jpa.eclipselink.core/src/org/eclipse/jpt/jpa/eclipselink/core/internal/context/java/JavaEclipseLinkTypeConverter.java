@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 
-import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jpa.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTypeConverter;
 import org.eclipse.jpt.jpa.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
@@ -132,8 +132,8 @@ public class JavaEclipseLinkTypeConverter
 	}
 
 	protected boolean isEquivalentTo(EclipseLinkTypeConverter converter) {
-		return Tools.valuesAreEqual(this.fullyQualifiedDataType, converter.getFullyQualifiedDataType()) &&
-				Tools.valuesAreEqual(this.fullyQualifiedObjectType, converter.getFullyQualifiedObjectType());
+		return ObjectTools.equals(this.fullyQualifiedDataType, converter.getFullyQualifiedDataType()) &&
+				ObjectTools.equals(this.fullyQualifiedObjectType, converter.getFullyQualifiedObjectType());
 	}
 
 

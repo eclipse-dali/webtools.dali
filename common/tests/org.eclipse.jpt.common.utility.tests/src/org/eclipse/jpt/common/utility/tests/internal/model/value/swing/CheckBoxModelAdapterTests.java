@@ -14,7 +14,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.EventListenerList;
 import junit.framework.TestCase;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.swing.CheckBoxModelAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
@@ -112,12 +112,12 @@ public class CheckBoxModelAdapterTests extends TestCase {
 	}
 
 	private void verifyHasNoListeners(Object model) throws Exception {
-		EventListenerList listenerList = (EventListenerList) ReflectionTools.getFieldValue(model, "listenerList");
+		EventListenerList listenerList = (EventListenerList) ObjectTools.get(model, "listenerList");
 		assertEquals(0, listenerList.getListenerList().length);
 	}
 
 	private void verifyHasListeners(Object model) throws Exception {
-		EventListenerList listenerList = (EventListenerList) ReflectionTools.getFieldValue(model, "listenerList");
+		EventListenerList listenerList = (EventListenerList) ObjectTools.get(model, "listenerList");
 		assertFalse(listenerList.getListenerList().length == 0);
 	}
 

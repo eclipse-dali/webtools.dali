@@ -13,9 +13,9 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.resource.java.FetchType;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLink;
@@ -70,7 +70,7 @@ public class TransformationAnnotationTests extends EclipseLinkJavaResourceModelT
 	public void testTransformationAnnotation() throws Exception {
 		ICompilationUnit cu = this.createTestTransformation();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		assertNotNull(resourceField.getAnnotation(EclipseLink.TRANSFORMATION));
 		
@@ -84,7 +84,7 @@ public class TransformationAnnotationTests extends EclipseLinkJavaResourceModelT
 	public void testGetOptional() throws Exception {
 		ICompilationUnit cu = this.createTestTransformationWithOptional();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkTransformationAnnotation transformation = (EclipseLinkTransformationAnnotation) resourceField.getAnnotation(EclipseLink.TRANSFORMATION);
 		assertEquals(Boolean.TRUE, transformation.getOptional());
@@ -93,7 +93,7 @@ public class TransformationAnnotationTests extends EclipseLinkJavaResourceModelT
 	public void testSetOptional() throws Exception {
 		ICompilationUnit cu = this.createTestTransformationWithOptional();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkTransformationAnnotation transformation = (EclipseLinkTransformationAnnotation) resourceField.getAnnotation(EclipseLink.TRANSFORMATION);
 		assertEquals(Boolean.TRUE, transformation.getOptional());
@@ -107,7 +107,7 @@ public class TransformationAnnotationTests extends EclipseLinkJavaResourceModelT
 	public void testSetOptionalNull() throws Exception {
 		ICompilationUnit cu = this.createTestTransformationWithOptional();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkTransformationAnnotation transformation = (EclipseLinkTransformationAnnotation) resourceField.getAnnotation(EclipseLink.TRANSFORMATION);
 		assertEquals(Boolean.TRUE, transformation.getOptional());
@@ -122,7 +122,7 @@ public class TransformationAnnotationTests extends EclipseLinkJavaResourceModelT
 	public void testGetFetch() throws Exception {
 		ICompilationUnit cu = this.createTestTransformationWithFetch();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkTransformationAnnotation transformation = (EclipseLinkTransformationAnnotation) resourceField.getAnnotation(EclipseLink.TRANSFORMATION);
 		assertEquals(FetchType.EAGER, transformation.getFetch());
@@ -131,7 +131,7 @@ public class TransformationAnnotationTests extends EclipseLinkJavaResourceModelT
 	public void testSetFetch() throws Exception {
 		ICompilationUnit cu = this.createTestTransformationWithFetch();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkTransformationAnnotation transformation = (EclipseLinkTransformationAnnotation) resourceField.getAnnotation(EclipseLink.TRANSFORMATION);
 		assertEquals(FetchType.EAGER, transformation.getFetch());
@@ -145,7 +145,7 @@ public class TransformationAnnotationTests extends EclipseLinkJavaResourceModelT
 	public void testSetFetchNull() throws Exception {
 		ICompilationUnit cu = this.createTestTransformationWithFetch();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		EclipseLinkTransformationAnnotation transformation = (EclipseLinkTransformationAnnotation) resourceField.getAnnotation(EclipseLink.TRANSFORMATION);
 		assertEquals(FetchType.EAGER, transformation.getFetch());

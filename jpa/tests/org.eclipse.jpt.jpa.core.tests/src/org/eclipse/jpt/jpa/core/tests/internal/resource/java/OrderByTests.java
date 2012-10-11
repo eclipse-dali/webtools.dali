@@ -13,8 +13,8 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
-import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
+import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.jpa.core.resource.java.JPA;
 import org.eclipse.jpt.jpa.core.resource.java.OrderByAnnotation;
 
@@ -54,7 +54,7 @@ public class OrderByTests extends JpaJavaResourceModelTestCase {
 	public void testOrderBy() throws Exception {
 		ICompilationUnit cu = this.createTestOrderBy();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		OrderByAnnotation orderBy = (OrderByAnnotation) resourceField.getAnnotation(JPA.ORDER_BY);
 		assertNotNull(orderBy);
@@ -63,7 +63,7 @@ public class OrderByTests extends JpaJavaResourceModelTestCase {
 	public void testGetValue() throws Exception {
 		ICompilationUnit cu = this.createTestOrderByWithValue();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 		
 		OrderByAnnotation orderBy = (OrderByAnnotation) resourceField.getAnnotation(JPA.ORDER_BY);
 		assertEquals("key", orderBy.getValue());
@@ -72,7 +72,7 @@ public class OrderByTests extends JpaJavaResourceModelTestCase {
 	public void testSetValue() throws Exception {
 		ICompilationUnit cu = this.createTestOrderBy();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceField resourceField = CollectionTools.get(resourceType.getFields(), 0);
+		JavaResourceField resourceField = IterableTools.get(resourceType.getFields(), 0);
 
 		OrderByAnnotation orderBy = (OrderByAnnotation) resourceField.getAnnotation(JPA.ORDER_BY);
 

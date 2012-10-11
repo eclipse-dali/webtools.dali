@@ -19,7 +19,7 @@ import org.eclipse.jpt.jpa.core.context.java.DefaultJavaAttributeMappingDefiniti
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
-import org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription;
+import org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig;
 import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
 import org.eclipse.persistence.jpa.jpql.parser.JPQLGrammar;
 
@@ -58,10 +58,10 @@ public interface JpaPlatform
 	String getId();
 
 	/**
-	 * Return the JPA platform's description (i.e. the description defined by
+	 * Return the JPA platform's config (i.e. the config defined by
 	 * the JPA platform's plug-in extension).
 	 */
-	JpaPlatformDescription getDescription();
+	JpaPlatformConfig getConfig();
 
 	/**
 	 * Return the JPA platform's version.
