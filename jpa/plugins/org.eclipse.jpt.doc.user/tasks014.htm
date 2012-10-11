@@ -5,56 +5,49 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Embedded mapping</title>
+<title>Embedded ID mapping</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-27T9:43:50Z" />
+<meta name="date" content="2012-10-11T7:52:7Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Embedded mapping" />
+<meta name="doctitle" content="Embedded ID mapping" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-27</p>
-<p><a id="BABCBHDF" name="BABCBHDF"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-10-11</p>
+<p><a id="CIHDIAEE" name="CIHDIAEE"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
-<h1>Embedded mapping</h1>
-<p><a id="sthref213" name="sthref213"></a><a id="sthref214" name="sthref214"></a><a id="sthref215" name="sthref215"></a><a id="sthref216" name="sthref216"></a>Use an <span class="bold">Embedded Mapping</span> to specify a persistent field or property of an entity whose value is an instance of an embeddable class.</p>
+<h1>Embedded ID mapping</h1>
+<p><a id="sthref224" name="sthref224"></a><a id="sthref225" name="sthref225"></a><a id="sthref226" name="sthref226"></a><a id="sthref227" name="sthref227"></a>Use an <span class="bold">Embedded ID Mapping</span> to specify the primary key of an embedded ID. These mappings may be used with a <a href="tasks005.htm#BABFEICE">Embeddable</a> entities.</p>
 <ol>
 <li>
-<p>In the <a href="ref_persistence_outline.htm#BABEGGFE">JPA Structure view</a>, right-click the field to map.</p>
+<p>In the <a href="ref_persistence_outline.htm#BABEGGFE">JPA Structure view</a>, select the field to map.</p>
 </li>
 <li>
-<p>Select <span class="bold">Map as &gt; Embedded</span>. The <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a> displays the properties for the selected field.</p>
-<div class="figure"><a id="sthref217" name="sthref217"></a>
-<p class="titleinfigure">JPA Details, Embedded mapping</p>
+<p>Right-click the field and then select <span class="bold">Map As &gt; Embedded Id</span>. The <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a> displays the properties for the selected field.</p>
+<div class="figure"><a id="sthref228" name="sthref228"></a>
+<p class="titleinfigure">JPA Details, Embedded ID mapping</p>
 <img src="img/jpa_details_embedded.png" alt="PA Details, Element collection mapping" title="PA Details, Element collection mapping" /><br /></div>
 <!-- class="figure" --></li>
 <li>
-<p>Complete each field in the <a href="reference035.htm#CACBJBFD">Embedded Mapping</a> area.</p>
+<p>Complete each field in the <a href="reference036.htm#CACDIDIA">Embedded ID Mapping</a> area.</p>
 </li>
 </ol>
 <p>Eclipse adds the following annotations to the field:</p>
 <pre xml:space="preserve" class="oac_no_warn">
-@Embedded
-@AttributeOverride(
-    column=@Column(
-        table="<span class="italic">&lt;COLUMN_TABLE&gt;</span>", 
-        name = "<span class="italic">&lt;COLUMN_NAME&gt;</span>"
-    )
-)
-
+@EmbeddedId
 </pre>
-<a id="sthref218" name="sthref218"></a>
+<a id="sthref229" name="sthref229"></a>
 <p class="subhead2">Related tasks</p>
 <ul>
 <li>
 <p><a href="task_mapping.htm#BABDGBIJ">Mapping an entity</a></p>
 </li>
 </ul>
-<a id="sthref219" name="sthref219"></a>
+<a id="sthref230" name="sthref230"></a>
 <p class="subhead2">Related references</p>
 <ul>
 <li>
@@ -64,7 +57,7 @@
 <p><a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a></p>
 </li>
 </ul>
-<a id="sthref220" name="sthref220"></a>
+<a id="sthref231" name="sthref231"></a>
 <p class="subhead2">Related concepts</p>
 <ul>
 <li>

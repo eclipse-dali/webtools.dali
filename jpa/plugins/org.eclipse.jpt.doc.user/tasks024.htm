@@ -5,107 +5,80 @@
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Generating tables from entities</title>
+<title>Generating dynamic entities from tables</title>
 <meta name="copyright" content="Copyright (c) 2000, 2009 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 1.0.11" />
-<meta name="date" content="2012-09-27T9:43:51Z" />
+<meta name="date" content="2012-10-11T7:52:9Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Generating tables from entities" />
+<meta name="doctitle" content="Generating dynamic entities from tables" />
 <meta name="relnum" content="Release 3.2" />
 <meta name="partnum" content="Release 3.2" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
 </head>
 <body>
-<p class="betadraftsubtitle">Beta Draft: 2012-09-27</p>
-<p><a id="CIHJIGBE" name="CIHJIGBE"></a></p>
+<p class="betadraftsubtitle">Beta Draft: 2012-10-11</p>
+<p><a id="CIHHFGIG" name="CIHHFGIG"></a></p>
 <div class="sect1"><!-- infolevel="all" infotype="General" -->
-<h1>Generating tables from entities</h1>
-<p><a id="sthref298" name="sthref298"></a><a id="sthref299" name="sthref299"></a><a id="sthref300" name="sthref300"></a>When using a vendor-specific platform, you can create a DDL script from your persistent entities.</p>
-<div align="center">
-<div class="inftblnote"><br />
-<table class="Note oac_no_warn" summary="" cellpadding="3" cellspacing="0">
-<tbody>
-<tr>
-<td align="left">
-<p class="notep1">Note:</p>
-<p>The DDL script will <code>DROP</code> existing tables on the database and <code>CREATE</code> new tables, based on the entities in your project.</p>
-</td>
-</tr>
-</tbody>
-</table>
-<br /></div>
-<!-- class="inftblnote" --></div>
-<p>To generate a DDL script:</p>
+<h1>Generating dynamic entities from tables</h1>
+<p><a id="sthref307" name="sthref307"></a><a id="sthref308" name="sthref308"></a><a id="sthref309" name="sthref309"></a><a id="sthref310" name="sthref310"></a>When using EclipseLink JPA, you can create dynamic entities from your database tables. This dynamic persistence provides access to a relational database with all the benefits of JPA <span class="italic">without coding</span> or maintaining Java classes.</p>
+<p>Dali dynamically creates the classes at runtime, as needed.</p>
+<p>To generate dynamic entities:</p>
 <ol>
 <li>
-<p>Right-click the JPA project in the <span class="gui-object-title">Project Explorer</span> and select <span class="gui-object-action">JPA Tools &gt; Generate Tables from Entities</span>.</p>
-<img src="img/generate_tables_from_entities.png" alt="JPA Tools &gt; Generate Tables from Entities" title="JPA Tools &gt; Generate Tables from Entities" /><br /></li>
-<li>
-<p>On the <a href="reference019.htm#CACHAJEG">Schema Generation</a> page, select the generation output mode.</p>
-<div class="figure"><a id="sthref301" name="sthref301"></a>
-<p class="titleinfigure">Schema Generation</p>
-<img src="img/generate_tables.png" alt="" title="" /><br /></div>
+<p>Right-click the JPA project in the <span class="gui-object-title">Project Explorer</span> and select <span class="gui-object-action">JPA Tools &gt; Generate Dynamic Entities from Tables</span>.</p>
+<img src="img/generate_dynamic_entities.png" alt="JPA Tools &gt; Generate Dynamic Entities from Tables" title="JPA Tools &gt; Generate Dynamic Entities from Tables" /><br />
+<p>The Select Tables page of the <a href="reference002.htm#CACGDFDJ">Generate Dynamic Entities from Tables wizard</a> appears.</p>
+<div class="figure"><a id="sthref311" name="sthref311"></a>
+<p class="titleinfigure">Select Tables</p>
+<img src="img/select_tables_dynamic.png" alt="" title="" /><br /></div>
 <!-- class="figure" --></li>
 <li>
-<p>Click <span class="bold">Finish</span>. Dali generates the selected DDL for the entities, as shown in <a href="#CIHJAHAC">Example: Sample Generated Output</a>.</p>
+<p>On the <a href="reference003.htm#CACFGHJF">Select Tables</a> page, select the tables from which to generate the entities and click <span class="bold">Next</span>.</p>
+<p>The <a href="reference004.htm#CACBDJAC">Table Associations</a> page appears.</p>
+<div class="figure"><a id="sthref312" name="sthref312"></a>
+<p class="titleinfigure">Table Associations</p>
+<img src="img/table_associations_dynamic.png" alt="" title="" /><br /></div>
+<!-- class="figure" --></li>
+<li>
+<p>On the <a href="reference004.htm#CACBDJAC">Table Associations</a> page, specify which table associations should be generated. Use the <a href="ref_create_new_association_wizard.htm#CIAFGHIF">Create New Association wizard</a> to create additional relationships.</p>
+<p>Click <span class="bold">Next</span>. The <a href="reference005.htm#CACHHEEH">Customize Default Entity Generation</a> page appears.</p>
+<div class="figure"><a id="sthref313" name="sthref313"></a>
+<p class="titleinfigure">Customize Defaults</p>
+<img src="img/customize_default_entity_generation_dynamic.png" alt="" title="" /><br /></div>
+<!-- class="figure" --></li>
+<li>
+<p>On the <a href="reference005.htm#CACHHEEH">Customize Default Entity Generation</a> page, specify the default information to use when generating the entities, and click <span class="bold">Next</span>.</p>
+<p>The <a href="reference006.htm#CACDGDIC">Customize Individual Entities</a> page appears.</p>
+<div class="figure"><a id="sthref314" name="sthref314"></a>
+<p class="titleinfigure">Customize Individual Entities</p>
+<img src="img/customize_individual_entities_dynamic.png" alt="" title="" /><br /></div>
+<!-- class="figure" --></li>
+<li>
+<p>Use the <a href="reference006.htm#CACDGDIC">Customize Individual Entities</a> page to customize specific generated entities.</p>
+</li>
+<li>
+<p>Click <span class="bold">Finish</span> to complete the wizard and generate the entities.</p>
 </li>
 </ol>
-<p>If you are not currently connected to the database, the Database Connection page appears. Select your database connection and schema, and click <span class="bold">Reconnect</span>.</p>
-<div class="example"><a id="CIHJAHAC" name="CIHJAHAC"></a>
-<p class="titleinexample">Sample Generated Output</p>
+<p>Dali generates the dynamic entities, using the <code>VIRTUAL</code> access type, as shown in <a href="#CIHIDHAB">Example: Sample eclipselink-orm.xml File with Dynamic Entities</a>.</p>
+<div class="example"><a id="CIHIDHAB" name="CIHIDHAB"></a>
+<p class="titleinexample"><a id="sthref315" name="sthref315"></a>Sample eclipselink-orm.xml File with Dynamic Entities</p>
 <pre xml:space="preserve" class="oac_no_warn">
-[EL Config]: metadata: The access type for the persistent class [class quickstart.demo.model.Address] is set to [FIELD].
-[EL Config]: metadata: The alias name for the entity class [class quickstart.demo.model.Address] is being defaulted to: Address.
-[EL Config]: metadata: The table name for entity [class quickstart.demo.model.Address] is being defaulted to: ADDRESS.
-[EL Config]: metadata: The column name for element [street] is being defaulted to: STREET.
-[EL Config]: metadata: The column name for element [city] is being defaulted to: CITY.
-[EL Config]: metadata: The column name for element [country] is being defaulted to: COUNTRY.
-[EL Info]: EclipseLink, version: Eclipse Persistence Services - 2.4.0.vXXXX
-[EL Fine]: connection: Detected database platform: org.eclipse.persistence.platform.database.JavaDBPlatform
-[EL Config]: connection: Connection(7896086)--connecting(DatabaseLogin(
-    platform=&gt;JavaDBPlatform
-    user name=&gt; ""
-    datasource URL=&gt; "jdbc:derby:C:\MyDB;create=true"
-))
-[EL Config]: connection: Connection(28523022)--Connected: jdbc:derby:C:\MyDB
-    User: APP
-    Database: Apache Derby  Version: 10.9.1.0 - (XXXX)
-    Driver: Apache Derby Embedded JDBC Driver  Version: 10.9.1.0 - (XXXX)
-[EL Config]: connection: Connection(27817788)--connecting(DatabaseLogin(
-    platform=&gt;JavaDBPlatform
-    user name=&gt; ""
-    datasource URL=&gt; "jdbc:derby:C:\MyDB;create=true"
-))
-[EL Config]: connection: Connection(11557581)--Connected: jdbc:derby:C:\MyDB
-    User: APP
-    Database: Apache Derby  Version: 10.9.1.0 - (XXXX)
-    Driver: Apache Derby Embedded JDBC Driver  Version: 10.9.1.0 - (XXXX)
-[EL Info]: connection: file:/C:/workspace/runtime-EclipseApplication/QuickStart/build/classes/_QuickStart_url=jdbc:derby:C:\Documents and Settings\rsapir\MyDB;create=true login successful
-[EL Fine]: sql: Connection(28523022)--DROP TABLE ADDRESS
-[EL Fine]: sql: Connection(28523022)--CREATE TABLE ADDRESS (ADDRESS_ID BIGINT NOT NULL, CITY VARCHAR(255), COUNTRY VARCHAR(255), P_CODE VARCHAR(255), PROVINCE VARCHAR(255), STREET VARCHAR(255), PRIMARY KEY (ADDRESS_ID))
-[EL Config]: connection: Connection(28523022)--disconnect
-[EL Info]: connection: file:/C://workspace/runtime-EclipseApplication/QuickStart/build/classes/_QuickStart_url=jdbc:derby:C:\MyDB;create=true logout successful
-[EL Config]: connection: Connection(7896086)--disconnect
-[EL Config]: connection: Connection(11557581)--disconnect
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;entity-mappings version="2.4" xmlns="http://www.eclipse.org/eclipselink/xsds/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eclipse.org/eclipselink/xsds/persistence/orm http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_2_4.xsd"&gt;
+    &lt;entity class="quickstart.demo.model.Inventory" <span class="bold">access="VIRTUAL"</span>&gt;
+        &lt;attributes&gt;
+            &lt;id name="itemSku" attribute-type="long"&gt;
 
+            &lt;/id&gt;
+        &lt;/attributes&gt;
+    &lt;/entity&gt;
+    &lt;entity ..."&gt;
+    &lt;/entity&gt;
+&lt;/entity-mappings&gt;
 </pre></div>
-<!-- class="example" -->
-<a id="sthref302" name="sthref302"></a>
-<p class="subhead2">Related tasks</p>
-<ul>
-<li>
-<p><a href="task_create_jpa_entity.htm#BABFBJBG">Creating a JPA entity</a></p>
-</li>
-</ul>
-<a id="sthref303" name="sthref303"></a>
-<p class="subhead2">Related reference</p>
-<ul>
-<li>
-<p><a href="ref_project_properties.htm#BABJHBCI">Project Properties page &ndash; JPA</a></p>
-</li>
-</ul>
-</div>
+<!-- class="example" --></div>
 <!-- class="sect1" -->
 <!-- Start Footer -->
 <div class="footer">
