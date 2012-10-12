@@ -81,11 +81,11 @@
 			<adapter type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig"/>
 		</factory>
 
-		<!-- XmlFile -> JpaPlatformDescription -->
+		<!-- XmlFile -> JpaPlatformConfig -->
 		<factory
 			adaptableType="org.eclipse.jpt.jpa.core.context.XmlFile"
 			class="org.eclipse.jpt.jpa.core.internal.XmlFileAdapterFactory">
-			<adapter type="org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription"/>
+			<adapter type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig"/>
 		</factory>
 
 	</extension>

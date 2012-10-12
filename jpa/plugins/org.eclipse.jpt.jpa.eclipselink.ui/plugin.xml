@@ -124,7 +124,7 @@
 							value="jpt.jpa"
 							forcePluginActivation="true"/>
 					</adapt>
-					<adapt type = "org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription">
+					<adapt type = "org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
 						<test property="org.eclipse.jpt.jpa.core.jpaPlatformGroup"
 							value="eclipselink"/>
 					</adapt>
@@ -149,7 +149,7 @@
 							value="jpt.jpa"
 							forcePluginActivation="true"/>
 					</adapt>
-					<adapt type = "org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription">
+					<adapt type = "org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
 						<test property="org.eclipse.jpt.jpa.core.jpaPlatformGroup"
 							value="eclipselink"/>
 						<not> 
@@ -328,7 +328,7 @@
 											property="org.eclipse.wst.common.project.facet.core.projectFacet"
 											value="jpt.jpa"/>
 									</adapt>
-									<adapt type="org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription">
+									<adapt type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
 										<test 
 											property="org.eclipse.jpt.jpa.core.jpaPlatformGroup"
 											value="eclipselink"/>
@@ -349,7 +349,7 @@
             			<iterate
                      ifEmpty="false">
                				<adapt
-                     			type="org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription">
+                     			type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
                   				<test
                         			property="org.eclipse.jpt.jpa.core.jpaPlatformGroup"
                         			value="eclipselink">
@@ -405,7 +405,7 @@
 									property="org.eclipse.wst.common.project.facet.core.projectFacet" 
 									value="jpt.jpa"/>
 							</adapt>
-							<adapt type = "org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription">
+							<adapt type = "org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
 								<test
 									property="org.eclipse.jpt.jpa.core.jpaPlatformGroup"
 									value="eclipselink"/>
@@ -434,7 +434,7 @@
                           	   </test>
                        	   </adapt>
                            <adapt
-                                 type="org.eclipse.jpt.jpa.core.platform.JpaPlatformDescription">
+                                 type="org.eclipse.jpt.jpa.core.platform.JpaPlatformConfig">
                               <test
                                     property="org.eclipse.jpt.jpa.core.jpaPlatformGroup"
                                     value="eclipselink">

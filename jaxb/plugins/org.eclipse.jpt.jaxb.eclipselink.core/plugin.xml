@@ -99,7 +99,7 @@
 							value="jaxb-user-library-provider"/>
 					</with>
 					<with variable="config">
-						<adapt type = "org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription">
+						<adapt type = "org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig">
 							<test property="org.eclipse.jpt.jaxb.core.jaxbPlatformGroup"
 								value="eclipselink"/>
 						</adapt>
