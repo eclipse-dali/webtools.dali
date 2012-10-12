@@ -15,9 +15,10 @@ import java.util.Comparator;
 /**
  * This comparator will reverse the order of the specified comparator.
  * If the specified comparator is <code>null</code>,
- * the natural ordering of the objects will be used.
+ * the natural ordering of the objects will be used (i.e. assume the elements
+ * implement the {@link Comparable} interface.
  */
-public class ReverseComparator<E extends Comparable<? super E>>
+public class ReverseComparator<E>
 	implements Comparator<E>, Serializable
 {
 	private final Comparator<E> comparator;
@@ -40,8 +41,9 @@ public class ReverseComparator<E extends Comparable<? super E>>
 		this.comparator = comparator;
 	}
 
+	@SuppressWarnings("unchecked")
 	public int compare(E e1, E e2) {
-		return (this.comparator != null) ? this.comparator.compare(e2, e1) : e2.compareTo(e1);
+		return (this.comparator != null) ? this.comparator.compare(e2, e1) : ((Comparable<E>) e2).compareTo(e1);
 	}
 
 	@Override

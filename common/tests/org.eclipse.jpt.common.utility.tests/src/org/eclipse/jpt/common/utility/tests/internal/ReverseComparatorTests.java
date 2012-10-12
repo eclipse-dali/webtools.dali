@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,10 +14,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import junit.framework.TestCase;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.ReverseComparator;
 
 @SuppressWarnings("nls")
-public class ReverseComparatorTests extends TestCase {
+public class ReverseComparatorTests
+	extends TestCase
+{
 	private Comparator<String> naturalReverseComparator;
 	private Comparator<String> customComparator;
 	private Comparator<String> customReverseComparator;
@@ -92,11 +95,77 @@ public class ReverseComparatorTests extends TestCase {
 		this.verifyList(this.buildCustomSortedList(), list);
 	}
 
-	private void verifyList(List<String> normal, List<String> reverse) {
+	public void testCustom_nonComparable() {
+		List<Foo> list = this.buildUnsortedFooList();
+		Collections.sort(list, new ReverseComparator<Foo>(Foo.COMPARATOR));
+		this.verifyList(this.buildSortedFooList(), list);
+	}
+
+	private List<Foo> buildUnsortedFooList() {
+		List<Foo> result = new ArrayList<Foo>();
+		result.add(new Foo("T"));
+		result.add(new Foo("Z"));
+		result.add(new Foo("Y"));
+		result.add(new Foo("M"));
+		result.add(new Foo("m"));
+		result.add(new Foo("a"));
+		result.add(new Foo("B"));
+		result.add(new Foo("b"));
+		result.add(new Foo("A"));
+		return result;
+	}
+
+	private List<Foo> buildSortedFooList() {
+		List<Foo> result = new ArrayList<Foo>(this.buildUnsortedFooList());
+		Collections.sort(result, Foo.COMPARATOR);
+		return result;
+	}
+
+	private <T> void verifyList(List<T> normal, List<T> reverse) {
 		int size = normal.size();
 		int max = size - 1;
 		for (int i = 0; i < size; i++) {
 			assertEquals(normal.get(i), reverse.get(max - i));
+		}
+	}
+
+	public static class Foo {
+		public final String string;
+		public Foo(String string) {
+			super();
+			this.string = string;
+		}
+		@Override
+		public boolean equals(Object o) {
+			return (o instanceof Foo) && this.string.equals(((Foo) o).string);
+		}
+		@Override
+		public int hashCode() {
+			return this.string.hashCode();
+		}
+		@Override
+		public String toString() {
+			return ObjectTools.toString(this, this.string);
+		}
+		public static final Comparator<Foo> COMPARATOR = new FooComparator();
+		public static class FooComparator
+			implements Comparator<Foo>
+		{
+			public int compare(Foo foo1, Foo foo2) {
+				String s1 = foo1.string;
+				String s2 = foo2.string;
+				String lower1 = s1.toLowerCase();
+				String lower2 = s2.toLowerCase();
+				int result = lower1.compareTo(lower2);
+				if (result == 0) {
+					return s1.compareTo(s2); // use case to differentiate "equal" strings
+				}
+				return result;
+			}
+			@Override
+			public String toString() {
+				return ObjectTools.singletonToString(this);
+			}
 		}
 	}
 }
