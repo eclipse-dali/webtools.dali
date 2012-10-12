@@ -35,11 +35,11 @@
 		point="org.eclipse.core.expressions.propertyTesters">
 		
 		<propertyTester
-			id="org.eclipse.jpt.jaxb.eclipselink.core.propertyTester.jaxbPackage"
+			id="org.eclipse.jpt.jaxb.eclipselink.core.propertyTester.JaxbPackage"
 			type="org.eclipse.jpt.jaxb.core.context.JaxbPackage"
 			namespace="org.eclipse.jpt.jaxb.eclipselink.core"
 			properties="hasEclipseLinkJaxbProperty"
-			class="org.eclipse.jpt.jaxb.eclipselink.core.internal.context.JaxbPackageTester"/>
+			class="org.eclipse.jpt.jaxb.eclipselink.core.internal.context.JaxbPackagePropertyTester"/>
 		
 	</extension>
 	

@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 
 
-public class JaxbPackageTester
+public class JaxbPackagePropertyTester
 		extends PropertyTester {
 	
 	public static final String HAS_PACKAGE_INFO = "hasPackageInfo"; //$NON-NLS-1$

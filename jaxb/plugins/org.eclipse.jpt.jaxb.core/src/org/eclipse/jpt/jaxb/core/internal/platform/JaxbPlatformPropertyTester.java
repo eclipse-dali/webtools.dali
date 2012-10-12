@@ -21,7 +21,7 @@ import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformManager;
  * Property tester for {@link JaxbPlatformConfig}.
  * See <code>org.eclipse.jpt.jaxb.core/plugin.xml:org.eclipse.core.expressions.propertyTesters</code>
  */
-public class JaxbPlatformTester
+public class JaxbPlatformPropertyTester
 	extends PropertyTester
 {
 	public static final String JAXB_PLATFORM = "jaxbPlatform"; //$NON-NLS-1$

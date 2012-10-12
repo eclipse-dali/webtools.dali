@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.core.platform.JpaPlatformManager;
  * Property tester for {@link JpaPlatformConfig}.
  * See <code>org.eclipse.jpt.jpa.core/plugin.xml:org.eclipse.core.expressions.propertyTesters</code>
  */
-public class JpaPlatformConfigPropertyTester
+public class JpaPlatformPropertyTester
 	extends PropertyTester
 {
 	public static final String JPA_PLATFORM = "jpaPlatform"; //$NON-NLS-1$

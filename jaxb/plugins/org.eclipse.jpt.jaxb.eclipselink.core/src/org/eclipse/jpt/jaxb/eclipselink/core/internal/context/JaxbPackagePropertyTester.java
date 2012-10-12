@@ -15,7 +15,7 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.resource.jaxbprops.JaxbPropertiesResource;
 
 
-public class JaxbPackageTester
+public class JaxbPackagePropertyTester
 		extends PropertyTester {
 	
 	public static final String HAS_ECLIPSELINK_JAXB_PROPERTY = "hasEclipseLinkJaxbProperty"; //$NON-NLS-1$

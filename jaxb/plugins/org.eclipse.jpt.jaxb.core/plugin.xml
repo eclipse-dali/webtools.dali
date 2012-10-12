@@ -108,18 +108,18 @@
 		point="org.eclipse.core.expressions.propertyTesters">
 
 		<propertyTester
-			id="org.eclipse.jpt.jaxb.core.propertyTester.jaxbPlatformDescription"
+			id="org.eclipse.jpt.jaxb.core.propertyTester.JaxbPlatform"
 			type="org.eclipse.jpt.jaxb.core.platform.JaxbPlatformConfig"
 			namespace="org.eclipse.jpt.jaxb.core"
 			properties="jaxbPlatform, jaxbPlatformGroup"
-			class="org.eclipse.jpt.jaxb.core.internal.platform.JaxbPlatformTester"/>
+			class="org.eclipse.jpt.jaxb.core.internal.platform.JaxbPlatformPropertyTester"/>
 		
 		<propertyTester
-			id="org.eclipse.jpt.jaxb.core.propertyTester.jaxbPackage"
+			id="org.eclipse.jpt.jaxb.core.propertyTester.JaxbPackage"
 			type="org.eclipse.jpt.jaxb.core.context.JaxbPackage"
 			namespace="org.eclipse.jpt.jaxb.core"
 			properties="hasPackageInfo"
-			class="org.eclipse.jpt.jaxb.core.internal.context.JaxbPackageTester"/>
+			class="org.eclipse.jpt.jaxb.core.internal.context.JaxbPackagePropertyTester"/>
 		
 	</extension>
 			
