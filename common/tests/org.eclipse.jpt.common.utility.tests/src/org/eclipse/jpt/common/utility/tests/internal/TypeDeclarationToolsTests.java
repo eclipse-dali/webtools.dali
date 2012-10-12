@@ -325,4 +325,9 @@ public class TypeDeclarationToolsTests
 		assertFalse(TypeDeclarationTools.isJavaLangClass7("".toCharArray()));
 		assertFalse(TypeDeclarationTools.isJavaLangClass7("Collection".toCharArray()));
 	}
+
+	public void testJDKVersion() {
+		assertTrue("update TypeDeclarationTools.JAVA_LANG_CLASS_NAMES for new JDK...",
+				TestTools.javaSpecificationVersionIsLessThanOrEqualTo("1.7"));
+	}
 }

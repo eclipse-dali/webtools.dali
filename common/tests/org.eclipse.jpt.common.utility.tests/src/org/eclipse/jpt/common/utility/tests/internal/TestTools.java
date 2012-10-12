@@ -30,6 +30,7 @@ import junit.framework.TestFailure;
 import junit.framework.TestResult;
 import junit.textui.TestRunner;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
+import org.eclipse.jpt.common.utility.internal.VersionComparator;
 import org.junit.Assert;
 
 /**
@@ -249,6 +250,31 @@ public final class TestTools {
 	 */
 	public static void setUpJUnitThreadContextClassLoader() {
 		Thread.currentThread().setContextClassLoader(TestTools.class.getClassLoader());
+	}
+
+	/**
+	 * Return whether the Java specification version of the current JVM
+	 * is greater than the specified version (e.g. <code>"1.5"</code>).
+	 * This is useful for a test that will fail if it encounters a newer
+	 * JVM than what the current code supports, serving as a reminder to the
+	 * developers. :-)
+	 */
+	public static boolean javaSpecificationVersionIsGreaterThan(String version) {
+		return VersionComparator.INTEGER_VERSION_COMPARATOR.compare(javaSpecificationVersion(), version) > 0;
+	}
+
+	/**
+	 * @see #javaSpecificationVersionIsGreaterThan(String)
+	 */
+	public static boolean javaSpecificationVersionIsLessThanOrEqualTo(String version) {
+		return ! javaSpecificationVersionIsGreaterThan(version);
+	}
+
+	/**
+	 * Return the Java specification version of the current JVM.
+	 */
+	public static String javaSpecificationVersion() {
+		return System.getProperty("java.specification.version");
 	}
 
 	/**
