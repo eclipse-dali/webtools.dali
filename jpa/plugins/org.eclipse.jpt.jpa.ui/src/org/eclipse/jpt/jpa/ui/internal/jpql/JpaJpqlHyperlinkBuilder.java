@@ -22,7 +22,7 @@ import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
-import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
 import org.eclipse.persistence.jpa.jpql.ExpressionTools;
@@ -100,7 +100,7 @@ public abstract class JpaJpqlHyperlinkBuilder extends AbstractExpressionVisitor 
 	 * created for the given {@link IMapping}
 	 * @param parentType The {@link IType} of the parent of the mapping
 	 * @param fieldType The {@link IType} of the mapping
-	 * @param memberName The name of the mapping, which should either be the field name or the method name
+	 * @param memberName The name of the given parent type's member
 	 * @param offset The offset to be added to the {@link IRegion}'s offset, which is the beginning
 	 * of the {@link IHyperlink}
 	 */
@@ -111,21 +111,26 @@ public abstract class JpaJpqlHyperlinkBuilder extends AbstractExpressionVisitor 
 	                                        int offset) {
 
 		IRegion region = buildRegion(expression, offset, memberName.length());
+		ISourceReference element = getJavaElement(parentType, memberName);
 
 		// 'Open Declaration' opens the declaration of the persistent type
-		addOpenMemberDeclarationHyperlink(
-			parentType,
-			getJavaElement(parentType, memberName),
-			region,
-			JptUiMessages.JpaJpqlHyperlinkBuilder_OpenDeclaration
-		);
+		if (element != null) {
+			addOpenMemberDeclarationHyperlink(
+				parentType,
+				element,
+				region,
+				JptUiMessages.JpaJpqlHyperlinkBuilder_OpenDeclaration
+			);
+		}
 
-		// 'Open Declared Type' opens the mapping type
-		addOpenDeclarationHyperlink(
-			fieldType,
-			region,
-			JptUiMessages.JpaJpqlHyperlinkBuilder_OpenDeclaredType
-		);
+		// 'Open Declared Type' opens the member's type
+		if (fieldType.isResolvable()) {
+			addOpenDeclarationHyperlink(
+				fieldType,
+				region,
+				JptUiMessages.JpaJpqlHyperlinkBuilder_OpenDeclaredType
+			);
+		}
 	}
 
 	/**
@@ -139,7 +144,7 @@ public abstract class JpaJpqlHyperlinkBuilder extends AbstractExpressionVisitor 
 	}
 
 	/**
-	 * Adds the given {@link IHyperlink}.
+	 * Adds a {@link IHyperlink} to open the editor on the given type.
 	 *
 	 * @param hyperlink A {@link IHyperlink} that can open the object represented by the visited
 	 * {@link Expression}.
@@ -149,18 +154,18 @@ public abstract class JpaJpqlHyperlinkBuilder extends AbstractExpressionVisitor 
 	}
 
 	/**
-	 * Adds the given {@link IHyperlink}.
+	 * Adds a {@link IHyperlink} to open the editor on the given type.
 	 *
-	 * @param type
-	 * @param region
-	 * @param hyperlinkText
+	 * @param type The {@link IType} to open if the hyperlink is chosen
+	 * @param region The {@link IRegion} represents the region to display the hyperlink within the JPQL query
+	 * @param hyperlinkText The text of the {@link IHyperlink}
 	 */
 	protected final void addOpenDeclarationHyperlink(IType type, IRegion region, String hyperlinkText) {
 		addHyperlink(buildOpenDeclarationHyperlink(type, region, hyperlinkText));
 	}
 
 	/**
-	 * Adds the given {@link IHyperlink}.
+	 * Adds a {@link IHyperlink} to open the editor on the given type's member.
 	 *
 	 * @param type The {@link IType} to open if the hyperlink is chosen
 	 * @param member The member, a child element of the type, to select
@@ -260,9 +265,10 @@ public abstract class JpaJpqlHyperlinkBuilder extends AbstractExpressionVisitor 
 	}
 
 	/**
-	 * Creates
+	 * Creates a new {@link IRegion} representing the location of the given {@link Expression} within
+	 * the JPQL query.
 	 *
-	 * @param expression
+	 * @param expression The {@link Expression} is used to calculate create the region within the JPQL query
 	 * @return A new {@link IRegion}
 	 */
 	protected final IRegion buildRegion(Expression expression) {
@@ -270,9 +276,9 @@ public abstract class JpaJpqlHyperlinkBuilder extends AbstractExpressionVisitor 
 	}
 
 	/**
-	 * Creates
+	 * Creates a new {@link IRegion} where the location is within the given {@link Expression}.
 	 *
-	 * @param expression
+	 * @param expression The {@link Expression} is used to calculate create the region within the JPQL query
 	 * @param offset The offset to be added to the {@link IRegion}'s offset, which is the beginning
 	 * of the {@link IHyperlink}
 	 * @return A new {@link IRegion}
@@ -282,9 +288,9 @@ public abstract class JpaJpqlHyperlinkBuilder extends AbstractExpressionVisitor 
 	}
 
 	/**
-	 * Creates
+	 * Creates a new {@link IRegion} where the location is within the given {@link Expression}.
 	 *
-	 * @param expression
+	 * @param expression The {@link Expression} is used to calculate create the region within the JPQL query
 	 * @param offset The offset to be added to the {@link IRegion}'s offset, which is the beginning
 	 * of the {@link IHyperlink}
 	 * @return A new {@link IRegion}
@@ -297,20 +303,20 @@ public abstract class JpaJpqlHyperlinkBuilder extends AbstractExpressionVisitor 
 	}
 
 	/**
-	 * Returns
+	 * Returns the {@link Entity} with the given fully qualified type name.
 	 *
-	 * @param typeName
-	 * @return
+	 * @param typeName The fully qualified type name of the entity to retrieve
+	 * @return The design-time representation of the entity or <code>null</code> if it could not be found
 	 */
 	protected Entity getEntity(String typeName) {
 		return getNamedQuery().getPersistenceUnit().getEntity(typeName);
 	}
 
 	/**
-	 * Returns
+	 * Returns the {@link Entity} with the given name.
 	 *
-	 * @param entityName
-	 * @return
+	 * @param entityName The name of the entity to retrieve
+	 * @return The design-time representation of the entity or <code>null</code> if it could not be found
 	 */
 	protected Entity getEntityNamed(String entityName) {
 
@@ -323,11 +329,30 @@ public abstract class JpaJpqlHyperlinkBuilder extends AbstractExpressionVisitor 
 		return null;
 	}
 
+	/**
+	 * Returns the Java element corresponding to the given member name (mapping name).
+	 *
+	 * @param parentType The type used to retrieve the entity
+	 * @param memberName The name of the member to retrieve its {@link ISourceReference}
+	 * @return The {@link ISourceReference} for the given member or <code>null</code> if it cannot
+	 * be found in the Java source file
+	 */
 	protected final ISourceReference getJavaElement(IType parentType, String memberName) {
 
 		Entity entity = getEntity(parentType.getName());
-		JavaPersistentAttribute attribute = entity.getPersistentType().getAttributeNamed(memberName).getJavaPersistentAttribute();
-		return (ISourceReference) attribute.getJavaElement();
+
+		// This could happen if the member is an enum constant
+		if (entity == null) {
+			return null;
+		}
+
+		ReadOnlyPersistentAttribute attribute = entity.getPersistentType().getAttributeNamed(memberName);
+
+		if (attribute == null) {
+			return null;
+		}
+
+		return (ISourceReference) attribute.getJavaPersistentAttribute().getJavaElement();
 	}
 
 	/**
@@ -344,7 +369,7 @@ public abstract class JpaJpqlHyperlinkBuilder extends AbstractExpressionVisitor 
 	 *
 	 * @return The position of the cursor in the query
 	 */
-	public int getPosition() {
+	protected final int getPosition() {
 		return queryPosition.getPosition();
 	}
 
@@ -355,7 +380,7 @@ public abstract class JpaJpqlHyperlinkBuilder extends AbstractExpressionVisitor 
 	 * @return Either the position of the cursor within the given {@link Expression} or -1 if the
 	 * cursor is not within it
 	 */
-	public int getPosition(Expression expression) {
+	protected final int getPosition(Expression expression) {
 		return queryPosition.getPosition(expression);
 	}
 

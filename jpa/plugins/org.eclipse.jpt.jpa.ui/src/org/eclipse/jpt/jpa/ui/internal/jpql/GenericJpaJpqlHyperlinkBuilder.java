@@ -13,7 +13,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.jpql;
 
+import java.util.StringTokenizer;
 import org.eclipse.jface.text.IRegion;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.Entity;
 import org.eclipse.jpt.jpa.core.context.NamedQuery;
 import org.eclipse.jpt.jpa.core.jpql.JpaJpqlQueryHelper;
@@ -22,13 +24,20 @@ import org.eclipse.persistence.jpa.jpql.StateFieldResolver;
 import org.eclipse.persistence.jpa.jpql.parser.AbstractPathExpression;
 import org.eclipse.persistence.jpa.jpql.parser.AbstractSchemaName;
 import org.eclipse.persistence.jpa.jpql.parser.AbstractTraverseParentVisitor;
+import org.eclipse.persistence.jpa.jpql.parser.CollectionExpression;
 import org.eclipse.persistence.jpa.jpql.parser.CollectionValuedPathExpression;
 import org.eclipse.persistence.jpa.jpql.parser.ConstructorExpression;
+import org.eclipse.persistence.jpa.jpql.parser.DeleteClause;
+import org.eclipse.persistence.jpa.jpql.parser.DeleteStatement;
 import org.eclipse.persistence.jpa.jpql.parser.EntityTypeLiteral;
 import org.eclipse.persistence.jpa.jpql.parser.Expression;
+import org.eclipse.persistence.jpa.jpql.parser.IdentificationVariable;
+import org.eclipse.persistence.jpa.jpql.parser.NullExpression;
 import org.eclipse.persistence.jpa.jpql.parser.QueryPosition;
 import org.eclipse.persistence.jpa.jpql.parser.RangeVariableDeclaration;
 import org.eclipse.persistence.jpa.jpql.parser.StateFieldPathExpression;
+import org.eclipse.persistence.jpa.jpql.parser.UpdateClause;
+import org.eclipse.persistence.jpa.jpql.parser.UpdateStatement;
 import org.eclipse.persistence.jpa.jpql.spi.IMapping;
 import org.eclipse.persistence.jpa.jpql.spi.IType;
 
@@ -40,6 +49,7 @@ import org.eclipse.persistence.jpa.jpql.spi.IType;
  * @since 3.3
  * @author Pascal Filion
  */
+@SuppressWarnings("nls")
 public class GenericJpaJpqlHyperlinkBuilder extends JpaJpqlHyperlinkBuilder {
 
 	private RangeVariableDeclarationVisitor rangeVariableDeclarationVisitor;
@@ -66,6 +76,12 @@ public class GenericJpaJpqlHyperlinkBuilder extends JpaJpqlHyperlinkBuilder {
 	 */
 	protected RangeVariableDeclarationVisitor buildRangeVariableDeclarationVisitor() {
 		return new RangeVariableDeclarationVisitor();
+	}
+
+	protected final IdentificationVariable findVirtualIdentificationVariable(AbstractSchemaName expression) {
+		VirtualIdentificationVariableFinder visitor = new VirtualIdentificationVariableFinder();
+		expression.accept(visitor);
+		return visitor.expression;
 	}
 
 	/**
@@ -112,12 +128,26 @@ public class GenericJpaJpqlHyperlinkBuilder extends JpaJpqlHyperlinkBuilder {
 		Entity entity = getEntityNamed(text);
 
 		if (entity != null) {
-			IType type = getType(entity.getPersistentType().getName());
-			addOpenDeclarationHyperlink(type, buildRegion(expression));
+
+			// XML file is not supported
+			if (entity.getMappingFileRoot() == null) {
+				IType type = getType(entity.getPersistentType().getName());
+				addOpenDeclarationHyperlink(type, buildRegion(expression));
+			}
 		}
-		// Now check for a derived path
 		else {
 
+			// Check to see if the "root" path is a class name before assuming it's a derived path
+			IType type = getType(text);
+
+			// Fully qualified class name
+			if (type.isResolvable()) {
+				addOpenDeclarationHyperlink(type, buildRegion(expression));
+			}
+			// Now resolve a derived path expression (for subqueries)
+			else {
+				visitDerivedPathExpression(expression);
+			}
 		}
 	}
 
@@ -132,6 +162,9 @@ public class GenericJpaJpqlHyperlinkBuilder extends JpaJpqlHyperlinkBuilder {
 			IType type = getType(expression.toActualText());
 			if (type.isResolvable()) {
 				addOpenDeclarationHyperlink(type, buildRegion(expression));
+			}
+			else {
+				visitPathExpression(expression);
 			}
 		}
 		else {
@@ -189,6 +222,83 @@ public class GenericJpaJpqlHyperlinkBuilder extends JpaJpqlHyperlinkBuilder {
 		visitPathExpression(expression);
 	}
 
+	protected void visitDerivedPathExpression(AbstractSchemaName expression) {
+
+		String text = expression.getText();
+		int position = getPosition();
+		int offset = expression.getOffset();
+		int length = 0;
+		Resolver resolver = null;
+
+		// Unqualified derived path
+		// Example: UPDATE Employee SET firstName = 'MODIFIED'
+		//          WHERE (SELECT COUNT(m) FROM managedEmployees m) > 0
+		if (text.indexOf(".") == -1) {
+
+			// Find the identification variable from the UPDATE range declaration
+			IdentificationVariable identificationVariable = findVirtualIdentificationVariable(expression);
+			String variableName = (identificationVariable != null) ? identificationVariable.getText() : null;
+
+			// Cannot continue
+			if (StringTools.isBlank(variableName)) {
+				return;
+			}
+
+			// Now resolve the superquery's identification variable
+			resolver = getQueryContext().getResolver(variableName);
+		}
+
+		// Now traverse the path, even if it's an unqualified path, the above
+		// if statement resolved the superquery's identification variable
+		for (StringTokenizer tokenizer = new StringTokenizer(text, "."); tokenizer.hasMoreTokens(); ) {
+
+			String path = tokenizer.nextToken();
+
+			// Identification variable
+			if (resolver == null) {
+
+				// The cursor is over the general identification variable
+				if (position <= offset + length + 1 /* DOT */) {
+					return;
+				}
+
+				resolver = getQueryContext().getDeclarationResolver().getChild(path);
+
+				// The identification variable cannot be resolved
+				if (resolver == null) {
+					break;
+				}
+			}
+			else {
+
+				Resolver childResolver = resolver.getChild(path);
+
+				if (childResolver == null) {
+					childResolver = new StateFieldResolver(resolver, path);
+					resolver.addChild(path, childResolver);
+				}
+
+				IMapping mapping = childResolver.getMapping();
+
+				// Invalid path expression
+				if (mapping == null) {
+					break;
+				}
+
+				// The position is within the current path
+				if (position <= offset + length + path.length()) {
+					addFieldHyperlinks(expression, mapping, length);
+					break;
+				}
+
+				resolver = childResolver;
+			}
+
+			// Update the length before continuing
+			length += path.length() + 1 /* DOT */;
+		}
+	}
+
 	/**
 	 * Visits the given {@link AbstractPathExpression} and determines the possible usages a path
 	 * expression can be used for:
@@ -202,9 +312,7 @@ public class GenericJpaJpqlHyperlinkBuilder extends JpaJpqlHyperlinkBuilder {
 	protected void visitPathExpression(AbstractPathExpression expression) {
 
 		// Nothing to do
-		if (!expression.hasIdentificationVariable() ||
-		     expression.startsWithDot()) {
-
+		if (expression.startsWithDot()) {
 			return;
 		}
 
@@ -233,8 +341,6 @@ public class GenericJpaJpqlHyperlinkBuilder extends JpaJpqlHyperlinkBuilder {
 			else {
 				for (String constantName : enumType.getEnumConstants()) {
 					if (enumConstant.equals(constantName)) {
-
-						// TODO: field type
 						addFieldHyperlinks(
 							expression,
 							enumType,
@@ -242,7 +348,6 @@ public class GenericJpaJpqlHyperlinkBuilder extends JpaJpqlHyperlinkBuilder {
 							constantName,
 							enumTypeLength + 1 /* DOT */
 						);
-
 						break;
 					}
 				}
@@ -315,6 +420,114 @@ public class GenericJpaJpqlHyperlinkBuilder extends JpaJpqlHyperlinkBuilder {
 		@Override
 		public void visit(RangeVariableDeclaration expression) {
 			rangeVariableDeclaration = true;
+		}
+	}
+
+	/**
+	 * This visitor traverses the parsed tree and retrieves the {@link IdentificationVariable}
+	 * defined for a range variable declaration.
+	 * <p>
+	 * TODO: REMOVE AND USE BaseDeclarationIdentificationVariableFinder ONE AVAILABLE IN ECLIPSELINK HERMES.
+	 */
+	protected static class VirtualIdentificationVariableFinder extends AbstractTraverseParentVisitor {
+
+		/**
+		 * The {@link IdentificationVariable} used to define the abstract schema name from either the
+		 * <b>UPDATE</b> or <b>DELETE</b> clause.
+		 */
+		protected IdentificationVariable expression;
+
+		/**
+		 * Determines if the {@link RangeVariableDeclaration} should traverse its identification
+		 * variable expression or simply visit the parent hierarchy.
+		 */
+		protected boolean traverse;
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void visit(CollectionExpression expression) {
+			if (traverse) {
+				// Invalid query, scan the first expression only
+				expression.getChild(0).accept(this);
+			}
+			else {
+				super.visit(expression);
+			}
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void visit(DeleteClause expression) {
+			try {
+				traverse = true;
+				expression.getRangeVariableDeclaration().accept(this);
+			}
+			finally {
+				traverse = false;
+			}
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void visit(DeleteStatement expression) {
+			expression.getDeleteClause().accept(this);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void visit(IdentificationVariable expression) {
+			this.expression = expression;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void visit(NullExpression expression) {
+			// Incomplete/invalid query, stop here
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void visit(RangeVariableDeclaration expression) {
+			if (traverse) {
+				expression.getIdentificationVariable().accept(this);
+			}
+			else {
+				super.visit(expression);
+			}
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void visit(UpdateClause expression) {
+			try {
+				traverse = true;
+				expression.getRangeVariableDeclaration().accept(this);
+			}
+			finally {
+				traverse = false;
+			}
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void visit(UpdateStatement expression) {
+			expression.getUpdateClause().accept(this);
 		}
 	}
 }

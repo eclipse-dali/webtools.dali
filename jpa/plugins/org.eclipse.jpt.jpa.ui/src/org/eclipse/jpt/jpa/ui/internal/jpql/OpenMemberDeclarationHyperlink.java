@@ -26,6 +26,9 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 /**
+ * This {IHyperlink} opens the editor on a Java class and select a persistent field (which is either
+ * the class attribute or the get method).
+ *
  * @version 3.3
  * @since 3.3
  * @author Pascal Filion
@@ -40,6 +43,13 @@ public class OpenMemberDeclarationHyperlink implements IHyperlink {
 
 	/**
 	 * Creates a new <code>OpenMemberDeclarationHyperlink</code>.
+	 *
+	 * @param javaProject The {@link IJavaProject} will be used to retrieve the {@link IType}
+	 * @param typeName The fully qualified type name to open in the editor
+	 * @param member The {@link ISourceReference} to select in the editor, which should either be a
+	 * class attribute or a get method
+	 * @param region The {@link IRegion} represents the region to display the hyperlink within the JPQL query
+	 * @param hyperlinkText The text of this {@link IHyperlink}
 	 */
 	public OpenMemberDeclarationHyperlink(IJavaProject javaProject,
 	                                      String typeName,
