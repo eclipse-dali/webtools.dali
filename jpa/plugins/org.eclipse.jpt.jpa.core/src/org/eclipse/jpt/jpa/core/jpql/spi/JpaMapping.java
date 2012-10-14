@@ -46,7 +46,7 @@ import static org.eclipse.persistence.jpa.jpql.spi.IMappingType.*;
  * to solicit feedback from pioneering adopters on the understanding that any code that uses this
  * API will almost certainly be broken (repeatedly) as the API evolves.
  *
- * @version 3.2
+ * @version 3.3
  * @since 3.0
  * @author Pascal Filion
  */
@@ -112,7 +112,7 @@ public abstract class JpaMapping implements IMapping {
 		};
 	}
 
-	protected IType buildType() {
+	protected IType buildType(boolean resolveRelationshipType) {
 
 		PersistentAttribute property = mapping.getPersistentAttribute();
 		String typeName = property.getTypeName();
@@ -123,7 +123,7 @@ public abstract class JpaMapping implements IMapping {
 		}
 
 		// For relationship mapping, make sure to check the target entity first
-		if (isRelationship()) {
+		if (resolveRelationshipType && isRelationship()) {
 
 			if (mappingType == ELEMENT_COLLECTION) {
 				String targetClass = ((ElementCollectionMapping2_0) mapping).getTargetClass();
@@ -132,10 +132,10 @@ public abstract class JpaMapping implements IMapping {
 				}
 			}
 			else {
-				String entityName = ((RelationshipMapping) mapping).getTargetEntity();
+				typeName = ((RelationshipMapping) mapping).getFullyQualifiedTargetEntity();
 
-				if (StringTools.isNotBlank(entityName)) {
-					IEntity entity = getParent().getProvider().getEntityNamed(entityName);
+				if (StringTools.isNotBlank(typeName)) {
+					IEntity entity = getParent().getProvider().getEntity(typeName);
 					if (entity != null) {
 						return entity.getType();
 					}
@@ -164,7 +164,7 @@ public abstract class JpaMapping implements IMapping {
 		}
 
 		return new JpaTypeDeclaration(
-			getType(),
+			buildType(false),
 			buildGenericTypeDeclarations(),
 			dimensionality
 		);
@@ -241,9 +241,9 @@ public abstract class JpaMapping implements IMapping {
 	}
 
 	/**
-	 * Returns
+	 * Returns the design-time mapping object.
 	 *
-	 * @return
+	 * @return The actual {@link AttributeMapping} wrapped by this {@link JpaMapping}
 	 */
 	protected AttributeMapping getMapping() {
 		return mapping;
@@ -278,7 +278,7 @@ public abstract class JpaMapping implements IMapping {
 	 */
 	public IType getType() {
 		if (type == null) {
-			type = buildType();
+			type = buildType(true);
 		}
 		return type;
 	}
@@ -366,7 +366,7 @@ public abstract class JpaMapping implements IMapping {
 		sb.append(" name=");
 		sb.append(getName());
 		sb.append(", mappingType=");
-		sb.append(getMappingType());
+		sb.append(mapping.getKey());
 		return sb.toString();
 	}
 }
