@@ -190,21 +190,7 @@ public class ModelIntegrationUtil {
 
 		String pathName = diagramFileName.toString();
 		URI resourceURI = URI.createFileURI(pathName);
-		final Resource resource = resourceSet.createResource(resourceURI);
-		//resource.setTrackingModification(false);
-			//(ResourceSetManager.getProjectForResourceSet(resourceSet));
-		defaultTransEditDomain.getCommandStack().execute(new RecordingCommand(defaultTransEditDomain) {
-			@Override
-			protected void doExecute() {
-				try {
-					resource.load(null);
-				} catch (IOException e) {
-					JPADiagramEditorPlugin.logInfo("The diagram file does not exist. It will be created");		//$NON-NLS-1$
-					JPADiagramEditorPlugin.logInfo(e.getLocalizedMessage());
-				}
-			}
-		});
-		
+		final Resource resource = resourceSet.createResource(resourceURI);		
 		if (!resource.isLoaded())
 			return createNewDiagram(project, defaultTransEditDomain, resourceSet, resource, diagramName, grid, snap);
 		
@@ -364,6 +350,26 @@ public class ModelIntegrationUtil {
 		if (ref != null)
 			return ref.get();
 		return null;
+	}
+	
+	public static void deleteDiagramXMIFile(final Diagram diagram) {
+		if(diagram != null && diagram.eResource()!=null){
+				TransactionalEditingDomain ted = ModelIntegrationUtil.getTransactionalEditingDomain(diagram);
+			if(ted == null)
+				return;
+			ted.getCommandStack().execute(new RecordingCommand(ted) {
+				
+				@Override
+				protected void doExecute() {
+					try {
+						diagram.eResource().delete(null);	
+					} catch (IOException e) {
+						JPADiagramEditorPlugin.logInfo("Cannot delete the digram xmi file."); //$NON-NLS-1$
+						JPADiagramEditorPlugin.logInfo(e.getLocalizedMessage());
+					}
+				}
+			});
+		}
 	}
 
 }

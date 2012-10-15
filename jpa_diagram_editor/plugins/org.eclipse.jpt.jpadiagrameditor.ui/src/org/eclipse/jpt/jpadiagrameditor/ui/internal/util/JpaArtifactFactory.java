@@ -597,7 +597,7 @@ public class JpaArtifactFactory {
 	private void createSimpleAttribute(JavaPersistentType attributeType,
 			String attributeName, String actName, boolean isCollection,
 			IType type) throws JavaModelException {
-		type.createField("  private " + JPAEditorUtil.returnSimpleName(attributeType.getName()) + " "
+		type.createField("  private " + JPAEditorUtil.returnSimpleName(attributeType.getName()) + " " //$NON-NLS-1$ //$NON-NLS-2$
 			+ JPAEditorUtil.decapitalizeFirstLetter(actName) + ";", null, false, new NullProgressMonitor()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		type.createMethod(genGetterContents(attributeName,
 				JPAEditorUtil.returnSimpleName(attributeType.getName()), null,

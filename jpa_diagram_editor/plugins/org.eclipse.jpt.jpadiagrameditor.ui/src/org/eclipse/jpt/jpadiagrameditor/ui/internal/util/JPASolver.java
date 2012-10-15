@@ -1399,6 +1399,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		final IResource resource = event.getResource();
 		if (resource != null && !resource.exists() || event.getType() == IResourceChangeEvent.PRE_CLOSE || (event.getType() == IResourceChangeEvent.PRE_DELETE)) {
 			    if (resource instanceof IProject) {
+			    	ModelIntegrationUtil.deleteDiagramXMIFile(ModelIntegrationUtil.getDiagramByProject((IProject)resource));
 					final IDiagramTypeProvider provider = featureProvider.getDiagramTypeProvider();
 					if (provider instanceof JPAEditorDiagramTypeProvider) {
 						final JPADiagramEditor diagramBySelectedProject = ((JPAEditorDiagramTypeProvider) provider).getDiagramEditor();
