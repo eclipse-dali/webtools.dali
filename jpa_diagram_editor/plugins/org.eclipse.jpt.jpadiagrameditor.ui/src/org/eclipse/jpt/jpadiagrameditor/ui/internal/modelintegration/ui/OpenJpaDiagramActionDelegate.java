@@ -89,7 +89,7 @@ public class OpenJpaDiagramActionDelegate implements IObjectActionDelegate {
 		}
 	}
 		
-	public static IDiagramEditor openDiagramEditor(Diagram diagram) {
+	public static IDiagramEditor openDiagramEditor(final Diagram diagram) {
 		
 		String diagramName = diagram.getName();
 		JpaProject jpaProject = ModelIntegrationUtil.getProjectByDiagram(diagramName);
@@ -115,7 +115,8 @@ public class OpenJpaDiagramActionDelegate implements IObjectActionDelegate {
 				JPADiagramEditor ret = (JPADiagramEditor) editorPart;
 				wrp.setObj(ret);
 				PlatformUI.getWorkbench().addWorkbenchListener( new IWorkbenchListener() {
-				    public boolean preShutdown( IWorkbench workbench, boolean forced ) {                            
+				    public boolean preShutdown( IWorkbench workbench, boolean forced ) {
+				    	ModelIntegrationUtil.deleteDiagramXMIFile(diagram);
 				    	workbenchPage.closeEditor( editorPart, true);
 				        return true;
 				    }
