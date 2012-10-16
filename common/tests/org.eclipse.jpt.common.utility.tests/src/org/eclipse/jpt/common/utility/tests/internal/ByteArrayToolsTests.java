@@ -25,21 +25,21 @@ public class ByteArrayToolsTests
 
 	public void testConvertToHexString() throws Exception {
 		String s = "test";
-		assertEquals("74657374", ByteArrayTools.convertToHexString(s.getBytes())); // Unicode values
+		assertEquals("74657374", ByteArrayTools.convertToHexString(s.getBytes())); // UTF-8 values
 	}
 
 	public void testConvertToHexString_negative() throws Exception {
-		String s = "café";
-		assertEquals("636166E9", ByteArrayTools.convertToHexString(s.getBytes())); // Unicode values
+		String s = "cafÃ©";
+		assertEquals("636166C3A9", ByteArrayTools.convertToHexString(s.getBytes())); // UTF-8 values
 	}
 
 	public void testConvertToHexCharArray() throws Exception {
 		String s = "test";
-		assertTrue(Arrays.equals("74657374".toCharArray(), ByteArrayTools.convertToHexCharArray(s.getBytes()))); // Unicode values
+		assertTrue(Arrays.equals("74657374".toCharArray(), ByteArrayTools.convertToHexCharArray(s.getBytes()))); // UTF-8 values
 	}
 
 	public void testConvertToHexCharArray_negative() throws Exception {
-		String s = "café";
-		assertTrue(Arrays.equals("636166E9".toCharArray(), ByteArrayTools.convertToHexCharArray(s.getBytes()))); // Unicode values
+		String s = "cafÃ©";
+		assertTrue(Arrays.equals("636166C3A9".toCharArray(), ByteArrayTools.convertToHexCharArray(s.getBytes()))); // UTF-8 values
 	}
 }

@@ -226,7 +226,7 @@ public class WriterToolsTests
 		this.verifyCapitalizeOnStringWriter("ORACLE", "ORACLE");
 		this.verifyCapitalizeOnStringWriter("", "");
 		this.verifyCapitalizeOnStringWriter("A", "a");
-		this.verifyCapitalizeOnStringWriter("\u00C9cole", "\u00E9cole"); // �cole->�COLE
+		this.verifyCapitalizeOnStringWriter("École", "école");
 	}
 
 	private void verifyCapitalizeOnStringWriter(String expected, String string) throws Exception {
@@ -258,7 +258,7 @@ public class WriterToolsTests
 		this.verifyUncapitalizeOnStringWriter("ORACLE", "ORACLE");
 		this.verifyUncapitalizeOnStringWriter("", "");
 		this.verifyUncapitalizeOnStringWriter("a", "A");
-		this.verifyUncapitalizeOnStringWriter("\u00E9cole", "\u00C9cole"); // �cole->�COLE
+		this.verifyUncapitalizeOnStringWriter("école", "École");
 	}
 
 	private void verifyUncapitalizeOnStringWriter(String expected, String string) throws Exception {
@@ -284,11 +284,11 @@ public class WriterToolsTests
 	}
 
 	public void testConvertToHexString() throws Exception {
-		this.verifyConvertToHexString("74657374", "test"); // Unicode values
+		this.verifyConvertToHexString("74657374", "test"); // UTF-8 values
 	}
 
 	public void testConvertToHexString_negative() throws Exception {
-		this.verifyConvertToHexString("636166E9", "caf�"); // Unicode values
+		this.verifyConvertToHexString("636166C3A9", "café"); // UTF-8 values
 	}
 
 	private void verifyConvertToHexString(String expected, String string) throws Exception {

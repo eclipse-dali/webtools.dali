@@ -180,7 +180,7 @@ public class StringToolsTests
 		this.verifyCapitalize("ORACLE", "ORACLE");
 		this.verifyCapitalize("", "");
 		this.verifyCapitalize("A", "a");
-		this.verifyCapitalize("\u00C9cole", "\u00E9cole"); // �cole->�COLE
+		this.verifyCapitalize("École", "école");
 	}
 
 	private void verifyCapitalize(String expected, String string) {
@@ -194,7 +194,7 @@ public class StringToolsTests
 		this.verifyUncapitalize("ORACLE", "ORACLE");
 		this.verifyUncapitalize("", "");
 		this.verifyUncapitalize("a", "A");
-		this.verifyUncapitalize("\u00E9cole", "\u00C9cole"); // �cole->�COLE
+		this.verifyUncapitalize("école", "École");
 	}
 
 	private void verifyUncapitalize(String expected, String string) {
@@ -313,18 +313,18 @@ public class StringToolsTests
 	}
 
 	public void testConvertHexStringToByteArray_ok() throws Exception {
-		String s = "74657374"; // Unicode values
+		String s = "74657374"; // UTF-8 values
 		assertEquals("test", new String(StringTools.convertHexStringToByteArray(s)));
 	}
 
 	public void testConvertHexStringToByteArray_negative() throws Exception {
-		String s = "636166E9"; // Unicode values
-		assertEquals("caf�", new String(StringTools.convertHexStringToByteArray(s)));
+		String s = "636166C3A9"; // UTF-8 values
+		assertEquals("café", new String(StringTools.convertHexStringToByteArray(s)));
 	}
 
 	public void testConvertHexStringToByteArray_lowercase() throws Exception {
-		String s = "636166e9"; // Unicode values
-		assertEquals("caf�", new String(StringTools.convertHexStringToByteArray(s)));
+		String s = "636166c3a9"; // UTF-8 values
+		assertEquals("café", new String(StringTools.convertHexStringToByteArray(s)));
 	}
 
 	// ********** convert camel-case to all-caps **********

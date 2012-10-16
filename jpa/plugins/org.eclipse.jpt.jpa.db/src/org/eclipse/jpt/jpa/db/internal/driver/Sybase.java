@@ -82,7 +82,7 @@ class Sybase
 	char[] getExtendedRegularNamePartCharacters() {
 		return EXTENDED_REGULAR_NAME_PART_CHARACTERS;
 	}
-	private static final char[] EXTENDED_REGULAR_NAME_PART_CHARACTERS = new char[] { '$', '¥', '£', '#' };
+	private static final char[] EXTENDED_REGULAR_NAME_PART_CHARACTERS = new char[] { '$', 'Â¥', 'Â£', '#' };
 
 	//TODO query database for delimiter setting
 	@Override
