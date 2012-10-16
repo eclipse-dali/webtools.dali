@@ -224,7 +224,7 @@ public class StringBuilderToolsTests
 		this.verifyCapitalizeOnString("ORACLE", "ORACLE");
 		this.verifyCapitalizeOnString("", "");
 		this.verifyCapitalizeOnString("A", "a");
-		this.verifyCapitalizeOnString("École", "école");
+		this.verifyCapitalizeOnString("\u00C9cole", "\u00E9cole"); // e'cole -> E'cole
 	}
 
 	private void verifyCapitalizeOnString(String expected, String string) {
@@ -256,7 +256,7 @@ public class StringBuilderToolsTests
 		this.verifyUncapitalizeOnString("ORACLE", "ORACLE");
 		this.verifyUncapitalizeOnString("", "");
 		this.verifyUncapitalizeOnString("a", "A");
-		this.verifyUncapitalizeOnString("école", "École");
+		this.verifyUncapitalizeOnString("\u00E9cole", "\u00C9cole"); // E'cole -> e'cole
 	}
 
 	private void verifyUncapitalizeOnString(String expected, String string) {
@@ -286,7 +286,7 @@ public class StringBuilderToolsTests
 	}
 
 	public void testConvertToHexString_negative() {
-		this.verifyConvertToHexString("636166C3A9", "café"); // UTF-8 values
+		this.verifyConvertToHexString("636166E9", "caf\u00E9"); // UTF-8 values
 	}
 
 	private void verifyConvertToHexString(String expected, String string) {

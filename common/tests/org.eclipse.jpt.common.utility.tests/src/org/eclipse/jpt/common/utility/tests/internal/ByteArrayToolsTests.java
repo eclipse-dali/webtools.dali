@@ -29,8 +29,8 @@ public class ByteArrayToolsTests
 	}
 
 	public void testConvertToHexString_negative() throws Exception {
-		String s = "café";
-		assertEquals("636166C3A9", ByteArrayTools.convertToHexString(s.getBytes())); // UTF-8 values
+		String s = "caf\u00E9"; // cafe'
+		assertEquals("636166E9", ByteArrayTools.convertToHexString(s.getBytes())); // UTF-8 values
 	}
 
 	public void testConvertToHexCharArray() throws Exception {
@@ -39,7 +39,7 @@ public class ByteArrayToolsTests
 	}
 
 	public void testConvertToHexCharArray_negative() throws Exception {
-		String s = "café";
-		assertTrue(Arrays.equals("636166C3A9".toCharArray(), ByteArrayTools.convertToHexCharArray(s.getBytes()))); // UTF-8 values
+		String s = "caf\u00E9"; // cafe'
+		assertTrue(Arrays.equals("636166E9".toCharArray(), ByteArrayTools.convertToHexCharArray(s.getBytes()))); // UTF-8 values
 	}
 }
