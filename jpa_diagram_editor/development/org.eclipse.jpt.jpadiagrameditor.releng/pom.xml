@@ -55,7 +55,7 @@
 		</repository>	
 		<repository>
 			<id>Kepler</id>
-			<url>http://build.eclipse.org/webtools/committers/wtp4x-R3.5.0-I/20121004233730/I-3.5.0-20121004233730/repository/</url>
+			<url>http://download.eclipse.org/webtools/downloads/drops/R3.5.0/S-3.5.0M2-20120927194043/repository/</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
