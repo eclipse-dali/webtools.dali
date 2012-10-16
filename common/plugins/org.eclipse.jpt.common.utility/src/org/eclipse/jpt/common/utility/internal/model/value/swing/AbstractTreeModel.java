@@ -17,7 +17,7 @@ import javax.swing.tree.TreeModel;
 
 /**
  * Abstract class that should have been provided by the JDK
- * (à la {@link javax.swing.AbstractListModel}). This class provides:<ul>
+ * (a la {@link javax.swing.AbstractListModel}). This class provides:<ul>
  * <li>support for a collection of listeners
  * <li>a number of convenience methods for firing events for those listeners
  * </ul>

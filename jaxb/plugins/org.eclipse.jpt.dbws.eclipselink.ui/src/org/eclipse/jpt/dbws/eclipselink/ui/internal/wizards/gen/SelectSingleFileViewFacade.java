@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  SelectSingleFileView
  *  
- *  Façade class to change accessibility of SelectSingleFileView.
+ *  Facade class to change accessibility of SelectSingleFileView.
  */
 @SuppressWarnings("restriction")
 public class SelectSingleFileViewFacade extends org.eclipse.wst.common.ui.internal.viewers.SelectSingleFileView {
