@@ -286,7 +286,11 @@ public class StringBufferToolsTests
 	}
 
 	public void testConvertToHexString_negative() {
-		this.verifyConvertToHexString("636166E9", "caf\u00E9"); // UTF-8 values
+		this.verifyConvertToHexString(this.getHexCafe(), "caf\u00E9"); // UTF-8 values
+	}
+
+	private String getHexCafe() {
+		return StringToolsTests.getHexCafe();
 	}
 
 	private void verifyConvertToHexString(String expected, String string) {

@@ -13,6 +13,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.io.WriterTools;
+import org.eclipse.jpt.common.utility.tests.internal.StringToolsTests;
 
 @SuppressWarnings("nls")
 public class WriterToolsTests
@@ -288,7 +289,11 @@ public class WriterToolsTests
 	}
 
 	public void testConvertToHexString_negative() throws Exception {
-		this.verifyConvertToHexString("636166E9", "caf\u00E9"); // UTF-8 values
+		this.verifyConvertToHexString(this.getHexCafe(), "caf\u00E9"); // UTF-8 values
+	}
+
+	private String getHexCafe() {
+		return StringToolsTests.getHexCafe();
 	}
 
 	private void verifyConvertToHexString(String expected, String string) throws Exception {

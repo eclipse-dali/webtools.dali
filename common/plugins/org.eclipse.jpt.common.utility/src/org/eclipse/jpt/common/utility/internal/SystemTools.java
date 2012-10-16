@@ -60,6 +60,28 @@ public final class SystemTools {
 	}
 
 
+	// ********** file encoding **********
+
+	/**
+	 * Return whether the current file encoding is Microsoft Windows
+	 * (i.e. "Cp1252").
+	 */
+	public static boolean fileEncodingIsWindows() {
+		return fileEncoding().equals("Cp1252");
+	}
+
+	/**
+	 * Return whether the current file encoding is UTF-8.
+	 */
+	public static boolean fileEncodingIsUTF8() {
+		return fileEncoding().equals("UTF-8");
+	}
+
+	private static String fileEncoding() {
+		return System.getProperty("file.encoding");
+	}
+
+
 	// ********** O/S **********
 
 	/**

@@ -271,17 +271,21 @@ public class CharArrayToolsTests
 
 	public void testConvertHexStringToByteArray_ok() throws Exception {
 		String s = "74657374"; // UTF-8 values
-		assertEquals("test", new String(CharArrayTools.convertHexStringToByteArray(s.toCharArray())));
+		TestTools.assertEquals("test", CharArrayTools.convertHexStringToByteArray(s.toCharArray()));
 	}
 
 	public void testConvertHexStringToByteArray_negative() throws Exception {
-		String s = "636166E9"; // UTF-8 values
-		assertEquals("caf\u00E9", new String(CharArrayTools.convertHexStringToByteArray(s.toCharArray())));
+		String s = this.getHexCafe();
+		TestTools.assertEquals("caf\u00E9", CharArrayTools.convertHexStringToByteArray(s.toCharArray()));
 	}
 
 	public void testConvertHexStringToByteArray_lowercase() throws Exception {
-		String s = "636166e9"; // UTF-8 values
-		assertEquals("caf\u00E9", new String(CharArrayTools.convertHexStringToByteArray(s.toCharArray())));
+		String s = this.getHexCafe().toLowerCase();
+		TestTools.assertEquals("caf\u00E9", CharArrayTools.convertHexStringToByteArray(s.toCharArray()));
+	}
+
+	private String getHexCafe() {
+		return StringToolsTests.getHexCafe();
 	}
 
 	// ********** convert camel-case to all-caps **********

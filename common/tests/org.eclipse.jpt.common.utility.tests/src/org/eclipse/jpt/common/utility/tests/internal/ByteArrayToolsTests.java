@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.tests.internal;
 
-import java.util.Arrays;
 import junit.framework.TestCase;
+
 import org.eclipse.jpt.common.utility.internal.ByteArrayTools;
 
 @SuppressWarnings("nls")
@@ -30,16 +30,20 @@ public class ByteArrayToolsTests
 
 	public void testConvertToHexString_negative() throws Exception {
 		String s = "caf\u00E9"; // cafe'
-		assertEquals("636166E9", ByteArrayTools.convertToHexString(s.getBytes())); // UTF-8 values
+		assertEquals(this.getHexCafe(), ByteArrayTools.convertToHexString(s.getBytes()));
 	}
 
 	public void testConvertToHexCharArray() throws Exception {
 		String s = "test";
-		assertTrue(Arrays.equals("74657374".toCharArray(), ByteArrayTools.convertToHexCharArray(s.getBytes()))); // UTF-8 values
+		TestTools.assertEquals("74657374", ByteArrayTools.convertToHexCharArray(s.getBytes()));
 	}
 
 	public void testConvertToHexCharArray_negative() throws Exception {
 		String s = "caf\u00E9"; // cafe'
-		assertTrue(Arrays.equals("636166E9".toCharArray(), ByteArrayTools.convertToHexCharArray(s.getBytes()))); // UTF-8 values
+		TestTools.assertEquals(this.getHexCafe(), ByteArrayTools.convertToHexCharArray(s.getBytes()));
+	}
+
+	private String getHexCafe() {
+		return StringToolsTests.getHexCafe();
 	}
 }

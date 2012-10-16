@@ -14,6 +14,7 @@ import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.ByteArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.SystemTools;
 
 @SuppressWarnings("nls")
 public class StringToolsTests
@@ -318,13 +319,23 @@ public class StringToolsTests
 	}
 
 	public void testConvertHexStringToByteArray_negative() throws Exception {
-		String s = "636166E9"; // UTF-8 values
+		String s = getHexCafe();
 		assertEquals("caf\u00E9", new String(StringTools.convertHexStringToByteArray(s)));
 	}
 
 	public void testConvertHexStringToByteArray_lowercase() throws Exception {
-		String s = "636166e9"; // UTF-8 values
+		String s = getHexCafe().toLowerCase();
 		assertEquals("caf\u00E9", new String(StringTools.convertHexStringToByteArray(s)));
+	}
+
+	public static String getHexCafe() {
+		if (SystemTools.fileEncodingIsWindows()) {
+			return "636166E9";
+		}
+		if (SystemTools.fileEncodingIsUTF8()) {
+			return "636166C3A9";
+		}
+		return null;
 	}
 
 	// ********** convert camel-case to all-caps **********
