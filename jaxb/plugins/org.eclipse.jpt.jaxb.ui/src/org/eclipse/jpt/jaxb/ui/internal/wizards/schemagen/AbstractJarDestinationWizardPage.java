@@ -13,7 +13,7 @@ import org.eclipse.jdt.ui.jarpackager.JarPackageData;
 import org.eclipse.jface.viewers.IStructuredSelection;
 
 /**
- *  Façade class to change accessibility of AbstractJarDestinationWizardPage.
+ *  FaÃ§ade class to change accessibility of AbstractJarDestinationWizardPage.
  */
 @SuppressWarnings("restriction")
 public abstract class AbstractJarDestinationWizardPage extends org.eclipse.jdt.internal.ui.jarpackager.AbstractJarDestinationWizardPage

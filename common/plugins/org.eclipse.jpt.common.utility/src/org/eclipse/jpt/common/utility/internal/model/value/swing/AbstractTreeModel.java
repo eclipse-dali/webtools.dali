@@ -17,9 +17,10 @@ import javax.swing.tree.TreeModel;
 
 /**
  * Abstract class that should have been provided by the JDK
- * (à la javax.swing.AbstractListModel). This class provides:
- * - support for a collection of listeners
- * - a number of convenience methods for firing events for those listeners
+ * (Ã  la {@link javax.swing.AbstractListModel}). This class provides:<ul>
+ * <li>support for a collection of listeners
+ * <li>a number of convenience methods for firing events for those listeners
+ * </ul>
  */
 public abstract class AbstractTreeModel
 	implements TreeModel, Serializable
