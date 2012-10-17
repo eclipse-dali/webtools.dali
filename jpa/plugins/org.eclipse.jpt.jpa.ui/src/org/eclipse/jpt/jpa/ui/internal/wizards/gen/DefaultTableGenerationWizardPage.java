@@ -34,6 +34,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenTable;
@@ -67,6 +68,8 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 	
 	protected TableGenPanel defaultTableGenPanel ;
 
+	protected static String SERIALIZABLE_INTERFACE = ORMGenTable.SERIALIZABLE_INTERFACE;
+	
 	public DefaultTableGenerationWizardPage(JpaProject jpaProject) {
 		super(true, "DefaultTableGenerationWizardPage"); //$NON-NLS-1$
 		this.jpaProject = jpaProject;
@@ -128,9 +131,9 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 				this.defaultTableGenPanel.setORMGenTable(this.defaultsTable);
 				defaultTableGenPanel.updateControls();
 				//set the super class and implemented interfaces value
-				String baseClass = this.defaultsTable.getExtends() == null ?"" : this.defaultsTable.getExtends();
-				this.setSuperClass(baseClass, true);
-				this.setSuperInterfaces(this.defaultsTable.getImplements(), true);
+				this.setTableSuperClass(this.defaultsTable);
+				this.setTableSuperInterfaces(this.defaultsTable);
+				
 				IPackageFragmentRoot root = getSourceFolder(this.defaultsTable.getSourceFolder());
 				String initPackageName = this.getPackageText();
 				if(initPackageName.length() == 0) {
@@ -139,6 +142,23 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 				this.setPackageFragmentRoot(root, true/*canBeModified*/);
 			}
 		}
+	}
+	
+	private void setTableSuperClass(ORMGenTable genTable) {
+		String baseClass = genTable.getExtends() == null ? "" : genTable.getExtends();
+		this.setSuperClass(baseClass, true);
+	}
+	
+	private void setTableSuperInterfaces(ORMGenTable genTable) {
+		List<String> superInterfaces = new ArrayList<String>(genTable.getImplements());
+		if( ! this.interfacesHasSerializable(superInterfaces)) {
+			superInterfaces.add(SERIALIZABLE_INTERFACE);
+		}
+		this.setSuperInterfaces(superInterfaces, true);
+	}
+	
+	private boolean interfacesHasSerializable(List<String> interfaces) {
+		return CollectionTools.contains(interfaces.iterator(), SERIALIZABLE_INTERFACE);
 	}
 	
 	//search for the source folder with the given name or return the first
@@ -299,18 +319,35 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 			updateStatus(Status.OK_STATUS);
 		}
 	}
-	
+
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected IStatus superInterfacesChanged() {
-		IStatus ret = super.superInterfacesChanged();
-		if ( ret.isOK() ) {
-			List interfaces = getSuperInterfaces();
-			if(defaultsTable!=null)
-				defaultsTable.setImplements(interfaces);
+		IStatus status = super.superInterfacesChanged();
+		if(status.isOK()) {
+			List<String> interfaces = this.getSuperInterfaces();
+			if(this.defaultsTable != null) {
+				this.defaultsTable.setImplements(interfaces);
+			}
+			if(this.serializableInterfaceRemoved(interfaces)) {
+				this.removeAllSerializableFromTables(this.customizer.getTableNames());
+			}
 		}
-		return ret;
-	}	
+		return status;
+	}
+
+	private void removeAllSerializableFromTables(List<String> tableNames) {
+		for(String tableName: tableNames) {
+			ORMGenTable table = this.customizer.getTable(tableName);
+			List<String> tableInterfaces = table.getImplements();
+			tableInterfaces.remove(SERIALIZABLE_INTERFACE);
+			table.setImplements(tableInterfaces);
+		}
+	}
+	
+	private boolean serializableInterfaceRemoved(List<String> interfaces) {
+		return ( ! this.interfacesHasSerializable(interfaces)) && (this.customizer != null);
+	}
 
 	protected ORMGenCustomizer getCustomizer() {
 		GenerateEntitiesFromSchemaWizard wizard = (GenerateEntitiesFromSchemaWizard) this.getWizard();

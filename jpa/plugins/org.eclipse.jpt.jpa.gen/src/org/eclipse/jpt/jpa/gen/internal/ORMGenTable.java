@@ -40,6 +40,7 @@ public class ORMGenTable
 	private List<ORMGenColumn> mColumns;
 	private Table mDbTable;
 	private HashMap<String, String> columnTypesMap =  null;
+	public static String SERIALIZABLE_INTERFACE = "java.io.Serializable"; //$NON-NLS-1$
 	/**
 	 * @param table
 	 *            The database table or null if this table is used to get/set
@@ -573,11 +574,15 @@ public class ORMGenTable
 		if (extendsClass != null && !extendsClass.equals("java.lang.Object") && !extendsClass.equals("Object")) {
 			buffer.append("extends " + simplifyClassName(extendsClass) + " "); //fix for bug 278626
 		}
-		buffer.append("implements Serializable"); // assuming that the Java
-													// file template imports the
-													// java.io.Serializable
+		boolean firstInterface = true;
 		for (Iterator<String> iter = getImplements().iterator(); iter.hasNext();) {
-			buffer.append(", " + simplifyClassName(iter.next()));
+			if(firstInterface) {
+				buffer.append("implements " + simplifyClassName(iter.next()));
+				firstInterface = false;
+			}
+			else {
+				buffer.append(", " + simplifyClassName(iter.next()));
+			}
 		}
 		return buffer.toString();
 	}
