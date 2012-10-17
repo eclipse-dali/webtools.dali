@@ -181,8 +181,8 @@ public class OxmXmlBindingsImpl
 	 * append package if the name is not qualified
 	 */
 	public String getQualifiedName(String className) {
-		if (className == null) {
-			return null;
+		if (StringTools.isBlank(className)) {
+			return StringTools.EMPTY_STRING;
 		}
 		
 		if (className.indexOf('.') >= 0) {

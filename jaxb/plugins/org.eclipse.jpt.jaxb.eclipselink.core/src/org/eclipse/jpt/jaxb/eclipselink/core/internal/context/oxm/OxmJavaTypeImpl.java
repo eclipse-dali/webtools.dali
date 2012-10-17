@@ -48,6 +48,7 @@ public class OxmJavaTypeImpl
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		setSpecifiedName_(buildSpecifiedName());
+		setQualifiedName_(buildQualifiedName());
 	}
 	
 	
@@ -65,7 +66,6 @@ public class OxmJavaTypeImpl
 	protected void setSpecifiedName_(String newName) {
 		String oldName = this.specifiedName;
 		this.specifiedName = newName;
-		this.qualifiedName = buildQualifiedName();
 		firePropertyChanged(SPECIFIED_NAME_PROPERTY, oldName, newName);
 	}
 	
@@ -75,6 +75,12 @@ public class OxmJavaTypeImpl
 	
 	public String getQualifiedName() {
 		return this.qualifiedName;
+	}
+	
+	protected void setQualifiedName_(String newName) {
+		String oldName = this.qualifiedName;
+		this.qualifiedName = newName;
+		firePropertyChanged(QUALIFIED_NAME_PROPERTY, oldName, newName);
 	}
 	
 	protected String buildQualifiedName() {

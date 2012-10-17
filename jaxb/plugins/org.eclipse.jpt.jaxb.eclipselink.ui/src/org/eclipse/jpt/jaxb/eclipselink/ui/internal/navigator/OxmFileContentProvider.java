@@ -10,14 +10,18 @@
 package org.eclipse.jpt.jaxb.eclipselink.ui.internal.navigator;
 
 import org.eclipse.jpt.common.ui.internal.jface.AbstractItemTreeContentProvider;
-import org.eclipse.jpt.common.utility.internal.model.value.NullCollectionValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.ListCollectionValueModelAdapter;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
-import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbPackage;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmFile;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaType;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlBindings;
 
 public class OxmFileContentProvider
-		extends AbstractItemTreeContentProvider<OxmFile, JaxbContextNode> {
+		extends AbstractItemTreeContentProvider<OxmFile, OxmJavaType> {
 	
 	public OxmFileContentProvider(OxmFile item, Manager manager) {
 		super(item, manager);
@@ -29,7 +33,18 @@ public class OxmFileContentProvider
 	}
 	
 	@Override
-	protected CollectionValueModel<JaxbContextNode> buildChildrenModel() {
-		return new NullCollectionValueModel();
+	protected CollectionValueModel<OxmJavaType> buildChildrenModel() {
+		return new ListCollectionValueModelAdapter<OxmJavaType>(
+				new ItemPropertyListValueModelAdapter<OxmJavaType>(
+						new ListAspectAdapter<OxmXmlBindings, OxmJavaType>(OxmXmlBindings.JAVA_TYPES_LIST, this.item.getXmlBindings()) {
+							@Override
+							protected ListIterable<OxmJavaType> getListIterable() {
+								return this.subject.getJavaTypes();
+							}
+							@Override
+							protected int size_() {
+								return this.subject.getJavaTypesSize();
+							}
+						}));
 	}
 }

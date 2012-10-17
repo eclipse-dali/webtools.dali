@@ -14,6 +14,7 @@ import org.eclipse.jpt.common.ui.internal.jface.StaticItemExtendedLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemExtendedLabelProvider;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmFile;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaType;
 import org.eclipse.jpt.jaxb.eclipselink.ui.internal.JptJaxbEclipseLinkUiIcons;
 import org.eclipse.jpt.jaxb.eclipselink.ui.internal.plugin.JptJaxbEclipseLinkUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.jaxb21.GenericJaxb_2_1_NavigatorItemLabelProviderFactory;
@@ -44,6 +45,9 @@ public class ELJaxbNavigatorItemLabelProviderFactory
 		else if (item instanceof OxmFile) {
 			return buildOxmFileLabelProvider((OxmFile) item, manager);
 		}
+		else if (item instanceof OxmJavaType) {
+			return buildOxmJavaTypeLabelProvider((OxmJavaType) item, manager);
+		}
 		
 		return super.buildProvider(item, manager);
 	}
@@ -68,5 +72,10 @@ public class ELJaxbNavigatorItemLabelProviderFactory
 	private String buildOxmFileDescription(OxmFile file) {
 		// the same, for now
 		return buildOxmFileText(file);
+	}
+	
+	protected ItemExtendedLabelProvider buildOxmJavaTypeLabelProvider(
+			OxmJavaType oxmJavaType, ItemExtendedLabelProvider.Manager manager) {
+		return new OxmJavaTypeItemLabelProvider(oxmJavaType, manager);
 	}
 }

@@ -49,6 +49,11 @@ public interface OxmJavaType
 	void setSpecifiedName(String newName);
 	
 	/**
+	 * String associated with changes to the "specifiedName" property
+	 */
+	static final String QUALIFIED_NAME_PROPERTY = "qualifiedName"; //$NON-NLS-1$
+	
+	/**
 	 * Return
 	 * - the name specified in source, if it is qualified or primitive
 	 * - the name specified in source with the xml-bindings package name prepended
