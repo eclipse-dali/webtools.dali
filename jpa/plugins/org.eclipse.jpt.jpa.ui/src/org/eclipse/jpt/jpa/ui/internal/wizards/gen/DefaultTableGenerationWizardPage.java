@@ -10,6 +10,7 @@
 
 package org.eclipse.jpt.jpa.ui.internal.wizards.gen;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.IPath;
@@ -34,7 +35,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenTable;
