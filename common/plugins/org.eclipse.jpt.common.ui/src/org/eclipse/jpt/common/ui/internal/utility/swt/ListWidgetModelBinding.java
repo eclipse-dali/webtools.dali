@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.common.ui.internal.utility.swt;
 
 import java.util.ArrayList;
-import org.eclipse.jface.resource.StringConverter;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTListChangeListenerWrapper;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -32,7 +31,7 @@ import org.eclipse.swt.events.DisposeListener;
  * its contents directly; all changes are driven by the model.
  * 
  * @see ListValueModel
- * @see StringConverter
+ * @see Transformer
  * @see ListWidget
  * @see SelectionBinding
  * @see SWTTools

@@ -15,20 +15,17 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
-import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.EnumerationIterator;
-import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 
 /**
  * {@link Enumeration} utility methods.
- * @see ArrayTools
+ * @see org.eclipse.jpt.common.utility.internal.ArrayTools
  * @see CollectionTools
- * @see IterableTools
- * @see IteratorTools
+ * @see org.eclipse.jpt.common.utility.internal.iterable.IterableTools
+ * @see org.eclipse.jpt.common.utility.internal.iterator.IteratorTools
  * @see ListTools
  */
 public final class EnumerationTools {

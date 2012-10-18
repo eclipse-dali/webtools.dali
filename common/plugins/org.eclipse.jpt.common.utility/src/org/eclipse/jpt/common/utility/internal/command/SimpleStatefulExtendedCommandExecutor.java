@@ -10,14 +10,15 @@
 package org.eclipse.jpt.common.utility.internal.command;
 
 import org.eclipse.jpt.common.utility.command.Command;
-import org.eclipse.jpt.common.utility.command.CommandExecutor;
 import org.eclipse.jpt.common.utility.command.ExtendedCommandExecutor;
 import org.eclipse.jpt.common.utility.command.StatefulExtendedCommandExecutor;
 
 /**
  * Straightforward implementation of {@link StatefulExtendedCommandExecutor}
  * that executes commands immediately by default. This executor can
- * also be used to adapt simple {@link CommandExecutor}s to the
+ * also be used to adapt simple
+ * {@link org.eclipse.jpt.common.utility.command.CommandExecutor CommandExecutor}s
+ * to the
  * {@link StatefulExtendedCommandExecutor} interface, providing support for
  * lifecycle state. Any calls to {@link #waitToExecute(Command)} suspend the
  * calling thread until the command executor is {@link #start() started}.

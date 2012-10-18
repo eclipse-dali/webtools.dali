@@ -20,9 +20,7 @@ import java.util.Random;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
-import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
-import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 
 /**
  * {@link Array} utility methods.
@@ -30,8 +28,8 @@ import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
  * that can be use by converting an array to a list ({@link Arrays#asList(Object...)}).
  * @see CharArrayTools
  * @see CollectionTools
- * @see IterableTools
- * @see IteratorTools
+ * @see org.eclipse.jpt.common.utility.internal.iterable.IterableTools
+ * @see org.eclipse.jpt.common.utility.internal.iterator.IteratorTools
  * @see ListTools
  */
 public final class ArrayTools {

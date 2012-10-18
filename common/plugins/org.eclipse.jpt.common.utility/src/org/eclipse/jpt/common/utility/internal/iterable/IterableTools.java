@@ -18,7 +18,6 @@ import java.util.List;
 import org.eclipse.jpt.common.utility.collection.Queue;
 import org.eclipse.jpt.common.utility.collection.Stack;
 import org.eclipse.jpt.common.utility.filter.Filter;
-import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
@@ -27,13 +26,12 @@ import org.eclipse.jpt.common.utility.internal.iterator.CloneIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.CloneListIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.GraphIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
-import org.eclipse.jpt.common.utility.internal.iterator.PeekableIterator;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * {@link Iterable} utility methods.
- * @see ArrayTools
+ * @see org.eclipse.jpt.common.utility.internal.ArrayTools
  * @see CollectionTools
  * @see IteratorTools
  * @see ListTools
@@ -685,7 +683,7 @@ public final class IterableTools {
 
 	/**
 	 * Construct an iterable that wraps the specified iterable and returns a
-	 * {@link PeekableIterator}.
+	 * {@link org.eclipse.jpt.common.utility.internal.iterator.PeekableIterator}.
 	 * @see PeekableIterable
 	 */
 	public static <E> PeekableIterable<E> peekableIterable(Iterable<? extends E> iterable) {

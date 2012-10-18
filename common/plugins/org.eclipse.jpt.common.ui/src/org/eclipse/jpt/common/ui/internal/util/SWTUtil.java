@@ -12,7 +12,6 @@ package org.eclipse.jpt.common.ui.internal.util;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.OpenStrategy;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.swt.SWTException;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
@@ -188,7 +187,7 @@ public class SWTUtil {
 
 	/**
 	 * Return the current shell. Return <code>null</code> if there is none.
-	 * @exception SWTException if not called from the UI thread
+	 * @exception org.eclipse.swt.SWTException if not called from the UI thread
 	 */
 	public static Shell getShell() {
 		Shell shell = getActiveShell();
@@ -199,7 +198,7 @@ public class SWTUtil {
 	 * Return the current "active" shell, which can be the shell from any
 	 * window. Return <code>null</code> if there is no display.
 	 * @see Display#getActiveShell()
-	 * @exception SWTException if not called from the UI thread
+	 * @exception org.eclipse.swt.SWTException if not called from the UI thread
 	 */
 	public static Shell getActiveShell() {
 		// Retrieve the active shell, which can be the shell from any window

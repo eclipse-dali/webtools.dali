@@ -10,13 +10,12 @@
 package org.eclipse.jpt.common.utility.internal.iterator;
 
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * A <code>SimultaneousIterator</code> provides an {@link Iterator}
  * for the simultaneous processing of a set of {@link Iterator}s
  * of objects of type <code>E</code>. Each call to {@link #next()}
- * returns a {@link List} of elements of type <code>E</code>. The elements
+ * returns a {@link java.util.List List} of elements of type <code>E</code>. The elements
  * in the list are in the same order as the order of the {@link Iterator}s
  * passed to the simultaneous iterator's constructor. The simultaneous iterator
  * will return as many lists as there are elements returned by <em>all</em>

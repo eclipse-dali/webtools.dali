@@ -12,7 +12,6 @@ package org.eclipse.jpt.common.utility.internal.io;
 import java.io.IOException;
 import java.io.Writer;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.ByteArrayTools;
 import org.eclipse.jpt.common.utility.internal.CharArrayTools;
 import org.eclipse.jpt.common.utility.internal.CharacterTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -1045,7 +1044,7 @@ public final class WriterTools {
 	/**
 	 * Convert the specified byte array to the corresponding string of
 	 * hexadecimal characters.
-	 * @see ByteArrayTools#convertToHexString(byte[])
+	 * @see org.eclipse.jpt.common.utility.internal.ByteArrayTools#convertToHexString(byte[])
 	 */
 	public static void convertToHexString(Writer writer, byte[] bytes) throws IOException {
 		int bytesLength = bytes.length;

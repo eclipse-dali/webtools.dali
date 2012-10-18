@@ -12,7 +12,6 @@ package org.eclipse.jpt.common.utility.internal.iterable;
 import java.util.ListIterator;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
-import org.eclipse.jpt.common.utility.internal.iterator.ReadOnlyCompositeListIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.TransformationListIterator;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 
@@ -25,7 +24,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
  * 
  * @param <E> the type of elements returned by the list iterable's list iterator
  * 
- * @see ReadOnlyCompositeListIterator
+ * @see org.eclipse.jpt.common.utility.internal.iterator.ReadOnlyCompositeListIterator
  * @see CompositeListIterable
  */
 public class ReadOnlyCompositeListIterable<E>

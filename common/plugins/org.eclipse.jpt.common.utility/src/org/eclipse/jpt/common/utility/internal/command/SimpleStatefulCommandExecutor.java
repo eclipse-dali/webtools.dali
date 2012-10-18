@@ -10,13 +10,12 @@
 package org.eclipse.jpt.common.utility.internal.command;
 
 import org.eclipse.jpt.common.utility.command.CommandExecutor;
-import org.eclipse.jpt.common.utility.command.StatefulCommandExecutor;
 
 /**
- * Straightforward implementation of {@link StatefulCommandExecutor}
+ * Straightforward implementation of {@link org.eclipse.jpt.common.utility.command.StatefulCommandExecutor}
  * that executes commands immediately by default. This executor can
  * also be used to adapt simple {@link CommandExecutor}s to the
- * {@link StatefulCommandExecutor} interface, providing support for
+ * {@link org.eclipse.jpt.common.utility.command.StatefulCommandExecutor} interface, providing support for
  * lifecycle state.
  */
 public class SimpleStatefulCommandExecutor

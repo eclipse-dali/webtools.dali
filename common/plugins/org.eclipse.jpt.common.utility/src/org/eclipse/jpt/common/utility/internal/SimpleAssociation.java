@@ -10,10 +10,9 @@
 package org.eclipse.jpt.common.utility.internal;
 
 import java.io.Serializable;
-import org.eclipse.jpt.common.utility.Association;
 
 /**
- * Straightforward implementation of {@link Association}.
+ * Straightforward implementation of {@link org.eclipse.jpt.common.utility.Association}.
  */
 public class SimpleAssociation<K, V>
 	extends AbstractAssociation<K, V>

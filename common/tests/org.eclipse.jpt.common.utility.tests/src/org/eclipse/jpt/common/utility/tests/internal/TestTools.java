@@ -18,17 +18,14 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.io.Serializable;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestFailure;
 import junit.framework.TestResult;
-import junit.textui.TestRunner;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.junit.Assert;
 
@@ -114,7 +111,7 @@ public final class TestTools {
 	}
 
 	/**
-	 * Test an object's implementation of {@link Serializable} by serializing the
+	 * Test an object's implementation of {@link java.io.Serializable} by serializing the
 	 * specified object to a byte array; then de-serializing the byte array and
 	 * returning the resultant object.
 	 */
@@ -253,7 +250,7 @@ public final class TestTools {
 	/**
 	 * Workaround for a JUnit bug: JUnit does not configure the testing {@link Thread}
 	 * with a context class loader. This should probably happen in
-	 * {@link TestRunner#doRun(Test)}, just before starting the thread.
+	 * {@link junit.textui.TestRunner#doRun(junit.framework.Test)}, just before starting the thread.
 	 */
 	public static void setUpJUnitThreadContextClassLoader() {
 		Thread.currentThread().setContextClassLoader(TestTools.class.getClassLoader());

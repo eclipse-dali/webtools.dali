@@ -10,7 +10,6 @@
 package org.eclipse.jpt.common.ui.internal.utility.swt;
 
 import java.util.Arrays;
-import org.eclipse.jface.resource.StringConverter;
 import org.eclipse.jpt.common.utility.internal.BitTools;
 import org.eclipse.jpt.common.utility.internal.model.value.ModifiablePropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticCollectionValueModel;

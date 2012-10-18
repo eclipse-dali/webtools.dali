@@ -13,7 +13,6 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
 import org.eclipse.jpt.common.utility.filter.Filter;
-import org.eclipse.jpt.common.utility.internal.io.WriterTools;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 
@@ -21,7 +20,7 @@ import org.eclipse.jpt.common.utility.transformer.Transformer;
  * {@link String} utility methods
  * 
  * @see CharArrayTools
- * @see WriterTools
+ * @see org.eclipse.jpt.common.utility.internal.io.WriterTools
  * @see StringBuilderTools
  * @see StringBufferTools
  */

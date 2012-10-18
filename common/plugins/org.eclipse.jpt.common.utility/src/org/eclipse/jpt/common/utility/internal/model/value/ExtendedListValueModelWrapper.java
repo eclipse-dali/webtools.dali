@@ -26,11 +26,11 @@ import org.eclipse.jpt.common.utility.model.event.ListClearEvent;
 import org.eclipse.jpt.common.utility.model.event.ListMoveEvent;
 import org.eclipse.jpt.common.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.common.utility.model.event.ListReplaceEvent;
-import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 
 /**
- * This wrapper extends a {@link ListValueModel} (or {@link CollectionValueModel})
+ * This wrapper extends a {@link ListValueModel}
+ * (or {@link org.eclipse.jpt.common.utility.model.value.CollectionValueModel CollectionValueModel})
  * with fixed collections of items on either end.
  * <p>
  * <strong>NB:</strong> Be careful using or wrapping this list value model, since the

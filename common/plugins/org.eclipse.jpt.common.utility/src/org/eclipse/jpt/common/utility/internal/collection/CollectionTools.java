@@ -17,15 +17,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.Vector;
-import org.eclipse.jpt.common.utility.internal.ArrayTools;
-import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
-import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
 
 /**
  * {@link Collection} utility methods.
- * @see ArrayTools
- * @see IterableTools
- * @see IteratorTools
+ * @see org.eclipse.jpt.common.utility.internal.ArrayTools
+ * @see org.eclipse.jpt.common.utility.internal.iterable.IterableTools
+ * @see org.eclipse.jpt.common.utility.internal.iterator.IteratorTools
  * @see ListTools
  */
 public final class CollectionTools {

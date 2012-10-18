@@ -10,7 +10,6 @@
 package org.eclipse.jpt.common.utility.internal.collection;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.NoSuchElementException;
@@ -18,7 +17,7 @@ import org.eclipse.jpt.common.utility.collection.Queue;
 
 /**
  * Resizable-array implementation of the {@link Queue} interface.
- * @see ArrayList
+ * @see java.util.ArrayList
  */
 public class ArrayQueue<E>
 	implements Queue<E>, Cloneable, Serializable
