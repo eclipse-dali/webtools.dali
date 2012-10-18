@@ -84,6 +84,7 @@ import org.eclipse.jpt.jpa.core.internal.plugin.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.jpa2.JpaProject2_0;
+import org.eclipse.jpt.jpa.core.jpa2.MetamodelSynchronizer;
 import org.eclipse.jpt.jpa.core.jpa2.context.JpaRootContextNode2_0;
 import org.eclipse.jpt.jpa.core.libprov.JpaLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jpa.core.resource.ResourceMappingFile;
@@ -1054,7 +1055,7 @@ public abstract class AbstractJpaProject
 		return new FilteringIterable<JavaResourceAbstractType>(this.getInternalSourceJavaResourceTypes()) {
 			@Override
 			protected boolean accept(JavaResourceAbstractType jrat) {
-				return MetamodelTools.isGeneratedMetamodelTopLevelType(jrat, genSourceFolder);
+				return MetamodelSynchronizer.MetamodelTools.isGeneratedMetamodelTopLevelType(jrat, genSourceFolder);
 			}
 		};
 	}
@@ -1068,7 +1069,7 @@ public abstract class AbstractJpaProject
 		if (primaryType == null) {
 			return null;  // no types in the file
 		}
-		return MetamodelTools.isGeneratedMetamodelTopLevelType(primaryType) ? primaryType : null;
+		return MetamodelSynchronizer.MetamodelTools.isGeneratedMetamodelTopLevelType(primaryType) ? primaryType : null;
 	}
 
 	protected JavaResourceCompilationUnit getJavaResourceCompilationUnit(IFile file) {
@@ -1096,22 +1097,19 @@ public abstract class AbstractJpaProject
 		return this.firePropertyChanged(METAMODEL_SOURCE_FOLDER_NAME_PROPERTY, old, folderName);
 	}
 
-	public void initializeMetamodel() {
-		if (this.isJpa2_0Compatible()) {
-			((JpaRootContextNode2_0) this.rootContextNode).initializeMetamodel();
-		}
+	protected void initializeMetamodel() {
+		((JpaRootContextNode2_0) this.rootContextNode).initializeMetamodel();
 	}
 
 	/**
 	 * Synchronize the metamodel for 2.0-compatible JPA projects.
 	 */
-	public IStatus synchronizeMetamodel(IProgressMonitor monitor) {
+	protected void synchronizeMetamodel() {
 		if (this.isJpa2_0Compatible()) {
 			if (this.metamodelSourceFolderName != null) {
 				this.scheduleSynchronizeMetamodelJob();
 			}
 		}
-		return Status.OK_STATUS;
 	}
 
 	/**
@@ -1171,10 +1169,8 @@ public abstract class AbstractJpaProject
 		return ((JpaRootContextNode2_0) this.rootContextNode).synchronizeMetamodel(monitor);
 	}
 
-	public void disposeMetamodel() {
-		if (this.isJpa2_0Compatible()) {
-			((JpaRootContextNode2_0) this.rootContextNode).disposeMetamodel();
-		}
+	protected void disposeMetamodel() {
+		((JpaRootContextNode2_0) this.rootContextNode).disposeMetamodel();
 	}
 
 	public IPackageFragmentRoot getMetamodelPackageFragmentRoot() {
@@ -2063,8 +2059,8 @@ public abstract class AbstractJpaProject
 	protected class UpdateCommandListener
 		implements NotifyingRepeatingJobCommand.Listener
 	{
-		public IStatus executionQuiesced(JobCommand command, IProgressMonitor monitor) {
-			return AbstractJpaProject.this.updateQuiesced(monitor);
+		public void executionQuiesced(JobCommand command) {
+			AbstractJpaProject.this.updateQuiesced();
 		}
 		@Override
 		public String toString() {
@@ -2076,10 +2072,10 @@ public abstract class AbstractJpaProject
 	 * This is the callback used by the update command to notify the JPA
 	 * project that the "update" has quiesced (i.e. the "update" has completed
 	 * and there are no outstanding requests for further "updates").
-	 * Called by {@link UpdateCommandListener#executionQuiesced(JobCommand, IProgressMonitor)}.
+	 * Called by {@link UpdateCommandListener#executionQuiesced(JobCommand)}.
 	 */
- 	protected IStatus updateQuiesced(IProgressMonitor monitor) {
-		return this.synchronizeMetamodel(monitor);
+ 	protected void updateQuiesced() {
+		this.synchronizeMetamodel();
 	}
 
 

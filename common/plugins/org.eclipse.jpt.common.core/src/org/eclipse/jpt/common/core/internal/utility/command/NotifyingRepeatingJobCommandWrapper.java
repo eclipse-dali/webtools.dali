@@ -11,10 +11,9 @@ package org.eclipse.jpt.common.core.internal.utility.command;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.OperationCanceledException;
-import org.eclipse.jpt.common.core.utility.command.NotifyingRepeatingJobCommand;
 import org.eclipse.jpt.common.core.utility.command.JobCommand;
 import org.eclipse.jpt.common.core.utility.command.JobCommandExecutor;
+import org.eclipse.jpt.common.core.utility.command.NotifyingRepeatingJobCommand;
 import org.eclipse.jpt.common.utility.ExceptionHandler;
 import org.eclipse.jpt.common.utility.internal.ListenerList;
 
@@ -69,25 +68,24 @@ public class NotifyingRepeatingJobCommandWrapper
 		IStatus status = super.executeCommand(monitor);
 		if (this.state.isQuiesced()) {
 			// hmmm - we will notify listeners even when we are "stopped"; that seems OK...
-			this.executionQuiesced(monitor);
+			this.executionQuiesced();
 		}
 		return status;
 	}
 
 	/**
-	 * Notify our listeners.
+	 * Notify our listeners. All listeners are notified. There is no way to
+	 * cancel the notifications (e.g. via a monitor or exception).
 	 */
-	private void executionQuiesced(IProgressMonitor monitor) {
+	private void executionQuiesced() {
 		for (Listener listener : this.listenerList.getListeners()) {
-			this.notifyListener(listener, monitor);
+			this.notifyListener(listener);
 		}
 	}
 
-	private void notifyListener(Listener listener, IProgressMonitor monitor) {
+	private void notifyListener(Listener listener) {
 		try {
-			listener.executionQuiesced(this, monitor);
-		} catch (OperationCanceledException ex) {
-			throw ex;  // seems reasonable...
+			listener.executionQuiesced(this);
 		} catch (Throwable ex) {
 			this.exceptionHandler.handleException(ex);
 		}

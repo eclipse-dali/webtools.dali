@@ -56,7 +56,7 @@ public interface NotifyingRepeatingJobCommand
 		/**
 		 * The specified job command has quiesced.
 		 */
-		IStatus executionQuiesced(JobCommand command, IProgressMonitor monitor);
+		void executionQuiesced(JobCommand command);
 	}
 
 

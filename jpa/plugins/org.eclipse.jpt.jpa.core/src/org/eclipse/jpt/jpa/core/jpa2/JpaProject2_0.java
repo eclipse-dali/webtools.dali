@@ -27,9 +27,8 @@ import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
  * @version 2.3
  * @since 2.3
  */
-// TODO no need to extend MetamodelSynchronizer - methods should be internal...
 public interface JpaProject2_0
-	extends JpaProject, MetamodelSynchronizer
+	extends JpaProject
 {
 	// ********** JPA facet **********
 
