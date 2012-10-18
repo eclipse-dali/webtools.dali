@@ -35,7 +35,6 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.common.core.internal.utility.JDTTools;
-import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenCustomizer;
 import org.eclipse.jpt.jpa.gen.internal.ORMGenTable;
@@ -159,7 +158,12 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 	}
 	
 	private boolean interfacesHasSerializable(List<String> interfaces) {
-		return CollectionTools.contains(interfaces.iterator(), SERIALIZABLE_INTERFACE);
+		for(String interf: interfaces) {
+			if(interf.equals(SERIALIZABLE_INTERFACE)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	//search for the source folder with the given name or return the first
@@ -364,4 +368,3 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 		return PlatformUI.getWorkbench().getHelpSystem();
 	}
 }
-
