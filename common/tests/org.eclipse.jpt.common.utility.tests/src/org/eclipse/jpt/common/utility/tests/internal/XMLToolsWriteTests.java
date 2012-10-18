@@ -13,6 +13,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.SystemTools;
 import org.eclipse.jpt.common.utility.internal.XMLTools;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -54,8 +55,14 @@ public class XMLToolsWriteTests
 		XMLTools.print(this.testDocument, stream);
 		stream.close();
 		StringBuffer sb = new StringBuffer(2000);
-		sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-		sb.append(CR);
+		sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"");
+		if (SystemTools.jvmIsOracle() && SystemTools.javaSpecificationVersionIsGreaterThan("1.5")) {
+			sb.append(" standalone=\"no\"");
+		}
+		sb.append("?>");
+		if (SystemTools.jvmIsOracle() || (SystemTools.jvmIsIBM() && SystemTools.javaSpecificationVersionIsLessThanOrEqualTo("1.5"))) {
+			sb.append(CR);
+		}
 		sb.append("<root-element>");
 		sb.append(CR);
 		sb.append("<element-0>");
@@ -64,7 +71,9 @@ public class XMLToolsWriteTests
 		sb.append(CR);
 		sb.append(string);
 		sb.append("</root-element>");
-		sb.append(CR);
+		if (SystemTools.jvmIsOracle() || (SystemTools.jvmIsIBM() && SystemTools.javaSpecificationVersionIsLessThanOrEqualTo("1.5"))) {
+			sb.append(CR);
+		}
 		String expected = sb.toString();
 		String actual = stream.toString();
 		assertEquals(StringTools.compressWhitespace(expected), StringTools.compressWhitespace(actual));

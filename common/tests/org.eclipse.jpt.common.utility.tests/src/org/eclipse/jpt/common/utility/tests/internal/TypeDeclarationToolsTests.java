@@ -10,6 +10,8 @@
 package org.eclipse.jpt.common.utility.tests.internal;
 
 import junit.framework.TestCase;
+
+import org.eclipse.jpt.common.utility.internal.SystemTools;
 import org.eclipse.jpt.common.utility.internal.TypeDeclarationTools;
 
 @SuppressWarnings("nls")
@@ -328,6 +330,6 @@ public class TypeDeclarationToolsTests
 
 	public void testJDKVersion() {
 		assertTrue("update TypeDeclarationTools.JAVA_LANG_CLASS_NAMES for new JDK...",
-				TestTools.javaSpecificationVersionIsLessThanOrEqualTo("1.7"));
+				SystemTools.javaSpecificationVersionIsLessThanOrEqualTo("1.7"));
 	}
 }

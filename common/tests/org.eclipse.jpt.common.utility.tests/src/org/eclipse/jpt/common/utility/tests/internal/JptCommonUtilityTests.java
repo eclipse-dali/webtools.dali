@@ -71,9 +71,10 @@ public class JptCommonUtilityTests {
 		suite.addTestSuite(SimpleJavaTypeTests.class);
 		suite.addTestSuite(SimpleMethodSignatureTests.class);
 		suite.addTestSuite(StackTraceTests.class);
-		suite.addTestSuite(StringToolsTests.class);
 		suite.addTestSuite(StringBufferToolsTests.class);
 		suite.addTestSuite(StringBuilderToolsTests.class);
+		suite.addTestSuite(StringToolsTests.class);
+		suite.addTestSuite(SystemToolsTests.class);
 		suite.addTestSuite(TypeDeclarationToolsTests.class);
 		suite.addTestSuite(VersionComparatorTests.class);
 		suite.addTestSuite(XMLToolsReadTests.class);

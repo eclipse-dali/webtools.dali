@@ -267,36 +267,34 @@ public class ClasspathTests extends TestCase {
 	}
 
 	public void testJavaExtensionClasspathEntries() {
+		if (SystemTools.javaSpecificationVersionIsLessThan("1.4") || SystemTools.javaSpecificationVersionIsGreaterThan("1.7")) {
+			fail("we need to update this test for the current JDK: " + SystemTools.javaSpecificationVersion());
+		}
+
+		Collection<String> jarNames = new ArrayList<String>();
+		Iterable<Classpath.Entry> entries = Classpath.javaExtensionClasspath().getEntries();
+		for (Classpath.Entry entry : entries) {
+			jarNames.add(entry.getFileName());
+		}
 		char sep = File.separatorChar;
-		String jdk = System.getProperty("java.version");
-		if (jdk.startsWith("1.4") || jdk.startsWith("1.5") || jdk.startsWith("1.6")) {
-			Collection<String> jarNames = new ArrayList<String>();
-			Iterable<Classpath.Entry> entries = Classpath.javaExtensionClasspath().getEntries();
-			for (Classpath.Entry entry : entries) {
-				jarNames.add(entry.getFileName());
-			}
-			String stdExtJarName = JAVA_HOME + sep + "lib" + sep + "ext" + sep + "dnsns.jar";
-			String msg = "jdk 1.4.x standard extension jar missing: " + stdExtJarName;
-			boolean jarPresent = jarNames.contains(stdExtJarName);
-			if (SystemTools.jvmIsSun() || (SystemTools.jvmIsIBM() && jdk.startsWith("1.6"))) {
-				assertTrue(msg, jarPresent);
-			}
-		} else {
-			fail("we need to update this test for the current jdk");
+		String stdExtJarName = JAVA_HOME + sep + "lib" + sep + "ext" + sep + "dnsns.jar";
+		String msg = "JDK standard extension jar missing: " + stdExtJarName;
+		boolean jarPresent = jarNames.contains(stdExtJarName);
+		if (SystemTools.jvmIsSun() || (SystemTools.jvmIsIBM() && SystemTools.javaSpecificationVersionIsGreaterThan("1.5"))) {
+			assertTrue(msg, jarPresent);
 		}
 	}
 
 	public void testJavaExtensionClassNames() {
-		String jdk = System.getProperty("java.version");
-		if (jdk.startsWith("1.4") || jdk.startsWith("1.5") || jdk.startsWith("1.6")) {
-			String className = "sun.net.spi.nameservice.dns.DNSNameService";
-			String msg = "jdk 1.4.x standard extension class missing: " + className;
-			boolean classPresent = IteratorTools.contains(Classpath.javaExtensionClasspath().classNames(), className);
-			if (SystemTools.jvmIsSun() || (SystemTools.jvmIsIBM() && jdk.startsWith("1.6"))) {
-				assertTrue(msg, classPresent);
-			}
-		} else {
-			fail("we need to update this test for the current jdk");
+		if (SystemTools.javaSpecificationVersionIsLessThan("1.4") || SystemTools.javaSpecificationVersionIsGreaterThan("1.7")) {
+			fail("we need to update this test for the current JDK: " + SystemTools.javaSpecificationVersion());
+		}
+
+		String className = "sun.net.spi.nameservice.dns.DNSNameService";
+		String msg = "JDK standard extension class missing: " + className;
+		boolean classPresent = IteratorTools.contains(Classpath.javaExtensionClasspath().classNames(), className);
+		if (SystemTools.jvmIsSun() || (SystemTools.jvmIsIBM() && SystemTools.javaSpecificationVersionIsGreaterThan("1.5"))) {
+			assertTrue(msg, classPresent);
 		}
 	}
 

@@ -60,6 +60,52 @@ public final class SystemTools {
 	}
 
 
+	// ********** Java specification version **********
+
+	/**
+	 * Return whether the Java specification version of the current JVM
+	 * is greater than the specified version (e.g. <code>"1.5"</code>).
+	 * <p>
+	 * This is useful for a test that should fail if it encounters a newer
+	 * JVM than what the current code supports, serving as a reminder to the
+	 * developers. :-)
+	 */
+	public static boolean javaSpecificationVersionIsGreaterThan(String version) {
+		return VersionComparator.INTEGER_VERSION_COMPARATOR.compare(javaSpecificationVersion(), version) > 0;
+	}
+
+	/**
+	 * Return whether the Java specification version of the current JVM
+	 * is less than or equal to the specified version (e.g. <code>"1.5"</code>).
+	 */
+	public static boolean javaSpecificationVersionIsLessThanOrEqualTo(String version) {
+		return ! javaSpecificationVersionIsGreaterThan(version);
+	}
+
+	/**
+	 * Return whether the Java specification version of the current JVM
+	 * is less than the specified version (e.g. <code>"1.5"</code>).
+	 */
+	public static boolean javaSpecificationVersionIsLessThan(String version) {
+		return VersionComparator.INTEGER_VERSION_COMPARATOR.compare(javaSpecificationVersion(), version) < 0;
+	}
+
+	/**
+	 * Return whether the Java specification version of the current JVM
+	 * is greater than or equal to the specified version (e.g. <code>"1.5"</code>).
+	 */
+	public static boolean javaSpecificationVersionIsGreaterThanOrEqualTo(String version) {
+		return ! javaSpecificationVersionIsLessThan(version);
+	}
+
+	/**
+	 * Return the Java specification version of the current JVM.
+	 */
+	public static String javaSpecificationVersion() {
+		return System.getProperty("java.specification.version");
+	}
+
+
 	// ********** file encoding **********
 
 	/**
