@@ -643,11 +643,11 @@ public class GenericOrmOneToOneMapping2_0Tests
 		assertEquals(0, virtualJoinTable.getSpecifiedJoinColumnsSize());
 		assertEquals(0, virtualJoinTable.getSpecifiedInverseJoinColumnsSize());
 		JoinColumn ormJoinColumn = virtualJoinTable.getDefaultJoinColumn();
-		assertEquals(TYPE_NAME + "_Address", ormJoinColumn.getDefaultTable());
+		assertEquals(TYPE_NAME + "_Address", ormJoinColumn.getDefaultTableName());
 		assertEquals(TYPE_NAME + "_id", ormJoinColumn.getDefaultName());
 		assertEquals("id", ormJoinColumn.getDefaultReferencedColumnName());
 		JoinColumn inverseOrmJoinColumn = virtualJoinTable.getDefaultInverseJoinColumn();
-		assertEquals(TYPE_NAME + "_Address", inverseOrmJoinColumn.getDefaultTable());
+		assertEquals(TYPE_NAME + "_Address", inverseOrmJoinColumn.getDefaultTableName());
 		assertEquals("address_id", inverseOrmJoinColumn.getDefaultName());
 		assertEquals("id", inverseOrmJoinColumn.getDefaultReferencedColumnName());
 
@@ -928,7 +928,7 @@ public class GenericOrmOneToOneMapping2_0Tests
 		assertEquals(Boolean.FALSE, virtualJoinColumn.getSpecifiedInsertable());
 		assertEquals(Boolean.FALSE, virtualJoinColumn.getSpecifiedUpdatable());
 		assertEquals("COLUMN_DEFINITION", virtualJoinColumn.getColumnDefinition());
-		assertEquals("MY_TABLE", virtualJoinColumn.getSpecifiedTable());
+		assertEquals("MY_TABLE", virtualJoinColumn.getSpecifiedTableName());
 
 		Cascade2_0 cascade = (Cascade2_0) virtualOneToOneMapping.getCascade();
 		assertTrue(cascade.isAll());

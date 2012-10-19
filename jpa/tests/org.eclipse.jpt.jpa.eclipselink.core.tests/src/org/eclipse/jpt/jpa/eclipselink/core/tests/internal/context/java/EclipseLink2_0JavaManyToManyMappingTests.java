@@ -759,34 +759,34 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		assertEquals(true, jobsOrderable.isOrderColumnOrdering());
 		assertEquals(null, jobsOrderColumn.getSpecifiedName());
 		assertEquals("jobs_ORDER", jobsOrderColumn.getDefaultName());
-		assertEquals("PrintJob_PrintQueue", jobsOrderColumn.getTable()); //the join table name
+		assertEquals("PrintJob_PrintQueue", jobsOrderColumn.getTableName()); //the join table name
 		Orderable2_0 queuesOrderable = ((Orderable2_0) queuesMapping.getOrderable());
 		OrderColumn2_0 queuesOrderColumn = queuesOrderable.getOrderColumn();
 		assertEquals(true, queuesOrderable.isOrderColumnOrdering());
 		assertEquals(null, queuesOrderColumn.getSpecifiedName());
 		assertEquals("queues_ORDER", queuesOrderColumn.getDefaultName());
-		assertEquals("PrintJob_PrintQueue", queuesOrderColumn.getTable());
+		assertEquals("PrintJob_PrintQueue", queuesOrderColumn.getTableName());
 		
 		jobsOrderColumn.setSpecifiedName("FOO");
 		assertEquals("FOO", jobsOrderColumn.getSpecifiedName());
 		assertEquals("jobs_ORDER", jobsOrderColumn.getDefaultName());
-		assertEquals("PrintJob_PrintQueue", jobsOrderColumn.getTable());
+		assertEquals("PrintJob_PrintQueue", jobsOrderColumn.getTableName());
 		queuesOrderColumn.setSpecifiedName("BAR");
 		assertEquals("BAR", queuesOrderColumn.getSpecifiedName());
 		assertEquals("queues_ORDER", queuesOrderColumn.getDefaultName());
-		assertEquals("PrintJob_PrintQueue", queuesOrderColumn.getTable());
+		assertEquals("PrintJob_PrintQueue", queuesOrderColumn.getTableName());
 		
 		((Entity) printJobPersistentType.getMapping()).getTable().setSpecifiedName("MY_TABLE");
-		assertEquals("MY_TABLE_PrintQueue", jobsOrderColumn.getTable());
-		assertEquals("MY_TABLE_PrintQueue", queuesOrderColumn.getTable());
+		assertEquals("MY_TABLE_PrintQueue", jobsOrderColumn.getTableName());
+		assertEquals("MY_TABLE_PrintQueue", queuesOrderColumn.getTableName());
 		
 		((Entity) printQueuePersistentType.getMapping()).getTable().setSpecifiedName("OTHER_TABLE");
-		assertEquals("MY_TABLE_OTHER_TABLE", jobsOrderColumn.getTable());
-		assertEquals("MY_TABLE_OTHER_TABLE", queuesOrderColumn.getTable());
+		assertEquals("MY_TABLE_OTHER_TABLE", jobsOrderColumn.getTableName());
+		assertEquals("MY_TABLE_OTHER_TABLE", queuesOrderColumn.getTableName());
 		
 		queuesMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("MY_JOIN_TABLE");
-		assertEquals("MY_JOIN_TABLE", jobsOrderColumn.getTable());
-		assertEquals("MY_JOIN_TABLE", queuesOrderColumn.getTable());
+		assertEquals("MY_JOIN_TABLE", jobsOrderColumn.getTableName());
+		assertEquals("MY_JOIN_TABLE", queuesOrderColumn.getTableName());
 	}
 	
 	private void createTestEntityPrintQueue() throws Exception {
@@ -878,12 +878,12 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		
 		assertNull(manyToManyMapping.getMapKeyColumn().getSpecifiedName());
 		assertEquals("addresses_KEY", manyToManyMapping.getMapKeyColumn().getName());
-		assertEquals("Address_" + TYPE_NAME, manyToManyMapping.getMapKeyColumn().getTable());//join table name of owning many-to-many
+		assertEquals("Address_" + TYPE_NAME, manyToManyMapping.getMapKeyColumn().getTableName());//join table name of owning many-to-many
 		
 		PersistentType persistentType = getPersistenceUnit().getPersistentType("test.Address");
 		ManyToManyMapping owningManyToManyMapping = (ManyToManyMapping) persistentType.getAttributeNamed("employees").getMapping();
 		((JoinTableRelationshipStrategy) owningManyToManyMapping.getRelationship().getStrategy()).getJoinTable().setSpecifiedName("MY_JOIN_TABLE");
-		assertEquals("MY_JOIN_TABLE", manyToManyMapping.getMapKeyColumn().getTable());
+		assertEquals("MY_JOIN_TABLE", manyToManyMapping.getMapKeyColumn().getTableName());
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -907,10 +907,10 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		
 		assertNull(manyToManyMapping.getMapKeyColumn().getSpecifiedName());
 		assertEquals("addresses_KEY", manyToManyMapping.getMapKeyColumn().getName());
-		assertEquals(TYPE_NAME + "_Address", manyToManyMapping.getMapKeyColumn().getTable());//join table name
+		assertEquals(TYPE_NAME + "_Address", manyToManyMapping.getMapKeyColumn().getTableName());//join table name
 		
 		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("MY_JOIN_TABLE");
-		assertEquals("MY_JOIN_TABLE", manyToManyMapping.getMapKeyColumn().getTable());
+		assertEquals("MY_JOIN_TABLE", manyToManyMapping.getMapKeyColumn().getTableName());
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -1040,7 +1040,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		ReadOnlyAttributeOverride defaultAttributeOverride = mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("city", defaultAttributeOverride.getName());
 		assertEquals("city", defaultAttributeOverride.getColumn().getName());
-		assertEquals(TYPE_NAME +"_PropertyInfo", defaultAttributeOverride.getColumn().getTable());
+		assertEquals(TYPE_NAME +"_PropertyInfo", defaultAttributeOverride.getColumn().getTableName());
 		assertEquals(null, defaultAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(true, defaultAttributeOverride.getColumn().isInsertable());
 		assertEquals(true, defaultAttributeOverride.getColumn().isUpdatable());
@@ -1056,7 +1056,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		
 		BasicMapping cityMapping = (BasicMapping) addressEmbeddable.getPersistentType().getAttributeNamed("city").getMapping();
 		cityMapping.getColumn().setSpecifiedName("FOO");
-		cityMapping.getColumn().setSpecifiedTable("BAR");
+		cityMapping.getColumn().setSpecifiedTableName("BAR");
 		cityMapping.getColumn().setColumnDefinition("COLUMN_DEF");
 		cityMapping.getColumn().setSpecifiedInsertable(Boolean.FALSE);
 		cityMapping.getColumn().setSpecifiedUpdatable(Boolean.FALSE);
@@ -1073,7 +1073,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		defaultAttributeOverride = mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("city", defaultAttributeOverride.getName());
 		assertEquals("FOO", defaultAttributeOverride.getColumn().getName());
-		assertEquals("BAR", defaultAttributeOverride.getColumn().getTable());
+		assertEquals("BAR", defaultAttributeOverride.getColumn().getTableName());
 		assertEquals("COLUMN_DEF", defaultAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(false, defaultAttributeOverride.getColumn().isInsertable());
 		assertEquals(false, defaultAttributeOverride.getColumn().isUpdatable());
@@ -1084,7 +1084,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		assertEquals(7, defaultAttributeOverride.getColumn().getScale());
 		
 		cityMapping.getColumn().setSpecifiedName(null);
-		cityMapping.getColumn().setSpecifiedTable(null);
+		cityMapping.getColumn().setSpecifiedTableName(null);
 		cityMapping.getColumn().setColumnDefinition(null);
 		cityMapping.getColumn().setSpecifiedInsertable(null);
 		cityMapping.getColumn().setSpecifiedUpdatable(null);
@@ -1096,7 +1096,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		defaultAttributeOverride = mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("city", defaultAttributeOverride.getName());
 		assertEquals("city", defaultAttributeOverride.getColumn().getName());
-		assertEquals(TYPE_NAME +"_PropertyInfo", defaultAttributeOverride.getColumn().getTable());
+		assertEquals(TYPE_NAME +"_PropertyInfo", defaultAttributeOverride.getColumn().getTableName());
 		assertEquals(null, defaultAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(true, defaultAttributeOverride.getColumn().isInsertable());
 		assertEquals(true, defaultAttributeOverride.getColumn().isUpdatable());

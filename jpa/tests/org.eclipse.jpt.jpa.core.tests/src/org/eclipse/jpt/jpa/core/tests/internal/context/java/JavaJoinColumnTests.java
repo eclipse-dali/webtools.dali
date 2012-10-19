@@ -273,13 +273,13 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		javaJoinColumn.setTable("BAR");
 		getJpaProject().synchronizeContextModel();
 		JavaJoinColumn joinColumn = joinColumns.getSpecifiedJoinColumns().iterator().next();
-		assertEquals("BAR", joinColumn.getSpecifiedTable());
+		assertEquals("BAR", joinColumn.getSpecifiedTableName());
 		assertEquals("BAR", javaJoinColumn.getTable());
 	
 		//set table to null in the resource model, 
 		javaJoinColumn.setTable(null);
 		getJpaProject().synchronizeContextModel();
-		assertNull(joinColumn.getSpecifiedTable());
+		assertNull(joinColumn.getSpecifiedTableName());
 		assertNull("BAR", javaJoinColumn.getTable());
 	}
 	
@@ -297,15 +297,15 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		JavaJoinColumn joinColumn = joinColumns.addSpecifiedJoinColumn(0);
 		//set table in the context model, verify resource model modified
 		joinColumn.setSpecifiedName("foo");
-		joinColumn.setSpecifiedTable("BAR");
+		joinColumn.setSpecifiedTableName("BAR");
 		
 		JoinColumnAnnotation javaJoinColumn = (JoinColumnAnnotation) resourceField.getAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME);
-		assertEquals("BAR", joinColumn.getSpecifiedTable());
+		assertEquals("BAR", joinColumn.getSpecifiedTableName());
 		assertEquals("BAR", javaJoinColumn.getTable());
 		
 		//set table to null in the context model
-		joinColumn.setSpecifiedTable(null);
-		assertNull(joinColumn.getSpecifiedTable());
+		joinColumn.setSpecifiedTableName(null);
+		assertNull(joinColumn.getSpecifiedTableName());
 		assertNull(javaJoinColumn.getTable());
 	}
 	

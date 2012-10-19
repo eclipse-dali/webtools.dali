@@ -226,12 +226,12 @@ public class AssociationOverrideJoinColumnValidator
 					this.getVirtualOverrideColumnTableNotValidMessage(),
 					new String[] {
 						AssociationOverrideJoinColumnValidator.this.override.getName(),
-						this.getColumn().getTable(),
+						this.getColumn().getTableName(),
 						this.getColumn().getName(),
 						this.getColumnTableDescriptionMessage()
 					},
 					this.getColumn(),
-					this.getColumn().getTableTextRange()
+					this.getColumn().getTableNameTextRange()
 				);
 		}
 
@@ -247,7 +247,7 @@ public class AssociationOverrideJoinColumnValidator
 					new String[] {
 						AssociationOverrideJoinColumnValidator.this.persistentAttribute.getName(),
 						AssociationOverrideJoinColumnValidator.this.override.getName(),
-						this.getColumn().getTable(),
+						this.getColumn().getTableName(),
 						this.getColumn().getName(),
 						this.getColumnTableDescriptionMessage()
 					},

@@ -22,8 +22,8 @@ public abstract class AbstractOrmBaseColumn<X extends XmlBaseColumn, O extends R
 	extends AbstractOrmNamedColumn<X, O>
 	implements OrmBaseColumn
 {
-	protected String specifiedTable;
-	protected String defaultTable;
+	protected String specifiedTableName;
+	protected String defaultTableName;
 
 	// TODO defaults from java for all of these settings
 	protected Boolean specifiedUnique;
@@ -43,7 +43,7 @@ public abstract class AbstractOrmBaseColumn<X extends XmlBaseColumn, O extends R
 
 	protected AbstractOrmBaseColumn(JpaContextNode parent, O owner, X xmlColumn) {
 		super(parent, owner, xmlColumn);
-		this.specifiedTable = this.buildSpecifiedTable();
+		this.specifiedTableName = this.buildSpecifiedTableName();
 		this.specifiedUnique = this.buildSpecifiedUnique();
 		this.specifiedNullable = this.buildSpecifiedNullable();
 		this.specifiedInsertable = this.buildSpecifiedInsertable();
@@ -56,7 +56,7 @@ public abstract class AbstractOrmBaseColumn<X extends XmlBaseColumn, O extends R
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.setSpecifiedTable_(this.buildSpecifiedTable());
+		this.setSpecifiedTableName_(this.buildSpecifiedTableName());
 		this.setSpecifiedUnique_(this.buildSpecifiedUnique());
 		this.setSpecifiedNullable_(this.buildSpecifiedNullable());
 		this.setSpecifiedInsertable_(this.buildSpecifiedInsertable());
@@ -66,52 +66,52 @@ public abstract class AbstractOrmBaseColumn<X extends XmlBaseColumn, O extends R
 	@Override
 	public void update() {
 		super.update();
-		this.setDefaultTable(this.buildDefaultTable());
+		this.setDefaultTableName(this.buildDefaultTableName());
 	}
 
 
-	// ********** table **********
+	// ********** table name **********
 
 	@Override
-	public String getTable() {
-		return (this.specifiedTable != null) ? this.specifiedTable : this.defaultTable;
+	public String getTableName() {
+		return (this.specifiedTableName != null) ? this.specifiedTableName : this.defaultTableName;
 	}
 
-	public String getSpecifiedTable() {
-		return this.specifiedTable;
+	public String getSpecifiedTableName() {
+		return this.specifiedTableName;
 	}
 
-	public void setSpecifiedTable(String table) {
-		if (this.valuesAreDifferent(this.specifiedTable, table)) {
+	public void setSpecifiedTableName(String tableName) {
+		if (this.valuesAreDifferent(this.specifiedTableName, tableName)) {
 			X xmlColumn = this.getXmlColumnForUpdate();
-			this.setSpecifiedTable_(table);
-			xmlColumn.setTable(table);
+			this.setSpecifiedTableName_(tableName);
+			xmlColumn.setTable(tableName);
 			this.removeXmlColumnIfUnset();
 		}
 	}
 
-	protected void setSpecifiedTable_(String table) {
-		String old = this.specifiedTable;
-		this.specifiedTable = table;
-		this.firePropertyChanged(SPECIFIED_TABLE_PROPERTY, old, table);
+	protected void setSpecifiedTableName_(String tableName) {
+		String old = this.specifiedTableName;
+		this.specifiedTableName = tableName;
+		this.firePropertyChanged(SPECIFIED_TABLE_NAME_PROPERTY, old, tableName);
 	}
 
-	protected String buildSpecifiedTable() {
+	protected String buildSpecifiedTableName() {
 		X xmlColumn = this.getXmlColumn();
 		return (xmlColumn == null) ? null : xmlColumn.getTable();
 	}
 
-	public String getDefaultTable() {
-		return this.defaultTable;
+	public String getDefaultTableName() {
+		return this.defaultTableName;
 	}
 
-	protected void setDefaultTable(String table) {
-		String old = this.defaultTable;
-		this.defaultTable = table;
-		this.firePropertyChanged(DEFAULT_TABLE_PROPERTY, old, table);
+	protected void setDefaultTableName(String tableName) {
+		String old = this.defaultTableName;
+		this.defaultTableName = tableName;
+		this.firePropertyChanged(DEFAULT_TABLE_NAME_PROPERTY, old, tableName);
 	}
 
-	protected String buildDefaultTable() {
+	protected String buildDefaultTableName() {
 		return this.owner.getDefaultTableName();
 	}
 
@@ -260,7 +260,7 @@ public abstract class AbstractOrmBaseColumn<X extends XmlBaseColumn, O extends R
 
 	protected void initializeFrom(ReadOnlyBaseColumn oldColumn) {
 		super.initializeFrom(oldColumn);
-		this.setSpecifiedTable(oldColumn.getSpecifiedTable());
+		this.setSpecifiedTableName(oldColumn.getSpecifiedTableName());
 		this.setSpecifiedUnique(oldColumn.getSpecifiedUnique());
 		this.setSpecifiedNullable(oldColumn.getSpecifiedNullable());
 		this.setSpecifiedInsertable(oldColumn.getSpecifiedInsertable());
@@ -269,12 +269,12 @@ public abstract class AbstractOrmBaseColumn<X extends XmlBaseColumn, O extends R
 
 	protected void initializeFromVirtual(ReadOnlyBaseColumn virtualColumn) {
 		super.initializeFromVirtual(virtualColumn);
-		this.setSpecifiedTable(virtualColumn.getTable());
+		this.setSpecifiedTableName(virtualColumn.getTableName());
 		// ignore other settings?
 	}
 
 	public boolean tableNameIsInvalid() {
-		return this.owner.tableNameIsInvalid(this.getTable());
+		return this.owner.tableNameIsInvalid(this.getTableName());
 	}
 
 	public Iterable<String> getCandidateTableNames() {
@@ -284,7 +284,7 @@ public abstract class AbstractOrmBaseColumn<X extends XmlBaseColumn, O extends R
 
 	// ********** validation **********
 
-	public TextRange getTableTextRange() {
+	public TextRange getTableNameTextRange() {
 		return this.getValidationTextRange(this.getXmlColumnTableTextRange());
 	}
 

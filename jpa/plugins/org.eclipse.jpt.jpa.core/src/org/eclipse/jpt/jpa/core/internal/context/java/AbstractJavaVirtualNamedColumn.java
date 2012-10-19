@@ -141,14 +141,14 @@ public abstract class AbstractJavaVirtualNamedColumn<O extends ReadOnlyNamedColu
 	}
 
 	protected Table buildDbTable() {
-		return this.owner.resolveDbTable(this.getTable());
+		return this.owner.resolveDbTable(this.getTableName());
 	}
 
 	/**
 	 * Return the name of the column's table. This is overridden
 	 * in {@link AbstractJavaVirtualBaseColumn} where a table can be defined.
 	 */
-	public String getTable() {
+	public String getTableName() {
 		return this.owner.getDefaultTableName();
 	}
 
@@ -186,7 +186,7 @@ public abstract class AbstractJavaVirtualNamedColumn<O extends ReadOnlyNamedColu
 
 	@Override
 	public void toString(StringBuilder sb) {
-		String table = this.getTable();
+		String table = this.getTableName();
 		if (table != null) {
 			sb.append(table);
 			sb.append('.');

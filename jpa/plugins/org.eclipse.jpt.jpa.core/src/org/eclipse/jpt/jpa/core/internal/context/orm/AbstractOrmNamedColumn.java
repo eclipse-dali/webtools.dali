@@ -16,7 +16,6 @@ import org.eclipse.jpt.jpa.core.context.JpaContextNode;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.jpa.core.context.orm.OrmNamedColumn;
 import org.eclipse.jpt.jpa.core.internal.context.JptValidator;
-import org.eclipse.jpt.jpa.core.resource.orm.AbstractXmlNamedColumn;
 import org.eclipse.jpt.jpa.core.resource.orm.XmlNamedColumn;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.Table;
@@ -33,8 +32,8 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * </ul>
  * <strong>NB:</strong> any subclass that directly holds its XML column must:<ul>
  * <li>call the "super" constructor that takes an XML column
- *     {@link #AbstractOrmNamedColumn(XmlContextNode, OrmReadOnlyNamedColumn.Owner, AbstractXmlNamedColumn)}
- * <li>override {@link #setXmlColumn(AbstractXmlNamedColumn)} to set the XML column
+ *     {@link #AbstractOrmNamedColumn(JpaContextNode, ReadOnlyNamedColumn.Owner, XmlNamedColumn)}
+ * <li>override {@link #setXmlColumn(XmlNamedColumn)} to set the XML column
  *     so it is in place before the column's state (e.g. {@link #specifiedName})
  *     is initialized
  * </ul>
@@ -196,8 +195,7 @@ public abstract class AbstractOrmNamedColumn<X extends XmlNamedColumn, O extends
 	// ********** database stuff **********
 
 	protected Column getDbColumn() {
-		Table table = this.getDbTable();
-		return (table == null) ? null : table.getColumnForIdentifier(this.getName());
+		return (this.dbTable == null) ? null : this.dbTable.getColumnForIdentifier(this.getName());
 	}
 
 	public Table getDbTable() {
@@ -211,7 +209,7 @@ public abstract class AbstractOrmNamedColumn<X extends XmlNamedColumn, O extends
 	}
 
 	protected Table buildDbTable() {
-		return this.owner.resolveDbTable(this.getTable());
+		return this.owner.resolveDbTable(this.getTableName());
 	}
 
 	/**
@@ -219,7 +217,7 @@ public abstract class AbstractOrmNamedColumn<X extends XmlNamedColumn, O extends
 	 * {@link AbstractOrmBaseColumn} (and other places) where a table can be
 	 * defined.
 	 */
-	public String getTable() {
+	public String getTableName() {
 		return this.owner.getDefaultTableName();
 	}
 
@@ -279,8 +277,7 @@ public abstract class AbstractOrmNamedColumn<X extends XmlNamedColumn, O extends
 	}
 
 	protected Iterable<String> getCandidateColumnNames() {
-		Table dbTable = this.getDbTable();
-		return (dbTable != null) ? dbTable.getSortedColumnIdentifiers() : EmptyIterable.<String> instance();
+		return (this.dbTable != null) ? this.dbTable.getSortedColumnIdentifiers() : EmptyIterable.<String> instance();
 	}
 	
 	// ********** misc **********
@@ -301,7 +298,7 @@ public abstract class AbstractOrmNamedColumn<X extends XmlNamedColumn, O extends
 
 	@Override
 	public void toString(StringBuilder sb) {
-		String table = this.getTable();
+		String table = this.getTableName();
 		if (table != null) {
 			sb.append(table);
 			sb.append('.');

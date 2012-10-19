@@ -693,7 +693,7 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		assertEquals(Boolean.FALSE, joinColumn.getSpecifiedInsertable());
 		assertEquals(Boolean.FALSE, joinColumn.getSpecifiedUpdatable());
 		assertEquals("COLUMN_DEFINITION", joinColumn.getColumnDefinition());
-		assertEquals("MY_TABLE", joinColumn.getSpecifiedTable());
+		assertEquals("MY_TABLE", joinColumn.getSpecifiedTableName());
 
 		Cascade cascade = oneToOneMapping.getCascade();
 		assertTrue(cascade.isAll());

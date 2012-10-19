@@ -86,12 +86,12 @@ public class TenantDiscriminatorColumnValidator2_3
 					IMessage.HIGH_SEVERITY,
 					this.getColumnTableNotValidMessage(),
 					new String[] {
-						this.getColumn().getTable(),
+						this.getColumn().getTableName(),
 						this.getColumn().getName(),
 						this.getColumnTableDescriptionMessage()
 					},
 					this.getColumn(),
-					this.getColumn().getTableTextRange()
+					this.getColumn().getTableNameTextRange()
 				);
 		}
 

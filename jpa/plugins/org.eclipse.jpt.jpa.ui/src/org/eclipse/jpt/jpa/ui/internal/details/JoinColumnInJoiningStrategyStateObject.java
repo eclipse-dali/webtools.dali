@@ -77,7 +77,7 @@ public class JoinColumnInJoiningStrategyStateObject
 		JoinColumn joinColumn = getJoinColumn();
 
 		if (joinColumn != null) {
-			return joinColumn.getDefaultTable();
+			return joinColumn.getDefaultTableName();
 		}
 		TypeMapping typeMapping = getRelationshipSource();		
 		return typeMapping == null ? null : typeMapping.getPrimaryTableName();

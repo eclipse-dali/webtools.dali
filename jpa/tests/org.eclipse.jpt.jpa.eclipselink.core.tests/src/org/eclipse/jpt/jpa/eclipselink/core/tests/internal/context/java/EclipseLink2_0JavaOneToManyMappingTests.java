@@ -705,17 +705,17 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		assertEquals(true, orderable.isOrderColumnOrdering());
 		assertEquals(null, orderColumn.getSpecifiedName());
 		assertEquals("jobs_ORDER", orderColumn.getDefaultName());
-		assertEquals("PrintJob", orderColumn.getTable());
+		assertEquals("PrintJob", orderColumn.getTableName());
 		
 		orderColumn.setSpecifiedName("FOO");
 		assertEquals("FOO", orderColumn.getSpecifiedName());
 		assertEquals("jobs_ORDER", orderColumn.getDefaultName());
-		assertEquals("PrintJob", orderColumn.getTable());
+		assertEquals("PrintJob", orderColumn.getTableName());
 		
 		JavaPersistentType printJobPersistentType = (JavaPersistentType) getPersistenceUnit().getPersistentType("test.PrintJob");
 		((Entity) printJobPersistentType.getMapping()).getTable().setSpecifiedName("MY_TABLE");
 
-		assertEquals("MY_TABLE", orderColumn.getTable());
+		assertEquals("MY_TABLE", orderColumn.getTableName());
 	}
 	
 	private void createTestEntityPrintQueue() throws Exception {
@@ -803,11 +803,11 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 
 		assertNull(oneToManyMapping.getMapKeyColumn().getSpecifiedName());
 		assertEquals("addresses_KEY", oneToManyMapping.getMapKeyColumn().getName());
-		assertEquals("Address", oneToManyMapping.getMapKeyColumn().getTable());//owing entity table name
+		assertEquals("Address", oneToManyMapping.getMapKeyColumn().getTableName());//owing entity table name
 
 		Entity addressEntity = getPersistenceUnit().getEntity("test.Address");
 		addressEntity.getTable().setSpecifiedName("MY_PRIMARY_TABLE");
-		assertEquals("MY_PRIMARY_TABLE", oneToManyMapping.getMapKeyColumn().getTable());
+		assertEquals("MY_PRIMARY_TABLE", oneToManyMapping.getMapKeyColumn().getTableName());
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -831,10 +831,10 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 
 		assertNull(oneToManyMapping.getMapKeyColumn().getSpecifiedName());
 		assertEquals("addresses_KEY", oneToManyMapping.getMapKeyColumn().getName());
-		assertEquals(TYPE_NAME + "_Address", oneToManyMapping.getMapKeyColumn().getTable());//join table name
+		assertEquals(TYPE_NAME + "_Address", oneToManyMapping.getMapKeyColumn().getTableName());//join table name
 
 		oneToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("MY_PRIMARY_TABLE");
-		assertEquals("MY_PRIMARY_TABLE", oneToManyMapping.getMapKeyColumn().getTable());
+		assertEquals("MY_PRIMARY_TABLE", oneToManyMapping.getMapKeyColumn().getTableName());
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -860,16 +860,16 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		JoinColumn joinColumn = ((JoinColumnRelationship) oneToManyMapping.getRelationship()).getJoinColumnStrategy().getSpecifiedJoinColumns().iterator().next();
 
 		assertEquals("addresses_id", joinColumn.getDefaultName());
-		assertEquals("Address", joinColumn.getDefaultTable());//target table name
+		assertEquals("Address", joinColumn.getDefaultTableName());//target table name
 
 		Entity addressEntity = getPersistenceUnit().getEntity("test.Address");
 		addressEntity.getTable().setSpecifiedName("ADDRESS_PRIMARY_TABLE");
-		assertEquals("ADDRESS_PRIMARY_TABLE", joinColumn.getDefaultTable());
+		assertEquals("ADDRESS_PRIMARY_TABLE", joinColumn.getDefaultTableName());
 
 		joinColumn.setSpecifiedName("FOO");
 		assertEquals("addresses_id", joinColumn.getDefaultName());
 		assertEquals("FOO", joinColumn.getSpecifiedName());
-		assertEquals("ADDRESS_PRIMARY_TABLE", joinColumn.getDefaultTable());
+		assertEquals("ADDRESS_PRIMARY_TABLE", joinColumn.getDefaultTableName());
 	}
 
 	//target foreign key case
@@ -885,11 +885,11 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 
 		assertNull(oneToManyMapping.getMapKeyColumn().getSpecifiedName());
 		assertEquals("addresses_KEY", oneToManyMapping.getMapKeyColumn().getName());
-		assertEquals("Address", oneToManyMapping.getMapKeyColumn().getTable());//target table name
+		assertEquals("Address", oneToManyMapping.getMapKeyColumn().getTableName());//target table name
 
 		Entity addressEntity = getPersistenceUnit().getEntity("test.Address");
 		addressEntity.getTable().setSpecifiedName("ADDRESS_PRIMARY_TABLE");
-		assertEquals("ADDRESS_PRIMARY_TABLE", oneToManyMapping.getMapKeyColumn().getTable());
+		assertEquals("ADDRESS_PRIMARY_TABLE", oneToManyMapping.getMapKeyColumn().getTableName());
 
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -900,7 +900,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		assertEquals("foo", oneToManyMapping.getMapKeyColumn().getSpecifiedName());
 		assertEquals("foo", oneToManyMapping.getMapKeyColumn().getName());
 		assertEquals("addresses_KEY", oneToManyMapping.getMapKeyColumn().getDefaultName());
-		assertEquals("ADDRESS_PRIMARY_TABLE", oneToManyMapping.getMapKeyColumn().getDefaultTable());
+		assertEquals("ADDRESS_PRIMARY_TABLE", oneToManyMapping.getMapKeyColumn().getDefaultTableName());
 	}
 
 	//target foreign key case
@@ -919,11 +919,11 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 
 		assertNull(orderColumn.getSpecifiedName());
 		assertEquals("addresses_ORDER", orderColumn.getName());
-		assertEquals("Address", orderColumn.getTable());//target table name
+		assertEquals("Address", orderColumn.getTableName());//target table name
 
 		Entity addressEntity = getPersistenceUnit().getEntity("test.Address");
 		addressEntity.getTable().setSpecifiedName("ADDRESS_PRIMARY_TABLE");
-		assertEquals("ADDRESS_PRIMARY_TABLE", orderColumn.getTable());
+		assertEquals("ADDRESS_PRIMARY_TABLE", orderColumn.getTableName());
 	}
 
 	public void testModifyPredominantJoiningStrategy() throws Exception {
@@ -1159,7 +1159,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		ReadOnlyAttributeOverride defaultAttributeOverride = mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("city", defaultAttributeOverride.getName());
 		assertEquals("city", defaultAttributeOverride.getColumn().getName());
-		assertEquals(TYPE_NAME +"_PropertyInfo", defaultAttributeOverride.getColumn().getTable());
+		assertEquals(TYPE_NAME +"_PropertyInfo", defaultAttributeOverride.getColumn().getTableName());
 		assertEquals(null, defaultAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(true, defaultAttributeOverride.getColumn().isInsertable());
 		assertEquals(true, defaultAttributeOverride.getColumn().isUpdatable());
@@ -1175,7 +1175,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		
 		BasicMapping cityMapping = (BasicMapping) addressEmbeddable.getPersistentType().getAttributeNamed("city").getMapping();
 		cityMapping.getColumn().setSpecifiedName("FOO");
-		cityMapping.getColumn().setSpecifiedTable("BAR");
+		cityMapping.getColumn().setSpecifiedTableName("BAR");
 		cityMapping.getColumn().setColumnDefinition("COLUMN_DEF");
 		cityMapping.getColumn().setSpecifiedInsertable(Boolean.FALSE);
 		cityMapping.getColumn().setSpecifiedUpdatable(Boolean.FALSE);
@@ -1192,7 +1192,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		defaultAttributeOverride = mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("city", defaultAttributeOverride.getName());
 		assertEquals("FOO", defaultAttributeOverride.getColumn().getName());
-		assertEquals("BAR", defaultAttributeOverride.getColumn().getTable());
+		assertEquals("BAR", defaultAttributeOverride.getColumn().getTableName());
 		assertEquals("COLUMN_DEF", defaultAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(false, defaultAttributeOverride.getColumn().isInsertable());
 		assertEquals(false, defaultAttributeOverride.getColumn().isUpdatable());
@@ -1203,7 +1203,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		assertEquals(7, defaultAttributeOverride.getColumn().getScale());
 		
 		cityMapping.getColumn().setSpecifiedName(null);
-		cityMapping.getColumn().setSpecifiedTable(null);
+		cityMapping.getColumn().setSpecifiedTableName(null);
 		cityMapping.getColumn().setColumnDefinition(null);
 		cityMapping.getColumn().setSpecifiedInsertable(null);
 		cityMapping.getColumn().setSpecifiedUpdatable(null);
@@ -1215,7 +1215,7 @@ public class EclipseLink2_0JavaOneToManyMappingTests
 		defaultAttributeOverride = mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("city", defaultAttributeOverride.getName());
 		assertEquals("city", defaultAttributeOverride.getColumn().getName());
-		assertEquals(TYPE_NAME +"_PropertyInfo", defaultAttributeOverride.getColumn().getTable());
+		assertEquals(TYPE_NAME +"_PropertyInfo", defaultAttributeOverride.getColumn().getTableName());
 		assertEquals(null, defaultAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(true, defaultAttributeOverride.getColumn().isInsertable());
 		assertEquals(true, defaultAttributeOverride.getColumn().isUpdatable());

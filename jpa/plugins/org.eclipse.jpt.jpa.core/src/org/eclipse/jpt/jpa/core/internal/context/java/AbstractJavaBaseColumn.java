@@ -24,8 +24,8 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 	extends AbstractJavaNamedColumn<A, O>
 	implements JavaBaseColumn
 {
-	protected String specifiedTable;
-	protected String defaultTable;
+	protected String specifiedTableName;
+	protected String defaultTableName;
 
 	protected Boolean specifiedUnique;
 	protected boolean defaultUnique;
@@ -47,7 +47,7 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 	protected AbstractJavaBaseColumn(JpaContextNode parent, O owner, A columnAnnotation) {
 		super(parent, owner, columnAnnotation);
 		//build defaults during construction for performance
-		this.defaultTable = this.buildDefaultTable();
+		this.defaultTableName = this.buildDefaultTableName();
 		this.defaultUnique = this.buildDefaultUnique();
 		this.defaultNullable = this.buildDefaultNullable();
 		this.defaultInsertable = this.buildDefaultInsertable();
@@ -57,7 +57,7 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 	@Override
 	protected void initialize(A columnAnnotation) {
 		super.initialize(columnAnnotation);
-		this.specifiedTable = this.buildSpecifiedTable(columnAnnotation);
+		this.specifiedTableName = this.buildSpecifiedTableName(columnAnnotation);
 		this.specifiedUnique = this.buildSpecifiedUnique(columnAnnotation);
 		this.specifiedNullable = this.buildSpecifiedNullable(columnAnnotation);
 		this.specifiedInsertable = this.buildSpecifiedInsertable(columnAnnotation);
@@ -69,7 +69,7 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 	@Override
 	protected void synchronizeWithResourceModel(A columnAnnotation) {
 		super.synchronizeWithResourceModel(columnAnnotation);
-		this.setSpecifiedTable_(this.buildSpecifiedTable(columnAnnotation));
+		this.setSpecifiedTableName_(this.buildSpecifiedTableName(columnAnnotation));
 		this.setSpecifiedUnique_(this.buildSpecifiedUnique(columnAnnotation));
 		this.setSpecifiedNullable_(this.buildSpecifiedNullable(columnAnnotation));
 		this.setSpecifiedInsertable_(this.buildSpecifiedInsertable(columnAnnotation));
@@ -79,7 +79,7 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 	@Override
 	public void update() {
 		super.update();
-		this.setDefaultTable(this.buildDefaultTable());
+		this.setDefaultTableName(this.buildDefaultTableName());
 		this.setDefaultUnique(this.buildDefaultUnique());
 		this.setDefaultNullable(this.buildDefaultNullable());
 		this.setDefaultInsertable(this.buildDefaultInsertable());
@@ -87,50 +87,50 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 	}
 
 
-	// ********** table **********
+	// ********** table name **********
 
 	@Override
-	public String getTable() {
-		return (this.specifiedTable != null) ? this.specifiedTable : this.defaultTable;
+	public String getTableName() {
+		return (this.specifiedTableName != null) ? this.specifiedTableName : this.defaultTableName;
 	}
 
-	public String getSpecifiedTable() {
-		return this.specifiedTable;
+	public String getSpecifiedTableName() {
+		return this.specifiedTableName;
 	}
 
-	public void setSpecifiedTable(String table) {
-		if (this.valuesAreDifferent(this.specifiedTable, table)) {
-			this.getColumnAnnotation().setTable(table);
+	public void setSpecifiedTableName(String tableName) {
+		if (this.valuesAreDifferent(this.specifiedTableName, tableName)) {
+			this.getColumnAnnotation().setTable(tableName);
 			this.removeColumnAnnotationIfUnset();
-			this.setSpecifiedTable_(table);
+			this.setSpecifiedTableName_(tableName);
 		}
 	}
 
-	protected void setSpecifiedTable_(String table) {
-		String old = this.specifiedTable;
-		this.specifiedTable = table;
-		this.firePropertyChanged(SPECIFIED_TABLE_PROPERTY, old, table);
+	protected void setSpecifiedTableName_(String tableName) {
+		String old = this.specifiedTableName;
+		this.specifiedTableName = tableName;
+		this.firePropertyChanged(SPECIFIED_TABLE_NAME_PROPERTY, old, tableName);
 	}
 
-	protected String buildSpecifiedTable(A columnAnnotation) {
+	protected String buildSpecifiedTableName(A columnAnnotation) {
 		return columnAnnotation.getTable();
 	}
 
-	public String getDefaultTable() {
-		return this.defaultTable;
+	public String getDefaultTableName() {
+		return this.defaultTableName;
 	}
 
-	protected void setDefaultTable(String table) {
-		String old = this.defaultTable;
-		this.defaultTable = table;
-		this.firePropertyChanged(DEFAULT_TABLE_PROPERTY, old, table);
+	protected void setDefaultTableName(String tableName) {
+		String old = this.defaultTableName;
+		this.defaultTableName = tableName;
+		this.firePropertyChanged(DEFAULT_TABLE_NAME_PROPERTY, old, tableName);
 	}
 
-	protected String buildDefaultTable() {
+	protected String buildDefaultTableName() {
 		return this.owner.getDefaultTableName();
 	}
 
-	public TextRange getTableTextRange() {
+	public TextRange getTableNameTextRange() {
 		return this.getValidationTextRange(this.getColumnAnnotation().getTableTextRange());
 	}
 
@@ -311,7 +311,7 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 
 	protected void initializeFrom(ReadOnlyBaseColumn oldColumn) {
 		super.initializeFrom(oldColumn);
-		this.setSpecifiedTable(oldColumn.getSpecifiedTable());
+		this.setSpecifiedTableName(oldColumn.getSpecifiedTableName());
 		this.setSpecifiedUnique(oldColumn.getSpecifiedUnique());
 		this.setSpecifiedNullable(oldColumn.getSpecifiedNullable());
 		this.setSpecifiedInsertable(oldColumn.getSpecifiedInsertable());
@@ -320,7 +320,7 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 
 	protected void initializeFromVirtual(ReadOnlyBaseColumn virtualColumn) {
 		super.initializeFromVirtual(virtualColumn);
-		this.setSpecifiedTable(virtualColumn.getTable());
+		this.setSpecifiedTableName(virtualColumn.getTableName());
 		// ignore other settings?
 	}
 
@@ -356,6 +356,6 @@ public abstract class AbstractJavaBaseColumn<A extends BaseColumnAnnotation, O e
 	// ********** validation **********
 
 	public boolean tableNameIsInvalid() {
-		return this.owner.tableNameIsInvalid(this.getTable());
+		return this.owner.tableNameIsInvalid(this.getTableName());
 	}
 }

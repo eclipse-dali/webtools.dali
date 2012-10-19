@@ -18,8 +18,8 @@ public abstract class AbstractJavaVirtualBaseColumn<O extends ReadOnlyBaseColumn
 	extends AbstractJavaVirtualNamedColumn<O, C>
 	implements VirtualBaseColumn
 {
-	protected String specifiedTable;
-	protected String defaultTable;
+	protected String specifiedTableName;
+	protected String defaultTableName;
 
 	protected Boolean specifiedUnique;
 	protected boolean defaultUnique;
@@ -45,8 +45,8 @@ public abstract class AbstractJavaVirtualBaseColumn<O extends ReadOnlyBaseColumn
 	public void update() {
 		super.update();
 
-		this.setSpecifiedTable(this.buildSpecifiedTable());
-		this.setDefaultTable(this.buildDefaultTable());
+		this.setSpecifiedTableName(this.buildSpecifiedTableName());
+		this.setDefaultTableName(this.buildDefaultTableName());
 
 		this.setSpecifiedUnique(this.buildSpecifiedUnique());
 		this.setDefaultUnique(this.buildDefaultUnique());
@@ -62,38 +62,38 @@ public abstract class AbstractJavaVirtualBaseColumn<O extends ReadOnlyBaseColumn
 	}
 
 
-	// ********** table **********
+	// ********** table name **********
 
 	@Override
-	public String getTable() {
-		return (this.specifiedTable != null) ? this.specifiedTable : this.defaultTable;
+	public String getTableName() {
+		return (this.specifiedTableName != null) ? this.specifiedTableName : this.defaultTableName;
 	}
 
-	public String getSpecifiedTable() {
-		return this.specifiedTable;
+	public String getSpecifiedTableName() {
+		return this.specifiedTableName;
 	}
 
-	protected void setSpecifiedTable(String table) {
-		String old = this.specifiedTable;
-		this.specifiedTable = table;
-		this.firePropertyChanged(SPECIFIED_TABLE_PROPERTY, old, table);
+	protected void setSpecifiedTableName(String tableName) {
+		String old = this.specifiedTableName;
+		this.specifiedTableName = tableName;
+		this.firePropertyChanged(SPECIFIED_TABLE_NAME_PROPERTY, old, tableName);
 	}
 
-	protected String buildSpecifiedTable() {
-		return this.getOverriddenColumn().getSpecifiedTable();
+	protected String buildSpecifiedTableName() {
+		return this.getOverriddenColumn().getSpecifiedTableName();
 	}
 
-	public String getDefaultTable() {
-		return this.defaultTable;
+	public String getDefaultTableName() {
+		return this.defaultTableName;
 	}
 
-	protected void setDefaultTable(String table) {
-		String old = this.defaultTable;
-		this.defaultTable = table;
-		this.firePropertyChanged(DEFAULT_TABLE_PROPERTY, old, table);
+	protected void setDefaultTableName(String tableName) {
+		String old = this.defaultTableName;
+		this.defaultTableName = tableName;
+		this.firePropertyChanged(DEFAULT_TABLE_NAME_PROPERTY, old, tableName);
 	}
 
-	protected String buildDefaultTable() {
+	protected String buildDefaultTableName() {
 		return this.owner.getDefaultTableName();
 	}
 
@@ -241,7 +241,7 @@ public abstract class AbstractJavaVirtualBaseColumn<O extends ReadOnlyBaseColumn
 	// ********** misc **********
 
 	public boolean tableNameIsInvalid() {
-		return this.owner.tableNameIsInvalid(this.getTable());
+		return this.owner.tableNameIsInvalid(this.getTableName());
 	}
 
 	public Iterable<String> getCandidateTableNames() {
@@ -251,7 +251,7 @@ public abstract class AbstractJavaVirtualBaseColumn<O extends ReadOnlyBaseColumn
 
 	// ********** validation **********
 
-	public TextRange getTableTextRange() {
+	public TextRange getTableNameTextRange() {
 		return this.getValidationTextRange();
 	}
 }

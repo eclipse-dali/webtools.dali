@@ -462,7 +462,7 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		Column javaAttributeOverrideColumn = javaEmbeddedMapping.getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next().getColumn();
 		
 		javaAttributeOverrideColumn.setSpecifiedName("FOO_COLUMN");
-		javaAttributeOverrideColumn.setSpecifiedTable("FOO_TABLE");
+		javaAttributeOverrideColumn.setSpecifiedTableName("FOO_TABLE");
 		javaAttributeOverrideColumn.setColumnDefinition("COLUMN_DEF");
 		javaAttributeOverrideColumn.setSpecifiedInsertable(Boolean.FALSE);
 		javaAttributeOverrideColumn.setSpecifiedUpdatable(Boolean.FALSE);
@@ -483,7 +483,7 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		attributeOverride = specifiedAttributeOverrides.next();
 		assertEquals("city", attributeOverride.getName());
 		assertEquals("FOO_COLUMN", attributeOverride.getColumn().getSpecifiedName());
-		assertEquals("FOO_TABLE", attributeOverride.getColumn().getSpecifiedTable());
+		assertEquals("FOO_TABLE", attributeOverride.getColumn().getSpecifiedTableName());
 		assertEquals("COLUMN_DEF", attributeOverride.getColumn().getColumnDefinition());
 		assertEquals(false, attributeOverride.getColumn().isInsertable());
 		assertEquals(false, attributeOverride.getColumn().isUpdatable());
@@ -516,7 +516,7 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		ormVirtualOverride = ormVirtualAttributeOverrides.next();
 		assertEquals("city", ormVirtualOverride.getName());
 		assertEquals("city", ormVirtualOverride.getColumn().getName());
-		assertEquals(TYPE_NAME, ormVirtualOverride.getColumn().getTable());
+		assertEquals(TYPE_NAME, ormVirtualOverride.getColumn().getTableName());
 		assertEquals(null, ormVirtualOverride.getColumn().getColumnDefinition());
 		assertEquals(true, ormVirtualOverride.getColumn().isInsertable());
 		assertEquals(true, ormVirtualOverride.getColumn().isUpdatable());
@@ -528,7 +528,7 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		ormVirtualOverride = ormVirtualAttributeOverrides.next();
 		assertEquals("state", ormVirtualOverride.getName());
 		assertEquals("MY_STATE_COLUMN", ormVirtualOverride.getColumn().getDefaultName());
-		assertEquals(TYPE_NAME, ormVirtualOverride.getColumn().getDefaultTable());
+		assertEquals(TYPE_NAME, ormVirtualOverride.getColumn().getDefaultTableName());
 		ormVirtualOverride = ormVirtualAttributeOverrides.next();
 		assertEquals("zip", ormVirtualOverride.getName());
 		
@@ -917,7 +917,7 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		zipCodePersistentType.getAttributeNamed("plusfour").addToXml();
 		BasicMapping plusFourMapping = (BasicMapping) zipCodePersistentType.getAttributeNamed("plusfour").getMapping();
 		plusFourMapping.getColumn().setSpecifiedName("BLAH");
-		plusFourMapping.getColumn().setSpecifiedTable("BLAH_TABLE");
+		plusFourMapping.getColumn().setSpecifiedTableName("BLAH_TABLE");
 		plusFourMapping.getColumn().setColumnDefinition("COLUMN_DEFINITION");
 		plusFourMapping.getColumn().setSpecifiedInsertable(Boolean.FALSE);
 		plusFourMapping.getColumn().setSpecifiedUpdatable(Boolean.FALSE);
@@ -931,7 +931,7 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		virtualAttributeOverride = (OrmVirtualAttributeOverride) ((OrmEmbeddedMapping) addressPersistentType.getAttributeNamed("zipCode").getMapping()).getAttributeOverrideContainer().getOverrideNamed("plusfour");
 		assertEquals("plusfour", virtualAttributeOverride.getName());
 		assertEquals("BLAH", virtualAttributeOverride.getColumn().getName());
-		assertEquals("BLAH_TABLE", virtualAttributeOverride.getColumn().getTable());	
+		assertEquals("BLAH_TABLE", virtualAttributeOverride.getColumn().getTableName());	
 		assertEquals("COLUMN_DEFINITION", virtualAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(false, virtualAttributeOverride.getColumn().isInsertable());
 		assertEquals(false, virtualAttributeOverride.getColumn().isUpdatable());

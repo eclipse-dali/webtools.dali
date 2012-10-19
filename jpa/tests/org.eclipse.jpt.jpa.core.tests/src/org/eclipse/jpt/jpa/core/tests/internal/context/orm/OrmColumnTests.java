@@ -190,26 +190,26 @@ public class OrmColumnTests extends ContextModelTestCase
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
 
-		assertNull(ormColumn.getSpecifiedTable());
+		assertNull(ormColumn.getSpecifiedTableName());
 		assertNull(basic.getColumn());
 		
 		//set name in the resource model, verify context model updated
 		basic.setColumn(OrmFactory.eINSTANCE.createXmlColumn());
 		basic.getColumn().setTable("FOO");
-		assertEquals("FOO", ormColumn.getSpecifiedTable());
+		assertEquals("FOO", ormColumn.getSpecifiedTableName());
 		assertEquals("FOO", basic.getColumn().getTable());
 	
 		//set name to null in the resource model
 		basic.getColumn().setTable(null);
-		assertNull(ormColumn.getSpecifiedTable());
+		assertNull(ormColumn.getSpecifiedTableName());
 		assertNull(basic.getColumn().getTable());
 		
 		basic.getColumn().setTable("FOO");
-		assertEquals("FOO", ormColumn.getSpecifiedTable());
+		assertEquals("FOO", ormColumn.getSpecifiedTableName());
 		assertEquals("FOO", basic.getColumn().getTable());
 
 		basic.setColumn(null);
-		assertNull(ormColumn.getSpecifiedTable());
+		assertNull(ormColumn.getSpecifiedTableName());
 		assertNull(basic.getColumn());
 	}
 	
@@ -223,17 +223,17 @@ public class OrmColumnTests extends ContextModelTestCase
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
 
-		assertNull(ormColumn.getSpecifiedTable());
+		assertNull(ormColumn.getSpecifiedTableName());
 		assertNull(basic.getColumn());
 		
 		//set name in the context model, verify resource model modified
-		ormColumn.setSpecifiedTable("foo");
-		assertEquals("foo", ormColumn.getSpecifiedTable());
+		ormColumn.setSpecifiedTableName("foo");
+		assertEquals("foo", ormColumn.getSpecifiedTableName());
 		assertEquals("foo", basic.getColumn().getTable());
 		
 		//set name to null in the context model
-		ormColumn.setSpecifiedTable(null);
-		assertNull(ormColumn.getSpecifiedTable());
+		ormColumn.setSpecifiedTableName(null);
+		assertNull(ormColumn.getSpecifiedTableName());
 		assertNull(basic.getColumn());
 	}
 
@@ -648,7 +648,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		BasicMapping nameVirtualMapping = (BasicMapping) namePersistentAttribute.getMapping();		
 		Column virtualColumn = nameVirtualMapping.getColumn();
 		assertEquals("name", virtualColumn.getName());
-		assertEquals(TYPE_NAME, virtualColumn.getTable());
+		assertEquals(TYPE_NAME, virtualColumn.getTableName());
 		assertNull(virtualColumn.getColumnDefinition());
 		assertTrue(virtualColumn.isInsertable());
 		assertTrue(virtualColumn.isUpdatable());
@@ -662,7 +662,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		JavaBasicMapping javaBasicMapping = (JavaBasicMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("name").getMapping();
 		JavaColumn javaColumn = javaBasicMapping.getColumn();
 		javaColumn.setSpecifiedName("FOO");		
-		javaColumn.setSpecifiedTable("FOO_TABLE");
+		javaColumn.setSpecifiedTableName("FOO_TABLE");
 		javaColumn.setColumnDefinition("COLUMN_DEFINITION");
 		javaColumn.setSpecifiedInsertable(Boolean.FALSE);	
 		javaColumn.setSpecifiedUpdatable(Boolean.FALSE);	
@@ -677,7 +677,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		nameVirtualMapping = (BasicMapping) namePersistentAttribute.getMapping();		
 		virtualColumn = nameVirtualMapping.getColumn();
 		assertEquals("FOO", virtualColumn.getName());
-		assertEquals("FOO_TABLE", virtualColumn.getTable());
+		assertEquals("FOO_TABLE", virtualColumn.getTableName());
 		assertEquals("COLUMN_DEFINITION", virtualColumn.getColumnDefinition());
 		assertFalse(virtualColumn.isInsertable());
 		assertFalse(virtualColumn.isUpdatable());
@@ -693,7 +693,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		nameVirtualMapping = (BasicMapping) namePersistentAttribute.getMapping();		
 		virtualColumn = nameVirtualMapping.getColumn();
 		assertEquals("name", virtualColumn.getName());
-		assertEquals(TYPE_NAME, virtualColumn.getTable());
+		assertEquals(TYPE_NAME, virtualColumn.getTableName());
 		assertNull(virtualColumn.getColumnDefinition());
 		assertTrue(virtualColumn.isInsertable());
 		assertTrue(virtualColumn.isUpdatable());
@@ -708,7 +708,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		nameVirtualMapping = (BasicMapping) namePersistentAttribute.getMapping();		
 		virtualColumn = nameVirtualMapping.getColumn();
 		assertEquals("name", virtualColumn.getName());
-		assertEquals(TYPE_NAME, virtualColumn.getTable());
+		assertEquals(TYPE_NAME, virtualColumn.getTableName());
 		assertNull(virtualColumn.getColumnDefinition());
 		assertTrue(virtualColumn.isInsertable());
 		assertTrue(virtualColumn.isUpdatable());
@@ -722,7 +722,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		nameVirtualMapping = (BasicMapping) namePersistentAttribute.getMapping();		
 		virtualColumn = nameVirtualMapping.getColumn();
 		assertEquals("name", virtualColumn.getName());
-		assertEquals(TYPE_NAME, virtualColumn.getTable());
+		assertEquals(TYPE_NAME, virtualColumn.getTableName());
 		assertNull(virtualColumn.getColumnDefinition());
 		assertTrue(virtualColumn.isInsertable());
 		assertTrue(virtualColumn.isUpdatable());
@@ -737,7 +737,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		nameVirtualMapping = (BasicMapping) namePersistentAttribute.getMapping();		
 		virtualColumn = nameVirtualMapping.getColumn();
 		assertEquals("FOO", virtualColumn.getName());
-		assertEquals("FOO_TABLE", virtualColumn.getTable());
+		assertEquals("FOO_TABLE", virtualColumn.getTableName());
 		assertEquals("COLUMN_DEFINITION", virtualColumn.getColumnDefinition());
 		assertFalse(virtualColumn.isInsertable());
 		assertFalse(virtualColumn.isUpdatable());
@@ -761,7 +761,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		JavaBasicMapping javaBasicMapping = (JavaBasicMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("name").getMapping();
 		JavaColumn javaColumn = javaBasicMapping.getColumn();
 		javaColumn.setSpecifiedName("FOO");		
-		javaColumn.setSpecifiedTable("FOO_TABLE");
+		javaColumn.setSpecifiedTableName("FOO_TABLE");
 		javaColumn.setColumnDefinition("COLUMN_DEFINITION");
 		javaColumn.setSpecifiedInsertable(Boolean.FALSE);	
 		javaColumn.setSpecifiedUpdatable(Boolean.FALSE);	
@@ -773,7 +773,7 @@ public class OrmColumnTests extends ContextModelTestCase
 
 	
 		assertEquals("name", ormColumn.getDefaultName());
-		assertEquals(TYPE_NAME, ormColumn.getDefaultTable());
+		assertEquals(TYPE_NAME, ormColumn.getDefaultTableName());
 		assertEquals(true, ormColumn.isDefaultInsertable());
 		assertEquals(true, ormColumn.isDefaultUpdatable());
 		assertEquals(true, ormColumn.isDefaultNullable());
@@ -782,7 +782,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		assertEquals(ReadOnlyColumn.DEFAULT_PRECISION, ormColumn.getDefaultPrecision());
 		assertEquals(ReadOnlyColumn.DEFAULT_SCALE, ormColumn.getDefaultScale());
 		assertNull(ormColumn.getSpecifiedName());
-		assertNull(ormColumn.getSpecifiedTable());
+		assertNull(ormColumn.getSpecifiedTableName());
 		assertNull(ormColumn.getColumnDefinition());
 		assertNull(ormColumn.getSpecifiedInsertable());
 		assertNull(ormColumn.getSpecifiedUpdatable());
@@ -803,25 +803,25 @@ public class OrmColumnTests extends ContextModelTestCase
 		BasicMapping nameVirtualMapping = (BasicMapping) nameOrmAttribute.getMapping();	
 		Column virtualColumn = nameVirtualMapping.getColumn();
 		
-		assertEquals(TYPE_NAME, virtualColumn.getTable());
+		assertEquals(TYPE_NAME, virtualColumn.getTableName());
 	
 		((OrmEntity) ormPersistentType.getMapping()).getTable().setSpecifiedName("ORM_TABLE");
-		assertEquals("ORM_TABLE", virtualColumn.getTable());
+		assertEquals("ORM_TABLE", virtualColumn.getTableName());
 		
 		//set Column table element in Java
 		JavaBasicMapping javaBasicMapping = (JavaBasicMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("name").getMapping();
-		javaBasicMapping.getColumn().setSpecifiedTable("JAVA_TABLE");	
+		javaBasicMapping.getColumn().setSpecifiedTableName("JAVA_TABLE");	
 		nameVirtualMapping = (BasicMapping) nameOrmAttribute.getMapping();	
 		virtualColumn = nameVirtualMapping.getColumn();
-		assertEquals("JAVA_TABLE", virtualColumn.getTable());
+		assertEquals("JAVA_TABLE", virtualColumn.getTableName());
 		
 		//make name persistent attribute not default
 		nameOrmAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("name"), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		BasicMapping nameSpecifiedMapping = (OrmBasicMapping) nameOrmAttribute.getMapping();	
 		Column specifiedColumn = nameSpecifiedMapping.getColumn();
-		assertNull(specifiedColumn.getSpecifiedTable());
-		assertEquals("ORM_TABLE", specifiedColumn.getDefaultTable());
-		assertEquals("ORM_TABLE", specifiedColumn.getTable());
+		assertNull(specifiedColumn.getSpecifiedTableName());
+		assertEquals("ORM_TABLE", specifiedColumn.getDefaultTableName());
+		assertEquals("ORM_TABLE", specifiedColumn.getTableName());
 	}
 
 //public void testUpdateDefaultNameNoJava() throws Exception {

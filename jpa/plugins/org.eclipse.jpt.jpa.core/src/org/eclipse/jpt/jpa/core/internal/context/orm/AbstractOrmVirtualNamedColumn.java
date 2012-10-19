@@ -127,8 +127,7 @@ public abstract class AbstractOrmVirtualNamedColumn<O extends ReadOnlyNamedColum
 	// ********** database stuff **********
 
 	protected Column getDbColumn() {
-		Table table = this.getDbTable();
-		return (table == null) ? null : table.getColumnForIdentifier(this.getName());
+		return (this.dbTable == null) ? null : this.dbTable.getColumnForIdentifier(this.getName());
 	}
 
 	public Table getDbTable() {
@@ -142,7 +141,7 @@ public abstract class AbstractOrmVirtualNamedColumn<O extends ReadOnlyNamedColum
 	}
 
 	protected Table buildDbTable() {
-		return this.owner.resolveDbTable(this.getTable());
+		return this.owner.resolveDbTable(this.getTableName());
 	}
 
 	public boolean isResolved() {
@@ -179,7 +178,7 @@ public abstract class AbstractOrmVirtualNamedColumn<O extends ReadOnlyNamedColum
 
 	@Override
 	public void toString(StringBuilder sb) {
-		String table = this.getTable();
+		String table = this.getTableName();
 		if (table != null) {
 			sb.append(table);
 			sb.append('.');

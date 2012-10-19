@@ -24,5 +24,5 @@ package org.eclipse.jpt.jpa.core.context;
 public interface TableColumn
 	extends NamedColumn, ReadOnlyTableColumn
 {
-	void setSpecifiedTable(String table);
+	void setSpecifiedTableName(String tableName);
 }

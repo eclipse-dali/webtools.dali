@@ -695,7 +695,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		Column javaAttributeOverrideColumn = javaEmbeddedIdMapping.getAttributeOverrideContainer().getSpecifiedOverrides().iterator().next().getColumn();
 		
 		javaAttributeOverrideColumn.setSpecifiedName("FOO_COLUMN");
-		javaAttributeOverrideColumn.setSpecifiedTable("FOO_TABLE");
+		javaAttributeOverrideColumn.setSpecifiedTableName("FOO_TABLE");
 		javaAttributeOverrideColumn.setColumnDefinition("COLUMN_DEF");
 		javaAttributeOverrideColumn.setSpecifiedInsertable(Boolean.FALSE);
 		javaAttributeOverrideColumn.setSpecifiedUpdatable(Boolean.FALSE);
@@ -714,7 +714,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		specifiedAttributeOverride = specifiedAttributeOverrides.next();
 		assertEquals("city", specifiedAttributeOverride.getName());
 		assertEquals("FOO_COLUMN", specifiedAttributeOverride.getColumn().getSpecifiedName());
-		assertEquals("FOO_TABLE", specifiedAttributeOverride.getColumn().getSpecifiedTable());
+		assertEquals("FOO_TABLE", specifiedAttributeOverride.getColumn().getSpecifiedTableName());
 		assertEquals("COLUMN_DEF", specifiedAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(false, specifiedAttributeOverride.getColumn().isInsertable());
 		assertEquals(false, specifiedAttributeOverride.getColumn().isUpdatable());
@@ -748,7 +748,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		ormOverride = ormOverrides.next();
 		assertEquals("city", ormOverride.getName());
 		assertEquals("city", ormOverride.getColumn().getDefaultName());
-		assertEquals(TYPE_NAME, ormOverride.getColumn().getDefaultTable());
+		assertEquals(TYPE_NAME, ormOverride.getColumn().getDefaultTableName());
 		assertEquals(null, ormOverride.getColumn().getColumnDefinition());
 		assertEquals(true, ormOverride.getColumn().isInsertable());
 		assertEquals(true, ormOverride.getColumn().isUpdatable());
@@ -760,7 +760,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		ormOverride = ormOverrides.next();
 		assertEquals("state", ormOverride.getName());
 		assertEquals("MY_STATE_COLUMN", ormOverride.getColumn().getDefaultName());
-		assertEquals(TYPE_NAME, ormOverride.getColumn().getDefaultTable());
+		assertEquals(TYPE_NAME, ormOverride.getColumn().getDefaultTableName());
 		ormOverride = ormOverrides.next();
 		assertEquals("zip", ormOverride.getName());
 		

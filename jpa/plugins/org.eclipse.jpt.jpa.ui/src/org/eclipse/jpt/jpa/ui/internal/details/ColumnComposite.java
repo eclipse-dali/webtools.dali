@@ -110,8 +110,8 @@ public class ColumnComposite
 	}
 	
 	/* CU private */ static final Collection<String> COLUMN_PICK_LIST_PROPERTIES = Arrays.asList(new String[] {
-		ReadOnlyTableColumn.DEFAULT_TABLE_PROPERTY,
-		ReadOnlyTableColumn.SPECIFIED_TABLE_PROPERTY
+		ReadOnlyTableColumn.DEFAULT_TABLE_NAME_PROPERTY,
+		ReadOnlyTableColumn.SPECIFIED_TABLE_NAME_PROPERTY
 	});
 
 	ModifiablePropertyValueModel<String> buildColumnDefinitionHolder() {
@@ -227,23 +227,23 @@ public class ColumnComposite
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(ReadOnlyBaseColumn.DEFAULT_TABLE_PROPERTY);
-				propertyNames.add(ReadOnlyBaseColumn.SPECIFIED_TABLE_PROPERTY);
+				propertyNames.add(ReadOnlyBaseColumn.DEFAULT_TABLE_NAME_PROPERTY);
+				propertyNames.add(ReadOnlyBaseColumn.SPECIFIED_TABLE_NAME_PROPERTY);
 			}
 			
 			@Override
 			protected String getDefaultValue() {
-				return this.getSubject().getDefaultTable();
+				return this.getSubject().getDefaultTableName();
 			}
 			
 			@Override
 			protected void setValue(String value) {
-				((Column) this.getSubject()).setSpecifiedTable(value);
+				((Column) this.getSubject()).setSpecifiedTableName(value);
 			}
 			
 			@Override
 			protected String getValue() {
-				return this.getSubject().getSpecifiedTable();
+				return this.getSubject().getSpecifiedTableName();
 			}
 			
 			// TODO we need to listen for this list to change...

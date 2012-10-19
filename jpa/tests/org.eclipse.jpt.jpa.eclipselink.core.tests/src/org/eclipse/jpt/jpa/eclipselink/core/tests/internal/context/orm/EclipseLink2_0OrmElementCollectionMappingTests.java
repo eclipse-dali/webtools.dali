@@ -980,12 +980,12 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		assertEquals(true, orderable.isOrderColumnOrdering());
 		assertEquals(null, orderColumn.getSpecifiedName());
 		assertEquals("addresses_ORDER", orderColumn.getDefaultName());
-		assertEquals(TYPE_NAME + "_addresses", orderColumn.getTable());
+		assertEquals(TYPE_NAME + "_addresses", orderColumn.getTableName());
 		
 		orderColumn.setSpecifiedName("FOO");
 		assertEquals("FOO", orderColumn.getSpecifiedName());
 		assertEquals("addresses_ORDER", orderColumn.getDefaultName());
-		assertEquals(TYPE_NAME + "_addresses", orderColumn.getTable());
+		assertEquals(TYPE_NAME + "_addresses", orderColumn.getTableName());
 	}
 	
 	public void testVirtualOrderColumn() throws Exception {
@@ -1010,11 +1010,11 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		orderable = (Orderable2_0) virtualElementCollectionMapping.getOrderable();
 		assertEquals(true, orderable.isOrderColumnOrdering());
 		assertEquals(false, orderable.isNoOrdering());
-		assertEquals(TYPE_NAME + "_addresses", orderable.getOrderColumn().getTable());
+		assertEquals(TYPE_NAME + "_addresses", orderable.getOrderColumn().getTableName());
 		assertEquals("addresses_ORDER", orderable.getOrderColumn().getName());
 		
 		((Orderable2_0) javaElementCollectionMapping.getOrderable()).getOrderColumn().setSpecifiedName("FOO");
-		assertEquals(TYPE_NAME + "_addresses", orderable.getOrderColumn().getTable());
+		assertEquals(TYPE_NAME + "_addresses", orderable.getOrderColumn().getTableName());
 		assertEquals("FOO", orderable.getOrderColumn().getName());
 	}
 
@@ -1028,7 +1028,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		ElementCollectionMapping2_0 addressesVirtualMapping = (ElementCollectionMapping2_0) addressesPersistentAttribute.getMapping();		
 		Column virtualColumn = addressesVirtualMapping.getValueColumn();
 		assertEquals("addresses", virtualColumn.getName());
-		assertEquals(TYPE_NAME + "_addresses", virtualColumn.getTable());
+		assertEquals(TYPE_NAME + "_addresses", virtualColumn.getTableName());
 		assertEquals(null, virtualColumn.getColumnDefinition());
 		assertTrue(virtualColumn.isInsertable());
 		assertTrue(virtualColumn.isUpdatable());
@@ -1041,7 +1041,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		//set Column annotation in Java
 		JavaElementCollectionMapping2_0 javaElementCollectionMapping = (JavaElementCollectionMapping2_0) ormPersistentType.getJavaPersistentType().getAttributeNamed("addresses").getMapping();
 		javaElementCollectionMapping.getValueColumn().setSpecifiedName("FOO");		
-		javaElementCollectionMapping.getValueColumn().setSpecifiedTable("FOO_TABLE");
+		javaElementCollectionMapping.getValueColumn().setSpecifiedTableName("FOO_TABLE");
 		javaElementCollectionMapping.getValueColumn().setColumnDefinition("COLUMN_DEFINITION");
 		javaElementCollectionMapping.getValueColumn().setSpecifiedInsertable(Boolean.FALSE);	
 		javaElementCollectionMapping.getValueColumn().setSpecifiedUpdatable(Boolean.FALSE);	
@@ -1052,7 +1052,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		javaElementCollectionMapping.getValueColumn().setSpecifiedScale(Integer.valueOf(47));
 
 		assertEquals("FOO", virtualColumn.getSpecifiedName());
-		assertEquals("FOO_TABLE", virtualColumn.getSpecifiedTable());
+		assertEquals("FOO_TABLE", virtualColumn.getSpecifiedTableName());
 		assertEquals("COLUMN_DEFINITION", virtualColumn.getColumnDefinition());
 		assertEquals(Boolean.FALSE, virtualColumn.getSpecifiedInsertable());
 		assertEquals(Boolean.FALSE, virtualColumn.getSpecifiedUpdatable());
@@ -1082,7 +1082,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		//set Column annotation in Java
 		JavaElementCollectionMapping2_0 javaElementCollectionMapping = (JavaElementCollectionMapping2_0) ormPersistentType.getJavaPersistentType().getAttributeNamed("addresses").getMapping();
 		javaElementCollectionMapping.getValueColumn().setSpecifiedName("FOO");		
-		javaElementCollectionMapping.getValueColumn().setSpecifiedTable("FOO_TABLE");
+		javaElementCollectionMapping.getValueColumn().setSpecifiedTableName("FOO_TABLE");
 		javaElementCollectionMapping.getValueColumn().setColumnDefinition("COLUMN_DEFINITION");
 		javaElementCollectionMapping.getValueColumn().setSpecifiedInsertable(Boolean.FALSE);	
 		javaElementCollectionMapping.getValueColumn().setSpecifiedUpdatable(Boolean.FALSE);	
@@ -1094,7 +1094,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 
 	
 		assertEquals("addresses", ormColumn.getDefaultName());
-		assertEquals(TYPE_NAME + "_addresses", ormColumn.getDefaultTable());
+		assertEquals(TYPE_NAME + "_addresses", ormColumn.getDefaultTableName());
 		assertEquals(true, ormColumn.isDefaultInsertable());
 		assertEquals(true, ormColumn.isDefaultUpdatable());
 		assertEquals(true, ormColumn.isDefaultNullable());
@@ -1103,7 +1103,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		assertEquals(ReadOnlyColumn.DEFAULT_PRECISION, ormColumn.getDefaultPrecision());
 		assertEquals(ReadOnlyColumn.DEFAULT_SCALE, ormColumn.getDefaultScale());
 		assertNull(ormColumn.getSpecifiedName());
-		assertNull(ormColumn.getSpecifiedTable());
+		assertNull(ormColumn.getSpecifiedTableName());
 		assertNull(ormColumn.getColumnDefinition());
 		assertNull(ormColumn.getSpecifiedInsertable());
 		assertNull(ormColumn.getSpecifiedUpdatable());
@@ -1124,25 +1124,25 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		ElementCollectionMapping2_0 addressesVirtualMapping = (ElementCollectionMapping2_0) addressesPersistentAttribute.getMapping();	
 		Column virtualColumn = addressesVirtualMapping.getValueColumn();
 		
-		assertEquals(TYPE_NAME + "_addresses", virtualColumn.getTable());
+		assertEquals(TYPE_NAME + "_addresses", virtualColumn.getTableName());
 	
 		//entity table should have no affect on the collection table default name
 		((OrmEntity) ormPersistentType.getMapping()).getTable().setSpecifiedName("ORM_TABLE");
-		assertEquals(TYPE_NAME + "_addresses", virtualColumn.getTable());
+		assertEquals(TYPE_NAME + "_addresses", virtualColumn.getTableName());
 		
 		//set Column table element in Java
 		JavaElementCollectionMapping2_0 javaElementCollectionMapping = (JavaElementCollectionMapping2_0) ormPersistentType.getJavaPersistentType().getAttributeNamed("addresses").getMapping();
 		javaElementCollectionMapping.getCollectionTable().setSpecifiedName("JAVA_COLLECTION_TABLE");
-		assertEquals("JAVA_COLLECTION_TABLE", virtualColumn.getTable());
-		javaElementCollectionMapping.getValueColumn().setSpecifiedTable("JAVA_TABLE");	
-		assertEquals("JAVA_TABLE", virtualColumn.getTable());
+		assertEquals("JAVA_COLLECTION_TABLE", virtualColumn.getTableName());
+		javaElementCollectionMapping.getValueColumn().setSpecifiedTableName("JAVA_TABLE");	
+		assertEquals("JAVA_TABLE", virtualColumn.getTableName());
 		
 		//make name persistent attribute not default
 		addressesPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("addresses"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		addressesVirtualMapping = (OrmElementCollectionMapping2_0) addressesPersistentAttribute.getMapping();	
 		virtualColumn = addressesVirtualMapping.getValueColumn();
-		assertNull(virtualColumn.getSpecifiedTable());
-		assertEquals(TYPE_NAME + "_addresses", virtualColumn.getDefaultTable());
+		assertNull(virtualColumn.getSpecifiedTableName());
+		assertEquals(TYPE_NAME + "_addresses", virtualColumn.getDefaultTableName());
 	}
 
 	public void testMoveSpecifiedAttributeOverride() throws Exception {
@@ -1289,7 +1289,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		Column javaAttributeOverrideColumn = javaElementCollectionMapping.getValueAttributeOverrideContainer().getSpecifiedOverrides().iterator().next().getColumn();
 		
 		javaAttributeOverrideColumn.setSpecifiedName("FOO_COLUMN");
-		javaAttributeOverrideColumn.setSpecifiedTable("FOO_TABLE");
+		javaAttributeOverrideColumn.setSpecifiedTableName("FOO_TABLE");
 		javaAttributeOverrideColumn.setColumnDefinition("COLUMN_DEF");
 		javaAttributeOverrideColumn.setSpecifiedInsertable(Boolean.FALSE);
 		javaAttributeOverrideColumn.setSpecifiedUpdatable(Boolean.FALSE);
@@ -1308,7 +1308,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		attributeOverride = specifiedAttributeOverrides.next();
 		assertEquals("city", attributeOverride.getName());
 		assertEquals("FOO_COLUMN", attributeOverride.getColumn().getSpecifiedName());
-		assertEquals("FOO_TABLE", attributeOverride.getColumn().getSpecifiedTable());
+		assertEquals("FOO_TABLE", attributeOverride.getColumn().getSpecifiedTableName());
 		assertEquals("COLUMN_DEF", attributeOverride.getColumn().getColumnDefinition());
 		assertEquals(false, attributeOverride.getColumn().isInsertable());
 		assertEquals(false, attributeOverride.getColumn().isUpdatable());
@@ -1342,7 +1342,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		virtualOverride = virtualAttributeOverrides.next();
 		assertEquals("state.name", virtualOverride.getName());
 		assertEquals("MY_STATE_COLUMN", virtualOverride.getColumn().getName());
-		assertEquals(TYPE_NAME + "_addresses", virtualOverride.getColumn().getTable());
+		assertEquals(TYPE_NAME + "_addresses", virtualOverride.getColumn().getTableName());
 		assertEquals(null, virtualOverride.getColumn().getColumnDefinition());
 		assertEquals(true, virtualOverride.getColumn().isInsertable());
 		assertEquals(true, virtualOverride.getColumn().isUpdatable());
@@ -1353,7 +1353,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		assertEquals(0, virtualOverride.getColumn().getScale());
 		virtualOverride = virtualAttributeOverrides.next();
 		assertEquals("state.abbr", virtualOverride.getName());
-		assertEquals(TYPE_NAME + "_addresses", virtualOverride.getColumn().getDefaultTable());
+		assertEquals(TYPE_NAME + "_addresses", virtualOverride.getColumn().getDefaultTableName());
 		virtualOverride = virtualAttributeOverrides.next();
 		assertEquals("zip", virtualOverride.getName());
 		
@@ -1382,7 +1382,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		ElementCollectionMapping2_0 addressesVirtualMapping = (ElementCollectionMapping2_0) addressesPersistentAttribute.getMapping();		
 		Column virtualColumn = addressesVirtualMapping.getMapKeyColumn();
 		assertEquals("addresses_KEY", virtualColumn.getName());
-		assertEquals(TYPE_NAME + "_addresses", virtualColumn.getTable());
+		assertEquals(TYPE_NAME + "_addresses", virtualColumn.getTableName());
 		assertEquals(null, virtualColumn.getColumnDefinition());
 		assertTrue(virtualColumn.isInsertable());
 		assertTrue(virtualColumn.isUpdatable());
@@ -1395,7 +1395,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		//set Column annotation in Java
 		JavaElementCollectionMapping2_0 javaElementCollectionMapping = (JavaElementCollectionMapping2_0) ormPersistentType.getJavaPersistentType().getAttributeNamed("addresses").getMapping();
 		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedName("FOO");		
-		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedTable("FOO_TABLE");
+		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedTableName("FOO_TABLE");
 		javaElementCollectionMapping.getMapKeyColumn().setColumnDefinition("COLUMN_DEFINITION");
 		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedInsertable(Boolean.FALSE);	
 		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedUpdatable(Boolean.FALSE);	
@@ -1406,7 +1406,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedScale(Integer.valueOf(47));
 
 		assertEquals("FOO", virtualColumn.getSpecifiedName());
-		assertEquals("FOO_TABLE", virtualColumn.getSpecifiedTable());
+		assertEquals("FOO_TABLE", virtualColumn.getSpecifiedTableName());
 		assertEquals("COLUMN_DEFINITION", virtualColumn.getColumnDefinition());
 		assertEquals(Boolean.FALSE, virtualColumn.getSpecifiedInsertable());
 		assertEquals(Boolean.FALSE, virtualColumn.getSpecifiedUpdatable());
@@ -1436,7 +1436,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		//set Column annotation in Java
 		JavaElementCollectionMapping2_0 javaElementCollectionMapping = (JavaElementCollectionMapping2_0) ormPersistentType.getJavaPersistentType().getAttributeNamed("addresses").getMapping();
 		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedName("FOO");		
-		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedTable("FOO_TABLE");
+		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedTableName("FOO_TABLE");
 		javaElementCollectionMapping.getMapKeyColumn().setColumnDefinition("COLUMN_DEFINITION");
 		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedInsertable(Boolean.FALSE);	
 		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedUpdatable(Boolean.FALSE);	
@@ -1448,7 +1448,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 
 
 		assertEquals("addresses_KEY", ormColumn.getDefaultName());
-		assertEquals(TYPE_NAME + "_addresses", ormColumn.getDefaultTable());
+		assertEquals(TYPE_NAME + "_addresses", ormColumn.getDefaultTableName());
 		assertEquals(true, ormColumn.isDefaultInsertable());
 		assertEquals(true, ormColumn.isDefaultUpdatable());
 		assertEquals(true, ormColumn.isDefaultNullable());
@@ -1457,7 +1457,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		assertEquals(ReadOnlyColumn.DEFAULT_PRECISION, ormColumn.getDefaultPrecision());
 		assertEquals(ReadOnlyColumn.DEFAULT_SCALE, ormColumn.getDefaultScale());
 		assertNull(ormColumn.getSpecifiedName());
-		assertNull(ormColumn.getSpecifiedTable());
+		assertNull(ormColumn.getSpecifiedTableName());
 		assertNull(ormColumn.getColumnDefinition());
 		assertNull(ormColumn.getSpecifiedInsertable());
 		assertNull(ormColumn.getSpecifiedUpdatable());
@@ -1478,25 +1478,25 @@ public class EclipseLink2_0OrmElementCollectionMappingTests
 		ElementCollectionMapping2_0 addressesVirtualMapping = (ElementCollectionMapping2_0) addressesPersistentAttribute.getMapping();	
 		Column virtualColumn = addressesVirtualMapping.getMapKeyColumn();
 
-		assertEquals(TYPE_NAME + "_addresses", virtualColumn.getTable());
+		assertEquals(TYPE_NAME + "_addresses", virtualColumn.getTableName());
 
 		//entity table should have no affect on the collection table default name
 		((OrmEntity) ormPersistentType.getMapping()).getTable().setSpecifiedName("ORM_TABLE");
-		assertEquals(TYPE_NAME + "_addresses", virtualColumn.getTable());
+		assertEquals(TYPE_NAME + "_addresses", virtualColumn.getTableName());
 
 		//set Column table element in Java
 		JavaElementCollectionMapping2_0 javaElementCollectionMapping = (JavaElementCollectionMapping2_0) ormPersistentType.getJavaPersistentType().getAttributeNamed("addresses").getMapping();
 		javaElementCollectionMapping.getCollectionTable().setSpecifiedName("JAVA_COLLECTION_TABLE");
-		assertEquals("JAVA_COLLECTION_TABLE", virtualColumn.getTable());
-		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedTable("JAVA_TABLE");	
-		assertEquals("JAVA_TABLE", virtualColumn.getTable());
+		assertEquals("JAVA_COLLECTION_TABLE", virtualColumn.getTableName());
+		javaElementCollectionMapping.getMapKeyColumn().setSpecifiedTableName("JAVA_TABLE");	
+		assertEquals("JAVA_TABLE", virtualColumn.getTableName());
 
 		//make addresses persistent attribute not default
 		addressesPersistentAttribute = ormPersistentType.addAttributeToXml(ormPersistentType.getAttributeNamed("addresses"), MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		addressesVirtualMapping = (OrmElementCollectionMapping2_0) addressesPersistentAttribute.getMapping();	
 		virtualColumn = addressesVirtualMapping.getMapKeyColumn();
-		assertNull(virtualColumn.getSpecifiedTable());
-		assertEquals(TYPE_NAME + "_addresses", virtualColumn.getDefaultTable());
+		assertNull(virtualColumn.getSpecifiedTableName());
+		assertEquals(TYPE_NAME + "_addresses", virtualColumn.getDefaultTableName());
 	}
 
 	public void testSelfReferentialElementCollectionMapping() throws Exception {

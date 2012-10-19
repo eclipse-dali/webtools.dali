@@ -113,12 +113,12 @@ public class AttributeOverrideColumnValidator
 					this.getVirtualOverrideColumnTableNotValidMessage(),
 					new String[] {
 						AttributeOverrideColumnValidator.this.override.getName(),
-						this.getColumn().getTable(),
+						this.getColumn().getTableName(),
 						this.getColumn().getName(),
 						this.getColumnTableDescriptionMessage()
 					},
 					this.getColumn(),
-					this.getColumn().getTableTextRange()
+					this.getColumn().getTableNameTextRange()
 				);
 		}
 
@@ -134,7 +134,7 @@ public class AttributeOverrideColumnValidator
 					new String[] {
 						AttributeOverrideColumnValidator.this.persistentAttribute.getName(),
 						AttributeOverrideColumnValidator.this.override.getName(),
-						this.getColumn().getTable(),
+						this.getColumn().getTableName(),
 						this.getColumn().getName(),
 						this.getColumnTableDescriptionMessage()
 					},

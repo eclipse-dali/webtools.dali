@@ -70,21 +70,21 @@ public class NullJavaMapKeyColumn2_0
 	}
 
 
-	// ********** table **********
+	// ********** table name **********
 
-	public String getTable() {
+	public String getTableName() {
 		return null;
 	}
 
-	public String getSpecifiedTable() {
+	public String getSpecifiedTableName() {
 		return null;
 	}
 
-	public void setSpecifiedTable(String table) {
+	public void setSpecifiedTableName(String table) {
 		throw new UnsupportedOperationException();
 	}
 
-	public String getDefaultTable() {
+	public String getDefaultTableName() {
 		return null;
 	}
 
@@ -267,7 +267,7 @@ public class NullJavaMapKeyColumn2_0
 		return this.getValidationTextRange();
 	}
 
-	public TextRange getTableTextRange() {
+	public TextRange getTableNameTextRange() {
 		return this.getValidationTextRange();
 	}
 

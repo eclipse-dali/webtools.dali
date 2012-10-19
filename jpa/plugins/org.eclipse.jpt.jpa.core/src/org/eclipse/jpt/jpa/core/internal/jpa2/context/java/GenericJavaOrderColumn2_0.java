@@ -252,7 +252,7 @@ public class GenericJavaOrderColumn2_0
 	}
 
 	@Override
-	public String getTable() {
+	public String getTableName() {
 		return this.getOrderable().getDefaultTableName();
 	}
 }

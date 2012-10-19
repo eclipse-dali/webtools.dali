@@ -153,8 +153,8 @@ public class TenantDiscriminatorColumnComposite extends Pane<ReadOnlyTenantDiscr
 	}
 
 	/* CU private */ static final Collection<String> COLUMN_PICK_LIST_PROPERTIES = Arrays.asList(new String[] {
-		ReadOnlyTableColumn.DEFAULT_TABLE_PROPERTY,
-		ReadOnlyTableColumn.SPECIFIED_TABLE_PROPERTY
+		ReadOnlyTableColumn.DEFAULT_TABLE_NAME_PROPERTY,
+		ReadOnlyTableColumn.SPECIFIED_TABLE_NAME_PROPERTY
 	});
 
 	private Pane<ReadOnlyTenantDiscriminatorColumn2_3> addTableCombo(Composite container) {
@@ -164,23 +164,23 @@ public class TenantDiscriminatorColumnComposite extends Pane<ReadOnlyTenantDiscr
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(ReadOnlyTableColumn.DEFAULT_TABLE_PROPERTY);
-				propertyNames.add(ReadOnlyTableColumn.SPECIFIED_TABLE_PROPERTY);
+				propertyNames.add(ReadOnlyTableColumn.DEFAULT_TABLE_NAME_PROPERTY);
+				propertyNames.add(ReadOnlyTableColumn.SPECIFIED_TABLE_NAME_PROPERTY);
 			}
 
 			@Override
 			protected String getDefaultValue() {
-				return this.getSubject().getDefaultTable();
+				return this.getSubject().getDefaultTableName();
 			}
 
 			@Override
 			protected void setValue(String value) {
-				((TenantDiscriminatorColumn2_3) this.getSubject()).setSpecifiedTable(value);
+				((TenantDiscriminatorColumn2_3) this.getSubject()).setSpecifiedTableName(value);
 			}
 
 			@Override
 			protected String getValue() {
-				return this.getSubject().getSpecifiedTable();
+				return this.getSubject().getSpecifiedTableName();
 			}
 
 			// TODO we need to listen for this list to change...

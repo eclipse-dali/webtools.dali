@@ -1172,12 +1172,12 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertEquals(true, orderable.isOrderColumnOrdering());
 		assertEquals(null, orderColumn.getSpecifiedName());
 		assertEquals("addresses_ORDER", orderColumn.getDefaultName());
-		assertEquals(TYPE_NAME + "_addresses", orderColumn.getTable());
+		assertEquals(TYPE_NAME + "_addresses", orderColumn.getTableName());
 		
 		orderColumn.setSpecifiedName("FOO");
 		assertEquals("FOO", orderColumn.getSpecifiedName());
 		assertEquals("addresses_ORDER", orderColumn.getDefaultName());
-		assertEquals(TYPE_NAME + "_addresses", orderColumn.getTable());
+		assertEquals(TYPE_NAME + "_addresses", orderColumn.getTableName());
 	}
 	
 	public void testGetValueColumn() throws Exception {
@@ -1189,7 +1189,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		assertNull(elementCollectionMapping.getValueColumn().getSpecifiedName());
 		assertEquals("id", elementCollectionMapping.getValueColumn().getName());
-		assertEquals(TYPE_NAME + "_id", elementCollectionMapping.getValueColumn().getTable());
+		assertEquals(TYPE_NAME + "_id", elementCollectionMapping.getValueColumn().getTableName());
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -1297,7 +1297,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		ReadOnlyAttributeOverride defaultAttributeOverride = attributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("city", defaultAttributeOverride.getName());
 		assertEquals("city", defaultAttributeOverride.getColumn().getName());
-		assertEquals(TYPE_NAME +"_addresses", defaultAttributeOverride.getColumn().getTable());
+		assertEquals(TYPE_NAME +"_addresses", defaultAttributeOverride.getColumn().getTableName());
 		assertEquals(null, defaultAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(true, defaultAttributeOverride.getColumn().isInsertable());
 		assertEquals(true, defaultAttributeOverride.getColumn().isUpdatable());
@@ -1314,7 +1314,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		BasicMapping cityMapping = (BasicMapping) embeddable.getPersistentType().getAttributeNamed("city").getMapping();
 		cityMapping.getColumn().setSpecifiedName("FOO");
-		cityMapping.getColumn().setSpecifiedTable("BAR");
+		cityMapping.getColumn().setSpecifiedTableName("BAR");
 		cityMapping.getColumn().setColumnDefinition("COLUMN_DEF");
 		cityMapping.getColumn().setSpecifiedInsertable(Boolean.FALSE);
 		cityMapping.getColumn().setSpecifiedUpdatable(Boolean.FALSE);
@@ -1331,7 +1331,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		defaultAttributeOverride = attributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("city", defaultAttributeOverride.getName());
 		assertEquals("FOO", defaultAttributeOverride.getColumn().getName());
-		assertEquals("BAR", defaultAttributeOverride.getColumn().getTable());
+		assertEquals("BAR", defaultAttributeOverride.getColumn().getTableName());
 		assertEquals("COLUMN_DEF", defaultAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(false, defaultAttributeOverride.getColumn().isInsertable());
 		assertEquals(false, defaultAttributeOverride.getColumn().isUpdatable());
@@ -1342,7 +1342,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertEquals(7, defaultAttributeOverride.getColumn().getScale());
 		
 		cityMapping.getColumn().setSpecifiedName(null);
-		cityMapping.getColumn().setSpecifiedTable(null);
+		cityMapping.getColumn().setSpecifiedTableName(null);
 		cityMapping.getColumn().setColumnDefinition(null);
 		cityMapping.getColumn().setSpecifiedInsertable(null);
 		cityMapping.getColumn().setSpecifiedUpdatable(null);
@@ -1354,7 +1354,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		defaultAttributeOverride = attributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("city", defaultAttributeOverride.getName());
 		assertEquals("city", defaultAttributeOverride.getColumn().getName());
-		assertEquals(TYPE_NAME +"_addresses", defaultAttributeOverride.getColumn().getTable());
+		assertEquals(TYPE_NAME +"_addresses", defaultAttributeOverride.getColumn().getTableName());
 		assertEquals(null, defaultAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(true, defaultAttributeOverride.getColumn().isInsertable());
 		assertEquals(true, defaultAttributeOverride.getColumn().isUpdatable());
@@ -1594,7 +1594,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		PersistentType statePersistentType = specifiedClassRefs.next().getJavaPersistentType();
 		BasicMapping abbrMapping = (BasicMapping) statePersistentType.getAttributeNamed("abbr").getMapping();
 		abbrMapping.getColumn().setSpecifiedName("BLAH");
-		abbrMapping.getColumn().setSpecifiedTable("BLAH_TABLE");
+		abbrMapping.getColumn().setSpecifiedTableName("BLAH_TABLE");
 		abbrMapping.getColumn().setColumnDefinition("COLUMN_DEFINITION");
 		abbrMapping.getColumn().setSpecifiedInsertable(Boolean.FALSE);
 		abbrMapping.getColumn().setSpecifiedUpdatable(Boolean.FALSE);
@@ -1608,7 +1608,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		virtualAttributeOverride = ((EmbeddedMapping) addressPersistentType.getAttributeNamed("state").getMapping()).getAttributeOverrideContainer().getOverrideNamed("abbr");
 		assertEquals("abbr", virtualAttributeOverride.getName());
 		assertEquals("BLAH", virtualAttributeOverride.getColumn().getName());
-		assertEquals("BLAH_TABLE", virtualAttributeOverride.getColumn().getTable());	
+		assertEquals("BLAH_TABLE", virtualAttributeOverride.getColumn().getTableName());	
 		assertEquals("COLUMN_DEFINITION", virtualAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(false, virtualAttributeOverride.getColumn().isInsertable());
 		assertEquals(false, virtualAttributeOverride.getColumn().isUpdatable());
@@ -1628,10 +1628,10 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		assertNull(elementCollectionMapping.getMapKeyColumn().getSpecifiedName());
 		assertEquals("addresses_KEY", elementCollectionMapping.getMapKeyColumn().getName());
-		assertEquals(TYPE_NAME + "_addresses", elementCollectionMapping.getMapKeyColumn().getTable());//collection table name
+		assertEquals(TYPE_NAME + "_addresses", elementCollectionMapping.getMapKeyColumn().getTableName());//collection table name
 		
 		elementCollectionMapping.getCollectionTable().setSpecifiedName("MY_COLLECTION_TABLE");
-		assertEquals("MY_COLLECTION_TABLE", elementCollectionMapping.getMapKeyColumn().getTable());
+		assertEquals("MY_COLLECTION_TABLE", elementCollectionMapping.getMapKeyColumn().getTableName());
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -1776,7 +1776,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		ReadOnlyAttributeOverride defaultAttributeOverride = mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("city", defaultAttributeOverride.getName());
 		assertEquals("city", defaultAttributeOverride.getColumn().getName());
-		assertEquals(TYPE_NAME +"_parcels", defaultAttributeOverride.getColumn().getTable());
+		assertEquals(TYPE_NAME +"_parcels", defaultAttributeOverride.getColumn().getTableName());
 		assertEquals(null, defaultAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(true, defaultAttributeOverride.getColumn().isInsertable());
 		assertEquals(true, defaultAttributeOverride.getColumn().isUpdatable());
@@ -1793,7 +1793,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		BasicMapping cityMapping = (BasicMapping) addressEmbeddable.getPersistentType().getAttributeNamed("city").getMapping();
 		cityMapping.getColumn().setSpecifiedName("FOO");
-		cityMapping.getColumn().setSpecifiedTable("BAR");
+		cityMapping.getColumn().setSpecifiedTableName("BAR");
 		cityMapping.getColumn().setColumnDefinition("COLUMN_DEF");
 		cityMapping.getColumn().setSpecifiedInsertable(Boolean.FALSE);
 		cityMapping.getColumn().setSpecifiedUpdatable(Boolean.FALSE);
@@ -1810,7 +1810,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		defaultAttributeOverride = mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("city", defaultAttributeOverride.getName());
 		assertEquals("FOO", defaultAttributeOverride.getColumn().getName());
-		assertEquals("BAR", defaultAttributeOverride.getColumn().getTable());
+		assertEquals("BAR", defaultAttributeOverride.getColumn().getTableName());
 		assertEquals("COLUMN_DEF", defaultAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(false, defaultAttributeOverride.getColumn().isInsertable());
 		assertEquals(false, defaultAttributeOverride.getColumn().isUpdatable());
@@ -1821,7 +1821,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertEquals(7, defaultAttributeOverride.getColumn().getScale());
 		
 		cityMapping.getColumn().setSpecifiedName(null);
-		cityMapping.getColumn().setSpecifiedTable(null);
+		cityMapping.getColumn().setSpecifiedTableName(null);
 		cityMapping.getColumn().setColumnDefinition(null);
 		cityMapping.getColumn().setSpecifiedInsertable(null);
 		cityMapping.getColumn().setSpecifiedUpdatable(null);
@@ -1833,7 +1833,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		defaultAttributeOverride = mapKeyAttributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("city", defaultAttributeOverride.getName());
 		assertEquals("city", defaultAttributeOverride.getColumn().getName());
-		assertEquals(TYPE_NAME +"_parcels", defaultAttributeOverride.getColumn().getTable());
+		assertEquals(TYPE_NAME +"_parcels", defaultAttributeOverride.getColumn().getTableName());
 		assertEquals(null, defaultAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(true, defaultAttributeOverride.getColumn().isInsertable());
 		assertEquals(true, defaultAttributeOverride.getColumn().isUpdatable());
@@ -1852,7 +1852,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		defaultAttributeOverride = attributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("parcelNumber", defaultAttributeOverride.getName());
 		assertEquals("parcelNumber", defaultAttributeOverride.getColumn().getName());
-		assertEquals(TYPE_NAME +"_parcels", defaultAttributeOverride.getColumn().getTable());
+		assertEquals(TYPE_NAME +"_parcels", defaultAttributeOverride.getColumn().getTableName());
 		assertEquals(null, defaultAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(true, defaultAttributeOverride.getColumn().isInsertable());
 		assertEquals(true, defaultAttributeOverride.getColumn().isUpdatable());
@@ -1869,7 +1869,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		BasicMapping parcelNumberMapping = (BasicMapping) propertyInfoEmbeddable.getPersistentType().getAttributeNamed("parcelNumber").getMapping();
 		parcelNumberMapping.getColumn().setSpecifiedName("FOO1");
-		parcelNumberMapping.getColumn().setSpecifiedTable("BAR1");
+		parcelNumberMapping.getColumn().setSpecifiedTableName("BAR1");
 		parcelNumberMapping.getColumn().setColumnDefinition("COLUMN_DEF1");
 		parcelNumberMapping.getColumn().setSpecifiedInsertable(Boolean.FALSE);
 		parcelNumberMapping.getColumn().setSpecifiedUpdatable(Boolean.FALSE);
@@ -1885,7 +1885,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		defaultAttributeOverride = attributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("parcelNumber", defaultAttributeOverride.getName());
 		assertEquals("FOO1", defaultAttributeOverride.getColumn().getName());
-		assertEquals("BAR1", defaultAttributeOverride.getColumn().getTable());
+		assertEquals("BAR1", defaultAttributeOverride.getColumn().getTableName());
 		assertEquals("COLUMN_DEF1", defaultAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(false, defaultAttributeOverride.getColumn().isInsertable());
 		assertEquals(false, defaultAttributeOverride.getColumn().isUpdatable());
@@ -1896,7 +1896,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertEquals(7, defaultAttributeOverride.getColumn().getScale());
 		
 		parcelNumberMapping.getColumn().setSpecifiedName(null);
-		parcelNumberMapping.getColumn().setSpecifiedTable(null);
+		parcelNumberMapping.getColumn().setSpecifiedTableName(null);
 		parcelNumberMapping.getColumn().setColumnDefinition(null);
 		parcelNumberMapping.getColumn().setSpecifiedInsertable(null);
 		parcelNumberMapping.getColumn().setSpecifiedUpdatable(null);
@@ -1908,7 +1908,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		defaultAttributeOverride = attributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("parcelNumber", defaultAttributeOverride.getName());
 		assertEquals("parcelNumber", defaultAttributeOverride.getColumn().getName());
-		assertEquals(TYPE_NAME +"_parcels", defaultAttributeOverride.getColumn().getTable());
+		assertEquals(TYPE_NAME +"_parcels", defaultAttributeOverride.getColumn().getTableName());
 		assertEquals(null, defaultAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(true, defaultAttributeOverride.getColumn().isInsertable());
 		assertEquals(true, defaultAttributeOverride.getColumn().isUpdatable());

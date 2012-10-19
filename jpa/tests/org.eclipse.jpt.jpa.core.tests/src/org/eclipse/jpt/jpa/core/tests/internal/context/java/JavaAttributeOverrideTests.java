@@ -200,15 +200,15 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		assertEquals(2, overrideContainer.getVirtualOverridesSize());
 		
 		ReadOnlyAttributeOverride attributeOverride = overrideContainer.getVirtualOverrides().iterator().next();
-		assertEquals("AnnotationTestTypeChild", attributeOverride.getColumn().getDefaultTable());
+		assertEquals("AnnotationTestTypeChild", attributeOverride.getColumn().getDefaultTableName());
 
 		
 		JavaPersistentType mappedSuperclass = ListTools.list(getPersistenceUnit().getSpecifiedClassRefs()).get(1).getJavaPersistentType();
 		BasicMapping basicMapping = (BasicMapping) mappedSuperclass.getAttributeNamed("id").getMapping();
-		basicMapping.getColumn().setSpecifiedTable("BAR");
+		basicMapping.getColumn().setSpecifiedTableName("BAR");
 	
 		attributeOverride = overrideContainer.getVirtualOverrides().iterator().next();
-		assertEquals("BAR", attributeOverride.getColumn().getDefaultTable());
+		assertEquals("BAR", attributeOverride.getColumn().getDefaultTableName());
 	}
 	
 	public void testDefaultName() throws Exception {

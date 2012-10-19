@@ -35,7 +35,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * <strong>NB:</strong> any subclass that directly holds its column annotation
  * must:<ul>
  * <li>call the "super" constructor that takes a column annotation
- *     {@link #AbstractJavaNamedColumn(JavaJpaContextNode, JavaReadOnlyNamedColumn.Owner, NamedColumnAnnotation)}
+ *     {@link #AbstractJavaNamedColumn(JpaContextNode, ReadOnlyNamedColumn.Owner, NamedColumnAnnotation)}
  * <li>override {@link #setColumnAnnotation(NamedColumnAnnotation)} to set the column annotation
  *     so it is in place before the column's state (e.g. {@link #specifiedName})
  *     is initialized
@@ -189,8 +189,7 @@ public abstract class AbstractJavaNamedColumn<A extends NamedColumnAnnotation, O
 	// ********** database stuff **********
 
 	protected Column getDbColumn() {
-		Table table = this.getDbTable();
-		return (table == null) ? null : table.getColumnForIdentifier(this.getName());
+		return (this.dbTable == null) ? null : this.dbTable.getColumnForIdentifier(this.getName());
 	}
 
 	public Table getDbTable() {
@@ -204,14 +203,14 @@ public abstract class AbstractJavaNamedColumn<A extends NamedColumnAnnotation, O
 	}
 
 	protected Table buildDbTable() {
-		return this.owner.resolveDbTable(this.getTable());
+		return this.owner.resolveDbTable(this.getTableName());
 	}
 
 	/**
 	 * Return the name of the column's table. This is overridden
 	 * in {@link AbstractJavaBaseColumn} where a table can be defined.
 	 */
-	public String getTable() {
+	public String getTableName() {
 		return this.owner.getDefaultTableName();
 	}
 
@@ -244,8 +243,7 @@ public abstract class AbstractJavaNamedColumn<A extends NamedColumnAnnotation, O
 	}
 
 	protected Iterable<String> getCandidateNames() {
-		Table dbTable = this.getDbTable();
-		return (dbTable != null) ? dbTable.getSortedColumnIdentifiers() : EmptyIterable.<String> instance();
+		return (this.dbTable != null) ? this.dbTable.getSortedColumnIdentifiers() : EmptyIterable.<String> instance();
 	}
 
 
@@ -290,7 +288,7 @@ public abstract class AbstractJavaNamedColumn<A extends NamedColumnAnnotation, O
 
 	@Override
 	public void toString(StringBuilder sb) {
-		String table = this.getTable();
+		String table = this.getTableName();
 		if (table != null) {
 			sb.append(table);
 			sb.append('.');

@@ -706,7 +706,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		ReadOnlyAttributeOverride defaultAttributeOverride = attributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("city", defaultAttributeOverride.getName());
 		assertEquals("city", defaultAttributeOverride.getColumn().getName());
-		assertEquals(TYPE_NAME, defaultAttributeOverride.getColumn().getTable());
+		assertEquals(TYPE_NAME, defaultAttributeOverride.getColumn().getTableName());
 		assertEquals(null, defaultAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(true, defaultAttributeOverride.getColumn().isInsertable());
 		assertEquals(true, defaultAttributeOverride.getColumn().isUpdatable());
@@ -723,7 +723,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		
 		BasicMapping cityMapping = (BasicMapping) embeddable.getPersistentType().getAttributeNamed("city").getMapping();
 		cityMapping.getColumn().setSpecifiedName("FOO");
-		cityMapping.getColumn().setSpecifiedTable("BAR");
+		cityMapping.getColumn().setSpecifiedTableName("BAR");
 		cityMapping.getColumn().setColumnDefinition("COLUMN_DEF");
 		cityMapping.getColumn().setSpecifiedInsertable(Boolean.FALSE);
 		cityMapping.getColumn().setSpecifiedUpdatable(Boolean.FALSE);
@@ -740,7 +740,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		defaultAttributeOverride = attributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("city", defaultAttributeOverride.getName());
 		assertEquals("FOO", defaultAttributeOverride.getColumn().getName());
-		assertEquals("BAR", defaultAttributeOverride.getColumn().getTable());
+		assertEquals("BAR", defaultAttributeOverride.getColumn().getTableName());
 		assertEquals("COLUMN_DEF", defaultAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(false, defaultAttributeOverride.getColumn().isInsertable());
 		assertEquals(false, defaultAttributeOverride.getColumn().isUpdatable());
@@ -751,7 +751,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		assertEquals(7, defaultAttributeOverride.getColumn().getScale());
 		
 		cityMapping.getColumn().setSpecifiedName(null);
-		cityMapping.getColumn().setSpecifiedTable(null);
+		cityMapping.getColumn().setSpecifiedTableName(null);
 		cityMapping.getColumn().setColumnDefinition(null);
 		cityMapping.getColumn().setSpecifiedInsertable(null);
 		cityMapping.getColumn().setSpecifiedUpdatable(null);
@@ -763,7 +763,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		defaultAttributeOverride = attributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("city", defaultAttributeOverride.getName());
 		assertEquals("city", defaultAttributeOverride.getColumn().getName());
-		assertEquals(TYPE_NAME, defaultAttributeOverride.getColumn().getTable());
+		assertEquals(TYPE_NAME, defaultAttributeOverride.getColumn().getTableName());
 		assertEquals(null, defaultAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(true, defaultAttributeOverride.getColumn().isInsertable());
 		assertEquals(true, defaultAttributeOverride.getColumn().isUpdatable());
@@ -1035,7 +1035,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		VirtualJoinColumn virtualJoinColumn = joiningStrategy.getJoinColumns().iterator().next();
 		assertEquals("address_id", virtualJoinColumn.getName());
 		assertEquals("id", virtualJoinColumn.getReferencedColumnName());
-		assertEquals(TYPE_NAME, virtualJoinColumn.getTable());
+		assertEquals(TYPE_NAME, virtualJoinColumn.getTableName());
 		assertEquals(null, virtualJoinColumn.getColumnDefinition());
 		assertEquals(true, virtualJoinColumn.isInsertable());
 		assertEquals(true, virtualJoinColumn.isUpdatable());
@@ -1049,7 +1049,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		JoinColumn joinColumn = oneToOneMapping.getRelationship().getJoinColumnStrategy().addSpecifiedJoinColumn(0);
 		joinColumn.setSpecifiedName("MY_JOIN_COLUMN");
 		joinColumn.setSpecifiedReferencedColumnName("MY_REFERENCE_COLUMN");
-		joinColumn.setSpecifiedTable("BAR");
+		joinColumn.setSpecifiedTableName("BAR");
 		joinColumn.setColumnDefinition("COLUMN_DEF");
 		joinColumn.setSpecifiedInsertable(Boolean.FALSE);
 		joinColumn.setSpecifiedUpdatable(Boolean.FALSE);
@@ -1067,7 +1067,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		virtualJoinColumn = joiningStrategy.getJoinColumns().iterator().next();
 		assertEquals("MY_JOIN_COLUMN", virtualJoinColumn.getName());
 		assertEquals("MY_REFERENCE_COLUMN", virtualJoinColumn.getReferencedColumnName());
-		assertEquals("BAR", virtualJoinColumn.getTable());
+		assertEquals("BAR", virtualJoinColumn.getTableName());
 		assertEquals("COLUMN_DEF", virtualJoinColumn.getColumnDefinition());
 		assertEquals(false, virtualJoinColumn.isInsertable());
 		assertEquals(false, virtualJoinColumn.isUpdatable());
@@ -1386,7 +1386,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		VirtualJoinColumn virtualJoinColumn = joinTable.getJoinColumns().iterator().next();
 		assertEquals("AnnotationTestType_id", virtualJoinColumn.getName());
 		assertEquals("id", virtualJoinColumn.getReferencedColumnName());
-		assertEquals("AnnotationTestType_Address", virtualJoinColumn.getTable());
+		assertEquals("AnnotationTestType_Address", virtualJoinColumn.getTableName());
 		assertEquals(null, virtualJoinColumn.getColumnDefinition());
 		assertEquals(true, virtualJoinColumn.isInsertable());
 		assertEquals(true, virtualJoinColumn.isUpdatable());
@@ -1397,7 +1397,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		VirtualJoinColumn virtualInverseJoinColumn = joinTable.getInverseJoinColumns().iterator().next();
 		assertEquals("addresses_id", virtualInverseJoinColumn.getName());
 		assertEquals("id", virtualInverseJoinColumn.getReferencedColumnName());
-		assertEquals("AnnotationTestType_Address", virtualInverseJoinColumn.getTable());
+		assertEquals("AnnotationTestType_Address", virtualInverseJoinColumn.getTableName());
 		assertEquals(null, virtualInverseJoinColumn.getColumnDefinition());
 		assertEquals(true, virtualInverseJoinColumn.isInsertable());
 		assertEquals(true, virtualInverseJoinColumn.isUpdatable());
@@ -1413,7 +1413,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		JoinColumn joinColumn = joinTableStrategy.getJoinTable().addSpecifiedJoinColumn(0);
 		joinColumn.setSpecifiedName("MY_JOIN_COLUMN");
 		joinColumn.setSpecifiedReferencedColumnName("MY_REFERENCE_COLUMN");
-		joinColumn.setSpecifiedTable("BAR");
+		joinColumn.setSpecifiedTableName("BAR");
 		joinColumn.setColumnDefinition("COLUMN_DEF");
 		joinColumn.setSpecifiedInsertable(Boolean.FALSE);
 		joinColumn.setSpecifiedUpdatable(Boolean.FALSE);
@@ -1423,7 +1423,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		JoinColumn inverseJoinColumn = joinTableStrategy.getJoinTable().addSpecifiedInverseJoinColumn(0);
 		inverseJoinColumn.setSpecifiedName("MY_INVERSE_JOIN_COLUMN");
 		inverseJoinColumn.setSpecifiedReferencedColumnName("MY_INVERSE_REFERENCE_COLUMN");
-		inverseJoinColumn.setSpecifiedTable("INVERSE_BAR");
+		inverseJoinColumn.setSpecifiedTableName("INVERSE_BAR");
 		inverseJoinColumn.setColumnDefinition("INVERSE_COLUMN_DEF");
 		inverseJoinColumn.setSpecifiedInsertable(Boolean.FALSE);
 		inverseJoinColumn.setSpecifiedUpdatable(Boolean.FALSE);
@@ -1441,7 +1441,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		virtualJoinColumn = joinTable.getJoinColumns().iterator().next();
 		assertEquals("MY_JOIN_COLUMN", virtualJoinColumn.getName());
 		assertEquals("MY_REFERENCE_COLUMN", virtualJoinColumn.getReferencedColumnName());
-		assertEquals("BAR", virtualJoinColumn.getTable());
+		assertEquals("BAR", virtualJoinColumn.getTableName());
 		assertEquals("COLUMN_DEF", virtualJoinColumn.getColumnDefinition());
 		assertEquals(false, virtualJoinColumn.isInsertable());
 		assertEquals(false, virtualJoinColumn.isUpdatable());
@@ -1452,7 +1452,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		virtualInverseJoinColumn = joinTable.getInverseJoinColumns().iterator().next();
 		assertEquals("MY_INVERSE_JOIN_COLUMN", virtualInverseJoinColumn.getName());
 		assertEquals("MY_INVERSE_REFERENCE_COLUMN", virtualInverseJoinColumn.getReferencedColumnName());
-		assertEquals("INVERSE_BAR", virtualInverseJoinColumn.getTable());
+		assertEquals("INVERSE_BAR", virtualInverseJoinColumn.getTableName());
 		assertEquals("INVERSE_COLUMN_DEF", virtualInverseJoinColumn.getColumnDefinition());
 		assertEquals(false, virtualInverseJoinColumn.isInsertable());
 		assertEquals(false, virtualInverseJoinColumn.isUpdatable());
@@ -1492,11 +1492,11 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		virtualAttributeOverride = virtualAttributeOverrides.next();
 		assertEquals("zipCode.zip", virtualAttributeOverride.getName());
 		assertEquals("zip", virtualAttributeOverride.getColumn().getName());
-		assertEquals("Customer", virtualAttributeOverride.getColumn().getTable());		
+		assertEquals("Customer", virtualAttributeOverride.getColumn().getTableName());		
 		virtualAttributeOverride = virtualAttributeOverrides.next();
 		assertEquals("zipCode.plusfour", virtualAttributeOverride.getName());
 		assertEquals("plusfour", virtualAttributeOverride.getColumn().getName());
-		assertEquals("Customer", virtualAttributeOverride.getColumn().getTable());	
+		assertEquals("Customer", virtualAttributeOverride.getColumn().getTableName());	
 		assertEquals(null, virtualAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(true, virtualAttributeOverride.getColumn().isInsertable());
 		assertEquals(true, virtualAttributeOverride.getColumn().isUpdatable());
@@ -1520,7 +1520,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		PersistentType zipCodePersistentType = specifiedClassRefs.next().getJavaPersistentType();
 		BasicMapping plusFourMapping = (BasicMapping) zipCodePersistentType.getAttributeNamed("plusfour").getMapping();
 		plusFourMapping.getColumn().setSpecifiedName("BLAH");
-		plusFourMapping.getColumn().setSpecifiedTable("BLAH_TABLE");
+		plusFourMapping.getColumn().setSpecifiedTableName("BLAH_TABLE");
 		plusFourMapping.getColumn().setColumnDefinition("COLUMN_DEFINITION");
 		plusFourMapping.getColumn().setSpecifiedInsertable(Boolean.FALSE);
 		plusFourMapping.getColumn().setSpecifiedUpdatable(Boolean.FALSE);
@@ -1534,7 +1534,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		virtualAttributeOverride = (VirtualAttributeOverride) ((JavaEmbeddedMapping) addressPersistentType.getAttributeNamed("zipCode").getMapping()).getAttributeOverrideContainer().getOverrideNamed("plusfour");
 		assertEquals("plusfour", virtualAttributeOverride.getName());
 		assertEquals("BLAH", virtualAttributeOverride.getColumn().getName());
-		assertEquals("BLAH_TABLE", virtualAttributeOverride.getColumn().getTable());	
+		assertEquals("BLAH_TABLE", virtualAttributeOverride.getColumn().getTableName());	
 		assertEquals("COLUMN_DEFINITION", virtualAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(false, virtualAttributeOverride.getColumn().isInsertable());
 		assertEquals(false, virtualAttributeOverride.getColumn().isUpdatable());
@@ -1548,7 +1548,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		virtualAttributeOverride = (VirtualAttributeOverride) ((JavaEmbeddedMapping) customerPersistentType.getAttributeNamed("address").getMapping()).getAttributeOverrideContainer().getOverrideNamed("zipCode.plusfour");
 		assertEquals("zipCode.plusfour", virtualAttributeOverride.getName());
 		assertEquals("BLAH", virtualAttributeOverride.getColumn().getName());
-		assertEquals("BLAH_TABLE", virtualAttributeOverride.getColumn().getTable());	
+		assertEquals("BLAH_TABLE", virtualAttributeOverride.getColumn().getTableName());	
 		assertEquals("COLUMN_DEFINITION", virtualAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(false, virtualAttributeOverride.getColumn().isInsertable());
 		assertEquals(false, virtualAttributeOverride.getColumn().isUpdatable());
@@ -1561,13 +1561,13 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		//set an attribute override on Address.zipCode embedded mapping
 		AttributeOverride specifiedAttributeOverride = ((VirtualAttributeOverride) ((JavaEmbeddedMapping) addressPersistentType.getAttributeNamed("zipCode").getMapping()).getAttributeOverrideContainer().getOverrideNamed("plusfour")).convertToSpecified();
 		specifiedAttributeOverride.getColumn().setSpecifiedName("BLAH_OVERRIDE");
-		specifiedAttributeOverride.getColumn().setSpecifiedTable("BLAH_TABLE_OVERRIDE");
+		specifiedAttributeOverride.getColumn().setSpecifiedTableName("BLAH_TABLE_OVERRIDE");
 		specifiedAttributeOverride.getColumn().setColumnDefinition("COLUMN_DEFINITION_OVERRIDE");
 	
 		virtualAttributeOverride = (VirtualAttributeOverride) ((JavaEmbeddedMapping) customerPersistentType.getAttributeNamed("address").getMapping()).getAttributeOverrideContainer().getOverrideNamed("zipCode.plusfour");
 		assertEquals("zipCode.plusfour", virtualAttributeOverride.getName());
 		assertEquals("BLAH_OVERRIDE", virtualAttributeOverride.getColumn().getName());
-		assertEquals("BLAH_TABLE_OVERRIDE", virtualAttributeOverride.getColumn().getTable());	
+		assertEquals("BLAH_TABLE_OVERRIDE", virtualAttributeOverride.getColumn().getTableName());	
 		assertEquals("COLUMN_DEFINITION_OVERRIDE", virtualAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(true, virtualAttributeOverride.getColumn().isInsertable());
 		assertEquals(true, virtualAttributeOverride.getColumn().isUpdatable());
@@ -1584,7 +1584,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 //		assertEquals("plusfour", specifiedAttributeOverride.getColumn().getDefaultName());
 		assertEquals("BLAH_OVERRIDE", specifiedAttributeOverride.getColumn().getSpecifiedName());
 //		assertEquals("Customer", specifiedAttributeOverride.getColumn().getDefaultTable());	
-		assertEquals("BLAH_TABLE_OVERRIDE", specifiedAttributeOverride.getColumn().getSpecifiedTable());	
+		assertEquals("BLAH_TABLE_OVERRIDE", specifiedAttributeOverride.getColumn().getSpecifiedTableName());	
 		assertEquals("COLUMN_DEFINITION_OVERRIDE", specifiedAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(true, specifiedAttributeOverride.getColumn().isInsertable());
 		assertEquals(true, specifiedAttributeOverride.getColumn().isUpdatable());

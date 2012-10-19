@@ -109,7 +109,7 @@ public class GenericOrmVirtualPrimaryKeyJoinColumn
 
 	// ********** misc **********
 
-	public String getTable() {
+	public String getTableName() {
 		return this.owner.getDefaultTableName();
 	}
 

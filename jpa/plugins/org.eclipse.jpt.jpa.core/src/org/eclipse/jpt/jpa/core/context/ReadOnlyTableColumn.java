@@ -29,19 +29,22 @@ public interface ReadOnlyTableColumn
 {
 	// ********** table **********
 
-	String getSpecifiedTable();
-		String SPECIFIED_TABLE_PROPERTY = "specifiedTable"; //$NON-NLS-1$
-	String getDefaultTable();
-		String DEFAULT_TABLE_PROPERTY = "defaultTable"; //$NON-NLS-1$
+	String getSpecifiedTableName();
+		String SPECIFIED_TABLE_NAME_PROPERTY = "specifiedTableName"; //$NON-NLS-1$
+	String getDefaultTableName();
+		String DEFAULT_TABLE_NAME_PROPERTY = "defaultTable"; //$NON-NLS-1$
 
 	/**
-	 * Return the (best guess) text location of the column's table.
+	 * Return the (best guess) text location of the column's table name.
 	 */
-	TextRange getTableTextRange();
+	TextRange getTableNameTextRange();
 
 
 	// ********** misc **********
 
+	/**
+	 * Return whether the column's table name is invalid.
+	 */
 	boolean tableNameIsInvalid();
 
 	/**

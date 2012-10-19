@@ -231,21 +231,21 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
 
-		assertNull(ormJoinColumn.getSpecifiedTable());
+		assertNull(ormJoinColumn.getSpecifiedTableName());
 		assertNull(joinColumnResource.getTable());
 		
 		//set table in the resource model, verify context model updated
 		joinColumnResource.setTable("FOO");
-		assertEquals("FOO", ormJoinColumn.getSpecifiedTable());
+		assertEquals("FOO", ormJoinColumn.getSpecifiedTableName());
 		assertEquals("FOO", joinColumnResource.getTable());
 	
 		//set table to null in the resource model
 		joinColumnResource.setTable(null);
-		assertNull(ormJoinColumn.getSpecifiedTable());
+		assertNull(ormJoinColumn.getSpecifiedTableName());
 		assertNull(joinColumnResource.getTable());
 		
 		joinColumnResource.setTable("FOO");
-		assertEquals("FOO", ormJoinColumn.getSpecifiedTable());
+		assertEquals("FOO", ormJoinColumn.getSpecifiedTableName());
 		assertEquals("FOO", joinColumnResource.getTable());
 
 		joinTableResource.getJoinColumns().remove(0);
@@ -265,17 +265,17 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
 
-		assertNull(ormJoinColumn.getSpecifiedTable());
+		assertNull(ormJoinColumn.getSpecifiedTableName());
 		assertNull(joinColumnResource.getTable());
 		
 		//set table in the context model, verify resource model modified
-		ormJoinColumn.setSpecifiedTable("foo");
-		assertEquals("foo", ormJoinColumn.getSpecifiedTable());
+		ormJoinColumn.setSpecifiedTableName("foo");
+		assertEquals("foo", ormJoinColumn.getSpecifiedTableName());
 		assertEquals("foo", joinColumnResource.getTable());
 		
 		//set table to null in the context model
-		ormJoinColumn.setSpecifiedTable(null);
-		assertNull(ormJoinColumn.getSpecifiedTable());
+		ormJoinColumn.setSpecifiedTableName(null);
+		assertNull(ormJoinColumn.getSpecifiedTableName());
 		assertNull(joinTableResource.getJoinColumns().get(0).getTable());
 	}
 

@@ -153,7 +153,7 @@ public class GenericOrmPrimaryKeyJoinColumn
 	}
 
 	@Override
-	public String getTable() {
+	public String getTableName() {
 		return this.owner.getDefaultTableName();
 	}
 

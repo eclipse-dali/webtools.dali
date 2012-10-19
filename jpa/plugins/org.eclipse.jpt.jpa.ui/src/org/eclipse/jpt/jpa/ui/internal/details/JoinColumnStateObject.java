@@ -138,7 +138,7 @@ public abstract class JoinColumnStateObject
 			return null;
 		}
 
-		return joinColumn.getSpecifiedTable();
+		return joinColumn.getSpecifiedTableName();
 	}
 
 	protected boolean isTableEditable() {
@@ -185,8 +185,8 @@ public abstract class JoinColumnStateObject
 		if (isTableEditable()) {
 			String table = getTable();
 
-			if (valuesAreDifferent(table, joinColumn.getSpecifiedTable())) {
-				joinColumn.setSpecifiedTable(table);
+			if (valuesAreDifferent(table, joinColumn.getSpecifiedTableName())) {
+				joinColumn.setSpecifiedTableName(table);
 			}
 		}
 

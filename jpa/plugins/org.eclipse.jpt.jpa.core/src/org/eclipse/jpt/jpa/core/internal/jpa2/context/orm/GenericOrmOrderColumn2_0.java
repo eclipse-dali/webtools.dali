@@ -193,7 +193,7 @@ public class GenericOrmOrderColumn2_0
 	}
 
 	@Override
-	public String getTable() {
+	public String getTableName() {
 		return this.getParent().getDefaultTableName();
 	}
 

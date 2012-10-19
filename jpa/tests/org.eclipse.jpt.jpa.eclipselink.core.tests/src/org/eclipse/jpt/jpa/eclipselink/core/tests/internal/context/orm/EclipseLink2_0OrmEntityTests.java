@@ -530,7 +530,7 @@ public class EclipseLink2_0OrmEntityTests
 		VirtualAttributeOverride virtualAttributeOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("id", virtualAttributeOverride.getName());
 		assertEquals("id", virtualAttributeOverride.getColumn().getName());
-		assertEquals(SUB_TYPE_NAME, virtualAttributeOverride.getColumn().getTable());
+		assertEquals(SUB_TYPE_NAME, virtualAttributeOverride.getColumn().getTableName());
 		
 
 		OrmMappedSuperclass mappedSuperclass = (OrmMappedSuperclass) ormEntity.getPersistentType().getSuperPersistentType().getMapping();
@@ -538,7 +538,7 @@ public class EclipseLink2_0OrmEntityTests
 		mappedSuperclass.getPersistentType().getAttributeNamed("id").addToXml();
 		BasicMapping idMapping = (BasicMapping) mappedSuperclass.getPersistentType().getAttributeNamed("id").getMapping();
 		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.getColumn().setSpecifiedTable("BAR");
+		idMapping.getColumn().setSpecifiedTableName("BAR");
 		
 		assertEquals(0, entityResource.getAttributeOverrides().size());
 
@@ -546,16 +546,16 @@ public class EclipseLink2_0OrmEntityTests
 		virtualAttributeOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("id", virtualAttributeOverride.getName());
 		assertEquals("FOO", virtualAttributeOverride.getColumn().getName());
-		assertEquals("BAR", virtualAttributeOverride.getColumn().getTable());
+		assertEquals("BAR", virtualAttributeOverride.getColumn().getTableName());
 
 		idMapping.getColumn().setSpecifiedName(null);
-		idMapping.getColumn().setSpecifiedTable(null);
+		idMapping.getColumn().setSpecifiedTableName(null);
 		assertEquals(0, entityResource.getAttributeOverrides().size());
 
 		virtualAttributeOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("id", virtualAttributeOverride.getName());
 		assertEquals("id", virtualAttributeOverride.getColumn().getName());
-		assertEquals(SUB_TYPE_NAME, virtualAttributeOverride.getColumn().getTable());
+		assertEquals(SUB_TYPE_NAME, virtualAttributeOverride.getColumn().getTableName());
 		
 		virtualAttributeOverride.convertToSpecified();
 		assertEquals(2, overrideContainer.getVirtualOverridesSize());
@@ -576,7 +576,7 @@ public class EclipseLink2_0OrmEntityTests
 		VirtualAttributeOverride virtualAttributeOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("id", virtualAttributeOverride.getName());
 		assertEquals("id", virtualAttributeOverride.getColumn().getName());
-		assertEquals(SUB_TYPE_NAME, virtualAttributeOverride.getColumn().getTable());
+		assertEquals(SUB_TYPE_NAME, virtualAttributeOverride.getColumn().getTableName());
 		
 
 		OrmEntity superclass = (OrmEntity) ormEntity.getParentEntity();
@@ -584,7 +584,7 @@ public class EclipseLink2_0OrmEntityTests
 		superclass.getPersistentType().getAttributeNamed("id").addToXml();
 		BasicMapping idMapping = (BasicMapping) superclass.getPersistentType().getAttributeNamed("id").getMapping();
 		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.getColumn().setSpecifiedTable("BAR");
+		idMapping.getColumn().setSpecifiedTableName("BAR");
 		
 		assertEquals(0, entityResource.getAttributeOverrides().size());
 
@@ -592,16 +592,16 @@ public class EclipseLink2_0OrmEntityTests
 		virtualAttributeOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("id", virtualAttributeOverride.getName());
 		assertEquals("FOO", virtualAttributeOverride.getColumn().getName());
-		assertEquals("BAR", virtualAttributeOverride.getColumn().getTable());
+		assertEquals("BAR", virtualAttributeOverride.getColumn().getTableName());
 
 		idMapping.getColumn().setSpecifiedName(null);
-		idMapping.getColumn().setSpecifiedTable(null);
+		idMapping.getColumn().setSpecifiedTableName(null);
 		assertEquals(0, entityResource.getAttributeOverrides().size());
 
 		virtualAttributeOverride = overrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("id", virtualAttributeOverride.getName());
 		assertEquals("id", virtualAttributeOverride.getColumn().getName());
-		assertEquals(SUB_TYPE_NAME, virtualAttributeOverride.getColumn().getTable());
+		assertEquals(SUB_TYPE_NAME, virtualAttributeOverride.getColumn().getTableName());
 		
 		virtualAttributeOverride.convertToSpecified();
 		assertEquals(2, overrideContainer.getVirtualOverridesSize());
@@ -1373,11 +1373,11 @@ public class EclipseLink2_0OrmEntityTests
 		virtualAttributeOverride = virtualAttributeOverrides.next();
 		assertEquals("address.zipCode.zip", virtualAttributeOverride.getName());
 		assertEquals("zip", virtualAttributeOverride.getColumn().getName());
-		assertEquals("LongTimeCustomer", virtualAttributeOverride.getColumn().getTable());		
+		assertEquals("LongTimeCustomer", virtualAttributeOverride.getColumn().getTableName());		
 		virtualAttributeOverride = virtualAttributeOverrides.next();
 		assertEquals("address.zipCode.plusfour", virtualAttributeOverride.getName());
 		assertEquals("plusfour", virtualAttributeOverride.getColumn().getName());
-		assertEquals("LongTimeCustomer", virtualAttributeOverride.getColumn().getTable());	
+		assertEquals("LongTimeCustomer", virtualAttributeOverride.getColumn().getTableName());	
 		assertEquals(null, virtualAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(true, virtualAttributeOverride.getColumn().isInsertable());
 		assertEquals(true, virtualAttributeOverride.getColumn().isUpdatable());
@@ -1391,7 +1391,7 @@ public class EclipseLink2_0OrmEntityTests
 		zipCodePersistentType.getAttributeNamed("plusfour").addToXml();
 		BasicMapping plusFourMapping = (BasicMapping) zipCodePersistentType.getAttributeNamed("plusfour").getMapping();
 		plusFourMapping.getColumn().setSpecifiedName("BLAH");
-		plusFourMapping.getColumn().setSpecifiedTable("BLAH_TABLE");
+		plusFourMapping.getColumn().setSpecifiedTableName("BLAH_TABLE");
 		plusFourMapping.getColumn().setColumnDefinition("COLUMN_DEFINITION");
 		plusFourMapping.getColumn().setSpecifiedInsertable(Boolean.FALSE);
 		plusFourMapping.getColumn().setSpecifiedUpdatable(Boolean.FALSE);
@@ -1406,7 +1406,7 @@ public class EclipseLink2_0OrmEntityTests
 		virtualAttributeOverride = (OrmVirtualAttributeOverride) attributeOverrideContainer.getOverrideNamed("address.zipCode.plusfour");
 		assertEquals("address.zipCode.plusfour", virtualAttributeOverride.getName());
 		assertEquals("BLAH", virtualAttributeOverride.getColumn().getName());
-		assertEquals("BLAH_TABLE", virtualAttributeOverride.getColumn().getTable());	
+		assertEquals("BLAH_TABLE", virtualAttributeOverride.getColumn().getTableName());	
 		assertEquals("COLUMN_DEFINITION", virtualAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(false, virtualAttributeOverride.getColumn().isInsertable());
 		assertEquals(false, virtualAttributeOverride.getColumn().isUpdatable());
@@ -1420,7 +1420,7 @@ public class EclipseLink2_0OrmEntityTests
 		addressPersistentType.getAttributeNamed("zipCode").addToXml();
 		AttributeOverride specifiedAttributeOverride = ((VirtualAttributeOverride) ((EmbeddedMapping) addressPersistentType.getAttributeNamed("zipCode").getMapping()).getAttributeOverrideContainer().getOverrideNamed("plusfour")).convertToSpecified();
 		specifiedAttributeOverride.getColumn().setSpecifiedName("BLAH_OVERRIDE");
-		specifiedAttributeOverride.getColumn().setSpecifiedTable("BLAH_TABLE_OVERRIDE");
+		specifiedAttributeOverride.getColumn().setSpecifiedTableName("BLAH_TABLE_OVERRIDE");
 		specifiedAttributeOverride.getColumn().setColumnDefinition("COLUMN_DEFINITION_OVERRIDE");
 
 
@@ -1428,7 +1428,7 @@ public class EclipseLink2_0OrmEntityTests
 		virtualAttributeOverride = (OrmVirtualAttributeOverride) attributeOverrideContainer.getOverrideNamed("address.zipCode.plusfour");
 		assertEquals("address.zipCode.plusfour", virtualAttributeOverride.getName());
 		assertEquals("BLAH_OVERRIDE", virtualAttributeOverride.getColumn().getName());
-		assertEquals("BLAH_TABLE_OVERRIDE", virtualAttributeOverride.getColumn().getTable());	
+		assertEquals("BLAH_TABLE_OVERRIDE", virtualAttributeOverride.getColumn().getTableName());	
 		assertEquals("COLUMN_DEFINITION_OVERRIDE", virtualAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(true, virtualAttributeOverride.getColumn().isInsertable());
 		assertEquals(true, virtualAttributeOverride.getColumn().isUpdatable());
@@ -1445,7 +1445,7 @@ public class EclipseLink2_0OrmEntityTests
 //		assertEquals("plusfour", specifiedAttributeOverride.getColumn().getDefaultName());
 		assertEquals("BLAH_OVERRIDE", specifiedAttributeOverride.getColumn().getSpecifiedName());
 //		assertEquals("Customer", specifiedAttributeOverride.getColumn().getDefaultTable());	
-		assertEquals("BLAH_TABLE_OVERRIDE", specifiedAttributeOverride.getColumn().getSpecifiedTable());	
+		assertEquals("BLAH_TABLE_OVERRIDE", specifiedAttributeOverride.getColumn().getSpecifiedTableName());	
 		assertEquals("COLUMN_DEFINITION_OVERRIDE", specifiedAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(true, specifiedAttributeOverride.getColumn().isInsertable());
 		assertEquals(true, specifiedAttributeOverride.getColumn().isUpdatable());
@@ -1483,11 +1483,11 @@ public class EclipseLink2_0OrmEntityTests
 		virtualAttributeOverride = virtualAttributeOverrides.next();
 		assertEquals("address.zipCode.zip", virtualAttributeOverride.getName());
 		assertEquals("zip", virtualAttributeOverride.getColumn().getName());
-		assertEquals("LongTimeCustomer", virtualAttributeOverride.getColumn().getTable());		
+		assertEquals("LongTimeCustomer", virtualAttributeOverride.getColumn().getTableName());		
 		virtualAttributeOverride = virtualAttributeOverrides.next();
 		assertEquals("address.zipCode.plusfour", virtualAttributeOverride.getName());
 		assertEquals("plusfour", virtualAttributeOverride.getColumn().getName());
-		assertEquals("LongTimeCustomer", virtualAttributeOverride.getColumn().getTable());	
+		assertEquals("LongTimeCustomer", virtualAttributeOverride.getColumn().getTableName());	
 		assertEquals(null, virtualAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(true, virtualAttributeOverride.getColumn().isInsertable());
 		assertEquals(true, virtualAttributeOverride.getColumn().isUpdatable());
@@ -1501,7 +1501,7 @@ public class EclipseLink2_0OrmEntityTests
 		zipCodePersistentType.getAttributeNamed("plusfour").addToXml();
 		BasicMapping plusFourMapping = (BasicMapping) zipCodePersistentType.getAttributeNamed("plusfour").getMapping();
 		plusFourMapping.getColumn().setSpecifiedName("BLAH");
-		plusFourMapping.getColumn().setSpecifiedTable("BLAH_TABLE");
+		plusFourMapping.getColumn().setSpecifiedTableName("BLAH_TABLE");
 		plusFourMapping.getColumn().setColumnDefinition("COLUMN_DEFINITION");
 		plusFourMapping.getColumn().setSpecifiedInsertable(Boolean.FALSE);
 		plusFourMapping.getColumn().setSpecifiedUpdatable(Boolean.FALSE);
@@ -1516,7 +1516,7 @@ public class EclipseLink2_0OrmEntityTests
 		virtualAttributeOverride = (OrmVirtualAttributeOverride) attributeOverrideContainer.getOverrideNamed("address.zipCode.plusfour");
 		assertEquals("address.zipCode.plusfour", virtualAttributeOverride.getName());
 		assertEquals("BLAH", virtualAttributeOverride.getColumn().getName());
-		assertEquals("BLAH_TABLE", virtualAttributeOverride.getColumn().getTable());	
+		assertEquals("BLAH_TABLE", virtualAttributeOverride.getColumn().getTableName());	
 		assertEquals("COLUMN_DEFINITION", virtualAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(false, virtualAttributeOverride.getColumn().isInsertable());
 		assertEquals(false, virtualAttributeOverride.getColumn().isUpdatable());
@@ -1530,7 +1530,7 @@ public class EclipseLink2_0OrmEntityTests
 		addressPersistentType.getAttributeNamed("zipCode").addToXml();
 		AttributeOverride specifiedAttributeOverride = ((VirtualAttributeOverride) ((EmbeddedMapping) addressPersistentType.getAttributeNamed("zipCode").getMapping()).getAttributeOverrideContainer().getOverrideNamed("plusfour")).convertToSpecified();
 		specifiedAttributeOverride.getColumn().setSpecifiedName("BLAH_OVERRIDE");
-		specifiedAttributeOverride.getColumn().setSpecifiedTable("BLAH_TABLE_OVERRIDE");
+		specifiedAttributeOverride.getColumn().setSpecifiedTableName("BLAH_TABLE_OVERRIDE");
 		specifiedAttributeOverride.getColumn().setColumnDefinition("COLUMN_DEFINITION_OVERRIDE");
 
 
@@ -1538,7 +1538,7 @@ public class EclipseLink2_0OrmEntityTests
 		virtualAttributeOverride = (OrmVirtualAttributeOverride) attributeOverrideContainer.getOverrideNamed("address.zipCode.plusfour");
 		assertEquals("address.zipCode.plusfour", virtualAttributeOverride.getName());
 		assertEquals("BLAH_OVERRIDE", virtualAttributeOverride.getColumn().getName());
-		assertEquals("BLAH_TABLE_OVERRIDE", virtualAttributeOverride.getColumn().getTable());	
+		assertEquals("BLAH_TABLE_OVERRIDE", virtualAttributeOverride.getColumn().getTableName());	
 		assertEquals("COLUMN_DEFINITION_OVERRIDE", virtualAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(true, virtualAttributeOverride.getColumn().isInsertable());
 		assertEquals(true, virtualAttributeOverride.getColumn().isUpdatable());
@@ -1555,7 +1555,7 @@ public class EclipseLink2_0OrmEntityTests
 //		assertEquals("plusfour", specifiedAttributeOverride.getColumn().getDefaultName());
 		assertEquals("BLAH_OVERRIDE", specifiedAttributeOverride.getColumn().getSpecifiedName());
 //		assertEquals("Customer", specifiedAttributeOverride.getColumn().getDefaultTable());	
-		assertEquals("BLAH_TABLE_OVERRIDE", specifiedAttributeOverride.getColumn().getSpecifiedTable());	
+		assertEquals("BLAH_TABLE_OVERRIDE", specifiedAttributeOverride.getColumn().getSpecifiedTableName());	
 		assertEquals("COLUMN_DEFINITION_OVERRIDE", specifiedAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(true, specifiedAttributeOverride.getColumn().isInsertable());
 		assertEquals(true, specifiedAttributeOverride.getColumn().isUpdatable());

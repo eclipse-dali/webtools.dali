@@ -68,17 +68,17 @@ public class GenericJavaVirtualAttributeOverride
 
 	@Override
 	public String getDefaultTableName() {
-		String overriddenColumnTable = this.getOverriddenColumnTable();
+		String overriddenColumnTable = this.getOverriddenColumnTableName();
 		return (overriddenColumnTable != null) ? overriddenColumnTable : super.getDefaultTableName();
 	}
 
-	protected String getOverriddenColumnTable() {
+	protected String getOverriddenColumnTableName() {
 		ReadOnlyColumn overriddenColumn = this.resolveOverriddenColumn();
 		// pretty sure this is the *specified* table...
-		return (overriddenColumn == null) ? null : overriddenColumn.getSpecifiedTable();
+		return (overriddenColumn == null) ? null : overriddenColumn.getSpecifiedTableName();
 	}
 
-	public String getDefaultColumnName(ReadOnlyNamedColumn column) {
+	public String getDefaultColumnName(ReadOnlyNamedColumn col) {
 		String overriddenColumnName = this.getOverriddenColumnName();
 		return (overriddenColumnName != null) ? overriddenColumnName : this.name;
 	}

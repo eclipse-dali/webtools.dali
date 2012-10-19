@@ -28,7 +28,7 @@ public class GenericJavaPrimaryKeyJoinColumn
 	extends AbstractJavaNamedColumn<PrimaryKeyJoinColumnAnnotation, ReadOnlyBaseJoinColumn.Owner>
 	implements JavaPrimaryKeyJoinColumn
 {
-	/** @see AbstractJavaNamedColumn#AbstractJavaNamedColumn(org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode, org.eclipse.jpt.jpa.core.context.java.JavaReadOnlyNamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */
+	/** @see AbstractJavaNamedColumn#AbstractJavaNamedColumn(org.eclipse.jpt.jpa.core.context.JpaContextNode, org.eclipse.jpt.jpa.core.context.ReadOnlyNamedColumn.Owner, org.eclipse.jpt.jpa.core.resource.java.NamedColumnAnnotation) */
 	protected /* final */ PrimaryKeyJoinColumnAnnotation columnAnnotation;  // never null
 
 	protected String specifiedReferencedColumnName;
@@ -40,17 +40,17 @@ public class GenericJavaPrimaryKeyJoinColumn
 	}
 
 	@Override
-	protected void initialize(PrimaryKeyJoinColumnAnnotation columnAnnotation) {
-		super.initialize(columnAnnotation);
-		this.specifiedReferencedColumnName = this.buildSpecifiedReferencedColumnName(columnAnnotation);
+	protected void initialize(PrimaryKeyJoinColumnAnnotation annotation) {
+		super.initialize(annotation);
+		this.specifiedReferencedColumnName = this.buildSpecifiedReferencedColumnName(annotation);
 	}
 
 	// ********** synchronize/update **********
 
 	@Override
-	public void synchronizeWithResourceModel(PrimaryKeyJoinColumnAnnotation columnAnnotation) {
-		super.synchronizeWithResourceModel(columnAnnotation);
-		this.setSpecifiedReferencedColumnName_(this.buildSpecifiedReferencedColumnName(columnAnnotation));
+	public void synchronizeWithResourceModel(PrimaryKeyJoinColumnAnnotation annotation) {
+		super.synchronizeWithResourceModel(annotation);
+		this.setSpecifiedReferencedColumnName_(this.buildSpecifiedReferencedColumnName(annotation));
 	}
 
 	@Override
@@ -102,8 +102,8 @@ public class GenericJavaPrimaryKeyJoinColumn
 		this.firePropertyChanged(SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY, old, name);
 	}
 
-	protected String buildSpecifiedReferencedColumnName(PrimaryKeyJoinColumnAnnotation columnAnnotation) {
-		return columnAnnotation.getReferencedColumnName();
+	protected String buildSpecifiedReferencedColumnName(PrimaryKeyJoinColumnAnnotation annotation) {
+		return annotation.getReferencedColumnName();
 	}
 
 	public String getDefaultReferencedColumnName() {
@@ -142,7 +142,7 @@ public class GenericJavaPrimaryKeyJoinColumn
 	// ********** misc **********
 
 	@Override
-	public String getTable() {
+	public String getTableName() {
 		return this.owner.getDefaultTableName();
 	}
 

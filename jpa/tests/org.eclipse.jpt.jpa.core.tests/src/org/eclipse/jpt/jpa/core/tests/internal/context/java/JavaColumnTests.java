@@ -210,72 +210,60 @@ public class JavaColumnTests extends ContextModelTestCase
 		assertNull(basicMapping.getColumn().getSpecifiedName());
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	public void testGetSpecifiedTableNull() throws Exception {
+	public void testGetSpecifiedTableNameNull() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		
-		assertNull(basicMapping.getColumn().getSpecifiedTable());
+		assertNull(basicMapping.getColumn().getSpecifiedTableName());
 	}
 
-	public void testGetSpecifiedTable() throws Exception {
+	public void testGetSpecifiedTableName() throws Exception {
 		createTestEntityWithBasicColumnTableSet();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 
-		assertEquals(TABLE_NAME, basicMapping.getColumn().getSpecifiedTable());
+		assertEquals(TABLE_NAME, basicMapping.getColumn().getSpecifiedTableName());
 	}
 	
-	public void testGetDefaultTableSpecifiedTableNull() throws Exception {
+	public void testGetDefaultTableNameSpecifiedTableNameNull() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 		
-		assertEquals(((Entity) basicMapping.getTypeMapping()).getName(), basicMapping.getColumn().getDefaultTable());
-		assertEquals(TYPE_NAME, basicMapping.getColumn().getDefaultTable());
+		assertEquals(((Entity) basicMapping.getTypeMapping()).getName(), basicMapping.getColumn().getDefaultTableName());
+		assertEquals(TYPE_NAME, basicMapping.getColumn().getDefaultTableName());
 	}
 
-	public void testGetDefaultTable() throws Exception {
+	public void testGetDefaultTableName() throws Exception {
 		createTestEntityWithDefaultBasicColumn();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
-		assertEquals(TYPE_NAME, basicMapping.getColumn().getDefaultTable());
+		assertEquals(TYPE_NAME, basicMapping.getColumn().getDefaultTableName());
 		
-		basicMapping.getColumn().setSpecifiedTable("foo");
-		assertEquals(TYPE_NAME, basicMapping.getColumn().getDefaultTable());
+		basicMapping.getColumn().setSpecifiedTableName("foo");
+		assertEquals(TYPE_NAME, basicMapping.getColumn().getDefaultTableName());
 	}
 	
-	public void testGetTable() throws Exception {
+	public void testGetTableName() throws Exception {
 		createTestEntityWithBasicColumnTableSet();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 	
-		assertEquals(TABLE_NAME, basicMapping.getColumn().getTable());
+		assertEquals(TABLE_NAME, basicMapping.getColumn().getTableName());
 	}
 
-	public void testSetSpecifiedTable() throws Exception {
+	public void testSetSpecifiedTableName() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 
-		basicMapping.getColumn().setSpecifiedTable("foo");
+		basicMapping.getColumn().setSpecifiedTableName("foo");
 		
-		assertEquals("foo", basicMapping.getColumn().getSpecifiedTable());
+		assertEquals("foo", basicMapping.getColumn().getSpecifiedTableName());
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -284,15 +272,15 @@ public class JavaColumnTests extends ContextModelTestCase
 		assertEquals("foo", column.getTable());
 	}
 	
-	public void testSetSpecifiedTableNull() throws Exception {
+	public void testSetSpecifiedTableNameNull() throws Exception {
 		createTestEntityWithBasicColumnTableSet();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 
-		basicMapping.getColumn().setSpecifiedTable(null);
+		basicMapping.getColumn().setSpecifiedTableName(null);
 		
-		assertNull(basicMapping.getColumn().getSpecifiedTable());
+		assertNull(basicMapping.getColumn().getSpecifiedTableName());
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -304,7 +292,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().getAttributes().iterator().next().getMapping();
 
-		assertNull(basicMapping.getColumn().getSpecifiedTable());
+		assertNull(basicMapping.getColumn().getSpecifiedTableName());
 		
 		JavaResourceType resourceType = (JavaResourceType) getJpaProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME, Kind.TYPE);
 		JavaResourceField resourceField = resourceType.getFields().iterator().next();
@@ -312,12 +300,12 @@ public class JavaColumnTests extends ContextModelTestCase
 
 		column.setTable("foo");
 		getJpaProject().synchronizeContextModel();
-		assertEquals("foo", basicMapping.getColumn().getSpecifiedTable());
-		assertEquals("foo", basicMapping.getColumn().getTable());
+		assertEquals("foo", basicMapping.getColumn().getSpecifiedTableName());
+		assertEquals("foo", basicMapping.getColumn().getTableName());
 		
 		column.setTable(null);
 		getJpaProject().synchronizeContextModel();
-		assertNull(basicMapping.getColumn().getSpecifiedTable());
+		assertNull(basicMapping.getColumn().getSpecifiedTableName());
 	}
 	
 	public void testGetColumnDefinition() throws Exception {

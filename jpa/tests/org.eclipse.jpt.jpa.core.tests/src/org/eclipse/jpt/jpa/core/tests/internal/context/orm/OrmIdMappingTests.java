@@ -445,7 +445,7 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		assertNull(ormColumn.getSpecifiedInsertable());
 		assertNull(ormColumn.getSpecifiedUpdatable());
 		assertNull(ormColumn.getColumnDefinition());
-		assertNull(ormColumn.getSpecifiedTable());
+		assertNull(ormColumn.getSpecifiedTableName());
 		assertNull(ormColumn.getSpecifiedLength());
 		assertNull(ormColumn.getSpecifiedPrecision());
 		assertNull(ormColumn.getSpecifiedScale());
@@ -456,7 +456,7 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		assertEquals(true, ormColumn.isDefaultInsertable());
 		assertEquals(true, ormColumn.isDefaultUpdatable());
 		assertEquals(null, ormColumn.getColumnDefinition());
-		assertEquals(TYPE_NAME, ormColumn.getDefaultTable());
+		assertEquals(TYPE_NAME, ormColumn.getDefaultTableName());
 		assertEquals(255, ormColumn.getDefaultLength());
 		assertEquals(0, ormColumn.getDefaultPrecision());
 		assertEquals(0, ormColumn.getDefaultScale());
@@ -487,7 +487,7 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		assertEquals(Boolean.FALSE, column.getSpecifiedInsertable());
 		assertEquals(Boolean.FALSE, column.getSpecifiedUpdatable());
 		assertEquals("COLUMN_DEFINITION", column.getColumnDefinition());
-		assertEquals("MY_TABLE", column.getSpecifiedTable());
+		assertEquals("MY_TABLE", column.getSpecifiedTableName());
 		assertEquals(Integer.valueOf(5), column.getSpecifiedLength());
 		assertEquals(Integer.valueOf(6), column.getSpecifiedPrecision());
 		assertEquals(Integer.valueOf(7), column.getSpecifiedScale());
@@ -545,7 +545,7 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		assertEquals(true, ormColumn.isDefaultInsertable());
 		assertEquals(true, ormColumn.isDefaultUpdatable());
 		assertNull(ormColumn.getColumnDefinition());
-		assertEquals(TYPE_NAME, ormColumn.getTable());
+		assertEquals(TYPE_NAME, ormColumn.getTableName());
 		assertEquals(255, ormColumn.getLength());
 		assertEquals(0, ormColumn.getPrecision());
 		assertEquals(0, ormColumn.getScale());
@@ -574,7 +574,7 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		assertNull(ormColumn.getSpecifiedInsertable());
 		assertNull(ormColumn.getSpecifiedUpdatable());
 		assertNull(ormColumn.getColumnDefinition());
-		assertNull(ormColumn.getSpecifiedTable());
+		assertNull(ormColumn.getSpecifiedTableName());
 		assertNull(ormColumn.getSpecifiedLength());
 		assertNull(ormColumn.getSpecifiedPrecision());
 		assertNull(ormColumn.getSpecifiedScale());
@@ -585,7 +585,7 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		assertEquals(true, ormColumn.isDefaultInsertable());
 		assertEquals(true, ormColumn.isDefaultUpdatable());
 		assertEquals(null, ormColumn.getColumnDefinition());
-		assertEquals(TYPE_NAME, ormColumn.getDefaultTable());
+		assertEquals(TYPE_NAME, ormColumn.getDefaultTableName());
 		assertEquals(255, ormColumn.getDefaultLength());
 		assertEquals(0, ormColumn.getDefaultPrecision());
 		assertEquals(0, ormColumn.getDefaultScale());

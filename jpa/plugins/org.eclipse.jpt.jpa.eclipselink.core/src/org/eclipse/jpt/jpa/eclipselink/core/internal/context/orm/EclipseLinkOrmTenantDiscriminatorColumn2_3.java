@@ -26,8 +26,8 @@ public class EclipseLinkOrmTenantDiscriminatorColumn2_3
 {
 	protected XmlTenantDiscriminatorColumn_2_3 xmlTenantDiscriminatorColumn;
 
-	protected String specifiedTable;
-	protected String defaultTable;
+	protected String specifiedTableName;
+	protected String defaultTableName;
 
 	protected String specifiedContextProperty;
 	protected String defaultContextProperty;
@@ -37,7 +37,7 @@ public class EclipseLinkOrmTenantDiscriminatorColumn2_3
 
 	public EclipseLinkOrmTenantDiscriminatorColumn2_3(JpaContextNode parent, ReadOnlyTenantDiscriminatorColumn2_3.Owner owner, XmlTenantDiscriminatorColumn_2_3 column) {
 		super(parent, owner, column);
-		this.specifiedTable = this.buildSpecifiedTable();
+		this.specifiedTableName = this.buildSpecifiedTableName();
 		this.specifiedContextProperty = this.buildSpecifiedContextProperty();
 		this.specifiedPrimaryKey = this.buildSpecifiedPrimaryKey();
 	}
@@ -48,7 +48,7 @@ public class EclipseLinkOrmTenantDiscriminatorColumn2_3
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.setSpecifiedTable_(this.buildSpecifiedTable());
+		this.setSpecifiedTableName_(this.buildSpecifiedTableName());
 		this.setSpecifiedContextProperty_(this.buildSpecifiedContextProperty());
 		this.setSpecifiedPrimaryKey_(this.buildSpecifiedPrimaryKey());
 	}
@@ -56,7 +56,7 @@ public class EclipseLinkOrmTenantDiscriminatorColumn2_3
 	@Override
 	public void update() {
 		super.update();
-		this.setDefaultTable(this.buildDefaultTable());
+		this.setDefaultTableName(this.buildDefaultTableName());
 		this.setDefaultContextProperty(this.buildDefaultContextProperty());
 		this.setDefaultPrimaryKey(this.buildDefaultPrimaryKey());
 	}
@@ -95,45 +95,45 @@ public class EclipseLinkOrmTenantDiscriminatorColumn2_3
 	}
 
 
-	// ********** table **********
+	// ********** table name **********
 
 	@Override
-	public String getTable() {
-		return (this.specifiedTable != null) ? this.specifiedTable : this.defaultTable;
+	public String getTableName() {
+		return (this.specifiedTableName != null) ? this.specifiedTableName : this.defaultTableName;
 	}
 
-	public String getSpecifiedTable() {
-		return this.specifiedTable;
+	public String getSpecifiedTableName() {
+		return this.specifiedTableName;
 	}
 
-	public void setSpecifiedTable(String table) {
-		if (this.valuesAreDifferent(this.specifiedTable, table)) {
-			this.setSpecifiedTable_(table);
-			this.xmlTenantDiscriminatorColumn.setTable(table);
+	public void setSpecifiedTableName(String tableName) {
+		if (this.valuesAreDifferent(this.specifiedTableName, tableName)) {
+			this.setSpecifiedTableName_(tableName);
+			this.xmlTenantDiscriminatorColumn.setTable(tableName);
 		}
 	}
 
-	protected void setSpecifiedTable_(String table) {
-		String old = this.specifiedTable;
-		this.specifiedTable = table;
-		this.firePropertyChanged(SPECIFIED_TABLE_PROPERTY, old, table);
+	protected void setSpecifiedTableName_(String tableName) {
+		String old = this.specifiedTableName;
+		this.specifiedTableName = tableName;
+		this.firePropertyChanged(SPECIFIED_TABLE_NAME_PROPERTY, old, tableName);
 	}
 
-	protected String buildSpecifiedTable() {
+	protected String buildSpecifiedTableName() {
 		return (this.xmlTenantDiscriminatorColumn == null) ? null : this.xmlTenantDiscriminatorColumn.getTable();
 	}
 
-	public String getDefaultTable() {
-		return this.defaultTable;
+	public String getDefaultTableName() {
+		return this.defaultTableName;
 	}
 
-	protected void setDefaultTable(String table) {
-		String old = this.defaultTable;
-		this.defaultTable = table;
-		this.firePropertyChanged(DEFAULT_TABLE_PROPERTY, old, table);
+	protected void setDefaultTableName(String tableName) {
+		String old = this.defaultTableName;
+		this.defaultTableName = tableName;
+		this.firePropertyChanged(DEFAULT_TABLE_NAME_PROPERTY, old, tableName);
 	}
 
-	protected String buildDefaultTable() {
+	protected String buildDefaultTableName() {
 		return this.owner.getDefaultTableName();
 	}
 
@@ -231,10 +231,10 @@ public class EclipseLinkOrmTenantDiscriminatorColumn2_3
 	// ********** validation **********
 
 	public boolean tableNameIsInvalid() {
-		return this.owner.tableNameIsInvalid(this.getTable());
+		return this.owner.tableNameIsInvalid(this.getTableName());
 	}
 
-	public TextRange getTableTextRange() {
+	public TextRange getTableNameTextRange() {
 		return this.getValidationTextRange(this.getXmlColumnTableTextRange());
 	}
 

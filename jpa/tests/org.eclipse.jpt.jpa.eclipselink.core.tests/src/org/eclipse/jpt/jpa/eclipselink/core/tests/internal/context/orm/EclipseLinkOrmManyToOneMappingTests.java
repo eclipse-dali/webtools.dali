@@ -286,7 +286,7 @@ public class EclipseLinkOrmManyToOneMappingTests
 		assertEquals(Boolean.FALSE, virtualJoinColumn.getSpecifiedInsertable());
 		assertEquals(Boolean.FALSE, virtualJoinColumn.getSpecifiedUpdatable());
 		assertEquals("COLUMN_DEFINITION", virtualJoinColumn.getColumnDefinition());
-		assertEquals("MY_TABLE", virtualJoinColumn.getSpecifiedTable());
+		assertEquals("MY_TABLE", virtualJoinColumn.getSpecifiedTableName());
 
 		Cascade cascade = virtualManyToOneMapping.getCascade();
 		assertTrue(cascade.isAll());

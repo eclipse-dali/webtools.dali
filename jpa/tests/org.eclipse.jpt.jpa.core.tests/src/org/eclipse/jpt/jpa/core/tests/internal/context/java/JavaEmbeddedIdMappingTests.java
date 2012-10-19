@@ -418,7 +418,7 @@ public class JavaEmbeddedIdMappingTests extends ContextModelTestCase
 		ReadOnlyAttributeOverride defaultAttributeOverride = attributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("city", defaultAttributeOverride.getName());
 		assertEquals("city", defaultAttributeOverride.getColumn().getName());
-		assertEquals(TYPE_NAME, defaultAttributeOverride.getColumn().getTable());
+		assertEquals(TYPE_NAME, defaultAttributeOverride.getColumn().getTableName());
 		assertEquals(null, defaultAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(true, defaultAttributeOverride.getColumn().isInsertable());
 		assertEquals(true, defaultAttributeOverride.getColumn().isUpdatable());
@@ -435,7 +435,7 @@ public class JavaEmbeddedIdMappingTests extends ContextModelTestCase
 		
 		BasicMapping cityMapping = (BasicMapping) embeddable.getPersistentType().getAttributeNamed("city").getMapping();
 		cityMapping.getColumn().setSpecifiedName("FOO");
-		cityMapping.getColumn().setSpecifiedTable("BAR");
+		cityMapping.getColumn().setSpecifiedTableName("BAR");
 		cityMapping.getColumn().setColumnDefinition("COLUMN_DEF");
 		cityMapping.getColumn().setSpecifiedInsertable(Boolean.FALSE);
 		cityMapping.getColumn().setSpecifiedUpdatable(Boolean.FALSE);
@@ -452,7 +452,7 @@ public class JavaEmbeddedIdMappingTests extends ContextModelTestCase
 		defaultAttributeOverride = attributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("city", defaultAttributeOverride.getName());
 		assertEquals("FOO", defaultAttributeOverride.getColumn().getName());
-		assertEquals("BAR", defaultAttributeOverride.getColumn().getTable());
+		assertEquals("BAR", defaultAttributeOverride.getColumn().getTableName());
 		assertEquals("COLUMN_DEF", defaultAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(false, defaultAttributeOverride.getColumn().isInsertable());
 		assertEquals(false, defaultAttributeOverride.getColumn().isUpdatable());
@@ -463,7 +463,7 @@ public class JavaEmbeddedIdMappingTests extends ContextModelTestCase
 		assertEquals(7, defaultAttributeOverride.getColumn().getScale());
 
 		cityMapping.getColumn().setSpecifiedName(null);
-		cityMapping.getColumn().setSpecifiedTable(null);
+		cityMapping.getColumn().setSpecifiedTableName(null);
 		cityMapping.getColumn().setColumnDefinition(null);
 		cityMapping.getColumn().setSpecifiedInsertable(null);
 		cityMapping.getColumn().setSpecifiedUpdatable(null);
@@ -475,7 +475,7 @@ public class JavaEmbeddedIdMappingTests extends ContextModelTestCase
 		defaultAttributeOverride = attributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("city", defaultAttributeOverride.getName());
 		assertEquals("city", defaultAttributeOverride.getColumn().getName());
-		assertEquals(TYPE_NAME, defaultAttributeOverride.getColumn().getTable());
+		assertEquals(TYPE_NAME, defaultAttributeOverride.getColumn().getTableName());
 		assertEquals(null, defaultAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(true, defaultAttributeOverride.getColumn().isInsertable());
 		assertEquals(true, defaultAttributeOverride.getColumn().isUpdatable());

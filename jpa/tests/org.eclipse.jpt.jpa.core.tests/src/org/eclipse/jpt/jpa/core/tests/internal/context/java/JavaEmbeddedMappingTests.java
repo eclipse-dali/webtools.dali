@@ -555,7 +555,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		ReadOnlyAttributeOverride defaultAttributeOverride = attributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("city", defaultAttributeOverride.getName());
 		assertEquals("city", defaultAttributeOverride.getColumn().getName());
-		assertEquals(TYPE_NAME, defaultAttributeOverride.getColumn().getTable());
+		assertEquals(TYPE_NAME, defaultAttributeOverride.getColumn().getTableName());
 		assertEquals(null, defaultAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(true, defaultAttributeOverride.getColumn().isInsertable());
 		assertEquals(true, defaultAttributeOverride.getColumn().isUpdatable());
@@ -572,7 +572,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		
 		BasicMapping cityMapping = (BasicMapping) embeddable.getPersistentType().getAttributeNamed("city").getMapping();
 		cityMapping.getColumn().setSpecifiedName("FOO");
-		cityMapping.getColumn().setSpecifiedTable("BAR");
+		cityMapping.getColumn().setSpecifiedTableName("BAR");
 		cityMapping.getColumn().setColumnDefinition("COLUMN_DEF");
 		cityMapping.getColumn().setSpecifiedInsertable(Boolean.FALSE);
 		cityMapping.getColumn().setSpecifiedUpdatable(Boolean.FALSE);
@@ -589,7 +589,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		defaultAttributeOverride = attributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("city", defaultAttributeOverride.getName());
 		assertEquals("FOO", defaultAttributeOverride.getColumn().getName());
-		assertEquals("BAR", defaultAttributeOverride.getColumn().getTable());
+		assertEquals("BAR", defaultAttributeOverride.getColumn().getTableName());
 		assertEquals("COLUMN_DEF", defaultAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(false, defaultAttributeOverride.getColumn().isInsertable());
 		assertEquals(false, defaultAttributeOverride.getColumn().isUpdatable());
@@ -600,7 +600,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		assertEquals(7, defaultAttributeOverride.getColumn().getScale());
 
 		cityMapping.getColumn().setSpecifiedName(null);
-		cityMapping.getColumn().setSpecifiedTable(null);
+		cityMapping.getColumn().setSpecifiedTableName(null);
 		cityMapping.getColumn().setColumnDefinition(null);
 		cityMapping.getColumn().setSpecifiedInsertable(null);
 		cityMapping.getColumn().setSpecifiedUpdatable(null);
@@ -612,7 +612,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		defaultAttributeOverride = attributeOverrideContainer.getVirtualOverrides().iterator().next();
 		assertEquals("city", defaultAttributeOverride.getName());
 		assertEquals("city", defaultAttributeOverride.getColumn().getName());
-		assertEquals(TYPE_NAME, defaultAttributeOverride.getColumn().getTable());
+		assertEquals(TYPE_NAME, defaultAttributeOverride.getColumn().getTableName());
 		assertEquals(null, defaultAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(true, defaultAttributeOverride.getColumn().isInsertable());
 		assertEquals(true, defaultAttributeOverride.getColumn().isUpdatable());
@@ -830,7 +830,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		PersistentType zipCodePersistentType = specifiedClassRefs.next().getJavaPersistentType();
 		BasicMapping plusFourMapping = (BasicMapping) zipCodePersistentType.getAttributeNamed("plusfour").getMapping();
 		plusFourMapping.getColumn().setSpecifiedName("BLAH");
-		plusFourMapping.getColumn().setSpecifiedTable("BLAH_TABLE");
+		plusFourMapping.getColumn().setSpecifiedTableName("BLAH_TABLE");
 		plusFourMapping.getColumn().setColumnDefinition("COLUMN_DEFINITION");
 		plusFourMapping.getColumn().setSpecifiedInsertable(Boolean.FALSE);
 		plusFourMapping.getColumn().setSpecifiedUpdatable(Boolean.FALSE);
@@ -844,7 +844,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		virtualAttributeOverride = ((EmbeddedMapping) addressPersistentType.getAttributeNamed("zipCode").getMapping()).getAttributeOverrideContainer().getOverrideNamed("plusfour");
 		assertEquals("plusfour", virtualAttributeOverride.getName());
 		assertEquals("BLAH", virtualAttributeOverride.getColumn().getName());
-		assertEquals("BLAH_TABLE", virtualAttributeOverride.getColumn().getTable());	
+		assertEquals("BLAH_TABLE", virtualAttributeOverride.getColumn().getTableName());	
 		assertEquals("COLUMN_DEFINITION", virtualAttributeOverride.getColumn().getColumnDefinition());
 		assertEquals(false, virtualAttributeOverride.getColumn().isInsertable());
 		assertEquals(false, virtualAttributeOverride.getColumn().isUpdatable());

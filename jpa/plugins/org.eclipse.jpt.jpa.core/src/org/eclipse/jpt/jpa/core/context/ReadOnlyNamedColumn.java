@@ -48,6 +48,7 @@ public interface ReadOnlyNamedColumn
 	 */
 	TextRange getNameTextRange();
 
+
 	// ********** table **********
 
 	/**
@@ -55,7 +56,7 @@ public interface ReadOnlyNamedColumn
 	 * <em>specified</em> table still has a table (as determined by
 	 * the column's owner).
 	 */
-	String getTable();
+	String getTableName();
 
 
 	// ********** column definition **********
