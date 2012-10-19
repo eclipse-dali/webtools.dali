@@ -1765,7 +1765,7 @@ public abstract class JptPlugin
 	/**
 	 * Value: <code>{@value}</code>
 	 */
-	protected final Class<?> DEBUG_TRACE_ENTRY_CLASS = JptPlugin.class;
+	protected static final Class<?> DEBUG_TRACE_ENTRY_CLASS = JptPlugin.class;
 
 	/**
 	 * The specified trace entry class must be the class where the trace methods
@@ -1858,7 +1858,7 @@ public abstract class JptPlugin
 		try {
 			return this.getStateLocation_();
 		} catch (IllegalStateException ex) {
-			return null;
+			return null; // -data @none
 		}
 	}
 
