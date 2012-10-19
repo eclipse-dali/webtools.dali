@@ -909,12 +909,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	}
 
 	protected IDialogSettings getDialogPreferences() {
-		IDialogSettings rootSettings = JptJpaUiPlugin.instance().getDialogSettings();
-		IDialogSettings settings = rootSettings.getSection(SETTINGS_SECTION_NAME);
-		if (settings == null) {
-			settings = rootSettings.addNewSection(SETTINGS_SECTION_NAME);
-		}
-		return settings;
+		return JptJpaUiPlugin.instance().getDialogSettings(SETTINGS_SECTION_NAME);
 	}
 
 	protected void storeSectionExpansionStates(IDialogSettings settings) {

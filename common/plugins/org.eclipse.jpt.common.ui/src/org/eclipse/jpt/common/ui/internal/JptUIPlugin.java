@@ -74,6 +74,7 @@ public abstract class JptUIPlugin
 				this.saveDialogSettings();
 			}
 		} finally {
+			this.preferenceStore = null;
 			this.imageRegistry = null;
 			this.dialogSettings = null;
 			super.stop_();
@@ -82,6 +83,22 @@ public abstract class JptUIPlugin
 
 
 	// ********** dialog settings **********
+
+	/**
+	 * Return the UI plug-in dialog settings for the specified section.
+	 * Create the section if it does not exist.
+	 */
+	public synchronized IDialogSettings getDialogSettings(String sectionName) {
+		IDialogSettings pluginSettings = this.getDialogSettings();
+		if (pluginSettings == null) {
+			return null;
+		}
+		IDialogSettings sectionSettings = pluginSettings.getSection(sectionName);
+		if (sectionSettings == null) {
+			sectionSettings = pluginSettings.addNewSection(sectionName);
+		}
+		return sectionSettings;
+	}
 
 	/**
 	 * Return the dialog settings for the UI plug-in.
@@ -98,21 +115,21 @@ public abstract class JptUIPlugin
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#loadDialogSettings()
 	 */
 	protected IDialogSettings buildDialogSettings() {
-		IDialogSettings result = this.buildDialogSettings_();
+		IDialogSettings settings = this.buildDialogSettings_();
 		String settingsFileName = this.getDialogSettingsFileName();
 		if (settingsFileName == null) {
-			return result;
+			return settings;
 		}
 		File settingsFile = new File(settingsFileName);
 		if (settingsFile.exists()) {
 			try {
-				result.load(settingsFileName);
+				settings.load(settingsFileName);
 			} catch (IOException ex) {
 				// if there are problems, return an empty settings container
 				return this.buildDialogSettings_();
 			}
 		}
-		return result;
+		return settings;
 	}
 
 	protected IDialogSettings buildDialogSettings_() {
@@ -147,17 +164,17 @@ public abstract class JptUIPlugin
 		if (stateLocation == null) {
 			return null;
 		}
-		return stateLocation.append(this.getRelativeDialogSettingsFileName()).toOSString();
+		return stateLocation.append(this.getSimpleDialogSettingsFileName()).toOSString();
 	}
 
-	protected String getRelativeDialogSettingsFileName() {
-		return RELATIVE_DIALOG_SETTINGS_FILE_NAME;
+	protected String getSimpleDialogSettingsFileName() {
+		return SIMPLE_DIALOG_SETTINGS_FILE_NAME;
 	}
 
 	/**
 	 * Value: <code>{@value}</code>
 	 */
-	protected static final String RELATIVE_DIALOG_SETTINGS_FILE_NAME = "dialog_settings.xml"; //$NON-NLS-1$
+	protected static final String SIMPLE_DIALOG_SETTINGS_FILE_NAME = "dialog_settings.xml"; //$NON-NLS-1$
 
 
 	// ********** images **********
@@ -317,7 +334,7 @@ public abstract class JptUIPlugin
 	}
 
 	/**
-	 * Return the image registry for the UI plug-in.
+	 * Return the UI plug-in's image registry.
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#getImageRegistry()
 	 */
 	protected synchronized ImageRegistry getImageRegistry() {
@@ -342,7 +359,7 @@ public abstract class JptUIPlugin
 	// ********** preference store **********
 
 	/**
-	 * Return the preference store for the UI plug-in.
+	 * Return the UI plug-in's preference store.
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#getPreferenceStore()
 	 */
 	public synchronized IPreferenceStore getPreferenceStore() {

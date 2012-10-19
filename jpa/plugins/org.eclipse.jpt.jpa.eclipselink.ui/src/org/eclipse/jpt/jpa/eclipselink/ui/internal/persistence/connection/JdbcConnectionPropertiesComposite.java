@@ -349,15 +349,7 @@ public class JdbcConnectionPropertiesComposite<T extends Connection>
 
 		@Override
 		protected IDialogSettings getDialogSettings() {
-
-			IDialogSettings dialogSettings = JptJpaEclipseLinkUiPlugin.instance().getDialogSettings();
-			IDialogSettings settings = dialogSettings.getSection(DIALOG_SETTINGS);
-
-			if (settings == null) {
-				settings = dialogSettings.addNewSection(DIALOG_SETTINGS);
-			}
-
-			return settings;
+			return JptJpaEclipseLinkUiPlugin.instance().getDialogSettings(DIALOG_SETTINGS);
 		}
 
 		@Override

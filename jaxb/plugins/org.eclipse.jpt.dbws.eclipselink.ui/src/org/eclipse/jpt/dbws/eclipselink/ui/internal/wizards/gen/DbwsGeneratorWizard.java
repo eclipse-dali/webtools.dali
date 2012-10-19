@@ -16,7 +16,6 @@ import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
@@ -63,13 +62,8 @@ public class DbwsGeneratorWizard extends Wizard implements IWorkbenchWizard {
 	}
 	
 	private void initialize() {
-		if(this.getDialogSettings() == null) {
-			IDialogSettings dbwsSettings = JptDbwsEclipseLinkUiPlugin.instance().getDialogSettings();
-			IDialogSettings wizardSettings = dbwsSettings.getSection(DBWS_SECTION_NAME);
-			if(wizardSettings == null) {
-				wizardSettings = dbwsSettings.addNewSection(DBWS_SECTION_NAME);
-			}
-			this.setDialogSettings(wizardSettings);
+		if (this.getDialogSettings() == null) {
+			this.setDialogSettings(JptDbwsEclipseLinkUiPlugin.instance().getDialogSettings(DBWS_SECTION_NAME));
 		}
 	}
 
