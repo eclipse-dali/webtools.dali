@@ -60,8 +60,8 @@ public class BundleActivatorTest
 		BundleActivator activator = (BundleActivator) ObjectTools.get(bundleContext, "activator");
 		String activatorClassName = activator.getClass().getName();
 		try {
-			Class<?> activatorClass = Class.forName(activatorClassName);
-			fail("activator class is exported: " + activatorClass);
+			Class<?> activatorClass = activator.getClass().getClassLoader().loadClass(activatorClassName);
+			fail("activator class is exported: " + activatorClass.getName());
 		} catch (ClassNotFoundException ex) {
 			// success
 		}
