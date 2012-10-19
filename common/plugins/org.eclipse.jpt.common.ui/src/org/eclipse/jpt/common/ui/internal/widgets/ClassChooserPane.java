@@ -432,8 +432,8 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 	}
 
 	@Override
-	public void dispose() {
+	public void controlDisposed() {
 		this.getSubjectHolder().removePropertyChangeListener(PropertyValueModel.VALUE, this.subjectChangeListener);
-		super.dispose();
+		super.controlDisposed();
 	}
 }

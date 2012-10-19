@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Control;
  * 
  * @param <T> the type of the details page manager's model
  * 
- * @version 2.0
+ * @version 3.3
  * @since 2.0
  * @see JpaDetailsProvider
  */
@@ -46,11 +46,6 @@ public interface JpaDetailsPageManager<T extends JpaStructureNode> {
 	 * The subject must be of type <code>T</code>.
 	 */
 	void setSubject(Object subject);
-
-	/**
-	 * Dispose the details page manager and any resources it holds.
-	 */
-	void dispose();
 
 	interface Factory {
 		<T extends JpaStructureNode> JpaDetailsPageManager<T> buildPageManager(Composite parent, WidgetFactory widgetFactory);

@@ -29,9 +29,4 @@ public interface JpaComposite {
 	 * @return This composite's actual widget
 	 */
 	Control getControl();
-
-	/**
-	 * Notifies this composite it should dispose any resources.
-	 */
-	void dispose();
 }

@@ -37,7 +37,6 @@ import org.eclipse.ui.part.PageBook;
  * @version 2.2
  * @since 1.0
  */
-@SuppressWarnings("nls")
 public class PersistentTypeDetailsPage extends AbstractJpaDetailsPage<PersistentType>
 {
 	private Map<String, JpaComposite> mappingComposites;
@@ -151,14 +150,11 @@ public class PersistentTypeDetailsPage extends AbstractJpaDetailsPage<Persistent
 	}
 
 	@Override
-	public void dispose() {
+	public void controlDisposed() {
 		JptJpaUiPlugin.instance().trace(TRACE_OPTION, "dispose"); //$NON-NLS-1$
 
-		for (JpaComposite mappingComposite : this.mappingComposites.values()) {
-			mappingComposite.dispose();
-		}
 		this.mappingComposites.clear();
-		super.dispose();
+		super.controlDisposed();
 	}
 
 	private static final String TRACE_OPTION = PersistentTypeDetailsPage.class.getSimpleName();

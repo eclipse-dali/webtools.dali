@@ -34,7 +34,7 @@ import org.eclipse.ui.help.IWorkbenchHelpSystem;
  * @see Node
  * @see DialogPane
  *
- * @version 2.0
+ * @version 3.3
  * @since 2.0
  */
 @SuppressWarnings("nls")
@@ -106,22 +106,6 @@ public abstract class Dialog<T extends Node> extends TitleAreaDialog
 	 */
 	Node.Validator buildValidator() {
 		return Node.NULL_VALIDATOR;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	public boolean close() {
-
-		// Dispose the pane in order to remove any listeners that could
-		// have been installed outside the scrope of the state object
-		if (pane != null) {
-			pane.dispose();
-			pane = null;
-		}
-
-		return super.close();
 	}
 
 	/**

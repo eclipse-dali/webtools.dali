@@ -347,7 +347,6 @@ public class PersistenceEditor
 
 		@Override
 		public void dispose() {
-			this.page.dispose();
 			if (this.imageDescriptor != null) {
 				PersistenceEditor.this.resourceManager.destroyImage(this.imageDescriptor);
 			}

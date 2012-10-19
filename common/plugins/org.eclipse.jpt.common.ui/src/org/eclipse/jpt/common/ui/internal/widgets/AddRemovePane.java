@@ -48,10 +48,11 @@ public abstract class AddRemovePane<T extends Model, E extends Object> extends P
 	private Adapter<E> adapter;
 	private Button addButton;
 	private IBaseLabelProvider labelProvider;
-	private ListValueModel<?> listHolder;
+	private ListValueModel<?> listModel;
 	private Button optionalButton;
 	private Button removeButton;
 	private ModifiableCollectionValueModel<E> selectedItemsModel;
+	private ListChangeListener listChangeListener;
 
 	/**
 	 * Creates a new <code>AddRemovePane</code>.
@@ -61,21 +62,21 @@ public abstract class AddRemovePane<T extends Model, E extends Object> extends P
 	 * @param adapter This <code>Adapter</code> is used to dictate the behavior
 	 * of this <code>AddRemovePane</code> and by delegating to it some of the
 	 * behavior
-	 * @param listHolder The <code>ListValueModel</code> containing the items
+	 * @param listModel The <code>ListValueModel</code> containing the items
 	 * @param selectedItemsModel The holder of the selected items
 	 * @param labelProvider The renderer used to format the list holder's items
 	 */
 	protected AddRemovePane(Pane<? extends T> parentPane,
 	                        Composite parent,
 	                        Adapter<E> adapter,
-	                        ListValueModel<?> listHolder,
+	                        ListValueModel<?> listModel,
 	                        ModifiableCollectionValueModel<E> selectedItemsModel,
 	                        IBaseLabelProvider labelProvider) {
 
 		this(parentPane,
 		     parent,
 		     adapter,
-		     listHolder,
+		     listModel,
 		     selectedItemsModel,
 		     labelProvider,
 		     null);
@@ -86,10 +87,10 @@ public abstract class AddRemovePane<T extends Model, E extends Object> extends P
 	 *
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
-	 * @param adapter This <code>Adapter</code> is used to dictacte the behavior
+	 * @param adapter This <code>Adapter</code> is used to dictate the behavior
 	 * of this <code>AddRemovePane</code> and by delegating to it some of the
 	 * behavior
-	 * @param listHolder The <code>ListValueModel</code> containing the items
+	 * @param listModel The <code>ListValueModel</code> containing the items
 	 * @param selectedItemsModel The holder of the selected items
 	 * @param labelProvider The renderer used to format the list holder's items
 	 * @param helpId The topic help ID to be registered with this pane
@@ -99,7 +100,7 @@ public abstract class AddRemovePane<T extends Model, E extends Object> extends P
 	protected AddRemovePane(Pane<? extends T> parentPane,
 	                        Composite parent,
 	                        Adapter<E> adapter,
-	                        ListValueModel<?> listHolder,
+	                        ListValueModel<?> listModel,
 	                        ModifiableCollectionValueModel<E> selectedItemsModel,
 	                        IBaseLabelProvider labelProvider,
 	                        String helpId) {
@@ -108,14 +109,14 @@ public abstract class AddRemovePane<T extends Model, E extends Object> extends P
 
 		initialize(
 			adapter,
-			listHolder,
+			listModel,
 			selectedItemsModel,
 			labelProvider
 		);
 
 		initializeLayout(
 			adapter,
-			listHolder,
+			listModel,
 			selectedItemsModel,
 			labelProvider,
 			helpId
@@ -125,7 +126,7 @@ public abstract class AddRemovePane<T extends Model, E extends Object> extends P
 	protected AddRemovePane(Pane<? extends T> parentPane,
         Composite parent,
         Adapter<E> adapter,
-        ListValueModel<?> listHolder,
+        ListValueModel<?> listModel,
         ModifiableCollectionValueModel<E> selectedItemsModel,
         IBaseLabelProvider labelProvider,
         PropertyValueModel<Boolean> enabledModel,
@@ -135,14 +136,14 @@ public abstract class AddRemovePane<T extends Model, E extends Object> extends P
 
 		initialize(
 			adapter,
-			listHolder,
+			listModel,
 			selectedItemsModel,
 			labelProvider
 		);
 		
 		initializeLayout(
 			adapter,
-			listHolder,
+			listModel,
 			selectedItemsModel,
 			labelProvider,
 			helpId
@@ -158,7 +159,7 @@ public abstract class AddRemovePane<T extends Model, E extends Object> extends P
 	 * of this <code>AddRemovePane</code> and by delegating to it some of the
 	 * behavior
 	 * @param parent The parent container
-	 * @param listHolder The <code>ListValueModel</code> containing the items
+	 * @param listModel The <code>ListValueModel</code> containing the items
 	 * @param selectedItemsModel The holder of the selected item
 	 * @param labelProvider The renderer used to format the list holder's items
 	 */
@@ -166,7 +167,7 @@ public abstract class AddRemovePane<T extends Model, E extends Object> extends P
 	                        PropertyValueModel<? extends T> subjectHolder,
 	                        Composite parent,
 	                        Adapter<E> adapter,
-	                        ListValueModel<?> listHolder,
+	                        ListValueModel<?> listModel,
 	                        ModifiableCollectionValueModel<E> selectedItemsModel,
 	                        IBaseLabelProvider labelProvider) {
 
@@ -174,7 +175,7 @@ public abstract class AddRemovePane<T extends Model, E extends Object> extends P
 		     subjectHolder,
 		     parent,
 		     adapter,
-		     listHolder,
+		     listModel,
 		     selectedItemsModel,
 		     labelProvider,
 		     null);
@@ -189,7 +190,7 @@ public abstract class AddRemovePane<T extends Model, E extends Object> extends P
 	 * of this <code>AddRemovePane</code> and by delegating to it some of the
 	 * behavior
 	 * @param parent The parent container
-	 * @param listHolder The <code>ListValueModel</code> containing the items
+	 * @param listModel The <code>ListValueModel</code> containing the items
 	 * @param selectedItemsModel The holder of the selected item
 	 * @param labelProvider The renderer used to format the list holder's items
 	 * @param helpId The topic help ID to be registered with this pane
@@ -198,7 +199,7 @@ public abstract class AddRemovePane<T extends Model, E extends Object> extends P
 	                        PropertyValueModel<? extends T> subjectHolder,
 	                        Composite parent,
 	                        Adapter<E> adapter,
-	                        ListValueModel<?> listHolder,
+	                        ListValueModel<?> listModel,
 	                        ModifiableCollectionValueModel<E> selectedItemsModel,
 	                        IBaseLabelProvider labelProvider,
 	                        String helpId) {
@@ -207,14 +208,14 @@ public abstract class AddRemovePane<T extends Model, E extends Object> extends P
 
 		initialize(
 			adapter,
-			listHolder,
+			listModel,
 			selectedItemsModel,
 			labelProvider
 		);
 
 		initializeLayout(
 			adapter,
-			listHolder,
+			listModel,
 			selectedItemsModel,
 			labelProvider,
 			helpId
@@ -412,8 +413,8 @@ public abstract class AddRemovePane<T extends Model, E extends Object> extends P
 		return this.labelProvider;
 	}
 
-	protected final ListValueModel<?> getListHolder() {
-		return this.listHolder;
+	protected final ListValueModel<?> getListModel() {
+		return this.listModel;
 	}
 
 	/**
@@ -441,18 +442,19 @@ public abstract class AddRemovePane<T extends Model, E extends Object> extends P
 	 * @category Initialization
 	 */
 	protected void initialize(Adapter<E> adapter,
-	                          ListValueModel<?> listHolder,
+	                          ListValueModel<?> listModel,
 	                          ModifiableCollectionValueModel<E> selectedItemsModel,
 	                          IBaseLabelProvider labelProvider)
 	{
-		this.listHolder         = listHolder;
+		this.listModel          = listModel;
 		this.labelProvider      = labelProvider;
 		this.adapter            = (adapter == null) ? buildAdapter() : adapter;
 		this.selectedItemsModel = selectedItemsModel;
 
-		this.listHolder.addListChangeListener(
+		this.listChangeListener = this.buildListChangeListener();
+		this.listModel.addListChangeListener(
 			ListValueModel.LIST_VALUES,
-			buildListChangeListener()
+			this.listChangeListener
 		);
 	}
 
@@ -516,7 +518,7 @@ public abstract class AddRemovePane<T extends Model, E extends Object> extends P
 	 * @category Layout
 	 */
 	protected void initializeLayout(Adapter<E> adapter,
-    	                             ListValueModel<?> listHolder,
+    	                             ListValueModel<?> listModel,
    	                             ModifiableCollectionValueModel<E> selectedItemsModel,
    	                             IBaseLabelProvider labelProvider,
    	                             String helpId) {
@@ -524,7 +526,7 @@ public abstract class AddRemovePane<T extends Model, E extends Object> extends P
 		initializeMainComposite(
 			(Composite) getControl(),
 			adapter,
-			listHolder,
+			listModel,
 			selectedItemsModel,
 			labelProvider,
 			helpId);
@@ -585,6 +587,14 @@ public abstract class AddRemovePane<T extends Model, E extends Object> extends P
 	}
 
 
+	@Override
+	protected void controlDisposed() {
+		this.listModel.removeListChangeListener(
+			ListValueModel.LIST_VALUES,
+			this.listChangeListener
+		);
+		super.controlDisposed();
+	}
 	/**
 	 * This adapter is used to perform the actual action when adding a new item
 	 * or removing the selected items. It is possible to add an optional button.

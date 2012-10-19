@@ -403,10 +403,9 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 	}
 
 	@Override
-	public void dispose() {
-		this.styledText.dispose();
+	protected void controlDisposed() {
 		this.getEnabledModel().removePropertyChangeListener(PropertyValueModel.VALUE, this.enabledModelListener);
-		super.dispose();
+		super.controlDisposed();
 	}
 
 	/**

@@ -147,14 +147,11 @@ public abstract class PersistentAttributeDetailsPage<A extends ReadOnlyPersisten
 	}
 
 	@Override
-	public void dispose() {
+	public void controlDisposed() {
 		JptJpaUiPlugin.instance().trace(TRACE_OPTION, "dispose"); //$NON-NLS-1$
 
-		for (JpaComposite mappingComposite : this.mappingComposites.values()) {
-			mappingComposite.dispose();
-		}
 		this.mappingComposites.clear();
-		super.dispose();
+		super.controlDisposed();
 	}
 
 	private static final String TRACE_OPTION = PersistentAttributeDetailsPage.class.getSimpleName();

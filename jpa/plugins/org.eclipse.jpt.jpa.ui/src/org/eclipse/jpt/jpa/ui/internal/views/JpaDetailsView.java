@@ -259,9 +259,6 @@ public class JpaDetailsView
 			this.currentPageManager.setSubject(null);
 			this.currentPageManager = null;
 		}
-		for (JpaDetailsPageManager<? extends JpaStructureNode> detailsPage : this.pageManagers.values()) {
-			detailsPage.dispose();
-		}
 		this.pageManagers.clear();
 	}
 

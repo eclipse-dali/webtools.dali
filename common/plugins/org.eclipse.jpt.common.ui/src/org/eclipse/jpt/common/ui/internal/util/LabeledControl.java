@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008 Oracle. All rights reserved. This
+ *  Copyright (c) 2008, 2012 Oracle. All rights reserved. This
  *  program and the accompanying materials are made available under the terms of
  *  the Eclipse Public License v1.0 which accompanies this distribution, and is
  *  available at http://www.eclipse.org/legal/epl-v10.html
@@ -8,6 +8,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.util;
 
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Image;
 
 /**
@@ -17,7 +18,7 @@ import org.eclipse.swt.graphics.Image;
  * @see LabeledButton
  * @see LabeledLabel
  *
- * @version 2.0
+ * @version 3.3
  * @since 2.0
  */
 public interface LabeledControl {
@@ -34,4 +35,15 @@ public interface LabeledControl {
 	 * @param text The new text
 	 */
 	void setText(String text);
+
+	/**
+	 * Convenience method: Adds a dispose listener to the check box.
+	 * The source of any events sent to the listener will be the wrapped control.
+	 */
+	void addDisposeListener(DisposeListener disposeListener);
+
+	/**
+	 * Convenience method: Removes a dispose listener from the wrapped control.
+	 */
+	void removeDisposeListener(DisposeListener disposeListener);
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008 Oracle. All rights reserved. This
+ *  Copyright (c) 2008, 2012 Oracle. All rights reserved. This
  *  program and the accompanying materials are made available under the terms of
  *  the Eclipse Public License v1.0 which accompanies this distribution, and is
  *  available at http://www.eclipse.org/legal/epl-v10.html
@@ -9,6 +9,7 @@
 package org.eclipse.jpt.common.ui.internal.util;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Label;
 
@@ -16,7 +17,7 @@ import org.eclipse.swt.widgets.Label;
  * A default implementation of <code>LabeledControl</code> that updates an
  * <code>Label</code> when required.
  *
- * @version 2.0
+ * @version 3.3
  * @since 2.0
  */
 @SuppressWarnings("nls")
@@ -40,6 +41,14 @@ public final class LabeledLabel implements LabeledControl
 
 		Assert.isNotNull(label, "The label cannot be null");
 		this.label = label;
+	}
+
+	public void addDisposeListener(DisposeListener disposeListener) {
+		this.label.addDisposeListener(disposeListener);
+	}
+
+	public void removeDisposeListener(DisposeListener disposeListener) {
+		this.label.removeDisposeListener(disposeListener);
 	}
 
 	/*

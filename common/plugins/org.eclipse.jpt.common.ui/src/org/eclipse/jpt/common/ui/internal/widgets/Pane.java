@@ -14,7 +14,6 @@ import java.util.Collection;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
-import org.eclipse.jface.resource.StringConverter;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jpt.common.ui.WidgetFactory;
@@ -40,6 +39,8 @@ import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.transformer.Transformer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -135,6 +136,12 @@ public abstract class Pane<T extends Model>
 	private PropertyValueModel<Boolean> enabledModel;
 
 	/**
+	 * A listener that allows us to stop listening to stuff when the control
+	 * is disposed. (Critical for preventing memory leaks.)
+	 */
+	private final DisposeListener controlDisposeListener;
+
+	/**
 	 * Creates a new <code>Pane</code>.
 	 *
 	 * @param parentPane The parent container of this one
@@ -209,6 +216,8 @@ public abstract class Pane<T extends Model>
 			this.container = null;
 			this.initializeLayout(parent);
 		}
+		this.controlDisposeListener = this.buildControlDisposeListener();
+		this.getControl().addDisposeListener(this.controlDisposeListener);
 		this.engageSubjectHolder();
 		this.engageListeners(getSubject());
 		this.populate();
@@ -247,6 +256,8 @@ public abstract class Pane<T extends Model>
 			this.container = null;
 			this.initializeLayout(parent);
 		}
+		this.controlDisposeListener = this.buildControlDisposeListener();
+		this.getControl().addDisposeListener(this.controlDisposeListener);
 		this.engageSubjectHolder();
 		this.engageListeners(getSubject());
 		this.populate();
@@ -276,6 +287,8 @@ public abstract class Pane<T extends Model>
 			this.container = null;
 			this.initializeLayout(parent);
 		}
+		this.controlDisposeListener = this.buildControlDisposeListener();
+		this.getControl().addDisposeListener(this.controlDisposeListener);
 		this.engageSubjectHolder();
 		this.engageListeners(getSubject());
 		this.populate();
@@ -297,6 +310,8 @@ public abstract class Pane<T extends Model>
 			this.container = null;
 			this.initializeLayout(parent);
 		}
+		this.controlDisposeListener = this.buildControlDisposeListener();
+		this.getControl().addDisposeListener(this.controlDisposeListener);
 		this.engageSubjectHolder();
 		this.engageListeners(getSubject());
 		this.populate();
@@ -363,6 +378,19 @@ public abstract class Pane<T extends Model>
 	 * @category Layout
 	 */
 	protected abstract void initializeLayout(Composite container);
+
+	private DisposeListener buildControlDisposeListener() {
+		return new DisposeListener() {
+			public void widgetDisposed(DisposeEvent event) {
+				Pane.this.controlDisposed();
+			}
+		    @Override
+			public String toString() {
+				return "control dispose listener";
+			}
+		};
+	}
+
 
 	/**
 	 * Adds any property names to the given collection in order to be notified
@@ -1532,7 +1560,6 @@ public abstract class Pane<T extends Model>
 	 * Creates a new <code>Text</code> widget.
 	 *
 	 * @param container The parent container
-	 * @param textHolder The holder of the text field's input
 	 * @return The newly created <code>Text</code> widget
 	 *
 	 * @category Layout
@@ -2664,17 +2691,16 @@ public abstract class Pane<T extends Model>
 		}
 	}
 
-	public void dispose() {
+	protected void controlDisposed() {
+		// the control is not yet "disposed" when we receive this event
+		// so we can still remove our listeners
 		JptCommonUiPlugin.instance().trace(TRACE_OPTION, "dispose");
 
 		// Dispose this pane
 		this.disengageListeners(getSubject());
 		this.disengageSubjectHolder();
 
-		// Ask the sub-panes to dispose themselves
-		for (Pane<?> subPane : this.subPanes) {
-			subPane.dispose();
-		}
+		this.getControl().removeDisposeListener(this.controlDisposeListener);
 	}
 
 	private static final String TRACE_OPTION = Pane.class.getSimpleName();

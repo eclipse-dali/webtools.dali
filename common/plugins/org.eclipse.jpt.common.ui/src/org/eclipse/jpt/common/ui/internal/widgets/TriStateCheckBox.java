@@ -112,13 +112,6 @@ public final class TriStateCheckBox {
 	}
 
 	/**
-	 * Disposes the check box widget.
-	 */
-	public void dispose() {
-		this.button.dispose();
-	}
-
-	/**
 	 * Returns the <code>Button</code> used to show a tri-state check box.
 	 *
 	 * @return The <code>Button</code> used to show a tri-state check box
