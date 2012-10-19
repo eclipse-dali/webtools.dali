@@ -26,6 +26,7 @@ import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.SystemTools;
+import org.eclipse.jpt.common.utility.internal.iterable.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.FilteringIterator;
 import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
@@ -807,6 +808,13 @@ public final class FileTools {
 	
 
 	// ********** miscellaneous **********
+
+	/**
+	 * Return only the files that fit the specified filter.
+	 */
+	public static Iterable<File> filter(Iterable<File> files, FileFilter fileFilter) {
+		return new FilteringIterable<File>(files, new FileFilterFilterAdapter(fileFilter));
+	}
 
 	/**
 	 * Return only the files that fit the specified filter.
