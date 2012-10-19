@@ -299,7 +299,7 @@ public final class JpaPreferences {
 
 	/**
 	 * Internal: Called <em>only</em> by the
-	 * {@link JpaPreferenceInitializer#initializeDefaultPreferences()
+	 * {@link org.eclipse.jpt.jpa.core.internal.JpaPreferenceInitializer#initializeDefaultPreferences()
 	 * JPA preferences initializer}.
 	 */
 	public static void initializeDefaultPreferences() {
