@@ -32,15 +32,15 @@ public interface TableGenerator
 	// ********** table **********
 
 	/**
-	 * Return the specified table if present, otherwise return the default
-	 * table.
+	 * Return the specified table name if present, otherwise return the default
+	 * table name.
 	 */
-	String getTable();
-	String getSpecifiedTable();
-	void setSpecifiedTable(String value);
-		String SPECIFIED_TABLE_PROPERTY = "specifiedTable"; //$NON-NLS-1$
-	String getDefaultTable();
-		String DEFAULT_TABLE_PROPERTY = "defaultTable"; //$NON-NLS-1$
+	String getTableName();
+	String getSpecifiedTableName();
+	void setSpecifiedTableName(String tableName);
+		String SPECIFIED_TABLE_NAME_PROPERTY = "specifiedTableName"; //$NON-NLS-1$
+	String getDefaultTableName();
+		String DEFAULT_TABLE_NAME_PROPERTY = "defaultTableName"; //$NON-NLS-1$
 
 
 	// ********** schema **********

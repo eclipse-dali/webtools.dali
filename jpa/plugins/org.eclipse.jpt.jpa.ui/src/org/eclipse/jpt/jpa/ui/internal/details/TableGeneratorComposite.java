@@ -367,8 +367,8 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(TableGenerator.DEFAULT_TABLE_PROPERTY);
-				propertyNames.add(TableGenerator.SPECIFIED_TABLE_PROPERTY);
+				propertyNames.add(TableGenerator.DEFAULT_TABLE_NAME_PROPERTY);
+				propertyNames.add(TableGenerator.SPECIFIED_TABLE_NAME_PROPERTY);
 				propertyNames.addAll(TABLE_PICK_LIST_PROPERTIES);
 			}
 
@@ -383,7 +383,7 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 
 			@Override
 			protected String getDefaultValue() {
-				return this.getSubject().getDefaultTable();
+				return this.getSubject().getDefaultTableName();
 			}
 
 			@Override
@@ -401,12 +401,12 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 
 			@Override
 			protected void setValue(String value) {
-				retrieveGenerator().setSpecifiedTable(value);
+				retrieveGenerator().setSpecifiedTableName(value);
 			}
 
 			@Override
 			protected String getValue() {
-				return this.getSubject().getSpecifiedTable();
+				return this.getSubject().getSpecifiedTableName();
 			}
 
 			@Override
@@ -503,7 +503,7 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 	));
 
 	/* CU private */ static final Collection<String> COLUMN_PICK_LIST_PROPERTIES = Arrays.asList(ArrayTools.addAll(TABLE_PICK_LIST_PROPERTIES.toArray(new String[0]),
-		TableGenerator.DEFAULT_TABLE_PROPERTY,
-		TableGenerator.SPECIFIED_TABLE_PROPERTY
+		TableGenerator.DEFAULT_TABLE_NAME_PROPERTY,
+		TableGenerator.SPECIFIED_TABLE_NAME_PROPERTY
 	));
 }

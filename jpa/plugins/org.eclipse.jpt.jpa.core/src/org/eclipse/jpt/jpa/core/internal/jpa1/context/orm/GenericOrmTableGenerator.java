@@ -37,8 +37,8 @@ public class GenericOrmTableGenerator
 	extends AbstractOrmDbGenerator<XmlTableGenerator>
 	implements OrmTableGenerator, UniqueConstraint.Owner
 {
-	protected String specifiedTable;
-	protected String defaultTable;
+	protected String specifiedTableName;
+	protected String defaultTableName;
 
 	protected String specifiedSchema;
 	protected String defaultSchema;
@@ -62,7 +62,7 @@ public class GenericOrmTableGenerator
 
 	public GenericOrmTableGenerator(JpaContextNode parent, XmlTableGenerator xmlTableGenerator) {
 		super(parent, xmlTableGenerator);
-		this.specifiedTable = xmlTableGenerator.getTable();
+		this.specifiedTableName = xmlTableGenerator.getTable();
 		this.specifiedSchema = xmlTableGenerator.getSchema();
 		this.specifiedCatalog = xmlTableGenerator.getCatalog();
 		this.specifiedPkColumnName = xmlTableGenerator.getPkColumnName();
@@ -77,7 +77,7 @@ public class GenericOrmTableGenerator
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.setSpecifiedTable_(this.xmlGenerator.getTable());
+		this.setSpecifiedTableName_(this.xmlGenerator.getTable());
 		this.setSpecifiedSchema_(this.xmlGenerator.getSchema());
 		this.setSpecifiedCatalog_(this.xmlGenerator.getCatalog());
 		this.setSpecifiedPkColumnName_(this.xmlGenerator.getPkColumnName());
@@ -89,7 +89,7 @@ public class GenericOrmTableGenerator
 	@Override
 	public void update() {
 		super.update();
-		this.setDefaultTable(this.buildDefaultTable());
+		this.setDefaultTableName(this.buildDefaultTableName());
 		this.setDefaultSchema(this.buildDefaultSchema());
 		this.setDefaultCatalog(this.buildDefaultCatalog());
 		this.setDefaultPkColumnName(this.buildDefaultPkColumnName());
@@ -107,44 +107,44 @@ public class GenericOrmTableGenerator
 	}
 	
 
-	// ********** table **********
+	// ********** table name **********
 
-	public String getTable() {
-		return (this.specifiedTable != null) ? this.specifiedTable : this.defaultTable;
+	public String getTableName() {
+		return (this.specifiedTableName != null) ? this.specifiedTableName : this.defaultTableName;
 	}
 
-	public String getSpecifiedTable() {
-		return this.specifiedTable;
+	public String getSpecifiedTableName() {
+		return this.specifiedTableName;
 	}
 
-	public void setSpecifiedTable(String table) {
-		this.setSpecifiedTable_(table);
-		this.xmlGenerator.setTable(table);
+	public void setSpecifiedTableName(String tableName) {
+		this.setSpecifiedTableName_(tableName);
+		this.xmlGenerator.setTable(tableName);
 	}
 
-	protected void setSpecifiedTable_(String table) {
-		String old = this.specifiedTable;
-		this.specifiedTable = table;
-		this.firePropertyChanged(SPECIFIED_TABLE_PROPERTY, old, table);
+	protected void setSpecifiedTableName_(String tableName) {
+		String old = this.specifiedTableName;
+		this.specifiedTableName = tableName;
+		this.firePropertyChanged(SPECIFIED_TABLE_NAME_PROPERTY, old, tableName);
 	}
 
-	public String getDefaultTable() {
-		return this.defaultTable;
+	public String getDefaultTableName() {
+		return this.defaultTableName;
 	}
 
-	protected void setDefaultTable(String table) {
-		String old = this.defaultTable;
-		this.defaultTable = table;
-		this.firePropertyChanged(DEFAULT_TABLE_PROPERTY, old, table);
+	protected void setDefaultTableName(String tableName) {
+		String old = this.defaultTableName;
+		this.defaultTableName = tableName;
+		this.firePropertyChanged(DEFAULT_TABLE_NAME_PROPERTY, old, tableName);
 	}
 
-	protected String buildDefaultTable() {
+	protected String buildDefaultTableName() {
 		return null; // TODO the default table is determined by the runtime provider...
 	}
 
 	public Table getDbTable() {
 		Schema dbSchema = this.getDbSchema();
-		return (dbSchema == null) ? null : dbSchema.getTableForIdentifier(this.getTable());
+		return (dbSchema == null) ? null : dbSchema.getTableForIdentifier(this.getTableName());
 	}
 
 
@@ -439,7 +439,7 @@ public class GenericOrmTableGenerator
 	}
 
 	protected boolean isEquivalentTo(TableGenerator generator) {
-		return ObjectTools.equals(this.specifiedTable, generator.getSpecifiedTable()) &&
+		return ObjectTools.equals(this.specifiedTableName, generator.getSpecifiedTableName()) &&
 				ObjectTools.equals(this.specifiedSchema, generator.getSpecifiedSchema()) &&
 				ObjectTools.equals(this.specifiedCatalog, generator.getSpecifiedCatalog()) &&
 				ObjectTools.equals(this.specifiedPkColumnName, generator.getSpecifiedPkColumnName()) &&
@@ -468,7 +468,7 @@ public class GenericOrmTableGenerator
 
 	public void convertFrom(JavaTableGenerator javaTableGenerator) {
 		super.convertFrom(javaTableGenerator);
-		this.setSpecifiedTable(javaTableGenerator.getSpecifiedTable());
+		this.setSpecifiedTableName(javaTableGenerator.getSpecifiedTableName());
 		this.setSpecifiedSchema(javaTableGenerator.getSpecifiedSchema());
 		this.setSpecifiedCatalog(javaTableGenerator.getSpecifiedCatalog());
 		this.setSpecifiedPkColumnName(javaTableGenerator.getSpecifiedPkColumnName());

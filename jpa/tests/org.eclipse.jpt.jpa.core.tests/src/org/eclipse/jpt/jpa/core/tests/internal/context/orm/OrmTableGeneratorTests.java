@@ -174,34 +174,34 @@ public class OrmTableGeneratorTests extends ContextModelTestCase
 		assertNull(tableGenerator.getSpecifiedAllocationSize());
 	}
 	
-	public void testUpdateSpecifiedTable() throws Exception {
+	public void testUpdateSpecifiedTableName() throws Exception {
 		TableGenerator tableGenerator = getEntityMappings().addTableGenerator(0);		
 		XmlTableGenerator tableGeneratorResource = getXmlEntityMappings().getTableGenerators().get(0);
 		
 		//set name in the resource model, verify context model updated
 		tableGeneratorResource.setTable("FOO");
-		assertEquals("FOO", tableGenerator.getSpecifiedTable());
+		assertEquals("FOO", tableGenerator.getSpecifiedTableName());
 		assertEquals("FOO", tableGeneratorResource.getTable());
 	
 		//set name to null in the resource model
 		tableGeneratorResource.setTable(null);
-		assertNull(tableGenerator.getSpecifiedTable());
+		assertNull(tableGenerator.getSpecifiedTableName());
 		assertNull(tableGeneratorResource.getTable());
 	}
 	
-	public void testModifySpecifiedTable() throws Exception {
+	public void testModifySpecifiedTableName() throws Exception {
 		TableGenerator tableGenerator = getEntityMappings().addTableGenerator(0);		
 		XmlTableGenerator tableGeneratorResource = getXmlEntityMappings().getTableGenerators().get(0);
 		
 		//set name in the context model, verify resource model modified
-		tableGenerator.setSpecifiedTable("FOO");
+		tableGenerator.setSpecifiedTableName("FOO");
 		assertEquals("FOO", tableGeneratorResource.getTable());
-		assertEquals("FOO", tableGenerator.getSpecifiedTable());
+		assertEquals("FOO", tableGenerator.getSpecifiedTableName());
 		
 		//set name to null in the context model
-		tableGenerator.setSpecifiedTable(null);
+		tableGenerator.setSpecifiedTableName(null);
 		assertNull(tableGeneratorResource.getTable());
-		assertNull(tableGenerator.getSpecifiedTable());
+		assertNull(tableGenerator.getSpecifiedTableName());
 	}
 
 	public void testUpdateSpecifiedSchema() throws Exception {

@@ -539,7 +539,7 @@ public class Generic2_0JpaMetadataConversionTests extends
 		// test the mapping file generators have correct values
 		OrmTableGenerator tableGen = entityMappings.getTableGenerators().iterator().next();
 		assertEquals("tgen", tableGen.getName());
-		assertEquals("ID_GEN", tableGen.getTable());
+		assertEquals("ID_GEN", tableGen.getTableName());
 		assertEquals("APP", tableGen.getSchema());
 		assertEquals("FOO", tableGen.getCatalog());
 		assertEquals("GEN_NAME", tableGen.getPkColumnName());
@@ -580,7 +580,7 @@ public class Generic2_0JpaMetadataConversionTests extends
 		// test the mapping file generators have correct values
 		OrmTableGenerator tableGen = entityMappings.getTableGenerators().iterator().next();
 		assertEquals("tgen", tableGen.getName());
-		assertEquals("ID_GEN", tableGen.getTable());
+		assertEquals("ID_GEN", tableGen.getTableName());
 		assertEquals("APP", tableGen.getSchema());
 		assertEquals("FOO", tableGen.getCatalog());
 		assertEquals("GEN_NAME", tableGen.getPkColumnName());

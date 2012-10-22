@@ -40,8 +40,8 @@ public class GenericJavaTableGenerator
 	extends AbstractJavaDbGenerator<TableGeneratorAnnotation>
 	implements JavaTableGenerator, UniqueConstraint.Owner
 {
-	protected String specifiedTable;
-	protected String defaultTable;
+	protected String specifiedTableName;
+	protected String defaultTableName;
 
 	protected String specifiedSchema;
 	protected String defaultSchema;
@@ -65,7 +65,7 @@ public class GenericJavaTableGenerator
 
 	public GenericJavaTableGenerator(JavaGeneratorContainer parent, TableGeneratorAnnotation generatorAnnotation) {
 		super(parent, generatorAnnotation);
-		this.specifiedTable = generatorAnnotation.getTable();
+		this.specifiedTableName = generatorAnnotation.getTable();
 		this.specifiedSchema = generatorAnnotation.getSchema();
 		this.specifiedCatalog = generatorAnnotation.getCatalog();
 		this.specifiedPkColumnName = generatorAnnotation.getPkColumnName();
@@ -80,7 +80,7 @@ public class GenericJavaTableGenerator
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.setSpecifiedTable_(this.generatorAnnotation.getTable());
+		this.setSpecifiedTableName_(this.generatorAnnotation.getTable());
 		this.setSpecifiedSchema_(this.generatorAnnotation.getSchema());
 		this.setSpecifiedCatalog_(this.generatorAnnotation.getCatalog());
 		this.setSpecifiedPkColumnName_(this.generatorAnnotation.getPkColumnName());
@@ -92,7 +92,7 @@ public class GenericJavaTableGenerator
 	@Override
 	public void update() {
 		super.update();
-		this.setDefaultTable(this.buildDefaultTable());
+		this.setDefaultTableName(this.buildDefaultTableName());
 		this.setDefaultSchema(this.buildDefaultSchema());
 		this.setDefaultCatalog(this.buildDefaultCatalog());
 		this.setDefaultPkColumnName(this.buildDefaultPkColumnName());
@@ -110,44 +110,44 @@ public class GenericJavaTableGenerator
 	}
 	
 
-	// ********** table **********
+	// ********** table name **********
 
-	public String getTable() {
-		return (this.specifiedTable != null) ? this.specifiedTable : this.defaultTable;
+	public String getTableName() {
+		return (this.specifiedTableName != null) ? this.specifiedTableName : this.defaultTableName;
 	}
 
-	public String getSpecifiedTable() {
-		return this.specifiedTable;
+	public String getSpecifiedTableName() {
+		return this.specifiedTableName;
 	}
 
-	public void setSpecifiedTable(String table) {
-		this.generatorAnnotation.setTable(table);
-		this.setSpecifiedTable_(table);
+	public void setSpecifiedTableName(String tableName) {
+		this.generatorAnnotation.setTable(tableName);
+		this.setSpecifiedTableName_(tableName);
 	}
 
-	protected void setSpecifiedTable_(String table) {
-		String old = this.specifiedTable;
-		this.specifiedTable = table;
-		this.firePropertyChanged(SPECIFIED_TABLE_PROPERTY, old, table);
+	protected void setSpecifiedTableName_(String tableName) {
+		String old = this.specifiedTableName;
+		this.specifiedTableName = tableName;
+		this.firePropertyChanged(SPECIFIED_TABLE_NAME_PROPERTY, old, tableName);
 	}
 
-	public String getDefaultTable() {
-		return this.defaultTable;
+	public String getDefaultTableName() {
+		return this.defaultTableName;
 	}
 
-	protected void setDefaultTable(String table) {
-		String old = this.defaultTable;
-		this.defaultTable = table;
-		this.firePropertyChanged(DEFAULT_TABLE_PROPERTY, old, table);
+	protected void setDefaultTableName(String tableName) {
+		String old = this.defaultTableName;
+		this.defaultTableName = tableName;
+		this.firePropertyChanged(DEFAULT_TABLE_NAME_PROPERTY, old, tableName);
 	}
 
-	protected String buildDefaultTable() {
+	protected String buildDefaultTableName() {
 		return null; // TODO the default table is determined by the runtime provider...
 	}
 
 	public Table getDbTable() {
 		Schema dbSchema = this.getDbSchema();
-		return (dbSchema == null) ? null : dbSchema.getTableForIdentifier(this.getTable());
+		return (dbSchema == null) ? null : dbSchema.getTableForIdentifier(this.getTableName());
 	}
 
 
@@ -565,7 +565,7 @@ public class GenericJavaTableGenerator
 	}
 
 	protected boolean isEquivalentTo(TableGenerator generator) {
-		return ObjectTools.equals(this.specifiedTable, generator.getSpecifiedTable()) &&
+		return ObjectTools.equals(this.specifiedTableName, generator.getSpecifiedTableName()) &&
 				ObjectTools.equals(this.specifiedSchema, generator.getSpecifiedSchema()) &&
 				ObjectTools.equals(this.specifiedCatalog, generator.getSpecifiedCatalog()) &&
 				ObjectTools.equals(this.specifiedPkColumnName, generator.getSpecifiedPkColumnName()) &&
