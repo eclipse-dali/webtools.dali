@@ -17,6 +17,8 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jpt.common.utility.collection.Queue;
 import org.eclipse.jpt.common.utility.collection.Stack;
+import org.eclipse.jpt.common.utility.command.InterruptibleParameterizedCommand;
+import org.eclipse.jpt.common.utility.command.ParameterizedCommand;
 import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
@@ -998,6 +1000,20 @@ public final class IterableTools {
 	 */
 	public static <E> TreeIterable<E> treeIterable(Iterable<? extends E> roots, Transformer<E, Iterator<? extends E>> transformer) {
 		return new TreeIterable<E>(roots, transformer);
+	}
+
+	/**
+	 * Execute the specified command for each element in the specified iterable.
+	 */
+	public static <E> void execute(Iterable<? extends E> iterable, ParameterizedCommand<E> command) {
+		IteratorTools.execute(iterable.iterator(), command);
+	}
+
+	/**
+	 * Execute the specified command for each element in the specified iterable.
+	 */
+	public static <E> void execute(Iterable<? extends E> iterable, InterruptibleParameterizedCommand<E> command) throws InterruptedException {
+		IteratorTools.execute(iterable.iterator(), command);
 	}
 
 

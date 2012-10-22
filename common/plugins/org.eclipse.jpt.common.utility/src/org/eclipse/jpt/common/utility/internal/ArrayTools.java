@@ -17,6 +17,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Random;
+import org.eclipse.jpt.common.utility.command.InterruptibleParameterizedCommand;
+import org.eclipse.jpt.common.utility.command.ParameterizedCommand;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
@@ -2801,6 +2803,27 @@ public final class ArrayTools {
 		array[i] = array[j];
 		array[j] = temp;
 		return array;
+	}
+
+
+	// ********** execute **********
+
+	/**
+	 * Execute the specified command for each element in the specified array.
+	 */
+	public static <E> void execute(E[] array, ParameterizedCommand<E> command) {
+		for (E e : array) {
+			command.execute(e);
+		}
+	}
+
+	/**
+	 * Execute the specified command for each element in the specified array.
+	 */
+	public static <E> void execute(E[] array, InterruptibleParameterizedCommand<E> command) throws InterruptedException {
+		for (E e : array) {
+			command.execute(e);
+		}
 	}
 
 
