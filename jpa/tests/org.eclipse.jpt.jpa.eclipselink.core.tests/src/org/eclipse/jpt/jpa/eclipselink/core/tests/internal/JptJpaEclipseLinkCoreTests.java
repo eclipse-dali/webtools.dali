@@ -14,7 +14,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.eclipse.jpt.jpa.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.JptJpaEclipseLinkCoreContextModelTests;
-import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.resource.JptJpaEclipselinkCoreResourceModelTests;
+import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.resource.JptJpaEclipseLinkCoreResourceModelTests;
 
 /**
  * decentralize test creation code
@@ -35,7 +35,7 @@ public class JptJpaEclipseLinkCoreTests {
 		// test.xml is split up because this test suite was taking too
 		// long and triggering a time-out during the WTP build
 		TestSuite suite = new TestSuite(JptJpaEclipseLinkCoreTests.class.getPackage().getName());
-		suite.addTest(JptJpaEclipselinkCoreResourceModelTests.suite());
+		suite.addTest(JptJpaEclipseLinkCoreResourceModelTests.suite());
 		suite.addTest(JptJpaEclipseLinkCoreContextModelTests.suite());
 		suite.addTest(JptJpaEclipseLinkCoreMiscTests.suite());
 		return suite;
