@@ -34,14 +34,14 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.PropertyPage;
 
-public class EclipselinkPreferencePage extends PropertyPage {
+public class EclipseLinkPreferencePage extends PropertyPage {
 
 	private EclipseLinkStaticWeavingBuilderConfigurator configurator;
 	private StaticWeavingComposite staticWeavingComposite;
 	
 	// ********** constructors **********
 	
-	public EclipselinkPreferencePage() {
+	public EclipseLinkPreferencePage() {
 		super();
 		setDescription(EclipseLinkUiMessages.EclipselinkPreferencePage_description);
 	}

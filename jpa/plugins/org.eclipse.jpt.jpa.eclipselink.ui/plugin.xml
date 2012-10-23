@@ -206,7 +206,7 @@
 			id="org.eclipse.jpt.jpa.eclipselink.ui.eclipselinkProjectProperties"
 			name="%eclipseLinkNode"
 			category="org.eclipse.jpt.jpa.ui.jpaProjectProperties"
-			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.weave.EclipselinkPreferencePage">
+			class="org.eclipse.jpt.jpa.eclipselink.ui.internal.weave.EclipseLinkPreferencePage">
 			<enabledWhen>
 				<adapt type="org.eclipse.core.resources.IProject">
 					<test
