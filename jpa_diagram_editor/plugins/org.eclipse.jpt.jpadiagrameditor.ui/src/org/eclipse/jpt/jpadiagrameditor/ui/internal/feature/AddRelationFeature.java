@@ -151,7 +151,7 @@ public class AddRelationFeature extends AbstractAddFeature {
 		double endCoefficient = 1.0 - startCoefficient;	
 		int len = JPAEditorUtil.calcConnectionLength(c);		
 		if (UNI.equals(direction)) {
-			ConnectionDecorator d = imageCreator.createArrowConnectionDecorator(c, endCoefficient, false);
+			ConnectionDecorator d = imageCreator.createArrowConnectionDecorator(c, endCoefficient);
 			Graphiti.getGaService().setLocation(d.getGraphicsAlgorithm(),Math.round(-len/10), 0);				
 		} 
 	}
@@ -171,7 +171,7 @@ public class AddRelationFeature extends AbstractAddFeature {
 		ConnectionDecorator d1 = imageCreator.createManyStartDecorator(c, startCoefficient);
 		Graphiti.getGaService().setLocation(d1.getGraphicsAlgorithm(),Math.round(len/10), 0);
 		if (UNI.equals(direction)) {
-			ConnectionDecorator d2 = imageCreator.createArrowConnectionDecorator(c, endCoefficient, false);
+			ConnectionDecorator d2 = imageCreator.createArrowConnectionDecorator(c, endCoefficient);
 			Graphiti.getGaService().setLocation(d2.getGraphicsAlgorithm(),Math.round(-len/10), 0);
 		} 
     }
@@ -186,7 +186,7 @@ public class AddRelationFeature extends AbstractAddFeature {
 			ConnectionDecorator d = imageCreator.createManyEndWithArrowDecorator(c, endCoefficient);
 			Graphiti.getGaService().setLocation(d.getGraphicsAlgorithm(),Math.round(-len/10), 0);
 		} else {
-			ConnectionDecorator d = imageCreator.createManyEndDecorator(c, endCoefficient);
+			ConnectionDecorator d = imageCreator.createManyEndDecorator(c, endCoefficient, false);
 			Graphiti.getGaService().setLocation(d.getGraphicsAlgorithm(),Math.round(-len/10), 0);
 		}
     }

@@ -50,7 +50,7 @@ abstract public class AbstractRelation implements IRelation {
 	}
 	
 	public String getId() {
-		return generateId(owner, inverse, getOwnerAttributeName(), getRelType(), getRelDir());
+		return generateId(owner, inverse, getOwnerAttributeName(), getInverseAttributeName(), getRelType(), getRelDir());
 	}
 	
 	public JavaPersistentType getOwner() {
@@ -116,11 +116,19 @@ abstract public class AbstractRelation implements IRelation {
 	public static String generateId(JavaPersistentType owner, 
 									JavaPersistentType inverse, 
 									String ownerAttributeName,
+									String inverseAttributeName,
 									RelType relType, 
 									RelDir relDir) {
-		String id = owner.getName() + "-" + inverse.getName() + SEPARATOR +  //$NON-NLS-1$
+		String id = ""; //$NON-NLS-1$
+		if(inverseAttributeName != null){
+			id = owner.getName() + "-" + inverse.getName() + SEPARATOR +  //$NON-NLS-1$
 					relTypeToIdPart.get(relType) + SEPARATOR +
-					relDirToIdPart.get(relDir) + SEPARATOR + ownerAttributeName; 
+					relDirToIdPart.get(relDir) + SEPARATOR + ownerAttributeName + SEPARATOR + inverseAttributeName;
+		} else {
+			id = owner.getName() + "-" + inverse.getName() + SEPARATOR +  //$NON-NLS-1$
+					relTypeToIdPart.get(relType) + SEPARATOR +
+					relDirToIdPart.get(relDir) + SEPARATOR + ownerAttributeName;
+		}
 		return id;
 	}
 

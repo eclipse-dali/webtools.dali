@@ -15,7 +15,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.relations;
 
-import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
@@ -28,13 +27,11 @@ public class OneToOneUniDirRelation extends OneToOneRelation implements IUnidire
 	public OneToOneUniDirRelation(IJPAEditorFeatureProvider fp, JavaPersistentType owner, 
 								  JavaPersistentType inverse, 
 								  String ownerAttributeName,
-								  boolean createAttribs, 
-								  ICompilationUnit ownerCU,
-								  ICompilationUnit inverseCU) {
+								  boolean createAttribs) {
 		super(owner, inverse);
 		this.ownerAttributeName = ownerAttributeName; 
 		if (createAttribs) 
-			createRelation(fp, ownerCU, inverseCU);
+			createRelation(fp);
 	}
 	
 	public JavaPersistentAttribute getAnnotatedAttribute() {
@@ -45,8 +42,8 @@ public class OneToOneUniDirRelation extends OneToOneRelation implements IUnidire
 		this.ownerAnnotatedAttribute = annotatedAttribute;
 	}
 
-	private void createRelation(IJPAEditorFeatureProvider fp, ICompilationUnit ownerCU, ICompilationUnit inverseCU) {
-		ownerAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, owner, inverse, ownerCU, inverseCU, false, null);
+	private void createRelation(IJPAEditorFeatureProvider fp) {
+		ownerAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, owner, inverse, false, null);
 		JpaArtifactFactory.instance().addOneToOneUnidirectionalRelation(fp, owner, ownerAnnotatedAttribute);
 	} 
 		

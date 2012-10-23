@@ -81,27 +81,27 @@ public class JPAEditorUtilTest {
 	public void testEqualsIgnoreFirstLetterCase() {
 		String s1 = "abcdefg";
 		String s2 = "Abcdefg";
-		assertTrue(JPAEditorUtil.equalsIgnoreFirstLetterCase(s1, s2));
+		assertTrue(equalsIgnoreFirstLetterCase(s1, s2));
 		
 		s1 = "";
 		s2 = "";
-		assertTrue(JPAEditorUtil.equalsIgnoreFirstLetterCase(s1, s2));
+		assertTrue(equalsIgnoreFirstLetterCase(s1, s2));
 		
 		s1 = "gjgIyguiyGUYuGUYGuyg";
 		s2 = "gjgIyguiyGUYuGUYGuyg";
-		assertTrue(JPAEditorUtil.equalsIgnoreFirstLetterCase(s1, s2));
+		assertTrue(equalsIgnoreFirstLetterCase(s1, s2));
 		
 		s1 = "LjgIyguiyGUYuGUYGuyg";
 		s2 = "LjgIyguiyGUYuGUYGuyg";
-		assertTrue(JPAEditorUtil.equalsIgnoreFirstLetterCase(s1, s2));		
+		assertTrue(equalsIgnoreFirstLetterCase(s1, s2));		
 		
 		s1 = "gjgIyguiyGUYuGUYGuygs";
 		s2 = "gjgIyguiyGUYuGUYGuyg";
-		assertFalse(JPAEditorUtil.equalsIgnoreFirstLetterCase(s1, s2));
+		assertFalse(equalsIgnoreFirstLetterCase(s1, s2));
 		
 		s1 = "LjgIyguiyGUyuGUYGuyg";
 		s2 = "LjgIyguiyGUYuGUYGuyg";
-		assertFalse(JPAEditorUtil.equalsIgnoreFirstLetterCase(s1, s2));			
+		assertFalse(equalsIgnoreFirstLetterCase(s1, s2));			
 	}
 	
 	@Test
@@ -409,4 +409,17 @@ public class JPAEditorUtilTest {
 		assertFalse(JPAEditorUtil.areHeadersEqual("header", JPAEditorConstants.HEADER_PREFIX_DIRTY + "headers"));
 	}
 	
+	
+	private static boolean equalsIgnoreFirstLetterCase(String s1, String s2) {
+		if ((s1 == null) && (s2 == null)) 
+			return true;
+		if ((s1 == null) || (s2 == null))
+			return false;
+		if (s1.length() != s2.length())
+			return false;
+		if (s1.length() == 0) 
+			return true;
+		return s1.substring(0, 1).equalsIgnoreCase(s2.substring(0, 1)) &&
+				s1.substring(1).equals(s2.substring(1));
+	}
 }

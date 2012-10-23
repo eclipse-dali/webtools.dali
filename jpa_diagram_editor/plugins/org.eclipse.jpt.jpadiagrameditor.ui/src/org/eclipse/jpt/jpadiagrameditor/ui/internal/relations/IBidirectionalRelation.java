@@ -25,6 +25,6 @@ public interface IBidirectionalRelation extends IRelation {
 
 	public abstract void setOwnerAnnotatedAttribute(JavaPersistentAttribute ownerAnnotatedAttribute);
 
-	public abstract void setInverseAnnotatedAttribute(JavaPersistentAttribute inverseAnnotatedAttribute); 
+	public abstract void setInverseAnnotatedAttribute(JavaPersistentAttribute inverseAnnotatedAttribute);
 
 }

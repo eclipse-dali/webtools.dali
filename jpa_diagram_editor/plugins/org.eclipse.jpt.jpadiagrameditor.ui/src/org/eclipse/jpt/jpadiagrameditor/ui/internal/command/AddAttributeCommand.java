@@ -9,6 +9,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.utility.command.Command;
+import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.propertypage.JPADiagramPropertyPage;
@@ -48,18 +49,28 @@ public class AddAttributeCommand implements Command{
 	public void execute() {
 		IType type = null;
 		try {
-			JPAEditorUtil.createImport(this.cu1, this.cu2.getType(this.attributeType.getName()).getElementName());
-			type = this.cu1.findPrimaryType();	
+			JPAEditorUtil.createImport(cu1, cu2.getType(attributeType.getName()).getElementName());
+			type = cu1.findPrimaryType();	
 
-			if (this.isCollection) {
-				createAttributeOfCollectiontype(this.fp, this.jpt, this.attributeType,
-						this.mapKeyType, this.attributeName, this.actName, this.cu1, type);
+			if (isCollection) {
+				createAttributeOfCollectiontype(fp, jpt, attributeType,
+						mapKeyType, attributeName, actName, cu1, type);
 			} else {
-				createSimpleAttribute(this.attributeType, this.attributeName, this.actName,
-						this.isCollection, type);
+				createSimpleAttribute(attributeType, attributeName, actName,
+						isCollection, type);
 			}
-								
-			this.jpt.getJavaResourceType().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
+			
+			JavaPersistentAttribute attr  = jpt.getAttributeNamed(attributeName);
+			int cnt = 0;
+			while ((attr == null) && (cnt < 25)) {
+				try {
+					Thread.sleep(250);
+				} catch (InterruptedException e) {
+				}
+				jpt.getJavaResourceType().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
+				attr = jpt.getAttributeNamed(attributeName);
+				cnt++;
+			}
 			
 		} catch (JavaModelException e) {
 			JPADiagramEditorPlugin.logError("Cannnot create a new attribute with name " + attributeName, e); //$NON-NLS-1$				
@@ -69,7 +80,7 @@ public class AddAttributeCommand implements Command{
 	private void createSimpleAttribute(JavaPersistentType attributeType,
 			String attributeName, String actName, boolean isCollection,
 			IType type) throws JavaModelException {
-		type.createField("  private " + JPAEditorUtil.returnSimpleName(attributeType.getName()) + " "
+		type.createField("  private " + JPAEditorUtil.returnSimpleName(attributeType.getName()) + " " //$NON-NLS-1$ //$NON-NLS-2$
 			+ JPAEditorUtil.decapitalizeFirstLetter(actName) + ";", null, false, new NullProgressMonitor()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		type.createMethod(JpaArtifactFactory.instance().genGetterContents(attributeName,
 				JPAEditorUtil.returnSimpleName(attributeType.getName()), null,

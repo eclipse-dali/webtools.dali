@@ -158,7 +158,7 @@ public class AddRelationFeatureTest {
 		Polyline pl = EasyMock.createMock(Polyline.class);
 		expect(pl.getX()).andReturn(0);
 		expect(pl.getY()).andReturn(0);		
-		expect(imageCreator.createManyEndDecorator(isA(Connection.class), eq(location))).andReturn(d);
+		expect(imageCreator.createManyEndDecorator(isA(Connection.class), eq(location), false)).andReturn(d);
 		expect(d.getGraphicsAlgorithm()).andReturn(pl);
 		replay(d, pl);		
 	}
@@ -191,7 +191,7 @@ public class AddRelationFeatureTest {
 		Polyline pl = EasyMock.createMock(Polyline.class);
 		expect(pl.getX()).andReturn(0);
 		expect(pl.getY()).andReturn(0);
-		expect(imageCreator.createArrowConnectionDecorator(isA(Connection.class), eq(location), false)).andReturn(d);
+		expect(imageCreator.createArrowConnectionDecorator(isA(Connection.class), eq(location))).andReturn(d);
 		expect(d.getGraphicsAlgorithm()).andReturn(pl);
 		replay(d, pl);
 	}

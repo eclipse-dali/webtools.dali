@@ -36,6 +36,10 @@ public class JPAEditorMessages extends NLS {
 	public static String CreateDiagramJob_createDiagramJobName;
 	public static String CreateDiagramJob_getJPADiagramMonitorTaskName;
 	
+	public static String CreateEmbeddableFeature_EmbeddableFeatureDescription;
+
+	public static String CreateEmbeddableFeature_EmbeddableFeatureName;
+
 	public static String CreateIsARelationFeature_description;
 	public static String CreateIsARelationFeature_name;
 	
@@ -44,9 +48,7 @@ public class JPAEditorMessages extends NLS {
 	public static String CreateJPAEntityFeature_createEntityErrorStatusMsg;
 	public static String CreateJPAEntityFeature_jpaEntityFeatureDescription;
 	public static String CreateJPAEntityFeature_jpaEntityFeatureName;
-	public static String CreateJPAEntityFeature_jpaProjectSelectionDialogDescription;
-	public static String CreateJPAEntityFeature_jpaProjectSelectionDialogTitle;
-	public static String CreateJPAEntityFromMappedSuperclassFeature_createInheritedEntityFeatureDescription;
+
 	public static String CreateJPAEntityFromMappedSuperclassFeature_createInheritedEntityFeatureName;
 	public static String CreateMappedSuperclassFeature_createMappedSuperclassFeatureDescription;
 	public static String CreateMappedSuperclassFeature_createMappedSuperclassFeatureName;
@@ -143,8 +145,6 @@ public class JPAEditorMessages extends NLS {
 
 	public static String JPAEditorToolBehaviorProvider_createAttributeButtonDescription;
 	public static String JPAEditorToolBehaviorProvider_createAttributeButtonlabel;
-	public static String JPAEditorToolBehaviorProvider_customSubMenuDescription;
-	public static String JPAEditorToolBehaviorProvider_customSubMenuText;
 	public static String JPAEditorToolBehaviorProvider_deleteAttributeButtonDescription;
 	public static String JPAEditorToolBehaviorProvider_deleteAttributeButtonlabel;
 	public static String JPAEditorToolBehaviorProvider_deleteEntityFromModelButtonDescription;
@@ -173,9 +173,9 @@ public class JPAEditorMessages extends NLS {
 	public static String JPAEditorToolBehaviorProvider_openJPADetailsView; 
 	public static String JPAEditorToolBehaviorProvider_openJPADetailsViewDesc;	
 	public static String JPAEditorToolBehaviorProvider_openMiniatureView; 
-	public static String JPAEditorToolBehaviorProvider_openMiniatureViewDesc;	
-	public static String JPAEditorToolBehaviorProvider_applyPattern; 
-	public static String JPAEditorToolBehaviorProvider_applyPatternDesc;
+	public static String JPAEditorToolBehaviorProvider_openMiniatureViewDesc;
+
+	public static String JPAEditorToolBehaviorProvider_CompositionPaletteName;
 	public static String JPAEditorToolBehaviorProvider_expandAttrMenuItem;
 
 	public static String JPAEditorToolBehaviorProvider_expandAttrMenuItemDescr;
@@ -247,6 +247,14 @@ public class JPAEditorMessages extends NLS {
 	
 	public static String MoveEntityFeature_ContextMenuOperationDescription; 
 	
+	public static String EmbedCollectionOfObjectsFeature_ElementCollectionFeatureDescription;
+
+	public static String EmbedCollectionOfObjectsFeature_ElementCollectionFeatureName;
+
+	public static String EmbedSingleObjectFeature_EmbeddedFeatureDescription;
+
+	public static String EmbedSingleObjectFeature_EmbeddedFeatureName;
+
 	public static String EntitiesCoordinatesXML_CannotCloseFileStreamErrorMSG;
 
 	public static String EntitiesCoordinatesXML_CannotCreateDOMFileErrorMSG;

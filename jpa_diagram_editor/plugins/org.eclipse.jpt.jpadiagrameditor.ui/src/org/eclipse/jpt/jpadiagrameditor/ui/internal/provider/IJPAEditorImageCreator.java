@@ -32,22 +32,21 @@ public interface IJPAEditorImageCreator {
 	public Polyline createConnectionLine(Diagram d, Connection connection);
 
 	public Polyline createIsAConnectionLine(Diagram d, Connection connection);
+	
+	public Polyline createHasReferenceConnectionLine(Diagram d, Connection connection);
 
-	//public ConnectionDecorator createTextConnectionDecorator(Connection connection, String text, double location);
+	public ConnectionDecorator createArrowConnectionDecorator(Connection connection, double location);
+	
+	public ConnectionDecorator createIsAArrowConnectionDecorator(Connection connection, double location);
 
-	public ConnectionDecorator createArrowConnectionDecorator(Connection connection, double location, boolean isA);
+	public ConnectionDecorator createHasReferenceStartConnectionDecorator(Connection connection, double location);
 
 	public ConnectionDecorator createManyEndWithArrowDecorator(Connection connection, double location);
 
 	public ConnectionDecorator createManyStartDecorator(Connection connection, double location);
 	
-	public ConnectionDecorator createManyEndDecorator(Connection connection, double location);
-
-	public ConnectionDecorator createIconConnectionDecorator(Connection connection, String iconId, double location);
+	public ConnectionDecorator createManyEndDecorator(Connection connection, double location, boolean isEmbedded);
 	
-	public ConnectionDecorator createCardinalityConnectionDecorator(Diagram d, Connection c, String text, double location);
-	
-	public ConnectionDecorator createIsATextConnectionDecorator(Diagram d, Connection c);
-	
+	public ConnectionDecorator createCardinalityConnectionDecorator(Diagram d, Connection c, String text, double location);	
 
 }

@@ -15,18 +15,13 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.feature;
 
-import java.util.Collection;
-import java.util.Iterator;
-
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ICustomContext;
-import org.eclipse.graphiti.features.context.impl.AddConnectionContext;
 import org.eclipse.graphiti.features.custom.AbstractCustomFeature;
 import org.eclipse.graphiti.mm.algorithms.Rectangle;
 import org.eclipse.graphiti.mm.algorithms.Text;
 import org.eclipse.graphiti.mm.algorithms.styles.Color;
 import org.eclipse.graphiti.mm.algorithms.styles.Orientation;
-import org.eclipse.graphiti.mm.pictograms.AnchorContainer;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.Shape;
@@ -35,7 +30,6 @@ import org.eclipse.graphiti.services.IGaService;
 import org.eclipse.graphiti.util.IColorConstant;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 
@@ -48,21 +42,7 @@ public class UpdateAttributeFeature extends AbstractCustomFeature {
 
 	public void reconnect(JavaPersistentType jpt) {
 		IJPAEditorFeatureProvider fp = getFeatureProvider();
-		Collection<IRelation> rels = JpaArtifactFactory.instance().produceAllRelations(jpt, fp);
-
-		Iterator<IRelation> it = rels.iterator();
-		while (it.hasNext()) {
-			IRelation rel = it.next();
-			AddRelationFeature relF = new AddRelationFeature(fp);
-			AnchorContainer acSource = (AnchorContainer) fp.getPictogramElementForBusinessObject(rel.getOwner());
-			AnchorContainer acTarget = (AnchorContainer) fp.getPictogramElementForBusinessObject(rel.getInverse());
-			if ((acSource != null) && (acTarget != null)) { 
-				AddConnectionContext ctx = new AddConnectionContext(acSource.getAnchors().iterator().next(), acTarget
-					.getAnchors().iterator().next());
-				ctx.setNewObject(rel);
-				relF.add(ctx);
-			}
-		}
+		JpaArtifactFactory.instance().addNewRelations(fp, jpt);
 	}
 
 	/**

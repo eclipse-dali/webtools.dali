@@ -107,7 +107,7 @@ public class CreateRelationAttributesTest {
 		}
  
 		JavaPersistentAttribute attr = JpaArtifactFactory.instance().
-				addAttribute(featureProvider, (JavaPersistentType)t1, (JavaPersistentType)t2, "add", "add", false, 
+				addAttribute(featureProvider, (JavaPersistentType)t1, (JavaPersistentType)t2, null, "add", "add", false, 
 						createCompilationUnitFrom(customerFile),
 						createCompilationUnitFrom(addressFile));
 		jpaProject.getProject().build(IncrementalProjectBuilder.CLEAN_BUILD, new NullProgressMonitor());
@@ -150,7 +150,7 @@ public class CreateRelationAttributesTest {
 		}
  
 		JavaPersistentAttribute attr = JpaArtifactFactory.instance().
-			addAttribute(featureProvider, (JavaPersistentType)t1, (JavaPersistentType)t2, "address", "address", false, 						
+			addAttribute(featureProvider, (JavaPersistentType)t1, (JavaPersistentType)t2, null, "address", "address", false, 						
 					createCompilationUnitFrom((IFile)t1.getResource()),
 					createCompilationUnitFrom((IFile)t2.getResource()));		
 		assertNotNull(attr);
@@ -201,13 +201,13 @@ public class CreateRelationAttributesTest {
 		}
  
 		JavaPersistentAttribute attr = JpaArtifactFactory.instance().
-			addAttribute( featureProvider, (JavaPersistentType)t1, (JavaPersistentType)t2, "creditCard", "creditCard", false,
+			addAttribute( featureProvider, (JavaPersistentType)t1, (JavaPersistentType)t2, null, "creditCard", "creditCard", false,
 					createCompilationUnitFrom((IFile)t1.getResource()),
 					createCompilationUnitFrom((IFile)t2.getResource()));		
 		assertNotNull(attr);
 
 		JavaPersistentAttribute attr2 = JpaArtifactFactory.instance().
-			addAttribute(featureProvider, (JavaPersistentType)t2, (JavaPersistentType)t1, "customer", "customer", false, 
+			addAttribute(featureProvider, (JavaPersistentType)t2, (JavaPersistentType)t1, null, "customer", "customer", false, 
 					createCompilationUnitFrom((IFile)t2.getResource()),
 					createCompilationUnitFrom((IFile)t1.getResource()));		
 		assertNotNull(attr2);
@@ -277,7 +277,7 @@ public class CreateRelationAttributesTest {
 			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, phoneType.getTypeBinding().getQualifiedName());
 		}
  
-		JavaPersistentAttribute attr = JpaArtifactFactory.instance().addAttribute(featureProvider, (JavaPersistentType)t1, (JavaPersistentType)t2, "phones", "phones", true, 
+		JavaPersistentAttribute attr = JpaArtifactFactory.instance().addAttribute(featureProvider, (JavaPersistentType)t1, (JavaPersistentType)t2, null, "phones", "phones", true, 
 				createCompilationUnitFrom((IFile)t1.getResource()),
 				createCompilationUnitFrom((IFile)t2.getResource()));		
 		assertNotNull(attr);
@@ -332,13 +332,13 @@ public class CreateRelationAttributesTest {
 		}
  
 		JavaPersistentAttribute singleSideAttribute = JpaArtifactFactory.instance().
-			addAttribute(featureProvider, (JavaPersistentType)singleSidePersistentType, (JavaPersistentType)manySidePersistentType, "reservations", "reservations", true, 
+			addAttribute(featureProvider, (JavaPersistentType)singleSidePersistentType, (JavaPersistentType)manySidePersistentType, null, "reservations", "reservations", true, 
 				createCompilationUnitFrom((IFile)singleSidePersistentType.getResource()),
 				createCompilationUnitFrom((IFile)manySidePersistentType.getResource()));		
 		assertNotNull(singleSideAttribute);
 
 		JavaPersistentAttribute manySideAttribute = JpaArtifactFactory.instance().
-			addAttribute(featureProvider, (JavaPersistentType)manySidePersistentType, (JavaPersistentType)singleSidePersistentType, "cruise", "cruise", false, 
+			addAttribute(featureProvider, (JavaPersistentType)manySidePersistentType, (JavaPersistentType)singleSidePersistentType, null, "cruise", "cruise", false, 
 				createCompilationUnitFrom((IFile)manySidePersistentType.getResource()),
 				createCompilationUnitFrom((IFile)singleSidePersistentType.getResource()));		
 		assertNotNull(manySideAttribute);
@@ -427,7 +427,7 @@ public class CreateRelationAttributesTest {
 		}
  
 		JavaPersistentAttribute mappedAttribute = JpaArtifactFactory.instance().
-			addAttribute(featureProvider, (JavaPersistentType)manySidePersistentType, (JavaPersistentType)singleSidePersistentType, "ship", "ship", true, 
+			addAttribute(featureProvider, (JavaPersistentType)manySidePersistentType, (JavaPersistentType)singleSidePersistentType, null, "ship", "ship", true, 
 					createCompilationUnitFrom((IFile)manySidePersistentType.getResource()),
 					createCompilationUnitFrom((IFile)singleSidePersistentType.getResource()));		
 		assertNotNull(mappedAttribute);
@@ -493,12 +493,12 @@ public class CreateRelationAttributesTest {
 		}
  
 		JavaPersistentAttribute ownerSideAttribute = JpaArtifactFactory.instance().
-			addAttribute(featureProvider, (JavaPersistentType)ownerSidePersistentType, (JavaPersistentType)inverseSidePersistentType, "customers", "customers", true,
+			addAttribute(featureProvider, (JavaPersistentType)ownerSidePersistentType, (JavaPersistentType)inverseSidePersistentType, null, "customers", "customers", true,
 					createCompilationUnitFrom((IFile)ownerSidePersistentType.getResource()),
 					createCompilationUnitFrom((IFile)inverseSidePersistentType.getResource()));		
 		assertNotNull(ownerSideAttribute);
 
-		JavaPersistentAttribute inverseSideAttributes = JpaArtifactFactory.instance().addAttribute(featureProvider, (JavaPersistentType)inverseSidePersistentType, (JavaPersistentType)ownerSidePersistentType, "reservations", "reservations", true, 
+		JavaPersistentAttribute inverseSideAttributes = JpaArtifactFactory.instance().addAttribute(featureProvider, (JavaPersistentType)inverseSidePersistentType, (JavaPersistentType)ownerSidePersistentType, null, "reservations", "reservations", true, 
 				createCompilationUnitFrom((IFile)inverseSidePersistentType.getResource()),
 				createCompilationUnitFrom((IFile)ownerSidePersistentType.getResource()));		
 		assertNotNull(inverseSideAttributes);
@@ -566,7 +566,7 @@ public class CreateRelationAttributesTest {
 		}
  
 		JavaPersistentAttribute annotatedSideAttribute = JpaArtifactFactory.instance().
-			addAttribute(featureProvider, (JavaPersistentType)annotatedPersistentType, (JavaPersistentType)referencedPersistentType, "cabins", "cabins", true,
+			addAttribute(featureProvider, (JavaPersistentType)annotatedPersistentType, (JavaPersistentType)referencedPersistentType, null, "cabins", "cabins", true,
 					createCompilationUnitFrom((IFile)annotatedPersistentType.getResource()),
 					createCompilationUnitFrom((IFile)referencedPersistentType.getResource()));		
 		assertNotNull(annotatedSideAttribute);

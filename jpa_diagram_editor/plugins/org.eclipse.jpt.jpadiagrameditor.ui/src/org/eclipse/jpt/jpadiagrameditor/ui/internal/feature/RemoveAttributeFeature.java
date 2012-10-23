@@ -15,14 +15,12 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.feature;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.IContext;
 import org.eclipse.graphiti.features.context.IRemoveContext;
-import org.eclipse.graphiti.features.context.impl.AddConnectionContext;
 import org.eclipse.graphiti.features.context.impl.CustomContext;
 import org.eclipse.graphiti.features.context.impl.RemoveContext;
 import org.eclipse.graphiti.features.custom.ICustomFeature;
@@ -35,8 +33,8 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPAEditorFeatureProvider;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.HasReferanceRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 
 public class RemoveAttributeFeature extends DefaultRemoveFeature {
@@ -105,13 +103,20 @@ public class RemoveAttributeFeature extends DefaultRemoveFeature {
 			fp.remove(fp.getKeyForBusinessObject(bo));
 			if (!skipRemoveRelations) {
 				IRelation rel = fp.getRelationRelatedToAttribute(jpa);
-				removeRelation(rel);
+				if(rel != null) {
+					removeRelation(rel);
+				}
+				
+				HasReferanceRelation embedRel = fp.getEmbeddedRelationRelatedToAttribute(jpa);
+				if(embedRel != null) {
+					removeRelation(embedRel);
+				}
 			}
 		}
 
 		ContainerShape entityShape = ((ContainerShape) pe).getContainer().getContainer();
 		try{
-		graphicalRemoveAttribute(entityShape);
+			graphicalRemoveAttribute(entityShape);
 		} catch (Exception e){
 			JPADiagramEditorPlugin.logError(e); 
 		}
@@ -123,7 +128,7 @@ public class RemoveAttributeFeature extends DefaultRemoveFeature {
 		graphicalRemove.execute(customContext);
 	}
 
-	private void removeRelation(IRelation rel) {
+	private void removeRelation(Object rel) {
 		if (rel == null)
 			return;
 		Connection conn = (Connection) getFeatureProvider().getPictogramElementForBusinessObject(rel);
@@ -137,22 +142,7 @@ public class RemoveAttributeFeature extends DefaultRemoveFeature {
 			return;
 		if (jpt == null)
 			return;
-
-		Collection<IRelation> rels = JpaArtifactFactory.instance()
-				.produceAllRelations(jpt, getFeatureProvider());
-		Iterator<IRelation> iter = rels.iterator();
-		while (iter.hasNext()) {
-			IRelation rel = iter.next();
-			ContainerShape ownerShape = (ContainerShape) getFeatureProvider().getPictogramElementForBusinessObject(
-					rel.getOwner());
-			ContainerShape inverseShape = (ContainerShape) getFeatureProvider().getPictogramElementForBusinessObject(
-					rel.getInverse());
-			AddConnectionContext cntx = new AddConnectionContext(JPAEditorUtil.getAnchor(ownerShape), JPAEditorUtil
-					.getAnchor(inverseShape));
-			cntx.setNewObject(rel);
-			AddRelationFeature ft = new AddRelationFeature(getFeatureProvider());
-			ft.add(cntx);
-		}
+		JpaArtifactFactory.instance().addNewRelations(getFeatureProvider(), jpt);
 		JpaArtifactFactory.instance().rearrangeIsARelations(getFeatureProvider());
 	}
 

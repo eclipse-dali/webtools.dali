@@ -15,7 +15,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.relations;
 
-import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
@@ -28,14 +27,12 @@ public class OneToOneBiDirRelation extends OneToOneRelation implements IBidirect
 								 JavaPersistentType inverse, 
 								 String ownerAttributeName,
 								 String inverseAttributeName,
-								 boolean createAttribs,
-								 ICompilationUnit ownerCU,
-								 ICompilationUnit inverseCU) {
+								 boolean createAttribs, JavaPersistentType embeddingEntity) {
 		super(owner, inverse);
 		this.ownerAttributeName = ownerAttributeName;
 		this.inverseAttributeName = inverseAttributeName;
 		if (createAttribs)
-			createRelation(fp, ownerCU, inverseCU);
+			createRelation(fp, embeddingEntity);
 	}
 
 	public JavaPersistentAttribute getOwnerAnnotatedAttribute() {
@@ -56,15 +53,19 @@ public class OneToOneBiDirRelation extends OneToOneRelation implements IBidirect
 		this.inverseAnnotatedAttribute = inverseAnnotatedAttribute;
 	}
 
-	private void createRelation(IJPAEditorFeatureProvider fp, ICompilationUnit ownerCU, ICompilationUnit inverseCU) {
-		ownerAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, owner, inverse, ownerCU, inverseCU, false, null);
-		inverseAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, inverse, owner, inverseCU, ownerCU, false, null);
+	private void createRelation(IJPAEditorFeatureProvider fp, JavaPersistentType embeddingEntity) {
+		ownerAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, owner, inverse, false, null);
 		
+		if(JpaArtifactFactory.instance().hasEmbeddableAnnotation(owner)){
+//			inverseAnnotatedAttribute = JpaArtifactFactory.instance().addEmbeddedAttribute(owner, inverse, null, false, fp);
+			inverseAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, inverse, embeddingEntity, false, null);
+		} else {
+			inverseAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, inverse, owner, false, null);
+		}
 		JpaArtifactFactory.instance().addOneToOneBidirectionalRelation(fp, owner, ownerAnnotatedAttribute, inverse, inverseAnnotatedAttribute);		
 	} 	
 		
 	public RelDir getRelDir() {
 		return RelDir.BI;
-	}	
-
+	}
 }

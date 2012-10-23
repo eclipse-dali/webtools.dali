@@ -19,7 +19,7 @@ public class ElementIsShown extends DefaultCondition{
 	}
 
 	public String getFailureMessage() {
-		return "Entity with name ''" + entityName +  "'' did not show.";
+		return "Element with name ''" + entityName +  "'' did not show.";
 	}
 
 }

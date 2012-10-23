@@ -93,7 +93,7 @@ public class JPADiagramPropertyPage extends PropertyPage {
 	protected Control createContents(Composite parent) {
 		final Composite composite = createCompositeContainer(parent);
 		project = (IProject)getElement().getAdapter(IProject.class);
-		isJPA10Project = JPAEditorUtil.checkJPAFacetVersion(project, "1.0");				//$NON-NLS-1$;
+		isJPA10Project = JPAEditorUtil.checkJPAFacetVersion(project, JPAEditorUtil.JPA_PROJECT_FACET_10);
 		loadProperties();
 		createDefaultFolderControl(composite);
 		createDefaultPackageControl(composite);

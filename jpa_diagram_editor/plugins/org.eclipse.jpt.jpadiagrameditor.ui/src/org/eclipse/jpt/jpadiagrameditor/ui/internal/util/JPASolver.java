@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.WeakHashMap;
+
 import org.eclipse.core.internal.resources.File;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarkerDelta;
@@ -39,7 +40,6 @@ import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.eclipse.graphiti.dt.IDiagramTypeProvider;
 import org.eclipse.graphiti.features.IRemoveFeature;
-import org.eclipse.graphiti.features.context.impl.AddConnectionContext;
 import org.eclipse.graphiti.features.context.impl.AddContext;
 import org.eclipse.graphiti.features.context.impl.CustomContext;
 import org.eclipse.graphiti.features.context.impl.RemoveContext;
@@ -63,6 +63,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.core.PackageFragmentRoot;
 import org.eclipse.jpt.common.core.JptResourceModel;
+import org.eclipse.jpt.common.core.resource.java.Annotation;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
@@ -103,11 +104,11 @@ import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpa.core.resource.java.OwnableRelationshipMappingAnnotation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditor;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.facade.EclipseFacade;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.AddAttributeFeature;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.AddRelationFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.GraphicalRemoveAttributeFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.RemoveAttributeFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.RemoveRelationFeature;
@@ -115,8 +116,10 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.ModelI
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPAEditorDiagramTypeProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.AbstractRelation;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.HasReferanceRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IBidirectionalRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IsARelation;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPage;
@@ -147,6 +150,9 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 
 	private HashSet<String> addIgnore = new HashSet<String>();
 	private Hashtable<String, IRelation> attribToRel = new Hashtable<String, IRelation>();
+	private Hashtable<String, HasReferanceRelation> attribToEmbeddedRel = new Hashtable<String, HasReferanceRelation>();
+	private Hashtable<String, IsARelation> attribToIsARel = new Hashtable<String, IsARelation>();
+
 	private static final String SEPARATOR = "-"; //$NON-NLS-1$
 
 	private IEclipseFacade eclipseFacade;
@@ -286,6 +292,10 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			return name;
 		} else if (bo instanceof AbstractRelation) {
 			return ((AbstractRelation) bo).getId();
+		} else if (bo instanceof HasReferanceRelation) {
+			return ((HasReferanceRelation)bo).getId();
+		} else if (bo instanceof IsARelation) {
+			return ((IsARelation)bo).getId();
 		} else if (bo instanceof JavaPersistentAttribute) {
 			JavaPersistentAttribute at = (JavaPersistentAttribute) bo;
 			return (((PersistentType)at.getParent()).getName() + "-" + at.getName()); //$NON-NLS-1$
@@ -310,12 +320,20 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 	protected String produceOwnerKeyForRel(AbstractRelation rel) {
 		return produceKeyForRel(rel.getOwner(), rel.getOwnerAttributeName());
 	}
+	
+	protected String produceKeyForEmbeddedRel(HasReferanceRelation rel){
+		return produceKeyForRel(rel.getEmbeddingEntity(), rel.getEmbeddedAnnotatedAttribute().getName());
+	}
+	
+	protected String produceKeyForIsARel(IsARelation rel) {
+		return produceKeyForRel(rel.getSubclass(), rel.getSuperclass().getName());
+	}
 
 	protected String produceInverseKeyForRel(AbstractRelation rel) {
 		return produceKeyForRel(rel.getInverse(), rel.getInverseAttributeName());
 	}
 
-	public String produceKeyForRel(JavaPersistentType jpt, String attributeName) {
+	private String produceKeyForRel(JavaPersistentType jpt, String attributeName) {
 		return jpt.getName() + SEPARATOR + attributeName;
 	}
 
@@ -335,6 +353,12 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			if (rel instanceof IBidirectionalRelation) {
 				attribToRel.put(produceInverseKeyForRel(rel), rel);
 			}
+		} else if (bo instanceof HasReferanceRelation) {
+			HasReferanceRelation rel = (HasReferanceRelation) bo;
+			attribToEmbeddedRel.put(produceKeyForEmbeddedRel(rel), rel);
+		} else if (bo instanceof IsARelation) {
+			IsARelation rel = (IsARelation) bo;
+			attribToIsARel.put(produceKeyForIsARel(rel), rel);
 		} else if (bo instanceof JavaPersistentAttribute) {
 			addPropertiesListenerToAttribute((JavaPersistentAttribute)bo);
 		}
@@ -369,6 +393,12 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 			attribToRel.remove(produceOwnerKeyForRel(rel));
 			if (rel instanceof IBidirectionalRelation) 
 				attribToRel.remove(produceInverseKeyForRel(rel));
+		} else if (o instanceof HasReferanceRelation) {
+			HasReferanceRelation rel = (HasReferanceRelation) o;
+			attribToEmbeddedRel.remove(produceKeyForEmbeddedRel(rel));
+		} else if (o instanceof IsARelation) {
+			IsARelation rel = (IsARelation) o;
+			attribToIsARel.remove(produceKeyForIsARel(rel));
 		} else if (o instanceof JavaPersistentAttribute) {
 			removeListenersFromAttribute((JavaPersistentAttribute)o);
 		}
@@ -383,42 +413,74 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		String key = produceKeyForRel((JavaPersistentType)jpa.getParent(), jpa.getName());
 		return attribToRel.containsKey(key);
 	}
-
-	public IRelation getRelationRelatedToAttribute(JavaPersistentAttribute jpa) {
-		String key = produceKeyForRel((JavaPersistentType)jpa.getParent(), jpa.getName());
+	
+	public IRelation getRelationRelatedToAttribute(JavaPersistentAttribute jpa, IJPAEditorFeatureProvider fp) {
+		String key = findRelationshipKey(jpa, fp);
 		return attribToRel.get(key);
 	}
-
-	public Set<IRelation> getRelationsRelatedToEntity(JavaPersistentType jpt) {
-		HashSet<IRelation> res = new HashSet<IRelation>();
-		for (JavaPersistentAttribute at : jpt.getAttributes()) {
-			IRelation rel = getRelationRelatedToAttribute(at);
-			if (rel != null)
-				res.add(rel);
+	
+	/**
+	 * This method is called to update the existing relationships when an Embeddable class is renamed. By the renamed
+	 * embedded attribute, find the target entity of the relationship:
+	 * First finds the type of the embedded attribute -> the embeddable class. Then iterates over the embeddable's attributes
+	 * and check for each attribute if it is involved in a relationship. If yes, find its parent -> the target entity class 
+	 * and iterates over its attribute. Check if there is an attribute that is involved in a relationship and has a "mappedBy" attribute
+	 * that consists of the name of the attribute which will be renamed and the name of the attribute in the embeddable class. If such an attribute
+	 * exists, the unique key for the existing relationship must be ganerated by the target entity and the name of the found attribute.
+	 * Otherwise the key must be generated by the name of the attribute that will be renamed and its parent entity.
+	 * @param jpa - the {@link JavaPersistentAttribute} which will be renamed
+	 * @param fp
+	 * @return the unique key for the relationship.
+	 */
+	private String findRelationshipKey(JavaPersistentAttribute jpa, IJPAEditorFeatureProvider fp){
+		JpaArtifactFactory jpaFactory = JpaArtifactFactory.instance();
+		if(jpaFactory.isEmbeddedAttribute(jpa)){
+			JavaPersistentType embeddableClass = jpaFactory.findJPT(jpa, fp, JpaArtifactFactory.instance().getAnnotations(jpa)[0]);
+			if(embeddableClass == null)
+				return ""; //$NON-NLS-1$
+			for (JavaPersistentAttribute relEntAt : embeddableClass.getAttributes())	{
+				IResource r = relEntAt.getParent().getResource();
+				if (!r.exists())
+					throw new RuntimeException();
+				Annotation[] ans = jpaFactory.getAnnotations(relEntAt);
+				for (Annotation an : ans) {
+					String annotationName = JPAEditorUtil.returnSimpleName(an.getAnnotationName());
+					if (JPAEditorConstants.RELATION_ANNOTATIONS.contains(annotationName)) {
+						JavaPersistentType jpt = jpaFactory.findJPT(relEntAt, fp, an);
+						if(jpt == null)
+							return ""; //$NON-NLS-1$
+						for(JavaPersistentAttribute attribute : jpt.getAttributes()){
+							Annotation[] inverseAnns = jpaFactory.getAnnotations(attribute);
+							for(Annotation inverseAn : inverseAnns){
+								String inverseAnName = JPAEditorUtil.returnSimpleName(inverseAn.getAnnotationName());
+								if(JPAEditorConstants.RELATION_ANNOTATIONS.contains(inverseAnName)){
+									String mappedBy = ((OwnableRelationshipMappingAnnotation)inverseAn).getMappedBy();
+									if(mappedBy.equals(jpa.getName()+"."+relEntAt.getName())) //$NON-NLS-1$
+										return produceKeyForRel(jpt, attribute.getName());
+								}
+							}
+						}
+					}
+				}
+			}
+//		} else {
+//			JavaPersistentType embeddedJPT = (JavaPersistentType) jpa.getParent();
+//			if(jpaFactory.hasEmbeddableAnnotation(embeddedJPT)){
+//				Set<IRelation> rels  = featureProvider.getAllExistingIRelations();
+//				for(IRelation rel : rels){
+//					if(rel.getOwnerAnnotatedAttribute().equals(jpa) && (rel instanceof IBidirectionalRelation)){
+//						return findRelationshipKey(rel.getInverseAnnotatedAttribute(), featureProvider);
+//					}
+//				}
+//			}
 		}
-		return res;
+		return produceKeyForRel((JavaPersistentType) jpa.getParent(), jpa.getName());
 	}
 
 	
-	public boolean existsRelation(JavaPersistentType jpt1, JavaPersistentType jpt2) {
-		Set<IRelation> rels = getRelationsRelatedToEntity(jpt1);
-		if (existsRelation(jpt1, jpt2, rels))
-			return true;		
-		rels = getRelationsRelatedToEntity(jpt2);
-		return existsRelation(jpt1, jpt2, rels);
-	}
-	
-	public boolean existsRelation(JavaPersistentType jpt1, 
-									  JavaPersistentType jpt2,
-									  Set<IRelation> rels) {
-		Iterator<IRelation> it = rels.iterator();
-		while (it.hasNext()) {
-			IRelation rel = it.next();
-			if ((jpt1.equals(rel.getOwner()) && jpt2.equals(rel.getInverse())) ||
-				((jpt2.equals(rel.getOwner()) && jpt1.equals(rel.getInverse()))))
-					return true;
-		}
-		return false;
+	public HasReferanceRelation getEmbeddedRelationToAttribute(JavaPersistentAttribute jpa) {
+		String key = produceKeyForRel((JavaPersistentType)jpa.getParent(), jpa.getName());
+		return attribToEmbeddedRel.get(key);
 	}
 
 	public Collection<Object> getVisualizedObjects() {
@@ -945,6 +1007,8 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 		util = null;
 		keyToBO.clear();
 		attribToRel.clear();
+		attribToEmbeddedRel.clear();
+		attribToIsARel.clear();
 		persistentTypes.clear();
 		keyToBO = null;
 		attribToRel = null;
@@ -1305,6 +1369,12 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 					if (rel == null)
 						continue;
 					Connection conn = (Connection) featureProvider.getPictogramElementForBusinessObject(rel);
+					if(conn == null){
+						HasReferanceRelation embedRel = featureProvider.getEmbeddedRelationRelatedToAttribute(at);
+						if(embedRel == null)
+							continue;
+						conn = (Connection)featureProvider.getPictogramElementForBusinessObject(embedRel);
+					}
 					while (conn != null) {
 						RemoveContext ctx = new RemoveContext(conn);
 						RemoveRelationFeature ft = new RemoveRelationFeature(featureProvider);
@@ -1319,21 +1389,7 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 					RemoveAttributeFeature ft = new RemoveAttributeFeature(featureProvider, true, true);
 					ft.remove(ctx);
 				}
-				Collection<IRelation> rels = JpaArtifactFactory.instance().produceAllRelations(
-						(JavaPersistentType) event.getSource(), featureProvider);
-				Iterator<IRelation> iter = rels.iterator();
-				while (iter.hasNext()) {
-					IRelation rel = iter.next();
-					ContainerShape ownerShape = (ContainerShape) featureProvider
-							.getPictogramElementForBusinessObject(rel.getOwner());
-					ContainerShape inverseShape = (ContainerShape) featureProvider
-							.getPictogramElementForBusinessObject(rel.getInverse());
-					AddConnectionContext cntx = new AddConnectionContext(JPAEditorUtil.getAnchor(ownerShape),
-							JPAEditorUtil.getAnchor(inverseShape));
-					cntx.setNewObject(rel);
-					AddRelationFeature ft = new AddRelationFeature(featureProvider);
-					ft.add(cntx);
-				}
+				JpaArtifactFactory.instance().addNewRelations(featureProvider, (JavaPersistentType) event.getSource());
 			} catch (Exception e) {
 				//$NON-NLS-1$
 			}
@@ -1478,5 +1534,4 @@ public class JPASolver implements IResourceChangeListener, IJpaSolver {
 	public Collection<JavaPersistentType> getPersistentTypes() {
 		return persistentTypes;
 	}
-
 }

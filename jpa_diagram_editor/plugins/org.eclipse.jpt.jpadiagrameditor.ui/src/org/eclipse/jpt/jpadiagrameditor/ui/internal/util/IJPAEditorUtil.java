@@ -18,31 +18,20 @@ package org.eclipse.jpt.jpadiagrameditor.ui.internal.util;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.graphiti.mm.pictograms.ConnectionDecorator;
 import org.eclipse.graphiti.mm.pictograms.FreeFormConnection;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorImageCreator.RelEndDir;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.IWorkbenchSite;
 
 
 public interface IJPAEditorUtil {
-	
-	public List<Point> createBendPointList(FreeFormConnection c,  int cnt, int connectionsNum, boolean selfRelation);
-	
+		
 	public List<Point> createBendPointList(FreeFormConnection c, boolean selfRelation);
-	
-	public int calcConnectionLength(FreeFormConnection c);
-	
-	public RelEndDir getConnectionStartDir(FreeFormConnection c);
-	
-	public RelEndDir getConnectionEndDir(FreeFormConnection c);
 	
 	public JavaPersistentType getJPType(ICompilationUnit cu);
 	
@@ -52,12 +41,8 @@ public interface IJPAEditorUtil {
 	
 	public void formatCode(ICompilationUnit cu, IWorkbenchSite ws);
 	
-	public String generateUniqueEntityName(JpaProject jpaProject, 
-			  String pack, 
-			  IJPAEditorFeatureProvider fp);
-	
-	public String generateUniqueMappedSuperclassName(JpaProject jpaProject,
-			String pack, IJPAEditorFeatureProvider fp);
+	public String generateUniqueTypeName(JpaProject jpaProject, 
+			  String pack, String objectTypeName, IJPAEditorFeatureProvider fp);
 
 	public IFile createEntityInProject(IProject project, 
 									   String entityName, 
@@ -72,17 +57,11 @@ public interface IJPAEditorUtil {
 									   String entityName, 
 									   JavaPersistentType mappedSuperclass) throws Exception;
 	
-
-	public IFile createEntityFromMappedSuperclassInProject(IProject project,
-			String mappedSuperclassName, IPreferenceStore jpaPreferenceStore) throws Exception;
-	
 	public IFile createMappedSuperclassInProject(IProject project,
-			IFolder folder, String mappedSuperclassName) throws Exception;
+			String mappedSuperclassName) throws Exception;
 	
-	public IFile createMappedSuperclassInProject(IProject project,
-			String mappedSuperclassName) throws Exception;	
-	
-	public boolean isCardinalityDecorator(ConnectionDecorator cd);
+	public IFile createEmbeddableInProject(IProject project,
+			String embeddableName) throws Exception;	
 	
 	public void discardWorkingCopyOnce(ICompilationUnit cu);
 }

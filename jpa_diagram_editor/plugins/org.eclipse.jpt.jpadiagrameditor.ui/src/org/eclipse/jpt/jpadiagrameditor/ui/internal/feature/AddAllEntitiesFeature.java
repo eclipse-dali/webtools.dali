@@ -100,7 +100,7 @@ public class AddAllEntitiesFeature extends AbstractCustomFeature implements IAdd
 		for (ClassRef classRef : unit.getClassRefs()) {
 			if (classRef.getJavaPersistentType() != null) { // null if
 				JavaPersistentType jpt = classRef.getJavaPersistentType(); 
-				if (JpaArtifactFactory.instance().hasEntityOrMappedSuperclassAnnotation(jpt)) {
+				if (JpaArtifactFactory.instance().hasAnyAnnotationType(jpt)) {
 					PictogramElement pe = getFeatureProvider().getPictogramElementForBusinessObject(jpt);
 					if (pe != null)
 						continue;

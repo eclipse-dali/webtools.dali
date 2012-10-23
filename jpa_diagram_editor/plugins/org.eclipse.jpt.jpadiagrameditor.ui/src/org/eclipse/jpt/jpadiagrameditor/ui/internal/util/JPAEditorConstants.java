@@ -22,15 +22,19 @@ import java.util.Set;
 import org.eclipse.graphiti.util.ColorConstant;
 import org.eclipse.graphiti.util.IColorConstant;
 import org.eclipse.jpt.jpa.core.MappingKeys;
+import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 
 public class JPAEditorConstants {
 	
 	public static enum DIAGRAM_OBJECT_TYPE {
 		Entity,
-		MappedSupeclass
+		MappedSupeclass,
+		Embeddable
 	};
 	
 	public static final String IS_A_RELATION_ID_PREFIX = "is_a_relation:"; 	//$NON-NLS-1$
+	
+	public static final String HAS_REFERENCE_RELATION_ID_PREFIX = "has_reference_relation:"; 	//$NON-NLS-1$
 	
 	public static final String IS_A = "is-a";	//$NON-NLS-1$
 	
@@ -59,25 +63,41 @@ public class JPAEditorConstants {
 	public static final IColorConstant ENTITY_BACKGROUND =
         new ColorConstant(212, 231, 248);
 	
+	public static final IColorConstant ENTITY_DISABLED_COLOR =
+	        new ColorConstant(192, 192, 192);
+	
 	public static final IColorConstant MAPPED_SUPERCLASS_BACKGROUND =
 	        new ColorConstant(212, 248, 231);
+	
+	public static final IColorConstant EMBEDDABLE_BACKGROUND =
+	        new ColorConstant(231, 227, 227);
 
 	public static final IColorConstant CONNECTION_LINE_COLOR = 
         new ColorConstant(98, 131,167);	
 	
 	public static final IColorConstant IS_A_CONNECTION_LINE_COLOR = 
-	        new ColorConstant(98, 167, 131);	
+	        new ColorConstant(98, 167, 131);
+	
+	public static final IColorConstant IS_A_ARROW_COLOR = 
+	        new ColorConstant(255, 255, 255);
+	
+	public static final IColorConstant EMBEDDED_CONNECTION_LINE_COLOR = 
+	        new ColorConstant(122, 78, 120);
 	
 	public static final IColorConstant ENTITY_BORDER_COLOR = 
         new ColorConstant(98, 131,167);		
 	
 	public static final IColorConstant MAPPED_SUPERCLASS_BORDER_COLOR = 
-	        new ColorConstant(98, 167, 131);		
+	        new ColorConstant(98, 167, 131);
+	
+	public static final IColorConstant EMBEDDABLE_BORDER_COLOR = 
+	        new ColorConstant(157, 103, 154);
 	
 	public final static String TRUE_STRING = Boolean.toString(true);
 	
 	public final static int CONNECTION_LINE_WIDTH = 2;
 	public final static int IS_A_CONNECTION_LINE_WIDTH = 2;
+	public final static int EMBEDDED_CONNECTION_LINE_WIDTH = 2;
 
 	public final static int ENTITY_BORDER_WIDTH = 2;
 	
@@ -125,6 +145,7 @@ public class JPAEditorConstants {
 	public final static String ANNOTATION_MANY_TO_MANY = "ManyToMany"; 		//$NON-NLS-1$
 	public final static String ANNOTATION_VERSION = "Version"; 				//$NON-NLS-1$
 	public final static String ANNOTATION_EMBEDDED = "Embedded"; 			//$NON-NLS-1$
+	public final static String ANNOTATION_ELEMENT_COLLECTION = "ElementCollection"; 			//$NON-NLS-1$
 	public final static String ANNOTATION_EMBEDDED_ID = "EmbeddedId"; 		//$NON-NLS-1$
 	public final static String ANNOTATION_TRANSIENT = "Transient"; 			//$NON-NLS-1$
 	
@@ -164,6 +185,7 @@ public class JPAEditorConstants {
 		ANNOTATION_NAME_TO_KEY.put(ANNOTATION_MANY_TO_MANY, MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		ANNOTATION_NAME_TO_KEY.put(ANNOTATION_VERSION, MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
 		ANNOTATION_NAME_TO_KEY.put(ANNOTATION_EMBEDDED, MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
+		ANNOTATION_NAME_TO_KEY.put(ANNOTATION_ELEMENT_COLLECTION, MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
 		ANNOTATION_NAME_TO_KEY.put(ANNOTATION_EMBEDDED_ID, MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
 		ANNOTATION_NAME_TO_KEY.put(ANNOTATION_TRANSIENT, MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
 		

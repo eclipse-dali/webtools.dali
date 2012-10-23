@@ -16,8 +16,6 @@
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.feature;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.emf.transaction.RecordingCommand;
@@ -25,10 +23,8 @@ import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ICustomContext;
-import org.eclipse.graphiti.features.context.impl.AddConnectionContext;
 import org.eclipse.graphiti.features.context.impl.AddContext;
 import org.eclipse.graphiti.features.custom.AbstractCustomFeature;
-import org.eclipse.graphiti.mm.pictograms.AnchorContainer;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
@@ -36,7 +32,6 @@ import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.GraphicsUpdater;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
@@ -71,6 +66,7 @@ public class GraphicalRemoveAttributeFeature extends AbstractCustomFeature {
 				removeCompartmentChildren(relationShape);
 				removeCompartmentChildren(basicShape);
 
+				
 				readdCompartmentsChildren((JavaPersistentType) bo, entityShape, primShape, relationShape, basicShape);
 
 				layoutPictogramElement(entityShape);
@@ -81,21 +77,8 @@ public class GraphicalRemoveAttributeFeature extends AbstractCustomFeature {
 	}
 
 	public void reconnect(JavaPersistentType jpt) {
-		IJPAEditorFeatureProvider fp = getFeatureProvider();
-		Collection<IRelation> rels = JpaArtifactFactory.instance().produceAllRelations(jpt, fp);
-		Iterator<IRelation> it = rels.iterator();
-		while (it.hasNext()) {
-			IRelation rel = it.next();
-			AddRelationFeature relF = new AddRelationFeature(fp);
-			AnchorContainer acSource = (AnchorContainer) fp.getPictogramElementForBusinessObject(rel.getOwner());
-			AnchorContainer acTarget = (AnchorContainer) fp.getPictogramElementForBusinessObject(rel.getInverse());
-			AddConnectionContext ctx = new AddConnectionContext(acSource.getAnchors().iterator().next(), acTarget
-					.getAnchors().iterator().next());
-			ctx.setNewObject(rel);
-			relF.add(ctx);
-		}
+		JpaArtifactFactory.instance().addNewRelations(getFeatureProvider(), jpt);
 		JpaArtifactFactory.instance().rearrangeIsARelations(getFeatureProvider());
-
 	}
 
 	private void readdCompartmentsChildren(JavaPersistentType javaPersistentType, ContainerShape entityShape,
@@ -113,10 +96,12 @@ public class GraphicalRemoveAttributeFeature extends AbstractCustomFeature {
 		for (JavaPersistentAttribute attribute : javaPersistentType.getAttributes()) {
 			addContext.setNewObject(attribute);
 			graphicalAdd.execute(addContext);
-
 			getFeatureProvider().renewAttributeJoiningStrategyPropertyListener(attribute);
-			getFeatureProvider().addJPTForUpdate(javaPersistentType.getName());
+//			getFeatureProvider().addJPTForUpdate(javaPersistentType.getName());
 		}
+		GraphicsUpdater.updateEntityShape(entityShape);
+		getFeatureProvider().addJPTForUpdate(javaPersistentType.getName());
+
 	}
 
 	private void removeCompartmentChildren(ContainerShape compartmentShape) {

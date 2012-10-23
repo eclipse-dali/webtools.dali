@@ -67,6 +67,6 @@ public class MoveEntityShapeFeature extends DefaultMoveShapeFeature {
 	
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return  (IJPAEditorFeatureProvider)super.getFeatureProvider();
-	}	
+	}
 
 }

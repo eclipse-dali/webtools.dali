@@ -36,6 +36,7 @@ import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.AbstractRelation;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.HasReferanceRelation;
 
 
 @SuppressWarnings("restriction")
@@ -65,7 +66,10 @@ public class RemoveRelationFeature extends AbstractFeature implements IRemoveFea
     	if (bo instanceof AbstractRelation) {
     		AbstractRelation rel = (AbstractRelation)bo;
     		getFeatureProvider().remove(rel.getId());
-    	}    	
+    	} else if (bo instanceof HasReferanceRelation) {
+    		HasReferanceRelation rel = (HasReferanceRelation) bo;
+    		getFeatureProvider().remove(rel.getId());
+    	}
     }    
         
 	public final void remove(final IRemoveContext context) {

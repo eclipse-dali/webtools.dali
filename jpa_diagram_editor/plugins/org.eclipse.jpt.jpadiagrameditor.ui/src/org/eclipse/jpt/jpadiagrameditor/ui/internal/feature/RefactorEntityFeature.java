@@ -296,12 +296,13 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 					Set<JavaPersistentAttribute> newSelfAts = new HashSet<JavaPersistentAttribute>();
 					while (iter.hasNext()) {
 						JavaPersistentAttribute at = iter.next();
-						ICompilationUnit cu = getFeatureProvider().getCompilationUnit((JavaPersistentType) at.getParent());
+						JavaPersistentType atParent = (JavaPersistentType) at.getParent();
+						ICompilationUnit cu = getFeatureProvider().getCompilationUnit(atParent);
 						if (!cu.exists()) {
 							at = (JavaPersistentAttribute)at.getPersistenceUnit().getPersistentType(newJptName).getAttributeNamed(at.getName());
 							JavaPersistentAttribute newAt = null;
 							try {
-								newAt = JpaArtifactFactory.instance().renameAttribute(at, JPAEditorUtil.returnSimpleName(newJptName), newJptName, getFeatureProvider());
+								newAt = JpaArtifactFactory.instance().renameAttribute(atParent, at.getName(), JPAEditorUtil.returnSimpleName(newJptName), newJptName, getFeatureProvider());
 							} catch (InterruptedException e) {
 								JPADiagramEditorPlugin.logError(e);
 							}
@@ -309,7 +310,7 @@ public abstract class RefactorEntityFeature extends AbstractCustomFeature {
 							newSelfAts.add(newAt);
 						} else {
 							try {
-								JpaArtifactFactory.instance().renameAttribute(at, JPAEditorUtil.returnSimpleName(newJptName), newJptName, getFeatureProvider());
+								JpaArtifactFactory.instance().renameAttribute(atParent, at.getName(), JPAEditorUtil.returnSimpleName(newJptName), newJptName, getFeatureProvider());
 							} catch (InterruptedException e) {
 								JPADiagramEditorPlugin.logError(e);
 							}

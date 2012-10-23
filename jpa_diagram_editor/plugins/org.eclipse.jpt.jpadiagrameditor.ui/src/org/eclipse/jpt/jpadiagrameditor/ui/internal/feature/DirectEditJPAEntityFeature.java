@@ -116,7 +116,9 @@ public class DirectEditJPAEntityFeature extends AbstractDirectEditingFeature {
 	    
 	    JpaArtifactFactory.instance().renameEntity(jpt, value);
 //	    Properties props = JPADiagramPropertyPage.loadProperties(jpt.getJpaProject().getProject());
-			if (JPADiagramPropertyPage.doesDirecteEditingAffectClassNameByDefault(jpt.getJpaProject().getProject(), props)) {
+			if ((JpaArtifactFactory.instance().hasEntityAnnotation(jpt) && JPADiagramPropertyPage.doesDirecteEditingAffectClassNameByDefault(jpt.getJpaProject().getProject(), props)) 
+					|| JpaArtifactFactory.instance().hasMappedSuperclassAnnotation(jpt) 
+					|| JpaArtifactFactory.instance().hasEmbeddableAnnotation(jpt)) {
 				RenameEntityWithoutUIFeature ft = new RenameEntityWithoutUIFeature(getFeatureProvider(), value);
 				ft.execute(jpt);
 				return;
@@ -142,7 +144,7 @@ public class DirectEditJPAEntityFeature extends AbstractDirectEditingFeature {
 	    	if (JpaArtifactFactory.instance().isMethodAnnotated(at)) 
 	    		newAtName = JPAEditorUtil.produceValidAttributeName(newAtName);
 	    	try {
-				newAtName = JpaArtifactFactory.instance().renameAttribute(at, newAtName, jpt.getName(), getFeatureProvider()).getName();
+				newAtName = JpaArtifactFactory.instance().renameAttribute(jpt, at.getName(), newAtName, jpt.getName(), getFeatureProvider()).getName();
 			} catch (InterruptedException e) {
 				JPADiagramEditorPlugin.logError(e);
 			}

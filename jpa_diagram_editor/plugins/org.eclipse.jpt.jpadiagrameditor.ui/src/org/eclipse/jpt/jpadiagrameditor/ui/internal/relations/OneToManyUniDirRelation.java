@@ -15,7 +15,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.relations;
 
-import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.propertypage.JPADiagramPropertyPage;
@@ -29,13 +28,11 @@ public class OneToManyUniDirRelation extends OneToManyRelation implements IUnidi
 	public OneToManyUniDirRelation(IJPAEditorFeatureProvider fp, JavaPersistentType owner, 
 								   JavaPersistentType inverse,
 								   String ownerAttributeName,
-								   boolean createAttribs, 
-								   ICompilationUnit ownerCU,
-								   ICompilationUnit inverseCU) {
+								   boolean createAttribs) {
 		super(owner, inverse);
 		this.ownerAttributeName = ownerAttributeName;
 		if (createAttribs)
-			createRelation(fp, ownerCU, inverseCU);		
+			createRelation(fp);		
 	}	
 
 	public JavaPersistentAttribute getAnnotatedAttribute() {
@@ -46,10 +43,10 @@ public class OneToManyUniDirRelation extends OneToManyRelation implements IUnidi
 		this.ownerAnnotatedAttribute = annotatedAttribute;
 	}
 
-	private void createRelation(IJPAEditorFeatureProvider fp, ICompilationUnit ownerCU, ICompilationUnit inverseCU) {
+	private void createRelation(IJPAEditorFeatureProvider fp) {
 		boolean isMap = JPADiagramPropertyPage.isMapType(owner.getJpaProject().getProject());
 		String mapKeyType = getMapKeyType(isMap, inverse);
-		ownerAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, owner, inverse, ownerCU, inverseCU, true, mapKeyType);
+		ownerAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, owner, inverse, true, mapKeyType);
 		
 		JpaArtifactFactory.instance().addOneToManyUnidirectionalRelation(fp, owner, ownerAnnotatedAttribute, isMap);
 	} 

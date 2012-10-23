@@ -15,7 +15,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.relations;
 
-import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.propertypage.JPADiagramPropertyPage;
@@ -30,14 +29,12 @@ public class ManyToOneBiDirRelation  extends ManyToOneRelation implements IBidir
 								  JavaPersistentType inverse, 
 								  String ownerAttributeName,
 								  String inverseAttributeName,
-								  boolean createAttribs,
-								  ICompilationUnit ownerCU,
-								  ICompilationUnit inverseCU) {
+								  boolean createAttribs, JavaPersistentType embeddingEntity) {
 		super(owner, inverse);
 		this.ownerAttributeName = ownerAttributeName;
 		this.inverseAttributeName = inverseAttributeName;
 		if (createAttribs)
-			createRelation(fp, ownerCU, inverseCU);
+			createRelation(fp, embeddingEntity);
 		
 	}	
 
@@ -57,13 +54,18 @@ public class ManyToOneBiDirRelation  extends ManyToOneRelation implements IBidir
 		this.inverseAnnotatedAttribute = inverseAnnotatedAttribute;
 	}
 
-	private void createRelation(IJPAEditorFeatureProvider fp, ICompilationUnit ownerCU, ICompilationUnit inverseCU) {
-		ownerAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, owner, inverse, ownerCU, inverseCU, false, null);
+	private void createRelation(IJPAEditorFeatureProvider fp, JavaPersistentType embeddingEntity) {
+		ownerAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, owner, inverse, false, null);
 
 		boolean isMap = JPADiagramPropertyPage.isMapType(owner.getJpaProject().getProject());
-		String mapKeyType = getMapKeyType(isMap, owner);
-		inverseAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, inverse, owner, inverseCU, ownerCU, true, mapKeyType);
-		
+		String mapKeyType = getMapKeyType(isMap, owner, embeddingEntity);
+		if(JpaArtifactFactory.instance().hasEmbeddableAnnotation(owner)){
+//			inverseAnnotatedAttribute = JpaArtifactFactory.instance().addEmbeddedAttribute(owner, inverse, mapKeyType, true, fp);
+			inverseAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, inverse, embeddingEntity, true, mapKeyType);
+
+		} else {
+			inverseAnnotatedAttribute = JPAEditorUtil.addAnnotatedAttribute(fp, inverse, owner, true, mapKeyType);
+		}
 		JpaArtifactFactory.instance().addManyToOneBidirectionalRelation(fp, owner, ownerAnnotatedAttribute, inverse, inverseAnnotatedAttribute, isMap);		
 	} 	
 		
@@ -71,7 +73,10 @@ public class ManyToOneBiDirRelation  extends ManyToOneRelation implements IBidir
 		return RelDir.BI;
 	}
 
-	private String getMapKeyType(boolean isMap, JavaPersistentType jpt){
+	private String getMapKeyType(boolean isMap, JavaPersistentType jpt, JavaPersistentType embeddingEntity){
+		if(JpaArtifactFactory.instance().hasEmbeddableAnnotation(jpt) && embeddingEntity!=null){
+			return isMap ? JpaArtifactFactory.instance().getIdType(embeddingEntity) : null;
+		}
 		return isMap ? JpaArtifactFactory.instance().getIdType(jpt) : null;
-	}	
+	}
 }

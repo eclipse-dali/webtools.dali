@@ -392,6 +392,4 @@ public class JPADiagramEditor extends DiagramEditor implements JpaEditorManager{
 
 		return null;
 	}
-
-	
 }

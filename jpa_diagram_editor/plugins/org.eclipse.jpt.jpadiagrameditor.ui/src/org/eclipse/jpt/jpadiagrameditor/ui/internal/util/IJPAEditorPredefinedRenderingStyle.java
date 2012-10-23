@@ -24,4 +24,9 @@ public interface IJPAEditorPredefinedRenderingStyle extends IPredefinedRendering
 	 */
 	public static final String GREEN_WHITE_GLOSS_ID = "green-white-gloss"; //$NON-NLS-1$
 	
+	/**
+	 * The ID for a violet-to-white gradient with a gloss-effect.
+	 */
+	public static final String VIOLET_WHITE_GLOSS_ID = "violet-white-gloss"; //$NON-NLS-1$
+	
 }

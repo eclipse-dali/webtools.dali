@@ -15,6 +15,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.ui;
 
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.Set;
@@ -93,7 +94,7 @@ public class OpenJpaDiagramActionDelegate implements IObjectActionDelegate {
 		
 		String diagramName = diagram.getName();
 		JpaProject jpaProject = ModelIntegrationUtil.getProjectByDiagram(diagramName);
-		if (!JPAEditorUtil.checkJPAFacetVersion(jpaProject, "1.0") && !ModelIntegrationUtil.isDiagramOpen(diagramName)) {					//$NON-NLS-1$
+		if (!JPAEditorUtil.checkJPAFacetVersion(jpaProject, JPAEditorUtil.JPA_PROJECT_FACET_10) && !ModelIntegrationUtil.isDiagramOpen(diagramName)) {
 			boolean wasEnabled = OptionalMessageDialog.isDialogEnabled(JPAEditorConstants.JPA_SUPPORT_DIALOG_ID);
 			int btnIndex = OptionalMessageDialog.open(JPAEditorConstants.JPA_SUPPORT_DIALOG_ID, 
 									   Display.getDefault().getShells()[0], 
@@ -122,7 +123,6 @@ public class OpenJpaDiagramActionDelegate implements IObjectActionDelegate {
 				    }
 				 
 				    public void postShutdown( IWorkbench workbench ){
-				 
 				    }
 				});
 				//CSN #1305850 2010

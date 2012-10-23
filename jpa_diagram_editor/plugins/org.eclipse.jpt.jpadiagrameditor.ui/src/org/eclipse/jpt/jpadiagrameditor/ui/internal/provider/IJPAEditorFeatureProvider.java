@@ -33,6 +33,8 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.IModelIntegrationUtil;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.HasReferanceRelation;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.HasReferanceRelation.HasReferenceType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation.RelDir;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation.RelType;
@@ -45,11 +47,11 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IPeServiceUtil;
 public interface IJPAEditorFeatureProvider extends IFeatureProvider{
 
 	public Diagram getDiagram();
-	
-	public HashSet<IsARelation> getAllRedundantIsARelations(); 
-	
+			
 	public HashSet<IsARelation> getAllExistingIsARelations();
-	
+		
+	public HashSet<HasReferanceRelation> getAllExistingHasReferenceRelations();
+		
 	public ICompilationUnit getCompilationUnit(JavaPersistentType jpt);
 	
 	public boolean hasObjectWithName(String name);
@@ -62,8 +64,8 @@ public interface IJPAEditorFeatureProvider extends IFeatureProvider{
 
 	public IRelation getRelationRelatedToAttribute(JavaPersistentAttribute jpa);
 	
-	public boolean existsRelation(JavaPersistentType jpt1, JavaPersistentType jpt2);
-
+	public HasReferanceRelation getEmbeddedRelationRelatedToAttribute(JavaPersistentAttribute jpa);
+	
 	public Object getBusinessObjectForKey(String key);
 
 	public void addJPTForUpdate(String jptName);
@@ -71,8 +73,11 @@ public interface IJPAEditorFeatureProvider extends IFeatureProvider{
     public boolean doesRelationExist(JavaPersistentType owner, 
 			JavaPersistentType inverse, 
 			String ownerAttributeName,
+			String inverseAttributeName,
 			RelType relType, 
 			RelDir relDir);
+    
+    public boolean doesEmbeddedRelationExist(JavaPersistentType embeddable, JavaPersistentType embeddingEntity, String embeddedAttributeName, HasReferenceType relType);
     
 	public void restoreEntity(JavaPersistentType jpt);
 	
@@ -119,5 +124,9 @@ public interface IJPAEditorFeatureProvider extends IFeatureProvider{
 	public void removeAllRedundantIsARelations();
 	
 	public boolean existRedundantIsARelations();
+	
+	public void setGrayColor(final JavaPersistentType jpt);
+	
+	public void setOriginalPersistentTypeColor();
 
 }

@@ -17,6 +17,10 @@ package org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.feature;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
+
+import java.util.HashSet;
+import java.util.Iterator;
+
 import org.easymock.EasyMock;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
@@ -50,6 +54,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.OneToManyUniDirRel
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.OneToOneBiDirRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.OneToOneUniDirRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.IEclipseFacade;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.JPACreateFactory;
 import org.junit.Before;
@@ -128,7 +133,7 @@ public class CreateRelationFeaturesTest {
 		expect(featureProvider.addIfPossible((IAddContext)EasyMock.anyObject())).andStubReturn(conn);
 		replay(featureProvider, a1, a2, cs1, cs2, ctx);
 		ft.create(ctx);
-		OneToOneUniDirRelation rel = ft.createRelation(featureProvider, cs1, cs2);
+		OneToOneUniDirRelation rel = ft.createRelation(featureProvider, cs1, cs2, null);
 		assertNotNull(rel);
 		assertNotNull(rel.getId());
 		assertEquals(RelType.ONE_TO_ONE, rel.getRelType());
@@ -138,9 +143,9 @@ public class CreateRelationFeaturesTest {
 		assertNotNull(t1.getAttributeNamed(rel.getOwnerAttributeName()));
 		assertTrue(JpaArtifactFactory.instance().isMethodAnnotated(t1));
 		JavaPersistentAttribute jpa = t1.getAttributeNamed("id");
-		assertFalse(JpaArtifactFactory.instance().isRelationAnnotated(jpa));
+		assertFalse(isRelationAnnotated(jpa));
 		jpa = t1.getAttributeNamed(rel.getOwnerAttributeName());
-		assertTrue(JpaArtifactFactory.instance().isRelationAnnotated(jpa));
+		assertTrue(isRelationAnnotated(jpa));
 	}
 	
 	@Test
@@ -200,7 +205,7 @@ public class CreateRelationFeaturesTest {
 		expect(featureProvider.addIfPossible((IAddContext)EasyMock.anyObject())).andStubReturn(conn);
 		replay(featureProvider, a1, a2, cs1, cs2, ctx);
 		ft.create(ctx);
-		OneToOneBiDirRelation rel = ft.createRelation(featureProvider, cs1, cs2);
+		OneToOneBiDirRelation rel = ft.createRelation(featureProvider, cs1, cs2, null);
 		assertNotNull(rel);
 		assertNotNull(rel.getId());
 		assertEquals(RelType.ONE_TO_ONE, rel.getRelType());
@@ -267,7 +272,7 @@ public class CreateRelationFeaturesTest {
 		expect(featureProvider.addIfPossible((IAddContext)EasyMock.anyObject())).andStubReturn(conn);
 		replay(featureProvider, a1, a2, cs1, cs2, ctx);
 		ft.create(ctx);
-		ManyToOneUniDirRelation rel = ft.createRelation(featureProvider, cs1, cs2);
+		ManyToOneUniDirRelation rel = ft.createRelation(featureProvider, cs1, cs2, null);
 		assertNotNull(rel);
 		assertNotNull(rel.getId());
 		assertEquals(RelType.MANY_TO_ONE, rel.getRelType());
@@ -333,7 +338,7 @@ public class CreateRelationFeaturesTest {
 		expect(featureProvider.addIfPossible((IAddContext)EasyMock.anyObject())).andStubReturn(conn);
 		replay(featureProvider, a1, a2, cs1, cs2, ctx);
 		ft.create(ctx);
-		ManyToOneBiDirRelation rel = ft.createRelation(featureProvider, cs1, cs2);
+		ManyToOneBiDirRelation rel = ft.createRelation(featureProvider, cs1, cs2, null);
 		assertNotNull(rel);
 		assertNotNull(rel.getId());
 		assertEquals(RelType.MANY_TO_ONE, rel.getRelType());
@@ -399,7 +404,7 @@ public class CreateRelationFeaturesTest {
 		expect(featureProvider.addIfPossible((IAddContext)EasyMock.anyObject())).andStubReturn(conn);
 		replay(featureProvider, a1, a2, cs1, cs2, ctx);
 		ft.create(ctx);
-		OneToManyUniDirRelation rel = ft.createRelation(featureProvider, cs1, cs2);
+		OneToManyUniDirRelation rel = ft.createRelation(featureProvider, cs1, cs2, null);
 		assertNotNull(rel);
 		assertNotNull(rel.getId());
 		assertEquals(RelType.ONE_TO_MANY, rel.getRelType());
@@ -464,7 +469,7 @@ public class CreateRelationFeaturesTest {
 		expect(featureProvider.addIfPossible((IAddContext)EasyMock.anyObject())).andStubReturn(conn);
 		replay(featureProvider, a1, a2, cs1, cs2, ctx);
 		ft.create(ctx);
-		ManyToManyUniDirRelation rel = ft.createRelation(featureProvider, cs1, cs2);
+		ManyToManyUniDirRelation rel = ft.createRelation(featureProvider, cs1, cs2, null);
 		assertNotNull(rel);
 		assertNotNull(rel.getId());
 		assertEquals(RelType.MANY_TO_MANY, rel.getRelType());
@@ -529,7 +534,7 @@ public class CreateRelationFeaturesTest {
 		expect(featureProvider.addIfPossible((IAddContext)EasyMock.anyObject())).andStubReturn(conn);
 		replay(featureProvider, a1, a2, cs1, cs2, ctx);
 		ft.create(ctx);
-		ManyToManyBiDirRelation rel = ft.createRelation(featureProvider, cs1, cs2);
+		ManyToManyBiDirRelation rel = ft.createRelation(featureProvider, cs1, cs2, null);
 		assertNotNull(rel);
 		assertNotNull(rel.getId());
 		assertEquals(RelType.MANY_TO_MANY, rel.getRelType());
@@ -543,4 +548,15 @@ public class CreateRelationFeaturesTest {
 		return JavaCore.createCompilationUnitFrom(file);
 	}
 
+	private boolean isRelationAnnotated(JavaPersistentAttribute jpa) {
+		
+		HashSet<String> anNames = JpaArtifactFactory.instance().getAnnotationNames(jpa);
+		Iterator<String> it = anNames.iterator();
+		while (it.hasNext()) {
+			String anName = it.next();
+			if (JPAEditorConstants.RELATION_ANNOTATIONS.contains(anName))
+				return true;
+		}
+		return false;		
+	}
 }

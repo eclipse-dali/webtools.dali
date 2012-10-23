@@ -347,13 +347,25 @@ public class AddJPAEntityFeature extends AbstractAddShapeFeature {
 		return entityRectangle;
 	}
 	
+	private String determineTheAppropriateTypeCommand(JPAEditorConstants.DIAGRAM_OBJECT_TYPE dot){
+		String typeIconId = ""; //$NON-NLS-1$
+		if(dot.equals(JPAEditorConstants.DIAGRAM_OBJECT_TYPE.Entity)){
+			typeIconId = JPAEditorImageProvider.JPA_ENTITY;
+		} else if (dot.equals(JPAEditorConstants.DIAGRAM_OBJECT_TYPE.MappedSupeclass)){
+			typeIconId = JPAEditorImageProvider.MAPPED_SUPERCLASS;
+		} else if (dot.equals(JPAEditorConstants.DIAGRAM_OBJECT_TYPE.Embeddable)){
+			typeIconId = JPAEditorImageProvider.EMBEDDABLE;
+		}
+		
+		return typeIconId;		
+	}
+	
 	private ContainerShape addHeader(JavaPersistentType addedWrapper,
 									 ContainerShape entityShape, 
 									 int width,
 									 JPAEditorConstants.DIAGRAM_OBJECT_TYPE dot) {
-		String entityIconId = dot.equals(JPAEditorConstants.DIAGRAM_OBJECT_TYPE.Entity) ? 
-									JPAEditorImageProvider.JPA_ENTITY :
-									JPAEditorImageProvider.MAPPED_SUPERCLASS;
+		
+		String entityIconId = determineTheAppropriateTypeCommand(dot);
 		
 		ContainerShape headerIconShape = Graphiti.getPeService().createContainerShape(
 				entityShape, false);

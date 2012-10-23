@@ -29,7 +29,8 @@ public class ContextMenuHelper
      * @throws WidgetNotFoundException
      *           if the widget is not found.
      */
-    public static void clickContextMenu( final AbstractSWTBot<?> bot, final String... texts )
+    @SuppressWarnings("unchecked")
+	public static void clickContextMenu( final AbstractSWTBot<?> bot, final String... texts )
     {
         final Matcher<?>[] matchers = new Matcher<?>[texts.length];
         for ( int i = 0; i < texts.length; i++ )

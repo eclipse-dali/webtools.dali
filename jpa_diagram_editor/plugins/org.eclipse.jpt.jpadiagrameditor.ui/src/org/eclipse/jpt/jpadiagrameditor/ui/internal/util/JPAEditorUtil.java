@@ -34,6 +34,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -95,7 +96,9 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.propertypage.JPADiagramPrope
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorImageCreator.RelEndDir;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPAEditorImageProvider;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.HasReferanceRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IsARelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorConstants.ShapeType;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.IEditorInput;
@@ -112,6 +115,7 @@ import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 @SuppressWarnings("restriction")
 public class JPAEditorUtil {
 	
+	public static final String JPA_PROJECT_FACET_10 = "1.0"; //$NON-NLS-1$
 
 	private static IPeServiceUtil peUtil = null;
 	private final static String PERSISTENCE_PROVIDER_LIBRARY_STRING = "javax/persistence/"; //$NON-NLS-1$
@@ -143,20 +147,7 @@ public class JPAEditorUtil {
 		return peUtil;
 	}
 	
-	public static boolean equalsIgnoreFirstLetterCase(String s1, String s2) {
-		if ((s1 == null) && (s2 == null)) 
-			return true;
-		if ((s1 == null) || (s2 == null))
-			return false;
-		if (s1.length() != s2.length())
-			return false;
-		if (s1.length() == 0) 
-			return true;
-		return s1.substring(0, 1).equalsIgnoreCase(s2.substring(0, 1)) &&
-				s1.substring(1).equals(s2.substring(1));
-	}
-	
-    public static Anchor getAnchor(ContainerShape cs) { 
+    private static Anchor getAnchor(ContainerShape cs) { 
     	Collection<Anchor> anchors  = cs.getAnchors();
     	if (anchors.iterator().hasNext())
     		return anchors.iterator().next();
@@ -202,24 +193,13 @@ public class JPAEditorUtil {
     
     public static String getAttributeTypeName(JavaResourceAttribute at) {
     	return at.getTypeBinding().getQualifiedName();
-    }        
-    
-    public static List<String> getAttributeTypeTypeNames(JavaResourceAttribute at) {
-    	ListIterator<String> tt = at.getTypeBinding().getTypeArgumentNames().iterator();
-    	if ((tt == null) || !tt.hasNext()) 
-    		return null;
-    	LinkedList<String> res = new LinkedList<String>();
-	    while (tt.hasNext()) 
-	    	res.add(tt.next()); 
-    	return res;
     }
     
     public static String getAttributeTypeNameWithGenerics(JavaPersistentAttribute at) {
     	return getAttributeTypeNameWithGenerics(at.getResourceAttribute());
     }
 
-    
-    public static String getAttributeTypeNameWithGenerics(JavaResourceAttribute at) {
+    private static String getAttributeTypeNameWithGenerics(JavaResourceAttribute at) {
     	StringBuilder res = new StringBuilder(getAttributeTypeName(at));
     	ListIterator<String> it = at.getTypeBinding().getTypeArgumentNames().iterator();
     	if ((it != null) && it.hasNext()) {
@@ -229,7 +209,6 @@ public class JPAEditorUtil {
     	}
     	return res.toString();
     }        
-    
     
     public static String[] getGenericsElementTypes(String typeName) {
     	if (typeName.indexOf("<") == -1)									//$NON-NLS-1$
@@ -252,19 +231,8 @@ public class JPAEditorUtil {
     	}
     	return res.toString();
     }     
-    
-    public static String createCommaSeparatedListOfSimpleTypeNames(ListIterator<String> strIt) {
-    	if ((strIt == null) || !strIt.hasNext()) 
-    		return null;
-    	StringBuilder res = new StringBuilder(JPAEditorUtil.returnSimpleName(strIt.next()));    	
-	    while (strIt.hasNext()) {
-	    	res.append(", ");									//$NON-NLS-1$
-	    	res.append(JPAEditorUtil.returnSimpleName(strIt.next()));
-	    }
-    	return res.toString();    	
-    }     
-    
-    public static String createCommaSeparatedListOfFullTypeNames(ListIterator<String> strIt) {
+
+    private static String createCommaSeparatedListOfFullTypeNames(ListIterator<String> strIt) {
     	if ((strIt == null) || !strIt.hasNext()) 
     		return null;
     	StringBuilder res = new StringBuilder(strIt.next());    	
@@ -274,7 +242,6 @@ public class JPAEditorUtil {
 	    }
     	return res.toString();    	
     }                    
-    
     
     public static String getText(JavaPersistentType jpt) {
     	return JPAEditorUtil.returnSimpleName(JpaArtifactFactory.instance().getEntityName(jpt));
@@ -305,51 +272,6 @@ public class JPAEditorUtil {
     	return	(JavaPersistentType)pt;
     }
     
-    public static String getNameFromShape(Shape sh) {
-    	ContainerShape csh = (ContainerShape)sh;
-    	List<Shape> shapes = csh.getChildren();
-    	Iterator<Shape> it = shapes.iterator();
-    	while (it.hasNext()) {
-    		Shape shape = it.next();
-    		GraphicsAlgorithm ga = shape.getGraphicsAlgorithm();
-    		if (ga instanceof Rectangle) {
-    			Rectangle rect = (Rectangle)ga;
-    			if (rect.getY() == 0) {
-    				List<GraphicsAlgorithm> gas = rect.getGraphicsAlgorithmChildren();
-    				if (gas.size() > 0) { 
-    					GraphicsAlgorithm gra = gas.get(0);
-    					if (gra instanceof Text)
-    						return ((Text)gra).getValue(); 
-    				}
-    			}
-    		}
-    	}
-    	return null;
-    }
-    
-    public static void setNameOfShape(Shape sh, String name) {
-    	ContainerShape csh = (ContainerShape)sh;
-    	List<Shape> shapes = csh.getChildren();
-    	Iterator<Shape> it = shapes.iterator();
-    	while (it.hasNext()) {
-    		Shape shape = it.next();
-    		GraphicsAlgorithm ga = shape.getGraphicsAlgorithm();
-    		if (ga instanceof Rectangle) {
-    			Rectangle rect = (Rectangle)ga;
-    			if (rect.getY() == 0) {
-    				List<GraphicsAlgorithm> gas = rect.getGraphicsAlgorithmChildren();
-    				if (gas.size() > 0) { 
-    					GraphicsAlgorithm gra = gas.get(0);
-    					if (gra instanceof Text) {
-    						((Text)gra).setValue(name);
-    						return;
-    					}
-    				}
-    			}
-    		}
-    	};
-    }
-    
     public static void setJPTNameInShape(ContainerShape cs, String newName) {
     	setJPTNameInShape(cs, newName, getPeUtil());
     }
@@ -367,8 +289,7 @@ public class JPAEditorUtil {
     		return;
     	}
     }
-    
-    
+
     public static String produceValidAttributeName(String name) {
     	if ((name == null) || (name.length() == 0)) 
 			return "";										//$NON-NLS-1$
@@ -382,12 +303,11 @@ public class JPAEditorUtil {
     				decapitalizeFirstLetter(name);
     }
     
-    public static boolean isUpperCase(String s) {
+    private static boolean isUpperCase(String s) {
     	if ((s == null) || (s.length() == 0) || (s.length() > 1)) 
     			throw new IllegalArgumentException("The given string has to contain one symbol exactly");	//$NON-NLS-1$
     	return s.toUpperCase(Locale.ENGLISH).equals(s);
     }
-    
     
 	public static void createRegisterEntityInXMLJob(final JpaProject jpaProject, final String classFQN) {
 		final JptXmlResource resource = jpaProject.getPersistenceXmlResource();
@@ -432,8 +352,8 @@ public class JPAEditorUtil {
 		String[] typeFQNs = getAllTypes(typeFQN);
 		createImports(cu, typeFQNs);
 	}
-		
-	public static String[] getAllTypes(String typeFQN){
+
+	private static String[] getAllTypes(String typeFQN){
 		typeFQN = typeFQN.replace('[', ',');
 		typeFQN = typeFQN.replace(']', ',');
 		typeFQN = typeFQN.replace('<', ',');
@@ -503,26 +423,12 @@ public class JPAEditorUtil {
 			icon = Graphiti.getGaService().createImage(iconRect, JPAEditorImageProvider.ICON_TRANSIENT);
 		} else if(annotations.contains(JPAEditorConstants.ANNOTATION_EMBEDDED)){
 			icon = Graphiti.getGaService().createImage(iconRect, JPAEditorImageProvider.ICON_EMBEDDED);
+		} else if(annotations.contains(JPAEditorConstants.ANNOTATION_ELEMENT_COLLECTION)){
+			icon = Graphiti.getGaService().createImage(iconRect, JPAEditorImageProvider.ICON_ELEMENT_COLLECTION);
 		} else {
 			icon = Graphiti.getGaService().createImage(iconRect, JPAEditorImageProvider.ICON_BASIC);			
 		}	
 		return icon;
-	}
-	
-	public static Shape getIconShape(Shape attributeShape) {
-		int y = attributeShape.getGraphicsAlgorithm().getY();
-		ContainerShape cs = attributeShape.getContainer();
-		Iterator<Shape> it = cs.getChildren().iterator();
-		while (it.hasNext()) {
-			Shape shp = it.next();
-			GraphicsAlgorithm ga = shp.getGraphicsAlgorithm(); 
-			if ((ga != null) && (ga.getY() == y) && 
-				(ShapeType.ICON.toString().
-						equals(Graphiti.getPeService().getPropertyValue(shp, 
-								JPAEditorConstants.PROP_SHAPE_TYPE)))) 
-				return shp;
-		}
-		return null;
 	}
 	
 	public static Collection<ContainerShape> getRelatedShapes(ContainerShape cs) {
@@ -568,7 +474,7 @@ public class JPAEditorUtil {
 		return createBendPointList(c, cnt - 1, cnt, selfRelation);
 	}
 		
-	public static List<Point> createBendPointList(FreeFormConnection c,  int cnt, int connectionsNum,  boolean selfRelation) {
+	private static List<Point> createBendPointList(FreeFormConnection c,  int cnt, int connectionsNum,  boolean selfRelation) {
 		return selfRelation ? 
 				createBendPointListForSelfRelation(c, cnt, connectionsNum) :
 				createBendPointListForNonSelfRelation(c, cnt, connectionsNum);
@@ -854,10 +760,14 @@ public class JPAEditorUtil {
 						while (cIter.hasNext()) {
 							Connection c = cIter.next();
 							Object o = fp.getBusinessObjectForPictogramElement(c);
-							if (!(o instanceof IRelation))
+							if (!(o instanceof IRelation) && !(o instanceof HasReferanceRelation) && !(o instanceof IsARelation))
 								continue;
-							IRelation rel = (IRelation)o; 
-							rearrangeConnection(c, cnt, setSize,  rel.getOwner() == rel.getInverse());
+							boolean isSelfConnection = false;
+							if(o instanceof IRelation){
+								IRelation rel = (IRelation)o;
+								isSelfConnection = rel.getOwner() == rel.getInverse();
+							}
+							rearrangeConnection(c, cnt, setSize,  isSelfConnection);
 							cnt++;
 						}
 					}
@@ -866,19 +776,19 @@ public class JPAEditorUtil {
 		});  
 	}
 	
-	static public boolean areConnectionsWithIdenticalEnds(Connection c1, Connection c2) {
+	static private boolean areConnectionsWithIdenticalEnds(Connection c1, Connection c2) {
 		return ((c1.getStart() == c2.getStart()) && (c1.getEnd() == c2.getEnd())) ||
 			   ((c1.getStart() == c2.getEnd()) && (c1.getEnd() == c2.getStart()));
 	}
 	
-	static public boolean connectionBelongsToSet(Connection c, Set<Connection> s) {
+	static private boolean connectionBelongsToSet(Connection c, Set<Connection> s) {
 		if (s.isEmpty())
 			return false;
 		Connection example = s.iterator().next();
 		return areConnectionsWithIdenticalEnds(c, example);
 	}
 	
-	static public int getNumberOfConnectionsWithSameEndsAs(Connection c) {
+	static private int getNumberOfConnectionsWithSameEndsAs(Connection c) {
 		Anchor from = c.getStart();
 		Anchor to = c.getEnd();
 		Collection<Connection> cs1 = from.getOutgoingConnections();
@@ -901,7 +811,7 @@ public class JPAEditorUtil {
 		return cnt;
 	}
 	
-	static void addConnection(Set<Set<Connection>> sets, Connection c, boolean selfOnly) {
+	private static void addConnection(Set<Set<Connection>> sets, Connection c, boolean selfOnly) {
 		if (sets == null)
 			throw new NullPointerException("'sets' parameter should not be null");	//$NON-NLS-1$
 		if (selfOnly && (c.getStart() != c.getEnd()))
@@ -921,13 +831,13 @@ public class JPAEditorUtil {
 		sets.add(newSet);
 	}
 	
-	static public void rearrangeConnection(Connection connection, int cnt, int connectionsNum, boolean selfRelation) {
+	static private void rearrangeConnection(Connection connection, int cnt, int connectionsNum, boolean selfRelation) {
 		FreeFormConnection c = (FreeFormConnection)connection;
 		rearrangeConnectionBendPoints(c, cnt, connectionsNum, selfRelation);
 		rearrangeConnectionDecoratorsLocation(c,  cnt, connectionsNum);										
 	}
 	
-	static public void rearrangeConnectionBendPoints(FreeFormConnection c, int cnt, int connectionsNum, boolean selfRelation) {
+	static private void rearrangeConnectionBendPoints(FreeFormConnection c, int cnt, int connectionsNum, boolean selfRelation) {
 		List<org.eclipse.graphiti.mm.algorithms.styles.Point> oldPts = c.getBendpoints();
 		List<org.eclipse.swt.graphics.Point> newPts = JPAEditorUtil.createBendPointList(c, cnt, connectionsNum,  selfRelation);
 		if (newPts == null)
@@ -946,7 +856,7 @@ public class JPAEditorUtil {
 		}
 	}
 	
-	static public void rearrangeConnectionDecoratorsLocation(FreeFormConnection c,  int cnt, int connectionsNum) {
+	static private void rearrangeConnectionDecoratorsLocation(FreeFormConnection c,  int cnt, int connectionsNum) {
 		Collection<ConnectionDecorator> dcrs = c.getConnectionDecorators();
 				int len = JPAEditorUtil.calcConnectionLength(c);
 				for (ConnectionDecorator dcr : dcrs) {
@@ -1024,12 +934,12 @@ public class JPAEditorUtil {
 		return ret;
 	}	
 	
-	static public RelEndDir getConnectionStartDir(FreeFormConnection c) {
+	static private RelEndDir getConnectionStartDir(FreeFormConnection c) {
 		EList<org.eclipse.graphiti.mm.algorithms.styles.Point> pts = c.getBendpoints();
 		return getConnectionEndDir(pts.get(0), pts.get(1));
 	}
 	
-	static public RelEndDir getConnectionEndDir(FreeFormConnection c) {
+	static private RelEndDir getConnectionEndDir(FreeFormConnection c) {
 		List<org.eclipse.graphiti.mm.algorithms.styles.Point> pts = c.getBendpoints();
 		return getConnectionEndDir(pts.get(pts.size() - 1), pts.get(pts.size() - 2));
 	}	
@@ -1053,30 +963,8 @@ public class JPAEditorUtil {
 		action.run(new StructuredSelection(cu));
 	}
 	
-	static public String generateUniqueEntityName(JpaProject jpaProject, 
-												  String pack, 
-												  IJPAEditorFeatureProvider fp) {
-    	String NAME = pack + ".Entity"; //$NON-NLS-1$
-    	String name = null;
-    	
-    	HashSet<String> JPAProjectEntityNames = getEntityNames(jpaProject);
-       	HashSet<String> JPAProjectEntitySimpleNames = getEntitySimpleNames(jpaProject);
-       	
-    	for (int i = 1; i < 100000000; i++) {
-    		name = NAME + i;
-    		if ((!fp.hasObjectWithName(name)) &&
-    				!JPAProjectEntityNames.contains(name.toLowerCase(Locale.ENGLISH)) && 
-    				!JPAProjectEntitySimpleNames.contains(JPAEditorUtil.returnSimpleName(name).toLowerCase(Locale.ENGLISH)) &&
-    				!isJavaFileInProject(jpaProject.getProject(), name, pack)) 
-    			break;
-    	}
-    	return name;
-    }
-	
-	
-	static public String generateUniqueMappedSuperclassName(
-			JpaProject jpaProject, String pack, IJPAEditorFeatureProvider fp) {
-		String NAME = pack + ".MpdSuprcls"; //$NON-NLS-1$
+	static public String generateUniquePersistentObjectName(JpaProject jpaProject, String pack, String objectTypeName, IJPAEditorFeatureProvider fp){
+		String NAME = pack + objectTypeName; 
 		String name = null;
 
 		HashSet<String> JPAProjectEntityNames = getEntityNames(jpaProject);
@@ -1115,14 +1003,6 @@ public class JPAEditorUtil {
 				mappedSuperclassPackage, idName, hasPrimaryKey);
 	}
 
-				
-	static public IFile createEntityFromMappedSuperclassInProject(
-			IProject project, String mappedSuperclassName,
-			IPreferenceStore jpaPreferenceStore) throws Exception {
-		IFolder folder = getPackageFolder(project);
-		return createMappedSuperclassInProject(project, folder, mappedSuperclassName);
-	}
-
 	@SuppressWarnings("deprecation")
 		private static IFolder getPackageFolder(IProject project) throws JavaModelException {
 	
@@ -1147,44 +1027,35 @@ public class JPAEditorUtil {
 
 	}
 	
-	static public IFile createMappedSuperclassInProject(IProject project,
+	public static IFile createMappedSuperclassInProject(IProject project,
 			String mappedSuperclassName) throws Exception {
 		IFolder folder = getPackageFolder(project);
-		return createMappedSuperclassInProject(project, folder, mappedSuperclassName);
-	}
-	
-	static public IFile createMappedSuperclassInProject(IProject project,
-			IFolder folder, String mappedSuperclassName) throws Exception {
-
 		String mappedSuperclassShortName = mappedSuperclassName
 				.substring(mappedSuperclassName.lastIndexOf('.') + 1);
-		if (!folder.exists()) {
-			folder.create(true, true, new NullProgressMonitor());
-		}
-		IFile file = folder.getFile(mappedSuperclassShortName + ".java"); //$NON-NLS-1$
-
-		if (!file.exists()) {
-			String content = "package " + JPADiagramPropertyPage.getDefaultPackage(project) + ";\n\n" //$NON-NLS-1$	//$NON-NLS-2$
-					+ "import javax.persistence.*;\n\n" //$NON-NLS-1$
-					+ "@MappedSuperclass \n" //$NON-NLS-1$
-					+ "public class " + mappedSuperclassShortName + " {\n\n" //$NON-NLS-1$ //$NON-NLS-2$
-					+ "}"; //$NON-NLS-1$
-			ByteArrayOutputStream stream = new ByteArrayOutputStream();
-			try {
-				stream.write(content.getBytes());
-				stream.flush();
-				file.create(new ByteArrayInputStream(stream.toByteArray()),
-						true, new NullProgressMonitor());
-			} finally {
-				stream.close();
-			}
-		}
-		return file;
+		String content = "package " + JPADiagramPropertyPage.getDefaultPackage(project) + ";\n\n" //$NON-NLS-1$	//$NON-NLS-2$
+				+ "import javax.persistence.*;\n\n" //$NON-NLS-1$
+				+ "@MappedSuperclass \n" //$NON-NLS-1$
+				+ "public class " + mappedSuperclassShortName + " {\n\n" //$NON-NLS-1$ //$NON-NLS-2$
+				+ "}"; //$NON-NLS-1$ 
+		return createClassInProject(project, folder, mappedSuperclassShortName, content);
 	}
-
-
+	
+	public static IFile createEmbeddableInProject(IProject project, String embeddableName) throws Exception {
+		IFolder folder = getPackageFolder(project);
+		String embeddableShortName = embeddableName
+				.substring(embeddableName.lastIndexOf('.') + 1);
+		String content = "package " + JPADiagramPropertyPage.getDefaultPackage(project) + ";\n\n" //$NON-NLS-1$	//$NON-NLS-2$
+				+ "import javax.persistence.*;\n\n" //$NON-NLS-1$
+				+ "import java.io.Serializable;\n\n" //$NON-NLS-1$
+				+ "@Embeddable \n" //$NON-NLS-1$
+				+ "public class " + embeddableShortName + " implements Serializable {\n\n" //$NON-NLS-1$ //$NON-NLS-2$
+				+ "private static final long serialVersionUID = 1L;\n\n" //$NON-NLS-1$
+				+ "}"; //$NON-NLS-1$ 
+		return createClassInProject(project, folder, embeddableShortName, content);
+	}
+	
 	@SuppressWarnings("deprecation")
-	static public boolean isJavaFileInProject(IProject project, 
+	static private boolean isJavaFileInProject(IProject project, 
 											  String entityName,
 											  String defaultEntityPacakage) {
 		IJavaProject javaProject = JavaCore.create(project);		
@@ -1298,7 +1169,7 @@ public class JPAEditorUtil {
 			}
 	}
 		
-	static private IFile createEntity(IProject project, 
+	private static IFile createEntity(IProject project, 
 									  IFolder folder, 
 									  String entityName, 
 									  boolean isMappedSuperclassChild, 
@@ -1308,10 +1179,7 @@ public class JPAEditorUtil {
 									  boolean hasPrimaryKey) throws Exception {
 		
 		String entityShortName = entityName.substring(entityName.lastIndexOf('.') + 1);		
-		if (!folder.exists()) {
-			folder.create(true, true, new NullProgressMonitor());				
-		}
-		IFile file = folder.getFile(entityShortName + ".java");		 //$NON-NLS-1$
+
 		Properties props = JPADiagramPropertyPage.loadProperties(project);
 		String tableNamePrefix = JPADiagramPropertyPage.getDefaultTablePrefixName(project, props);
 		String tableName = (tableNamePrefix.length() > 0) ? (tableNamePrefix + entityShortName.toUpperCase(Locale.ENGLISH)) : "";	//$NON-NLS-1$
@@ -1332,32 +1200,46 @@ public class JPAEditorUtil {
 			packageImport = "import " + mappedSuperclassPackage + ".*;"; //$NON-NLS-1$	//$NON-NLS-2$
 		}
 
+		
 		String primaryKeyDeclaration = ""; //$NON-NLS-1$
 		if (!hasPrimaryKey) 
 			primaryKeyDeclaration = generatePrimaryKeyDeclaration(fieldBasedAccess, idName);
 		
+		String content = "package " + JPADiagramPropertyPage.getDefaultPackage(project, props)	//$NON-NLS-1$ 
+		  		 + ";\n\n"																	//$NON-NLS-1$	
+		  		 + "import javax.persistence.*;\n"  										//$NON-NLS-1$
+		  		 + packageImport+"\n\n" 													//$NON-NLS-1$
+		  		 + "@Entity \n" 															//$NON-NLS-1$
+		  		 + ((tableName.length() > 0) ? ("@Table(name=\"" 							//$NON-NLS-1$
+		  		 + tableName + "\")\n") : "")  												//$NON-NLS-1$	//$NON-NLS-2$
+		  		 + classDeclarationStringContent
+		  		 + primaryKeyDeclaration
+		  		 +"}"; 																		//$NON-NLS-1$
+		
+		return createClassInProject(project, folder, entityShortName, content);
+	}	
+	
+	private static IFile createClassInProject(IProject project,
+			IFolder folder, String classShortName, String content) throws Exception{
+		
+		if (!folder.exists()) {
+			folder.create(true, true, new NullProgressMonitor());
+		}
+		IFile file = folder.getFile(classShortName + ".java"); //$NON-NLS-1$
+
 		if (!file.exists()) {
-			  String content = "package " + JPADiagramPropertyPage.getDefaultPackage(project, props)	//$NON-NLS-1$ 
-					  		 + ";\n\n"																	//$NON-NLS-1$	
-					  		 + "import javax.persistence.*;\n"  										//$NON-NLS-1$
-					  		 + packageImport+"\n\n" 													//$NON-NLS-1$
-					  		 + "@Entity \n" 															//$NON-NLS-1$
-					  		 + ((tableName.length() > 0) ? ("@Table(name=\"" 							//$NON-NLS-1$
-					  		 + tableName + "\")\n") : "")  												//$NON-NLS-1$	//$NON-NLS-2$
-					  		 + classDeclarationStringContent
-					  		 + primaryKeyDeclaration
-					  		 +"}"; 																		//$NON-NLS-1$
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
 			try {
 				stream.write(content.getBytes());
 				stream.flush();
-				file.create(new ByteArrayInputStream(stream.toByteArray()), true, new NullProgressMonitor());
+				file.create(new ByteArrayInputStream(stream.toByteArray()),
+						true, new NullProgressMonitor());
 			} finally {
 				stream.close();
-			}	
+			}
 		}
 		return file;
-	}	
+	}
 	
 	static private String generatePrimaryKeyDeclaration(boolean fieldBasedAccess, String primaryKeyName) {
 		String primaryKeyDeclaration = (fieldBasedAccess ? "  @Id \n" : "") 				//$NON-NLS-1$	//$NON-NLS-2$
@@ -1489,13 +1371,13 @@ public class JPAEditorUtil {
 		return isAdded;
 	}
 	
-	public static String cutOffStringPrefix(String s, String prefix) {
+	private static String cutOffStringPrefix(String s, String prefix) {
 		if (s.startsWith(prefix)) 
 			return s.substring(prefix.length());
 		return s;
 	}
 	
-	public static String cutOffHeaderDirtyPrefix(String header) {
+	private static String cutOffHeaderDirtyPrefix(String header) {
 		return cutOffStringPrefix(header, JPAEditorConstants.HEADER_PREFIX_DIRTY);
 	}	
 	
@@ -1506,8 +1388,7 @@ public class JPAEditorUtil {
 	}
 	
 	public static JavaPersistentAttribute addAnnotatedAttribute(IJPAEditorFeatureProvider fp, JavaPersistentType referencingJPT, 
-			JavaPersistentType referencedJPT, ICompilationUnit referencingCU, ICompilationUnit referencedCU, boolean isCollection,
-			String mapKeyType){
+			JavaPersistentType referencedJPT, boolean isCollection, String mapKeyType){
 		
 		String name = returnSimpleName(referencedJPT.getName());
 		String actName = returnSimpleName(JpaArtifactFactory.instance().getEntityName(referencedJPT));
@@ -1521,13 +1402,9 @@ public class JPAEditorUtil {
 		}
 		nameWithNonCapitalLetter = produceUniqueAttributeName(referencingJPT, nameWithNonCapitalLetter);
 		actNameWithNonCapitalLetter = produceUniqueAttributeName(referencingJPT, actNameWithNonCapitalLetter);
-		
-		if(mapKeyType == null){
-			return JpaArtifactFactory.instance().addAttribute(fp, referencingJPT, referencedJPT, 
-					 nameWithNonCapitalLetter, actNameWithNonCapitalLetter, isCollection, 
-					 referencingCU, referencedCU);
-		}
-		
+
+		ICompilationUnit referencingCU = JPAEditorUtil.getCompilationUnit(referencingJPT);
+		ICompilationUnit referencedCU = JPAEditorUtil.getCompilationUnit(referencedJPT);
 		return JpaArtifactFactory.instance().addAttribute(fp, referencingJPT, referencedJPT, mapKeyType,
 																			 nameWithNonCapitalLetter, 
 																			 actNameWithNonCapitalLetter, isCollection, 

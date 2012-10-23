@@ -139,10 +139,7 @@ public class CreateRelationsTest {
 	@Test
 	public void testCreateOneToOneUnidirRelation() throws Exception {
 				
-		AbstractRelation rel = new OneToOneUniDirRelation(featureProvider, t1, t2, "address",
-								  					true, 
-								  					cu1,
-								  					cu2);
+		AbstractRelation rel = new OneToOneUniDirRelation(featureProvider, t1, t2, "address", true);
 		assertNotNull(rel);
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
@@ -158,10 +155,7 @@ public class CreateRelationsTest {
 	@Test
 	public void testCreateOneToOneBidirRelation() throws Exception {
 		
-		AbstractRelation rel = new OneToOneBiDirRelation(featureProvider, t1, t2, "address", "customer",
-								  					true, 
-								  					cu1,
-								  					cu2);
+		AbstractRelation rel = new OneToOneBiDirRelation(featureProvider, t1, t2, "address", "customer", true, null);
 		assertNotNull(rel);
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
@@ -183,10 +177,7 @@ public class CreateRelationsTest {
 	
 	@Test
 	public void testCreateOneToManyUnidirRelation() throws Exception {
-		AbstractRelation rel = new OneToManyUniDirRelation(featureProvider, t1, t2, "address",
-								  					true, 
-								  					cu1,
-								  					cu2);
+		AbstractRelation rel = new OneToManyUniDirRelation(featureProvider, t1, t2, "address", true);
 		assertNotNull(rel);
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
@@ -202,10 +193,7 @@ public class CreateRelationsTest {
 	
 	@Test
 	public void testCreateManyToOneUnidirRelation() throws Exception {
-		AbstractRelation rel = new ManyToOneUniDirRelation(featureProvider, t1, t2, "address",
-								  					true, 
-								  					cu1,
-								  					cu2);
+		AbstractRelation rel = new ManyToOneUniDirRelation(featureProvider, t1, t2, "address", true);
 		assertNotNull(rel);
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
@@ -218,10 +206,7 @@ public class CreateRelationsTest {
 	
 	@Test
 	public void testCreateManyToOneBidirRelation() throws Exception {
-		AbstractRelation rel = new ManyToOneBiDirRelation(featureProvider, t1, t2, "address", "customer",
-								  					true, 
-								  					cu1,
-								  					cu2);
+		AbstractRelation rel = new ManyToOneBiDirRelation(featureProvider, t1, t2, "address", "customer", true, null);
 		assertNotNull(rel);
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
@@ -241,10 +226,7 @@ public class CreateRelationsTest {
 	
 	@Test
 	public void testCreateManyToManyUnidirRelation() throws Exception {
-		AbstractRelation rel = new ManyToManyUniDirRelation(featureProvider, t1, t2, "address",
-								  					true, 
-								  					cu1,
-								  					cu2);
+		AbstractRelation rel = new ManyToManyUniDirRelation(featureProvider, t1, t2, "address", true);
 		assertNotNull(rel);
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
@@ -258,10 +240,7 @@ public class CreateRelationsTest {
 	
 	@Test
 	public void testCreateManyToManyBidirRelation() throws Exception {
-		AbstractRelation rel = new ManyToManyBiDirRelation(featureProvider, t1, t2, "address", "customer",
-								  					true, 
-								  					createCompilationUnitFrom((IFile)t1.getResource()),
-								  					createCompilationUnitFrom((IFile)t2.getResource()));
+		AbstractRelation rel = new ManyToManyBiDirRelation(featureProvider, t1, t2, "address", "customer", true, null);
 		assertNotNull(rel);
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
@@ -316,10 +295,7 @@ public class CreateRelationsTest {
 			expect(featureProvider20.loadProperties(jpa20Project.getProject())).andReturn(props);
 			replay(featureProvider20);
 							
-			AbstractRelation rel = new OneToManyUniDirRelation(featureProvider20, t1, t2, "address",
-									  					true, 
-									  					cu1,
-									  					cu2);
+			AbstractRelation rel = new OneToManyUniDirRelation(featureProvider20, t1, t2, "address", true);
 			assertNotNull(rel);
 			assertSame(t1, rel.getOwner());
 			assertSame(t2, rel.getInverse());
@@ -381,10 +357,7 @@ public class CreateRelationsTest {
 			expect(featureProvider20.loadProperties(jpa20Project.getProject())).andReturn(props);
 			replay(featureProvider20);
 							
-			AbstractRelation rel = new OneToManyUniDirRelation(featureProvider20, t1, t2, "project",
-									  					true, 
-									  					cu1,
-									  					cu2);
+			AbstractRelation rel = new OneToManyUniDirRelation(featureProvider20, t1, t2, "project", true);
 			assertNotNull(rel);
 			assertSame(t1, rel.getOwner());
 			assertSame(t2, rel.getInverse());
@@ -444,10 +417,7 @@ public class CreateRelationsTest {
 			expect(featureProvider20.loadProperties(jpa20Project.getProject())).andReturn(props);
 			replay(featureProvider20);
 										
-			AbstractRelation rel = new OneToManyUniDirRelation(featureProvider20, t1, t2, "person",
-									  					true, 
-									  					cu1,
-									  					cu2);
+			AbstractRelation rel = new OneToManyUniDirRelation(featureProvider20, t1, t2, "person", true);
 			assertNotNull(rel);
 			assertSame(t1, rel.getOwner());
 			assertSame(t2, rel.getInverse());

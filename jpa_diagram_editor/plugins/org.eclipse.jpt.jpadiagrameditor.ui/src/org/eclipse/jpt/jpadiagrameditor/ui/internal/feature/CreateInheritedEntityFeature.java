@@ -25,12 +25,18 @@ import org.eclipse.graphiti.mm.pictograms.Anchor;
 import org.eclipse.graphiti.mm.pictograms.Connection;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.jpa.core.JpaProject;
+import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
+import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.ModelIntegrationUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPAEditorImageProvider;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 
 public class CreateInheritedEntityFeature extends AbstractCreateConnectionFeature {
 
@@ -101,6 +107,40 @@ public class CreateInheritedEntityFeature extends AbstractCreateConnectionFeatur
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return (IJPAEditorFeatureProvider)super.getFeatureProvider(); 
 	}
-
+	
+	@Override
+	public void endConnecting() {
+		super.endConnecting();
+		getFeatureProvider().setOriginalPersistentTypeColor();
+	}
+	
+	@Override
+	public void startConnecting() {
+		super.startConnecting();
+		disableAllNotValidJPTs();
+	}
+	
+	@SuppressWarnings("restriction")
+	private void disableAllNotValidJPTs(){
+		Diagram d = getDiagram();
+		JpaProject project = ModelIntegrationUtil.getProjectByDiagram(d.getName());
+		PersistenceUnit unit = project.getRootContextNode().getPersistenceXml().
+								getRoot().getPersistenceUnits().iterator().next();
+		disableAllEmbeddables(unit);
+	}
+	
+	/**
+	 * Disable (color in gray) all {@link Embeddable}s registered in the persistence unit.
+	 * @param unit
+	 */
+	private void disableAllEmbeddables(PersistenceUnit unit) {
+		for (ClassRef classRef : unit.getClassRefs()) {
+			if (classRef.getJavaPersistentType() != null) {
+				final JavaPersistentType jpt = classRef.getJavaPersistentType();
+				if(JpaArtifactFactory.instance().hasEmbeddableAnnotation(jpt))
+					getFeatureProvider().setGrayColor(jpt);
+			}
+		}
+	}
 
 }

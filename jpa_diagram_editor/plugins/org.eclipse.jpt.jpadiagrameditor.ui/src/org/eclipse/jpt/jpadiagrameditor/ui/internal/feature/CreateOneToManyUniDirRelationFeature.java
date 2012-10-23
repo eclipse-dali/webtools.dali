@@ -35,7 +35,7 @@ public class CreateOneToManyUniDirRelationFeature extends CreateOneToManyRelatio
 		
 	@Override
 	public OneToManyUniDirRelation createRelation(IJPAEditorFeatureProvider fp, PictogramElement source, 
-			PictogramElement target) {
+			PictogramElement target, JavaPersistentType embeddingEntity) {
 		JavaPersistentType owner = (JavaPersistentType)(getBusinessObjectForPictogramElement(source));
 		JavaPersistentType inverse = (JavaPersistentType)(getBusinessObjectForPictogramElement(target));	
 				
@@ -45,14 +45,12 @@ public class CreateOneToManyUniDirRelationFeature extends CreateOneToManyRelatio
 			nameWithNonCapitalLetter = JPAEditorUtil.produceValidAttributeName(attributeName);
 		
 		String attributeText = JPAEditorUtil.produceUniqueAttributeName(owner, nameWithNonCapitalLetter);		
-		OneToManyUniDirRelation relation = new OneToManyUniDirRelation(fp, owner, inverse, attributeText, true, 
-				getFeatureProvider().getCompilationUnit(owner),
-				getFeatureProvider().getCompilationUnit(inverse));
+		OneToManyUniDirRelation relation = new OneToManyUniDirRelation(fp, owner, inverse, attributeText, true);
 		return relation;	
 	}	
 	
     public String getCreateImageId() {
         return JPAEditorImageProvider.ICON_ONE_TO_MANY_1_DIR;
-    }		
+    }
 	
 }

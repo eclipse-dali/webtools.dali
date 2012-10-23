@@ -124,4 +124,5 @@ public class JPADiagramEditorInput extends DiagramEditorInput
 	public String getProjectName() {
 		return projectName;
 	}
+
 }

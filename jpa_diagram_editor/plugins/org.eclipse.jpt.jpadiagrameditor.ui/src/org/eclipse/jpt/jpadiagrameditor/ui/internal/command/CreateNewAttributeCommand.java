@@ -9,6 +9,7 @@ import org.eclipse.jdt.core.IImportDeclaration;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.common.utility.command.Command;
+import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
@@ -110,6 +111,16 @@ public class CreateNewAttributeCommand implements Command {
 		
 	}
 		
-		jpt.getJavaResourceType().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
+		JavaPersistentAttribute attr  = jpt.getAttributeNamed(attrName);
+		int cnt = 0;
+		while ((attr == null) && (cnt < 25)) {
+			try {
+				Thread.sleep(250);
+			} catch (InterruptedException e) {
+			}
+			jpt.getJavaResourceType().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
+			attr = jpt.getAttributeNamed(attrName);
+			cnt++;
+		}
 	}
 }

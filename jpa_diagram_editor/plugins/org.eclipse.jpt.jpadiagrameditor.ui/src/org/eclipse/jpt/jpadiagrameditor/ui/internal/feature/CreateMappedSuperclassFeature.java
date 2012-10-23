@@ -73,10 +73,10 @@ public class CreateMappedSuperclassFeature extends
 		
 		String mappedSuperclassName = getFeatureProvider()
 				.getJPAEditorUtil()
-				.generateUniqueMappedSuperclassName(
+				.generateUniqueTypeName(
 						jpaProject,
 						JPADiagramPropertyPage.getDefaultPackage(jpaProject.getProject()),
-						getFeatureProvider());
+						".MpdSuprcls", getFeatureProvider()); //$NON-NLS-1$
 		
 		if (! JpaPreferences.getDiscoverAnnotatedClasses(jpaProject.getProject())) {
 			JPAEditorUtil.createRegisterEntityInXMLJob(jpaProject, mappedSuperclassName);

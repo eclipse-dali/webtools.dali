@@ -29,18 +29,11 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 
 public class CreateDiagramJob extends Job {
 
-	//private Connection moinConnection = null;
 	private PersistenceUnit persistenceUnit;
 	private Diagram diagram;
 	private int grid;
 	private boolean snap;
-	
-	/*
-	public Connection getMoinConnection() {
-		return moinConnection;
-	}
-	*/
-	
+
 	public Diagram getDiagram() {
 		return diagram;
 	}
@@ -53,11 +46,9 @@ public class CreateDiagramJob extends Job {
 	}
 
 	public IStatus run(IProgressMonitor monitor) {
-		//IProject project = persistenceUnit.getJpaProject().getProject();
 		try{
 			monitor.beginTask(JPAEditorMessages.CreateDiagramJob_getJPADiagramMonitorTaskName, 3); 
 			monitor.worked(1);
-			//moinConnection = ConnectionManager.getInstance().createConnection(project);
 			monitor.worked(1);
 			diagram = ModelIntegrationUtil.createDiagram(persistenceUnit, grid, snap);
 			monitor.worked(1);

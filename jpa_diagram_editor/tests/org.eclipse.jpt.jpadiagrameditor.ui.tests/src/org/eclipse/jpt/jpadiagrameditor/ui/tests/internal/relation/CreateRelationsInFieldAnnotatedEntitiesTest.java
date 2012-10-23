@@ -103,10 +103,7 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		}
 		ICompilationUnit cu1 = createCompilationUnitFrom((IFile)t1.getResource());
-		AbstractRelation rel = new OneToOneUniDirRelation(featureProvider, t1, t2, "address",
-								  					true, 
-								  					cu1,
-								  					createCompilationUnitFrom((IFile)t2.getResource()));
+		AbstractRelation rel = new OneToOneUniDirRelation(featureProvider, t1, t2, "address", true);
 		assertNotNull(rel);
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
@@ -156,10 +153,7 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		}
 		ICompilationUnit cu1 = createCompilationUnitFrom((IFile)t1.getResource());
 		ICompilationUnit cu2 = createCompilationUnitFrom((IFile)t2.getResource());
-		AbstractRelation rel = new OneToOneBiDirRelation(featureProvider, t1, t2, "address", "customer",
-								  					true, 
-								  					cu1,
-								  					cu2);
+		AbstractRelation rel = new OneToOneBiDirRelation(featureProvider, t1, t2, "address", "customer", true, null);
 		assertNotNull(rel);
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
@@ -219,10 +213,7 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		}
 		ICompilationUnit cu1 = createCompilationUnitFrom((IFile)t1.getResource());
-		AbstractRelation rel = new OneToManyUniDirRelation(featureProvider, t1, t2, "address",
-								  					true, 
-								  					cu1,
-								  					createCompilationUnitFrom((IFile)t2.getResource()));
+		AbstractRelation rel = new OneToManyUniDirRelation(featureProvider, t1, t2, "address", true);
 		assertNotNull(rel);
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
@@ -272,10 +263,7 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		}
 		ICompilationUnit cu1 = createCompilationUnitFrom((IFile)t1.getResource());
-		AbstractRelation rel = new ManyToOneUniDirRelation(featureProvider, t1, t2, "address",
-								  					true, 
-								  					cu1,
-								  					createCompilationUnitFrom((IFile)t2.getResource()));
+		AbstractRelation rel = new ManyToOneUniDirRelation(featureProvider, t1, t2, "address", true);
 		assertNotNull(rel);
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
@@ -326,10 +314,7 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		}
 		ICompilationUnit cu1 = createCompilationUnitFrom((IFile)t1.getResource());
 		ICompilationUnit cu2 = createCompilationUnitFrom((IFile)t2.getResource());
-		AbstractRelation rel = new ManyToOneBiDirRelation(featureProvider, t1, t2, "address", "customer",
-								  					true, 
-								  					cu1,
-								  					cu2);
+		AbstractRelation rel = new ManyToOneBiDirRelation(featureProvider, t1, t2, "address", "customer", true, null);
 		assertNotNull(rel);
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
@@ -388,10 +373,7 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 			t2 = JpaArtifactFactory.instance().getContextPersistentType(jpaProject, addressType.getTypeBinding().getQualifiedName());
 		}
 		ICompilationUnit cu1 = createCompilationUnitFrom((IFile)t1.getResource());
-		AbstractRelation rel = new ManyToManyUniDirRelation(featureProvider, t1, t2, "address",
-								  					true, 
-								  					cu1,
-								  					createCompilationUnitFrom((IFile)t2.getResource()));
+		AbstractRelation rel = new ManyToManyUniDirRelation(featureProvider, t1, t2, "address", true);
 		assertNotNull(rel);
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());
@@ -442,10 +424,7 @@ public class CreateRelationsInFieldAnnotatedEntitiesTest {
 		}
 		ICompilationUnit cu1 = createCompilationUnitFrom((IFile)t1.getResource());
 		ICompilationUnit cu2 = createCompilationUnitFrom((IFile)t2.getResource());
-		AbstractRelation rel = new ManyToManyBiDirRelation(featureProvider, t1, t2, "address", "customer",
-								  					true, 
-								  					cu1,
-								  					cu2);
+		AbstractRelation rel = new ManyToManyBiDirRelation(featureProvider, t1, t2, "address", "customer", true, null);
 		assertNotNull(rel);
 		assertSame(t1, rel.getOwner());
 		assertSame(t2, rel.getInverse());

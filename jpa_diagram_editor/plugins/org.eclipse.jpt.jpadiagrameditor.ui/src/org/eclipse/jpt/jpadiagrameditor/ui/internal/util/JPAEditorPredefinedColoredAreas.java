@@ -49,6 +49,28 @@ public class JPAEditorPredefinedColoredAreas extends PredefinedColoredAreas
 		gradientColoredAreas.setStyleAdaption(IPredefinedRenderingStyle.STYLE_ADAPTATION_DEFAULT);
 		return gradientColoredAreas;
 	}
+	
+	/**
+	 * The color-areas, which are used for default elements with the ID
+	 * {@link #VIOLET_WHITE_GLOSS_ID}.
+	 */
+	private static GradientColoredAreas getVioletWhiteGlossDefaultAreas() {
+		final GradientColoredAreas gradientColoredAreas = StylesFactory.eINSTANCE.createGradientColoredAreas();
+		final EList<GradientColoredArea> gcas = gradientColoredAreas.getGradientColor();
+
+		addGradientColoredArea(gcas, "F5F0F5", 0, LocationType.LOCATION_TYPE_ABSOLUTE_START, "F5F0F5", 1, //$NON-NLS-1$ //$NON-NLS-2$
+				LocationType.LOCATION_TYPE_ABSOLUTE_START);
+		addGradientColoredArea(gcas, "F1EBF5", 1, LocationType.LOCATION_TYPE_ABSOLUTE_START, "F1EBF5", 2, //$NON-NLS-1$ //$NON-NLS-2$
+				LocationType.LOCATION_TYPE_ABSOLUTE_START);
+		addGradientColoredArea(gcas, "E6DAEE", 2, LocationType.LOCATION_TYPE_ABSOLUTE_START, "E6DAEE", 3, //$NON-NLS-1$ //$NON-NLS-2$
+				LocationType.LOCATION_TYPE_ABSOLUTE_START);
+		addGradientColoredArea(gcas, "E4D8EC", 3, LocationType.LOCATION_TYPE_ABSOLUTE_START, "FAFCFB", 2, //$NON-NLS-1$ //$NON-NLS-2$
+				LocationType.LOCATION_TYPE_ABSOLUTE_END);
+		addGradientColoredArea(gcas, "DADAEB", 2, LocationType.LOCATION_TYPE_ABSOLUTE_END, "DADAEB", 0, //$NON-NLS-1$ //$NON-NLS-2$
+				LocationType.LOCATION_TYPE_ABSOLUTE_END);
+		gradientColoredAreas.setStyleAdaption(IPredefinedRenderingStyle.STYLE_ADAPTATION_DEFAULT);
+		return gradientColoredAreas;
+	}
 
 	/**
 	 * The color-areas, which are used for primary selected elements with the ID
@@ -71,10 +93,33 @@ public class JPAEditorPredefinedColoredAreas extends PredefinedColoredAreas
 				LocationType.LOCATION_TYPE_ABSOLUTE_END);
 		return gradientColoredAreas;
 	}
+	
+	/**
+	 * The color-areas, which are used for primary selected elements with the ID
+	 * {@link #GREEN_WHITE_GLOSS_ID}.
+	 */
+	private static GradientColoredAreas getVioletWhiteGlossPrimarySelectedAreas() {
+		final GradientColoredAreas gradientColoredAreas = StylesFactory.eINSTANCE.createGradientColoredAreas();
+		gradientColoredAreas.setStyleAdaption(IPredefinedRenderingStyle.STYLE_ADAPTATION_PRIMARY_SELECTED);
+		final EList<GradientColoredArea> gcas = gradientColoredAreas.getGradientColor();
+
+		addGradientColoredArea(gcas, "EEEAF1", 0, LocationType.LOCATION_TYPE_ABSOLUTE_START, "EEEAF1", 1, //$NON-NLS-1$ //$NON-NLS-2$
+				LocationType.LOCATION_TYPE_ABSOLUTE_START);
+		addGradientColoredArea(gcas, "CDB8DE", 1, LocationType.LOCATION_TYPE_ABSOLUTE_START, "CDB8DE", 2, //$NON-NLS-1$ //$NON-NLS-2$
+				LocationType.LOCATION_TYPE_ABSOLUTE_START);
+		addGradientColoredArea(gcas, "C2A9D7", 2, LocationType.LOCATION_TYPE_ABSOLUTE_START, "C2A9D7", 3, //$NON-NLS-1$ //$NON-NLS-2$
+				LocationType.LOCATION_TYPE_ABSOLUTE_START);
+		addGradientColoredArea(gcas, "BA9ED2", 3, LocationType.LOCATION_TYPE_ABSOLUTE_START, "CAB5DD", 2, //$NON-NLS-1$ //$NON-NLS-2$
+				LocationType.LOCATION_TYPE_ABSOLUTE_END);
+		addGradientColoredArea(gcas, "CEBAE0", 2, LocationType.LOCATION_TYPE_ABSOLUTE_END, "CEBAE0", 0, //$NON-NLS-1$ //$NON-NLS-2$
+				LocationType.LOCATION_TYPE_ABSOLUTE_END);
+		
+		return gradientColoredAreas;
+	}
 
 	/**
 	 * The color-areas, which are used for secondary selected elements with the
-	 * ID {@link #GREEN_WHITE_GLOSS_ID}.
+	 * ID {@link #VIOLET_WHITE_GLOSS_ID}.
 	 */
 	private static GradientColoredAreas getGreenWhiteGlossSecondarySelectedAreas() {
 		final GradientColoredAreas gradientColoredAreas = StylesFactory.eINSTANCE.createGradientColoredAreas();
@@ -91,14 +136,38 @@ public class JPAEditorPredefinedColoredAreas extends PredefinedColoredAreas
 				LocationType.LOCATION_TYPE_ABSOLUTE_END);
 		addGradientColoredArea(gcas, "B2E5CD", 2, LocationType.LOCATION_TYPE_ABSOLUTE_END, "B2E5CD", 0, //$NON-NLS-1$ //$NON-NLS-2$
 				LocationType.LOCATION_TYPE_ABSOLUTE_END);
+		
+		return gradientColoredAreas;
+	}
+	
+	/**
+	 * The color-areas, which are used for secondary selected elements with the
+	 * ID {@link #VIOLET_WHITE_GLOSS_ID}.
+	 */
+	private static GradientColoredAreas getVioletWhiteGlossSecondarySelectedAreas() {
+		final GradientColoredAreas gradientColoredAreas = StylesFactory.eINSTANCE.createGradientColoredAreas();
+		gradientColoredAreas.setStyleAdaption(IPredefinedRenderingStyle.STYLE_ADAPTATION_SECONDARY_SELECTED);
+		final EList<GradientColoredArea> gcas = gradientColoredAreas.getGradientColor();
+		
+		addGradientColoredArea(gcas, "EEEAF1", 0, LocationType.LOCATION_TYPE_ABSOLUTE_START, "EEEAF1", 1, //$NON-NLS-1$ //$NON-NLS-2$
+				LocationType.LOCATION_TYPE_ABSOLUTE_START);
+		addGradientColoredArea(gcas, "DCCEE8", 1, LocationType.LOCATION_TYPE_ABSOLUTE_START, "DCCEE8", 2, //$NON-NLS-1$ //$NON-NLS-2$
+				LocationType.LOCATION_TYPE_ABSOLUTE_START);
+		addGradientColoredArea(gcas, "E1CEEB", 2, LocationType.LOCATION_TYPE_ABSOLUTE_START, "E1CEEB", 3, //$NON-NLS-1$ //$NON-NLS-2$
+				LocationType.LOCATION_TYPE_ABSOLUTE_START);
+		addGradientColoredArea(gcas, "E0CEE8", 3, LocationType.LOCATION_TYPE_ABSOLUTE_START, "E0D2E8", 2, //$NON-NLS-1$ //$NON-NLS-2$
+				LocationType.LOCATION_TYPE_ABSOLUTE_END);
+		addGradientColoredArea(gcas, "D8C8E6", 2, LocationType.LOCATION_TYPE_ABSOLUTE_END, "D8C8E6", 0, //$NON-NLS-1$ //$NON-NLS-2$
+				LocationType.LOCATION_TYPE_ABSOLUTE_END);
+		
 		return gradientColoredAreas;
 	}
 
 	/**
 	 * The color-areas, which are used for elements where an action is allowed
-	 * with the ID {@link #GREEN_WHITE_GLOSS_ID}.
+	 * with the ID {@link #GREEN_WHITE_GLOSS_ID} or {@link #VIOLET_WHITE_GLOSS_ID}.
 	 */
-	private static GradientColoredAreas getGreeenWhiteGlossActionAllowedAreas() {
+	private static GradientColoredAreas getWhiteGlossActionAllowedAreas() {
 		final GradientColoredAreas gradientColoredAreas = StylesFactory.eINSTANCE.createGradientColoredAreas();
 		gradientColoredAreas.setStyleAdaption(IPredefinedRenderingStyle.STYLE_ADAPTATION_ACTION_ALLOWED);
 		final EList<GradientColoredArea> gcas = gradientColoredAreas.getGradientColor();
@@ -110,9 +179,9 @@ public class JPAEditorPredefinedColoredAreas extends PredefinedColoredAreas
 
 	/**
 	 * The color-areas, which are used for elements where an action is forbidden
-	 * with the ID {@link #GREEN_WHITE_GLOSS_ID}.
+	 * with the ID {@link #GREEN_WHITE_GLOSS_ID} or {@link #VIOLET_WHITE_GLOSS_ID}.
 	 */
-	private static GradientColoredAreas getGreenWhiteGlossActionForbiddenAreas() {
+	private static GradientColoredAreas getWhiteGlossActionForbiddenAreas() {
 		final GradientColoredAreas gradientColoredAreas = StylesFactory.eINSTANCE.createGradientColoredAreas();
 		gradientColoredAreas.setStyleAdaption(IPredefinedRenderingStyle.STYLE_ADAPTATION_ACTION_FORBIDDEN);
 		final EList<GradientColoredArea> gcas = gradientColoredAreas.getGradientColor();
@@ -120,8 +189,7 @@ public class JPAEditorPredefinedColoredAreas extends PredefinedColoredAreas
 		addGradientColoredArea(gcas, "FF00CC", 0, LocationType.LOCATION_TYPE_ABSOLUTE_START, "FF0066", 0, //$NON-NLS-1$ //$NON-NLS-2$
 				LocationType.LOCATION_TYPE_ABSOLUTE_END);
 		return gradientColoredAreas;
-	}
-	
+	}	
 	
 	public static AdaptedGradientColoredAreas getGreenWhiteGlossAdaptions() {
 		final AdaptedGradientColoredAreas agca = StylesFactory.eINSTANCE.createAdaptedGradientColoredAreas();
@@ -133,9 +201,25 @@ public class JPAEditorPredefinedColoredAreas extends PredefinedColoredAreas
 		agca.getAdaptedGradientColoredAreas().add(IPredefinedRenderingStyle.STYLE_ADAPTATION_SECONDARY_SELECTED,
 				getGreenWhiteGlossSecondarySelectedAreas());
 		agca.getAdaptedGradientColoredAreas().add(IPredefinedRenderingStyle.STYLE_ADAPTATION_ACTION_ALLOWED,
-				getGreeenWhiteGlossActionAllowedAreas());
+				getWhiteGlossActionAllowedAreas());
 		agca.getAdaptedGradientColoredAreas().add(IPredefinedRenderingStyle.STYLE_ADAPTATION_ACTION_FORBIDDEN,
-				getGreenWhiteGlossActionForbiddenAreas());
+				getWhiteGlossActionForbiddenAreas());
+		return agca;
+	}
+	
+	public static AdaptedGradientColoredAreas getVioletWhiteGlossAdaptions() {
+		final AdaptedGradientColoredAreas agca = StylesFactory.eINSTANCE.createAdaptedGradientColoredAreas();
+		agca.setDefinedStyleId(VIOLET_WHITE_GLOSS_ID);
+		agca.setGradientType(IGradientType.VERTICAL);
+		agca.getAdaptedGradientColoredAreas().add(IPredefinedRenderingStyle.STYLE_ADAPTATION_DEFAULT, getVioletWhiteGlossDefaultAreas());
+		agca.getAdaptedGradientColoredAreas().add(IPredefinedRenderingStyle.STYLE_ADAPTATION_PRIMARY_SELECTED,
+				getVioletWhiteGlossPrimarySelectedAreas());
+		agca.getAdaptedGradientColoredAreas().add(IPredefinedRenderingStyle.STYLE_ADAPTATION_SECONDARY_SELECTED,
+				getVioletWhiteGlossSecondarySelectedAreas());
+		agca.getAdaptedGradientColoredAreas().add(IPredefinedRenderingStyle.STYLE_ADAPTATION_ACTION_ALLOWED,
+				getWhiteGlossActionAllowedAreas());
+		agca.getAdaptedGradientColoredAreas().add(IPredefinedRenderingStyle.STYLE_ADAPTATION_ACTION_FORBIDDEN,
+				getWhiteGlossActionForbiddenAreas());
 		return agca;
 	}	
 
@@ -143,8 +227,12 @@ public class JPAEditorPredefinedColoredAreas extends PredefinedColoredAreas
 		AdaptedGradientColoredAreas res = PredefinedColoredAreas.getAdaptedGradientColoredAreas(id);
 		if (res != null)
 			return res;
-		if (GREEN_WHITE_GLOSS_ID.equals(id))
+		if (GREEN_WHITE_GLOSS_ID.equals(id)) {
 			return getGreenWhiteGlossAdaptions();
+		} else if (VIOLET_WHITE_GLOSS_ID.equals(id)){
+			return getVioletWhiteGlossAdaptions();
+		}
+		
 		return null;
 	}
 }

@@ -16,11 +16,13 @@ public class SetMappedByNewValueCommand implements Command {
 	private String inverseEntityName;
 	private String inverseAttributeName;
 	private JavaPersistentAttribute newAt;
+	private JavaPersistentAttribute oldAt;
 	private IRelation rel;
 	
 	public SetMappedByNewValueCommand(IJPAEditorFeatureProvider fp,
 			PersistenceUnit pu, String inverseEntityName,
 			String inverseAttributeName, JavaPersistentAttribute newAt,
+			JavaPersistentAttribute oldAt,
 			IRelation rel) {
 		super();
 		this.fp =fp;
@@ -28,16 +30,29 @@ public class SetMappedByNewValueCommand implements Command {
 		this.inverseEntityName = inverseEntityName;
 		this.inverseAttributeName = inverseAttributeName;
 		this.newAt = newAt;
+		this.oldAt = oldAt;
 		this.rel = rel;
 	}
 
 	public void execute() {
 		fp.addAttribForUpdate(pu, inverseEntityName
 				+ EntityChangeListener.SEPARATOR + inverseAttributeName
-				+ EntityChangeListener.SEPARATOR + newAt.getName());
+				+ EntityChangeListener.SEPARATOR + newAt.getName() 
+				+ EntityChangeListener.SEPARATOR + oldAt.getName());
 		Annotation a = rel.getInverseAnnotatedAttribute().getMapping().getMappingAnnotation();
 		if (OwnableRelationshipMappingAnnotation.class.isInstance(a)) {
-			((OwnableRelationshipMappingAnnotation)a).setMappedBy(newAt.getName());
+			String mappedBy = ((OwnableRelationshipMappingAnnotation)a).getMappedBy();
+			String[] mappedByAttrs = mappedBy.split("\\."); //$NON-NLS-1$
+			if(mappedByAttrs.length > 1){
+				if(mappedByAttrs[0].equals(oldAt.getName())){
+					mappedBy = newAt.getName() + "." + mappedByAttrs[1]; //$NON-NLS-1$
+				} else if(mappedByAttrs[1].equals(oldAt.getName())){
+					mappedBy = mappedByAttrs[0] + "." + newAt.getName(); //$NON-NLS-1$
+				}
+			} else {
+				mappedBy = newAt.getName();
+			}
+			((OwnableRelationshipMappingAnnotation)a).setMappedBy(mappedBy);
 		
 			rel.getInverse().getJavaResourceType().getJavaResourceCompilationUnit().synchronizeWithJavaSource();
 		}

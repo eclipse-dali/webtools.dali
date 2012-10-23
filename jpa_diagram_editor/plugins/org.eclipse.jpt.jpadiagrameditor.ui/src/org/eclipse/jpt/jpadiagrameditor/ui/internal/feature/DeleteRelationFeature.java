@@ -26,6 +26,7 @@ import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.AbstractRelation;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.HasReferanceRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IBidirectionalRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IUnidirectionalRelation;
@@ -70,13 +71,37 @@ public class DeleteRelationFeature extends DefaultDeleteFeature{
         }
 
         preDelete(context);
-        AbstractRelation rel = (AbstractRelation)businessObjectForPictogramElement;
+        
+        if(businessObjectForPictogramElement instanceof AbstractRelation) {
+        	deleteAbstractRelation(businessObjectForPictogramElement);   
+        } else if (businessObjectForPictogramElement instanceof HasReferanceRelation){
+        	deleteEmbeddedRelation(businessObjectForPictogramElement);
+        }
+
+        postDelete(context);
+    }
+
+	private void deleteEmbeddedRelation(Object businessObjectForPictogramElement) {
+		HasReferanceRelation rel = (HasReferanceRelation)businessObjectForPictogramElement;
+		JavaPersistentAttribute attribute = rel.getEmbeddedAnnotatedAttribute();
+		PictogramElement textShape = getFeatureProvider().getPictogramElementForBusinessObject(attribute);
+		if(textShape == null)
+			return;
+		ClickRemoveAttributeButtonFeature feat = new ClickRemoveAttributeButtonFeature(getFeatureProvider());
+		IDeleteContext delCtx = new DeleteContext(textShape);    		
+		feat.delete(delCtx, false);
+	}
+
+	private void deleteAbstractRelation(Object businessObjectForPictogramElement) {
+		AbstractRelation rel = (AbstractRelation)businessObjectForPictogramElement;
 		
         if (rel instanceof IUnidirectionalRelation) {
         	IUnidirectionalRelation relation = (IUnidirectionalRelation)rel;
-        	ClickRemoveAttributeButtonFeature feat = new ClickRemoveAttributeButtonFeature(getFeatureProvider());
     		JavaPersistentAttribute attribute = relation.getAnnotatedAttribute();
     		PictogramElement textShape = getFeatureProvider().getPictogramElementForBusinessObject(attribute);
+    		if(textShape == null)
+    			return;
+        	ClickRemoveAttributeButtonFeature feat = new ClickRemoveAttributeButtonFeature(getFeatureProvider());
     		IDeleteContext delCtx = new DeleteContext(textShape);    		
     		feat.delete(delCtx, false);
     	}    	
@@ -87,28 +112,36 @@ public class DeleteRelationFeature extends DefaultDeleteFeature{
         	
     		JavaPersistentAttribute ownerAttribute = relation.getOwnerAnnotatedAttribute();
     		PictogramElement ownerAttributeTextShape = getFeatureProvider().getPictogramElementForBusinessObject(ownerAttribute);
+    		if(ownerAttributeTextShape == null)
+    			return;
     		IDeleteContext deleteOwnerAttributeContext = new DeleteContext(ownerAttributeTextShape);
     		feat.delete(deleteOwnerAttributeContext, false);
     		
     		JavaPersistentAttribute inverseAttribute = relation.getInverseAnnotatedAttribute();
     		PictogramElement inverseAttributeTextShape = getFeatureProvider().getPictogramElementForBusinessObject(inverseAttribute);
+    		if(inverseAttributeTextShape == null)
+    			return;
     		IDeleteContext deleteInverseAttributeContext = new DeleteContext(inverseAttributeTextShape);
-    		feat.delete(deleteInverseAttributeContext, false);    		
-    	}    	
-
-        postDelete(context);
-    }	
+    		feat.delete(deleteInverseAttributeContext, false);
+    	}
+	}	
     
 	public void postDelete(IDeleteContext context) {
         PictogramElement pe = context.getPictogramElement();
         Object businessObjectForPictogramElement = getBusinessObjectForPictogramElement(pe);
-        IRelation rel = (IRelation)businessObjectForPictogramElement;	
-		IWorkbenchSite ws = ((IEditorPart)getDiagramEditor()).getSite();
-		ICompilationUnit cu = getFeatureProvider().getCompilationUnit(rel.getOwner());		
-        ut.organizeImports(cu, ws);        
-		if (rel instanceof IBidirectionalRelation) {
-			cu = getFeatureProvider().getCompilationUnit(rel.getInverse());
-			ut.organizeImports(cu, ws);  
+		IWorkbenchSite ws = ((IEditorPart) getDiagramEditor()).getSite();
+		if (businessObjectForPictogramElement instanceof IRelation) {
+			IRelation rel = (IRelation) businessObjectForPictogramElement;
+			ICompilationUnit cu = getFeatureProvider().getCompilationUnit(rel.getOwner());
+			ut.organizeImports(cu, ws);
+			if (rel instanceof IBidirectionalRelation) {
+				cu = getFeatureProvider().getCompilationUnit(rel.getInverse());
+				ut.organizeImports(cu, ws);
+			}
+		} else if(businessObjectForPictogramElement instanceof HasReferanceRelation){
+			HasReferanceRelation rel = (HasReferanceRelation) businessObjectForPictogramElement;
+			ICompilationUnit cu = getFeatureProvider().getCompilationUnit(rel.getEmbeddingEntity());
+			ut.organizeImports(cu, ws); 
 		}
 	}
     

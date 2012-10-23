@@ -106,7 +106,7 @@ public class JPAEditorFeatureProviderTest {
 		JavaPersistentType jpt2 = replayJPT("TestEntity2");
 		IJPAEditorFeatureProvider provider = createFeatureProvider();
 
-		AbstractRelation relation = new ManyToManyUniDirRelation(provider, jpt1, jpt2, "attribute1", false, null, null);
+		AbstractRelation relation = new ManyToManyUniDirRelation(provider, jpt1, jpt2, "attribute1", false);
 		expect(solver.getBusinessObjectForKey(businessObjectKey)).andStubReturn(relation);
 		
 		//test

@@ -15,32 +15,17 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.util;
 
-import java.io.ObjectInputStream.GetField;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.TreeIterator;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EOperation;
-import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.graphiti.features.context.impl.RemoveContext;
-import org.eclipse.graphiti.mm.Property;
-import org.eclipse.graphiti.mm.algorithms.GraphicsAlgorithm;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
-import org.eclipse.graphiti.mm.pictograms.PictogramElement;
-import org.eclipse.graphiti.mm.pictograms.PictogramLink;
 import org.eclipse.jpt.jpa.core.JpaPreferences;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
+import org.eclipse.jpt.jpa.core.context.MappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
@@ -50,6 +35,7 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.internal.context.java.JavaNullTypeMapping;
 import org.eclipse.jpt.jpa.core.resource.java.OwnableRelationshipMappingAnnotation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.JPADiagramEditorPlugin;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.command.SetMappedByNewValueCommand;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.RemoveAndSaveEntityFeature;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.swt.widgets.Display;
@@ -136,7 +122,7 @@ public class EntityChangeListener extends Thread {
 						PersistenceUnit pu = JpaArtifactFactory.instance().getPersistenceUnit(jpt);
 						PersistentType pt = pu.getPersistentType(jpt.getName());
 						
-						if ((pt == null) || !JpaArtifactFactory.instance().hasEntityOrMappedSuperclassAnnotation(jpt)) {
+						if ((pt == null) || !JpaArtifactFactory.instance().hasAnyAnnotationType(jpt)) {
 														
 							JpaArtifactFactory.instance().forceSaveEntityClass(jpt, featureProvider);
 							
@@ -163,6 +149,7 @@ public class EntityChangeListener extends Thread {
 						String entityName = jptAndAttrib[0];
 						String attribName = jptAndAttrib[1];
 						String mappedBy = jptAndAttrib[2];
+						String oldMappedBy = jptAndAttrib[3];
 						JavaPersistentType jpt = (JavaPersistentType)pu.getPersistentType(entityName);
 						if (jpt != null) {
 							JavaPersistentAttribute jpa = jpt.getAttributeNamed(attribName);
@@ -174,7 +161,31 @@ public class EntityChangeListener extends Thread {
 									if (!ownableRef.strategyIsMappedBy()) {
 									    ownableRef.setStrategyToMappedBy();
 									}
-									ownableRef.getMappedByStrategy().setMappedByAttribute(mappedBy);									
+									MappedByRelationshipStrategy mappedByStrategy = ownableRef.getMappedByStrategy();
+									String mappedByAttr = mappedByStrategy.getMappedByAttribute();
+																		
+									String[] mappedByAttrs = mappedByAttr.split("\\."); //$NON-NLS-1$
+									if(mappedByAttrs.length > 1){
+										if(mappedByAttrs[0].equals(oldMappedBy)){
+											mappedByAttr = mappedBy + "." + mappedByAttrs[1]; //$NON-NLS-1$
+										} else if(mappedByAttrs[1].equals(oldMappedBy)){
+											mappedByAttr = mappedByAttrs[0] + "." + mappedBy; //$NON-NLS-1$
+										}
+									} else {
+										mappedByAttr = mappedBy;
+									}
+									mappedByStrategy.setMappedByAttribute(mappedByAttr);
+									
+									
+//									if(mappedByAttrs.length > 1){
+//										if(mappedByAttrs[0].equals(oldAt.getName())){
+//											mappedBy = newAt.getName() + "." + mappedByAttrs[1];
+//										} else if(mappedByAttrs[1].equals(oldAt.getName())){
+//											mappedBy = mappedByAttrs[0] + "." + newAt.getName();
+//										}
+//									} else {
+//										mappedBy = newAt.getName();
+									jpt.update();
 									attribsToUpdate.remove(jptAtMB);
 								}
 							}

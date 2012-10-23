@@ -80,11 +80,7 @@ public class DeleteJPAEntityFeature extends DefaultDeleteFeature {
 						
 		} 	
     }
-    
-    public String getQuestionToUser() {
-    	return MessageFormat.format(JPAEditorMessages.DeleteJPAEntityFeature_deleteJPAEntityQuestion, entityName, entityClassName);
-    }
-    
+
 	public IJPAEditorFeatureProvider getFeatureProvider() {
 		return (IJPAEditorFeatureProvider)super.getFeatureProvider();
 	}		    

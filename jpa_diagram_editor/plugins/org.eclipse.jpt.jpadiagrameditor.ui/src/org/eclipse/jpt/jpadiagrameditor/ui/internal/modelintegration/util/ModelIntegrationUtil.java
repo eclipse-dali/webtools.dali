@@ -191,6 +191,7 @@ public class ModelIntegrationUtil {
 
 		String pathName = diagramFileName.toString();
 		URI resourceURI = URI.createFileURI(pathName);
+		
 		final Resource resource = resourceSet.createResource(resourceURI);		
 		if (!resource.isLoaded())
 			return createNewDiagram(project, defaultTransEditDomain, resourceSet, resource, diagramName, grid, snap);
@@ -365,7 +366,7 @@ public class ModelIntegrationUtil {
 			return ref.get();
 		return null;
 	}
-
+	
 	public static void deleteDiagramXMIFile(final Diagram diagram) {
 		if(diagram != null && diagram.eResource()!=null){
 				TransactionalEditingDomain ted = ModelIntegrationUtil.getTransactionalEditingDomain(diagram);

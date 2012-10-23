@@ -117,9 +117,9 @@ public class CreateJPAEntityFeature extends AbstractCreateFeature {
 			targetProject = jpaProject.getProject();
 		}    	
 		String entityName = getFeatureProvider().getJPAEditorUtil().
-								generateUniqueEntityName(jpaProject, 
+								generateUniqueTypeName(jpaProject, 
 														 JPADiagramPropertyPage.getDefaultPackage(jpaProject.getProject()), 
-														 getFeatureProvider()); 
+														 ".Entity", getFeatureProvider()); //$NON-NLS-1$
 
 		if(!JPAEditorUtil.checkIsSetPersistenceProviderLibrary(jpaProject)){
 			Shell shell = JPADiagramEditorPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell();

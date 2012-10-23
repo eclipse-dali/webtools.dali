@@ -89,15 +89,10 @@ public class IsARelation {
 				startJpt.getName() + SEPARATOR + endJpt.getName();
 	}
 	
-	public boolean equals(Object obj) {
-		if (obj == null)
+	public boolean equals(Object otherRel) {
+		if (!IsARelation.class.isInstance(otherRel))
 			return false;
-		if (this.hashCode() != obj.hashCode())
-			return false;
-		if (!(obj instanceof IsARelation))
-			return false;
-		IsARelation rel = (IsARelation)obj; 
-		return this.getId().equals(rel.getId());
+		return getId().equals(((IsARelation)otherRel).getId());
 	}
 	
 	public int hashCode() {
