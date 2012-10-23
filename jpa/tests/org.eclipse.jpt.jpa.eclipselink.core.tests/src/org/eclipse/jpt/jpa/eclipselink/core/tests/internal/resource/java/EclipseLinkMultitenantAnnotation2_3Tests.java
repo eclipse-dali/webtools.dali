@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,9 +18,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.resource.java.EclipseLinkMultitenant
 import org.eclipse.jpt.jpa.eclipselink.core.resource.java.MultitenantType2_3;
 
 @SuppressWarnings("nls")
-public class EclipselinkMultitenantAnnotation2_3Tests extends EclipseLink2_3JavaResourceModelTestCase {
-
-	public EclipselinkMultitenantAnnotation2_3Tests(String name) {
+public class EclipseLinkMultitenantAnnotation2_3Tests
+	extends EclipseLink2_3JavaResourceModelTestCase
+{
+	public EclipseLinkMultitenantAnnotation2_3Tests(String name) {
 		super(name);
 	}
 	

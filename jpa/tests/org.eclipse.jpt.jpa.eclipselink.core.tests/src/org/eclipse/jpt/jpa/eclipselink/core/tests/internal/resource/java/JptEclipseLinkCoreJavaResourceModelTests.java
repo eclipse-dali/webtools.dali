@@ -36,7 +36,7 @@ public class JptEclipseLinkCoreJavaResourceModelTests {
 		suite.addTestSuite(TypeConverterAnnotationTests.class);
 		suite.addTestSuite(WriteTransformerAnnotationTests.class);
 		suite.addTestSuite(MapKeyConvertAnnotation2_0Tests.class);
-		suite.addTestSuite(EclipselinkMultitenantAnnotation2_3Tests.class);
+		suite.addTestSuite(EclipseLinkMultitenantAnnotation2_3Tests.class);
 		suite.addTestSuite(EclipseLinkTenantDiscriminatorColumnAnnotation2_3Tests.class);
 		
 		return suite;
