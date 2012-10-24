@@ -9,6 +9,14 @@
 	
 	<properties>
 		<tycho-version>0.15.0</tycho-version>
+		<eclipse-site>http://download.eclipse.org/eclipse/updates/4.3milestones/</eclipse-site>
+		<emf-site>http://download.eclipse.org/modeling/emf/emf/updates/2.9milestones/</emf-site>
+		<modeling-site>http://download.eclipse.org/modeling/emf/updates/releases</modeling-site>
+		<dtp-site>http://download.eclipse.org/datatools/downloads/drops/M_updates_1.10.1/</dtp-site>
+		<gef-site>http://download.eclipse.org/tools/gef/updates/milestones/</gef-site>
+		<wtp-site>http://build.eclipse.org/webtools/committers/wtp4x-R3.5.0-I/20121022195619/I-3.5.0-20121022195619/repository/</wtp-site>
+		<graphiti-site>http://download.eclipse.org/graphiti/updates/milestones/</graphiti-site>
+		<swtbot-site>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site</swtbot-site>
 		<tycho.testArgLine>-Xmx512m -Xms128m -XX:PermSize=32m -XX:MaxPermSize=256m -DenableDebug -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=1044</tycho.testArgLine>
 	</properties>
 	
@@ -50,24 +58,44 @@
 	
 	<repositories>
 		<repository>
-			<id>Juno</id>
-			<url>http://download.eclipse.org/releases/juno/</url>
+			<id>Kepler</id>
+			<url>${eclipse-site}</url>
 			<layout>p2</layout>			
 		</repository>	
 		<repository>
-			<id>Kepler</id>
-			<url>http://download.eclipse.org/webtools/downloads/drops/R3.5.0/S-3.5.0M2-20120927194043/repository/</url>
+			<id>EMF</id>
+			<url>${emf-site}</url>
+			<layout>p2</layout>
+		</repository>
+		<repository>
+			<id>DTP</id>
+			<url>${dtp-site}</url>
+			<layout>p2</layout>
+		</repository>
+		<repository>
+			<id>Modeling</id>
+			<url>${modeling-site}</url>
+			<layout>p2</layout>
+		</repository>
+		<repository>
+			<id>GEF</id>
+			<url>${gef-site}</url>
+			<layout>p2</layout>
+		</repository>
+		<repository>
+			<id>WTP</id>
+			<url>${wtp-site}</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
 			<id>Graphiti</id>
-			<url>http://download.eclipse.org/graphiti/updates/milestones/</url>
+			<url>${graphiti-site}</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
 			<id>swtbot</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site</url>
+			<url>${swtbot-site}</url>
 		</repository>
 	</repositories>
 	
