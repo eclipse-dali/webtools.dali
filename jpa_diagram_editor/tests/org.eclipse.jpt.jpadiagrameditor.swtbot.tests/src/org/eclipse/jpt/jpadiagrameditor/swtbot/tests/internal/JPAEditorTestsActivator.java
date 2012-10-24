@@ -17,7 +17,6 @@ package org.eclipse.jpt.jpadiagrameditor.swtbot.tests.internal;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Plugin;
-import org.eclipse.jpt.common.utility.internal.ReflectionTools;
 import org.eclipse.jpt.jpa.core.JpaProjectManager;
 import org.osgi.framework.BundleContext;
 
