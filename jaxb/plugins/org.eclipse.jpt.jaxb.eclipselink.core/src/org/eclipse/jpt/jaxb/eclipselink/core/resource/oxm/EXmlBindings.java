@@ -905,7 +905,7 @@ public class EXmlBindings extends ERootObjectImpl
 		result.append(xmlAccessorOrder);
 		result.append(", xmlMappingMetadataComplete: ");
 		result.append(xmlMappingMetadataComplete);
-		result.append(", packageName: ");
+		result.append(", specifiedPackageName: ");
 		result.append(packageName);
 		result.append(", xmlNameTransformer: ");
 		result.append(xmlNameTransformer);

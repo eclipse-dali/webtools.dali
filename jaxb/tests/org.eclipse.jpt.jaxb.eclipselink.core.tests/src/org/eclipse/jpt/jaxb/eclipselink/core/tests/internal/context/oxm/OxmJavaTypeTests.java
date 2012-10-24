@@ -136,7 +136,7 @@ public class OxmJavaTypeTests
 		assertEquals("java.lang.String", javaType.getQualifiedName());
 		assertEquals("String", javaType.getSimpleName());
 		
-		xmlBindings.setPackageName("test.oxm2");
+		xmlBindings.setSpecifiedPackageName("test.oxm2");
 		javaType.setSpecifiedName("Foo");
 		oxmResource.save();
 		

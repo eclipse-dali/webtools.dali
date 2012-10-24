@@ -29,5 +29,10 @@ public interface OxmFile
 	
 	String getPackageName();
 	
+	
+	// ***** xml bindings *****
+	
+	static final String XML_BINDINGS_PROPERTY = "xmlBindings"; //$NON-NLS-1$
+	
 	OxmXmlBindings getXmlBindings();
 }

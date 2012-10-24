@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.common.core.resource.xml.EBaseObjectImpl;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -1381,6 +1382,14 @@ public class EJavaType extends EBaseObjectImpl implements EPropertyHolder
 		result.append(')');
 		return result.toString();
 	}
+	
+	
+	// ***** text range *****
+	
+	public TextRange getNameTextRange() {
+		return getAttributeTextRange(Oxm.NAME);
+	}
+	
 
 	// ***** translators *****
 	

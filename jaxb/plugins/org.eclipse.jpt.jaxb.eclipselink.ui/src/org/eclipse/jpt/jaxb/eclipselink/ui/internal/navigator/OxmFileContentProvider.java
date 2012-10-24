@@ -13,8 +13,10 @@ import org.eclipse.jpt.common.ui.internal.jface.AbstractItemTreeContentProvider;
 import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.ListCollectionValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbPackage;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmFile;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaType;
@@ -36,7 +38,7 @@ public class OxmFileContentProvider
 	protected CollectionValueModel<OxmJavaType> buildChildrenModel() {
 		return new ListCollectionValueModelAdapter<OxmJavaType>(
 				new ItemPropertyListValueModelAdapter<OxmJavaType>(
-						new ListAspectAdapter<OxmXmlBindings, OxmJavaType>(OxmXmlBindings.JAVA_TYPES_LIST, this.item.getXmlBindings()) {
+						new ListAspectAdapter<OxmXmlBindings, OxmJavaType>(buildXmlBindingsModel(), OxmXmlBindings.JAVA_TYPES_LIST) {
 							@Override
 							protected ListIterable<OxmJavaType> getListIterable() {
 								return this.subject.getJavaTypes();
@@ -46,5 +48,14 @@ public class OxmFileContentProvider
 								return this.subject.getJavaTypesSize();
 							}
 						}));
+	}
+	
+	protected PropertyValueModel<OxmXmlBindings> buildXmlBindingsModel() {
+		return new PropertyAspectAdapter<OxmFile, OxmXmlBindings>(OxmFile.XML_BINDINGS_PROPERTY, this.item) {
+			@Override
+			protected OxmXmlBindings buildValue_() {
+				return this.subject.getXmlBindings();
+			}
+		};
 	}
 }

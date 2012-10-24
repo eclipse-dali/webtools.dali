@@ -13,6 +13,7 @@ import org.eclipse.jpt.common.utility.iterable.ListIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlAccessOrderHolder;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlAccessTypeHolder;
+import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -27,6 +28,9 @@ import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlAccessTypeHolder;
 public interface OxmXmlBindings
 		extends JaxbContextNode, ELXmlAccessTypeHolder, ELXmlAccessOrderHolder {
 	
+	EXmlBindings getEXmlBindings();
+	
+	
 	// ***** mapping metadata complete *****
 	
 	final static String XML_MAPPING_METADATA_COMPLETE_PROPERTY = "xmlMappingMetadataComplete"; //$NON-NLS-1$
@@ -38,15 +42,26 @@ public interface OxmXmlBindings
 	
 	// ***** package name *****
 	
-	final static String PACKAGE_NAME_PROPERTY = "packageName"; //$NON-NLS-1$
+	/** string associated with specifiedPackageName property */
+	final static String SPECIFIED_PACKAGE_NAME_PROPERTY = "specifiedPackageName"; //$NON-NLS-1$
 	
+	/** return the package name specified on the xml-bindings node */
+	String getSpecifiedPackageName();
+	
+	/** set the package name on the xml-bindings node */
+	void setSpecifiedPackageName(String packageName);
+	
+	/** string associated with impliedPackageName property */
+	final static String IMPLIED_PACKAGE_NAME_PROPERTY = "impliedPackageName"; //$NON-NLS-1$
+	
+	/** return the package name implied by querying java types included in this document */
+	String getImpliedPackageName();
+	
+	/** return the specified package name if specified, otherwise the implied package name */
 	String getPackageName();
 	
-	void setPackageName(String packageName);
-	
-	/**
-	 * Return a qualified name for the given child type
-	 */
+	/** Return a qualified name for the given (qualified or unqualified) child type name, 
+	 *  prepending a package name if applicable */
 	String getQualifiedName(String childTypeName);
 	
 	

@@ -100,6 +100,9 @@ public class ELJaxbContextRootImpl
 			if (! unmatchedOxmResources.remove(oxmResource)) {
 				removeOxmFile(oxmFile);
 			}
+			else {
+				oxmFile.update();
+			}
 		}
 		
 		for (JptXmlResource oxmResource : unmatchedOxmResources) {

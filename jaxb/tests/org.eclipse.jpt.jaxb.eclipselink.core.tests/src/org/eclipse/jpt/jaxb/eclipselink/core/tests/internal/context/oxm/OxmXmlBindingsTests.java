@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jaxb.eclipselink.core.tests.internal.context.oxm;
 
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbContextRoot;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELXmlAccessOrder;
@@ -276,6 +277,8 @@ public class OxmXmlBindingsTests
 		EXmlBindings eXmlBindings = (EXmlBindings) oxmResource.getRootObject();
 		
 		assertEquals("test.oxm", eXmlBindings.getPackageName());
+		assertEquals("test.oxm", xmlBindings.getSpecifiedPackageName());
+		assertEquals(StringTools.EMPTY_STRING, xmlBindings.getImpliedPackageName());
 		assertEquals("test.oxm", xmlBindings.getPackageName());
 		
 		eXmlBindings.setPackageName("foo");
@@ -283,14 +286,21 @@ public class OxmXmlBindingsTests
 		
 		assertFileContentsContains("oxm.xml", "package-name=\"foo\"", true);
 		assertEquals("foo", eXmlBindings.getPackageName());
+		assertEquals("foo", xmlBindings.getSpecifiedPackageName());
+		assertEquals(StringTools.EMPTY_STRING, xmlBindings.getImpliedPackageName());
 		assertEquals("foo", xmlBindings.getPackageName());
 		
 		eXmlBindings.setPackageName(null);
+		EJavaType eJavaType = OxmFactory.eINSTANCE.createEJavaType();
+		eJavaType.setName("test.foo.Foo");
+		eXmlBindings.getJavaTypes().add(eJavaType);
 		oxmResource.save();
 		
 		assertFileContentsContains("oxm.xml", "package-name=", false);
 		assertNull(eXmlBindings.getPackageName());
-		assertNull(xmlBindings.getPackageName());
+		assertNull(xmlBindings.getSpecifiedPackageName());
+		assertEquals("test.foo", xmlBindings.getImpliedPackageName());
+		assertEquals("test.foo", xmlBindings.getPackageName());
 	}
 	
 	public void testModifyPackageName() throws Exception {
@@ -302,21 +312,21 @@ public class OxmXmlBindingsTests
 		EXmlBindings eXmlBindings = (EXmlBindings) oxmResource.getRootObject();
 		
 		assertEquals("test.oxm", eXmlBindings.getPackageName());
-		assertEquals("test.oxm", xmlBindings.getPackageName());
+		assertEquals("test.oxm", xmlBindings.getSpecifiedPackageName());
 		
-		xmlBindings.setPackageName("foo");
+		xmlBindings.setSpecifiedPackageName("foo");
 		oxmResource.save();
 		
 		assertFileContentsContains("oxm.xml", "package-name=\"foo\"", true);
 		assertEquals("foo", eXmlBindings.getPackageName());
-		assertEquals("foo", xmlBindings.getPackageName());
+		assertEquals("foo", xmlBindings.getSpecifiedPackageName());
 		
-		xmlBindings.setPackageName(null);
+		xmlBindings.setSpecifiedPackageName(null);
 		oxmResource.save();
 		
 		assertFileContentsContains("oxm.xml", "package-name=", false);
 		assertNull(eXmlBindings.getPackageName());
-		assertNull(xmlBindings.getPackageName());
+		assertNull(xmlBindings.getSpecifiedPackageName());
 	}
 	
 	public void testUpdateJavaTypes() throws Exception {

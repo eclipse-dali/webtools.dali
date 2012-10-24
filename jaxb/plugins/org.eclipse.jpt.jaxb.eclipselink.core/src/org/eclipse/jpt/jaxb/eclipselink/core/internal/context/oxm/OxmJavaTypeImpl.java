@@ -9,11 +9,19 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.oxm;
 
+import java.util.List;
+import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ObjectTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.TypeDeclarationTools;
 import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmJavaType;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlBindings;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessageBuilder;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessages;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class OxmJavaTypeImpl
 		extends AbstractJaxbContextNode
@@ -89,5 +97,50 @@ public class OxmJavaTypeImpl
 	
 	public String getSimpleName() {
 		return TypeDeclarationTools.simpleName(this.qualifiedName);
+	}
+	
+	
+	// ***** validation *****
+	
+	@Override
+	public TextRange getValidationTextRange() {
+		TextRange textRange = this.eJavaType.getValidationTextRange();
+		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
+	}
+	
+	protected TextRange getNameTextRange() {
+		return this.eJavaType.getNameTextRange();
+	}
+	
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		
+		validateName(messages, reporter);
+		
+	}
+	
+	protected void validateName(List<IMessage> messages, IReporter reporter) {
+		// type name must be specified
+		if (StringTools.isBlank(this.specifiedName)) {
+			messages.add(
+					ELJaxbValidationMessageBuilder.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							ELJaxbValidationMessages.OXM_JAVA_TYPE__NAME_NOT_SPECIFIED,
+							this,
+							getNameTextRange()));
+			return;
+		}
+		
+		// package name must be uniform across oxm file
+		String packageName = TypeDeclarationTools.packageName(this.specifiedName);
+		if (! StringTools.isBlank(packageName) && ! ObjectTools.equals(packageName, getXmlBindings().getPackageName())) {
+			messages.add(
+					ELJaxbValidationMessageBuilder.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							ELJaxbValidationMessages.OXM_JAVA_TYPE__PACKAGE_NAME_NOT_UNIFORM,
+							this,
+							getNameTextRange()));
+		}
 	}
 }

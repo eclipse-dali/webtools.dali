@@ -77,10 +77,16 @@ public class OxmFileImpl
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.resourceType = oxmResource.getResourceType();
+		this.resourceType = this.oxmResource.getResourceType();
+		syncXmlBindings();
+	}
+	
+	@Override
+	public void update() {
+		super.update();
 		
 		if (this.xmlBindings != null) {
-			this.xmlBindings.synchronizeWithResourceModel();
+			this.xmlBindings.update();
 		}
 	}
 	
@@ -89,6 +95,22 @@ public class OxmFileImpl
 	
 	public OxmXmlBindings getXmlBindings() {
 		return this.xmlBindings;
+	}
+	
+	protected void setXmlBindings(OxmXmlBindings xmlBindings) {
+		OxmXmlBindings oldXmlBindings = this.xmlBindings;
+		this.xmlBindings = xmlBindings;
+		firePropertyChanged(XML_BINDINGS_PROPERTY, oldXmlBindings, xmlBindings);
+	}
+	
+	protected void syncXmlBindings() {
+		EXmlBindings eXmlBindings = (EXmlBindings) this.oxmResource.getRootObject();
+		if (this.xmlBindings == null || this.xmlBindings.getEXmlBindings() != eXmlBindings) {
+			setXmlBindings(buildXmlBindings());
+		}
+		if (this.xmlBindings != null) {
+			this.xmlBindings.synchronizeWithResourceModel();
+		}
 	}
 	
 	protected OxmXmlBindings buildXmlBindings() {
@@ -124,6 +146,10 @@ public class OxmFileImpl
 							ELJaxbValidationMessages.OXM_FILE__VERSION_NOT_SUPPORTED,
 							OxmFileImpl.this,
 							getVersionTextRange()));
+		}
+		
+		if (this.xmlBindings != null) {
+			this.xmlBindings.validate(messages, reporter);
 		}
 	}
 }

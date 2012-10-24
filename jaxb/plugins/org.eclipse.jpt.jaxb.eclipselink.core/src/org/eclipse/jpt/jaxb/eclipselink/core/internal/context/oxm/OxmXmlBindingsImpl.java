@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.eclipselink.core.internal.context.oxm;
 
+import java.util.List;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.ClassNameTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
@@ -25,6 +26,8 @@ import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlBindings;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EJavaType;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.OxmFactory;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class OxmXmlBindingsImpl
 		extends AbstractJaxbContextNode
@@ -38,7 +41,8 @@ public class OxmXmlBindingsImpl
 	
 	protected boolean xmlMappingMetadataComplete;
 	
-	protected String packageName;
+	protected String specifiedPackageName;
+	protected String impliedPackageName;
 	
 	protected final ContextListContainer<OxmJavaType, EJavaType> javaTypeContainer;
 	
@@ -49,10 +53,15 @@ public class OxmXmlBindingsImpl
 		this.specifiedAccessType = buildSpecifiedAccessType();
 		this.specifiedAccessOrder = buildSpecifiedAccessOrder();
 		this.xmlMappingMetadataComplete = buildXmlMappingMetadataComplete();
-		this.packageName = buildPackageName();
+		this.specifiedPackageName = buildSpecifiedPackageName();
+		// impliedPackageName not built until update, as it depends on sub-nodes
 		this.javaTypeContainer = buildJavaTypeContainer();
 	}
 	
+	
+	public EXmlBindings getEXmlBindings() {
+		return this.eXmlBindings;
+	}
 	
 	// ***** sync/update *****
 	
@@ -62,13 +71,14 @@ public class OxmXmlBindingsImpl
 		setSpecifiedAccessType_(buildSpecifiedAccessType());
 		setSpecifiedAccessOrder_(buildSpecifiedAccessOrder());
 		setXmlMappingMetadataComplete_(buildXmlMappingMetadataComplete());
-		setPackageName_(buildPackageName());
+		setSpecifiedPackageName_(buildSpecifiedPackageName());
 		this.javaTypeContainer.synchronizeWithResourceModel();
 	}
 	
 	@Override
 	public void update() {
 		super.update();
+		setImpliedPackageName_(buildImpliedPackageName());
 		this.javaTypeContainer.update();
 	}
 	
@@ -158,23 +168,47 @@ public class OxmXmlBindingsImpl
 	
 	// ***** package name *****
 	
-	public String getPackageName() {
-		return this.packageName;
+	public String getSpecifiedPackageName() {
+		return this.specifiedPackageName;
 	}
 	
-	public void setPackageName(String packageName) {
+	public void setSpecifiedPackageName(String packageName) {
 		this.eXmlBindings.setPackageName(packageName);
-		setPackageName_(packageName);
+		setSpecifiedPackageName_(packageName);
 	}
 	
-	protected void setPackageName_(String packageName) {
-		String oldPackageName = this.packageName;
-		this.packageName = packageName;
-		firePropertyChanged(PACKAGE_NAME_PROPERTY, oldPackageName, packageName);
+	protected void setSpecifiedPackageName_(String packageName) {
+		String oldPackageName = this.specifiedPackageName;
+		this.specifiedPackageName = packageName;
+		firePropertyChanged(SPECIFIED_PACKAGE_NAME_PROPERTY, oldPackageName, packageName);
 	}
 	
-	protected String buildPackageName() {
+	protected String buildSpecifiedPackageName() {
 		return this.eXmlBindings.getPackageName();
+	}
+	
+	public String getImpliedPackageName() {
+		return this.impliedPackageName;
+	}
+	
+	protected void setImpliedPackageName_(String packageName) {
+		String oldPackageName = this.impliedPackageName;
+		this.impliedPackageName = packageName;
+		firePropertyChanged(IMPLIED_PACKAGE_NAME_PROPERTY, oldPackageName, packageName);
+	}
+	
+	protected String buildImpliedPackageName() {
+		for (OxmJavaType javaType : getJavaTypes()) {
+			String packageName = TypeDeclarationTools.packageName(javaType.getSpecifiedName());
+			if (! StringTools.isBlank(packageName)) {
+				return packageName;
+			}
+		}
+		return StringTools.EMPTY_STRING;
+	}
+	
+	public String getPackageName() {
+		return (this.specifiedPackageName != null) ? this.specifiedPackageName : this.impliedPackageName;
 	}
 	
 	/**
@@ -200,7 +234,11 @@ public class OxmXmlBindingsImpl
 			return StringTools.concatenate("java.lang.", className);
 		}
 		
-		return StringTools.concatenate(this.packageName, ".", className);
+		if (StringTools.isBlank(this.specifiedPackageName)) {
+			return className;
+		}
+		
+		return StringTools.concatenate(this.specifiedPackageName, ".", className);
 	}
 	
 	
@@ -288,5 +326,14 @@ public class OxmXmlBindingsImpl
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.eXmlBindings.getValidationTextRange();
 		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
+	}
+	
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		
+		for (OxmJavaType javaType : getJavaTypes()) {
+			javaType.validate(messages, reporter);
+		}
 	}
 }
