@@ -10,8 +10,6 @@
 package org.eclipse.jpt.common.core.tests;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Properties;
 import junit.framework.TestCase;
 import org.eclipse.core.resources.IProject;
@@ -87,38 +85,25 @@ public abstract class PreferencesTests
 		return this.javaProjectHarness.getProject();
 	}
 
-	protected Properties readProjectPrefs() {
+	protected Properties readProjectPrefs() throws Exception {
 		return this.readProperties(this.projectPrefsFilePath);
 	}
 
-	protected Properties readWorkspacePrefs() {
+	protected Properties readWorkspacePrefs() throws Exception {
 		return this.readProperties(this.workspacePrefsFilePath);
 	}
 
 	/**
 	 * read preferences directly from file
 	 */
-	protected Properties readProperties(String path) {
+	protected Properties readProperties(String path) throws Exception {
 		Properties properties = new Properties();
-		FileInputStream stream;
-		try {
-			stream = new FileInputStream(path);
-		} catch (FileNotFoundException ex) {
-			throw new RuntimeException(ex);
-		}
-
+		FileInputStream stream = new FileInputStream(path);
 		try {
 			properties.load(stream);
-		} catch (IOException ex) {
-			throw new RuntimeException(ex);
 		} finally {
-			try {
-				stream.close();
-			} catch (IOException ex) {
-				throw new RuntimeException(ex);
-			}
+			stream.close();
 		}
-
 		return properties;
 	}
 
