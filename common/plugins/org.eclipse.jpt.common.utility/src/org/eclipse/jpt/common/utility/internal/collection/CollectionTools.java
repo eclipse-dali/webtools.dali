@@ -17,6 +17,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.Vector;
+import org.eclipse.jpt.common.utility.filter.Filter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * {@link Collection} utility methods.
@@ -131,6 +133,23 @@ public final class CollectionTools {
 			}
 		}
 		return true;
+	}
+
+
+	// ********** filter **********
+
+	/**
+	 * Return a new collection with the filtered
+	 * elements of the specified collection.
+	 */
+	public static <E> HashBag<E> filter(Collection<? extends E> collection, Filter<E> filter) {
+		HashBag<E> result = new HashBag<E>(collection.size());
+		for (E e : collection) {
+			if (filter.accept(e)) {
+				result.add(e);
+			}
+		}
+		return result;
 	}
 
 
@@ -281,6 +300,21 @@ public final class CollectionTools {
 		}
 		collection.clear();
 		return true;
+	}
+
+
+	// ********** transform **********
+
+	/**
+	 * Return a new collection with transformations of the
+	 * elements in the specified collection.
+	 */
+	public static <E1, E2> HashBag<E2> transform(Collection<E1> collection, Transformer<E1, ? extends E2> transformer) {
+		HashBag<E2> result = new HashBag<E2>(collection.size());
+		for (E1 e : collection) {
+			result.add(transformer.transform(e));
+		}
+		return result;
 	}
 
 

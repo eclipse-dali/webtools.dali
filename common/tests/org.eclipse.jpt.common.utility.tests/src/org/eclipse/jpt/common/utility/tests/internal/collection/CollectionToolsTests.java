@@ -11,6 +11,7 @@ package org.eclipse.jpt.common.utility.tests.internal.collection;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -21,12 +22,14 @@ import java.util.TreeSet;
 import java.util.Vector;
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.collection.Bag;
+import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.ReverseComparator;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
+import org.eclipse.jpt.common.utility.tests.internal.ArrayToolsTests;
 
 @SuppressWarnings("nls")
 public class CollectionToolsTests
@@ -339,6 +342,23 @@ public class CollectionToolsTests
 	public void testContainsAllCollectionObjectArray() {
 		Object[] a = new Object[] { "zero", "one", "two" };
 		assertTrue(CollectionTools.containsAll(this.buildStringList1(), a));
+	}
+
+	// ********** filter **********
+
+	public void testFilterCollectionFilter() {
+		Collection<String> c = CollectionTools.collection(new String[] { "zero", "one", "two", "three", "four" });
+		Collection<String> actual = CollectionTools.filter(c, new ArrayToolsTests.StringLengthFilter(3));
+		Collection<String> expected = CollectionTools.collection(new String[] { "one", "two" });
+		assertEquals(expected, actual);
+	}
+
+	public void testFilterCollectionFilterTransparent() {
+		Collection<String> c = CollectionTools.collection(new String[] { "zero", "one", "two", "three", "four" });
+		Collection<String> actual = CollectionTools.filter(c, Filter.Transparent.<String>instance());
+		Collection<String> expected = CollectionTools.collection(new String[] { "zero", "one", "two", "three", "four" });
+		assertEquals(expected, actual);
+		assertNotSame(expected, actual);
 	}
 
 	// ********** remove all **********
@@ -688,6 +708,18 @@ public class CollectionToolsTests
 		Collection<String> c = new ArrayList<String>();
 		assertFalse(CollectionTools.retainAll(c, (Object[]) new String[0]));
 		assertEquals(0, c.size());
+	}
+
+
+	// ********** transform **********
+
+	public void testTransformCollectionTransformer() {
+		List<String> list = Arrays.asList(new String[] { "zero", "one", "two" });
+		Collection<String> actual = CollectionTools.transform(list, ArrayToolsTests.UPPER_CASE_TRANSFORMER);
+		assertEquals(3, actual.size());
+		assertTrue(actual.contains("ZERO"));
+		assertTrue(actual.contains("ONE"));
+		assertTrue(actual.contains("TWO"));
 	}
 
 

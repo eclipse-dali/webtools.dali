@@ -187,6 +187,20 @@ public final class IterableTools {
 	}
 
 	/**
+	 * Execute the specified command for each element in the specified iterable.
+	 */
+	public static <E> void execute(Iterable<? extends E> iterable, ParameterizedCommand<E> command) {
+		IteratorTools.execute(iterable.iterator(), command);
+	}
+
+	/**
+	 * Execute the specified command for each element in the specified iterable.
+	 */
+	public static <E> void execute(Iterable<? extends E> iterable, InterruptibleParameterizedCommand<E> command) throws InterruptedException {
+		IteratorTools.execute(iterable.iterator(), command);
+	}
+
+	/**
 	 * Return the element corresponding to the specified index
 	 * in the specified iterable.
 	 */
@@ -377,7 +391,7 @@ public final class IterableTools {
 	 * @see CompositeIterable
 	 */
 	public static <P, E> CompositeIterable<E> compositeIterable(Iterable<? extends P> parents, Transformer<P, Iterable<? extends E>> childrenTransformer) {
-		return compositeIterable(transformationIterable(parents, childrenTransformer));
+		return compositeIterable(transform(parents, childrenTransformer));
 	}
 
 	/**
@@ -424,7 +438,7 @@ public final class IterableTools {
 	 */
 	public static <E> CompositeListIterable<E> compositeListIterable(List<? extends List<E>> lists) {
 		Transformer<List<E>, ListIterable<E>> transformer = listListIterableTransformer();
-		return compositeListIterable(transformationListIterable(listIterable(lists), transformer));
+		return compositeListIterable(transform(listIterable(lists), transformer));
 	}
 
 	/**
@@ -442,7 +456,7 @@ public final class IterableTools {
 	 * @see CompositeListIterable
 	 */
 	public static <P, E> CompositeListIterable<E> compositeListIterable(ListIterable<? extends P> parents, Transformer<P, ListIterable<E>> childrenTransformer) {
-		return compositeListIterable(transformationListIterable(parents, childrenTransformer));
+		return compositeListIterable(transform(parents, childrenTransformer));
 	}
 
 	/**
@@ -483,7 +497,7 @@ public final class IterableTools {
 	 * elements in the specified iterable.
 	 * @see FilteringIterable
 	 */
-	public static <E> FilteringIterable<E> filteringIterable(Iterable<E> iterable, Filter<E> filter) {
+	public static <E> FilteringIterable<E> filter(Iterable<? extends E> iterable, Filter<E> filter) {
 		return new FilteringIterable<E>(iterable, filter);
 	}
 
@@ -736,7 +750,7 @@ public final class IterableTools {
 	 */
 	public static <E> ReadOnlyCompositeListIterable<E> readOnlyCompositeListIterable(List<? extends List<? extends E>> lists) {
 		Transformer<List<? extends E>, ListIterable<? extends E>> transformer = readOnlyListListIterableTransformer();
-		return readOnlyCompositeListIterable(transformationListIterable(listIterable(lists), transformer));
+		return readOnlyCompositeListIterable(transform(listIterable(lists), transformer));
 	}
 
 	/**
@@ -754,7 +768,7 @@ public final class IterableTools {
 	 * @see ReadOnlyCompositeListIterable
 	 */
 	public static <P, E> ReadOnlyCompositeListIterable<E> readOnlyCompositeListIterable(ListIterable<? extends P> parents, Transformer<P, ListIterable<? extends E>> childrenTransformer) {
-		return readOnlyCompositeListIterable(transformationListIterable(parents, childrenTransformer));
+		return readOnlyCompositeListIterable(transform(parents, childrenTransformer));
 	}
 
 	/**
@@ -953,7 +967,7 @@ public final class IterableTools {
 	 * elements in the specified iterable.
 	 * @see TransformationIterable
 	 */
-	public static <E1, E2> TransformationIterable<E1, E2> transformationIterable(Iterable<? extends E1> iterable, Transformer<E1, ? extends E2> transformer) {
+	public static <E1, E2> TransformationIterable<E1, E2> transform(Iterable<? extends E1> iterable, Transformer<E1, ? extends E2> transformer) {
 		return new TransformationIterable<E1, E2>(iterable, transformer);
 	}
 
@@ -971,7 +985,7 @@ public final class IterableTools {
 	 * elements in the specified iterable.
 	 * @see TransformationListIterable
 	 */
-	public static <E1, E2> TransformationListIterable<E1, E2> transformationListIterable(ListIterable<? extends E1> iterable, Transformer<E1, ? extends E2> transformer) {
+	public static <E1, E2> TransformationListIterable<E1, E2> transform(ListIterable<? extends E1> iterable, Transformer<E1, ? extends E2> transformer) {
 		return new TransformationListIterable<E1, E2>(iterable, transformer);
 	}
 
@@ -1000,20 +1014,6 @@ public final class IterableTools {
 	 */
 	public static <E> TreeIterable<E> treeIterable(Iterable<? extends E> roots, Transformer<E, Iterator<? extends E>> transformer) {
 		return new TreeIterable<E>(roots, transformer);
-	}
-
-	/**
-	 * Execute the specified command for each element in the specified iterable.
-	 */
-	public static <E> void execute(Iterable<? extends E> iterable, ParameterizedCommand<E> command) {
-		IteratorTools.execute(iterable.iterator(), command);
-	}
-
-	/**
-	 * Execute the specified command for each element in the specified iterable.
-	 */
-	public static <E> void execute(Iterable<? extends E> iterable, InterruptibleParameterizedCommand<E> command) throws InterruptedException {
-		IteratorTools.execute(iterable.iterator(), command);
 	}
 
 

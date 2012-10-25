@@ -23,6 +23,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.Vector;
 import junit.framework.TestCase;
+import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.Range;
 import org.eclipse.jpt.common.utility.internal.ReverseComparator;
@@ -30,6 +31,7 @@ import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
+import org.eclipse.jpt.common.utility.tests.internal.ArrayToolsTests;
 
 @SuppressWarnings("nls")
 public class ListToolsTests
@@ -203,6 +205,24 @@ public class ListToolsTests
 		list2.add(new String("b"));
 		list2.add(new String("c"));
 		assertEquals(new Range(3, -1), ListTools.differenceRange(list1, list2));
+	}
+
+
+	// ********** filter **********
+
+	public void testFilterListFilter() {
+		List<String> list = Arrays.asList(new String[] { "zero", "one", "two", "three", "four" });
+		List<String> actual = ListTools.filter(list, new ArrayToolsTests.StringLengthFilter(3));
+		List<String> expected = Arrays.asList(new String[] { "one", "two" });
+		assertEquals(expected, actual);
+	}
+
+	public void testFilterListFilterTransparent() {
+		List<String> list = Arrays.asList(new String[] { "zero", "one", "two", "three", "four" });
+		List<String> actual = ListTools.filter(list, Filter.Transparent.<String>instance());
+		List<String> expected = Arrays.asList(new String[] { "zero", "one", "two", "three", "four" });
+		assertEquals(expected, actual);
+		assertNotSame(expected, actual);
 	}
 
 
@@ -560,6 +580,16 @@ public class ListToolsTests
 		List<String> actual = ListTools.rotate(this.buildStringList1());
 		List<String> expected = this.buildStringList1();
 		Collections.rotate(expected, 1);
+		assertEquals(expected, actual);
+	}
+
+
+	// ********** transform **********
+
+	public void testTransformListTransformer() {
+		List<String> list = Arrays.asList(new String[] { "zero", "one", "two" });
+		List<String> actual = ListTools.transform(list, ArrayToolsTests.UPPER_CASE_TRANSFORMER);
+		List<Object> expected = Arrays.asList(new Object[] { "ZERO", "ONE", "TWO" });
 		assertEquals(expected, actual);
 	}
 

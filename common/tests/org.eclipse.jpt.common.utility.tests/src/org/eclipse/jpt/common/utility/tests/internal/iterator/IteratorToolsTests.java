@@ -11,6 +11,7 @@ package org.eclipse.jpt.common.utility.tests.internal.iterator;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -18,15 +19,14 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
 import junit.framework.TestCase;
-
 import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.ReverseComparator;
 import org.eclipse.jpt.common.utility.internal.collection.HashBag;
 import org.eclipse.jpt.common.utility.internal.iterable.IterableTools;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
 import org.eclipse.jpt.common.utility.internal.iterator.IteratorTools;
+import org.eclipse.jpt.common.utility.tests.internal.ArrayToolsTests;
 
 @SuppressWarnings("nls")
 public class IteratorToolsTests
@@ -258,6 +258,23 @@ public class IteratorToolsTests
 		list2.remove(3);
 		assertTrue(IteratorTools.elementsAreNotIdentical(list1.iterator(), list2.iterator()));
 		assertFalse(IteratorTools.elementsAreEqual(list1.iterator(), list2.iterator()));
+	}
+
+
+	// ********** execute **********
+
+	public void testExecuteParmCommand() {
+		List<String> list = this.buildStringList1();
+		ArrayToolsTests.ConcatenateCommand command = new ArrayToolsTests.ConcatenateCommand();
+		IteratorTools.execute(list.iterator(), command);
+		assertEquals("zeroonetwo", command.string);
+	}
+
+	public void testExecuteInterruptibleParmCommand() throws Exception {
+		List<String> list = this.buildStringList1();
+		ArrayToolsTests.InterruptibleConcatenateCommand command = new ArrayToolsTests.InterruptibleConcatenateCommand();
+		IteratorTools.execute(list.iterator(), command);
+		assertEquals("zeroonetwo", command.string);
 	}
 
 
@@ -504,6 +521,16 @@ public class IteratorToolsTests
 			}
 		}
 		assertTrue(exCaught);
+	}
+
+
+	// ********** transform **********
+
+	public void testTransformIteratorTransformer() {
+		List<String> list = Arrays.asList(new String[] { "zero", "one", "two" });
+		Iterator<String> actual = IteratorTools.transform(list.iterator(), ArrayToolsTests.UPPER_CASE_TRANSFORMER);
+		Iterator<Object> expected = Arrays.asList(new Object[] { "ZERO", "ONE", "TWO" }).iterator();
+		assertTrue(IteratorTools.elementsAreEqual(expected, actual));
 	}
 
 

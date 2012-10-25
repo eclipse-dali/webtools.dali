@@ -19,10 +19,12 @@ import java.util.LinkedHashSet;
 import java.util.Random;
 import org.eclipse.jpt.common.utility.command.InterruptibleParameterizedCommand;
 import org.eclipse.jpt.common.utility.command.ParameterizedCommand;
+import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.collection.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.collection.ListTools;
 import org.eclipse.jpt.common.utility.internal.iterable.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterator.ArrayIterator;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * {@link Array} utility methods.
@@ -2824,6 +2826,50 @@ public final class ArrayTools {
 		for (E e : array) {
 			command.execute(e);
 		}
+	}
+
+
+	// ********** filter **********
+
+	/**
+	 * Return a new array with the filtered
+	 * elements of the specified array.
+	 */
+	public static <E> E[] filter(E[] array, Filter<E> filter) {
+		int length = array.length;
+		E[] result = newInstance(array, length);
+		int resultLength = 0;
+		for (int i = 0; i < length; i++) {
+			E e = array[i];
+			if (filter.accept(e)) {
+				result[resultLength++] = e;
+			}
+		}
+		return (resultLength < length) ? subArray(result, 0, resultLength) : result;
+	}
+
+
+	// ********** transform **********
+
+	/**
+	 * Return a new array with transformations of the
+	 * elements in the specified array.
+	 */
+	public static <E> Object[] transform(E[] array, Transformer<E, ?> transformer) {
+		return transform(array, transformer, OBJECT_CLASS);
+	}
+
+	/**
+	 * Return a new array with transformations of the
+	 * elements in the specified array.
+	 */
+	public static <E1, E2> E2[] transform(E1[] array, Transformer<E1, ? extends E2> transformer, Class<E2> componentType) {
+		int length = array.length;
+		E2[] result = newInstance(componentType, length);
+		for (int i = length; i-- > 0; ) {
+			result[i] = transformer.transform(array[i]);
+		}
+		return result;
 	}
 
 

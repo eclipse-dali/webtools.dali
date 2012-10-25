@@ -11,6 +11,7 @@ package org.eclipse.jpt.common.utility.internal.collection;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -18,7 +19,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.RandomAccess;
+import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.Range;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 /**
  * {@link List} utility methods.
@@ -151,6 +154,23 @@ public final class ListTools {
 			}
 		}
 		return -1;
+	}
+
+
+	// ********** filter **********
+
+	/**
+	 * Return a new list with the filtered
+	 * elements of the specified list.
+	 */
+	public static <E> ArrayList<E> filter(Collection<? extends E> list, Filter<E> filter) {
+		ArrayList<E> result = new ArrayList<E>(list.size());
+		for (E e : list) {
+			if (filter.accept(e)) {
+				result.add(e);
+			}
+		}
+		return result;
 	}
 
 
@@ -393,6 +413,21 @@ public final class ListTools {
 	 */
 	public static <E> List<E> rotate(List<E> list) {
 		return rotate(list, 1);
+	}
+
+
+	// ********** transform **********
+
+	/**
+	 * Return a new list with transformations of the
+	 * elements in the specified list.
+	 */
+	public static <E1, E2> ArrayList<E2> transform(List<E1> list, Transformer<E1, ? extends E2> transformer) {
+		ArrayList<E2> result = new ArrayList<E2>(list.size());
+		for (E1 e : list) {
+			result.add(transformer.transform(e));
+		}
+		return result;
 	}
 
 

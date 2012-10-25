@@ -17,14 +17,19 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-
 import junit.framework.TestCase;
-
+import org.eclipse.jpt.common.utility.filter.Filter;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ClassTools;
 import org.eclipse.jpt.common.utility.internal.Range;
 import org.eclipse.jpt.common.utility.internal.ReverseComparator;
+import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.command.InterruptibleParameterizedCommandAdapter;
+import org.eclipse.jpt.common.utility.internal.command.ParameterizedCommandAdapter;
+import org.eclipse.jpt.common.utility.internal.filter.FilterAdapter;
 import org.eclipse.jpt.common.utility.internal.iterator.EmptyIterator;
+import org.eclipse.jpt.common.utility.internal.transformer.TransformerAdapter;
+import org.eclipse.jpt.common.utility.transformer.Transformer;
 
 @SuppressWarnings("nls")
 public class ArrayToolsTests
@@ -2919,6 +2924,108 @@ public class ArrayToolsTests
 		int[] a2 = this.buildIntArray();
 		a1 = ArrayTools.swap(a1, 1, 1);
 		assertTrue(Arrays.equals(a1, a2));
+	}
+
+
+	// ********** execute **********
+
+	public void testExecuteObjectArrayParmCommand() {
+		String[] a = this.buildStringArray1();
+		ConcatenateCommand command = new ConcatenateCommand();
+		ArrayTools.execute(a, command);
+		assertEquals("zeroonetwo", command.string);
+	}
+
+	public static class ConcatenateCommand
+		extends ParameterizedCommandAdapter<String>
+	{
+		public String string = StringTools.EMPTY_STRING;
+
+		@Override
+		public void execute(String s) {
+			this.string += s;
+		}
+	}
+
+	public void testExecuteObjectArrayInterruptibleParmCommand() throws Exception {
+		String[] a = this.buildStringArray1();
+		InterruptibleConcatenateCommand command = new InterruptibleConcatenateCommand();
+		ArrayTools.execute(a, command);
+		assertEquals("zeroonetwo", command.string);
+	}
+
+	public static class InterruptibleConcatenateCommand
+		extends InterruptibleParameterizedCommandAdapter<String>
+	{
+		public String string = StringTools.EMPTY_STRING;
+
+		@Override
+		public void execute(String s) throws InterruptedException {
+			this.string += s;
+		}
+	}
+
+
+	// ********** filter **********
+
+	public void testFilterObjectArrayFilter() {
+		String[] a = new String[] { "zero", "one", "two", "three", "four" };
+		String[] actual = ArrayTools.filter(a, new StringLengthFilter(3));
+		String[] expected = new String[] { "one", "two" };
+		assertEquals(Arrays.asList(expected), Arrays.asList(actual));
+	}
+
+	public void testFilterObjectArrayFilterTransparent() {
+		String[] a = new String[] { "zero", "one", "two", "three", "four" };
+		String[] actual = ArrayTools.filter(a, Filter.Transparent.<String>instance());
+		String[] expected = new String[] { "zero", "one", "two", "three", "four" };
+		assertEquals(Arrays.asList(expected), Arrays.asList(actual));
+		assertNotSame(expected, actual);
+	}
+
+	/**
+	 * Accept any string with the specified length.
+	 */
+	public static class StringLengthFilter
+		extends FilterAdapter<String>
+	{
+		private final int length;
+		public StringLengthFilter(int length) {
+			super();
+			this.length = length;
+		}
+		@Override
+		public boolean accept(String s) {
+			return s.length() == this.length;
+		}
+	}
+
+
+	// ********** transform **********
+
+	public void testTransformObjectArrayTransformer() {
+		String[] a = new String[] { "zero", "one", "two" };
+		Object[] actual = ArrayTools.transform(a, UPPER_CASE_TRANSFORMER);
+		Object[] expected = new Object[] { "ZERO", "ONE", "TWO" };
+		assertEquals(Arrays.asList(expected), Arrays.asList(actual));
+	}
+
+	public void testTransformObjectArrayTransformerClass() {
+		String[] a = new String[] { "zero", "one", "two" };
+		String[] actual = ArrayTools.transform(a, UPPER_CASE_TRANSFORMER, String.class);
+		String[] expected = new String[] { "ZERO", "ONE", "TWO" };
+		assertEquals(Arrays.asList(expected), Arrays.asList(actual));
+	}
+
+	public static final Transformer<String, String> UPPER_CASE_TRANSFORMER = new UpperCaseTransformer();
+
+	public static class UpperCaseTransformer
+		extends TransformerAdapter<String, String>
+	{
+		@Override
+		public String transform(String s) {
+			return s.toUpperCase();
+		}
 	}
 
 

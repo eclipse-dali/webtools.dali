@@ -201,6 +201,24 @@ public final class IteratorTools {
 	}
 
 	/**
+	 * Execute the specified command for each element in the specified iterator.
+	 */
+	public static <E> void execute(Iterator<? extends E> iterator, ParameterizedCommand<E> command) {
+		while (iterator.hasNext()) {
+			command.execute(iterator.next());
+		}
+	}
+
+	/**
+	 * Execute the specified command for each element in the specified iterator.
+	 */
+	public static <E> void execute(Iterator<? extends E> iterator, InterruptibleParameterizedCommand<E> command) throws InterruptedException {
+		while (iterator.hasNext()) {
+			command.execute(iterator.next());
+		}
+	}
+
+	/**
 	 * Return the element corresponding to the specified index
 	 * in the specified iterator.
 	 */
@@ -511,7 +529,7 @@ public final class IteratorTools {
 	 */
 	public static <E> CompositeIterator<E> compositeIterator(Iterable<? extends Iterable<? extends E>> iterables) {
 		Transformer<Iterable<? extends E>, Iterator<? extends E>> transformer = iterableIteratorTransformer();
-		return compositeIterator(transformationIterator(iterables.iterator(), transformer));
+		return compositeIterator(transform(iterables.iterator(), transformer));
 	}
 
 	/**
@@ -548,7 +566,7 @@ public final class IteratorTools {
 	 * @see CompositeIterator
 	 */
 	public static <P, E> CompositeIterator<E> compositeIterator(Iterator<? extends P> parents, Transformer<P, Iterator<? extends E>> childrenTransformer) {
-		return compositeIterator(transformationIterator(parents, childrenTransformer));
+		return compositeIterator(transform(parents, childrenTransformer));
 	}
 
 	/**
@@ -557,7 +575,7 @@ public final class IteratorTools {
 	 * @see CompositeIterator
 	 */
 	public static <P, E> CompositeIterator<E> compositeIterator(Iterable<? extends P> parents, Transformer<P, Iterable<? extends E>> childrenTransformer) {
-		return compositeIterator(IterableTools.transformationIterable(parents, childrenTransformer));
+		return compositeIterator(IterableTools.transform(parents, childrenTransformer));
 	}
 
 	/**
@@ -595,7 +613,7 @@ public final class IteratorTools {
 	 */
 	public static <E> CompositeListIterator<E> compositeListIterator(List<? extends List<E>> lists) {
 		Transformer<List<E>, ListIterator<E>> transformer = listListIteratorTransformer();
-		return compositeListIterator(transformationListIterator(lists.listIterator(), transformer));
+		return compositeListIterator(transform(lists.listIterator(), transformer));
 	}
 
 	/**
@@ -641,7 +659,7 @@ public final class IteratorTools {
 	 */
 	public static <E> CompositeListIterator<E> compositeListIterator(ListIterable<? extends ListIterable<E>> iterables) {
 		Transformer<ListIterable<E>, ListIterator<E>> transformer = listIterableListIteratorTransformer();
-		return compositeListIterator(transformationListIterator(iterables.iterator(), transformer));
+		return compositeListIterator(transform(iterables.iterator(), transformer));
 	}
 
 	/**
@@ -650,7 +668,7 @@ public final class IteratorTools {
 	 * @see CompositeListIterator
 	 */
 	public static <P, E> CompositeListIterator<E> compositeListIterator(ListIterable<? extends P> parents, Transformer<P, ListIterable<E>> childrenTransformer) {
-		return compositeListIterator(IterableTools.transformationListIterable(parents, childrenTransformer));
+		return compositeListIterator(IterableTools.transform(parents, childrenTransformer));
 	}
 
 	/**
@@ -687,7 +705,7 @@ public final class IteratorTools {
 	 * @see CompositeListIterator
 	 */
 	public static <P, E> CompositeListIterator<E> compositeListIterator(ListIterator<? extends P> parents, Transformer<P, ListIterator<E>> childrenTransformer) {
-		return compositeListIterator(transformationListIterator(parents, childrenTransformer));
+		return compositeListIterator(transform(parents, childrenTransformer));
 	}
 
 	/**
@@ -709,7 +727,7 @@ public final class IteratorTools {
 	 * elements in the specified iterable.
 	 * @see FilteringIterator
 	 */
-	public static <E> FilteringIterator<E> filteringIterator(Iterable<E> iterable, Filter<E> filter) {
+	public static <E> FilteringIterator<E> filteringIterator(Iterable<? extends E> iterable, Filter<E> filter) {
 		return new FilteringIterator<E>(iterable, filter);
 	}
 
@@ -718,7 +736,7 @@ public final class IteratorTools {
 	 * elements in the specified iterator.
 	 * @see FilteringIterator
 	 */
-	public static <E> FilteringIterator<E> filteringIterator(Iterator<E> iterator, Filter<E> filter) {
+	public static <E> FilteringIterator<E> filter(Iterator<? extends E> iterator, Filter<E> filter) {
 		return new FilteringIterator<E>(iterator, filter);
 	}
 
@@ -1001,7 +1019,7 @@ public final class IteratorTools {
 	 */
 	public static <E> ReadOnlyCompositeListIterator<E> readOnlyCompositeListIterator(List<? extends List<? extends E>> lists) {
 		Transformer<List<? extends E>, ListIterator<? extends E>> transformer = readOnlyListListIteratorTransformer();
-		return readOnlyCompositeListIterator(transformationListIterator(lists.listIterator(), transformer));
+		return readOnlyCompositeListIterator(transform(lists.listIterator(), transformer));
 	}
 
 	/**
@@ -1047,7 +1065,7 @@ public final class IteratorTools {
 	 */
 	public static <E> ReadOnlyCompositeListIterator<E> readOnlyCompositeListIterator(ListIterable<? extends ListIterable<? extends E>> iterables) {
 		Transformer<ListIterable<? extends E>, ListIterator<? extends E>> transformer = readOnlyListIterableListIteratorTransformer();
-		return readOnlyCompositeListIterator(transformationListIterator(iterables.iterator(), transformer));
+		return readOnlyCompositeListIterator(transform(iterables.iterator(), transformer));
 	}
 
 	/**
@@ -1084,7 +1102,7 @@ public final class IteratorTools {
 	 * @see ReadOnlyCompositeListIterator
 	 */
 	public static <P, E> ReadOnlyCompositeListIterator<E> readOnlyCompositeListIterator(ListIterator<? extends P> parents, Transformer<P, ListIterator<? extends E>> childrenTransformer) {
-		return readOnlyCompositeListIterator(transformationListIterator(parents, childrenTransformer));
+		return readOnlyCompositeListIterator(transform(parents, childrenTransformer));
 	}
 
 	/**
@@ -1483,7 +1501,7 @@ public final class IteratorTools {
 	 * elements in the specified iterator.
 	 * @see TransformationIterator
 	 */
-	public static <E1, E2> TransformationIterator<E1, E2> transformationIterator(Iterator<? extends E1> iterator, Transformer<E1, ? extends E2> transformer) {
+	public static <E1, E2> TransformationIterator<E1, E2> transform(Iterator<? extends E1> iterator, Transformer<E1, ? extends E2> transformer) {
 		return new TransformationIterator<E1, E2>(iterator, transformer);
 	}
 
@@ -1510,7 +1528,7 @@ public final class IteratorTools {
 	 * elements in the specified iterator.
 	 * @see TransformationListIterator
 	 */
-	public static <E1, E2> TransformationListIterator<E1, E2> transformationListIterator(ListIterator<? extends E1> iterator, Transformer<E1, ? extends E2> transformer) {
+	public static <E1, E2> TransformationListIterator<E1, E2> transform(ListIterator<? extends E1> iterator, Transformer<E1, ? extends E2> transformer) {
 		return new TransformationListIterator<E1, E2>(iterator, transformer);
 	}
 
@@ -1548,24 +1566,6 @@ public final class IteratorTools {
 	 */
 	public static <E> TreeIterator<E> treeIterator(Iterator<? extends E> roots, Transformer<E, Iterator<? extends E>> transformer) {
 		return new TreeIterator<E>(roots, transformer);
-	}
-
-	/**
-	 * Execute the specified command for each element in the specified iterator.
-	 */
-	public static <E> void execute(Iterator<? extends E> iterator, ParameterizedCommand<E> command) {
-		while (iterator.hasNext()) {
-			command.execute(iterator.next());
-		}
-	}
-
-	/**
-	 * Execute the specified command for each element in the specified iterator.
-	 */
-	public static <E> void execute(Iterator<? extends E> iterator, InterruptibleParameterizedCommand<E> command) throws InterruptedException {
-		while (iterator.hasNext()) {
-			command.execute(iterator.next());
-		}
 	}
 
 
