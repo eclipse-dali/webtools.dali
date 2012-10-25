@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
+import org.eclipse.ui.forms.widgets.Section;
 
 /**
  * Various SWT tools.
@@ -378,6 +379,38 @@ public final class SWTTools {
 		new SimpleBooleanStateController(booleanModel, control, defaultValue, adapter);
 	}
 
+
+	// ********** 'expanded' state **********
+
+	/**
+	 * Control the <em>expanded</em> state of the specified section with the
+	 * specified boolean model. If the boolean is <code>null<code>, the section's
+	 * <em>expanded</em> state will be false.
+	 */
+	public static void controlExpandedState(PropertyValueModel<Boolean> booleanModel, Section section) {
+		controlExpandedState(booleanModel, section, false);
+	}
+
+	/**
+	 * Control the <em>expanded</em> state of the specified section with the
+	 * specified boolean model. If the boolean is <code>null<code>, the section's
+	 * <em>expanded</em> state will be the specified default value.
+	 */
+	public static void controlExpandedState(PropertyValueModel<Boolean> booleanModel, Section section, boolean defaultValue) {
+		control(booleanModel, section, defaultValue, EXPANDED_ADAPTER);
+	}
+
+	private static final BooleanStateController.Adapter EXPANDED_ADAPTER =
+			new BooleanStateController.Adapter() {
+				public void setState(Control section, boolean b) {
+					((Section) section).setExpanded(b);
+				}
+			};
+
+	private static void control(PropertyValueModel<Boolean> booleanModel, Section section, boolean defaultValue, BooleanStateController.Adapter adapter) {
+		// the new controller will add itself as a listener to the value model and the section
+		new SimpleBooleanStateController(booleanModel, section, defaultValue, adapter);
+	}
 
 	// ********** constructor **********
 

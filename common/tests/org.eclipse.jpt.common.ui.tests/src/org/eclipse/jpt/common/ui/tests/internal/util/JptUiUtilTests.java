@@ -26,6 +26,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	LabeledLabelTest.class,
 	LabeledControlUpdaterTest.class,
 	PaneVisibilityEnablerTest.class,
+	SectionExpanderTest.class,
 })
 @RunWith(Suite.class)
 public final class JptUiUtilTests {
