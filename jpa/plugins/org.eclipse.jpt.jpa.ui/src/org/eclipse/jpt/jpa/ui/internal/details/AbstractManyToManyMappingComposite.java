@@ -95,10 +95,12 @@ public abstract class AbstractManyToManyMappingComposite<T extends ManyToManyMap
 	}
 	
 	protected void initializeManyToManyCollapsibleSection(Composite container) {
-		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		final Section section = this.getWidgetFactory().createSection(container,
+				ExpandableComposite.TITLE_BAR |
+				ExpandableComposite.TWISTIE |
+				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		section.setText(JptUiDetailsMessages.ManyToManySection_title);
-		section.setExpanded(true);
 		section.setClient(this.initializeManyToManySection(section));
 	}
 

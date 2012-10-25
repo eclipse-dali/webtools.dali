@@ -48,7 +48,7 @@ public class OrmElementCollectionMapping2_0Composite
 	}
 
 	@Override
-	protected Control initializeElementCollectionSection(Composite container) {
+	protected Control buildElementCollectionSectionClient(Composite container) {
 		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
 		// Target class widgets

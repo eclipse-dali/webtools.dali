@@ -61,11 +61,13 @@ public abstract class AbstractEmbeddedMappingComposite<T extends EmbeddedMapping
 	}
 	
 	protected void initializeEmbeddedCollapsibleSection(Composite container) {
-		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		final Section section = this.getWidgetFactory().createSection(container,
+				ExpandableComposite.TITLE_BAR |
+				ExpandableComposite.TWISTIE |
+				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		section.setText(JptUiDetailsMessages.EmbeddedSection_title);
 		section.setClient(this.initializeEmbeddedSection(section));
-		section.setExpanded(true);
 	}
 	
 	protected Control initializeEmbeddedSection(Composite container) {

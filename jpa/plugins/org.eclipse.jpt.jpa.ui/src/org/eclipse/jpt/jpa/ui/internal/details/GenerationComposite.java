@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
+import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
@@ -20,9 +21,12 @@ import org.eclipse.jpt.jpa.core.context.TableGenerator;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.jpa.ui.internal.details.GeneratorComposite.GeneratorBuilder;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Section;
 
 /**
  * Here the layout of this pane:
@@ -89,23 +93,27 @@ public class GenerationComposite extends Pane<GeneratorContainer>
 
 	@Override
 	protected void initializeLayout(Composite container) {
-
-		this.initializeTableGeneratorPane(container);
-		this.initializeSequenceGeneratorPane(container);
+		this.initializeTableGeneratorCollapsibleSection(container);
+		this.initializeSequenceGeneratorCollapsibleSection(container);
 	}
 
-	private void initializeSequenceGeneratorPane(Composite container) {
+	protected void initializeSequenceGeneratorCollapsibleSection(Composite container) {
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages.GeneratorsComposite_sequenceGeneratorSection);
+		SWTTools.controlExpandedState(this.sequenceGeneratorExpansionStateHolder, section);
 
-		// Sequence Generator sub-section
-		container = this.addCollapsibleSubSection(
-			container,
-			JptUiDetailsMessages.GeneratorsComposite_sequenceGeneratorSection,
-			this.sequenceGeneratorExpansionStateHolder
-		);
+		section.setClient(GenerationComposite.this.initializeSequenceGeneratorPane(section));
+	}
+
+	private Composite initializeSequenceGeneratorPane(Composite container) {
+		Composite client = this.getWidgetFactory().createComposite(container);
+		client.setLayout(new GridLayout(1, false));
+		client.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		// Sequence Generator check box
 		Button sequenceGeneratorCheckBox = addCheckBox(
-			container,
+				client,
 			JptUiDetailsMessages.GeneratorsComposite_sequenceGeneratorCheckBox,
 			this.buildSequenceGeneratorBooleanHolder(),
 			JpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR
@@ -115,10 +123,12 @@ public class GenerationComposite extends Pane<GeneratorContainer>
 		sequenceGeneratorCheckBox.setLayoutData(gridData);
 
 		// Sequence Generator pane
-		Control sequenceGeneratorComposite = this.addSequenceGeneratorComposite(container);
+		Control sequenceGeneratorComposite = this.addSequenceGeneratorComposite(client);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalIndent = sequenceGeneratorCheckBox.getBorderWidth() + 16;
 		sequenceGeneratorComposite.setLayoutData(gridData);
+
+		return client;
 	}
 	
 	protected Control addSequenceGeneratorComposite(Composite container) {
@@ -167,17 +177,22 @@ public class GenerationComposite extends Pane<GeneratorContainer>
 		};
 	}
 
- 	private void initializeTableGeneratorPane(Composite container) {
+	protected void initializeTableGeneratorCollapsibleSection(Composite container) {
+		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages.GeneratorsComposite_tableGeneratorSection);
+		SWTTools.controlExpandedState(this.tableGeneratorExpansionStateHolder, section);
 
-		// Table Generator sub-section
-		container = addCollapsibleSubSection(
-			container,
-			JptUiDetailsMessages.GeneratorsComposite_tableGeneratorSection,
-			this.tableGeneratorExpansionStateHolder
-		);
+		section.setClient(GenerationComposite.this.initializeTableGeneratorPane(section));
+	}
+
+	private Composite initializeTableGeneratorPane(Composite container) {
+		Composite client = this.getWidgetFactory().createComposite(container);
+		client.setLayout(new GridLayout(1, false));
+		client.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		Button tableGeneratorCheckBox = addCheckBox(
-			container,
+				client,
 			JptUiDetailsMessages.GeneratorsComposite_tableGeneratorCheckBox,
 			this.buildTableGeneratorBooleanHolder(),
 			JpaHelpContextIds.MAPPING_TABLE_GENERATOR
@@ -191,12 +206,14 @@ public class GenerationComposite extends Pane<GeneratorContainer>
 		Control tableGeneratorComposite = new TableGeneratorComposite(
 			this,
 			this.buildTableGeneratorHolder(),
-			container,
+			client,
 			this.buildTableGeneratorBuilder()
 		).getControl();
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalIndent = tableGeneratorCheckBox.getBorderWidth() + 16;
 		tableGeneratorComposite.setLayoutData(gridData);
+
+		return client;
 	}
 
 	private PropertyValueModel<TableGenerator> buildTableGeneratorHolder() {

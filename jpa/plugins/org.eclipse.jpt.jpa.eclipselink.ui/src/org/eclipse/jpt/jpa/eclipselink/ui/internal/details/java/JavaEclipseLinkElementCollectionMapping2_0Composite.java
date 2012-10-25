@@ -36,6 +36,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.forms.widgets.Hyperlink;
+import org.eclipse.ui.forms.widgets.Section;
 
 public class JavaEclipseLinkElementCollectionMapping2_0Composite
 	extends EclipseLinkElementCollectionMapping2_0Composite<JavaElementCollectionMapping2_0>
@@ -56,7 +57,7 @@ public class JavaEclipseLinkElementCollectionMapping2_0Composite
 	}
 
 	@Override
-	protected Control initializeElementCollectionSection(Composite container) {
+	protected Control buildElementCollectionSectionClient(Composite container) {
 		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
 		// Target class widgets
@@ -89,10 +90,9 @@ public class JavaEclipseLinkElementCollectionMapping2_0Composite
 		};
 	}
 
-
 	@Override
-	protected void initializeBasicValueTypeSection(Composite container) {
-		super.initializeBasicValueTypeSection(container);
+	protected Composite buildBasicValueTypeSectionClient(Section section) {
+		Composite container = super.buildBasicValueTypeSectionClient(section);
 		PropertyValueModel<Converter> converterHolder = buildConverterHolder();
 
 		// EclipseLink Converter
@@ -110,6 +110,8 @@ public class JavaEclipseLinkElementCollectionMapping2_0Composite
 		gridData.horizontalIndent = 20;
 		convertLabel.setLayoutData(gridData);
 		registerSubPane(new EclipseLinkConvertCombo(convertHolder, convertEnabledModel, container, getWidgetFactory()));
+
+		return container;
 	}
 
 	protected PropertyValueModel<Converter> buildConverterHolder() {

@@ -14,7 +14,6 @@ import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -26,6 +25,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Section;
 
 /**
  *  JdbcPropertiesComposite
@@ -57,54 +58,71 @@ public class JdbcPropertiesComposite<T extends Connection>
 		connectionComposite.getControl().setLayoutData(gridData);
 
 		// Read Connection
-		Composite readConnectionSection = this.addCollapsibleSubSection(
-			container,
-			EclipseLinkUiMessages.PersistenceXmlConnectionTab_readConnectionsSectionTitle,
-			new SimplePropertyValueModel<Boolean>(Boolean.TRUE) //expanded
-		);
-		readConnectionSection.getParent().setLayoutData(new GridData()); //change layout so it doesn't fill horizontally
-		readConnectionSection.setLayout(new GridLayout(2, false));
+		Section readConnectionSection = this.addReadConnectionSection(container);
+		gridData = new GridData();
+		gridData.verticalAlignment = SWT.TOP;
+		readConnectionSection.setLayoutData(gridData);
+		
+		// Write Connection
+		Section writeConnectionSection = this.addWriteConnectionSection(container);
+		gridData = new GridData();
+		gridData.horizontalIndent = 15;
+		gridData.verticalAlignment = SWT.TOP;
+		writeConnectionSection.setLayoutData(gridData);
+	}
+
+	protected Section addReadConnectionSection(Composite container) {
+		Section readConnectionSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE | ExpandableComposite.EXPANDED);
+		readConnectionSection.setText(EclipseLinkUiMessages.PersistenceXmlConnectionTab_readConnectionsSectionTitle);
+		
+		Composite readConnectionClient = this.getWidgetFactory().createComposite(readConnectionSection);
+		readConnectionClient.setLayout(new GridLayout(2, false));
+		readConnectionClient.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		// Read Connections Shared
 		TriStateCheckBox sharedCheckBox = this.addTriStateCheckBoxWithDefault(
-			readConnectionSection,
+				readConnectionClient,
 			EclipseLinkUiMessages.PersistenceXmlConnectionTab_readConnectionsSharedLabel,
 			this.buildReadConnectionsSharedHolder(),
 			this.buildReadConnectionsSharedStringHolder(),
 			JpaHelpContextIds.PERSISTENCE_XML_CONNECTION
 		);
-		gridData = new GridData();
+		GridData gridData = new GridData();
 		gridData.horizontalSpan = 2;
 		sharedCheckBox.getCheckBox().setLayoutData(gridData);
 		
 		// Read Connections Minimum
-		this.addLabel(readConnectionSection, EclipseLinkUiMessages.PersistenceXmlConnectionTab_readConnectionsMinLabel);
-		this.addReadConnectionsMinCombo(readConnectionSection);
+		this.addLabel(readConnectionClient, EclipseLinkUiMessages.PersistenceXmlConnectionTab_readConnectionsMinLabel);
+		this.addReadConnectionsMinCombo(readConnectionClient);
 
 		// Read Connections Maximum
-		this.addLabel(readConnectionSection, EclipseLinkUiMessages.PersistenceXmlConnectionTab_readConnectionsMaxLabel);
-		this.addReadConnectionsMaxCombo(readConnectionSection);
+		this.addLabel(readConnectionClient, EclipseLinkUiMessages.PersistenceXmlConnectionTab_readConnectionsMaxLabel);
+		this.addReadConnectionsMaxCombo(readConnectionClient);
 		
+		readConnectionSection.setClient(readConnectionClient);
+
+		return readConnectionSection;
+	}
+
+	protected Section addWriteConnectionSection(Composite container) {
+		Section writeConnectionSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE | ExpandableComposite.EXPANDED);
+		writeConnectionSection.setText(EclipseLinkUiMessages.PersistenceXmlConnectionTab_writeConnectionsSectionTitle);
 		
-		// Write Connection
-		Composite writeConnectionSection =  this.addCollapsibleSubSection(
-			container,
-			EclipseLinkUiMessages.PersistenceXmlConnectionTab_writeConnectionsSectionTitle,
-			new SimplePropertyValueModel<Boolean>(Boolean.TRUE) //expanded
-		);
-		gridData = new GridData();
-		gridData.horizontalIndent = 15;
-		gridData.verticalAlignment = SWT.TOP;
-		writeConnectionSection.getParent().setLayoutData(gridData);
-		writeConnectionSection.setLayout(new GridLayout(2, false));
+		Composite writeConnectionClient = this.getWidgetFactory().createComposite(writeConnectionSection);
+		writeConnectionClient.setLayout(new GridLayout(2, false));
+		writeConnectionClient.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		// Write Connections Minimum
-		this.addLabel(writeConnectionSection, EclipseLinkUiMessages.PersistenceXmlConnectionTab_writeConnectionsMinLabel);
-		this.addWriteConnectionsMinCombo(writeConnectionSection);
+		this.addLabel(writeConnectionClient, EclipseLinkUiMessages.PersistenceXmlConnectionTab_writeConnectionsMinLabel);
+		this.addWriteConnectionsMinCombo(writeConnectionClient);
 
 		// Write Connections Maximum
-		this.addLabel(writeConnectionSection, EclipseLinkUiMessages.PersistenceXmlConnectionTab_writeConnectionsMaxLabel);
-		this.addWriteConnectionsMaxCombo(writeConnectionSection);
+		this.addLabel(writeConnectionClient, EclipseLinkUiMessages.PersistenceXmlConnectionTab_writeConnectionsMaxLabel);
+		this.addWriteConnectionsMaxCombo(writeConnectionClient);
+		
+		writeConnectionSection.setClient(writeConnectionClient);
+
+		return writeConnectionSection;
 	}
 
 	private ModifiablePropertyValueModel<Boolean> buildReadConnectionsSharedHolder() {

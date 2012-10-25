@@ -28,7 +28,6 @@ import org.eclipse.jpt.jpa.ui.internal.details.db.ColumnCombo;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
@@ -103,7 +102,9 @@ public class DiscriminatorColumnComposite<T extends Entity> extends Pane<T> {
 		this.addDiscriminatorTypeCombo(container, discriminatorColumnHolder, enabledModel);
 
 
-		Section detailsSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE);
+		Section detailsSection = this.getWidgetFactory().createSection(container, 
+				ExpandableComposite.TWISTIE |
+				ExpandableComposite.CLIENT_INDENT);
 		detailsSection.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		detailsSection.setText(JptUiDetailsMessages.InheritanceComposite_detailsGroupBox);
 		detailsSection.setClient(this.initializeDetailsClient(detailsSection, discriminatorColumnHolder, enabledModel));
@@ -117,17 +118,11 @@ public class DiscriminatorColumnComposite<T extends Entity> extends Pane<T> {
 		detailsSection.setLayoutData(gridData);
 
 		// Length widgets
-		Label lengthLabel = this.addLabel(detailsClient, JptUiDetailsMessages.ColumnComposite_length, enabledModel);
-		gridData = new GridData();
-		gridData.horizontalIndent = 16;
-		lengthLabel.setLayoutData(gridData);
+		this.addLabel(detailsClient, JptUiDetailsMessages.ColumnComposite_length, enabledModel);
 		this.addLengthCombo(detailsClient, discriminatorColumnHolder, enabledModel);
 
 		// Column Definition widgets
-		Label columnDefinitionLabel = this.addLabel(detailsClient, JptUiDetailsMessages.ColumnComposite_columnDefinition, enabledModel);
-		gridData = new GridData();
-		gridData.horizontalIndent = 16;
-		columnDefinitionLabel.setLayoutData(gridData);
+		this.addLabel(detailsClient, JptUiDetailsMessages.ColumnComposite_columnDefinition, enabledModel);
 		this.addText(detailsClient, this.buildColumnDefinitionHolder(discriminatorColumnHolder), null, enabledModel);
 
 		return detailsClient;

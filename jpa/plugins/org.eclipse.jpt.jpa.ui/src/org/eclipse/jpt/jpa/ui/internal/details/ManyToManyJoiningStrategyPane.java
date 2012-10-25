@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.JoinTableRelationship;
@@ -19,7 +18,11 @@ import org.eclipse.jpt.jpa.core.context.ManyToManyMapping;
 import org.eclipse.jpt.jpa.core.context.ManyToManyRelationship;
 import org.eclipse.jpt.jpa.core.context.MappedByRelationship;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyRelationship;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Section;
 
 /**
  * Here is the layout of this pane:  
@@ -60,10 +63,19 @@ public class ManyToManyJoiningStrategyPane
 
 	@Override
 	protected Composite addComposite(Composite container) {
-		return addCollapsibleSection(
-			container,
-			JptUiDetailsMessages.Joining_title,
-			new SimplePropertyValueModel<Boolean>(Boolean.TRUE));
+		Section section = this.getWidgetFactory().createSection(container, 
+				ExpandableComposite.TITLE_BAR | 
+				ExpandableComposite.TWISTIE | 
+				ExpandableComposite.EXPANDED);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages.Joining_title);
+
+		Composite client = this.getWidgetFactory().createComposite(section);
+		client.setLayout(new GridLayout(1, false));
+		client.setLayoutData(new GridData(GridData.FILL_BOTH));
+		section.setClient(client);
+
+		return client;
 	}
 
 	@Override

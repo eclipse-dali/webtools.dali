@@ -43,10 +43,12 @@ public abstract class AbstractManyToOneMappingComposite<T extends ManyToOneMappi
 	}
 	
 	protected void initializeManyToOneCollapsibleSection(Composite container) {
-		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		final Section section = this.getWidgetFactory().createSection(container,
+				ExpandableComposite.TITLE_BAR |
+				ExpandableComposite.TWISTIE |
+				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		section.setText(JptUiDetailsMessages.ManyToOneSection_title);
-		section.setExpanded(true);
 		section.setClient(this.initializeManyToOneSection(section));
 	}
 

@@ -390,7 +390,9 @@ public class ColumnComposite
 
 
 		// Details sub-pane
-		final Section detailsSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE);
+		final Section detailsSection = this.getWidgetFactory().createSection(container, 
+				ExpandableComposite.TWISTIE |
+				ExpandableComposite.CLIENT_INDENT);
 		detailsSection.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		detailsSection.setText(JptUiDetailsMessages.ColumnComposite_details);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
@@ -408,7 +410,7 @@ public class ColumnComposite
 	}
 
 	protected Composite initializeDetailsSection(Composite container) {
-		Composite detailsClient = this.addSubPane(container, 2, 0, 16, 0, 0);
+		Composite detailsClient = this.addSubPane(container, 2, 0, 0, 0, 0);
 
 		// Insertable tri-state check box
 		TriStateCheckBox insertableCheckBox = addTriStateCheckBoxWithDefault(

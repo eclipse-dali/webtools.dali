@@ -615,7 +615,6 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		);
 
 		expandablePane.setText(text);
-		expandablePane.setExpanded(false);
 		expandablePane.setFont(JFaceResources.getFontRegistry().getBold(JFaceResources.DIALOG_FONT));
 		expandablePane.setLayoutData(gridData);
 		expandablePane.addExpansionListener(buildExpansionListener());

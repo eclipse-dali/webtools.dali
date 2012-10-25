@@ -107,7 +107,9 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 
 		
 		// Advanced sub-pane
-		final Section advancedSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE);
+		final Section advancedSection = this.getWidgetFactory().createSection(container,
+				ExpandableComposite.TWISTIE |
+				ExpandableComposite.CLIENT_INDENT);
 		advancedSection.setText(EclipseLinkUiDetailsMessages.EclipseLinkCachingComposite_advanced);
 		gridData = new GridData(GridData.FILL_BOTH);
 		gridData.horizontalIndent = 16;
@@ -128,7 +130,7 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 	}
 	
 	protected Composite initializeAdvancedPane(Composite container, PropertyValueModel<Boolean> sharedCacheEnableModel) {
-		container = addSubPane(container, 2, 0, 8, 0, 0);
+		container = addSubPane(container, 2, 0, 0, 0, 0);
 
 		EclipseLinkExpiryComposite expiryComposite = new EclipseLinkExpiryComposite(this, container, sharedCacheEnableModel);
 		GridData gridData = new GridData();

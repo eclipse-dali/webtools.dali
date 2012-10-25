@@ -15,7 +15,6 @@ import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
@@ -27,6 +26,10 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.forms.events.ExpansionAdapter;
+import org.eclipse.ui.forms.events.ExpansionEvent;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Section;
 
 /**
  *  EclipseLinkLogging2_0Composite
@@ -45,67 +48,78 @@ public class EclipseLinkLogging2_0Composite extends EclipseLinkLoggingComposite<
 	protected void initializeLayout(Composite container) {
 		super.initializeLayout(container);
 
-		Composite loggingLevelComposite = this.addCategoryLoggingLevelComposite(container);
+		Composite loggingLevelComposite = this.addCategoryLoggingLevelSection(container);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		loggingLevelComposite.setLayoutData(gridData);
 	}
 
-	protected Composite addCategoryLoggingLevelComposite(Composite container) {
-		container = this.addCollapsibleSubSection(
-			container,
-			EclipseLinkUiMessages.PersistenceXmlLoggingTab_categoryLoggingLevelSectionTitle,
-			new SimplePropertyValueModel<Boolean>(Boolean.FALSE)
-		);
-		GridLayout layout = new GridLayout(2, false);
-		container.setLayout(layout);
+	protected Section addCategoryLoggingLevelSection(Composite container) {
+		final Section loggingSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE);
+		loggingSection.setText(EclipseLinkUiMessages.PersistenceXmlLoggingTab_categoryLoggingLevelSectionTitle);
 
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlLoggingTab_cacheLoggingLevelLabel);
-		this.addLoggingLevelCombo(container, Logging2_0.CACHE_CATEGORY_LOGGING_PROPERTY);
+		loggingSection.addExpansionListener(new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanging(ExpansionEvent e) {
+				if (e.getState() && loggingSection.getClient() == null) {
+					loggingSection.setClient(createCategoryLoggingLevelClient(loggingSection));
+				}
+			}
+		});
 
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlLoggingTab_connectionLoggingLevelLabel);
-		this.addLoggingLevelCombo(container, Logging2_0.CONNECTION_CATEGORY_LOGGING_PROPERTY);
+		return loggingSection;
+	}
 
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlLoggingTab_dmsLoggingLevelLabel);
-		this.addLoggingLevelCombo(container, Logging2_0.DMS_CATEGORY_LOGGING_PROPERTY);
+	protected Composite createCategoryLoggingLevelClient(Section loggingSection) {
+		Composite loggingClient = this.getWidgetFactory().createComposite(loggingSection);
+		loggingClient.setLayout(new GridLayout(2, false));
 
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlLoggingTab_ejbLoggingLevelLabel);
-		this.addLoggingLevelCombo(container, Logging2_0.EJB_CATEGORY_LOGGING_PROPERTY);
+		this.addLabel(loggingClient, EclipseLinkUiMessages.PersistenceXmlLoggingTab_cacheLoggingLevelLabel);
+		this.addLoggingLevelCombo(loggingClient, Logging2_0.CACHE_CATEGORY_LOGGING_PROPERTY);
 
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlLoggingTab_ejb_or_metadataLoggingLevelLabel);
-		this.addLoggingLevelCombo(container, Logging2_0.EJB_OR_METADATA_CATEGORY_LOGGING_PROPERTY);
+		this.addLabel(loggingClient, EclipseLinkUiMessages.PersistenceXmlLoggingTab_connectionLoggingLevelLabel);
+		this.addLoggingLevelCombo(loggingClient, Logging2_0.CONNECTION_CATEGORY_LOGGING_PROPERTY);
 
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlLoggingTab_eventLoggingLevelLabel);
-		this.addLoggingLevelCombo(container, Logging2_0.EVENT_CATEGORY_LOGGING_PROPERTY);
+		this.addLabel(loggingClient, EclipseLinkUiMessages.PersistenceXmlLoggingTab_dmsLoggingLevelLabel);
+		this.addLoggingLevelCombo(loggingClient, Logging2_0.DMS_CATEGORY_LOGGING_PROPERTY);
 
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlLoggingTab_jpa_metamodelLoggingLevelLabel);
-		this.addLoggingLevelCombo(container, Logging2_0.JPA_METAMODEL_CATEGORY_LOGGING_PROPERTY);
+		this.addLabel(loggingClient, EclipseLinkUiMessages.PersistenceXmlLoggingTab_ejbLoggingLevelLabel);
+		this.addLoggingLevelCombo(loggingClient, Logging2_0.EJB_CATEGORY_LOGGING_PROPERTY);
 
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlLoggingTab_propagationLoggingLevelLabel);
-		this.addLoggingLevelCombo(container, Logging2_0.PROPAGATION_CATEGORY_LOGGING_PROPERTY);
+		this.addLabel(loggingClient, EclipseLinkUiMessages.PersistenceXmlLoggingTab_ejb_or_metadataLoggingLevelLabel);
+		this.addLoggingLevelCombo(loggingClient, Logging2_0.EJB_OR_METADATA_CATEGORY_LOGGING_PROPERTY);
 
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlLoggingTab_propertiesLoggingLevelLabel);
-		this.addLoggingLevelCombo(container, Logging2_0.PROPERTIES_CATEGORY_LOGGING_PROPERTY);
+		this.addLabel(loggingClient, EclipseLinkUiMessages.PersistenceXmlLoggingTab_eventLoggingLevelLabel);
+		this.addLoggingLevelCombo(loggingClient, Logging2_0.EVENT_CATEGORY_LOGGING_PROPERTY);
 
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlLoggingTab_queryLoggingLevelLabel);
-		this.addLoggingLevelCombo(container, Logging2_0.QUERY_CATEGORY_LOGGING_PROPERTY);
+		this.addLabel(loggingClient, EclipseLinkUiMessages.PersistenceXmlLoggingTab_jpa_metamodelLoggingLevelLabel);
+		this.addLoggingLevelCombo(loggingClient, Logging2_0.JPA_METAMODEL_CATEGORY_LOGGING_PROPERTY);
 
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlLoggingTab_sequencingLoggingLevelLabel);
-		this.addLoggingLevelCombo(container, Logging2_0.SEQUENCING_CATEGORY_LOGGING_PROPERTY);
+		this.addLabel(loggingClient, EclipseLinkUiMessages.PersistenceXmlLoggingTab_propagationLoggingLevelLabel);
+		this.addLoggingLevelCombo(loggingClient, Logging2_0.PROPAGATION_CATEGORY_LOGGING_PROPERTY);
 
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlLoggingTab_serverLoggingLevelLabel);
-		this.addLoggingLevelCombo(container, Logging2_0.SERVER_CATEGORY_LOGGING_PROPERTY);
+		this.addLabel(loggingClient, EclipseLinkUiMessages.PersistenceXmlLoggingTab_propertiesLoggingLevelLabel);
+		this.addLoggingLevelCombo(loggingClient, Logging2_0.PROPERTIES_CATEGORY_LOGGING_PROPERTY);
 
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlLoggingTab_sqlLoggingLevelLabel);
-		this.addLoggingLevelCombo(container, Logging2_0.SQL_CATEGORY_LOGGING_PROPERTY);
+		this.addLabel(loggingClient, EclipseLinkUiMessages.PersistenceXmlLoggingTab_queryLoggingLevelLabel);
+		this.addLoggingLevelCombo(loggingClient, Logging2_0.QUERY_CATEGORY_LOGGING_PROPERTY);
 
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlLoggingTab_transactionLoggingLevelLabel);
-		this.addLoggingLevelCombo(container, Logging2_0.TRANSACTION_CATEGORY_LOGGING_PROPERTY);
+		this.addLabel(loggingClient, EclipseLinkUiMessages.PersistenceXmlLoggingTab_sequencingLoggingLevelLabel);
+		this.addLoggingLevelCombo(loggingClient, Logging2_0.SEQUENCING_CATEGORY_LOGGING_PROPERTY);
 
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlLoggingTab_weaverLoggingLevelLabel);
-		this.addLoggingLevelCombo(container, Logging2_0.WEAVER_CATEGORY_LOGGING_PROPERTY);
+		this.addLabel(loggingClient, EclipseLinkUiMessages.PersistenceXmlLoggingTab_serverLoggingLevelLabel);
+		this.addLoggingLevelCombo(loggingClient, Logging2_0.SERVER_CATEGORY_LOGGING_PROPERTY);
 
-		return container.getParent(); //return the Section, instead of its client
+		this.addLabel(loggingClient, EclipseLinkUiMessages.PersistenceXmlLoggingTab_sqlLoggingLevelLabel);
+		this.addLoggingLevelCombo(loggingClient, Logging2_0.SQL_CATEGORY_LOGGING_PROPERTY);
+
+		this.addLabel(loggingClient, EclipseLinkUiMessages.PersistenceXmlLoggingTab_transactionLoggingLevelLabel);
+		this.addLoggingLevelCombo(loggingClient, Logging2_0.TRANSACTION_CATEGORY_LOGGING_PROPERTY);
+
+		this.addLabel(loggingClient, EclipseLinkUiMessages.PersistenceXmlLoggingTab_weaverLoggingLevelLabel);
+		this.addLoggingLevelCombo(loggingClient, Logging2_0.WEAVER_CATEGORY_LOGGING_PROPERTY);
+
+		return loggingClient;
 	}
 
 	@Override

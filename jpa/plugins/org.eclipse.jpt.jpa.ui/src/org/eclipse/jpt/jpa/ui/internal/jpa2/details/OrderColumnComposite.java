@@ -295,10 +295,11 @@ public class OrderColumnComposite extends Pane<OrderColumn2_0> {
 		this.addColumnCombo(container);
 
 		// Details sub-pane
-		Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE);
+		Section section = this.getWidgetFactory().createSection(container, 
+				ExpandableComposite.TWISTIE | 
+				ExpandableComposite.CLIENT_INDENT);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
-		gridData.horizontalIndent = 16;
 		section.setLayoutData(gridData);
 		section.setText(JptUiDetailsMessages.ColumnComposite_details);
 

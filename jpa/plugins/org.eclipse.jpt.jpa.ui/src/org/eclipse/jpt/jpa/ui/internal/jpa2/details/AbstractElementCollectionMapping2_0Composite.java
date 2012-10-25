@@ -13,7 +13,6 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -127,14 +126,16 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 	}
 	
 	protected void initializeElementCollectionCollapsibleSection(Composite container) {
-		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		final Section section = this.getWidgetFactory().createSection(container,
+				ExpandableComposite.TITLE_BAR |
+				ExpandableComposite.TWISTIE |
+				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		section.setText(JptUiDetailsMessages2_0.ElementCollectionSection_title);
-		section.setExpanded(true);
-		section.setClient(this.initializeElementCollectionSection(section));
+		section.setClient(this.buildElementCollectionSectionClient(section));
 	}
 
-	protected Control initializeElementCollectionSection(Composite container) {
+	protected Control buildElementCollectionSectionClient(Composite container) {
 		container = this.addSubPane(container, 2, 0, 0, 0, 0);
 
 		// Target class widgets
@@ -158,7 +159,6 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		section.setText(JptUiDetailsMessages.OrderingComposite_orderingGroup);
-		section.setClient(initializeOrderingSection(section));
 		section.addExpansionListener(new ExpansionAdapter() {
 			@Override
 			public void expansionStateChanging(ExpansionEvent e) {
@@ -177,7 +177,14 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		section.setText(JptUiDetailsMessages2_0.AbstractElementCollectionMapping2_0_Composite_valueSectionTitle);
-		section.setClient(initializeValueSection(section));
+		section.addExpansionListener(new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanging(ExpansionEvent e) {
+				if (e.getState() && section.getClient() == null) {
+					section.setClient(AbstractElementCollectionMapping2_0Composite.this.initializeValueSection(section));
+				}
+			}
+		});
 	}
 	
 	protected void initializeKeyCollapsibleSection(Composite container) {
@@ -205,20 +212,29 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 		Composite basicComposite = addSubPane(container);
 
 		new ColumnComposite(this, buildValueColumnHolder(), basicComposite);
-		// type section
-		Composite converterSection = addCollapsibleSubSection(
-			basicComposite,
-			JptUiDetailsMessages.TypeSection_type,
-			new SimplePropertyValueModel<Boolean>(Boolean.FALSE)
-		);
 
-		this.initializeBasicValueTypeSection(converterSection);
+		// type section
+		final Section section = this.getWidgetFactory().createSection(basicComposite, ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages.TypeSection_type);
+		section.addExpansionListener(new ExpansionAdapter() {
+			@Override
+			public void expansionStateChanging(ExpansionEvent e) {
+				if (e.getState() && section.getClient() == null) {
+					Composite converterClient = buildBasicValueTypeSectionClient(section);
+					converterClient.setLayoutData(new GridData(GridData.FILL_BOTH));
+					section.setClient(converterClient);
+				}
+			}
+		});
 
 		return basicComposite;
 	}
 
-	protected void initializeBasicValueTypeSection(Composite container) {
-		((GridLayout) container.getLayout()).numColumns = 2;
+	protected Composite buildBasicValueTypeSectionClient(Section section) {
+		Composite container = this.getWidgetFactory().createComposite(section);
+		GridLayout layout = new GridLayout(2, false);
+		container.setLayout(layout);
 		// No converter
 		Button noConverterButton = addRadioButton(
 			container, 
@@ -253,6 +269,8 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 			buildEnumeratedBooleanHolder(), 
 			null);
 		registerSubPane(new EnumTypeComboViewer(buildEnumeratedConverterHolder(converterHolder), getEnabledModel(), container, getWidgetFactory()));
+
+		return container;
 	}
 
 	protected Control getEmbeddableValueComposite(Composite container) {

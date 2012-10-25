@@ -39,11 +39,13 @@ public abstract class AbstractEmbeddedIdMappingComposite<T extends EmbeddedIdMap
 	}
 
 	protected void initializeEmbeddedIdCollapsibleSection(Composite container) {
-		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		final Section section = this.getWidgetFactory().createSection(container,
+				ExpandableComposite.TITLE_BAR |
+				ExpandableComposite.TWISTIE |
+				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		section.setText(JptUiDetailsMessages.EmbeddedIdSection_title);
 		section.setClient(this.initializeEmbeddedIdSection(section));
-		section.setExpanded(true);
 	}
 
 	protected abstract Control initializeEmbeddedIdSection(Composite container);

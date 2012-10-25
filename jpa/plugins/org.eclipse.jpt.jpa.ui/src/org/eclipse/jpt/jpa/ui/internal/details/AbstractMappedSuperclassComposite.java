@@ -42,10 +42,12 @@ public abstract class AbstractMappedSuperclassComposite<T extends MappedSupercla
 	}
 	
 	protected void initializeMappedSuperclassCollapsibleSection(Composite container) {
-		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		final Section section = this.getWidgetFactory().createSection(container,
+				ExpandableComposite.TITLE_BAR |
+				ExpandableComposite.TWISTIE |
+				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		section.setText(JptUiDetailsMessages.MappedSuperclassSection_title);
-		section.setExpanded(true);
 		section.setClient(this.initializeMappedSuperclassSection(section));
 	}
 	

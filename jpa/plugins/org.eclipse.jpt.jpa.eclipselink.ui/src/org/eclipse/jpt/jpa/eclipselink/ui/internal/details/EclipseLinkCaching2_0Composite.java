@@ -102,7 +102,9 @@ public abstract class EclipseLinkCaching2_0Composite<T extends EclipseLinkCachin
 		new EclipseLinkCacheSizeCombo(this, container, cacheableEnableModel);
 		
 		// Advanced sub-pane
-		final Section advancedSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE);
+		final Section advancedSection = this.getWidgetFactory().createSection(container, 
+			ExpandableComposite.TWISTIE |
+			ExpandableComposite.CLIENT_INDENT);
 		gridData = new GridData(GridData.FILL_BOTH);
 		gridData.horizontalIndent = 16;
 		gridData.horizontalSpan = 2;

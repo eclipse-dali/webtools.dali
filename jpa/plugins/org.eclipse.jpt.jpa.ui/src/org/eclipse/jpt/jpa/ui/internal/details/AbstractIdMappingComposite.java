@@ -52,10 +52,12 @@ public abstract class AbstractIdMappingComposite<T extends IdMapping>
 	}
 	
 	protected void initializeIdCollapsibleSection(Composite container) {
-		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		final Section section = this.getWidgetFactory().createSection(container,
+				ExpandableComposite.TITLE_BAR |
+				ExpandableComposite.TWISTIE |
+				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		section.setText(JptUiDetailsMessages.IdSection_title);
-		section.setExpanded(true);
 		section.setClient(this.initializeIdSection(section));
 	}
 	

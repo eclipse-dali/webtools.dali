@@ -22,6 +22,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Section;
 
 public class DerivedIdentity2_0Pane
 	extends Pane<DerivedIdentity2_0>
@@ -36,16 +38,20 @@ public class DerivedIdentity2_0Pane
 	
 	@Override
 	protected Composite addComposite(Composite container) {
-		Composite composite = addCollapsibleSection(
-			container,
-			JptUiDetailsMessages2_0.DerivedIdentity_title);
-		return composite;
+		Section section = getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(JptUiDetailsMessages2_0.DerivedIdentity_title);
+
+		Composite client = this.getWidgetFactory().createComposite(section);
+		client.setLayout(new GridLayout(2, false));
+		client.setLayoutData(new GridData(GridData.FILL_BOTH));
+		section.setClient(client);
+
+		return client;
 	}
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		((GridLayout) container.getLayout()).numColumns = 2;
-
 		//null derived identity
 		Button nullDerivedIdentityButton = this.addRadioButton(
 			container,

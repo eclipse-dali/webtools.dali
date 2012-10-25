@@ -79,10 +79,12 @@ public abstract class AbstractVersionMappingComposite<T extends VersionMapping>
 	}
 	
 	protected void initializeVersionCollapsibleSection(Composite container) {
-		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		final Section section = this.getWidgetFactory().createSection(container,
+				ExpandableComposite.TITLE_BAR |
+				ExpandableComposite.TWISTIE |
+				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		section.setText(JptUiDetailsMessages.VersionSection_title);
-		section.setExpanded(true);
 		section.setClient(initializeVersionSection(section));
 	}
 

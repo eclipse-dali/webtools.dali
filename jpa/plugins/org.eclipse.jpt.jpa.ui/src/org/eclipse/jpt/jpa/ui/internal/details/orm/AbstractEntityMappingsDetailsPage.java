@@ -108,10 +108,12 @@ public abstract class AbstractEntityMappingsDetailsPage extends AbstractJpaDetai
 	}
 	
 	protected void initializeEntityMappingsCollapsibleSection(Composite container) {
-		final Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+		final Section section = this.getWidgetFactory().createSection(container,
+				ExpandableComposite.TITLE_BAR |
+				ExpandableComposite.TWISTIE |
+				ExpandableComposite.EXPANDED);
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		section.setText(JptUiDetailsOrmMessages.EntityMappingsSection_title);
-		section.setExpanded(true);
 		section.setClient(this.initializeEntityMappingsSection(section));
 	}
 	
