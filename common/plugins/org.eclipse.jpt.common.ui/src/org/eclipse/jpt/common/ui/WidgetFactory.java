@@ -168,7 +168,8 @@ public interface WidgetFactory {
 	 * @param parent The parent container
 	 * @param style The style of the title bar, which can be
 	 * <code>ExpandableComposite.TWISTIE</code> and
-	 * <code>ExpandableComposite.TITLE_BAR</code>
+	 * <code>ExpandableComposite.TITLE_BAR</code> and
+	 * <code>ExpandableComposite.EXPANDED</code>
 	 * @return A new <code>Section</code>
 	 */
 	Section createSection(Composite parent, int style);
