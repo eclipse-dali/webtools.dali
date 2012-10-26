@@ -24,14 +24,14 @@ import org.eclipse.ui.texteditor.ITextEditorActionConstants;
  * @version 2.0
  * @since 2.0
  */
-public class PersistenceContributor extends MultiPageEditorActionBarContributor {
+public class JpaXmlEditorContributor extends MultiPageEditorActionBarContributor {
 
 	private IEditorPart activeEditorPart;
 
 	/**
 	 * Creates a new <code>PersistenceContributor</code>.
 	 */
-	public PersistenceContributor() {
+	public JpaXmlEditorContributor() {
 		super();
 	}
 

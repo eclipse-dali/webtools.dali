@@ -356,7 +356,7 @@
 		
 		<editor
 			class="org.eclipse.jpt.jpa.ui.internal.editors.JpaXmlEditor"
-			contributorClass="org.eclipse.jpt.jpa.ui.internal.editors.PersistenceContributor"
+			contributorClass="org.eclipse.jpt.jpa.ui.internal.editors.JpaXmlEditorContributor"
 			icon="$nl$/icons/full/obj16/jpa-file.gif"
 			id="org.eclipse.jpt.jpa.ui.internal.editors.PersistenceEditor"
 			name="%persistenceEditor">
