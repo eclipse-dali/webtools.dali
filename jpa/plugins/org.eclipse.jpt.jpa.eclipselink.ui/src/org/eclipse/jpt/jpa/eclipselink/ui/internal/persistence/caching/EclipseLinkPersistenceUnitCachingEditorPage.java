@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.caching;
 
 import java.util.Collection;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -19,64 +18,57 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.FlushClearCache;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.jpa.ui.editors.JpaPageComposite;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Section;
 
-/**
- *  PersistenceXmlCachingTab
- */
-public class PersistenceXmlCachingTab<T extends Caching>
+public class EclipseLinkPersistenceUnitCachingEditorPage<T extends Caching>
 								extends Pane<T>
-								implements JpaPageComposite
 {
-	public PersistenceXmlCachingTab(
-			PropertyValueModel<T> subjectHolder,
+	public EclipseLinkPersistenceUnitCachingEditorPage(
+			PropertyValueModel<T> subjectModel,
 			Composite parent,
             WidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(subjectModel, parent, widgetFactory);
 	}
 
-	// ********** JpaPageComposite implementation **********
-
-	public String getHelpID() {
-		return EclipseLinkHelpContextIds.PERSISTENCE_CACHING;
-	}
-
-	public ImageDescriptor getPageImageDescriptor() {
-		return null;
-	}
-	public String getPageText() {
-		return EclipseLinkUiMessages.PersistenceXmlCachingTab_title;
-	}
-
-	
 	@Override
 	protected void initializeLayout(Composite container) {
-		container = this.addSection(
-			container,
-			EclipseLinkUiMessages.PersistenceXmlCachingTab_sectionTitle,
-			EclipseLinkUiMessages.PersistenceXmlCachingTab_sectionDescription
-		);
-		container.setLayout(new GridLayout(2, false));
+		Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | Section.DESCRIPTION);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(EclipseLinkUiMessages.PersistenceXmlCachingTab_sectionTitle);
+		section.setDescription(EclipseLinkUiMessages.PersistenceXmlCachingTab_sectionDescription);
+
+		Composite client = this.getWidgetFactory().createComposite(section);
+		GridLayout layout = new GridLayout(2, false);
+		layout.marginHeight = 0;
+		layout.marginWidth  = 0;
+		layout.marginTop    = 0;
+		layout.marginLeft   = 0;
+		layout.marginBottom = 0;
+		layout.marginRight  = 0;
+		client.setLayout(layout);
+		client.setLayoutData(new GridData(GridData.FILL_BOTH));
+		section.setClient(client);
 
 		// Defaults
-		CacheDefaultsComposite<T> defaultsComposite = new CacheDefaultsComposite<T>(this, container);
+		CacheDefaultsComposite<T> defaultsComposite = new CacheDefaultsComposite<T>(this, client);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		defaultsComposite.getControl().setLayoutData(gridData);
 
 		// EntitiesList
-		EntityListComposite<T> entitiesComposite = new EntityListComposite<T>(this, container);
+		EntityListComposite<T> entitiesComposite = new EntityListComposite<T>(this, client);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		entitiesComposite.getControl().setLayoutData(gridData);
 
 		// Flush Clear Cache
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlCachingTab_FlushClearCacheLabel);
-		this.addFlushClearCacheCombo(container);
+		this.addLabel(client, EclipseLinkUiMessages.PersistenceXmlCachingTab_FlushClearCacheLabel);
+		this.addFlushClearCacheCombo(client);
 	}
 
 	protected EnumFormComboViewer<Caching, FlushClearCache> addFlushClearCacheCombo(Composite container) {

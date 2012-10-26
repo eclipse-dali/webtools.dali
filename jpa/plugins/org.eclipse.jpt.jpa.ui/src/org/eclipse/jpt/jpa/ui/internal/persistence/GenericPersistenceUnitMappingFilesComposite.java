@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see PersistenceUnit
- * @see PersistenceUnitGeneralTab - The parent container
+ * @see PersistenceUnitGeneralEditorPageDefinition - The parent container
  * @see AddRemoveListPane
  *
  * @version 2.0

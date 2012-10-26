@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.EclipseLinkPersi
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.GeneralProperties;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitGeneralTab;
+import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitGeneralEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitMappingFilesComposite;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
@@ -38,7 +38,7 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see PersistenceUnit
- * @see PersistenceUnitGeneralTab - The parent container
+ * @see PersistenceUnitGeneralEditorPageDefinition - The parent container
  * @see AddRemoveListPane
  *
  * @version 2.0

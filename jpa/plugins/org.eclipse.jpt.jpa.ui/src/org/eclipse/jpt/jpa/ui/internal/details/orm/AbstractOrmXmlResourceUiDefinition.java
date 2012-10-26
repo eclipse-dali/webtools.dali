@@ -26,12 +26,14 @@ import org.eclipse.jpt.jpa.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.orm.OrmAttributeMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.orm.OrmTypeMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.orm.OrmXmlUiFactory;
+import org.eclipse.jpt.jpa.ui.internal.AbstractResourceUiDefinition;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  * All the state in the definition should be "static" (i.e. unchanging once it is initialized).
  */
 public abstract class AbstractOrmXmlResourceUiDefinition
+	extends AbstractResourceUiDefinition
 	implements MappingResourceUiDefinition
 {
 

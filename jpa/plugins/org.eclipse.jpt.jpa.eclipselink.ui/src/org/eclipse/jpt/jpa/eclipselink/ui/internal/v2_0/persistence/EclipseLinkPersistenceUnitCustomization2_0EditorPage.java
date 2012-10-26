@@ -12,20 +12,17 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.v2_0.persistence;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.customization.PersistenceXmlCustomizationTab;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.customization.EclipseLinkPersistenceUnitCustomizationEditorPage;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- *  PersistenceXmlCustomization2_0Tab
- */
-public class PersistenceXmlCustomization2_0Tab extends PersistenceXmlCustomizationTab<Customization>
+public class EclipseLinkPersistenceUnitCustomization2_0EditorPage extends EclipseLinkPersistenceUnitCustomizationEditorPage<Customization>
 {
-	public PersistenceXmlCustomization2_0Tab(
-		PropertyValueModel<Customization> subjectHolder,
+	public EclipseLinkPersistenceUnitCustomization2_0EditorPage(
+		PropertyValueModel<Customization> subjectModel,
 		Composite parent,
         WidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(subjectModel, parent, widgetFactory);
 	}
 
 
@@ -33,5 +30,4 @@ public class PersistenceXmlCustomization2_0Tab extends PersistenceXmlCustomizati
 	protected void buildEntityListComposite(Composite parent) {
 		// do nothing
 	}
-	
 }

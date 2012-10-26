@@ -116,7 +116,7 @@ public abstract class Pane<T extends Model>
 	/**
 	 * The subject of this pane.
 	 */
-	private PropertyValueModel<T> subjectHolder;
+	private PropertyValueModel<T> subjectModel;
 
 	/**
 	 * The collection of registered sub-panes will be automatically notified
@@ -266,19 +266,19 @@ public abstract class Pane<T extends Model>
 	/**
 	 * Creates a new <code>Pane</code>.
 	 *
-	 * @param subjectHolder The holder of this pane's subject
+	 * @param subjectModel The holder of this pane's subject
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 *
 	 * @category Constructor
 	 */
 	protected Pane(
-		PropertyValueModel<? extends T> subjectHolder,
+		PropertyValueModel<? extends T> subjectModel,
 		Composite parent,
 		WidgetFactory widgetFactory) {
 
 		super();
-		this.initialize(subjectHolder, this.buildNonNullEnabledModel(subjectHolder), widgetFactory);
+		this.initialize(subjectModel, this.buildNonNullEnabledModel(subjectModel), widgetFactory);
 		if (this.addsComposite()) {
 			this.container = this.addComposite(parent);
 			this.initializeLayout(this.container);
@@ -317,8 +317,8 @@ public abstract class Pane<T extends Model>
 		this.populate();
 	}
 
-	protected PropertyValueModel<Boolean> buildNonNullEnabledModel(PropertyValueModel<? extends T> subjectHolder) {
-		return new TransformationPropertyValueModel<T, Boolean>(subjectHolder) {
+	protected PropertyValueModel<Boolean> buildNonNullEnabledModel(PropertyValueModel<? extends T> subjectModel) {
+		return new TransformationPropertyValueModel<T, Boolean>(subjectModel) {
 			@Override
 			protected Boolean transform(T value) {
 				return Boolean.valueOf(value != null);
@@ -331,13 +331,13 @@ public abstract class Pane<T extends Model>
 
 	@SuppressWarnings("unchecked")
 	private void initialize(
-			PropertyValueModel<? extends T> subjectHolder,
+			PropertyValueModel<? extends T> subjectModel,
 			PropertyValueModel<Boolean> enabledModel,
 	        WidgetFactory widgetFactory) {
 
-		Assert.isNotNull(subjectHolder, "The subject holder cannot be null");
+		Assert.isNotNull(subjectModel, "The subject model cannot be null");
 
-		this.subjectHolder         = (PropertyValueModel<T>) subjectHolder;
+		this.subjectModel         = (PropertyValueModel<T>) subjectModel;
 		this.widgetFactory         = widgetFactory;
 		this.enabledModel 		   = enabledModel;
 		this.subPanes              = new ArrayList<Pane<?>>();
@@ -585,187 +585,6 @@ public abstract class Pane<T extends Model>
 		Button button = this.addUnmanagedToggleButton(parent, buttonText, booleanHolder, helpId, SWT.CHECK);
 		this.controlEnabledState(enabledModel, button);
 		return button;
-	}
-
-	/**
-	 * Creates a new <code>Section</code> that can be collapsed. A sub-pane is
-	 * automatically added as its client and is the returned <code>Composite</code>.
-	 *
-	 * @param container The container of the new widget
-	 * @param sectionText The text of the new section
-	 * @return The <code>Section</code>'s sub-pane
-	 *
-	 * @category Layout
-	 */
-	protected final Composite addCollapsibleSection(
-			Composite container,
-	        String sectionText) {
-
-		return this.addCollapsibleSection(
-				container,
-				sectionText,
-				new SimplePropertyValueModel<Boolean>(Boolean.FALSE));
-	}
-
-	/**
-	 * Creates a new <code>Section</code> that can be collapsed. A sub-pane is
-	 * automatically added as its client and is the returned <code>Composite</code>.
-	 *
-	 * @param container The container of the new widget
-	 * @param sectionText The text of the new section
-	 * @param description The section's description or <code>null</code> if none
-	 * @return The <code>Section</code>'s sub-pane
-	 *
-	 * @category Layout
-	 */
-	protected final Composite addCollapsibleSection(Composite container,
-	                                                  String sectionText,
-	                                                  String description) {
-
-		return this.addCollapsibleSection(
-			container,
-			sectionText,
-			description,
-			new SimplePropertyValueModel<Boolean>(Boolean.FALSE)
-		);
-	}
-
-	/**
-	 * Creates a new <code>Section</code>. A sub-pane is automatically added as
-	 * its client and is the returned <code>Composite</code>.
-	 *
-	 * @param container The container of the new widget
-	 * @param sectionText The text of the new section
-	 * @param type The type of section to create
-	 * @param expandedStateHolder The holder of the boolean that will dictate
-	 * when to expand or collapse the section
-	 * @return The <code>Section</code>'s sub-pane
-	 *
-	 * @category Layout
-	 */
-	private Composite addCollapsibleSection(Composite container,
-	                                          String sectionText,
-	                                          int type,
-	                                          PropertyValueModel<Boolean> expandedStateHolder) {
-
-		return addCollapsibleSection(container, sectionText, null, type, expandedStateHolder);
-	}
-
-	/**
-	 * Creates a new <code>Section</code>. A sub-pane is automatically added as
-	 * its client and is the returned <code>Composite</code>.
-	 *
-	 * @param container The container of the new widget
-	 * @param sectionText The text of the new section
-	 * @param description The section's description or <code>null</code> if none
-	 * was provided
-	 * @param type The type of section to create
-	 * @param expandedStateHolder The holder of the boolean that will dictate
-	 * when to expand or collapse the section
-	 * @return The <code>Section</code>'s sub-pane
-	 *
-	 * @category Layout
-	 */
-	private Composite addCollapsibleSection(Composite container,
-	                                          String sectionText,
-	                                          String description,
-	                                          int type,
-	                                          PropertyValueModel<Boolean> expandedStateHolder) {
-
-		Composite subPane = this.addSection(
-			container,
-			sectionText,
-			description,
-			ExpandableComposite.TWISTIE | type
-		);
-
-		Section section = (Section) subPane.getParent();
-
-		expandedStateHolder.addPropertyChangeListener(
-			PropertyValueModel.VALUE,
-			buildExpandedStateChangeListener(section)
-		);
-
-		section.setExpanded(
-			expandedStateHolder.getValue() != null ? expandedStateHolder.getValue() : true
-		);
-
-		return subPane;
-	}
-
-	/**
-	 * Creates a new <code>Section</code>. A sub-pane is automatically added as
-	 * its client and is the returned <code>Composite</code>.
-	 *
-	 * @param container The container of the new widget
-	 * @param sectionText The text of the new section
-	 * @param expandedStateHolder The holder of the boolean that will dictate
-	 * when to expand or collapse the section
-	 * @return The <code>Section</code>'s sub-pane
-	 *
-	 * @category Layout
-	 */
-	protected final Composite addCollapsibleSection(Composite container,
-	                                                  String sectionText,
-	                                                  PropertyValueModel<Boolean> expandedStateHolder) {
-
-		return this.addCollapsibleSection(
-			container,
-			sectionText,
-			ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE,
-			expandedStateHolder
-		);
-	}
-
-	/**
-	 * Creates a new <code>Section</code>. A sub-pane is automatically added as
-	 * its client and is the returned <code>Composite</code>.
-	 *
-	 * @param container The container of the new widget
-	 * @param sectionText The text of the new section
-	 * @param description The section's description or <code>null</code> if none
-	 * @param expandedStateHolder The holder of the boolean that will dictate
-	 * when to expand or collapse the section
-	 * @return The <code>Section</code>'s sub-pane
-	 *
-	 * @category Layout
-	 */
-	protected final Composite addCollapsibleSection(Composite container,
-	                                                  String sectionText,
-	                                                  String description,
-	                                                  PropertyValueModel<Boolean> expandedStateHolder) {
-
-		return this.addCollapsibleSection(
-			container,
-			sectionText,
-			description,
-			ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE,
-			expandedStateHolder
-		);
-	}
-
-	/**
-	 * Creates a new <code>Section</code>. A sub-pane is automatically added as
-	 * its client which can be typed cast directly as a <code>Composite</code>.
-	 *
-	 * @param container The container of the new widget
-	 * @param sectionText The text of the new section
-	 * @param expandedStateHolder The holder of the boolean that will dictate
-	 * when to expand or collapse the section
-	 * @return The <code>Section</code>'s sub-pane
-	 *
-	 * @category Layout
-	 */
-	protected final Composite addCollapsibleSubSection(Composite container,
-	                                          String sectionText,
-	                                          PropertyValueModel<Boolean> expandedStateHolder) {
-
-		return this.addCollapsibleSection(
-			container,
-			sectionText,
-			SWT.NULL,
-			expandedStateHolder
-		);
 	}
 
 	/**
@@ -1037,22 +856,6 @@ public abstract class Pane<T extends Model>
 		ComboViewer viewer = new ComboViewer(combo);
 		viewer.setLabelProvider(labelProvider);
 		return viewer;
-	}
-
-	private PropertyChangeListener buildExpandedStateChangeListener(final Section section) {
-		return new SWTPropertyChangeListenerWrapper(buildExpandedStateChangeListener_(section));
-	}
-
-	private PropertyChangeListener buildExpandedStateChangeListener_(final Section section) {
-		return new PropertyChangeListener() {
-			public void propertyChanged(final PropertyChangeEvent e) {
-				Boolean value = (Boolean) e.getNewValue();
-				if (value == null) {
-					value = Boolean.TRUE;
-				}
-				section.setExpanded(value);
-			}
-		};
 	}
 
 	/**
@@ -1655,46 +1458,6 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @param container The container of the new widget
 	 * @param sectionText The text of the new section
-	 * @return The <code>Section</code>'s sub-pane
-	 *
-	 * @category Layout
-	 */
-	protected final Composite addSection(Composite container,
-	                                       String sectionText) {
-
-		return this.addSection(
-			container,
-			sectionText,
-			ExpandableComposite.TITLE_BAR
-		);
-	}
-
-	/**
-	 * Creates a new <code>Section</code>. A sub-pane is automatically added as
-	 * its client and is the returned <code>Composite</code>.
-	 *
-	 * @param container The container of the new widget
-	 * @param sectionText The text of the new section
-	 * @param type The type of section to create
-	 * @param expandedStateHolder The holder of the boolean that will dictate
-	 * when to expand or collapse the section
-	 * @return The <code>Section</code>'s sub-pane
-	 *
-	 * @category Layout
-	 */
-	private Composite addSection(Composite container,
-	                               String sectionText,
-	                               int type) {
-
-		return this.addSection(container, sectionText, null, type);
-	}
-
-	/**
-	 * Creates a new <code>Section</code>. A sub-pane is automatically added as
-	 * its client and is the returned <code>Composite</code>.
-	 *
-	 * @param container The container of the new widget
-	 * @param sectionText The text of the new section
 	 * @param description The section's description
 	 * @return The <code>Section</code>'s sub-pane
 	 *
@@ -1721,7 +1484,6 @@ public abstract class Pane<T extends Model>
 	 * @param description The section's description or <code>null</code> if none
 	 * was provider
 	 * @param type The type of section to create
-	 * @param expandedStateHolder The holder of the boolean that will dictate
 	 * when to expand or collapse the section
 	 * @return The <code>Section</code>'s sub-pane
 	 *
@@ -1878,26 +1640,6 @@ public abstract class Pane<T extends Model>
 		container = this.addPane(container, layout);
 
 		return container;
-	}
-
-	/**
-	 * Creates a new <code>Section</code>. A sub-pane is automatically added as
-	 * its client which can be typed cast directly as a <code>Composite</code>.
-	 *
-	 * @param container The container of the new widget
-	 * @param sectionText The text of the new section
-	 * @return The <code>Section</code>'s sub-pane
-	 *
-	 * @category Layout
-	 */
-	protected final Composite addSubSection(Composite container,
-	                                          String sectionText) {
-
-		return this.addCollapsibleSubSection(
-			container,
-			sectionText,
-			new SimplePropertyValueModel<Boolean>(Boolean.TRUE)
-		);
 	}
 
 	/**
@@ -2415,7 +2157,7 @@ public abstract class Pane<T extends Model>
 	}
 
 	private void engageSubjectHolder() {
-		this.subjectHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.subjectChangeListener);
+		this.subjectModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.subjectChangeListener);
 	}
 
 	/**
@@ -2459,7 +2201,7 @@ public abstract class Pane<T extends Model>
 	}
 
 	private void disengageSubjectHolder() {
-		this.subjectHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.subjectChangeListener);
+		this.subjectModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.subjectChangeListener);
 	}
 
 	/**
@@ -2484,7 +2226,7 @@ public abstract class Pane<T extends Model>
 	 * @category Populate
 	 */
 	protected final PropertyValueModel<T> getSubjectHolder() {
-		return this.subjectHolder;
+		return this.subjectModel;
 	}
 
 	/**
@@ -2626,7 +2368,7 @@ public abstract class Pane<T extends Model>
 	 * @category Populate
 	 */
 	public T getSubject() {
-		return this.subjectHolder.getValue();
+		return this.subjectModel.getValue();
 	}
 
 	/**

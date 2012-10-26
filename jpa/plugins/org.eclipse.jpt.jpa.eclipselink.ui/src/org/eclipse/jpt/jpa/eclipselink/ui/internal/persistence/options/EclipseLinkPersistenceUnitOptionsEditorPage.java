@@ -12,9 +12,8 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.options;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
+
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.resource.StringConverter;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
@@ -46,7 +45,6 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.TargetDatabase;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.TargetServer;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.jpa.ui.editors.JpaPageComposite;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -57,37 +55,19 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
+
 import com.ibm.icu.text.Collator;
 
-/**
- * EclipseLinkOptionsComposite
- */
-public class PersistenceXmlOptionsTab<T extends PersistenceUnit>
-	extends Pane<T>
-	implements JpaPageComposite
-{
+public class EclipseLinkPersistenceUnitOptionsEditorPage  extends Pane<PersistenceUnit>{
+
 	private PropertyValueModel<Options> optionsHolder;
 
-	public PersistenceXmlOptionsTab(
-				PropertyValueModel<T> subjectHolder, 
-				Composite parent, 
-				WidgetFactory widgetFactory) {
+	public EclipseLinkPersistenceUnitOptionsEditorPage(
+			PropertyValueModel<PersistenceUnit> subjectModel,
+            Composite parent,
+            WidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
-	}
-
-	// ********** JpaPageComposite implementation **********
-
-	public String getHelpID() {
-		return EclipseLinkHelpContextIds.PERSISTENCE_OPTIONS;
-	}
-
-	public ImageDescriptor getPageImageDescriptor() {
-		return null;
-	}
-
-	public String getPageText() {
-		return EclipseLinkUiMessages.PersistenceXmlOptionsTab_title;
+		super(subjectModel, parent, widgetFactory);
 	}
 
 	@Override
@@ -129,7 +109,7 @@ public class PersistenceXmlOptionsTab<T extends PersistenceUnit>
 		Control miscellaneousComposite = this.initializeMiscellaneousSection(miscellaneousSection);
 		miscellaneousSection.setClient(miscellaneousComposite);
 	}
-	
+
 	private Control initializeSessionOptionsSection(Section section) {
 		this.optionsHolder = this.buildOptionsHolder();
 		GridLayout layout = new GridLayout(2, false);
@@ -148,7 +128,6 @@ public class PersistenceXmlOptionsTab<T extends PersistenceUnit>
 			this.buildSessionNameHolder(),
 			StringObjectTransformer.<String>instance(),
 			EclipseLinkHelpContextIds.PERSISTENCE_OPTIONS_SESSION_NAME
-			
 		);
 		SWTUtil.attachDefaultValueHandler(sessionNameCombo);
 
@@ -172,7 +151,7 @@ public class PersistenceXmlOptionsTab<T extends PersistenceUnit>
 			EclipseLinkHelpContextIds.PERSISTENCE_OPTIONS_TARGET_DATABASE
 		);
 		SWTUtil.attachDefaultValueHandler(targetDatabaseCombo);
-		
+
 
 		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlOptionsTab_targetServerLabel);
 		Combo targetServerCombo = addEditableCombo(
@@ -197,7 +176,7 @@ public class PersistenceXmlOptionsTab<T extends PersistenceUnit>
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		includeDescriptorQueriesCheckBox.getCheckBox().setLayoutData(gridData);
-		
+
 		return container;
 	}
 
@@ -218,10 +197,10 @@ public class PersistenceXmlOptionsTab<T extends PersistenceUnit>
 			this.buildTemporalMutableStringHolder(),
 			EclipseLinkHelpContextIds.PERSISTENCE_OPTIONS
 		);
-		
+
 		return container;
 	}
-	
+
 	private PropertyValueModel<SchemaGeneration> buildSchemaGenerationHolder() {
 		return new TransformationPropertyValueModel<PersistenceUnit, SchemaGeneration>(getSubjectHolder()) {
 			@Override
@@ -230,7 +209,7 @@ public class PersistenceXmlOptionsTab<T extends PersistenceUnit>
 			}
 		};
 	}
-	
+
 	private PropertyValueModel<Logging> buildLoggingHolder() {
 		return new TransformationPropertyValueModel<PersistenceUnit, Logging>(getSubjectHolder()) {
 			@Override
@@ -239,7 +218,7 @@ public class PersistenceXmlOptionsTab<T extends PersistenceUnit>
 			}
 		};
 	}
-	
+
 	private PropertyValueModel<Options> buildOptionsHolder() {
 		return new TransformationPropertyValueModel<PersistenceUnit, Options>(getSubjectHolder()) {
 			@Override
@@ -257,7 +236,7 @@ public class PersistenceXmlOptionsTab<T extends PersistenceUnit>
 		return new PropertyAspectAdapter<Options, String>(this.optionsHolder, Options.DEFAULT_SESSION_NAME) {
 			@Override
 			protected String buildValue_() {
-				return PersistenceXmlOptionsTab.this.getSessionNameDefaultValue(subject);
+				return EclipseLinkPersistenceUnitOptionsEditorPage.this.getSessionNameDefaultValue(subject);
 			}
 		};
 	}
@@ -275,7 +254,7 @@ public class PersistenceXmlOptionsTab<T extends PersistenceUnit>
 
 				String name = subject.getSessionName();
 				if (name == null) {
-					name = PersistenceXmlOptionsTab.this.getSessionNameDefaultValue(subject);
+					name = EclipseLinkPersistenceUnitOptionsEditorPage.this.getSessionNameDefaultValue(subject);
 				}
 				return name;
 			}
@@ -310,7 +289,7 @@ public class PersistenceXmlOptionsTab<T extends PersistenceUnit>
 		return new PropertyAspectAdapter<Options, String>(this.optionsHolder, Options.DEFAULT_SESSIONS_XML) {
 			@Override
 			protected String buildValue_() {
-				return PersistenceXmlOptionsTab.this.getSessionsXmlDefaultValue(subject);
+				return EclipseLinkPersistenceUnitOptionsEditorPage.this.getSessionsXmlDefaultValue(subject);
 			}
 		};
 	}
@@ -328,7 +307,7 @@ public class PersistenceXmlOptionsTab<T extends PersistenceUnit>
 
 				String name = subject.getSessionsXml();
 				if (name == null) {
-					name = PersistenceXmlOptionsTab.this.getSessionsXmlDefaultValue(subject);
+					name = EclipseLinkPersistenceUnitOptionsEditorPage.this.getSessionsXmlDefaultValue(subject);
 				}
 				return name;
 			}
@@ -363,7 +342,7 @@ public class PersistenceXmlOptionsTab<T extends PersistenceUnit>
 		return new PropertyAspectAdapter<Options, String>(this.optionsHolder, Options.DEFAULT_TARGET_DATABASE) {
 			@Override
 			protected String buildValue_() {
-				return PersistenceXmlOptionsTab.this.getTargetDatabaseDefaultValue(subject);
+				return EclipseLinkPersistenceUnitOptionsEditorPage.this.getTargetDatabaseDefaultValue(subject);
 			}
 		};
 	}
@@ -464,7 +443,7 @@ public class PersistenceXmlOptionsTab<T extends PersistenceUnit>
 
 				String name = subject.getTargetDatabase();
 				if (name == null) {
-					name = PersistenceXmlOptionsTab.this.getTargetDatabaseDefaultValue(subject);
+					name = EclipseLinkPersistenceUnitOptionsEditorPage.this.getTargetDatabaseDefaultValue(subject);
 				}
 				return name;
 			}
@@ -528,7 +507,7 @@ public class PersistenceXmlOptionsTab<T extends PersistenceUnit>
 		return new PropertyAspectAdapter<Options, String>(this.optionsHolder, Options.DEFAULT_TARGET_SERVER) {
 			@Override
 			protected String buildValue_() {
-				return PersistenceXmlOptionsTab.this.getTargetServerDefaultValue(subject);
+				return EclipseLinkPersistenceUnitOptionsEditorPage.this.getTargetServerDefaultValue(subject);
 			}
 		};
 	}
@@ -600,7 +579,7 @@ public class PersistenceXmlOptionsTab<T extends PersistenceUnit>
 			protected String buildValue_() {
 				String name = subject.getTargetServer();
 				if (name == null) {
-					name = PersistenceXmlOptionsTab.this.getTargetServerDefaultValue(subject);
+					name = EclipseLinkPersistenceUnitOptionsEditorPage.this.getTargetServerDefaultValue(subject);
 				}
 				return name;
 			}
@@ -686,7 +665,7 @@ public class PersistenceXmlOptionsTab<T extends PersistenceUnit>
 			protected String getClassName() {
 				return this.getSubject().getEventListener();
 			}
-			
+
 			@Override
 			protected IJavaProject getJavaProject() {
 				return getSubject().getJpaProject().getJavaProject();
@@ -696,7 +675,7 @@ public class PersistenceXmlOptionsTab<T extends PersistenceUnit>
 			protected void setClassName(String className) {
 				this.getSubject().setEventListener(className);
 			}
-			
+
 			@Override
 			protected String getSuperInterfaceName() {
 				return Options.ECLIPSELINK_EVENT_LISTENER_CLASS_NAME;

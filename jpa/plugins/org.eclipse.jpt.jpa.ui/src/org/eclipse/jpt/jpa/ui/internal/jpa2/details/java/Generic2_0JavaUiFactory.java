@@ -26,15 +26,12 @@ import org.eclipse.jpt.jpa.ui.details.JpaComposite;
 import org.eclipse.jpt.jpa.ui.internal.details.java.BaseJavaUiFactory;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.ElementCollectionMapping2_0Composite;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.details.EmbeddedIdMapping2_0Composite;
-import org.eclipse.jpt.jpa.ui.internal.persistence.GenericPersistenceXmlUiFactory;
 import org.eclipse.jpt.jpa.ui.jpa2.details.java.JavaUiFactory2_0;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  * The default implementation of the UI factory required to show the information
  * related to a JPA mapping (type or attribute).
- *
- * @see GenericPersistenceXmlUiFactory
  *
  * @version 1.0
  * @since 1.0

@@ -9,16 +9,19 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.persistence;
 
+import java.util.List;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.internal.jface.SimpleItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.persistence.GenericPersistenceXmlDefinition;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
+import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
+import org.eclipse.jpt.jpa.ui.internal.AbstractResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.structure.PersistenceStructureItemContentProviderFactory;
 import org.eclipse.jpt.jpa.ui.internal.structure.PersistenceStructureItemLabelProviderFactory;
 
 public class PersistenceXmlUiDefinition
-	extends AbstractPersistenceXmlResourceUiDefinition
+	extends AbstractResourceUiDefinition
 {
 	// singleton
 	private static final ResourceUiDefinition INSTANCE = new PersistenceXmlUiDefinition();
@@ -38,13 +41,14 @@ public class PersistenceXmlUiDefinition
 	private PersistenceXmlUiDefinition() {
 		super();
 	}
-	
-	
+
 	@Override
-	protected PersistenceXmlUiFactory buildPersistenceXmlUiFactory() {
-		return new GenericPersistenceXmlUiFactory();
+	protected void addEditorPageDefinitionsTo(List<JpaEditorPageDefinition> definitions) {
+		definitions.add(PersistenceUnitGeneralEditorPageDefinition.instance());
+		definitions.add(PersistenceUnitConnectionEditorPageDefinition.instance());
+		definitions.add(PersistenceUnitPropertiesEditorPageDefinition.instance());
 	}
-	
+
 	public boolean providesUi(JptResourceType resourceType) {
 		return resourceType.equals(GenericPersistenceXmlDefinition.instance().getResourceType());
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2012 Oracle. All rights reserved.
+ * Copyright (c) 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,11 +10,21 @@
 package org.eclipse.jpt.jpa.ui.editors;
 
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jpt.jpa.ui.details.JpaComposite;
+import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.jpa.core.JpaStructureNode;
+import org.eclipse.ui.forms.IManagedForm;
 
 /**
- * A {@link JpaPageComposite} defines the common behavior of the JPA
- * related widgets that is shown as a page within an editor.
+ * A {@link JpaEditorPageDefinition} defines the content of an editor page.
+ * We take advantage of the FormEditor behavior by not building the content
+ * of any particular editor page until that tab is selected. At this point
+ * {@link #buildEditorPageContent(IManagedForm, WidgetFactory, PropertyValueModel)}
+ * will be called.
+ * 
+ * @see org.eclipse.jpt.jpa.ui.ResourceUiDefinition
+ * @see org.eclipse.jpt.jpa.ui.internal.editors.JpaXmlEditor
+ * 
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -22,7 +32,7 @@ import org.eclipse.jpt.jpa.ui.details.JpaComposite;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JpaPageComposite extends JpaComposite {
+public interface JpaEditorPageDefinition {
 
 	/**
 	 * Returns the help ID. This ID will be used if the help button is invoked.
@@ -33,7 +43,7 @@ public interface JpaPageComposite extends JpaComposite {
 	String getHelpID();
 
 	/**
-	 * The image of the tab showing this page.
+	 * The image descriptor of the tab showing this page.
 	 *
 	 * @return The page's image
 	 */
@@ -45,4 +55,10 @@ public interface JpaPageComposite extends JpaComposite {
 	 * @return The page's text
 	 */
 	String getPageText();
+
+	/**
+	 * Build the content of this editor page using the given WidgetFactory
+	 * and the JpaStructureNode model.
+	 */
+	void buildEditorPageContent(IManagedForm form, WidgetFactory widgetFactory, PropertyValueModel<JpaStructureNode> rootStructureNodeModel);
 }

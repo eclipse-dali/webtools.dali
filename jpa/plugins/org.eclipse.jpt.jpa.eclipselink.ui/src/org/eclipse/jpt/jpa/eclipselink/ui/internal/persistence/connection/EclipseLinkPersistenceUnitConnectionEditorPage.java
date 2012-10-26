@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.connection;
 
 import java.util.Collection;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
@@ -27,51 +26,33 @@ import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitTransactionTy
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.BatchWriting;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Connection;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.jpa.ui.editors.JpaPageComposite;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Section;
 
-/**
- * PersistenceXmlConnectionTab
- */
-public class PersistenceXmlConnectionTab<T extends Connection>
-	extends Pane<T>
-	implements JpaPageComposite
-{
-	// ********** constructors/initialization **********
-	public PersistenceXmlConnectionTab(
-				PropertyValueModel<T> subjectHolder, 
-				Composite parent, 
-				WidgetFactory widgetFactory) {
-		
+public class EclipseLinkPersistenceUnitConnectionEditorPage
+	extends Pane<Connection> {
+
+	public EclipseLinkPersistenceUnitConnectionEditorPage(
+			PropertyValueModel<Connection> subjectHolder,
+            Composite parent,
+            WidgetFactory widgetFactory) {
+
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	// ********** JpaPageComposite implementation **********
-
-	public String getHelpID() {
-		return JpaHelpContextIds.PERSISTENCE_XML_CONNECTION;
-	}
-
-	public ImageDescriptor getPageImageDescriptor() {
-		return null;
-	}
-
-	public String getPageText() {
-		return EclipseLinkUiMessages.PersistenceXmlConnectionTab_title;
-	}
-
-
 	@Override
 	protected void initializeLayout(Composite container) {
-		container = addSection(
-			container,
-			EclipseLinkUiMessages.PersistenceXmlConnectionTab_sectionTitle,
-			EclipseLinkUiMessages.PersistenceXmlConnectionTab_sectionDescription
-		);
+		Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | Section.DESCRIPTION);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(EclipseLinkUiMessages.PersistenceXmlConnectionTab_sectionTitle);
+		section.setDescription(EclipseLinkUiMessages.PersistenceXmlConnectionTab_sectionDescription);
+
+		Composite client = this.getWidgetFactory().createComposite(section);
 		GridLayout layout = new GridLayout(2, false);
 		layout.marginHeight = 0;
 		layout.marginWidth  = 0;
@@ -79,32 +60,34 @@ public class PersistenceXmlConnectionTab<T extends Connection>
 		layout.marginLeft   = 0;
 		layout.marginBottom = 0;
 		layout.marginRight  = 0;
-		container.setLayout(layout);
+		client.setLayout(layout);
+		client.setLayoutData(new GridData(GridData.FILL_BOTH));
+		section.setClient(client);
 
 		//transaction type
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlConnectionTab_transactionTypeLabel);
-		this.addTransactionTypeCombo(container);
+		this.addLabel(client, EclipseLinkUiMessages.PersistenceXmlConnectionTab_transactionTypeLabel);
+		this.addTransactionTypeCombo(client);
 
 		//batch writing
-		this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlConnectionTab_batchWritingLabel);
-		this.addBatchWritingCombo(container);
+		this.addLabel(client, EclipseLinkUiMessages.PersistenceXmlConnectionTab_batchWritingLabel);
+		this.addBatchWritingCombo(client);
 
 
 		//cache statements
 		ModifiablePropertyValueModel<Boolean> cacheStatementsHolder = buildCacheStatementsHolder();
 		this.addTriStateCheckBox(
-			container,
+				client,
 			EclipseLinkUiMessages.PersistenceXmlConnectionTab_cacheStatementsLabel,
 			cacheStatementsHolder,
 			JpaHelpContextIds.PERSISTENCE_XML_CONNECTION
 		);
-		IntegerCombo<?> combo = addCacheStatementsSizeCombo(container);
+		IntegerCombo<?> combo = addCacheStatementsSizeCombo(client);
 
 		this.installControlEnabler(cacheStatementsHolder, combo);
 
-		
+
 		TriStateCheckBox nativeSqlCheckBox = this.addTriStateCheckBoxWithDefault(
-			container,
+			client,
 			EclipseLinkUiMessages.PersistenceXmlConnectionTab_nativeSqlLabel,
 			this.buildNativeSqlHolder(),
 			this.buildNativeSqlStringHolder(),
@@ -113,8 +96,8 @@ public class PersistenceXmlConnectionTab<T extends Connection>
 		GridData gridData = new GridData();
 		gridData.horizontalSpan = 2;
 		nativeSqlCheckBox.getCheckBox().setLayoutData(gridData);
-	
-		ConnectionPropertiesComposite<T> connectionPropertiesComposite = new ConnectionPropertiesComposite<T>(this, container);
+
+		ConnectionPropertiesComposite<Connection> connectionPropertiesComposite = new ConnectionPropertiesComposite<Connection>(this, client);
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		connectionPropertiesComposite.getControl().setLayoutData(gridData);
@@ -182,7 +165,6 @@ public class PersistenceXmlConnectionTab<T extends Connection>
 				return this.subject.getPersistenceUnit();
 			}
 		};
-		
 	}
 
 	private void clearJTAProperties() {
@@ -284,7 +266,7 @@ public class PersistenceXmlConnectionTab<T extends Connection>
 			}
 		};
 	}
-	
+
 	private PropertyValueModel<Boolean> buildDefaultNativeSqlHolder() {
 		return new PropertyAspectAdapter<Connection, Boolean>(
 			getSubjectHolder(),
@@ -326,7 +308,7 @@ public class PersistenceXmlConnectionTab<T extends Connection>
 			}
 		};
 	}
-	
+
 	private IntegerCombo<Connection> addCacheStatementsSizeCombo(Composite container) {
 		return new IntegerCombo<Connection>(this, container) {
 			@Override
@@ -343,7 +325,7 @@ public class PersistenceXmlConnectionTab<T extends Connection>
 					}
 				};
 			}
-			
+
 			@Override
 			protected ModifiablePropertyValueModel<Integer> buildSelectedItemHolder() {
 				return new PropertyAspectAdapter<Connection, Integer>(getSubjectHolder(), Connection.CACHE_STATEMENTS_SIZE_PROPERTY) {

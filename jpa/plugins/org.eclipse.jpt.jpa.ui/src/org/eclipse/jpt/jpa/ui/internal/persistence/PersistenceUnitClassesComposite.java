@@ -73,7 +73,7 @@ import org.eclipse.ui.progress.IProgressService;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see PersistenceUnit
- * @see PersistenceUnitGeneralTab - The parent container
+ * @see PersistenceUnitGeneralEditorPageDefinition - The parent container
  * @see AddRemoveListPane
  *
  * @version 2.3

@@ -11,6 +11,8 @@ package org.eclipse.jpt.jpa.ui;
 
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
+import org.eclipse.jpt.common.utility.iterable.ListIterable;
+import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
 
 /**
  * Resource UI definition.
@@ -34,4 +36,15 @@ public interface ResourceUiDefinition {
 	 * labels.
 	 */
 	ItemTreeStateProviderFactoryProvider getStructureViewFactoryProvider();
+
+	/**
+	 * Return the <code>JpaEditorPageDefinition</code>'s to be displayed
+	 * as tabs for an editor for the resource.
+	 * <p>
+	 * Currently we only have a persistence.xml editor
+	 * 
+	 * @see org.eclipse.jpt.jpa.ui.internal.editors.JpaXmlEditor
+	 */
+	ListIterable<JpaEditorPageDefinition> getEditorPageDefinitions();
+
 }

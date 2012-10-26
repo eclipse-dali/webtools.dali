@@ -9,16 +9,20 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.v2_0.persistence;
 
+import java.util.List;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.jface.ItemTreeStateProviderFactoryProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa2.context.persistence.GenericPersistenceXml2_0Definition;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.EclipseLinkPersistenceXmlUiDefinition;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.connection.EclipseLinkPersistenceUnitConnectionEditorPageDefinition;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.general.EclipseLinkPersistenceUnitGeneralEditorPageDefinition;
 import org.eclipse.jpt.jpa.ui.ResourceUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.persistence.AbstractPersistenceXmlResourceUiDefinition;
-import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceXmlUiFactory;
+import org.eclipse.jpt.jpa.ui.editors.JpaEditorPageDefinition;
+import org.eclipse.jpt.jpa.ui.internal.AbstractResourceUiDefinition;
+import org.eclipse.jpt.jpa.ui.internal.persistence.PersistenceUnitPropertiesEditorPageDefinition;
 
 public class EclipseLinkPersistenceXml2_4UiDefinition
-	extends AbstractPersistenceXmlResourceUiDefinition
+	extends AbstractResourceUiDefinition
 {
 	// singleton
 	private static final ResourceUiDefinition INSTANCE = new EclipseLinkPersistenceXml2_4UiDefinition();
@@ -29,24 +33,30 @@ public class EclipseLinkPersistenceXml2_4UiDefinition
 	public static ResourceUiDefinition instance() {
 		return INSTANCE;
 	}
-	
-	
+
+
 	/**
 	 * Enforce singleton usage
 	 */
 	private EclipseLinkPersistenceXml2_4UiDefinition() {
 		super();
 	}
-	
+
+
 	@Override
-	protected PersistenceXmlUiFactory buildPersistenceXmlUiFactory() {
-		return new EclipseLink2_4PersistenceXmlUiFactory();
+	protected void addEditorPageDefinitionsTo(List<JpaEditorPageDefinition> definitions) {
+		definitions.add(EclipseLinkPersistenceUnitGeneralEditorPageDefinition.instance());
+		definitions.add(EclipseLinkPersistenceUnitConnectionEditorPageDefinition.instance());
+		definitions.add(EclipseLinkPersistenceUnitCustomization2_0EditorPageDefinition.instance());
+		definitions.add(EclipseLinkPersistenceUnitCaching2_0EditorPageDefinition.instance());
+		definitions.add(EclipseLinkPersistenceUnitOptions2_4EditorPageDefinition.instance());
+		definitions.add(PersistenceUnitPropertiesEditorPageDefinition.instance());
 	}
-	
+
 	public boolean providesUi(JptResourceType resourceType) {
 		return resourceType.equals(GenericPersistenceXml2_0Definition.instance().getResourceType());
 	}
-	
+
 	public ItemTreeStateProviderFactoryProvider getStructureViewFactoryProvider() {
 		return EclipseLinkPersistenceXmlUiDefinition.STRUCTURE_VIEW_FACTORY_PROVIDER;
 	}

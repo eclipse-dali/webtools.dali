@@ -31,6 +31,7 @@ import org.eclipse.jpt.jpa.ui.details.java.DefaultJavaTypeMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.java.JavaAttributeMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.java.JavaTypeMappingUiDefinition;
 import org.eclipse.jpt.jpa.ui.details.java.JavaUiFactory;
+import org.eclipse.jpt.jpa.ui.internal.AbstractResourceUiDefinition;
 import org.eclipse.jpt.jpa.ui.internal.structure.JavaStructureItemContentProviderFactory;
 import org.eclipse.jpt.jpa.ui.internal.structure.JavaStructureItemLabelProviderFactory;
 import org.eclipse.swt.widgets.Composite;
@@ -40,6 +41,7 @@ import org.eclipse.swt.widgets.Composite;
  * (i.e. unchanging once it is initialized).
  */
 public abstract class AbstractJavaResourceUiDefinition
+	extends AbstractResourceUiDefinition
 	implements MappingResourceUiDefinition
 {
 	private final JavaUiFactory factory;
@@ -210,4 +212,5 @@ public abstract class AbstractJavaResourceUiDefinition
 	}
 
 	protected abstract void addDefaultAttributeMappingUiDefinitionsTo(List<DefaultJavaAttributeMappingUiDefinition<?>> definitions);
+
 }

@@ -22,9 +22,6 @@ public class JptUiPersistenceMessages {
 	public static String ArchiveFileSelectionDialog_jarPathHelpLabel;
 	public static String ArchiveFileSelectionDialog_jarPathLabel;
 
-	public static String PersistenceEditor_page_help;
-	public static String PersistenceEditor_sourceTab;
-
 	public static String PersistenceUnitClassesComposite_description;
 	public static String PersistenceUnitClassesComposite_excludeUnlistedMappedClasses;
 	public static String PersistenceUnitClassesComposite_excludeUnlistedMappedClassesWithDefault;

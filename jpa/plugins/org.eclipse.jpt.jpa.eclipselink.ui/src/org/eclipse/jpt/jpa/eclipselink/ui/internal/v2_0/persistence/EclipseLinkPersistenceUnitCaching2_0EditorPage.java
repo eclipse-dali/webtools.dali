@@ -14,6 +14,7 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
+import org.eclipse.jpt.common.utility.internal.model.value.CompositeBooleanPropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
@@ -24,55 +25,68 @@ import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.CacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Caching;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.caching.PersistenceXmlCachingTab;
+import org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.caching.EclipseLinkPersistenceUnitCachingEditorPage;
 import org.eclipse.jpt.jpa.ui.internal.jpa2.persistence.JptUiPersistence2_0Messages;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Section;
 
-/**
- *  PersistenceXmlCaching2_0Tab
- */
-public class PersistenceXmlCaching2_0Tab extends PersistenceXmlCachingTab<Caching>
+public class EclipseLinkPersistenceUnitCaching2_0EditorPage
+	extends EclipseLinkPersistenceUnitCachingEditorPage<Caching>
 {
-	public PersistenceXmlCaching2_0Tab(
-			PropertyValueModel<Caching> subjectHolder,
+	public EclipseLinkPersistenceUnitCaching2_0EditorPage(
+			PropertyValueModel<Caching> subjectModel,
 			Composite parent,
             WidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(subjectModel, parent, widgetFactory);
 	}
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		container = this.addSection(
-			container,
-			EclipseLinkUiMessages.PersistenceXmlCachingTab_sectionTitle,
-			EclipseLinkUiMessages.PersistenceXmlCachingTab_sectionDescription
-		);
-		container.setLayout(new GridLayout(2, false));
+		Section section = this.getWidgetFactory().createSection(container, ExpandableComposite.TITLE_BAR | Section.DESCRIPTION);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		section.setText(EclipseLinkUiMessages.PersistenceXmlCachingTab_sectionTitle);
+		section.setDescription(EclipseLinkUiMessages.PersistenceXmlCachingTab_sectionDescription);
+
+		Composite client = this.getWidgetFactory().createComposite(section);
+		GridLayout layout = new GridLayout(2, false);
+		layout.marginHeight = 0;
+		layout.marginWidth  = 0;
+		layout.marginTop    = 0;
+		layout.marginLeft   = 0;
+		layout.marginBottom = 0;
+		layout.marginRight  = 0;
+		client.setLayout(layout);
+		client.setLayoutData(new GridData(GridData.FILL_BOTH));
+		section.setClient(client);
+
+		PropertyValueModel<PersistenceUnit2_0> persistenceUnitModel = this.buildPersistenceUnit2_0Model();
 
 		// SharedCacheMode
-		this.addLabel(container, JptUiPersistence2_0Messages.SharedCacheModeComposite_sharedCacheModeLabel);		
-		this.addSharedCacheModeCombo(container, this.buildPersistenceUnit2_0Holder());
+		this.addLabel(client, JptUiPersistence2_0Messages.SharedCacheModeComposite_sharedCacheModeLabel);		
+		this.addSharedCacheModeCombo(client, persistenceUnitModel);
 
 		// Defaults
 		// Default Cache Type
-		Label cacheTypeLabel = this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlCachingTab_defaultCacheTypeLabel);
-		Combo cacheTypeCombo = this.buildDefaultCacheTypeCombo(container).getControl();
+		Label cacheTypeLabel = this.addLabel(client, EclipseLinkUiMessages.PersistenceXmlCachingTab_defaultCacheTypeLabel);
+		Combo cacheTypeCombo = this.buildDefaultCacheTypeCombo(client).getControl();
 
 		// Default Cache Size
-		Label cacheSizeLabel = this.addLabel(container, EclipseLinkUiMessages.DefaultCacheSizeComposite_defaultCacheSize);
-		Combo cacheSizeCombo = this.addDefaultCacheSizeCombo(container).getControl();
+		Label cacheSizeLabel = this.addLabel(client, EclipseLinkUiMessages.DefaultCacheSizeComposite_defaultCacheSize);
+		Combo cacheSizeCombo = this.addDefaultCacheSizeCombo(client).getControl();
 
 
 		// Flush Clear Cache
-		Label flushClearCacheLabel = this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlCachingTab_FlushClearCacheLabel);
-		Combo flushClearCacheCombo = this.addFlushClearCacheCombo(container).getControl();
+		Label flushClearCacheLabel = this.addLabel(client, EclipseLinkUiMessages.PersistenceXmlCachingTab_FlushClearCacheLabel);
+		Combo flushClearCacheCombo = this.addFlushClearCacheCombo(client).getControl();
 
 		SWTTools.controlEnabledState(
-			this.buildSharedCacheModeEnablerHolder(),
+			this.buildSharedCacheModeEnablerModel(persistenceUnitModel),
 			cacheTypeLabel,
 			cacheTypeCombo,
 			cacheSizeLabel,
@@ -81,7 +95,7 @@ public class PersistenceXmlCaching2_0Tab extends PersistenceXmlCachingTab<Cachin
 			flushClearCacheCombo);
 	}
 
-	private PropertyValueModel<PersistenceUnit2_0> buildPersistenceUnit2_0Holder() {
+	private PropertyValueModel<PersistenceUnit2_0> buildPersistenceUnit2_0Model() {
 		return new PropertyAspectAdapter<Caching, PersistenceUnit2_0>(this.getSubjectHolder()) {
 			@Override
 			protected PersistenceUnit2_0 buildValue_() {
@@ -92,9 +106,9 @@ public class PersistenceXmlCaching2_0Tab extends PersistenceXmlCachingTab<Cachin
 
 
 	//********* shared cache mode ***********
-	
-	private EnumFormComboViewer<PersistenceUnit2_0, SharedCacheMode> addSharedCacheModeCombo(Composite parent, PropertyValueModel<? extends PersistenceUnit2_0> subjectHolder) {
-		return new EnumFormComboViewer<PersistenceUnit2_0, SharedCacheMode>(this, subjectHolder, parent) {
+
+	private EnumFormComboViewer<PersistenceUnit2_0, SharedCacheMode> addSharedCacheModeCombo(Composite parent, PropertyValueModel<? extends PersistenceUnit2_0> subjectModel) {
+		return new EnumFormComboViewer<PersistenceUnit2_0, SharedCacheMode>(this, subjectModel, parent) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
@@ -146,18 +160,21 @@ public class PersistenceXmlCaching2_0Tab extends PersistenceXmlCachingTab<Cachin
 		};
 	}
 
-	private PropertyValueModel<Boolean> buildSharedCacheModeEnablerHolder() {
-		return new TransformationPropertyValueModel<SharedCacheMode, Boolean>(this.buildSharedCacheModeHolder()) {
-			@Override
-			protected Boolean transform(SharedCacheMode value) {
-				return value != SharedCacheMode.NONE;
-			}
-		};
+	@SuppressWarnings("unchecked")
+	private PropertyValueModel<Boolean> buildSharedCacheModeEnablerModel(PropertyValueModel<PersistenceUnit2_0> persistenceUnitModel) {
+		return CompositeBooleanPropertyValueModel.and(
+			this.getEnabledModel(), 
+			new TransformationPropertyValueModel<SharedCacheMode, Boolean>(this.buildSharedCacheModeModel(persistenceUnitModel)) {
+				@Override
+				protected Boolean transform(SharedCacheMode value) {
+					return Boolean.valueOf(value != SharedCacheMode.NONE);
+				}
+			});
 	}
 
-	private PropertyValueModel<SharedCacheMode> buildSharedCacheModeHolder() {
+	private PropertyValueModel<SharedCacheMode> buildSharedCacheModeModel(PropertyValueModel<PersistenceUnit2_0> persistenceUnitModel) {
 		return new PropertyAspectAdapter<PersistenceUnit2_0, SharedCacheMode>(
-								this.buildPersistenceUnit2_0Holder(), 
+								persistenceUnitModel, 
 								PersistenceUnit2_0.SPECIFIED_SHARED_CACHE_MODE_PROPERTY, 
 								PersistenceUnit2_0.DEFAULT_SHARED_CACHE_MODE_PROPERTY) {
 			@Override
@@ -226,7 +243,7 @@ public class PersistenceXmlCaching2_0Tab extends PersistenceXmlCachingTab<Cachin
 				return EclipseLinkHelpContextIds.PERSISTENCE_CACHING_DEFAULT_TYPE;
 			}
 		};
-	}	
+	}
 
 	protected IntegerCombo<Caching> addDefaultCacheSizeCombo(Composite container) {
 		return new IntegerCombo<Caching>(this, container) {	

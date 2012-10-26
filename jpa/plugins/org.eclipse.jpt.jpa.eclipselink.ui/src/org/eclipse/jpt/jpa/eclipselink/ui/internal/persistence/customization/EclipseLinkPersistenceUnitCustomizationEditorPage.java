@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.customization;
 
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserPane;
@@ -23,7 +22,6 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.Customization;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.jpa.ui.editors.JpaPageComposite;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -34,33 +32,15 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
 
-/**
- *  PersistenceXmlCustomizationTabItem
- */
-public class PersistenceXmlCustomizationTab<T extends Customization>
-								extends Pane<T>
-								implements JpaPageComposite
+public class EclipseLinkPersistenceUnitCustomizationEditorPage<T extends Customization>
+	extends Pane<T>
 {
-	public PersistenceXmlCustomizationTab(
-			PropertyValueModel<T> subjectHolder,
+	public EclipseLinkPersistenceUnitCustomizationEditorPage(
+			PropertyValueModel<T> subjectModel,
 			Composite parent,
             WidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
-	}
-	
-	// ********** JpaPageComposite implementation **********
-
-	public String getHelpID() {
-		return EclipseLinkHelpContextIds.PERSISTENCE_CUSTOMIZATION;
-	}
-
-	public ImageDescriptor getPageImageDescriptor() {
-		return null;
-	}
-	
-	public String getPageText() {
-		return EclipseLinkUiMessages.PersistenceXmlCustomizationTab_title;
+		super(subjectModel, parent, widgetFactory);
 	}
 
 	@Override
@@ -84,7 +64,7 @@ public class PersistenceXmlCustomizationTab<T extends Customization>
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.verticalAlignment = SWT.TOP;
 		weavingSection.setLayoutData(gridData);
-		
+
 		Section customizersSection = this.getWidgetFactory().createSection(parent, ExpandableComposite.TITLE_BAR);
 		customizersSection.setText(EclipseLinkUiMessages.PersistenceXmlCustomizationTab_customizersSection);
 		customizersSection.setClient(this.initializeCustomizersSection(customizersSection));
@@ -112,8 +92,8 @@ public class PersistenceXmlCustomizationTab<T extends Customization>
 		TriStateCheckBox validationOnlyCheckBox = this.addTriStateCheckBoxWithDefault(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlCustomizationTab_validationOnlyLabel,
-			this.buildValidationOnlyHolder(),
-			this.buildValidationOnlyStringHolder(),
+			this.buildValidationOnlyModel(),
+			this.buildValidationOnlyStringModel(),
 			EclipseLinkHelpContextIds.PERSISTENCE_CUSTOMIZATION
 		);
 		GridData gridData = new GridData();
@@ -125,8 +105,8 @@ public class PersistenceXmlCustomizationTab<T extends Customization>
 		TriStateCheckBox validateSchemaCheckBox = this.addTriStateCheckBoxWithDefault(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlCustomizationTab_validateSchemaLabel,
-			this.buildValidateSchemaHolder(),
-			this.buildValidateSchemaStringHolder(),
+			this.buildValidateSchemaModel(),
+			this.buildValidateSchemaStringModel(),
 			EclipseLinkHelpContextIds.PERSISTENCE_CUSTOMIZATION
 		);
 		gridData = new GridData();
@@ -138,7 +118,7 @@ public class PersistenceXmlCustomizationTab<T extends Customization>
 			container,
 			EclipseLinkUiMessages.PersistenceXmlCustomizationTab_throwExceptionsLabel,
 			this.buildThrowExceptionsHolder(),
-			this.buildThrowExceptionsStringHolder(),
+			this.buildThrowExceptionsStringModel(),
 			EclipseLinkHelpContextIds.PERSISTENCE_CUSTOMIZATION
 		);
 		gridData = new GridData();
@@ -166,15 +146,15 @@ public class PersistenceXmlCustomizationTab<T extends Customization>
 
 		return container;
 	}
-	
+
 	protected void buildEntityListComposite(Composite parent) {
 		new EntityListComposite(this, parent); 
 	}
 
 
 	//********* validation only ***********
-	
-	private ModifiablePropertyValueModel<Boolean> buildValidationOnlyHolder() {
+
+	private ModifiablePropertyValueModel<Boolean> buildValidationOnlyModel() {
 		return new PropertyAspectAdapter<Customization, Boolean>(getSubjectHolder(), Customization.VALIDATION_ONLY_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -188,8 +168,8 @@ public class PersistenceXmlCustomizationTab<T extends Customization>
 		};
 	}
 
-	private PropertyValueModel<String> buildValidationOnlyStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultValidationOnlyHolder()) {
+	private PropertyValueModel<String> buildValidationOnlyStringModel() {
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultValidationOnlyModel()) {
 			@Override
 			protected String transform(Boolean value) {
 				if (value != null) {
@@ -200,8 +180,8 @@ public class PersistenceXmlCustomizationTab<T extends Customization>
 			}
 		};
 	}
-	
-	private PropertyValueModel<Boolean> buildDefaultValidationOnlyHolder() {
+
+	private PropertyValueModel<Boolean> buildDefaultValidationOnlyModel() {
 		return new PropertyAspectAdapter<Customization, Boolean>(
 			getSubjectHolder(),
 			Customization.VALIDATION_ONLY_PROPERTY)
@@ -218,8 +198,8 @@ public class PersistenceXmlCustomizationTab<T extends Customization>
 
 
 	//********* validate schema ***********
-	
-	private ModifiablePropertyValueModel<Boolean> buildValidateSchemaHolder() {
+
+	private ModifiablePropertyValueModel<Boolean> buildValidateSchemaModel() {
 		return new PropertyAspectAdapter<Customization, Boolean>(getSubjectHolder(), Customization.VALIDATE_SCHEMA_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -233,8 +213,8 @@ public class PersistenceXmlCustomizationTab<T extends Customization>
 		};
 	}
 
-	private PropertyValueModel<String> buildValidateSchemaStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultValidateSchemaHolder()) {
+	private PropertyValueModel<String> buildValidateSchemaStringModel() {
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultValidateSchemaModel()) {
 			@Override
 			protected String transform(Boolean value) {
 				if (value != null) {
@@ -245,8 +225,8 @@ public class PersistenceXmlCustomizationTab<T extends Customization>
 			}
 		};
 	}
-	
-	private PropertyValueModel<Boolean> buildDefaultValidateSchemaHolder() {
+
+	private PropertyValueModel<Boolean> buildDefaultValidateSchemaModel() {
 		return new PropertyAspectAdapter<Customization, Boolean>(
 			getSubjectHolder(),
 			Customization.VALIDATE_SCHEMA_PROPERTY)
@@ -263,7 +243,7 @@ public class PersistenceXmlCustomizationTab<T extends Customization>
 
 
 	//********* throw exceptions ***********
-	
+
 	private ModifiablePropertyValueModel<Boolean> buildThrowExceptionsHolder() {
 		return new PropertyAspectAdapter<Customization, Boolean>(getSubjectHolder(), Customization.THROW_EXCEPTIONS_PROPERTY) {
 			@Override
@@ -277,8 +257,8 @@ public class PersistenceXmlCustomizationTab<T extends Customization>
 		};
 	}
 
-	private PropertyValueModel<String> buildThrowExceptionsStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultThrowExceptionsHolder()) {
+	private PropertyValueModel<String> buildThrowExceptionsStringModel() {
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultThrowExceptionsModel()) {
 			@Override
 			protected String transform(Boolean value) {
 				if (value != null) {
@@ -289,8 +269,8 @@ public class PersistenceXmlCustomizationTab<T extends Customization>
 			}
 		};
 	}
-	
-	private PropertyValueModel<Boolean> buildDefaultThrowExceptionsHolder() {
+
+	private PropertyValueModel<Boolean> buildDefaultThrowExceptionsModel() {
 		return new PropertyAspectAdapter<Customization, Boolean>(
 			getSubjectHolder(),
 			Customization.THROW_EXCEPTIONS_PROPERTY)
@@ -336,22 +316,21 @@ public class PersistenceXmlCustomizationTab<T extends Customization>
 			protected String getClassName() {
 				return this.getSubject().getExceptionHandler();
 			}
-			
+
 			@Override
 			protected IJavaProject getJavaProject() {
 				return getSubject().getJpaProject().getJavaProject();
 			}
-			
+
 			@Override
 			protected void setClassName(String className) {
 				this.getSubject().setExceptionHandler(className);
 			}
-			
+
 			@Override
 			protected String getSuperInterfaceName() {
 				return Customization.ECLIPSELINK_EXCEPTION_HANDLER_CLASS_NAME;
 			}
 		};
 	}
-
 }

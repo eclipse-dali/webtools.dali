@@ -199,6 +199,9 @@ public class JptUiMessages {
 
 	public static String JpaPlatformUi_missingJpaPlatform;
 
+	public static String JpaXmlEditor_page_help;
+	public static String JpaXmlEditor_sourcePage;
+
 	private JptUiMessages() {
 		throw new UnsupportedOperationException();
 	}

@@ -48,7 +48,7 @@ import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see PersistenceUnit
- * @see PersistenceUnitGeneralTab - The parent container
+ * @see PersistenceUnitGeneralEditorPageDefinition - The parent container
  * @see AddRemoveListPane
  *
  * @version 2.0
