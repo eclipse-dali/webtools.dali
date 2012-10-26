@@ -20,9 +20,10 @@ import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.jpa.gen.internal.Association;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 
 /**
  * A Draw2d figure representing list of associations between two database tables
@@ -35,6 +36,12 @@ public class AssociationsListComposite extends FigureCanvas {
 	TableAssociationsWizardPage tableAssociationsWizardPage; //the parent wizard page
 	AssociationFigure selectedAssociationFigure ;
 	
+	/**
+	 * A listener that allows us to stop listening to stuff when the control
+	 * is disposed. (Critical for preventing memory leaks.)
+	 */
+	private final DisposeListener disposeListener;
+
 	protected final ResourceManager resourceManager;
 	
 	public AssociationsListComposite(Composite parent, TableAssociationsWizardPage tableAssociationsWizardPage, ResourceManager resourceManager){
@@ -50,7 +57,10 @@ public class AssociationsListComposite extends FigureCanvas {
 		Figure figure = new Figure();
 		figure.setLayoutManager(new ToolbarLayout());
 		figure.setBorder(new LineBorder(1));
-		this.listener = new AssociationToggleSelectionListener(); 
+		this.listener = new AssociationToggleSelectionListener();
+
+		this.disposeListener = new ControlDisposeListener();
+		this.addDisposeListener(this.disposeListener);
 		
 		this.setContents(figure);
 	}
@@ -103,10 +113,9 @@ public class AssociationsListComposite extends FigureCanvas {
 		return ret==null?null:ret.getAssociation();
 	}
 	
-	@Override
-	public void dispose() {
+	protected void controlDisposed() {
 		this.disposeFigure((Figure) getContents());
-		super.dispose();
+		this.removeDisposeListener(this.disposeListener);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -132,6 +141,17 @@ public class AssociationsListComposite extends FigureCanvas {
 			//Highlight new selection
 			selectedAssociationFigure = figure;
 			selectedAssociationFigure.setSelected( true );
+		}
+	}
+
+	private class ControlDisposeListener
+		implements DisposeListener {
+		public void widgetDisposed(DisposeEvent e) {
+			AssociationsListComposite.this.controlDisposed();
+		}
+	    @Override
+		public String toString() {
+			return "control dispose listener"; //$NON-NLS-1$
 		}
 	}
 }

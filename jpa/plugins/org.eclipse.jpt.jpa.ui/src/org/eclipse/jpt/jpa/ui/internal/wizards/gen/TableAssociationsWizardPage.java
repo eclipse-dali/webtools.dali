@@ -757,14 +757,4 @@ public class TableAssociationsWizardPage extends WizardPage {
 	protected final IWorkbenchHelpSystem getHelpSystem() {
 		return PlatformUI.getWorkbench().getHelpSystem();
 	}
-	
-	@Override
-	public void dispose() {
-		//when the JPA project wizard page is shown first, the other wizard pages are lazily built, thus
-		//associationList can be null - bug 307894
-		if (this.associationList != null) {
-			this.associationList.dispose();
-		}
-		super.dispose();
-	}
 }
