@@ -14,10 +14,14 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbContextRoot;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbPackage;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmFile;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlBindings;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessageBuilder;
+import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessages;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.Oxm;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -67,6 +71,11 @@ public class OxmFileImpl
 	
 	public String getPackageName() {
 		return (this.xmlBindings == null) ? null : this.xmlBindings.getPackageName();
+	}
+	
+	public ELJaxbPackage getPackage() {
+		String packageName = getPackageName();
+		return (StringTools.isBlank(packageName)) ? null : (ELJaxbPackage) getContextRoot().getPackage(packageName);
 	}
 	
 	
@@ -122,21 +131,36 @@ public class OxmFileImpl
 	
 	// ***** validation *****
 	
+	protected EXmlBindings getEXmlBindings() {
+		// each doc will at least have an xml-bindings node, by definition
+		return (EXmlBindings) this.oxmResource.getRootObject();
+	}
+	
 	@Override
 	public TextRange getValidationTextRange() {
-		// each doc will at least have an xml-bindings node, by definition
-		return ((EXmlBindings) this.oxmResource.getRootObject()).getValidationTextRange();
+		return getEXmlBindings().getValidationTextRange();
 	}
 	
 	protected TextRange getVersionTextRange() {
-		// each doc will at least have an xml-bindings node, by definition
-		return ((EXmlBindings) this.oxmResource.getRootObject()).getVersionTextRange();
+		return getEXmlBindings().getVersionTextRange();
+	}
+	
+	protected TextRange getPackageNameTextRange() {
+		return getEXmlBindings().getPackageNameTextRange();
 	}
 	
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		
+		if (getPackage() == null) {
+			messages.add(
+					ELJaxbValidationMessageBuilder.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							ELJaxbValidationMessages.OXM_FILE__NO_PACKAGE,
+							this,
+							getPackageNameTextRange()));
+		}
 		
 		if (this.xmlBindings != null) {
 			this.xmlBindings.validate(messages, reporter);

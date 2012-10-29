@@ -11,6 +11,7 @@ package org.eclipse.jpt.jaxb.eclipselink.core.context.oxm;
 
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
+import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbPackage;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -28,6 +29,9 @@ public interface OxmFile
 	JptXmlResource getOxmResource();
 	
 	String getPackageName();
+	
+	/** Convenience: will return the package associated with the package name  */
+	ELJaxbPackage getPackage();
 	
 	
 	// ***** xml bindings *****

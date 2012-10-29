@@ -31,7 +31,7 @@ public class OxmFileContentProvider
 	
 	
 	public ELJaxbPackage getParent() {
-		return (ELJaxbPackage) this.item.getContextRoot().getPackage(this.item.getPackageName());
+		return this.item.getPackage();
 	}
 	
 	@Override

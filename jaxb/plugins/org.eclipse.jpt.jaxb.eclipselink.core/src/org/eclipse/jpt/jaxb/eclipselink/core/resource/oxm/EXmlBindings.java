@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleRootTranslator;
 import org.eclipse.jpt.common.core.resource.xml.ERootObjectImpl;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.jaxb.eclipselink.core.internal.plugin.JptJaxbEclipseLinkCorePlugin;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -938,15 +939,22 @@ public class EXmlBindings extends ERootObjectImpl
 	}
 	
 	
-	// ********** content type **********
-
+	// ***** content type *****
+	
 	/**
 	 * The content type for <code>oxm.xml</code> mapping files.
 	 */
 	public static final IContentType CONTENT_TYPE = JptJaxbEclipseLinkCorePlugin.instance().getContentType("oxm"); //$NON-NLS-1$
-
-
-	// ********** translators **********
+	
+	
+	// ***** validation *****
+	
+	public TextRange getPackageNameTextRange() {
+		return getAttributeTextRange(Oxm.PACKAGE_NAME);
+	}
+	
+	
+	// ***** translators *****
 	
 	private static final Translator ROOT_TRANSLATOR = buildRootTranslator();
 	
