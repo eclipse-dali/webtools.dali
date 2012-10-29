@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa2;
 
-import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Collection;
 import java.util.Date;
@@ -21,11 +20,13 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.common.core.utility.BodySourceWriter;
 import org.eclipse.jpt.common.utility.internal.ClassNameTools;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.internal.collection.LinkedStack;
+import org.eclipse.jpt.common.utility.io.JptPrintWriter;
 import org.eclipse.jpt.jpa.core.context.AttributeMapping;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
@@ -221,14 +222,15 @@ public class GenericMetamodelSynchronizer
 		BodySourceWriter bodySourceWriter = this.buildBodySourceWriter(memberTypeTree);
 
 		StringWriter sw = new StringWriter(bodySourceWriter.getLength() + 2000);
-		PrintWriter pw = new PrintWriter(sw);
+		JptPrintWriter pw = new JptPrintWriter(sw, this.getLineSeparator());
 		this.printPackageAndImportsOn(pw, bodySourceWriter);
 		pw.print(bodySourceWriter.getSource());
 		return sw.toString();
 	}
 
 	protected BodySourceWriter buildBodySourceWriter(Map<String, Collection<MetamodelSourceType>> memberTypeTree) {
-		BodySourceWriter pw = new BodySourceWriter(this.getPackageName(), this.getClassName());
+		BodySourceWriter pw = new BodySourceWriter(this.getPackageName(), 
+													this.getClassName(), this.getLineSeparator());
 		this.printBodySourceOn(pw, memberTypeTree);
 		return pw;
 	}
@@ -405,7 +407,7 @@ public class GenericMetamodelSynchronizer
 
 	// ********** package and imports **********
 
-	protected void printPackageAndImportsOn(PrintWriter pw, BodySourceWriter bodySourceWriter) {
+	protected void printPackageAndImportsOn(JptPrintWriter pw, BodySourceWriter bodySourceWriter) {
 		if (this.getPackageName().length() != 0) {
 			pw.print("package ");
 			pw.print(this.getPackageName());
@@ -429,6 +431,10 @@ public class GenericMetamodelSynchronizer
 	@Override
 	public String toString() {
 		return ObjectTools.toString(this, this.sourceType.getName());
+	}
+
+	protected String getLineSeparator() {
+		return PlatformTools.getNewTextFileLineDelimiter();
 	}
 
 }

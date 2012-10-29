@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -41,8 +41,8 @@ public class BodySourceWriter
 	// key = short class name; value = import package
 	protected final HashMap<String, ImportPackage> imports = new HashMap<String, ImportPackage>();
 
-	public BodySourceWriter(String packageName, String className) {
-		super(new StringWriter(2000));
+	public BodySourceWriter(String packageName, String className, String lineSeparator) {
+		super(new StringWriter(2000), DEFAULT_INDENT, lineSeparator);
 		this.packageName = packageName;
 		this.className = className;
 	}

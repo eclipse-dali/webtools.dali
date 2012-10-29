@@ -21,10 +21,13 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.core.runtime.content.IContentTypeManager;
+import org.eclipse.core.runtime.preferences.DefaultScope;
+import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.JptWorkspace;
 import org.eclipse.jpt.common.core.internal.JptCommonCoreMessages;
 import org.eclipse.jpt.common.core.internal.plugin.JptCommonCorePlugin;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.osgi.framework.Bundle;
 
 /**
@@ -234,6 +237,18 @@ public class PlatformTools {
 
 	private static void logError(Throwable ex, String msg, Object... args) {
 		JptCommonCorePlugin.instance().logError(ex, msg, args);
+	}
+
+
+	// ********** workspace preferences **********
+
+	public static String getNewTextFileLineDelimiter() {
+		IScopeContext[] contexts = new IScopeContext[] { DefaultScope.INSTANCE };
+		return Platform.getPreferencesService().getString(
+									Platform.PI_RUNTIME, 
+									Platform.PREF_LINE_SEPARATOR, 
+									StringTools.CR, 
+									contexts);
 	}
 
 

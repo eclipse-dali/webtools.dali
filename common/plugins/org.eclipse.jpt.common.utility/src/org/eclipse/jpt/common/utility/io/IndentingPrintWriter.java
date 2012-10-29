@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.utility.io;
 
-import java.io.PrintWriter;
 import java.io.Writer;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 
 /**
- * Extend {@link PrintWriter} to automatically indent new lines.
+ * Extend {@link JptPrintWriter} to automatically indent new lines.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -22,7 +22,7 @@ import java.io.Writer;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public class IndentingPrintWriter
-	extends PrintWriter
+	extends JptPrintWriter
 {
 	private final String indent;
 	private int indentLevel;
@@ -35,14 +35,18 @@ public class IndentingPrintWriter
 	 * Construct a writer that indents with tabs.
 	 */
 	public IndentingPrintWriter(Writer out) {
-		this(out, DEFAULT_INDENT);
+		this(out, DEFAULT_INDENT, StringTools.CR);
 	}
 
 	/**
 	 * Construct a writer that indents with the specified string.
 	 */
 	public IndentingPrintWriter(Writer out, String indent) {
-		this(out, indent, 0);
+		this(out, indent, 0, StringTools.CR);
+	}
+	
+	public IndentingPrintWriter(Writer out, String indent, String lineSeparator) {
+		this(out, indent, 0, lineSeparator);
 	}
 
 	/**
@@ -50,7 +54,11 @@ public class IndentingPrintWriter
 	 * and begins with the specified indent level.
 	 */
 	public IndentingPrintWriter(Writer out, String indent, int initialIndentLevel) {
-		super(out);
+		this(out, indent, initialIndentLevel, StringTools.CR);
+	}
+	
+	public IndentingPrintWriter(Writer out, String indent, int initialIndentLevel, String lineSeparator) {
+		super(out, lineSeparator);
 		if (indent == null) {
 			throw new NullPointerException();
 		}
