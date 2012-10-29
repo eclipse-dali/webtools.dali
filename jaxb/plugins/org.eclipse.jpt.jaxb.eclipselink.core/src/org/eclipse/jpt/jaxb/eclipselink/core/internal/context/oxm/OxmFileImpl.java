@@ -18,8 +18,6 @@ import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbContextRoot;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmFile;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.oxm.OxmXmlBindings;
-import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessageBuilder;
-import org.eclipse.jpt.jaxb.eclipselink.core.internal.validation.ELJaxbValidationMessages;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.EXmlBindings;
 import org.eclipse.jpt.jaxb.eclipselink.core.resource.oxm.Oxm;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -139,14 +137,6 @@ public class OxmFileImpl
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		
-		if (! this.resourceType.isKindOf(Oxm.RESOURCE_TYPE_2_2)) {
-			messages.add(
-					ELJaxbValidationMessageBuilder.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							ELJaxbValidationMessages.OXM_FILE__VERSION_NOT_SUPPORTED,
-							OxmFileImpl.this,
-							getVersionTextRange()));
-		}
 		
 		if (this.xmlBindings != null) {
 			this.xmlBindings.validate(messages, reporter);
