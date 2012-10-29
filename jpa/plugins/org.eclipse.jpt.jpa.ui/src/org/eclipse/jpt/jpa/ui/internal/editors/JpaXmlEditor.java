@@ -364,7 +364,6 @@ public class JpaXmlEditor
 	public void dispose() {
 		this.editorInputModel.setValue(null);
 		this.localResourceManager.dispose();
-		this.widgetFactory.dispose();
 		this.rootStructureNodeModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.rootStructureNodeListener);
 
 		super.dispose();
