@@ -79,19 +79,33 @@ public class JpaXmlEditor
 {
 
 	/**
-	 * The IFileEditorInput model
+	 * The IFileEditorInput model.
+	 * <p>
+	 * @see #setInput(IEditorInput)
 	 */
 	private final ModifiablePropertyValueModel<IFileEditorInput> editorInputModel = new SimplePropertyValueModel<IFileEditorInput>();
 
 	/**
-	 * The one we listen to
+	 * The root structure node model is built from the editorInputModel. We assume
+	 * there is only 1 root structure node in the JpaFile. This is true of the
+	 * persistence.xml and orm.xml models.
+	 * <p>
+	 * We listen to changes to this model and swap out the editor pages.
+	 * Do not use this model as the subjectModel for the pages, 
+	 * we need to control that model ourselves.
+	 * @see #pageRootStructureNodeModel
 	 */
 	private PropertyValueModel<JpaStructureNode> rootStructureNodeModel;
 
+	/**
+	 * Store the root structure node listener so we can remove it on {@link #dispose()}.
+	 * Listens to {@link #rootStructureNodeModel} in order to swap out the editor pages.
+	 */
 	private final PropertyChangeListener rootStructureNodeListener = new RootStructureNodeListener();
 
 	/**
-	 * The one to be passed to the Page
+	 * This root structure node model is passed to the pages. This gives us control
+	 * over when the subject is changed for the pages.
 	 */
 	private ModifiablePropertyValueModel<JpaStructureNode> pageRootStructureNodeModel;
 
@@ -151,9 +165,8 @@ public class JpaXmlEditor
 	@Override
 	protected void addPages() {
 		this.addXMLSourceEditorPage();
-		//TODO this.addXMLDesignEditorPage();
-		if (this.getRootStructureNode() != null) {
-			this.setPageRootStructureNode_(this.getRootStructureNode());
+		if (this.rootStructureNodeModel.getValue() != null) {
+			this.setPageRootStructureNode_(this.rootStructureNodeModel.getValue());
 			this.setActivePage(0);
 		}
 	}
@@ -178,20 +191,21 @@ public class JpaXmlEditor
 	 * @see #getRootStructureNode()
 	 * @see Page
 	 */
-	protected void addSpecificPages() {
-		JptResourceType resourceType = this.getRootStructureNode().getResourceType();
+	protected void addSpecificPages(PropertyValueModel<JpaStructureNode> structureNodeModel) {
+		JpaStructureNode rootStructureNode = structureNodeModel.getValue();
+		JptResourceType resourceType = rootStructureNode.getResourceType();
 		if (resourceType == null) {
 			return;  // might not ever get here... (if we have a p.xml, it probably has a resource type...)
 		}
 
-		JpaPlatform jpaPlatform = this.getRootStructureNode().getJpaPlatform();
+		JpaPlatform jpaPlatform = rootStructureNode.getJpaPlatform();
 		JpaPlatformUi jpaPlatformUI = (JpaPlatformUi) jpaPlatform.getAdapter(JpaPlatformUi.class);
 		ResourceUiDefinition definition = jpaPlatformUI.getResourceUiDefinition(resourceType);
 
 		ListIterable<JpaEditorPageDefinition> pageDefinitions = definition.getEditorPageDefinitions();
 
 		for (JpaEditorPageDefinition editorPageDefinition : pageDefinitions) {
-			FormPage formPage = new Page(editorPageDefinition);
+			FormPage formPage = new Page(editorPageDefinition, structureNodeModel);
 
 			int index = this.getPageCount() == 0 ? 0 : this.getPageCount() - 1;//always keep the source tab as the last tab
 			try {
@@ -283,23 +297,21 @@ public class JpaXmlEditor
 			this.pageRootStructureNodeModel.setValue(null);
 			this.pageRootStructureNodeModel = null;
 		}
-
-		while (this.getPageCount() > 1) {//don't remove the XML Editor page
+		if (this.getPageCount() > 1) {
 			//set the XML source editor to be the active page before removing the other pages.
 			//If I don't do this and the active page gets removed it will build the contents
 			//of the next page. I don't want to do this since I'm trying to remove all the
-			//pages except the xml source page.
-			this.setActivePage(getPageCount() - 1);
-			this.removePage(0);
+			//pages except the XML source editor page.
+			this.setActivePage(this.getPageCount() - 1);
+
+			while (this.getPageCount() > 1) {//don't remove the XML Editor page
+				this.removePage(0);
+			}
 		}
 		if (rootStructureNode != null) {
 			this.pageRootStructureNodeModel = new SimplePropertyValueModel<JpaStructureNode>(rootStructureNode);
-			this.addSpecificPages();
+			this.addSpecificPages(this.pageRootStructureNodeModel);
 		}
-	}
-
-	protected JpaStructureNode getRootStructureNode() {
-		return this.rootStructureNodeModel.getValue();
 	}
 
 	//*should* be only 1 root structure node for the jpa file (this is true for persistence.xml and orm.xml files)
@@ -352,6 +364,7 @@ public class JpaXmlEditor
 	public void dispose() {
 		this.editorInputModel.setValue(null);
 		this.localResourceManager.dispose();
+		this.widgetFactory.dispose();
 		this.rootStructureNodeModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.rootStructureNodeListener);
 
 		super.dispose();
@@ -397,16 +410,22 @@ public class JpaXmlEditor
 		private final JpaEditorPageDefinition editorPageDefinition;
 
 		/**
+		 * This root structure node model.
+		 */
+		private PropertyValueModel<JpaStructureNode> structureNodeModel;
+
+		/**
 		 * The FormPage's image descriptor, stored so that we can dispose of it.
 		 */
 		private ImageDescriptor imageDescriptor;
 
-		Page(JpaEditorPageDefinition editorPageDefinition) {
+		Page(JpaEditorPageDefinition editorPageDefinition, PropertyValueModel<JpaStructureNode> structureNodeModel) {
 			super(JpaXmlEditor.this,
 					editorPageDefinition.getClass().getName(),
 					editorPageDefinition.getPageText());
 
 			this.editorPageDefinition = editorPageDefinition;
+			this.structureNodeModel = structureNodeModel;
 		}
 
 		@Override
@@ -446,7 +465,7 @@ public class JpaXmlEditor
 			Composite body = form.getForm().getBody();
 			body.setLayout(new GridLayout(1, true));
 
-			this.editorPageDefinition.buildEditorPageContent(form, getWidgetFactory(), JpaXmlEditor.this.pageRootStructureNodeModel);
+			this.editorPageDefinition.buildEditorPageContent(form, getWidgetFactory(), this.structureNodeModel);
 			//calling this because it makes the scroll bar appear on the editor tabs when the content
 			//is larger than the editor tab area. Not sure how else to make this happen
 			form.reflow(true);
