@@ -49,6 +49,7 @@ import org.eclipse.jpt.jpa.ui.internal.plugin.JptJpaUiPlugin;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
@@ -59,9 +60,9 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
+import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.MultiPageEditorSite;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.sse.ui.StructuredTextEditor;
 
 /**
@@ -117,8 +118,11 @@ public class JpaXmlEditor
 
 	/**
 	 * The factory used to create the various widgets.
+	 * The widgetFactory wraps the editor's toolkit, is created 
+	 * when the editor's toolkit is {@link #createToolkit(Display) created}
+	 * and disposed, when the editor is {@link #dispose() disposed}.
 	 */
-	private final WidgetFactory widgetFactory;
+	private WidgetFactory widgetFactory;
 
 	/**
 	 * The local resource manager, used to create/destroy Images
@@ -129,15 +133,15 @@ public class JpaXmlEditor
 	public JpaXmlEditor() {
 		super();
 		this.localResourceManager = new LocalResourceManager(JFaceResources.getResources());
-		this.widgetFactory = this.buildWidgetFactory();
 		this.structuredTextEditor = new StructuredTextEditor();
 		this.structuredTextEditor.setEditorPart(this);
 	}
 
-	private WidgetFactory buildWidgetFactory() {
-		return new FormWidgetFactory(
-			new TabbedPropertySheetWidgetFactory()
-		);
+	@Override
+	protected FormToolkit createToolkit(Display display) {
+		FormToolkit toolkit = super.createToolkit(display);
+		this.widgetFactory = new FormWidgetFactory(toolkit);
+		return toolkit;
 	}
 
 	@Override
@@ -365,6 +369,7 @@ public class JpaXmlEditor
 		this.editorInputModel.setValue(null);
 		this.localResourceManager.dispose();
 		this.rootStructureNodeModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.rootStructureNodeListener);
+		this.widgetFactory.dispose();
 
 		super.dispose();
 	}

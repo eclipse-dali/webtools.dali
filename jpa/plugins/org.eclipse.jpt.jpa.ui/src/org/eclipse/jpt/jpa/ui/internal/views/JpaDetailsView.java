@@ -10,13 +10,14 @@
 package org.eclipse.jpt.jpa.ui.internal.views;
 
 import java.util.HashMap;
-import org.eclipse.jpt.common.ui.internal.widgets.PropertySheetWidgetFactory;
+
+import org.eclipse.jpt.common.ui.internal.widgets.FormWidgetFactory;
 import org.eclipse.jpt.common.utility.internal.ObjectTools;
 import org.eclipse.jpt.common.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.ModifiablePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.JpaStructureNode;
 import org.eclipse.jpt.jpa.ui.details.JpaDetailsPageManager;
 import org.eclipse.jpt.jpa.ui.internal.JptUiMessages;
@@ -28,6 +29,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.part.ViewPart;
@@ -48,8 +51,12 @@ public class JpaDetailsView
 	/**
 	 * The factory used by the details view and its page managers
 	 * to create the their widgets.
+	 * The widgetFactory is created when the view's control is
+	 * {@link #createPartControl(Composite) created}
+	 * and disposed, if necessary, when the view is
+	 * {@link #dispose() disposed}.
 	 */
-	private final PropertySheetWidgetFactory widgetFactory = new PropertySheetWidgetFactory();
+	private FormWidgetFactory widgetFactory;
 
 	/**
 	 * The scrolled form that holds the {@link #pageBook page book}.
@@ -102,7 +109,8 @@ public class JpaDetailsView
 
 	@Override
 	public void createPartControl(Composite parent) {
-		this.scrolledForm = this.widgetFactory.getWidgetFactory().createScrolledForm(parent);
+		this.widgetFactory = new FormWidgetFactory(new FormToolkit(parent.getDisplay()));
+		this.scrolledForm = this.widgetFactory.createScrolledForm(parent);
 		JptJpaUiPlugin.instance().controlAffectsJavaSource(this.scrolledForm);
 		this.scrolledForm.getBody().setLayout(new GridLayout());
 
@@ -245,6 +253,9 @@ public class JpaDetailsView
 
 	@Override
 	public void dispose() {
+		if (this.widgetFactory != null) {
+			this.widgetFactory.dispose();
+		}
 		if (this.manager != null) {
 			this.dispose_();
 		}

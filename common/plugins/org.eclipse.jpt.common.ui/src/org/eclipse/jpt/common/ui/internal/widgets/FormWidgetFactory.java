@@ -26,16 +26,18 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
+import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 
 /**
  * This <code>WidgetFactory</code> is responsible to create the widgets
  * using the <code>FormToolkit</code> in order use the form style (flat-style)
- * look and feel.
+ * look and feel. Clients that create a FormWidgetFactory must call {@link #dispose()} 
+ * when they are finished using the widget factory.
+
  *
  * @see FormToolkit
- *
- * @version 2.0
+ * @version 3.3
  * @since 2.0
  */
 @SuppressWarnings("nls")
@@ -48,9 +50,8 @@ public class FormWidgetFactory implements WidgetFactory {
 
 	/**
 	 * Creates a new <code>FormWidgetFactory</code>.
-	 *
-	 * @param widgetFactory The actual factory responsible for creating the new
-	 * widgets
+	 * <p>
+	 * Clients that call this method must call {@link #dispose()}
 	 */
 	public FormWidgetFactory(FormToolkit widgetFactory) {
 		super();
@@ -219,6 +220,10 @@ public class FormWidgetFactory implements WidgetFactory {
 		return this.widgetFactory.createSection(parent, SWT.FLAT | style);
 	}
 
+	public ScrolledForm createScrolledForm(Composite parent) {
+		return this.widgetFactory.createScrolledForm(parent);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -267,5 +272,9 @@ public class FormWidgetFactory implements WidgetFactory {
 	 */
 	public FormToolkit getWidgetFactory() {
 		return this.widgetFactory;
+	}
+
+	public void dispose() {
+		this.widgetFactory.dispose();
 	}
 }

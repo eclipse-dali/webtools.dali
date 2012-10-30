@@ -207,4 +207,8 @@ public class DefaultWidgetFactory implements WidgetFactory {
 		TriStateCheckBox checkBox = new TriStateCheckBox(parent, text, this);
 		return checkBox.getCheckBox();
 	}
+
+	public void dispose() {
+		//nothing to dispose
+	}
 }

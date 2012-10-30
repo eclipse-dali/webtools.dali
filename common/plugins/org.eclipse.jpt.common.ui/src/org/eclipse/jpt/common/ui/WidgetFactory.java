@@ -33,7 +33,7 @@ import org.eclipse.ui.forms.widgets.Section;
  * adopters on the understanding that any code that uses this API will almost
  * certainly be broken (repeatedly) as the API evolves.
  *
- * @version 2.0
+ * @version 3.3
  * @since 2.0
  */
 public interface WidgetFactory {
@@ -207,4 +207,9 @@ public interface WidgetFactory {
 	 * @return A new <code>Button</code> that has 3 selection states
 	 */
 	Button createTriStateCheckBox(Composite parent, String text);
+
+	/**
+	 * Dispose of the widget factory
+	 */
+	void dispose();
 }
