@@ -14,7 +14,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.resource.xml.JptXmlResource;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbContextRoot;
 import org.eclipse.jpt.jaxb.eclipselink.core.context.ELJaxbPackage;
@@ -39,6 +38,9 @@ public class OxmFileImpl
 	 * (since, if the content type changes, we get garbage-collected).
 	 */
 	protected JptResourceType resourceType;
+	
+	/** backpointer */
+	protected ELJaxbPackage elJaxbPackage;
 	
 	/**
 	 * The root element of the oxm file.
@@ -73,11 +75,6 @@ public class OxmFileImpl
 		return (this.xmlBindings == null) ? null : this.xmlBindings.getPackageName();
 	}
 	
-	public ELJaxbPackage getPackage() {
-		String packageName = getPackageName();
-		return (StringTools.isBlank(packageName)) ? null : (ELJaxbPackage) getContextRoot().getPackage(packageName);
-	}
-	
 	
 	// ***** sync/update *****
 	
@@ -95,6 +92,19 @@ public class OxmFileImpl
 		if (this.xmlBindings != null) {
 			this.xmlBindings.update();
 		}
+	}
+	
+	
+	// ***** package *****
+	
+	public ELJaxbPackage getPackage() {
+		return this.elJaxbPackage;
+	}
+	
+	public void setPackage(ELJaxbPackage newPackage) {
+		ELJaxbPackage oldPackage = this.elJaxbPackage;
+		this.elJaxbPackage = newPackage;
+		firePropertyChanged(PACKAGE_PROPERTY, oldPackage, newPackage);
 	}
 	
 	

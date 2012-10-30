@@ -49,6 +49,14 @@ public class ELJaxbPackageImpl
 	}
 	
 	protected void setOxmFile(OxmFile oxmFile) {
+		if (valuesAreDifferent(this.oxmFile, oxmFile)) {
+			this.oxmFile.setPackage(null);
+			setOxmFile_(oxmFile);
+			oxmFile.setPackage(this);
+		}
+	}
+	
+	protected void setOxmFile_(OxmFile oxmFile) {
 		OxmFile old = this.oxmFile;
 		this.oxmFile = oxmFile;
 		firePropertyChanged(OXM_FILE_PROPERTY, old, oxmFile);

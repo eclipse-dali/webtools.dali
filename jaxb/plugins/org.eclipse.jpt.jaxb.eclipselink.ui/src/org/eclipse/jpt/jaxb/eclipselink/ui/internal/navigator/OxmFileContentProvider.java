@@ -31,6 +31,8 @@ public class OxmFileContentProvider
 	
 	
 	public ELJaxbPackage getParent() {
+		// don't need to worry about change notification, as if the parent package changes,
+		// this node will be represented in a different place in the tree
 		return this.item.getPackage();
 	}
 	

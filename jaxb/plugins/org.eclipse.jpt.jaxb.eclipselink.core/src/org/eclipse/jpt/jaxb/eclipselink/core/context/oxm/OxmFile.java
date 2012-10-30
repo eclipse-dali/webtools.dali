@@ -30,8 +30,15 @@ public interface OxmFile
 	
 	String getPackageName();
 	
-	/** Convenience: will return the package associated with the package name  */
+	
+	// ***** package *****
+	
+	static final String PACKAGE_PROPERTY = "package"; //$NON-NLS-1$
+	
 	ELJaxbPackage getPackage();
+	
+	/** NB: not API.  Used internally only. */
+	void setPackage(ELJaxbPackage newPackage);
 	
 	
 	// ***** xml bindings *****
