@@ -72,11 +72,16 @@ public class JdbcPropertiesComposite<T extends Connection>
 	}
 
 	protected Section addReadConnectionSection(Composite container) {
-		Section readConnectionSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE | ExpandableComposite.EXPANDED);
+		Section readConnectionSection = this.getWidgetFactory().createSection(container, 
+				ExpandableComposite.TWISTIE | 
+				ExpandableComposite.EXPANDED |
+				ExpandableComposite.CLIENT_INDENT);
 		readConnectionSection.setText(EclipseLinkUiMessages.PersistenceXmlConnectionTab_readConnectionsSectionTitle);
 		
 		Composite readConnectionClient = this.getWidgetFactory().createComposite(readConnectionSection);
-		readConnectionClient.setLayout(new GridLayout(2, false));
+		GridLayout gridLayout = new GridLayout(2, false);
+		gridLayout.marginWidth  = 0;
+		readConnectionClient.setLayout(gridLayout);
 		readConnectionClient.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		// Read Connections Shared
@@ -105,11 +110,16 @@ public class JdbcPropertiesComposite<T extends Connection>
 	}
 
 	protected Section addWriteConnectionSection(Composite container) {
-		Section writeConnectionSection = this.getWidgetFactory().createSection(container, ExpandableComposite.TWISTIE | ExpandableComposite.EXPANDED);
+		Section writeConnectionSection = this.getWidgetFactory().createSection(container, 
+				ExpandableComposite.TWISTIE | 
+				ExpandableComposite.EXPANDED |
+				ExpandableComposite.CLIENT_INDENT);
 		writeConnectionSection.setText(EclipseLinkUiMessages.PersistenceXmlConnectionTab_writeConnectionsSectionTitle);
 		
 		Composite writeConnectionClient = this.getWidgetFactory().createComposite(writeConnectionSection);
-		writeConnectionClient.setLayout(new GridLayout(2, false));
+		GridLayout gridLayout = new GridLayout(2, false);
+		gridLayout.marginWidth  = 0;
+		writeConnectionClient.setLayout(gridLayout);
 		writeConnectionClient.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		// Write Connections Minimum
