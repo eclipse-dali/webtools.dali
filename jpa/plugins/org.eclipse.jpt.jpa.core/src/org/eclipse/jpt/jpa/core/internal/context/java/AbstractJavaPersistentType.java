@@ -978,7 +978,9 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	public void gatherRootStructureNodes(JpaFile jpaFile, Collection<JpaStructureNode> rootStructureNodes) {
-		if (this.getResource().equals(jpaFile.getFile())) {
+		IResource resource = this.getResource();
+		// the resource can be null if the resource type is "external"
+		if (resource != null && resource.equals(jpaFile.getFile())) {
 			rootStructureNodes.add(this);
 		}
 	}
