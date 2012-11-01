@@ -83,11 +83,11 @@
 			<uri
 				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_2_4.xsd"
 				uri="schemas/eclipselink_orm_2_4.xsd"/>
-
+<!-- comment out for now until the 2.5 schema is in our wtp build
 			<uri
 				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_2_5.xsd"
 				uri="platform:/plugin/org.eclipse.persistence.jpa/org/eclipse/persistence/jpa/eclipselink_orm_2_5.xsd"/>
-
+-->
 			<uri
 				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_oxm_2_0.xsd"
 				uri="schemas/eclipselink_oxm_2_0.xsd"/>
