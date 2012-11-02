@@ -66,7 +66,7 @@ public interface XmlQuery extends XmlQuery_2_0
 	void setName(String value);
 
 	/**
-	 * Returns the value of the '<em><b>Query</b></em>' element.
+	 * Returns the value of the '<em><b>Query</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Query</em>' attribute isn't clear,
@@ -98,7 +98,7 @@ public interface XmlQuery extends XmlQuery_2_0
 	 * Sets the value of the '{@link org.eclipse.jpt.jpa.core.resource.orm.XmlQuery#getQuery <em>Query</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Query</em>' element.
+	 * @param value the new value of the '<em>Query</em>' attribute.
 	 * @see #getQuery()
 	 * @generated
 	 */

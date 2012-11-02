@@ -3271,6 +3271,15 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_ENTITY_MAPPINGS__SCHEMA_LOCATION = CommonPackage.EROOT_OBJECT_IMPL__SCHEMA_LOCATION;
 
 	/**
+	 * The feature id for the '<em><b>Implied Version</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY_MAPPINGS__IMPLIED_VERSION = CommonPackage.EROOT_OBJECT_IMPL__IMPLIED_VERSION;
+
+	/**
 	 * The feature id for the '<em><b>Named Queries</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

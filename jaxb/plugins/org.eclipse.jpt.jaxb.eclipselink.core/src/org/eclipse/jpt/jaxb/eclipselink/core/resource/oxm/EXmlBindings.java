@@ -56,12 +56,8 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
 public class EXmlBindings extends ERootObjectImpl
 {
 	/**
-	 * The default value of the '{@link #getXmlAccessorType() <em>Xml Accessor Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getXmlAccessorType()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
 	protected static final EXmlAccessType XML_ACCESSOR_TYPE_EDEFAULT = null;
 
@@ -85,7 +81,7 @@ public class EXmlBindings extends ERootObjectImpl
 	 * @generated
 	 * @ordered
 	 */
-	protected static final EXmlAccessOrder XML_ACCESSOR_ORDER_EDEFAULT = null;
+	protected static final EXmlAccessOrder XML_ACCESSOR_ORDER_EDEFAULT = EXmlAccessOrder.ALPHABETICAL;
 
 
 	/**
@@ -906,7 +902,7 @@ public class EXmlBindings extends ERootObjectImpl
 		result.append(xmlAccessorOrder);
 		result.append(", xmlMappingMetadataComplete: ");
 		result.append(xmlMappingMetadataComplete);
-		result.append(", specifiedPackageName: ");
+		result.append(", packageName: ");
 		result.append(packageName);
 		result.append(", xmlNameTransformer: ");
 		result.append(xmlNameTransformer);

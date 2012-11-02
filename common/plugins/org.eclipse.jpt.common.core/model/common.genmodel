@@ -14,6 +14,7 @@
     <genClasses image="false" ecoreClass="common.ecore#//ERootObject">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute common.ecore#//ERootObject/version"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute common.ecore#//ERootObject/schemaLocation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute common.ecore#//ERootObject/impliedVersion"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
