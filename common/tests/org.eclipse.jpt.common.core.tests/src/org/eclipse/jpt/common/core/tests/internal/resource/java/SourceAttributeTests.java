@@ -18,6 +18,7 @@ import org.eclipse.jpt.common.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
 
 
+@SuppressWarnings("nls")
 public class SourceAttributeTests
 		extends JavaResourceModelTestCase {
 	

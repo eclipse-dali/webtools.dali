@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.core.tests.internal.context.java;
 
 import java.util.Iterator;
 
-import org.eclipse.core.internal.utils.ArrayIterator;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.common.core.resource.java.JavaResourceAnnotatedElement.Kind;
@@ -321,9 +320,9 @@ public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 		createGenericSuperclass();
 		createGenericSubclass();
 		JavaPersistentType superclassPT = 
-				((ClassRef) IterableTools.get(getPersistenceUnit().getClassRefs(), 0)).getJavaPersistentType();
+				IterableTools.get(getPersistenceUnit().getClassRefs(), 0).getJavaPersistentType();
 		JavaPersistentType subclassPT = 
-				((ClassRef) IterableTools.get(getPersistenceUnit().getClassRefs(), 1)).getJavaPersistentType();
+				IterableTools.get(getPersistenceUnit().getClassRefs(), 1).getJavaPersistentType();
 		
 		// generic field
 		JavaPersistentAttribute genericAttribute = superclassPT.getAttributeNamed("genericField");

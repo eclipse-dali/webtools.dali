@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jpa.ui.internal.dialogs;
 
 import java.util.Comparator;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.StatusDialog;
 import org.eclipse.jface.viewers.ComboViewer;

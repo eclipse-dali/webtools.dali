@@ -25,7 +25,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
-import org.eclipse.jpt.common.core.internal.resource.xml.AbstractJptXmlResourceProvider;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.xml.JpaXmlResourceProvider;
 import org.eclipse.jpt.jpa.core.JpaProject;
@@ -107,7 +106,7 @@ public abstract class AbstractJpaFileCreationOperation
 		IContainer container = getContainer();
 		if (! container.exists()) {
 			if (container.getType() == IContainer.PROJECT) {
-				throw new ExecutionException("Project does not exist");
+				throw new ExecutionException("Project does not exist"); //$NON-NLS-1$
 			}
 			else if (container.getType() == IContainer.FOLDER) {
 				try {
@@ -132,7 +131,7 @@ public abstract class AbstractJpaFileCreationOperation
 			resourceProvider.createFileAndResource(getDataModel(), monitor);
 		}
 		catch (CoreException e) {
-			throw new ExecutionException("Could not create file", e);
+			throw new ExecutionException("Could not create file", e); //$NON-NLS-1$
 		}
 		this.file = newFile;
 	}

@@ -208,7 +208,7 @@ public abstract class ComboPane<T extends Model>
 				this.comboBox.select(0);
 			}
 			else {
-				this.comboBox.setText("");
+				this.comboBox.setText(""); //$NON-NLS-1$
 			}
 		} else {
 			// select the new value

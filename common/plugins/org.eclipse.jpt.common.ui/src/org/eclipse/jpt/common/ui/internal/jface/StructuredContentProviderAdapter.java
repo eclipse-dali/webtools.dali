@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2012 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -115,7 +115,7 @@ public class StructuredContentProviderAdapter
 			}
 			@Override
 			public String toString() {
-				return "list listener";
+				return "list listener"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -125,7 +125,7 @@ public class StructuredContentProviderAdapter
 
 	public Object[] getElements(Object inputElement) {
 		if (inputElement != this.listHolder) {
-			throw new IllegalArgumentException("invalid input element: " + inputElement);
+			throw new IllegalArgumentException("invalid input element: " + inputElement); //$NON-NLS-1$
 		}
 		return this.listHolder.toArray();
 	}
@@ -135,10 +135,10 @@ public class StructuredContentProviderAdapter
 	 */
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		if (viewer != this.listViewer) {
-			throw new IllegalArgumentException("invalid viewer: " + viewer);
+			throw new IllegalArgumentException("invalid viewer: " + viewer); //$NON-NLS-1$
 		}
 		if (oldInput != this.listHolder) {
-			throw new IllegalArgumentException("invalid old input: " + oldInput);
+			throw new IllegalArgumentException("invalid old input: " + oldInput); //$NON-NLS-1$
 		}
 		this.modelChanged((ListValueModel) oldInput, (ListValueModel) newInput);
 	}

@@ -31,7 +31,6 @@ import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.OrmElementCollectionMa
 import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_3JpaPlatformProvider;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.v2_3.EclipseLink2_3;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLink2_3JpaPlatformProvider;
 
 
 public class EclipseLinkOrmXml2_3Definition

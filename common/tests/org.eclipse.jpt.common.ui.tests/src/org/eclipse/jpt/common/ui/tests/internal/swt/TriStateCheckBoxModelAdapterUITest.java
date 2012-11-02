@@ -37,6 +37,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * Play around with a set of tri-state check boxes.
  */
+@SuppressWarnings("nls")
 public class TriStateCheckBoxModelAdapterUITest
 	extends ApplicationWindow
 {

@@ -20,7 +20,6 @@ import org.eclipse.jpt.jpa.core.context.orm.OrmTypeMappingDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.jpa.core.context.orm.UnsupportedOrmAttributeMappingDefinition;
-import org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformProvider;
 
 /**
  * All the state in the definition should be "static"

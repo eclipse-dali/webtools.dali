@@ -11,8 +11,6 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.ddlgen;
 
 import java.util.Properties;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jpt.common.core.gen.JptGenerator;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.jpa2.context.persistence.connection.JpaConnection2_0;
 import org.eclipse.jpt.jpa.db.ConnectionProfile;

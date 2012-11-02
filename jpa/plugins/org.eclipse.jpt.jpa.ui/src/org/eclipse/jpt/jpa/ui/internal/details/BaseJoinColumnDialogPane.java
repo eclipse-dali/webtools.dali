@@ -11,7 +11,6 @@ package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
-import org.eclipse.jface.resource.StringConverter;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;

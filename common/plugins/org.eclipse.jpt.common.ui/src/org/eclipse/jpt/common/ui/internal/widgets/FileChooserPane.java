@@ -10,7 +10,6 @@
 package org.eclipse.jpt.common.ui.internal.widgets;
 
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jpt.common.ui.internal.plugin.JptCommonUiPlugin;
@@ -36,7 +35,6 @@ import org.eclipse.ui.dialogs.ISelectionStatusValidator;
  * @version 2.0
  * @since 2.0
  */
-@SuppressWarnings("nls")
 public abstract class FileChooserPane<T extends Model> extends ChooserPane<T>
 {
 	private ModifiablePropertyValueModel<String> textHolder;

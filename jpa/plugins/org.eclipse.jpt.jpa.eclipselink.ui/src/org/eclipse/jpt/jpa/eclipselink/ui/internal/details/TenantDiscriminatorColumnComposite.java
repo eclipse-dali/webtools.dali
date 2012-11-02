@@ -37,7 +37,6 @@ import org.eclipse.jpt.jpa.ui.internal.details.db.DatabaseObjectCombo;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 
 public class TenantDiscriminatorColumnComposite extends Pane<ReadOnlyTenantDiscriminatorColumn2_3> {
 

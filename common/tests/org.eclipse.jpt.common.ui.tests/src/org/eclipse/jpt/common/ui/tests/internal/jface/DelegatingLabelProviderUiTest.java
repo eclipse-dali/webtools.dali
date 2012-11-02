@@ -55,6 +55,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
+@SuppressWarnings("nls")
 public class DelegatingLabelProviderUiTest extends ApplicationWindow
 {
 	private TreeViewer tree;
