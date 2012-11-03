@@ -1036,7 +1036,7 @@ public class JPAEditorUtil {
 				+ "import java.io.Serializable;\n"
 				+ "import javax.persistence.*;\n\n" //$NON-NLS-1$
 				+ "@MappedSuperclass \n" //$NON-NLS-1$
-				+ "public class " + mappedSuperclassShortName + " implements Serializable {\n\n" //$NON-NLS-1$ //$NON-NLS-2$
+				+ "public abstract class " + mappedSuperclassShortName + " implements Serializable {\n\n" //$NON-NLS-1$ //$NON-NLS-2$
 				+ "private static final long serialVersionUID = 1L;\n"
 				+ "}"; //$NON-NLS-1$ 
 		return createClassInProject(project, folder, mappedSuperclassShortName, content);
