@@ -1033,9 +1033,11 @@ public class JPAEditorUtil {
 		String mappedSuperclassShortName = mappedSuperclassName
 				.substring(mappedSuperclassName.lastIndexOf('.') + 1);
 		String content = "package " + JPADiagramPropertyPage.getDefaultPackage(project) + ";\n\n" //$NON-NLS-1$	//$NON-NLS-2$
+				+ "import java.io.Serializable;\n"
 				+ "import javax.persistence.*;\n\n" //$NON-NLS-1$
 				+ "@MappedSuperclass \n" //$NON-NLS-1$
-				+ "public class " + mappedSuperclassShortName + " {\n\n" //$NON-NLS-1$ //$NON-NLS-2$
+				+ "public class " + mappedSuperclassShortName + " implements Serializable {\n\n" //$NON-NLS-1$ //$NON-NLS-2$
+				+ "private static final long serialVersionUID = 1L;\n"
 				+ "}"; //$NON-NLS-1$ 
 		return createClassInProject(project, folder, mappedSuperclassShortName, content);
 	}
@@ -1186,12 +1188,13 @@ public class JPAEditorUtil {
 		boolean fieldBasedAccess = JPADiagramPropertyPage.isAccessFieldBased(project, props);
 		
 		String classDeclarationStringContent = null;
+		String importSerializable = "";
 		if (isMappedSuperclassChild) {
 			String mappedSuperclassShortName = mappedSuperclassName.substring(mappedSuperclassName.lastIndexOf('.') + 1);
 			classDeclarationStringContent = "public class " + entityShortName + " extends " + mappedSuperclassShortName + " {\n\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		} else {
-			classDeclarationStringContent = "public class " + entityShortName + " {\n\n"; //$NON-NLS-1$ //$NON-NLS-2$
-
+			classDeclarationStringContent = "public class " + entityShortName + " implements Serializable {\n\n"; //$NON-NLS-1$ //$NON-NLS-2$
+			importSerializable += "import java.io.Serializable;\n";
 		}
 
 		String packageImport = ""; //$NON-NLS-1$
@@ -1206,13 +1209,15 @@ public class JPAEditorUtil {
 			primaryKeyDeclaration = generatePrimaryKeyDeclaration(fieldBasedAccess, idName);
 		
 		String content = "package " + JPADiagramPropertyPage.getDefaultPackage(project, props)	//$NON-NLS-1$ 
-		  		 + ";\n\n"																	//$NON-NLS-1$	
+		  		 + ";\n\n"																//$NON-NLS-1$	
+		  		 + importSerializable
 		  		 + "import javax.persistence.*;\n"  										//$NON-NLS-1$
 		  		 + packageImport+"\n\n" 													//$NON-NLS-1$
 		  		 + "@Entity \n" 															//$NON-NLS-1$
 		  		 + ((tableName.length() > 0) ? ("@Table(name=\"" 							//$NON-NLS-1$
 		  		 + tableName + "\")\n") : "")  												//$NON-NLS-1$	//$NON-NLS-2$
 		  		 + classDeclarationStringContent
+		  		 + "private static final long serialVersionUID = 1L;\n"
 		  		 + primaryKeyDeclaration
 		  		 +"}"; 																		//$NON-NLS-1$
 		
