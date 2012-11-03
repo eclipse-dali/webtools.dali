@@ -1218,6 +1218,8 @@ public class JPAEditorUtil {
 		  		 + tableName + "\")\n") : "")  												//$NON-NLS-1$	//$NON-NLS-2$
 		  		 + classDeclarationStringContent
 		  		 + "private static final long serialVersionUID = 1L;\n"
+		  		 + "public " + entityShortName + "() {\n"
+		  		 + "}\n"
 		  		 + primaryKeyDeclaration
 		  		 +"}"; 																		//$NON-NLS-1$
 		
