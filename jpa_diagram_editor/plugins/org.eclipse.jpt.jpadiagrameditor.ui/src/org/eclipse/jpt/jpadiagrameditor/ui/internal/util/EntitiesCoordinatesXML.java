@@ -186,14 +186,14 @@ public class EntitiesCoordinatesXML {
 		NodeList nodeList = rootElement.getElementsByTagName(JPAEditorConstants.ENTITY_XML_TAG);
 		for(int i=0; i<nodeList.getLength();i++){
 			Element node = (Element) nodeList.item(i);
-			String entityName = node.getElementsByTagName(JPAEditorConstants.ENTITY_NAME_TAG).item(0).getTextContent();
-			int width = Integer.parseInt(node.getElementsByTagName(JPAEditorConstants.ENTITY_WIDTH_TAG).item(0).getTextContent());
-			int height = Integer.parseInt(node.getElementsByTagName(JPAEditorConstants.ENTITY_HEIGHT_TAG).item(0).getTextContent());
-			int xCoordinate = Integer.parseInt(node.getElementsByTagName(JPAEditorConstants.ENTITY_X_COORDINATE_TAG).item(0).getTextContent());
-			int yCoordinate = Integer.parseInt(node.getElementsByTagName(JPAEditorConstants.ENTITY_Y_COORDINATE_TAG).item(0).getTextContent());
-			boolean isPrimaryCollapsed = Boolean.parseBoolean(node.getElementsByTagName(JPAEditorConstants.ENTITY_PRIMARY_SECTION_STATE_TAG).item(0).getTextContent());
-			boolean isRelationCollapsed = Boolean.parseBoolean(node.getElementsByTagName(JPAEditorConstants.ENTITY_RELATION_SECTION_STATE_TAG).item(0).getTextContent());
-			boolean isBasicCollapsed = Boolean.parseBoolean(node.getElementsByTagName(JPAEditorConstants.ENTITY_BASIC_SECTION_STATE_TAG).item(0).getTextContent());
+			String entityName = node.getElementsByTagName(JPAEditorConstants.ENTITY_NAME_TAG).item(0).getTextContent().trim();
+			int width = Integer.parseInt(node.getElementsByTagName(JPAEditorConstants.ENTITY_WIDTH_TAG).item(0).getTextContent().trim());
+			int height = Integer.parseInt(node.getElementsByTagName(JPAEditorConstants.ENTITY_HEIGHT_TAG).item(0).getTextContent().trim());
+			int xCoordinate = Integer.parseInt(node.getElementsByTagName(JPAEditorConstants.ENTITY_X_COORDINATE_TAG).item(0).getTextContent().trim());
+			int yCoordinate = Integer.parseInt(node.getElementsByTagName(JPAEditorConstants.ENTITY_Y_COORDINATE_TAG).item(0).getTextContent().trim());
+			boolean isPrimaryCollapsed = Boolean.parseBoolean(node.getElementsByTagName(JPAEditorConstants.ENTITY_PRIMARY_SECTION_STATE_TAG).item(0).getTextContent().trim());
+			boolean isRelationCollapsed = Boolean.parseBoolean(node.getElementsByTagName(JPAEditorConstants.ENTITY_RELATION_SECTION_STATE_TAG).item(0).getTextContent().trim());
+			boolean isBasicCollapsed = Boolean.parseBoolean(node.getElementsByTagName(JPAEditorConstants.ENTITY_BASIC_SECTION_STATE_TAG).item(0).getTextContent().trim());
 			
 			SizePosition rectSP = new SizePosition(width, height, xCoordinate, yCoordinate);
 			rectSP.primaryCollapsed = isPrimaryCollapsed;
